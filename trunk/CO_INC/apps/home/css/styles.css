@@ -1,0 +1,69 @@
+@charset "utf-8";
+/* CSS Document */
+
+#home {
+	background-color: #333333;
+    height: 100%;
+    position: absolute;
+    width: 100%;
+}
+
+#home .topbar {
+	
+	background-color:#E5E5E5;
+height:30px;
+}
+
+#menu a.app_home:link, #menu a.app_home:active, #menu a.app_home:visited { color: #333; text-decoration: none; outline: none; background: url(../../../../img/app_propellor.png) no-repeat 36px 0px; }
+#menu a.app_home:hover { color: #fff; text-decoration: none; outline: none; background: #191919 url(../../../img/app_propellor.png) no-repeat 36px -90px; }
+#menu a.app_home.active-app { color: #fff; text-decoration: none; outline: none; background: #191919 url(../../../img/app_propellor.png) no-repeat 36px -90px; }
+
+#columns .column {
+float:left;
+height:auto !important;
+min-height:400px;
+width:350px;
+}
+
+#columns .widget {
+-moz-border-radius:4px 4px 4px 4px;
+margin:25px 25px 0 0;
+padding:2px;
+}
+
+.widget-placeholder { border: 2px dashed #999; margin:25px 25px 0 0;}
+
+#columns .widget .widget-head {
+    color: #000;
+    overflow: hidden;
+    width: 100%;
+    height: 25px;
+    line-height: 25px;
+		cursor: move;
+}
+
+#columns .widget-head h3 { font-weight: bold; padding: 0 0 0 25px; }
+
+/*#sortable1, #sortable2, #sortable3, #sortable4 { margin: 0; padding: 0; float: left; width: 350px; min-height: 500px; }
+.widget-title { height: 25px; }
+.widget-title h3 { color: #000; font-weight: bold; padding: 4px 0 0 20px; }
+.widget-content { text-align: center; padding: 0 2px 2px 2px; }
+*/
+.widget-home { background-color:#b9b9b9; }
+.widget-notes { background-color:#d2a009; }
+.widget-notes-inner { background-color:#483703; padding: 23px 19px;}
+.widget-projects { background-color:#82aa0b; }
+.widget-projects-inner { background-color:#2d3a04; padding: 23px 19px;}
+.widget-email { background-color:#4ba0c7; }
+.widget-email-inner { background-color:#1b3743; padding: 23px 19px;}
+
+.widget-head a.collapse {
+background:url("../collapse.png") no-repeat scroll 0px 0px transparent;
+display:inline;
+float:left;
+height:14px;
+margin:7px 0 0 5px;
+outline:medium none;
+text-indent:-9999em;
+width:14px;
+}
