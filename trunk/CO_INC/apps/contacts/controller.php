@@ -25,6 +25,7 @@ class Contacts extends Controller {
 	}
 	
 	function getGroupDetails($id) {
+		global $lang;
 		$group = $this->model->getGroupDetails($id);
 		if($id == 0) {
 			include 'view/system_group.php';
@@ -84,6 +85,7 @@ class Contacts extends Controller {
 	}
 
 	function getContactDetails($id) {
+		global $lang;
 		if($contact = $this->model->getContactDetails($id)) {
 			include 'view/contact_edit.php';
 		} else {
