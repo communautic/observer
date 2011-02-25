@@ -17,7 +17,7 @@ define('PROJECT_FOLDER_STATUS_ACTIVE', 'aktiv');
 define('PROJECT_FOLDER_STATUS_ARCHIVE', 'archiv');
 
 // Project Right
-define('PROJECT_TITLE', 'Projekt');
+$lang["PROJECT_TITLE"] = 'Projekt';
 define('PROJECT_START', 'Start');
 define('PROJECT_KICKOFF', 'Kick Off');
 define('PROJECT_END', 'Ende');

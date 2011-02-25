@@ -51,20 +51,7 @@ class Phases {
 		  }
 	}
 
-	/*function getNew($id,$num) {
-		$phase = $this->model->getNew($id,$num);
-		include 'view/new.php';
-	}
-	
-	function createNew($id,$title,$startdate,$enddate,$management,$management_ct,$team,$team_ct,$protocol,$phase_access,$phase_status,$phase_status_date,$task_startdatenew,$task_enddatenew,$task_idnew,$task_textnew,$task_new) {
-		$retval = $this->model->createNew($id,$title,$startdate,$enddate,$management,$management_ct,$team,$team_ct,$protocol,$phase_access,$phase_status,$phase_status_date,$task_startdatenew,$task_enddatenew,$task_idnew,$task_textnew,$task_new);
-		if($retval){
-			 return '{ "what": "phase" , "action": "new", "id": "' . $retval . '" }';
-		  } else{
-			 return "error";
-		  }
-	}*/
-	
+
 	function createDuplicate($id) {
 		$retval = $this->model->createDuplicate($id);
 		if($retval){
@@ -73,7 +60,8 @@ class Phases {
 			 return "error";
 		  }
 	}
-	
+
+
 	function binPhase($id) {
 		$retval = $this->model->binPhase($id);
 		if($retval){
@@ -82,7 +70,8 @@ class Phases {
 			 return "error";
 		  }
 	}
-	
+
+
 	function toggleIntern($id,$status) {
 		$retval = $this->model->toggleIntern($id,$status);
 		if($retval){
@@ -91,7 +80,8 @@ class Phases {
 			 return "error";
 		  }
 	}
-	
+
+
 	function getPhaseTaskDialog() {
 		include 'view/dialog_task.php';
 	}
@@ -104,8 +94,10 @@ class Phases {
 			 return "error";
 		  }
 	}
-	
+
+
 	function addTask($pid,$phid,$date,$cat) {
+		global $lang;
 		$task = $this->model->addTask($pid,$phid,$date,$cat);
 		foreach($task as $value) {
 			$checked = '';
@@ -131,12 +123,8 @@ class Phases {
 			return "error";
 		}
 	}
-	
-	/*function insertTask($start,$end,$num) {
-		//$task = $this->model->insertPhaseTask($start,$end);
-		include 'view/task_new.php';
-	}*/
-	
+
+
 	function getPhaseStatusDialog() {
 		include 'view/dialog_status.php';
 	}

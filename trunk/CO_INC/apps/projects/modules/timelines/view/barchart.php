@@ -11,7 +11,9 @@
          <td width="15"></td>
         <td class="barchart_color_finished"><span><?php echo TIMELINE_STATUS_FINISHED;?></span></td>
          <td width="15"></td>
-        <td class="barchart_color_overdue"><span><?php echo TIMELINE_STATUS_NOT_FINISHED;?></span></td>
+        <td class="barchart_color_not_finished"><span><?php echo TIMELINE_STATUS_NOT_FINISHED;?></span></td>
+         <td width="15"></td>
+        <td class="barchart_color_overdue"><span><?php echo TIMELINE_STATUS_OVERDUE;?></span></td>
     </tr>
 </table></td>
   </tr>
@@ -32,7 +34,7 @@ foreach($project["phases"] as $key => &$value){ ?>
       
       <?php foreach($project["phases"][$key]["tasks"] as $tkey => &$tvalue){ ?>
       
-      <div style="position: relative; padding-left: 25px; height: 16px; margin: 0 15px 2px 0; background-color:#e5e5e5">
+      <div style="position: relative; padding: 0 50px 0 25px; height: 16px; margin: 0 15px 2px 0; background-color:#e5e5e5">
 	  	<a href="#" class="but-scroll-to" t="<?php echo($project["phases"][$key]["css_top"]);?>" l="<?php echo($project["phases"][$key]["css_left"]);?>"><?php echo($project["phases"][$key]["tasks"][$tkey]["text"]);?></a><div style="text-align: right; position: absolute; width: 38px; padding: 1px 10px 0 0; top: 0; right: 0; height: 16px; border-left: 2px solid #fff;"><?php echo($project["phases"][$key]["tasks"][$tkey]["days"]);?></div>
       </div>
 
@@ -50,6 +52,9 @@ foreach($project["phases"] as $key => &$value){ ?>
 	$day = $project["startdate"];
 	$today = $date->formatDate("now","Y-m-d");
 	//loop through all days and generate date row
+	if($project["days"] < 20) {
+		//$project["days"] = 20;
+	}
 	for ($i = 0; $i <= $project["days"]; $i++) {
 		$yo = $this->model->barchartCalendar($day,$i);
 		$week = "";
@@ -89,7 +94,7 @@ foreach($project["phases"] as $key => &$value){ ?>
 			$i = 1;
 			foreach($project["phases"] as $key => &$value){ ?>
             <!-- outer phase container for opacyti bg -->
-            	<div class="coTooltip barchart-phase-bg <?php echo($project["phases"][$key]["status"]);?>" style="z-index: 1; position: absolute; top: <?php echo($project["phases"][$key]["css_top"]);?>px; left: <?php echo($project["phases"][$key]["css_left"]);?>px; height: <?php echo($project["phases"][$key]["css_height"]);?>px; width: <?php echo($project["phases"][$key]["css_width"]);?>px;">
+            	<div class="coTooltip barchart-phase-bg loadPhase <?php echo($project["phases"][$key]["status"]);?>" rel="<?php echo($project["phases"][$key]["id"]);?>" style="z-index: 1; position: absolute; top: <?php echo($project["phases"][$key]["css_top"]);?>px; left: <?php echo($project["phases"][$key]["css_left"]);?>px; height: <?php echo($project["phases"][$key]["css_height"]);?>px; width: <?php echo($project["phases"][$key]["css_width"]);?>px;">
                 
                 <!-- phase tooltip -->
 				<div class="coTooltipHtml" style="display: none">
@@ -107,7 +112,7 @@ foreach($project["phases"] as $key => &$value){ ?>
 				if($project["phases"][$key]["tasks"][$tkey]["cat"] == 0) {
 				?>
                 <!-- task -->
-                <div id="task_<?php echo($project["phases"][$key]["tasks"][$tkey]["id"]);?>" class="coTooltip <?php echo($project["phases"][$key]["tasks"][$tkey]["status"]);?>" style="z-index: 2; position: absolute; top: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_top"]);?>px; left: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_left"]);?>px; height: 10px; width: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_width"]);?>px;">
+                <div id="task_<?php echo($project["phases"][$key]["tasks"][$tkey]["id"]);?>" class="coTooltip loadPhase <?php echo($project["phases"][$key]["tasks"][$tkey]["status"]);?>" rel="<?php echo($project["phases"][$key]["id"]);?>" style="z-index: 2; position: absolute; top: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_top"]);?>px; left: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_left"]);?>px; height: 10px; width: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_width"]);?>px;">
                 	<!-- task tooltip -->
             		<div class="coTooltipHtml" style="display: none">
 						<?php echo($project["phases"][$key]["tasks"][$tkey]["text"]);?><br />
@@ -134,14 +139,23 @@ foreach($project["phases"] as $key => &$value){ ?>
                 <div class="barchart-dependency" style="z-index: 2; position: absolute; top: <?php echo($dep_top);?>px; left: <?php echo($dep_left);?>px; height: <?php echo($dep_height);?>px; width: <?php echo($dep_width);?>px;"><div class="barchart-arrow"></div></div>
             	<?php } ?>
             	<!-- task dependency -->
+                <?php if(!empty($project["phases"][$key]["tasks"][$tkey]["overdue"])){ ?>
+                <div class="barchart_color_overdue coTooltip" style="z-index: 2; position: absolute; top: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_top"]);?>px; left: <?php echo($project["phases"][$key]["tasks"][$tkey]["overdue"]["left"]);?>px; height: 10px; width: <?php echo($project["phases"][$key]["tasks"][$tkey]["overdue"]["width"]);?>px;" title="<?php echo($project["phases"][$key]["tasks"][$tkey]["overdue"]["days"]);?>">
+                <div class="coTooltipHtml" style="display: none">
+						<?php echo($project["phases"][$key]["tasks"][$tkey]["text"]);?><br />
+                        <?php echo($project["phases"][$key]["tasks"][$tkey]["startdate"]);?> - <?php echo($project["phases"][$key]["tasks"][$tkey]["enddate"]);?><br />
+						<?php echo($project["phases"][$key]["tasks"][$tkey]["overdue"]["days"] . " " . TIMELINE_STATUS_OVERDUE_POPUP);?>
+                    </div>
+                </div>
+                <?php } ?>
                 
                 <?php } else { ?>
                 <!-- milestone -->
-                <div id="task_<?php echo($project["phases"][$key]["tasks"][$tkey]["id"]);?>" class="coTooltip" style="z-index: 3; position: absolute; top: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_top"]);?>px; left: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_left"]+18);?>px; height: 10px; width: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_width"]);?>px;"><span class="icon-milestone"></span>
+                <div id="task_<?php echo($project["phases"][$key]["tasks"][$tkey]["id"]);?>" class="coTooltip loadPhase" rel="<?php echo($project["phases"][$key]["id"]);?>" style="z-index: 3; position: absolute; top: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_top"]);?>px; left: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_left"]+18);?>px; height: 10px; width: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_width"]);?>px;"><span class="icon-milestone"></span>
                 	<!-- task tooltip -->
             		<div class="coTooltipHtml" style="display: none">
 						<?php echo($project["phases"][$key]["tasks"][$tkey]["text"]);?><br />
-                        <?php echo($project["phases"][$key]["tasks"][$tkey]["startdate"]);?> - <?php echo($project["phases"][$key]["tasks"][$tkey]["enddate"]);?>
+                        <?php echo($project["phases"][$key]["tasks"][$tkey]["startdate"]);?> - <?php echo($project["phases"][$key]["tasks"][$tkey]["enddate"]);?><br />
 					</div>
                 </div>
                 <!-- milestone dependency -->
@@ -170,7 +184,15 @@ foreach($project["phases"] as $key => &$value){ ?>
             	<?php } ?>
             </div>
 			<?php if(!empty($project["phases"][$key]["overdue"])){ ?>
-			<div class="barchart_color_overdue" style="position: absolute; top: <?php echo($project["phases"][$key]["css_top"]);?>px; left: <?php echo($project["phases"][$key]["overdue"]["left"]);?>px; height: <?php echo($project["phases"][$key]["css_height"]);?>px; width: <?php echo($project["phases"][$key]["overdue"]["width"]);?>px;" title="<?php echo($project["phases"][$key]["overdue"]["days"]);?>"></div>
+			<div class="barchart_color_overdue barchart-phase-bg coTooltip" style="position: absolute; top: <?php echo($project["phases"][$key]["css_top"]);?>px; left: <?php echo($project["phases"][$key]["overdue"]["left"]);?>px; height: <?php echo($project["phases"][$key]["css_height"]);?>px; width: <?php echo($project["phases"][$key]["overdue"]["width"]);?>px;" title="<?php echo($project["phases"][$key]["overdue"]["days"]);?>">
+            <div class="coTooltipHtml" style="display: none">
+					<?php echo($i . ". " . $project["phases"][$key]["title"]);?><br />
+                    <?php echo($project["phases"][$key]["startdate"]);?> - <?php echo($project["phases"][$key]["enddate"]);?><br />
+					<?php echo($project["phases"][$key]["overdue"]["days"] . " " . TIMELINE_STATUS_OVERDUE_POPUP);?>
+                
+                </div>
+            
+            </div>
             <?php } 
 			$i++;
 			 } ?>
@@ -183,7 +205,7 @@ foreach($project["phases"] as $key => &$value){ ?>
 <div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-footer">
   <tr>
-    <td class="left">Stand <?php echo($project["datetime"]);?></td>
+    <td class="left"><?php echo($lang["GLOBAL_FOOTER_STATUS"] . " " . $project["datetime"]);?></td>
     <td class="middle"></td>
     <td class="right"></td>
   </tr>

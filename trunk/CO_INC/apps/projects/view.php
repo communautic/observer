@@ -52,10 +52,7 @@
             <div class="top-subheadline"></div>
             <div class="top-subheadlineTwo"></div>
         </div>
-        <div class="info-top">
-            <div class="info-line1"></div>
-            <div class="info-line1"></div>
-        </div>
+        <div class="info-top"><img src="data/logo.jpg" border="0" /></div>
     </div>
 <div class="center-west">
             <ul id="projectsActions" class="ui-layout-content actionconsole">

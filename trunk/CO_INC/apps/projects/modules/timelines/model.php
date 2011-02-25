@@ -79,6 +79,8 @@ class TimelinesModel extends ProjectsModel {
 
 	function getDetails($pid) {
 		global $session, $contactsmodel;
+		$now = new DateTime("now");
+		$today = $now->format('Y-m-d');
 		$project = array();
 		$project["phases"] = array();
 		// get project details
@@ -132,14 +134,20 @@ class TimelinesModel extends ProjectsModel {
 					case "0":
 						if($row->status == 0) {
 							$tstatus = "barchart_color_planned";
-						} else if ($row->status == 1 && date("Y-m-d") <= $rowt->startdate) {
+						} else if ($row->status == 1 && $today <= $rowt->startdate) {
 							$tstatus = "barchart_color_planned";
+						} else if ($row->status == 1 && $today <= $rowt->enddate) {
+							$tstatus = "barchart_color_inprogress";
+
 						} else {
-							$tstatus = "barchart_color_overdue";
+							$tstatus = "barchart_color_not_finished";
 						}
 					break;
 					case "1":
 						$tstatus = "barchart_color_finished";
+						if($rowt->donedate > $rowt->enddate) {
+							$tstatus = "barchart_color_overdue";
+						}
 					break;
 				}
 				
@@ -215,7 +223,7 @@ class TimelinesModel extends ProjectsModel {
 		}
 		// get phase details
 		//$q = "select title,id,startdate,enddate,status,dependency from " . CO_TBL_PHASES . " where pid = '$pid' and bin = '0' order by startdate";
-		$q = "SELECT a.title,a.id,a.status,a.dependency, (SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . "  as b WHERE b.phaseid=a.id and b.bin='0') as startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " as c WHERE c.phaseid=a.id and c.bin='0') as enddate FROM " . CO_TBL_PHASES . " as a WHERE pid = '$pid' and bin = '0' ORDER BY startdate";
+		$q = "SELECT a.title,a.id,a.status,a.dependency,a.finished_date, (SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . "  as b WHERE b.phaseid=a.id and b.bin='0') as startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " as c WHERE c.phaseid=a.id and c.bin='0') as enddate FROM " . CO_TBL_PHASES . " as a WHERE pid = '$pid' and bin = '0' ORDER BY startdate";
 		$result = mysql_query($q, $this->_db->connection);
 		$phase_top = 21;
 		$phase_top_next = 0;
@@ -270,6 +278,7 @@ class TimelinesModel extends ProjectsModel {
 				$task_width = ($task_days+1) * $width;
 				$task_start = $this->_date->dateDiff($row->startdate,$rowt->startdate);
 				$task_left = $task_start * $width;
+				$overdue = array();
 				// task status
 				switch($rowt->status) {
 					case "0":
@@ -277,12 +286,21 @@ class TimelinesModel extends ProjectsModel {
 							$tstatus = "barchart_color_planned";
 						} else if ($row->status == 1 && $today <= $rowt->startdate) {
 							$tstatus = "barchart_color_planned";
+						} else if ($row->status == 1 && $today <= $rowt->enddate) {
+							$tstatus = "barchart_color_inprogress";
+
 						} else {
-							$tstatus = "barchart_color_overdue";
+							$tstatus = "barchart_color_not_finished";
 						}
 					break;
 					case "1":
 						$tstatus = "barchart_color_finished";
+						// overdue
+						if($rowt->donedate > $rowt->enddate) {
+							$overdue["days"] = $this->_date->dateDiff($rowt->enddate,$rowt->donedate);
+							$overdue["width"] = $overdue["days"] * $width;
+							$overdue["left"] = $task_left + $task_width;
+						}
 					break;
 				}
 				
@@ -323,7 +341,8 @@ class TimelinesModel extends ProjectsModel {
 					"dep_key" => $dep_key,
 					"css_top" => $task_top,
 					"css_width" => $task_width,
-					"css_left" => $task_left
+					"css_left" => $task_left,
+					"overdue" => $overdue,
 				);
 				
 				$project['tasks'][] = array(
@@ -356,14 +375,13 @@ class TimelinesModel extends ProjectsModel {
         		}
 			}*/
 			
-			//$overdue = array();
+			$phase_overdue = array();
 			// phase overdue?
-			/*if($row->status != 2 && $today > $row->enddate) {
-				$overdue["days"] = $this->_date->dateDiff($row->enddate,$today);
-			    $overdue["width"] = $overdue["days"] * $width;
-				$overdue["left"] = $phase_left + $phase_width;
-			}*/
-			
+			if($row->status == 2 && $row->finished_date > $row->enddate) {
+				$phase_overdue["days"] = $this->_date->dateDiff($row->enddate,$row->finished_date);
+			    $phase_overdue["width"] = $phase_overdue["days"] * $width;
+				$phase_overdue["left"] = $phase_left + $phase_width;
+			}
 			
 			
 			$project['phases'][] = array(
@@ -377,8 +395,8 @@ class TimelinesModel extends ProjectsModel {
 				"css_height" => $phase_height,
 				"css_top" => $phase_top,
 				"css_width" => $phase_width,
-				"css_left" => $phase_left
-				//"overdue" => $overdue
+				"css_left" => $phase_left,
+				"overdue" => $phase_overdue
 				//"dep" => $dep
 			);
 			$p++;

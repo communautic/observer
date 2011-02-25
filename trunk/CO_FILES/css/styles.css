@@ -116,9 +116,9 @@ li.ui-state-highlight { height: 13px; margin: 0 0 5px 0;}
 .sort2 { background-position: 0px -20px; }
 .sort3 { background-position: 0px -40px; }
 .filter-box-outer { float: left; }
-.filter-box { background-color: #e5e5e5; margin-left: 9px; width: 100px; border: 0; font-size: 11px;}
+.filter-box { background-color: #fff; margin-left: 9px; width: 100px; border: 0; font-size: 11px;}
 
-.filter-search-outer { float: left; margin-top: 1px; background: #e5e5e5 url(../img/apps_buttons_sprite.png) no-repeat -200px -570px; width: 13px; height: 14px; }
+.filter-search-outer { float: left; margin-top: 1px; background: #e5e5e5 url(../img/apps_buttons_sprite.png) no-repeat -200px -570px; width: 15px; height: 14px; }
 
 .module-access-status { position: absolute; width: 10px; height: 13px; margin: 3px 0 0 -20px; background:url(../img/apps_buttons_sprite.png) no-repeat -120px -570px; display: none;}
 .module-access-active { display: block; }
@@ -151,7 +151,7 @@ li.ui-state-highlight { height: 13px; margin: 0 0 5px 0;}
 .top-headline { font-size: 20px; font-weight: bold; color:#e5e5e5 }
 .top-subheadline { font-size: 20px; color:#e5e5e5 }
 .top-subheadlineTwo { margin-top: 3px; font-size: 13px; color:#e5e5e5 }
-.info-top { float: right; width: 200px; height: 50px; font-size: 11px; color:#e5e5e5; text-align: right; margin:  3px 30px 0 0;}
+.info-top { float: right; width: 200px; height: 80px; text-align: right; margin:  0 15px 0 0;}
 
 .info-top .info-line1 { height: 24px;}
 
@@ -595,3 +595,4 @@ border:1px dashed black;
 #tabs li { border: 0;}
 
 .tinymce { background-color: #E1F0AF}
+.loadPhase { cursor: pointer }
