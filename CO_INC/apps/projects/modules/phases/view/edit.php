@@ -1,7 +1,7 @@
 <div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-title">
   <tr>
-    <td class="tcell-left text11"><a href="#" class="content-nav focusTitle"><span><?php echo PHASE_TITLE;?></span></a></td>
+    <td class="tcell-left text11"><a href="#" class="content-nav focusTitle"><span><?php echo $lang["PHASE_TITLE"];?></span></a></td>
 	<td width="20"><div class="bold"><?php echo($phase->num) ;?>.</div></td>
     <td><input name="title" type="text" class="title textarea-title" value="<?php echo($phase->title);?>" maxlength="100" /></td>
   </tr>
@@ -51,9 +51,8 @@
 <table border="0" cellpadding="0" cellspacing="0" class="table-content addTaskTable">
 	<tr>
 		<td class="tcell-left text11">
-        <a href="<?php echo $lang["GLOBAL_STATUS"];?>" class="content-nav showDialog" request="getPhaseTaskDialog" field="status" title="<?php echo $lang["GLOBAL_STATUS"];?>" append="1"><span><?php echo PHASE_TASK_MILESTONE;?></span></a>
-        
-        <!--<a href="<?php echo PHASE_TASK_ADD;?>" class="content-nav addtask" title="<?php echo(PHASE_TASK_ADD);?>"><span><?php echo PHASE_TASK_MILESTONE;?></span></a>--></td>
+        <a href="#" class="content-nav showDialog" request="getPhaseTaskDialog" field="status" append="1"><span><?php echo $lang["PHASE_TASK_MILESTONE"];?></span></a>
+        </td>
     <td class="tcell-right">&nbsp;</td>
     </tr>
 </table>

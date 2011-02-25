@@ -1,7 +1,7 @@
 <div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-title">
   <tr>
-    <td class="tcell-left text11"><a href="#" class="content-nav focusTitle"><span><?php echo PROJECT_TITLE;?></span></a></td>
+    <td class="tcell-left text11"><a href="#" class="content-nav focusTitle"><span><?php echo $lang["PROJECT_TITLE"];?></span></a></td>
     <td class="tcell-right"><input name="title" type="text" class="title textarea-title" value="<?php echo($project->title);?>" maxlength="100" /></td>
   </tr>
 </table>

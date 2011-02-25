@@ -11,7 +11,9 @@
          <td width="15"></td>
         <td class="barchart_color_finished"><span><?php echo TIMELINE_STATUS_FINISHED;?></span></td>
          <td width="15"></td>
-        <td class="barchart_color_overdue"><span><?php echo TIMELINE_STATUS_NOT_FINISHED;?></span></td>
+        <td class="barchart_color_not_finished"><span><?php echo TIMELINE_STATUS_NOT_FINISHED;?></span></td>
+         <td width="15"></td>
+        <td class="barchart_color_overdue"><span><?php echo TIMELINE_STATUS_OVERDUE;?></span></td>
     </tr>
 </table></td>
   </tr>
@@ -20,7 +22,7 @@
 <div class="ui-layout-content barchart-scroll">
 <table border="0" cellpadding="0" cellspacing="0" class="table-content no-margin">
 	<tr>
-		<td class="tcell-left text11"><span class="content-nav">Projekt</span></td>
+		<td class="tcell-left text11"><span class="content-nav"><?php echo $lang["PROJECT_TITLE"];?></span></td>
 		<td class="tcell-right">
 			<div class="psp-item <?php echo($project["status"]);?>"><a href="#" class="loadProject" rel="<?php echo($project["id"]);?>"><?php echo($project["title"]);?></a><br />
 				<div class="psp-item-startdate"><?php echo($project["startdate"]);?></div><div class="psp-item-enddate"><?php echo($project["enddate"]);?></div>
@@ -34,11 +36,11 @@ $numPhases = sizeof($project["phases"]);
 if($numPhases > 0) { 
 $width = $numPhases * 170;
 ?>
-<div class="text11 tbl-inactive" style="position: absolute; padding-left: 15px; height: 58px;" >Phasen</div>
+<div class="text11 tbl-inactive" style="position: absolute; padding-left: 15px; height: 58px;" ><?php echo $lang["PROJECT_PHASES"];?></div>
 	<div style="width: <?php echo($width+150);?>px">
     <div style="width: 150px; float: left;">
       <div style="height: 58px; margin-bottom: 18px;"></div>
-      <div class="text11" style="padding-left: 15px;">Aktivit&auml;ten / Meilensteine</div>
+      <div class="text11" style="padding-left: 15px;"><?php echo $lang["PHASE_TASK_MILESTONE"];?></div>
     </div>
 	<?php
     
@@ -85,7 +87,7 @@ $width = $numPhases * 170;
 <div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-footer">
   <tr>
-    <td class="left">Stand <?php echo($project["datetime"]);?></td>
+    <td class="left"><?php echo($lang["GLOBAL_FOOTER_STATUS"] . " " . $project["datetime"]);?></td>
     <td class="middle"></td>
     <td class="right"></td>
   </tr>

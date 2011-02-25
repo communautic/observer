@@ -993,7 +993,7 @@ $(document).ready(function() {
 	});
 	
 	// load a phase
-	$("a.loadPhase").live('click', function() {
+	$(".loadPhase").live('click', function() {
 		var id = $(this).attr("rel");
 		$("#projects3 h3[rel='phases']").trigger('click', [id]);
 		return false;

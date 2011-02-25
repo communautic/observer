@@ -34,10 +34,7 @@
         	<div class="top-headline"></div>
             <div class="top-subheadline"></div>
         </div>
-        <div class="info-top">
-            <div class="info-line1"><?php echo(date("d.m.Y"));?></div>
-            <div class="info-line1"><?php echo($users->getUserFullname($session->uid));?></div>
-        </div>
+        <div class="info-top"><img src="data/logo.jpg" border="0" /></div>
     </div>
     <div class="center-west">
         <ul id="contactsActions" class="ui-layout-content actionconsole">

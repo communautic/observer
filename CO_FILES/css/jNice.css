@@ -84,7 +84,7 @@ button span span {
 }*/
 
 .jNiceCheckbox {
-	background: url(../img/apps_buttons_sprite.png) no-repeat -100px -570px;
+	background: url(../img/apps_buttons_sprite.png) no-repeat -60px -570px;
 	height: 14px;
 	width: 18px;
 	position:absolute;left:0px;top:0px;cursor:pointer;vertical-align:middle;

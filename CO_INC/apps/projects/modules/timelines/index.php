@@ -12,6 +12,7 @@ foreach($controller->applications as $app => $display) {
 
 // needs phases config file for db
 include_once(CO_INC . "/apps/projects/modules/phases/config.php");
+include_once(CO_INC . "/apps/projects/modules/phases/lang/" . $session->userlang . ".php");
 
 include_once(CO_INC . "/apps/projects/modules/timelines/config.php");
 include_once(CO_INC . "/apps/projects/modules/timelines/lang/" . $session->userlang . ".php");

@@ -148,7 +148,9 @@ display: block; height: 13px; width: 15px; margin-top: -15px; background:url(../
 .barchart_color_planned { background-color: #4BA0C8;}
 .barchart_color_inprogress { background-color: #FFD20A;}
 .barchart_color_finished { background-color: #82aa0b;}
+.barchart_color_not_finished { background-color: #7f7f7f;}
 .barchart_color_overdue { background-color: #EB4600;}
+
 
 .timeline-legend { font-size: 11px; line-height: 16px; }
 .timeline-legend span { width: 120px; display: block; padding-left: 8px;}

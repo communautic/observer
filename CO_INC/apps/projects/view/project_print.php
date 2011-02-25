@@ -1,6 +1,6 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
   <tr>
-    <td width="140"><?php echo PROJECT_TITLE;?></td>
+    <td width="140"><?php echo $lang["PROJECT_TITLE"];?></td>
     <td><?php echo($project->title);?></td>
   </tr>
 </table>

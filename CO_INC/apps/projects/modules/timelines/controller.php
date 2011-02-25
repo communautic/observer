@@ -22,7 +22,7 @@ class Timelines {
 	}
 	
 	function getDetails($id,$pid) {
-		global $date;
+		global $date,$lang;
 		switch($id) {
 			case "1":
 				$data["what"] = $id;
