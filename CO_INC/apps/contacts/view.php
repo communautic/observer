@@ -1,11 +1,11 @@
 <div id="contacts" class="app">
 <input name="contacts-current" id="contacts-current" type="hidden" value="" />
 <div class="ui-layout-west">
-	<div class="ui-layout-west-topbar"><img src="../../data/recheis.png" style="margin: 2px 0 0 31px;"/></div>
-	<div id="contacts1-outer">
+<?php include(CO_INC . "/view/logo.php"); ?>	
+<div id="contacts1-outer">
     <h3 class="module-bg-active"><?php echo CONTACTS_GROUPS;?></h3>
     <div id="contacts1" class="module-bg-active">
-    	<div class="module-actions"><div class="sort-outer"><a href="#" class="sort" rel="1"></a></div><div class="filter-box-outer"><form action="#"><fieldset><input name="search" type="text" class="filter filter-box" value="" size="4" /></fieldset></form></div></div>
+    	<div class="module-actions"><div class="sort-outer"><a href="#" class="sort" rel="1"></a></div><div class="filter-box-outer"><form action="#"><fieldset><input name="search" type="text" class="filter filter-box" value="" size="4" /></fieldset></form></div><div class="filter-search-outer"></div></div>
     	<div class="module-inner west-ui-content">
         <div class="scrolling-content">
         	<ul class="topul"><li><a href="#" rel="0"class="module-click"><span class="text"><?php echo CONTACTS_SYSTEM_GROUP;?></span></a></li></ul>
@@ -14,10 +14,10 @@
         </div>
 	</div>
     </div>
-	<div id="contacts2-contacts-outer">
+	<div id="contacts2-outer">
 		<h3><?php echo CONTACTS_CONTACT_LIST;?></h3>
-        <div id="contacts2-contacts">
-        	<div class="module-actions"><div class="sort-outer"><a href="#" class="sort" rel="1"></a></div><div class="filter-box-outer"><form action="#"><fieldset><input name="search" type="text" class="filter filter-box" value="" size="4" /></fieldset></form></div></div>
+        <div id="contacts2">
+        	<div class="module-actions"><div class="sort-outer"><a href="#" class="sort" rel="1"></a></div><div class="filter-box-outer"><form action="#"><fieldset><input name="search" type="text" class="filter filter-box" value="" size="4" /></fieldset></form></div><div class="filter-search-outer"></div></div>
     	<div class="module-inner west-ui-content">
             <div class="scrolling-content">
             <ul class="sortable"><li></li></ul>
@@ -25,33 +25,6 @@
         </div>
         </div>
 	</div>
-    <div id="contacts2-groups-outer">
-		<h3>Projekte</h3>
-        <div id="contacts2-groups">
-        	<div class="module-actions"><div class="sort-outer"><a href="#" class="sort" rel="1"></a></div></div>
-    	<div class="module-inner west-ui-content">
-            <div class="scrolling-content">
-            <ul><li></li></ul>
-            </div>
-        </div>
-        </div>
-	</div>
-	<div id="contacts3-contacts-outer">
-		<div id="contacts3-contacts">
-        	<?php //foreach($contacts->modules as $module) {
-					//include_once("modules/".$module."/lang/de.php"); 
-					?>
-                    <!--<div class="module-actions"><div class="sort-outer"><a href="#" class="sort" rel="1"></a></div></div>
-					<h3 rel="<?php echo($module);?>"><?php echo(${$module.'_name'});?></h3>
-                    
-            <div class="contacts3-content">
-            <div class="scrolling-content">
-                <ul rel="<?php echo($module);?>"><li></li></ul>
-                </div>
-            </div>-->
-<?php // } ?>
-        </div>
-    </div>
 </div>
 
     <!-- center -->

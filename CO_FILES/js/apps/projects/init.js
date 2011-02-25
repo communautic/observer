@@ -563,10 +563,9 @@ $(document).ready(function() {
 					//projectsInnerLayout.initContent('center');
 					initContentScrollbar();
 					var h = $("#projects .ui-layout-west").height();
-			$("#projects1").delay(200).animate({height: h-46}, function() {
-				$(this).animate({height: h-71});			 
-			});
-					
+					$("#projects1").delay(200).animate({height: h-46}, function() {
+						$(this).animate({height: h-71});			 
+					});
 					}
 				 });
 				}

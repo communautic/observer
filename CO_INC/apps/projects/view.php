@@ -1,7 +1,7 @@
 <div id="projects" class="app">
 <input name="projects-current" id="projects-current" type="hidden" value="" />
 <div class="ui-layout-west">
-<div class="ui-layout-west-topbar" style="text-align: center"><a href="/"><img src="<?php echo(CO_FILES);?>/img/co_logo.png" border="0" style="margin-top: 8px;"/></a></div>
+<?php include(CO_INC . "/view/logo.php"); ?>
 	<div id="projects1-outer">
     <h3 class="module-bg-active"><?php echo $lang["PROJECT_FOLDER"];?></h3>
     <div id="projects1" class="module-bg-active">
