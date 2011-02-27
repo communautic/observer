@@ -449,6 +449,13 @@ $(document).ready(function() {
 		return false;
 	});
 	
+	
+	$('a.selectTextfield').live('click',function() {
+		$(this).parent().next().find('input').focus();
+		return false;
+	});
+	
+	
 	/*$('a.focusText').live('click',function() {
 		$(this).parent().next().find("input").focus();
 		$(this).parent().next().find("textarea").focus();
@@ -741,27 +748,23 @@ $('a.ui-datepicker-trigger-action').live('click',function() {
 
 
 	$('a.protocolToggle').live('click',function() {
-		//$(this).parent().next().find(".protocol-outer").focus();
 		var ele = 'protocol';
-		
 		if($('#' + ele + '_external').is(":visible")) {
-					$('#'+ele+'_external').fadeOut( function() {									   
-						$('#'+ele).parent().animate({ marginBottom: "0px" }, 200 );
-						
-						if(confirmNavigation()) {
-							formChanged = false;
-							var obj = getCurrentModule();
-							$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
-						}
-					});	
+			$('#'+ele+'_external').fadeOut( function() {									   
+				$('#'+ele).parent().animate({ marginBottom: "0px" }, 200 );
+					if(confirmNavigation()) {
+						formChanged = false;
+						//$(".tinymce").html($('protocol').html());
+						tinyMCE.triggerSave();
+						var obj = getCurrentModule();
+						$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+					}
+				});	
 			} else {
-		
-		
-		
-		$('#protocol').trigger('click');
-		
+				if ($("#"+ele).is(':visible')) $("#"+ele).tinymce().show();
+				tinyMCE.execCommand('mceFocus',false,ele);
 			}
-		//$("#protocol").tinymce().show();
+			
 		return false;
 	});
 
@@ -787,6 +790,7 @@ $('a.ui-datepicker-trigger-action').live('click',function() {
 				
 			});
     	});
+		//$("#"+ele).tinymce().show();
 	}
 
 

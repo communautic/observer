@@ -22,7 +22,10 @@
 <div class="ui-layout-content barchart-scroll">
 
 <div  class="barchart-outer" style="font-size: 11px; width: <?php echo($project["css_width"]+225);?>px; height:<?php echo($project["css_height"]+50);?>px">
-  	<div id="barchart-container-left" style="position: absolute; z-index: 4; width: 225px; padding-top: 55px; background-color:#FFF; height:<?php echo($project["css_height"]-5);?>px">
+  	<div id="barchart-container-left" style="position: absolute; z-index: 4; width: 225px; padding-top: 37px; background-color:#FFF; height:<?php echo($project["css_height"]-5);?>px">
+    
+<div style="position: relative; padding-left: 10px; height: 16px; margin: 0 15px 2px 0;"><a href="#" class="but-scroll-to">Vorgang</a>
+    <div style="text-align: center; position: absolute; width: 45px; padding: 1px 5px 0 0; top: 0; right: 0; height: 16px;">Dauer (t)</div></div>
 
 <div style="position: relative; padding-left: 10px; height: 16px; margin: 0 15px 2px 0; background-color:#e5e5e5"><a href="#" class="but-scroll-to">Kick off</a>
     <div style="text-align: right; position: absolute; width: 38px; padding: 1px 10px 0 0; top: 0; right: 0; height: 16px; border-left: 2px solid #fff;">1</div></div>
@@ -62,10 +65,10 @@ foreach($project["phases"] as $key => &$value){ ?>
 		$now = "";
 		$bg = "#b2b2b2";
 		if($yo["week"] != "") {
-			$week = '<div style="position: absolute; top: -20px; width: 45px; color: #000;">KW ' . $yo["week"] . '</div>';
+			$week = '<div style="position: absolute; top: -15px; width: 45px; color: #000;">KW ' . $yo["week"] . '</div>';
 		}
 		if($yo["month"] != "") {
-			$month = '<div style="position: absolute; top: -40px; width: 45px; color: #000;">' . $yo["month"] . '</div>';
+			$month = '<div style="position: absolute; top: -30px; width: 45px; color: #000;">' . $yo["month"] . '</div>';
 		}
 		if($day == $today) {
 			$bg = "#a0a0a0";

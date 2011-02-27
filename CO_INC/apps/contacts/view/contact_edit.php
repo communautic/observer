@@ -13,7 +13,7 @@ switch($contact->lang) {
 <div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-title">
 	<tr>
-		<td class="tcell-left text11"><span class="content-nav"><?php echo CONTACTS_CONTACT_LASTNAME;?></span></td>
+		<td class="tcell-left text11"><a href="#" class="content-nav focusTitle"><span><?php echo CONTACTS_CONTACT_LASTNAME;?></span></a></td>
 		<td class="tcell-right"><input type="text" name="title" class="title textarea-title" value="<?php echo($contact->lastname);?>" /></td>
 	</tr>
 </table>
@@ -24,49 +24,55 @@ switch($contact->lang) {
 <input type="hidden" name="id" value="<?php echo($contact->id);?>">
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
-    <td class="tcell-left text11"><span class="content-nav"><?php echo CONTACTS_CONTACT_FIRSTNAME;?></span></td>
+    <td class="tcell-left text11"><a href="#" class="content-nav selectTextfield"><span><?php echo CONTACTS_CONTACT_FIRSTNAME;?></span></a></td>
     <td class="tcell-right"><input name="firstname" type="text" class="title2 bg" value="<?php echo($contact->firstname);?>" /></td>
   </tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
-    <td class="tcell-left text11"><span class="content-nav"><?php echo CONTACTS_CONTACT_TITLE;?></span></td>
+    <td class="tcell-left text11"><a href="#" class="content-nav selectTextfield"><span><?php echo CONTACTS_CONTACT_TITLE;?></span></a></td>
     <td class="tcell-right"><input name="title" id="title" type="text" class="bg" value="<?php echo($contact->title);?>" /></td>
   </tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
-    <td class="tcell-left text11"><span class="content-nav"><?php echo CONTACTS_CONTACT_POSITION;?></span></td>
-    <td class="tcell-right"><textarea name="position" id="position" cols="20" rows="2" class="bg"><?php echo($contact->position);?></textarea></td>
+    <td class="tcell-left text11"><a href="#" class="content-nav selectTextfield"><span>Firma</span></a></td>
+    <td class="tcell-right"><input name="company" id="company" type="text" class="bg" value="<?php echo($contact->company);?>" /></td>
   </tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
-    <td class="tcell-left text11"><span class="content-nav"><?php echo CONTACTS_CONTACT_EMAIL;?></span></td>
+    <td class="tcell-left text11"><a href="#" class="content-nav selectTextfield"><span><?php echo CONTACTS_CONTACT_POSITION;?></span></a></td>
+    <td class="tcell-right"><input name="position" id="position" type="text" class="bg" value="<?php echo($contact->position);?>" /></td>
+  </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+  <tr>
+    <td class="tcell-left text11"><a href="#" class="content-nav selectTextfield"><span><?php echo CONTACTS_CONTACT_EMAIL;?></span></a></td>
     <td class="tcell-right"><input name="email" type="text" class="bg" value="<?php echo($contact->email);?>" /></td>
   </tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
-    <td class="tcell-left text11"><span class="content-nav"><?php echo CONTACTS_CONTACT_TEL;?></span></td>
+    <td class="tcell-left text11"><a href="#" class="content-nav selectTextfield"><span><?php echo CONTACTS_CONTACT_TEL;?></span></a></td>
     <td class="tcell-right"><input name="phone1" id="phone1" type="text" class="bg" value="<?php echo($contact->phone1);?>" /></td>
   </tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
-    <td class="tcell-left text11"><span class="content-nav"><?php echo CONTACTS_CONTACT_TEL2;?></span></td>
+    <td class="tcell-left text11"><a href="#" class="content-nav selectTextfield"><span><?php echo CONTACTS_CONTACT_TEL2;?></span></a></td>
     <td class="tcell-right"><input name="phone2" id="phone2" type="text" class="bg" value="<?php echo($contact->phone2);?>" /></td>
   </tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
-    <td class="tcell-left text11"><span class="content-nav"><?php echo CONTACTS_CONTACT_FAX;?></span></td>
+    <td class="tcell-left text11"><a href="#" class="content-nav selectTextfield"><span><?php echo CONTACTS_CONTACT_FAX;?></span></a></td>
     <td class="tcell-right"><input name="fax" id="fax" type="text" class="bg" value="<?php echo($contact->fax);?>" /></td>
   </tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
-    <td valign="top" class="tcell-left text11"><span class="content-nav"><?php echo CONTACTS_CONTACT_ADDRESS;?></span></td>
+    <td valign="top" class="tcell-left text11"><a href="#" class="content-nav selectTextfield"><span><?php echo CONTACTS_CONTACT_ADDRESS;?></span></a></td>
     <td class="tcell-right"><textarea name="address" id="address" cols="20" rows="3" class="bg"><?php echo($contact->address);?></textarea></td>
   </tr>
 </table>
