@@ -106,9 +106,9 @@ display: block; height: 13px; width: 15px; margin-top: -15px; background:url(../
 	border: 1px solid #fff;
 	width: 100%;
 }
-#contacts-right textarea:hover,
+/*#contacts-right textarea:hover,
 #contacts-right textarea:focus,
-#contacts-right input.bg:hover, 
+#contacts-right input.bg:hover, */
 #contacts-right input.bg:focus {
     background-color: #ffd396;
 }

@@ -43,7 +43,7 @@
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
   <tr>
-    <td class="tcell-left text11"><span class="content-nav"><?php echo PHASE_DESCRIPTION;?></span></td>
+    <td class="tcell-left text11"><a href="#" class="content-nav protocolToggle"><span><?php echo PHASE_DESCRIPTION;?></span></a></td>
     <td class="tcell-right"><div class="protocol-outer" style="position: relative;"><div id="protocol" class="tinymce" style="min-height: 26px;"><?php echo($phase->protocol);?></div></div></td>
   </tr>
 </table>
