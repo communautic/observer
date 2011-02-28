@@ -108,8 +108,8 @@ class Contacts extends Controller {
 	}
 	
 	
-	function setContactDetails($id, $lastname, $firstname, $title, $position, $address, $email, $phone1, $phone2, $fax, $lang) {
-		$retval = $this->model->setContactDetails($id, $lastname, $firstname, $title, $position, $address, $email, $phone1, $phone2, $fax, $lang);
+	function setContactDetails($id, $lastname, $firstname, $title, $company, $position, $email, $phone1, $phone2, $fax, $address_line1, $address_line2, $address_town, $address_postcode, $address_country, $lang) {
+		$retval = $this->model->setContactDetails($id, $lastname, $firstname, $title, $company, $position, $email, $phone1, $phone2, $fax, $address_line1, $address_line2, $address_town, $address_postcode, $address_country, $lang);
 		if($retval){
 			 return '{ "action": "edit", "id": "' . $id . '" }';
 		  } else{

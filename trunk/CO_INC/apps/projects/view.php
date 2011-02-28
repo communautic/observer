@@ -56,16 +56,15 @@
         </div>
         <div class="info-top"><img src="data/logo.jpg" border="0" /></div>
     </div>
-<div class="center-west">
-            <ul id="projectsActions" class="ui-layout-content actionconsole">
-				<li class="listNew"><a href="#" class="actionNew" title="<?php echo ACTION_NEW;?>"></a></li>
-                <li class="listPrint"><a href="#" class="actionPrint" title="<?php echo ACTION_PRINT;?>"></a></li>
-                <li class="listSend"><a href="#" class="actionSend" title="<?php echo ACTION_SENDTO;?>"></a></li>
-                <li class="listDuplicate"><a href="#" class="actionDuplicate" title="<?php echo ACTION_DUPLICATE;?>"></a></li>
-                <li class="listBin"><a href="#" class="actionBin" title="<?php echo ACTION_DELETE;?>"></a></li>
-            </ul>
-
-</div>
-<div class="center-center" id="projects-right"></div>
+	<div class="center-west">
+		<ul id="projectsActions" class="ui-layout-content actionconsole">
+			<li class="listNew"><a href="#" class="actionNew" title="<?php echo $lang["ACTION_NEW"];?>"></a></li>
+			<li class="listPrint"><a href="#" class="actionPrint" title="<?php echo $lang["ACTION_PRINT"];?>"></a></li>
+			<li class="listSend"><a href="#" class="actionSend" title="<?php echo $lang["ACTION_SENDTO"];?>"></a></li>
+			<li class="listDuplicate"><a href="#" class="actionDuplicate" title="<?php echo $lang["ACTION_DUPLICATE"];?>"></a></li>
+			<li class="listBin"><a href="#" class="actionBin" title="<?php echo $lang["ACTION_DELETE"];?>"></a></li>
+		</ul>
+	</div>
+	<div class="center-center" id="projects-right"></div>
 </div>
 </div>

@@ -1,7 +1,7 @@
 <div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-title grey">
   <tr>
-    <td class="tcell-left text11"><span class="content-nav">Balkenplan</span></td>
+    <td class="tcell-left text11"><span class="content-nav"><?php echo TIMELINE_PROJECT_PLAN;?></span></td>
     <td>
     <table border="0" cellspacing="0" cellpadding="0" class="timeline-legend">
     <tr>
@@ -24,10 +24,10 @@
 <div  class="barchart-outer" style="font-size: 11px; width: <?php echo($project["css_width"]+225);?>px; height:<?php echo($project["css_height"]+50);?>px">
   	<div id="barchart-container-left" style="position: absolute; z-index: 4; width: 225px; padding-top: 37px; background-color:#FFF; height:<?php echo($project["css_height"]-5);?>px">
     
-<div style="position: relative; padding-left: 10px; height: 16px; margin: 0 15px 2px 0;"><a href="#" class="but-scroll-to">Vorgang</a>
-    <div style="text-align: center; position: absolute; width: 45px; padding: 1px 5px 0 0; top: 0; right: 0; height: 16px;">Dauer (t)</div></div>
+<div style="position: relative; padding-left: 10px; height: 16px; margin: 0 15px 2px 0;"><a href="#" class="but-scroll-to"><?php echo $lang['TIMELINE_ACTION'];?></a>
+    <div style="text-align: center; position: absolute; width: 45px; padding: 1px 5px 0 0; top: 0; right: 0; height: 16px;"><?php echo $lang['TIMELINE_TIME'];?></div></div>
 
-<div style="position: relative; padding-left: 10px; height: 16px; margin: 0 15px 2px 0; background-color:#e5e5e5"><a href="#" class="but-scroll-to">Kick off</a>
+<div style="position: relative; padding-left: 10px; height: 16px; margin: 0 15px 2px 0; background-color:#e5e5e5"><a href="#" class="but-scroll-to"><?php echo $lang['PROJECT_KICKOFF'];?></a>
     <div style="text-align: right; position: absolute; width: 38px; padding: 1px 10px 0 0; top: 0; right: 0; height: 16px; border-left: 2px solid #fff;">1</div></div>
 
 <?php 
@@ -38,7 +38,8 @@ foreach($project["phases"] as $key => &$value){ ?>
       <?php foreach($project["phases"][$key]["tasks"] as $tkey => &$tvalue){ ?>
       
       <div style="position: relative; padding: 0 50px 0 25px; height: 16px; margin: 0 15px 2px 0; background-color:#e5e5e5">
-	  	<a href="#" class="but-scroll-to" t="<?php echo($project["phases"][$key]["css_top"]);?>" l="<?php echo($project["phases"][$key]["css_left"]);?>"><?php echo($project["phases"][$key]["tasks"][$tkey]["text"]);?></a><div style="text-align: right; position: absolute; width: 38px; padding: 1px 10px 0 0; top: 0; right: 0; height: 16px; border-left: 2px solid #fff;"><?php echo($project["phases"][$key]["tasks"][$tkey]["days"]);?></div>
+	  	<div style="height: 16px; overflow: hidden"><a href="#" class="but-scroll-to" t="<?php echo($project["phases"][$key]["css_top"]);?>" l="<?php echo($project["phases"][$key]["css_left"]);?>"><?php echo($project["phases"][$key]["tasks"][$tkey]["text"]);?></a></div>
+        <div style="text-align: right; position: absolute; width: 38px; padding: 1px 10px 0 0; top: 0; right: 0; height: 16px; border-left: 2px solid #fff;"><?php echo($project["phases"][$key]["tasks"][$tkey]["days"]);?></div>
       </div>
 
      <?php } 
@@ -97,7 +98,7 @@ foreach($project["phases"] as $key => &$value){ ?>
 			$i = 1;
 			foreach($project["phases"] as $key => &$value){ ?>
             <!-- outer phase container for opacyti bg -->
-            	<div class="coTooltip barchart-phase-bg loadPhase <?php echo($project["phases"][$key]["status"]);?>" rel="<?php echo($project["phases"][$key]["id"]);?>" style="z-index: 1; position: absolute; top: <?php echo($project["phases"][$key]["css_top"]);?>px; left: <?php echo($project["phases"][$key]["css_left"]);?>px; height: <?php echo($project["phases"][$key]["css_height"]);?>px; width: <?php echo($project["phases"][$key]["css_width"]);?>px;">
+            	<div class="coTooltip barchart-phase-bg loadPhase2 <?php echo($project["phases"][$key]["status"]);?>" rel="<?php echo($project["phases"][$key]["id"]);?>" style="z-index: 1; position: absolute; top: <?php echo($project["phases"][$key]["css_top"]);?>px; left: <?php echo($project["phases"][$key]["css_left"]);?>px; height: <?php echo($project["phases"][$key]["css_height"]);?>px; width: <?php echo($project["phases"][$key]["css_width"]);?>px;">
                 
                 <!-- phase tooltip -->
 				<div class="coTooltipHtml" style="display: none">
@@ -115,7 +116,7 @@ foreach($project["phases"] as $key => &$value){ ?>
 				if($project["phases"][$key]["tasks"][$tkey]["cat"] == 0) {
 				?>
                 <!-- task -->
-                <div id="task_<?php echo($project["phases"][$key]["tasks"][$tkey]["id"]);?>" class="coTooltip loadPhase <?php echo($project["phases"][$key]["tasks"][$tkey]["status"]);?>" rel="<?php echo($project["phases"][$key]["id"]);?>" style="z-index: 2; position: absolute; top: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_top"]);?>px; left: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_left"]);?>px; height: 10px; width: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_width"]);?>px;">
+                <div id="task_<?php echo($project["phases"][$key]["tasks"][$tkey]["id"]);?>" class="coTooltip loadPhase2 <?php echo($project["phases"][$key]["tasks"][$tkey]["status"]);?>" rel="<?php echo($project["phases"][$key]["id"]);?>" style="z-index: 2; position: absolute; top: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_top"]);?>px; left: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_left"]);?>px; height: 10px; width: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_width"]);?>px;">
                 	<!-- task tooltip -->
             		<div class="coTooltipHtml" style="display: none">
 						<?php echo($project["phases"][$key]["tasks"][$tkey]["text"]);?><br />
@@ -154,7 +155,7 @@ foreach($project["phases"] as $key => &$value){ ?>
                 
                 <?php } else { ?>
                 <!-- milestone -->
-                <div id="task_<?php echo($project["phases"][$key]["tasks"][$tkey]["id"]);?>" class="coTooltip loadPhase" rel="<?php echo($project["phases"][$key]["id"]);?>" style="z-index: 3; position: absolute; top: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_top"]);?>px; left: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_left"]+18);?>px; height: 10px; width: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_width"]);?>px;"><span class="icon-milestone"></span>
+                <div id="task_<?php echo($project["phases"][$key]["tasks"][$tkey]["id"]);?>" class="coTooltip loadPhase2" rel="<?php echo($project["phases"][$key]["id"]);?>" style="z-index: 3; position: absolute; top: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_top"]);?>px; left: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_left"]+18);?>px; height: 10px; width: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_width"]);?>px;"><span class="icon-milestone"></span>
                 	<!-- task tooltip -->
             		<div class="coTooltipHtml" style="display: none">
 						<?php echo($project["phases"][$key]["tasks"][$tkey]["text"]);?><br />

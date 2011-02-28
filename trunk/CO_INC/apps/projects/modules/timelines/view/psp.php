@@ -1,7 +1,7 @@
 <div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-title grey">
   <tr>
-    <td class="tcell-left text11"><span class="content-nav">Projektstrukturplan (PSP)</span></td>
+    <td class="tcell-left text11"><span class="content-nav"><?php echo TIMELINE_PROJECT_STRUCTURE;?></span></td>
     <td>
     <table border="0" cellspacing="0" cellpadding="0" class="timeline-legend">
     <tr>
@@ -24,7 +24,7 @@
 	<tr>
 		<td class="tcell-left text11"><span class="content-nav"><?php echo $lang["PROJECT_TITLE"];?></span></td>
 		<td class="tcell-right">
-			<div class="psp-item <?php echo($project["status"]);?>"><a href="#" class="loadProject" rel="<?php echo($project["id"]);?>"><?php echo($project["title"]);?></a><br />
+			<div class="psp-item <?php echo($project["status"]);?> loadProject" rel="<?php echo($project["id"]);?>"><a href="#" class="loadProject" rel="<?php echo($project["id"]);?>"><?php echo($project["title"]);?></a><br />
 				<div class="psp-item-startdate"><?php echo($project["startdate"]);?></div><div class="psp-item-enddate"><?php echo($project["enddate"]);?></div>
                 <div class="psp-connector-project-vert"></div>
 			</div>
@@ -58,17 +58,17 @@ $width = $numPhases * 170;
 		}
 	?>
     <div style="width: 170px; float: left;">
-        <div class="psp-item <?php echo($project["phases"][$key]["status"]);?>">
+        <div class="psp-item <?php echo($project["phases"][$key]["status"]);?> loadPhase" rel="<?php echo($project["phases"][$key]["id"]);?>">
 			<div class="psp-connector-phase-vert"></div>
             <?php if($countPhases > 1) { echo '<div class="psp-connector-phase-hori"></div>'; } ?>
-			<a href="#" class="loadPhase" rel="<?php echo($project["phases"][$key]["id"]);?>"><?php echo($countPhases . ". " .$project["phases"][$key]["title"]);?></a>
+			<div style="height: 42px; overflow: hidden"><a href="#" class="loadPhase" rel="<?php echo($project["phases"][$key]["id"]);?>"><?php echo($countPhases . ". " .$project["phases"][$key]["title"]);?></a></div>
             <div class="psp-item-startdate"><?php echo($project["phases"][$key]["startdate"]);?></div><div class="psp-item-enddate"><?php echo($project["phases"][$key]["enddate"]);?></div>
         </div>
 			<?php
 		foreach($project["phases"][$key]["tasks"] as $tkey => &$tvalue){ ?>
-             <div class="psp-item <?php echo($project["phases"][$key]["tasks"][$tkey]["status"]);?>">
+             <div class="psp-item <?php echo($project["phases"][$key]["tasks"][$tkey]["status"]);?> loadPhase" rel="<?php echo($project["phases"][$key]["id"]);?>">
              <div class="psp-connector-vert"></div>
-            <a href="#" class="loadPhase" rel="<?php echo($project["phases"][$key]["id"]);?>"><?php echo($project["phases"][$key]["tasks"][$tkey]["text"]);?></a>
+            <div style="height: 42px; overflow: hidden"><a href="#" class="loadPhase" rel="<?php echo($project["phases"][$key]["id"]);?>"><?php echo($project["phases"][$key]["tasks"][$tkey]["text"]);?></a></div>
             <?php if($project["phases"][$key]["tasks"][$tkey]["cat"] == 0) { ?>
 				<div class="psp-item-startdate"><?php echo($project["phases"][$key]["tasks"][$tkey]["startdate"]);?></div><div class="psp-item-enddate"><?php echo($project["phases"][$key]["tasks"][$tkey]["enddate"]);?></div>
 			<?php } else { ?>

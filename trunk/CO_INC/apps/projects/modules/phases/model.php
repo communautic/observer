@@ -173,10 +173,10 @@ class PhasesModel extends ProjectsModel {
 		$array["dependency"] = $this->getPhaseDetails($row['dependency'],'dependency');
 		$array["dependency_exists"] = $this->getDependency($id);
 		$array["projecttitle"] = $this->getProjectTitle($array['pid']);
-		$array["management"] = $this->_contactsmodel->getUserList($array['management'],'management');
-		$array["management_ct"] = empty($array["management_ct"]) ? "" : TEXT_NOTE . " " . $array['management_ct'];
+		$array["management"] = $this->_contactsmodel->getUserListPlain($this->getProjectField($array['pid'], 'management'));
+		//$array["management_ct"] = empty($array["management_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['management_ct'];
 		$array["team"] = $this->_contactsmodel->getUserList($array['team'],'team');
-		$array["team_ct"] = empty($array["team_ct"]) ? "" : TEXT_NOTE . " " . $array['team_ct'];
+		$array["team_ct"] = empty($array["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['team_ct'];
 		$array["documents"] = $this->_documents->getDocListFromIDs($array["documents"],'documents');
 		
 		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
@@ -200,15 +200,15 @@ class PhasesModel extends ProjectsModel {
 		// status
 		switch($array["status"]) {
 			case "0":
-				$array["status_text"] = PHASE_STATUS_PLANED;
+				$array["status_text"] = $lang["PROJECT_STATUS_PLANNED"];
 				$array["status_date"] = $array["planned_date"];
 			break;
 			case "1":
-				$array["status_text"] = PHASE_STATUS_INPROGRESS;
+				$array["status_text"] = $lang["PROJECT_STATUS_INPROGRESS"];
 				$array["status_date"] = $array["inprogress_date"];
 			break;
 			case "2":
-				$array["status_text"] = PHASE_STATUS_FINISHED;
+				$array["status_text"] = $lang["PROJECT_STATUS_FINISHED"];
 				$array["status_date"] = $array["finished_date"];
 			break;
 		}
@@ -252,13 +252,12 @@ class PhasesModel extends ProjectsModel {
 	}
 
 
-	function setDetails($id,$title,$management,$management_ct,$team,$team_ct,$protocol,$documents,$phase_access,$phase_access_orig,$phase_status,$phase_status_date,$task_startdate,$task_enddate,$task_donedate,$task_id,$task_text,$task,$task_cat,$task_dependent) {
+	function setDetails($id,$title,$team,$team_ct,$protocol,$documents,$phase_access,$phase_access_orig,$phase_status,$phase_status_date,$task_startdate,$task_enddate,$task_donedate,$task_id,$task_text,$task,$task_cat,$task_dependent) {
 		global $session, $system;
 
 		$phase_status_date = $this->_date->formatDate($phase_status_date);
 		
 		// user lists
-		$management = $this->_contactsmodel->sortUserIDsByName($management);
 		$team = $this->_contactsmodel->sortUserIDsByName($team);
 		
 		switch($phase_status) {
@@ -285,7 +284,7 @@ class PhasesModel extends ProjectsModel {
 			$accesssql = "access='$phase_access', access_date='$phase_access_date', access_user = '$session->uid',";
 		}
 		
-		$q = "UPDATE " . CO_TBL_PHASES . " set title = '$title', management = '$management', management_ct = '$management_ct', team='$team', team_ct = '$team_ct', protocol = '$protocol', documents='$documents', $accesssql status = '$phase_status', $sql = '$phase_status_date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PHASES . " set title = '$title', team='$team', team_ct = '$team_ct', protocol = '$protocol', documents='$documents', $accesssql status = '$phase_status', $sql = '$phase_status_date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		

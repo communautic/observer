@@ -51,8 +51,6 @@ function phaseFormProcess(formData, form, poformOptions) {
 		} 
 	}
 	formData[formData.length] = processList('dependency');
-	formData[formData.length] = processList('management');
-	formData[formData.length] = processCustomText('management_ct');
 	formData[formData.length] = processList('team');
 	formData[formData.length] = processCustomText('team_ct');
 	formData[formData.length] = processDocList('documents');
