@@ -25,7 +25,7 @@
 #projects .center-center a:visited { color: #000; }
 #projects .center-center a:hover   { color: #577207; cursor: pointer}
 
-.context  {
+#projects .context  {
 	background-color: #82aa0a;
 }
 

@@ -18,7 +18,7 @@ foreach($controller->applications as $app => $display) {
 <!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title><?php echo(APPLICATION_NAME);?></title>
+<title><?php echo $lang["APPLICATION_NAME"];?></title>
 <link href="<?php echo CO_FILES;?>/css/reset.css" rel="stylesheet" type="text/css" media="screen,projection" />
 <link href="<?php echo CO_FILES;?>/css/styles.css" rel="stylesheet" type="text/css" media="screen,projection" />
 <link href="<?php echo CO_FILES;?>/css/content.css" rel="stylesheet" type="text/css" media="screen,projection" />
@@ -84,7 +84,6 @@ foreach($controller->applications as $app => $display) {
 </head>
 <body>
 <div id="intro"><div id="intro-content"><p><img src="<?php echo CO_FILES;?>/img/ajax-loader.gif" alt="Loading" width="32" height="32" /></p></div></div>
-<div id="loading"><?php echo TEXT_SAVING;?></div>
 <div id="container">
 <div id="container-inner">
 <?php

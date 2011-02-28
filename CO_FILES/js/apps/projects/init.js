@@ -69,6 +69,8 @@ function projectFormProcess(formData, form, poformOptions) {
     } 
 	}*/
 	formData[formData.length] = processList('projectfolder');
+	formData[formData.length] = processList('ordered_by');
+	formData[formData.length] = processCustomText('ordered_by_ct');
 	formData[formData.length] = processList('management');
 	formData[formData.length] = processCustomText('management_ct');
 	formData[formData.length] = processList('team');
@@ -279,7 +281,7 @@ function projectsActions(status) {
 	/*	0= new	1= print	2= send		3= duplicate	4= delete	*/
 	switch(status) {
 		//case 0: 	actions = ['0','1','2','3','4']; break; // all actions
-		case 0: actions = ['0','1','3','4']; break;
+		case 0: actions = ['0','3','4']; break;
 		//case 1: 	actions = ['0','1','2','4']; break; 	// no duplicate
 		case 1: actions = ['0','4']; break;
 		//case 2: 	actions = ['1']; break;   					// just save
@@ -979,18 +981,29 @@ $(document).ready(function() {
 		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 		return false;
 	});
+
+
+	$('a.insertProjectFolderfromDialog').livequery('click',function() {
+		var field = $(this).attr("field");
+		var gid = $(this).attr("gid");
+		var title = $(this).attr("title");
+		var html = '<a class="listmember" uid="' + gid + '" field="'+field+'">' + title + '</a>';
+		$("#"+field).html(html);
+		$("#modalDialog").dialog('close');
+		var obj = getCurrentModule();
+		$('#projects .coform').ajaxSubmit(obj.poformOptions);
+	});
 	
 	
 // INTERLINKS FROM Content
 	
 	// load a project
-	$("a.loadProject").live('click', function() {
+	$(".loadProject").live('click', function() {
 		var id = $(this).attr("rel");
 		$("#projects2-outer > h3").trigger('click', [id]);
 		return false;
-		//$("#projects3 h3[rel='phases']").hide();
-		//
 	});
+
 	
 	// load a phase
 	$(".loadPhase").live('click', function() {
@@ -998,29 +1011,20 @@ $(document).ready(function() {
 		$("#projects3 h3[rel='phases']").trigger('click', [id]);
 		return false;
 	});
+	
+	$(".loadPhase2").live('click', function() {
+		var id = $(this).attr("rel");
+		$("#projects3 h3[rel='phases']").trigger('click', [id]);
+		return false;
+	});
+
 
 
 
 /**** OLD CODE ****/
-	
-
-	
-	
-	
-	
-		
-
-	
 // right window Ajax form
 
-	$('.show-hide-protocol').livequery('click',function() {
-		$('#protocol-outer').slideToggle();			
-		return false;
-	});	
-	
-
-	
-	$('#actionDownload').click(function(){
+	/*$('#actionDownload').click(function(){
 		var pocurrent = $('#pocurrent').val();
 		switch(pocurrent) {
 			case 'document':
@@ -1059,18 +1063,7 @@ $(document).ready(function() {
 		var id = $(this).attr("id").substring(5); // This extract the id from the link's id field
     	$("#toggleDiv-" + id).slideToggle("slow");
 		return false;
-	});
-	
-	
-	$('a.insertProjectFolderfromDialog').livequery('click',function() {
-		var field = $(this).attr("field");
-		var gid = $(this).attr("gid");
-		var title = $(this).attr("title");
-		var html = '<a class="listmember" uid="' + gid + '" field="'+field+'">' + title + '</a>';
-		$("#"+field).html(html);
-		$("#modalDialog").dialog('close');
-		var obj = getCurrentModule();
-		$('#projects .coform').ajaxSubmit(obj.poformOptions);
-	});
+	});*/
+
 
 });

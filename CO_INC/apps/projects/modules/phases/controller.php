@@ -34,8 +34,8 @@ class Phases {
 		}
 	}
 	
-	function setDetails($id,$title,$management,$management_ct,$team,$team_ct,$protocol,$documents,$phase_access,$phase_access_orig,$phase_status,$phase_status_date,$task_startdate,$task_enddate,$task_donedate,$task_id,$task_text,$task,$task_cat,$task_dependent) {
-		if($arr = $this->model->setDetails($id,$title,$management,$management_ct,$team,$team_ct,$protocol,$documents,$phase_access,$phase_access_orig,$phase_status,$phase_status_date,$task_startdate,$task_enddate,$task_donedate,$task_id,$task_text,$task,$task_cat,$task_dependent)){
+	function setDetails($id,$title,$team,$team_ct,$protocol,$documents,$phase_access,$phase_access_orig,$phase_status,$phase_status_date,$task_startdate,$task_enddate,$task_donedate,$task_id,$task_text,$task,$task_cat,$task_dependent) {
+		if($arr = $this->model->setDetails($id,$title,$team,$team_ct,$protocol,$documents,$phase_access,$phase_access_orig,$phase_status,$phase_status_date,$task_startdate,$task_enddate,$task_donedate,$task_id,$task_text,$task,$task_cat,$task_dependent)){
 			 return '{ "action": "edit" , "id": "' . $arr["id"] . '", "access": "' . $phase_access . '", "status": "' . $phase_status . '", "startdate": "' . $arr["startdate"] . '", "enddate": "' . $arr["enddate"] . '"}';
 		  } else{
 			 return "error";
@@ -83,6 +83,7 @@ class Phases {
 
 
 	function getPhaseTaskDialog() {
+		global $lang;
 		include 'view/dialog_task.php';
 	}
 	

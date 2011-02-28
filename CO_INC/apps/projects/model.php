@@ -206,6 +206,14 @@ class ProjectsModel extends Model {
 		$title = mysql_result($result,0);
 		return $title;
    }
+   
+   	function getProjectField($id,$field){
+		global $session;
+		$q = "SELECT $field FROM " . CO_TBL_PROJECTS . " where id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$title = mysql_result($result,0);
+		return $title;
+   }
 
 
   /**
@@ -272,6 +280,14 @@ class ProjectsModel extends Model {
 		foreach($row as $key => $val) {
 			$array[$key] = $val;
 		}
+		
+		// status
+		$itemstatus = "";
+		if($array["status"] == 2) {
+			$itemstatus = " module-item-active";
+		}
+		$array["itemstatus"] = $itemstatus;
+		
 		$projects[] = new Lists($array);
 	  }
 	  $arr = array("projects" => $projects, "sort" => $sortcur);
@@ -280,7 +296,7 @@ class ProjectsModel extends Model {
 
 
    function getProjectDetails($id) {
-		global $session, $contactsmodel;
+		global $session, $contactsmodel, $lang;
 		$q = "SELECT a.*,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_PROJECTS . " as a where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if(mysql_num_rows($result) < 1) {
@@ -301,9 +317,9 @@ class ProjectsModel extends Model {
 		// other functions
 		$array["projectfolder"] = $this->getProjectFolderDetails($array["projectfolder"],"projectfolder");
 		$array["management"] = $contactsmodel->getUserList($array['management'],'management');
-		$array["management_ct"] = empty($array["management_ct"]) ? "" : TEXT_NOTE . " " . $array['management_ct'];
+		$array["management_ct"] = empty($array["management_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['management_ct'];
 		$array["team"] = $contactsmodel->getUserList($array['team'],'team');
-		$array["team_ct"] = empty($array["team_ct"]) ? "" : TEXT_NOTE . " " . $array['team_ct'];
+		$array["team_ct"] = empty($array["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['team_ct'];
 		$array["ordered_by"] = $contactsmodel->getUserList($array['ordered_by'],'ordered_by');
 		//$array["documents"] = $this->getRelatedDocuments('0:'.$id);
 		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
@@ -312,15 +328,15 @@ class ProjectsModel extends Model {
 		
 		switch($array["status"]) {
 			case "0":
-				$array["status_text"] = PROJECT_STATUS_PLANNED;
+				$array["status_text"] = $lang["PROJECT_STATUS_PLANNED"];
 				$array["status_date"] = $this->_date->formatDate($array["planned_date"],CO_DATE_FORMAT);
 			break;
 			case "1":
-				$array["status_text"] = PROJECT_STATUS_INPROGRESS;
+				$array["status_text"] = $lang["PROJECT_STATUS_INPROGRESS"];
 				$array["status_date"] = $this->_date->formatDate($array["inprogress_date"],CO_DATE_FORMAT);
 			break;
 			case "2":
-				$array["status_text"] = PROJECT_STATUS_FINISHED;
+				$array["status_text"] = $lang["PROJECT_STATUS_FINISHED"];
 				$array["status_date"] = $this->_date->formatDate($array["finished_date"],CO_DATE_FORMAT);
 			break;
 		}
@@ -402,13 +418,14 @@ class ProjectsModel extends Model {
    /**
    * get details for the project folder
    */
-   function setProjectDetails($id,$title,$startdate,$management,$management_ct,$team,$team_ct,$protocol,$projectfolder,$status,$status_date) {
+   function setProjectDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$projectfolder,$status,$status_date) {
 		global $session, $contactsmodel;
 		
 		$startdate = $this->_date->formatDate($_POST['startdate']);
 		$status_date = $this->_date->formatDate($status_date);
 		
 		// user lists
+		$ordered_by = $contactsmodel->sortUserIDsByName($ordered_by);
 		$management = $contactsmodel->sortUserIDsByName($management);
 		$team = $contactsmodel->sortUserIDsByName($team);
 		
@@ -421,16 +438,25 @@ class ProjectsModel extends Model {
 			break;
 			case "2":
 				$sql = "finished_date";
+				$this->setAllPhasesFinished($id,$status_date);
 			break;
 		}
 
 		$now = gmdate("Y-m-d H:i:s");
 		
-		$q = "UPDATE " . CO_TBL_PROJECTS . " set title = '$title', projectfolder = '$projectfolder', startdate = '$startdate', management = '$management', management_ct = '$management_ct', team='$team', team_ct = '$team_ct', protocol = '$protocol', status = '$status', $sql = '$status_date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PROJECTS . " set title = '$title', projectfolder = '$projectfolder', startdate = '$startdate', ordered_by = '$ordered_by', ordered_by_ct = '$ordered_by_ct', management = '$management', management_ct = '$management_ct', team='$team', team_ct = '$team_ct', protocol = '$protocol', status = '$status', $sql = '$status_date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
+		
 		if ($result) {
 			return true;
 		}
+	}
+	
+	function setAllPhasesFinished($id,$status_date) {
+		global $session;
+		$now = gmdate("Y-m-d H:i:s");
+		$q = "UPDATE " . CO_TBL_PHASES . " set status = '2', finished_date = '$status_date', edited_user = '$session->uid', edited_date = '$now' WHERE pid = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
 	}
 
 
@@ -718,7 +744,7 @@ class ProjectsModel extends Model {
 				}
 				$chart["tendency"] = "tendency_negative.png";
 				$chart["rest"] = $this->getRest($chart["real"]);
-				$chart["title"] = "Aktivit&auml;t zeitgerecht";
+				$chart["title"] = "Arbeitspakete in Plan";
 				$chart["img_name"] = $id . "tasksontime.png";
 				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
 				$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);

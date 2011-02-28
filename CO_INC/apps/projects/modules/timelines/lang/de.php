@@ -1,5 +1,5 @@
 <?php
-$timelines_name = "Zeitplan";
+$timelines_name = "Zeitpl&auml;ne";
 
 // Right
 define("TIMELINE_PROJECT_STRUCTURE", 'Projektstrukturplan (PSP)');
@@ -14,4 +14,6 @@ define('TIMELINE_STATUS_OVERDUE', 'außer Plan');
 
 define('TIMELINE_STATUS_OVERDUE_POPUP', 'Tag/e außer Plan');
 
+$lang['TIMELINE_TIME'] = 'Tage';
+$lang['TIMELINE_ACTION'] = 'Vorgang';
 ?>

@@ -11,7 +11,7 @@
 		<?php
 if(is_array($list)) {
 foreach ($list as $item) { ?>
-	<a href="#" class="insertGroupfromDialog" title="<?php echo($item->title);?>" field="<?php echo($field);?>" append="<?php echo($append);?>" gid="<?php echo($item->id);?>"><?php echo($item->title);?></a><br />
+	<a href="#" class="insertGroupfromDialog" title="<?php echo($item->title);?>" field="<?php echo($field);?>" append="<?php echo($append);?>" gid="<?php echo($item->id);?>"><?php echo($item->title);?></a>
     <?php
 }
 			}

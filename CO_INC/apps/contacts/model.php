@@ -374,11 +374,11 @@ class ContactsModel extends Model {
    /**
    * get details for the contact group
    */
-   function setContactDetails($id, $lastname, $firstname, $title, $position, $address, $email, $phone1, $phone2, $fax, $lang) {
+   function setContactDetails($id, $lastname, $firstname, $title, $company, $position, $email, $phone1, $phone2, $fax, $address_line1, $address_line2, $address_town, $address_postcode, $address_country, $lang) {
 		global $session;
 		$now = gmdate("Y-m-d H:i:s");
 		
-		$q = "UPDATE " . CO_TBL_USERS . " set lastname = '$lastname', firstname = '$firstname', title = '$title', position = '$position', address = '$address', email = '$email', phone1 = '$phone1', phone2 = '$phone2', fax = '$fax', lang = '$lang', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_USERS . " set lastname = '$lastname', firstname = '$firstname', title = '$title', company = '$company', position = '$position', email = '$email', phone1 = '$phone1', phone2 = '$phone2', fax = '$fax', address_line1 = '$address_line1', address_line2 = '$address_line2', address_town = '$address_town', address_postcode = '$address_postcode', address_country = '$address_country', lang = '$lang', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
@@ -506,6 +506,42 @@ class ContactsModel extends Model {
 }
 
 
+function getUserListPlain($string){
+		$users_string = explode(",", $string);
+		$users_total = sizeof($users_string);
+		$users = '';
+		
+		if($users_total == 0) { 
+			return $users; 
+		}
+		
+		// check if user is available and build array
+		$users_arr = array();
+		foreach ($users_string as &$value) {
+			$q = "SELECT id, firstname, lastname FROM ".CO_TBL_USERS." where id = '$value'";
+			$result_user = mysql_query($q, $this->_db->connection);
+			if(mysql_num_rows($result_user) > 0) {
+				while($row_user = mysql_fetch_assoc($result_user)) {
+					$users_arr[$row_user["id"]] = $row_user["lastname"] . ' ' . $row_user["firstname"];		
+				}
+			}
+		}
+		$users_arr_total = sizeof($users_arr);
+		
+		// build string
+		$i = 1;
+		foreach ($users_arr as $key => &$value) {
+			$users .= $value;		
+			if($i < $users_arr_total) {
+				$users .= ', ';
+			}
+			$users .= '';	
+			$i++;
+		}
+		return $users;
+}
+
+
 	function getPlaceList($string,$field){
 		$users_string = explode(",", $string);
 		$users_total = sizeof($users_string);
@@ -518,11 +554,11 @@ class ContactsModel extends Model {
 		// check if user is available and build array
 		$users_arr = array();
 		foreach ($users_string as &$value) {
-			$q = "SELECT id, address FROM ".CO_TBL_USERS." where id = '$value'";
+			$q = "SELECT id, address_line1, address_town FROM ".CO_TBL_USERS." where id = '$value'";
 			$result_user = mysql_query($q, $this->_db->connection);
 			if(mysql_num_rows($result_user) > 0) {
 				while($row_user = mysql_fetch_assoc($result_user)) {
-					$users_arr[$row_user["id"]] = $row_user["address"];		
+					$users_arr[$row_user["id"]] = $row_user["address_line1"] . ", " . $row_user["address_town"];		
 				}
 			}
 		}
@@ -555,7 +591,7 @@ class ContactsModel extends Model {
    
    
    function getUserContext($id,$field){
-		$q = "SELECT id, firstname, lastname, position,phone1,phone2,fax,address,email FROM ".CO_TBL_USERS." where id = '$id'";
+		$q = "SELECT id, firstname, lastname, company, position,phone1,phone2,fax,address_line1, address_town, address_postcode,email FROM ".CO_TBL_USERS." where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_fetch_array($result);
 		foreach($row as $key => $val) {
@@ -584,7 +620,7 @@ class ContactsModel extends Model {
 	 function getPlacesSearch($term){
 			global $system;
 			$num=0;
-			$q = "SELECT id, address as label from " . CO_TBL_USERS . " where (lastname like '%$term%' or firstname like '%$term%') and bin ='0' and invisible = '0'";
+			$q = "SELECT id, CONCAT(lastname, ' ',firstname,', ',address_line1, ', ', address_town) as label from " . CO_TBL_USERS . " where (lastname like '%$term%' or firstname like '%$term%') and bin ='0' and invisible = '0'";
 			$result = mysql_query($q, $this->_db->connection);
 			$num=mysql_affected_rows();
 			$rows = array();

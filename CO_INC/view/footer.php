@@ -14,7 +14,7 @@ Benutzer: <?php echo($users->getUserFullname($session->uid));?>
 		}
 		echo '<li><a href="#" rel="'.$app.'" class="toggleObservers' . $activeapp . ' app_'.$app.'" >' . ${$app.'_name'} . '</a></li>';
 	}
-	echo '<li><a href="/?path=login">' . LOGIN_LOGOUT . '</a></li>';
+	echo '<li><a href="/?path=login">' . $lang["LOGIN_LOGOUT"] . '</a></li>';
 	?>
 </ul>
 </div>

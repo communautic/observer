@@ -12,7 +12,7 @@
 </table>
 <table border="0" cellspacing="0" cellpadding="0">
 	<tr>
-	  <td><?php echo PROJECT_KICKOFF;?></td>
+	  <td><?php echo $lang['PROJECT_KICKOFF'];?></td>
 		<td><?php echo($project->startdate)?></td>
 	</tr>
 </table>
@@ -25,14 +25,14 @@
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0">
 	<tr>
-	  <td><?php echo PROJECT_MANAGEMENT;?></td>
+	  <td><?php echo $lang["PROJECT_MANAGEMENT"];?></td>
 	  <td><?php echo($project->management);?><br />
 <?php echo($project->management_ct);?></td>
 	</tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0">
   <tr>
-    <td><a href="#" class="content-nav showDialog" request="getContactsDialog" field="team" append="1"><span><?php echo PROJECT_TEAM;?></span></a></td>
+    <td><a href="#" class="content-nav showDialog" request="getContactsDialog" field="team" append="1"><span><?php echo $lang["PROJECT_TEAM"];?></span></a></td>
     <td><div id="team" class="itemlist-field"><?php echo($project->team);?></div><div id="team_ct" class="itemlist-field"><a field="team_ct" class="ct-content"><?php echo($project->team_ct);?></a></div></td>
   </tr>
 </table>

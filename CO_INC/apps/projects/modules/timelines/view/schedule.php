@@ -1,19 +1,19 @@
 <div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-title">
   <tr>
-    <td class="tcell-left text11"><span class="content-nav">Terminliste</span></td>
+    <td class="tcell-left text11"><span class="content-nav"><?php echo TIMELINE_DATES_LIST;?></span></td>
     <td></td>
   </tr>
 </table>
 </div>
 <div class="ui-layout-content"><div class="scroll-pane">
-<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+<table border="0" cellpadding="0" cellspacing="0" class="table-content loadProject" rel="<?php echo($project["id"]);?>">
 	<tr>
 		<td class="tcell-left-inactive text11"><?php echo $lang["PROJECT_TITLE"];?></td>
 		<td class="tcell-right bold"><a href="#" class="loadProject" rel="<?php echo($project["id"]);?>"><?php echo($project["title"]);?></a></td>
     </tr>
 </table>
-<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+<table border="0" cellpadding="0" cellspacing="0" class="table-content loadProject" rel="<?php echo($project["id"]);?>">
 	<tr>
 		<td class="tcell-left-inactive text11"></td>
 		<td class="tcell-right"><?php echo($project["startdate"]);?> - <?php echo($project["enddate"]);?></td>
@@ -32,7 +32,7 @@ if($numPhases > 0) {
 		}*/
 	?>
 
-<table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive">
+<table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive loadPhase" rel="<?php echo($project["phases"][$key]["id"]);?>">
 	<tr>
 	  <td class="tcell-left-inactive text11"><?php echo $lang["PHASE_TITLE"];?></td>
         <td class="tcell-right"><a href="#" class="loadPhase bold" rel="<?php echo($project["phases"][$key]["id"]);?>"><?php echo($countPhases . " " . $project["phases"][$key]["title"]);?></a><br />
@@ -46,7 +46,7 @@ if($numPhases > 0) {
 			if($project["phases"][$key]["tasks"][$tkey]["cat"] == 0) {
 		?>
             
-            <table border="0" cellspacing="0" cellpadding="0" class="table-content">
+            <table border="0" cellspacing="0" cellpadding="0" class="table-content loadPhase" rel="<?php echo($project["phases"][$key]["id"]);?>">
                 <tr>
                   <td class="tcell-left-inactive text11"></td>
                    <td width="20"></td>
@@ -57,7 +57,7 @@ if($numPhases > 0) {
                 </tr>
             </table>
 			<?php } else { ?>
-            <table border="0" cellspacing="0" cellpadding="0" class="table-content">
+            <table border="0" cellspacing="0" cellpadding="0" class="table-content loadPhase" rel="<?php echo($project["phases"][$key]["id"]);?>">
                 <tr>
                   <td class="tcell-left-inactive text11"></td>
                    <td width="20"></td>

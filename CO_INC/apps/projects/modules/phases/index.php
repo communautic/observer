@@ -93,7 +93,7 @@ if (!empty($_POST['request'])) {
 			if(isset($_POST['task'])) {
 				$task = $_POST['task'];
 			}
-			echo($phases->setDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['management'], $system->checkMagicQuotes($_POST['management_ct']), $_POST['team'], $system->checkMagicQuotes($_POST['team_ct']), $system->checkMagicQuotes($_POST['protocol']), $_POST["documents"],$_POST['phase_access'], $_POST['phase_access_orig'], $_POST['phase_status'], $_POST['phase_status_date'],$task_startdate,$task_enddate,$task_donedate,$task_id,$task_text,$task,$task_cat,$task_dependent));
+			echo($phases->setDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['team'], $system->checkMagicQuotes($_POST['team_ct']), $system->checkMagicQuotes($_POST['protocol']), $_POST["documents"],$_POST['phase_access'], $_POST['phase_access_orig'], $_POST['phase_status'], $_POST['phase_status_date'],$task_startdate,$task_enddate,$task_donedate,$task_id,$task_text,$task,$task_cat,$task_dependent));
 		break;
 	}
 }

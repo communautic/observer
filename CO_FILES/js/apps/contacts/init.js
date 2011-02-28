@@ -66,23 +66,6 @@ function contactFormResponse(data) {
 					}
 				});*/
 		break;
-		/*case "new":
-			var fid = $("#contacts1 .module-click:visible").attr("rel");
-			$.ajax({ type: "GET", url: "apps/contacts/", dataType:  'json', data: "request=getContactList&id="+fid, success: function(list){
-				$("#contacts2 ul").html(list.html);
-				var index = $("#contacts2 .module-click").index($("#contacts2 .module-click[rel='"+data.id+"']"));
-				setModuleActive($("#contacts2"),index);
-				$.ajax({ type: "GET", url: "apps/contacts/", data: "request=getContactDetails&id="+data.id, success: function(html){
-					$("#"+contacts.name+"-right").html(html);
-					initScrollbar( '#contacts .scrolling-content' );
-					$("#loading").fadeOut();
-					}
-				});
-				contactsActions(0);
-				resetForm();
-				}
-			});
-		break;*/
 	}
 }
 
@@ -356,6 +339,7 @@ function contactsloadModuleStart() {
 				$("#"+contacts.name+"-right").html(html);
 				contactsInnerLayout.initContent('center');
 				initScrollbar( '#contacts .scrolling-content' );
+				$('#contacts1 input.filter').quicksearch('#contacts1 li');
 				$("#contacts3 .contacts3-content").hide();
 				}
 			});
@@ -502,10 +486,11 @@ $(document).ready(function() {
 					contactsActions(1);
 				}
 				initScrollbar( '#contacts .scrolling-content' );
+				$('#contacts1 input.filter').quicksearch('#contacts1 li');
 				var id = $("#contacts1 .module-click:eq(0)").attr("rel");
 				$("#contacts1 .module-click:eq(0)").addClass('active-link');
-				$("#contacts2-groups-outer").hide();
-				$("#contacts2-outer").show();
+				//$("#contacts2-groups-outer").hide();
+				//$("#contacts2-outer").show();
 				$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getGroupDetails&id="+id, success: function(html){
 					$("#"+contacts.name+"-right").html(html);
 					$("#contacts1").delay(200).animate({height: h-46}, function() {
@@ -526,6 +511,7 @@ $(document).ready(function() {
 			var index = $("#contacts1 .module-click").index($("#contacts1 .module-click[rel='"+id+"']"));
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/contacts&request=getGroupList", success: function(data){
 				$("#contacts1 ul:eq(1)").html(data.html);
+				$('#contacts1 input.filter').quicksearch('#contacts1 li');
 				$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getGroupDetails&id="+id, success: function(html){
 					$("#contacts1 li").show();
 					setModuleActive($("#contacts1"),index);
@@ -558,8 +544,15 @@ $(document).ready(function() {
 	* show contacts list
 	*/
 	$("#contacts2-outer > h3").click(function() {
+		
+		if(confirmNavigation()) {
+			formChanged = false;
+			var obj = getCurrentModule();
+			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+		}
+		
 		if($(this).hasClass("module-bg-active")) {
-			var id = $("#contacts1 .module-click:visible").attr("rel");
+			/*var id = $("#contacts1 .module-click:visible").attr("rel");
 			var contactid = $("#contacts2 .module-click:eq(0)").attr("rel");
 			if(contactid == undefined) {
 				return false;
@@ -581,7 +574,10 @@ $(document).ready(function() {
 					}
 				});
 				}
-			});
+			});*/
+			
+			$("#contacts1-outer > h3").trigger("click");
+			
 		} else {
 			if($("#contacts2").height() == module_title_height) {
 				
@@ -753,7 +749,7 @@ $(document).ready(function() {
 		$('.places-search').livequery(function() { 
 			$(this).autocomplete({
 				appendTo: '#tabs-1',
-				source: "/apps/contacts&request=getPlacesSearch",
+				source: "?path=apps/contacts&request=getPlacesSearch",
 				//minLength: 2,
 				select: function(event, ui) {
 					var field = $(this).attr("title");

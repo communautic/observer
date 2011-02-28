@@ -148,7 +148,7 @@ class MeetingsModel extends ProjectsModel {
 		$array["start"] = $this->_date->formatDate($array["start"],CO_TIME_FORMAT);
 		$array["end"] = $this->_date->formatDate($array["end"],CO_TIME_FORMAT);
 		$array["location"] = $this->_contactsmodel->getPlaceList($array['location'],'location');
-		$array["location_ct"] = empty($array["location_ct"]) ? "" : TEXT_NOTE . " " . $array['location_ct'];
+		$array["location_ct"] = empty($array["location_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['location_ct'];
 
 		$array["relates_to_text"] = "";
 		if($array['relates_to'] != "") {
@@ -156,9 +156,9 @@ class MeetingsModel extends ProjectsModel {
 		}
 
 		$array["participants"] = $this->_contactsmodel->getUserList($array['participants'],'participants');
-		$array["participants_ct"] = empty($array["participants_ct"]) ? "" : TEXT_NOTE . " " . $array['participants_ct'];
+		$array["participants_ct"] = empty($array["participants_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['participants_ct'];
 		$array["management"] = $this->_contactsmodel->getUserList($array['management'],'management');
-		$array["management_ct"] = empty($array["management_ct"]) ? "" : TEXT_NOTE . " " . $array['management_ct'];
+		$array["management_ct"] = empty($array["management_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['management_ct'];
 		$array["documents"] = $this->_documents->getDocListFromIDs($array['documents'],'documents');
 		
 		$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);

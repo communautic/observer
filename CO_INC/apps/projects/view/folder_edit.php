@@ -66,9 +66,9 @@
         <tr>
           <td width="23" valign="top"><input name="projectstatus" type="radio" value="0"<?php //echo($active);?> class="jNiceHidden" />
           </td>
-          <td width="70" valign="top"><?php echo PROJECT_FOLDER_STATUS_ACTIVE;?></td>
+          <td width="70" valign="top"><?php echo $lang["PROJECT_FOLDER_STATUS_ACTIVE"];?></td>
           <td width="23" valign="top"><input name="projectstatus" type="radio" value="1"<?php //echo($archiv);?> class="jNiceHidden" /></td>
-          <td valign="top"><?php echo PROJECT_FOLDER_STATUS_ARCHIVE;?></td>
+          <td valign="top"><?php echo $lang["PROJECT_FOLDER_STATUS_ARCHIVE"];?></td>
         </tr>
       </table>
     </td>
@@ -97,7 +97,7 @@
 if(is_array($projects)) {
 	foreach ($projects as $project) { 
 	?>
-    <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive">
+    <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive loadProject" rel="<?php echo($project->id);?>">
 	<tr>
 		<td class="tcell-left text11">&nbsp;</td>
 		<td class="tcell-right"><a href="#" class="loadProject bold" rel="<?php echo($project->id);?>"><?php echo($project->title);?></a></td>

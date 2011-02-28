@@ -26,6 +26,16 @@
 #contacts .center-center a:visited { color: #000; }
 #contacts .center-center a:hover   { color: #865b00; }
 
+#contacts .context  {
+	background-color: #c88700;
+}
+
+#contacts .showDialog {
+	background-color: #c88700;
+}
+
+
+
 #menu a.app_contacts:link, #menu a.app_contacts:active, #menu a.app_contacts:visited { color: #333; text-decoration: none; outline: none; background: url(../../img/app_propellor.png) no-repeat 36px 0px; }
 #menu a.app_contacts:hover { color: #fff; text-decoration: none; outline: none; background: #c98601 url(../../img/app_propellor.png) no-repeat 36px -60px; }
 #menu a.app_contacts.active-app { color: #fff; text-decoration: none; outline: none; background: #c98601 url(../../img/app_propellor.png) no-repeat 36px -60px; }

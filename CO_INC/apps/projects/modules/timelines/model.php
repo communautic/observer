@@ -300,6 +300,12 @@ class TimelinesModel extends ProjectsModel {
 							$overdue["days"] = $this->_date->dateDiff($rowt->enddate,$rowt->donedate);
 							$overdue["width"] = $overdue["days"] * $width;
 							$overdue["left"] = $task_left + $task_width;
+							
+							if($rowt->donedate > $project["enddate"]) {
+								$project["enddate"] = $rowt->donedate;
+								$project["days"] = $this->_date->dateDiff($project["startdate"],$project["enddate"]);
+								$project["css_width"] = ($project["days"]+1) * $width;
+							}
 						}
 					break;
 				}
@@ -381,6 +387,12 @@ class TimelinesModel extends ProjectsModel {
 				$phase_overdue["days"] = $this->_date->dateDiff($row->enddate,$row->finished_date);
 			    $phase_overdue["width"] = $phase_overdue["days"] * $width;
 				$phase_overdue["left"] = $phase_left + $phase_width;
+				
+				if($row->finished_date > $project["enddate"]) {
+					$project["enddate"] = $row->finished_date;
+					$project["days"] = $this->_date->dateDiff($project["startdate"],$project["enddate"]);
+					$project["css_width"] = ($project["days"]+1) * $width;
+				}
 			}
 			
 			

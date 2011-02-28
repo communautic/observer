@@ -1,6 +1,6 @@
 var FILE_BROWSE = "Datei / Upload";
 var FILE_DROP_AREA = "Dateien hier hereinziehen";
-var CUSTOM_NOTE = "Notiz:";
+var CUSTOM_NOTE = "manueller Eintrag:";
 
 // Alerts
 var ALERT_YES = "Ja";

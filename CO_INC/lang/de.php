@@ -1,27 +1,25 @@
 <?php
-define('APPLICATION_NAME', 'company observer 6.1');
+$lang["APPLICATION_NAME"] = "company observer 6.0";
 
 /* LOGIN PAGE */
-define('LOGIN_USERNAME', 'Benutzername:');
-define('LOGIN_PASSWORD', 'Passwort:');
-define('LOGIN_REMEMBER', 'Benutzerkonto speichern');
-define('LOGIN_REQUIREMENTS', 'Systemanforderungen');
-define('LOGIN_REQUIREMENTS_DETAILS', 'Internet Explorer 6+, Firefox 2+, Safari3+');
-define('LOGIN_LOGIN', 'weiter');
-define('LOGIN_COPYRIGHT', '<a href="http://www.communautic.com" target="_blank">Alle Rechte vorbehalten communautic Ebenbichler KG | www.communautic.com</a>');
-define('LOGIN_LOGIN_FAILED', 'Benutzername oder Passwort sind nicht korrekt. Bitte versuchen Sie es erneut.');
-define('LOGIN_LOGOUT', 'Abmelden');
-
-define('TEXT_SAVING', 'Daten werden gespeichert ...');
+$lang["LOGIN_USERNAME"] = "Benutzername:";
+$lang["LOGIN_PASSWORD"] = "Passwort:";
+$lang["LOGIN_REMEMBER"] = "Benutzerkonto speichern";
+$lang["LOGIN_REQUIREMENTS"] = "Systemanforderungen";
+$lang["LOGIN_REQUIREMENTS_DETAILS"] = "Internet Explorer 6+, Firefox 2+, Safari3+";
+$lang["LOGIN_LOGIN"] = "weiter";
+$lang["LOGIN_COPYRIGHT"] = '<a href="http://www.communautic.com" target="_blank">Alle Rechte vorbehalten communautic Ebenbichler KG | www.communautic.com</a>';
+$lang["LOGIN_LOGIN_FAILED"] = "Benutzername oder Passwort sind nicht korrekt. Bitte versuchen Sie es erneut.";
+$lang["LOGIN_LOGOUT"] = "Abmelden";
 
 /* APPS ACTION LINKS */
-define('ACTION_NEW', 'neu');
-define('ACTION_PRINT', 'drucken');
-define('ACTION_SENDTO', 'weiterleiten');
-define('ACTION_DUPLICATE', 'duplizieren');
-define('ACTION_DELETE', 'löschen');
+$lang["ACTION_NEW"] = "neu";
+$lang["ACTION_PRINT"] = "drucken";
+$lang["ACTION_SENDTO"] = "weiterleiten";
+$lang["ACTION_DUPLICATE"] = "duplizieren";
+$lang["ACTION_DELETE"] = "löschen";
 
-define('TEXT_NOTE', 'Notiz:');
+$lang["TEXT_NOTE"] = "manueller Eintrag:";
 	
 $lang["CREATED_BY_ON"]		= 	'angelegt:';
 $lang["EDITED_BY_ON"] 		= 	'aktualisiert:';

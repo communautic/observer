@@ -5,10 +5,6 @@ include_once(CO_INC . "/controller.php");
 foreach($controller->applications as $app => $display) {
 	include_once(CO_INC . "/apps/".$app."/config.php");
 	include_once(CO_INC . "/apps/".$app."/lang/" . $session->userlang . ".php");
-	
-	if(file_exists(CO_PATH_BASE . "/lang/".$app."/" . $session->userlang . ".php")) {
-		include_once(CO_PATH_BASE . "/test/" . $session->userlang . ".php");
-	}
 	include_once(CO_INC . "/apps/".$app."/model.php");
 	include_once(CO_INC . "/apps/".$app."/controller.php");
 }
@@ -117,7 +113,7 @@ if (!empty($_POST['request'])) {
 			echo($projects->newFolder($system->checkMagicQuotes($_POST['title']), $_POST['projectstatus']));
 		break;*/
 		case 'setProjectDetails':
-			echo($projects->setProjectDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['startdate'], $_POST['management'], $system->checkMagicQuotes($_POST['management_ct']), $_POST['team'], $system->checkMagicQuotes($_POST['team_ct']), $system->checkMagicQuotes($_POST['protocol']), $_POST['projectfolder'], $_POST['status'], $_POST['status_date']));
+			echo($projects->setProjectDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['startdate'], $_POST['ordered_by'], $system->checkMagicQuotes($_POST['ordered_by_ct']), $_POST['management'], $system->checkMagicQuotes($_POST['management_ct']), $_POST['team'], $system->checkMagicQuotes($_POST['team_ct']), $system->checkMagicQuotes($_POST['protocol']), $_POST['projectfolder'], $_POST['status'], $_POST['status_date']));
 		break;
 		/*case 'newProject':
 			echo($projects->newProject($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['startdate'], $_POST['enddate'], $_POST['management'], $system->checkMagicQuotes($_POST['management_ct']), $_POST['team'], $system->checkMagicQuotes($_POST['team_ct']), $system->checkMagicQuotes($_POST['protocol']), $_POST['projectfolder'], $_POST['status'], $_POST['status_date']));
