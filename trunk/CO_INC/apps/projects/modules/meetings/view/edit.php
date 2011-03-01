@@ -100,6 +100,10 @@ include("task.php");
 		<td class="tcell-right-inactive"><?php echo($meeting->emailed_to);?></td>
     </tr>
 </table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content" height="100">
+	<tr>
+	  <td class="tcell-left text11"></td>
+</table>
 </form>
 </div>
 </div>
