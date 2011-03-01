@@ -127,6 +127,7 @@ class Phases {
 
 
 	function getPhaseStatusDialog() {
+		global $lang;
 		include 'view/dialog_status.php';
 	}
 	

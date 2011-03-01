@@ -72,12 +72,6 @@ switch($contact->lang) {
   </tr>
 </table>
 <div class="content-spacer"></div>
-<table border="0" cellpadding="0" cellspacing="0" class="table-content">
-	<tr>
-		<td class="tcell-left-inactive text11"><?php echo $lang['CONTACTS_ADDRESS'];?></td>
-    <td class="tcell-right">&nbsp;</td>
-    </tr>
-</table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
     <tr>
         <td class="tcell-left text11"><a href="#" class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_ADDRESS_LINE1'];?></span></a></td>
@@ -108,12 +102,6 @@ switch($contact->lang) {
     <td class="tcell-right"><input name="address_country" id="address_country" type="text" class="bg" value="<?php echo($contact->address_country);?>" /></td>
   </tr>
 </table>
-<!--<table border="0" cellspacing="0" cellpadding="0" class="table-content">
-  <tr>
-    <td valign="top" class="tcell-left text11"><a href="#" class="content-nav selectTextfield"><span><?php echo CONTACTS_CONTACT_ADDRESS;?></span></a></td>
-    <td class="tcell-right"><textarea name="address" id="address" cols="20" rows="3" class="bg"><?php echo($contact->address);?></textarea></td>
-  </tr>
-</table>-->
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>

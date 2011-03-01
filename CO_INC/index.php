@@ -97,6 +97,7 @@ include(CO_INC . "/view/footer.php");
 </div>
 <div id="tooltip-simple"></div>
 <div id="modalDialog"></div>
+<div id="modalDialogContext"></div>
 <div id="modalDialogTime"></div>
 <div id="modalDialogForward" title="Weiterleitung">
     <table border="0" cellspacing="0" cellpadding="0" class="table-title">
