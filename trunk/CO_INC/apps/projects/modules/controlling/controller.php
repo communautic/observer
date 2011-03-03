@@ -1,17 +1,13 @@
 <?php
-/*include_once("../../config.php");
-include_once("config.php");
-include_once("lang/" . $session->userlang . ".php");
-include_once("model.php");*/
 
 class Controlling {
 	var $module;
 	
-	// get all available apps
 	function __construct($name) {
 			$this->module = $name;
 			$this->form_url = "apps/projects/modules/$name/";
 			$this->model = new ControllingModel();
+			$this->binDisplay = false;
 	}
 	
 	function getList($id,$sort) {
@@ -26,15 +22,13 @@ class Controlling {
 		return $system->json_encode($data);
 	}
 	
-	function getDetails($id) {
-		include('view/edit.php');
-		/*if($arr = $this->model->getDetails($id)) {
-			$controlling = $arr["controlling"];
-			$task = $arr["task"];
+	function getDetails($id,$pid) {
+		global $lang;
+		if($controlling = $this->model->getDetails($pid)) {
 			include('view/edit.php');
 		} else {
 			include CO_INC .'/view/default.php';
-		}*/
+		}
 	}
 	
 	function setDetails($id,$title,$controllingdate,$task_idnew,$task_textnew,$task_new,$task_id,$task_text,$task) {
@@ -81,6 +75,15 @@ class Controlling {
 	function insertTask($num) {
 		//$task = $this->model->insertDocumentTask($start,$end);
 		include 'view/task_new.php';
+	}
+	
+	
+	function getChart($id,$what) {
+		if($chart = $this->model->getChart($id,$what)) {
+				include CO_INC .'/apps/projects/view/chart.php';
+		} else {
+			include CO_INC .'/view/default.php';
+		}
 	}
 	
 }

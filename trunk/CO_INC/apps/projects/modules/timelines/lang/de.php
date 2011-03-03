@@ -1,5 +1,5 @@
 <?php
-$timelines_name = "Zeitpl&auml;ne";
+$timelines_name = "Zeitpläne";
 
 // Right
 define("TIMELINE_PROJECT_STRUCTURE", 'Projektstrukturplan (PSP)');

@@ -1,0 +1,94 @@
+#bin { position:absolute; height: 100%;  width: 100%; background-color:#333333;}
+#bin .ui-layout-resizer-west { background-color:#82aa0a !important; }
+#bin .ui-layout-resizer-west-closed { background-color:#82aa0a !important; }
+
+#bin-top { height: 50px; float: left;}
+
+#bin .module-bg-active { background-color: #999; color:#fff }
+
+#bin1, #bin2, #bin3 { padding:0; overflow: hidden !important; /* prevent scrollbars auto-added by Layout */}
+#bin3 { display: block;}
+#bin3 .scrolling-content { width: 325px !important;}
+
+.bin3-content { width: 325px;; background-color: #82aa0a; padding:0; overflow:hidden !important;}
+
+#bin .ui-layout-west li a:hover   { background-color: #666}
+#bin .ui-layout-west li a.active-link  { background-color: #666}
+#bin .hover-bg  { background-color: #666}
+#bin .hover-outline { border: 1px solid #666}
+
+#bin .jspDrag { background: #666; }
+
+#bin .center-center a         { color: #000; }
+#bin .center-center a:link    { color: #000; }
+#bin .center-center a:active  { color: #000; }
+#bin .center-center a:visited { color: #000; }
+#bin .center-center a:hover   { color: #666; cursor: pointer}
+
+#bin .context  {
+	background-color: #82aa0a;
+}
+
+#binActions { display: block; }
+
+#menu a.app_bin:link, #menu a.app_bin:active, #menu a.app_bin:visited { color: #333; text-decoration: none; outline: none; background: url(../../img/app_propellor.png) no-repeat 36px 0px; }
+#menu a.app_bin:hover { color: #fff; text-decoration: none; outline: none; background: #999 url(../../img/app_propellor.png) no-repeat 36px -180px; }
+#menu a.app_bin.active-app { color: #fff; text-decoration: none; outline: none; background: #999 url(../../img/app_propellor.png) no-repeat 36px -180px; }
+
+/* Actions Menu */
+#binActions a.actionNew 				{	background-position: -50px 0px;	}
+#binActions a.actionNew:hover 			{ 	background-position:  -100px 0px;	}
+#binActions a.actionNew.noactive 		{ 	background-position:  0px 0px; 		}
+
+/*#binActions a.actionSave 				{ 	background-position: -50px -51px;	}
+#binActions a.actionSave:hover 		{ 	background-position: -100px -51px;	}
+#binActions a.actionSave.noactive 		{ 	background-position: 0px -51px;		}*/
+
+#binActions a.actionPrint 				{ 	background-position: -50px -102px;	}
+#binActions a.actionPrint:hover 		{ 	background-position: -100px -102px;	}
+#binActions a.actionPrint.noactive 	{ 	background-position:0px -102px;		}
+
+#binActions a.actionSend 				{ 	background-position: -50px -151px;	}
+#binActions a.actionSend:hover 		{ 	background-position: -100px -151px;	}
+#binActions a.actionSend.noactive 		{ 	background-position: 0px -151px; 	}
+
+#binActions a.actionDuplicate 			{ 	background-position: -50px -206px;	}
+#binActions a.actionDuplicate:hover 	{ 	background-position: -100px -206px;	}
+#binActions a.actionDuplicate.noactive { background-position: 0px -206px;  	}
+
+.milestone { width: 18px; height: 18px; background: url(../../../img/milestone.png) no-repeat 0px 0px; text-align: center; line-height: 19px;}
+.milestone span { margin-left: 3px; }
+.phaseouter { margin-top: 1px;}
+
+#bin .table-title, #bin .textarea-title { 
+background-color: #e1f0af; }
+
+#bin .ui-datepicker-trigger-action-status {
+	position: absolute;
+	left: 318px;
+display: block; height: 13px; width: 15px; margin-top: -15px; background:url(../../../img/apps_buttons_sprite.png) no-repeat -20px -570px
+}
+
+#bin a.disabled{
+	background-position: 0px -570px
+}
+/*.table-content input.bg:hover, .table-content input.bg:focus {
+    border: 1px solid #82AA0A;
+}*/
+
+#bin-right .tcell-left span { display: block; padding: 0 0 0 15px; }
+#bin-right .tcell-left-short span { display: block; padding: 0 0 0 15px; }
+#bin-right a.content-nav         { color: #000; }
+#bin-right a.content-nav :link    { color: #000; }
+#bin-right a.content-nav :active  { color: #000; }
+#bin-right a.content-nav :visited { color: #000; }
+#bin-right a.content-nav :hover   { background-color: #82AA0A; color: #000}
+
+.content-outline {background-color: #e1f0af;}
+
+#bin-right textarea:hover,
+#bin-right textarea:focus,
+#bin-right input.bg:hover, 
+#bin-right input.bg:focus {
+    background-color: #e1f0af;
+}

@@ -258,22 +258,17 @@ class TimelinesModel extends ProjectsModel {
 			$num_tasks = mysql_num_rows($resultt);
 			if( $num_tasks > 1 ) {
 				$project["css_height"] += ($num_tasks*$height_of_tasks)+($num_tasks*$space_between_tasks)+16;
-				//$phase_height = ($num_tasks*$height_of_tasks)+3;
-				
 				$phase_height = ($num_tasks*$height_of_tasks)+($num_tasks*$space_between_tasks)+16;
-				
 				$phase_top_next = ($num_tasks*$height_of_tasks)+($num_tasks*$space_between_tasks)+16;
 			} else {
 				$project["css_height"] += 34;
 				$phase_height = 34;
-				$phase_top_next = ($num_tasks*$height_of_tasks)+16;
+				$phase_top_next = ($num_tasks*$height_of_tasks)+24;
 			}
 			$task_top = 3;
-			//$task_top_next = 0;
 			$t = 0;
 			while ($rowt = mysql_fetch_object($resultt)) {
 				$task_top += 18;
-				//$task_top_next += 13;
 				$task_days = $this->_date->dateDiff($rowt->startdate,$rowt->enddate);
 				$task_width = ($task_days+1) * $width;
 				$task_start = $this->_date->dateDiff($row->startdate,$rowt->startdate);

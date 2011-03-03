@@ -7,6 +7,7 @@ class Meetings {
 			$this->module = $name;
 			$this->form_url = "apps/projects/modules/$name/";
 			$this->model = new MeetingsModel();
+			$this->binDisplay = true;
 	}
 
 

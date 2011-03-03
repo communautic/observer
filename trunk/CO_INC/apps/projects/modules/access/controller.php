@@ -8,6 +8,7 @@ class Access {
 			$this->module = $name;
 			$this->form_url = "apps/projects/modules/$name/";
 			$this->model = new AccessModel();
+			$this->binDisplay = false;
 	}
 	
 	function getList($id,$sort) {

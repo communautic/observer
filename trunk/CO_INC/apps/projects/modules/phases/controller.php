@@ -8,6 +8,7 @@ class Phases {
 			$this->module = $name;
 			$this->form_url = "apps/projects/modules/$name/";
 			$this->model = new PhasesModel();
+			$this->binDisplay = true;
 	}
 	
 	function getList($id,$sort) {

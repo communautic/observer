@@ -12,6 +12,7 @@ class Projects extends Controller {
 			$this->model = new ProjectsModel();
 			$this->modules = $this->getModules($this->application);
 			$this->num_modules = sizeof((array)$this->modules);
+			$this->binDisplay = true;
 	}
 	
 	function getFolderList($sort) {
@@ -237,13 +238,29 @@ class Projects extends Controller {
 	
 	// STATISTICS
 	
-	function getChart($id,$what) {
-		if($chart = $this->model->getChart($id,$what)) {
+	function getChartFolder($id,$what) {
+		if($chart = $this->model->getChartFolder($id,$what)) {
 				include 'view/chart.php';
 		} else {
 			include CO_INC .'/view/default.php';
 		}
 	}
+
+
+	function getBin() {
+		global $lang;
+		if($arr = $this->model->getBin()) {
+			$bin = $arr["bin"];
+			$folders = $arr["folders"];
+			//$projects = $arr["projects"];
+			//$phases = $arr["phases"];
+			include 'view/bin.php';
+		}
+		else {
+			include CO_INC .'/view/default.php';
+		}
+	}
+
 
 	
 }

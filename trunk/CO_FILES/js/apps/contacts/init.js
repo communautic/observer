@@ -727,6 +727,9 @@ $(document).ready(function() {
 			$("#"+field).append(html);
 			var obj = getCurrentModule();
 			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+			// Save last selected user to user prefs
+			//$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=setPreflast10Users&id="+id, success: function(data){
+			//});
 		}
 		
 		// autocomplete contacts search

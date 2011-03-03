@@ -11,6 +11,7 @@ class Documents {
 			$this->module = $name;
 			$this->form_url = "apps/projects/modules/$name/";
 			$this->model = new DocumentsModel();
+			$this->binDisplay = true;
 	}
 
 

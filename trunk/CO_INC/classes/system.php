@@ -7,6 +7,7 @@ class System
 		if (!get_magic_quotes_gpc()) {
 			$string = addslashes($string);
 		}
+		$string = str_replace('"', "&quot;", $string);
 		//return htmlentities($string, ENT_QUOTES);
 		return $string;
 	}

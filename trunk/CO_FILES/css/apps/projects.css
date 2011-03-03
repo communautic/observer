@@ -25,10 +25,6 @@
 #projects .center-center a:visited { color: #000; }
 #projects .center-center a:hover   { color: #577207; cursor: pointer}
 
-#projects .context  {
-	background-color: #82aa0a;
-}
-
 #projectsActions { display: block; }
 
 #menu a.app_projects:link, #menu a.app_projects:active, #menu a.app_projects:visited { color: #333; text-decoration: none; outline: none; background: url(../../img/app_propellor.png) no-repeat 36px 0px; }

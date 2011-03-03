@@ -10,9 +10,17 @@ foreach($controller->applications as $app => $display) {
 }
 
 // get dependend modules
-include_once("modules/phases/config.php");
-include_once("modules/phases/model.php");
+//include_once("modules/phases/config.php");
+//include_once("modules/phases/model.php");
 //include_once("../phases/controller.php");
+
+foreach($projects->modules as $module  => $value) {
+	include_once("modules/".$module."/config.php");
+	include_once("modules/".$module."/lang/" . $session->userlang . ".php");
+	include_once("modules/".$module."/model.php");
+	include_once("modules/".$module."/controller.php");
+					
+}
 
 // GET requests
 if (!empty($_GET['request'])) {
@@ -99,6 +107,18 @@ if (!empty($_GET['request'])) {
 		/*case 'getPhaseDetails':
 			echo($projects->getPhaseDetails($_GET['id'],$_GET['num']));
 		break;*/
+		case 'getBin':
+			echo($projects->getBin());
+			
+			/*foreach($projects->modules as $module  => $value) {
+				if(${$module}->binDisplay) {
+					echo($module . "Bin");
+				}
+			}*/
+			
+			//echo("Bin");
+			//echo($projects->getAccessDialog());
+		break;
 	}
 }
 

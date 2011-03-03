@@ -276,6 +276,7 @@ ul.actionconsole { margin: 0 11px 0 11px;  }
 	border: 1px solid #000;
 	padding: 10px 15px;
 	font-size: 12px;
+	background-color: #a5a5a5;
 }
 
 
@@ -593,7 +594,7 @@ border:1px dashed black;
 
 #tabs.ui-widget-content { border: 0;}
 #tabs .ui-widget-header { background: transparent;}
-#tabs li { border: 0;}
+#tabs li { border: 0; }
 
 .tinymce { background-color: #E1F0AF}
 .loadProject { cursor: pointer }

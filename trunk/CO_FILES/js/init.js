@@ -485,6 +485,7 @@ $(document).ready(function() {
 		var title = $(this).attr("title"); //header of dialog
 		sql = $(this).attr("sql"); // special sql if present
 		
+		var app = getCurrentApp();
 		var module = getCurrentModule();
 		
 		if($("#modalDialog").is(':visible') || $("#ui-datepicker-div").is(':visible')) {
@@ -498,8 +499,9 @@ $(document).ready(function() {
 		}
 		return false;
 	});
-	
-		// init modalDialogs
+
+
+	// init modalDialogs
 	$("#modalDialogForward").dialog({  
 		autoOpen: false,
 		resizable: true,

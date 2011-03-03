@@ -4,9 +4,10 @@ class Timelines {
 	var $module;
 	
 	function __construct($name) {
-			$this->module = $name;
-			$this->form_url = "apps/projects/modules/$name/";
-			$this->model = new TimelinesModel();
+		$this->module = $name;
+		$this->form_url = "apps/projects/modules/$name/";
+		$this->model = new TimelinesModel();
+		$this->binDisplay = false;
 	}
 	
 	function getList($id,$sort) {

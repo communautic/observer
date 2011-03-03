@@ -17,10 +17,11 @@ controlling.toggleIntern = controllingToggleIntern;
 
 function getDetailsControlling(moduleidx,liindex) {
 	var phaseid = $("#projects3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
+	var pid = $("#projects2 .module-click:visible").attr("rel");
 	if(phaseid == undefined) {
 					return false;
 				}
-	$.ajax({ type: "GET", url: "apps/projects/modules/controlling/", data: "request=getDetails&id="+phaseid, success: function(html){
+	$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/controlling&request=getDetails&id="+phaseid+"&pid="+pid, success: function(html){
 				$("#"+projects.name+"-right").html(html);
 				initContentScrollbar();
 				initScrollbar( '.projects3-content:visible .scrolling-content' );
@@ -55,13 +56,13 @@ function controllingFormResponse(data) {
 		break;
 		case "new":
 			var id = $("#projects2 .module-click:visible").attr("rel");
-			$.ajax({ type: "GET", url: "apps/projects/modules/controlling/", dataType:  'json', data: "request=getList&id="+id, success: function(html){
+			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/controlling&request=getList&id="+id, success: function(html){
 				$(".projects3-content:visible ul").html(html);
 				var index = $(".projects3-content:visible .module-click").index($(".projects3-content:visible .module-click[rel='"+data.id+"']"));
 				$(".projects3-content:visible .module-click:eq("+index+")").addClass('active-link');
 				//$(".projects3-content:visible .drag:eq("+index+")").show();
 				var num = index+1;
-				$.ajax({ type: "GET", url: "apps/projects/modules/controlling/", data: "request=getDetails&id="+data.id+"&num="+num, success: function(html){
+				$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/controlling&request=getDetails&id="+data.id+"&num="+num, success: function(html){
 					$("#projects-right").html(html);
 					initContentScrollbar();
 					$("#loading").fadeOut();
@@ -77,7 +78,7 @@ function controllingFormResponse(data) {
 
 function newControlling() {
 	var id = $('#projects2 .module-click:visible').attr("rel");
-	$.ajax({ type: "GET", url: "apps/projects/modules/controlling/", data: 'request=getNew&id=' + id, cache: false, success: function(html){
+	$.ajax({ type: "GET", url: "/", data: 'path=apps/projects/modules/controlling&request=getNew&id=' + id, cache: false, success: function(html){
 		$("#projects-right").html(html);
 		setTitleFocus();
 		projectsActions(2);
@@ -97,14 +98,14 @@ function binControlling() {
 			if(v){
 				var id = $("#projects3 .active-link").attr("rel");
 				var pid = $("#projects2 .module-click:visible").attr("rel");
-				$.ajax({ type: "GET", url: "apps/projects/modules/controlling/", data: "request=binControlling&id=" + id, cache: false, success: function(data){
+				$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/controlling&request=binControlling&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
-							$.ajax({ type: "GET", url: "apps/projects/modules/controlling/", dataType:  'json', data: "request=getList&id="+pid, success: function(html){
+							$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/controlling&request=getList&id="+pid, success: function(html){
 								$(".projects3-content:visible ul").html(html);
 								var id = $("#projects3 .module-click:eq(0)").attr("rel");
 								$("#projects3 .projects3-content:visible .module-click:eq(0)").addClass('active-link');
 								//$("#projects3 .projects3-content:visible ul:eq(0) .drag:eq(0)").show();
-								$.ajax({ type: "GET", url: "apps/projects/modules/controlling/", data: "request=getDetails&id="+id+"&num=1", success: function(html){
+								$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/controlling&request=getDetails&id="+id+"&num=1", success: function(html){
 									$("#projects-right").html(html);
 									initScrollbar( '#projects .scrolling-content' );
 									initContentScrollbar();
@@ -123,7 +124,7 @@ function binControlling() {
 
 
 function controllingToggleIntern(id,status,obj) {
-	$.ajax({ type: "GET", url: "apps/projects/modules/controlling/", data: "request=toggleIntern&id=" + id + "&status=" + status, cache: false, success: function(data){
+	$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/controlling&request=toggleIntern&id=" + id + "&status=" + status, cache: false, success: function(data){
 		if(data == "true") {
 			obj.toggleClass("module-item-active")
 		}
@@ -132,7 +133,7 @@ function controllingToggleIntern(id,status,obj) {
 }
 
 function dialogControlling(offset,request,field,append,title,sql) {
-	$.ajax({ type: "GET", url: "apps/projects/", data: 'request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
+	$.ajax({ type: "GET", url: "/", data: 'path=apps/projects&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
 			$("#modalDialog").html(html);
 			$("#modalDialog").dialog('option', 'position', offset);
 			$("#modalDialog").dialog('option', 'title', title);
@@ -143,7 +144,7 @@ function dialogControlling(offset,request,field,append,title,sql) {
 
 function addTaskControlling() {
 	var num = parseInt($("#projects-right .tasks-entry").size());
-	$.ajax({ type: "GET", url: "/apps/projects/modules/controlling/", data: "request=insertTask&num=" + num, success: function(html){
+	$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/controlling&request=insertTask&num=" + num, success: function(html){
 		$('#controllingtasks').append(html);
 		var idx = parseInt($('.cbx').size() -1);
 		var element = $('.cbx:eq('+idx+')');
