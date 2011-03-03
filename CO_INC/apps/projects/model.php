@@ -590,6 +590,15 @@ class ProjectsModel extends Model {
 	   return $count;
    }
    
+   function numPhasesOnTime($id) {
+	   //$q = "SELECT COUNT(id) FROM " .  CO_TBL_PHASES. " WHERE pid='$id' $sql and bin='0'";
+	   $q = "SELECT a.id,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as enddate FROM " . CO_TBL_PHASES . " as a where a.pid= '$id' and a.status='2' and a.finished_date <= enddate";
+
+	   $result = mysql_query($q, $this->_db->connection);
+	   $count = mysql_result($result,0);
+	   return $count;
+   }
+   
    function numPhasesTasks($id,$status = 0,$sql="") {
 	   //$sql = "";
 	   if ($status == 1) {
@@ -606,16 +615,17 @@ class ProjectsModel extends Model {
    }
 
 
-	function getChart($id, $what) { 
+	function getChartFolder($id, $what) { 
+		global $controllingmodel;
 		switch($what) {
 			case 'stability':
-				$chart = $this->getChart($id, 'realisation');
+				$chart = $this->getChartFolder($id, 'realisation');
 				$realisation = $chart["real"];
 				
-				$chart = $this->getChart($id, 'tasksontime');
+				$chart = $this->getChartFolder($id, 'tasksontime');
 				$tasksontime = $chart["real"];
 				
-				$chart = $this->getChart($id, 'timeing');
+				$chart = $this->getChartFolder($id, 'timeing');
 				$timeing = $chart["real"];
 				
 				$chart["real"] = round(($realisation+$tasksontime+$timeing)/3,0);
@@ -631,35 +641,72 @@ class ProjectsModel extends Model {
 				$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
 				
 			break;
-			case 'realisation':
-				$phases = 0;
-				$phases_done = 0;
-				$phases_tasks = 0;
-				$phases_tasks_done = 0;
-				$q = "SELECT id FROM " . CO_TBL_PROJECTS. " WHERE projectfolder = '$id'";
+			/*case 'realisation':
+				$tasks = 0;
+				$tasks_done = 0;
+				$q = "SELECT id FROM " . CO_TBL_PROJECTS. " WHERE projectfolder = '$id' and bin = '0'";
 				$result = mysql_query($q, $this->_db->connection);
 				while($row = mysql_fetch_assoc($result)) {
 					$pid = $row["id"];
-					$phases += $this->numPhases($pid);
-					$phases_done += $this->numPhases($pid,2);
-					$phases_tasks += $this->numPhasesTasks($pid);
-					$phases_tasks_done += $this->numPhasesTasks($pid,1);
+					$tasks += $this->numPhasesTasks($pid);
+					$tasks_done += $this->numPhasesTasks($pid,1);
 				}
-				if($phases == 0 || $phases_tasks == 0) {
+				if($tasks == 0) {
 					$chart["real"] = 0;
 				} else {
-					$chart["real"] = round(((100/$phases)*$phases_done + (100/$phases_tasks)*$phases_tasks_done)/2,2);
+					$chart["real"] = round((100/$tasks)*$tasks_done,2);
 				}
 				
 				$chart["tendency"] = "tendency_negative.png";
 				if(isset($pid)) {
-				$qt = "SELECT MAX(donedate) as dt,enddate FROM " . CO_TBL_PHASES_TASKS. " WHERE status='1' and pid='$pid'";
+					$qt = "SELECT MAX(donedate) as dt,enddate FROM " . CO_TBL_PHASES_TASKS. " WHERE status='1' and pid='$pid' and bin='0'";
+					$resultt = mysql_query($qt, $this->_db->connection);
+					$ten = mysql_fetch_assoc($resultt);
+					if($ten["dt"] <= $ten["enddate"]) {
+						$chart["tendency"] = "tendency_positive.png";
+					}
+				}
+				
+				$chart["rest"] = $this->getRest($chart["real"]);
+				$chart["title"] = "Realisierungsgrad";
+				$chart["img_name"] = $id . "_realisierungsgrad.png";
+				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
+				
+				$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
+			break;
+			*/
+			case 'realisation':
+				$realisation = 0;
+				$id_array = "";
+				
+				$q = "SELECT id FROM " . CO_TBL_PROJECTS. " WHERE projectfolder = '$id' and bin = '0'";
+				$result = mysql_query($q, $this->_db->connection);
+				$num = mysql_num_rows($result);
+				$i = 1;
+				while($row = mysql_fetch_assoc($result)) {
+					$pid = $row["id"];
+					$calc = $controllingmodel->getChart($pid,'realisation',0);
+					$realisation += $calc["real"];
+
+					if($i == 1) {
+						$id_array .= " and (pid='".$pid."'";
+					} else {
+						$id_array .= " or pid='".$pid."'";
+					}
+					if($i == $num) {
+						$id_array .= ")";
+					}
+					//$id_array .= " and pid='".$pid."'";
+					$i++;
+				}
+
+				$chart["real"] = round(($realisation)/$num,0);
+				$chart["tendency"] = "tendency_negative.png";
+				$qt = "SELECT MAX(donedate) as dt,enddate FROM " . CO_TBL_PHASES_TASKS. " WHERE status='1' $id_array and bin='0'";
 				$resultt = mysql_query($qt, $this->_db->connection);
 				$ten = mysql_fetch_assoc($resultt);
-				
 				if($ten["dt"] <= $ten["enddate"]) {
 					$chart["tendency"] = "tendency_positive.png";
-				}
 				}
 				
 				$chart["rest"] = $this->getRest($chart["real"]);
@@ -670,28 +717,54 @@ class ProjectsModel extends Model {
 				$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
 			break;
 			
+
 			case 'timeing':
-				//$phases = 0;
-				$phases_done = 0;
-				$phases_done_ontime = 0;
-				$tasks_done = 0;
-				$tasks_done_ontime = 0;
-				$q = "SELECT id FROM " . CO_TBL_PROJECTS. " WHERE projectfolder = '$id'";
+				$realisation = 0;
+				$id_array = "";
+				
+				$q = "SELECT id FROM " . CO_TBL_PROJECTS. " WHERE projectfolder = '$id' and bin = '0'";
 				$result = mysql_query($q, $this->_db->connection);
+				$num = mysql_num_rows($result);
+				$i = 1;
 				while($row = mysql_fetch_assoc($result)) {
 					$pid = $row["id"];
-					//$phases += $this->numPhases($pid);
-					//$phases_done += $this->numPhases($pid,2);
-					//$phases_done_ontime += $this->numPhases($pid,2," and finished_date <= enddate ");
-					$tasks_done += $this->numPhasesTasks($pid,1);
-					$tasks_done_ontime += $this->numPhasesTasks($pid,1," and donedate <= enddate ");
+					$calc = $controllingmodel->getChart($pid,'timeing',0);
+					$realisation += $calc["real"];
+
+					if($i == 1) {
+						$id_array .= " and (pid='".$pid."'";
+					} else {
+						$id_array .= " or pid='".$pid."'";
+					}
+					if($i == $num) {
+						$id_array .= ")";
+					}
+					//$id_array .= " and pid='".$pid."'";
+					$i++;
 				}
-				if($tasks_done == 0) {
-					$chart["real"] = 0;
+
+				$chart["real"] = round(($realisation)/$num,0);
+				
+				$today = date("Y-m-d");
+				
+				$chart["tendency"] = "tendency_positive.png";
+				$qt = "SELECT COUNT(id) FROM " . CO_TBL_PHASES_TASKS. " WHERE status='0' and startdate <= '$today' and enddate >= '$today' $id_array and bin='0'";
+				$resultt = mysql_query($qt, $this->_db->connection);
+				$tasks_active = mysql_result($resultt,0);
+				
+				$qo = "SELECT COUNT(id) FROM " . CO_TBL_PHASES_TASKS. " WHERE status='0' and enddate < '$today' $id_array and bin='0'";
+				$resulto = mysql_query($qo, $this->_db->connection);
+				$tasks_overdue = mysql_result($resulto,0);
+				if($tasks_active + $tasks_overdue == 0) {
+					$tendency = 0;
 				} else {
-					$chart["real"] = round((100/$tasks_done)*$tasks_done_ontime,2);
+					$tendency = round((100/($tasks_active + $tasks_overdue)) * $tasks_overdue,2);
 				}
-				$chart["tendency"] = "tendency_negative.png";
+				
+				if($tendency > 10) {
+					$chart["tendency"] = "tendency_negative.png";
+				}
+				
 				$chart["rest"] = $this->getRest($chart["real"]);
 				$chart["title"] = "Termintreue";
 				$chart["img_name"] = $id . "_timeing.png";
@@ -753,6 +826,31 @@ class ProjectsModel extends Model {
 		
 		return $chart;
    }
+
+
+   function getBin() {
+	   	
+		$bin = array();
+		$bin["datetime"] = $this->_date->formatDate("now",CO_DATETIME_FORMAT);
+		
+		// get folders
+		//$q = "select a.title,a.id,a.access,a.status,(SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " WHERE phaseid=a.id) as enddate from " . CO_TBL_PHASES . " as a where a.pid = '$id' and a.bin != '1' order by startdate";
+		$q ="select id, title from " . CO_TBL_PROJECTS_FOLDERS . " where status='0' and bin = '1'";
+		$result = mysql_query($q, $this->_db->connection);
+	  	$folders = "";
+	  	while ($row = mysql_fetch_array($result)) {
+			foreach($row as $key => $val) {
+				$folder[$key] = $val;
+			}
+			$folders[] = new Lists($folder);
+	  	}
+		
+		$arr = array("bin" => $bin, "folders" => $folders);
+		return $arr;
+	   	
+	   
+   }
+   
 	
 }
 

@@ -12,6 +12,7 @@ class Phonecalls {
 			$this->module = $name;
 			$this->form_url = "apps/projects/modules/$name/";
 			$this->model = new PhonecallsModel();
+			$this->binDisplay = true;
 	}
 	
 	function getList($id,$sort) {

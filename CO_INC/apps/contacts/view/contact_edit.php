@@ -18,7 +18,7 @@ switch($contact->lang) {
 	</tr>
 </table>
 </div>
-<div class="ui-layout-content"><div class="scrolling-content">
+<div class="ui-layout-content"><div class="scroll-pane">
 <form action="/" method="post" class="coform jNice">
 <input type="hidden" id="path" name="path" value="<?php echo $this->form_url;?>">
 <input type="hidden" id="poformaction" name="request" value="setContactDetails">

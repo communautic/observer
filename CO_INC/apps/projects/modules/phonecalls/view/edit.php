@@ -1,7 +1,7 @@
 <div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-title">
   <tr>
-    <td class="tcell-left text11"><a href="<?php echo MEETING_TITLE;?>" class="content-nav focusTitle"><span><?php echo PHONECALL_TITLE;?></span></a></td>
+    <td class="tcell-left text11"><a href="#" class="content-nav focusTitle"><span><?php echo PHONECALL_TITLE;?></span></a></td>
     <td><input type="text" name="title" class="title textarea-title" value="<?php echo($phonecall->title);?>" /></td>
   </tr>
 </table>

@@ -46,15 +46,15 @@
 </table>
     </div>
 </div>
-<?php  $this->getChart($folder->id,'stability');?>
+<?php  $this->getChartFolder($folder->id,'stability');?>
 </div>
 
 
 <div style="height: 125px;" class="text11">
 <div style="height: 26px;" class="tbl-inactive"></div>
-<?php  $this->getChart($folder->id,'realisation');?>
-<?php  $this->getChart($folder->id,'timeing');?>
-<?php  $this->getChart($folder->id,'tasksontime');?>
+<?php  $this->getChartFolder($folder->id,'realisation');?>
+<?php  $this->getChartFolder($folder->id,'timeing');?>
+<?php  $this->getChartFolder($folder->id,'tasksontime');?>
 </div>
 
 <!--

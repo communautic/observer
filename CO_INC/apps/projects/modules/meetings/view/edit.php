@@ -1,7 +1,7 @@
 <div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-title">
   <tr>
-    <td class="tcell-left text11"><a href="#" class="content-nav focusTitle"><span><?php echo MEETING_TITLE;?></span></a></td>
+    <td class="tcell-left text11"><a href="#" class="content-nav focusTitle"><span><?php echo $lang["MEETING_TITLE"];?></span></a></td>
     <td><input name="title" type="text" class="title textarea-title" value="<?php echo($meeting->title);?>" maxlength="100" /></td>
   </tr>
 </table>
@@ -14,48 +14,41 @@
 <input type="hidden" name="pid" value="<?php echo($meeting->pid);?>">
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-		<td class="tcell-left text11"><a href="<?php echo MEETING_DATE;?>" class="content-nav ui-datepicker-trigger-action"><span><?php echo MEETING_DATE;?></span></a></td>
+		<td class="tcell-left text11"><a href="#" class="content-nav ui-datepicker-trigger-action"><span><?php echo $lang["MEETING_DATE"];?></span></a></td>
 		<td class="tcell-right"><input name="meeting_date" type="text" class="input-date datepicker meeting_date" value="<?php echo($meeting->meeting_date)?>" /></td>
 	</tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-		<td class="tcell-left text11"><a href="time" class="content-nav showDialogTime" rel="meetingstart" title="Zeit"><span><?php echo MEETING_TIME_START;?></span></a></td>
+		<td class="tcell-left text11"><a href="#" class="content-nav showDialogTime" rel="meetingstart" title="Zeit"><span><?php echo $lang["MEETING_TIME_START"];?></span></a></td>
 		<td class="tcell-right"><div id="meetingstart" class="itemlist-field"><?php echo($meeting->start);?></div></td>
 	</tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-		<td class="tcell-left text11"><a href="time" class="content-nav showDialogTime" rel="meetingend" title="Zeit"><span><?php echo MEETING_TIME_END;?></span></a></td>
+		<td class="tcell-left text11"><a href="#" class="content-nav showDialogTime" rel="meetingend" title="Zeit"><span><?php echo $lang["MEETING_TIME_END"];?></span></a></td>
 		<td class="tcell-right"><div id="meetingend" class="itemlist-field"><?php echo($meeting->end);?></div></td>
 	</tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-		<td class="tcell-left text11"><a href="Ort" class="content-nav showDialog" request="getContactsDialogPlace" field="location" title="Ort" append="0"><span><?php echo MEETING_PLACE;?></span></a></td>
+		<td class="tcell-left text11"><a href="#" class="content-nav showDialog" request="getContactsDialogPlace" field="location" title="Ort" append="0"><span><?php echo $lang["MEETING_PLACE"];?></span></a></td>
 		<td class="tcell-right"><div id="location" class="itemlist-field"><?php echo($meeting->location);?></div><div id="location_ct" class="itemlist-field"><a field="location_ct" class="ct-content"><?php echo($meeting->location_ct);?></a></div></td>
 	</tr>
 </table>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
-		<td class="tcell-left text11"><a href="#" class="content-nav showDialog" request="getContactsDialog" field="participants" append="1"><span><?php echo MEETING_ATTENDEES;?></span></a></td>
+		<td class="tcell-left text11"><a href="#" class="content-nav showDialog" request="getContactsDialog" field="participants" append="1"><span><?php echo $lang["MEETING_ATTENDEES"];?></span></a></td>
 		<td class="tcell-right"><div id="participants" class="itemlist-field"><?php echo($meeting->participants);?></div><div id="participants_ct" class="itemlist-field"><a field="participants_ct" class="ct-content"><?php echo($meeting->participants_ct);?></a></div></td>
 	</tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
-		<td class="tcell-left text11"><a href="#" class="content-nav showDialog" request="getContactsDialog" field="management" append="1"><span><?php echo MEETING_MANAGEMENT;?></span></a></td>
+		<td class="tcell-left text11"><a href="#" class="content-nav showDialog" request="getContactsDialog" field="management" append="1"><span><?php echo $lang["MEETING_MANAGEMENT"];?></span></a></td>
 		<td class="tcell-right"><div id="management" class="itemlist-field"><?php echo($meeting->management);?></div><div id="management_ct" class="itemlist-field"><a field="management_ct" class="ct-content"><?php echo($meeting->management_ct);?></a></div></td>
 	</tr>
 </table>
-<!--<div class="content-spacer"></div>
-<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
-	<tr>
-		<td class="tcell-left text11"><a href="#" class="content-nav activateToolbar"><span><?php echo MEETING_DESCRIPTION;?></span></a></td>
-		<td  class="tcell-right"><div class="protocol-outer"><textarea name="protocol" class="tinymce" id="protocol"><?php echo($meeting->protocol);?></textarea></div></td>
-    </tr>
-</table>-->
 <div class="content-spacer"></div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
@@ -67,7 +60,7 @@
 <table border="0" cellpadding="0" cellspacing="0" class="table-content addTaskTable">
 	<tr>
 		<td class="tcell-left text11">
-        <a href="<?php echo MEETING_GOALS_ADD;?>" class="content-nav addMeetingTask" title="<?php echo(MEETING_GOALS_ADD);?>"><span><?php echo MEETING_GOALS;?></span></a>
+        <a href="#" class="content-nav addMeetingTask"><span><?php echo $lang["MEETING_GOALS"];?></span></a>
         </td>
     <td class="tcell-right">&nbsp;</td>
     </tr>

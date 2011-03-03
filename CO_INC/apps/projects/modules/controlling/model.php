@@ -3,18 +3,17 @@
 class ControllingModel extends ProjectsModel {
 	
 	public function __construct() {  
-     parent::__construct();
-		$this->_phases = new PhasesModel();
+		parent::__construct();
 		$this->_contactsmodel = new ContactsModel();
 	}
 	
 	function getList($id,$sort) {
-	global $session;
+		global $session, $lang;
 
 			// dates
 			$array["id"] = 0;
 			$array["controlling_date"] = $this->_date->formatDate("now",CO_DATE_FORMAT);
-			$array["title"] = "Controlling";
+			$array["title"] = $lang["CONTROLLING_STATUS"];
 			$array["itemstatus"] = "";
 			
 			$controlling[] = new Lists($array);
@@ -22,187 +21,179 @@ class ControllingModel extends ProjectsModel {
 	  $arr = array("controlling" => $controlling, "sort" => 0);
 	  return $arr;
 	}
-
 	
 	
-	// Get controlling list from ids for Tooltips
-	function getControllingDetails($string,$field){
-		$users_string = explode(",", $string);
-		$users_total = sizeof($users_string);
-		$users = '';
-		if($users_total == 0) { return $users; }
-		$i = 1;
-		foreach ($users_string as &$value) {
-			$q = "SELECT id,title from " . CO_TBL_CONTROLLING . " where id = '$value'";
-			$result_user = mysql_query($q, $this->_db->connection);
-			while($row_user = mysql_fetch_assoc($result_user)) {
-				$users .= '<span class="groupmember tooltip-advanced" uid="' . $row_user["id"] . '">' . $row_user["title"] . '</span><div style="display:none"><a href="delete" class="markfordeletionNEW" uid="' . $row_user["id"] . '" field="' . $field . '">X</a><br /></div>';
-				if($i < $users_total) {
-					$users .= ', ';
-				}
-			}
-			$i++;
-		}
-		return $users;
-   }
-   
-   function getDependency($id){
-		$q = "SELECT title FROM " . CO_TBL_PHASES . " where id = '$id'";
-		$result = mysql_query($q, $this->_db->connection);
-		return mysql_num_rows($result);
-   }
-   
-	function getDetails($id) {
-		global $session;
-		$q = "SELECT * FROM " . CO_TBL_CONTROLLING . " where id = '$id'";
-		$result = mysql_query($q, $this->_db->connection);
-		if(mysql_num_rows($result) < 1) {
-			return false;
-		}
-		$row = mysql_fetch_array($result);
-		foreach($row as $key => $val) {
-				$array[$key] = $val;
-			}
-		
-		// dates
-		$array["controlling_date"] = $this->_date->formatDate($array["controlling_date"],CO_DATE_FORMAT);
-		
-		$array["posponed_date"] = $this->_date->formatDate($array["posponed_date"],CO_DATE_FORMAT);
-		
-		// time
-		$array["start"] = $this->_date->formatDate($array["controlling_date"],CO_TIME_FORMAT);
-		$array["end"] = $this->_date->formatDate($array["controlling_date"],CO_TIME_FORMAT);
-		
-		$array["related_to"] = $this->_phases->getDocumentDetails($row['related_to'],'related_to');
-		//$array["dependency_exists"] = $this->getDependency($id);
-		//$array["projecttitle"] = $this->getProjectTitle($array['pid']);
-		$array["participants"] = $this->_contactsmodel->getUserList($array['participants'],'participants');
-		$array["coordinator"] = $this->_contactsmodel->getUserList($array['coordinator'],'coordinator');
-		//$array["documents"] = $this->getRelatedDocuments('0:'.$id);
-		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
-		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
-		$array["current_user"] = $session->uid;
-		
-		// get user perms
-		$array["edit"] = "1";
-		
-		$controlling = new Lists($array);
-		
-		// get the tasks
-		$task = array();
-		$q = "SELECT * FROM " . CO_TBL_CONTROLLING_TASKS . " where phaseid = '$id'";
-		$result = mysql_query($q, $this->_db->connection);
-		while($row = mysql_fetch_array($result)) {
-		foreach($row as $key => $val) {
-				$tasks[$key] = $val;
-			}
-		
-		$task[] = new Lists($tasks);
-		}
-		
-		$arr = array("controlling" => $controlling, "task" => $task);
-	  
-		return $arr;
-   }
-   
-   function setDetails($id,$title,$controllingdate,$task_idnew,$task_textnew,$task_new,$task_id,$task_text,$task) {
+	function getDetails($pid) {
 		global $session;
 		
-		$controllingdate = $this->_date->formatDate($controllingdate);
+		$array["id"] = $pid;
+		$array["datetime"] = $this->_date->formatDate("now",CO_DATETIME_FORMAT);
 		
-		$q = "UPDATE " . CO_TBL_CONTROLLING . " set title = '$title', controlling_date = '$controllingdate', edited_user = '$session->uid', edited_date = NOW() where id='$id'";
-		$result = mysql_query($q, $this->_db->connection);
+		$array["allphases"] = $this->getNumPhases($pid, "all");
+		$array["plannedphases"] = $this->getNumPhases($pid, "0");
+		$array["inprogressphases"] = $this->getNumPhases($pid, "1");
+		$array["finishedphases"] = $this->getNumPhases($pid, "2");
 		
-		// do existing tasks
-		$task_size = sizeof($task_id);
-		for ($i = 0; $i < $task_size; $i++) {
-			if (is_array($task)) {
-				if (in_array($task_id[$i], $task) == true) {
-					$checked_items[$i] = '1';
-				} else {
-					$checked_items[$i] = '0';
-				}
-			} else {
-				$checked_items[$i] = '0';
-			}
-		}
-
-		for ($i = 0; $i < $task_size; $i++) {
-			if ($task_text[$i] != "") {
-			$q = "UPDATE " . CO_TBL_CONTROLLING_TASKS . " set status = '$checked_items[$i]', text = '$task_text[$i]' WHERE id='$task_id[$i]'";
-			$result = mysql_query($q, $this->_db->connection);
-			} else {
-				$q = "DELETE FROM " . CO_TBL_CONTROLLING_TASKS . " WHERE id='$task_id[$i]'";
-				$result = mysql_query($q, $this->_db->connection);
-			}
-		}
-		
-		// do new tasks
-		$task_size_new = sizeof($task_idnew);
-		for ($i = 0; $i < $task_size_new; $i++) {
-			if (is_array($task_new)) {
-				if (in_array($task_idnew[$i], $task_new) == true) {
-					$checked_items_new[$i] = '1';
-				} else {
-					$checked_items_new[$i] = '0';
-				}
-			} else {
-				$checked_items_new[$i] = '0';
-			}
-		}
-
-		for ($i = 0; $i < $task_size_new; $i++) {
-			if ($task_textnew[$i] != "") {
-				$q = "INSERT INTO " . CO_TBL_CONTROLLING_TASKS . " set phaseid='$id', status = '$checked_items_new[$i]', text = '$task_textnew[$i]'";
-				$result = mysql_query($q, $this->_db->connection);
-			}
-		}
-		
-		if ($result) {
-			return $id;
-		}
-   }
-   
-   function getNew($id) {
-		// get user perms
-		$array["pid"] = $id;
-		$array["controlling_date"] = $this->_date->formatDate(date("Y-m-d"),CO_DATE_FORMAT);
 		
 		$controlling = new Lists($array);
 		return $controlling;
    }
    
-   function createNew($id,$title,$controlling_date) {
-		global $session;
-		
-		$controlling_date = $this->_date->formatDateGMT("2010-09-15 12:15:00");
-		
-		$q = "INSERT INTO " . CO_TBL_CONTROLLING . " set title = '$title', controlling_date='$controlling_date', pid = '$id'";
-		$result = mysql_query($q, $this->_db->connection);
-		if ($result) {
-		  	$id = mysql_insert_id();
-			return $id;
+   	function getNumPhases($id,$status, $sql="") {
+		switch($status) {
+			case "all":
+				$sql .= "";
+			break;
+			case "0":
+				$sql .= " and status='0'";
+			break;
+			case "1":
+				$sql .= " and status='1'";
+			break;
+			case "2":
+				$sql .= " and status='2'";
+			break;
+			
 		}
+		
+	   $q = "SELECT COUNT(id) FROM " .  CO_TBL_PHASES. " WHERE pid='$id' $sql and bin='0'";
+	   $result = mysql_query($q, $this->_db->connection);
+	   $count = mysql_result($result,0);
+	   return $count;
    }
    
-   function binControlling($id) {
-		global $session;
-		$q = "UPDATE " . CO_TBL_CONTROLLING . " set bin = '1', bintime = NOW(), binuser= '$session->uid' where id='$id'";
-		$result = mysql_query($q, $this->_db->connection);
-		if ($result) {
-		  	return true;
-		}
+   function getNumTasks($id,$status = 0,$sql="") {
+	   //$sql = "";
+	   if ($status == 1) {
+		   $sql .= " and status='1' ";
+	   }
+	   $q = "SELECT COUNT(id) FROM " .  CO_TBL_PHASES_TASKS. " WHERE pid='$id' $sql and bin='0'";
+	   $result = mysql_query($q, $this->_db->connection);
+	   $count = mysql_result($result,0);
+	   return $count;
    }
-
-
-   function toggleIntern($id,$status) {
-		global $session;
-		$q = "UPDATE " . CO_TBL_CONTROLLING . " set intern = '$status' where id='$id'";
-		$result = mysql_query($q, $this->_db->connection);
-		if ($result) {
-		  	return true;
+   
+   
+   function getChart($id, $what, $image = 1) { 
+		switch($what) {
+			case 'stability':
+				$chart = $this->getChart($id, 'realisation');
+				$realisation = $chart["real"];
+				
+				$chart = $this->getChart($id, 'tasksontime');
+				$tasksontime = $chart["real"];
+				
+				$chart = $this->getChart($id, 'timeing');
+				$timeing = $chart["real"];
+				
+				$chart["real"] = round(($realisation+$tasksontime+$timeing)/3,0);
+				$chart["title"] = "Projektstabilit&auml;t aktuell";
+				$chart["img_name"] = "p_" . $id . "_stability.png";
+				$chart["url"] = 'https://chart.googleapis.com/chart?chs=150x90&cht=gm&chd=t:' . $chart["real"];
+				
+				$chart["tendency"] = "tendency_negative.png";
+				if($chart["real"] >= 50) {
+					$chart["tendency"] = "tendency_positive.png";
+				}
+				
+				$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
+				
+			break;
+			case 'realisation':
+				$tasks = $this->getNumTasks($id);
+				$tasks_done = $this->getNumTasks($id,1);
+				
+				if($tasks == 0) {
+					$chart["real"] = 0;
+				} else {
+					$chart["real"] = round((100/$tasks)*$tasks_done,2);
+				}
+				
+				$chart["tendency"] = "tendency_negative.png";
+				$qt = "SELECT MAX(donedate) as dt,enddate FROM " . CO_TBL_PHASES_TASKS. " WHERE status='1' and pid='$id' and bin='0'";
+				$resultt = mysql_query($qt, $this->_db->connection);
+				$ten = mysql_fetch_assoc($resultt);
+				if($ten["dt"] <= $ten["enddate"]) {
+					$chart["tendency"] = "tendency_positive.png";
+				}
+				
+				$chart["rest"] = $this->getRest($chart["real"]);
+				$chart["title"] = "Realisierungsgrad";
+				$chart["img_name"] = "p_" . $id . "_realisierungsgrad.png";
+				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
+				if($image == 1) {
+					$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
+				}
+			break;
+			case 'timeing':
+				$tasks_done = $this->getNumTasks($id,1);
+				$tasks_done_ontime = $this->getNumTasks($id,1," and donedate <= enddate ");
+				
+				if($tasks_done == 0) {
+					$chart["real"] = 0;
+				} else {
+					$chart["real"] = round((100/$tasks_done)*$tasks_done_ontime,2);
+				}
+				
+				$today = date("Y-m-d");
+				
+				
+				$chart["tendency"] = "tendency_positive.png";
+				$qt = "SELECT COUNT(id) FROM " . CO_TBL_PHASES_TASKS. " WHERE status='0' and startdate <= '$today' and enddate >= '$today' and pid='$id' and bin='0'";
+				$resultt = mysql_query($qt, $this->_db->connection);
+				$tasks_active = mysql_result($resultt,0);
+				
+				$qo = "SELECT COUNT(id) FROM " . CO_TBL_PHASES_TASKS. " WHERE status='0' and enddate < '$today' and pid='$id' and bin='0'";
+				$resulto = mysql_query($qo, $this->_db->connection);
+				$tasks_overdue = mysql_result($resulto,0);
+				if($tasks_active + $tasks_overdue == 0) {
+					$tendency = 0;
+				} else {
+					$tendency = round((100/($tasks_active + $tasks_overdue)) * $tasks_overdue,2);
+				}
+				
+				if($tendency > 10) {
+					$chart["tendency"] = "tendency_negative.png";
+				}
+				
+				$chart["rest"] = $this->getRest($chart["real"]);
+				$chart["title"] = "Termintreue";
+				$chart["img_name"] = "p_" . $id . "_timeing.png";
+				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
+			
+				$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
+			break;
+			case 'tasksontime':
+				$tasks = 0;
+				$tasks_done = 0;
+				
+				$q = "SELECT id FROM " . CO_TBL_PROJECTS. " WHERE projectfolder = '$id'";
+				$result = mysql_query($q, $this->_db->connection);
+				while($row = mysql_fetch_assoc($result)) {
+					$pid = $row["id"];
+					$tasks += $this->numPhasesTasks($pid);
+					$tasks_done += $this->numPhasesTasks($pid,1," and donedate <= enddate ");
+				}
+				if($tasks == 0) {
+					$chart["real"] = 0;
+				} else {
+					$chart["real"] = round((100/$tasks)*$tasks_done,2);
+				}
+				$chart["tendency"] = "tendency_negative.png";
+				$chart["rest"] = $this->getRest($chart["real"]);
+				$chart["title"] = "Arbeitspakete in Plan";
+				$chart["img_name"] = "p_" . $id . "tasksontime.png";
+				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
+				$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
+			break;
 		}
+		
+		return $chart;
    }
+   
+   
 
 }
+
+$controllingmodel = new ControllingModel();
 ?>

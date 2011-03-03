@@ -22,7 +22,8 @@ $lang["PHASE_TASK_DEPENDENT"] = 'abhängig';
 $lang["PHASE_TASK_STATUS_FINISHED"] = 'erreicht am';
 
 // check for custom lang file
-if(file_exists(CO_PATH_BASE . "/lang/projects/phases/" . $session->userlang . ".php")) {
-	include_once(CO_PATH_BASE . "/lang/projects/phases/" . $session->userlang . ".php");
+$custom_lang = CO_PATH_BASE . "/lang/projects/phases/de.php";
+if(file_exists($custom_lang)) {
+	include_once($custom_lang);
 }
 ?>

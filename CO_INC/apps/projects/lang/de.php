@@ -30,4 +30,9 @@ $lang["PROJECT_STATUS_INPROGRESS"] = 'in Arbeit seit';
 $lang["PROJECT_STATUS_FINISHED"] = 'abgeschlossen am';
 $lang["PROJECT_PHASES"] = 'Phasen';
 
+// check for custom lang file
+$custom_lang = CO_PATH_BASE . "/lang/projects/de.php";
+if(file_exists($custom_lang)) {
+	include_once($custom_lang);
+}
 ?>

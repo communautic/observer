@@ -10,6 +10,7 @@ class Contacts extends Controller {
 			$this->model = new ContactsModel();
 			$this->modules = $this->getModules($this->application);
 			$this->num_modules = sizeof((array)$this->modules);
+			$this->binDisplay = true;
 	}
 	
 	function getGroupList($sort) {

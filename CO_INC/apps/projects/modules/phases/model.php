@@ -370,7 +370,7 @@ class PhasesModel extends ProjectsModel {
 		$text = $lang["PHASE_TASK_NEW"];
 		
 		// add first task 1 week starting from last phase or kick off plus 1 day
-		$q = "INSERT INTO " . CO_TBL_PHASES_TASKS . " set pid='$pid', phaseid='$id', status = '0', text = 'Aktivität 1', startdate = '$startdate', enddate = '$enddate'";
+		$q = "INSERT INTO " . CO_TBL_PHASES_TASKS . " set pid='$pid', phaseid='$id', status = '0', text = '" . $lang["PHASE_TASK_NEW"] . "', startdate = '$startdate', enddate = '$enddate'";
 			$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {

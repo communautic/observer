@@ -74,13 +74,17 @@ if (!empty($_GET['request'])) {
 		case 'getContactsSearch':
 			echo($contacts->getContactsSearch($_GET['term']));
 		break;
-	case 'getPlacesSearch':
+		case 'getPlacesSearch':
 			echo($contacts->getPlacesSearch($_GET['term']));
 		break;
+		case 'getBin':
+			echo(" Groups / contacts Bin");
+		break;
 	}
+	
 }
 
-// GET requests
+// POST requests
 if (!empty($_POST['request'])) {
 	
 	switch ($_POST['request']) {

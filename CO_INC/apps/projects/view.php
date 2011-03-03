@@ -32,8 +32,8 @@
 					include_once("modules/".$module."/model.php");
 					include_once("modules/".$module."/controller.php");
 					?>
-                    <div class="module-actions module-actions-modules"><div class="sort-outer"><a href="#" class="sort" rel="1"></a></div>
-                    <?php if (${$module.'_filter'} != 0) { ?>
+                    <div class="module-actions module-actions-modules"><?php if (${$module.'_filter'} != 0) { ?><div class="sort-outer"><a href="#" class="sort" rel="1"></a></div>
+                    
                     <div class="filter-box-outer"><form action="#"><fieldset><input name="search" type="text" class="filter filter-box" value="" size="4" /></fieldset></form></div><div class="filter-search-outer"></div><?php } ?></div>
 					<h3 rel="<?php echo($module);?>"><?php echo(${$module.'_name'});?></h3>
                     

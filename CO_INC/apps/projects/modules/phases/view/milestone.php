@@ -14,7 +14,7 @@
   <table width="100%" border="0" cellpadding="0" cellspacing="0">
     <tr>
       <td width="12"></td>
-      <td class="tcell-left text11"><a href="#" class="content-nav ui-datepicker-trigger-action"><span><?php echo $lang["PHASE_TASK_START"];?></span></a></td>
+      <td class="tcell-left text11"><a href="#" class="content-nav ui-datepicker-trigger-action"><span><?php echo $lang["PHASE_MILESTONE_DATE"];?></span></a></td>
       <td class="tcell-right"><input name="task_startdate[<?php echo $value->id;?>]" type="text" class="input-date datepicker task_start" value="<?php echo $value->startdate;?>" />
       <input name="task_enddate[<?php echo $value->id;?>]" type="hidden" value="" />
       </td>
