@@ -7,28 +7,59 @@
 </table>
 </div>
 <div class="ui-layout-content"><div class="scroll-pane">
-<table border="0" cellpadding="0" cellspacing="0" class="table-content">
-	<tr>
-		<td class="tcell-left-inactive text11"><?php echo $lang["PROJECT_FOLDER"];?></td>
-    <td class="tcell-right">&nbsp;</td>
-    </tr>
-</table>
 <?php
 if(is_array($folders)) {
-	$i = 1;
 	foreach ($folders as $folder) { ?>
     <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive" rel="<?php echo($folder->id);?>">
 	<tr>
-		<td class="tcell-left text11">&nbsp;</td>
+		<td class="tcell-left text11"><span><?php echo $lang["PROJECT_FOLDER"];?></span></td>
 		<td class="tcell-right"><?php echo($folder->title);?></td>
+        <td width="30"><a href="#" class="deleteDoc" rel="<?php echo $value->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="30"><a href="#" class="deleteDoc" rel="<?php echo $value->id;?>"><span class="icon-delete"></span></a></td>
+	</tr>
+    <tr>
+		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>
+		<td class="tcell-right"><?php echo($folder->binuser . ", " .$folder->bintime)?></td>
+        <td></td>
+        <td></td>
 	</tr>
 </table>
     <?php 
-	$i++;
 	}
 }
 ?>
+<div class="content-spacer"></div>
+<?php
+if(is_array($projects)) {
+	foreach ($projects as $project) { ?>
+    <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive" rel="<?php echo($project->id);?>">
+	<tr>
+		<td class="tcell-left text11"><span><?php echo $lang["PROJECT_TITLE"];?></span></td>
+		<td class="tcell-right"><?php echo($project->title);?></td>
+        <td width="30"><a href="#" class="deleteDoc" rel="<?php echo $value->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="30"><a href="#" class="deleteDoc" rel="<?php echo $value->id;?>"><span class="icon-delete"></span></a></td>
+	</tr>
+    <tr>
+		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>
+		<td class="tcell-right"><?php echo($project->binuser . ", " .$project->bintime)?></td>
+        <td></td>
+        <td></td>
+	</tr>
+</table>
+    <?php 
+	}
+}
 
+
+/*foreach($this->modules as $module  => $value) {
+	include_once(CO_INC . "/apps/projects/modules/" . $module . "/controller.php");
+	if($module->binDisplay) {
+		echo($module);
+	}
+}*/
+
+
+?>
 
 </div>
 </div>
