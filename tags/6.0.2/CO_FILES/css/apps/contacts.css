@@ -1,0 +1,116 @@
+#contacts { position:absolute; height: 100%;  width: 100%; background-color:#333333;}
+#contacts .ui-layout-resizer-west { background-color:#c88700 !important; }
+#contacts .ui-layout-resizer-west-closed { background-color:#c88700 !important; }
+
+#contacts-top { height: 50px; float: left;}
+
+#contacts .module-bg-active { background-color: #c88700; color: #fff }
+
+#contacts3 h3 { padding: 0 40px 0 6px; font-size: 12px; line-height: 24px; cursor:pointer; color: #000; text-align: right; }
+
+#contacts1, #contacts2, #contacts3 { padding:0; overflow: hidden !important; /* prevent scrollbars auto-added by Layout */}
+
+.contacts3-content { 	width: 100%; background-color: #c88700; padding:0; overflow:hidden !important; }
+
+#contacts .ui-layout-west li a:hover   { background-color: #865b00}
+#contacts .ui-layout-west li a.active-link  { background-color: #865b00}
+
+/*.ui-layout-west li a.deactivated { color: #fff; }
+.ui-layout-west li a.deactivated:hover { color: #fff; background-color: transparent !important; }*/
+
+#contacts .jScrollPaneDrag { background: #865b00; }
+
+#contacts .center-center a         { color: #000; }
+#contacts .center-center a:link    { color: #000; }
+#contacts .center-center a:active  { color: #000; }
+#contacts .center-center a:visited { color: #000; }
+#contacts .center-center a:hover   { color: #865b00; }
+
+
+
+#menu a.app_contacts:link, #menu a.app_contacts:active, #menu a.app_contacts:visited { color: #333; text-decoration: none; outline: none; background: url(../../img/app_propellor.png) no-repeat 36px 0px; }
+#menu a.app_contacts:hover { color: #fff; text-decoration: none; outline: none; background: #c98601 url(../../img/app_propellor.png) no-repeat 36px -60px; }
+#menu a.app_contacts.active-app { color: #fff; text-decoration: none; outline: none; background: #c98601 url(../../img/app_propellor.png) no-repeat 36px -60px; }
+
+
+/* Actions Menu */
+#contactsActions a.actionNew 				{	background-position: -150px 0px;	}
+#contactsActions a.actionNew:hover 			{ 	background-position:  -200px 0px;	}
+#contactsActions a.actionNew.noactive 		{ 	background-position:  0px 0px; 		}
+
+/*#contactsActions a.actionSave 				{ 	background-position: -150px -51px;	}
+#contactsActions a.actionSave:hover 		{ 	background-position: -200px -51px;	}
+#contactsActions a.actionSave.noactive 		{ 	background-position: 0px -51px;		}*/
+
+#contactsActions a.actionPrint 				{ 	background-position: -150px -102px;	}
+#contactsActions a.actionPrint:hover 		{ 	background-position: -200px -102px;	}
+#contactsActions a.actionPrint.noactive 	{ 	background-position:0px -102px;		}
+
+#contactsActions a.actionSend 				{ 	background-position: -150px -151px;	}
+#contactsActions a.actionSend:hover 		{ 	background-position: -200px -151px;	}
+#contactsActions a.actionSend.noactive 		{ 	background-position: 0px -151px; 	}
+
+#contactsActions a.actionDuplicate 			{ 	background-position: -150px -206px;	}
+#contactsActions a.actionDuplicate:hover 	{ 	background-position: -200px -206px;	}
+#contactsActions a.actionDuplicate.noactive { background-position: 0px -206px;  	}
+
+#contactsActions a.actionExport				{ 	background-position: -150px -258px;	}
+#contactsActions a.actionExport:hover 	{ 	background-position: -200px -258px;	}
+#contactsActions a.actionExport.noactive { background-position: 0px -258px;  	}
+
+#contactsActions a.actionImport				{ 	background-position: -150px -310px;	}
+#contactsActions a.actionImport:hover 	{ 	background-position: -200px -310px;	}
+#contactsActions a.actionImport.noactive { background-position: 0px -310px;  	}
+
+/*#contacts .table-title, #contacts .textarea-title, #contacts .table-content input.bg {
+background-color: #ffd396;
+}
+
+#contacts .table-content textarea.bg {
+width: 100%; border: 0; background-color: #ffd396; margin: 0; padding: 0;
+}
+
+#contacts .showDialog, #contacts .showDialogTime, #contacts .addtask, #contacts .protocolToggle { display: block; height: 13px; width: 15px; margin-top: 3px; background:url(../../../img/apps_buttons_sprite.png) no-repeat -40px -570px}
+
+.contacts-search { width: 100px; border: 0; margin: 2px 0;}
+#custom-text { width: 100px; border: 0; margin: 2px 0;}
+
+#contacts .context {
+background-color:#c88700;
+}
+ */
+ 
+#contacts .table-title, #contacts .textarea-title { 
+background-color: #ffd396; }
+
+#contacts .ui-datepicker-trigger-action-status {
+	position: absolute;
+	left: 318px;
+display: block; height: 13px; width: 15px; margin-top: -15px; background:url(../../../img/apps_buttons_sprite.png) no-repeat -40px -570px
+}
+
+#contacts a.disabled{
+	background-position: 0px -570px
+}
+
+#contacts-right .tcell-left span { display: block; padding: 0 0 0 15px; }
+#contacts-right .tcell-left-short span { display: block; padding: 0 0 0 15px; }
+#contacts-right a.content-nav         { color: #000; }
+#contacts-right a.content-nav :link    { color: #000; }
+#contacts-right a.content-nav :active  { color: #000; }
+#contacts-right a.content-nav :visited { color: #000; }
+#contacts-right a.content-nav :hover   { background-color: #C88700; color: #000}
+
+.content-outline {background-color: #e1f0af;}
+
+#contacts-right textarea{ font-size: 13px;
+	font-family: Arial, Helvetica, sans-serif;
+	border: 1px solid #fff;
+	width: 100%;
+}
+/*#contacts-right textarea:hover,
+#contacts-right textarea:focus,
+#contacts-right input.bg:hover, */
+#contacts-right input.bg:focus {
+    background-color: #ffd396;
+}
