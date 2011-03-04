@@ -168,9 +168,9 @@ bc
 
 	});
 
-	$('.timeline-scroll').livequery(function() {
+	/*$('.timeline-scroll').livequery(function() {
 		$(this).jScrollPane({horizontalGutter: 10,verticalGutter: 10,animateScroll: true});
-	});
+	});*/
 
 	
 });

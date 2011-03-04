@@ -622,13 +622,13 @@ class ProjectsModel extends Model {
 				$chart = $this->getChartFolder($id, 'realisation');
 				$realisation = $chart["real"];
 				
-				$chart = $this->getChartFolder($id, 'tasksontime');
-				$tasksontime = $chart["real"];
-				
 				$chart = $this->getChartFolder($id, 'timeing');
 				$timeing = $chart["real"];
 				
-				$chart["real"] = round(($realisation+$tasksontime+$timeing)/3,0);
+				$chart = $this->getChartFolder($id, 'tasks');
+				$tasks = $chart["real"];
+				
+				$chart["real"] = round(($realisation+$timeing+$tasks)/3,0);
 				$chart["title"] = "Projektstabilit&auml;t aktuell";
 				$chart["img_name"] = $id . "_stability.png";
 				$chart["url"] = 'https://chart.googleapis.com/chart?chs=150x90&cht=gm&chd=t:' . $chart["real"];
@@ -774,53 +774,56 @@ class ProjectsModel extends Model {
 			break;
 			
 			case 'tasks':
-				$tasks = 0;
-				$tasks_done = 0;
+				$realisation = 0;
+				$id_array = "";
 				
-				$q = "SELECT id FROM " . CO_TBL_PROJECTS. " WHERE projectfolder = '$id'";
+				$q = "SELECT id FROM " . CO_TBL_PROJECTS. " WHERE projectfolder = '$id' and bin = '0'";
 				$result = mysql_query($q, $this->_db->connection);
+				$num = mysql_num_rows($result);
+				$i = 1;
 				while($row = mysql_fetch_assoc($result)) {
 					$pid = $row["id"];
-					$tasks += $this->numPhasesTasks($pid);
-					$tasks_done += $this->numPhasesTasks($pid,1);
+					$calc = $controllingmodel->getChart($pid,'tasks',0);
+					$realisation += $calc["real"];
+
+					if($i == 1) {
+						$id_array .= " and (pid='".$pid."'";
+					} else {
+						$id_array .= " or pid='".$pid."'";
+					}
+					if($i == $num) {
+						$id_array .= ")";
+					}
+					$i++;
 				}
-				if($tasks == 0) {
-					$chart["real"] = 0;
-				} else {
-					$chart["real"] = round((100/$tasks)*$tasks_done,2);
+
+				$chart["real"] = round(($realisation)/$num,0);
+				
+				$today = date("Y-m-d");
+				
+				$chart["tendency"] = "tendency_positive.png";
+				$qt = "SELECT status,donedate,enddate FROM " . CO_TBL_PHASES_TASKS. " WHERE enddate < '$today' $id_array and bin='0' ORDER BY enddate DESC LIMIT 0,1";
+				$resultt = mysql_query($qt, $this->_db->connection);
+				$rowt = mysql_fetch_assoc($resultt);
+				if(mysql_num_rows($resultt) != 0) {
+					$status = $rowt["status"];
+					$enddate = $rowt["enddate"];
+					$donedate = $rowt["donedate"];
+					if($status == "1" && $donedate > $enddate) {
+						$chart["tendency"] = "tendency_negative.png";
+					}
+					if($status == "0") {
+						$chart["tendency"] = "tendency_negative.png";
+					}
 				}
-				$chart["tendency"] = "tendency_negative.png";
+				
 				$chart["rest"] = $this->getRest($chart["real"]);
 				$chart["title"] = "Aktivit&auml;t erreicht";
-				$chart["img_name"] = $id . "tasks.png";
+				$chart["img_name"] = $id . "_tasks.png";
 				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
 			
 				$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
 				
-			break;
-			
-			case 'tasksontime':
-				$tasks = 0;
-				$tasks_done = 0;
-				
-				$q = "SELECT id FROM " . CO_TBL_PROJECTS. " WHERE projectfolder = '$id'";
-				$result = mysql_query($q, $this->_db->connection);
-				while($row = mysql_fetch_assoc($result)) {
-					$pid = $row["id"];
-					$tasks += $this->numPhasesTasks($pid);
-					$tasks_done += $this->numPhasesTasks($pid,1," and donedate <= enddate ");
-				}
-				if($tasks == 0) {
-					$chart["real"] = 0;
-				} else {
-					$chart["real"] = round((100/$tasks)*$tasks_done,2);
-				}
-				$chart["tendency"] = "tendency_negative.png";
-				$chart["rest"] = $this->getRest($chart["real"]);
-				$chart["title"] = "Arbeitspakete in Plan";
-				$chart["img_name"] = $id . "tasksontime.png";
-				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
-				$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
 			break;
 		}
 		

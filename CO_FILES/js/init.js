@@ -618,7 +618,8 @@ $('a.ui-datepicker-trigger-action').live('click',function() {
 				$(this).datepicker('option', 'minDate', new Date(Date.parse($("input[name='startdate']").val())));
 			}
 			if(input.name.match(/task_startdate/)) {
-					$(this).datepicker('option', 'minDate', new Date($("input[name='kickoff']").val()));
+				//alert("yes");
+					$(this).datepicker('option', 'minDate', new Date(Date.parse($("input[name='kickoff']").val())));
 			}
 			if(input.name.match(/task_enddate/)) {
 					var reg = /[0-9]+/.exec(input.name);

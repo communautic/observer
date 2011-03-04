@@ -54,7 +54,7 @@
 <div style="height: 26px;" class="tbl-inactive"></div>
 <?php  $this->getChartFolder($folder->id,'realisation');?>
 <?php  $this->getChartFolder($folder->id,'timeing');?>
-<?php  $this->getChartFolder($folder->id,'tasksontime');?>
+<?php  $this->getChartFolder($folder->id,'tasks');?>
 </div>
 
 <!--
