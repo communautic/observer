@@ -14,6 +14,9 @@ foreach($controller->applications as $app => $display) {
 include_once(CO_INC . "/apps/projects/modules/phases/config.php");
 include_once(CO_INC . "/apps/projects/modules/phases/lang/" . $session->userlang . ".php");
 
+include_once(CO_INC . "/apps/projects/modules/meetings/config.php");
+include_once(CO_INC . "/apps/projects/modules/meetings/lang/" . $session->userlang . ".php");
+
 include_once(CO_INC . "/apps/projects/modules/controlling/config.php");
 include_once(CO_INC . "/apps/projects/modules/controlling/lang/" . $session->userlang . ".php");
 include_once(CO_INC . "/apps/projects/modules/controlling/model.php");

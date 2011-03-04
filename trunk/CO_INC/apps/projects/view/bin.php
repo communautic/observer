@@ -7,6 +7,12 @@
 </table>
 </div>
 <div class="ui-layout-content"><div class="scroll-pane">
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+	<tr>
+		<td class="tcell-left-inactive text11"><?php echo $lang["PROJECT_FOLDER"];?></td>
+    <td class="tcell-right">&nbsp;</td>
+    </tr>
+</table>
 <?php
 if(is_array($folders)) {
 	foreach ($folders as $folder) { ?>
@@ -14,8 +20,8 @@ if(is_array($folders)) {
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang["PROJECT_FOLDER"];?></span></td>
 		<td class="tcell-right"><?php echo($folder->title);?></td>
-        <td width="30"><a href="#" class="deleteDoc" rel="<?php echo $value->id;?>"><span class="icon-delete"></span></a></td>
-        <td width="30"><a href="#" class="deleteDoc" rel="<?php echo $value->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="30"><a href="#" class="deleteg" rel="<?php echo $value->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="30"><a href="#" class="deleteg" rel="<?php echo $value->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>
@@ -29,6 +35,12 @@ if(is_array($folders)) {
 }
 ?>
 <div class="content-spacer"></div>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+	<tr>
+		<td class="tcell-left-inactive text11"><?php echo $lang["PROJECT_PROJECTS"];?></td>
+    <td class="tcell-right">&nbsp;</td>
+    </tr>
+</table>
 <?php
 if(is_array($projects)) {
 	foreach ($projects as $project) { ?>
@@ -36,8 +48,8 @@ if(is_array($projects)) {
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang["PROJECT_TITLE"];?></span></td>
 		<td class="tcell-right"><?php echo($project->title);?></td>
-        <td width="30"><a href="#" class="deleteDoc" rel="<?php echo $value->id;?>"><span class="icon-delete"></span></a></td>
-        <td width="30"><a href="#" class="deleteDoc" rel="<?php echo $value->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="30"><a href="#" class="deleteF" rel="<?php echo $value->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="30"><a href="#" class="deleteF" rel="<?php echo $value->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>

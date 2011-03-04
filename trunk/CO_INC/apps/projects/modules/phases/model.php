@@ -160,6 +160,7 @@ class PhasesModel extends ProjectsModel {
 		// dates
 		$array["today"] = $this->_date->formatDate("now",CO_DATE_FORMAT);
 		$array["startdate"] = $this->_date->formatDate($array["startdate"],CO_DATE_FORMAT);
+		$array["kickoff"] = $this->_date->formatDate($array["kickoff"],CO_DATE_FORMAT);
 		$array["enddate"] = $this->_date->formatDate($array["enddate"],CO_DATE_FORMAT);
 		$array["dependency_startdate"] = $this->_date->formatDate($row['dependency_startdate'],CO_DATE_FORMAT);
 		$array["dependency_enddate"] = $this->_date->formatDate($row['dependency_enddate'],CO_DATE_FORMAT);

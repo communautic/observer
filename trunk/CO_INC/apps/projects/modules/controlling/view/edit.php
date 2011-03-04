@@ -46,7 +46,7 @@
 <div style="height: 26px;" class="tbl-inactive"></div>
 <?php  $this->getChart($controlling->id,'realisation');?>
 <?php  $this->getChart($controlling->id,'timeing');?>
-<?php  $this->getChart($controlling->id,'tasksontime');?>
+<?php  $this->getChart($controlling->id,'tasks');?>
 </div>
 
 
