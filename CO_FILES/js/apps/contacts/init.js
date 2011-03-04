@@ -49,8 +49,6 @@ function groupFormProcess(formData, form, poformOptions) {
 	} else {
 		formData[formData.length] = { "name": "title", "value": title };
 	}
-	//$("#loading").fadeIn();
-	
 	formData[formData.length] = processList('members');
 }
 
@@ -132,27 +130,22 @@ $.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/contacts&req
 
 
 function newGroup() {
-	$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=newGroup", cache: false, success: function(data){
-		//$("#"+contacts.name+"-right").html(html);
-		//$('#'+contacts.name+'-right .title').focus();
-		//contactsActions(2);
-		
+	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/contacts&request=newGroup", cache: false, success: function(data){
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/contacts&request=getGroupList", success: function(list){
 				$("#contacts1 ul:eq(1)").html(list.html);
 				$("#contacts1 li").show();
+				$("#contacts1 .module-click").removeClass('active-link');
 				var index = $("#contacts1 .module-click").index($("#contacts1 .module-click[rel='"+data.id+"']"));
 				setModuleActive($("#contacts1"),index);
 				$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getGroupDetails&id="+data.id, success: function(html){
 					$("#"+contacts.name+"-right").html(html);
-					initScrollbar( '#contacts .scrolling-content' );
-					$("#loading").fadeOut();
+					//initScrollbar( '#contacts .scrolling-content' );
+					contactsInnerLayout.initContent('center');
 					}
 				});
 				contactsActions(1);
 				}
 			});
-		
-		
 		}
 	});
 }
@@ -230,11 +223,11 @@ function binGroup() {
 function contactsActions(status) {
 	/*	0= new	1= save		2= print	3= send		4= duplicate	5= export	6= import	7=empty		8=delete */
 	switch(status) {
-		case 0: 	actions = ['0','1','2','4','5','6']; break; // system group
-		case 1: 	actions = ['0','1','2','3','7']; break; // contact details
+		case 0: 	actions = ['0']; break; // system group
+		case 1: 	actions = ['0','7']; break; // contact details
 		case 2: 	actions = ['1']; break;   					// just save
 		case 3: 	actions = ['0']; break;   					// just new
-		case 4: 	actions = ['0','1','2','3','4','5','6','7','8']; break; // all
+		case 4: 	actions = ['0','7']; break; // all
 		default: 	actions = [];  								// none
 	}
 	$('#contactsActions > li a').each( function(index) {

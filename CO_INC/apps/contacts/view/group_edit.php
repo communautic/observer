@@ -6,8 +6,9 @@
 	</tr>
 </table>
 </div>
-<div class="ui-layout-content"><div class="scrolling-content">
-<form action="<?php echo $this->form_url;?>" method="post" class="coform jNice">
+<div class="ui-layout-content"><div class="scroll-pane">
+<form action="/" method="post" class="coform jNice">
+<input type="hidden" id="path" name="path" value="<?php echo $this->form_url;?>">
 <input type="hidden" id="poformaction" name="request" value="setGroupDetails">
 <input type="hidden" name="id" value="<?php echo($group->id);?>">
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
