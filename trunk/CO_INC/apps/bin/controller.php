@@ -2,7 +2,6 @@
 
 class Bin extends Controller {
 	
-	// get all available apps
 	function __construct($name) {
 			$this->application = $name;
 			$this->form_url = "apps/$name/";
@@ -11,9 +10,6 @@ class Bin extends Controller {
 			$this->num_modules = 0;
 			$this->binDisplay = false;
 	}
-	
-
-
 
 }
 $bin = new Bin("bin");

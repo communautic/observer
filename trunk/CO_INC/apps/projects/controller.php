@@ -252,8 +252,10 @@ class Projects extends Controller {
 		if($arr = $this->model->getBin()) {
 			$bin = $arr["bin"];
 			$folders = $arr["folders"];
-			//$projects = $arr["projects"];
+			$projects = $arr["projects"];
 			//$phases = $arr["phases"];
+			
+			
 			include 'view/bin.php';
 		}
 		else {

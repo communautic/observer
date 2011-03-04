@@ -833,25 +833,37 @@ class ProjectsModel extends Model {
 		$bin = array();
 		$bin["datetime"] = $this->_date->formatDate("now",CO_DATETIME_FORMAT);
 		
-		// get folders
-		//$q = "select a.title,a.id,a.access,a.status,(SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " WHERE phaseid=a.id) as enddate from " . CO_TBL_PHASES . " as a where a.pid = '$id' and a.bin != '1' order by startdate";
-		$q ="select id, title from " . CO_TBL_PROJECTS_FOLDERS . " where status='0' and bin = '1'";
+		$folders = "";
+		$q ="select id, title, bintime, binuser from " . CO_TBL_PROJECTS_FOLDERS . " where bin = '1'";
 		$result = mysql_query($q, $this->_db->connection);
 	  	$folders = "";
 	  	while ($row = mysql_fetch_array($result)) {
 			foreach($row as $key => $val) {
 				$folder[$key] = $val;
 			}
+			$folder["bintime"] = $this->_date->formatDate($folder["bintime"],CO_DATETIME_FORMAT);
+			$folder["binuser"] = $this->_users->getUserFullname($folder["binuser"]);
 			$folders[] = new Lists($folder);
 	  	}
 		
-		$arr = array("bin" => $bin, "folders" => $folders);
+		$projects = "";
+		$q ="select id, title, bintime, binuser from " . CO_TBL_PROJECTS . " where bin = '1'";
+		$result = mysql_query($q, $this->_db->connection);
+	  	$projects = "";
+	  	while ($row = mysql_fetch_array($result)) {
+			foreach($row as $key => $val) {
+				$project[$key] = $val;
+			}
+			$project["bintime"] = $this->_date->formatDate($project["bintime"],CO_DATETIME_FORMAT);
+			$project["binuser"] = $this->_users->getUserFullname($project["binuser"]);
+			$projects[] = new Lists($project);
+	  	}
+		
+		$arr = array("bin" => $bin, "folders" => $folders, "projects" => $projects);
 		return $arr;
-	   	
-	   
    }
-   
-	
+
+
 }
 
 $projectsmodel = new ProjectsModel(); // needed for direct calls to functions eg echo $projectsmodel ->getProjectTitle(1);

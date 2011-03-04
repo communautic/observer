@@ -23,6 +23,7 @@ $lang["TEXT_NOTE"] = "manueller Eintrag:";
 	
 $lang["CREATED_BY_ON"]		= 	'angelegt:';
 $lang["EDITED_BY_ON"] 		= 	'aktualisiert:';
+$lang["DELETED_BY_ON"] 		= 	'gelöscht';
 $lang["INTERNAL_CHANGED"] 	= 	'freigegeben:';
 
 $lang["GLOBAL_REMOVE"] = 'Entfernen';
