@@ -902,7 +902,7 @@ $(document).ready(function() {
 						$("#projects-top .top-subheadline").html($("#projects2 a.module-click:visible").find(".text").html());
 						
 						$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getDates&id="+id, success: function(data){
-							$("#projects-top .top-subheadlineTwo").html(data.startdate + ' - ' + data.enddate);
+							$("#projects-top .top-subheadlineTwo").html(data.startdate + ' - <span id="projectenddate">' + data.enddate + '</span>');
 						}
 						});
 					});

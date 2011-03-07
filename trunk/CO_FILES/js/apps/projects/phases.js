@@ -65,23 +65,31 @@ function phaseFormResponse(data) {
 			$("#projects3 a.active-link .text").html($("#projects .title").val());
 			$("#phasestartdate").html(data.startdate);
 			$("#phaseenddate").html(data.enddate);
+			
+			//update Project Enddate
+			var pid = $('#projects2 .module-click:visible').attr("rel");
+			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getDates&id="+pid, success: function(project){
+					$("#projectenddate").html(project.enddate);
+				}
+			});
+			
 			var num  = $("#projects3 a.active-link .phase_num").html();
-				switch(data.access) {
-					case "0":
-						$("#projects3 a.active-link .module-access-status").removeClass("module-access-active");
-					break;
-					case "1":
-						$("#projects3 a.active-link .module-access-status").addClass("module-access-active");
-					break;
-				}
+			switch(data.access) {
+				case "0":
+					$("#projects3 a.active-link .module-access-status").removeClass("module-access-active");
+				break;
+				case "1":
+					$("#projects3 a.active-link .module-access-status").addClass("module-access-active");
+				break;
+			}
 				
-				switch(data.status) {
-					case "2":
-						$("#projects3 a.active-link .module-item-status").addClass("module-item-active");
-					break;
-					default:
-						$("#projects3 a.active-link .module-item-status").removeClass("module-item-active");
-				}
+			switch(data.status) {
+				case "2":
+					$("#projects3 a.active-link .module-item-status").addClass("module-item-active");
+				break;
+				default:
+					$("#projects3 a.active-link .module-item-status").removeClass("module-item-active");
+			}
 		break;
 	}
 }
@@ -99,6 +107,11 @@ function newPhase() {
 				var moduleidx = $(".projects3-content").index($(".projects3-content:visible"));
 				getDetailsPhase(moduleidx,liindex);
 				projectsActions(0);
+				//update Project Enddate
+				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getDates&id="+pid, success: function(project){
+						$("#projectenddate").html(project.enddate);
+					}
+				});
 				}
 			});
 		}
@@ -154,6 +167,11 @@ function binPhase() {
 							getDetailsPhase(moduleidx,liindex);
 							$("#projects3 .projects3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
 							//projectsActions(0);
+							//update Project Enddate
+							$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getDates&id="+pid, success: function(project){
+									$("#projectenddate").html(project.enddate);
+								}
+							});
 							}
 						});
 					}
