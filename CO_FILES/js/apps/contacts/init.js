@@ -714,7 +714,8 @@ $(document).ready(function() {
 		function log(field,id,value) {
 			closedialog = 0;
 			if($("#"+field).html() != "") {
-				$("#"+field+" .listmember-outer:visible:last .listmember").append(", ");
+				//$("#"+field+" .listmember-outer:visible:last .listmember").append(", ");
+				$("#"+field+" .listmember:visible:last").append(", ");
 			}
 			var html = '<span class="listmember-outer"><a class="listmember" uid="' + id + '" field="'+field+'">' + value + '</a>';
 			$("#"+field).append(html);
@@ -770,7 +771,8 @@ $(document).ready(function() {
 				$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 			} else {
 				if($("#"+field).html() != "") {
-					$("#"+field+" .listmember-outer:visible:last .listmember").append(", ");
+					//$("#"+field+" .listmember-outer:visible:last .listmember").append(", ");
+					$("#"+field+" .listmember:visible:last").append(", ");
 				}
 					$("#"+field).append(data);
 				}
