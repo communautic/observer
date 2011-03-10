@@ -247,6 +247,31 @@ class DocumentsModel extends ProjectsModel {
 		  	return true;
 		}
    }
+   
+   function restoreDocument($id) {
+		$q = "UPDATE " . CO_TBL_DOCUMENTS_FOLDERS . " set bin = '0' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+		  	return true;
+		}
+	}
+	
+	
+	function deleteDocument($id) {
+		$q = "SELECT id FROM " . CO_TBL_DOCUMENTS . " where did = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+			$fid = $row["id"];
+			$this->deleteFile($fid);
+		}
+
+		$q = "DELETE FROM " . CO_TBL_DOCUMENTS_FOLDERS . " where id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		if ($result) {
+		  	return true;
+		}
+	}
 
 
 	function binDocItem($id) {
@@ -258,6 +283,34 @@ class DocumentsModel extends ProjectsModel {
 		}
 	}
 
+
+	function restoreFile($id) {
+		$q = "UPDATE " . CO_TBL_DOCUMENTS . " set bin = '0' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+		  	return true;
+		}
+	}
+	
+	
+	function deleteFile($id) {
+		$q = "SELECT tempname FROM " . CO_TBL_DOCUMENTS . " where id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$filename = mysql_result($result,0);
+		
+		$file = CO_PATH_DOCUMENTS . "/" . $filename; 
+		
+		if(is_file($file)){
+            @unlink($file);
+        }
+		
+		$q = "DELETE FROM " . CO_TBL_DOCUMENTS . " where id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		if ($result) {
+		  	return true;
+		}
+	}
 
 	function getDocumentsDialog($request,$field,$append,$title,$sql,$id) {
 		global $session;

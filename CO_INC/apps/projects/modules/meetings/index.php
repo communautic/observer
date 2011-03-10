@@ -43,9 +43,6 @@ if (!empty($_GET['request'])) {
 		case 'getDetails':
 			echo($meetings->getDetails($_GET['id']));
 		break;
-		/*case 'getNew':
-			echo($meetings->getNew($_GET['id']));
-		break;*/
 		case 'createNew':
 			echo($meetings->createNew($_GET['id']));
 		break;
@@ -54,6 +51,12 @@ if (!empty($_GET['request'])) {
 		break;
 		case 'binMeeting':
 			echo($meetings->binMeeting($_GET['id']));
+		break;
+		case 'restoreMeeting':
+			echo($meetings->restoreMeeting($_GET['id']));
+		break;
+			case 'deleteMeeting':
+			echo($meetings->deleteMeeting($_GET['id']));
 		break;
 		case 'setOrder':
 			echo($projects->setSortOrder("meeting-sort",$_GET['meetingItem'],$_GET['id']));
@@ -69,6 +72,12 @@ if (!empty($_GET['request'])) {
 		break;
 		case 'deleteTask':
 			echo($meetings->deleteTask($_GET['id']));
+		break;
+		case 'restoreMeetingTask':
+			echo($meetings->restoreMeetingTask($_GET['id']));
+		break;
+			case 'deleteMeetingTask':
+			echo($meetings->deleteMeetingTask($_GET['id']));
 		break;
 		case 'getMeetingStatusDialog':
 			echo($meetings->getMeetingStatusDialog());

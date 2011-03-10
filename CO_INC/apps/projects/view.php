@@ -62,7 +62,8 @@
 			<li class="listPrint"><a href="#" class="actionPrint" title="<?php echo $lang["ACTION_PRINT"];?>"></a></li>
 			<li class="listSend"><a href="#" class="actionSend" title="<?php echo $lang["ACTION_SENDTO"];?>"></a></li>
 			<li class="listDuplicate"><a href="#" class="actionDuplicate" title="<?php echo $lang["ACTION_DUPLICATE"];?>"></a></li>
-			<li class="listBin"><a href="#" class="actionBin" title="<?php echo $lang["ACTION_DELETE"];?>"></a></li>
+			<li class="listProjectHandbook"><a href="#" class="actionProjectHandbook" title="<?php echo $lang["ACTION_PROJECTHANDBOOK"];?>"></a></li>
+            <li class="listBin"><a href="#" class="actionBin" title="<?php echo $lang["ACTION_DELETE"];?>"></a></li>
 		</ul>
 	</div>
 	<div class="center-center" id="projects-right"></div>

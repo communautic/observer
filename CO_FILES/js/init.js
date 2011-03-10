@@ -85,10 +85,36 @@ function processList(list) {
 	return { "name": list, "value": itemlist };
 }
 
+function processListArray(num) {
+	var items = $("#task_team_"+num+" .listmember").size();
+	var itemlist = "";
+	$("#task_team_"+num+" .listmember").each( function(i) {
+		if ( $(this).hasClass("deletefromlist") ) {
+			itemlist += "";
+		} else if ( $(this).hasClass("addtolist") ) {
+			itemlist += $(this).attr("uid") + ",";
+		} else {
+			itemlist += $(this).attr("uid") + ",";
+		}
+		if(items-1 == i) {
+		itemlist = itemlist.slice(0, -1)
+		}
+	})
+	
+	return { "name": "task_team["+num+"]", "value": itemlist };
+}
+
+
 function processCustomText(list) {
 	var text = $("#"+list+" .ct-content").html();
 	text = text.replace(CUSTOM_NOTE+" ","");	
 	return { "name": list, "value": text };
+}
+
+function processCustomTextArray(num) {
+	var text = $("#task_team_"+num+"_ct .ct-content").html();
+	text = text.replace(CUSTOM_NOTE+" ","");	
+	return { "name": "task_team_ct["+num+"]", "value": text };
 }
 
 function processString(list) {
@@ -584,6 +610,16 @@ $(document).ready(function() {
 			return false;
 	});
 
+	$(".insertStringFromDialog").live("click", function() {
+			var field = $(this).attr("rel");
+			var val = $(this).html();
+			$('#'+field).html(val);
+			var obj = getCurrentModule();
+			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+			$("#modalDialog").dialog("close");
+			return false;
+	});
+	
 
 
 

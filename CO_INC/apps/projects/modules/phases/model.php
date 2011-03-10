@@ -175,7 +175,6 @@ class PhasesModel extends ProjectsModel {
 		$array["dependency_exists"] = $this->getDependency($id);
 		$array["projecttitle"] = $this->getProjectTitle($array['pid']);
 		$array["management"] = $this->_contactsmodel->getUserListPlain($this->getProjectField($array['pid'], 'management'));
-		//$array["management_ct"] = empty($array["management_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['management_ct'];
 		$array["team"] = $this->_contactsmodel->getUserList($array['team'],'team');
 		$array["team_ct"] = empty($array["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['team_ct'];
 		$array["documents"] = $this->_documents->getDocListFromIDs($array["documents"],'documents');
@@ -232,6 +231,8 @@ class PhasesModel extends ProjectsModel {
 			$tasks["startdate"] = $this->_date->formatDate($tasks["startdate"],CO_DATE_FORMAT);
 			$tasks["enddate"] = $this->_date->formatDate($tasks["enddate"],CO_DATE_FORMAT);
 			$tasks["donedate"] = $this->_date->formatDate($tasks["donedate"],CO_DATE_FORMAT);
+			$tasks["team"] = $this->_contactsmodel->getUserList($tasks['team'],'team');
+			$tasks["team_ct"] = empty($tasks["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $tasks['team_ct'];
 				
 			$tasks["dependent_title"] = "";
 			if($tasks["dependent"] > 0) {
@@ -253,7 +254,7 @@ class PhasesModel extends ProjectsModel {
 	}
 
 
-	function setDetails($id,$title,$team,$team_ct,$protocol,$documents,$phase_access,$phase_access_orig,$phase_status,$phase_status_date,$task_startdate,$task_enddate,$task_donedate,$task_id,$task_text,$task,$task_cat,$task_dependent) {
+	function setDetails($id,$title,$team,$team_ct,$protocol,$documents,$phase_access,$phase_access_orig,$phase_status,$phase_status_date,$task_startdate,$task_enddate,$task_donedate,$task_id,$task_text,$task,$task_cat,$task_dependent,$task_team,$task_team_ct) {
 		global $session, $system;
 
 		$phase_status_date = $this->_date->formatDate($phase_status_date);
@@ -303,23 +304,32 @@ class PhasesModel extends ProjectsModel {
 			}
 			$start = $this->_date->formatDate($task_startdate[$key]);
 			$end = $this->_date->formatDate($task_enddate[$key]);
+			if(isset($task_team[$key])) {
+				$task_team_i = $this->_contactsmodel->sortUserIDsByName($task_team[$key]);
+			} else {
+				$task_team_i = "";
+			}
+			
+			if(isset($task_team_ct[$key])) {
+				$task_team_ct_i = $task_team_ct[$key];
+			} else {
+				$task_team_ct_i = "";
+			}
 			$donedate = $this->_date->formatDate($task_donedate[$key]);
 			$datearray[]= $start;
 			if($task_enddate[$key] != "") {
 				$datearray[]= $end;
 			}
-				
-				if($task_cat[$key] == 1) {
-					$end = $start;
-				}
+			if($task_cat[$key] == 1) {
+				$end = $start;
+			}
 
-				$q = "UPDATE " . CO_TBL_PHASES_TASKS . " set status = '$checked_items[$key]', donedate='$donedate', dependent = '$task_dependent[$key]', text = '$task_text[$key]', startdate = '$start', enddate = '$end' WHERE id='$task_id[$key]'";
-				$result = mysql_query($q, $this->_db->connection);
+			$q = "UPDATE " . CO_TBL_PHASES_TASKS . " set status = '$checked_items[$key]', donedate='$donedate', dependent = '$task_dependent[$key]', text = '$task_text[$key]', startdate = '$start', enddate = '$end', team = '$task_team_i', team_ct = '$task_team_ct_i' WHERE id='$task_id[$key]'";
+			$result = mysql_query($q, $this->_db->connection);
 		}
 		
 		if (!in_array('0', $checked_items)) {
     		//all tasks done
-			
 		}
 		
 		$startdate =  $this->_date->formatDate(min($datearray),CO_DATE_FORMAT);
@@ -426,10 +436,6 @@ class PhasesModel extends ProjectsModel {
 			return $id_new;
 		}
 	}
-
-	function phaseTest() {
-		echo("success");
-	}
 	
 
    function binPhase($id) {
@@ -438,6 +444,34 @@ class PhasesModel extends ProjectsModel {
 		$result = mysql_query($q, $this->_db->connection);
 		
 		$q = "UPDATE " . CO_TBL_PHASES_TASKS . " set bin = '1' where phaseid='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		if ($result) {
+		  	return true;
+		}
+	}
+	
+	function restorePhase($id) {
+		global $session;
+		$q = "UPDATE " . CO_TBL_PHASES . " set bin = '0', bintime = NOW(), binuser= '$session->uid' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		$q = "UPDATE " . CO_TBL_PHASES_TASKS . " set bin = '0' where phaseid='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		if ($result) {
+		  	return true;
+		}
+	}
+	
+	
+	function deletePhase($id) {
+		global $session;
+		
+		$q = "DELETE FROM " . CO_TBL_PHASES_TASKS . " where phaseid='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		$q = "DELETE FROM " . CO_TBL_PHASES . " where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
@@ -454,6 +488,13 @@ class PhasesModel extends ProjectsModel {
 		  	return true;
 		}
 	}
+	
+	
+	function getPhaseField($id,$field) {
+		$q = "SELECT $field FROM " . CO_TBL_PHASES . " where id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		return mysql_result($result,0);
+	}
 
 
 	function addTask($pid,$phid,$date,$cat) {
@@ -463,12 +504,14 @@ class PhasesModel extends ProjectsModel {
 		switch($cat) {
 			case "1": 
 				$text = $lang["PHASE_MILESTONE_NEW"];
+				$team = "";
 			break;
 			default:
 				$text = $lang["PHASE_TASK_NEW"];
+				$team = $this->getPhaseField($phid,'team');
 		}
 		
-		$q = "INSERT INTO " . CO_TBL_PHASES_TASKS . " set pid='$pid', phaseid='$phid', status = '0', text = '$text', startdate = '$date', enddate = '$date', cat = '$cat'";
+		$q = "INSERT INTO " . CO_TBL_PHASES_TASKS . " set pid='$pid', phaseid='$phid', status = '0', text = '$text', startdate = '$date', enddate = '$date', cat = '$cat', team = '$team'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id = mysql_insert_id();
 		
@@ -483,8 +526,9 @@ class PhasesModel extends ProjectsModel {
 			$tasks["startdate"] = $this->_date->formatDate($tasks["startdate"],CO_DATE_FORMAT);
 			$tasks["enddate"] = $this->_date->formatDate($tasks["enddate"],CO_DATE_FORMAT);
 			$tasks["today"] = $this->_date->formatDate("now",CO_DATE_FORMAT);
-				
 			$tasks["dependent_title"] = "";
+			$tasks["team"] = $this->_contactsmodel->getUserList($tasks['team'],'team');
+			
 			$task[] = new Lists($tasks);
 		}
 		return $task;
@@ -523,5 +567,34 @@ class PhasesModel extends ProjectsModel {
 		}
 	}
 
+	function restorePhaseTask($id) {
+		$q = "UPDATE " . CO_TBL_PHASES_TASKS . " set bin = '0' WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		if($result) {
+			return true;
+		}
+	}
+
+	function deletePhaseTask($id) {
+		global $session;
+		$q = "DELETE FROM " . CO_TBL_PHASES_TASKS . " WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		if($result) {
+			return true;
+		}
+	}
+	
+	function getBin() {
+		
+	}
+	
+function test() {
+		echo "dxasddas";	
+	}
+
 }
+
+$phasesmodel = new PhasesModel();
 ?>

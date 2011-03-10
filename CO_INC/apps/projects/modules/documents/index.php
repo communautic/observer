@@ -38,6 +38,12 @@ if (!empty($_GET['request'])) {
 		case 'binDocument':
 			echo($documents->binDocument($_GET['id']));
 		break;
+		case 'restoreDocument':
+			echo($documents->restoreDocument($_GET['id']));
+		break;
+		case 'deleteDocument':
+			echo($documents->deleteDocument($_GET['id']));
+		break;
 		case 'setOrder':
 			echo($projects->setSortOrder("document-sort",$_GET['documentItem'],$_GET['id']));
 		break;
@@ -55,6 +61,12 @@ if (!empty($_GET['request'])) {
 		break;
 		case 'binDocItem':
 			echo($documents->binDocItem($_GET['id']));
+		break;
+		case 'restoreFile':
+			echo($documents->restoreFile($_GET['id']));
+		break;
+		case 'deleteFile':
+			echo($documents->deleteFile($_GET['id']));
 		break;
 	}
 }

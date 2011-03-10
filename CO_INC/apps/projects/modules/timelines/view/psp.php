@@ -19,7 +19,8 @@
   </tr>
 </table>
 </div>
-<div class="ui-layout-content barchart-scroll">
+<div class="ui-layout-content">
+<div class="scroll-pane">
 <table border="0" cellpadding="0" cellspacing="0" class="table-content no-margin">
 	<tr>
 		<td class="tcell-left text11"><span class="content-nav"><?php echo $lang["PROJECT_TITLE"];?></span></td>
@@ -82,6 +83,7 @@ $width = $numPhases * 170;
     }
 }
 ?>
+</div>
 </div>
 </div>
 <div>

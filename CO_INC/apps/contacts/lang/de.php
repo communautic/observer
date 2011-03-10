@@ -1,13 +1,14 @@
 <?php
 $contacts_name = "Kontakte";
 
-define('CONTACTS_GROUPS', 'Kontaktgruppen');
-define('CONTACTS_CONTACT_LIST', 'Einzelkontakte');
+$lang['CONTACTS_GROUPS'] = 'Gruppen';
+$lang['CONTACTS_GROUPS'] = 'Gruppen';
+$lang['CONTACTS_CONTACT'] = 'Kontakt';
+$lang['CONTACTS_CONTACTS'] = 'Einzelkontakte';
 
-define('CONTACTS_GROUP_STATUS', 'Gruppenstatus:');
-define('CONTACTS_GROUP_TITLE', 'Gruppenname:');
-define('CONTACTS_SINGLE_CONTACTS', 'Einzelkontakte:');
-define('CONTACTS_SYSTEM_GROUP', 'Alle Kontakte');
+$lang['CONTACTS_GROUP_TITLE'] = 'Gruppe';
+$lang['CONTACTS_SINGLE_CONTACTS'] = 'Einzelkontakte';
+$lang['CONTACTS_SYSTEM_GROUP'] = 'Alle Kontakte';
 define('CONTACTS_ADD_CONTACT_TO_GROUP', 'Einzelkontakt integrieren:');
 define('CONTACTS_ADD_GROUP_TO_GROUP', 'Gruppe integrieren:');
 define('CONTACTS_GROUP_MEMBERS', 'Mitglieder:');
@@ -30,11 +31,12 @@ $lang['CONTACTS_TOWN'] = 'Ort';
 $lang['CONTACTS_POSTCODE'] = 'Plz';
 $lang['CONTACTS_COUNTRY'] = 'Land';
 
+$lang['CONTACTS_LANGUAGE'] = 'Sprachplattform';
+$lang['CONTACTS_TIMEZONE'] = 'Zeitzone';
 
 define('CONTACTS_CONTACT_USERNAME', 'Benutzername');
 define('CONTACTS_CONTACT_PASSWORD', 'Passwort');
 define('CONTACTS_CONTACT_GROUPMEMBERSHIP', 'Gruppenmitglied');
-define('CONTACTS_CONTACT_LANGUAGE', 'Sprachplattform');
 
 define('CONTACTS_DIALOG_CONTACTS', 'Kontakte');
 

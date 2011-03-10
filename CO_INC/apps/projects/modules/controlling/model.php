@@ -89,16 +89,13 @@ class ControllingModel extends ProjectsModel {
    function getChart($id, $what, $image = 1) { 
 		switch($what) {
 			case 'stability':
-				$chart = $this->getChart($id, 'realisation');
-				$realisation = $chart["real"];
-
 				$chart = $this->getChart($id, 'timeing');
 				$timeing = $chart["real"];
 				
 				$chart = $this->getChart($id, 'tasks');
 				$tasks = $chart["real"];
 				
-				$chart["real"] = round(($realisation+$timeing+$tasks)/3,0);
+				$chart["real"] = round(($timeing+$tasks)/2,0);
 				$chart["title"] = "Projektstabilit&auml;t aktuell";
 				$chart["img_name"] = "p_" . $id . "_stability.png";
 				$chart["url"] = 'https://chart.googleapis.com/chart?chs=150x90&cht=gm&chd=t:' . $chart["real"];

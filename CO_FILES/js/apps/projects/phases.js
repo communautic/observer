@@ -50,6 +50,19 @@ function phaseFormProcess(formData, form, poformOptions) {
 			} 
 		} 
 	}
+
+	$('.task_team_list').each(function() {
+		var id = $(this).attr("id");
+		var reg = /[0-9]+/.exec(id);
+		formData[formData.length] = processListArray(reg);
+	});
+
+	$('.task_team_list_ct').each(function() {
+		var id = $(this).attr("id");
+		var reg = /[0-9]+/.exec(id);
+		formData[formData.length] = processCustomTextArray(reg);
+	});
+
 	formData[formData.length] = processList('dependency');
 	formData[formData.length] = processList('team');
 	formData[formData.length] = processCustomText('team_ct');
@@ -62,7 +75,8 @@ function phaseFormProcess(formData, form, poformOptions) {
 function phaseFormResponse(data) {
 	switch(data.action) {
 		case "edit":
-			$("#projects3 a.active-link .text").html($("#projects .title").val());
+			//$("#projects3 a.active-link .text").html($("#projects .title").val());
+			$("#projects3 a[rel='"+data.id+"'] .text").html($("#projects .title").val());
 			$("#phasestartdate").html(data.startdate);
 			$("#phaseenddate").html(data.enddate);
 			
@@ -370,6 +384,97 @@ $(document).ready(function() {
 		$("#"+field+"-text").html("");
 		var obj = getCurrentModule();
 		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+		return false;
+	});
+	
+	
+	// Recycle bin functions
+	$(".bin-deletePhase").live('click',function(e) {
+		var id = $(this).attr("rel");
+		var txt = ALERT_DELETE_REALLY;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=deletePhase&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$('#phase_'+id).slideUp();
+						}
+					}
+					});
+				} 
+			}
+		});
+		return false;
+	});
+	
+	$(".bin-restorePhase").live('click',function(e) {
+		var id = $(this).attr("rel");
+		var txt = ALERT_RESTORE;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=restorePhase&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$('#phase_'+id).slideUp();
+						}
+					}
+					});
+				} 
+			}
+		});
+		return false;
+	});
+
+
+	$(".bin-deletePhaseTask").live('click',function(e) {
+		var id = $(this).attr("rel");
+		var txt = ALERT_DELETE_REALLY;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=deletePhaseTask&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$('#phase_task_'+id).slideUp();
+						}
+					}
+					});
+				} 
+			}
+		});
+		return false;
+	});
+	
+	$(".bin-restorePhaseTask").live('click',function(e) {
+		var id = $(this).attr("rel");
+		var txt = ALERT_RESTORE;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=restorePhaseTask&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$('#phase_task_'+id).slideUp();
+						}
+					}
+					});
+				} 
+			}
+		});
 		return false;
 	});
 	

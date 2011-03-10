@@ -1,14 +1,14 @@
 <div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-title">
 	<tr>
-		<td class="tcell-left text11"><span class="content-nav"><?php echo CONTACTS_GROUP_TITLE;?></span></td>
-		<td><input type="text" name="title" class="title textarea-title" value="<?php echo CONTACTS_SYSTEM_GROUP;?>" /></td>
+		<td class="tcell-left text11"><span class="content-nav"><?php echo $lang['CONTACTS_GROUP_TITLE'];?></span></td>
+		<td><input type="text" name="title" class="title textarea-title" value="<?php echo $lang['CONTACTS_SYSTEM_GROUP'];?>" /></td>
 	</tr>
 </table>
 </div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
-    <td valign="top" class="tcell-left text11"><span class="content-nav"><?php echo CONTACTS_SINGLE_CONTACTS;?></span></td>
+    <td valign="top" class="tcell-left text11"><span class="content-nav"><?php echo $lang['CONTACTS_SINGLE_CONTACTS'];?></span></td>
     <td valign="top"><?php echo($group->allcontacts);?>&nbsp;</td>
   </tr>
 </table>

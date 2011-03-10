@@ -100,7 +100,8 @@ function meetingFormProcess(formData, form, poformOptions) {
 function meetingFormResponse(data) {
 	switch(data.action) {
 		case "edit":
-			$("#projects3 a.active-link .text").html($("#projects .meeting_date").val() + ' - ' +$("#projects .title").val());
+			//$("#projects3 a.active-link .text").html($("#projects .meeting_date").val() + ' - ' +$("#projects .title").val());
+			$("#projects3 a[rel='"+data.id+"'] .text").html($("#projects .meeting_date").val() + ' - ' +$("#projects .title").val());
 				switch(data.access) {
 					case "0":
 						$("#projects3 a.active-link .module-access-status").removeClass("module-access-active");
@@ -386,6 +387,99 @@ $(document).ready(function() {
 				}
 				initContentScrollbar();
 			});
+			}
+		});
+		return false;
+	});
+	
+	
+	// Recycle bin functions
+
+
+	$(".bin-deleteMeeting").live('click',function(e) {
+		var id = $(this).attr("rel");
+		var txt = ALERT_DELETE_REALLY;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/meetings&request=deleteMeeting&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$('#meeting_'+id).slideUp();
+						}
+					}
+					});
+				} 
+			}
+		});
+		return false;
+	});
+	
+	$(".bin-restoreMeeting").live('click',function(e) {
+		var id = $(this).attr("rel");
+		var txt = ALERT_RESTORE;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/meetings&request=restoreMeeting&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$('#meeting_'+id).slideUp();
+						}
+					}
+					});
+				} 
+			}
+		});
+		return false;
+	});
+
+	
+	$(".bin-deleteMeetingTask").live('click',function(e) {
+		var id = $(this).attr("rel");
+		var txt = ALERT_DELETE_REALLY;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/meetings&request=deleteMeetingTask&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$('#meeting_task_'+id).slideUp();
+						}
+					}
+					});
+				} 
+			}
+		});
+		return false;
+	});
+	
+	$(".bin-restoreMeetingTask").live('click',function(e) {
+		var id = $(this).attr("rel");
+		var txt = ALERT_RESTORE;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/meetings&request=restoreMeetingTask&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$('#meeting_task_'+id).slideUp();
+						}
+					}
+					});
+				} 
 			}
 		});
 		return false;

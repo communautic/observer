@@ -25,7 +25,6 @@ group.poformOptions = { beforeSubmit: groupFormProcess, dataType:  'json', succe
 
 function initContactsContentScrollbar() {
 	contactsInnerLayout.initContent('center');
-	initScrollbar( '#contacts-right .scrolling-content' );
 }
 
 
@@ -37,7 +36,8 @@ function contactFormProcess(formData, form, poformOptions) {
 	} else {
 		formData[formData.length] = { "name": "lastname", "value": title };
 	}
-	//$("#loading").fadeIn(); 
+	formData[formData.length] = processString('lang');
+	formData[formData.length] = processString('timezone');
 }
 
 
@@ -57,12 +57,7 @@ function contactFormResponse(data) {
 	switch(data.action) {
 		case "edit":
 			var name = $("#contacts .title").val() + ' ' + $("#contacts .title2").val();
-			$("#contacts2 a.active-link .text").html(name);
-			/*$.ajax({ type: "GET", url: "apps/contacts/", data: "request=getContactDetails&id="+data.id, success: function(html){
-					$("#contacts-right").html(html);
-					//$("#loading").fadeOut();
-					}
-				});*/
+			$("#contacts2 a[rel='"+data.id+"'] .text").html(name);
 		break;
 	}
 }
@@ -71,54 +66,26 @@ function contactFormResponse(data) {
 function groupFormResponse(data) {
 	switch(data.action) {
 		case "edit":
-			$("#contacts1 a.active-link .text").html($("#contacts .title").val());
-			//$("#loading").fadeOut();
-			//resetForm();
+			$("#contacts1 a[rel='"+data.id+"'] .text").html($("#contacts .title").val());
 		break;
-		/*case "new":
-			$.ajax({ type: "GET", url: "apps/contacts/", dataType:  'json', data: "request=getGroupList", success: function(list){
-				$("#contacts1 ul:eq(1)").html(list.html);
-				$("#contacts1 li").show();
-				var index = $("#contacts1 .module-click").index($("#contacts1 .module-click[rel='"+data.id+"']"));
-				setModuleActive($("#contacts1"),index);
-				$.ajax({ type: "GET", url: "apps/contacts/", data: "request=getGroupDetails&id="+data.id, success: function(html){
-					$("#"+contacts.name+"-right").html(html);
-					initScrollbar( '#contacts .scrolling-content' );
-					$("#loading").fadeOut();
-					}
-				});
-				contactsActions(1);
-				}
-			});
-			resetForm();
-		break;*/
 	}
 }
 
 
 function newContact() {
 	var id = $('#'+contacts.name+' .module-click:visible').attr("rel");
-	/*$.ajax({ type: "GET", url: "apps/contacts/", data: 'request=newContact&id=' + id,cache: false, success: function(html){
-		$("#"+contacts.name+"-right").html(html);
-		$('#'+contacts.name+'-right .title').focus();
-		contactsActions(2);
-		}
-	});*/
-$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/contacts&request=newContact&id=' + id, cache: false, success: function(data){
-		//var id = $("#projects1 .module-click:visible").attr("rel");
+	$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/contacts&request=newContact&id=' + id, cache: false, success: function(data){
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/contacts&request=getContactList&id="+id, success: function(list){
 				$("#contacts2 ul").html(list.html);
 				var index = $("#contacts2 .module-click").index($("#contacts2 .module-click[rel='"+data.id+"']"));
 				setModuleActive($("#contacts2"),index);
 				$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getContactDetails&id="+data.id, success: function(html){
 					$("#"+contacts.name+"-right").html(html);
-					//initScrollbar( '#projects2 .scrolling-content' );
 					initContactsContentScrollbar()
-					//$("#loading").fadeOut();
+					$('#contacts2 input.filter').quicksearch('#contacts2 li');
 					}
 				});
 				contactsActions(0);
-				//resetForm();
 				}
 			});
 		
@@ -139,8 +106,8 @@ function newGroup() {
 				setModuleActive($("#contacts1"),index);
 				$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getGroupDetails&id="+data.id, success: function(html){
 					$("#"+contacts.name+"-right").html(html);
-					//initScrollbar( '#contacts .scrolling-content' );
-					contactsInnerLayout.initContent('center');
+					initContactsContentScrollbar()
+					$('#contacts1 input.filter').quicksearch('#contacts1 li');
 					}
 				});
 				contactsActions(1);
@@ -173,10 +140,11 @@ function binContact() {
 							$("#contacts2 .module-click:eq(0)").addClass('active-link');
 							$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getContactDetails&id="+id, success: function(html){
 								$("#"+contacts.name+"-right").html(html);
-								initScrollbar( '#contacts .scrolling-content' );
+								initContactsContentScrollbar()
+								$('#contacts2 input.filter').quicksearch('#contacts2 li');
 								}
 							});
-							//$('input#id_search_list').quicksearch('#contacts1 li');
+							
 							contactsActions(0);
 							}
 						});
@@ -205,7 +173,9 @@ function binGroup() {
 							//$("#contacts1 .drag:eq(0)").show();
 							$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getGroupDetails&id="+id, success: function(html){
 								$("#"+contacts.name+"-right").html(html);
-								initScrollbar( '#contacts .scrolling-content' );
+								//initScrollbar( '#contacts .scrolling-content' );
+								initContactsContentScrollbar()
+								$('#contacts1 input.filter').quicksearch('#contacts1 li');
 								}
 							});
 							contactsActions(1);
@@ -250,7 +220,7 @@ function sortClickGroup(obj,sortcur,sortnew) {
 		//$("#contacts1 .drag:eq(0)").show();
 		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getGroupDetails&id="+id, success: function(html){
 			$("#"+contacts.name+"-right").html(html);
-			initScrollbar( '#contacts .scrolling-content' );
+			//initScrollbar( '#contacts .scrolling-content' );
 			}
 		});
 		}
@@ -278,7 +248,7 @@ function sortClickContact(obj,sortcur,sortnew) {
 		  setModuleActive($("#contacts2"),'0');
 		  $.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getContactDetails&id="+id, success: function(html){
 			  $("#"+contacts.name+"-right").html(html);
-			  initScrollbar( '#contacts .scrolling-content' );
+			  //initScrollbar( '#contacts .scrolling-content' );
 			  }
 		  });
 	}
@@ -315,8 +285,8 @@ function contactsloadModuleStart() {
 	$("#contacts2 li").show();
 	$("#contacts2").css("height", h-(contacts.modules_height+96)).removeClass("module-active");
 	$("#contacts2 .module-inner").css("height", h-(contacts.modules_height+96));
-	$("#contacts3").css("height", h-121);
-	$("#contacts3 .contacts3-content").css("height", h-(contacts.modules_height+121));
+	//$("#contacts3").css("height", h-121);
+	//$("#contacts3 .contacts3-content").css("height", h-(contacts.modules_height+121));
 	$("#contacts-current").val("group");
 	//$("#contacts2-groups-outer").hide();
 	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/contacts&request=getGroupList", success: function(data){
@@ -331,9 +301,9 @@ function contactsloadModuleStart() {
 				$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getGroupDetails&id="+id, success: function(html){
 				$("#"+contacts.name+"-right").html(html);
 				contactsInnerLayout.initContent('center');
-				initScrollbar( '#contacts .scrolling-content' );
+				//initScrollbar( '#contacts .scrolling-content' );
 				$('#contacts1 input.filter').quicksearch('#contacts1 li');
-				$("#contacts3 .contacts3-content").hide();
+				//$("#contacts3 .contacts3-content").hide();
 				}
 			});
 
@@ -356,70 +326,6 @@ function contactsresetModuleHeights() {
 		$("#contacts2").css("height", h-(contacts.modules_height+96));
 		$("#contacts2 .module-inner").css("height", h-(contacts.modules_height+96));
 	}
-	$("#contacts3").css("height", h-121);
-	$("#contacts3 .contacts3-content").css("height", h-(contacts.modules_height+121));
-	initScrollbar( '#contacts .scrolling-content' );
-}
-
-function setModule2Height() {
-	var h = $("#contacts .ui-layout-west").height();
-	  $(".contacts3-content").slideUp();
-	  $("#contacts2 li").show();
-	  $("#contacts2 .module-actions").slideDown();
-	  $("#contacts2-outer").slideDown();
-	  $("#contacts2").css("overflow", "auto").removeClass("module-active").animate({height: h-(contacts.modules_height+90)}, function() {
-		  initScrollbar( '#contacts2 .scrolling-content' );
-	  });
-}
-
-function setModule3Height() {
-	var h = $("#contacts .ui-layout-west").height();
-	$("#contacts3").css("height", h-120);
-	  $("#contacts3-outer").slideDown();
-	  $("#contacts3 li").show();
-	  $("#contacts3 .contacts3-content").css("height", h-330).hide();
-	$("#contacts3 .contacts3-content:eq(0)").show();
-	  $("#contacts3-outer").slideDown();
-	  $("#contacts3").css("overflow", "auto").removeClass("module-active").animate({height: h-51}, function() {
-		  initScrollbar( '#contacts2 .scrolling-content' );
-	  });
-
-	
-}
-
-function loadModule1(id) {
-	var index = $("#contacts1 .module-click").index($("#contacts1 .module-click[rel='"+id+"']"));
-	$("#contacts1 li:eq("+index+")").fadeIn();
-	$("#contacts1 li:not(:eq("+index+"))").hide();
-	$("#contacts1 .module-actions").slideUp();
-	$("#contacts1").css("overflow", "hidden").animate({height: module_title_height}, function() {
-		$(this).addClass("module-active");
-		initScrollbar( '#contacts1 .scrolling-content' );									  
-	 });
-	$.ajax({ type: "GET", url: "contacts/contacts_l.php", data: "id="+id, success: function(html){
-			$("#contacts2 ul").html(html);
-
-		}
-	});
-}
-
-function loadModule2(id) {
-	var index = $("#contacts2 .module-click").index($("#contacts2 .module-click[rel='"+id+"']"));
-	$("#contacts2 li:eq("+index+")").fadeIn();
-	$("#contacts2 li:not(:eq("+index+"))").hide();
-	
-	$("#contacts2-outer").slideDown();
-	$("#contacts2 .module-inner").show();
-	$("#contacts2 .module-actions").slideUp();
-	$("#contacts2").css("overflow", "hidden").animate({height: module_title_height}, function() {
-		$(this).addClass("module-active");
-		initScrollbar( '#contacts2 .scrolling-content' );									  
-	 });
-	//setModule3Height();
-	// get module id
-	var module1_id = 8;
-	loadModule1(module1_id);
-
 }
 
 
@@ -442,8 +348,8 @@ $(document).ready(function() {
 	});
 	
 	contactsInnerLayout = $('#contacts div.ui-layout-center').layout({
-			center__onresize:				function() { initScrollbar( '#contacts .scrolling-content' ); }
-		,	resizeWhileDragging:		false
+		//	center__onresize:				function() { initScrollbar( '#contacts .scrolling-content' ); },
+			resizeWhileDragging:		false
 		,	spacing_open:				0			// cosmetic spacing
 		,	closable: 				false
 		,	resizable: 				false
@@ -478,7 +384,7 @@ $(document).ready(function() {
 				} else {
 					contactsActions(1);
 				}
-				initScrollbar( '#contacts .scrolling-content' );
+				//initScrollbar( '#contacts .scrolling-content' );
 				$('#contacts1 input.filter').quicksearch('#contacts1 li');
 				var id = $("#contacts1 .module-click:eq(0)").attr("rel");
 				$("#contacts1 .module-click:eq(0)").addClass('active-link');
@@ -510,16 +416,16 @@ $(document).ready(function() {
 					setModuleActive($("#contacts1"),index);
 					$("#contacts1").css("overflow", "auto").animate({height: h-71}, function() {
 						$("#"+contacts.name+"-right").html(html);
-						initScrollbar( '#contacts .scrolling-content' );
+						//initScrollbar( '#contacts .scrolling-content' );
 						$("#contacts-current").val("group");
 						contactsActions(0);
 						setModuleDeactive($("#contacts2"),'0');
-						setModuleDeactive($("#contacts3"),'0');
+						//setModuleDeactive($("#contacts3"),'0');
 						$("#contacts2 li").show();
 						$("#contacts2").css("height", h-(contacts.modules_height+96)).removeClass("module-active");
 						$("#contacts2").prev("h3").removeClass("white");
 						$("#contacts2 .module-inner").css("height", h-(contacts.modules_height+90));
-						$("#contacts3 .contacts3-content:visible").slideUp();
+						//$("#contacts3 .contacts3-content:visible").slideUp();
 					});
 					}
 				 });
@@ -545,35 +451,9 @@ $(document).ready(function() {
 		}
 		
 		if($(this).hasClass("module-bg-active")) {
-			/*var id = $("#contacts1 .module-click:visible").attr("rel");
-			var contactid = $("#contacts2 .module-click:eq(0)").attr("rel");
-			if(contactid == undefined) {
-				return false;
-			}
-			var index = $("#contacts1 .module-click").index($("#contacts1 .module-click[rel='"+id+"']"));
-			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/contacts&request=getContactList&id="+id, success: function(html){
-				$("#contacts2 ul").html(html);
-				if(data.html == "<li></li>") {
-					contactsActions(3);
-				} else {
-					contactsActions(1);
-					setModuleActive($("#contacts2"),index);
-				}
-				
-				$("#contacts2 .module-click:eq(0)").addClass('active-link');
-				$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getContactDetails&id="+contactid, success: function(html){
-					$("#"+contacts.name+"-right").html(html);
-					
-					}
-				});
-				}
-			});*/
-			
 			$("#contacts1-outer > h3").trigger("click");
-			
 		} else {
 			if($("#contacts2").height() == module_title_height) {
-				
 				var h = $("#contacts .ui-layout-west").height();
 				var id = $("#contacts1 .module-click:visible").attr("rel");
 				var contactid = $("#contacts2 .module-click:eq(0)").attr("rel");
@@ -585,11 +465,11 @@ $(document).ready(function() {
 					$("#contacts2 li").show();
 					setModuleActive($("#contacts2"),index);
 					$("#contacts2").css("overflow", "auto").animate({height: h-(contacts.modules_height+90)}, function() {
-						initScrollbar( '#contacts .scrolling-content' );
+						//initScrollbar( '#contacts .scrolling-content' );
 						initContactsContentScrollbar()
-						$("#contacts3 h3").removeClass("module-bg-active");
+						//$("#contacts3 h3").removeClass("module-bg-active");
 					});
-					$(".contacts3-content").slideUp();
+					//$(".contacts3-content").slideUp();
 				}
 				});
 			} else {
@@ -604,6 +484,7 @@ $(document).ready(function() {
 						} else {
 							contactsActions(1);
 						}
+						$('#contacts2 input.filter').quicksearch('#contacts2 li');
 						var contactid = $("#contacts2 .module-click:eq(0)").attr("rel");
 						$("#contacts-top .top-headline").html($("#contacts1 a.module-click:visible").find(".text").html());
 						$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getContactDetails&id="+contactid, success: function(html){
@@ -612,7 +493,6 @@ $(document).ready(function() {
 								setModuleActive($("#contacts2"),0)
 								setModuleDeactive($("#contacts1"),index);
 								$("#contacts1").css("overflow", "hidden").animate({height: module_title_height}, function() {
-									initScrollbar( '#contacts .scrolling-content' );
 									initContactsContentScrollbar()
 								});
 							}
@@ -665,6 +545,13 @@ $(document).ready(function() {
 		if($(this).hasClass("deactivated")) {
 			return false;
 		}
+		
+		if(confirmNavigation()) {
+			formChanged = false;
+			var obj = getCurrentModule();
+			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+		}
+		
 		var fid = $("#contacts .module-click:visible").attr("rel");
 		var id = $(this).attr("rel");
 		var index = $("#contacts a.module-click").index(this);
@@ -686,7 +573,7 @@ $(document).ready(function() {
 		return false;
 	});
   
-  $("a.loadModule1").click(function() {
+  /*$("a.loadModule1").click(function() {
 		if($("#contacts").is(":hidden")) {
 			var appdeactivate = $("div.app:visible").attr("id");
 			$('#contacts').slideToggle();
@@ -697,14 +584,14 @@ $(document).ready(function() {
 		loadModule1(id);
 		setModule2Height();
 		return false;
-	});
+	});*/
   
-    $(".loadModule2").click(function() {
+    /*$(".loadModule2").click(function() {
 		var id = $(this).attr("rel");
 		loadModule2(id);
 		setModule3Height();
 		return false;
-	});
+	});*/
 		
 	// ************************
 	// Contact Dialog Functions
@@ -851,7 +738,102 @@ $(document).ready(function() {
 				$("#contacts1-outer > h3").trigger('click', [id]);
 			
 		});
+		
+		
+		
+	// Recycle bin functions
+	$(".bin-deleteGroup").live('click',function(e) {
+		var id = $(this).attr("rel");
+		var txt = ALERT_DELETE_REALLY;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=deleteGroup&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$('#group_'+id).slideUp();
+						}
+					}
+					});
+				} 
+			}
+		});
+	
+		return false;
+	});
+	
+	$(".bin-restoreGroup").live('click',function(e) {
+		var id = $(this).attr("rel");
+		var txt = ALERT_RESTORE;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=restoreGroup&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$('#group_'+id).slideUp();
+						}
+					}
+					});
+				} 
+			}
+		});
+	
+		return false;
+	});
 
+
+	$(".bin-deleteContact").live('click',function(e) {
+		var id = $(this).attr("rel");
+		var txt = ALERT_DELETE_REALLY;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=deleteContact&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$('#contact_'+id).slideUp();
+						}
+					}
+					});
+				} 
+			}
+		});
+	
+		return false;
+	});
+	
+	$(".bin-restoreContact").live('click',function(e) {
+		var id = $(this).attr("rel");
+		var txt = ALERT_RESTORE;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=restoreContact&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$('#contact_'+id).slideUp();
+						}
+					}
+					});
+				} 
+			}
+		});
+	
+		return false;
+	});
 
 
 });

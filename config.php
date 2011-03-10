@@ -26,6 +26,7 @@ define("CO_PATH_URL"	, 		"http://dev.companyobserver.com" 			);
 
 /* Default Language */
 define("CO_DEFAULT_LANGUAGE"	, 			"de" );
+define("CO_DEFAULT_TIMEZONE"	, 			"Europe/Vienna" );
 
 define("CO_PATH_DOCUMENTS"	, CO_PATH_BASE . "/data/documents/");
 define("CO_PATH_CHARTS"	, CO_PATH_BASE . "/data/charts/");

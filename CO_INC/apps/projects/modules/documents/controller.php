@@ -80,6 +80,26 @@ class Documents {
 	}
 
 
+	function restoreDocument($id) {
+		$retval = $this->model->restoreDocument($id);
+		if($retval){
+			return "true";
+		} else{
+			return "error";
+		}
+	}
+
+
+	function deleteDocument($id) {
+		$retval = $this->model->deleteDocument($id);
+		if($retval){
+			return "true";
+		} else{
+			return "error";
+		}
+	}
+
+
 	function getDocumentsDialog($request,$field,$append,$title,$sql,$id) {
 		$list = $this->model->getDocumentsDialog($request,$field,$append,$title,$sql,$id);
 		include 'view/dialog.php';
@@ -103,6 +123,24 @@ class Documents {
 
 	function binDocItem($id) {
 		$retval = $this->model->binDocItem($id);
+		if($retval){
+			return "true";
+		} else{
+			return "error";
+		}
+	}
+	
+	function restoreFile($id) {
+		$retval = $this->model->restoreFile($id);
+		if($retval){
+			return "true";
+		} else{
+			return "error";
+		}
+	}
+	
+	function deleteFile($id) {
+		$retval = $this->model->deleteFile($id);
 		if($retval){
 			return "true";
 		} else{

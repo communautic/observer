@@ -35,8 +35,8 @@ class Phases {
 		}
 	}
 	
-	function setDetails($id,$title,$team,$team_ct,$protocol,$documents,$phase_access,$phase_access_orig,$phase_status,$phase_status_date,$task_startdate,$task_enddate,$task_donedate,$task_id,$task_text,$task,$task_cat,$task_dependent) {
-		if($arr = $this->model->setDetails($id,$title,$team,$team_ct,$protocol,$documents,$phase_access,$phase_access_orig,$phase_status,$phase_status_date,$task_startdate,$task_enddate,$task_donedate,$task_id,$task_text,$task,$task_cat,$task_dependent)){
+	function setDetails($id,$title,$team,$team_ct,$protocol,$documents,$phase_access,$phase_access_orig,$phase_status,$phase_status_date,$task_startdate,$task_enddate,$task_donedate,$task_id,$task_text,$task,$task_cat,$task_dependent,$task_team,$task_team_ct) {
+		if($arr = $this->model->setDetails($id,$title,$team,$team_ct,$protocol,$documents,$phase_access,$phase_access_orig,$phase_status,$phase_status_date,$task_startdate,$task_enddate,$task_donedate,$task_id,$task_text,$task,$task_cat,$task_dependent,$task_team,$task_team_ct)){
 			 return '{ "action": "edit" , "id": "' . $arr["id"] . '", "access": "' . $phase_access . '", "status": "' . $phase_status . '", "startdate": "' . $arr["startdate"] . '", "enddate": "' . $arr["enddate"] . '"}';
 		  } else{
 			 return "error";
@@ -72,6 +72,23 @@ class Phases {
 		  }
 	}
 
+	function restorePhase($id) {
+		$retval = $this->model->restorePhase($id);
+		if($retval){
+			return "true";
+		} else{
+			return "error";
+		}
+	}
+
+	function deletePhase($id) {
+		$retval = $this->model->deletePhase($id);
+		if($retval){
+			return "true";
+		} else{
+			return "error";
+		}
+	}
 
 	function toggleIntern($id,$status) {
 		$retval = $this->model->toggleIntern($id,$status);
@@ -125,12 +142,32 @@ class Phases {
 			return "error";
 		}
 	}
-
+	
+	
+	function deletePhaseTask($id) {
+		$retval = $this->model->deletePhaseTask($id);
+		if($retval){
+			return "true";
+		} else{
+			return "error";
+		}
+	}
+	
+	function restorePhaseTask($id) {
+		$retval = $this->model->restorePhaseTask($id);
+		if($retval){
+			return "true";
+		} else{
+			return "error";
+		}
+	}
 
 	function getPhaseStatusDialog() {
 		global $lang;
 		include 'view/dialog_status.php';
 	}
+	
+
 	
 }
 

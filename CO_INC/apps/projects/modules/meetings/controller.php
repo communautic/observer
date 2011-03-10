@@ -78,6 +78,23 @@ class Meetings {
 		  }
 	}
 
+	function restoreMeeting($id) {
+		$retval = $this->model->restoreMeeting($id);
+		if($retval){
+			 return "true";
+		  } else{
+			 return "error";
+		  }
+	}
+	
+	function deleteMeeting($id) {
+		$retval = $this->model->deleteMeeting($id);
+		if($retval){
+			 return "true";
+		  } else{
+			 return "error";
+		  }
+	}
 
 	function toggleIntern($id,$status) {
 		$retval = $this->model->toggleIntern($id,$status);
@@ -103,6 +120,24 @@ class Meetings {
 
 	function deleteTask($id) {
 		$retval = $this->model->deleteTask($id);
+		if($retval){
+			return "true";
+		} else{
+			return "error";
+		}
+	}
+	
+	function restoreMeetingTask($id) {
+		$retval = $this->model->restoreMeetingTask($id);
+		if($retval){
+			return "true";
+		} else{
+			return "error";
+		}
+	}
+	
+	function deleteMeetingTask($id) {
+		$retval = $this->model->deleteMeetingTask($id);
 		if($retval){
 			return "true";
 		} else{

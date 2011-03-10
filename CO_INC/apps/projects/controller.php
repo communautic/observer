@@ -4,6 +4,7 @@
 
 class Projects extends Controller {
 	
+	//$modules;
 	// get all available apps
 	function __construct($name) {
 			//parent::__construct();
@@ -14,7 +15,7 @@ class Projects extends Controller {
 			$this->num_modules = sizeof((array)$this->modules);
 			$this->binDisplay = true;
 	}
-	
+
 	function getFolderList($sort) {
 		global $system;
 		$arr = $this->model->getFolderList($sort);
@@ -84,6 +85,24 @@ class Projects extends Controller {
 	
 	function binFolder($id) {
 		$retval = $this->model->binFolder($id);
+		if($retval){
+			 return "true";
+		  } else{
+			 return "error";
+		  }
+	}
+	
+	function restoreFolder($id) {
+		$retval = $this->model->restoreFolder($id);
+		if($retval){
+			 return "true";
+		  } else{
+			 return "error";
+		  }
+	}
+	
+	function deleteFolder($id) {
+		$retval = $this->model->deleteFolder($id);
 		if($retval){
 			 return "true";
 		  } else{
@@ -169,24 +188,6 @@ class Projects extends Controller {
 		  }
 	}
 	
-	/*function newProject($id,$title,$startdate,$enddate,$management,$management_ct,$team,$team_ct,$protocol,$projectfolder,$status,$status_date) {
-		$retval = $this->model->newProject($id,$title,$startdate,$enddate,$management,$management_ct,$team,$team_ct,$protocol,$projectfolder,$status,$status_date);
-		if($retval){
-			 return '{ "action": "new", "id": "' . $retval . '" }';
-		  } else{
-			 return "error";
-		  }
-	}*/
-	
-	/*function newProject($id,$title,$startdate,$enddate,$management,$team,$ordered_by,$ordered_on,$project_partner,$protocol,$projectstatus,$planned_date,$inprogress_date,$finished_date) {
-		$retval = $this->model->newProject($id,$title,$startdate,$enddate,$management,$team,$ordered_by,$ordered_on,$project_partner,$protocol,$projectstatus,$planned_date,$inprogress_date,$finished_date);
-		if($retval){
-			 return '{ "action": "new", "id": "' . $retval . '" }';
-		  } else{
-			 return "error";
-		  }
-	}*/
-	
 	
 	function setProjectDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$projectfolder,$status,$status_date) {
 		$retval = $this->model->setProjectDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$projectfolder,$status,$status_date);
@@ -206,6 +207,23 @@ class Projects extends Controller {
 		  }
 	}
 	
+	function restoreProject($id) {
+		$retval = $this->model->restoreProject($id);
+		if($retval){
+			 return "true";
+		  } else{
+			 return "error";
+		  }
+	}	
+
+	function deleteProject($id) {
+		$retval = $this->model->deleteProject($id);
+		if($retval){
+			 return "true";
+		  } else{
+			 return "error";
+		  }
+	}	
 	
 	//function moveProject($id,$title,$startdate,$enddate,$management,$management_ct,$team,$team_ct,$protocol,$projectfolder,$status,$status_date,$movedays) {
 	function moveProject($id,$startdate,$movedays) {
@@ -245,17 +263,20 @@ class Projects extends Controller {
 			include CO_INC .'/view/default.php';
 		}
 	}
-
+	
 
 	function getBin() {
-		global $lang;
+		global $lang, $projects;
 		if($arr = $this->model->getBin()) {
 			$bin = $arr["bin"];
-			$folders = $arr["folders"];
+			/*$folders = $arr["folders"];
 			$projects = $arr["projects"];
-			//$phases = $arr["phases"];
-			
-			
+			$phases = $arr["phases"];
+			$tasks = $arr["tasks"];
+			$meetings = $arr["meetings"];
+			$meetings_tasks = $arr["meetings_tasks"];
+			$documents_folders = $arr["documents_folders"];
+			$files = $arr["files"];*/
 			include 'view/bin.php';
 		}
 		else {

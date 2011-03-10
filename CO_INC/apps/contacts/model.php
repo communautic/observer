@@ -166,6 +166,22 @@ class ContactsModel extends Model {
 		}
    }
 
+   function restoreGroup($id) {
+		$q = "UPDATE " . CO_CONTACTS_TBL_GROUPS . " set bin = '0' WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+		  	return true;
+		}
+   }
+   
+   
+    function deleteGroup($id) {
+		$q = "DELETE FROM " . CO_CONTACTS_TBL_GROUPS . " WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+		  	return true;
+		}
+   }
 
   /**
    * get number of contacts for a contact group
@@ -197,7 +213,7 @@ class ContactsModel extends Model {
 		// check if user is available and build array
 		$i = 0;
 		foreach ($users_string as &$value) {
-			$q = "SELECT id FROM ".CO_TBL_USERS." where id = '$value'";
+			$q = "SELECT id FROM ".CO_TBL_USERS." where id = '$value' and bin='0'";
 			$result_user = mysql_query($q, $this->_db->connection);
 			if(mysql_num_rows($result_user) > 0) {
 				$i++;
@@ -319,7 +335,7 @@ class ContactsModel extends Model {
 	 function getGroupsByUser($id) {
 		 	global $session;
 			$groups = '';
-			$q = "SELECT * FROM " . CO_CONTACTS_TBL_GROUPS . " where members REGEXP '[[:<:]]".$id."[[:>:]]'";
+			$q = "SELECT * FROM " . CO_CONTACTS_TBL_GROUPS . " where bin='0' and members REGEXP '[[:<:]]".$id."[[:>:]]'";
 			$result = mysql_query($q, $this->_db->connection);
 			$rows = mysql_num_rows($result);
 			$i = 1;
@@ -374,34 +390,25 @@ class ContactsModel extends Model {
    /**
    * get details for the contact group
    */
-   function setContactDetails($id, $lastname, $firstname, $title, $company, $position, $email, $phone1, $phone2, $fax, $address_line1, $address_line2, $address_town, $address_postcode, $address_country, $lang) {
+   function setContactDetails($id, $lastname, $firstname, $title, $company, $position, $email, $phone1, $phone2, $fax, $address_line1, $address_line2, $address_town, $address_postcode, $address_country, $lang,$timezone) {
 		global $session;
 		$now = gmdate("Y-m-d H:i:s");
 		
-		$q = "UPDATE " . CO_TBL_USERS . " set lastname = '$lastname', firstname = '$firstname', title = '$title', company = '$company', position = '$position', email = '$email', phone1 = '$phone1', phone2 = '$phone2', fax = '$fax', address_line1 = '$address_line1', address_line2 = '$address_line2', address_town = '$address_town', address_postcode = '$address_postcode', address_country = '$address_country', lang = '$lang', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_USERS . " set lastname = '$lastname', firstname = '$firstname', title = '$title', company = '$company', position = '$position', email = '$email', phone1 = '$phone1', phone2 = '$phone2', fax = '$fax', address_line1 = '$address_line1', address_line2 = '$address_line2', address_town = '$address_town', address_postcode = '$address_postcode', address_country = '$address_country', lang = '$lang', timezone = '$timezone', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			return true;
 		}
    }
-
-   /*function getContactNew($id) {
-		// get user perms
-		$array["contactgroup"] = $this->getContactGroupDetails($id,"contactgroup");
-		$array["today"] = $this->_date->formatDate(date("Y-m-d"),CO_DATE_FORMAT);
-		
-		$contact = new Contact($array);
-		return $contact;
-   }*/
    
-	 
+   
    function newContact() {
 		global $session;
 		
 		$now = gmdate("Y-m-d H:i:s");
 		
-		$q = "INSERT INTO " . CO_TBL_USERS . " set lastname = 'Neuer Kontakt', lang = 'de', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+		$q = "INSERT INTO " . CO_TBL_USERS . " set lastname = 'Neuer Kontakt', lang = '" . CO_DEFAULT_LANGUAGE . "', timezone = '" . CO_DEFAULT_TIMEZONE . "', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 		  	$id = mysql_insert_id();
@@ -419,8 +426,26 @@ class ContactsModel extends Model {
 		  	return true;
 		}
 	}
-   
-   
+
+	function restoreContact($id) {
+		$q = "UPDATE " . CO_TBL_USERS . " set bin = '0' WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+		  	return true;
+		}
+	}
+	
+	function deleteContact($id) {
+		$q = "DELETE FROM " . CO_TBL_USER_SETTINGS . " WHERE uid='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		$q = "DELETE FROM " . CO_TBL_USERS . " WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+		  	return true;
+		}
+	}
+	
    function getContactsDialog($request,$field,$append,$title,$sql) {
 		global $session;
 		
@@ -482,7 +507,7 @@ class ContactsModel extends Model {
 		// check if user is available and build array
 		$users_arr = array();
 		foreach ($users_string as &$value) {
-			$q = "SELECT id, firstname, lastname FROM ".CO_TBL_USERS." where id = '$value'";
+			$q = "SELECT id, firstname, lastname FROM ".CO_TBL_USERS." where id = '$value' and bin='0'";
 			$result_user = mysql_query($q, $this->_db->connection);
 			if(mysql_num_rows($result_user) > 0) {
 				while($row_user = mysql_fetch_assoc($result_user)) {
@@ -630,39 +655,40 @@ function getUserListPlain($string){
 			return $system->json_encode($rows);
    }
    
-	/*function getPhaseDetails($id,$num) {
-		global $session;
-		$q = "SELECT * FROM " . CO_TBL_PHASES . " where id = '$id'";
+   
+   
+      function getBin() {
+	   	
+		$bin = array();
+		$bin["datetime"] = $this->_date->formatDate("now",CO_DATETIME_FORMAT);
+	  	
+		$groups = "";
+		$q ="select id, title, bin, bintime, binuser from " . CO_CONTACTS_TBL_GROUPS . " WHERE bin='1' and id!='0'";
 		$result = mysql_query($q, $this->_db->connection);
-		$row = mysql_fetch_array($result);
-		foreach($row as $key => $val) {
-				$array[$key] = $val;
+	  	while ($row = mysql_fetch_array($result)) {
+			foreach($row as $key => $val) {
+				$group[$key] = $val;
 			}
+			$group["bintime"] = $this->_date->formatDate($group["bintime"],CO_DATETIME_FORMAT);
+			$group["binuser"] = $this->_users->getUserFullname($group["binuser"]);
+			$groups[] = new Lists($group);
+	  	}
 		
-		// dates
-		$array["startdate"] = $this->_date->formatDate($array["startdate"],CO_DATE_FORMAT);
-		$array["enddate"] = $this->_date->formatDate($array["enddate"],CO_DATE_FORMAT);
-		$array["planned_date"] = $this->_date->formatDate($array["planned_date"],CO_DATE_FORMAT);
-		$array["inprogress_date"] = $this->_date->formatDate($array["inprogress_date"],CO_DATE_FORMAT);
-		$array["finished_date"] = $this->_date->formatDate($array["finished_date"],CO_DATE_FORMAT);
-		$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
-		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
+		$contacts = "";
+		$q ="select id, firstname, lastname, bin, bintime, binuser from " . CO_TBL_USERS . " WHERE bin='1'";
+		$result = mysql_query($q, $this->_db->connection);
+	  	while ($row = mysql_fetch_array($result)) {
+			foreach($row as $key => $val) {
+				$contact[$key] = $val;
+			}
+			$contact["bintime"] = $this->_date->formatDate($contact["bintime"],CO_DATETIME_FORMAT);
+			$contact["binuser"] = $this->_users->getUserFullname($contact["binuser"]);
+			$contacts[] = new Lists($contact);
+	  	}
 		
-		// other functions
-		$array["management"] = $this->_users->getUsersDetails($array['management'],'management');
-		$array["team"] = $this->_users->getUsersDetails($array['team'],'team');
-		$array["documents"] = $this->getRelatedDocuments('0:'.$id);
-		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
-		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
-		$array["current_user"] = $session->uid;
-		$array["num"] = $num;
-		
-		// get user perms
-		$array["edit"] = "1";
-		
-		$phase = new Contact($array);
-		return $phase;
-   }*/
+		$arr = array("bin" => $bin, "groups" => $groups, "contacts" => $contacts);
+		return $arr;
+   }
 	
 }
 

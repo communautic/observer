@@ -204,7 +204,7 @@ class TimelinesModel extends ProjectsModel {
 			$project["days"] = $this->_date->dateDiff($row->startdate,$row->enddate);
 			$project["datetime"] = $this->_date->formatDate("now",CO_DATETIME_FORMAT);
 			$project["css_width"] = ($project["days"]+1) * $width;
-			$project["css_height"] = 41; // pixel add at bottom
+			$project["css_height"] = 23; // pixel add at bottom
 			$wday = $this->_date->formatDate($row->startdate,"w");
 			if($wday != 1) {
 				$project["bg_image_shift"] = -($wday-1)*$width;

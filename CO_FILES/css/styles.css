@@ -177,7 +177,7 @@ li.ui-state-highlight { height: 13px; margin: 0 0 5px 0;}
 					overflow-y: auto;
 				}
 
-.scroll-pane { width: 100%; height: 100%; overflow: auto; }
+.scroll-pane { width: 100%; height: 100%; overflow: auto; position: relative; }
 
 
 #menu { position:absolute; bottom:-55px; left: 0; right: 0; z-index: 1; height: 30px; background-color:#666; width: 100%; font-size: 13px; color: #333;}
@@ -224,6 +224,11 @@ ul.actionconsole { margin: 0 11px 0 11px;  }
 .actionconsole a.actionDuplicate { display: block; height: 30px; background: url(../img/apps_buttons_sprite.png) no-repeat;}
 .actionconsole a.actionDuplicate:hover { background: url(../img/apps_buttons_sprite.png) no-repeat;}
 .actionconsole a.actionDuplicate.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: default; }
+
+.actionconsole li.listProjectHandbook { display: block; height: 37px; margin-bottom: 15px; }
+.actionconsole a.actionProjectHandbook { display: block; height: 37px; background: url(../img/apps_buttons_sprite.png) no-repeat;}
+.actionconsole a.actionProjectHandbook:hover { background: url(../img/apps_buttons_sprite.png) no-repeat;}
+.actionconsole a.actionProjectHandbook.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: default; }
 
 .actionconsole li.listExport { display: block; height: 30px; margin-bottom: 22px; }
 .actionconsole a.actionExport { display: block; height: 30px; background: url(../img/apps_buttons_sprite.png) no-repeat;}
