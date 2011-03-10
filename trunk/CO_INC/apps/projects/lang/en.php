@@ -1,30 +1,44 @@
 <?php
+// App name
 $projects_name = "Projects";
 
 // Left
-define('PROJECT_FOLDER', 'Project Folder');
-define('PROJECT_PROJECT', 'Projects');
+$lang["PROJECT_FOLDER"] = 'Folder';
+$lang["PROJECT_FOLDER_NEW"] = 'New Folder';
+$lang["PROJECT_PROJECTS"] = 'Projects';
+$lang["PROJECT_NEW"] = 'New Project';
 
 // Folder Right
-define('PROJECT_FOLDER_TITLE', 'Project Folder/Title:');
-define('PROJECT_FOLDER_PROJECTS_CREATED', 'Projects/total:');
-define('PROJECT_FOLDER_PROJECTS_RUNNING', 'Projects/activ:');
-define('PROJECT_FOLDER_PROJECTS_FINISHED', 'Projects/finished:');
-define('PROJECT_FOLDER_STATUS_TITLE', 'Status:');
-define('PROJECT_FOLDER_STATUS_ACTIVE', 'aktiv');
-define('PROJECT_FOLDER_STATUS_ARCHIVE', 'archive');
+$lang["PROJECT_FOLDER_PROJECTS_CREATED"] = 'Projects total';
+$lang["PROJECT_FOLDER_PROJECTS_PLANNED"] = 'Projects planned';
+$lang["PROJECT_FOLDER_PROJECTS_RUNNING"] = 'Projects in progress';
+$lang["PROJECT_FOLDER_PROJECTS_FINISHED"] = 'Projects finished';
+$lang["PROJECT_FOLDER_STATUS_ACTIVE"] = 'activ';
+$lang["PROJECT_FOLDER_STATUS_ARCHIVE"] = 'archive';
+
+$lang["PROJECT_FOLDER_CHART_STABILITY"] = 'current Project stability';
+$lang["PROJECT_FOLDER_CHART_REALISATION"] = 'Realisation';
+$lang["PROJECT_FOLDER_CHART_ADHERANCE"] = 'Adherance to schedules';
+$lang["PROJECT_FOLDER_CHART_TASKS"] = 'Tasks on time';
 
 // Project Right
-define('PROJECT_TITLE', 'Project Title:');
-define('PROJECT_START', 'Start:');
-define('PROJECT_END', 'End:');
-define('PROJECT_MANAGEMENT', 'Management:');
-define('PROJECT_TEAM', 'Team:');
-define('PROJECT_DESCRIPTION', 'Description:');
-define('PROJECT_FOLDER_RIGHT', 'Project folder:');
-define('PROJECT_STATUS', 'Status:');
-define('PROJECT_STATUS_PLANNED', 'planned');
-define('PROJECT_STATUS_INPROGRESS', 'in progress');
-define('PROJECT_STATUS_FINISHED', 'finished');
+$lang["PROJECT_TITLE"] = 'Project';
+$lang['PROJECT_KICKOFF'] = 'Kick Off';
 
+$lang["PROJECT_CLIENT"] = 'Commissioner';
+$lang["PROJECT_MANAGEMENT"] = 'Project Management';
+$lang["PROJECT_TEAM"] = 'Project Team';
+$lang["PROJECT_DESCRIPTION"] = 'Description';
+
+$lang["PROJECT_STATUS_PLANNED"] = 'plannend since';
+$lang["PROJECT_STATUS_INPROGRESS"] = 'in progress since';
+$lang["PROJECT_STATUS_FINISHED"] = 'finished on';
+$lang["PROJECT_PHASES"] = 'Phases';
+$lang["PROJECT_MEETINGS"] = 'Meetings';
+
+// check for custom lang file
+$custom_lang = CO_PATH_BASE . "/lang/projects/en.php";
+if(file_exists($custom_lang)) {
+	include_once($custom_lang);
+}
 ?>

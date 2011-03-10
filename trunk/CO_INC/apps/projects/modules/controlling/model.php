@@ -87,6 +87,7 @@ class ControllingModel extends ProjectsModel {
    
    
    function getChart($id, $what, $image = 1) { 
+		global $lang;
 		switch($what) {
 			case 'stability':
 				$chart = $this->getChart($id, 'timeing');
@@ -96,7 +97,7 @@ class ControllingModel extends ProjectsModel {
 				$tasks = $chart["real"];
 				
 				$chart["real"] = round(($timeing+$tasks)/2,0);
-				$chart["title"] = "Projektstabilit&auml;t aktuell";
+				$chart["title"] = $lang["CONTROLLING_STABILITY"];
 				$chart["img_name"] = "p_" . $id . "_stability.png";
 				$chart["url"] = 'https://chart.googleapis.com/chart?chs=150x90&cht=gm&chd=t:' . $chart["real"];
 				
@@ -129,8 +130,8 @@ class ControllingModel extends ProjectsModel {
 				}
 				
 				$chart["rest"] = $this->getRest($chart["real"]);
-				$chart["title"] = "Realisierungsgrad";
-				$chart["img_name"] = "p_" . $id . "_realisierungsgrad.png";
+				$chart["title"] = $lang["CONTROLLING_REALISATION"];
+				$chart["img_name"] = "p_" . $id . "_realisation.png";
 				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
 				
 				if($image == 1) {
@@ -184,7 +185,7 @@ class ControllingModel extends ProjectsModel {
 				}
 				
 				$chart["rest"] = $this->getRest($chart["real"]);
-				$chart["title"] = "Termintreue";
+				$chart["title"] = $lang["CONTROLLING_ADHERANCE"];
 				$chart["img_name"] = "p_" . $id . "_timeing.png";
 				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
 				
@@ -222,7 +223,7 @@ class ControllingModel extends ProjectsModel {
 				}
 				
 				$chart["rest"] = $this->getRest($chart["real"]);
-				$chart["title"] = "Arbeitspakete in Plan";
+				$chart["title"] = $lang["CONTROLLING_TASKS"];
 				$chart["img_name"] = "p_" . $id . "_tasks.png";
 				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
 

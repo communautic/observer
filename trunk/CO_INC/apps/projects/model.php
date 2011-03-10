@@ -688,7 +688,7 @@ class ProjectsModel extends Model {
 
 
 	function getChartFolder($id, $what) { 
-		global $controllingmodel;
+		global $controllingmodel, $lang;
 		switch($what) {
 			case 'stability':
 				$chart = $this->getChartFolder($id, 'timeing');
@@ -698,7 +698,7 @@ class ProjectsModel extends Model {
 				$tasks = $chart["real"];
 				
 				$chart["real"] = round(($timeing+$tasks)/2,0);
-				$chart["title"] = "Projektstabilit&auml;t aktuell";
+				$chart["title"] = $lang["PROJECT_FOLDER_CHART_STABILITY"];
 				$chart["img_name"] = $id . "_stability.png";
 				$chart["url"] = 'https://chart.googleapis.com/chart?chs=150x90&cht=gm&chd=t:' . $chart["real"];
 				
@@ -710,40 +710,6 @@ class ProjectsModel extends Model {
 				$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
 				
 			break;
-			/*case 'realisation':
-				$tasks = 0;
-				$tasks_done = 0;
-				$q = "SELECT id FROM " . CO_TBL_PROJECTS. " WHERE projectfolder = '$id' and bin = '0'";
-				$result = mysql_query($q, $this->_db->connection);
-				while($row = mysql_fetch_assoc($result)) {
-					$pid = $row["id"];
-					$tasks += $this->numPhasesTasks($pid);
-					$tasks_done += $this->numPhasesTasks($pid,1);
-				}
-				if($tasks == 0) {
-					$chart["real"] = 0;
-				} else {
-					$chart["real"] = round((100/$tasks)*$tasks_done,2);
-				}
-				
-				$chart["tendency"] = "tendency_negative.png";
-				if(isset($pid)) {
-					$qt = "SELECT MAX(donedate) as dt,enddate FROM " . CO_TBL_PHASES_TASKS. " WHERE status='1' and pid='$pid' and bin='0'";
-					$resultt = mysql_query($qt, $this->_db->connection);
-					$ten = mysql_fetch_assoc($resultt);
-					if($ten["dt"] <= $ten["enddate"]) {
-						$chart["tendency"] = "tendency_positive.png";
-					}
-				}
-				
-				$chart["rest"] = $this->getRest($chart["real"]);
-				$chart["title"] = "Realisierungsgrad";
-				$chart["img_name"] = $id . "_realisierungsgrad.png";
-				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
-				
-				$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
-			break;
-			*/
 			case 'realisation':
 				$realisation = 0;
 				$id_array = "";
@@ -782,8 +748,8 @@ class ProjectsModel extends Model {
 				}
 				
 				$chart["rest"] = $this->getRest($chart["real"]);
-				$chart["title"] = "Realisierungsgrad";
-				$chart["img_name"] = $id . "_realisierungsgrad.png";
+				$chart["title"] = $lang["PROJECT_FOLDER_CHART_REALISATION"];
+				$chart["img_name"] = $id . "_realisation.png";
 				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
 				
 				$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
@@ -842,7 +808,7 @@ class ProjectsModel extends Model {
 				}
 				
 				$chart["rest"] = $this->getRest($chart["real"]);
-				$chart["title"] = "Termintreue";
+				$chart["title"] = $lang["PROJECT_FOLDER_CHART_ADHERANCE"];
 				$chart["img_name"] = $id . "_timeing.png";
 				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
 			
@@ -897,7 +863,7 @@ class ProjectsModel extends Model {
 				}
 				
 				$chart["rest"] = $this->getRest($chart["real"]);
-				$chart["title"] = "Arbeitspakete in Plan";
+				$chart["title"] = $lang["PROJECT_FOLDER_CHART_TASKS"];
 				$chart["img_name"] = $id . "_tasks.png";
 				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
 			
