@@ -17,6 +17,7 @@ $lang["PHASE_MILESTONE_DATE"] = 'Zeitpunkt';
 
 $lang["PHASE_TASK_START"] = 'Start';
 $lang["PHASE_TASK_END"] = 'Ende';
+$lang["PHASE_TASK_TEAM"] = 'Verantwortung';
 $lang["PHASE_TASK_DEPENDENT"] = 'abhängig';
 
 $lang["PHASE_TASK_STATUS_FINISHED"] = 'erreicht am';

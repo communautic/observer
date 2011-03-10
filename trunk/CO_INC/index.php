@@ -22,8 +22,8 @@ foreach($controller->applications as $app => $display) {
 <link href="<?php echo CO_FILES;?>/css/reset.css" rel="stylesheet" type="text/css" media="screen,projection" />
 <link href="<?php echo CO_FILES;?>/css/styles.css" rel="stylesheet" type="text/css" media="screen,projection" />
 <link href="<?php echo CO_FILES;?>/css/content.css" rel="stylesheet" type="text/css" media="screen,projection" />
-<!--<link href="<?php echo CO_FILES;?>/css/jScrollPane.css" rel="stylesheet" type="text/css" />-->
-<link href="<?php echo CO_FILES;?>/css/jquery.jscrollpane.css" rel="stylesheet" type="text/css" />
+<!--<link href="<?php echo CO_FILES;?>/css/jScrollPane.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo CO_FILES;?>/css/jquery.jscrollpane.css" rel="stylesheet" type="text/css" />-->
 <link href="<?php echo CO_FILES;?>/css/jquery-ui-1.8.5.custom.css" rel="stylesheet" type="text/css" media="screen,projection" />
 <link href="<?php echo CO_FILES;?>/css/jNice.css" rel="stylesheet" type="text/css" media="screen,projection" />
 <link href="<?php echo CO_FILES;?>/css/impromptu.css" rel="stylesheet" type="text/css" media="screen,projection" />
@@ -51,10 +51,10 @@ var co_files = '<?php echo CO_FILES;?>';
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.quicksearch.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.form-2.43.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.layout-1.3.0.js"></script>
-<!-- new scrollpane-->
+<!-- new scrollpane
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.mousewheel.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/mwheelIntent.js"></script>
-<script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.jscrollpane.min.js"></script> 
+<script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.jscrollpane.min.js"></script> -->
 <!-- ns -->
 <!--<script type="text/javascript" src="js/jScrollPane.js"></script>-->
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.jNice.js"></script>
@@ -62,6 +62,7 @@ var co_files = '<?php echo CO_FILES;?>';
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.tooltip.min.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.resize-1.1.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/fileuploader.js"></script>
+<script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.scrollTo.min.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/lang/<?php echo($session->userlang); ?>.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/init.js"></script>
 <script type="text/javascript">

@@ -34,11 +34,7 @@ class Contacts extends Controller {
 			include 'view/group_edit.php';
 		}
 	}
-	
-	function getGroupNew() {
-		//$group = $this->model->getGroupDetails($id);
-		include 'view/group_new.php';
-	}
+
 	
 	function newGroup() {
 		$retval = $this->model->newGroup();
@@ -68,10 +64,24 @@ class Contacts extends Controller {
 		  }
 	}
 
-	/*function getContactList($id) {
-		$contacts = $this->model->getContactList($id);
-		include 'view/contacts_list.php';
-	}*/
+	function restoreGroup($id) {
+		$retval = $this->model->restoreGroup($id);
+		if($retval){
+			 return "true";
+		  } else{
+			 return "error";
+		  }
+	}
+	
+	function deleteGroup($id) {
+		$retval = $this->model->deleteGroup($id);
+		if($retval){
+			 return "true";
+		  } else{
+			 return "error";
+		  }
+	}
+
 	
 	function getContactList($id,$sort) {
 		global $system;
@@ -109,8 +119,8 @@ class Contacts extends Controller {
 	}
 	
 	
-	function setContactDetails($id, $lastname, $firstname, $title, $company, $position, $email, $phone1, $phone2, $fax, $address_line1, $address_line2, $address_town, $address_postcode, $address_country, $lang) {
-		$retval = $this->model->setContactDetails($id, $lastname, $firstname, $title, $company, $position, $email, $phone1, $phone2, $fax, $address_line1, $address_line2, $address_town, $address_postcode, $address_country, $lang);
+	function setContactDetails($id, $lastname, $firstname, $title, $company, $position, $email, $phone1, $phone2, $fax, $address_line1, $address_line2, $address_town, $address_postcode, $address_country, $lang,$timezone) {
+		$retval = $this->model->setContactDetails($id, $lastname, $firstname, $title, $company, $position, $email, $phone1, $phone2, $fax, $address_line1, $address_line2, $address_town, $address_postcode, $address_country, $lang,$timezone);
 		if($retval){
 			 return '{ "action": "edit", "id": "' . $id . '" }';
 		  } else{
@@ -126,15 +136,33 @@ class Contacts extends Controller {
 			 return "error";
 		  }
 	}
+
+
+	function restoreContact($id) {
+		$retval = $this->model->restoreContact($id);
+		if($retval){
+			 return "true";
+		  } else{
+			 return "error";
+		  }
+	}
 	
-	/*function getPhaseDetails($id,$num) {
-		$phase = $this->model->getPhaseDetails($id,$num);
-		include 'view/phase_details.php';
-	}*/
+	function deleteContact($id) {
+		$retval = $this->model->deleteContact($id);
+		if($retval){
+			 return "true";
+		  } else{
+			 return "error";
+		  }
+	}
+
 	
-	function testdata() {
-		$retval = $this->model->testdataModel();
-		return $retval;
+	function getLanguageDialog($request,$field,$append,$title,$sql) {
+		include_once dirname(__FILE__).'/view/dialog_languages.php';
+	}
+	
+	function getTimezoneDialog($request,$field,$append,$title,$sql) {
+		include_once dirname(__FILE__).'/view/dialog_timezones.php';
 	}
 	
 	function getContactsDialog($request,$field,$append,$title,$sql) {
@@ -169,6 +197,19 @@ class Contacts extends Controller {
 	function getPlacesSearch($term) {
 		$search = $this->model->getPlacesSearch($term);
 		return $search;
+	}
+	
+	function getBin() {
+		global $lang;
+		if($arr = $this->model->getBin()) {
+			$bin = $arr["bin"];
+			$groups = $arr["groups"];
+			$contacts = $arr["contacts"];
+			include 'view/bin.php';
+		}
+		else {
+			include CO_INC .'/view/default.php';
+		}
 	}
 	
 }

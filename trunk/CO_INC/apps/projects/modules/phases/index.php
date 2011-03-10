@@ -44,6 +44,12 @@ if (!empty($_GET['request'])) {
 		case 'binPhase':
 			echo($phases->binPhase($_GET['id']));
 		break;
+		case 'restorePhase':
+			echo($phases->restorePhase($_GET['id']));
+		break;
+		case 'deletePhase':
+			echo($phases->deletePhase($_GET['id']));
+		break;
 		case 'setOrder':
 			echo($projects->setSortOrder("phase-sort",$_GET['phaseItem'],$_GET['id']));
 		break;
@@ -61,6 +67,12 @@ if (!empty($_GET['request'])) {
 		break;
 		case 'deleteTask':
 			echo($phases->deleteTask($_GET['id']));
+		break;
+		case 'restorePhaseTask':
+			echo($phases->restorePhaseTask($_GET['id']));
+		break;
+		case 'deletePhaseTask':
+			echo($phases->deletePhaseTask($_GET['id']));
 		break;
 		case 'getPhaseStatusDialog':
 			echo($phases->getPhaseStatusDialog());
@@ -80,6 +92,8 @@ if (!empty($_POST['request'])) {
 			$task_dependent = array();
 			$task_text = array();
 			$task = array();
+			$task_team = array();
+			$task_team_ct = array();
 			
 			if(isset($_POST['task_id'])) {
 				$task_startdate = $_POST['task_startdate'];
@@ -89,11 +103,13 @@ if (!empty($_POST['request'])) {
 				$task_text = $_POST['task_text'];
 				$task_cat = $_POST['task_cat'];
 				$task_dependent = $_POST['task_dependent'];
+				$task_team = $_POST['task_team'];
+				$task_team_ct = $_POST['task_team_ct'];
 			}
 			if(isset($_POST['task'])) {
 				$task = $_POST['task'];
 			}
-			echo($phases->setDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['team'], $system->checkMagicQuotes($_POST['team_ct']), $system->checkMagicQuotes($_POST['protocol']), $_POST["documents"],$_POST['phase_access'], $_POST['phase_access_orig'], $_POST['phase_status'], $_POST['phase_status_date'],$task_startdate,$task_enddate,$task_donedate,$task_id,$task_text,$task,$task_cat,$task_dependent));
+			echo($phases->setDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['team'], $system->checkMagicQuotes($_POST['team_ct']), $system->checkMagicQuotes($_POST['protocol']), $_POST["documents"],$_POST['phase_access'], $_POST['phase_access_orig'], $_POST['phase_status'], $_POST['phase_status_date'],$task_startdate,$task_enddate,$task_donedate,$task_id,$task_text,$task,$task_cat,$task_dependent,$task_team,$task_team_ct));
 		break;
 	}
 }

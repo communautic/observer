@@ -1,15 +1,3 @@
-<?php
-$de = '';
-$en = '';
-switch($contact->lang) {
-	case "de":
-		$de = ' checked="checked"';
-	break;
-	case "en":
-		$en = ' checked="checked"';
-	break;
-}
-?>
 <div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-title">
 	<tr>
@@ -103,7 +91,7 @@ switch($contact->lang) {
   </tr>
 </table>
 <div class="content-spacer"></div>
-<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+<!--<table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 	  <td class="tcell-left text11"><span class="content-nav"><?php echo CONTACTS_CONTACT_USERNAME;?></span></td>
 	  <td class="tcell-right"><?php echo($contact->username);?></td>
@@ -114,7 +102,7 @@ switch($contact->lang) {
 	  <td class="tcell-left text11"><span class="content-nav"><?php echo CONTACTS_CONTACT_PASSWORD;?></span></td>
 	  <td class="tcell-right"><?php echo($contact->pwd);?></td>
 	</tr>
-</table>
+</table>-->
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 	  <td class="tcell-left text11"><span class="content-nav"><?php echo CONTACTS_CONTACT_GROUPMEMBERSHIP;?></span></td>
@@ -124,38 +112,15 @@ switch($contact->lang) {
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><span class="content-nav"><?php echo CONTACTS_CONTACT_LANGUAGE;?></span></td>
-	  <td width="25"><input title="lang" name="lang" type="radio" value="en"<?php echo($en);?> class="jNiceHidden" /></td><td width="25">en</td>
-      <td width="25"><input title="lang" name="lang" type="radio" value="de"<?php echo($de);?> class="jNiceHidden" /></td><td>de</td>
+	  <td class="tcell-left text11"><a href="#" class="content-nav showDialog" request="getLanguageDialog" field="lang" append="0"><span><?php echo $lang['CONTACTS_LANGUAGE'];?></span></a></span></td>
+      <td class="tcell-right"><div id="lang" class="itemlist-field"><?php echo($contact->lang);?></div></td>
 	</tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
-    <tr>
-        <td class="tcell-left text11"><span class="content-nav">Zeitzone</span></td>
-        <td class="tcell-right"><?php 
-				$zonelist = array('Europe/London' => 'Europe/London',
-													'Europe/Vienna' => 'Europe/Vienna'
-													);
-				?>
-        <select name="timezone">
-        <?php
-					foreach($zonelist as $key => $value) {
-						$checked = '';
-						if($contact->timezone == $key) {
-							$checked = ' checked = "checked"';
-						}
-						echo '		<option value="' . $key . '" ' . $checked . '>' . $value . '</option>' . "\n";
-					}
-					?>
-        </select>
-        </td>
-    </tr>
-</table>
-<table border="0" cellpadding="0" cellspacing="0" class="table-content">
-    <tr>
-        <td class="tcell-left text11"><span class="content-nav">Datum/Zeitanzeige</span></td>
-        <td class="tcell-right">dd.mm.yyyy hh:mm</td>
-    </tr>
+	<tr>
+	  <td class="tcell-left text11"><a href="#" class="content-nav showDialog" request="getTimezoneDialog" field="timezone" append="0"><span><?php echo $lang['CONTACTS_TIMEZONE'];?></span></a></span></td>
+      <td class="tcell-right"><div id="timezone" class="itemlist-field"><?php echo($contact->timezone);?></div></td>
+	</tr>
 </table>
 </form>
 </div>

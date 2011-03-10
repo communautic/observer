@@ -23,6 +23,11 @@
     </tr>
     <tr>
       <td>&nbsp;</td>
+      <td class="tcell-left text11"><a href="#" class="content-nav showDialog" request="getContactsDialog" field="task_team_<?php echo $value->id;?>" append="1"><span><?php echo $lang["PHASE_TASK_TEAM"];?></span></a></td>
+      <td class="tcell-right"><div id="task_team_<?php echo $value->id;?>" class="itemlist-field task_team_list"><?php echo($value->team);?></div><div id="task_team_<?php echo $value->id;?>_ct" class="itemlist-field task_team_list_ct"><a field="task_team_<?php echo $value->id;?>_ct" class="ct-content"><?php echo($value->team_ct);?></a></div></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
       <td class="tcell-left text11"><a href="#" class="content-nav showDialog" request="getTasksDialog" field="dependent<?php echo $value->id;?>" sql="<?php echo $value->id;?>" append="1"><span><?php echo $lang["PHASE_TASK_DEPENDENT"];?></span></a></td>
       <td class="tcell-right"><input id="dependent<?php echo $value->id;?>" name="task_dependent[<?php echo $value->id;?>]" type="hidden" value="<?php echo $value->dependent;?>"><span id="dependent<?php echo $value->id;?>-text"><a href="#" class="dependentTask" rel="dependent<?php echo $value->id;?>"><?php echo $value->dependent_title;?></a></span></td>
     </tr>

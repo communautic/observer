@@ -9,17 +9,11 @@ foreach($controller->applications as $app => $display) {
 	include_once(CO_INC . "/apps/".$app."/controller.php");
 }
 
-// get dependend modules
-//include_once("modules/phases/config.php");
-//include_once("modules/phases/model.php");
-//include_once("../phases/controller.php");
-
 foreach($projects->modules as $module  => $value) {
 	include_once("modules/".$module."/config.php");
 	include_once("modules/".$module."/lang/" . $session->userlang . ".php");
 	include_once("modules/".$module."/model.php");
 	include_once("modules/".$module."/controller.php");
-					
 }
 
 // GET requests
@@ -55,6 +49,12 @@ if (!empty($_GET['request'])) {
 		case 'binFolder':
 			echo($projects->binFolder($_GET['id']));
 		break;
+		case 'restoreFolder':
+			echo($projects->restoreFolder($_GET['id']));
+		break;
+		case 'deleteFolder':
+			echo($projects->deleteFolder($_GET['id']));
+		break;
 		case 'getProjectList':
 			$sort = "0";
 			if(!empty($_GET['sort'])) {
@@ -87,6 +87,12 @@ if (!empty($_GET['request'])) {
 		case 'binProject':
 			echo($projects->binProject($_GET['id']));
 		break;
+		case 'restoreProject':
+			echo($projects->restoreProject($_GET['id']));
+		break;
+		case 'deleteProject':
+			echo($projects->deleteProject($_GET['id']));
+		break;
 		// get Groups for Dialogs
 		case 'getContactsDialog':
 			echo($contacts->getContactsDialog($_GET['request'],$_GET['field'],$_GET['append'],$_GET['title'],$_GET['sql']));
@@ -104,44 +110,24 @@ if (!empty($_GET['request'])) {
 		case 'getAccessDialog':
 			echo($projects->getAccessDialog());
 		break;
-		/*case 'getPhaseDetails':
-			echo($projects->getPhaseDetails($_GET['id'],$_GET['num']));
-		break;*/
 		case 'getBin':
 			echo($projects->getBin());
-			
-			/*foreach($projects->modules as $module  => $value) {
-				if(${$module}->binDisplay) {
-					echo($module . "Bin");
-				}
-			}*/
-			
-			//echo("Bin");
-			//echo($projects->getAccessDialog());
 		break;
 	}
 }
 
-// GET requests
 if (!empty($_POST['request'])) {
 	
 	switch ($_POST['request']) {
 		case 'setFolderDetails':
 			echo($projects->setFolderDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['projectstatus']));
 		break;
-		/*case 'newFolder':
-			echo($projects->newFolder($system->checkMagicQuotes($_POST['title']), $_POST['projectstatus']));
-		break;*/
 		case 'setProjectDetails':
 			echo($projects->setProjectDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['startdate'], $_POST['ordered_by'], $system->checkMagicQuotes($_POST['ordered_by_ct']), $_POST['management'], $system->checkMagicQuotes($_POST['management_ct']), $_POST['team'], $system->checkMagicQuotes($_POST['team_ct']), $system->checkMagicQuotes($_POST['protocol']), $_POST['projectfolder'], $_POST['status'], $_POST['status_date']));
 		break;
-		/*case 'newProject':
-			echo($projects->newProject($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['startdate'], $_POST['enddate'], $_POST['management'], $system->checkMagicQuotes($_POST['management_ct']), $_POST['team'], $system->checkMagicQuotes($_POST['team_ct']), $system->checkMagicQuotes($_POST['protocol']), $_POST['projectfolder'], $_POST['status'], $_POST['status_date']));
-		break;*/
 		case 'moveProject':
 			echo($projects->moveProject($_POST['id'], $_POST['startdate'], $_POST['movedays']));
 		break;
 	}
 }
-
 ?>

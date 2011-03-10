@@ -38,7 +38,7 @@ $(document).ready(function() {
 	
 	// barchart opacity with jquery
 	$(".barchart-phase-bg").livequery( function() {
-		$(this).css("opacity","0.5");
+		$(this).css("opacity","0.3");
 	});
 	
 	$(".phaseTooltip").livequery( function() {
@@ -74,37 +74,15 @@ $(this).scroll(function() {
 				.animate({"marginLeft": ($("#scrollE").scrollLeft()) + "px"}, "fast" );
 });
 });*/
-
+/*
 
 $('.barchart-scroll').livequery(function() {
-										 var bc = $(this);
-bc
-			/*.bind(
-				'jsp-initialised',
-				function(event, isScrollable)
-				{
-					console.log('Handle jsp-initialised', this,
-								'isScrollable=', isScrollable);
-				}
-			)
-			.bind(
-				'jsp-scroll-y',
-				function(event, scrollPositionY, isAtTop, isAtBottom)
-				{
-					console.log('Handle jsp-scroll-y', this,
-								'scrollPositionY=', scrollPositionY,
-								'isAtTop=', isAtTop,
-								'isAtBottom=', isAtBottom);
-				}
-			)*/
+	 var bc = $(this);
+	bc
 			.bind(
 				'jsp-scroll-x',
 				function(event, scrollPositionX, isAtLeft, isAtRight)
 				{
-					/*console.log('Handle jsp-scroll-x', this,
-								'scrollPositionX=', scrollPositionX,
-								'isAtLeft=', isAtLeft,
-								'isAtRight=', isAtRight);*/
 					
 					var $scrollingDiv = $("#barchart-container-left");
 	   $scrollingDiv
@@ -112,49 +90,9 @@ bc
 				.animate({"marginLeft": scrollPositionX + "px"} );
 				}
 			)
-			/*.bind(
-				'jsp-arrow-change',
-				function(event, isAtTop, isAtBottom, isAtLeft, isAtRight)
-				{
-					console.log('Handle jsp-arrow-change', this,
-								'isAtTop=', isAtTop,
-								'isAtBottom=', isAtBottom,
-								'isAtLeft=', isAtLeft,
-								'isAtRight=', isAtRight);
-				}
-			)*/
 			.jScrollPane({horizontalGutter: 10,verticalGutter: 10,animateScroll: true});
 			
 			var api = bc.data('jsp');
-			
-			
-			/*var throttleTimeout;
-			$(window).bind(
-				'resize',
-				function()
-				{
-					if ($.browser.msie) {
-						// IE fires multiple resize events while you are dragging the browser window which
-						// causes it to crash if you try to update the scrollpane on every one. So we need
-						// to throttle it to fire a maximum of once every 50 milliseconds...
-						if (!throttleTimeout) {
-							throttleTimeout = setTimeout(
-								function()
-								{
-									api.reinitialise();
-									throttleTimeout = null;
-								},
-								50
-							);
-						}
-					} else {
-						api.reinitialise();
-						
-					}
-				}
-			);*/
-
-			
 			
 			
 	$('.but-scroll-to').live('click', function() {
@@ -163,14 +101,22 @@ bc
 		api.scrollTo(l,t);
 		return false;
 	});
-
-
-
-	});
-
-	/*$('.timeline-scroll').livequery(function() {
-		$(this).jScrollPane({horizontalGutter: 10,verticalGutter: 10,animateScroll: true});
 	});*/
+
+$("#barchartScroll").livequery( function() {
+	$(this).scroll(function() {
+		var $scrollingDiv = $("#barchart-container-left");
+		$scrollingDiv.stop().animate({"marginLeft": ($("#barchartScroll").scrollLeft()) + "px"}, "fast" );
+	});
+});
+
+
+$('.but-scroll-to').live('click', function() {
+		var t = $(this).attr('t');
+		var l = $(this).attr('l');
+		$('.scroll-pane').scrollTo(l,t);
+		return false;
+	});
 
 	
 });

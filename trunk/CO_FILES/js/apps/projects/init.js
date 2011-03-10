@@ -43,8 +43,6 @@ function projectFormProcess(formData, form, poformOptions) {
 	} else {
 		formData[formData.length] = { "name": "title", "value": title };
 	}
-	//$("#loading").fadeIn();
-	//var protocol = nicEditors.findEditor('protocol').getContent();
 	if($('#protocol_ifr').length > 0) {
 		var protocol = $('#protocol').tinymce().getContent();
 		for (var i=0; i < formData.length; i++) { 
@@ -60,14 +58,6 @@ function projectFormProcess(formData, form, poformOptions) {
 			} 
 		} 
 	}
-	/*if($('#protocol').length > 0) {
-	var protocol = $('#protocol').tinymce().getContent();
-	for (var i=0; i < formData.length; i++) { 
-        if (formData[i].name == 'protocol') { 
-            formData[i].value = protocol;
-        } 
-    } 
-	}*/
 	formData[formData.length] = processList('projectfolder');
 	formData[formData.length] = processList('ordered_by');
 	formData[formData.length] = processCustomText('ordered_by_ct');
@@ -87,14 +77,13 @@ function folderFormProcess(formData, form, poformOptions) {
 	} else {
 		formData[formData.length] = { "name": "title", "value": title };
 	}
-	//$("#loading").fadeIn();
 }
 
 
 function projectFormResponse(data) {
 	switch(data.action) {
 		case "edit":
-			$("#projects2 a.active-link .text").html($("#projects .title").val());
+			$("#projects2 a[rel='"+data.id+"'] .text").html($("#projects .title").val());
 			$("#durationStart").html($("input[name='startdate']").val());
 		break;
 		case "reload":
@@ -123,7 +112,7 @@ function printFolder() {
 function folderFormResponse(data) {
 	switch(data.action) {
 		case "edit":
-			$("#projects1 a.active-link .text").html($("#projects .title").val());
+			$("#projects1 a[rel='"+data.id+"'] .text").html($("#projects .title").val());
 		break;
 	}
 }
@@ -131,23 +120,19 @@ function folderFormResponse(data) {
 function newProject() {
 	var id = $('#'+projects.name+' .module-click:visible').attr("rel");
 	$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/projects&request=newProject&id=' + id, cache: false, success: function(data){
-		//var id = $("#projects1 .module-click:visible").attr("rel");
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectList&id="+id, success: function(list){
 				$("#projects2 ul").html(list.html);
 				var index = $("#projects2 .module-click").index($("#projects2 .module-click[rel='"+data.id+"']"));
 				setModuleActive($("#projects2"),index);
 				$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=getProjectDetails&id="+data.id, success: function(html){
 					$("#"+projects.name+"-right").html(html);
-					//initScrollbar( '#projects2 .scrolling-content' );
 					initContentScrollbar();
-					//$("#loading").fadeOut();
+					$('#projects2 input.filter').quicksearch('#projects2 li');
 					}
 				});
 				projectsActions(0);
 				}
 			});
-		
-		
 		}
 	});
 }
@@ -164,7 +149,7 @@ function newFolder() {
 				$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=getFolderDetails&id="+data.id, success: function(html){
 					$("#"+projects.name+"-right").html(html);
 					initContentScrollbar();
-					//$("#loading").fadeOut();
+					$('#projects1 input.filter').quicksearch('#projects1 li');
 					}
 				});
 				projectsActions(1);
@@ -188,6 +173,7 @@ function duplicateProject() {
 					$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=getProjectDetails&id="+id, success: function(html){
 							$("#"+projects.name+"-right").html(html);
 							initContentScrollbar();
+							$('#projects2 input.filter').quicksearch('#projects2 li');
 						}
 			   		});
 			}
@@ -222,8 +208,8 @@ function binProject() {
 							$("#projects2 .module-click:eq(0)").addClass('active-link');
 							$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=getProjectDetails&fid="+fid+"&id="+id, success: function(html){
 								$("#"+projects.name+"-right").html(html);
-								initScrollbar( '#projects .scrolling-content' );
 								initContentScrollbar();
+								$('#projects2 input.filter').quicksearch('#projects2 li');
 								}
 							});
 						}
@@ -258,11 +244,10 @@ function binFolder() {
 							}
 							var id = $("#projects1 .module-click:eq(0)").attr("rel");
 							$("#projects1 .module-click:eq(0)").addClass('active-link');
-							//$("#projects1 .drag:eq(0)").show();
 							$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=getFolderDetails&id="+id, success: function(html){
 								$("#"+projects.name+"-right").html(html);
-								initScrollbar( '#projects .scrolling-content' );
 								initContentScrollbar();
+								$('#projects1 input.filter').quicksearch('#projects1 li');
 							}
 							});
 						}
@@ -279,11 +264,12 @@ function binFolder() {
 function projectsActions(status) {
 	/*	0= new	1= save		2= print	3= send		4= duplicate	5= delete	*/
 	/*	0= new	1= print	2= send		3= duplicate	4= delete	*/
+	/*	0= new	1= print	2= send		3= duplicate	4= handbook	5 = delete*/
 	switch(status) {
 		//case 0: 	actions = ['0','1','2','3','4']; break; // all actions
-		case 0: actions = ['0','3','4']; break;
+		case 0: actions = ['0','3','5']; break;
 		//case 1: 	actions = ['0','1','2','4']; break; 	// no duplicate
-		case 1: actions = ['0','4']; break;
+		case 1: actions = ['0','5']; break;
 		//case 2: 	actions = ['1']; break;   					// just save
 		case 3: 	actions = ['0']; break;   					// just new
 		case 4: 	actions = ['1','2']; break;   					// no new no delete
@@ -435,7 +421,7 @@ function projectsresetModuleHeights() {
 	initScrollbar( '#projects .scrolling-content' );
 }
 
-function setModule2Height() {
+/*function setModule2Height() {
 	var h = $("#projects .ui-layout-west").height();
 	  $(".projects3-content").slideUp();
 	  $("#projects2 li").show();
@@ -444,9 +430,9 @@ function setModule2Height() {
 	  $("#projects2").css("overflow", "auto").removeClass("module-active").animate({height: h-(projects.modules_height+90)}, function() {
 		  initScrollbar( '#projects2 .scrolling-content' );
 	  });
-}
+}*/
 
-function setModule3Height() {
+/*function setModule3Height() {
 	var h = $("#projects .ui-layout-west").height();
 	$("#projects3").css("height", h-120);
 	  $("#projects3-outer").slideDown();
@@ -459,9 +445,9 @@ function setModule3Height() {
 	  });
 
 	
-}
+}*/
 
-function loadModule1(id) {
+/*function loadModule1(id) {
 	var index = $("#projects1 .module-click").index($("#projects1 .module-click[rel='"+id+"']"));
 	$("#projects1 li:eq("+index+")").fadeIn();
 	$("#projects1 li:not(:eq("+index+"))").hide();
@@ -475,9 +461,9 @@ function loadModule1(id) {
 
 		}
 	});
-}
+}*/
 
-function loadModule2(id) {
+/*function loadModule2(id) {
 	var index = $("#projects2 .module-click").index($("#projects2 .module-click[rel='"+id+"']"));
 	$("#projects2 li:eq("+index+")").fadeIn();
 	$("#projects2 li:not(:eq("+index+"))").hide();
@@ -494,7 +480,7 @@ function loadModule2(id) {
 	var module1_id = 8;
 	loadModule1(module1_id);
 
-}
+}*/
 
 
 var projectsLayout, projectsInnerLayout;
@@ -616,14 +602,6 @@ $(document).ready(function() {
 		return false;
 	});
 	
-	/*$("#projects1 a.deactivated").live('click', function() {
-				$("#projects1-outer > h3").trigger('click');
-			
-		});*/
-	
-	
-	
-  
   
 	/**
 	* show projects list
@@ -709,7 +687,7 @@ $(document).ready(function() {
 							initContentScrollbar();
 							
 							var h = $("#projects .ui-layout-west").height();
-			$("#projects2").delay(200).animate({height: h-(projects.modules_height+96)});			 
+							$("#projects2").delay(200).animate({height: h-(projects.modules_height+96)});			 
 							
 							}
 						});
@@ -927,7 +905,7 @@ $(document).ready(function() {
 		return false;
 	});
   
-  $("a.loadModule1").click(function() {
+ /* $("a.loadModule1").click(function() {
 		if($("#projects").is(":hidden")) {
 			var appdeactivate = $("div.app:visible").attr("id");
 			$('#projects').slideToggle();
@@ -938,14 +916,14 @@ $(document).ready(function() {
 		loadModule1(id);
 		setModule2Height();
 		return false;
-	});
+	});*/
   
-    $(".loadModule2").click(function() {
+   /* $(".loadModule2").click(function() {
 		var id = $(this).attr("rel");
 		loadModule2(id);
 		setModule3Height();
 		return false;
-	});
+	});*/
 	
 	$('a.addtask').live('click',function() {
 		var module = getCurrentModule();
@@ -1065,5 +1043,101 @@ $(document).ready(function() {
 		return false;
 	});*/
 
+
+	// Recycle bin functions
+	$(".bin-deleteFolder").live('click',function(e) {
+		var id = $(this).attr("rel");
+		var txt = ALERT_DELETE_REALLY;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=deleteFolder&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$('#folder_'+id).slideUp();
+						}
+					}
+					});
+				} 
+			}
+		});
+	
+		return false;
+	});
+	
+	$(".bin-restoreFolder").live('click',function(e) {
+		var id = $(this).attr("rel");
+		var txt = ALERT_RESTORE;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=restoreFolder&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$('#folder_'+id).slideUp();
+						}
+					}
+					});
+				} 
+			}
+		});
+	
+		return false;
+	});
+	
+	
+	$(".bin-deleteProject").live('click',function(e) {
+		var id = $(this).attr("rel");
+		var txt = ALERT_DELETE_REALLY;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=deleteProject&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$('#project_'+id).slideUp();
+						}
+					}
+					});
+				} 
+			}
+		});
+	
+		return false;
+	});
+	
+	$(".bin-restoreProject").live('click',function(e) {
+		var id = $(this).attr("rel");
+		var txt = ALERT_RESTORE;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=restoreProject&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$('#project_'+id).slideUp();
+						}
+					}
+					});
+				} 
+			}
+		});
+	
+		return false;
+	});
+	
+	
 
 });

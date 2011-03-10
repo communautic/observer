@@ -217,7 +217,8 @@ class MeetingsModel extends ProjectsModel {
 		$arr = array("meeting" => $meeting, "task" => $task);
 		return $arr;
    }
-   
+
+
    function setDetails($pid,$id,$title,$meetingdate,$start,$end,$location,$location_ct,$participants,$participants_ct,$management,$management_ct,$task_id,$task_title,$task_text,$task,$task_sort,$documents,$meeting_access,$meeting_access_orig,$meeting_status,$meeting_status_date) {
 		global $session, $lang;
 		
@@ -320,6 +321,29 @@ class MeetingsModel extends ProjectsModel {
 		  	return true;
 		}
    }
+   
+   function restoreMeeting($id) {
+		$q = "UPDATE " . CO_TBL_MEETINGS . " set bin = '0' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+		  	return true;
+		}
+   }
+   
+   function deleteMeeting($id) {
+		$q = "SELECT id FROM " . CO_TBL_MEETINGS_TASKS . " WHERE mid = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+			$tid = $row["id"];
+			$this->deleteMeetingTask($tid);
+		}
+		
+		$q = "DELETE FROM " . CO_TBL_MEETINGS . " WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+		  	return true;
+		}
+   }
 
 
    function toggleIntern($id,$status) {
@@ -356,6 +380,24 @@ class MeetingsModel extends ProjectsModel {
    function deleteTask($id) {
 		global $session;
 		$q = "UPDATE " . CO_TBL_MEETINGS_TASKS . " set bin = '1', bintime = NOW(), binuser= '$session->uid' WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if($result) {
+			return true;
+		}
+   }
+   
+   function restoreMeetingTask($id) {
+		global $session;
+		$q = "UPDATE " . CO_TBL_MEETINGS_TASKS . " set bin = '0' WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if($result) {
+			return true;
+		}
+   }
+   
+   function deleteMeetingTask($id) {
+		global $session;
+		$q = "DELETE FROM " . CO_TBL_MEETINGS_TASKS . " WHERE id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if($result) {
 			return true;

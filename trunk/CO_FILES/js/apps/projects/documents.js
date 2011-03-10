@@ -93,7 +93,8 @@ function documentFormProcess(formData, form, poformOptions) {
 function documentFormResponse(data) {
 	switch(data.action) {
 		case "edit":
-			$("#projects3 a.active-link .text").html($("#projects .title").val());
+			//$("#projects3 a.active-link .text").html($("#projects .title").val());
+			$("#projects3 a[rel='"+data.id+"'] .text").html($("#projects .title").val());
 			$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/documents&request=getDetails&id="+data.id, success: function(html){
 				$("#projects-right").html(html);
 				initContentScrollbar();
@@ -379,6 +380,101 @@ $(document).ready(function() {
 				} 
 			}
 		});
+	});
+
+
+// Recycle bin functions
+
+	
+	$(".bin-deleteDocumentFolder").live('click',function(e) {
+		var id = $(this).attr("rel");
+		var txt = ALERT_DELETE_REALLY;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/documents&request=deleteDocument&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$('#document_'+id).slideUp();
+						}
+					}
+					});
+				} 
+			}
+		});
+		return false;
+	});
+	
+	$(".bin-restoreDocumentFolder").live('click',function(e) {
+		var id = $(this).attr("rel");
+		var txt = ALERT_RESTORE;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/documents&request=restoreDocument&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$('#document_'+id).slideUp();
+						}
+					}
+					});
+				} 
+			}
+		});
+		return false;
+	});
+
+	
+	
+	
+	$(".bin-deleteFile").live('click',function(e) {
+		var id = $(this).attr("rel");
+		var txt = ALERT_DELETE_REALLY;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/documents&request=deleteFile&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$('#file_'+id).slideUp();
+						}
+					}
+					});
+				} 
+			}
+		});
+		return false;
+	});
+	
+	$(".bin-restoreFile").live('click',function(e) {
+		var id = $(this).attr("rel");
+		var txt = ALERT_RESTORE;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/documents&request=restoreFile&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$('#file_'+id).slideUp();
+						}
+					}
+					});
+				} 
+			}
+		});
+		return false;
 	});
 
 
