@@ -1,0 +1,5 @@
+/* Silver */
+.coSkinSilver .mceToolbar .mceToolbarStart span, .coSkinSilver .mceButton, .coSkinSilver .mceSplitButton, .coSkinSilver .mceSeparator, .coSkinSilver .mceSplitButton a.mceOpen, .coSkinSilver .mceListBox a.mceOpen {}
+.coSkinSilver table, .coSkinSilver .mceMenuItemTitle a {background:#eee}
+.coSkinSilver .mceListBox .mceText {background:#FFF}
+.coSkinSilver .mceExternalToolbar, .coSkinSilver .mceListBox .mceText, .coSkinSilver div.mceMenu, .coSkinSilver table.mceLayout, .coSkinSilver .mceMenuItemTitle a, .coSkinSilver table.mceLayout tr.mceFirst td, .coSkinSilver table.mceLayout, .coSkinSilver .mceMenuItemTitle a, .coSkinSilver table.mceLayout tr.mceLast td, .coSkinSilver .mceIframeContainer {}
