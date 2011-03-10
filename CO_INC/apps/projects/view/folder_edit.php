@@ -48,15 +48,12 @@
 </div>
 <?php  $this->getChartFolder($folder->id,'stability');?>
 </div>
-
-
 <div style="height: 125px;" class="text11">
 <div style="height: 26px;" class="tbl-inactive"></div>
 <?php  $this->getChartFolder($folder->id,'realisation');?>
 <?php  $this->getChartFolder($folder->id,'timeing');?>
 <?php  $this->getChartFolder($folder->id,'tasks');?>
 </div>
-
 <!--
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
@@ -74,18 +71,7 @@
     </td>
   </tr>
 </table>-->
-
-<!--<table border="0" cellspacing="0" cellpadding="0" class="table-content">
-    <tr>
-    <td class="tcell-left text11"><span class="content-nav">Benutzer eingeloggt</span></td>
-    <td class="tcell-right">Ebenbichler Michael, Randolf Gunharth</td>
-  </tr>
-</table>-->
 <div class="content-spacer"></div>
-
-
-<!--<img src="https://chart.googleapis.com/chart?cht=p3&chd=t:60,40&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF" alt="Teilnehmern" title="Teilnehmern"/>-->
-
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
