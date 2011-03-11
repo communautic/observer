@@ -129,7 +129,7 @@ function meetingFormResponse(data) {
 				$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/meetings&request=getDetails&id="+data.id, success: function(html){
 					$("#projects-right").html(html);
 					initContentScrollbar();
-					$("#loading").fadeOut();
+					//$("#loading").fadeOut();
 					}
 				});
 				projectsActions(0);
@@ -157,6 +157,7 @@ function newMeeting() {
 					}
 				});
 				projectsActions(0);
+				$('#projects3 input.filter').quicksearch('#projects3 li');
 				}
 			});
 		}
@@ -180,6 +181,7 @@ function duplicateMeeting() {
 			getDetailsMeeting(moduleidx,liindex);
 			$(".projects3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
 			projectsActions(0);
+			$('#projects3 input.filter').quicksearch('#projects3 li');
 			}
 		});
 		}
@@ -206,6 +208,7 @@ function binMeeting() {
 									projectsActions(3);
 								} else {
 									projectsActions(0);
+									$('#projects3 input.filter').quicksearch('#projects3 li');
 								}
 								var moduleidx = $(".projects3-content").index($(".projects3-content:visible"));
 								var liindex = 0;
@@ -238,7 +241,7 @@ function sortClickMeeting(obj,sortcur,sortnew) {
 			
 		  $.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/meetings&request=getDetails&id="+id+"&num="+num, success: function(html){
 			  $("#"+projects.name+"-right").html(html);
-			  initScrollbar( '#projects .scrolling-content' );
+			 //initScrollbar( '#projects .scrolling-content' );
 				initContentScrollbar();
 			  }
 		  });

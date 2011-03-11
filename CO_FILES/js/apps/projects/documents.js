@@ -43,15 +43,11 @@ function getDetailsDocument(moduleidx,liindex) {
 	$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/documents&request=getDetails&id="+phaseid, success: function(html){
 		$("#"+projects.name+"-right").html(html);
 		initContentScrollbar();
-		initScrollbar( '.projects3-content:visible .scrolling-content' );
 		}
 	});
 }
 
 function documentSerialize(formData, form, poformOptions) {
-				//$("#projects .title").attr("value",$("#related_to_fake span").attr('uid'));
-				//$("#related_to_protocol").attr("value",$("#related_to_protocol_fake span").attr('uid'));
-
 	var title = $("#projects .title").val();
 	if(title == "") {
 		$.prompt(ALERT_NO_TITLE, {callback: setTitleFocus});
@@ -59,12 +55,8 @@ function documentSerialize(formData, form, poformOptions) {
 	} else {
 		formData[formData.length] = { "name": "title", "value": title };
 	}
-	
-	/*if($('#protocol').length > 0) {
-	var protocol = $('#protocol').tinymce().getContent();
-	$("#protocol").attr("value",protocol);
-	}*/
 }
+
 
 function documentFormProcess(formData, form, poformOptions) {
 	var title = $("#projects .title").fieldValue();
@@ -74,17 +66,6 @@ function documentFormProcess(formData, form, poformOptions) {
 	} else {
 		formData[formData.length] = { "name": "title", "value": title };
 	}
-	/*var uploadValue = $('input[name=upload]').fieldValue();
-	if (!uploadValue[0]) {
-	$.prompt(ALERT_NO_FILE);
-	return false;
-	}*/
-	
-	/*for (var i=0; i < formData.length; i++) { 
-			if (formData[i].name == 'file') { 
-				formData[i].value = '';
-			} 
-		} */
 	
 	formData[formData.length] = processList('document_access');
 }
@@ -93,12 +74,10 @@ function documentFormProcess(formData, form, poformOptions) {
 function documentFormResponse(data) {
 	switch(data.action) {
 		case "edit":
-			//$("#projects3 a.active-link .text").html($("#projects .title").val());
 			$("#projects3 a[rel='"+data.id+"'] .text").html($("#projects .title").val());
 			$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/documents&request=getDetails&id="+data.id, success: function(html){
 				$("#projects-right").html(html);
 				initContentScrollbar();
-				// do module access done status
 				switch(data.access) {
 					case "0":
 						$("#projects3 a.active-link .module-access-status").removeClass("module-access-active");
@@ -107,13 +86,11 @@ function documentFormResponse(data) {
 						$("#projects3 a.active-link .module-access-status").addClass("module-access-active");
 					break;
 				}
-				$("#loading").fadeOut();
 				}
 			});
 		break;
 	}
 }
-
 
 
 function newDocument() {
@@ -127,6 +104,7 @@ function newDocument() {
 			var moduleidx = $(".projects3-content").index($(".projects3-content:visible"));
 			getDetailsDocument(moduleidx,liindex);
 			projectsActions(0);
+			$('#projects3 input.filter').quicksearch('#projects3 li');
 			}
 		});
 		}
@@ -150,11 +128,13 @@ function duplicateDocument() {
 			getDetailsDocument(moduleidx,liindex);
 			$(".projects3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
 			projectsActions(0);
+			$('#projects3 input.filter').quicksearch('#projects3 li');
 			}
 		});
 		}
 	});
 }
+
 
 function binDocument() {
 	var txt = ALERT_DELETE;
@@ -176,6 +156,7 @@ function binDocument() {
 							getDetailsDocument(moduleidx,liindex);
 							$("#projects3 .projects3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
 							projectsActions(0);
+							$('#projects3 input.filter').quicksearch('#projects3 li');
 							}
 						});
 						}
@@ -197,9 +178,7 @@ function sortClickDocument(obj,sortcur,sortnew) {
 			if(id == undefined) {
 				return false;
 			}
-			
 			var num = $(".projects3-content:visible .phase_num:eq(0)").html();
-			
 		  $.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/documents&request=getDetails&id="+id+"&num="+num, success: function(html){
 			  $("#"+projects.name+"-right").html(html);
 			  initScrollbar( '#projects .scrolling-content' );
@@ -221,7 +200,6 @@ function sortDragDocument(order) {
 }
 
 
-
 function dialogDocument(offset,request,field,append,title,sql) {
 	$.ajax({ type: "GET", url: "/", data: 'path=apps/projects&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
 			$("#modalDialog").html(html);
@@ -231,6 +209,7 @@ function dialogDocument(offset,request,field,append,title,sql) {
 			}
 		});
 }
+
 
 function addTaskDocument() {
 	var startdate = $("input[name='startdate']").val();

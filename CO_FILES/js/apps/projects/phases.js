@@ -21,7 +21,7 @@ function getDetailsPhase(moduleidx,liindex) {
 	$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=getDetails&id="+phaseid+"&num="+num, success: function(html){
 		$("#"+projects.name+"-right").html(html);
 		initContentScrollbar();
-		initScrollbar( '.projects3-content:visible .scrolling-content' );
+		//initScrollbar( '.projects3-content:visible .scrolling-content' );
 		}
 	});
 }
@@ -121,6 +121,7 @@ function newPhase() {
 				var moduleidx = $(".projects3-content").index($(".projects3-content:visible"));
 				getDetailsPhase(moduleidx,liindex);
 				projectsActions(0);
+				$('#projects3 input.filter').quicksearch('#projects3 li');
 				//update Project Enddate
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getDates&id="+pid, success: function(project){
 						$("#projectenddate").html(project.enddate);
@@ -149,6 +150,7 @@ function duplicatePhase() {
 			getDetailsPhase(moduleidx,liindex);
 			$(".projects3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
 			projectsActions(0);
+			$('#projects3 input.filter').quicksearch('#projects3 li');
 			}
 		});
 		}
@@ -175,6 +177,7 @@ function binPhase() {
 								projectsActions(3);
 							} else {
 								projectsActions(0);
+								$('#projects3 input.filter').quicksearch('#projects3 li');
 							}
 							var moduleidx = $(".projects3-content").index($(".projects3-content:visible"));
 							var liindex = 0;

@@ -483,8 +483,9 @@ $(document).ready(function() {
 							contactsActions(3);
 						} else {
 							contactsActions(1);
+							$('#contacts2 input.filter').quicksearch('#contacts2 li');
 						}
-						$('#contacts2 input.filter').quicksearch('#contacts2 li');
+						
 						var contactid = $("#contacts2 .module-click:eq(0)").attr("rel");
 						$("#contacts-top .top-headline").html($("#contacts1 a.module-click:visible").find(".text").html());
 						$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getContactDetails&id="+contactid, success: function(html){

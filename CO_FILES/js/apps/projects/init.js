@@ -267,7 +267,7 @@ function projectsActions(status) {
 	/*	0= new	1= print	2= send		3= duplicate	4= handbook	5 = delete*/
 	switch(status) {
 		//case 0: 	actions = ['0','1','2','3','4']; break; // all actions
-		case 0: actions = ['0','3','5']; break;
+		case 0: actions = ['0','1','3','5']; break;
 		//case 1: 	actions = ['0','1','2','4']; break; 	// no duplicate
 		case 1: actions = ['0','5']; break;
 		//case 2: 	actions = ['1']; break;   					// just save
@@ -632,6 +632,7 @@ $(document).ready(function() {
 					projectsActions(3);
 				} else {
 					projectsActions(0);
+					$('#projects2').find('input.filter').quicksearch('#projects2 li');
 				}
 				
 				

@@ -1,9 +1,5 @@
 body {
-    margin: 20px 60px 0 60px;
+    margin: 60px 60px 60px 72pt;
     font-family: Arial, Helvetica, sans-serif;
 }
-.text11 { font-size: 11px; line-height: 21px; }
-.bold { font-weight: bold}
-.tcell-left { width: 136px; padding: 0 0 0 15px; vertical-align: middle; }
 
-table { width: 100%}

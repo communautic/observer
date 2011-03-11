@@ -60,7 +60,7 @@ var co_files = '<?php echo CO_FILES;?>';
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.jNice.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery-impromptu.3.1.min.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.tooltip.min.js"></script>
-<script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.resize-1.1.js"></script>
+<!--<script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.resize-1.1.js"></script>-->
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/fileuploader.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.scrollTo.min.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/lang/<?php echo($session->userlang); ?>.js"></script>

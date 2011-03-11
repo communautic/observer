@@ -778,12 +778,12 @@ $('a.ui-datepicker-trigger-action').live('click',function() {
 	// bind tinymce editors
 	//$("textarea.tinymce").livequery(function() {
 	// Well, try this on for size!
-	$(".protocol-outer").livequery(function() {
+	/*$(".protocol-outer").livequery(function() {
 		$(this).resize(function(e){
 			initScrollbar( '.center-center .scrolling-content' );
 			//$(".center-center .scroll-pane").jScrollPane();
 		});
-	});
+	});*/
 
 
 	$('a.protocolToggle').live('click',function() {
@@ -829,8 +829,14 @@ $('a.ui-datepicker-trigger-action').live('click',function() {
 				
 			});
     	});
-		//$("#"+ele).tinymce().show();
 	}
+	
+	
+	$(".mceIcon").live("click", function(e) {
+		var obj = getCurrentModule();
+		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+		e.preventDefault();
+	})
 
 
 	$(".tinymce").livequery(function() {
