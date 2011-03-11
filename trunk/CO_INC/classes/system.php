@@ -12,6 +12,13 @@ class System
 		return $string;
 	}
 	
+	function checkMagicQuotesTinyMCE($string) {
+		if (!get_magic_quotes_gpc()) {
+			$string = addslashes($string);
+		}
+		return $string;
+	}
+	
 	
 	/**
 	 * Returns a reference to a json object
