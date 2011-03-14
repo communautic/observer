@@ -142,10 +142,10 @@ class ControllingModel extends ProjectsModel {
 			case 'timeing':
 				$today = date("Y-m-d");
 				
-				$tasks_done = $this->getNumTasks($id,""," and enddate < '$today'");
-				$tasks_done_ontime = $this->getNumTasks($id,1," and donedate <= enddate and enddate < '$today'");
+				$tasks_done = $this->getNumTasks($id,""," and enddate <= '$today'");
+				$tasks_done_ontime = $this->getNumTasks($id,1," and donedate <= enddate and enddate <= '$today'");
 				
-				$meetings_done = $this->getNumMeetings($id,""," and meeting_date < '$today'");
+				$meetings_done = $this->getNumMeetings($id,""," and meeting_date <= '$today'");
 				$meetings_done_ontime = $this->getNumMeetings($id,1," and meeting_date <= '$today'");
 				
 				$divider = 2; // wenn zb keine Besprech dann devider = 1
@@ -197,8 +197,8 @@ class ControllingModel extends ProjectsModel {
 			case 'tasks':
 				$today = date("Y-m-d");
 				
-				$tasks_done = $this->getNumTasks($id,""," and enddate < '$today'");
-				$tasks_done_ontime = $this->getNumTasks($id,1," and donedate <= enddate and enddate < '$today'");
+				$tasks_done = $this->getNumTasks($id,""," and enddate <= '$today'");
+				$tasks_done_ontime = $this->getNumTasks($id,1," and donedate <= enddate and enddate <= '$today'");
 				
 				if($tasks_done == 0) {
 					$chart["real"] = 0;
@@ -207,7 +207,7 @@ class ControllingModel extends ProjectsModel {
 				}
 				
 				$chart["tendency"] = "tendency_positive.png";
-				$qt = "SELECT status,donedate,enddate FROM " . CO_TBL_PHASES_TASKS. " WHERE enddate < '$today' and pid='$id' and bin='0' ORDER BY enddate DESC LIMIT 0,1";
+				$qt = "SELECT status,donedate,enddate FROM " . CO_TBL_PHASES_TASKS. " WHERE enddate <= '$today' and pid='$id' and bin='0' ORDER BY enddate DESC LIMIT 0,1";
 				$resultt = mysql_query($qt, $this->_db->connection);
 				$rowt = mysql_fetch_assoc($resultt);
 				if(mysql_num_rows($resultt) != 0) {
