@@ -29,6 +29,7 @@ $lang["INTERNAL_CHANGED"] 	= 	'released:';
 
 $lang["GLOBAL_USER"] = 'User:';
 
+$lang["GLOBAL_SAVE"] = 'Save';
 $lang["GLOBAL_REMOVE"] = 'Delete';
 
 $lang["GLOBAL_STATUS"] 		= 	'Status';
@@ -41,4 +42,10 @@ $lang["GLOBAL_ACCESS_INTERNAL"] = 'internal';
 $lang["GLOBAL_ACCESS_PUBLIC"] = 'public';
 $lang["GLOBAL_ACCESS_FOOTER"] = 'access:';
 $lang["GLOBAL_FOOTER_STATUS"] = 'Stand';
+
+$lang["GLOBAL_TO"] = 'to';
+$lang["GLOBAL_CC"] = 'CC';
+$lang["GLOBAL_SUBJECT"] = 'Subject';
+$lang["GLOBAL_MESSAGE"] = 'Message';
+$lang["GLOBAL_SEND"] = 'Send';
 ?>

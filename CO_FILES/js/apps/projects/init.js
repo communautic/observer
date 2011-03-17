@@ -10,10 +10,13 @@ projects.sortdrag = sortDragProject;
 projects.actionDialog = dialogProject;
 projects.actionNew = newProject;
 projects.actionPrint = printProject;
+projects.actionSend = sendProject;
 projects.actionDuplicate = duplicateProject;
+projects.actionHandbook = printProjectHandbook;
 projects.actionBin = binProject;
 //projects.actionMoveProject = moveProject;
 projects.poformOptions = { beforeSubmit: projectFormProcess, dataType:  'json', success: projectFormResponse };
+//projects.sendformOptions = { beforeSubmit: projectSendProcess, dataType:  'json', success: projectSendResponse };
 
 // register folder object
 var folder = new Module('folder');
@@ -96,10 +99,32 @@ function projectFormResponse(data) {
 	}
 }
 
+
 function printProject() {
-	var id = $("#projects2 .module-click:visible").attr("rel");
+	var id = $("#projects2 .active-link").attr("rel");
 	var url ='/?path=apps/projects&request=printProjectDetails&id='+id;
 	location.href = url;
+}
+
+
+function printProjectHandbook() {
+	var obj = getCurrentModule();
+	if(obj.name == 'projects') {
+		var id = $("#projects2 .active-link").attr("rel");
+	} else {
+		var id = $('#projects2 .module-click:visible').attr("rel");
+	}
+	var url ='/?path=apps/projects&request=printProjectHandbook&id='+id;
+	location.href = url;
+}
+
+
+function sendProject() {
+	var id = $("#projects2 .active-link").attr("rel");
+	$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=getProjectSend&id="+id, success: function(html){
+		$("#modalDialogForward").html(html).dialog('open');
+		}
+	});
 }
 
 
@@ -109,6 +134,7 @@ function printFolder() {
 	location.href = url;
 }
 
+
 function folderFormResponse(data) {
 	switch(data.action) {
 		case "edit":
@@ -116,6 +142,7 @@ function folderFormResponse(data) {
 		break;
 	}
 }
+
 
 function newProject() {
 	var id = $('#'+projects.name+' .module-click:visible').attr("rel");
@@ -136,7 +163,6 @@ function newProject() {
 		}
 	});
 }
-
 
 
 function newFolder() {
@@ -267,7 +293,7 @@ function projectsActions(status) {
 	/*	0= new	1= print	2= send		3= duplicate	4= handbook	5 = delete*/
 	switch(status) {
 		//case 0: 	actions = ['0','1','2','3','4']; break; // all actions
-		case 0: actions = ['0','1','3','5']; break;
+		case 0: actions = ['0','1','2','3','4','5']; break;
 		//case 1: 	actions = ['0','1','2','4']; break; 	// no duplicate
 		case 1: actions = ['0','5']; break;
 		//case 2: 	actions = ['1']; break;   					// just save
@@ -283,6 +309,7 @@ function projectsActions(status) {
 		}
 	})
 }
+
 
 function sortClickFolder(obj,sortcur,sortnew) {
 	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getFolderList&sort="+sortnew, success: function(data){
@@ -301,6 +328,7 @@ function sortClickFolder(obj,sortcur,sortnew) {
 	});
 }
 
+
 function sortDragFolder(order) {
 	$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=setFolderOrder&"+order, success: function(html){
 		$("#projects1 a.sort").attr("rel", "3");
@@ -308,6 +336,7 @@ function sortDragFolder(order) {
 		}
 	});
 }
+
 
 function sortClickProject(obj,sortcur,sortnew) {
 	var fid = $("#projects .module-click:visible").attr("rel");
@@ -329,6 +358,7 @@ function sortClickProject(obj,sortcur,sortnew) {
 	});
 }
 
+
 function sortDragProject(order) {
 	var fid = $("#projects .module-click:visible").attr("rel");
 	$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=setProjectOrder&"+order+"&id="+fid, success: function(html){
@@ -337,6 +367,7 @@ function sortDragProject(order) {
 		}
 	});
 }
+
 
 function dialogProject(offset,request,field,append,title,sql) {
 	//console.log(offset[0]);
@@ -420,67 +451,6 @@ function projectsresetModuleHeights() {
 	$("#projects3 .projects3-content").css("height", h-(projects.modules_height+121));
 	initScrollbar( '#projects .scrolling-content' );
 }
-
-/*function setModule2Height() {
-	var h = $("#projects .ui-layout-west").height();
-	  $(".projects3-content").slideUp();
-	  $("#projects2 li").show();
-	  $("#projects2 .module-actions").slideDown();
-	  $("#projects2-outer").slideDown();
-	  $("#projects2").css("overflow", "auto").removeClass("module-active").animate({height: h-(projects.modules_height+90)}, function() {
-		  initScrollbar( '#projects2 .scrolling-content' );
-	  });
-}*/
-
-/*function setModule3Height() {
-	var h = $("#projects .ui-layout-west").height();
-	$("#projects3").css("height", h-120);
-	  $("#projects3-outer").slideDown();
-	  $("#projects3 li").show();
-	  $("#projects3 .projects3-content").css("height", h-330).hide();
-	$("#projects3 .projects3-content:eq(0)").show();
-	  $("#projects3-outer").slideDown();
-	  $("#projects3").css("overflow", "auto").removeClass("module-active").animate({height: h-51}, function() {
-		  initScrollbar( '#projects2 .scrolling-content' );
-	  });
-
-	
-}*/
-
-/*function loadModule1(id) {
-	var index = $("#projects1 .module-click").index($("#projects1 .module-click[rel='"+id+"']"));
-	$("#projects1 li:eq("+index+")").fadeIn();
-	$("#projects1 li:not(:eq("+index+"))").hide();
-	$("#projects1 .module-actions").slideUp();
-	$("#projects1").css("overflow", "hidden").animate({height: module_title_height}, function() {
-		$(this).addClass("module-active");
-		initScrollbar( '#projects1 .scrolling-content' );									  
-	 });
-	$.ajax({ type: "GET", url: "projects/projects_l.php", data: "id="+id, success: function(html){
-			$("#projects2 ul").html(html);
-
-		}
-	});
-}*/
-
-/*function loadModule2(id) {
-	var index = $("#projects2 .module-click").index($("#projects2 .module-click[rel='"+id+"']"));
-	$("#projects2 li:eq("+index+")").fadeIn();
-	$("#projects2 li:not(:eq("+index+"))").hide();
-	
-	$("#projects2-outer").slideDown();
-	$("#projects2 .module-inner").show();
-	$("#projects2 .module-actions").slideUp();
-	$("#projects2").css("overflow", "hidden").animate({height: module_title_height}, function() {
-		$(this).addClass("module-active");
-		initScrollbar( '#projects2 .scrolling-content' );									  
-	 });
-	//setModule3Height();
-	// get module id
-	var module1_id = 8;
-	loadModule1(module1_id);
-
-}*/
 
 
 var projectsLayout, projectsInnerLayout;
@@ -1043,6 +1013,15 @@ $(document).ready(function() {
     	$("#toggleDiv-" + id).slideToggle("slow");
 		return false;
 	});*/
+	
+	
+	$('a.actionProjectHandbook').click(function(){
+		if($(this).hasClass("noactive")) {
+			return false;
+		}
+		projects.actionHandbook();
+		return false;
+	});
 
 
 	// Recycle bin functions
@@ -1138,7 +1117,6 @@ $(document).ready(function() {
 	
 		return false;
 	});
-	
-	
+
 
 });

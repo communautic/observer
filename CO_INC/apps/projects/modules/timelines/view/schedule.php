@@ -35,7 +35,7 @@ if($numPhases > 0) {
 <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive loadPhase" rel="<?php echo($project["phases"][$key]["id"]);?>">
 	<tr>
 	  <td class="tcell-left-inactive text11"><?php echo $lang["PHASE_TITLE"];?></td>
-        <td class="tcell-right"><a href="#" class="loadPhase bold" rel="<?php echo($project["phases"][$key]["id"]);?>"><?php echo($countPhases . " " . $project["phases"][$key]["title"]);?></a><br />
+        <td class="tcell-right"><a href="#" class="loadPhase bold" rel="<?php echo($project["phases"][$key]["id"]);?>"><?php echo($countPhases . ". " . $project["phases"][$key]["title"]);?></a><br />
         <span class="text11 content-date"><?php echo $lang["GLOBAL_DURATION"];?></span><span class="text11"><?php echo($project["phases"][$key]["startdate"]);?> - <?php echo($project["phases"][$key]["enddate"]);?></span><br />
         </td>
 	</tr>
@@ -68,10 +68,8 @@ if($numPhases > 0) {
                 </tr>
             </table>
             <?php } 
-				//if($taskcount < $numTasks) {
+
 					echo('<div class="content-line-grey"></div>');
-				//}
-			//$taskcount++;
 			
 			?>
 		<?php } ?>

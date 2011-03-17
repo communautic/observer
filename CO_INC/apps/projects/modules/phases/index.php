@@ -53,6 +53,16 @@ if (!empty($_GET['request'])) {
 		case 'setOrder':
 			echo($projects->setSortOrder("phase-sort",$_GET['phaseItem'],$_GET['id']));
 		break;
+		case 'printDetails':
+			$t = "pdf"; // options: pdf, html
+			if(!empty($_GET['t'])) {
+				$t = $_GET['t'];
+			}
+			echo($phases->printDetails($_GET['id'],$_GET['num'],$t));
+		break;
+		case 'getSend':
+			echo($phases->getSend($_GET['id'],$_GET['num']));
+		break;
 		case 'toggleIntern':
 			echo($phases->toggleIntern($_GET['id'],$_GET['status']));
 		break;
@@ -110,6 +120,9 @@ if (!empty($_POST['request'])) {
 				$task = $_POST['task'];
 			}
 			echo($phases->setDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['team'], $system->checkMagicQuotes($_POST['team_ct']), $system->checkMagicQuotesTinyMCE($_POST['protocol']), $_POST["documents"],$_POST['phase_access'], $_POST['phase_access_orig'], $_POST['phase_status'], $_POST['phase_status_date'],$task_startdate,$task_enddate,$task_donedate,$task_id,$task_text,$task,$task_cat,$task_dependent,$task_team,$task_team_ct));
+		break;
+		case 'sendDetails':
+			echo($phases->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotes($_POST['subject']), $system->checkMagicQuotes($_POST['body'])));
 		break;
 	}
 }

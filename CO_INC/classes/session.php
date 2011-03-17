@@ -4,6 +4,7 @@ include("users.php");
 include("system.php");
 include("form.php");
 include("date.php");
+include("class.phpmailer-lite.php");
 
 class Session
 {
@@ -109,6 +110,7 @@ class Session
          $this->userlevel = $this->userinfo['userlevel'];
 		 $this->firstname = $this->userinfo['firstname'];
 		 $this->lastname = $this->userinfo['lastname'];
+		 $this->email = $this->userinfo['email'];
 		 $this->uid = $this->userinfo['id'];
 		 $this->userlang = $this->userinfo['lang'];
 		 $this->useroffset = $this->userinfo['offset'];

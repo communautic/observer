@@ -20,6 +20,22 @@ function Module (name) {
 	this.save;
 }
 
+var sendformOptions = { beforeSubmit: projectSendProcess, dataType:  'json', success: projectSendResponse };
+
+
+function projectSendProcess(formData, form, sendformOptions) {
+	formData[formData.length] = processList('to');
+	formData[formData.length] = processList('cc');
+}
+
+function projectSendResponse(data) {
+	if(data == 1) {
+	$("#modalDialogForward").dialog('close');
+	} else {
+		$("#modalDialogForward").html("Failed");
+	}
+}
+
 function initScrollbar ( elem ) {
 	//alert(elem)
 	var pane = $(elem);
@@ -280,26 +296,18 @@ $(document).ready(function() {
 		if($(this).hasClass("noactive")) {
 			return false;
 		}
-		//$("#"+projects.name+"-right").jqprint({ printContainer: false });
-		//$.ajax({ type: "GET", url: "http://po61.communautic.com/dompdf/cert.php",cache: false });
-		//var url = 'http://po61.communautic.com/dompdf/cert.php';
-		//var url ='http://po61.communautic.com/apps/projects/?request=printProjectDetails&id=28';
-		//location.href = url;
 		var obj = getCurrentModule();
 		obj.actionPrint();
 		return false;
 	});
 	
-	$('a.actionSend').click(function(){
+	$('a.actionSend').click(function(e){
 		if($(this).hasClass("noactive")) {
 			return false;
 		}
-		// get subject
-		var app = getCurrentApp();
-		var subject = $("#"+app+ " .title").val();
-		$("#forward-subject").val(subject);
-		$("#modalDialogForward").dialog('open');
-		return false;
+		var obj = getCurrentModule();
+		obj.actionSend();
+		e.preventDefault();
 	});
 	
 	$('a.actionDuplicate').click(function(){
@@ -310,6 +318,7 @@ $(document).ready(function() {
 		obj.actionDuplicate();
 		return false;
 	});
+	
 	
 	$('a.actionBin').click(function(){
 		if($(this).hasClass("noactive")) {
@@ -347,44 +356,18 @@ $(document).ready(function() {
 	  	}
 	});
 	
-
-	/*$(".module-item-status").live('click',function() {
-		var obj = $(this);
-		var module = getCurrentModule();
-		var id = $(this).next().attr("rel");
-		if($(this).hasClass("module-item-active")) {
-			var status = 0;
-		} else {
-			var status = 1;
-		}
-		//alert(id);
-		module.toggleIntern(id,status,obj);
-		return false;
+	
+	//var sendobj;
+	$('.sendForm').livequery(function() {
+		//var obj = getCurrentModule();
+		$(this).ajaxForm(sendformOptions);
+		//sendobj = obj;
 	});
 	
-	$(".module-item-status").live('mouseover mouseout', function(event) {
-	  if (event.type == 'mouseover') {
-		$(this).next().addClass("hover-bg");
-		
-	  } else {
-		$(this).next().removeClass("hover-bg");
-	  }
-	});*/
-	
-	/*$(".module-access-status").live('mouseover mouseout', function(event) {
-	  if (event.type == 'mouseover') {
-		$(this).next().addClass("hover-bg");
-		
-	  } else {
-		$(this).next().removeClass("hover-bg");
-	  }
-	});*/
-	
-		
-		// disable right click
-		/*$(document).bind("contextmenu",function(e){
-			return false;
-		});*/
+	$('.actionSendForm').live("click", function(e) {
+		$('.sendForm').ajaxSubmit(sendformOptions);
+		e.preventDefault();
+	});
 		
 
 		
@@ -502,8 +485,12 @@ $(document).ready(function() {
 
 
 	$('a.showDialog').live('click',function() {
+		var offsetsubtract = 150;
+		if($(this).attr("offsetsubract") > 0) {
+			var offsetsubtract = 150 - $(this).attr("offsetsubract");
+		}
 		var offset = $(this).offset();
-		offset = [offset.left+150,offset.top+18];
+		offset = [offset.left+offsetsubtract,offset.top+18];
 		var sql;
 		var request = $(this).attr("request"); // function name
 		var field = $(this).attr("field"); // field to fill selection into

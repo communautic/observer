@@ -38,7 +38,6 @@ define('CONTACTS_CONTACT_PASSWORD', 'Passwort');
 define('CONTACTS_CONTACT_GROUPMEMBERSHIP', 'Gruppenmitglied');
 
 define('CONTACTS_DIALOG_CONTACTS', 'Kontakte');
-
-
+$lang['CONTACTS_CUSTOM'] = 'manuell';
 
 ?>

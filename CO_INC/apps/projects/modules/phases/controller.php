@@ -1,16 +1,17 @@
 <?php
 
-class Phases {
+class Phases extends Projects {
 	var $module;
-	
-	// get all available apps
+
+
 	function __construct($name) {
 			$this->module = $name;
 			$this->form_url = "apps/projects/modules/$name/";
 			$this->model = new PhasesModel();
 			$this->binDisplay = true;
 	}
-	
+
+
 	function getList($id,$sort) {
 		global $system;
 		$arr = $this->model->getList($id,$sort);
@@ -23,7 +24,8 @@ class Phases {
 		$data["sort"] = $arr["sort"];
 		return $system->json_encode($data);
 	}
-	
+
+
 	function getDetails($id,$num) {
 		global $lang;
 		if($arr = $this->model->getDetails($id,$num)) {
@@ -34,7 +36,72 @@ class Phases {
 			include CO_INC .'/view/default.php';
 		}
 	}
+
+
+	function printDetails($id,$num,$t) {
+		global $lang;
+		$title = "";
+		$html = "";
+		if($arr = $this->model->getDetails($id,$num)) {
+			$phase = $arr["phase"];
+			$task = $arr["task"];
+			ob_start();
+				include 'view/print.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			$title = $phase->title;
+		}
+		switch($t) {
+			case "html":
+				$this->printHTML($title,$html);
+			break;
+			default:
+				$this->printPDF($title,$html);
+		}
+	}
 	
+	function getSend($id,$num) {
+		global $lang;
+		if($arr = $this->model->getDetails($id,$num)) {
+			$phase = $arr["phase"];
+			$task = $arr["task"];
+			
+			$form_url = $this->form_url;
+			$request = "sendDetails";
+			$to = $phase->team;
+			$cc = "";
+			$subject = $phase->title;
+			$variable = $num;
+			
+			include CO_INC .'/view/dialog_send.php';
+		}
+		else {
+			include CO_INC .'/view/default.php';
+		}
+	}
+
+
+	function sendDetails($id,$variable,$to,$cc,$subject,$body) {
+		global $session,$users, $lang;
+		$title = "";
+		$html = "";
+		if($arr = $this->model->getDetails($id,$variable)) {
+			$phase = $arr["phase"];
+			$task = $arr["task"];
+			ob_start();
+				include 'view/print.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			$title = $phase->title;
+		}
+		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
+		$pdf = $this->savePDF($title,$html,$attachment);
+		
+		//$to,$from,$fromName,$subject,$body,$attachment
+		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment);
+	}
+
+
 	function setDetails($id,$title,$team,$team_ct,$protocol,$documents,$phase_access,$phase_access_orig,$phase_status,$phase_status_date,$task_startdate,$task_enddate,$task_donedate,$task_id,$task_text,$task,$task_cat,$task_dependent,$task_team,$task_team_ct) {
 		if($arr = $this->model->setDetails($id,$title,$team,$team_ct,$protocol,$documents,$phase_access,$phase_access_orig,$phase_status,$phase_status_date,$task_startdate,$task_enddate,$task_donedate,$task_id,$task_text,$task,$task_cat,$task_dependent,$task_team,$task_team_ct)){
 			 return '{ "action": "edit" , "id": "' . $arr["id"] . '", "access": "' . $phase_access . '", "status": "' . $phase_status . '", "startdate": "' . $arr["startdate"] . '", "enddate": "' . $arr["enddate"] . '"}';
@@ -42,7 +109,8 @@ class Phases {
 			 return "error";
 		  }
 	}
-	
+
+
 	function createNew($id,$num) {
 		$retval = $this->model->createNew($id,$num);
 		if($retval){
@@ -72,6 +140,7 @@ class Phases {
 		  }
 	}
 
+
 	function restorePhase($id) {
 		$retval = $this->model->restorePhase($id);
 		if($retval){
@@ -81,6 +150,7 @@ class Phases {
 		}
 	}
 
+
 	function deletePhase($id) {
 		$retval = $this->model->deletePhase($id);
 		if($retval){
@@ -89,6 +159,7 @@ class Phases {
 			return "error";
 		}
 	}
+
 
 	function toggleIntern($id,$status) {
 		$retval = $this->model->toggleIntern($id,$status);
@@ -104,7 +175,8 @@ class Phases {
 		global $lang;
 		include 'view/dialog_task.php';
 	}
-	
+
+
 	function getTasksDialog($id,$field) {
 		$retval = $this->model->getTasksDialog($id,$field);
 		if($retval){
@@ -142,8 +214,8 @@ class Phases {
 			return "error";
 		}
 	}
-	
-	
+
+
 	function deletePhaseTask($id) {
 		$retval = $this->model->deletePhaseTask($id);
 		if($retval){
@@ -152,7 +224,8 @@ class Phases {
 			return "error";
 		}
 	}
-	
+
+
 	function restorePhaseTask($id) {
 		$retval = $this->model->restorePhaseTask($id);
 		if($retval){
@@ -162,13 +235,13 @@ class Phases {
 		}
 	}
 
+
 	function getPhaseStatusDialog() {
 		global $lang;
 		include 'view/dialog_status.php';
 	}
-	
 
-	
+
 }
 
 $phases = new Phases("phases");

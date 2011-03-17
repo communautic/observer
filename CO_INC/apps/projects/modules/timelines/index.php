@@ -33,6 +33,24 @@ if (!empty($_GET['request'])) {
 		case 'getDetails':
 			echo($timelines->getDetails($_GET['id'],$_GET['pid']));
 		break;
+		case 'printDetails':
+			$t = "pdf"; // options: pdf, html
+			if(!empty($_GET['t'])) {
+				$t = $_GET['t'];
+			}
+			echo($timelines->printDetails($_GET['id'],$_GET['pid'],$t));
+		break;
+		case 'getSend':
+			echo($timelines->getSend($_GET['id'],$_GET['pid']));
+		break;
+	}
+}
+
+if (!empty($_POST['request'])) {
+	switch ($_POST['request']) {
+		case 'sendDetails':
+			echo($timelines->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotes($_POST['subject']), $system->checkMagicQuotes($_POST['body'])));
+		break;
 	}
 }
 ?>
