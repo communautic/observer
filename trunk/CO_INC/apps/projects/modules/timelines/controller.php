@@ -1,6 +1,6 @@
 <?php
 
-class Timelines {
+class Timelines extends Projects {
 	var $module;
 	
 	function __construct($name) {
@@ -42,6 +42,60 @@ class Timelines {
 			break;
 		}
 	}
+
+
+	function printDetails($id,$pid,$t) {
+		global $lang;
+		$title = "";
+		$html = "";
+		if($project = $this->model->getDetails($pid)) {
+			ob_start();
+				include 'view/print_schedule.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			$title = $project["title"] . " - " . TIMELINE_DATES_LIST;
+		}
+		switch($t) {
+			case "html":
+				$this->printHTML($title,$html);
+			break;
+			default:
+				$this->printPDF($title,$html);
+		}
+	}
+
+
+	function getSend($id,$pid) {
+		global $projectsmodel, $lang;
+		
+		$form_url = "apps/projects/modules/timelines/";
+		$request = "sendDetails";
+		$to = "";
+		$cc = "";
+		$subject = $projectsmodel->getProjectTitle($pid) . " - " . TIMELINE_DATES_LIST;
+		$variable = $pid;
+		include CO_INC .'/view/dialog_send.php';
+	}
+
+
+	function sendDetails($id,$variable,$to,$cc,$subject,$body) {
+		global $projectsmodel,$session,$users, $lang;
+		$title = "";
+		$html = "";
+		if($project = $this->model->getDetails($variable)) {
+			ob_start();
+				include 'view/print_schedule.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			$title = $project["title"] . " - " . TIMELINE_DATES_LIST;
+		}
+		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
+		$pdf = $this->savePDF($title,$html,$attachment);
+		
+		//$to,$from,$fromName,$subject,$body,$attachment
+		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment);
+	}
+	
 }
 
 $timelines = new Timelines("timelines");

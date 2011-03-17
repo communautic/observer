@@ -30,7 +30,7 @@ include_once(CO_INC . "/apps/projects/modules/meetings/model.php");
 include_once(CO_INC . "/apps/projects/modules/meetings/controller.php");
 $meetings = new Meetings("meetings");
 
-// GET requests
+
 if (!empty($_GET['request'])) {
 	switch ($_GET['request']) {
 		case 'getList':
@@ -61,12 +61,19 @@ if (!empty($_GET['request'])) {
 		case 'setOrder':
 			echo($projects->setSortOrder("meeting-sort",$_GET['meetingItem'],$_GET['id']));
 		break;
+		case 'printDetails':
+			$t = "pdf"; // options: pdf, html
+			if(!empty($_GET['t'])) {
+				$t = $_GET['t'];
+			}
+			echo($meetings->printDetails($_GET['id'],$t));
+		break;
+		case 'getSend':
+			echo($meetings->getSend($_GET['id']));
+		break;
 		case 'toggleIntern':
 			echo($meetings->toggleIntern($_GET['id'],$_GET['status']));
 		break;
-		/*case 'insertTask':
-			echo($meetings->insertTask($_GET['num'],$_GET['sort']));
-		break;*/
 		case 'addTask':
 			echo($meetings->addTask($_GET['mid'],$_GET['num'],$_GET['sort']));
 		break;
@@ -85,7 +92,6 @@ if (!empty($_GET['request'])) {
 	}
 }
 
-// POST requests
 if (!empty($_POST['request'])) {
 	
 	switch ($_POST['request']) {
@@ -110,9 +116,9 @@ if (!empty($_POST['request'])) {
 			}
 			echo($meetings->setDetails($_POST['pid'], $_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['meeting_date'], $_POST['meetingstart'], $_POST['meetingend'], $_POST['location'], $system->checkMagicQuotes($_POST['location_ct']), $_POST['participants'], $system->checkMagicQuotes($_POST['participants_ct']), $_POST['management'], $system->checkMagicQuotes($_POST['management_ct']),$task_id,$task_title,$task_text,$task,$task_sort,$_POST['documents'],$_POST['meeting_access'],$_POST['meeting_access_orig'],$_POST['meeting_status'],$_POST['meeting_status_date']));
 		break;
-		/*case 'createNew':
-			echo($meetings->createNew($_POST['id'],$_POST['title'],$_POST['meeting_date']));
-		break;*/
+		case 'sendDetails':
+			echo($meetings->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotes($_POST['subject']), $system->checkMagicQuotes($_POST['body'])));
+		break;
 	}
 }
 

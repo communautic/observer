@@ -1,6 +1,6 @@
 <?php
 
-class Meetings {
+class Meetings extends Projects {
 	var $module;
 
 	function __construct($name) {
@@ -33,6 +33,70 @@ class Meetings {
 		} else {
 			include CO_INC .'/view/default.php';
 		}
+	}
+
+
+	function printDetails($id,$t) {
+		global $lang;
+		$title = "";
+		$html = "";
+		if($arr = $this->model->getDetails($id)) {
+			$meeting = $arr["meeting"];
+			$task = $arr["task"];
+			ob_start();
+				include 'view/print.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			$title = $meeting->title;
+		}
+		switch($t) {
+			case "html":
+				$this->printHTML($title,$html);
+			break;
+			default:
+				$this->printPDF($title,$html);
+		}
+	}
+	
+	function getSend($id) {
+		global $lang;
+		if($arr = $this->model->getDetails($id)) {
+			$meeting = $arr["meeting"];
+			$task = $arr["task"];
+			
+			$form_url = $this->form_url;
+			$request = "sendDetails";
+			$to = $meeting->participants;
+			$cc = "";
+			$subject = $meeting->title;
+			$variable = "";
+			
+			include CO_INC .'/view/dialog_send.php';
+		}
+		else {
+			include CO_INC .'/view/default.php';
+		}
+	}
+
+
+	function sendDetails($id,$variable,$to,$cc,$subject,$body) {
+		global $session,$users, $lang;
+		$title = "";
+		$html = "";
+		if($arr = $this->model->getDetails($id)) {
+			$meeting = $arr["meeting"];
+			$task = $arr["task"];
+			ob_start();
+				include 'view/print.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			$title = $meeting->title;
+		}
+		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
+		$pdf = $this->savePDF($title,$html,$attachment);
+		
+		//$to,$from,$fromName,$subject,$body,$attachment
+		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment);
 	}
 
 

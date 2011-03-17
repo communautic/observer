@@ -106,22 +106,22 @@ class Model extends MySQLDB {
 	}
 	
 	
-	function getPrintHeader() {
+	function getConfigField($field) {
 		global $session;
-		$q = "select value from co_config where name='printheader'";
+		$q = "select value from co_config where name='$field'";
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_result($result,0);
 		return $row;
 	}
 
 
-	function getPrintFooter() {
+	/*function getPrintFooter() {
 		global $session;
 		$q = "select value from co_config where name='printfooter'";
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_result($result,0);
 		return $row;
-	}
+	}*/
 	
 	
 	public static function saveImage($chart_url,$path,$file_name){

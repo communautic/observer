@@ -95,9 +95,6 @@ class ContactsModel extends Model {
 		
 			$array["allcontacts"] = $this->getNumAllContacts();
 			$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
-			
-			
-			
 		} else {
 			$q = "SELECT * FROM " . CO_CONTACTS_TBL_GROUPS . " where id = '$id'";
 			$result = mysql_query($q, $this->_db->connection);
@@ -229,6 +226,14 @@ class ContactsModel extends Model {
 		$result = mysql_query($q, $this->_db->connection);
 		$title = mysql_result($result,0);
 		return $title;
+   }
+   
+   function getContactFieldFromID($id,$field){
+		global $session;
+		$q = "SELECT " . $field . " FROM " . CO_TBL_USERS . " where id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$string = mysql_result($result,0);
+		return $string;
    }
    
   /**
@@ -494,6 +499,19 @@ class ContactsModel extends Model {
 		
 	}
 	
+	/*function getUserFieldFromIDs($string, $field) {
+		$ids_arr = explode(",", $string);
+		$ids_total = sizeof($ids_arr);
+		$emails = array();
+		foreach ($ids_arr as &$value) {
+			$q = "SELECT " . $field . " FROM ".CO_TBL_USERS." where id = '$value'";
+			$result = mysql_query($q, $this->_db->connection);
+			$row = mysql_fetch_assoc($result);
+			$emails[] = $row["email"];
+		}
+		return $emails;
+	}*/
+	
 	
 	function getUserList($string,$field){
 		$users_string = explode(",", $string);
@@ -529,6 +547,8 @@ class ContactsModel extends Model {
 		}
 		return $users;
 }
+
+
 
 
 function getUserListPlain($string){

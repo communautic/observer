@@ -16,9 +16,7 @@ foreach($projects->modules as $module  => $value) {
 	include_once("modules/".$module."/controller.php");
 }
 
-// GET requests
 if (!empty($_GET['request'])) {
-	
 	switch ($_GET['request']) {
 		case 'getFolderList':
 			$sort = "0";
@@ -78,6 +76,16 @@ if (!empty($_GET['request'])) {
 			}
 			echo($projects->printProjectDetails($_GET['id'],$t));
 		break;
+		case 'printProjectHandbook':
+			$t = "pdf"; // options: pdf, html
+			if(!empty($_GET['t'])) {
+				$t = $_GET['t'];
+			}
+			echo($projects->printProjectHandbook($_GET['id'],$t));
+		break;
+		case 'getProjectSend':
+			echo($projects->getProjectSend($_GET['id']));
+		break;
 		case 'newProject':
 			echo($projects->newProject($_GET['id']));
 		break;
@@ -117,7 +125,6 @@ if (!empty($_GET['request'])) {
 }
 
 if (!empty($_POST['request'])) {
-	
 	switch ($_POST['request']) {
 		case 'setFolderDetails':
 			echo($projects->setFolderDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['projectstatus']));
@@ -127,6 +134,9 @@ if (!empty($_POST['request'])) {
 		break;
 		case 'moveProject':
 			echo($projects->moveProject($_POST['id'], $_POST['startdate'], $_POST['movedays']));
+		break;
+		case 'sendProjectDetails':
+			echo($projects->sendProjectDetails($_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotes($_POST['subject']), $system->checkMagicQuotes($_POST['body'])));
 		break;
 	}
 }

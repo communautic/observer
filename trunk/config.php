@@ -30,6 +30,8 @@ define("CO_DEFAULT_TIMEZONE"	, 			"Europe/Vienna" );
 
 define("CO_PATH_DOCUMENTS"	, CO_PATH_BASE . "/data/documents/");
 define("CO_PATH_CHARTS"	, CO_PATH_BASE . "/data/charts/");
+define("CO_PATH_PDF"	, CO_PATH_BASE . "/data/pdf/");
+define("CO_PATH_TEMPLATES"	, CO_PATH_BASE . "/data/templates/");
 
 /* Upload Folders */
 //define("PO_PATH_DATA"	, CO_PATH_BASE . "/data/");

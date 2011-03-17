@@ -352,7 +352,7 @@ position:relative;
 	}
 
 
-#modalDialogForward { background-color: #fff; padding: 10px;}
+
 
 
 /*time diaolg*/
@@ -614,3 +614,19 @@ border:1px dashed black;
 .loadProject { cursor: pointer }
 .loadPhase { cursor: pointer }
 .loadPhase2 { cursor: pointer }
+
+/* Forwarding window */
+#modalDialogForward { padding-right: 15px;}
+.table-window { width: 100%; margin-bottom: 1px;}
+.table-window td { vertical-align: top; padding-top: 2px;}
+.table-window .tcell-left { width: 65px; padding: 0 15px 0 0;}
+
+.table-window .tcell-left span { display: block; padding: 0 0 0 15px; }
+.table-window .tcell-left-short span { display: block; padding: 0 0 0 15px; }
+.table-window a.content-nav         { color: #000; }
+.table-window a.content-nav :link    { color: #000; }
+.table-window a.content-nav :active  { color: #000; }
+.table-window a.content-nav :visited { color: #000; }
+.table-window a.content-nav :hover   { background-color: #666; color: #000}
+.table-window input { width: 100%; font-size: 13px !important;}
+.table-window textarea { width: 100%; font-size: 13px !important;}

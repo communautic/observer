@@ -3,8 +3,7 @@
 //include_once("lang/" . $session->userlang . ".php");
 
 class Projects extends Controller {
-	
-	//$modules;
+
 	// get all available apps
 	function __construct($name) {
 			//parent::__construct();
@@ -15,6 +14,7 @@ class Projects extends Controller {
 			$this->num_modules = sizeof((array)$this->modules);
 			$this->binDisplay = true;
 	}
+
 
 	function getFolderList($sort) {
 		global $system;
@@ -27,7 +27,8 @@ class Projects extends Controller {
 		$data["sort"] = $arr["sort"];
 		return $system->json_encode($data);
 	}
-	
+
+
 	function getFolderDetails($id) {
 		global $lang;
 		if($arr = $this->model->getFolderDetails($id)) {
@@ -72,7 +73,8 @@ class Projects extends Controller {
 			 return "error";
 		  }
 	}
-	
+
+
 	function setFolderDetails($id,$title,$projectstatus) {
 		$retval = $this->model->setFolderDetails($id,$title,$projectstatus);
 		sleep(1);
@@ -82,7 +84,8 @@ class Projects extends Controller {
 			 return "error";
 		  }
 	}
-	
+
+
 	function binFolder($id) {
 		$retval = $this->model->binFolder($id);
 		if($retval){
@@ -91,7 +94,8 @@ class Projects extends Controller {
 			 return "error";
 		  }
 	}
-	
+
+
 	function restoreFolder($id) {
 		$retval = $this->model->restoreFolder($id);
 		if($retval){
@@ -100,7 +104,8 @@ class Projects extends Controller {
 			 return "error";
 		  }
 	}
-	
+
+
 	function deleteFolder($id) {
 		$retval = $this->model->deleteFolder($id);
 		if($retval){
@@ -123,6 +128,7 @@ class Projects extends Controller {
 		return $system->json_encode($data);
 	}
 
+
 	function getProjectDetails($id) {
 		global $lang;
 		if($arr = $this->model->getProjectDetails($id)) {
@@ -135,7 +141,8 @@ class Projects extends Controller {
 			include CO_INC .'/view/default.php';
 		}
 	}
-	
+
+
 	function getDates($id) {
 		
 		if($project = $this->model->getDates($id)) {
@@ -152,7 +159,6 @@ class Projects extends Controller {
 			$project = $arr["project"];
 			$phases = $arr["phases"];
 			$num = $arr["num"];
-			
 			ob_start();
 				include 'view/project_print.php';
 				$html = ob_get_contents();
@@ -170,6 +176,99 @@ class Projects extends Controller {
 	}
 
 
+	function printProjectHandbook($id, $t) {
+		global $lang;
+		$title = "";
+		$html = "";
+		
+		if($arr = $this->model->getProjectDetails($id)) {
+			$project = $arr["project"];
+			$phases = $arr["phases"];
+			$num = $arr["num"];
+			
+			ob_start();
+				include 'view/handbook_cover.php';
+				$html .= ob_get_contents();
+			ob_end_clean();
+			
+			ob_start();
+				include 'view/project_print.php';
+				$html .= ob_get_contents();
+			ob_end_clean();
+			
+			//$phases->printDetails($id,$num,$t)
+			$phasescont = new Phases("phases");
+			foreach ($phases as $phase) {
+				
+				//$phasescont->printDetails(1,1);
+				if($arr = $phasescont->model->getDetails($phase->id,$num[$phase->id])) {
+			$phase = $arr["phase"];
+			$task = $arr["task"];
+			ob_start();
+				include 'modules/phases/view/print.php';
+				$html .= ob_get_contents();
+			ob_end_clean();
+			//$title = $phase->title;
+		}
+			}
+			
+			
+			$title = $project->title . " - " . $lang["PROJECT_HANDBOOK"];
+		}
+		switch($t) {
+			case "html":
+				$this->printHTML($title,$html);
+			break;
+			default:
+				$this->printPDF($title,$html);
+		}
+		
+	}
+
+
+	function getProjectSend($id) {
+		global $lang;
+		if($arr = $this->model->getProjectDetails($id)) {
+			$project = $arr["project"];
+			$phases = $arr["phases"];
+			$num = $arr["num"];
+			
+			$form_url = $this->form_url;
+			$request = "sendProjectDetails";
+			$to = $project->team;
+			$cc = "";
+			$subject = $project->title;
+			$variable = "";
+			include CO_INC .'/view/dialog_send.php';
+		}
+		else {
+			include CO_INC .'/view/default.php';
+		}
+	}
+
+
+	function sendProjectDetails($id,$to,$cc,$subject,$body) {
+		global $session,$users, $lang;
+		$title = "";
+		$html = "";
+		if($arr = $this->model->getProjectDetails($id)) {
+			$project = $arr["project"];
+			$phases = $arr["phases"];
+			$num = $arr["num"];
+			ob_start();
+				include 'view/project_print.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			$title = $project->title;
+		}
+		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
+		$pdf = $this->savePDF($title,$html,$attachment);
+		
+		//$to,$from,$fromName,$subject,$body,$attachment
+		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment);
+	}
+
+
 	function newProject($id) {
 		$retval = $this->model->newProject($id);
 		if($retval){
@@ -178,7 +277,8 @@ class Projects extends Controller {
 			 return "error";
 		  }
 	}
-	
+
+
 	function createDuplicate($id) {
 		$retval = $this->model->createDuplicate($id);
 		if($retval){
@@ -187,8 +287,8 @@ class Projects extends Controller {
 			 return "error";
 		  }
 	}
-	
-	
+
+
 	function setProjectDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$projectfolder,$status,$status_date) {
 		$retval = $this->model->setProjectDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$projectfolder,$status,$status_date);
 		if($retval){
@@ -197,7 +297,8 @@ class Projects extends Controller {
 			 return "error";
 		  }
 	}
-	
+
+
 	function binProject($id) {
 		$retval = $this->model->binProject($id);
 		if($retval){
@@ -206,7 +307,8 @@ class Projects extends Controller {
 			 return "error";
 		  }
 	}
-	
+
+
 	function restoreProject($id) {
 		$retval = $this->model->restoreProject($id);
 		if($retval){
@@ -216,6 +318,7 @@ class Projects extends Controller {
 		  }
 	}	
 
+
 	function deleteProject($id) {
 		$retval = $this->model->deleteProject($id);
 		if($retval){
@@ -224,8 +327,8 @@ class Projects extends Controller {
 			 return "error";
 		  }
 	}	
-	
-	//function moveProject($id,$title,$startdate,$enddate,$management,$management_ct,$team,$team_ct,$protocol,$projectfolder,$status,$status_date,$movedays) {
+
+
 	function moveProject($id,$startdate,$movedays) {
 		$retval = $this->model->moveProject($id,$startdate,$movedays);
 		if($retval){
@@ -234,7 +337,8 @@ class Projects extends Controller {
 			 return "error";
 		  }
 	}
-	
+
+
 	function getProjectFolderDialog($field,$title) {
 		$retval = $this->model->getProjectFolderDialog($field,$title);
 		if($retval){
@@ -243,19 +347,21 @@ class Projects extends Controller {
 			 return "error";
 		  }
 	}
-	
+
+
 	function getProjectStatusDialog() {
 		global $lang;
 		include 'view/dialog_project_status.php';
 	}
-	
+
+
 	function getAccessDialog() {
 		global $lang;
 		include 'view/dialog_access.php';
 	}
-	
+
+
 	// STATISTICS
-	
 	function getChartFolder($id,$what) {
 		if($chart = $this->model->getChartFolder($id,$what)) {
 				include 'view/chart.php';
@@ -263,7 +369,7 @@ class Projects extends Controller {
 			include CO_INC .'/view/default.php';
 		}
 	}
-	
+
 
 	function getBin() {
 		global $lang, $projects;
@@ -285,7 +391,6 @@ class Projects extends Controller {
 	}
 
 
-	
 }
 
 $projects = new Projects("projects");

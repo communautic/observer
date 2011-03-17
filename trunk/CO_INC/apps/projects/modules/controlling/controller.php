@@ -1,15 +1,15 @@
 <?php
-
-class Controlling {
+class Controlling extends Projects {
 	var $module;
-	
+
 	function __construct($name) {
 			$this->module = $name;
 			$this->form_url = "apps/projects/modules/$name/";
 			$this->model = new ControllingModel();
 			$this->binDisplay = false;
 	}
-	
+
+
 	function getList($id,$sort) {
 		global $system;
 		$arr = $this->model->getList($id,$sort);
@@ -21,7 +21,8 @@ class Controlling {
 		$data["sort"] = $arr["sort"];
 		return $system->json_encode($data);
 	}
-	
+
+
 	function getDetails($id,$pid) {
 		global $lang;
 		if($controlling = $this->model->getDetails($pid)) {
@@ -30,61 +31,75 @@ class Controlling {
 			include CO_INC .'/view/default.php';
 		}
 	}
-	
-	function setDetails($id,$title,$controllingdate,$task_idnew,$task_textnew,$task_new,$task_id,$task_text,$task) {
-		$retval = $this->model->setDetails($id,$title,$controllingdate,$task_idnew,$task_textnew,$task_new,$task_id,$task_text,$task);
-		if($retval){
-			 return '{ "action": "edit" , "id": "' . $retval . '"}';
-		  } else{
-			 return "error";
-		  }
+
+
+	function printDetails($id,$pid,$t) {
+		global $projectsmodel,$lang;
+		$title = "";
+		$html = "";
+		$tit = $projectsmodel->getProjectTitle($pid);
+		if($controlling = $this->model->getDetails($pid)) {
+			ob_start();
+				include 'view/print.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			$title =  $tit . " - " . $lang["CONTROLLING_STATUS"];
+		}
+		switch($t) {
+			case "html":
+				$this->printHTML($title,$html);
+			break;
+			default:
+				$this->printPDF($title,$html);
+		}
 	}
 
-	function getNew($id) {
-		$controlling = $this->model->getNew($id);
-		include 'view/new.php';
+
+	function getSend($id,$pid) {
+		global $projectsmodel,$lang;
+		$form_url = "apps/projects/modules/controlling/";
+		$request = "sendDetails";
+		$to = "";
+		$cc = "";
+		$subject = $projectsmodel->getProjectTitle($pid) . " - " . $lang["CONTROLLING_STATUS"];
+		$variable = $pid;
+		include CO_INC .'/view/dialog_send.php';
 	}
-	
-	function createNew($id,$title,$controlling_date) {
-		$retval = $this->model->createNew($id,$title,$controlling_date);
-		if($retval){
-			 return '{ "what": "controlling" , "action": "new", "id": "' . $retval . '" }';
-		  } else{
-			 return "error";
-		  }
+
+
+	function sendDetails($id,$variable,$to,$cc,$subject,$body) {
+		global $projectsmodel,$session,$users, $lang;
+		$title = "";
+		$html = "";
+		$tit = $projectsmodel->getProjectTitle($variable);
+		if($controlling = $this->model->getDetails($variable)) {
+			ob_start();
+				include 'view/print.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			$title =  $tit . " - " . $lang["CONTROLLING_STATUS"];
+		}
+		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
+		$pdf = $this->savePDF($title,$html,$attachment);
+		
+		//$to,$from,$fromName,$subject,$body,$attachment
+		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment);
 	}
-	
-	function binControlling($id) {
-		$retval = $this->model->binControlling($id);
-		if($retval){
-			 return "true";
-		  } else{
-			 return "error";
-		  }
-	}
-	
-	function toggleIntern($id,$status) {
-		$retval = $this->model->toggleIntern($id,$status);
-		if($retval){
-			 return "true";
-		  } else{
-			 return "error";
-		  }
-	}
-	
-	function insertTask($num) {
-		//$task = $this->model->insertDocumentTask($start,$end);
-		include 'view/task_new.php';
-	}
-	
-	
-	function getChart($id,$what) {
+
+
+	function getChart($id,$what, $print=0) {
 		if($chart = $this->model->getChart($id,$what)) {
-				include CO_INC .'/apps/projects/view/chart.php';
+				if($print == 1) {
+					include CO_INC .'/apps/projects/view/chart_print.php';
+				} else {
+					include CO_INC .'/apps/projects/view/chart.php';
+				}
+				
 		} else {
 			include CO_INC .'/view/default.php';
 		}
 	}
+
 	
 }
 

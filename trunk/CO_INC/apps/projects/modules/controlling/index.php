@@ -24,7 +24,6 @@ include_once(CO_INC . "/apps/projects/modules/controlling/controller.php");
 
 $controlling = new Controlling("controlling");
 
-// GET requests
 if (!empty($_GET['request'])) {
 	switch ($_GET['request']) {
 		case 'getList':
@@ -36,6 +35,24 @@ if (!empty($_GET['request'])) {
 		break;
 		case 'getDetails':
 			echo($controlling->getDetails($_GET['id'],$_GET['pid']));
+		break;
+		case 'printDetails':
+			$t = "pdf"; // options: pdf, html
+			if(!empty($_GET['t'])) {
+				$t = $_GET['t'];
+			}
+			echo($controlling->printDetails($_GET['id'],$_GET['pid'],$t));
+		break;
+		case 'getSend':
+			echo($controlling->getSend($_GET['id'],$_GET['pid']));
+		break;
+	}
+}
+
+if (!empty($_POST['request'])) {
+	switch ($_POST['request']) {
+		case 'sendDetails':
+			echo($controlling->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotes($_POST['subject']), $system->checkMagicQuotes($_POST['body'])));
 		break;
 	}
 }

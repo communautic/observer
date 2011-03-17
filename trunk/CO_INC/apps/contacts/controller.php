@@ -166,11 +166,13 @@ class Contacts extends Controller {
 	}
 	
 	function getContactsDialog($request,$field,$append,$title,$sql) {
+		global $lang;
 		$list = $this->model->getContactsDialog($request,$field,$append,$title,$sql);
 		include_once dirname(__FILE__).'/view/dialog_contacts.php';
 	}
 	
 	function getContactsDialogPlace($request,$field,$append,$title,$sql) {
+		global $lang;
 		include_once dirname(__FILE__).'/view/dialog_places.php';
 	}
 	

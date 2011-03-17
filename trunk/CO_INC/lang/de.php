@@ -29,6 +29,7 @@ $lang["INTERNAL_CHANGED"] 	= 	'freigegeben:';
 
 $lang["GLOBAL_USER"] = 'Benutzer:';
 
+$lang["GLOBAL_SAVE"] = 'Speichern';
 $lang["GLOBAL_REMOVE"] = 'Entfernen';
 
 $lang["GLOBAL_STATUS"] 		= 	'Status';
@@ -41,4 +42,13 @@ $lang["GLOBAL_ACCESS_INTERNAL"] = 'zur internen Nutzung';
 $lang["GLOBAL_ACCESS_PUBLIC"] = 'öffentlich';
 $lang["GLOBAL_ACCESS_FOOTER"] = 'freigegeben:';
 $lang["GLOBAL_FOOTER_STATUS"] = 'Stand';
+
+$lang["GLOBAL_TO"] = 'An';
+$lang["GLOBAL_CC"] = 'CC';
+$lang["GLOBAL_SUBJECT"] = 'Betreff';
+$lang["GLOBAL_MESSAGE"] = 'Inhalt';
+$lang["GLOBAL_SEND"] = 'Senden';
+
+$lang["GLOBAL_PAGE"] = 'fsfde';
+
 ?>

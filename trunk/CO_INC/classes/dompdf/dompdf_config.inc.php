@@ -246,7 +246,7 @@ if (!defined("DOMPDF_DEFAULT_MEDIA_TYPE")) {
  * @see CPDF_Adapter::PAPER_SIZES for valid sizes
  */
 if (!defined("DOMPDF_DEFAULT_PAPER_SIZE")) {
-  define("DOMPDF_DEFAULT_PAPER_SIZE", "letter");
+  define("DOMPDF_DEFAULT_PAPER_SIZE", "a4");
 }
 
 
@@ -330,7 +330,7 @@ if (!defined("DOMPDF_ENABLE_PHP")) {
  * @var bool
  */
 if (!defined("DOMPDF_ENABLE_REMOTE")) {
-  define("DOMPDF_ENABLE_REMOTE", false);
+  define("DOMPDF_ENABLE_REMOTE", true);
 }
  
 /**

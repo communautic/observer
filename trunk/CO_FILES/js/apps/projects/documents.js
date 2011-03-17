@@ -8,6 +8,7 @@ documents.actionDialog = dialogDocument;
 documents.addTask = addTaskDocument;
 documents.actionNew = newDocument;
 documents.actionPrint = printDocument;
+documents.actionSend = sendDocument;
 documents.actionDuplicate = duplicateDocument;
 documents.actionBin = binDocument;
 documents.poformOptions = { beforeSerialize: documentSerialize, beforeSubmit: documentFormProcess, dataType:  'json', success: documentFormResponse };
@@ -113,12 +114,23 @@ function newDocument() {
 
 
 function printDocument() {
-	alert("in Entwicklung - siehe Druckenlink unter Projekte");
+	var id = $("#projects3 .active-link:visible").attr("rel");
+	var url ='/?path=apps/projects/modules/documents&request=printDetails&id='+id;
+	location.href = url;
+}
+
+
+function sendDocument() {
+	var id = $("#projects3 .active-link:visible").attr("rel");
+	$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/documents&request=getSend&id="+id, success: function(html){
+		$("#modalDialogForward").html(html).dialog('open');
+		}
+	});
 }
 
 
 function duplicateDocument() {
-	var id = $("#projects3 .active-link").attr("rel");
+	var id = $("#projects3 .active-link:visible").attr("rel");
 	var pid = $("#projects2 .module-click:visible").attr("rel");
 	$.ajax({ type: "GET", url: "/", data: 'path=apps/projects/modules/documents&request=createDuplicate&id=' + id, cache: false, success: function(did){
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/projects/modules/documents&request=getList&id="+pid, success: function(data){																																																																				
@@ -145,7 +157,7 @@ function binDocument() {
 		buttons:langbuttons,
 		callback: function(v,m,f){		
 			if(v){
-				var id = $("#projects3 .active-link").attr("rel");
+				var id = $("#projects3 .active-link:visible").attr("rel");
 				var pid = $("#projects2 .module-click:visible").attr("rel");
 				$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/documents&request=binDocument&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -228,7 +240,7 @@ function addTaskDocument() {
 }
 
 function createUploader(ele){            
-	var did = $("#projects3 .active-link").attr("rel");
+	var did = $("#projects3 .active-link:visible").attr("rel");
 	var num = 0;
 	var numdocs = 0;
 	var uploader = new qq.FileUploader({

@@ -47,6 +47,16 @@ if (!empty($_GET['request'])) {
 		case 'setOrder':
 			echo($projects->setSortOrder("document-sort",$_GET['documentItem'],$_GET['id']));
 		break;
+		case 'printDetails':
+			$t = "pdf"; // options: pdf, html
+			if(!empty($_GET['t'])) {
+				$t = $_GET['t'];
+			}
+			echo($documents->printDetails($_GET['id'],$t));
+		break;
+		case 'getSend':
+			echo($documents->getSend($_GET['id']));
+		break;
 		case 'getDocumentsDialog':
 			echo($documents->getDocumentsDialog($_GET['request'],$_GET['field'],$_GET['append'],$_GET['title'],$_GET['sql'],$_GET['id']));
 		break;
@@ -75,6 +85,9 @@ if (!empty($_POST['request'])) {
 	switch ($_POST['request']) {
 		case 'setDetails':
 			echo($documents->setDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']),$_POST['document_access']));
+		break;
+		case 'sendDetails':
+			echo($documents->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotes($_POST['subject']), $system->checkMagicQuotes($_POST['body'])));
 		break;
 	}
 }

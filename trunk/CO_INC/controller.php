@@ -6,9 +6,8 @@ class Controller extends MySQLDB {
 	var $num_applications;
 	var $modules = array();
 	var $form_url;
-	//var $modules = array();
 
-	// get all available apps
+
 	function __construct() {
 		global $system,$session;
 		$this->_db = new MySQLDB();
@@ -17,7 +16,6 @@ class Controller extends MySQLDB {
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_result($result,0);
 		$this->applications = $system->json_decode($row);
-		//$this->num_applications = sizeof($this->applications);
 	}
 
 
@@ -40,27 +38,128 @@ class Controller extends MySQLDB {
 
 
 	function printPDF($title,$text) {
-		$header = $this->model->getPrintHeader();
-		$footer = $this->model->getPrintFooter();
-		$html = $header . $text . $footer;
-			require_once(CO_INC . "/classes/dompdf/dompdf_config.inc.php");
-			$dompdf = new DOMPDF();
-			$dompdf->load_html($html);
-			$dompdf->render();
-			$options['Attachment'] = 1;
-			$options['Accept-Ranges'] = 0;
-			$options['compress'] = 1;
-			$dompdf->stream($title.".pdf", $options);
+		global $lang;
+		ob_start();
+			include(CO_INC . "/view/printheader.php");
+			$header = ob_get_contents();
+		ob_end_clean();
 		
+		$pdfheader = CO_PATH_BASE . "/data/templates/pdfheader.php";
+		if(file_exists($pdfheader)) {
+			ob_start();
+				include_once($pdfheader);
+				$headerpdf = ob_get_contents();
+			ob_end_clean();
+		} else {
+			$headerpdf = "";
+		}
+		
+		$footer = "</body></html>";
+		$html = $header . '<script type="text/php">' . $headerpdf  . '</script>' . $text . $footer;
+		require_once(CO_INC . "/classes/dompdf/dompdf_config.inc.php");
+		$dompdf = new DOMPDF();
+		$dompdf->load_html($html);
+		$dompdf->render();
+		$options['Attachment'] = 1;
+		$options['Accept-Ranges'] = 0;
+		$options['compress'] = 1;
+		$dompdf->stream($title.".pdf", $options);
 	}
-	
+
+
+	function savePDF($title,$text,$path) {
+		global $lang;
+		ob_start();
+			include(CO_INC . "/view/printheader.php");
+			$header = ob_get_contents();
+		ob_end_clean();
+		
+		$pdfheader = CO_PATH_BASE . "/data/templates/pdfheader.php";
+		if(file_exists($pdfheader)) {
+			ob_start();
+				include_once($pdfheader);
+				$headerpdf = ob_get_contents();
+			ob_end_clean();
+		} else {
+			$headerpdf = "";
+		}
+		
+		$footer = "</body></html>";
+		$html = $header . '<script type="text/php">' . $headerpdf . '</script>' . $text . $footer;
+		require_once(CO_INC . "/classes/dompdf/dompdf_config.inc.php");
+		$dompdf = new DOMPDF();
+		$dompdf->load_html($html);
+		$dompdf->render();
+		$pdf = $dompdf->output();
+		file_put_contents( $path, $pdf);
+	}
+
+
 	function printHTML($title,$text) {
-		$header = $this->model->getPrintHeader();
-		$footer = $this->model->getPrintFooter();
+		ob_start();
+			include(CO_INC . "/view/printheader.php");
+			$header = ob_get_contents();
+		ob_end_clean();
+		$footer = "</body></html>";
 		$html = $header . $text . $footer;
 		echo($html);
-		
 	}
+
+
+	function sendEmail($to,$cc,$from,$fromName,$subject,$body,$attachment,$attachment_array = "") {
+		global $contactsmodel;
+		
+		try {
+  			$mail = new PHPMailerLite(true); //New instance, with exceptions enabled
+			$mail->CharSet = "UTF-8";
+			//$body = file_get_contents('contents.html');
+			//$body = preg_replace('/\\\\/','', $body); //Strip backslashes
+			$footer = "<br />sent with company.observer";
+  
+			$mail->AddReplyTo($from,$fromName);
+			$mail->SetFrom($from,$fromName);
+			
+			$tos = explode(",", $to);
+			foreach ($tos as &$to) {
+				$email = $contactsmodel->getContactFieldFromID($to, "email");
+				$firstname = $contactsmodel->getContactFieldFromID($to, "firstname");
+				$lastname = $contactsmodel->getContactFieldFromID($to, "lastname");
+				$mail->AddAddress($email,$firstname . " " . $lastname);
+			}
+			
+			if($cc != "") {
+			$ccs = explode(",", $cc);
+			foreach ($ccs as &$cc) {
+				$email = $contactsmodel->getContactFieldFromID($cc, "email");
+				$firstname = $contactsmodel->getContactFieldFromID($cc, "firstname");
+				$lastname = $contactsmodel->getContactFieldFromID($cc, "lastname");
+				$mail->AddCC($email,$firstname . " " . $lastname);
+			}
+			}
+			
+			$mail->Subject  = $subject;
+			
+			$mail->AltBody    = "To view the message, please use an HTML compatible email viewer!"; // optional, comment out and test
+			$mail->WordWrap   = 80;
+			
+			$mail->MsgHTML(stripslashes($body . $footer));
+			$mail->AddAttachment($attachment);
+			
+			if(is_array($attachment_array)) {
+				foreach ($attachment_array as &$att) {
+					$mail->AddAttachment(CO_PATH_DOCUMENTS . $att["tempname"], $att["filename"]); 
+				}
+			}
+			
+			$mail->IsHTML(true); // send as HTML
+			
+			$mail->Send();
+			return true;
+		} catch (phpmailerException $e) {
+			return $e->errorMessage();
+		}
+	}
+
 
 }
 

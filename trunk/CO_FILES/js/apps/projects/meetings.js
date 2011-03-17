@@ -9,6 +9,7 @@ meetings.actionDialog = dialogMeeting;
 meetings.deleteTask = deleteTask;
 meetings.actionNew = newMeeting;
 meetings.actionPrint = printMeeting;
+meetings.actionSend = sendMeeting;
 meetings.actionDuplicate = duplicateMeeting;
 meetings.actionBin = binMeeting;
 meetings.poformOptions = { beforeSubmit: meetingFormProcess, dataType:  'json', success: meetingFormResponse };
@@ -17,9 +18,6 @@ meetings.toggleIntern = meetingToggleIntern;
 
 function getDetailsMeeting(moduleidx,liindex) {
 	var phaseid = $("#projects3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
-	
-	//alert(moduleidx + " " + liindex + " " + phaseid);
-	
 	$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/meetings&request=getDetails&id="+phaseid, success: function(html){
 		$("#"+projects.name+"-right").html(html);
 		initContentScrollbar();
@@ -30,7 +28,6 @@ function getDetailsMeeting(moduleidx,liindex) {
 
 
 function meetingFormProcess(formData, form, poformOptions) {
-	// check title
 	var title = $("#projects .title").fieldValue();
 	if(title == "") {
 		$.prompt(ALERT_NO_TITLE, {callback: setTitleFocus});
@@ -38,14 +35,6 @@ function meetingFormProcess(formData, form, poformOptions) {
 	} else {
 		formData[formData.length] = { "name": "title", "value": title };
 	}
-	/*if($('#protocol').length > 0) {
-		var protocol = $('#protocol').tinymce().getContent();
-		for (var i=0; i < formData.length; i++) { 
-			if (formData[i].name == 'protocol') { 
-				formData[i].value = protocol;
-			} 
-		} 
-	}*/
 	
 	$("#meetingtasks > div").each(function() {
 		var id = $(this).attr('id');
@@ -64,23 +53,7 @@ function meetingFormProcess(formData, form, poformOptions) {
 			var text = $('#'+yo).html();
 			formData[formData.length] = { "name": name, "value": text };
 		}
-		
-	
 	});
-	
-	/*$("#meetingtasks").find(':input[name^="task_text_"]').each(function() {
-					//alert($(this).attr('name'));
-					var id = $(this).attr('name');
-					var text = $('#'+id).tinymce().getContent();
-					var reg = /[0-9]+/.exec(id);
-					var name = "task_text["+reg+"]";
-					for (var i=0; i < formData.length; i++) { 
-			if (formData[i].name == id) { 
-				formData[i].name = name;
-				formData[i].value = text;
-			} 
-		}
-	})*/
 	
 	formData[formData.length] = processList('participants');
 	formData[formData.length] = processCustomText('participants_ct');
@@ -100,7 +73,6 @@ function meetingFormProcess(formData, form, poformOptions) {
 function meetingFormResponse(data) {
 	switch(data.action) {
 		case "edit":
-			//$("#projects3 a.active-link .text").html($("#projects .meeting_date").val() + ' - ' +$("#projects .title").val());
 			$("#projects3 a[rel='"+data.id+"'] .text").html($("#projects .meeting_date").val() + ' - ' +$("#projects .title").val());
 				switch(data.access) {
 					case "0":
@@ -143,17 +115,14 @@ function meetingFormResponse(data) {
 function newMeeting() {
 	var id = $('#projects2 .module-click:visible').attr("rel");
 	$.ajax({ type: "GET", url: "/", dataType: 'json', data: 'path=apps/projects/modules/meetings&request=createNew&id=' + id, cache: false, success: function(data){
-		//var id = $("#projects2 .module-click:visible").attr("rel");
 			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/projects/modules/meetings&request=getList&id="+id, success: function(list){
 				$(".projects3-content:visible ul").html(list.html);
 				var index = $(".projects3-content:visible .module-click").index($(".projects3-content:visible .module-click[rel='"+data.id+"']"));
 				$(".projects3-content:visible .module-click:eq("+index+")").addClass('active-link');
-				//$(".projects3-content:visible .drag:eq("+index+")").show();
 				var num = index+1;
 				$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/meetings&request=getDetails&id="+data.id+"&num="+num, success: function(html){
 					$("#projects-right").html(html);
 					initContentScrollbar();
-					//$("#loading").fadeOut();
 					}
 				});
 				projectsActions(0);
@@ -166,12 +135,23 @@ function newMeeting() {
 
 
 function printMeeting() {
-	alert("in Entwicklung - siehe Druckenlink unter Projekte");
+	var id = $("#projects3 .active-link:visible").attr("rel");
+	var url ='/?path=apps/projects/modules/meetings&request=printDetails&id='+id;
+	location.href = url;
+}
+
+
+function sendMeeting() {
+	var id = $("#projects3 .active-link:visible").attr("rel");
+	$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/meetings&request=getSend&id="+id, success: function(html){
+		$("#modalDialogForward").html(html).dialog('open');
+		}
+	});
 }
 
 
 function duplicateMeeting() {
-	var id = $("#projects3 .active-link").attr("rel");
+	var id = $("#projects3 .active-link:visible").attr("rel");
 	var pid = $("#projects2 .module-click:visible").attr("rel");
 	$.ajax({ type: "GET", url: "/", data: 'path=apps/projects/modules/meetings&request=createDuplicate&id=' + id, cache: false, success: function(mid){
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/projects/modules/meetings&request=getList&id="+pid, success: function(data){																																																																				
@@ -198,7 +178,7 @@ function binMeeting() {
 		buttons:langbuttons,
 		callback: function(v,m,f){		
 			if(v){
-				var id = $("#projects3 .active-link").attr("rel");
+				var id = $("#projects3 .active-link:visible").attr("rel");
 				var pid = $("#projects2 .module-click:visible").attr("rel");
 				$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/meetings&request=binMeeting&id=" + id, cache: false, success: function(data){
 						if(data == "true") {

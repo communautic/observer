@@ -9,6 +9,7 @@ phases.actionDialog = dialogPhase;
 phases.deleteTask = deleteTask;
 phases.actionNew = newPhase;
 phases.actionPrint = printPhase;
+phases.actionSend = sendPhase;
 phases.actionDuplicate = duplicatePhase;
 phases.actionBin = binPhase;
 phases.poformOptions = { beforeSubmit: phaseFormProcess, dataType:  'json', success: phaseFormResponse };
@@ -75,7 +76,6 @@ function phaseFormProcess(formData, form, poformOptions) {
 function phaseFormResponse(data) {
 	switch(data.action) {
 		case "edit":
-			//$("#projects3 a.active-link .text").html($("#projects .title").val());
 			$("#projects3 a[rel='"+data.id+"'] .text").html($("#projects .title").val());
 			$("#phasestartdate").html(data.startdate);
 			$("#phaseenddate").html(data.enddate);
@@ -134,13 +134,25 @@ function newPhase() {
 }
 
 function printPhase() {
-	alert("in Entwicklung - siehe Druckenlink unter Projekte");
+	var id = $("#projects3 .active-link:visible").attr("rel");
+	var num = $("#projects3 .active-link:visible").find(".phase_num").html();
+	var url ='/?path=apps/projects/modules/phases&request=printDetails&id='+id+"&num="+num;
+	location.href = url;
+}
+
+
+function sendPhase() {
+	var id = $("#projects3 .active-link:visible").attr("rel");
+	var num = $("#projects3 .active-link:visible").find(".phase_num").html();
+	$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=getSend&id="+id+"&num="+num, success: function(html){
+		$("#modalDialogForward").html(html).dialog('open');
+		}
+	});
 }
 
 
 function duplicatePhase() {
-	//$("#loading").fadeIn();
-	var id = $("#projects3 .active-link").attr("rel");
+	var id = $("#projects3 .active-link:visible").attr("rel");
 	var pid = $("#projects2 .module-click:visible").attr("rel");
 	$.ajax({ type: "GET", url: "/", data: 'path=apps/projects/modules/phases&request=createDuplicate&id=' + id, cache: false, success: function(phaseid){
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/projects/modules/phases&request=getList&id="+pid, success: function(data){																																																																				
@@ -167,7 +179,7 @@ function binPhase() {
 		buttons:langbuttons,
 		callback: function(v,m,f){		
 			if(v){
-				var id = $("#projects3 .active-link").attr("rel");
+				var id = $("#projects3 .active-link:visible").attr("rel");
 				var pid = $("#projects2 .module-click:visible").attr("rel");
 				$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=binPhase&id=" + id, cache: false, success: function(data){
 					if(data == "true") {
@@ -287,13 +299,10 @@ function dialogPhase(offset,request,field,append,title,sql) {
 			}
 		});
 	}
-	
-	
 }
 
 
 function deleteTask(id) {
-	
 	var txt = ALERT_DELETE;
 	var langbuttons = {};
 	langbuttons[ALERT_YES] = true;
@@ -302,27 +311,22 @@ function deleteTask(id) {
 		buttons:langbuttons,
 		callback: function(v,m,f){		
 			if(v){
-	
-	$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=deleteTask&id=" + id, success: function(data){
-		if(data){
-			$("#task_"+id).slideUp(function(){ 
-					$(this).remove();
-					var pst = $(".task_start:first").val();
-					var pen = $(".task_start:last").val();
-					$("#phasestartdate").html(pst);
-					$("#phaseenddate").html(pen);
-					
+				$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=deleteTask&id=" + id, success: function(data){
+					if(data){
+						$("#task_"+id).slideUp(function(){ 
+							$(this).remove();
+							var pst = $(".task_start:first").val();
+							var pen = $(".task_start:last").val();
+							$("#phasestartdate").html(pst);
+							$("#phaseenddate").html(pen);
+						});
+					} 
+					}
 				});
-			
-			
-		} 
-		}
-	});
-	} 
+			} 
 		}
 	});
 }
-
 
 
 $(document).ready(function() { 
@@ -335,7 +339,7 @@ $(document).ready(function() {
 		$("#phase_status").nextAll('img').trigger('click');
 		return false;
 	});
-	
+
 	$(".insertTaskfromDialog").live('click', function() {
 	 	var field = $(this).attr("field");
 		var gid = $(this).attr("gid");
@@ -348,7 +352,7 @@ $(document).ready(function() {
 		$('#projects .coform').ajaxSubmit(obj.poformOptions);
 		return false;
 	});
-	
+
 	$("a.addPhaseTask").live('click', function() {
 		var enddate = $("#phaseenddate").html();
 		var pid = $("#projects2 .module-click:visible").attr("rel");
@@ -371,7 +375,7 @@ $(document).ready(function() {
 		});
 		return false;
 	});
-	
+
 	$('a.dependentTask').live('click',function() {
 		var ele = $(this);
 		var field = $(this).attr("rel");
@@ -380,7 +384,7 @@ $(document).ready(function() {
 				ele.next().slideDown();
 		return false;
 	});
-	
+
 	$('a.delete-dependentTask').live('click',function() {
 		var field = $(this).attr("rel");
 		$("#"+field).val(0);
@@ -389,8 +393,8 @@ $(document).ready(function() {
 		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 		return false;
 	});
-	
-	
+
+
 	// Recycle bin functions
 	$(".bin-deletePhase").live('click',function(e) {
 		var id = $(this).attr("rel");
@@ -413,7 +417,8 @@ $(document).ready(function() {
 		});
 		return false;
 	});
-	
+
+
 	$(".bin-restorePhase").live('click',function(e) {
 		var id = $(this).attr("rel");
 		var txt = ALERT_RESTORE;
@@ -458,7 +463,8 @@ $(document).ready(function() {
 		});
 		return false;
 	});
-	
+
+
 	$(".bin-restorePhaseTask").live('click',function(e) {
 		var id = $(this).attr("rel");
 		var txt = ALERT_RESTORE;
