@@ -714,7 +714,7 @@ class ProjectsModel extends Model {
 				$realisation = 0;
 				$id_array = "";
 				
-				$q = "SELECT id FROM " . CO_TBL_PROJECTS. " WHERE projectfolder = '$id' and bin = '0'";
+				$q = "SELECT id FROM " . CO_TBL_PROJECTS. " WHERE projectfolder = '$id' and status != '0' and bin = '0'";
 				$result = mysql_query($q, $this->_db->connection);
 				$num = mysql_num_rows($result);
 				$i = 1;
@@ -760,7 +760,7 @@ class ProjectsModel extends Model {
 				$realisation = 0;
 				$id_array = "";
 				
-				$q = "SELECT id FROM " . CO_TBL_PROJECTS. " WHERE projectfolder = '$id' and bin = '0'";
+				$q = "SELECT id FROM " . CO_TBL_PROJECTS. " WHERE projectfolder = '$id' and status != '0' and bin = '0'";
 				$result = mysql_query($q, $this->_db->connection);
 				$num = mysql_num_rows($result);
 				$i = 1;
@@ -819,7 +819,7 @@ class ProjectsModel extends Model {
 				$realisation = 0;
 				$id_array = "";
 				
-				$q = "SELECT id FROM " . CO_TBL_PROJECTS. " WHERE projectfolder = '$id' and bin = '0'";
+				$q = "SELECT id FROM " . CO_TBL_PROJECTS. " WHERE projectfolder = '$id' and status != '0' and bin = '0'";
 				$result = mysql_query($q, $this->_db->connection);
 				$num = mysql_num_rows($result);
 				$i = 1;
