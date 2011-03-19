@@ -1,5 +1,5 @@
 <?php
-$lang["APPLICATION_NAME"] = "company observer 6.0.4";
+$lang["APPLICATION_NAME"] = "company observer 6.0.5";
 
 /* LOGIN PAGE */
 $lang["LOGIN_USERNAME"] = "Username:";
@@ -17,7 +17,7 @@ $lang["ACTION_NEW"] = "new";
 $lang["ACTION_PRINT"] = "print";
 $lang["ACTION_SENDTO"] = "forward";
 $lang["ACTION_DUPLICATE"] = "duplicate";
-$lang["ACTION_PROJECTHANDBOOK"] = "Handbook";
+$lang["ACTION_PROJECTHANDBOOK"] = "Project Guide";
 $lang["ACTION_DELETE"] = "delete";
 
 $lang["TEXT_NOTE"] = "manual entry:";
@@ -43,7 +43,7 @@ $lang["GLOBAL_ACCESS_PUBLIC"] = 'public';
 $lang["GLOBAL_ACCESS_FOOTER"] = 'access:';
 $lang["GLOBAL_FOOTER_STATUS"] = 'Stand';
 
-$lang["GLOBAL_TO"] = 'to';
+$lang["GLOBAL_TO"] = 'To';
 $lang["GLOBAL_CC"] = 'CC';
 $lang["GLOBAL_SUBJECT"] = 'Subject';
 $lang["GLOBAL_MESSAGE"] = 'Message';

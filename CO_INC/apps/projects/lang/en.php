@@ -36,7 +36,7 @@ $lang["PROJECT_STATUS_FINISHED"] = 'finished on';
 $lang["PROJECT_PHASES"] = 'Phases';
 $lang["PROJECT_MEETINGS"] = 'Meetings';
 
-$lang["PROJECT_HANDBOOK"] = 'Project Handbook';
+$lang["PROJECT_HANDBOOK"] = 'Project Guide';
 
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/projects/en.php";

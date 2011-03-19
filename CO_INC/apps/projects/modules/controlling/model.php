@@ -86,6 +86,34 @@ class ControllingModel extends ProjectsModel {
    }
    
    
+   // Daily Cron
+   function getDailyStatistic() {
+		global $session;
+		// select all projects that are active ie startdate is < today and endfdate > today or status != 2
+		$today = date("Y-m-d");
+		//$str = "";
+		$q = "SELECT a.id,a.status,(SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as startdate ,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_PROJECTS . " as a where a.bin='0'";
+
+		$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+			if($row["startdate"] < $today && $row["status"] != '2') {
+				//$str .= $row["id"] . " : ";
+				$id = $row["id"];
+				$chart = $this->getChart($id, "stability", $image = 0);
+				$res = $chart["real"];
+				//$str .= $chart["real"];
+						$qs = "INSERT INTO " . CO_TBL_PROJECTS_STATISICS . " set pid = '$id', result = '$res'";
+						$results = mysql_query($qs, $this->_db->connection);
+				
+				
+			}
+		}
+		
+		//return $str;
+	}
+
+   
+   
    function getChart($id, $what, $image = 1) { 
 		global $lang;
 		switch($what) {
