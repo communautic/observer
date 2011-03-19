@@ -87,6 +87,11 @@ class Controlling extends Projects {
 	}
 
 
+	function getDailyStatistic() {
+		echo $this->model->getDailyStatistic();
+	}
+
+
 	function getChart($id,$what, $print=0) {
 		if($chart = $this->model->getChart($id,$what)) {
 				if($print == 1) {

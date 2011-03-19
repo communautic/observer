@@ -138,7 +138,8 @@ class TimelinesModel extends ProjectsModel {
 							$tstatus = "barchart_color_planned";
 						} else if ($row->status == 1 && $today <= $rowt->enddate) {
 							$tstatus = "barchart_color_inprogress";
-
+						} else if ($row->status == 1 && $today > $rowt->enddate) {
+							$tstatus = "barchart_color_overdue";
 						} else {
 							$tstatus = "barchart_color_not_finished";
 						}
@@ -283,7 +284,17 @@ class TimelinesModel extends ProjectsModel {
 							$tstatus = "barchart_color_planned";
 						} else if ($row->status == 1 && $today <= $rowt->enddate) {
 							$tstatus = "barchart_color_inprogress";
-
+						} else if ($row->status == 1 && $today > $rowt->enddate) {
+							$tstatus = "barchart_color_inprogress";
+							$overdue["days"] = $this->_date->dateDiff($rowt->enddate,$today);
+							$overdue["width"] = $overdue["days"] * $width;
+							$overdue["left"] = $task_left + $task_width;
+							
+							if($today > $project["enddate"]) {
+								$project["enddate"] = $today;
+								$project["days"] = $this->_date->dateDiff($project["startdate"],$project["enddate"]);
+								$project["css_width"] = ($project["days"]+1) * $width;
+							}
 						} else {
 							$tstatus = "barchart_color_not_finished";
 						}

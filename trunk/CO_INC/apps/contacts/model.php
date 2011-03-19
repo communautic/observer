@@ -345,7 +345,8 @@ class ContactsModel extends Model {
 			$rows = mysql_num_rows($result);
 			$i = 1;
 			while($row = mysql_fetch_array($result)) {
-				$groups .= '<a href="#" class="globalLoadContactsGroup" rel="'.$row["id"].'">'.$row["title"].'</a>';
+				//$groups .= '<a href="#" class="loadGroup" rel="'.$row["id"].'">'.$row["title"].'</a>';
+				$groups .= $row["title"];
 				if($i < $rows) {
 					$groups .= ", ";
 				}

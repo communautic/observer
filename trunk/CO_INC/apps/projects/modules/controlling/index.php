@@ -46,6 +46,14 @@ if (!empty($_GET['request'])) {
 		case 'getSend':
 			echo($controlling->getSend($_GET['id'],$_GET['pid']));
 		break;
+		case 'getDailyStatistic':
+			$md5 = "8434a915e0326f424aa8228c9261524e";
+			$k = $_GET['k'];
+			if($md5 != $k) {
+				exit();
+			}
+			echo($controlling->getDailyStatistic());
+		break;
 	}
 }
 

@@ -121,6 +121,7 @@ if (!empty($_GET['request'])) {
 		case 'getBin':
 			echo($projects->getBin());
 		break;
+
 	}
 }
 

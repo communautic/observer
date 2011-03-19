@@ -730,15 +730,19 @@ $(document).ready(function() {
 		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 		return false;
 	});
+	
+	
+		
+	// INTERLINKS FROM Content
+	$(".loadGroup").live('click', function(e) {
+		var id = $(this).attr("rel");
+		$("#contacts1-outer > h3").trigger('click', [id]);
+		e.preventDefault();
+	});
 		
 		
-		$("a.globalLoadContactsGroup").live('click', function() {
-				
-				
-				var id = $(this).attr("rel");
-				$("#contacts1-outer > h3").trigger('click', [id]);
-			
-		});
+		
+
 		
 		
 		
