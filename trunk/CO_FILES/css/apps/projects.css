@@ -12,49 +12,47 @@
 
 .projects3-content { width: 325px;; background-color: #82aa0a; padding:0; overflow:hidden !important;}
 
-#projects .ui-layout-west li a:hover   { background-color: #577207}
-#projects .ui-layout-west li a.active-link  { background-color: #577207}
+#projects .ui-layout-west li>span:hover   { background-color: #577207}
+#projects .ui-layout-west li>span.active-link  { background-color: #577207}
 #projects .hover-bg  { background-color: #577207}
 #projects .hover-outline { border: 1px solid #577207}
 
 #projects .jspDrag { background: #577207; }
 
+#projects .co-link:hover { color: #82aa0b; }
+
 #projects .center-center a         { color: #000; }
 #projects .center-center a:link    { color: #000; }
 #projects .center-center a:active  { color: #000; }
 #projects .center-center a:visited { color: #000; }
-#projects .center-center a:hover   { color: #577207; cursor: pointer}
+#projects .center-center a:hover   { color: #82aa0b; cursor: pointer}
 
 #projectsActions { display: block; }
 
-#menu a.app_projects:link, #menu a.app_projects:active, #menu a.app_projects:visited { color: #333; text-decoration: none; outline: none; background: url(../../img/app_propellor.png) no-repeat 36px 0px; }
-#menu a.app_projects:hover { color: #fff; text-decoration: none; outline: none; background: #82aa0b url(../../img/app_propellor.png) no-repeat 36px -30px; }
-#menu a.app_projects.active-app { color: #fff; text-decoration: none; outline: none; background: #82aa0b url(../../img/app_propellor.png) no-repeat 36px -30px; }
+#menu .app_projects { color: #333; text-decoration: none; outline: none; background: url(../../img/app_propellor.png) no-repeat 36px 0px; }
+#menu .app_projects:hover { color: #fff; text-decoration: none; outline: none; background: #82aa0b url(../../img/app_propellor.png) no-repeat 36px -30px; }
+#menu .app_projects.active-app { color: #fff; text-decoration: none; outline: none; background: #82aa0b url(../../img/app_propellor.png) no-repeat 36px -30px; }
 
 /* Actions Menu */
-#projectsActions a.actionNew 				{	background-position: -50px 0px;	}
-#projectsActions a.actionNew:hover 			{ 	background-position:  -100px 0px;	}
-#projectsActions a.actionNew.noactive 		{ 	background-position:  0px 0px; 		}
+#projectsActions span.actionNew 				{	background-position: -50px 0px;	}
+#projectsActions span.actionNew:hover 			{ 	background-position:  -100px 0px;	}
+#projectsActions span.actionNew.noactive 		{ 	background-position:  0px 0px; 		}
 
-/*#projectsActions a.actionSave 				{ 	background-position: -50px -51px;	}
-#projectsActions a.actionSave:hover 		{ 	background-position: -100px -51px;	}
-#projectsActions a.actionSave.noactive 		{ 	background-position: 0px -51px;		}*/
+#projectsActions span.actionPrint 				{ 	background-position: -50px -102px;	}
+#projectsActions span.actionPrint:hover 		{ 	background-position: -100px -102px;	}
+#projectsActions span.actionPrint.noactive 	{ 	background-position:0px -102px;		}
 
-#projectsActions a.actionPrint 				{ 	background-position: -50px -102px;	}
-#projectsActions a.actionPrint:hover 		{ 	background-position: -100px -102px;	}
-#projectsActions a.actionPrint.noactive 	{ 	background-position:0px -102px;		}
+#projectsActions span.actionSend 				{ 	background-position: -50px -151px;	}
+#projectsActions span.actionSend:hover 		{ 	background-position: -100px -151px;	}
+#projectsActions span.actionSend.noactive 		{ 	background-position: 0px -151px; 	}
 
-#projectsActions a.actionSend 				{ 	background-position: -50px -151px;	}
-#projectsActions a.actionSend:hover 		{ 	background-position: -100px -151px;	}
-#projectsActions a.actionSend.noactive 		{ 	background-position: 0px -151px; 	}
+#projectsActions span.actionDuplicate 			{ 	background-position: -50px -206px;	}
+#projectsActions span.actionDuplicate:hover 	{ 	background-position: -100px -206px;	}
+#projectsActions span.actionDuplicate.noactive { background-position: 0px -206px;  	}
 
-#projectsActions a.actionDuplicate 			{ 	background-position: -50px -206px;	}
-#projectsActions a.actionDuplicate:hover 	{ 	background-position: -100px -206px;	}
-#projectsActions a.actionDuplicate.noactive { background-position: 0px -206px;  	}
-
-#projectsActions a.actionProjectHandbook 			{ 	background-position: -50px -413px;	}
-#projectsActions a.actionProjectHandbook:hover 	{ 	background-position: -100px -413px;	}
-#projectsActions a.actionProjectHandbook.noactive { background-position: 0px -413px;  	}
+#projectsActions span.actionProjectHandbook 			{ 	background-position: -50px -413px;	}
+#projectsActions span.actionProjectHandbook:hover 	{ 	background-position: -100px -413px;	}
+#projectsActions span.actionProjectHandbook.noactive { background-position: 0px -413px;  	}
 
 .milestone { width: 18px; height: 18px; background: url(../../../img/milestone.png) no-repeat 0px 0px; text-align: center; line-height: 19px;}
 .milestone span { margin-left: 3px; }
@@ -71,13 +69,11 @@ background-color: #e1f0af; }
 
 #projects a.disabled { background-position: 0px -570px; }
 
-#projects-right .tcell-left span { display: block; padding: 0 0 0 15px; }
+#projects-right .tcell-left span span { display: block; padding: 0 0 0 15px; }
 #projects-right .tcell-left-short span { display: block; padding: 0 0 0 15px; }
-#projects-right a.content-nav         { color: #000; }
-#projects-right a.content-nav :link    { color: #000; }
-#projects-right a.content-nav :active  { color: #000; }
-#projects-right a.content-nav :visited { color: #000; }
-#projects-right a.content-nav :hover   { background-color: #82AA0A; color: #000}
+
+#projects-right .content-nav         { color: #000; }
+#projects-right .content-nav:hover   { display: block; background-color: #82AA0A; color: #000; cursor: pointer; }
 
 .content-outline {background-color: #e1f0af;}
 

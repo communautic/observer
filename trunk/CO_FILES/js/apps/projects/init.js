@@ -86,8 +86,17 @@ function folderFormProcess(formData, form, poformOptions) {
 function projectFormResponse(data) {
 	switch(data.action) {
 		case "edit":
-			$("#projects2 a[rel='"+data.id+"'] .text").html($("#projects .title").val());
+			$("#projects2 span[rel='"+data.id+"'] .text").html($("#projects .title").val());
 			$("#durationStart").html($("input[name='startdate']").val());
+			
+			switch(data.status) {
+				case "2":
+					$("#projects2 .active-link .module-item-status").addClass("module-item-active");
+				break;
+				default:
+					$("#projects2 .active-link .module-item-status").removeClass("module-item-active");
+			}
+			
 		break;
 		case "reload":
 			$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=getProjectDetails&id="+data.id, success: function(html){
@@ -301,7 +310,7 @@ function projectsActions(status) {
 		case 4: 	actions = ['1','2']; break;   					// no new no delete
 		default: 	actions = [];  								// none
 	}
-	$('#projectsActions > li a').each( function(index) {
+	$('#projectsActions > li span').each( function(index) {
 		if(index in oc(actions)) {
 			$(this).removeClass('noactive');
 		} else {
@@ -319,8 +328,8 @@ function sortClickFolder(obj,sortcur,sortnew) {
 			$('#projects1 input.filter').quicksearch('#projects1 li');
 		  var id = $("#projects1 .module-click:eq(0)").attr("rel");
 		  $("#projects1 .module-click:eq(0)").addClass('active-link');
-		  $.ajax({ type: "GET", url: "/", data: "request=path=apps/projects&getFolderDetails&id="+id, success: function(html){
-			  $("#"+projects.name+"-right").html(html);
+		  $.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=getFolderDetails&id="+id, success: function(html){
+			  $("#projects-right").html(html);
 			  initContentScrollbar()
 			  }
 		  });
@@ -331,8 +340,8 @@ function sortClickFolder(obj,sortcur,sortnew) {
 
 function sortDragFolder(order) {
 	$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=setFolderOrder&"+order, success: function(html){
-		$("#projects1 a.sort").attr("rel", "3");
-		$("#projects1 a.sort").removeClass("sort1").removeClass("sort2").addClass("sort3");
+		$("#projects1 .sort").attr("rel", "3");
+		$("#projects1 .sort").removeClass("sort1").removeClass("sort2").addClass("sort3");
 		}
 	});
 }
@@ -362,8 +371,8 @@ function sortClickProject(obj,sortcur,sortnew) {
 function sortDragProject(order) {
 	var fid = $("#projects .module-click:visible").attr("rel");
 	$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=setProjectOrder&"+order+"&id="+fid, success: function(html){
-		$("#projects2 a.sort").attr("rel", "3");
-		$("#projects2 a.sort").removeClass("sort1").removeClass("sort2").addClass("sort3");
+		$("#projects2 .sort").attr("rel", "3");
+		$("#projects2 .sort").removeClass("sort1").removeClass("sort2").addClass("sort3");
 		}
 	});
 }
@@ -412,7 +421,7 @@ function projectsloadModuleStart() {
 		}
 		$("#projects1").css("overflow", "auto").animate({height: h-71}, function() {
 			$("#projects1 li").show();
-			$("#projects1 a.sort").attr("rel", data.sort).addClass("sort"+data.sort);
+			$("#projects1 .sort").attr("rel", data.sort).addClass("sort"+data.sort);
 			projectsInnerLayout.initContent('center');
 				initScrollbar( '#projects .scrolling-content' );
 				$('#projects1 input.filter').quicksearch('#projects1 li');
@@ -652,7 +661,7 @@ $(document).ready(function() {
 						$("#projects1").css("overflow", "hidden").animate({height: module_title_height}, function() {
 							//initScrollbar( '#projects .scrolling-content' );		
 							//initContentScrollbar();
-							$("#projects-top .top-headline").html($("#projects a.module-click:visible").find(".text").html());
+							$("#projects-top .top-headline").html($("#projects .module-click:visible").find(".text").html());
 							$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=getProjectDetails&id="+projectid, success: function(html){
 							$("#"+projects.name+"-right").html(html);
 							initContentScrollbar();
@@ -682,7 +691,7 @@ $(document).ready(function() {
 	});
 
 
-	$("#projects1 a.module-click").live('click',function(e) {
+	$("#projects1 .module-click").live('click',function(e) {
 		if($(this).hasClass("deactivated")) {
 			return false;
 		}
@@ -692,8 +701,8 @@ $(document).ready(function() {
 			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 		}
 		var id = $(this).attr("rel");
-		var index = $("#projects a.module-click").index(this);
-		$("#projects a.module-click").removeClass("active-link");
+		var index = $("#projects .module-click").index(this);
+		$("#projects .module-click").removeClass("active-link");
 		$(this).addClass("active-link");
 
 		var h = $("#projects .ui-layout-west").height();
@@ -711,7 +720,7 @@ $(document).ready(function() {
 	});
 
 
-	$("#projects2 a.module-click").live('click',function() {
+	$("#projects2 .module-click").live('click',function() {
 		if($(this).hasClass("deactivated")) {
 			return false;
 		}
@@ -724,12 +733,12 @@ $(document).ready(function() {
 		
 		var fid = $("#projects .module-click:visible").attr("rel");
 		var id = $(this).attr("rel");
-		var index = $("#projects a.module-click").index(this);
-		$("#projects a.module-click").removeClass("active-link");
+		var index = $("#projects .module-click").index(this);
+		$("#projects .module-click").removeClass("active-link");
 		$(this).addClass("active-link");
 		//$("#projects .top-line1-text2").html(" / " + $(this).find(".text").html());
-		$("#projects-top .top-headline").html($("#projects a.module-click:visible").find(".text").html());
-		//$("#projects2 a.module-click:not(.active-link) .drag").hide();
+		$("#projects-top .top-headline").html($("#projects .module-click:visible").find(".text").html());
+		//$("#projects2 .module-click:not(.active-link) .drag").hide();
 		$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=getProjectDetails&fid="+fid+"&id="+id, success: function(html){
 			$("#"+projects.name+"-right").html(html);
 			initContentScrollbar();
@@ -747,7 +756,7 @@ $(document).ready(function() {
 	});
 
 
-	$("#projects3 a.module-click").live('click',function() {
+	$("#projects3 .module-click").live('click',function() {
 		
 		if(confirmNavigation()) {
 			formChanged = false;
@@ -759,7 +768,7 @@ $(document).ready(function() {
 		//var ulidx = $(this).parents("ul").index();
 		var ulidx = $("#projects3 ul").index($(this).parents("ul"));
 		var index = $("#projects3 ul:eq("+ulidx+") .module-click").index($("#projects3 ul:eq("+ulidx+") .module-click[rel='"+id+"']"));
-		$("#projects3 a.module-click").removeClass("active-link");
+		$("#projects3 .module-click").removeClass("active-link");
 		$(this).addClass("active-link");
 		
 		var obj = getCurrentModule();
@@ -848,7 +857,7 @@ $(document).ready(function() {
 					$("#projects3 .module-actions:visible").hide();
 					setModuleDeactive($("#projects2"),index);
 					$("#projects2").css("overflow", "hidden").animate({height: module_title_height}, function() {
-						$("#projects-top .top-subheadline").html($("#projects2 a.module-click:visible").find(".text").html());
+						$("#projects-top .top-subheadline").html($("#projects2 .module-click:visible").find(".text").html());
 						
 						$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getDates&id="+id, success: function(data){
 							$("#projects-top .top-subheadlineTwo").html(data.startdate + ' - <span id="projectenddate">' + data.enddate + '</span>');
@@ -1015,7 +1024,7 @@ $(document).ready(function() {
 	});*/
 	
 	
-	$('a.actionProjectHandbook').click(function(){
+	$('span.actionProjectHandbook').click(function(){
 		if($(this).hasClass("noactive")) {
 			return false;
 		}

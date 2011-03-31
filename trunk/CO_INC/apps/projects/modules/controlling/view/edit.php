@@ -1,7 +1,7 @@
 <div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-title">
   <tr>
-    <td nowrap="nowrap" class="tcell-left text11"><span class="content-nav"><?php echo $lang["CONTROLLING_STATUS"];?></span></td>
+    <td nowrap="nowrap" class="tcell-left text11"><span class="content-nav-title"><?php echo $lang["CONTROLLING_STATUS"];?></span></td>
     <td></td>
   </tr>
 </table>

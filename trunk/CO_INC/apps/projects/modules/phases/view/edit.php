@@ -1,7 +1,7 @@
 <div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-title">
   <tr>
-    <td class="tcell-left text11"><a href="#" class="content-nav focusTitle"><span><?php echo $lang["PHASE_TITLE"];?></span></a></td>
+    <td class="tcell-left text11"><span class="content-nav focusTitle"><span><?php echo $lang["PHASE_TITLE"];?></span></span></td>
 	<td width="20"><div class="bold"><?php echo($phase->num) ;?>.</div></td>
     <td><input name="title" type="text" class="title textarea-title" value="<?php echo($phase->title);?>" maxlength="100" /></td>
   </tr>
@@ -28,21 +28,21 @@
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
   <tr>
-    <td class="tcell-left text11"><a href="#" class="content-nav showDialog" request="getContactsDialog" field="team" append="1"><span><?php echo $lang["PHASE_TEAM"];?></span></a></td>
-    <td class="tcell-right"><div id="team" class="itemlist-field"><?php echo($phase->team);?></div><div id="team_ct" class="itemlist-field"><a field="team_ct" class="ct-content"><?php echo($phase->team_ct);?></a></div></td>
+    <td class="tcell-left text11"><span class="content-nav showDialog" request="getContactsDialog" field="team" append="1"><span><?php echo $lang["PHASE_TEAM"];?></span></span></td>
+    <td class="tcell-right"><div id="team" class="itemlist-field"><?php echo($phase->team);?></div><div id="team_ct" class="itemlist-field"><span field="team_ct" class="ct-content"><?php echo($phase->team_ct);?></span></div></td>
   </tr>
 </table>
 <div class="content-spacer"></div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><a href="#" class="content-nav showDialog" request="getPhaseStatusDialog" field="status" append="1"><span><?php echo $lang["GLOBAL_STATUS"];?></span></a></td>
+	  <td class="tcell-left text11"><span class="content-nav showDialog" request="getPhaseStatusDialog" field="status" append="1"><span><?php echo $lang["GLOBAL_STATUS"];?></span></span></td>
         <td class="tcell-right"><div id="phase_status" class="itemlist-field"><div class="listmember" field="phase_status" uid="<?php echo($phase->status);?>" style="float: left"><?php echo($phase->status_text);?></div></div><input name="phase_status_date" type="text" class="input-date datepicker phase_status_date" value="<?php echo($phase->status_date)?>" style="float: left; margin-left: 8px;" /></td>
 	</tr>
 </table>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
   <tr>
-    <td class="tcell-left text11"><a href="#" class="content-nav protocolToggle"><span><?php echo $lang["PROJECT_DESCRIPTION"];?></span></a></td>
+    <td class="tcell-left text11"><span class="content-nav protocolToggle"><span><?php echo $lang["PROJECT_DESCRIPTION"];?></span></span></td>
     <td class="tcell-right"><div class="protocol-outer" style="position: relative;"><div id="protocol" class="tinymce" style="min-height: 26px;"><?php echo($phase->protocol);?></div></div></td>
   </tr>
 </table>
@@ -50,7 +50,7 @@
 <table border="0" cellpadding="0" cellspacing="0" class="table-content addTaskTable">
 	<tr>
 		<td class="tcell-left text11">
-        <a href="#" class="content-nav showDialog" request="getPhaseTaskDialog" field="status" append="1"><span><?php echo $lang["PHASE_TASK_MILESTONE"];?></span></a>
+        <span class="content-nav showDialog" request="getPhaseTaskDialog" field="status" append="1"><span><?php echo $lang["PHASE_TASK_MILESTONE"];?></span></span>
         </td>
     <td class="tcell-right">&nbsp;</td>
     </tr>
@@ -76,13 +76,13 @@ foreach($task as $value) {
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
   <tr>
-    <td class="tcell-left text11"><a href="#" class="content-nav showDialog" request="getDocumentsDialog" field="documents" append="1"><span><?php echo $lang["DOCUMENT_DOCUMENTS"];?></span></a></td>
+    <td class="tcell-left text11"><span class="content-nav showDialog" request="getDocumentsDialog" field="documents" append="1"><span><?php echo $lang["DOCUMENT_DOCUMENTS"];?></span></span></td>
     <td class="tcell-right"><div id="documents" class="itemlist-field"><?php echo($phase->documents);?></div></td>
   </tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><a href="#" class="content-nav showDialog" request="getAccessDialog" field="phase_access" title="<?php echo $lang["GLOBAL_ACCESS"];?>" append="1"><span><?php echo $lang["GLOBAL_ACCESS"];?></span></a></td>
+	  <td class="tcell-left text11"><span class="content-nav showDialog" request="getAccessDialog" field="phase_access" title="<?php echo $lang["GLOBAL_ACCESS"];?>" append="1"><span><?php echo $lang["GLOBAL_ACCESS"];?></span></span></td>
         <td class="tcell-right"><div id="phase_access" class="itemlist-field"><div class="listmember" field="phase_access" uid="<?php echo($phase->access);?>" style="float: left"><?php echo($phase->access_text);?></div></div><input type="hidden" name="phase_access_orig" value="<?php echo($phase->access);?>" /></td>
 	</tr>
 </table>

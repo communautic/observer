@@ -20,7 +20,7 @@ function binActions(status) {
 		case 0: actions = []; break;
 		default: 	actions = [];  	// none
 	}
-	$('#binActions > li a').each( function(index) {
+	$('#binActions > li span').each( function(index) {
 		if(index in oc(actions)) {
 			$(this).removeClass('noactive');
 		} else {
@@ -115,13 +115,13 @@ $(document).ready(function() {
 	});
 
 
-	$("#bin1 a.module-click").live('click',function(e) {
+	$("#bin1 .module-click").live('click',function(e) {
 		if($(this).hasClass("deactivated")) {
 			return false;
 		}
 		var id = $(this).attr("rel");
-		var index = $("#bin a.module-click").index(this);
-		$("#bin a.module-click").removeClass("active-link");
+		var index = $("#bin .module-click").index(this);
+		$("#bin .module-click").removeClass("active-link");
 		$(this).addClass("active-link");
 			
 		$.ajax({ type: "GET", url: "/", data: "path=apps/"+ id +"&request=getBin", success: function(html){

@@ -1,7 +1,7 @@
 <div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-title">
   <tr>
-    <td class="tcell-left text11"><span class="content-nav"><?php echo TIMELINE_DATES_LIST;?></span></td>
+    <td class="tcell-left text11"><span class="content-nav-title"><?php echo TIMELINE_DATES_LIST;?></span></td>
     <td></td>
   </tr>
 </table>
@@ -10,7 +10,7 @@
 <table border="0" cellpadding="0" cellspacing="0" class="table-content loadProject" rel="<?php echo($project["id"]);?>">
 	<tr>
 		<td class="tcell-left-inactive text11"><?php echo $lang["PROJECT_TITLE"];?></td>
-		<td class="tcell-right bold"><a href="#" class="loadProject" rel="<?php echo($project["id"]);?>"><?php echo($project["title"]);?></a></td>
+		<td class="tcell-right bold"><a class="loadProject" rel="<?php echo($project["id"]);?>"><?php echo($project["title"]);?></a></td>
     </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content loadProject" rel="<?php echo($project["id"]);?>">
@@ -35,7 +35,7 @@ if($numPhases > 0) {
 <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive loadPhase" rel="<?php echo($project["phases"][$key]["id"]);?>">
 	<tr>
 	  <td class="tcell-left-inactive text11"><?php echo $lang["PHASE_TITLE"];?></td>
-        <td class="tcell-right"><a href="#" class="loadPhase bold" rel="<?php echo($project["phases"][$key]["id"]);?>"><?php echo($countPhases . ". " . $project["phases"][$key]["title"]);?></a><br />
+        <td class="tcell-right"><a class="loadPhase bold" rel="<?php echo($project["phases"][$key]["id"]);?>"><?php echo($countPhases . ". " . $project["phases"][$key]["title"]);?></a><br />
         <span class="text11 content-date"><?php echo $lang["GLOBAL_DURATION"];?></span><span class="text11"><?php echo($project["phases"][$key]["startdate"]);?> - <?php echo($project["phases"][$key]["enddate"]);?></span><br />
         </td>
 	</tr>

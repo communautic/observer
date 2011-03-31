@@ -292,7 +292,7 @@ class Projects extends Controller {
 	function setProjectDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$projectfolder,$status,$status_date) {
 		$retval = $this->model->setProjectDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$projectfolder,$status,$status_date);
 		if($retval){
-			 return '{ "action": "edit", "id": "' . $id . '" }';
+			 return '{ "action": "edit", "id": "' . $id . '", "status": "' . $status . '"}';
 		  } else{
 			 return "error";
 		  }

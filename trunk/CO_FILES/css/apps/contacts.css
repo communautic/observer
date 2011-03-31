@@ -12,55 +12,52 @@
 
 .contacts3-content { 	width: 100%; background-color: #c88700; padding:0; overflow:hidden !important; }
 
-#contacts .ui-layout-west li a:hover   { background-color: #865b00}
-#contacts .ui-layout-west li a.active-link  { background-color: #865b00}
+#contacts .ui-layout-west li>span:hover   { background-color: #865b00}
+#contacts .ui-layout-west li>span.active-link  { background-color: #865b00}
 
 /*.ui-layout-west li a.deactivated { color: #fff; }
 .ui-layout-west li a.deactivated:hover { color: #fff; background-color: transparent !important; }*/
 
 #contacts .jScrollPaneDrag { background: #865b00; }
 
+#contacts .co-link:hover { color: #865b00; }
+
 #contacts .center-center a         { color: #000; }
 #contacts .center-center a:link    { color: #000; }
 #contacts .center-center a:active  { color: #000; }
 #contacts .center-center a:visited { color: #000; }
-#contacts .center-center a:hover   { color: #865b00; }
+#contacts .center-center a:hover   { color: #865b00; cursor: pointer}
 
 
-
-#menu a.app_contacts:link, #menu a.app_contacts:active, #menu a.app_contacts:visited { color: #333; text-decoration: none; outline: none; background: url(../../img/app_propellor.png) no-repeat 36px 0px; }
-#menu a.app_contacts:hover { color: #fff; text-decoration: none; outline: none; background: #c98601 url(../../img/app_propellor.png) no-repeat 36px -60px; }
-#menu a.app_contacts.active-app { color: #fff; text-decoration: none; outline: none; background: #c98601 url(../../img/app_propellor.png) no-repeat 36px -60px; }
+#menu .app_contacts { color: #333; text-decoration: none; outline: none; background: url(../../img/app_propellor.png) no-repeat 36px 0px; }
+#menu .app_contacts:hover { color: #fff; text-decoration: none; outline: none; background: #c98601 url(../../img/app_propellor.png) no-repeat 36px -60px; }
+#menu .app_contacts.active-app { color: #fff; text-decoration: none; outline: none; background: #c98601 url(../../img/app_propellor.png) no-repeat 36px -60px; }
 
 
 /* Actions Menu */
-#contactsActions a.actionNew 				{	background-position: -150px 0px;	}
-#contactsActions a.actionNew:hover 			{ 	background-position:  -200px 0px;	}
-#contactsActions a.actionNew.noactive 		{ 	background-position:  0px 0px; 		}
+#contactsActions span.actionNew 				{	background-position: -150px 0px;	}
+#contactsActions span.actionNew:hover 			{ 	background-position:  -200px 0px;	}
+#contactsActions span.actionNew.noactive 		{ 	background-position:  0px 0px; 		}
 
-/*#contactsActions a.actionSave 				{ 	background-position: -150px -51px;	}
-#contactsActions a.actionSave:hover 		{ 	background-position: -200px -51px;	}
-#contactsActions a.actionSave.noactive 		{ 	background-position: 0px -51px;		}*/
+#contactsActions span.actionPrint 				{ 	background-position: -150px -102px;	}
+#contactsActions span.actionPrint:hover 		{ 	background-position: -200px -102px;	}
+#contactsActions span.actionPrint.noactive 	{ 	background-position:0px -102px;		}
 
-#contactsActions a.actionPrint 				{ 	background-position: -150px -102px;	}
-#contactsActions a.actionPrint:hover 		{ 	background-position: -200px -102px;	}
-#contactsActions a.actionPrint.noactive 	{ 	background-position:0px -102px;		}
+#contactsActions span.actionSend 				{ 	background-position: -150px -151px;	}
+#contactsActions span.actionSend:hover 		{ 	background-position: -200px -151px;	}
+#contactsActions span.actionSend.noactive 		{ 	background-position: 0px -151px; 	}
 
-#contactsActions a.actionSend 				{ 	background-position: -150px -151px;	}
-#contactsActions a.actionSend:hover 		{ 	background-position: -200px -151px;	}
-#contactsActions a.actionSend.noactive 		{ 	background-position: 0px -151px; 	}
+#contactsActions span.actionDuplicate 			{ 	background-position: -150px -206px;	}
+#contactsActions span.actionDuplicate:hover 	{ 	background-position: -200px -206px;	}
+#contactsActions span.actionDuplicate.noactive { background-position: 0px -206px;  	}
 
-#contactsActions a.actionDuplicate 			{ 	background-position: -150px -206px;	}
-#contactsActions a.actionDuplicate:hover 	{ 	background-position: -200px -206px;	}
-#contactsActions a.actionDuplicate.noactive { background-position: 0px -206px;  	}
+#contactsActions span.actionExport				{ 	background-position: -150px -258px;	}
+#contactsActions span.actionExport:hover 	{ 	background-position: -200px -258px;	}
+#contactsActions span.actionExport.noactive { background-position: 0px -258px;  	}
 
-#contactsActions a.actionExport				{ 	background-position: -150px -258px;	}
-#contactsActions a.actionExport:hover 	{ 	background-position: -200px -258px;	}
-#contactsActions a.actionExport.noactive { background-position: 0px -258px;  	}
-
-#contactsActions a.actionImport				{ 	background-position: -150px -310px;	}
-#contactsActions a.actionImport:hover 	{ 	background-position: -200px -310px;	}
-#contactsActions a.actionImport.noactive { background-position: 0px -310px;  	}
+#contactsActions span.actionImport				{ 	background-position: -150px -310px;	}
+#contactsActions span.actionImport:hover 	{ 	background-position: -200px -310px;	}
+#contactsActions span.actionImport.noactive { background-position: 0px -310px;  	}
 
 /*#contacts .table-title, #contacts .textarea-title, #contacts .table-content input.bg {
 background-color: #ffd396;
@@ -93,13 +90,11 @@ display: block; height: 13px; width: 15px; margin-top: -15px; background:url(../
 	background-position: 0px -570px
 }
 
-#contacts-right .tcell-left span { display: block; padding: 0 0 0 15px; }
+#contacts-right .tcell-left span span { display: block; padding: 0 0 0 15px; }
 #contacts-right .tcell-left-short span { display: block; padding: 0 0 0 15px; }
-#contacts-right a.content-nav         { color: #000; }
-#contacts-right a.content-nav :link    { color: #000; }
-#contacts-right a.content-nav :active  { color: #000; }
-#contacts-right a.content-nav :visited { color: #000; }
-#contacts-right a.content-nav :hover   { background-color: #C88700; color: #000}
+
+#contacts-right .content-nav         { color: #000; }
+#contacts-right .content-nav:hover   { display: block; background-color: #C88700; color: #000; cursor: pointer; }
 
 .content-outline {background-color: #e1f0af;}
 

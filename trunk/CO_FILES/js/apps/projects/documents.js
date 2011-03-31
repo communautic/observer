@@ -75,16 +75,16 @@ function documentFormProcess(formData, form, poformOptions) {
 function documentFormResponse(data) {
 	switch(data.action) {
 		case "edit":
-			$("#projects3 a[rel='"+data.id+"'] .text").html($("#projects .title").val());
+			$("#projects3 span[rel='"+data.id+"'] .text").html($("#projects .title").val());
 			$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/documents&request=getDetails&id="+data.id, success: function(html){
 				$("#projects-right").html(html);
 				initContentScrollbar();
 				switch(data.access) {
 					case "0":
-						$("#projects3 a.active-link .module-access-status").removeClass("module-access-active");
+						$("#projects3 .active-link .module-access-status").removeClass("module-access-active");
 					break;
 					case "1":
-						$("#projects3 a.active-link .module-access-status").addClass("module-access-active");
+						$("#projects3 .active-link .module-access-status").addClass("module-access-active");
 					break;
 				}
 				}
@@ -205,8 +205,8 @@ function sortClickDocument(obj,sortcur,sortnew) {
 function sortDragDocument(order) {
 	var fid = $("#projects2 .module-click:visible").attr("rel");
 	$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/documents&request=setOrder&"+order+"&id="+fid, success: function(html){
-		$("#projects3 a.sort:visible").attr("rel", "3");
-		$("#projects3 a.sort:visible").removeClass("sort1").removeClass("sort2").addClass("sort3");
+		$("#projects3 .sort:visible").attr("rel", "3");
+		$("#projects3 .sort:visible").removeClass("sort1").removeClass("sort2").addClass("sort3");
 		}
 	});
 }
@@ -320,7 +320,7 @@ $(document).ready(function() {
 	});
 
 
-	$('a.docitem').live('click',function() {
+	$('.docitem').live('click',function() {
 		var ele = $(this);
 		var uid = $(this).attr('uid');
 		var field = $(this).attr('field');
@@ -333,7 +333,7 @@ $(document).ready(function() {
 	});
 
 
-	$('a.delete-docitem').livequery('click',function() {
+	$('.delete-docitem').livequery('click',function() {
 		var field = $(this).attr('field');
 		$(this).parent().fadeOut();
 		$(this).parent().prev().toggleClass('deletefromlist');
@@ -350,7 +350,7 @@ $(document).ready(function() {
 	
 	
 	
-	$('a.deleteDoc').livequery('click',function() {
+	$('.deleteDoc').livequery('click',function() {
 		var id = $(this).attr('rel');
 		var txt = ALERT_DELETE;
 		var langbuttons = {};
