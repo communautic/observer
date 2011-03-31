@@ -75,7 +75,7 @@ if (!empty($_GET['request'])) {
 			echo($contacts->getUserContext($_GET['id'],$_GET['field']));
 		break;
 		case 'getCustomTextContext':
-			echo('<div class="context"><a href="delete" class="delete-ct">Entfernen</a><br /></div>');
+			echo('<div class="context"><a href="delete" class="delete-ct">' . $lang["GLOBAL_REMOVE"] . '</a><br /></div>');
 		break;
 		case 'getLanguageDialog':
 			echo($contacts->getLanguageDialog($_GET['request'],$_GET['field'],$_GET['append'],$_GET['title'],$_GET['sql']));
