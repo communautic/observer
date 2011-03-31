@@ -38,7 +38,7 @@ class Controlling extends Projects {
 		$title = "";
 		$html = "";
 		$tit = $projectsmodel->getProjectTitle($pid);
-		if($controlling = $this->model->getDetails($pid)) {
+		if($cont = $this->model->getDetails($pid)) {
 			ob_start();
 				include 'view/print.php';
 				$html = ob_get_contents();

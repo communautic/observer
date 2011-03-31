@@ -185,34 +185,35 @@ class Projects extends Controller {
 			$project = $arr["project"];
 			$phases = $arr["phases"];
 			$num = $arr["num"];
-			
 			ob_start();
 				include 'view/handbook_cover.php';
 				$html .= ob_get_contents();
 			ob_end_clean();
-			
 			ob_start();
 				include 'view/project_print.php';
 				$html .= ob_get_contents();
 			ob_end_clean();
-			
-			//$phases->printDetails($id,$num,$t)
+			// phases
 			$phasescont = new Phases("phases");
 			foreach ($phases as $phase) {
-				
-				//$phasescont->printDetails(1,1);
 				if($arr = $phasescont->model->getDetails($phase->id,$num[$phase->id])) {
-			$phase = $arr["phase"];
-			$task = $arr["task"];
-			ob_start();
-				include 'modules/phases/view/print.php';
-				$html .= ob_get_contents();
-			ob_end_clean();
-			//$title = $phase->title;
-		}
+					$phase = $arr["phase"];
+					$task = $arr["task"];
+					ob_start();
+						include 'modules/phases/view/print.php';
+						$html .= ob_get_contents();
+					ob_end_clean();
+				}
 			}
-			
-			
+			// controlling
+			$controlling = new Controlling("controlling");
+			if($cont = $controlling->model->getDetails($id)) {
+				$tit = $project->title;
+				ob_start();
+					include 'modules/controlling/view/print.php';
+					$html .= ob_get_contents();
+				ob_end_clean();
+			}
 			$title = $project->title . " - " . $lang["PROJECT_HANDBOOK"];
 		}
 		switch($t) {
