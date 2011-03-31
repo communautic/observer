@@ -155,6 +155,7 @@ class TimelinesModel extends ProjectsModel {
 				$tasks[] = array(
 					"id" => $rowt->id,
 					"text" => $rowt->text,
+					"team" => $this->_contactsmodel->getUserListPlain($rowt->team,'team'),
 					"startdate" => $this->_date->formatDate($rowt->startdate,CO_DATE_FORMAT),
 					"enddate" => $this->_date->formatDate($rowt->enddate,CO_DATE_FORMAT),
 					"status" => $tstatus,

@@ -30,7 +30,7 @@ $lang["INTERNAL_CHANGED"] 	= 	'released:';
 $lang["GLOBAL_USER"] = 'User:';
 
 $lang["GLOBAL_SAVE"] = 'Save';
-$lang["GLOBAL_REMOVE"] = 'Delete';
+$lang["GLOBAL_REMOVE"] = 'Remove';
 
 $lang["GLOBAL_STATUS"] 		= 	'Status';
 $lang["GLOBAL_DURATION"] 	= 	'Duration';

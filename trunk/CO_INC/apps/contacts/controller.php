@@ -187,6 +187,7 @@ class Contacts extends Controller {
 	}
 	
 	function getUserContext($id,$field) {
+		global $lang;
 		$context = $this->model->getUserContext($id,$field);
 		include 'view/contact_context.php';
 	}
