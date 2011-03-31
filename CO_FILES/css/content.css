@@ -6,6 +6,8 @@ strong { font-weight: bold}
 .content-line-grey { height: 2px; background-color:#E5E5E5}
 .content-date { width: 60px; display: block; float: left;}
 
+.content-nav-title { padding: 0 0 0 15px; }
+
 .table-title { width: 100%;
 margin: 0 0 10px 0;
 height: 28px;

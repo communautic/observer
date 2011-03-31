@@ -8,7 +8,7 @@
     	<div class="module-actions"><div class="sort-outer"><a href="#" class="sort" rel="1"></a></div><div class="filter-box-outer"><form action="#"><fieldset><input name="search" type="text" class="filter filter-box" value="" size="4" /></fieldset></form></div><div class="filter-search-outer"></div></div>
     	<div class="module-inner west-ui-content">
         <div class="scrolling-content">
-        	<ul class="topul"><li><a href="#" rel="0" class="module-click"><span class="text"><?php echo $lang['CONTACTS_SYSTEM_GROUP'];?></span></a></li></ul>
+        	<ul class="topul"><li><span rel="0" class="module-click"><span class="text"><?php echo $lang['CONTACTS_SYSTEM_GROUP'];?></span></span></li></ul>
             <ul class="sortable sublist"><li></li></ul>
         </div>
         </div>
@@ -38,14 +38,14 @@
     </div>
     <div class="center-west">
         <ul id="contactsActions" class="ui-layout-content actionconsole">
-           <li class="listNew"><a href="#" class="actionNew" title="<?php echo $lang["ACTION_NEW"];?>"></a></li>
-			<li class="listPrint"><a href="#" class="actionPrint" title="<?php echo $lang["ACTION_PRINT"];?>"></a></li>
-			<li class="listSend"><a href="#" class="actionSend" title="<?php echo $lang["ACTION_SENDTO"];?>"></a></li>
-			<li class="listDuplicate"><a href="#" class="actionDuplicate" title="<?php echo $lang["ACTION_DUPLICATE"];?>"></a></li>
-            <li class="listExport"><a href="export" class="actionExport" title="exportieren"></a></li>
-            <li class="listImport"><a href="import" class="actionImport" title="importieren"></a></li>
-            <li class="listEmpty"><a href="empty" class="actionEmpty" title="leeren"></a></li>
-            <li class="listBin"><a href="#" class="actionBin" title="<?php echo $lang["ACTION_DELETE"];?>"></a></li>
+           <li class="listNew"><span class="actionNew" title="<?php echo $lang["ACTION_NEW"];?>"></span></li>
+			<li class="listPrint"><span class="actionPrint" title="<?php echo $lang["ACTION_PRINT"];?>"></span></li>
+			<li class="listSend"><span class="actionSend" title="<?php echo $lang["ACTION_SENDTO"];?>"></span></li>
+			<li class="listDuplicate"><span class="actionDuplicate" title="<?php echo $lang["ACTION_DUPLICATE"];?>"></span></li>
+            <li class="listExport"><span class="actionExport" title="exportieren"></span></li>
+            <li class="listImport"><span class="actionImport" title="importieren"></span></li>
+            <li class="listEmpty"><span class="actionEmpty" title="leeren"></span></li>
+            <li class="listBin"><span class="actionBin" title="<?php echo $lang["ACTION_DELETE"];?>"></span></li>
         </ul>
     </div>
     <div class="center-center" id="contacts-right"></div>

@@ -1,7 +1,7 @@
 <div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-title grey">
   <tr>
-    <td class="tcell-left text11"><span class="content-nav"><?php echo TIMELINE_PROJECT_PLAN;?></span></td>
+    <td class="tcell-left text11"><span class="content-nav-title"><?php echo TIMELINE_PROJECT_PLAN;?></span></td>
     <td>
     <table border="0" cellspacing="0" cellpadding="0" class="timeline-legend">
     <tr>
@@ -27,18 +27,18 @@
 	<div style="position: relative; padding-left: 10px; height: 16px; margin: 0 15px 2px 0;"><?php echo $lang['TIMELINE_ACTION'];?>
     <div style="text-align: center; position: absolute; width: 45px; padding: 1px 5px 0 0; top: 0; right: 0; height: 16px;"><?php echo $lang['TIMELINE_TIME'];?></div></div>
 
-	<div style="position: relative; padding-left: 10px; height: 16px; margin: 0 15px 2px 0; background-color:#e5e5e5"><a href="#" class="but-scroll-to" t="0" l="0"><?php echo $lang['PROJECT_KICKOFF'];?></a>
+	<div style="position: relative; padding-left: 10px; height: 16px; margin: 0 15px 2px 0; background-color:#e5e5e5"><a class="but-scroll-to" t="0" l="0"><?php echo $lang['PROJECT_KICKOFF'];?></a>
     <div style="text-align: right; position: absolute; width: 38px; padding: 1px 10px 0 0; top: 0; right: 0; height: 16px; border-left: 2px solid #fff;">1</div></div>
 
 <?php 
 $i = 1;
 foreach($project["phases"] as $key => &$value){ ?>
-<div style="position: relative; padding-left: 10px; height: 16px; margin: 0 15px 2px 0; background-color:#e5e5e5"><div style="position: absolute; height: 16px; width: 145px; overflow: hidden"><a href="#" class="but-scroll-to" t="<?php echo($project["phases"][$key]["css_top"]);?>" l="<?php echo($project["phases"][$key]["css_left"]);?>"><?php echo($i . ". " . $project["phases"][$key]["title"]);?></a></div><div style="text-align: right; position: absolute; width: 38px; padding: 1px 10px 0 0; top: 0; right: 0; height: 16px; border-left: 2px solid #fff;"><?php echo($project["phases"][$key]["days"]);?></div></div>
+<div style="position: relative; padding-left: 10px; height: 16px; margin: 0 15px 2px 0; background-color:#e5e5e5"><div style="position: absolute; height: 16px; width: 145px; overflow: hidden"><a class="but-scroll-to" t="<?php echo($project["phases"][$key]["css_top"]);?>" l="<?php echo($project["phases"][$key]["css_left"]);?>"><?php echo($i . ". " . $project["phases"][$key]["title"]);?></a></div><div style="text-align: right; position: absolute; width: 38px; padding: 1px 10px 0 0; top: 0; right: 0; height: 16px; border-left: 2px solid #fff;"><?php echo($project["phases"][$key]["days"]);?></div></div>
       
       <?php foreach($project["phases"][$key]["tasks"] as $tkey => &$tvalue){ ?>
       
       <div style="position: relative; padding: 0 50px 0 25px; height: 16px; margin: 0 15px 2px 0; background-color:#e5e5e5">
-	  	<div style="height: 16px; overflow: hidden"><a href="#" class="but-scroll-to" t="<?php echo($project["phases"][$key]["css_top"]+$project["phases"][$key]["tasks"][$tkey]["css_top"]);?>" l="<?php echo($project["phases"][$key]["css_left"]+$project["phases"][$key]["tasks"][$tkey]["css_left"]);?>"><?php echo($project["phases"][$key]["tasks"][$tkey]["text"]);?></a></div>
+	  	<div style="height: 16px; overflow: hidden"><a class="but-scroll-to" t="<?php echo($project["phases"][$key]["css_top"]+$project["phases"][$key]["tasks"][$tkey]["css_top"]);?>" l="<?php echo($project["phases"][$key]["css_left"]+$project["phases"][$key]["tasks"][$tkey]["css_left"]);?>"><?php echo($project["phases"][$key]["tasks"][$tkey]["text"]);?></a></div>
         <div style="text-align: right; position: absolute; width: 38px; padding: 1px 10px 0 0; top: 0; right: 0; height: 16px; border-left: 2px solid #fff;"><?php echo($project["phases"][$key]["tasks"][$tkey]["days"]);?></div>
       </div>
 

@@ -1,7 +1,7 @@
 <div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-title">
 	<tr>
-		<td class="tcell-left text11"><a href="#" class="content-nav focusTitle"><span><?php echo $lang["PROJECT_FOLDER"];?></span></a></td>
+		<td class="tcell-left text11"><span class="content-nav focusTitle"><span><?php echo $lang["PROJECT_FOLDER"];?></span></span></td>
 		<td><input name="title" type="text" class="title textarea-title" value="<?php echo($folder->title);?>" maxlength="100" /></td>
 	</tr>
 </table>
@@ -86,7 +86,7 @@ if(is_array($projects)) {
     <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive loadProject" rel="<?php echo($project->id);?>">
 	<tr>
 		<td class="tcell-left text11">&nbsp;</td>
-		<td class="tcell-right"><a href="#" class="loadProject bold" rel="<?php echo($project->id);?>"><?php echo($project->title);?></a></td>
+		<td class="tcell-right"><span class="loadProject bold co-link" rel="<?php echo($project->id);?>"><?php echo($project->title);?></span></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11">&nbsp;</td>

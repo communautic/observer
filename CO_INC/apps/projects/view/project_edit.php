@@ -1,7 +1,7 @@
 <div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-title">
   <tr>
-    <td class="tcell-left text11"><a href="#" class="content-nav focusTitle"><span><?php echo $lang["PROJECT_TITLE"];?></span></a></td>
+    <td class="tcell-left text11"><span class="content-nav focusTitle"><span><?php echo $lang["PROJECT_TITLE"];?></span></span></td>
     <td class="tcell-right"><input name="title" type="text" class="title textarea-title" value="<?php echo($project->title);?>" maxlength="100" /></td>
   </tr>
 </table>
@@ -19,46 +19,46 @@
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><a href="#" class="content-nav ui-datepicker-trigger-action"><span><?php echo $lang['PROJECT_KICKOFF'];?></span></a></td>
+	  <td class="tcell-left text11"><span class="content-nav ui-datepicker-trigger-action"><span><?php echo $lang['PROJECT_KICKOFF'];?></span></span></td>
 		<td class="tcell-right"><input name="startdate" type="text" class="input-date datepicker" value="<?php echo($project->startdate)?>" /><input name="moveproject_start" type="hidden" value="<?php echo($project->startdate)?>" /></td>
 	</tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><a href="#" class="content-nav showDialog" request="getProjectFolderDialog" field="projectfolder" append="1"><span><?php echo $lang["PROJECT_FOLDER"];?></span></a></td>
+	  <td class="tcell-left text11"><span class="content-nav showDialog" request="getProjectFolderDialog" field="projectfolder" append="1"><span><?php echo $lang["PROJECT_FOLDER"];?></span></span></td>
         <td class="tcell-right"><div id="projectfolder" class="itemlist-field"><?php echo($project->projectfolder);?></div></td>
 	</tr>
 </table>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><a href="#" class="content-nav showDialog" request="getContactsDialog" field="ordered_by" append="0"><span><?php echo $lang["PROJECT_CLIENT"];?></span></a></td>
-	  <td class="tcell-right"><div id="ordered_by" class="itemlist-field"><?php echo($project->ordered_by);?></div><div id="ordered_by_ct" class="itemlist-field"><a field="ordered_by_ct" class="ct-content"><?php echo($project->ordered_by_ct);?></a></div></td>
+	  <td class="tcell-left text11"><span class="content-nav showDialog" request="getContactsDialog" field="ordered_by" append="0"><span><?php echo $lang["PROJECT_CLIENT"];?></span></span></td>
+	  <td class="tcell-right"><div id="ordered_by" class="itemlist-field"><?php echo($project->ordered_by);?></div><div id="ordered_by_ct" class="itemlist-field"><span field="ordered_by_ct" class="ct-content"><?php echo($project->ordered_by_ct);?></span></div></td>
 	</tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><a href="#" class="content-nav showDialog" request="getContactsDialog" field="management" append="1"><span><?php echo $lang["PROJECT_MANAGEMENT"];?></span></a></td>
-	  <td class="tcell-right"><div id="management" class="itemlist-field"><?php echo($project->management);?></div><div id="management_ct" class="itemlist-field"><a field="management_ct" class="ct-content"><?php echo($project->management_ct);?></a></div></td>
+	  <td class="tcell-left text11"><span class="content-nav showDialog" request="getContactsDialog" field="management" append="1"><span><?php echo $lang["PROJECT_MANAGEMENT"];?></span></span></td>
+	  <td class="tcell-right"><div id="management" class="itemlist-field"><?php echo($project->management);?></div><div id="management_ct" class="itemlist-field"><span field="management_ct" class="ct-content"><?php echo($project->management_ct);?></span></div></td>
 	</tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
   <tr>
-    <td class="tcell-left text11"><a href="#" class="content-nav showDialog" request="getContactsDialog" field="team" append="1"><span><?php echo $lang["PROJECT_TEAM"];?></span></a></td>
-    <td class="tcell-right"><div id="team" class="itemlist-field"><?php echo($project->team);?></div><div id="team_ct" class="itemlist-field"><a field="team_ct" class="ct-content"><?php echo($project->team_ct);?></a></div></td>
+    <td class="tcell-left text11"><span class="content-nav showDialog" request="getContactsDialog" field="team" append="1"><span><?php echo $lang["PROJECT_TEAM"];?></span></span></td>
+    <td class="tcell-right"><div id="team" class="itemlist-field"><?php echo($project->team);?></div><div id="team_ct" class="itemlist-field"><span field="team_ct" class="ct-content"><?php echo($project->team_ct);?></span></div></td>
   </tr>
 </table>
 <div class="content-spacer"></div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><a href="#" class="content-nav showDialog" request="getProjectStatusDialog" field="status" title="<?php echo $lang["GLOBAL_STATUS"];?>" append="1"><span><?php echo $lang["GLOBAL_STATUS"];?></span></a></td>
+	  <td class="tcell-left text11"><span class="content-nav showDialog" request="getProjectStatusDialog" field="status" title="<?php echo $lang["GLOBAL_STATUS"];?>" append="1"><span><?php echo $lang["GLOBAL_STATUS"];?></span></span></td>
         <td class="tcell-right"><div id="status" class="itemlist-field"><div class="listmember" field="status" uid="<?php echo($project->status);?>" style="float: left"><?php echo($project->status_text);?></div></div><input name="status_date" type="text" class="input-date datepicker status_date" value="<?php echo($project->status_date)?>" style="float: left; margin-left: 8px;" /></td>
 	</tr>
 </table>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
 	<tr>
-		<td class="tcell-left text11"><a href="#" class="content-nav protocolToggle"><span><?php echo $lang["PROJECT_DESCRIPTION"];?></span></a></td>
+		<td class="tcell-left text11"><span class="content-nav protocolToggle"><span><?php echo $lang["PROJECT_DESCRIPTION"];?></span></span></td>
     <td class="tcell-right"><div class="protocol-outer" style="position: relative;"><div id="protocol" class="tinymce" style="min-height: 26px;"><?php echo($project->protocol);?></div></div></td>
     </tr>
 </table>
@@ -77,7 +77,7 @@ if(is_array($phases)) {
     <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive loadPhase" rel="<?php echo($phase->id);?>">
 	<tr>
 		<td class="tcell-left text11">&nbsp;</td>
-		<td class="tcell-right"><a href="#" class="loadPhase bold" rel="<?php echo($phase->id);?>"><?php echo($num[$phase->id] . " " . $phase->title);?></a></td>
+		<td class="tcell-right"><span class="loadPhase bold co-link" rel="<?php echo($phase->id);?>"><?php echo($num[$phase->id] . " " . $phase->title);?></span></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11">&nbsp;</td>

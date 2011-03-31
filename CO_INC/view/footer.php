@@ -12,7 +12,7 @@
 		if($display == 1) {
 			$activeapp = " active-app";
 		}
-		echo '<li><a href="#" rel="'.$app.'" class="toggleObservers' . $activeapp . ' app_'.$app.'" >' . ${$app.'_name'} . '</a></li>';
+		echo '<li><span rel="'.$app.'" class="toggleObservers' . $activeapp . ' app_'.$app.'" >' . ${$app.'_name'} . '</span></li>';
 	}
 	?>
 </ul>

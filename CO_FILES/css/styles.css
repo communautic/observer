@@ -59,6 +59,9 @@ a:visited { color: #fff; text-decoration: none; outline: none; }
 a:hover   { color: #82aa0b; text-decoration: none; outline: none;}
 a:focus  { outline: none; }
 
+.co-link { cursor: pointer; }
+.co-link:hover { cursor: pointer; }
+
 #loading {
 width:200px;
 height: 200px;
@@ -96,22 +99,29 @@ padding: 0 0 5px 0;
 width: 325px;
 }
 
-.ui-layout-west li a { line-height: 20px; padding: 0 0 0 30px; color: #fff; text-decoration: none; outline: none; display: block; position: relative; }
+/*.ui-layout-west li a { line-height: 20px; padding: 0 0 0 30px; color: #fff; text-decoration: none; outline: none; display: block; position: relative; }
 .ui-layout-west li a:link    { color: #000; text-decoration: none; outline: none; }
 .ui-layout-west li a:active  { color: #82aa0b; text-decoration: none; outline: none; }
 .ui-layout-west li a:visited { color: #000; text-decoration: none; outline: none; }
 .ui-layout-west li a:hover   { color: #fff; text-decoration: none; outline: none; }
 .ui-layout-west li a.active-link  { color: #fff; text-decoration: none; outline: none; }
 .ui-layout-west li a.hover-bg  { color: #fff; text-decoration: none; outline: none;}
-/*.ui-layout-west li .text  { display: block; width: 260px;}*/
-
 .ui-layout-west li a.deactivated { color: #fff; margin-top: -4px; cursor: default }
-.ui-layout-west li a.deactivated:hover { color: #fff; background-color: transparent !important; }
+.ui-layout-west li a.deactivated:hover { color: #fff; background-color: transparent !important; }*/
+
+
+.ui-layout-west li>span { line-height: 20px; padding: 0 0 0 30px; color: #fff; text-decoration: none; outline: none; display: block; position: relative; }
+.ui-layout-west li>span:hover   { color: #fff; text-decoration: none; outline: none; cursor: pointer; }
+.ui-layout-west li>span.active-link  { color: #fff; text-decoration: none; outline: none; }
+.ui-layout-west li>span.hover-bg  { color: #fff; text-decoration: none; outline: none;}
+.ui-layout-west li>span.deactivated { color: #fff; margin-top: -4px; cursor: default }
+.ui-layout-west li>span.deactivated:hover { color: #fff; background-color: transparent !important; }
+
 
 li.ui-state-highlight { height: 13px; margin: 0 0 5px 0;}
 
 .sort-outer { float: left; width: 13px; height: 13px; margin-top: 1px;}
-.sort { height: 13px; display: block; background-image:url(../img/sort_buttons_trans.png) }
+.sort { height: 13px; display: block; background-image:url(../img/sort_buttons_trans.png); cursor: pointer; }
 .sort1 { background-position: 0px 0px; }
 .sort2 { background-position: 0px -20px; }
 .sort3 { background-position: 0px -40px; }
@@ -189,66 +199,61 @@ li.ui-state-highlight { height: 13px; margin: 0 0 5px 0;}
 */
 
 #appnav li { float: left; width: 150px; height: 30px;}
-#appnav a { line-height: 30px; display: block; padding-left: 60px; }
-#appnav a:link, #appnav a:active, #appnav a:visited    { color: #333; text-decoration: none; outline: none; background: url(../img/app_propellor.png) no-repeat 36px 0px; }
-#appnav a:hover { color: #fff; text-decoration: none; outline: none; background: #999 url(../img/app_propellor.png) no-repeat 36px -180px; }
+#appnav span { line-height: 30px; display: block; padding-left: 60px; }
+/*#appnav a:link, #appnav a:active, #appnav a:visited    { color: #333; text-decoration: none; outline: none; background: url(../img/app_propellor.png) no-repeat 36px 0px; }*/
+#appnav span:hover { color: #fff; text-decoration: none; outline: none; background: #999 url(../img/app_propellor.png) no-repeat 36px -180px; cursor: pointer; }
 
 #logout { position: absolute; height: 20px; width: 20px;  right: 20px; top: 5px; }
 #logout a span { display: block; height: 20px; width: 20px; }
 #logout a { line-height: 1em; display: block; padding:0; height: 20px; width: 20px;}
-#logout a, #logout a:link, #logout a:active, #logout a:visited    { outline: none; background: url(../img/apps_buttons_sprite.png) no-repeat -220px -570px; }
-#logout a:hover { outline: none; background: url(../img/apps_buttons_sprite.png) no-repeat -240px -570px; }
+#logout a, #logout a:link, #logout a:active, #logout a:visited    { outline: none; background: url(../img/apps_buttons_sprite.png) no-repeat -240px -570px; }
+#logout a:hover { outline: none; background: url(../img/apps_buttons_sprite.png) no-repeat -220px -570px; }
 
 ul.actionconsole { margin: 0 11px 0 11px;  }
 .actionconsole li.listNew { display: block; height: 26px; margin: 15px 0 24px 0; }
-.actionconsole a.actionNew { display: block; height: 26px; background: url(../img/apps_buttons_sprite.png) no-repeat;}
-.actionconsole a.actionNew:hover { background: url(../img/apps_buttons_sprite.png) no-repeat;}
-.actionconsole a.actionNew.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: default;}
-
-/*.actionconsole li.listSave { display: block; height: 31px; margin-bottom: 19px; }
-.actionconsole a.actionSave { display: block; height: 31px; background: url(../img/apps_buttons_sprite.png) no-repeat;}
-.actionconsole a.actionSave:hover { background: url(../img/apps_buttons_sprite.png) no-repeat;}
-.actionconsole a.actionSave.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: default;}*/
+.actionconsole span.actionNew { display: block; height: 26px; background: url(../img/apps_buttons_sprite.png) no-repeat; }
+.actionconsole span.actionNew:hover { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: pointer;}
+.actionconsole span.actionNew.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: default;}
 
 .actionconsole li.listPrint { display: block; height: 30px; margin-bottom: 19px; }
-.actionconsole a.actionPrint { display: block; height: 30px; background: url(../img/apps_buttons_sprite.png) no-repeat;}
-.actionconsole a.actionPrint:hover { background: url(../img/apps_buttons_sprite.png) no-repeat;}
-.actionconsole a.actionPrint.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: default;}
+.actionconsole span.actionPrint { display: block; height: 30px; background: url(../img/apps_buttons_sprite.png) no-repeat;}
+.actionconsole span.actionPrint:hover { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: pointer;}
+.actionconsole span.actionPrint.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: default;}
 
 .actionconsole li.listSend { display: block; height: 36px; margin-bottom: 19px; }
-.actionconsole a.actionSend { display: block; height: 36px; background: url(../img/apps_buttons_sprite.png) no-repeat;}
-.actionconsole a.actionSend:hover { background: url(../img/apps_buttons_sprite.png) no-repeat;}
-.actionconsole a.actionSend.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: default;}
+.actionconsole span.actionSend { display: block; height: 36px; background: url(../img/apps_buttons_sprite.png) no-repeat;}
+.actionconsole span.actionSend:hover { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: pointer;}
+.actionconsole span.actionSend.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: default;}
 
 .actionconsole li.listDuplicate { display: block; height: 30px; margin-bottom: 22px; }
-.actionconsole a.actionDuplicate { display: block; height: 30px; background: url(../img/apps_buttons_sprite.png) no-repeat;}
-.actionconsole a.actionDuplicate:hover { background: url(../img/apps_buttons_sprite.png) no-repeat;}
-.actionconsole a.actionDuplicate.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: default; }
+.actionconsole span.actionDuplicate { display: block; height: 30px; background: url(../img/apps_buttons_sprite.png) no-repeat;}
+.actionconsole span.actionDuplicate:hover { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: pointer;}
+.actionconsole span.actionDuplicate.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: default; }
 
 .actionconsole li.listProjectHandbook { display: block; height: 37px; margin-bottom: 15px; }
-.actionconsole a.actionProjectHandbook { display: block; height: 37px; background: url(../img/apps_buttons_sprite.png) no-repeat;}
-.actionconsole a.actionProjectHandbook:hover { background: url(../img/apps_buttons_sprite.png) no-repeat;}
-.actionconsole a.actionProjectHandbook.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: default; }
+.actionconsole span.actionProjectHandbook { display: block; height: 37px; background: url(../img/apps_buttons_sprite.png) no-repeat;}
+.actionconsole span.actionProjectHandbook:hover { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: pointer;}
+.actionconsole span.actionProjectHandbook.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: default; }
 
 .actionconsole li.listExport { display: block; height: 30px; margin-bottom: 22px; }
-.actionconsole a.actionExport { display: block; height: 30px; background: url(../img/apps_buttons_sprite.png) no-repeat;}
-.actionconsole a.actionExport:hover { background: url(../img/apps_buttons_sprite.png) no-repeat;}
-.actionconsole a.actionExport.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: default; }
+.actionconsole span.actionExport { display: block; height: 30px; background: url(../img/apps_buttons_sprite.png) no-repeat;}
+.actionconsole span.actionExport:hover { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: pointer;}
+.actionconsole span.actionExport.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: default; }
 
 .actionconsole li.listImport { display: block; height: 30px; margin-bottom: 22px; }
-.actionconsole a.actionImport { display: block; height: 30px; background: url(../img/apps_buttons_sprite.png) no-repeat;}
-.actionconsole a.actionImport:hover { background: url(../img/apps_buttons_sprite.png) no-repeat;}
-.actionconsole a.actionImport.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: default; }
+.actionconsole span.actionImport { display: block; height: 30px; background: url(../img/apps_buttons_sprite.png) no-repeat;}
+.actionconsole span.actionImport:hover { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: pointer;}
+.actionconsole span.actionImport.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: default; }
 
 .actionconsole li.listEmpty { position: absolute; bottom: 63px; height: 30px; width: 28px; }
-.actionconsole a.actionEmpty { display: block; height: 30px; background: url(../img/apps_buttons_sprite.png) no-repeat -50px -466px;}
-.actionconsole a.actionEmpty:hover { background: url(../img/apps_buttons_sprite.png) no-repeat -100px -466px;}
-.actionconsole a.actionEmpty.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat 0px -466px; cursor: default;}
+.actionconsole span.actionEmpty { display: block; height: 30px; background: url(../img/apps_buttons_sprite.png) no-repeat -50px -466px;}
+.actionconsole span.actionEmpty:hover { background: url(../img/apps_buttons_sprite.png) no-repeat -100px -466px; cursor: pointer;}
+.actionconsole span.actionEmpty.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat 0px -466px; cursor: default;}
 
 .actionconsole li.listBin { position: absolute; bottom: 16px; height: 28px; width: 28px; }
-.actionconsole a.actionBin { display: block; height: 36px; background: url(../img/apps_buttons_sprite.png) no-repeat -50px -519px;}
-.actionconsole a.actionBin:hover { background: url(../img/apps_buttons_sprite.png) no-repeat -100px -519px;}
-.actionconsole a.actionBin.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat 0px -519px; cursor: default;}
+.actionconsole span.actionBin { display: block; height: 36px; background: url(../img/apps_buttons_sprite.png) no-repeat -50px -519px;}
+.actionconsole span.actionBin:hover { background: url(../img/apps_buttons_sprite.png) no-repeat -100px -519px; cursor: pointer;}
+.actionconsole span.actionBin.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat 0px -519px; cursor: default;}
 
 .module-actions { position: absolute; padding-left: 9px; margin-top: -17px;}
 .module-actions-modules { margin-top: 7px;}

@@ -5,14 +5,13 @@
 	<div id="bin1-outer">
     <h3 class="module-bg-active"><?php echo $lang["BIN_FOLDER"];?></h3>
     <div id="bin1" class="module-bg-active">
-    	<!--<div class="module-actions"><div class="sort-outer"><a href="#" class="sort" rel="1"></a></div><div class="filter-box-outer"><form action="#"><fieldset><input name="search" type="text" class="filter filter-box" value="" size="4" /></fieldset></form></div><div class="filter-search-outer"></div></div>-->
     	<div class="module-inner west-ui-content">
         <div class="scrolling-content">
             <ul class="sortable">
             	<?php
 				foreach($controller->applications as $app => $display) {
 							if(${$app}->binDisplay) {
-							echo('<li id="folderItem_"><a href="#" rel="' . $app . '" class="module-click"><span class="text">' . ${$app.'_name'} . '</span></a></li>');
+							echo('<li id="folderItem_"><span rel="' . $app . '" class="module-click"><span class="text">' . ${$app.'_name'} . '</span></span></li>');
 							}
 				}
 				?>
@@ -35,7 +34,7 @@
     </div>
 	<div class="center-west">
 		<ul id="binActions" class="ui-layout-content actionconsole">
-			<li class="listBin"><a href="#" class="actionBin" title="<?php echo $lang["ACTION_DELETE"];?>"></a></li>
+			<li class="listBin"><span class="actionBin" title="<?php echo $lang["ACTION_DELETE"];?>"></span></li>
 		</ul>
 	</div>
 	<div class="center-center" id="bin-right"></div>

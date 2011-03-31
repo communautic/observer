@@ -1,7 +1,7 @@
 <div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-title">
 	<tr>
-		<td class="tcell-left text11"><span class="content-nav"><?php echo $lang['CONTACTS_GROUP_TITLE'];?></span></td>
+		<td class="tcell-left text11"><span class="content-nav focusTitle"><span><?php echo $lang['CONTACTS_GROUP_TITLE'];?></span></span></td>
 		<td><input type="text" name="title" class="title textarea-title" value="<?php echo($group->title);?>" /></td>
 	</tr>
 </table>
@@ -13,13 +13,13 @@
 <input type="hidden" name="id" value="<?php echo($group->id);?>">
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
-    <td class="tcell-left text11"><span class="content-nav"><?php echo $lang['CONTACTS_SINGLE_CONTACTS'];?></span></td>
-    <td class="tcell-right"><span id="num_contacts"><?php echo($group->allcontacts);?></span></td>
+    <td class="tcell-left-inactive text11"><?php echo $lang['CONTACTS_SINGLE_CONTACTS'];?></td>
+    <td class="tcell-right-inactive"><span id="num_contacts"><?php echo($group->allcontacts);?></span></td>
   </tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
-    <td class="tcell-left text11"><a href="#" class="content-nav showDialog" request="getContactsDialog" field="members" append="1"><span><?php echo CONTACTS_GROUP_MEMBERS;?></span></a></td>
+    <td class="tcell-left text11"><span class="content-nav showDialog" request="getContactsDialog" field="members" append="1"><span><?php echo CONTACTS_GROUP_MEMBERS;?></span></span></td>
     <td class="tcell-right"><div id="members" class="itemlist-field"><?php echo($group->members);?></div>
     </td>
   </tr>

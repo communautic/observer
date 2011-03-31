@@ -73,22 +73,22 @@ function meetingFormProcess(formData, form, poformOptions) {
 function meetingFormResponse(data) {
 	switch(data.action) {
 		case "edit":
-			$("#projects3 a[rel='"+data.id+"'] .text").html($("#projects .meeting_date").val() + ' - ' +$("#projects .title").val());
+			$("#projects3 span[rel='"+data.id+"'] .text").html($("#projects .meeting_date").val() + ' - ' +$("#projects .title").val());
 				switch(data.access) {
 					case "0":
-						$("#projects3 a.active-link .module-access-status").removeClass("module-access-active");
+						$("#projects3 .active-link .module-access-status").removeClass("module-access-active");
 					break;
 					case "1":
-						$("#projects3 a.active-link .module-access-status").addClass("module-access-active");
+						$("#projects3 .active-link .module-access-status").addClass("module-access-active");
 					break;
 				}
 				
 				switch(data.status) {
 					case "1":
-						$("#projects3 a.active-link .module-item-status").addClass("module-item-active");
+						$("#projects3 .active-link .module-item-status").addClass("module-item-active");
 					break;
 					default:
-						$("#projects3 a.active-link .module-item-status").removeClass("module-item-active");
+						$("#projects3 .active-link .module-item-status").removeClass("module-item-active");
 				}
 		break;
 		case "reload":
@@ -233,8 +233,8 @@ function sortClickMeeting(obj,sortcur,sortnew) {
 function sortDragMeeting(order) {
 	var fid = $("#projects2 .module-click:visible").attr("rel");
 	$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/meetings&request=setOrder&"+order+"&id="+fid, success: function(html){
-		$("#projects3 a.sort:visible").attr("rel", "3");
-		$("#projects3 a.sort:visible").removeClass("sort1").removeClass("sort2").addClass("sort3");
+		$("#projects3 .sort:visible").attr("rel", "3");
+		$("#projects3 .sort:visible").removeClass("sort1").removeClass("sort2").addClass("sort3");
 		}
 	});
 }
@@ -355,7 +355,7 @@ $(document).ready(function() {
 		return false;
 	});
 	
-	$("a.addMeetingTask").live('click', function() {
+	$(".addMeetingTask").live('click', function() {
 		var mid = $(".projects3-content:visible .active-link").attr("rel");
 		var num = parseInt($("#projects-right .task_sort").size());
 		$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/meetings&request=addTask&mid=" + mid + "&num=" + num + "&sort=" + num, success: function(html){

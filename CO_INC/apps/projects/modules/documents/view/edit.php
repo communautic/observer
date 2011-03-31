@@ -1,7 +1,7 @@
 <div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-title">
   <tr>
-    <td class="tcell-left text11"><a href="#" class="content-nav focusTitle"><span><?php echo $lang["DOCUMENT_TITLE"];?></span></a></td>
+    <td class="tcell-left text11"><span class="content-nav focusTitle"><span><?php echo $lang["DOCUMENT_TITLE"];?></span></span></td>
     <td><input name="title" type="text" class="title textarea-title" value="<?php echo($document->title);?>" maxlength="100" /></td>
   </tr>
 </table>
@@ -27,8 +27,8 @@
   <table width="100%" border="0" cellpadding="0" cellspacing="0">
     <tr>
       <td class="tcell-left text11"><?php echo $lang["DOCUMENT_FILENAME"];?></td>
-      <td class="tcell-right"><a href="Download" class="downloadDocument" rel="<?php echo $value->id;?>" title="Download"><?php echo($value->filename)?></a></td>
- 	  <td width="30"><a href="#" class="deleteDoc" rel="<?php echo $value->id;?>"><span class="icon-delete"></span></a></td>
+      <td class="tcell-right"><a class="downloadDocument" rel="<?php echo $value->id;?>" title="Download"><?php echo($value->filename)?></a></td>
+ 	  <td width="30"><a class="deleteDoc" rel="<?php echo $value->id;?>"><span class="icon-delete"></span></a></td>
     </tr>
     <tr>
       <td class="tcell-left text11"><?php echo $lang["DOCUMENT_FILESIZE"];?></td>
@@ -45,7 +45,7 @@
 <div class="content-spacer"></div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><a href="#" class="content-nav showDialog" request="getAccessDialog" field="document_access" title="<?php echo $lang["GLOBAL_ACCESS"];?>" append="1"><span><?php echo $lang["GLOBAL_ACCESS"];?></span></a></td>
+	  <td class="tcell-left text11"><span class="content-nav showDialog" request="getAccessDialog" field="document_access" title="<?php echo $lang["GLOBAL_ACCESS"];?>" append="1"><span><?php echo $lang["GLOBAL_ACCESS"];?></span></span></td>
         <td class="tcell-right"><div id="document_access" class="itemlist-field"><div class="listmember" field="document_access" uid="<?php echo($document->access);?>" style="float: left"><?php echo($document->access_text);?></div></div></td>
 	</tr>
 </table>

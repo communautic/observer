@@ -76,7 +76,7 @@ function phaseFormProcess(formData, form, poformOptions) {
 function phaseFormResponse(data) {
 	switch(data.action) {
 		case "edit":
-			$("#projects3 a[rel='"+data.id+"'] .text").html($("#projects .title").val());
+			$("#projects3 span[rel='"+data.id+"'] .text").html($("#projects .title").val());
 			$("#phasestartdate").html(data.startdate);
 			$("#phaseenddate").html(data.enddate);
 			
@@ -87,22 +87,22 @@ function phaseFormResponse(data) {
 				}
 			});
 			
-			var num  = $("#projects3 a.active-link .phase_num").html();
+			var num  = $("#projects3 .active-link .phase_num").html();
 			switch(data.access) {
 				case "0":
-					$("#projects3 a.active-link .module-access-status").removeClass("module-access-active");
+					$("#projects3 .active-link .module-access-status").removeClass("module-access-active");
 				break;
 				case "1":
-					$("#projects3 a.active-link .module-access-status").addClass("module-access-active");
+					$("#projects3 .active-link .module-access-status").addClass("module-access-active");
 				break;
 			}
 				
 			switch(data.status) {
 				case "2":
-					$("#projects3 a.active-link .module-item-status").addClass("module-item-active");
+					$("#projects3 .active-link .module-item-status").addClass("module-item-active");
 				break;
 				default:
-					$("#projects3 a.active-link .module-item-status").removeClass("module-item-active");
+					$("#projects3 .active-link .module-item-status").removeClass("module-item-active");
 			}
 		break;
 	}
@@ -111,7 +111,7 @@ function phaseFormResponse(data) {
 
 function newPhase() {
 	var id = $('#projects2 .module-click:visible').attr("rel");
-	var num  = parseInt($(".projects3-content:visible a.module-click").size()+1);
+	var num  = parseInt($(".projects3-content:visible .module-click").size()+1);
 	$.ajax({ type: "GET", url: "/", dataType: 'json', data: 'path=apps/projects/modules/phases&request=createNew&id=' + id + '&num=' + num, cache: false, success: function(data){
 		var pid = $("#projects2 .module-click:visible").attr("rel");
 			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/projects/modules/phases&request=getList&id="+pid, success: function(ldata){
@@ -234,8 +234,8 @@ function sortClickPhase(obj,sortcur,sortnew) {
 function sortDragPhase(order) {
 	var fid = $("#projects2 .module-click:visible").attr("rel");
 	$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=setOrder&"+order+"&id="+fid, success: function(html){
-		$("#projects3 a.sort:visible").attr("rel", "3");
-		$("#projects3 a.sort:visible").removeClass("sort1").removeClass("sort2").addClass("sort3");
+		$("#projects3 .sort:visible").attr("rel", "3");
+		$("#projects3 .sort:visible").removeClass("sort1").removeClass("sort2").addClass("sort3");
 		}
 	});
 }

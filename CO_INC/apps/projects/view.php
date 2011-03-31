@@ -5,7 +5,7 @@
 	<div id="projects1-outer">
     <h3 class="module-bg-active"><?php echo $lang["PROJECT_FOLDER"];?></h3>
     <div id="projects1" class="module-bg-active">
-    	<div class="module-actions"><div class="sort-outer"><a href="#" class="sort" rel="1"></a></div><div class="filter-box-outer"><form action="#"><fieldset><input name="search" type="text" class="filter filter-box" value="" size="4" /></fieldset></form></div><div class="filter-search-outer"></div></div>
+    	<div class="module-actions"><div class="sort-outer"><span class="sort" rel="1"></span></div><div class="filter-box-outer"><form action="#"><fieldset><input name="search" type="text" class="filter filter-box" value="" size="4" /></fieldset></form></div><div class="filter-search-outer"></div></div>
     	<div class="module-inner west-ui-content">
         <div class="scrolling-content">
             <ul class="sortable"><li></li></ul>
@@ -16,7 +16,7 @@
 	<div id="projects2-outer">
 		<h3><?php echo $lang["PROJECT_PROJECTS"];?></h3>
         <div id="projects2">
-        	<div class="module-actions"><div class="sort-outer"><a href="#" class="sort" rel="1"></a></div><div class="filter-box-outer"><form action="#"><fieldset><input name="search" type="text" class="filter filter-box" value="" size="4" /></fieldset></form></div><div class="filter-search-outer"></div></div>
+        	<div class="module-actions"><div class="sort-outer"><span class="sort" rel="1"></span></div><div class="filter-box-outer"><form action="#"><fieldset><input name="search" type="text" class="filter filter-box" value="" size="4" /></fieldset></form></div><div class="filter-search-outer"></div></div>
     	<div class="module-inner west-ui-content">
             <div class="scrolling-content">
             <ul class="sortable"><li></li></ul>
@@ -32,7 +32,7 @@
 					include_once("modules/".$module."/model.php");
 					include_once("modules/".$module."/controller.php");
 					?>
-                    <div class="module-actions module-actions-modules"><?php if (${$module.'_filter'} != 0) { ?><div class="sort-outer"><a href="#" class="sort" rel="1"></a></div>
+                    <div class="module-actions module-actions-modules"><?php if (${$module.'_filter'} != 0) { ?><div class="sort-outer"><span class="sort" rel="1"></span></div>
                     
                     <div class="filter-box-outer"><form action="#"><fieldset><input name="search" type="text" class="filter filter-box" value="" size="4" /></fieldset></form></div><div class="filter-search-outer"></div><?php } ?></div>
 					<h3 rel="<?php echo($module);?>"><?php echo(${$module.'_name'});?></h3>
@@ -58,12 +58,12 @@
     </div>
 	<div class="center-west">
 		<ul id="projectsActions" class="ui-layout-content actionconsole">
-			<li class="listNew"><a href="#" class="actionNew" title="<?php echo $lang["ACTION_NEW"];?>"></a></li>
-			<li class="listPrint"><a href="#" class="actionPrint" title="<?php echo $lang["ACTION_PRINT"];?>"></a></li>
-			<li class="listSend"><a href="#" class="actionSend" title="<?php echo $lang["ACTION_SENDTO"];?>"></a></li>
-			<li class="listDuplicate"><a href="#" class="actionDuplicate" title="<?php echo $lang["ACTION_DUPLICATE"];?>"></a></li>
-			<li class="listProjectHandbook"><a href="#" class="actionProjectHandbook" title="<?php echo $lang["ACTION_PROJECTHANDBOOK"];?>"></a></li>
-            <li class="listBin"><a href="#" class="actionBin" title="<?php echo $lang["ACTION_DELETE"];?>"></a></li>
+			<li class="listNew"><span class="actionNew" title="<?php echo $lang["ACTION_NEW"];?>"></span></li>
+			<li class="listPrint"><span class="actionPrint" title="<?php echo $lang["ACTION_PRINT"];?>"></span></li>
+			<li class="listSend"><span class="actionSend" title="<?php echo $lang["ACTION_SENDTO"];?>"></span></li>
+			<li class="listDuplicate"><span class="actionDuplicate" title="<?php echo $lang["ACTION_DUPLICATE"];?>"></span></li>
+			<li class="listProjectHandbook"><span class="actionProjectHandbook" title="<?php echo $lang["ACTION_PROJECTHANDBOOK"];?>"></span></li>
+            <li class="listBin"><span class="actionBin" title="<?php echo $lang["ACTION_DELETE"];?>"></span></li>
 		</ul>
 	</div>
 	<div class="center-center" id="projects-right"></div>
