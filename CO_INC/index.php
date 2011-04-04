@@ -47,7 +47,7 @@ var co_files = '<?php echo CO_FILES;?>';
 <?php } ?>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.livequery-1.1.1.min.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.quicksearch.js"></script>
-<script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.form-2.43.js"></script>
+<script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.form.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.layout-1.3.0.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.jNice.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery-impromptu.3.1.min.js"></script>
