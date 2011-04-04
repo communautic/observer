@@ -136,7 +136,7 @@ li.ui-state-highlight { height: 13px; margin: 0 0 5px 0;}
 .module-item-active { display: inline-block; }
 
 .text { padding-right: 30px; }
-.num { position: absolute; right: 15px; font-size: 11px;}
+.num { position: absolute; right: 15px; font-size: 11px; top: 0;}
 /*.phase_num { position: absolute; bottom: 0;}*/
 
 .ui-layout-resizer-west { display: none !important; width: 10px !important; height: 20px !important; }
