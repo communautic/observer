@@ -1,4 +1,4 @@
-jQuery(function ($) {
+(function($, window, document, undefined) {
 	$.fn.quicksearch = function (target, opt) {
 		
 		var timeout, cache, rowcache, jq_results, val = '', e = this, options = $.extend({ 
@@ -19,17 +19,29 @@ jQuery(function ($) {
 			},
 			hide: function () {
 				this.style.display = "none";
+			},
+			prepareQuery: function (val) {
+				return val.toLowerCase().split(' ');
+			},
+			testQuery: function (query, txt, _row) {
+				for (var i = 0; i < query.length; i += 1) {
+					if (txt.indexOf(query[i]) === -1) {
+						return false;
+					}
+				}
+				return true;
 			}
 		}, opt);
 		
 		this.go = function () {
 			
-			var i = 0, noresults = true, vals = val.toLowerCase().split(' ');
+			var i = 0, 
+			noresults = true, 
+			query = options.prepareQuery(val),
+			val_empty = (val.replace(' ', '').length === 0);
 			
-			var rowcache_length = rowcache.length;
-			for (var i = 0; i < rowcache_length; i++)
-			{
-				if (this.test(vals, cache[i]) || val == "") {
+			for (var i = 0, len = rowcache.length; i < len; i++) {
+				if (val_empty || options.testQuery(query, cache[i], rowcache[i])) {
 					options.show.apply(rowcache[i]);
 					noresults = false;
 				} else {
@@ -89,15 +101,6 @@ jQuery(function ($) {
 			return this;
 		};
 		
-		this.test = function (vals, t) {
-			for (var i = 0; i < vals.length; i += 1) {
-				if (t.indexOf(vals[i]) === -1) {
-					return false;
-				}
-			}
-			return true;
-		};
-		
 		this.cache = function () {
 			
 			jq_results = $(target);
@@ -143,4 +146,5 @@ jQuery(function ($) {
 		});
 		
 	};
-});
+
+}(jQuery, this, document));
