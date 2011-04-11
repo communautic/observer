@@ -41,7 +41,7 @@ $lang["GLOBAL_ACCESS"] = 'Access';
 $lang["GLOBAL_ACCESS_INTERNAL"] = 'internal';
 $lang["GLOBAL_ACCESS_PUBLIC"] = 'public';
 $lang["GLOBAL_ACCESS_FOOTER"] = 'access:';
-$lang["GLOBAL_FOOTER_STATUS"] = 'Stand';
+$lang["GLOBAL_FOOTER_STATUS"] = 'Status';
 
 $lang["GLOBAL_TO"] = 'To';
 $lang["GLOBAL_CC"] = 'CC';
