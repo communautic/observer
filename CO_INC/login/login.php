@@ -10,8 +10,8 @@
 <!--[if lt IE 8]>
 <link href="<?php echo CO_FILES;?>/css/login/ie.css" rel="stylesheet" type="text/css" media="screen,projection" />
 <![endif]-->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.form-2.43.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.form.js"></script>
 <script type="text/javascript">
 
 $(document).ready(function() {
