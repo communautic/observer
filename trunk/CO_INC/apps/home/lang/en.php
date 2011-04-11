@@ -1,3 +1,3 @@
 <?php
-$home_name = "Desktop";
+$home_name = "Dashboard";
 ?>

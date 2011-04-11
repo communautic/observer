@@ -14,7 +14,7 @@
         </li>
         <li class="widget widget-home">
         	<div class="widget-head widget-home"><a class="collapse" href="#">COLLAPSE</a><h3>service information</h3></div>
-        	<div class="widget-content widget-home"><img src="apps/home/col_1_2.jpg" width="321" height="249" /></div>
+        	<div class="widget-content widget-home"><img src="CO_INC/apps/home/col_1_2.jpg" width="321" height="249" /></div>
         </li>
     </ul>
     
@@ -41,7 +41,7 @@
         	<div class="widget-head"><a class="collapse" href="#">COLLAPSE</a><h3>today's tasks</h3></div>
         	<div class="widget-content widget-home-inner">
             <div id="calendar-widget"></div>
-            <img src="apps/home/col_4_1.jpg" width="321" height="563" /></div>
+            <img src="CO_INC/apps/home/col_4_1.jpg" width="321" height="563" /></div>
         </li>
     </ul>
 </div>
