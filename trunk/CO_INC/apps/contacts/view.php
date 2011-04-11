@@ -8,7 +8,7 @@
     	<div class="module-actions"><div class="sort-outer"><a href="#" class="sort" rel="1"></a></div><div class="filter-box-outer"><form action="#"><fieldset><input name="search" type="text" class="filter filter-box" value="" size="4" /></fieldset></form></div><div class="filter-search-outer"></div></div>
     	<div class="module-inner west-ui-content">
         <div class="scrolling-content">
-        	<ul class="topul"><li><span rel="0" class="module-click"><span class="text"><?php echo $lang['CONTACTS_SYSTEM_GROUP'];?></span><span class="num">(<?php echo $contactsmodel->getNumAllContacts();?>)</span></span></li></ul>
+        	<ul class="topul"><li><span rel="0" class="module-click"><span class="text"><?php echo $lang['CONTACTS_SYSTEM_GROUP'];?></span><span class="num" id="totalContacts">(<?php echo $contactsmodel->getNumAllContacts();?>)</span></span></li></ul>
             <ul class="sortable sublist"><li></li></ul>
         </div>
         </div>
