@@ -1,0 +1,453 @@
+<?php
+
+class DocumentsModel extends ProjectsModel {
+	
+	public function __construct() {  
+		parent::__construct();
+		$this->_contactsmodel = new ContactsModel();
+	}
+
+	
+	function getList($id,$sort) {
+		global $session;
+	  if($sort == 0) {
+		  $sortstatus = $this->getSortStatus("document-sort-status",$id);
+		  if(!$sortstatus) {
+				$order = "order by edited_date DESC";
+				$sortcur = '1';
+		  } else {
+			  switch($sortstatus) {
+				  case "1":
+				  		$order = "order by edited_date DESC";
+						$sortcur = '1';
+				  break;
+				  case "2":
+				  		$order = "order by edited_date ASC";
+							$sortcur = '2';
+				  break;
+				  case "3":
+				  		$sortorder = $this->getSortOrder("document-sort-order",$id);
+				  		if(!$sortorder) {
+								$order = "order by edited_date DESC";
+								$sortcur = '1';
+						  } else {
+								$order = "order by field(id,$sortorder)";
+								$sortcur = '3';
+						  }
+				  break;	
+			  }
+		  }
+	  } else {
+		  switch($sort) {
+				  case "1":
+				  		$order = "order by edited_date DESC";
+						$sortcur = '1';
+				  break;
+				  case "2":
+				  		$order = "order by edited_date ASC";
+						$sortcur = '2';
+				  break;
+				  case "3":
+				  		$sortorder = $this->getSortOrder("document-sort-order",$id);
+				  		if(!$sortorder) {
+						  	$order = "order by edited_date DESC";
+								$sortcur = '1';
+						  } else {
+								$order = "order by field(id,$sortorder)";
+								$sortcur = '3';
+						  }
+				  break;	
+			  }
+	  }
+	  
+		$q = "select id,title,access,edited_date from " . CO_TBL_DOCUMENTS_FOLDERS . " where pid = '$id' and bin != '1' " . $order;
+
+	  $this->setSortStatus("document-sort-status",$sortcur,$id);
+		$result = mysql_query($q, $this->_db->connection);
+	  $documents = "";
+	  while ($row = mysql_fetch_array($result)) {
+
+		foreach($row as $key => $val) {
+				$array[$key] = $val;
+			}
+			
+			// dates
+			$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATE_FORMAT);
+			
+			// access
+			$accessstatus = "";
+			if($array["access"] == 1) {
+				$accessstatus = " module-access-active";
+			}
+			$array["accessstatus"] = $accessstatus;
+			
+			$documents[] = new Lists($array);
+	  }
+		
+	  $arr = array("documents" => $documents, "sort" => $sortcur);
+	  return $arr;
+	}
+	
+	
+	
+	// Get document list from ids for Tooltips
+	function getDocumentDetails($string,$field){
+		$users_string = explode(",", $string);
+		$users_total = sizeof($users_string);
+		$users = '';
+		if($users_total == 0) { return $users; }
+		$i = 1;
+		foreach ($users_string as &$value) {
+			$q = "SELECT id,title from " . CO_TBL_DOCUMENTS . " where id = '$value'";
+			$result_user = mysql_query($q, $this->_db->connection);
+			while($row_user = mysql_fetch_assoc($result_user)) {
+				$users .= '<span class="groupmember tooltip-advanced" uid="' . $row_user["id"] . '">' . $row_user["title"] . '</span><div style="display:none"><a href="delete" class="markfordeletionNEW" uid="' . $row_user["id"] . '" field="' . $field . '">X</a><br /></div>';
+				if($i < $users_total) {
+					$users .= ', ';
+				}
+			}
+			$i++;
+		}
+		return $users;
+   }
+   
+   function getDependency($id){
+		$q = "SELECT title FROM " . CO_TBL_DOCUMENTS . " where dependency = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		return mysql_num_rows($result);
+   }
+   
+   	function formatBytes($bytes, $precision = 2) {
+		$units = array('B', 'KB', 'MB', 'GB', 'TB');
+	  
+		$bytes = max($bytes, 0);
+		$pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+		$pow = min($pow, count($units) - 1);
+	  
+		$bytes /= pow(1024, $pow);
+	  
+		return round($bytes, $precision) . ' ' . $units[$pow];
+	}
+   
+	function getDetails($id) {
+		global $session, $contactsmodel, $lang;
+		$q = "SELECT * FROM " . CO_TBL_DOCUMENTS_FOLDERS . " where id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result) < 1) {
+			return false;
+		}
+		$row = mysql_fetch_array($result);
+		foreach($row as $key => $val) {
+				$array[$key] = $val;
+			}
+		
+		//$array["filesize"] = $this->formatBytes($array["filesize"]);
+
+		$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
+		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
+		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
+		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
+		$array["current_user"] = $session->uid;
+		//$array["num"] = $num;
+		
+		switch($array["access"]) {
+			case "0":
+				$array["access_text"] = $lang["GLOBAL_ACCESS_INTERNAL"];
+				$array["access_footer"] = "";
+			break;
+			case "1":
+				$array["access_text"] = $lang["GLOBAL_ACCESS_PUBLIC"];
+				$array["access_user"] = $this->_users->getUserFullname($array["access_user"]);
+				$array["access_date"] = $this->_date->formatDate($array["access_date"],CO_DATETIME_FORMAT);
+				$array["access_footer"] = $lang["GLOBAL_ACCESS_FOOTER"] . " " . $array["access_user"] . ", " .$array["access_date"];
+			break;
+		}
+		
+		// get user perms
+		$array["edit"] = "1";
+		
+		$document = new Lists($array);
+		
+		// now get all actual documents
+		// get the tasks
+		$doc = array();
+		$qt = "SELECT * FROM " . CO_TBL_DOCUMENTS . " where did = '$id' and bin='0' ORDER BY created_date DESC";
+		$resultt = mysql_query($qt, $this->_db->connection);
+		while($rowt = mysql_fetch_array($resultt)) {
+			foreach($rowt as $key => $val) {
+				$docs[$key] = $val;
+			}
+
+			$docs["filesize"] = $this->formatBytes($docs["filesize"]);
+			$doc[] = new Lists($docs);
+		}
+		$arr = array("document" => $document, "doc" => $doc);
+		return $arr;
+		
+	  
+		return $document;
+   }
+   
+   function setDetails($id,$title,$document_access) {
+		global $session;
+		
+		$now = gmdate("Y-m-d H:i:s");
+		
+		$access_date = "";
+		if($document_access == 1) {
+			$access_date = $now;
+		}
+		
+		$q = "UPDATE " . CO_TBL_DOCUMENTS_FOLDERS . " set title = '$title', access='$document_access', access_date='$access_date', access_user = '$session->uid', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		if ($result) {
+			return $id;
+		}
+   }
+
+
+   function createNew($id) {
+		global $session, $lang;
+		
+		$now = gmdate("Y-m-d H:i:s");
+		
+		$q = "INSERT INTO " . CO_TBL_DOCUMENTS_FOLDERS . " set title = '" . $lang["DOCUMENT_NEW"] . "', pid='$id', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+		$result = mysql_query($q, $this->_db->connection);
+		$id = mysql_insert_id();
+		if ($result) {
+			return $id;
+		}
+   }
+	 
+	 function createDuplicate($id) {
+			global $session, $lang;
+			
+			$now = gmdate("Y-m-d H:i:s");
+			
+			$q = "INSERT INTO " . CO_TBL_DOCUMENTS_FOLDERS . " (pid,title,created_date,created_user,edited_date,edited_user) SELECT pid,CONCAT(title,' " . $lang["GLOBAL_DUPLICAT"]. "'),'$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_DOCUMENTS_FOLDERS . " where id='$id'";
+			$result = mysql_query($q, $this->_db->connection);
+			$id_new = mysql_insert_id();
+			
+			// documents ???
+			$qt = "INSERT INTO " . CO_TBL_DOCUMENTS . " (did,filename,tempname,filesize) SELECT $id_new,filename,tempname,filesize FROM " . CO_TBL_DOCUMENTS . " where did='$id' and bin='0'";
+			$resultt = mysql_query($qt, $this->_db->connection);
+			
+			if ($result) {
+					return $id_new;
+			}
+	 }
+
+
+   function binDocument($id) {
+		global $session;
+		$q = "UPDATE " . CO_TBL_DOCUMENTS_FOLDERS . " set bin = '1', bintime = NOW(), binuser= '$session->uid' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+		  	return true;
+		}
+   }
+   
+   function restoreDocument($id) {
+		$q = "UPDATE " . CO_TBL_DOCUMENTS_FOLDERS . " set bin = '0' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+		  	return true;
+		}
+	}
+	
+	
+	function deleteDocument($id) {
+		$q = "SELECT id FROM " . CO_TBL_DOCUMENTS . " where did = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+			$fid = $row["id"];
+			$this->deleteFile($fid);
+		}
+
+		$q = "DELETE FROM " . CO_TBL_DOCUMENTS_FOLDERS . " where id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		if ($result) {
+		  	return true;
+		}
+	}
+
+
+	function binDocItem($id) {
+		global $session;
+		$q = "UPDATE " . CO_TBL_DOCUMENTS . " set bin = '1', bintime = NOW(), binuser= '$session->uid' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+		  	return true;
+		}
+	}
+
+
+	function restoreFile($id) {
+		$q = "UPDATE " . CO_TBL_DOCUMENTS . " set bin = '0' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+		  	return true;
+		}
+	}
+	
+	
+	function deleteFile($id) {
+		$q = "SELECT tempname FROM " . CO_TBL_DOCUMENTS . " where id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$filename = mysql_result($result,0);
+		
+		$file = CO_PATH_DOCUMENTS . "/" . $filename; 
+		
+		if(is_file($file)){
+            @unlink($file);
+        }
+		
+		$q = "DELETE FROM " . CO_TBL_DOCUMENTS . " where id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		if ($result) {
+		  	return true;
+		}
+	}
+
+	function getDocumentsDialog($request,$field,$append,$title,$sql,$id) {
+		global $session;
+		
+		$documents = "";
+		
+		$array["field"] = $field;
+		$q = "select id, title from " . CO_TBL_DOCUMENTS_FOLDERS . " where pid='$id' and bin = '0' order by title";
+		$result = mysql_query($q, $this->_db->connection);
+	  	while ($row = mysql_fetch_array($result)) {
+			foreach($row as $key => $val) {
+				$array[$key] = $val;
+			}
+			$documents[] = new Lists($array); 
+	  }
+	  return $documents;
+	}
+
+
+   function getDocListFromIDs($string,$field){
+		global $session;
+		
+		$string = explode(",", $string);
+		$total = sizeof($string);
+		$users = '';
+		
+		if($total == 0) { 
+			return $users; 
+		}
+		
+		$arr = array();
+		
+		$sql = "and access='1'";
+		if($session->isSysadmin() || $session->isAdmin()) {
+			$sql = "";
+		}
+		foreach ($string as &$value) {
+			$q = "SELECT id, title FROM " . CO_TBL_DOCUMENTS_FOLDERS . " where id = '$value' $sql and bin='0'";
+			$result = mysql_query($q, $this->_db->connection);
+			if(mysql_num_rows($result) > 0) {
+				while($row = mysql_fetch_assoc($result)) {
+					$arr[$row["id"]] = $row["title"];		
+				}
+			}
+		}
+		$arr_total = sizeof($arr);
+		
+		// build string
+		$i = 1;
+		foreach ($arr as $key => &$value) {
+			$users .= '<span class="docitems-outer"><a class="docitem" uid="' . $key . '" field="' . $field . '">' . $value;		
+			if($i < $arr_total) {
+				$users .= ', ';
+			}
+			$users .= '</a></span>';	
+			$i++;
+		}
+		return $users;
+	}
+
+
+	function getDocContext($id,$field){
+		$q = "SELECT id,title FROM " . CO_TBL_DOCUMENTS_FOLDERS . " where id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_array($result);
+		foreach($row as $key => $val) {
+			$array[$key] = $val;
+		}
+		
+		$array["field"] = $field;
+		
+		$document = new Lists($array); 
+		
+		$doc = array();
+		$qt = "SELECT * FROM " . CO_TBL_DOCUMENTS . " where did = '$id' and bin='0' ORDER BY created_date DESC";
+		$resultt = mysql_query($qt, $this->_db->connection);
+		while($rowt = mysql_fetch_array($resultt)) {
+			foreach($rowt as $key => $val) {
+				$docs[$key] = $val;
+			}
+
+			$docs["filesize"] = $this->formatBytes($docs["filesize"]);
+			$doc[] = new Lists($docs);
+		}
+		
+		$arr = array("document" => $document, "doc" => $doc);
+		return $arr;
+	}
+
+
+	function downloadDocument($id) {
+		$q = "SELECT * FROM " . CO_TBL_DOCUMENTS . " where id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_assoc($result);
+		$filename = $row["filename"];
+		$tempname = $row["tempname"];
+		$fullPath = CO_PATH_DOCUMENTS.$tempname;
+		$filePath = CO_PATH_DOCUMENTS.$filename;
+		
+
+		if ($fd = fopen ($fullPath, "rb")) {
+			$fsize = filesize($fullPath);
+			$path_parts = pathinfo($filePath); 
+			$ext = strtolower($path_parts["extension"]); 
+			switch ($ext) {
+				case "png":
+				case "bmp":
+				case "gif":
+				header("Content-type: image/".$ext.""); 
+				header("Content-Disposition: attachment; filename=\"".$filename."\"");
+				break;
+				case "jpg":
+				case "jpeg":
+				header("Content-type: image/jpeg"); 
+				header("Content-Disposition: attachment; filename=\"".$filename."\"");
+				break;
+				case "pdf":
+				header("Content-type: application/pdf");
+				header("Content-Disposition: attachment; filename=\"".$filename."\""); 
+				break;
+				case "zip":
+				header("Content-type: application/zip"); 
+				header("Content-Disposition: filename=\"".$filename."\"");
+				break;
+				default;
+				header("Content-type: application/octet-stream");
+				header("Content-Disposition: filename=\"".$filename."\"");
+			}
+			header("Content-length: $fsize");
+			header("Cache-control: private"); 
+			while(!feof($fd)) {
+				$buffer = fread($fd, 2048);
+				echo $buffer;
+			}
+		}
+		fclose ($fd);
+		exit;
+		}
+	}
+?>

@@ -1,0 +1,22 @@
+body {
+    margin: 90pt 60pt 60pt 72pt;
+    font-family: Arial, Helvetica, sans-serif;
+	font-size: 10pt;
+}
+
+td { vertical-align: middle; height: 18pt;}
+td.top { vertical-align: top}
+
+table.standard { margin: 0 10pt 0 10pt }
+table.grey { background-color:#E5E5E5; margin: 0 0 2px 0; padding: 0 10pt 0 10pt}
+
+p { margin: 0;}
+
+.tcell-left { width: 140pt; font-size: 8pt; padding-top: 3pt;}
+.tcell-left-short { width: 120pt; font-size: 8pt; padding-top: 3pt;}
+.short { width: 20pt; vertical-align: top}
+
+.line { height: 10pt; margin-bottom: 10pt; border-bottom: 1px solid #666;}
+h1 { font-size: 36pt; margin: 0pt; padding: 0pt;}
+h2 { font-size: 25pt; margin: 0pt; padding: 0pt;}
+h3 { margin: 0pt; padding: 0pt;}
