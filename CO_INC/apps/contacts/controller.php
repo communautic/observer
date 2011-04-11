@@ -112,7 +112,8 @@ class Contacts extends Controller {
 	function newContact() {
 		$retval = $this->model->newContact();
 		if($retval){
-			 return '{ "action": "new", "id": "' . $retval . '" }';
+			 $num = $this->model->getNumAllContacts();
+			 return '{ "action": "new", "id": "' . $retval . '", "num": "' . $num . '"}';
 		  } else{
 			 return "error";
 		  }
@@ -131,7 +132,8 @@ class Contacts extends Controller {
 	function binContact($id) {
 		$retval = $this->model->binContact($id);
 		if($retval){
-			 return "true";
+			$num = $this->model->getNumAllContacts();
+			 return '{ "status": "true", "num": "' . $num . '"}';
 		  } else{
 			 return "error";
 		  }

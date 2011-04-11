@@ -75,6 +75,7 @@ function groupFormResponse(data) {
 function newContact() {
 	var id = $('#'+contacts.name+' .module-click:visible').attr("rel");
 	$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/contacts&request=newContact&id=' + id, cache: false, success: function(data){
+			$('#totalContacts').html("(" + data.num + ")");
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/contacts&request=getContactList&id="+id, success: function(list){
 				$("#contacts2 ul").html(list.html);
 				var index = $("#contacts2 .module-click").index($("#contacts2 .module-click[rel='"+data.id+"']"));
@@ -126,8 +127,9 @@ function binContact() {
 			if(v){
 				var id = $("#contacts2 .active-link").attr("rel");
 				var fid = $("#contacts .module-click:visible").attr("rel");
-				$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=binContact&id=" + id, cache: false, success: function(data){
-					if(data == "true") {
+				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/contacts&request=binContact&id=" + id, cache: false, success: function(data){
+					if(data.status == "true") {
+						$('#totalContacts').html("(" + data.num + ")");
 						$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/contacts&request=getContactList&id="+fid, success: function(list){
 							$("#contacts2 ul").html(list.html);
 							if(list.html == "<li></li>") {
