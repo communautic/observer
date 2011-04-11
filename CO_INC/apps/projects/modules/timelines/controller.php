@@ -50,7 +50,12 @@ class Timelines extends Projects {
 		$html = "";
 		if($project = $this->model->getDetails($pid)) {
 			ob_start();
-				include 'view/print_schedule.php';
+				if($id == 3) {
+					//include 'view/print_psp.php';
+					include 'view/print_schedule.php';
+				} else {
+					include 'view/print_schedule.php';
+				}
 				$html = ob_get_contents();
 			ob_end_clean();
 			$title = $project["title"] . " - " . TIMELINE_DATES_LIST;

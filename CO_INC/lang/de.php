@@ -49,6 +49,7 @@ $lang["GLOBAL_SUBJECT"] = 'Betreff';
 $lang["GLOBAL_MESSAGE"] = 'Inhalt';
 $lang["GLOBAL_SEND"] = 'Senden';
 
-$lang["GLOBAL_PAGE"] = 'fsfde';
+// PDF print Globals
+$GLOBALS['PAGE'] = "Seite"; 
 
 ?>

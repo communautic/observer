@@ -135,7 +135,7 @@ li.ui-state-highlight { height: 13px; margin: 0 0 5px 0;}
 .module-item-status { margin: 0 0 0 10px; width: 12px; height: 9px; background:url(../img/apps_buttons_sprite.png) no-repeat -140px -570px; display: none;}
 .module-item-active { display: inline-block; }
 
-.text { padding-right: 30px; }
+.text { /*padding-right: 30px;*/ }
 .num { position: absolute; right: 15px; font-size: 11px; top: 0;}
 /*.phase_num { position: absolute; bottom: 0;}*/
 

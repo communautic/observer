@@ -48,4 +48,7 @@ $lang["GLOBAL_CC"] = 'CC';
 $lang["GLOBAL_SUBJECT"] = 'Subject';
 $lang["GLOBAL_MESSAGE"] = 'Message';
 $lang["GLOBAL_SEND"] = 'Send';
+
+// PDF print Globals
+$GLOBALS['PAGE'] = "Page"; 
 ?>
