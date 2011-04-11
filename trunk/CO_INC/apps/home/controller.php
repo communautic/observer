@@ -9,6 +9,7 @@ class Home extends Controller {
 			//$this->model = new ProjectsModel();
 			$this->modules = array();
 			$this->num_modules = 0;
+			$this->binDisplay = false;
 	}
 	
 	public static function saveImage($chart_url,$path,$file_name){
