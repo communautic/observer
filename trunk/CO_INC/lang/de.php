@@ -1,5 +1,5 @@
 <?php
-$lang["APPLICATION_NAME"] = "company observer 6.0.5";
+$lang["APPLICATION_NAME"] = "company observer 6.0.6";
 
 /* LOGIN PAGE */
 $lang["LOGIN_USERNAME"] = "Benutzername:";
