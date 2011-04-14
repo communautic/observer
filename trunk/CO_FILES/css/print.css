@@ -4,11 +4,12 @@ body {
 	font-size: 10pt;
 }
 
-td { vertical-align: middle; height: 18pt;}
+td,div { vertical-align: middle; height: 18pt;}
 td.top { vertical-align: top}
 
 table.standard { margin: 0 10pt 0 10pt }
 table.grey { background-color:#E5E5E5; margin: 0 0 2px 0; padding: 0 10pt 0 10pt}
+.grey { color:#666666; }
 
 p { margin: 0;}
 

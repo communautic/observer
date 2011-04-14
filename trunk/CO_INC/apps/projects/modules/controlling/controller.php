@@ -82,6 +82,9 @@ class Controlling extends Projects {
 		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
 		$pdf = $this->savePDF($title,$html,$attachment);
 		
+		// write sento log
+		//$this->writeSendtoLog("controlling",$id,$to);
+		
 		//$to,$from,$fromName,$subject,$body,$attachment
 		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment);
 	}

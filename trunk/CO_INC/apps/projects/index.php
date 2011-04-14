@@ -86,6 +86,9 @@ if (!empty($_GET['request'])) {
 		case 'getProjectSend':
 			echo($projects->getProjectSend($_GET['id']));
 		break;
+		case 'getSendtoDetails':
+			echo($projects->getSendtoDetails("projects",$_GET['id']));
+		break;
 		case 'newProject':
 			echo($projects->newProject($_GET['id']));
 		break;

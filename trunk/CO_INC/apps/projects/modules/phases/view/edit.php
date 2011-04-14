@@ -86,19 +86,18 @@ foreach($task as $value) {
         <td class="tcell-right"><div id="phase_access" class="itemlist-field"><div class="listmember" field="phase_access" uid="<?php echo($phase->access);?>" style="float: left"><?php echo($phase->access_text);?></div></div><input type="hidden" name="phase_access_orig" value="<?php echo($phase->access);?>" /></td>
 	</tr>
 </table>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content" height="100">
-	<tr>
-	  <td class="tcell-left text11"></td>
-</table>
-</form>
-<!--<div class="content-spacer"></div>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 		<td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_EMAILED_TO"];?></td>
-		<td class="tcell-right-inactive"><?php echo($phase->emailed_to);?></td>
+		<td class="tcell-right-inactive"><div id="phase_sendto">
+        <?php 
+			foreach($sendto as $value) { 
+			echo '<div class="tcell-right-para">' . $value->who . ', ' . $value->date . '</div>';
+		 } ?></div></td>
     </tr>
-</table>-->
+</table>
+</form>
 </div>
 </div>
 <div>

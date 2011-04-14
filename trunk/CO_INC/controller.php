@@ -133,7 +133,8 @@ class Controller extends MySQLDB {
 				$email = $contactsmodel->getContactFieldFromID($cc, "email");
 				$firstname = $contactsmodel->getContactFieldFromID($cc, "firstname");
 				$lastname = $contactsmodel->getContactFieldFromID($cc, "lastname");
-				$mail->AddCC($email,$firstname . " " . $lastname);
+				// changed to bcc
+				$mail->AddBCC($email,$firstname . " " . $lastname);
 			}
 			}
 			
@@ -160,7 +161,20 @@ class Controller extends MySQLDB {
 		}
 	}
 
-
+	
+	function writeSendtoLog($what,$whatid,$who) {
+		$this->model->writeSendtoLog($what,$whatid,$who);
+	}
+	
+	function getSendtoDetails($what,$id) {
+		$html = "";
+		$sendto = $this->model->getSendtoDetails($what,$id);
+		foreach($sendto as $value) { 
+			$html .= '<div class="tcell-right-para">' . $value->who . ', ' . $value->date . '</div>';
+		 }
+		return $html;
+	}
+	
 }
 
 $controller = new Controller();

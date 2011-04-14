@@ -213,8 +213,10 @@ class MeetingsModel extends ProjectsModel {
 			$task[] = new Lists($tasks);
 		}
 		
+		$sendto = $this->getSendtoDetails("meetings",$id);
+		
 		$meeting = new Lists($array);
-		$arr = array("meeting" => $meeting, "task" => $task);
+		$arr = array("meeting" => $meeting, "task" => $task, "sendto" => $sendto);
 		return $arr;
    }
 

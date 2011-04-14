@@ -29,6 +29,7 @@ class Meetings extends Projects {
 		if($arr = $this->model->getDetails($id)) {
 			$meeting = $arr["meeting"];
 			$task = $arr["task"];
+			$sendto = $arr["sendto"];
 			include('view/edit.php');
 		} else {
 			include CO_INC .'/view/default.php';
@@ -43,6 +44,7 @@ class Meetings extends Projects {
 		if($arr = $this->model->getDetails($id)) {
 			$meeting = $arr["meeting"];
 			$task = $arr["task"];
+			$sendto = $arr["sendto"];
 			ob_start();
 				include 'view/print.php';
 				$html = ob_get_contents();
@@ -77,8 +79,8 @@ class Meetings extends Projects {
 			include CO_INC .'/view/default.php';
 		}
 	}
-
-
+	
+	
 	function sendDetails($id,$variable,$to,$cc,$subject,$body) {
 		global $session,$users, $lang;
 		$title = "";
@@ -86,6 +88,7 @@ class Meetings extends Projects {
 		if($arr = $this->model->getDetails($id)) {
 			$meeting = $arr["meeting"];
 			$task = $arr["task"];
+			$sendto = $arr["sendto"];
 			ob_start();
 				include 'view/print.php';
 				$html = ob_get_contents();
@@ -94,6 +97,9 @@ class Meetings extends Projects {
 		}
 		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
 		$pdf = $this->savePDF($title,$html,$attachment);
+		
+		// write sento log
+		$this->writeSendtoLog("meetings",$id,$to);
 		
 		//$to,$from,$fromName,$subject,$body,$attachment
 		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment);

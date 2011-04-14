@@ -11,6 +11,7 @@ projects.actionDialog = dialogProject;
 projects.actionNew = newProject;
 projects.actionPrint = printProject;
 projects.actionSend = sendProject;
+projects.actionSendtoResponse = sendProjectResponse;
 projects.actionDuplicate = duplicateProject;
 projects.actionHandbook = printProjectHandbook;
 projects.actionBin = binProject;
@@ -132,6 +133,15 @@ function sendProject() {
 	var id = $("#projects2 .active-link").attr("rel");
 	$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=getProjectSend&id="+id, success: function(html){
 		$("#modalDialogForward").html(html).dialog('open');
+		}
+	});
+}
+
+function sendProjectResponse() {
+	var id = $("#projects2 .active-link").attr("rel");
+	$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=getSendtoDetails&id="+id, success: function(html){
+		$("#project_sendto").html(html);
+		$("#modalDialogForward").dialog('close');
 		}
 	});
 }

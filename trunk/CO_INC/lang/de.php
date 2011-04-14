@@ -34,7 +34,7 @@ $lang["GLOBAL_REMOVE"] = 'Entfernen';
 
 $lang["GLOBAL_STATUS"] 		= 	'Status';
 $lang["GLOBAL_DURATION"] 	= 	'Dauer';
-$lang["GLOBAL_EMAILED_TO"] 	= 	'Weiterleitung an';
+$lang["GLOBAL_EMAILED_TO"] 	= 	'Weiterleitung';
 $lang["GLOBAL_DUPLICAT"] 	= 	'Duplikat';
 
 $lang["GLOBAL_ACCESS"] = 'Freigabe';
@@ -45,11 +45,13 @@ $lang["GLOBAL_FOOTER_STATUS"] = 'Stand';
 
 $lang["GLOBAL_TO"] = 'An';
 $lang["GLOBAL_CC"] = 'CC';
+$lang["GLOBAL_BCC"] = 'BCC';
 $lang["GLOBAL_SUBJECT"] = 'Betreff';
 $lang["GLOBAL_MESSAGE"] = 'Inhalt';
 $lang["GLOBAL_SEND"] = 'Senden';
 
 // PDF print Globals
+$GLOBALS['SECTION'] = "";
 $GLOBALS['PAGE'] = "Seite"; 
 
 ?>

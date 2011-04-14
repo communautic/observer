@@ -45,10 +45,12 @@ $lang["GLOBAL_FOOTER_STATUS"] = 'Status';
 
 $lang["GLOBAL_TO"] = 'To';
 $lang["GLOBAL_CC"] = 'CC';
+$lang["GLOBAL_BCC"] = 'BCC';
 $lang["GLOBAL_SUBJECT"] = 'Subject';
 $lang["GLOBAL_MESSAGE"] = 'Message';
 $lang["GLOBAL_SEND"] = 'Send';
 
 // PDF print Globals
+$GLOBALS['SECTION'] = "";
 $GLOBALS['PAGE'] = "Page"; 
 ?>

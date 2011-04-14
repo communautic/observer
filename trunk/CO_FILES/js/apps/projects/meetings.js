@@ -10,6 +10,7 @@ meetings.deleteTask = deleteTask;
 meetings.actionNew = newMeeting;
 meetings.actionPrint = printMeeting;
 meetings.actionSend = sendMeeting;
+meetings.actionSendtoResponse = sendMeetingResponse;
 meetings.actionDuplicate = duplicateMeeting;
 meetings.actionBin = binMeeting;
 meetings.poformOptions = { beforeSubmit: meetingFormProcess, dataType:  'json', success: meetingFormResponse };
@@ -146,6 +147,15 @@ function sendMeeting() {
 	var id = $("#projects3 .active-link:visible").attr("rel");
 	$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/meetings&request=getSend&id="+id, success: function(html){
 		$("#modalDialogForward").html(html).dialog('open');
+		}
+	});
+}
+
+function sendMeetingResponse() {
+	var id = $("#projects3 .active-link:visible").attr("rel");
+	$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/meetings&request=getSendtoDetails&id="+id, success: function(html){
+		$("#meeting_sendto").html(html);
+		$("#modalDialogForward").dialog('close');
 		}
 	});
 }

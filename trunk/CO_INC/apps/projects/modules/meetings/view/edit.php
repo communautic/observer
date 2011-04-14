@@ -49,7 +49,6 @@
 		<td class="tcell-right"><div id="management" class="itemlist-field"><?php echo($meeting->management);?></div><div id="management_ct" class="itemlist-field"><span field="management_ct" class="ct-content"><?php echo($meeting->management_ct);?></span></div></td>
 	</tr>
 </table>
-<div class="content-spacer"></div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 	  <td class="tcell-left text11"><span class="content-nav showDialog" request="getMeetingStatusDialog" field="status" title="<?php echo $lang["GLOBAL_STATUS"];?>" append="1"><span><?php echo $lang["GLOBAL_STATUS"];?></span></span></td>
@@ -87,10 +86,16 @@ include("task.php");
         <td class="tcell-right"><div id="meeting_access" class="itemlist-field"><div class="listmember" field="meeting_access" uid="<?php echo($meeting->access);?>" style="float: left"><?php echo($meeting->access_text);?></div></div><input type="hidden" name="meeting_access_orig" value="<?php echo($meeting->access);?>" /></td>
 	</tr>
 </table>
+<div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 		<td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_EMAILED_TO"];?></td>
-		<td class="tcell-right-inactive"><?php echo($meeting->emailed_to);?></td>
+		<td class="tcell-right-inactive"><div id="meeting_sendto">
+        <?php 
+			foreach($sendto as $value) { 
+			echo '<div class="tcell-right-para">' . $value->who . ', ' . $value->date . '</div>';
+		 } ?></div>
+        </td>
     </tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content" height="100">

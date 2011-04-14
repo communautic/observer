@@ -91,13 +91,17 @@ if(is_array($phases)) {
 	}
 }
 ?>
-<!--<div class="content-spacer"></div>
+<div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
-		<td class="tcell-left-inactive text11"><?php //echo $lang["GLOBAL_EMAILED_TO"];?></td>
-		<td class="tcell-right-inactive"><?php //echo($project->emailed_to);?></td>
+		<td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_EMAILED_TO"];?></td>
+		<td class="tcell-right-inactive"><div id="project_sendto">
+        <?php 
+			foreach($sendto as $value) { 
+			echo '<div class="tcell-right-para">' . $value->who . ', ' . $value->date . '</div>';
+		 } ?></div></td>
     </tr>
-</table>-->
+</table>
 </div>
 </div>
 <div>

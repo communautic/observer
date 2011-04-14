@@ -33,6 +33,7 @@ class Documents extends Projects {
 		if($arr = $this->model->getDetails($id)) {
 			$document = $arr["document"];
 			$doc = $arr["doc"];
+			$sendto = $arr["sendto"];
 			include('view/edit.php');
 		} else {
 			include CO_INC .'/view/default.php';
@@ -47,6 +48,7 @@ class Documents extends Projects {
 		if($arr = $this->model->getDetails($id)) {
 			$document = $arr["document"];
 			$doc = $arr["doc"];
+			$sendto = $arr["sendto"];
 			ob_start();
 				include 'view/print.php';
 				$html = ob_get_contents();
@@ -91,6 +93,7 @@ class Documents extends Projects {
 		if($arr = $this->model->getDetails($id)) {
 			$document = $arr["document"];
 			$doc = $arr["doc"];
+			$sendto = $arr["sendto"];
 			ob_start();
 				include 'view/print.php';
 				$html = ob_get_contents();
@@ -104,6 +107,9 @@ class Documents extends Projects {
 			$attachment_array[] = array("tempname" => $value->tempname, "filename" => $value->filename);
 			
 		}
+		
+		// write sento log
+		$this->writeSendtoLog("documents",$id,$to);
 		
 		//$to,$from,$fromName,$subject,$body,$attachment
 		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment,$attachment_array);

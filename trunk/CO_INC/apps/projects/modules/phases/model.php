@@ -249,7 +249,10 @@ class PhasesModel extends ProjectsModel {
 			
 			$task[] = new Lists($tasks);
 		}
-		$arr = array("phase" => $phase, "task" => $task);
+		
+		$sendto = $this->getSendtoDetails("phases",$id);
+		
+		$arr = array("phase" => $phase, "task" => $task, "sendto" => $sendto);
 		return $arr;
 	}
 

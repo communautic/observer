@@ -395,7 +395,10 @@ class ProjectsModel extends Model {
 			$num[$rown["id"]] = $i;
 			$i++;
 		}
-		$arr = array("project" => $project, "phases" => $phases, "num" => $num);
+		
+		$sendto = $this->getSendtoDetails("projects",$id);
+		
+		$arr = array("project" => $project, "phases" => $phases, "num" => $num, "sendto" => $sendto);
 		return $arr;
    }
 
@@ -877,7 +880,7 @@ class ProjectsModel extends Model {
 
 
    function getBin() {
-		global $projects;
+		global $projects,$phasesmodel;
 		
 		$bin = array();
 		$bin["datetime"] = $this->_date->formatDate("now",CO_DATETIME_FORMAT);
@@ -937,15 +940,15 @@ class ProjectsModel extends Model {
 						
 						
 						
-						//foreach($projects->modules as $module => $value) {
-							//if(CONSTANT($module.'_bin') == 1) {
+						foreach($projects->modules as $module => $value) {
+							if(CONSTANT($module.'_bin') == 1) {
 								//${$module."test"} = new Phases("phases");
 								//include(CO_INC . "/apps/projects/modules/".$module."/model.php");
-								//$phases->model->test();
+								//$phasesmodel->test();
 								//echo $module;
 								//$arr[$module] = "";
-							//}
-						//}
+							}
+						}
 						
 						
 						// look for all modules that do use bin

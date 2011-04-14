@@ -20,20 +20,32 @@ function Module (name) {
 	this.save;
 }
 
+
 var sendformOptions = { beforeSubmit: projectSendProcess, dataType:  'json', success: projectSendResponse };
 
-
 function projectSendProcess(formData, form, sendformOptions) {
+	if($("#to").html() == "") {
+		return false;
+	}
 	formData[formData.length] = processList('to');
 	formData[formData.length] = processList('cc');
+	
 }
 
 function projectSendResponse(data) {
+	
 	if(data == 1) {
-	$("#modalDialogForward").dialog('close');
+		var obj = getCurrentModule();
+		obj.actionSendtoResponse();
 	} else {
 		$("#modalDialogForward").html("Failed");
 	}
+	
+	/*if(data == 1) {
+	$("#modalDialogForward").dialog('close');
+	} else {
+		$("#modalDialogForward").html("Failed");
+	}*/
 }
 
 function initScrollbar ( elem ) {
