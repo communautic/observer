@@ -66,12 +66,15 @@ class Projects extends Controller {
 
 
 	function newFolder() {
+		global $session;
 		$retval = $this->model->newFolder();
 		if($retval){
-			 return '{ "action": "new", "id": "' . $retval . '" }';
-		  } else{
+			// write action log
+			//$this->model->writeActionLog($session->uid,"projects","");
+			return '{ "action": "new", "id": "' . $retval . '" }';
+		} else{
 			 return "error";
-		  }
+		}
 	}
 
 
@@ -135,6 +138,7 @@ class Projects extends Controller {
 			$project = $arr["project"];
 			$phases = $arr["phases"];
 			$num = $arr["num"];
+			$sendto = $arr["sendto"];
 			include 'view/project_edit.php';
 		}
 		else {
@@ -159,12 +163,14 @@ class Projects extends Controller {
 			$project = $arr["project"];
 			$phases = $arr["phases"];
 			$num = $arr["num"];
+			$sendto = $arr["sendto"];
 			ob_start();
 				include 'view/project_print.php';
 				$html = ob_get_contents();
 			ob_end_clean();
 			$title = $project->title;
 		}
+		$GLOBALS['SECTION'] = "projekte.png";
 		switch($t) {
 			case "html":
 				$this->printHTML($title,$html);
@@ -185,6 +191,7 @@ class Projects extends Controller {
 			$project = $arr["project"];
 			$phases = $arr["phases"];
 			$num = $arr["num"];
+			$sendto = $arr["sendto"];
 			ob_start();
 				include 'view/handbook_cover.php';
 				$html .= ob_get_contents();
@@ -199,6 +206,7 @@ class Projects extends Controller {
 				if($arr = $phasescont->model->getDetails($phase->id,$num[$phase->id])) {
 					$phase = $arr["phase"];
 					$task = $arr["task"];
+					$sendto = $arr["sendto"];
 					ob_start();
 						include 'modules/phases/view/print.php';
 						$html .= ob_get_contents();
@@ -216,6 +224,7 @@ class Projects extends Controller {
 			}
 			$title = $project->title . " - " . $lang["PROJECT_HANDBOOK"];
 		}
+		$GLOBALS['SECTION'] = "projekt_handbuch.png";
 		switch($t) {
 			case "html":
 				$this->printHTML($title,$html);
@@ -256,14 +265,19 @@ class Projects extends Controller {
 			$project = $arr["project"];
 			$phases = $arr["phases"];
 			$num = $arr["num"];
+			$sendto = $arr["sendto"];
 			ob_start();
 				include 'view/project_print.php';
 				$html = ob_get_contents();
 			ob_end_clean();
 			$title = $project->title;
 		}
+		$GLOBALS['SECTION'] = "projekt_handbuch.png";
 		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
 		$pdf = $this->savePDF($title,$html,$attachment);
+		
+		// write sento log
+		$this->writeSendtoLog("projects",$id,$to);
 		
 		//$to,$from,$fromName,$subject,$body,$attachment
 		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment);

@@ -16,12 +16,32 @@
         	<div class="widget-head widget-home"><a class="collapse" href="#">COLLAPSE</a><h3>service information</h3></div>
         	<div class="widget-content widget-home"><img src="CO_INC/apps/home/col_1_2.jpg" width="321" height="249" /></div>
         </li>
+        
     </ul>
     
     <ul id="column2" class="column">
         <li class="widget widget-notes">
         	<div class="widget-head"><a class="collapse" href="#">COLLAPSE</a><h3>notes</h3></div>
         	<div class="widget-content widget-notes-inner">NOTE: Here you can see notes, which either were written by another user (for your attention) or which you wrote to yourself as reminders.</div>
+        </li>
+        
+        <li class="widget widget-notes">
+        	<div class="widget-head widget-notes"><a class="collapse" href="#">COLLAPSE</a><h3>Aktive Benutzer</h3></div>
+        	<div class="widget-content widget-notes">
+            	<div class="widget-content widget-notes-inner">
+                Gunharth Randolf, Peter Meier
+                </div>
+            </div>
+        </li>
+        
+        <li class="widget widget-notes">
+        	<div class="widget-head widget-notes"><a class="collapse" href="#">COLLAPSE</a><h3>Letzten 10 Aktionen</h3></div>
+        	<div class="widget-content widget-notes">
+            	<div class="widget-content widget-notes-inner">
+                Heute 10:10 - Gunharth Randolf, Projekt "Ladida", speichern<br />
+                09.04 21:00 - Peter Meier, Projekt "Ladida", angelegt
+                </div>
+            </div>
         </li>
     </ul>
     

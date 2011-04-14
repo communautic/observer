@@ -5,6 +5,7 @@ timelines.getDetails = getDetailsTimeline;
 timelines.actionDialog = dialogTimeline;
 timelines.actionPrint = printTimeline;
 timelines.actionSend = sendTimeline;
+timelines.actionSendtoResponse = sendTimelineResponse;
 
 
 function getDetailsTimeline(moduleidx,liindex) {
@@ -38,6 +39,18 @@ function sendTimeline() {
 		$("#modalDialogForward").html(html).dialog('open');
 		}
 	});
+}
+
+function sendTimelineResponse() {
+	var id = $("#projects3 .active-link:visible").attr("rel");
+	if($("#timeline_sendto").length > 0) {
+		$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/tiomelines&request=getSendtoDetails&id="+id, success: function(html){
+			$("#timeline_sendto").html(html);
+			
+			}
+		});
+	}
+	$("#modalDialogForward").dialog('close');
 }
 
 

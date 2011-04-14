@@ -181,11 +181,11 @@ class DocumentsModel extends ProjectsModel {
 			$docs["filesize"] = $this->formatBytes($docs["filesize"]);
 			$doc[] = new Lists($docs);
 		}
-		$arr = array("document" => $document, "doc" => $doc);
-		return $arr;
 		
-	  
-		return $document;
+		$sendto = $this->getSendtoDetails("documents",$id);
+		
+		$arr = array("document" => $document, "doc" => $doc, "sendto" => $sendto);
+		return $arr;
    }
    
    function setDetails($id,$title,$document_access) {
@@ -361,7 +361,7 @@ class DocumentsModel extends ProjectsModel {
 		// build string
 		$i = 1;
 		foreach ($arr as $key => &$value) {
-			$users .= '<span class="docitems-outer"><a class="docitem" uid="' . $key . '" field="' . $field . '">' . $value;		
+			$users .= '<span class="docitems-outer"><a class="docitemContext" uid="' . $key . '" field="' . $field . '">' . $value;		
 			if($i < $arr_total) {
 				$users .= ', ';
 			}

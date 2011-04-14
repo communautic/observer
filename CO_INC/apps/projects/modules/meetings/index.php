@@ -71,6 +71,9 @@ if (!empty($_GET['request'])) {
 		case 'getSend':
 			echo($meetings->getSend($_GET['id']));
 		break;
+		case 'getSendtoDetails':
+			echo($meetings->getSendtoDetails("meetings",$_GET['id']));
+		break;
 		case 'toggleIntern':
 			echo($meetings->toggleIntern($_GET['id'],$_GET['status']));
 		break;

@@ -31,6 +31,7 @@ class Phases extends Projects {
 		if($arr = $this->model->getDetails($id,$num)) {
 			$phase = $arr["phase"];
 			$task = $arr["task"];
+			$sendto = $arr["sendto"];
 			include('view/edit.php');
 		} else {
 			include CO_INC .'/view/default.php';
@@ -45,6 +46,7 @@ class Phases extends Projects {
 		if($arr = $this->model->getDetails($id,$num)) {
 			$phase = $arr["phase"];
 			$task = $arr["task"];
+			$sendto = $arr["sendto"];
 			ob_start();
 				include 'view/print.php';
 				$html = ob_get_contents();
@@ -88,6 +90,7 @@ class Phases extends Projects {
 		if($arr = $this->model->getDetails($id,$variable)) {
 			$phase = $arr["phase"];
 			$task = $arr["task"];
+			$sendto = $arr["sendto"];
 			ob_start();
 				include 'view/print.php';
 				$html = ob_get_contents();
@@ -96,6 +99,9 @@ class Phases extends Projects {
 		}
 		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
 		$pdf = $this->savePDF($title,$html,$attachment);
+		
+		// write sento log
+		$this->writeSendtoLog("phases",$id,$to);
 		
 		//$to,$from,$fromName,$subject,$body,$attachment
 		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment);

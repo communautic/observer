@@ -58,6 +58,7 @@ color: #333;
 .table-content .tcell-left-inactive { width: 136px; padding: 0 0 0 15px; color:#666}
 .table-content .tcell-right { padding: 2px 0 0 0; }
 .table-content .tcell-right-inactive { padding: 3px 0 0 0; color:#666}
+.table-content .tcell-right-para { padding: 0 0 6px 0; }
 .table-content input { background-color: transparent; }
 .table-content input.bg { font-size: 13px;
 	font-family: Arial, Helvetica, sans-serif;

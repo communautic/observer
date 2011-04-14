@@ -129,4 +129,14 @@ foreach($task as $value) {
 		<td><?php echo($phase->access_text)?></td>
 	</tr>
 </table>
+&nbsp;
+<table border="0" cellpadding="0" cellspacing="0" width="100%" class="standard">
+    <tr>
+		<td class="tcell-left top grey"><?php echo$lang["GLOBAL_EMAILED_TO"];?></td>
+		<td><?php 
+			foreach($sendto as $value) { 
+			echo '<div class="grey">' . $value->who . ', ' . $value->date . '</div>';
+		 } ?></td>
+	</tr>
+</table>
 <div style="page-break-after:always;">&nbsp;</div>

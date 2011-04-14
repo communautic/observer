@@ -137,7 +137,43 @@ class Model extends MySQLDB {
 		$chart_url = 'http://chart.apis.google.com/chart?chf=bg,s,3F3F3F&chxs=0,FFFFFF,11.5&chxt=x&chs=321x170&cht=p3&chco=FF9900|3399CC|E0E0E0&chd=s:jfh&chdlp=b&chma=20,20,15';
 		$image = self::saveImage($chart_url ,$local_image_path,$image_name);
 	}*/
-
+	
+	
+	function writeActionLog() {
+		$q = "INSERT INTO co_log set app='projects'";
+		$result = mysql_query($q, $this->_db->connection);
+	}
+	
+	
+	function writeSendtoLog($what,$whatid,$who) {
+		$now = gmdate("Y-m-d H:i:s");
+		$q = "INSERT INTO co_log_sendto SET date='$now', what='$what', whatid='$whatid', who='$who'";
+		$result = mysql_query($q, $this->_db->connection);
+	}
+	
+	
+	function getSendtoDetails($what,$id) {
+		global $contactsmodel;
+	// Select sendto
+		$sendto = array();
+		$q = "SELECT * FROM co_log_sendto where what='$what' and whatid = '$id' ORDER BY date DESC";
+		$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+		foreach($row as $key => $val) {
+				
+				if($key == "who") {
+					$sendtos[$key] = $contactsmodel->getUserListPlain($val);
+				}
+				else if($key == "date") {
+					$sendtos[$key] = $this->_date->formatDate($val,CO_DATETIME_FORMAT);
+				} else {
+					$sendtos[$key] = $val;
+				}
+			}
+			$sendto[] = new Lists($sendtos);
+		}
+		return $sendto;
+	}
 
 }
 

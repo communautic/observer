@@ -5,6 +5,7 @@ controlling.getDetails = getDetailsControlling;
 controlling.actionDialog = dialogControlling;
 controlling.actionPrint = printControlling;
 controlling.actionSend = sendControlling;
+controlling.actionSendtoResponse = sendControllingResponse;
 
 function getDetailsControlling(moduleidx,liindex) {
 	var phaseid = $("#projects3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
@@ -36,6 +37,18 @@ function sendControlling() {
 		$("#modalDialogForward").html(html).dialog('open');
 		}
 	});
+}
+
+function sendControllingResponse() {
+	var id = $("#projects3 .active-link:visible").attr("rel");
+	if($("#controlling_sendto").length > 0) {
+		$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/controlling&request=getSendtoDetails&id="+id, success: function(html){
+			$("#controlling_sendto").html(html);
+			
+			}
+		});
+	}
+	$("#modalDialogForward").dialog('close');
 }
 
 function dialogControlling(offset,request,field,append,title,sql) {

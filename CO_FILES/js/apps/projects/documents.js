@@ -9,6 +9,7 @@ documents.addTask = addTaskDocument;
 documents.actionNew = newDocument;
 documents.actionPrint = printDocument;
 documents.actionSend = sendDocument;
+documents.actionSendtoResponse = sendDocumentResponse;
 documents.actionDuplicate = duplicateDocument;
 documents.actionBin = binDocument;
 documents.poformOptions = { beforeSerialize: documentSerialize, beforeSubmit: documentFormProcess, dataType:  'json', success: documentFormResponse };
@@ -124,6 +125,15 @@ function sendDocument() {
 	var id = $("#projects3 .active-link:visible").attr("rel");
 	$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/documents&request=getSend&id="+id, success: function(html){
 		$("#modalDialogForward").html(html).dialog('open');
+		}
+	});
+}
+
+function sendDocumentResponse() {
+	var id = $("#projects3 .active-link:visible").attr("rel");
+	$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/documents&request=getSendtoDetails&id="+id, success: function(html){
+		$("#document_sendto").html(html);
+		$("#modalDialogForward").dialog('close');
 		}
 	});
 }
@@ -320,7 +330,7 @@ $(document).ready(function() {
 	});
 
 
-	$('.docitem').live('click',function() {
+	$('.docitemContext').live('click',function() {
 		var ele = $(this);
 		var uid = $(this).attr('uid');
 		var field = $(this).attr('field');

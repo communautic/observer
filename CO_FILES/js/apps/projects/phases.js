@@ -10,6 +10,7 @@ phases.deleteTask = deleteTask;
 phases.actionNew = newPhase;
 phases.actionPrint = printPhase;
 phases.actionSend = sendPhase;
+phases.actionSendtoResponse = sendPhaseResponse;
 phases.actionDuplicate = duplicatePhase;
 phases.actionBin = binPhase;
 phases.poformOptions = { beforeSubmit: phaseFormProcess, dataType:  'json', success: phaseFormResponse };
@@ -150,6 +151,14 @@ function sendPhase() {
 	});
 }
 
+function sendPhaseResponse() {
+	var id = $("#projects3 .active-link:visible").attr("rel");
+	$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=getSendtoDetails&id="+id, success: function(html){
+		$("#phase_sendto").html(html);
+		$("#modalDialogForward").dialog('close');
+		}
+	});
+}
 
 function duplicatePhase() {
 	var id = $("#projects3 .active-link:visible").attr("rel");

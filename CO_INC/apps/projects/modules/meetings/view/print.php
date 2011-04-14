@@ -32,9 +32,6 @@
 	  <td class="tcell-left"><?php echo $lang["MEETING_MANAGEMENT"];?></td>
         <td><?php echo($meeting->management);?></td>
 	</tr>
-</table>
-&nbsp;
-<table border="0" cellpadding="0" cellspacing="0" width="100%" class="standard">
 	<tr>
 	  <td class="tcell-left"><?php echo $lang["GLOBAL_STATUS"];?></td>
         <td><?php echo($meeting->status_text);?> <?php echo($meeting->status_date)?></td>
@@ -82,9 +79,15 @@ foreach($task as $value) {
 		<td class="tcell-left"><?php echo $lang["GLOBAL_ACCESS"];?></td>
 		<td><?php echo($meeting->access_text)?></td>
 	</tr>
+</table>
+&nbsp;
+<table border="0" cellpadding="0" cellspacing="0" width="100%" class="standard">
     <tr>
-		<td class="tcell-left"><?php echo$lang["GLOBAL_EMAILED_TO"];?></td>
-		<td><?php echo($meeting->emailed_to)?></td>
+		<td class="tcell-left top grey"><?php echo$lang["GLOBAL_EMAILED_TO"];?></td>
+		<td><?php 
+			foreach($sendto as $value) { 
+			echo '<div class="grey">' . $value->who . ', ' . $value->date . '</div>';
+		 } ?></td>
 	</tr>
 </table>
 <div style="page-break-after:always;">&nbsp;</div>
