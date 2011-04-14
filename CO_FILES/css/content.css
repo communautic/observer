@@ -78,7 +78,7 @@ color: #333;
 .table-footer .tcell-right { }*/
 
 
-    input {
+    input, textarea {
     -webkit-appearance:none;
     -webkit-border-radius:0px;
     }
@@ -110,8 +110,9 @@ color: #333;
 	width: 300px;
 }
 
-.protocol-outer { position: relative;}
-.tbl-protocol { height: 55px;}
+.tbl-protocol td { background-color:#E1F0AF; padding-top: 14px; }
+.elastic { padding: 0; margin: 0 0 5px 0; width: 100%; height: 60px; background-color: #E1F0AF; border: 0; overflow: hidden; }
+
 
 .meetingouter { margin-bottom: 3px;}
 .task-drag { width: 15px; height: 15px; display: none; background:url(../img/sort_buttons_trans.png) no-repeat 0px -60px; }

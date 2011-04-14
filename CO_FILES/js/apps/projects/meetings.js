@@ -42,7 +42,8 @@ function meetingFormProcess(formData, form, poformOptions) {
 		var yo = "task_text_"+reg;
 		var name = "task_text["+reg+"]";
 		if($('#task_'+reg+' :input[name="task_text_'+reg+'"]').length > 0) {
-			var text = $('#'+yo).tinymce().getContent();
+			//var text = $('#'+yo).tinymce().getContent();
+			var text = $('#'+yo).val();
 			for (var i=0; i < formData.length; i++) { 
 				if (formData[i].name == yo) { 
 					formData[i].name = name;

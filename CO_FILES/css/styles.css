@@ -329,9 +329,6 @@ ul.actionconsole { margin: 0 11px 0 11px;  }
 	border-left: 0px none;
 }
 
-/*#protocol { width: 100%; background-color: #E1F0AF; border: 0; margin:0; padding: 0; }*/
-/*.tinymce { height: 18px; width: 100%; background-color: #E1F0AF; border: 0; margin:0; padding: 0;}*/
-
 
 .ui-layout-content {
 overflow:hidden;
@@ -342,8 +339,6 @@ position:relative;
 
 /*.showDialog, .showDialogTime, .addtask { display: block; height: 13px; width: 15px; margin-top: 3px; background:url(../img/apps_buttons_sprite.png) no-repeat 0px -570px}
 .showDialog:hover, .showDialogTime:hover, .addtask:hover { background-position: -20px -570px}*/
-
-.tbl-protocol td { background-color:#E1F0AF; padding-top: 14px; }
 
 
 /* autocomplete max height */

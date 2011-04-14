@@ -46,7 +46,7 @@ function projectFormProcess(formData, form, poformOptions) {
 	} else {
 		formData[formData.length] = { "name": "title", "value": title };
 	}
-	if($('#protocol_ifr').length > 0) {
+	/*if($('#protocol_ifr').length > 0) {
 		var protocol = $('#protocol').tinymce().getContent();
 		for (var i=0; i < formData.length; i++) { 
 			if (formData[i].name == 'protocol') { 
@@ -60,7 +60,7 @@ function projectFormProcess(formData, form, poformOptions) {
 				formData[i].value = protocol;
 			} 
 		} 
-	}
+	}*/
 	formData[formData.length] = processList('projectfolder');
 	formData[formData.length] = processList('ordered_by');
 	formData[formData.length] = processCustomText('ordered_by_ct');
