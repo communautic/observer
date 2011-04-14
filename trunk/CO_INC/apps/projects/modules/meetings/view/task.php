@@ -18,7 +18,7 @@
   <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
 	<tr>
 		<td class="tcell-left text11">&nbsp;</td>
-		<td  class="tcell-right"><div class="protocol-outer" style="position: relative;"><div id="task_text_<?php echo $value->id;?>" class="tinymce" style="min-height: 26px;"><?php echo $value->text;?></div></div></td>
+		<td class="tcell-right"><textarea id="task_text_<?php echo $value->id;?>" name="task_text_<?php echo $value->id;?>" class="elastic"><?php echo $value->text;?></textarea></td>
     </tr>
 </table>
 </div>

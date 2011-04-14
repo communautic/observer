@@ -59,23 +59,6 @@
 #contactsActions span.actionImport:hover 	{ 	background-position: -200px -310px;	}
 #contactsActions span.actionImport.noactive { background-position: 0px -310px;  	}
 
-/*#contacts .table-title, #contacts .textarea-title, #contacts .table-content input.bg {
-background-color: #ffd396;
-}
-
-#contacts .table-content textarea.bg {
-width: 100%; border: 0; background-color: #ffd396; margin: 0; padding: 0;
-}
-
-#contacts .showDialog, #contacts .showDialogTime, #contacts .addtask, #contacts .protocolToggle { display: block; height: 13px; width: 15px; margin-top: 3px; background:url(../../../img/apps_buttons_sprite.png) no-repeat -40px -570px}
-
-.contacts-search { width: 100px; border: 0; margin: 2px 0;}
-#custom-text { width: 100px; border: 0; margin: 2px 0;}
-
-#contacts .context {
-background-color:#c88700;
-}
- */
  
 #contacts .table-title, #contacts .textarea-title { 
 background-color: #ffd396; }

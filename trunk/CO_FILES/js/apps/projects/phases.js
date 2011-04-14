@@ -36,7 +36,7 @@ function phaseFormProcess(formData, form, poformOptions) {
 	} else {
 		formData[formData.length] = { "name": "title", "value": title };
 	}
-	if($('#protocol_ifr').length > 0) {
+	/*if($('#protocol_ifr').length > 0) {
 		var protocol = $('#protocol').tinymce().getContent();
 		for (var i=0; i < formData.length; i++) { 
 			if (formData[i].name == 'protocol') { 
@@ -50,7 +50,7 @@ function phaseFormProcess(formData, form, poformOptions) {
 				formData[i].value = protocol;
 			} 
 		} 
-	}
+	}*/
 
 	$('.task_team_list').each(function() {
 		var id = $(this).attr("id");

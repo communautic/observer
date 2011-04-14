@@ -42,8 +42,8 @@
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
   <tr>
-    <td class="tcell-left text11"><span class="content-nav protocolToggle"><span><?php echo $lang["PROJECT_DESCRIPTION"];?></span></span></td>
-    <td class="tcell-right"><div class="protocol-outer" style="position: relative;"><div id="protocol" class="tinymce" style="min-height: 26px;"><?php echo($phase->protocol);?></div></div></td>
+    <td class="tcell-left text11"><span class="content-nav selectTextarea"><span><?php echo $lang["PROJECT_DESCRIPTION"];?></span></span></td>
+    <td class="tcell-right"><textarea name="protocol" class="elastic"><?php echo(strip_tags($phase->protocol));?></textarea></td>
   </tr>
 </table>
 <div class="content-spacer"></div>

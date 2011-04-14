@@ -199,7 +199,9 @@ var inAnimation = false; //flag for testing if we are in a animation
 $(document).ready(function() { 
 						   
 	
-	
+	$('.elastic').livequery(function() {
+		$(this).elastic();
+	});
 	/*$('.scroll-pane').livequery(function() {
 		//$(this).jScrollPane();
 		var ele = $(this);
@@ -284,7 +286,7 @@ $(document).ready(function() {
 	});*/
 	
 	// title autosave
-	$("input.bg, input.title").live('blur', function() { 
+	$("input.bg, input.title, textarea.elastic").live('blur', function() { 
 		if(confirmNavigation()) {
 			formChanged = false;
 			var obj = getCurrentModule();
@@ -461,6 +463,11 @@ $(document).ready(function() {
 	
 	$('.selectTextfield').live('click',function() {
 		$(this).parent().next().find('input').focus();
+		return false;
+	});
+	
+	$('.selectTextarea').live('click',function() {
+		$(this).parent().next().find('textarea').focus();
 		return false;
 	});
 	
@@ -773,7 +780,7 @@ $('.ui-datepicker-trigger-action').live('click',function() {
 	});*/
 
 
-	$('.protocolToggle').live('click',function() {
+	/*$('.protocolToggle').live('click',function() {
 		var ele = 'protocol';
 		if($('#' + ele + '_external').is(":visible")) {
 			$('#'+ele+'_external').fadeOut( function() {									   
@@ -792,10 +799,10 @@ $('.ui-datepicker-trigger-action').live('click',function() {
 			}
 			
 		return false;
-	});
+	});*/
 
 
-	function myCustomInitInstance(ed) {
+	/*function myCustomInitInstance(ed) {
 		var ele = ed.id;
 		//$("#"+ele+"_tbl").height(0);
 		
@@ -816,17 +823,17 @@ $('.ui-datepicker-trigger-action').live('click',function() {
 				
 			});
     	});
-	}
+	}*/
 	
 	
-	$(".mceIcon").live("click", function(e) {
+	/*$(".mceIcon").live("click", function(e) {
 		var obj = getCurrentModule();
 		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 		e.preventDefault();
-	})
+	})*/
 
 
-	$(".tinymce").livequery(function() {
+	/*$(".tinymce").livequery(function() {
 			$(this).tinymce({
 			script_url : 'tiny_mce/tiny_mce_gzip.php',
 			doctype: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">',
@@ -849,17 +856,17 @@ $('.ui-datepicker-trigger-action').live('click',function() {
 			theme_advanced_resizing_min_height : 24,
 			init_instance_callback: myCustomInitInstance
 		});
-	})
+	})*/
 
 
-	$(".tinymce").live("click",function() {
+	/*$(".tinymce").live("click",function() {
 		var ele = $(this).attr("id");
 		$(this).tinymce().show();
 		$(this).parent().animate({ marginBottom: "27px" }, 200, function() {
 			$("#"+ele+"_external").fadeIn();	
 		});
 		return false;
-	})	
+	})	*/
 
 
 });
@@ -880,6 +887,16 @@ $(document).ready(function() {
      });
 	
 	$(".bg").livequery(function () {
+          $(this).data('initial_value', $(this).val());
+		  $(this).keyup(function() {
+          if ($(this).val() != $(this).data('initial_value')) {
+			  formChanged = true;
+			  $(this).data('initial_value', $(this).val());
+		  }
+		});
+     });
+	
+	$(".elastic").livequery(function () {
           $(this).data('initial_value', $(this).val());
 		  $(this).keyup(function() {
           if ($(this).val() != $(this).data('initial_value')) {
