@@ -538,7 +538,7 @@ $(document).ready(function() {
 		autoOpen: false,
 		resizable: true,
 		width: 400,  
-		height: 300,
+		height: 320,
 		show: 'slide',
 		hide: 'slide'
 	})

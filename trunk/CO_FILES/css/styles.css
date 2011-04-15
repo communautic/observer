@@ -628,5 +628,6 @@ border:1px dashed black;
 .table-window a.content-nav :active  { color: #000; }
 .table-window a.content-nav :visited { color: #000; }
 .table-window a.content-nav :hover   { background-color: #666; color: #000}
+
 .table-window input { width: 100%; font-size: 13px !important;}
 .table-window textarea { width: 100%; font-size: 13px !important;}
