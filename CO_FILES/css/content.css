@@ -121,3 +121,7 @@ color: #333;
 .content-outline { padding: 5px 0;}
 .dialog-text { font-size:12px; padding: 3px 15px;}
 .dialog-text a { display: block; margin: 7px 0;}
+
+div.coButton-outer { width: 100px; margin:auto; text-align: center; }
+span.coButton  { width: 100px; background-color: #666; display: block; padding: 4px; text-align:center }
+span.coButton:hover   { background-color: #333; color: #fff; cursor: pointer; }

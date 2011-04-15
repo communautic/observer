@@ -10,7 +10,7 @@
 		<td class="tcell-right text13"><div id="to" class="itemlist-field"><?php echo $to;?></div></td>
 	</tr>
 	<tr>
-		<td class="tcell-left text11"><a href="#" class="content-nav showDialog" request="getContactsDialog" field="cc" append="1" offsetsubract="70"><span><?php echo $lang["GLOBAL_CC"];?></span></a></td>
+		<td class="tcell-left text11"><a href="#" class="content-nav showDialog" request="getContactsDialog" field="cc" append="1" offsetsubract="70"><span><?php echo $lang["GLOBAL_BCC"];?></span></a></td>
 		<td class="tcell-right text13"><div id="cc" class="itemlist-field"><?php echo $cc;?></div></td>
 	</tr>
      <tr>
@@ -27,12 +27,5 @@
       </tr>
 </table>
 <div class="content-spacer"></div>
-<table border="0" cellpadding="0" cellspacing="0" class="table-window">
-	<tr>
-      <tr>
-        <td class="tcell-left text11"><a href="#" class="content-nav  actionSendForm"><span><?php echo $lang["GLOBAL_SEND"];?></span></a></td>
-      		<td class="tcell-right">&nbsp;</td>
-
-      </tr>
-    </table>
+<div class="coButton-outer"><span class="content-nav actionSendForm coButton"><?php echo $lang["GLOBAL_SEND"];?></span></div>
 </form>
