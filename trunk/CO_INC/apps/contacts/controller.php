@@ -83,9 +83,9 @@ class Contacts extends Controller {
 	}
 
 	
-	function getContactList($id,$sort) {
+	function getContactList($sort) {
 		global $system;
-		$arr = $this->model->getContactList($id,$sort);
+		$arr = $this->model->getContactList($sort);
 		$contacts = $arr["contacts"];
 		ob_start();
 			include('view/contact_list.php');

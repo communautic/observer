@@ -46,10 +46,10 @@ if (!empty($_GET['request'])) {
 			if(!empty($_GET['sort'])) {
 				$sort = $_GET['sort'];
 			}
-			echo($contacts->getContactList($_GET['id'],$sort));
+			echo($contacts->getContactList($sort));
 		break;
 		case 'setContactOrder':
-			echo($contacts->setSortOrder("contact-sort",$_GET['contactItem'],$_GET['id']));
+			echo($contacts->setSortOrder("contact-sort",$_GET['contactItem']));
 		break;
 		case 'getContactDetails':
 			echo($contacts->getContactDetails($_GET['id']));

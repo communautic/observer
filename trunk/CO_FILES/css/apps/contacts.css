@@ -9,8 +9,9 @@
 #contacts3 h3 { padding: 0 40px 0 6px; font-size: 12px; line-height: 24px; cursor:pointer; color: #000; text-align: right; }
 
 #contacts1, #contacts2, #contacts3 { padding:0; overflow: hidden !important; /* prevent scrollbars auto-added by Layout */}
-
-.contacts3-content { 	width: 100%; background-color: #c88700; padding:0; overflow:hidden !important; }
+#contacts1 { display: block;}
+#contacts1 .scrolling-content { width: 325px !important;}
+.contacts1-content { width: 325px;; background-color: #c88700; padding:0; overflow:hidden !important;}
 
 #contacts .ui-layout-west li>span:hover   { background-color: #865b00}
 #contacts .ui-layout-west li>span.active-link  { background-color: #865b00}
