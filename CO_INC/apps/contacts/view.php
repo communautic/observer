@@ -2,7 +2,7 @@
 <input name="contacts-current" id="contacts-current" type="hidden" value="" />
 <div class="ui-layout-west">
 <?php include(CO_INC . "/view/logo.php"); ?>	
-<div id="contacts1-outer">
+<!--<div id="contacts1-outer">
     <h3 class="module-bg-active"><?php echo $lang['CONTACTS_GROUPS'];?></h3>
     <div id="contacts1" class="module-bg-active">
     	<div class="module-actions"><div class="sort-outer"><a href="#" class="sort" rel="1"></a></div><div class="filter-box-outer"><form action="#"><fieldset><input name="search" type="text" class="filter filter-box" value="" size="4" /></fieldset></form></div><div class="filter-search-outer"></div></div>
@@ -24,7 +24,30 @@
             </div>
         </div>
         </div>
-	</div>
+	</div>-->
+    
+    
+	<div id="contacts1-outer">
+		<div id="contacts1">
+			<div class="module-actions module-actions-modules"><div class="sort-outer"><span class="sort" rel="1"></span></div>
+			<div class="filter-box-outer"><form action="#"><fieldset><input name="search" type="text" class="filter filter-box" value="" size="4" /></fieldset></form></div><div class="filter-search-outer"></div></div>
+			<h3 rel="contacts"><?php echo $lang['CONTACTS_CONTACTS'];?></h3>    
+            <div class="contacts1-content"><div class="scrolling-content">        
+                <ul class="sortable" rel="contacts"><li></li></ul>
+                </div>
+            </div>
+			<div class="module-actions module-actions-modules"><div class="sort-outer"><span class="sort" rel="1"></span></div>
+            <div class="filter-box-outer"><form action="#"><fieldset><input name="search" type="text" class="filter filter-box" value="" size="4" /></fieldset></form></div><div class="filter-search-outer"></div></div>
+			<h3 rel="group"><?php echo $lang['CONTACTS_GROUPS'];?></h3>    
+            <div class="contacts1-content"><div class="scrolling-content">        
+                <ul class="sortable" rel="group"><li></li></ul>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
 </div>
 
     <!-- center -->

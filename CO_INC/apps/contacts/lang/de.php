@@ -3,10 +3,10 @@ $contacts_name = "Kontakte";
 
 $lang['CONTACTS_GROUPS'] = 'Gruppen';
 $lang['CONTACTS_CONTACT'] = 'Kontakt';
-$lang['CONTACTS_CONTACTS'] = 'Einzelkontakte';
+$lang['CONTACTS_CONTACTS'] = 'Kontakte';
 
 $lang['CONTACTS_GROUP_TITLE'] = 'Gruppe';
-$lang['CONTACTS_SINGLE_CONTACTS'] = 'Einzelkontakte';
+$lang['CONTACTS_SINGLE_CONTACTS'] = 'Kontakte';
 $lang['CONTACTS_SYSTEM_GROUP'] = 'Alle Kontakte';
 define('CONTACTS_ADD_CONTACT_TO_GROUP', 'Einzelkontakt integrieren');
 define('CONTACTS_ADD_GROUP_TO_GROUP', 'Gruppe integrieren');

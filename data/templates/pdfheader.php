@@ -28,7 +28,10 @@ if ( isset($pdf) ) {
 	$yum = $GLOBALS['PAGE'];
 	$pdf->page_text($w-90, $h-30, "$yum {PAGE_NUM} / {PAGE_COUNT}", $font, 8, array(0.4,0.4,0.4));
 	$pdf->image(CO_FILES . "/img/print/co.png", "png", 72, $h-30, 91, 8);
-	$pdf->close_object();
+    $section = $GLOBALS['SECTION'];
+    $pdf->image(CO_FILES . "/img/print/".$section, "png", $w-72, $h-401, 34, 361);
+	
+    $pdf->close_object();
 	$pdf->add_object($footer, "all");
     
 }
