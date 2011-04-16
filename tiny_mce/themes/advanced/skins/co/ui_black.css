@@ -1,8 +1,0 @@
-/* Black */
-.coSkinBlack .mceToolbar .mceToolbarStart span, .coSkinBlack .mceToolbar .mceToolbarEnd span, .coSkinBlack .mceButton, .coSkinBlack .mceSplitButton, .coSkinBlack .mceSeparator, .coSkinBlack .mceSplitButton a.mceOpen, .coSkinBlack .mceListBox a.mceOpen {background-image:url(img/button_bg_black.png)}
-.coSkinBlack table, .coSkinBlack .mceMenuItemTitle a, .coSkinBlack .mceMenuItemTitle span.mceText, .coSkinBlack .mceStatusbar div, .coSkinBlack .mceStatusbar span, .coSkinBlack .mceStatusbar a {background:#535353; color:#FFF}
-.coSkinBlack table.mceListBoxEnabled .mceText, o2k7SkinBlack .mceListBox .mceText {background:#FFF; border:1px solid #CBCFD4; border-bottom-color:#989FA9; border-right:0}
-.coSkinBlack table.mceListBoxEnabled:hover .mceText, .coSkinBlack .mceListBoxHover .mceText, .coSkinBlack .mceListBoxSelected .mceText {background:#FFF; border:1px solid #FFBD69; border-right:0}
-.coSkinBlack .mceExternalToolbar, .coSkinBlack .mceListBox .mceText, .coSkinBlack div.mceMenu, .coSkinBlack table.mceLayout, .coSkinBlack .mceMenuItemTitle a, .coSkinBlack table.mceLayout tr.mceFirst td, .coSkinBlack table.mceLayout, .coSkinBlack .mceMenuItemTitle a, .coSkinBlack table.mceLayout tr.mceLast td, .coSkinBlack .mceIframeContainer {}
-.coSkinBlack table.mceSplitButtonEnabled:hover a.mceAction, .coSkinBlack .mceSplitButtonHover a.mceAction, .coSkinBlack .mceSplitButtonSelected {background-image:url(img/button_bg_black.png)}
-.coSkinBlack .mceMenu .mceMenuItemEnabled a:hover, .coSkinBlack .mceMenu .mceMenuItemActive {background-color:#FFE7A1}
