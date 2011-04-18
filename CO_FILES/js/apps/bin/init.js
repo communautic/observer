@@ -10,14 +10,30 @@ bin.modules_height = bin_num_modules*module_title_height;
 
 function binBin() {
 	var id = $("#bin1 .active-link").attr("rel");
-	alert("work in progress - delete all in " + id);
+	//alert("work in progress - delete all in " + id);
+	var txt = ALERT_DELETE_REALLY;
+	var langbuttons = {};
+	langbuttons[ALERT_YES] = true;
+	langbuttons[ALERT_NO] = false;
+	$.prompt(txt,{ 
+		buttons:langbuttons,
+		callback: function(v,m,f){		
+			if(v){
+				$.ajax({ type: "GET", url: "/", data: "path=apps/"+ id +"&request=emptyBin", success: function(html){
+					$("#bin-right").html(html);
+					binInnerLayout.initContent('center');
+					}
+				});
+			} 
+		}
+	});
 }
 
 function binActions(status) {
 	/*	0= delete	*/
 	switch(status) {
-		//case 0: actions = ['0']; break;
-		case 0: actions = []; break;
+		case 0: actions = ['0']; break;
+		//case 0: actions = []; break;
 		default: 	actions = [];  	// none
 	}
 	$('#binActions > li span').each( function(index) {
@@ -108,7 +124,7 @@ $(document).ready(function() {
 		$("#bin1 .module-click:eq(0)").addClass('active-link');
 		$.ajax({ type: "GET", url: "/", data: "path=apps/"+ id +"&request=getBin", success: function(html){
 			$("#bin-right").html(html);
-			initContentScrollbar();
+			binInnerLayout.initContent('center');
 			}
 		 });
 		return false;

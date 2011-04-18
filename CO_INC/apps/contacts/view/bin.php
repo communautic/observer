@@ -8,14 +8,14 @@
 </div>
 <div class="ui-layout-content"><div class="scroll-pane">
 
-<?php if(is_array($groups)) { ?>
+<?php if(is_array($arr["groups"])) { ?>
     <table border="0" cellpadding="0" cellspacing="0" class="table-content">
         <tr>
             <td class="tcell-left-inactive text11"><?php echo $lang['CONTACTS_GROUPS'];?></td>
         <td class="tcell-right">&nbsp;</td>
         </tr>
     </table>
-<?php foreach ($groups as $group) { ?>
+<?php foreach ($arr["groups"] as $group) { ?>
     <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive" id="group_<?php echo($group->id);?>" rel="<?php echo($group->id);?>">
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang['CONTACTS_GROUP_TITLE'];?></span></td>
@@ -36,7 +36,7 @@
 ?>
 
 
-<?php if(is_array($contacts)) { ?>
+<?php if(is_array($arr["contacts"])) { ?>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
@@ -44,7 +44,7 @@
     <td class="tcell-right">&nbsp;</td>
     </tr>
 </table>
-<?php foreach ($contacts as $contact) { ?>
+<?php foreach ($arr["contacts"] as $contact) { ?>
     <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive" id="contact_<?php echo($contact->id);?>" rel="<?php echo($contact->id);?>">
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang['CONTACTS_CONTACT'];?></span></td>

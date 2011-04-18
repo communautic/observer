@@ -84,36 +84,26 @@ class ContactsModel extends Model {
    */
    function getGroupDetails($id) {
 		global $session;
-		if($id == 0) { // build in group
-			$q = "SELECT * FROM " . CO_CONTACTS_TBL_GROUPS . " where id = '$id'";
-			$result = mysql_query($q, $this->_db->connection);
-			$row = mysql_fetch_assoc($result);
-			foreach($row as $key => $val) {
-				$array[$key] = $val;
-			}
-			$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
-		
-			$array["allcontacts"] = $this->getNumAllContacts();
-			$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
-		} else {
-			$q = "SELECT * FROM " . CO_CONTACTS_TBL_GROUPS . " where id = '$id'";
-			$result = mysql_query($q, $this->_db->connection);
-			$row = mysql_fetch_assoc($result);
-			foreach($row as $key => $val) {
-				$array[$key] = $val;
-			}
-			
-			// dates
-			$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
-			$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
-		
-			$array["allcontacts"] = $this->getNumContacts($array["members"]);
-			$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
-			$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
-			//$array["members"] = $this->getGroupMembers($id,"members");
-			$array["members"] = $this->getUserList($array['members'],'members');
-
+		$q = "SELECT * FROM " . CO_CONTACTS_TBL_GROUPS . " where id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result) < 1) {
+			return false;
 		}
+		$row = mysql_fetch_assoc($result);
+		foreach($row as $key => $val) {
+			$array[$key] = $val;
+		}
+		
+		// dates
+		$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
+		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
+	
+		$array["allcontacts"] = $this->getNumContacts($array["members"]);
+		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
+		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
+		//$array["members"] = $this->getGroupMembers($id,"members");
+		$array["members"] = $this->getUserList($array['members'],'members');
+
 		$group = new Group($array);
 		return $group;
    }
@@ -684,7 +674,7 @@ function getUserListPlain($string){
 		$bin["datetime"] = $this->_date->formatDate("now",CO_DATETIME_FORMAT);
 	  	
 		$groups = "";
-		$q ="select id, title, bin, bintime, binuser from " . CO_CONTACTS_TBL_GROUPS . " WHERE bin='1' and id!='0'";
+		$q ="select id, title, bin, bintime, binuser from " . CO_CONTACTS_TBL_GROUPS . " WHERE bin='1'";
 		$result = mysql_query($q, $this->_db->connection);
 	  	while ($row = mysql_fetch_array($result)) {
 			foreach($row as $key => $val) {
@@ -710,6 +700,33 @@ function getUserListPlain($string){
 		$arr = array("bin" => $bin, "groups" => $groups, "contacts" => $contacts);
 		return $arr;
    }
+  
+  
+   function emptyBin() {
+	   	
+		$bin = array();
+		$bin["datetime"] = $this->_date->formatDate("now",CO_DATETIME_FORMAT);
+	  	
+		$groups = "";
+		$q ="select id, title, bin, bintime, binuser from " . CO_CONTACTS_TBL_GROUPS . " WHERE bin='1'";
+		$result = mysql_query($q, $this->_db->connection);
+	  	while ($row = mysql_fetch_array($result)) {
+			$id = $row["id"];
+			$this->deleteGroup($id);
+	  	}
+		
+		$contacts = "";
+		$q ="select id, firstname, lastname, bin, bintime, binuser from " . CO_TBL_USERS . " WHERE bin='1'";
+		$result = mysql_query($q, $this->_db->connection);
+	  	while ($row = mysql_fetch_array($result)) {
+			$id = $row["id"];
+			$this->deleteContact($id);
+	  	}
+		
+		$arr = array("bin" => $bin, "groups" => $groups, "contacts" => $contacts);
+		return $arr;
+   }
+   
 	
 }
 

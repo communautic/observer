@@ -580,29 +580,56 @@ class ProjectsModel extends Model {
 	}
 	
 	function deleteProject($id) {
+		global $projects;
 		
-		$documentsmodel = new DocumentsModel();
-		$q = "SELECT id FROM co_projects_documents_folders where pid = '$id'";
-		$result = mysql_query($q, $this->_db->connection);
-		while($row = mysql_fetch_array($result)) {
-			$did = $row["id"];
-			$documentsmodel->deleteDocument($did);
+		$active_modules = array();
+		foreach($projects->modules as $module => $value) {
+			if(CONSTANT($module.'_bin') == 1) {
+				$active_modules[] = $module;
+				$arr[$module] = "";
+				$arr[$module . "_tasks"] = "";
+				$arr[$module . "_folders"] = "";
+			}
 		}
 		
-		$meetingsmodel = new MeetingsModel();
-		$q = "SELECT id FROM co_projects_meetings where pid = '$id'";
-		$result = mysql_query($q, $this->_db->connection);
-		while($row = mysql_fetch_array($result)) {
-			$mid = $row["id"];
-			$meetingsmodel->deleteMeeting($mid);
+		if(in_array("vdocs",$active_modules)) {
+			$vdocsmodel = new VDocsModel();
+			$q = "SELECT id FROM co_projects_vdocs where pid = '$id'";
+			$result = mysql_query($q, $this->_db->connection);
+			while($row = mysql_fetch_array($result)) {
+				$vid = $row["id"];
+				$vdocsmodel->deleteVDoc($vid);
+			}
 		}
 		
-		$phasesmodel = new PhasesModel();
-		$q = "SELECT id FROM co_projects_phases where pid = '$id'";
-		$result = mysql_query($q, $this->_db->connection);
-		while($row = mysql_fetch_array($result)) {
-			$pid = $row["id"];
-			$phasesmodel->deletePhase($pid);
+		if(in_array("documents",$active_modules)) {
+			$documentsmodel = new DocumentsModel();
+			$q = "SELECT id FROM co_projects_documents_folders where pid = '$id'";
+			$result = mysql_query($q, $this->_db->connection);
+			while($row = mysql_fetch_array($result)) {
+				$did = $row["id"];
+				$documentsmodel->deleteDocument($did);
+			}
+		}
+		
+		if(in_array("meetings",$active_modules)) {
+			$meetingsmodel = new MeetingsModel();
+			$q = "SELECT id FROM co_projects_meetings where pid = '$id'";
+			$result = mysql_query($q, $this->_db->connection);
+			while($row = mysql_fetch_array($result)) {
+				$mid = $row["id"];
+				$meetingsmodel->deleteMeeting($mid);
+			}
+		}
+		
+		if(in_array("phases",$active_modules)) {
+			$phasesmodel = new PhasesModel();
+			$q = "SELECT id FROM co_projects_phases where pid = '$id'";
+			$result = mysql_query($q, $this->_db->connection);
+			while($row = mysql_fetch_array($result)) {
+				$pid = $row["id"];
+				$phasesmodel->deletePhase($pid);
+			}
 		}
 		
 		$q = "DELETE FROM co_log_sendto WHERE what='projects' and whatid='$id'";
@@ -1046,6 +1073,142 @@ class ProjectsModel extends Model {
 									$vdoc["binuser"] = $this->_users->getUserFullname($vdoc["binuser"]);
 									$vdocs[] = new Lists($vdoc);
 									$arr["vdocs"] = $vdocs;
+							}
+						}
+
+
+					}
+				}
+			}
+	  	}
+		return $arr;
+   }
+   
+   
+   function emptyBin() {
+		global $projects;
+		
+		$bin = array();
+		$bin["datetime"] = $this->_date->formatDate("now",CO_DATETIME_FORMAT);
+		$arr = array();
+		$arr["bin"] = $bin;
+		
+		$arr["folders"] = "";
+		$arr["pros"] = "";
+		$arr["files"] = "";
+		$arr["tasks"] = "";
+		
+		$active_modules = array();
+		foreach($projects->modules as $module => $value) {
+			if(CONSTANT($module.'_bin') == 1) {
+				$active_modules[] = $module;
+				$arr[$module] = "";
+				$arr[$module . "_tasks"] = "";
+				$arr[$module . "_folders"] = "";
+			}
+		}
+		
+		$q ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_FOLDERS;
+		$result = mysql_query($q, $this->_db->connection);
+	  	while ($row = mysql_fetch_array($result)) {
+			$id = $row["id"];
+			if($row["bin"] == "1") { // deleted folders
+				$this->deleteFolder($id);
+			} else { // folder not binned
+				
+				$qp ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS . " where projectfolder = '$id'";
+				$resultp = mysql_query($qp, $this->_db->connection);
+				while ($rowp = mysql_fetch_array($resultp)) {
+					$pid = $rowp["id"];
+					if($rowp["bin"] == "1") { // deleted projects
+						$this->deleteProject($pid);
+					} else {
+						
+						// phases
+						$phasesmodel = new PhasesModel();
+						$qph ="select id, title, bin, bintime, binuser from " . CO_TBL_PHASES . " where pid = '$pid'";
+						$resultph = mysql_query($qph, $this->_db->connection);
+						while ($rowph = mysql_fetch_array($resultph)) {
+							$phid = $rowph["id"];
+							if($rowph["bin"] == "1") { // deleted phases
+								$phasesmodel->deletePhase($phid);
+								$arr["phases"] = "";
+							} else {
+								// tasks
+								$qt ="select id, text, bin, bintime, binuser from " . CO_TBL_PHASES_TASKS . " where phaseid = '$phid'";
+								$resultt = mysql_query($qt, $this->_db->connection);
+								while ($rowt = mysql_fetch_array($resultt)) {
+									if($rowt["bin"] == "1") { // deleted phases
+										$phtid = $rowt["id"];
+										$phasesmodel->deletePhaseTask($phtid);
+										$arr["tasks"] = "";
+									} 
+								}
+							}
+						}
+
+
+						// meetings
+						if(in_array("meetings",$active_modules)) {
+							$meetingsmodel = new MeetingsModel();
+							$qm ="select id, title, bin, bintime, binuser from " . CO_TBL_MEETINGS . " where pid = '$pid'";
+							$resultm = mysql_query($qm, $this->_db->connection);
+							while ($rowm = mysql_fetch_array($resultm)) {
+								$mid = $rowm["id"];
+								if($rowm["bin"] == "1") { // deleted meeting
+									$meetingsmodel->deleteMeeting($mid);
+									$arr["meetings"] = "";
+								} else {
+									// meetings_tasks
+									$qmt ="select id, title, bin, bintime, binuser from " . CO_TBL_MEETINGS_TASKS . " where mid = '$mid'";
+									$resultmt = mysql_query($qmt, $this->_db->connection);
+									while ($rowmt = mysql_fetch_array($resultmt)) {
+										if($rowmt["bin"] == "1") { // deleted phases
+											$mtid = $rowmt["id"];
+											$meetingsmodel->deleteMeetingTask($mtid);
+											$arr["meetings_tasks"] = "";
+										}
+									}
+								}
+							}
+						}
+
+
+						// documents_folder
+						if(in_array("documents",$active_modules)) {
+							$documentsmodel = new DocumentsModel();
+							$qd ="select id, title, bin, bintime, binuser from " . CO_TBL_DOCUMENTS_FOLDERS . " where pid = '$pid'";
+							$resultd = mysql_query($qd, $this->_db->connection);
+							while ($rowd = mysql_fetch_array($resultd)) {
+								$did = $rowd["id"];
+								if($rowd["bin"] == "1") { // deleted meeting
+									$documentsmodel->deleteDocument($did);
+									$arr["documents_folders"] = "";
+								} else {
+									// files
+									$qf ="select id, filename, bin, bintime, binuser from " . CO_TBL_DOCUMENTS . " where did = '$did'";
+									$resultf = mysql_query($qf, $this->_db->connection);
+									while ($rowf = mysql_fetch_array($resultf)) {
+										if($rowf["bin"] == "1") { // deleted phases
+											$fid = $rowf["id"];
+											$documentsmodel->deleteFile($fid);
+											$arr["files"] = "";
+										}
+									}
+								}
+							}
+						}
+	
+	
+						// vdocs
+						if(in_array("vdocs",$active_modules)) {
+							$qv ="select id, title, bin, bintime, binuser from " . CO_TBL_VDOCS . " where pid = '$pid' and bin='1'";
+							$resultv = mysql_query($qv, $this->_db->connection);
+							while ($rowv = mysql_fetch_array($resultv)) {
+								$vid = $rowv["id"];
+								$vdocsmodel = new VDocsModel();
+								$vdocsmodel->deleteVDoc($vid);
+								$arr["vdocs"] = "";
 							}
 						}
 

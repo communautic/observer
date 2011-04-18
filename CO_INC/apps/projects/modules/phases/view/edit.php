@@ -92,8 +92,10 @@ foreach($task as $value) {
 		<td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_EMAILED_TO"];?></td>
 		<td class="tcell-right-inactive"><div id="phase_sendto">
         <?php 
-			foreach($sendto as $value) { 
-			echo '<div class="tcell-right-para">' . $value->who . ', ' . $value->date . '</div>';
+			foreach($sendto as $value) {
+				if(!empty($value->who)) {
+					echo '<div class="tcell-right-para">' . $value->who . ', ' . $value->date . '</div>';
+				}
 		 } ?></div></td>
     </tr>
 </table>

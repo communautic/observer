@@ -176,7 +176,7 @@ function binGroup() {
 		buttons:{Ja:true, Nein:false},
 		callback: function(v,m,f){		
 			if(v){
-				var id = $("#contacts1 .active-link").attr("rel");
+				var id = $("#contacts1 .active-link:visible").attr("rel");
 				$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=binGroup&id=" + id, cache: false, success: function(data){
 					if(data == "true") {
 						$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/contacts&request=getGroupList", success: function(data){

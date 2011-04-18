@@ -95,6 +95,9 @@ if (!empty($_GET['request'])) {
 		case 'getBin':
 			echo($contacts->getBin());
 		break;
+		case 'emptyBin':
+			echo($contacts->emptyBin());
+		break;
 	}
 	
 }
