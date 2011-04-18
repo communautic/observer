@@ -264,7 +264,10 @@ class DocumentsModel extends ProjectsModel {
 			$fid = $row["id"];
 			$this->deleteFile($fid);
 		}
-
+		
+		$q = "DELETE FROM co_log_sendto WHERE what='documents' and whatid='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
 		$q = "DELETE FROM " . CO_TBL_DOCUMENTS_FOLDERS . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
@@ -282,6 +285,41 @@ class DocumentsModel extends ProjectsModel {
 		  	return true;
 		}
 	}
+	
+	/*function getBin($id) {
+		$arr = "";
+		$qd ="select id, title, bin, bintime, binuser from " . CO_TBL_DOCUMENTS_FOLDERS . " where pid = '$id'";
+						$resultd = mysql_query($qd, $this->_db->connection);
+						while ($rowd = mysql_fetch_array($resultd)) {
+							$did = $rowd["id"];
+							if($rowd["bin"] == "1") { // deleted meeting
+								foreach($rowd as $key => $val) {
+									$documents_folder[$key] = $val;
+								}
+								$documents_folder["bintime"] = $this->_date->formatDate($documents_folder["bintime"],CO_DATETIME_FORMAT);
+								$documents_folder["binuser"] = $this->_users->getUserFullname($documents_folder["binuser"]);
+								$documents_folders[] = new Lists($documents_folder);
+								$arr["documents_folders"] = $documents_folders;
+							} else {
+								// files
+								$qf ="select id, filename, bin, bintime, binuser from " . CO_TBL_DOCUMENTS . " where did = '$did'";
+								$resultf = mysql_query($qf, $this->_db->connection);
+								while ($rowf = mysql_fetch_array($resultf)) {
+									if($rowf["bin"] == "1") { // deleted phases
+										foreach($rowf as $key => $val) {
+											$file[$key] = $val;
+										}
+										$file["bintime"] = $this->_date->formatDate($file["bintime"],CO_DATETIME_FORMAT);
+										$file["binuser"] = $this->_users->getUserFullname($file["binuser"]);
+										$files[] = new Lists($file);
+										$arr["files"] = $files;
+									}
+								}
+							}
+						}
+						return $arr;
+						//echo "ss";
+	}*/
 
 
 	function restoreFile($id) {
