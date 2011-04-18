@@ -41,7 +41,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%" class="grey" style="padding: 10pt 10pt 10pt 10pt;">
 	<tr>
         <td class="tcell-left top"><?php echo $lang["PROJECT_DESCRIPTION"];?></td>
-        <td><?php echo($project->protocol);?></td>
+        <td><?php echo(nl2br($project->protocol));?></td>
 	</tr>
 </table>
 &nbsp;
@@ -58,7 +58,7 @@ if(is_array($phases)) {
 	</tr>
     <tr>
 		<td class="tcell-left">&nbsp;</td>
-		<td><?php echo $lang["GLOBAL_DURATION"];?> <?php echo($phase->startdate . " - " . $phase->enddate);?>
+		<td class="grey smalltext"><?php echo $lang["GLOBAL_DURATION"];?> <?php echo($phase->startdate . " - " . $phase->enddate);?>
         <div class="line">&nbsp;</div>
         </td>
 	</tr>

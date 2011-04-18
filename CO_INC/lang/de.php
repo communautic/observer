@@ -52,6 +52,7 @@ $lang["GLOBAL_SEND"] = 'Senden';
 
 // PDF print Globals
 $GLOBALS['SECTION'] = "";
-$GLOBALS['PAGE'] = "Seite"; 
+$GLOBALS['PAGE'] = "Seite";
+$GLOBALS['OF'] = "von"; 
 
 ?>

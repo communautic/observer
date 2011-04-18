@@ -170,7 +170,7 @@ class Projects extends Controller {
 			ob_end_clean();
 			$title = $project->title;
 		}
-		$GLOBALS['SECTION'] = "projekte.png";
+		$GLOBALS['SECTION'] = "projekt.png";
 		switch($t) {
 			case "html":
 				$this->printHTML($title,$html);
@@ -224,7 +224,7 @@ class Projects extends Controller {
 			}
 			$title = $project->title . " - " . $lang["PROJECT_HANDBOOK"];
 		}
-		$GLOBALS['SECTION'] = "projekt_handbuch.png";
+		$GLOBALS['SECTION'] = "projekthandbuch.png";
 		switch($t) {
 			case "html":
 				$this->printHTML($title,$html);
@@ -390,14 +390,6 @@ class Projects extends Controller {
 		global $lang, $projects;
 		if($arr = $this->model->getBin()) {
 			$bin = $arr["bin"];
-			/*$folders = $arr["folders"];
-			$projects = $arr["projects"];
-			$phases = $arr["phases"];
-			$tasks = $arr["tasks"];
-			$meetings = $arr["meetings"];
-			$meetings_tasks = $arr["meetings_tasks"];
-			$documents_folders = $arr["documents_folders"];
-			$files = $arr["files"];*/
 			include 'view/bin.php';
 		}
 		else {
