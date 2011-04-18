@@ -393,7 +393,7 @@ $(document).ready(function() {
 					if(data.html == "<li></li>") {
 						contactsActions(0);
 					} else {
-						projectsActions(1);
+						contactsActions(1);
 						$('#contacts1').find('input.filter').quicksearch('#contacts1 li');
 					}
 				
