@@ -160,7 +160,6 @@ class Model extends MySQLDB {
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
 		foreach($row as $key => $val) {
-				
 				if($key == "who") {
 					$sendtos[$key] = $contactsmodel->getUserListPlain($val);
 				}
@@ -169,6 +168,7 @@ class Model extends MySQLDB {
 				} else {
 					$sendtos[$key] = $val;
 				}
+				
 			}
 			$sendto[] = new Lists($sendtos);
 		}

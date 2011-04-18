@@ -56,7 +56,9 @@
 		<td class="tcell-right-inactive"><div id="document_sendto">
         <?php 
 			foreach($sendto as $value) { 
-			echo '<div class="tcell-right-para">' . $value->who . ', ' . $value->date . '</div>';
+				if(!empty($value->who)) {
+					echo '<div class="tcell-right-para">' . $value->who . ', ' . $value->date . '</div>';
+				}
 		 } ?></div>
         </td>
     </tr>

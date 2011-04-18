@@ -124,6 +124,9 @@ if (!empty($_GET['request'])) {
 		case 'getBin':
 			echo($projects->getBin());
 		break;
+		case 'emptyBin':
+			echo($projects->emptyBin());
+		break;
 
 	}
 }

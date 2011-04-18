@@ -157,7 +157,7 @@ function printFolder() {
 function folderFormResponse(data) {
 	switch(data.action) {
 		case "edit":
-			$("#projects1 a[rel='"+data.id+"'] .text").html($("#projects .title").val());
+			$("#projects1 span[rel='"+data.id+"'] .text").html($("#projects .title").val());
 		break;
 	}
 }

@@ -396,6 +396,19 @@ class Projects extends Controller {
 			include CO_INC .'/view/default.php';
 		}
 	}
+	
+	function emptyBin() {
+		global $lang, $projects;
+		if($arr = $this->model->emptyBin()) {
+			$bin = $arr["bin"];
+			include 'view/bin.php';
+		}
+		else {
+			include CO_INC .'/view/default.php';
+		}
+	}
+	
+	
 
 
 }
