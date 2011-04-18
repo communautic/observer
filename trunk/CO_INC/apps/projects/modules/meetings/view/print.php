@@ -55,7 +55,7 @@ foreach($task as $value) {
         <tr>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
-            <td><?php echo($value->text);?>
+            <td><?php echo(nl2br($value->text));?>
             </td>
         </tr>
 		<tr>
