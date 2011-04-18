@@ -340,6 +340,9 @@ class MeetingsModel extends ProjectsModel {
 			$this->deleteMeetingTask($tid);
 		}
 		
+		$q = "DELETE FROM co_log_sendto WHERE what='meetings' and whatid='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
 		$q = "DELETE FROM " . CO_TBL_MEETINGS . " WHERE id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
