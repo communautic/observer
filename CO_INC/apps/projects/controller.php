@@ -272,7 +272,7 @@ class Projects extends Controller {
 			ob_end_clean();
 			$title = $project->title;
 		}
-		$GLOBALS['SECTION'] = "projekt_handbuch.png";
+		$GLOBALS['SECTION'] = "projekt.png";
 		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
 		$pdf = $this->savePDF($title,$html,$attachment);
 		
