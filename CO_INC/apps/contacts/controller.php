@@ -33,12 +33,128 @@ class Contacts extends Controller {
 			include CO_INC .'/view/default.php';
 		}
 	}
+	
+	
+	function printGroupDetails($id, $t) {
+		global $lang;
+		$title = "";
+		$html = "";
+		if($group = $this->model->getGroupDetails($id)) {
+			ob_start();
+				include 'view/group_print.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			$title = $group->title;
+		}
+		//$GLOBALS['SECTION'] = "projekt.png";
+		switch($t) {
+			case "html":
+				$this->printHTML($title,$html);
+			break;
+			default:
+				$this->printPDF($title,$html);
+		}
+		
+	}
+
+
+	function getGroupSend($id) {
+		global $lang;
+		if($group = $this->model->getGroupDetails($id)) {
+			$form_url = $this->form_url;
+			$request = "sendGroupDetails";
+			$to = "";
+			$cc = "";
+			$subject = $group->title;
+			$variable = "";
+			include CO_INC .'/view/dialog_send.php';
+		}
+		else {
+			include CO_INC .'/view/default.php';
+		}
+	}
+
+
+	function sendGroupDetails($id,$to,$cc,$subject,$body) {
+		global $session,$users, $lang;
+		$title = "";
+		$html = "";
+		if($group = $this->model->getGroupDetails($id)) {
+			ob_start();
+				include 'view/group_print.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			$title = $group->title;
+		}
+		//$GLOBALS['SECTION'] = "projekt.png";
+		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
+		$pdf = $this->savePDF($title,$html,$attachment);
+		
+		// write sento log
+		//$this->writeSendtoLog("projects",$id,$to);
+		
+		//$to,$from,$fromName,$subject,$body,$attachment
+		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment);
+	}
+	
+	function getGroupSendVcard($id) {
+		global $lang;
+		if($group = $this->model->getGroupDetails($id)) {
+			$form_url = $this->form_url;
+			$request = "sendGroupDetailsVcard";
+			$to = "";
+			$cc = "";
+			$subject = $group->title;
+			$variable = "";
+			include CO_INC .'/view/dialog_send.php';
+		}
+		else {
+			include CO_INC .'/view/default.php';
+		}
+	}
+	
+	
+	function sendGroupDetailsVcard($id,$to,$cc,$subject,$body) {
+		global $session,$users, $lang;
+		
+		if($group = $this->model->getGroupDetails($id)) {
+			/*ob_start();
+				include 'view/group_print.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			$title = $contact->lastname . "_" . $contact->firstname;*/
+			$vcards_array = "";
+			$users = explode(",", $group->membersID);
+			foreach ($users as &$value) {
+				$contact = $this->model->getContactDetails($value);
+				$vcards_array[] = array("path" => $this->saveContactVCard($value), "filename" => $contact->firstname."_".$contact->lastname . ".vcf");
+			}
+		}
+		//$GLOBALS['SECTION'] = "projekt.png";
+		$attachment = "";
+		$attachment_array = "";
+		
+		// write sento log
+		//$this->writeSendtoLog("projects",$id,$to);
+		
+		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment,$attachment_array,$vcards_array);
+	}
+
 
 	
 	function newGroup() {
 		$retval = $this->model->newGroup();
 		if($retval){
 			 return '{ "action": "new", "id": "' . $retval . '" }';
+		  } else{
+			 return "error";
+		  }
+	}
+	
+	function duplicateGroup($id) {
+		$retval = $this->model->duplicateGroup($id);
+		if($retval){
+			 return $retval;
 		  } else{
 			 return "error";
 		  }
@@ -102,53 +218,132 @@ class Contacts extends Controller {
 			include CO_INC .'/view/default.php';
 		}
 	}
+	
+	function printContactDetails($id, $t) {
+		global $lang;
+		$title = "";
+		$html = "";
+		if($contact = $this->model->getContactDetails($id)) {
+			ob_start();
+				include 'view/contact_print.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			$title = $contact->lastname . "_" . $contact->firstname;
+		}
+		//$GLOBALS['SECTION'] = "projekt.png";
+		switch($t) {
+			case "html":
+				$this->printHTML($title,$html);
+			break;
+			default:
+				$this->printPDF($title,$html);
+		}
+		
+	}
 
 
-	function getContactVCard($id) {
+function getContactSend($id) {
+		global $lang;
+		if($contact = $this->model->getContactDetails($id)) {
+			$form_url = $this->form_url;
+			$request = "sendContactDetails";
+			$to = "";
+			$cc = "";
+			$subject = $contact->lastname . " " . $contact->firstname;
+			$variable = "";
+			include CO_INC .'/view/dialog_send.php';
+		}
+		else {
+			include CO_INC .'/view/default.php';
+		}
+	}
+
+
+	function sendContactDetails($id,$to,$cc,$subject,$body) {
+		global $session,$users, $lang;
+		$title = "";
+		$html = "";
+		if($contact = $this->model->getContactDetails($id)) {
+			ob_start();
+				include 'view/contact_print.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			$title = $contact->lastname . "_" . $contact->firstname;
+		}
+		//$GLOBALS['SECTION'] = "projekt.png";
+		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
+		$pdf = $this->savePDF($title,$html,$attachment);
+		
+		// write sento log
+		//$this->writeSendtoLog("projects",$id,$to);
+		
+		//$to,$from,$fromName,$subject,$body,$attachment
+		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment);
+	}
+	
+	function getContactSendVcard($id) {
+		global $lang;
+		if($contact = $this->model->getContactDetails($id)) {
+			$form_url = $this->form_url;
+			$request = "sendContactDetailsVcard";
+			$to = "";
+			$cc = "";
+			$subject = $contact->lastname . " " . $contact->firstname;
+			$variable = "";
+			include CO_INC .'/view/dialog_send.php';
+		}
+		else {
+			include CO_INC .'/view/default.php';
+		}
+	}
+	
+	
+	function sendContactDetailsVcard($id,$to,$cc,$subject,$body) {
+		global $session,$users, $lang;
+		
+		/*if($contact = $this->model->getContactDetails($id)) {
+			ob_start();
+				include 'view/contact_print.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			$title = $contact->lastname . "_" . $contact->firstname;
+		}*/
+		//$GLOBALS['SECTION'] = "projekt.png";
+		$attachment = $this->saveContactVCard($id);
+		
+		// write sento log
+		//$this->writeSendtoLog("projects",$id,$to);
+		
+		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment);
+	}
+	
+
+	function saveContactVCard($id) {
 		$vcardString = '';
 		$contact = $this->model->getContactDetails($id);
-		 $data['BEGIN'] = 'VCARD';
-    $data['VERSION'] = '3.0';
-    $data['PRODID'] = '-//company contact export Version 1//EN';
-    $data['REV'] = date('Y-m-d H:i:s');
-    $data['TZ'] = date('O');
- 
-    $data['FN'] = $contact->firstname . " " . $contact->lastname;
-    $data['N'] = $contact->lastname.';'.$contact->firstname;
- 
-    if ($this->getTitle() != '') {
-        $data['TITLE'] = $contact->title;
-    }
- 
-    //foreach ($this->getMailAddresses() as $mailAddress) {
+		$data['BEGIN'] = 'VCARD';
+   		$data['VERSION'] = '3.0';
+    	$data['N'] = $contact->lastname.';'.$contact->firstname;
+		$data['FN'] = $contact->firstname . " " . $contact->lastname;
+		$data['ORG'] = $contact->company;
+		$data['TITLE'] = $contact->title;
+		//PHOTO;VALUE=URL;TYPE=GIF:http://www.example.com/dir_photos/my_photo.gif
+		$data['TEL;type=CELL;type=pref'] = $contact->phone1;
+		$data['TEL;type=WORK'] = $contact->phone2;
         $data['EMAIL;TYPE=internet'] = $contact->email;
-    //}
- 
-    /*if ($this->getNotice() != '') {
-        $data['NOTE'] = $this->getNotice();
-    }*/
- 
-    $data['END'] = 'VCARD';
+    	$data['END'] = 'VCARD';
  
     $exportString = '';
     foreach ($data as $index => $value) {
         $exportString .= $index . ':' . $value . "\r\n";
     }
  
-    return $exportString;
-	 
-		//if (count($contacts) == 1) {
-			$filename = str_replace(" ", "_", $contact->firstname.' '.$contact->lastname);
-		/*} else {
-			$filename = 'VCARDS';
-		}*/
-	 
-		header('Content-Type', 'text/x-vCard; charset=utf-8');
-		header('Content-Disposition', 'attachment; filename="'.$filename.'.vcf"');
-		header('Content-Length', strlen($vcardString));
-		header('Connection', 'close');
-		//$this->getResponse()->setBody($vcardString);
-		//file_put_contents( $path, $pdf);
+
+	$filename = $contact->firstname."_".$contact->lastname . ".vcf";
+
+		$path = "/home/dev/public_html/data/vcards/".$filename;
+		file_put_contents($path, $exportString);
+	 	return $path;
 	}
 
 
@@ -162,6 +357,16 @@ class Contacts extends Controller {
 		if($retval){
 			 $num = $this->model->getNumAllContacts();
 			 return '{ "action": "new", "id": "' . $retval . '", "num": "' . $num . '"}';
+		  } else{
+			 return "error";
+		  }
+	}
+	
+	
+	function duplicateContact($id) {
+		$retval = $this->model->duplicateContact($id);
+		if($retval){
+			 return $retval;
 		  } else{
 			 return "error";
 		  }

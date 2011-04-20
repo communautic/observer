@@ -48,6 +48,10 @@
 #contactsActions span.actionSend:hover 		{ 	background-position: -200px -151px;	}
 #contactsActions span.actionSend.noactive 		{ 	background-position: 0px -151px; 	}
 
+#contactsActions span.actionSendVcard 				{ 	background-position: -150px -359px;	}
+#contactsActions span.actionSendVcard:hover 		{ 	background-position: -200px -359px;	}
+#contactsActions span.actionSendVcard.noactive 		{ 	background-position: 0px -359px; 	}
+
 #contactsActions span.actionDuplicate 			{ 	background-position: -150px -206px;	}
 #contactsActions span.actionDuplicate:hover 	{ 	background-position: -200px -206px;	}
 #contactsActions span.actionDuplicate.noactive { background-position: 0px -206px;  	}
@@ -62,7 +66,7 @@
 
  
 #contacts .table-title, #contacts .textarea-title { 
-background-color: #ffd396; }
+background-color: #e9d09a; }
 
 #contacts .ui-datepicker-trigger-action-status {
 	position: absolute;
@@ -74,10 +78,10 @@ display: block; height: 13px; width: 15px; margin-top: -15px; background:url(../
 	background-position: 0px -570px
 }
 
-#contacts-right .tcell-left span span { display: block; padding: 0 0 0 15px; }
+#contacts-right .tcell-left span span, #contacts-right .tcell-left-shorter span span { display: block; padding: 0 0 0 15px; }
 #contacts-right .tcell-left-short span { display: block; padding: 0 0 0 15px; }
 
-#contacts-right .content-nav         { color: #000; }
+#contacts-right .content-nav         { display: block; color: #000; }
 #contacts-right .content-nav:hover   { display: block; background-color: #C88700; color: #000; cursor: pointer; }
 
 .content-outline {background-color: #e1f0af;}
@@ -91,5 +95,5 @@ display: block; height: 13px; width: 15px; margin-top: -15px; background:url(../
 #contacts-right textarea:focus,
 #contacts-right input.bg:hover, */
 #contacts-right input.bg:focus {
-    background-color: #ffd396;
+    background-color: #e9d09a;
 }

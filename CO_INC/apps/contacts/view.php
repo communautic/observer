@@ -64,10 +64,8 @@
            <li class="listNew"><span class="actionNew" title="<?php echo $lang["ACTION_NEW"];?>"></span></li>
 			<li class="listPrint"><span class="actionPrint" title="<?php echo $lang["ACTION_PRINT"];?>"></span></li>
 			<li class="listSend"><span class="actionSend" title="<?php echo $lang["ACTION_SENDTO"];?>"></span></li>
-			<li class="listDuplicate"><span class="actionDuplicate" title="<?php echo $lang["ACTION_DUPLICATE"];?>"></span></li>
-            <li class="listExport"><span class="actionExport" title="exportieren"></span></li>
-            <li class="listImport"><span class="actionImport" title="importieren"></span></li>
-            <li class="listEmpty"><span class="actionEmpty" title="leeren"></span></li>
+			<li class="listSendVcard"><span class="actionSendVcard" title="<?php echo $lang["ACTION_SENDTO"];?>"></span></li>
+            <li class="listDuplicate"><span class="actionDuplicate" title="<?php echo $lang["ACTION_DUPLICATE"];?>"></span></li>
             <li class="listBin"><span class="actionBin" title="<?php echo $lang["ACTION_DELETE"];?>"></span></li>
         </ul>
     </div>

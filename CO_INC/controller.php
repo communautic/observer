@@ -106,7 +106,7 @@ class Controller extends MySQLDB {
 	}
 
 
-	function sendEmail($to,$cc,$from,$fromName,$subject,$body,$attachment,$attachment_array = "") {
+	function sendEmail($to,$cc,$from,$fromName,$subject,$body,$attachment = "",$attachment_array = "",$vcards_array = "") {
 		global $contactsmodel;
 		
 		try {
@@ -144,11 +144,19 @@ class Controller extends MySQLDB {
 			$mail->WordWrap   = 80;
 			
 			$mail->MsgHTML(stripslashes($body . $footer));
-			$mail->AddAttachment($attachment);
+			if($attachment != "") {
+				$mail->AddAttachment($attachment);
+			}
 			
 			if(is_array($attachment_array)) {
 				foreach ($attachment_array as &$att) {
 					$mail->AddAttachment(CO_PATH_DOCUMENTS . $att["tempname"], $att["filename"]); 
+				}
+			}
+			
+			if(is_array($vcards_array)) {
+				foreach ($vcards_array as &$att) {
+					$mail->AddAttachment($att["path"], $att["filename"]); 
 				}
 			}
 			

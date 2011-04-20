@@ -225,6 +225,11 @@ ul.actionconsole { margin: 0 11px 0 11px;  }
 .actionconsole span.actionSend:hover { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: pointer;}
 .actionconsole span.actionSend.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: default;}
 
+.actionconsole li.listSendVcard { display: block; height: 36px; margin-bottom: 19px; }
+.actionconsole span.actionSendVcard { display: block; height: 36px; background: url(../img/apps_buttons_sprite.png) no-repeat;}
+.actionconsole span.actionSendVcard:hover { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: pointer;}
+.actionconsole span.actionSendVcard.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: default;}
+
 .actionconsole li.listDuplicate { display: block; height: 30px; margin-bottom: 22px; }
 .actionconsole span.actionDuplicate { display: block; height: 30px; background: url(../img/apps_buttons_sprite.png) no-repeat;}
 .actionconsole span.actionDuplicate:hover { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: pointer;}
@@ -287,7 +292,7 @@ ul.actionconsole { margin: 0 11px 0 11px;  }
 #tooltip h3, #tooltip div { margin: 0; color: #000;}
 #tooltip h3 { font-size: 11px; font-weight: normal }
 
-.listmember-outer { display: inline-block; padding-right: 5px;}
+.listmember-outer, .docitems-outer { display: inline-block; padding-right: 5px;}
 .context {
 	position: absolute;
 	z-index: 3000;
