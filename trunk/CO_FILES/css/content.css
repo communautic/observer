@@ -34,6 +34,10 @@ background-color: #e5e5e5;
 color: #333;
 }
 
+.tbl-inactive { 
+background-color: #e5e5e5;
+}
+
 .table-footer { width: 100%;
 margin: 10px 0 0 0;
 height: 25px;
@@ -52,23 +56,28 @@ color: #333;
 .table-content { width: 100%; margin-bottom: 1px;}
 .table-content td { vertical-align: top; padding-top: 2px;}
 .table-content .tcell-left { width: 136px; padding: 0 15px 0 0;}
+.table-content .tcell-left-shorter { width: 129px; padding: 0 15px 0 0;}
 .table-content .tcell-left-tasks { width: 94px; padding: 0 15px 0 0;}
 .table-content .tcell-left-phases-tasks { width: 108px; padding: 0 15px 0 0;}
 .table-content .tcell-left-short { width: 136px; padding: 0;}
 .table-content .tcell-left-inactive { width: 136px; padding: 0 0 0 15px; color:#666}
 .table-content .tcell-right { padding: 2px 0 0 0; }
+.table-content .tcell-right-nopadding { padding: 0; }
 .table-content .tcell-right-inactive { padding: 3px 0 0 0; color:#666}
 .table-content .tcell-right-para { padding: 0 0 6px 0; }
 .table-content input { background-color: transparent; }
-.table-content input.bg { font-size: 13px;
-	font-family: Arial, Helvetica, sans-serif;
-	border: 1px solid #fff;
-	width: 99%;
-	height: 16px;
-}
+
 .tbl-inactive input.bg {
 	border: 1px solid #E5E5E5;
 	font-weight: bold;
+}
+.table-content input.bg { font-size: 13px;
+font-weight: normal;
+	font-family: Arial, Helvetica, sans-serif;
+	border: 0;
+	width: 99%;
+	height: 16px;
+	padding: 2px 0 2px 5px;
 }
 
 .no-margin { margin: 0;}

@@ -13,83 +13,84 @@
 <input type="hidden" name="id" value="<?php echo($contact->id);?>">
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
-    <td class="tcell-left text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_FIRSTNAME'];?></span></span></td>
-    <td class="tcell-right"><input name="firstname" type="text" class="title2 bg" value="<?php echo($contact->firstname);?>" /></td>
+    <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_FIRSTNAME'];?></span></span></td>
+    <td class="tcell-right-nopadding"><input name="firstname" type="text" class="title2 bg" value="<?php echo($contact->firstname);?>" /></td>
   </tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
-    <td class="tcell-left text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_CONTACT_TITLE'];?></span></span></td>
-    <td class="tcell-right"><input name="title" id="title" type="text" class="bg" value="<?php echo($contact->title);?>" /></td>
+    <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_CONTACT_TITLE'];?></span></span></td>
+    <td class="tcell-right-nopadding"><input name="title" id="title" type="text" class="bg" value="<?php echo($contact->title);?>" /></td>
   </tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
-    <td class="tcell-left text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_COMPANY'];?></span></span></td>
-    <td class="tcell-right"><input name="company" id="company" type="text" class="bg" value="<?php echo($contact->company);?>" /></td>
+    <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_COMPANY'];?></span></span></td>
+    <td class="tcell-right-nopadding"><input name="company" id="company" type="text" class="bg" value="<?php echo($contact->company);?>" /></td>
   </tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
-    <td class="tcell-left text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_POSITION'];?></span></span></td>
-    <td class="tcell-right"><input name="position" id="position" type="text" class="bg" value="<?php echo($contact->position);?>" /></td>
+    <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_POSITION'];?></span></span></td>
+    <td class="tcell-right-nopadding"><input name="position" id="position" type="text" class="bg" value="<?php echo($contact->position);?>" /></td>
   </tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
-    <td class="tcell-left text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_EMAIL'];?></span></span></td>
-    <td class="tcell-right"><input name="email" type="text" class="bg" value="<?php echo($contact->email);?>" /></td>
-  </tr>
-</table>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content">
-  <tr>
-    <td class="tcell-left text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_TEL'];?></span></span></td>
-    <td class="tcell-right"><input name="phone1" id="phone1" type="text" class="bg" value="<?php echo($contact->phone1);?>" /></td>
-  </tr>
-</table>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content">
-  <tr>
-    <td class="tcell-left text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_TEL2'];?></span></span></td>
-    <td class="tcell-right"><input name="phone2" id="phone2" type="text" class="bg" value="<?php echo($contact->phone2);?>" /></td>
-  </tr>
-</table>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content">
-  <tr>
-    <td class="tcell-left text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_FAX'];?></span></span></td>
-    <td class="tcell-right"><input name="fax" id="fax" type="text" class="bg" value="<?php echo($contact->fax);?>" /></td>
+    <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_EMAIL'];?></span></span></td>
+    <td class="tcell-right-nopadding"><input name="email" type="text" class="bg" value="<?php echo($contact->email);?>" /></td>
   </tr>
 </table>
 <div class="content-spacer"></div>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+<div class="tbl-inactive">
+<table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive">
+  <tr>
+    <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_TEL'];?></span></span></td>
+    <td class="tcell-right-nopadding"><input name="phone1" id="phone1" type="text" class="bg" value="<?php echo($contact->phone1);?>" /></td>
+  </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive">
+  <tr>
+    <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_TEL2'];?></span></span></td>
+    <td class="tcell-right-nopadding"><input name="phone2" id="phone2" type="text" class="bg" value="<?php echo($contact->phone2);?>" /></td>
+  </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive">
+  <tr>
+    <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_FAX'];?></span></span></td>
+    <td class="tcell-right-nopadding"><input name="fax" id="fax" type="text" class="bg" value="<?php echo($contact->fax);?>" /></td>
+  </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive">
     <tr>
-        <td class="tcell-left text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_ADDRESS_LINE1'];?></span></span></td>
-        <td class="tcell-right"><input name="address_line1" id="address_line1" type="text" class="bg" value="<?php echo($contact->address_line1);?>" /></td>
+        <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_ADDRESS_LINE1'];?></span></span></td>
+        <td class="tcell-right-nopadding"><input name="address_line1" id="address_line1" type="text" class="bg" value="<?php echo($contact->address_line1);?>" /></td>
         </tr>
 </table>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+<table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive">
   <tr>
-    <td class="tcell-left text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_ADDRESS_LINE2'];?></span></span></td>
-    <td class="tcell-right"><input name="address_line2" id="address_line2" type="text" class="bg" value="<?php echo($contact->address_line2);?>" /></td>
+    <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_ADDRESS_LINE2'];?></span></span></td>
+    <td class="tcell-right-nopadding"><input name="address_line2" id="address_line2" type="text" class="bg" value="<?php echo($contact->address_line2);?>" /></td>
   </tr>
 </table>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+<table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive">
   <tr>
-    <td class="tcell-left text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_TOWN'];?></span></span></td>
-    <td class="tcell-right"><input name="address_town" id="address_town" type="text" class="bg" value="<?php echo($contact->address_town);?>" /></td>
+    <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_TOWN'];?></span></span></td>
+    <td class="tcell-right-nopadding"><input name="address_town" id="address_town" type="text" class="bg" value="<?php echo($contact->address_town);?>" /></td>
   </tr>
 </table>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+<table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive">
   <tr>
-    <td class="tcell-left text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_POSTCODE'];?></span></span></td>
-    <td class="tcell-right"><input name="address_postcode" id="address_postcode" type="text" class="bg" value="<?php echo($contact->address_postcode);?>" /></td>
+    <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_POSTCODE'];?></span></span></td>
+    <td class="tcell-right-nopadding"><input name="address_postcode" id="address_postcode" type="text" class="bg" value="<?php echo($contact->address_postcode);?>" /></td>
   </tr>
 </table>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+<table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive" style="margin-bottom: 0;">
   <tr>
-    <td class="tcell-left text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_COUNTRY'];?></span></span></td>
-    <td class="tcell-right"><input name="address_country" id="address_country" type="text" class="bg" value="<?php echo($contact->address_country);?>" /></td>
+    <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_COUNTRY'];?></span></span></td>
+    <td class="tcell-right-nopadding"><input name="address_country" id="address_country" type="text" class="bg" value="<?php echo($contact->address_country);?>" /></td>
   </tr>
-</table>
+</table></div>
 <div class="content-spacer"></div>
 <!--<table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>

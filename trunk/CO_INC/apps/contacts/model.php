@@ -101,7 +101,7 @@ class ContactsModel extends Model {
 		$array["allcontacts"] = $this->getNumContacts($array["members"]);
 		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
 		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
-		//$array["members"] = $this->getGroupMembers($id,"members");
+		$array["membersID"] = $array["members"];
 		$array["members"] = $this->getUserList($array['members'],'members');
 
 		$group = new Group($array);
@@ -137,6 +137,21 @@ class ContactsModel extends Model {
 			return $id;
 		}
    }
+   
+   
+   function duplicateGroup($id) {
+		global $session, $lang;
+		
+		$now = gmdate("Y-m-d H:i:s");
+		
+		$q = "INSERT INTO " . CO_CONTACTS_TBL_GROUPS . " (title, members, edited_user, edited_date, created_user, created_date) SELECT CONCAT(title, ' ".$lang["GLOBAL_DUPLICAT"]."'),members, $session->uid as edited_user, '$now' as edited_date, $session->uid as created_user, '$now' as created_date FROM " . CO_CONTACTS_TBL_GROUPS . " where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$id_new = mysql_insert_id();
+		
+		if ($result) {
+			return $id_new;
+		}
+	}
    
    /**
    * delete contact group
@@ -411,6 +426,20 @@ class ContactsModel extends Model {
 			return $id;
 		}
    }
+   
+   	function duplicateContact($id) {
+		global $session, $lang;
+		
+		$now = gmdate("Y-m-d H:i:s");
+		
+		$q = "INSERT INTO " . CO_TBL_USERS . " (lastname, firstname, title, company, position, email, phone1, phone2, fax, address_line1, address_line2, address_town, address_postcode, address_country, lang, timezone, edited_user, edited_date, created_user, created_date) SELECT CONCAT('".$lang["GLOBAL_DUPLICAT"]." ',lastname),firstname, title, company, position, email, phone1, phone2, fax, address_line1, address_line2, address_town, address_postcode, address_country, lang, timezone, $session->uid as edited_user, '$now' as edited_date, $session->uid as created_user, '$now' as created_date FROM " . CO_TBL_USERS . " where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$id_new = mysql_insert_id();
+		
+		if ($result) {
+			return $id_new;
+		}
+	}
    
 	function binContact($id) {
 		global $session;

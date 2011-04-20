@@ -22,9 +22,9 @@ documents.poformOptions = { beforeSerialize: documentSerialize, beforeSubmit: do
 */
 
 function processDocList(list) {
-	var items = $("#"+list+" .docitem").size();
+	var items = $("#"+list+" .docitemRelated").size();
 	var itemlist = "";
-	$("#"+list+" .docitem").each( function(i) {
+	$("#"+list+" .docitemRelated").each( function(i) {
 		if ( $(this).hasClass("deletefromlist") ) {
 			itemlist += "";
 		} else if ( $(this).hasClass("addtolist") ) {
@@ -312,13 +312,13 @@ $(document).ready(function() {
 		var append = $(this).attr("append");
 		var id = $(this).attr("did");
 		var text = $(this).html();
-		var html = '<span class="docitems-outer"><a class="docitem" uid="' + id + '" field="' + field + '">' + text + '</a></span>';
+		var html = '<span class="docitems-outer"><a class="docitemRelated" uid="' + id + '" field="' + field + '">' + text + '</a></span>';
 		if(append == 0) {
 			$("#"+field).html(html);
 			$("#modalDialog").dialog('close');
 		} else {
 			if($("#"+field).html() != "") {
-				$("#"+field+" .docitems-outer:visible:last .docitem").append(", ");
+				$("#"+field+" .docitemRelated:visible:last").append(", ");
 				$("#"+field).append(html);
 			} else {
 				$("#"+field).append(html);
@@ -330,7 +330,7 @@ $(document).ready(function() {
 	});
 
 
-	$('.docitemContext').live('click',function() {
+	$('.docitemRelated').live('click',function() {
 		var ele = $(this);
 		var uid = $(this).attr('uid');
 		var field = $(this).attr('field');
@@ -349,9 +349,9 @@ $(document).ready(function() {
 		$(this).parent().prev().toggleClass('deletefromlist');
 		$(this).parents(".docitems-outer").hide();
 		if($("#"+field+" .docitems-outer:visible").length > 0) {
-		var text = $("#"+field+" .docitems-outer:visible:last .docitem").html();
+		var text = $("#"+field+" .docitems-outer:visible:last .docitemRelated").html();
 		var textnew = text.split(", ");
-		$("#"+field+" .docitems-outer:visible:last .docitem").html(textnew[0]);
+		$("#"+field+" .docitems-outer:visible:last .docitemRelated").html(textnew[0]);
 		}
 		var obj = getCurrentModule();
 		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);

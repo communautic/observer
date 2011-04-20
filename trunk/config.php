@@ -28,6 +28,8 @@ define("CO_PATH_URL"	, 		"http://dev.companyobserver.com" 			);
 define("CO_DEFAULT_LANGUAGE"	, 			"de" );
 define("CO_DEFAULT_TIMEZONE"	, 			"Europe/Vienna" );
 
+// Data folder
+define("CO_PATH_DATA"	, CO_PATH_BASE . "/data/");
 define("CO_PATH_DOCUMENTS"	, CO_PATH_BASE . "/data/documents/");
 define("CO_PATH_CHARTS"	, CO_PATH_BASE . "/data/charts/");
 define("CO_PATH_PDF"	, CO_PATH_BASE . "/data/pdf/");
@@ -71,6 +73,7 @@ define("CO_TIME_FORMAT"	,  	"H:i");
  * also add additional level specifications.
  * Levels must be digits between 0-9.
  */
+define("SYSADMIN_NAME", "sysadmin");
 define("ADMIN_NAME", "generaladmin");
 define("GUEST_NAME", "Guest");
 define("SYSADMIN_LEVEL", 1);

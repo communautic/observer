@@ -69,10 +69,10 @@ background-color: #e1f0af; }
 
 #projects a.disabled { background-position: 0px -570px; }
 
-#projects-right .tcell-left span span { display: block; padding: 0 0 0 15px; }
+#projects-right .tcell-left span span { position: relative; display: block; padding: 0 0 0 15px; }
 #projects-right .tcell-left-short span { display: block; padding: 0 0 0 15px; }
 
-#projects-right .content-nav         { color: #000; }
+#projects-right .content-nav         { display: block; color: #000; }
 #projects-right .content-nav:hover   { display: block; background-color: #82AA0A; color: #000; cursor: pointer; }
 
 .content-outline {background-color: #e1f0af;}

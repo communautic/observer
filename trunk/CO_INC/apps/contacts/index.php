@@ -23,6 +23,19 @@ if (!empty($_GET['request'])) {
 		case 'getGroupDetails':
 			echo($contacts->getGroupDetails($_GET['id']));
 		break;
+		case 'printGroupDetails':
+			$t = "pdf"; // options: pdf, html
+			if(!empty($_GET['t'])) {
+				$t = $_GET['t'];
+			}
+			echo($contacts->printGroupDetails($_GET['id'],$t));
+		break;
+		case 'getGroupSend':
+			echo($contacts->getGroupSend($_GET['id']));
+		break;
+		case 'getGroupSendVcard':
+			echo($contacts->getGroupSendVcard($_GET['id']));
+		break;
 		case 'setGroupOrder':
 			echo($contacts->setSortOrder("group-sort",$_GET['groupItem']));
 		break;
@@ -31,6 +44,9 @@ if (!empty($_GET['request'])) {
 		break;*/
 		case 'newGroup':
 			echo($contacts->newGroup());
+		break;
+		case 'duplicateGroup':
+			echo($contacts->duplicateGroup($_GET['id']));
 		break;
 		case 'binGroup':
 			echo($contacts->binGroup($_GET['id']));
@@ -54,8 +70,27 @@ if (!empty($_GET['request'])) {
 		case 'getContactDetails':
 			echo($contacts->getContactDetails($_GET['id']));
 		break;
+		case 'printContactDetails':
+			$t = "pdf"; // options: pdf, html
+			if(!empty($_GET['t'])) {
+				$t = $_GET['t'];
+			}
+			echo($contacts->printContactDetails($_GET['id'],$t));
+		break;
+		case 'getContactSend':
+			echo($contacts->getContactSend($_GET['id']));
+		break;
+		case 'getContactSendVcard':
+			echo($contacts->getContactSendVcard($_GET['id']));
+		break;
+		case 'getSendtoDetails':
+			echo($contacts->getSendtoDetails("contacts",$_GET['id']));
+		break;
 		case 'newContact':
 			echo($contacts->newContact());
+		break;
+		case 'duplicateContact':
+			echo($contacts->duplicateContact($_GET['id']));
 		break;
 		case 'binContact':
 			echo($contacts->binContact($_GET['id']));
@@ -111,6 +146,18 @@ if (!empty($_POST['request'])) {
 		break;
 		case 'setContactDetails':
 			echo($contacts->setContactDetails($_POST['id'], $system->checkMagicQuotes($_POST['lastname']), $system->checkMagicQuotes($_POST['firstname']), $system->checkMagicQuotes($_POST['title']), $system->checkMagicQuotes($_POST['company']), $system->checkMagicQuotes($_POST['position']), $system->checkMagicQuotes($_POST['email']), $system->checkMagicQuotes($_POST['phone1']), $system->checkMagicQuotes($_POST['phone2']), $system->checkMagicQuotes($_POST['fax']), $system->checkMagicQuotes($_POST['address_line1']), $system->checkMagicQuotes($_POST['address_line2']), $system->checkMagicQuotes($_POST['address_town']), $system->checkMagicQuotes($_POST['address_postcode']), $system->checkMagicQuotes($_POST['address_country']), $_POST['lang'], $_POST['timezone']));
+		break;
+		case 'sendContactDetails':
+			echo($contacts->sendContactDetails($_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotes($_POST['subject']), $system->checkMagicQuotes($_POST['body'])));
+		break;
+		case 'sendGroupDetails':
+			echo($contacts->sendGroupDetails($_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotes($_POST['subject']), $system->checkMagicQuotes($_POST['body'])));
+		break;
+		case 'sendContactDetailsVcard':
+			echo($contacts->sendContactDetailsVCard($_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotes($_POST['subject']), $system->checkMagicQuotes($_POST['body'])));
+		break;
+		case 'sendGroupDetailsVcard':
+			echo($contacts->sendGroupDetailsVCard($_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotes($_POST['subject']), $system->checkMagicQuotes($_POST['body'])));
 		break;
 	}
 }

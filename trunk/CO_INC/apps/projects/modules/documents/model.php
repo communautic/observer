@@ -399,7 +399,7 @@ class DocumentsModel extends ProjectsModel {
 		// build string
 		$i = 1;
 		foreach ($arr as $key => &$value) {
-			$users .= '<span class="docitems-outer"><a class="docitemContext" uid="' . $key . '" field="' . $field . '">' . $value;		
+			$users .= '<span class="docitems-outer"><a class="docitemRelated" uid="' . $key . '" field="' . $field . '">' . $value;		
 			if($i < $arr_total) {
 				$users .= ', ';
 			}
