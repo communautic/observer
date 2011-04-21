@@ -20,7 +20,7 @@ $lang["ACTION_DUPLICATE"] = "duplizieren";
 $lang["ACTION_PROJECTHANDBOOK"] = "Projekthandbuch";
 $lang["ACTION_DELETE"] = "löschen";
 
-$lang["TEXT_NOTE"] = "manueller Eintrag:";
+$lang["TEXT_NOTE"] = "Notiz:";
 	
 $lang["CREATED_BY_ON"]		= 	'angelegt:';
 $lang["EDITED_BY_ON"] 		= 	'aktualisiert:';

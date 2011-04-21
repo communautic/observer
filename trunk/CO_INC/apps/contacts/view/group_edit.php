@@ -25,6 +25,34 @@
   </tr>
 </table>
 </form>
+<div class="content-spacer"></div>
+<div class="content-spacer"></div>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+	<tr>
+		<td class="tcell-left-inactive text11"><?php echo CONTACTS_GROUP_MEMBERS;?></td>
+    <td class="tcell-right">&nbsp;</td>
+    </tr>
+</table>
+<?php
+if(is_array($members)) {
+	foreach ($members as $member) { 
+	?>
+    <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive" rel="<?php echo($member["id"]);?>">
+	<tr>
+		<td class="tcell-left text11">&nbsp;</td>
+		<td class="tcell-right"><span class="bold co-link" rel="<?php echo($member["id"]);?>"><?php echo($member["name"]);?></span></td>
+	</tr>
+    <tr>
+		<td class="tcell-left text11">&nbsp;</td>
+		<td class="tcell-right">
+        <span class="text11"><?php echo($member["email"] . ", " . $member["phone"]);?></span>
+</td>
+	</tr>
+</table>
+    <?php 
+	}
+}
+?>
 </div>
 </div>
 <div>

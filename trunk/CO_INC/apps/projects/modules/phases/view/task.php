@@ -2,10 +2,10 @@
 <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-inactive">
   <tr>
 		<td class="tcell-left-phases-tasks text11">&nbsp;</td>
-    	<td class="tcell-right">
+    	<td class="tcell-right-nopadding">
   <table width="100%" border="0" cellpadding="0" cellspacing="0">
     <tr>
-      <td width="25" style="padding-top: 4px;"><input name="task[<?php echo $value->id;?>]" type="checkbox" value="<?php echo $value->id;?>" class="cbx jNiceHidden" <?php echo $checked ;?> /></td>
+      <td width="20" style="padding-top: 4px;"><input name="task[<?php echo $value->id;?>]" type="checkbox" value="<?php echo $value->id;?>" class="cbx jNiceHidden" <?php echo $checked ;?> /></td>
       <td class="text11" style="padding-top: 0px;"><input name="task_text[<?php echo $value->id;?>]" type="text" class="bg" value="<?php echo $value->text;?>" maxlength="100" /><input name="task_id[<?php echo $value->id;?>]" type="hidden" value="<?php echo $value->id;?>"><input name="task_cat[<?php echo $value->id;?>]" type="hidden" value="<?php echo $value->cat;?>"></td>
       <td width="30"><a class="deleteTask" rel="<?php echo $value->id;?>"><span class="icon-delete"></span></a></td>
     </tr>

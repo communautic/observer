@@ -113,7 +113,12 @@ if (!empty($_POST['request'])) {
 				$task_enddate = $_POST['task_enddate'];
 				$task_donedate = $_POST['task_donedate'];
 				$task_id = $_POST['task_id'];
-				$task_text = $_POST['task_text'];
+				$task_text_orig = $_POST['task_text'];
+				$task_text = "";
+				foreach ($task_text_orig as $key => $text) {
+					$text_new = $system->checkMagicQuotes($text);
+					$task_text[$key] = $text_new;
+				}
 				$task_cat = $_POST['task_cat'];
 				$task_dependent = $_POST['task_dependent'];
 				$task_team = $_POST['task_team'];
@@ -122,7 +127,7 @@ if (!empty($_POST['request'])) {
 			if(isset($_POST['task'])) {
 				$task = $_POST['task'];
 			}
-			echo($phases->setDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['team'], $system->checkMagicQuotes($_POST['team_ct']), $system->checkMagicQuotesTinyMCE($_POST['protocol']), $_POST["documents"],$_POST['phase_access'], $_POST['phase_access_orig'], $_POST['phase_status'], $_POST['phase_status_date'],$task_startdate,$task_enddate,$task_donedate,$task_id,$task_text,$task,$task_cat,$task_dependent,$task_team,$task_team_ct));
+			echo($phases->setDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['team'], $system->checkMagicQuotes($_POST['team_ct']), $system->checkMagicQuotes($_POST['protocol']), $_POST["documents"],$_POST['phase_access'], $_POST['phase_access_orig'], $_POST['phase_status'], $_POST['phase_status_date'],$task_startdate,$task_enddate,$task_donedate,$task_id,$task_text,$task,$task_cat,$task_dependent,$task_team,$task_team_ct));
 		break;
 		case 'sendDetails':
 			echo($phases->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotes($_POST['subject']), $system->checkMagicQuotes($_POST['body'])));

@@ -108,8 +108,20 @@ if (!empty($_POST['request'])) {
 			
 			if(isset($_POST['task_id'])) {
 				$task_id = $_POST['task_id'];
-				$task_title = $_POST['task_title'];
-				$task_text = $_POST['task_text'];
+				//$task_title = $_POST['task_title'];
+				$task_title_orig = $_POST['task_text'];
+				$task_title = "";
+				foreach ($task_title_orig as $key => $text) {
+					$text_new = $system->checkMagicQuotes($text);
+					$task_title[$key] = $text_new;
+				}
+				//$task_text = $_POST['task_text'];
+				$task_text_orig = $_POST['task_text'];
+				$task_text = "";
+				foreach ($task_text_orig as $key => $text) {
+					$text_new = $system->checkMagicQuotes($text);
+					$task_text[$key] = $text_new;
+				}
 			}
 			if(isset($_POST['task'])) {
 				$task = $_POST['task'];

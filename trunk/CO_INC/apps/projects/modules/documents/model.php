@@ -13,22 +13,22 @@ class DocumentsModel extends ProjectsModel {
 	  if($sort == 0) {
 		  $sortstatus = $this->getSortStatus("document-sort-status",$id);
 		  if(!$sortstatus) {
-				$order = "order by edited_date DESC";
+				$order = "order by title";
 				$sortcur = '1';
 		  } else {
 			  switch($sortstatus) {
 				  case "1":
-				  		$order = "order by edited_date DESC";
+				  		$order = "order by title";
 						$sortcur = '1';
 				  break;
 				  case "2":
-				  		$order = "order by edited_date ASC";
+				  		$order = "order by title DESC";
 							$sortcur = '2';
 				  break;
 				  case "3":
 				  		$sortorder = $this->getSortOrder("document-sort-order",$id);
 				  		if(!$sortorder) {
-								$order = "order by edited_date DESC";
+								$order = "order by title";
 								$sortcur = '1';
 						  } else {
 								$order = "order by field(id,$sortorder)";
@@ -40,17 +40,17 @@ class DocumentsModel extends ProjectsModel {
 	  } else {
 		  switch($sort) {
 				  case "1":
-				  		$order = "order by edited_date DESC";
+				  		$order = "order by title";
 						$sortcur = '1';
 				  break;
 				  case "2":
-				  		$order = "order by edited_date ASC";
+				  		$order = "order by title DESC";
 						$sortcur = '2';
 				  break;
 				  case "3":
 				  		$sortorder = $this->getSortOrder("document-sort-order",$id);
 				  		if(!$sortorder) {
-						  	$order = "order by edited_date DESC";
+						  	$order = "order by title";
 								$sortcur = '1';
 						  } else {
 								$order = "order by field(id,$sortorder)";
@@ -479,6 +479,8 @@ class DocumentsModel extends ProjectsModel {
 			}
 			header("Content-length: $fsize");
 			header("Cache-control: private"); 
+			ob_clean();
+			flush();
 			while(!feof($fd)) {
 				$buffer = fread($fd, 2048);
 				echo $buffer;

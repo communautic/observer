@@ -1,7 +1,7 @@
 <?php
 
-include_once(dirname(__FILE__)."/model/groups.php");
-include_once(dirname(__FILE__)."/model/contacts.php");
+//include_once(dirname(__FILE__)."/model/groups.php");
+//include_once(dirname(__FILE__)."/model/contacts.php");
 //include_once(dirname(__FILE__)."/model/lists.php");
 
 class ContactsModel extends Model {
@@ -71,7 +71,7 @@ class ContactsModel extends Model {
 				$array["numContacts"] = $this->getNumContacts($val);
 				}
 			}
-			$groups[] = new Group($array); 
+			$groups[] = new Lists($array); 
 	  }
 	  
 	  $arr = array("groups" => $groups, "sort" => $sortcur);
@@ -104,7 +104,7 @@ class ContactsModel extends Model {
 		$array["membersID"] = $array["members"];
 		$array["members"] = $this->getUserList($array['members'],'members');
 
-		$group = new Group($array);
+		$group = new Lists($array);
 		return $group;
    }
    
@@ -307,7 +307,7 @@ class ContactsModel extends Model {
 		foreach($row as $key => $val) {
 				$array[$key] = $val;
 			}
-			$contacts[] = new Contact($array);
+			$contacts[] = new Lists($array);
 		  
 	  }
 	  
@@ -338,7 +338,7 @@ class ContactsModel extends Model {
 		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
 		$array["groups"] = $this->getGroupsByUser($id);
 		
-		$contact = new Contact($array);
+		$contact = new Lists($array);
 		return $contact;
    }
 	 

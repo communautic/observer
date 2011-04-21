@@ -544,6 +544,7 @@ $(document).ready(function() {
 
 	// init modalDialogs
 	$("#modalDialogForward").dialog({  
+		dialogClass: 'sendtoWindow',
 		autoOpen: false,
 		resizable: true,
 		width: 400,  

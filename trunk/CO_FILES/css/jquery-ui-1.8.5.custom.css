@@ -572,3 +572,25 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 .ui-progressbar { height:2em; text-align: left; }
 .ui-progressbar .ui-progressbar-value {margin: -1px; height:100%; }
 .ui-datepicker-close { display: none; }
+
+.ui-autocomplete { position: absolute; cursor: default; }	
+
+.ui-autocomplete-input {
+    background-color: #FFFFFF;
+    border: 0 none;
+    font-size: 11px !important;
+    margin: 0;
+    width: 130px;
+}
+
+/* workarounds */
+* html .ui-autocomplete { width:1px; } /* without this, the menu expands to 100% in IE6 */
+
+.sendtoWindow { background-color: #b3cbef; }
+.sendtoWindow .ui-widget-header { background-color: #6496db; }
+.sendtoWindow .ui-state-hover .ui-icon, .sendtoWindow .ui-state-focus .ui-icon { background-color: #b3cbef; }
+
+.sendtoWindow span.coButton  { background-color: #6496db; color: #fff; }
+.sendtoWindow span.coButton:hover   { background-color: #fff; color: #000; cursor: pointer; }
+.sendtoWindow input { border: 0;}
+.sendtoWindow textarea { border: 0; height: 140px;}
