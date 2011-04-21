@@ -596,6 +596,17 @@ $(document).ready(function() {
 		//});
 	}
 	
+	function logLocation(field,id,value) {
+		closedialog = 0;
+		var html = '<span class="listmember-outer"><a class="listmember" uid="' + id + '" field="'+field+'">' + value + '</a>';
+		$("#"+field).html(html);
+		var obj = getCurrentModule();
+		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+		// Save last selected user to user prefs
+		//$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=setPreflast10Users&id="+id, success: function(data){
+		//});
+	}
+	
 	// autocomplete contacts search
 	$('.contacts-search').livequery(function() { 
 		$(this).autocomplete({
@@ -623,7 +634,7 @@ $(document).ready(function() {
 				var text = ui.item.value;
 					text = text.split(",");
 					text = text[1] + ', ' + text[2];
-				log(field, ui.item.id, text);
+				logLocation(field, ui.item.id, text);
 			},
 			close: function(event, ui) {
 				$(this).val("");
