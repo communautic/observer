@@ -438,10 +438,31 @@ function getContactSend($id) {
 	
 	function getContactsDialog($request,$field,$append,$title,$sql) {
 		global $lang;
-		$list = $this->model->getContactsDialog($request,$field,$append,$title,$sql);
+		$groups = $this->model->getLast10Groups();
+		$contacts = $this->model->getLast10Contacts();
 		include_once dirname(__FILE__).'/view/dialog_contacts.php';
 	}
 	
+	function saveLastUsedContacts($id) {
+		$retval = $this->model->saveLastUsedContacts($id);
+		if($retval){
+		   return "true";
+		} else{
+		   return "error";
+		}
+	}
+
+
+	function saveLastUsedGroups($id) {
+		$retval = $this->model->saveLastUsedGroups($id);
+		if($retval){
+		   return "true";
+		} else{
+		   return "error";
+		}
+	}
+
+
 	function getContactsDialogPlace($request,$field,$append,$title,$sql) {
 		global $lang;
 		include_once dirname(__FILE__).'/view/dialog_places.php';
@@ -465,6 +486,11 @@ function getContactSend($id) {
 	
 	function getContactsSearch($term) {
 		$search = $this->model->getContactsSearch($term);
+		return $search;
+	}
+	
+	function getGroupsSearch($term) {
+		$search = $this->model->getGroupsSearch($term);
 		return $search;
 	}
 	

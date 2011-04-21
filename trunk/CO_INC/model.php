@@ -105,6 +105,36 @@ class Model extends MySQLDB {
 		}
 	}
 	
+	function getUserSetting($object) {
+		global $session;
+		if(!$this->existUserSetting($object)) {
+			return false;
+		} else {
+			$q = "select value from " . CO_TBL_USER_SETTINGS . " where object='$object' and uid='$session->uid'";
+			$result = mysql_query($q, $this->_db->connection);
+			$row = mysql_result($result,0);
+			if($row == "") {
+				return false;
+			} else {
+				return $row;
+			}
+		}
+	}
+	
+	function setUserSetting($object,$string) {
+		global $session;
+		
+		if(!$this->existUserSetting($object)) {
+			$q = "insert into " . CO_TBL_USER_SETTINGS . " set uid='$session->uid', object='$object', value='$string'";
+			$result = mysql_query($q, $this->_db->connection);
+			return true;
+		} else {
+			$q = "update " . CO_TBL_USER_SETTINGS . " set value='$string' where object='$object' and uid='$session->uid'";
+			$result = mysql_query($q, $this->_db->connection);
+			return true;
+		}
+	}
+	
 	
 	function getConfigField($field) {
 		global $session;
