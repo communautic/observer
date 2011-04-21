@@ -28,6 +28,14 @@ class Contacts extends Controller {
 	function getGroupDetails($id) {
 		global $lang;
 		if($group = $this->model->getGroupDetails($id)) {
+			$members = "";
+			if(!empty($group->membersID))  {
+				$membersarray = explode(",", $group->membersID);
+				foreach ($membersarray as &$value) {
+					$contact = $this->model->getContactDetails($value);
+					$members[] = array("id" => $contact->id, "name" => $contact->lastname." ".$contact->firstname, "email" => $contact->email, "phone" => $contact->phone1);
+				}
+			}
 			include 'view/group_edit.php';
 		} else {
 			include CO_INC .'/view/default.php';
@@ -40,6 +48,14 @@ class Contacts extends Controller {
 		$title = "";
 		$html = "";
 		if($group = $this->model->getGroupDetails($id)) {
+			$members = "";
+			if(!empty($group->membersID))  {
+				$membersarray = explode(",", $group->membersID);
+				foreach ($membersarray as &$value) {
+					$contact = $this->model->getContactDetails($value);
+					$members[] = array("id" => $contact->id, "name" => $contact->lastname." ".$contact->firstname, "email" => $contact->email, "phone" => $contact->phone1);
+				}
+			}
 			ob_start();
 				include 'view/group_print.php';
 				$html = ob_get_contents();

@@ -94,14 +94,15 @@ class Documents extends Projects {
 			$document = $arr["document"];
 			$doc = $arr["doc"];
 			$sendto = $arr["sendto"];
-			ob_start();
+			/*ob_start();
 				include 'view/print.php';
 				$html = ob_get_contents();
 			ob_end_clean();
-			$title = $document->title;
+			$title = $document->title;*/
 		}
-		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
-		$pdf = $this->savePDF($title,$html,$attachment);
+		//$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
+		//$pdf = $this->savePDF($title,$html,$attachment);
+		$attachment = "";
 		$attachment_array = "";
 		foreach($doc as $value) {
 			$attachment_array[] = array("tempname" => $value->tempname, "filename" => $value->filename);

@@ -86,14 +86,14 @@ if(is_array($projects)) {
     <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive loadProject" rel="<?php echo($project->id);?>">
 	<tr>
 		<td class="tcell-left text11">&nbsp;</td>
-		<td class="tcell-right"><span class="loadProject bold co-link" rel="<?php echo($project->id);?>"><?php echo($project->title);?></span></td>
-	</tr>
+		<td class="tcell-right" width="50%"><span class="loadProject bold co-link" rel="<?php echo($project->id);?>"><?php echo($project->title);?></span></td>
+		<td class="tcell-right"><?php echo($project->realisation["real"]);?>%</td>
+    </tr>
     <tr>
 		<td class="tcell-left text11">&nbsp;</td>
-		<td class="tcell-right">
-        <span class="text11 content-date"><?php echo $lang["GLOBAL_DURATION"];?></span><span class="text11"><?php echo($project->startdate . " - " . $project->enddate);?></span>
-</td>
-	</tr>
+		<td class="tcell-right"><span class="text11 content-date"><?php echo $lang["GLOBAL_DURATION"];?></span><span class="text11"><?php echo($project->startdate . " - " . $project->enddate);?></span></td>
+		<td class="tcell-right"><?php echo($project->management);?></td>
+    </tr>
 </table>
     <?php 
 	}

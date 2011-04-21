@@ -656,7 +656,7 @@ $(document).ready(function() {
 	});
 
 
-	$('a.append-custom-text').livequery('click',function() {
+	$('.append-custom-text').livequery('click',function() {
 		var field = $(this).attr("field")+"_ct";
 		var html = '<a field="' + field + '" class="ct-content">' + CUSTOM_NOTE + ' ' + $("#custom-text").val() + '</a>';
 		$("#"+field).html(html);

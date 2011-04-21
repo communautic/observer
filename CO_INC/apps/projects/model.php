@@ -1,7 +1,7 @@
 <?php
 //include_once(CO_PATH_BASE . "/model.php");
-include_once(dirname(__FILE__)."/model/folders.php");
-include_once(dirname(__FILE__)."/model/projects.php");
+//include_once(dirname(__FILE__)."/model/folders.php");
+//include_once(dirname(__FILE__)."/model/projects.php");
 
 class ProjectsModel extends Model {
 
@@ -71,7 +71,7 @@ class ProjectsModel extends Model {
 				$array["numProjects"] = $this->getNumProjects($val);
 				}
 			}
-			$folders[] = new Folder($array);
+			$folders[] = new Lists($array);
 		  
 	  }
 	  
@@ -85,7 +85,7 @@ class ProjectsModel extends Model {
    * get details for the project folder
    */
    function getFolderDetails($id) {
-		global $session;
+		global $session, $contactsmodel, $controllingmodel;
 		$q = "SELECT * FROM " . CO_TBL_PROJECTS_FOLDERS . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if(mysql_num_rows($result) < 1) {
@@ -106,10 +106,10 @@ class ProjectsModel extends Model {
 		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
 		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
 		
-		$folder = new Folder($array);
+		$folder = new Lists($array);
 		
 		// get project details
-		$q = "SELECT a.title,a.id,(SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as startdate ,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_PROJECTS . " as a where a.projectfolder='$id' and a.bin='0'";
+		$q = "SELECT a.title,a.id,a.management, (SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as startdate ,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_PROJECTS . " as a where a.projectfolder='$id' and a.bin='0'";
 
 		//$q = "select a.title,a.id,a.access,a.status,(SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " WHERE phaseid=a.id) as enddate from " . CO_TBL_PHASES . " as a where a.pid = '$id' and a.bin != '1' order by startdate";
 		$result = mysql_query($q, $this->_db->connection);
@@ -120,6 +120,8 @@ class ProjectsModel extends Model {
 			}
 			$project["startdate"] = $this->_date->formatDate($project["startdate"],CO_DATE_FORMAT);
 			$project["enddate"] = $this->_date->formatDate($project["enddate"],CO_DATE_FORMAT);
+			$project["realisation"] = $controllingmodel->getChart($project["id"], "realisation", 0);
+			$project["management"] = $contactsmodel->getUserListPlain($project['management']);
 			$projects[] = new Lists($project);
 	  	}
 		
@@ -349,7 +351,7 @@ class ProjectsModel extends Model {
 		$array["team"] = $contactsmodel->getUserList($array['team'],'team');
 		$array["team_ct"] = empty($array["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['team_ct'];
 		$array["ordered_by"] = $contactsmodel->getUserList($array['ordered_by'],'ordered_by');
-		//$array["documents"] = $this->getRelatedDocuments('0:'.$id);
+		$array["ordered_by_ct"] = empty($array["ordered_by_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['ordered_by_ct'];
 		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
 		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
 		$array["current_user"] = $session->uid;
@@ -372,7 +374,7 @@ class ProjectsModel extends Model {
 		// get user perms
 		$array["edit"] = "1";
 		
-		$project = new Project($array);
+		$project = new Lists($array);
 		
 		// get phase details
 		$q = "select a.title,a.id,a.access,a.status,(SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " WHERE phaseid=a.id) as enddate from " . CO_TBL_PHASES . " as a where a.pid = '$id' and a.bin != '1' order by startdate";
@@ -419,7 +421,7 @@ class ProjectsModel extends Model {
 		$array["startdate"] = $this->_date->formatDate($array["startdate"],CO_DATE_FORMAT);
 		$array["enddate"] = $this->_date->formatDate($array["enddate"],CO_DATE_FORMAT);
 
-		$project = new Project($array);
+		$project = new Lists($array);
 		return $project;
 	}
 

@@ -58,7 +58,7 @@ color: #333;
 .table-content .tcell-left { width: 136px; padding: 0 15px 0 0;}
 .table-content .tcell-left-shorter { width: 129px; padding: 0 15px 0 0;}
 .table-content .tcell-left-tasks { width: 94px; padding: 0 15px 0 0;}
-.table-content .tcell-left-phases-tasks { width: 108px; padding: 0 15px 0 0;}
+.table-content .tcell-left-phases-tasks { width: 110px; padding: 0 15px 0 0;}
 .table-content .tcell-left-short { width: 136px; padding: 0;}
 .table-content .tcell-left-inactive { width: 136px; padding: 0 0 0 15px; color:#666}
 .table-content .tcell-right { padding: 2px 0 0 0; }
@@ -78,6 +78,10 @@ font-weight: normal;
 	width: 99%;
 	height: 16px;
 	padding: 2px 0 2px 5px;
+}
+
+#projects .table-content input.bg { 
+	font-weight: bold;
 }
 
 .no-margin { margin: 0;}
@@ -128,9 +132,11 @@ font-weight: normal;
 .task-drag { width: 15px; height: 15px; display: none; background:url(../img/sort_buttons_trans.png) no-repeat 0px -60px; }
 
 .content-outline { padding: 5px 0;}
-.dialog-text { font-size:12px; padding: 3px 15px;}
+.dialog-text { font-size:12px; padding: 10px 0 0 10px; float: left;}
 .dialog-text a { display: block; margin: 7px 0;}
 
 div.coButton-outer { width: 100px; margin:auto; text-align: center; }
 span.coButton  { width: 100px; background-color: #666; display: block; padding: 4px; text-align:center }
 span.coButton:hover   { background-color: #333; color: #fff; cursor: pointer; }
+
+#custom-text { height: 105px; margin-bottom: 5px;}
