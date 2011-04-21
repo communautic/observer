@@ -619,11 +619,11 @@ function getUserListPlain($string){
 		// check if user is available and build array
 		$users_arr = array();
 		foreach ($users_string as &$value) {
-			$q = "SELECT id, address_line1, address_town FROM ".CO_TBL_USERS." where id = '$value'";
+			$q = "SELECT id, address_line1, address_postcode, address_town FROM ".CO_TBL_USERS." where id = '$value'";
 			$result_user = mysql_query($q, $this->_db->connection);
 			if(mysql_num_rows($result_user) > 0) {
 				while($row_user = mysql_fetch_assoc($result_user)) {
-					$users_arr[$row_user["id"]] = $row_user["address_line1"] . ", " . $row_user["address_town"];		
+					$users_arr[$row_user["id"]] = $row_user["address_line1"] . ", " . $row_user["address_postcode"] . " " . $row_user["address_town"];		
 				}
 			}
 		}
@@ -685,7 +685,7 @@ function getUserListPlain($string){
 	 function getPlacesSearch($term){
 			global $system;
 			$num=0;
-			$q = "SELECT id, CONCAT(lastname, ' ',firstname,', ',address_line1, ', ', address_town) as label from " . CO_TBL_USERS . " where (lastname like '%$term%' or firstname like '%$term%') and bin ='0' and invisible = '0'";
+			$q = "SELECT id, CONCAT(lastname, ' ',firstname,', ',address_line1, ', ', address_postcode, ' ', address_town) as label from " . CO_TBL_USERS . " where (lastname like '%$term%' or firstname like '%$term%') and bin ='0' and invisible = '0'";
 			$result = mysql_query($q, $this->_db->connection);
 			$num=mysql_affected_rows();
 			$rows = array();
