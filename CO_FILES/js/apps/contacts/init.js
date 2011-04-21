@@ -591,9 +591,25 @@ $(document).ready(function() {
 		$("#"+field).append(html);
 		var obj = getCurrentModule();
 		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
-		// Save last selected user to user prefs
-		//$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=setPreflast10Users&id="+id, success: function(data){
-		//});
+		
+		// save to lastused
+		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=saveLastUsedContacts&id="+id});
+	}
+	
+	function logGroup(field,id,value) {
+		closedialog = 0;
+		if($("#"+field).html() != "") {
+			$("#"+field+" .listmember:visible:last").append(", ");
+		}
+		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getUsersInGroupDialog&id="+id+"&field="+field, success: function(data){
+			$("#"+field).append(data);
+			var obj = getCurrentModule();
+			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+		
+			// save to lastused
+			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=saveLastUsedGroups&id="+id});																												
+			}
+		});		
 	}
 	
 	function logLocation(field,id,value) {
@@ -623,7 +639,23 @@ $(document).ready(function() {
 		});
 	});
 	
-	// autocomplete contacts search
+	// autocomplete groups search
+	$('.groups-search').livequery(function() { 
+		$(this).autocomplete({
+			appendTo: '#tabs-2',
+			source: "?path=apps/contacts&request=getGroupsSearch",
+			//minLength: 2,
+			select: function(event, ui) {
+				var field = $(this).attr("title");
+				logGroup(field, ui.item.id, ui.item.value);
+			},
+			close: function(event, ui) {
+				$(this).val("");
+			}
+		});
+	});
+	
+	// autocomplete locations search
 	$('.places-search').livequery(function() { 
 		$(this).autocomplete({
 			appendTo: '#tabs-1',
@@ -641,8 +673,27 @@ $(document).ready(function() {
 			}
 		});
 	});
-		
-		
+	
+	$('a.insertContactfromDialog').livequery('click',function() {
+		var field = $(this).attr("field");
+		var append = $(this).attr("append");
+		var cid = $(this).attr("cid");
+		var name = $(this).html();
+		var html = '<span class="listmember-outer"><a class="listmember" uid="' + cid + '" field="'+field+'">' + name + '</a>';
+
+		if($("#"+field).html() != "") {
+			$("#"+field+" .listmember:visible:last").append(", ");
+		}
+		$("#"+field).append(html);
+		var obj = getCurrentModule();
+		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+				
+		// save to lastused
+		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=saveLastUsedContacts&id="+cid});
+
+		return false;
+	});
+	
 	$('a.insertGroupfromDialog').livequery('click',function() {
 		var field = $(this).attr("field");
 		var append = $(this).attr("append");
@@ -665,6 +716,30 @@ $(document).ready(function() {
 		});
 		return false;
 	});
+	
+
+	/*$('a.insertGroupfromDialog').livequery('click',function() {
+		var field = $(this).attr("field");
+		var append = $(this).attr("append");
+		var gid = $(this).attr("gid");
+		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getUsersInGroupDialog&id="+gid+"&field="+field, success: function(data){
+			if(append == 0) {
+				$("#"+field).html(data);
+				$("#modalDialog").dialog('close');
+				var obj = getCurrentModule();
+				$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+			} else {
+				if($("#"+field).html() != "") {
+					$("#"+field+" .listmember:visible:last").append(", ");
+				}
+					$("#"+field).append(data);
+				}
+				var obj = getCurrentModule();
+				$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+			}
+		});
+		return false;
+	});*/
 
 
 	$('.append-custom-text').livequery('click',function() {

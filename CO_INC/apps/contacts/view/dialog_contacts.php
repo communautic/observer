@@ -6,17 +6,34 @@
 	</ul>
 	<div id="tabs-1">
 		<div class="dialog-text"><input class="contacts-search" title="<?php echo($field);?>"/></div><div class="filter-search-outer" style="margin-top: 11px;"></div>
-	</div>
-	<div id="tabs-2"><div class="dialog-text">
-		<?php
-if(is_array($list)) {
-foreach ($list as $item) { ?>
-	<a href="#" class="insertGroupfromDialog" title="<?php echo($item->title);?>" field="<?php echo($field);?>" append="<?php echo($append);?>" gid="<?php echo($item->id);?>"><?php echo($item->title);?></a>
-    <?php
-}
+		<div class="dialog-text">
+        <div class="text11">Zuletzt verwendet:</span><br />
+        <?php
+        	if(is_array($contacts)) {
+				foreach ($contacts as $contact) { ?>
+        			<a href="#" class="insertContactfromDialog" field="<?php echo($field);?>" append="<?php echo($append);?>" cid="<?php echo($contact["id"]);?>"><?php echo($contact["name"]);?></a>
+            <?php
+				}
 			}
-?>
-	</div></div>
+		?>
+        </div>
+        </div>
+    </div>
+	<div id="tabs-2">
+    	<div class="dialog-text"><input class="groups-search" title="<?php echo($field);?>"/></div><div class="filter-search-outer" style="margin-top: 11px;"></div>
+        <div class="dialog-text">
+        <div class="text11">Zuletzt verwendet:</span><br />
+		<?php
+			if(is_array($groups)) {
+				foreach ($groups as $group) { ?>
+					<a href="#" class="insertGroupfromDialog" title="<?php echo($group["title"]);?>" field="<?php echo($field);?>" append="<?php echo($append);?>" gid="<?php echo($group["id"]);?>"><?php echo($group["title"]);?></a>
+		<?php
+				}
+			}
+		?>
+		</div>
+        </div>
+	</div>
 	<div id="tabs-3">
 		<div class="dialog-text"><textarea id="custom-text" name="custom-text" cols="20" rows="2"></textarea>
 <br />

@@ -76,13 +76,10 @@ class ContactsModel extends Model {
 	  
 	  $arr = array("groups" => $groups, "sort" => $sortcur);
 	  return $arr;
-   }
+	}
 
 
-  /**
-   * get details for the contact group
-   */
-   function getGroupDetails($id) {
+	function getGroupDetails($id) {
 		global $session;
 		$q = "SELECT * FROM " . CO_CONTACTS_TBL_GROUPS . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
@@ -106,13 +103,10 @@ class ContactsModel extends Model {
 
 		$group = new Lists($array);
 		return $group;
-   }
-   
- 
-   /**
-   * get details for the contact group
-   */
-   function setGroupDetails($id,$title,$members) {
+	}
+
+
+	function setGroupDetails($id,$title,$members) {
 		global $session;
 		$members = $this->sortUserIDsByName($members);
 		$q = "UPDATE " . CO_CONTACTS_TBL_GROUPS . " set title = '$title', members = '$members' where id='$id'";
@@ -120,30 +114,24 @@ class ContactsModel extends Model {
 		if ($result) {
 			return true;
 		}
-   }
-   
-   /**
-   * create new contact group
-   */
-   function newGroup() {
+	}
+
+
+	function newGroup() {
 		global $session;
-		
 		$now = gmdate("Y-m-d H:i:s");
-		
 		$q = "INSERT INTO " . CO_CONTACTS_TBL_GROUPS . " set title = 'Neue Gruppe', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 		  	$id = mysql_insert_id();
 			return $id;
 		}
-   }
-   
-   
-   function duplicateGroup($id) {
+	}
+
+
+	function duplicateGroup($id) {
 		global $session, $lang;
-		
 		$now = gmdate("Y-m-d H:i:s");
-		
 		$q = "INSERT INTO " . CO_CONTACTS_TBL_GROUPS . " (title, members, edited_user, edited_date, created_user, created_date) SELECT CONCAT(title, ' ".$lang["GLOBAL_DUPLICAT"]."'),members, $session->uid as edited_user, '$now' as edited_date, $session->uid as created_user, '$now' as created_date FROM " . CO_CONTACTS_TBL_GROUPS . " where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
@@ -152,32 +140,29 @@ class ContactsModel extends Model {
 			return $id_new;
 		}
 	}
-   
-   /**
-   * delete contact group
-   */
-   function binGroup($id) {
+
+
+	function binGroup($id) {
 		global $session;
-		
 		$now = gmdate("Y-m-d H:i:s");
-		
 		$q = "UPDATE " . CO_CONTACTS_TBL_GROUPS . " set bin = '1', bintime = '$now', binuser= '$session->uid' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 		  	return true;
 		}
-   }
+	}
 
-   function restoreGroup($id) {
+
+	function restoreGroup($id) {
 		$q = "UPDATE " . CO_CONTACTS_TBL_GROUPS . " set bin = '0' WHERE id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 		  	return true;
 		}
-   }
-   
-   
-    function deleteGroup($id) {
+	}
+
+
+	function deleteGroup($id) {
 		$q = "DELETE FROM " . CO_CONTACTS_TBL_GROUPS . " WHERE id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
@@ -185,23 +170,18 @@ class ContactsModel extends Model {
 		}
    }
 
-  /**
-   * get number of contacts for a contact group
-   * status: 0 = all, 1 = active, 2 = abgeschlossen
-   */  
-   
-   function getNumAllContacts() {
+
+	function getNumAllContacts() {
 		global $session;
 
 		$q = "select count(*) from " . CO_TBL_USERS . " WHERE bin !='1'";
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_result($result,0);
 		return $row;
-   }
-   
-	 // comma separated list - returns number
-	 
-   function getNumContacts($string) {
+	}
+
+
+	function getNumContacts($string) {
 		global $session;
 
 		$users_string = explode(",", $string);
@@ -222,30 +202,28 @@ class ContactsModel extends Model {
 			}
 		}
 		return $i; 
-   }
+	}
    
    
-   	 function getContactTitle($id){
+	function getContactTitle($id){
 		global $session;
 		$q = "SELECT title FROM " . CO_TBL_PROJECTS . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$title = mysql_result($result,0);
 		return $title;
-   }
-   
-   function getContactFieldFromID($id,$field){
+	}
+
+
+	function getContactFieldFromID($id,$field){
 		global $session;
 		$q = "SELECT " . $field . " FROM " . CO_TBL_USERS . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$string = mysql_result($result,0);
 		return $string;
-   }
-   
-  /**
-   * get the list of contacts for a contact group
-   */ 
-   
-   function getContactList($sort) {
+	}
+
+
+	function getContactList($sort) {
       global $session;
 	  if($sort == 0) {
 		  $sortstatus = $this->getSortStatus("contact-sort-status");
@@ -317,7 +295,7 @@ class ContactsModel extends Model {
    }
    
    
-   function getContactDetails($id) {
+	function getContactDetails($id) {
 		global $session;
 		$q = "SELECT * FROM " . CO_TBL_USERS . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
@@ -340,27 +318,28 @@ class ContactsModel extends Model {
 		
 		$contact = new Lists($array);
 		return $contact;
-   }
-	 
-	 function getGroupsByUser($id) {
-		 	global $session;
-			$groups = '';
-			$q = "SELECT * FROM " . CO_CONTACTS_TBL_GROUPS . " where bin='0' and members REGEXP '[[:<:]]".$id."[[:>:]]'";
-			$result = mysql_query($q, $this->_db->connection);
-			$rows = mysql_num_rows($result);
-			$i = 1;
-			while($row = mysql_fetch_array($result)) {
-				//$groups .= '<a href="#" class="loadGroup" rel="'.$row["id"].'">'.$row["title"].'</a>';
-				$groups .= $row["title"];
-				if($i < $rows) {
-					$groups .= ", ";
-				}
-				$i++;
+	}
+
+
+	function getGroupsByUser($id) {
+		global $session;
+		$groups = '';
+		$q = "SELECT * FROM " . CO_CONTACTS_TBL_GROUPS . " where bin='0' and members REGEXP '[[:<:]]".$id."[[:>:]]'";
+		$result = mysql_query($q, $this->_db->connection);
+		$rows = mysql_num_rows($result);
+		$i = 1;
+		while($row = mysql_fetch_array($result)) {
+			//$groups .= '<a href="#" class="loadGroup" rel="'.$row["id"].'">'.$row["title"].'</a>';
+			$groups .= $row["title"];
+			if($i < $rows) {
+				$groups .= ", ";
 			}
-			return $groups;
-	 }
+			$i++;
+		}
+		return $groups;
+	}
    
-   // Create contact group title
+	// Create contact group title
 	function getContactGroupDetails($string,$field){
 		$users_string = explode(",", $string);
 		$users_total = sizeof($users_string);
@@ -380,7 +359,8 @@ class ContactsModel extends Model {
 		}
 		return $users;
    }
-	
+
+
 	function getRelatedDocuments($id){
 		$string = "";
 		$q = "SELECT title from " . PO_TBL_DOCUMENTS . " where related_to = '$id'";
@@ -396,12 +376,9 @@ class ContactsModel extends Model {
 		}
 		return $string;
    }
-   
-   
-   /**
-   * get details for the contact group
-   */
-   function setContactDetails($id, $lastname, $firstname, $title, $company, $position, $email, $phone1, $phone2, $fax, $address_line1, $address_line2, $address_town, $address_postcode, $address_country, $lang,$timezone) {
+
+
+	function setContactDetails($id, $lastname, $firstname, $title, $company, $position, $email, $phone1, $phone2, $fax, $address_line1, $address_line2, $address_town, $address_postcode, $address_country, $lang,$timezone) {
 		global $session;
 		$now = gmdate("Y-m-d H:i:s");
 		
@@ -411,10 +388,10 @@ class ContactsModel extends Model {
 		if ($result) {
 			return true;
 		}
-   }
+	}
    
    
-   function newContact() {
+	function newContact() {
 		global $session;
 		
 		$now = gmdate("Y-m-d H:i:s");
@@ -425,8 +402,9 @@ class ContactsModel extends Model {
 		  	$id = mysql_insert_id();
 			return $id;
 		}
-   }
-   
+	}
+
+
    	function duplicateContact($id) {
 		global $session, $lang;
 		
@@ -440,7 +418,8 @@ class ContactsModel extends Model {
 			return $id_new;
 		}
 	}
-   
+
+
 	function binContact($id) {
 		global $session;
 		$now = gmdate("Y-m-d H:i:s");
@@ -451,6 +430,7 @@ class ContactsModel extends Model {
 		  	return true;
 		}
 	}
+
 
 	function restoreContact($id) {
 		$q = "UPDATE " . CO_TBL_USERS . " set bin = '0' WHERE id='$id'";
@@ -471,7 +451,7 @@ class ContactsModel extends Model {
 		}
 	}
 	
-   function getContactsDialog($request,$field,$append,$title,$sql) {
+   /*function getContactsDialog($request,$field,$append,$title,$sql) {
 		global $session;
 		
 		$groups = "";
@@ -486,7 +466,52 @@ class ContactsModel extends Model {
 	  }
 
 	  return $groups;
+	}*/
+	
+	function getLast10Contacts() {
+		global $session;
+		
+		$contacts = $this->getUserArray($this->getUserSetting("last-used-contacts"));
+	  return $contacts;
 	}
+	
+	function saveLastUsedContacts($id) {
+		global $session;
+		$string = $id . "," .$this->getUserSetting("last-used-contacts");
+		$string = rtrim($string, ",");
+		$ids_arr = explode(",", $string);
+		$res = array_unique($ids_arr);
+		foreach ($res as $key => $value) {
+			$ids_rtn[] = $value;
+		}
+		array_splice($ids_rtn, 5);
+		$str = implode(",", $ids_rtn);
+		
+		$this->setUserSetting("last-used-contacts",$str);
+	  return true;
+	}
+	
+	function getLast10Groups() {
+		global $session;
+		$groups = $this->getGroupsArray($this->getUserSetting("last-used-groups"));
+		return $groups;
+	}
+	
+	function saveLastUsedGroups($id) {
+		global $session;
+		$string = $id . "," .$this->getUserSetting("last-used-groups");
+		$string = rtrim($string, ",");
+		$ids_arr = explode(",", $string);
+		$res = array_unique($ids_arr);
+		foreach ($res as $key => $value) {
+			$ids_rtn[] = $value;
+		}
+		array_splice($ids_rtn, 5);
+		$str = implode(",", $ids_rtn);
+		
+		$this->setUserSetting("last-used-groups",$str);
+		return true;
+	}	
 	
 	
 	function sortUserIDsByName($string) {
@@ -532,6 +557,51 @@ class ContactsModel extends Model {
 		return $emails;
 	}*/
 	
+	function getUserArray($string){
+		$users_string = explode(",", $string);
+		$users_total = sizeof($users_string);
+		$users = '';
+		
+		if($users_total == 0) { 
+			return $users; 
+		}
+		
+		// check if user is available and build array
+		$users_arr = "";
+		foreach ($users_string as &$value) {
+			$q = "SELECT id, firstname, lastname FROM ".CO_TBL_USERS." where id = '$value' and bin='0'";
+			$result_user = mysql_query($q, $this->_db->connection);
+			if(mysql_num_rows($result_user) > 0) {
+				while($row_user = mysql_fetch_assoc($result_user)) {
+					$users_arr[] = array("id" => $row_user["id"], "name" => $row_user["lastname"] . ' ' . $row_user["firstname"]);		
+				}
+			}
+		}
+
+		return $users_arr;
+}
+
+
+	function getGroupsArray($string){
+		$string = explode(",", $string);
+		$total = sizeof($string);
+		$arr = '';
+		if($total == 0) { 
+			return $arr; 
+		}
+		// check if group is available and build array
+		foreach ($string as &$value) {
+			$q = "SELECT id, title FROM ".CO_CONTACTS_TBL_GROUPS." where id = '$value' and members != '' and bin='0'";
+			$result = mysql_query($q, $this->_db->connection);
+			if(mysql_num_rows($result) > 0) {
+				while($row = mysql_fetch_assoc($result)) {
+					$arr[] = array("id" => $row["id"], "title" => $row["title"]);		
+				}
+			}
+		}
+		return $arr;
+	}
+	
 	
 	function getUserList($string,$field){
 		$users_string = explode(",", $string);
@@ -566,12 +636,12 @@ class ContactsModel extends Model {
 			$i++;
 		}
 		return $users;
-}
+	}
 
 
 
 
-function getUserListPlain($string){
+	function getUserListPlain($string){
 		$users_string = explode(",", $string);
 		$users_total = sizeof($users_string);
 		$users = '';
@@ -604,7 +674,7 @@ function getUserListPlain($string){
 			$i++;
 		}
 		return $users;
-}
+	}
 
 
 	function getPlaceList($string,$field){
@@ -640,22 +710,22 @@ function getUserListPlain($string){
 			$i++;
 		}
 		return $users;
-}
+	}
 
    
 	 
 	 
-	 function getUsersInGroupDialog($id,$field){
+	function getUsersInGroupDialog($id,$field){
 		$users = '';
 		$q = "SELECT members FROM ".CO_CONTACTS_TBL_GROUPS." WHERE id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$members = mysql_result($result,0);
 		$members = $this->getUserList($members,$field);
 		return $members;
-   }
-   
-   
-   function getUserContext($id,$field){
+	}
+
+
+	function getUserContext($id,$field){
 		$q = "SELECT id, firstname, lastname, company, position,phone1,phone2,fax,address_line1, address_town, address_postcode,email FROM ".CO_TBL_USERS." where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_fetch_array($result);
@@ -667,37 +737,53 @@ function getUserListPlain($string){
 		
 		$context = new Lists($array); 
 	  	return $context;
-   }
-	 
+	}
+
+
 	function getContactsSearch($term){
-			global $system;
-			$num=0;
-			$q = "SELECT id, CONCAT(lastname,' ',firstname) as label from " . CO_TBL_USERS . " where (lastname like '%$term%' or firstname like '%$term%') and bin ='0' and invisible = '0'";
-			$result = mysql_query($q, $this->_db->connection);
-			$num=mysql_affected_rows();
-			$rows = array();
-			while($r = mysql_fetch_assoc($result)) {
-				 $rows[] = $r;
-			}
-			return $system->json_encode($rows);
-   }
-	 
-	 function getPlacesSearch($term){
-			global $system;
-			$num=0;
-			$q = "SELECT id, CONCAT(lastname, ' ',firstname,', ',address_line1, ', ', address_postcode, ' ', address_town) as label from " . CO_TBL_USERS . " where (lastname like '%$term%' or firstname like '%$term%') and bin ='0' and invisible = '0'";
-			$result = mysql_query($q, $this->_db->connection);
-			$num=mysql_affected_rows();
-			$rows = array();
-			while($r = mysql_fetch_assoc($result)) {
-				 $rows[] = $r;
-			}
-			return $system->json_encode($rows);
-   }
+		global $system;
+		$num=0;
+		$q = "SELECT id, CONCAT(lastname,' ',firstname) as label from " . CO_TBL_USERS . " where (lastname like '%$term%' or firstname like '%$term%') and bin ='0' and invisible = '0'";
+		$result = mysql_query($q, $this->_db->connection);
+		$num=mysql_affected_rows();
+		$rows = array();
+		while($r = mysql_fetch_assoc($result)) {
+			 $rows[] = $r;
+		}
+		return $system->json_encode($rows);
+	}
+
+
+	function getGroupsSearch($term){
+		global $system;
+		$num=0;
+		$q = "SELECT id, title as label from " . CO_CONTACTS_TBL_GROUPS . " where title like '%$term%' and members != '' and bin ='0'";
+		$result = mysql_query($q, $this->_db->connection);
+		$num=mysql_affected_rows();
+		$rows = array();
+		while($r = mysql_fetch_assoc($result)) {
+			 $rows[] = $r;
+		}
+		return $system->json_encode($rows);
+	}
+
+
+	function getPlacesSearch($term){
+		global $system;
+		$num=0;
+		$q = "SELECT id, CONCAT(lastname, ' ',firstname,', ',address_line1, ', ', address_postcode, ' ', address_town) as label from " . CO_TBL_USERS . " where (lastname like '%$term%' or firstname like '%$term%') and bin ='0' and invisible = '0'";
+		$result = mysql_query($q, $this->_db->connection);
+		$num=mysql_affected_rows();
+		$rows = array();
+		while($r = mysql_fetch_assoc($result)) {
+			 $rows[] = $r;
+		}
+		return $system->json_encode($rows);
+	}
    
    
    
-      function getBin() {
+	function getBin() {
 	   	
 		$bin = array();
 		$bin["datetime"] = $this->_date->formatDate("now",CO_DATETIME_FORMAT);
@@ -728,10 +814,10 @@ function getUserListPlain($string){
 		
 		$arr = array("bin" => $bin, "groups" => $groups, "contacts" => $contacts);
 		return $arr;
-   }
+	}
   
   
-   function emptyBin() {
+	function emptyBin() {
 	   	
 		$bin = array();
 		$bin["datetime"] = $this->_date->formatDate("now",CO_DATETIME_FORMAT);
@@ -754,8 +840,7 @@ function getUserListPlain($string){
 		
 		$arr = array("bin" => $bin, "groups" => $groups, "contacts" => $contacts);
 		return $arr;
-   }
-   
+	}
 	
 }
 

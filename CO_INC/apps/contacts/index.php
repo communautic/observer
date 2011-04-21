@@ -124,8 +124,17 @@ if (!empty($_GET['request'])) {
 		case 'getContactsSearch':
 			echo($contacts->getContactsSearch($_GET['term']));
 		break;
+		case 'getGroupsSearch':
+			echo($contacts->getGroupsSearch($_GET['term']));
+		break;
 		case 'getPlacesSearch':
 			echo($contacts->getPlacesSearch($_GET['term']));
+		break;
+		case 'saveLastUsedContacts':
+			echo($contacts->saveLastUsedContacts($_GET['id']));
+		break;
+		case 'saveLastUsedGroups':
+			echo($contacts->saveLastUsedGroups($_GET['id']));
 		break;
 		case 'getBin':
 			echo($contacts->getBin());
