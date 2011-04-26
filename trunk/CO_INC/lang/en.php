@@ -15,12 +15,12 @@ $lang["LOGIN_LOGOUT"] = "Logout";
 /* APPS ACTION LINKS */
 $lang["ACTION_NEW"] = "new";
 $lang["ACTION_PRINT"] = "print";
-$lang["ACTION_SENDTO"] = "forward";
+$lang["ACTION_SENDTO"] = "send to";
 $lang["ACTION_DUPLICATE"] = "duplicate";
-$lang["ACTION_PROJECTHANDBOOK"] = "Project Guide";
+$lang["ACTION_PROJECTHANDBOOK"] = "Project Manual";
 $lang["ACTION_DELETE"] = "delete";
 
-$lang["TEXT_NOTE"] = "manual entry:";
+$lang["TEXT_NOTE"] = "Note:";
 	
 $lang["CREATED_BY_ON"]		= 	'created:';
 $lang["EDITED_BY_ON"] 		= 	'edited:';
@@ -33,13 +33,13 @@ $lang["GLOBAL_SAVE"] = 'Save';
 $lang["GLOBAL_REMOVE"] = 'Remove';
 
 $lang["GLOBAL_STATUS"] 		= 	'Status';
-$lang["GLOBAL_DURATION"] 	= 	'Duration';
-$lang["GLOBAL_EMAILED_TO"] 	= 	'Sent to';
+$lang["GLOBAL_DURATION"] 	= 	'Timeline';
+$lang["GLOBAL_EMAILED_TO"] 	= 	'Send';
 $lang["GLOBAL_DUPLICAT"] 	= 	'Duplicate';
 
 $lang["GLOBAL_ACCESS"] = 'Access';
 $lang["GLOBAL_ACCESS_INTERNAL"] = 'internal';
-$lang["GLOBAL_ACCESS_PUBLIC"] = 'public';
+$lang["GLOBAL_ACCESS_PUBLIC"] = 'external';
 $lang["GLOBAL_ACCESS_FOOTER"] = 'access:';
 $lang["GLOBAL_FOOTER_STATUS"] = 'Status';
 

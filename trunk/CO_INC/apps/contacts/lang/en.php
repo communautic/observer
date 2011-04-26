@@ -38,5 +38,5 @@ define('CONTACTS_CONTACT_PASSWORD', 'Password');
 define('CONTACTS_CONTACT_GROUPMEMBERSHIP', 'Group membership');
 
 define('CONTACTS_DIALOG_CONTACTS', 'Contacts');
-$lang['CONTACTS_CUSTOM'] = 'custom';
+$lang['CONTACTS_CUSTOM'] = 'Note';
 ?>
