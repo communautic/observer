@@ -29,7 +29,7 @@
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
   <tr>
     <td class="tcell-left text11"><span class="content-nav showDialog" request="getContactsDialog" field="team" append="1"><span><?php echo $lang["PHASE_TEAM"];?></span></span></td>
-    <td class="tcell-right"><div id="team" class="itemlist-field"><?php echo($phase->team);?></div><div id="team_ct" class="itemlist-field"><span field="team_ct" class="ct-content"><?php echo($phase->team_ct);?></span></div></td>
+    <td class="tcell-right"><div id="team" class="itemlist-field"><?php echo($phase->team);?></div><div id="team_ct" class="itemlist-field"><a field="team_ct" class="ct-content"><?php echo($phase->team_ct);?></a></div></td>
   </tr>
 </table>
 <div class="content-spacer"></div>

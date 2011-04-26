@@ -24,7 +24,7 @@
     <tr>
       <td>&nbsp;</td>
       <td class="tcell-left text11"><span class="content-nav showDialog" request="getContactsDialog" field="task_team_<?php echo $value->id;?>" append="1"><span><?php echo $lang["PHASE_TASK_TEAM"];?></span></span></td>
-      <td class="tcell-right"><div id="task_team_<?php echo $value->id;?>" class="itemlist-field task_team_list"><?php echo($value->team);?></div><div id="task_team_<?php echo $value->id;?>_ct" class="itemlist-field task_team_list_ct"><span field="task_team_<?php echo $value->id;?>_ct" class="ct-content"><?php echo($value->team_ct);?></span></div></td>
+      <td class="tcell-right"><div id="task_team_<?php echo $value->id;?>" class="itemlist-field task_team_list"><?php echo($value->team);?></div><div id="task_team_<?php echo $value->id;?>_ct" class="itemlist-field task_team_list_ct"><a field="task_team_<?php echo $value->id;?>_ct" class="ct-content"><?php echo($value->team_ct);?></a></div></td>
     </tr>
     <tr>
       <td>&nbsp;</td>

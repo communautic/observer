@@ -33,19 +33,19 @@
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 	  <td class="tcell-left text11"><span class="content-nav showDialog" request="getContactsDialog" field="ordered_by" append="0"><span><?php echo $lang["PROJECT_CLIENT"];?></span></span></td>
-	  <td class="tcell-right"><div id="ordered_by" class="itemlist-field"><?php echo($project->ordered_by);?></div><div id="ordered_by_ct" class="itemlist-field"><span field="ordered_by_ct" class="ct-content"><?php echo($project->ordered_by_ct);?></span></div></td>
+	  <td class="tcell-right"><div id="ordered_by" class="itemlist-field"><?php echo($project->ordered_by);?></div><div id="ordered_by_ct" class="itemlist-field"><a field="ordered_by_ct" class="ct-content"><?php echo($project->ordered_by_ct);?></a></div></td>
 	</tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 	  <td class="tcell-left text11"><span class="content-nav showDialog" request="getContactsDialog" field="management" append="1"><span><?php echo $lang["PROJECT_MANAGEMENT"];?></span></span></td>
-	  <td class="tcell-right"><div id="management" class="itemlist-field"><?php echo($project->management);?></div><div id="management_ct" class="itemlist-field"><span field="management_ct" class="ct-content"><?php echo($project->management_ct);?></span></div></td>
+	  <td class="tcell-right"><div id="management" class="itemlist-field"><?php echo($project->management);?></div><div id="management_ct" class="itemlist-field"><a field="management_ct" class="ct-content"><?php echo($project->management_ct);?></a></div></td>
 	</tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
   <tr>
     <td class="tcell-left text11"><span class="content-nav showDialog" request="getContactsDialog" field="team" append="1"><span><?php echo $lang["PROJECT_TEAM"];?></span></span></td>
-    <td class="tcell-right"><div id="team" class="itemlist-field"><?php echo($project->team);?></div><div id="team_ct" class="itemlist-field"><span field="team_ct" class="ct-content"><?php echo($project->team_ct);?></span></div></td>
+    <td class="tcell-right"><div id="team" class="itemlist-field"><?php echo($project->team);?></div><div id="team_ct" class="itemlist-field"><a field="team_ct" class="ct-content"><?php echo($project->team_ct);?></a></div></td>
   </tr>
 </table>
 <div class="content-spacer"></div>
