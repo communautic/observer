@@ -305,6 +305,11 @@ function dialogPhase(offset,request,field,append,title,sql) {
 			$("#modalDialog").dialog('option', 'position', offset);
 			$("#modalDialog").dialog('option', 'title', title);
 			$("#modalDialog").dialog('open');
+			if($("#" + field + "_ct .ct-content").length > 0) {
+				var ct = $("#" + field + "_ct .ct-content").html();
+				ct = ct.replace(CUSTOM_NOTE + " ","");
+				$("#custom-text").val(ct);
+			}
 			}
 		});
 	}

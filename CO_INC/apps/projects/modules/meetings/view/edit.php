@@ -33,20 +33,20 @@
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 		<td class="tcell-left text11"><span class="content-nav showDialog" request="getContactsDialogPlace" field="location" title="Ort" append="0"><span><?php echo $lang["MEETING_PLACE"];?></span></span></td>
-		<td class="tcell-right"><div id="location" class="itemlist-field"><?php echo($meeting->location);?></div><div id="location_ct" class="itemlist-field"><span field="location_ct" class="ct-content"><?php echo($meeting->location_ct);?></span></div></td>
+		<td class="tcell-right"><div id="location" class="itemlist-field"><?php echo($meeting->location);?></div><div id="location_ct" class="itemlist-field"><a field="location_ct" class="ct-content"><?php echo($meeting->location_ct);?></a></div></td>
 	</tr>
 </table>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 		<td class="tcell-left text11"><span href="#" class="content-nav showDialog" request="getContactsDialog" field="participants" append="1"><span><?php echo $lang["MEETING_ATTENDEES"];?></span></span></td>
-		<td class="tcell-right"><div id="participants" class="itemlist-field"><?php echo($meeting->participants);?></div><div id="participants_ct" class="itemlist-field"><span field="participants_ct" class="ct-content"><?php echo($meeting->participants_ct);?></span></div></td>
+		<td class="tcell-right"><div id="participants" class="itemlist-field"><?php echo($meeting->participants);?></div><div id="participants_ct" class="itemlist-field"><a field="participants_ct" class="ct-content"><?php echo($meeting->participants_ct);?></a></div></td>
 	</tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 		<td class="tcell-left text11"><span class="content-nav showDialog" request="getContactsDialog" field="management" append="1"><span><?php echo $lang["MEETING_MANAGEMENT"];?></span></span></td>
-		<td class="tcell-right"><div id="management" class="itemlist-field"><?php echo($meeting->management);?></div><div id="management_ct" class="itemlist-field"><span field="management_ct" class="ct-content"><?php echo($meeting->management_ct);?></span></div></td>
+		<td class="tcell-right"><div id="management" class="itemlist-field"><?php echo($meeting->management);?></div><div id="management_ct" class="itemlist-field"><a field="management_ct" class="ct-content"><?php echo($meeting->management_ct);?></a></div></td>
 	</tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">

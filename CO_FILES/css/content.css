@@ -1,3 +1,7 @@
+textarea {
+    resize: none;
+}
+
 .text11 { font-size: 11px; line-height: 20px; }
 .text13 { font-size: 13px; }
 .bold { font-weight: bold}
