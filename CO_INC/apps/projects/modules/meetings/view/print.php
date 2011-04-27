@@ -50,7 +50,7 @@ foreach($task as $value) {
         <tr>
             <td class="tcell-left-short"><?php if($i == 1) { echo $lang["MEETING_GOALS"]; }?>&nbsp;</td>
             <td class="short"><?php echo $img;?></td>
-            <td><?php echo($value->title);?></td>
+            <td class="greybg"><?php echo($value->title);?></td>
         </tr>
         <tr>
             <td>&nbsp;</td>
@@ -69,25 +69,4 @@ foreach($task as $value) {
 	$i++;
 	}
 ?>
-&nbsp;
-<table border="0" cellpadding="0" cellspacing="0" width="100%" class="standard">
-	<tr>
-		<td class="tcell-left"><?php echo $lang["DOCUMENT_DOCUMENTS"];?></td>
-        <td><?php echo($meeting->documents)?></td>
-	</tr>
-    <tr>
-		<td class="tcell-left"><?php echo $lang["GLOBAL_ACCESS"];?></td>
-		<td><?php echo($meeting->access_text)?></td>
-	</tr>
-</table>
-&nbsp;
-<table border="0" cellpadding="0" cellspacing="0" width="100%" class="standard">
-    <tr>
-		<td class="tcell-left top grey"><?php echo$lang["GLOBAL_EMAILED_TO"];?></td>
-		<td><?php 
-			foreach($sendto as $value) { 
-			echo '<div class="grey">' . $value->who . ', ' . $value->date . '</div>';
-		 } ?></td>
-	</tr>
-</table>
 <div style="page-break-after:always;">&nbsp;</div>

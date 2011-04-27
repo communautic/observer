@@ -20,23 +20,30 @@
 </table>
 &nbsp;
 <table border="0" cellpadding="0" cellspacing="0" width="100%" class="standard">
-	<tr>
+	<?php if(!empty($project->ordered_by) || !empty($project->ordered_by_ct)) { ?>
+    <tr>
 		<td class="tcell-left"><?php echo $lang["PROJECT_CLIENT"];?></td>
 		<td><?php echo($project->ordered_by);?><br /><?php echo($project->ordered_by_ct);?></td>
 	</tr>
-	<tr>
+    <?php } ?>
+	<?php if(!empty($project->management) || !empty($project->management_ct)) { ?>
+    <tr>
 		<td class="tcell-left"><?php echo $lang["PROJECT_MANAGEMENT"];?></td>
 		<td><?php echo($project->management);?><br /><?php echo($project->management_ct);?></td>
 	</tr>
+    <?php } ?>
+    <?php if(!empty($project->team) || !empty($project->team_ct)) { ?>
 	<tr>
 		<td class="tcell-left"><?php echo $lang["PROJECT_TEAM"];?></td>
 		<td><?php echo($project->team);?><br /><?php echo($project->team_ct);?></td>
 	</tr>
+    <?php } ?>
 	<tr>
 	  <td class="tcell-left"><?php echo $lang["GLOBAL_STATUS"];?></td>
         <td><?php echo($project->status_text);?> <?php echo($project->status_date)?></td>
 	</tr>
 </table>
+<?php if(!empty($project->protocol)) { ?>
 &nbsp;
 <table border="0" cellpadding="0" cellspacing="0" width="100%" class="grey" style="padding: 10pt 10pt 10pt 10pt;">
 	<tr>
@@ -44,6 +51,7 @@
         <td><?php echo(nl2br($project->protocol));?></td>
 	</tr>
 </table>
+<?php } ?>
 &nbsp;
 <?php
 if(is_array($phases)) {
@@ -68,14 +76,4 @@ if(is_array($phases)) {
 	}
 }
 ?>
-&nbsp;
-<table border="0" cellpadding="0" cellspacing="0" width="100%" class="standard">
-    <tr>
-		<td class="tcell-left top grey"><?php echo$lang["GLOBAL_EMAILED_TO"];?></td>
-		<td><?php 
-			foreach($sendto as $value) { 
-			echo '<div class="grey">' . $value->who . ', ' . $value->date . '</div>';
-		 } ?></td>
-	</tr>
-</table>
 <div style="page-break-after:always;">&nbsp;</div>

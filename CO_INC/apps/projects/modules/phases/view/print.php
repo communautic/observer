@@ -9,14 +9,18 @@
 		<td class="tcell-left"><?php echo $lang["GLOBAL_DURATION"];?></td>
 		<td><?php echo($phase->startdate)?> - <?php echo($phase->enddate)?></td>
     </tr>
+    <?php if(!empty($phase->management)) { ?>
 	<tr>
 	  <td class="tcell-left"><?php echo $lang["PROJECT_MANAGEMENT"];?></td>
         <td><?php echo($phase->management);?></td>
 	</tr>
+    <?php } ?>
+    <?php if(!empty($phase->team) || !empty($phase->team_ct)) { ?>
 	<tr>
 	  <td class="tcell-left"><?php echo $lang["PHASE_TEAM"];?></td>
-        <td><?php echo($phase->team);?></td>
+        <td><?php echo($phase->team);?><br /><?php echo($phase->team_ct);?></td>
 	</tr>
+    <?php } ?>
 </table>
 &nbsp;
 <table border="0" cellpadding="0" cellspacing="0" width="100%" class="standard">
@@ -25,6 +29,7 @@
         <td><?php echo($phase->status_text);?> <?php echo($phase->status_date)?></td>
 	</tr>
 </table>
+<?php if(!empty($phase->protocol)) { ?>
 &nbsp;
 <table border="0" cellpadding="0" cellspacing="0" width="100%" class="grey" style="padding: 10pt 10pt 10pt 10pt;">
 	<tr>
@@ -32,6 +37,7 @@
         <td><?php echo(nl2br($phase->protocol));?></td>
 	</tr>
 </table>
+<?php } ?>
 &nbsp;
 <?php
 $i = 1;
@@ -51,7 +57,7 @@ foreach($task as $value) {
         <tr>
             <td class="tcell-left-short"><?php if($i == 1) { echo $lang["PHASE_TASK_MILESTONE"]; }?>&nbsp;</td>
             <td class="short"><?php echo $img;?></td>
-            <td><?php echo($value->text);?></td>
+            <td class="greybg"><?php echo($value->text);?></td>
         </tr>
         <tr>
             <td>&nbsp;</td>
@@ -59,24 +65,30 @@ foreach($task as $value) {
             <td><?php echo $lang["GLOBAL_DURATION"];?> <?php echo($value->startdate . " - " . $value->enddate);?>
             </td>
         </tr>
+        <?php if(!empty($value->team) || !empty($value->team_ct)) { ?>
         <tr>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td><?php echo $lang["PHASE_TASK_TEAM"];?> <?php echo($value->team . " " . $value->team_ct);?>
             </td>
         </tr>
+        <?php } ?>
+        <?php if(!empty($value->dependent_title)) { ?>
         <tr>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td><?php echo $lang["PHASE_TASK_DEPENDENT"];?> <?php echo($value->dependent_title);?>
             </td>
         </tr>
+        <?php } ?>
+        <?php if(!empty($donedate)) { ?>
         <tr>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td><?php echo $lang["PROJECT_STATUS_FINISHED"];?> <?php echo($donedate);?>
             </td>
         </tr>
+        <?php } ?>
             <tr>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
@@ -96,19 +108,23 @@ foreach($task as $value) {
             <td><?php echo $lang["PHASE_MILESTONE_DATE"];?> <?php echo($value->startdate);?>
             </td>
         </tr>
+        <?php if(!empty($value->dependent_title)) { ?>
         <tr>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td><?php echo $lang["PHASE_TASK_DEPENDENT"];?> <?php echo($value->dependent_title);?>
             </td>
         </tr>
+        <?php } ?>
+        <?php if(!empty($donedate)) { ?>
         <tr>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td><?php echo $lang["PROJECT_STATUS_FINISHED"];?> <?php echo($donedate);?>
             </td>
         </tr>
-            <tr>
+        <?php } ?>
+        <tr>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td><div class="line">&nbsp;</div></td>
@@ -118,25 +134,4 @@ foreach($task as $value) {
 	$i++;
 	}
 ?>
-&nbsp;
-<table border="0" cellpadding="0" cellspacing="0" width="100%" class="standard">
-	<tr>
-	  <td class="tcell-left"><?php echo $lang["DOCUMENT_DOCUMENTS"];?></td>
-        <td><?php echo($phase->documents)?></td>
-	</tr>
-	<tr>
-		<td class="tcell-left"><?php echo $lang["GLOBAL_ACCESS"];?></td>
-		<td><?php echo($phase->access_text)?></td>
-	</tr>
-</table>
-&nbsp;
-<table border="0" cellpadding="0" cellspacing="0" width="100%" class="standard">
-    <tr>
-		<td class="tcell-left top grey"><?php echo$lang["GLOBAL_EMAILED_TO"];?></td>
-		<td><?php 
-			foreach($sendto as $value) { 
-			echo '<div class="grey">' . $value->who . ', ' . $value->date . '</div>';
-		 } ?></td>
-	</tr>
-</table>
 <div style="page-break-after:always;">&nbsp;</div>
