@@ -16,4 +16,6 @@ define('TIMELINE_STATUS_OVERDUE_POPUP', 'Tag/e außer Plan');
 
 $lang['TIMELINE_TIME'] = 'Tage';
 $lang['TIMELINE_ACTION'] = 'Vorgang';
+
+$lang["PRINT_TIMELINE"] = 'terminliste.png';
 ?>

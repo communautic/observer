@@ -13,4 +13,6 @@ $lang["CONTROLLING_REALISATION"] = 'Realisierungsgrad';
 $lang["CONTROLLING_ADHERANCE"] = 'Termintreue';
 $lang["CONTROLLING_TASKS"] = 'Arbeitspakete in Plan';
 
+$lang["PRINT_CONTROLLING"] = 'statusbericht.png';
+
 ?>

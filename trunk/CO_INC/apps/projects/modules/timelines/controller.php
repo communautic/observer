@@ -45,7 +45,7 @@ class Timelines extends Projects {
 
 
 	function printDetails($id,$pid,$t) {
-		global $lang;
+		global $session, $lang;
 		$title = "";
 		$html = "";
 		if($project = $this->model->getDetails($pid)) {
@@ -60,6 +60,7 @@ class Timelines extends Projects {
 			ob_end_clean();
 			$title = $project["title"] . " - " . TIMELINE_DATES_LIST;
 		}
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_TIMELINE"];
 		switch($t) {
 			case "html":
 				$this->printHTML($title,$html);
@@ -94,6 +95,7 @@ class Timelines extends Projects {
 			ob_end_clean();
 			$title = $project["title"] . " - " . TIMELINE_DATES_LIST;
 		}
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_TIMELINE"];
 		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
 		$pdf = $this->savePDF($title,$html,$attachment);
 		

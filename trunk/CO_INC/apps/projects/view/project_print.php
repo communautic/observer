@@ -62,13 +62,13 @@ if(is_array($phases)) {
 		<td class="tcell-left">
         <?php if($i == 1) { echo $lang["PROJECT_PHASES"]; }?>&nbsp;
         </td>
-		<td><?php echo($num[$phase->id] . " " . $phase->title);?></td>
+		<td class="greybg"><?php echo($num[$phase->id] . " " . $phase->title);?></td>
 	</tr>
     <tr>
 		<td class="tcell-left">&nbsp;</td>
 		<td class="grey smalltext"><?php echo $lang["GLOBAL_DURATION"];?> <?php echo($phase->startdate . " - " . $phase->enddate);?>
-        <div class="line">&nbsp;</div>
-        </td>
+        <br />&nbsp;
+</td>
 	</tr>
 </table>
     <?php 

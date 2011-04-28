@@ -20,19 +20,19 @@
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-		<td class="tcell-left text11"><span class="content-nav showDialogTime" rel="meetingstart" title="Zeit"><span><?php echo $lang["MEETING_TIME_START"];?></span></span></td>
+		<td class="tcell-left text11"><span class="content-nav showDialogTime" rel="meetingstart"><span><?php echo $lang["MEETING_TIME_START"];?></span></span></td>
 		<td class="tcell-right"><div id="meetingstart" class="itemlist-field"><?php echo($meeting->start);?></div></td>
 	</tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-		<td class="tcell-left text11"><span class="content-nav showDialogTime" rel="meetingend" title="Zeit"><span><?php echo $lang["MEETING_TIME_END"];?></span></span></td>
+		<td class="tcell-left text11"><span class="content-nav showDialogTime" rel="meetingend"><span><?php echo $lang["MEETING_TIME_END"];?></span></span></td>
 		<td class="tcell-right"><div id="meetingend" class="itemlist-field"><?php echo($meeting->end);?></div></td>
 	</tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-		<td class="tcell-left text11"><span class="content-nav showDialog" request="getContactsDialogPlace" field="location" title="Ort" append="0"><span><?php echo $lang["MEETING_PLACE"];?></span></span></td>
+		<td class="tcell-left text11"><span class="content-nav showDialog" request="getContactsDialogPlace" field="location" append="0"><span><?php echo $lang["MEETING_PLACE"];?></span></span></td>
 		<td class="tcell-right"><div id="location" class="itemlist-field"><?php echo($meeting->location);?></div><div id="location_ct" class="itemlist-field"><a field="location_ct" class="ct-content"><?php echo($meeting->location_ct);?></a></div></td>
 	</tr>
 </table>
@@ -51,7 +51,7 @@
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><span class="content-nav showDialog" request="getMeetingStatusDialog" field="status" title="<?php echo $lang["GLOBAL_STATUS"];?>" append="1"><span><?php echo $lang["GLOBAL_STATUS"];?></span></span></td>
+	  <td class="tcell-left text11"><span class="content-nav showDialog" request="getMeetingStatusDialog" field="status" append="1"><span><?php echo $lang["GLOBAL_STATUS"];?></span></span></td>
         <td class="tcell-right"><div id="meeting_status" class="itemlist-field"><div class="listmember" field="meeting_status" uid="<?php echo($meeting->status);?>" style="float: left"><?php echo($meeting->status_text);?></div></div><input name="meeting_status_date" type="text" class="input-date datepicker meeting_status_date" value="<?php echo($meeting->status_date)?>" style="float: left; margin-left: 8px;" /></td>
 	</tr>
 </table>
@@ -82,7 +82,7 @@ include("task.php");
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><span class="content-nav showDialog" request="getAccessDialog" field="meeting_access" title="<?php echo $lang["GLOBAL_ACCESS"];?>" append="1"><span><?php echo $lang["GLOBAL_ACCESS"];?></span></span></td>
+	  <td class="tcell-left text11"><span class="content-nav showDialog" request="getAccessDialog" field="meeting_access" append="1"><span><?php echo $lang["GLOBAL_ACCESS"];?></span></span></td>
         <td class="tcell-right"><div id="meeting_access" class="itemlist-field"><div class="listmember" field="meeting_access" uid="<?php echo($meeting->access);?>" style="float: left"><?php echo($meeting->access_text);?></div></div><input type="hidden" name="meeting_access_orig" value="<?php echo($meeting->access);?>" /></td>
 	</tr>
 </table>

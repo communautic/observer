@@ -34,7 +34,7 @@ class Controlling extends Projects {
 
 
 	function printDetails($id,$pid,$t) {
-		global $projectsmodel,$lang;
+		global $session, $projectsmodel,$lang;
 		$title = "";
 		$html = "";
 		$tit = $projectsmodel->getProjectTitle($pid);
@@ -45,6 +45,7 @@ class Controlling extends Projects {
 			ob_end_clean();
 			$title =  $tit . " - " . $lang["CONTROLLING_STATUS"];
 		}
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_CONTROLLING"];
 		switch($t) {
 			case "html":
 				$this->printHTML($title,$html);
@@ -79,6 +80,7 @@ class Controlling extends Projects {
 			ob_end_clean();
 			$title =  $tit . " - " . $lang["CONTROLLING_STATUS"];
 		}
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_CONTROLLING"];
 		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
 		$pdf = $this->savePDF($title,$html,$attachment);
 		

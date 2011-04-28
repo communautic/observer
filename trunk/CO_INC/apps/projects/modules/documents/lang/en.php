@@ -8,6 +8,8 @@ $lang["DOCUMENT_UPLOAD"] = 'File / Upload';
 $lang["DOCUMENT_FILENAME"] = 'Filename/Format';
 $lang["DOCUMENT_FILESIZE"] = 'Filesize';
 
+$lang["PRINT_DOCUMENT"] = 'document.png';
+
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/projects/documents/en.php";
 if(file_exists($custom_lang)) {

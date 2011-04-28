@@ -38,6 +38,10 @@ $lang["PROJECT_MEETINGS"] = 'Besprechungen';
 
 $lang["PROJECT_HANDBOOK"] = 'Projekthandbuch';
 
+// Print images
+$lang["PRINT_PROJECT_MANUAL"] = 'projekthandbuch.png';
+$lang["PRINT_PROJECT"] = 'projekt.png';
+
 
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/projects/de.php";

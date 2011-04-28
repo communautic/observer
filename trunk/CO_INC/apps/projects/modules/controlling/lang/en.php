@@ -13,4 +13,6 @@ $lang["CONTROLLING_REALISATION"] = 'Progress';
 $lang["CONTROLLING_ADHERANCE"] = 'Timeliness';
 $lang["CONTROLLING_TASKS"] = 'Stage Timeliness';
 
+$lang["PRINT_CONTROLLING"] = 'status.png';
+
 ?>

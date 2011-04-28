@@ -156,7 +156,7 @@ class Projects extends Controller {
 
 
 	function printProjectDetails($id, $t) {
-		global $lang;
+		global $session,$lang;
 		$title = "";
 		$html = "";
 		if($arr = $this->model->getProjectDetails($id)) {
@@ -170,7 +170,7 @@ class Projects extends Controller {
 			ob_end_clean();
 			$title = $project->title;
 		}
-		$GLOBALS['SECTION'] = "projekt.png";
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_PROJECT"];
 		switch($t) {
 			case "html":
 				$this->printHTML($title,$html);
@@ -183,7 +183,7 @@ class Projects extends Controller {
 
 
 	function printProjectHandbook($id, $t) {
-		global $lang;
+		global $session,$lang;
 		$title = "";
 		$html = "";
 		
@@ -224,7 +224,7 @@ class Projects extends Controller {
 			}
 			$title = $project->title . " - " . $lang["PROJECT_HANDBOOK"];
 		}
-		$GLOBALS['SECTION'] = "projekthandbuch.png";
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_PROJECT_MANUAL"];
 		switch($t) {
 			case "html":
 				$this->printHTML($title,$html);
@@ -272,7 +272,7 @@ class Projects extends Controller {
 			ob_end_clean();
 			$title = $project->title;
 		}
-		$GLOBALS['SECTION'] = "projekt.png";
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_PROJECT"];
 		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
 		$pdf = $this->savePDF($title,$html,$attachment);
 		

@@ -92,7 +92,7 @@ foreach($task as $value) {
             <tr>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
-            <td><div class="line">&nbsp;</div></td>
+            <td>&nbsp;</td>
         </tr>
     </table>
     <?php } else { // milestone ?>
@@ -100,7 +100,7 @@ foreach($task as $value) {
         <tr>
             <td class="tcell-left-short"><?php if($i == 1) { echo $lang["PHASE_TASK_MILESTONE"]; }?>&nbsp;</td>
             <td class="short"><?php echo $img;?></td>
-            <td><img src="<?php echo(CO_FILES);?>/img/print/milestone.png" width="18" height="18" /> <?php echo($value->text);?></td>
+            <td class="greybg"><img src="<?php echo(CO_FILES);?>/img/print/milestone.png" width="18" height="18" /> <?php echo($value->text);?></td>
         </tr>
         <tr>
             <td>&nbsp;</td>
@@ -127,7 +127,7 @@ foreach($task as $value) {
         <tr>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
-            <td><div class="line">&nbsp;</div></td>
+            <td>&nbsp;</td>
         </tr>
     </table>
 	<?php }

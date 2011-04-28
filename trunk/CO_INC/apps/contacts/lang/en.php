@@ -39,4 +39,7 @@ define('CONTACTS_CONTACT_GROUPMEMBERSHIP', 'Group membership');
 
 define('CONTACTS_DIALOG_CONTACTS', 'Contacts');
 $lang['CONTACTS_CUSTOM'] = 'Note';
+
+$lang["PRINT_GROUP"] = 'group.png';
+$lang["PRINT_CONTACT"] = 'contact.png';
 ?>

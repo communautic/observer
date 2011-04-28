@@ -42,7 +42,7 @@ class Documents extends Projects {
 	
 	
 	function printDetails($id,$t) {
-		global $lang;
+		global $session, $lang;
 		$title = "";
 		$html = "";
 		if($arr = $this->model->getDetails($id)) {
@@ -55,6 +55,7 @@ class Documents extends Projects {
 			ob_end_clean();
 			$title = $document->title;
 		}
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_DOCUMENT"];
 		switch($t) {
 			case "html":
 				$this->printHTML($title,$html);
@@ -87,7 +88,7 @@ class Documents extends Projects {
 
 
 	function sendDetails($id,$variable,$to,$cc,$subject,$body) {
-		global $session,$users, $lang;
+		global $session, $users, $lang;
 		$title = "";
 		$html = "";
 		if($arr = $this->model->getDetails($id)) {
@@ -100,6 +101,7 @@ class Documents extends Projects {
 			ob_end_clean();
 			$title = $document->title;*/
 		}
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_DOCUMENT"];
 		//$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
 		//$pdf = $this->savePDF($title,$html,$attachment);
 		$attachment = "";
