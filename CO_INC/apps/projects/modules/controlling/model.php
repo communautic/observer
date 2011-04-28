@@ -10,7 +10,6 @@ class ControllingModel extends ProjectsModel {
 	function getList($id,$sort) {
 		global $session, $lang;
 
-			// dates
 			$array["id"] = 0;
 			$array["controlling_date"] = $this->_date->formatDate("now",CO_DATE_FORMAT);
 			$array["title"] = $lang["CONTROLLING_STATUS"];

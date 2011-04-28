@@ -4,7 +4,7 @@
 //include_once(dirname(__FILE__)."/model/projects.php");
 
 class ProjectsModel extends Model {
-
+	
 	// Get all Project Folders
    function getFolderList($sort) {
       global $session;
@@ -212,15 +212,22 @@ class ProjectsModel extends Model {
    */   
    function getNumProjects($id, $status="0") {
 		global $session;
+		
+		$access = "";
+		 if(!$session->isSysadmin()) {
+			//$access = " and id IN (" . implode(',', $session->canView) . ") ";
+			$access = " and id IN (" . implode(',', $session->canAccess) . ") ";
+		  }
+		
 		switch($status) {
 			case "0":
-				$q = "select id from " . CO_TBL_PROJECTS . " where projectfolder='$id' and bin != '1'";
+				$q = "select id from " . CO_TBL_PROJECTS . " where projectfolder='$id' " . $access . " and bin != '1'";
 			break;
 			case "1":
-				$q = "select id from " . CO_TBL_PROJECTS . " where projectfolder='$id' and status = '1' and bin != '1'";
+				$q = "select id from " . CO_TBL_PROJECTS . " where projectfolder='$id' " . $access . " and status = '1' and bin != '1'";
 			break;
 			case "2":
-				$q = "select id from " . CO_TBL_PROJECTS . " where projectfolder='$id' and status = '2' and bin != '1'";
+				$q = "select id from " . CO_TBL_PROJECTS . " where projectfolder='$id' " . $access . " and status = '2' and bin != '1'";
 			break;
 		}
 		$result = mysql_query($q, $this->_db->connection);
@@ -301,7 +308,12 @@ class ProjectsModel extends Model {
 			  }
 	  }
 	  
-	  $q ="select id,title,status from " . CO_TBL_PROJECTS . " where projectfolder='$id' and bin = '0' " . $order;
+	  $access = "";
+	  if(!$session->isSysadmin()) {
+	  	//$access = " and id IN (" . implode(',', $session->canView) . ") ";
+		$access = " and id IN (" . implode(',', $session->canAccess) . ") ";
+	  }
+	  $q ="select id,title,status from " . CO_TBL_PROJECTS . " where projectfolder='$id' and bin = '0' " . $access . $order;
 
 	  $this->setSortStatus("project-sort-status",$sortcur,$id);
       $result = mysql_query($q, $this->_db->connection);

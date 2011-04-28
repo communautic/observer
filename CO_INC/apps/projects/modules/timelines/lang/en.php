@@ -16,4 +16,6 @@ define('TIMELINE_STATUS_OVERDUE_POPUP', 'day/s delayed');
 
 $lang['TIMELINE_TIME'] = 'Days';
 $lang['TIMELINE_ACTION'] = 'Stages';
+
+$lang["PRINT_TIMELINE"] = 'phasing.png';
 ?>

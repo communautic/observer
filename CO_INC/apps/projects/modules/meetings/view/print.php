@@ -61,7 +61,7 @@ foreach($task as $value) {
 		<tr>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
-            <td><div class="line">&nbsp;</div></td>
+            <td>&nbsp;</td>
         </tr>
     </table>
     

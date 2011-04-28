@@ -40,7 +40,7 @@ class Phases extends Projects {
 
 
 	function printDetails($id,$num,$t) {
-		global $lang;
+		global $session, $lang;
 		$title = "";
 		$html = "";
 		if($arr = $this->model->getDetails($id,$num)) {
@@ -53,6 +53,7 @@ class Phases extends Projects {
 			ob_end_clean();
 			$title = $phase->title;
 		}
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_PHASE"];
 		switch($t) {
 			case "html":
 				$this->printHTML($title,$html);
@@ -97,6 +98,7 @@ class Phases extends Projects {
 			ob_end_clean();
 			$title = $phase->title;
 		}
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_PHASE"];
 		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
 		$pdf = $this->savePDF($title,$html,$attachment);
 		

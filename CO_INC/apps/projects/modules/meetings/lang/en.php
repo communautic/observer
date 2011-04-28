@@ -20,6 +20,8 @@ $lang["MEETING_STATUS_CANCELLED"] = 'cancelled';
 $lang["MEETING_STATUS_POSPONED"] = 'posponed to';
 $lang["MEETING_POSPONED"] = 'posponed';
 
+$lang["PRINT_MEETING"] = 'meeting.png';
+
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/projects/meetings/en.php";
 if(file_exists($custom_lang)) {

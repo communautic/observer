@@ -22,6 +22,8 @@ $lang["PHASE_TASK_DEPENDENT"] = 'depends';
 
 $lang["PHASE_TASK_STATUS_FINISHED"] = 'completed by';
 
+$lang["PRINT_PHASE"] = 'phase.png';
+
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/projects/phases/en.php";
 if(file_exists($custom_lang)) {

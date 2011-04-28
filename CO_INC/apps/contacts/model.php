@@ -484,7 +484,7 @@ class ContactsModel extends Model {
 		foreach ($res as $key => $value) {
 			$ids_rtn[] = $value;
 		}
-		array_splice($ids_rtn, 5);
+		array_splice($ids_rtn, 7);
 		$str = implode(",", $ids_rtn);
 		
 		$this->setUserSetting("last-used-contacts",$str);
@@ -506,7 +506,7 @@ class ContactsModel extends Model {
 		foreach ($res as $key => $value) {
 			$ids_rtn[] = $value;
 		}
-		array_splice($ids_rtn, 5);
+		array_splice($ids_rtn, 7);
 		$str = implode(",", $ids_rtn);
 		
 		$this->setUserSetting("last-used-groups",$str);

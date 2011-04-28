@@ -44,7 +44,7 @@ class Contacts extends Controller {
 	
 	
 	function printGroupDetails($id, $t) {
-		global $lang;
+		global $session, $lang;
 		$title = "";
 		$html = "";
 		if($group = $this->model->getGroupDetails($id)) {
@@ -62,7 +62,7 @@ class Contacts extends Controller {
 			ob_end_clean();
 			$title = $group->title;
 		}
-		//$GLOBALS['SECTION'] = "projekt.png";
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_GROUP"];
 		switch($t) {
 			case "html":
 				$this->printHTML($title,$html);
@@ -102,7 +102,7 @@ class Contacts extends Controller {
 			ob_end_clean();
 			$title = $group->title;
 		}
-		//$GLOBALS['SECTION'] = "projekt.png";
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_GROUP"];
 		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
 		$pdf = $this->savePDF($title,$html,$attachment);
 		
@@ -236,7 +236,7 @@ class Contacts extends Controller {
 	}
 	
 	function printContactDetails($id, $t) {
-		global $lang;
+		global $session, $lang;
 		$title = "";
 		$html = "";
 		if($contact = $this->model->getContactDetails($id)) {
@@ -246,7 +246,7 @@ class Contacts extends Controller {
 			ob_end_clean();
 			$title = $contact->lastname . "_" . $contact->firstname;
 		}
-		//$GLOBALS['SECTION'] = "projekt.png";
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_CONTACT"];
 		switch($t) {
 			case "html":
 				$this->printHTML($title,$html);
@@ -286,7 +286,7 @@ function getContactSend($id) {
 			ob_end_clean();
 			$title = $contact->lastname . "_" . $contact->firstname;
 		}
-		//$GLOBALS['SECTION'] = "projekt.png";
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_CONTACT"];
 		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
 		$pdf = $this->savePDF($title,$html,$attachment);
 		
