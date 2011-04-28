@@ -581,6 +581,7 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
     font-size: 11px !important;
     margin: 0;
     width: 130px;
+	height: 14px;
 }
 
 /* workarounds */

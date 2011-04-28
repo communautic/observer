@@ -114,21 +114,22 @@ width: 325px;
 .ui-layout-west li>span:hover   { color: #fff; text-decoration: none; outline: none; cursor: pointer; }
 .ui-layout-west li>span.active-link  { color: #fff; text-decoration: none; outline: none; }
 .ui-layout-west li>span.hover-bg  { color: #fff; text-decoration: none; outline: none;}
-.ui-layout-west li>span.deactivated { color: #fff; margin-top: -4px; cursor: default }
+.ui-layout-west li>span.deactivated { color: #fff; cursor: default }
 .ui-layout-west li>span.deactivated:hover { color: #fff; background-color: transparent !important; }
 
 
 li.ui-state-highlight { height: 13px; margin: 0 0 5px 0;}
 
-.sort-outer { float: left; width: 13px; height: 13px; margin-top: 1px;}
+.sort-outer { float: left; width: 13px; height: 13px;}
 .sort { height: 13px; display: block; background-image:url(../img/sort_buttons_trans.png); cursor: pointer; }
 .sort1 { background-position: 0px 0px; }
 .sort2 { background-position: 0px -20px; }
 .sort3 { background-position: 0px -40px; }
 .filter-box-outer { float: left; }
-.filter-box { background-color: #fff; margin-left: 9px; width: 100px; border: 0; font-size: 11px;}
+.filter-box-outer form { font-size: 10px; }
+.filter-box { background-color: #fff; margin-left: 9px; width: 100px; height: 14px; border: 0; font-size: 11px;}
 
-.filter-search-outer { float: left; margin-top: 1px; background: #fff url(../img/apps_buttons_sprite.png) no-repeat -200px -570px; width: 14px; height: 14px; }
+.filter-search-outer { float: left; background: #fff url(../img/apps_buttons_sprite.png) no-repeat -200px -570px; width: 14px; height: 14px; }
 
 .module-access-status { position: absolute; width: 10px; height: 13px; margin: 3px 0 0 -20px; background:url(../img/apps_buttons_sprite.png) no-repeat -120px -570px; display: none;}
 .module-access-active { display: block; }
@@ -181,7 +182,6 @@ li.ui-state-highlight { height: 13px; margin: 0 0 5px 0;}
 					height:			100%;
 					padding:		0;  
 					padding-right:	0; 
-					margin-top: 4px;
 					margin-bottom: 4px;
 					overflow: hidden;
 					overflow-y: auto;
@@ -260,7 +260,7 @@ ul.actionconsole { margin: 0 11px 0 11px;  }
 .actionconsole span.actionBin:hover { background: url(../img/apps_buttons_sprite.png) no-repeat -100px -519px; cursor: pointer;}
 .actionconsole span.actionBin.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat 0px -519px; cursor: default;}
 
-.module-actions { position: absolute; padding-left: 9px; margin-top: -17px;}
+.module-actions { position: absolute; padding-left: 9px; margin-top: -19px;}
 .module-actions-modules { margin-top: 7px;}
 
 .icon-delete { display: block; margin: 2px 0 0 5px; width: 15px; height: 15px;  background: url(../img/apps_buttons_sprite.png) no-repeat -160px -570px; }
