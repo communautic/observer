@@ -1,13 +1,10 @@
 <?php
-$access_name = "Zugangsberechtigungen";
+$access_name = "Zugang";
 
-// Right
-define('ACCESS_TITLE', 'Kontakt:');
-define('ACCESS_LEVEL', 'Zugangsart:');
-define('ACCESS_LEVEL_GUEST', 'Beobachter');
-define('ACCESS_LEVEL_ADMIN', 'Administrator');
-define('ACCESS_NEWSCIRCLE', 'Newscircle:');
-define('ACCESS_CONTACTS', 'Kontakte:');
+$lang["ACCESSRIGHTS"] = 'Berechtigungen';
+
+$lang["ACCESS_ADMINS"] = 'Administratoren';
+$lang["ACCESS_GUESTS"] = 'Beobachter';
 
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/projects/access/de.php";
