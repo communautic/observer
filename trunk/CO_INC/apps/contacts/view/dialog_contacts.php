@@ -5,9 +5,9 @@
 		<li><a href="#tabs-3"><?php echo $lang['CONTACTS_CUSTOM'];?></a></li>
 	</ul>
 	<div id="tabs-1">
-		<div class="dialog-text"><input class="contacts-search" title="<?php echo($field);?>"/></div><div class="filter-search-outer" style="margin-top: 11px;"></div>
-		<div class="dialog-text">
-        <div class="text11">Zuletzt verwendet:</span><br />
+		<div class="dialog-text-2"><input class="contacts-search" title="<?php echo($field);?>"/></div><div class="filter-search-outer" style="margin-top: 10px;"></div>
+		<div class="dialog-text-2">
+        <div>
         <?php
         	if(is_array($contacts)) {
 				foreach ($contacts as $contact) { ?>
@@ -20,9 +20,9 @@
         </div>
     </div>
 	<div id="tabs-2">
-    	<div class="dialog-text"><input class="groups-search" title="<?php echo($field);?>"/></div><div class="filter-search-outer" style="margin-top: 11px;"></div>
-        <div class="dialog-text">
-        <div class="text11">Zuletzt verwendet:</span><br />
+    	<div class="dialog-text-2"><input class="groups-search" title="<?php echo($field);?>"/></div><div class="filter-search-outer" style="margin-top: 10px;"></div>
+        <div class="dialog-text-2">
+        <div>
 		<?php
 			if(is_array($groups)) {
 				foreach ($groups as $group) { ?>

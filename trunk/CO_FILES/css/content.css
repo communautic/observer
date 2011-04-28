@@ -66,9 +66,9 @@ color: #333;
 .table-content .tcell-left-short { width: 136px; padding: 0;}
 .table-content .tcell-left-inactive { width: 136px; padding: 0 0 0 15px; color:#666}
 .table-content .tcell-right { padding: 2px 0 0 0; }
-.table-content .tcell-right-nopadding { padding: 0; }
 .table-content .tcell-right-inactive { padding: 3px 0 0 0; color:#666}
 .table-content .tcell-right-para { padding: 0 0 6px 0; }
+.table-content .tcell-right-nopadding { padding: 0; }
 .table-content input { background-color: transparent; }
 
 .tbl-inactive input.bg {
@@ -138,6 +138,9 @@ font-weight: normal;
 .content-outline { padding: 5px 0;}
 .dialog-text { font-size:12px; padding: 10px 0 0 10px; float: left;}
 .dialog-text a { display: block; margin: 7px 0;}
+
+.dialog-text-2 { font-size:11px; padding: 10px 0 0 10px; float: left;}
+.dialog-text-2 a { display: block; margin: 3px 0;}
 
 div.coButton-outer { width: 100px; margin:auto; text-align: center; }
 span.coButton  { width: 100px; background-color: #666; display: block; padding: 4px; text-align:center }

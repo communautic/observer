@@ -95,11 +95,11 @@ if(is_array($phases)) {
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 		<td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_EMAILED_TO"];?></td>
-		<td class="tcell-right-inactive"><div id="project_sendto">
+		<td class="tcell-right-inactive tcell-right-nopadding"><div id="project_sendto">
         <?php 
 			foreach($sendto as $value) { 
 			if(!empty($value->who)) {
-				echo '<div class="tcell-right-para">' . $value->who . ', ' . $value->date . '</div>';
+				echo '<div class="text11">' . $value->who . ', ' . $value->date . '</div>';
 			}
 		 } ?></div></td>
     </tr>
