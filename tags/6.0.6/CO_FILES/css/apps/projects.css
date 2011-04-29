@@ -1,0 +1,122 @@
+#projects { position:absolute; height: 100%;  width: 100%; background-color:#333333;}
+#projects .ui-layout-resizer-west { background-color:#82aa0a !important; }
+#projects .ui-layout-resizer-west-closed { background-color:#82aa0a !important; }
+
+#projects-top { height: 50px; float: left;}
+
+#projects .module-bg-active { background-color: #82aa0a; color:#fff }
+
+#projects1, #projects2, #projects3 { padding:0; overflow: hidden !important; /* prevent scrollbars auto-added by Layout */}
+#projects3 { display: block;}
+#projects3 .scrolling-content { width: 325px !important;}
+
+.projects3-content { width: 325px;; background-color: #82aa0a; padding:0; overflow:hidden !important;}
+
+#projects .ui-layout-west li>span:hover   { background-color: #577207}
+#projects .ui-layout-west li>span.active-link  { background-color: #577207}
+#projects .hover-bg  { background-color: #577207}
+#projects .hover-outline { border: 1px solid #577207}
+
+#projects .jspDrag { background: #577207; }
+
+#projects .co-link:hover { color: #82aa0b; }
+
+#projects .center-center a         { color: #000; }
+#projects .center-center a:link    { color: #000; }
+#projects .center-center a:active  { color: #000; }
+#projects .center-center a:visited { color: #000; }
+#projects .center-center a:hover   { color: #82aa0b; cursor: pointer}
+
+#projectsActions { display: block; }
+
+#menu .app_projects { color: #333; text-decoration: none; outline: none; background: url(../../img/app_propellor.png) no-repeat 36px 0px; }
+#menu .app_projects:hover { color: #fff; text-decoration: none; outline: none; background: #82aa0b url(../../img/app_propellor.png) no-repeat 36px -30px; }
+#menu .app_projects.active-app { color: #fff; text-decoration: none; outline: none; background: #82aa0b url(../../img/app_propellor.png) no-repeat 36px -30px; }
+
+/* Actions Menu */
+#projectsActions span.actionNew 				{	background-position: -50px 0px;	}
+#projectsActions span.actionNew:hover 			{ 	background-position:  -100px 0px;	}
+#projectsActions span.actionNew.noactive 		{ 	background-position:  0px 0px; 		}
+
+#projectsActions span.actionPrint 				{ 	background-position: -50px -102px;	}
+#projectsActions span.actionPrint:hover 		{ 	background-position: -100px -102px;	}
+#projectsActions span.actionPrint.noactive 	{ 	background-position:0px -102px;		}
+
+#projectsActions span.actionSend 				{ 	background-position: -50px -151px;	}
+#projectsActions span.actionSend:hover 		{ 	background-position: -100px -151px;	}
+#projectsActions span.actionSend.noactive 		{ 	background-position: 0px -151px; 	}
+
+#projectsActions span.actionDuplicate 			{ 	background-position: -50px -206px;	}
+#projectsActions span.actionDuplicate:hover 	{ 	background-position: -100px -206px;	}
+#projectsActions span.actionDuplicate.noactive { background-position: 0px -206px;  	}
+
+#projectsActions span.actionProjectHandbook 			{ 	background-position: -50px -413px;	}
+#projectsActions span.actionProjectHandbook:hover 	{ 	background-position: -100px -413px;	}
+#projectsActions span.actionProjectHandbook.noactive { background-position: 0px -413px;  	}
+
+.milestone { width: 18px; height: 18px; background: url(../../../img/milestone.png) no-repeat 0px 0px; text-align: center; line-height: 19px;}
+.milestone span { margin-left: 3px; }
+.phaseouter { margin-top: 1px;}
+
+#projects .table-title, #projects .textarea-title { 
+background-color: #e1f0af; }
+
+#projects .ui-datepicker-trigger-action-status {
+	position: absolute;
+	left: 318px;
+	display: block; height: 13px; width: 15px; margin-top: -15px; background:								url(../../../img/apps_buttons_sprite.png) no-repeat -20px -570px
+}
+
+#projects a.disabled { background-position: 0px -570px; }
+
+#projects-right .tcell-left span span { position: relative; display: block; padding: 0 0 0 15px; }
+#projects-right .tcell-left-short span { display: block; padding: 0 0 0 15px; }
+
+#projects-right .content-nav         { display: block; color: #000; }
+#projects-right .content-nav:hover   { display: block; background-color: #82AA0A; color: #000; cursor: pointer; }
+
+.content-outline {background-color: #e1f0af;}
+
+#projects-right textarea:hover,
+#projects-right textarea:focus,
+#projects-right input.bg:hover, 
+#projects-right input.bg:focus {
+    background-color: #e1f0af;
+}
+
+/* PSP */
+
+#psp { margin-left: 10px;}
+.barchart-outer { border-right:  1px solid #dedede; border-bottom:  1px solid #dedede; }
+.barchart-dependency { border-left:  1px solid #333; border-bottom:  1px solid #333; }
+.barchart-arrow { position: absolute; right: -6px; bottom: -6px; height: 6px; width: 13px; background-image:url(../../img/gantt_arrow.png) }
+.barchart_color_planned { background-color: #4BA0C8;}
+.barchart_color_inprogress { background-color: #FFD20A;}
+.barchart_color_finished { background-color: #82aa0b;}
+.barchart_color_not_finished { background-color: #7f7f7f;}
+.barchart_color_overdue { background-color: #EB4600;}
+
+.timeline-legend { font-size: 11px; line-height: 16px; }
+.timeline-legend span { width: 120px; display: block; padding-left: 8px;}
+
+.psp-item { position: relative; margin-bottom: 20px; border: 1px solid #000; width: 150px; height: 56px; font-size: 11px; font-weight: bold; text-align:center}
+.psp-item-startdate { position: absolute; left: 0; bottom: 0; width: 75px; height: 13px; border-top: 1px solid #000;}
+.psp-item-enddate { position: absolute; right: 0; bottom: 0; width: 74px; height: 13px; border-top: 1px solid #000; border-left: 1px solid #000;}
+.psp-connector-project-vert { position: absolute; top: 56px; left: 75px; height: 24px; width: 1px; background-color: #000; }
+.psp-connector-phase-hori { position: absolute; top: -10px; left: -94px; height: 9px; width: 170px; border-top: 1px solid #000; border-right: 1px solid #000; }
+.psp-connector-phase-vert { position: absolute; top: 28px; left: -10px; height: 1px; width: 9px; background-color: #000; }
+.psp-connector-vert { position: absolute; top: -50px; left: -10px; height: 78px; width: 9px; border-bottom: 1px solid #000; border-left: 1px solid #000; }
+
+.td_border_top_right {
+ border-top: 1px solid #24211D; 
+ border-right: 1px solid #24211D; 
+ border-bottom: 0; 
+ border-left:  0; 
+}
+
+.td_border_left {
+ border-top: 0; 
+ border-left: 1px solid #24211D; 
+ border-right: 0; 
+ border-bottom:  0; 
+}
