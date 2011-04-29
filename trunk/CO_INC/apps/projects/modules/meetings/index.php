@@ -109,7 +109,7 @@ if (!empty($_POST['request'])) {
 			if(isset($_POST['task_id'])) {
 				$task_id = $_POST['task_id'];
 				//$task_title = $_POST['task_title'];
-				$task_title_orig = $_POST['task_text'];
+				$task_title_orig = $_POST['task_title'];
 				$task_title = "";
 				foreach ($task_title_orig as $key => $text) {
 					$text_new = $system->checkMagicQuotes($text);
