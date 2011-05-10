@@ -74,11 +74,11 @@ define("CO_TIME_FORMAT"	,  	"H:i");
  * Levels must be digits between 0-9.
  */
 define("SYSADMIN_NAME", "sysadmin");
-define("ADMIN_NAME", "generaladmin");
+//define("ADMIN_NAME", "generaladmin");
 define("GUEST_NAME", "Guest");
 define("SYSADMIN_LEVEL", 1);
-define("ADMIN_LEVEL", 2);
-define("USER_LEVEL",  3);
+//define("ADMIN_LEVEL", 2);
+//define("USER_LEVEL",  3);
 define("GUEST_LEVEL", 0);
 
 define("TRACK_VISITORS", true);

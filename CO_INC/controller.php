@@ -107,14 +107,14 @@ class Controller extends MySQLDB {
 
 
 	function sendEmail($to,$cc,$from,$fromName,$subject,$body,$attachment = "",$attachment_array = "",$vcards_array = "") {
-		global $contactsmodel;
+		global $lang, $contactsmodel;
 		
 		try {
   			$mail = new PHPMailerLite(true); //New instance, with exceptions enabled
 			$mail->CharSet = "UTF-8";
 			//$body = file_get_contents('contents.html');
 			//$body = preg_replace('/\\\\/','', $body); //Strip backslashes
-			$footer = "<br />sent with company.observer";
+			$footer = $lang["GLOBAL_EMAIL_FOOTER"];
   
 			$mail->AddReplyTo($from,$fromName);
 			$mail->SetFrom($from,$fromName);
@@ -178,7 +178,7 @@ class Controller extends MySQLDB {
 		$html = "";
 		$sendto = $this->model->getSendtoDetails($what,$id);
 		foreach($sendto as $value) { 
-			$html .= '<div class="tcell-right-para">' . $value->who . ', ' . $value->date . '</div>';
+			$html .= '<div class="text11">' . $value->who . ', ' . $value->date . '</div>';
 		 }
 		return $html;
 	}

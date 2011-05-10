@@ -17,13 +17,42 @@ phases.poformOptions = { beforeSubmit: phaseFormProcess, dataType:  'json', succ
 phases.toggleIntern = phaseToggleIntern;
 
 
-function getDetailsPhase(moduleidx,liindex) {
+function getDetailsPhase(moduleidx,liindex,list) {
 	var phaseid = $("#projects3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
 	var num = $("#projects3 ul:eq("+moduleidx+") .phase_num:eq("+liindex+")").html();
-	$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=getDetails&id="+phaseid+"&num="+num, success: function(html){
-		$("#"+projects.name+"-right").html(html);
+	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/phases&request=getDetails&id="+phaseid+"&num="+num, success: function(data){
+		$("#projects-right").html(data.html);
+		if(list == 0) {
+			switch (data.access) {
+				case "sysadmin": case "admin":
+					projectsActions(0);
+				break;
+				case "guest":
+					projectsActions(5);
+				break;
+			}
+		} else {
+			switch (data.access) {
+				case "sysadmin": case "admin" :
+					if(list == "<li></li>") {
+						projectsActions(3);
+					} else {
+						projectsActions(0);
+						$('#projects3').find('input.filter').quicksearch('#projects3 li');
+					}
+				break;
+				case "guest":
+					if(list == "<li></li>") {
+						projectsActions();
+					} else {
+						projectsActions(5);
+						$('#projects3').find('input.filter').quicksearch('#projects3 li');
+					}
+				break;
+			}
+			
+		}
 		initContentScrollbar();
-		//initScrollbar( '.projects3-content:visible .scrolling-content' );
 		}
 	});
 }
@@ -37,21 +66,6 @@ function phaseFormProcess(formData, form, poformOptions) {
 	} else {
 		formData[formData.length] = { "name": "title", "value": title };
 	}
-	/*if($('#protocol_ifr').length > 0) {
-		var protocol = $('#protocol').tinymce().getContent();
-		for (var i=0; i < formData.length; i++) { 
-			if (formData[i].name == 'protocol') { 
-				formData[i].value = protocol;
-			} 
-		} 
-	} else {
-		var protocol = $('#protocol').html();
-		for (var i=0; i < formData.length; i++) { 
-			if (formData[i].name == 'protocol') { 
-				formData[i].value = protocol;
-			} 
-		} 
-	}*/
 
 	$('.task_team_list').each(function() {
 		var id = $(this).attr("id");
@@ -121,7 +135,6 @@ function newPhase() {
 				$(".projects3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
 				var moduleidx = $(".projects3-content").index($(".projects3-content:visible"));
 				getDetailsPhase(moduleidx,liindex);
-				projectsActions(0);
 				$('#projects3 input.filter').quicksearch('#projects3 li');
 				//update Project Enddate
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getDates&id="+pid, success: function(project){
@@ -133,6 +146,7 @@ function newPhase() {
 		}
 	});
 }
+
 
 function printPhase() {
 	var id = $("#projects3 .active-link:visible").attr("rel");
@@ -224,18 +238,18 @@ function binPhase() {
 function sortClickPhase(obj,sortcur,sortnew) {
 	var fid = $("#projects2 .module-click:visible").attr("rel");
 	$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/projects/modules/phases&request=getList&id="+fid+"&sort="+sortnew, success: function(data){
-		  $(".projects3-content:visible ul").html(data.html);
-		  obj.attr("rel",sortnew);
-		  obj.removeClass("sort"+sortcur).addClass("sort"+sortnew);
-		  var id = $(".projects3-content:visible .module-click:eq(0)").attr("rel");
-			if(id == undefined) {
-				return false;
-			}
-			var moduleidx = $(".projects3-content").index($(".projects3-content:visible"));
-			var liindex = 0;
-			getDetailsPhase(moduleidx,liindex);
-			$("#projects3 .projects3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
-	}
+		$(".projects3-content:visible ul").html(data.html);
+		obj.attr("rel",sortnew);
+		obj.removeClass("sort"+sortcur).addClass("sort"+sortnew);
+		var id = $(".projects3-content:visible .module-click:eq(0)").attr("rel");
+		if(id == undefined) {
+			return false;
+		}
+		var moduleidx = $(".projects3-content").index($(".projects3-content:visible"));
+		var liindex = 0;
+		getDetailsPhase(moduleidx,liindex);
+		$("#projects3 .projects3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
+		}
 	});
 }
 

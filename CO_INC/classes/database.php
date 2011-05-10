@@ -131,9 +131,8 @@ class MySQLDB
     * info into the database. Appropriate user level is set.
     * Returns true on success, false otherwise.
     */
-   function addNewUser($username, $password, $email){
+   /*function addNewUser($username, $password, $email){
       $time = time();
-      /* If admin sign up, give admin user level */
       if(strcasecmp($username, ADMIN_NAME) == 0){
          $ulevel = ADMIN_LEVEL;
       }else{
@@ -141,7 +140,7 @@ class MySQLDB
       }
       $q = "INSERT INTO ".PO_TBL_USERS." VALUES ('$username', '$password', '0', $ulevel, '$email', $time)";
       return mysql_query($q, $this->connection);
-   }
+   }*/
    
    /**
     * updateUserField - Updates a field, specified by the field
@@ -152,7 +151,7 @@ class MySQLDB
       return mysql_query($q, $this->connection);
    }
    
-   function updateUser($uid, $id, $field, $value){
+   function updateUser($id, $field, $value){
       $q = "UPDATE ".CO_TBL_USERS." SET ".$field." = '$value' WHERE id = '$id'";
       return mysql_query($q, $this->connection);
    }
@@ -282,6 +281,27 @@ class MySQLDB
    function query($query){
       return mysql_query($query, $this->connection);
    }
+   
+   
+   /*function getViewPerms($uid) {
+		$perms = array();
+		$q = "SELECT pid FROM co_projects_access where guests REGEXP '[[:<:]]" . $uid . "[[:>:]]'";
+      	$result = mysql_query($q, $this->connection);
+		while($row = mysql_fetch_array($result)) {
+			$perms[] = $row["pid"];
+		}
+		return $perms;
+   }
+   
+   function getEditPerms($uid) {
+		$perms = array();
+		$q = "SELECT pid FROM co_projects_access where admins REGEXP '[[:<:]]" . $uid . "[[:>:]]'";
+      	$result = mysql_query($q, $this->connection);
+		while($row = mysql_fetch_array($result)) {
+			$perms[] = $row["pid"];
+		}
+		return $perms;
+   }*/
    
  	
    

@@ -1,7 +1,7 @@
 <div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-title">
 	<tr>
-		<td class="tcell-left text11"><span class="content-nav focusTitle"><span><?php echo $lang["PROJECT_FOLDER"];?></span></span></td>
+		<td class="tcell-left text11"><span class="<?php if($folder->canedit) { ?>content-nav focusTitle<?php } ?>"><span><?php echo $lang["PROJECT_FOLDER"];?></span></span></td>
 		<td><input name="title" type="text" class="title textarea-title" value="<?php echo($folder->title);?>" maxlength="100" /></td>
 	</tr>
 </table>
@@ -86,13 +86,13 @@ if(is_array($projects)) {
     <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive loadProject" rel="<?php echo($project->id);?>">
 	<tr>
 		<td class="tcell-left text11">&nbsp;</td>
-		<td class="tcell-right" width="50%"><span class="loadProject bold co-link" rel="<?php echo($project->id);?>"><?php echo($project->title);?></span></td>
-		<td class="tcell-right"><?php echo($project->realisation["real"]);?>%</td>
-    </tr>
+		<td colspan="3" class="tcell-right"><span class="loadProject bold co-link" rel="<?php echo($project->id);?>"><?php echo($project->title);?></span></td>
+    	</tr>
     <tr>
 		<td class="tcell-left text11">&nbsp;</td>
-		<td class="tcell-right"><span class="text11 content-date"><?php echo $lang["GLOBAL_DURATION"];?></span><span class="text11"><?php echo($project->startdate . " - " . $project->enddate);?></span></td>
-		<td class="tcell-right"><?php echo($project->management);?></td>
+		<td class="tcell-right" width="220"><span class="text11 content-date"><?php echo $lang["GLOBAL_DURATION"];?></span><span class="text11"><?php echo($project->startdate . " - " . $project->enddate);?></span></td>
+    	<td class="tcell-right" width="190"><span class="text11"><span style="display: inline; margin-right: 20px;">Realisierungsgrad</span><?php echo($project->realisation["real"]);?>%</span></td>
+    	<td class="tcell-right"><span class="text11"><span style="display: inline; margin-right: 20px;">Projektleitung</span><?php echo($project->management);?></span></td>
     </tr>
 </table>
     <?php 

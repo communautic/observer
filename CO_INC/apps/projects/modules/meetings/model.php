@@ -59,15 +59,21 @@ class MeetingsModel extends ProjectsModel {
 						  }
 				  break;	
 			  }
-	  }
+		}
 	  
-		//$q = "select title,id,intern,startdate,enddate from " . CO_TBL_PHASES . " where pid = '$id' and bin != '1' " . $order;
-		$q = "select id,title,meeting_date,access,status from " . CO_TBL_MEETINGS . " where pid = '$id' and bin != '1' " . $order;
+	  
+		$perm = $this->getProjectAccess($id);
+		$sql ="";
+		if( $perm ==  "guest") {
+			$sql = " and access = '1' ";
+		}
+		
+		$q = "select id,title,meeting_date,access,status from " . CO_TBL_MEETINGS . " where pid = '$id' and bin != '1' " . $sql . $order;
 
-	  $this->setSortStatus("meeting-sort-status",$sortcur,$id);
+		$this->setSortStatus("meeting-sort-status",$sortcur,$id);
 		$result = mysql_query($q, $this->_db->connection);
-	  $meetings = "";
-	  while ($row = mysql_fetch_array($result)) {
+		$meetings = "";
+		while ($row = mysql_fetch_array($result)) {
 
 		foreach($row as $key => $val) {
 				$array[$key] = $val;
@@ -92,38 +98,9 @@ class MeetingsModel extends ProjectsModel {
 			$meetings[] = new Lists($array);
 	  }
 		
-	  $arr = array("meetings" => $meetings, "sort" => $sortcur);
+	  $arr = array("meetings" => $meetings, "sort" => $sortcur, "perm" => $perm);
 	  return $arr;
 	}
-
-	
-	// Get meeting list from ids for Tooltips
-	function getMeetingDetails($string,$field){
-		$users_string = explode(",", $string);
-		$users_total = sizeof($users_string);
-		$users = '';
-		if($users_total == 0) { return $users; }
-		$i = 1;
-		foreach ($users_string as &$value) {
-			$q = "SELECT id,title from " . CO_TBL_MEETINGS . " where id = '$value'";
-			$result_user = mysql_query($q, $this->_db->connection);
-			while($row_user = mysql_fetch_assoc($result_user)) {
-				$users .= '<span class="groupmember tooltip-advanced" uid="' . $row_user["id"] . '">' . $row_user["title"] . '</span><div style="display:none"><a href="delete" class="markfordeletionNEW" uid="' . $row_user["id"] . '" field="' . $field . '">X</a><br /></div>';
-				if($i < $users_total) {
-					$users .= ', ';
-				}
-			}
-			$i++;
-		}
-		return $users;
-   }
-
-
-	/*function getDependency($id){
-		$q = "SELECT title FROM " . CO_TBL_PHASES . " where id = '$id'";
-		$result = mysql_query($q, $this->_db->connection);
-		return mysql_num_rows($result);
-	}*/
 
 
 	function getDetails($id) {
@@ -215,8 +192,15 @@ class MeetingsModel extends ProjectsModel {
 		
 		$sendto = $this->getSendtoDetails("meetings",$id);
 		
+		$perms = $this->getProjectAccess($array["pid"]);
+		$array["canedit"] = false;
+		if($perms == "sysadmin" || $perms == "admin") {
+			$array["canedit"] = true;
+		}
+		
+		
 		$meeting = new Lists($array);
-		$arr = array("meeting" => $meeting, "task" => $task, "sendto" => $sendto);
+		$arr = array("meeting" => $meeting, "task" => $task, "sendto" => $sendto, "access" => $perms);
 		return $arr;
    }
 

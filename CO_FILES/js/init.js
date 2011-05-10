@@ -341,8 +341,8 @@ $(document).ready(function() {
 		obj.actionDuplicate();
 		return false;
 	});
-	
-	
+
+
 	$('span.actionBin').click(function(){
 		if($(this).hasClass("noactive")) {
 			return false;
@@ -350,6 +350,16 @@ $(document).ready(function() {
 		var obj = getCurrentModule();
 		obj.actionBin();
 		return false;
+	});
+	
+	$('span.actionSetLogin').click(function(){
+		var username = $("#username").val();
+		var password = $("#password").val();
+		$.ajax({ type: "POST", url: "/", data: "path=login&changelogin=1&username="+username+"&password="+password, success: function(html){
+				  $("#intro-password").fadeOut();
+					}
+				});
+		
 	});
 	
 	

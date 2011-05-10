@@ -7,6 +7,7 @@
 </div>
 <ul id="appnav">
 <?php
+if($session->isSysadmin()) {
 	foreach($controller->applications as $app => $display) {
 		$activeapp = "";
 		if($display == 1) {
@@ -14,7 +15,14 @@
 		}
 		echo '<li><span rel="'.$app.'" class="toggleObservers' . $activeapp . ' app_'.$app.'" >' . ${$app.'_name'} . '</span></li>';
 	}
-	?>
+} else if($projects->isAdmin()) {
+	// needs desktop
+	echo '<li><span rel="projects" class="toggleObservers active-app app_projects" >' . $projects_name . '</span></li>';
+	echo '<li><span rel="contacts" class="toggleObservers app_contacts" >' . $contacts_name . '</span></li>';
+} else {
+	echo '<li><span rel="projects" class="toggleObservers active-app app_projects" >' . $projects_name . '</span></li>';
+}
+?>
 </ul>
 <div id="logout"/><a href="/?path=login" title="<?php echo $lang["LOGIN_LOGOUT"];?>"><span>&nbsp;</span></a></div>
 </div>

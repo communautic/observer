@@ -32,14 +32,31 @@ class Contacts extends Controller {
 			if(!empty($group->membersID))  {
 				$membersarray = explode(",", $group->membersID);
 				foreach ($membersarray as &$value) {
-					$contact = $this->model->getContactDetails($value);
+					if($contact = $this->model->getContactDetails($value)) {
 					$members[] = array("id" => $contact->id, "name" => $contact->lastname." ".$contact->firstname, "email" => $contact->email, "phone" => $contact->phone1);
+					}
 				}
 			}
 			include 'view/group_edit.php';
 		} else {
 			include CO_INC .'/view/default.php';
 		}
+	}
+	
+	function getGroupMemberDetails($id) {
+		global $lang;
+		if($group = $this->model->getGroupDetails($id)) {
+		$members = "";
+			if(!empty($group->membersID))  {
+				$membersarray = explode(",", $group->membersID);
+				foreach ($membersarray as &$value) {
+					if($contact = $this->model->getContactDetails($value)) {
+					$members[] = array("id" => $contact->id, "name" => $contact->lastname." ".$contact->firstname, "email" => $contact->email, "username" => $contact->username, "userlevel" => $contact->userlevel);
+					}
+				}
+			}
+		}
+		return json_encode($members);
 	}
 	
 	
@@ -227,12 +244,26 @@ class Contacts extends Controller {
 	}
 
 	function getContactDetails($id) {
-		global $lang;
+		global $lang, $session;
 		if($contact = $this->model->getContactDetails($id)) {
 			include 'view/contact_edit.php';
 		} else {
 			include CO_INC .'/view/default.php';
 		}
+	}
+	
+	function getContactField($id,$field) {
+		global $lang, $session;
+		echo $this->model->getContactFieldFromID($id,$field);
+	}
+	
+	function getContactDetailsArray($id) {
+		global $lang;
+		if($contact = $this->model->getContactDetails($id)) {
+		$details = "";
+		$details = array("id" => $contact->id, "name" => $contact->lastname." ".$contact->firstname, "email" => $contact->email, "username" => $contact->username, "userlevel" => $contact->userlevel);
+		}
+		return json_encode($details);
 	}
 	
 	function printContactDetails($id, $t) {
@@ -436,6 +467,16 @@ function getContactSend($id) {
 		include_once dirname(__FILE__).'/view/dialog_timezones.php';
 	}
 	
+	function getAccessDialog($request,$field,$append,$title,$sql) {
+		global $lang;
+		include_once dirname(__FILE__).'/view/dialog_access.php';
+	}
+	
+	function getSysadminDialog($request,$field,$append,$title,$sql) {
+		global $lang;
+		include_once dirname(__FILE__).'/view/dialog_sysadmin.php';
+	}
+	
 	function getContactsDialog($request,$field,$append,$title,$sql) {
 		global $lang;
 		$groups = $this->model->getLast10Groups();
@@ -519,6 +560,58 @@ function getContactSend($id) {
 		else {
 			include CO_INC .'/view/default.php';
 		}
+	}
+	
+	function generateAccess($id) {
+		global $lang, $session;
+		
+		$username = $session->generateAccessUsername(4);
+		$password = $session->generateAccessPassword(4);
+		
+		$to = $id;
+		$from = $this->model->getContactFieldFromID($session->uid, 'email');
+		$fromName = $this->model->getContactFieldFromID($session->uid, 'firstname') . " " . $this->model->getContactFieldFromID($session->uid, 'lastname');
+		$subject = $lang['ACCESS_CODES_EMAIL_SUBJECT'];
+		$body = sprintf($lang['ACCESS_CODES_EMAIL'], CO_PATH_URL, $username, $password);
+		
+		$email = $this->sendEmail($to,$cc="",$from,$fromName,$subject,$body);
+		
+		// now save to db
+		$save = $this->model->setContactAccessDetails($id,$username,$password);
+		
+		$now = $this->model->_date->formatDate(gmdate("Y-m-d"),CO_DATE_FORMAT);
+		//$now = "now";
+		$user = $this->model->getUserFullname($session->uid);
+		
+		echo sprintf($lang['CONTACTS_ACCESS_ACTIVE'], $now, $user);
+	}
+	
+	
+	function removeAccess($id) {
+		global $lang, $session;
+		// now save to db
+		$save = $this->model->removeAccess($id);
+		$now = $this->model->_date->formatDate(gmdate("Y-m-d"),CO_DATE_FORMAT);
+		$user = $this->model->getUserFullname($session->uid);
+		echo sprintf($lang['CONTACTS_ACCESS_REMOVE'], $now, $user);
+	}
+	
+	function setSysadmin($id) {
+		global $lang, $session;
+		// now save to db
+		$save = $this->model->setSysadmin($id);
+		$now = $this->model->_date->formatDate(gmdate("Y-m-d"),CO_DATE_FORMAT);
+		$user = $this->model->getUserFullname($session->uid);
+		echo sprintf($lang['CONTACTS_SYSADMIN_ACTIVE'], $now, $user);
+	}
+	
+	function removeSysadmin($id) {
+		global $lang, $session;
+		// now save to db
+		$save = $this->model->removeSysadmin($id);
+		$now = $this->model->_date->formatDate(gmdate("Y-m-d"),CO_DATE_FORMAT);
+		$user = $this->model->getUserFullname($session->uid);
+		echo sprintf($lang['CONTACTS_SYSADMIN_REMOVE'], $now, $user);
 	}
 	
 }

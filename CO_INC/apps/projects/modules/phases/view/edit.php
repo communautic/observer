@@ -1,14 +1,14 @@
 <div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-title">
   <tr>
-    <td class="tcell-left text11"><span class="content-nav focusTitle"><span><?php echo $lang["PHASE_TITLE"];?></span></span></td>
+    <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav focusTitle<?php } ?>"><span><?php echo $lang["PHASE_TITLE"];?></span></span></td>
 	<td width="20"><div class="bold"><?php echo($phase->num) ;?>.</div></td>
     <td><input name="title" type="text" class="title textarea-title" value="<?php echo($phase->title);?>" maxlength="100" /></td>
   </tr>
 </table>
 </div>
 <div class="ui-layout-content"><div class="scroll-pane">
-<form action="/" method="post" class="coform jNice">
+<form action="/" method="post" class="<?php if($phase->canedit) { ?>coform <?php } ?>jNice">
 <input type="hidden" id="path" name="path" value="<?php echo $this->form_url;?>">
 <input type="hidden" id="poformaction" name="request" value="setDetails">
 <input type="hidden" name="id" value="<?php echo($phase->id);?>">
@@ -28,29 +28,28 @@
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
   <tr>
-    <td class="tcell-left text11"><span class="content-nav showDialog" request="getContactsDialog" field="team" append="1"><span><?php echo $lang["PHASE_TEAM"];?></span></span></td>
+    <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="team" append="1"><span><?php echo $lang["PHASE_TEAM"];?></span></span></td>
     <td class="tcell-right"><div id="team" class="itemlist-field"><?php echo($phase->team);?></div><div id="team_ct" class="itemlist-field"><a field="team_ct" class="ct-content"><?php echo($phase->team_ct);?></a></div></td>
   </tr>
 </table>
 <div class="content-spacer"></div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><span class="content-nav showDialog" request="getPhaseStatusDialog" field="status" append="1"><span><?php echo $lang["GLOBAL_STATUS"];?></span></span></td>
-        <td class="tcell-right"><div id="phase_status" class="itemlist-field"><div class="listmember" field="phase_status" uid="<?php echo($phase->status);?>" style="float: left"><?php echo($phase->status_text);?></div></div><input name="phase_status_date" type="text" class="input-date datepicker phase_status_date" value="<?php echo($phase->status_date)?>" style="float: left; margin-left: 8px;" /></td>
+	  <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav showDialog<?php } ?>" request="getPhaseStatusDialog" field="status" append="1"><span><?php echo $lang["GLOBAL_STATUS"];?></span></span></td>
+        <td class="tcell-right"><div id="phase_status" class="itemlist-field"><div class="listmember" field="phase_status" uid="<?php echo($phase->status);?>" style="float: left"><?php echo($phase->status_text);?></div></div><?php if($phase->canedit) { ?><input name="phase_status_date" type="text" class="input-date datepicker phase_status_date" value="<?php echo($phase->status_date)?>" style="float: left; margin-left: 8px;" /><?php } else { ?><div style="float: left; margin-left: 8px;"><?php echo($phase->status_date)?></div><?php } ?></td>
 	</tr>
 </table>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
   <tr>
-    <td class="tcell-left text11"><span class="content-nav selectTextarea"><span><?php echo $lang["PROJECT_DESCRIPTION"];?></span></span></td>
-    <td class="tcell-right"><textarea name="protocol" class="elastic"><?php echo(strip_tags($phase->protocol));?></textarea></td>
+    <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["PROJECT_DESCRIPTION"];?></span></span></td>
+    <td class="tcell-right"><?php if($phase->canedit) { ?><textarea name="protocol" class="elastic"><?php echo(strip_tags($phase->protocol));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($phase->protocol)));?><?php } ?></td>
   </tr>
 </table>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content addTaskTable">
 	<tr>
-		<td class="tcell-left text11">
-        <span class="content-nav showDialog" request="getPhaseTaskDialog" field="status" append="1"><span><?php echo $lang["PHASE_TASK_MILESTONE"];?></span></span>
+		<td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav showDialog<?php } ?>" request="getPhaseTaskDialog" field="status" append="1"><span><?php echo $lang["PHASE_TASK_MILESTONE"];?></span></span>
         </td>
     <td class="tcell-right">&nbsp;</td>
     </tr>
@@ -76,13 +75,13 @@ foreach($task as $value) {
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
   <tr>
-    <td class="tcell-left text11"><span class="content-nav showDialog" request="getDocumentsDialog" field="documents" append="1"><span><?php echo $lang["DOCUMENT_DOCUMENTS"];?></span></span></td>
+    <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav showDialog<?php } ?>" request="getDocumentsDialog" field="documents" append="1"><span><?php echo $lang["DOCUMENT_DOCUMENTS"];?></span></span></td>
     <td class="tcell-right"><div id="documents" class="itemlist-field"><?php echo($phase->documents);?></div></td>
   </tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><span class="content-nav showDialog" request="getAccessDialog" field="phase_access" title="<?php echo $lang["GLOBAL_ACCESS"];?>" append="1"><span><?php echo $lang["GLOBAL_ACCESS"];?></span></span></td>
+	  <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav showDialog<?php } ?>" request="getAccessDialog" field="phase_access" title="<?php echo $lang["GLOBAL_ACCESS"];?>" append="1"><span><?php echo $lang["GLOBAL_ACCESS"];?></span></span></td>
         <td class="tcell-right"><div id="phase_access" class="itemlist-field"><div class="listmember" field="phase_access" uid="<?php echo($phase->access);?>" style="float: left"><?php echo($phase->access_text);?></div></div><input type="hidden" name="phase_access_orig" value="<?php echo($phase->access);?>" /></td>
 	</tr>
 </table>

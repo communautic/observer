@@ -1,8 +1,16 @@
+<?php
+$hideTab3 = 0;
+switch($field) {
+	case "admins": case "guests": case "to": case "cc":
+		$hideTab3 = 1;
+	break;
+}
+?>
 <div id="tabs">
 	<ul>
 		<li><a href="#tabs-1"><?php echo $lang['CONTACTS_CONTACT'];?></a></li>
 		<li><a href="#tabs-2"><?php echo $lang['CONTACTS_GROUP_TITLE'];?></a></li>
-		<li><a href="#tabs-3"><?php echo $lang['CONTACTS_CUSTOM'];?></a></li>
+		<?php if($hideTab3 == 0) { ?><li><a href="#tabs-3"><?php echo $lang['CONTACTS_CUSTOM'];?></a></li><?php } ?>
 	</ul>
 	<div id="tabs-1">
 		<div class="dialog-text-2"><input class="contacts-search" title="<?php echo($field);?>"/></div><div class="filter-search-outer" style="margin-top: 10px;"></div>
@@ -34,9 +42,10 @@
 		</div>
         </div>
 	</div>
-	<div id="tabs-3">
-		<div class="dialog-text"><textarea id="custom-text" name="custom-text" cols="20" rows="2"></textarea>
-<br />
-<div class="coButton-outer"><span class="append-custom-text coButton" field="<?php echo($field);?>"><?php echo $lang["GLOBAL_SAVE"];?></span></div></div>
+	<?php if($hideTab3 == 0) { ?>
+    <div id="tabs-3">
+		<div class="dialog-text"><textarea id="custom-text" name="custom-text" cols="20" rows="2"></textarea><br />
+		<div class="coButton-outer"><span class="append-custom-text coButton" field="<?php echo($field);?>"><?php echo $lang["GLOBAL_SAVE"];?></span></div></div>
 	</div>
+    <?php } ?>
 </div>

@@ -5,7 +5,6 @@ documents.getDetails = getDetailsDocument;
 documents.sortclick = sortClickDocument;
 documents.sortdrag = sortDragDocument;
 documents.actionDialog = dialogDocument;
-documents.addTask = addTaskDocument;
 documents.actionNew = newDocument;
 documents.actionPrint = printDocument;
 documents.actionSend = sendDocument;
@@ -13,13 +12,7 @@ documents.actionSendtoResponse = sendDocumentResponse;
 documents.actionDuplicate = duplicateDocument;
 documents.actionBin = binDocument;
 documents.poformOptions = { beforeSerialize: documentSerialize, beforeSubmit: documentFormProcess, dataType:  'json', success: documentFormResponse };
-// 
-/* Functions 
-- documentFormProcess
-- documentFormResponse
-- newDocument
-- binDocument
-*/
+
 
 function processDocList(list) {
 	var items = $("#"+list+" .docitemRelated").size();
@@ -40,10 +33,40 @@ function processDocList(list) {
 }
 
 
-function getDetailsDocument(moduleidx,liindex) {
-	var phaseid = $("#projects3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
-	$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/documents&request=getDetails&id="+phaseid, success: function(html){
-		$("#"+projects.name+"-right").html(html);
+function getDetailsDocument(moduleidx,liindex,list) {
+	var id = $("#projects3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
+	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/documents&request=getDetails&id="+id, success: function(data){
+		$("#projects-right").html(data.html);
+		if(list == 0) {
+			switch (data.access) {
+				case "sysadmin": case "admin":
+					projectsActions(0);
+				break;
+				case "guest":
+					projectsActions(5);
+				break;
+			}
+		} else {
+			switch (data.access) {
+				case "sysadmin": case "admin" :
+					if(list == "<li></li>") {
+						projectsActions(3);
+					} else {
+						projectsActions(0);
+						$('#projects3').find('input.filter').quicksearch('#projects3 li');
+					}
+				break;
+				case "guest":
+					if(list == "<li></li>") {
+						projectsActions();
+					} else {
+						projectsActions(5);
+						$('#projects3').find('input.filter').quicksearch('#projects3 li');
+					}
+				break;
+			}
+			
+		}
 		initContentScrollbar();
 		}
 	});
@@ -77,19 +100,17 @@ function documentFormResponse(data) {
 	switch(data.action) {
 		case "edit":
 			$("#projects3 span[rel='"+data.id+"'] .text").html($("#projects .title").val());
-			$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/documents&request=getDetails&id="+data.id, success: function(html){
-				$("#projects-right").html(html);
-				initContentScrollbar();
-				switch(data.access) {
-					case "0":
-						$("#projects3 .active-link .module-access-status").removeClass("module-access-active");
-					break;
-					case "1":
-						$("#projects3 .active-link .module-access-status").addClass("module-access-active");
-					break;
-				}
-				}
-			});
+			var moduleidx = $(".projects3-content").index($(".projects3-content:visible"));
+			var liindex = $(".projects3-content:visible .module-click").index($(".projects3-content:visible .module-click[rel='"+data.id+"']"));
+			getDetailsDocument(moduleidx,liindex);
+			switch(data.access) {
+				case "0":
+					$("#projects3 .active-link .module-access-status").removeClass("module-access-active");
+				break;
+				case "1":
+					$("#projects3 .active-link .module-access-status").addClass("module-access-active");
+				break;
+			}
 		break;
 	}
 }
@@ -193,21 +214,18 @@ function binDocument() {
 function sortClickDocument(obj,sortcur,sortnew) {
 	var fid = $("#projects2 .module-click:visible").attr("rel");
 	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/documents&request=getList&id="+fid+"&sort="+sortnew, success: function(data){
-		  $(".projects3-content:visible ul").html(data.html);
-		  obj.attr("rel",sortnew);
-		  obj.removeClass("sort"+sortcur).addClass("sort"+sortnew);
-		  var id = $(".projects3-content:visible .module-click:eq(0)").attr("rel");
-			if(id == undefined) {
-				return false;
-			}
-			var num = $(".projects3-content:visible .phase_num:eq(0)").html();
-		  $.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/documents&request=getDetails&id="+id+"&num="+num, success: function(html){
-			  $("#"+projects.name+"-right").html(html);
-			  initScrollbar( '#projects .scrolling-content' );
-				initContentScrollbar();
-			  }
-		  });
-	}
+		$(".projects3-content:visible ul").html(data.html);
+		obj.attr("rel",sortnew);
+		obj.removeClass("sort"+sortcur).addClass("sort"+sortnew);
+		var id = $(".projects3-content:visible .module-click:eq(0)").attr("rel");
+		if(id == undefined) {
+			return false;
+		}
+		var moduleidx = $(".projects3-content").index($(".projects3-content:visible"));
+		var liindex = 0;
+		getDetailsDocument(moduleidx,liindex);
+		$("#projects3 .projects3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
+		}
 	});
 }
 
@@ -233,7 +251,7 @@ function dialogDocument(offset,request,field,append,title,sql) {
 }
 
 
-function addTaskDocument() {
+/*function addTaskDocument() {
 	var startdate = $("input[name='startdate']").val();
 	var enddate = $("input[name='enddate']").val();
 	var num = parseInt($("#projects-right .tasks-entry").size());
@@ -247,7 +265,7 @@ function addTaskDocument() {
 		});
 		 }
 	});
-}
+}*/
 
 function createUploader(ele){            
 	var did = $("#projects3 .active-link:visible").attr("rel");
@@ -272,7 +290,7 @@ function createUploader(ele){
 				'</td><td></td></tr></table>' +
             '</span>',   
 		action: '/',
-		sizeLimit: 10240000, // max size
+		sizeLimit: 10*1024*1024, // max size
 		params: {
 			path: 'classes/file_uploader',
 			request: 'createNew',

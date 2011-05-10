@@ -50,6 +50,10 @@ outline: none;
 #intro-content { margin-left: 50%; margin-top: 300px; }
 #intro-content img { margin-left: -16px; }
 
+#intro-password { position: absolute; top:0; left: 0; height: 100%; width: 100%; background-color:#fff; z-index: 50000}
+#intro-password-content { margin-left: 50%; margin-top: 200px; }
+#intro-password-content-inner { height: 300px; width: 400px; margin-left: -200px; background-color:#666;}
+
 table { empty-cells:show; }
 
 a         { color: #fff; text-decoration: none; outline: none; }
@@ -240,7 +244,7 @@ ul.actionconsole { margin: 0 11px 0 11px;  }
 .actionconsole span.actionProjectHandbook:hover { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: pointer;}
 .actionconsole span.actionProjectHandbook.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: default; }
 
-.actionconsole li.listExport { display: block; height: 30px; margin-bottom: 22px; }
+/*.actionconsole li.listExport { display: block; height: 30px; margin-bottom: 22px; }
 .actionconsole span.actionExport { display: block; height: 30px; background: url(../img/apps_buttons_sprite.png) no-repeat;}
 .actionconsole span.actionExport:hover { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: pointer;}
 .actionconsole span.actionExport.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: default; }
@@ -253,7 +257,7 @@ ul.actionconsole { margin: 0 11px 0 11px;  }
 .actionconsole li.listEmpty { position: absolute; bottom: 63px; height: 30px; width: 28px; }
 .actionconsole span.actionEmpty { display: block; height: 30px; background: url(../img/apps_buttons_sprite.png) no-repeat -50px -466px;}
 .actionconsole span.actionEmpty:hover { background: url(../img/apps_buttons_sprite.png) no-repeat -100px -466px; cursor: pointer;}
-.actionconsole span.actionEmpty.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat 0px -466px; cursor: default;}
+.actionconsole span.actionEmpty.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat 0px -466px; cursor: default;}*/
 
 .actionconsole li.listBin { position: absolute; bottom: 16px; height: 28px; width: 28px; }
 .actionconsole span.actionBin { display: block; height: 36px; background: url(../img/apps_buttons_sprite.png) no-repeat -50px -519px;}

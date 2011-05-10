@@ -21,6 +21,10 @@ class Session
    var $userinfo = array();  //The array holding all user info
    var $url;          //The page url current being viewed
    var $referrer;     //Last recorded site page viewed
+    var $pwd_pick;     //Last recorded site page viewed
+   //var $canView = array();
+   //var $canEdit = array();
+   //var $canAccess = array();
    /**
     * Note: referrer should really only be considered the actual
     * page referrer in process.php, any other time it may be
@@ -96,12 +100,11 @@ class Session
       if(isset($_SESSION['username']) && isset($_SESSION['userid']) &&
          $_SESSION['username'] != GUEST_NAME){
          /* Confirm that username and userid are valid */
-         /*if($database->confirmUserID($_SESSION['username'], $_SESSION['userid']) != 0){
-             Variables are incorrect, user not logged in 
+         if($database->confirmUserID($_SESSION['username'], $_SESSION['userid']) != 0){
             unset($_SESSION['username']);
             unset($_SESSION['userid']);
             return false;
-         }*/
+         }
 
          /* User is logged in, set class variables */
          $this->userinfo  = $database->getUserInfo($_SESSION['username']);
@@ -115,6 +118,14 @@ class Session
 		 $this->userlang = $this->userinfo['lang'];
 		 $this->useroffset = $this->userinfo['offset'];
 		 $this->timezone = $this->userinfo['timezone'];
+		 $this->pwd_pick = $this->userinfo['pwd_pick'];
+		 //$this->canView = "";
+		 /*if (!$this->isSysadmin()) {
+			 $this->canView = $database->getViewPerms($this->uid);
+			 $this->canEdit = $database->getEditPerms($this->uid);
+			 $this->canAccess = array_merge($this->canView,$this->canEdit);
+		 }*/
+		 
          return true;
       }
       /* User not logged in */
@@ -200,6 +211,15 @@ class Session
       /* Login completed successfully */
       return true;
    }
+   
+   
+	function changeLogin($username, $password){
+		global $database;  //The database and form object 
+		$database->updateUser($this->uid, "username", $username);
+		$database->updateUser($this->uid, "password", md5($password));
+		$database->updateUser($this->uid, "pwd_pick", '1');
+		return true;
+	}
 
    /**
     * logout - Gets called when the user wants to be logged out of the
@@ -237,6 +257,11 @@ class Session
       $this->username  = GUEST_NAME;
       $this->userlevel = GUEST_LEVEL;
    }
+   
+   function checkUsername($username) {
+	   global $database;
+	   return $database->usernameTaken($username);
+   }
 
    /**
     * register - Gets called when the user has just submitted the
@@ -245,16 +270,14 @@ class Session
     * 1. If no errors were found, it registers the new user and
     * returns 0. Returns 2 if registration failed.
     */
-   function register($subuser, $subpass, $subemail){
+  /* function register($subuser, $subpass, $subemail){
       global $database, $form, $mailer;  //The database, form and mailer object
-      
-      /* Username error checking */
+
       $field = "user";  //Use field name for username
       if(!$subuser || strlen($subuser = trim($subuser)) == 0){
          $form->setError($field, "* Username not entered");
       }
       else{
-         /* Spruce up username, check length */
          $subuser = stripslashes($subuser);
          if(strlen($subuser) < 5){
             $form->setError($field, "* Username below 5 characters");
@@ -262,54 +285,39 @@ class Session
          else if(strlen($subuser) > 30){
             $form->setError($field, "* Username above 30 characters");
          }
-         /* Check if username is not alphanumeric */
          else if(!eregi("^([0-9a-z])+$", $subuser)){
             $form->setError($field, "* Username not alphanumeric");
          }
-         /* Check if username is reserved */
          else if(strcasecmp($subuser, GUEST_NAME) == 0){
             $form->setError($field, "* Username reserved word");
          }
-         /* Check if username is already in use */
          else if($database->usernameTaken($subuser)){
             $form->setError($field, "* Username already in use");
          }
-         /* Check if username is banned */
          else if($database->usernameBanned($subuser)){
             $form->setError($field, "* Username banned");
          }
       }
 
-      /* Password error checking */
       $field = "pass";  //Use field name for password
       if(!$subpass){
          $form->setError($field, "* Password not entered");
       }
       else{
-         /* Spruce up password and check length*/
          $subpass = stripslashes($subpass);
          if(strlen($subpass) < 4){
             $form->setError($field, "* Password too short");
          }
-         /* Check if password is not alphanumeric */
          else if(!eregi("^([0-9a-z])+$", ($subpass = trim($subpass)))){
             $form->setError($field, "* Password not alphanumeric");
          }
-         /**
-          * Note: I trimmed the password only after I checked the length
-          * because if you fill the password field up with spaces
-          * it looks like a lot more characters than 4, so it looks
-          * kind of stupid to report "password too short".
-          */
       }
       
-      /* Email error checking */
       $field = "email";  //Use field name for email
       if(!$subemail || strlen($subemail = trim($subemail)) == 0){
          $form->setError($field, "* Email not entered");
       }
       else{
-         /* Check if valid email address */
          $regex = "^[_+a-z0-9-]+(\.[_+a-z0-9-]+)*"
                  ."@[a-z0-9-]+(\.[a-z0-9-]{1,})*"
                  ."\.([a-z]{2,}){1}$";
@@ -319,11 +327,9 @@ class Session
          $subemail = stripslashes($subemail);
       }
 
-      /* Errors exist, have user correct them */
       if($form->num_errors > 0){
          return 1;  //Errors with form
       }
-      /* No errors, add the new account to the */
       else{
          if($database->addNewUser($subuser, md5($subpass), $subemail)){
             if(EMAIL_WELCOME){
@@ -334,7 +340,7 @@ class Session
             return 2;  //Registration attempt failed
          }
       }
-   }
+   }*/
    
    /**
     * editAccount - Attempts to edit the user's account information
@@ -443,7 +449,7 @@ class Session
    
    
    
-   function editUser($id, $lastname, $firstname, $title, $position, $phone1, $phone2, $fax, $address){
+  /* function editUser($id, $lastname, $firstname, $title, $position, $phone1, $phone2, $fax, $address){
       global $database;
 	  
          $database->updateUser($this->uid, $id, "lastname", $lastname);
@@ -455,9 +461,8 @@ class Session
 		 $database->updateUser($this->uid, $id, "fax", $fax);
 		 $database->updateUser($this->uid, $id, "address", $address);
       
-      /* Success! */
       return true;
-   }
+   }*/
    
 	function editGroup($id, $name, $users2delete='', $users2add=''){
 		global $database;
@@ -484,18 +489,30 @@ class Session
       return true;
    }
 
-   /**
-    * isAdmin - Returns true if currently logged in user is
-    * an administrator, false otherwise.
-    */
-   function isAdmin(){
-      return ($this->userlevel == ADMIN_LEVEL ||
-              $this->username  == ADMIN_NAME);
-   }
+   // check if user is admin in any of the projects
+   //function isAdmin(){
+	 // return !empty($this->canEdit);
+	  //return "test";
+      //return ($this->userlevel == ADMIN_LEVEL || $this->username  == ADMIN_NAME);
+   //}
    
    function isSysadmin(){
       return ($this->userlevel == SYSADMIN_LEVEL ||
               $this->username  == SYSADMIN_NAME);
+   }
+   
+   function getAccess($pid) {
+		$access = "";
+		if(in_array($pid,$this->canView)) {
+			$access = "guest";
+		}
+		if(in_array($pid,$this->canEdit)) {
+			$access = "admin";
+		}
+		if($this->isSysadmin()) {
+			$access = "sysadmin";
+		}
+		return $access;
    }
    
    /**
@@ -529,53 +546,26 @@ class Session
 
 
 
-// new document
-	function newDocument($pid, $private, $title, $filename, $tempname, $filesize, $related_to, $related_to_protocol, $document_date, $protocol, $created_user, $edited_user){
-		global $database;
-		$q = "INSERT INTO " . PO_TBL_DOCUMENTS . " set pid = '$pid', intern = '$private', title = '$title', filename = '$filename', filesize = '$filesize', related_to = '$related_to', related_to_protocol = '$related_to_protocol', tempname = '$tempname', document_date = '$document_date', protocol = '$protocol', created_user = '$created_user', created_date = NOW(), edited_user = '$edited_user', edited_date = NOW()";
-		$result = $database->query($q);
-		if ($result) {
-		  	$id = mysql_insert_id();
-			return $id;
-		}
-	}
+   function generateAccessUsername($length){
+      $randstr = "";
+      for($i=0; $i<$length; $i++){
+         $randnum = mt_rand(65,90);
+		 $randstr .= chr($randnum);
+      }
+      return $randstr;
+   }
+   
+   function generateAccessPassword($length){
+      $randstr = "";
+      for($i=0; $i<$length; $i++){
+         $randnum = mt_rand(1,9);
+         $randstr .= chr($randnum+48);
+      }
+      return $randstr;
+   }
 
 
-// edit document
-	function editDocument($id, $private, $title, $related_to, $related_to_protocol, $document_date, $protocol, $edited_user){
-		global $database;
-		$q = "UPDATE " . PO_TBL_DOCUMENTS . " set intern = '$private', title = '$title', related_to = '$related_to', related_to_protocol = '$related_to_protocol', document_date = '$document_date', protocol = '$protocol', edited_user = '$edited_user', edited_date = NOW() WHERE id='$id'";
-		$result = $database->query($q);
-		if ($result) {
-		  	return true;
-		}
-	}
-	
-// bin document
-	function binDocument($id,$uid){
-		global $database;
-		$q = "UPDATE " . PO_TBL_DOCUMENTS . " set bin = '1', bintime = NOW(), binuser= '$uid' where id='$id'";
-		$result = $database->query($q);
-		if ($result) {
-			return true;
-		} else {
-			
-		}
-	}
-	
-	
-// new document
-	function newImage($pid, $private, $title, $filename, $tempname, $filesize, $related_to, $related_to_protocol, $document_date, $protocol, $created_user, $edited_user){
-		global $database;
-		$q = "INSERT INTO " . PO_TBL_DOCUMENTS_IMAGES . " set pid = '$pid', intern = '$private', title = '$title', filename = '$filename', filesize = '$filesize', related_to = '$related_to', related_to_protocol = '$related_to_protocol', tempname = '$tempname', document_date = '$document_date', protocol = '$protocol', created_user = '$created_user', created_date = NOW(), edited_user = '$edited_user', edited_date = NOW()";
-		$result = $database->query($q);
-		if ($result) {
-		  	$id = mysql_insert_id();
-			return $id;
-		}
-	}
-
-};
+}
 
 /**
  * Initialize session object - This must be initialized before

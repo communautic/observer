@@ -73,7 +73,7 @@ class SampleModel extends ProjectsModel {
 		$array["start"] = $this->_date->formatDate($array["sample_date"],CO_TIME_FORMAT);
 		$array["end"] = $this->_date->formatDate($array["sample_date"],CO_TIME_FORMAT);
 		
-		$array["related_to"] = $this->_phases->getDocumentDetails($row['related_to'],'related_to');
+		//$array["related_to"] = $this->_phases->getDocumentDetails($row['related_to'],'related_to');
 		//$array["dependency_exists"] = $this->getDependency($id);
 		//$array["projecttitle"] = $this->getProjectTitle($array['pid']);
 		$array["participants"] = $this->_contactsmodel->getUserList($array['participants'],'participants');

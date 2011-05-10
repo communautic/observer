@@ -13,13 +13,13 @@
 <input type="hidden" name="pid" value="<?php echo($access->pid);?>">
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
-		<td class="tcell-left text11"><span class="content-nav showDialog" request="getContactsDialog" field="admins" append="1"><span><?php echo $lang["ACCESS_ADMINS"];?></span></span></td>
+		<td class="tcell-left text11"><span class="content-nav showDialog" request="getContactsDialog" field="admins" append="1"><span><?php echo $lang["GLOBAL_ADMINS"];?></span></span></td>
 		<td class="tcell-right"><div id="admins" class="itemlist-field"><?php echo($access->admins);?></div></td>
 	</tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
-		<td class="tcell-left text11"><span class="content-nav showDialog" request="getContactsDialog" field="guests" append="1"><span><?php echo $lang["ACCESS_GUESTS"];?></span></span></td>
+		<td class="tcell-left text11"><span class="content-nav showDialog" request="getContactsDialog" field="guests" append="1"><span><?php echo $lang["GLOBAL_GUESTS"];?></span></span></td>
 		<td class="tcell-right"><div id="guests" class="itemlist-field"><?php echo($access->guests);?></div></td>
 	</tr>
 </table>

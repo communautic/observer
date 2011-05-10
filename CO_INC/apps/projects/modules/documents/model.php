@@ -58,16 +58,21 @@ class DocumentsModel extends ProjectsModel {
 						  }
 				  break;	
 			  }
-	  }
+		}
 	  
-		$q = "select id,title,access,edited_date from " . CO_TBL_DOCUMENTS_FOLDERS . " where pid = '$id' and bin != '1' " . $order;
+		$perm = $this->getProjectAccess($id);
+		$sql ="";
+		if( $perm ==  "guest") {
+			$sql = " and access = '1' ";
+		}
+	  
+		$q = "select id,title,access,edited_date from " . CO_TBL_DOCUMENTS_FOLDERS . " where pid = '$id' and bin != '1' " . $sql . $order;
 
-	  $this->setSortStatus("document-sort-status",$sortcur,$id);
+		$this->setSortStatus("document-sort-status",$sortcur,$id);
 		$result = mysql_query($q, $this->_db->connection);
-	  $documents = "";
-	  while ($row = mysql_fetch_array($result)) {
-
-		foreach($row as $key => $val) {
+		$documents = "";
+		while ($row = mysql_fetch_array($result)) {
+			foreach($row as $key => $val) {
 				$array[$key] = $val;
 			}
 			
@@ -84,39 +89,11 @@ class DocumentsModel extends ProjectsModel {
 			$documents[] = new Lists($array);
 	  }
 		
-	  $arr = array("documents" => $documents, "sort" => $sortcur);
+	  $arr = array("documents" => $documents, "sort" => $sortcur, "perm" => $perm);
 	  return $arr;
 	}
-	
-	
-	
-	// Get document list from ids for Tooltips
-	function getDocumentDetails($string,$field){
-		$users_string = explode(",", $string);
-		$users_total = sizeof($users_string);
-		$users = '';
-		if($users_total == 0) { return $users; }
-		$i = 1;
-		foreach ($users_string as &$value) {
-			$q = "SELECT id,title from " . CO_TBL_DOCUMENTS . " where id = '$value'";
-			$result_user = mysql_query($q, $this->_db->connection);
-			while($row_user = mysql_fetch_assoc($result_user)) {
-				$users .= '<span class="groupmember tooltip-advanced" uid="' . $row_user["id"] . '">' . $row_user["title"] . '</span><div style="display:none"><a href="delete" class="markfordeletionNEW" uid="' . $row_user["id"] . '" field="' . $field . '">X</a><br /></div>';
-				if($i < $users_total) {
-					$users .= ', ';
-				}
-			}
-			$i++;
-		}
-		return $users;
-   }
-   
-   function getDependency($id){
-		$q = "SELECT title FROM " . CO_TBL_DOCUMENTS . " where dependency = '$id'";
-		$result = mysql_query($q, $this->_db->connection);
-		return mysql_num_rows($result);
-   }
-   
+
+
    	function formatBytes($bytes, $precision = 2) {
 		$units = array('B', 'KB', 'MB', 'GB', 'TB');
 	  
@@ -128,7 +105,8 @@ class DocumentsModel extends ProjectsModel {
 	  
 		return round($bytes, $precision) . ' ' . $units[$pow];
 	}
-   
+
+
 	function getDetails($id) {
 		global $session, $contactsmodel, $lang;
 		$q = "SELECT * FROM " . CO_TBL_DOCUMENTS_FOLDERS . " where id = '$id'";
@@ -166,10 +144,15 @@ class DocumentsModel extends ProjectsModel {
 		// get user perms
 		$array["edit"] = "1";
 		
+		$perms = $this->getProjectAccess($array["pid"]);
+		$array["canedit"] = false;
+		if($perms == "sysadmin" || $perms == "admin") {
+			$array["canedit"] = true;
+		}
+		
 		$document = new Lists($array);
 		
 		// now get all actual documents
-		// get the tasks
 		$doc = array();
 		$qt = "SELECT * FROM " . CO_TBL_DOCUMENTS . " where did = '$id' and bin='0' ORDER BY created_date DESC";
 		$resultt = mysql_query($qt, $this->_db->connection);
@@ -184,10 +167,11 @@ class DocumentsModel extends ProjectsModel {
 		
 		$sendto = $this->getSendtoDetails("documents",$id);
 		
-		$arr = array("document" => $document, "doc" => $doc, "sendto" => $sendto);
+		$arr = array("document" => $document, "doc" => $doc, "sendto" => $sendto, "access" => $perms);
 		return $arr;
    }
-   
+
+
    function setDetails($id,$title,$document_access) {
 		global $session;
 		
@@ -382,9 +366,9 @@ class DocumentsModel extends ProjectsModel {
 		$arr = array();
 		
 		$sql = "and access='1'";
-		if($session->isSysadmin() || $session->isAdmin()) {
+		/*if($session->isSysadmin() || $session->isAdmin()) {
 			$sql = "";
-		}
+		}*/
 		foreach ($string as &$value) {
 			$q = "SELECT id, title FROM " . CO_TBL_DOCUMENTS_FOLDERS . " where id = '$value' $sql and bin='0'";
 			$result = mysql_query($q, $this->_db->connection);

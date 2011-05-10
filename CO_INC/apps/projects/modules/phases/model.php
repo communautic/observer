@@ -60,9 +60,13 @@ class PhasesModel extends ProjectsModel {
 			  }
 		}
 	  
-		//$q = "select title,id,access,status,startdate,enddate from " . CO_TBL_PHASES . " where pid = '$id' and bin != '1' " . $order;
+		$perm = $this->getProjectAccess($id);
+		$sql ="";
+		if( $perm ==  "guest") {
+			$sql = " and a.access = '1' ";
+		}
 		
-		$q = "select a.title,a.id,a.access,a.status,(SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as startdate from " . CO_TBL_PHASES . " as a where a.pid = '$id' and a.bin != '1' " . $order;
+		$q = "select a.title,a.id,a.access,a.status,(SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as startdate from " . CO_TBL_PHASES . " as a where a.pid = '$id' and a.bin != '1' " . $sql . $order;
 		
 	  	$this->setSortStatus("phase-sort-status",$sortcur,$id);
 		$result = mysql_query($q, $this->_db->connection);
@@ -92,7 +96,7 @@ class PhasesModel extends ProjectsModel {
 		// generate phase numbering
 		$num = "";
 		
-		$qn = "select a.id,(SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as startdate from " . CO_TBL_PHASES . " as a where a.pid = '$id' and a.bin != '1' order by startdate";
+		$qn = "select a.id,(SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as startdate from " . CO_TBL_PHASES . " as a where a.pid = '$id' and a.bin != '1'" . $sql . " order by startdate";
 		$resultn = mysql_query($qn, $this->_db->connection);
 		$i = 1;
 		while ($rown = mysql_fetch_array($resultn)) {
@@ -100,7 +104,7 @@ class PhasesModel extends ProjectsModel {
 			$i++;
 		}
 		
-		$arr = array("phases" => $phases, "sort" => $sortcur, "num" => $num);
+		$arr = array("phases" => $phases, "sort" => $sortcur, "num" => $num, "perm" => $perm);
 		return $arr;
 	}
 	
@@ -213,8 +217,11 @@ class PhasesModel extends ProjectsModel {
 			break;
 		}
 		
-		// get user perms
-		$array["edit"] = "1";
+		$perms = $this->getProjectAccess($array["pid"]);
+		$array["canedit"] = false;
+		if($perms == "sysadmin" || $perms == "admin") {
+			$array["canedit"] = true;
+		}
 		
 		$phase = new Lists($array);
 		
@@ -252,7 +259,7 @@ class PhasesModel extends ProjectsModel {
 		
 		$sendto = $this->getSendtoDetails("phases",$id);
 		
-		$arr = array("phase" => $phase, "task" => $task, "sendto" => $sendto);
+		$arr = array("phase" => $phase, "task" => $task, "sendto" => $sendto, "access" => $perms);
 		return $arr;
 	}
 

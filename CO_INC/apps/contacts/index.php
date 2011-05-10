@@ -23,6 +23,9 @@ if (!empty($_GET['request'])) {
 		case 'getGroupDetails':
 			echo($contacts->getGroupDetails($_GET['id']));
 		break;
+		case 'getGroupMemberDetails':
+			echo($contacts->getGroupMemberDetails($_GET['id']));
+		break;
 		case 'printGroupDetails':
 			$t = "pdf"; // options: pdf, html
 			if(!empty($_GET['t'])) {
@@ -70,6 +73,12 @@ if (!empty($_GET['request'])) {
 		case 'getContactDetails':
 			echo($contacts->getContactDetails($_GET['id']));
 		break;
+		case 'getContactDetailsArray':
+			echo($contacts->getContactDetailsArray($_GET['id']));
+		break;
+		case 'getContactField':
+			echo($contacts->getContactField($_GET['id'],$_GET['field']));
+		break;
 		case 'printContactDetails':
 			$t = "pdf"; // options: pdf, html
 			if(!empty($_GET['t'])) {
@@ -101,6 +110,18 @@ if (!empty($_GET['request'])) {
 		case 'deleteContact':
 			echo($contacts->deleteContact($_GET['id']));
 		break;
+		case 'generateAccess':
+			echo($contacts->generateAccess($_GET['id']));
+		break;
+		case 'removeAccess':
+			echo($contacts->removeAccess($_GET['id']));
+		break;
+		case 'setSysadmin':
+			echo($contacts->setSysadmin($_GET['id']));
+		break;
+		case 'removeSysadmin':
+			echo($contacts->removeSysadmin($_GET['id']));
+		break;
 		// get Users within Group for Dialog insert
 		case 'getUsersInGroupDialog':
 			echo($contacts->getUsersInGroupDialog($_GET['id'],$_GET['field']));
@@ -117,6 +138,12 @@ if (!empty($_GET['request'])) {
 		break;
 		case 'getTimezoneDialog':
 			echo($contacts->getTimezoneDialog($_GET['request'],$_GET['field'],$_GET['append'],$_GET['title'],$_GET['sql']));
+		break;
+		case 'getAccessDialog':
+			echo($contacts->getAccessDialog($_GET['request'],$_GET['field'],$_GET['append'],$_GET['title'],$_GET['sql']));
+		break;
+		case 'getSysadminDialog':
+			echo($contacts->getSysadminDialog($_GET['request'],$_GET['field'],$_GET['append'],$_GET['title'],$_GET['sql']));
 		break;
 		case 'getContactsDialog':
 			echo($contacts->getContactsDialog($_GET['request'],$_GET['field'],$_GET['append'],$_GET['title'],$_GET['sql']));

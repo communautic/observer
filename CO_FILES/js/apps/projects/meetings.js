@@ -17,12 +17,41 @@ meetings.poformOptions = { beforeSubmit: meetingFormProcess, dataType:  'json', 
 meetings.toggleIntern = meetingToggleIntern;
 
 
-function getDetailsMeeting(moduleidx,liindex) {
-	var phaseid = $("#projects3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
-	$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/meetings&request=getDetails&id="+phaseid, success: function(html){
-		$("#"+projects.name+"-right").html(html);
+function getDetailsMeeting(moduleidx,liindex,list) {
+	var id = $("#projects3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
+	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/meetings&request=getDetails&id="+id, success: function(data){
+		$("#projects-right").html(data.html);
+		if(list == 0) {
+			switch (data.access) {
+				case "sysadmin": case "admin":
+					projectsActions(0);
+				break;
+				case "guest":
+					projectsActions(5);
+				break;
+			}
+		} else {
+			switch (data.access) {
+				case "sysadmin": case "admin" :
+					if(list == "<li></li>") {
+						projectsActions(3);
+					} else {
+						projectsActions(0);
+						$('#projects3').find('input.filter').quicksearch('#projects3 li');
+					}
+				break;
+				case "guest":
+					if(list == "<li></li>") {
+						projectsActions();
+					} else {
+						projectsActions(5);
+						$('#projects3').find('input.filter').quicksearch('#projects3 li');
+					}
+				break;
+			}
+			
+		}
 		initContentScrollbar();
-		initScrollbar( '.projects3-content:visible .scrolling-content' );
 		}
 	});
 }
@@ -97,16 +126,10 @@ function meetingFormResponse(data) {
 			var id = $("#projects2 .module-click:visible").attr("rel");
 			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/projects/modules/meetings&request=getList&id="+id, success: function(list){
 				$(".projects3-content:visible ul").html(list.html);
-				var index = $(".projects3-content:visible .module-click").index($(".projects3-content:visible .module-click[rel='"+data.id+"']"));
-				$(".projects3-content:visible .module-click:eq("+index+")").addClass('active-link');
-				//$(".projects3-content:visible .drag:eq("+index+")").show();
-				$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/meetings&request=getDetails&id="+data.id, success: function(html){
-					$("#projects-right").html(html);
-					initContentScrollbar();
-					//$("#loading").fadeOut();
-					}
-				});
-				projectsActions(0);
+				var moduleidx = $(".projects3-content").index($(".projects3-content:visible"));
+				var liindex = $(".projects3-content:visible .module-click").index($(".projects3-content:visible .module-click[rel='"+data.id+"']"));
+				getDetailsMeeting(moduleidx,liindex);
+				$("#projects3 .projects3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
 				}
 			});
 		break;
@@ -119,15 +142,10 @@ function newMeeting() {
 	$.ajax({ type: "GET", url: "/", dataType: 'json', data: 'path=apps/projects/modules/meetings&request=createNew&id=' + id, cache: false, success: function(data){
 			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/projects/modules/meetings&request=getList&id="+id, success: function(list){
 				$(".projects3-content:visible ul").html(list.html);
-				var index = $(".projects3-content:visible .module-click").index($(".projects3-content:visible .module-click[rel='"+data.id+"']"));
-				$(".projects3-content:visible .module-click:eq("+index+")").addClass('active-link');
-				var num = index+1;
-				$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/meetings&request=getDetails&id="+data.id+"&num="+num, success: function(html){
-					$("#projects-right").html(html);
-					initContentScrollbar();
-					}
-				});
-				projectsActions(0);
+				var liindex = $(".projects3-content:visible .module-click").index($(".projects3-content:visible .module-click[rel='"+data.id+"']"));
+				$(".projects3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
+				var moduleidx = $(".projects3-content").index($(".projects3-content:visible"));
+				getDetailsMeeting(moduleidx,liindex);
 				$('#projects3 input.filter').quicksearch('#projects3 li');
 				}
 			});
@@ -169,9 +187,10 @@ function duplicateMeeting() {
 			$(".projects3-content:visible ul").html(data.html);
 			var moduleidx = $(".projects3-content").index($(".projects3-content:visible"));
 			var liindex = $(".projects3-content:visible .module-click").index($(".projects3-content:visible .module-click[rel='"+mid+"']"));
+			//var list = 0;
 			getDetailsMeeting(moduleidx,liindex);
 			$(".projects3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
-			projectsActions(0);
+			//projectsActions(0);
 			$('#projects3 input.filter').quicksearch('#projects3 li');
 			}
 		});
@@ -205,7 +224,6 @@ function binMeeting() {
 								var liindex = 0;
 								getDetailsMeeting(moduleidx,liindex);
 								$("#projects3 .projects3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
-								//projectsActions(0);
 							}
 							});
 						}
@@ -220,22 +238,17 @@ function binMeeting() {
 function sortClickMeeting(obj,sortcur,sortnew) {
 	var fid = $("#projects2 .module-click:visible").attr("rel");
 	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/meetings&request=getList&id="+fid+"&sort="+sortnew, success: function(data){
-		  $(".projects3-content:visible ul").html(data.html);
-		  obj.attr("rel",sortnew);
-		  obj.removeClass("sort"+sortcur).addClass("sort"+sortnew);
-		  var id = $(".projects3-content:visible .module-click:eq(0)").attr("rel");
-			if(id == undefined) {
-				return false;
-			}
-			
-			var num = $(".projects3-content:visible .phase_num:eq(0)").html();
-			
-		  $.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/meetings&request=getDetails&id="+id+"&num="+num, success: function(html){
-			  $("#"+projects.name+"-right").html(html);
-			 //initScrollbar( '#projects .scrolling-content' );
-				initContentScrollbar();
-			  }
-		  });
+		$(".projects3-content:visible ul").html(data.html);
+		obj.attr("rel",sortnew);
+		obj.removeClass("sort"+sortcur).addClass("sort"+sortnew);
+		var id = $(".projects3-content:visible .module-click:eq(0)").attr("rel");
+		if(id == undefined) {
+			return false;
+		}
+		var moduleidx = $(".projects3-content").index($(".projects3-content:visible"));
+		var liindex = 0;
+		getDetailsMeeting(moduleidx,liindex);
+		$("#projects3 .projects3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
 	}
 	});
 }

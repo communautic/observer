@@ -107,8 +107,14 @@ class TimelinesModel extends ProjectsModel {
 				break;
 			}
 		}
+		
+		$access = $this->getProjectAccess($pid);
+		$sql="";
+		if($access == "guest") {
+			$sql = " and a.access = '1' ";
+		}
 		// get phase details
-		$q = "SELECT a.title,a.id,a.status,(SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin = '0') as startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " as c WHERE c.phaseid=a.id and c.bin = '0') as enddate FROM " . CO_TBL_PHASES . " as a WHERE pid = '$pid' and bin = '0' ORDER BY startdate";
+		$q = "SELECT a.title,a.id,a.status,(SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin = '0') as startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " as c WHERE c.phaseid=a.id and c.bin = '0') as enddate FROM " . CO_TBL_PHASES . " as a WHERE pid = '$pid' and bin = '0' " . $sql . " ORDER BY startdate";
 		$result = mysql_query($q, $this->_db->connection);
 	  	while ($row = mysql_fetch_object($result)) {
 			// phase status
@@ -223,9 +229,15 @@ class TimelinesModel extends ProjectsModel {
 				break;
 			}
 		}
+		
+		$access = $this->getProjectAccess($pid);
+		$sql="";
+		if($access == "guest") {
+			$sql = " and a.access = '1' ";
+		}
 		// get phase details
 		//$q = "select title,id,startdate,enddate,status,dependency from " . CO_TBL_PHASES . " where pid = '$pid' and bin = '0' order by startdate";
-		$q = "SELECT a.title,a.id,a.status,a.dependency,a.finished_date, (SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . "  as b WHERE b.phaseid=a.id and b.bin='0') as startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " as c WHERE c.phaseid=a.id and c.bin='0') as enddate FROM " . CO_TBL_PHASES . " as a WHERE pid = '$pid' and bin = '0' ORDER BY startdate";
+		$q = "SELECT a.title,a.id,a.status,a.dependency,a.finished_date, (SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . "  as b WHERE b.phaseid=a.id and b.bin='0') as startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " as c WHERE c.phaseid=a.id and c.bin='0') as enddate FROM " . CO_TBL_PHASES . " as a WHERE pid = '$pid' and bin = '0' " . $sql . " ORDER BY startdate";
 		$result = mysql_query($q, $this->_db->connection);
 		$phase_top = 21;
 		$phase_top_next = 0;

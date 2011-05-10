@@ -11,7 +11,13 @@ class Process
       if(isset($_POST['sublogin'])){
          $this->procLogin();
       }
-      else if($session->logged_in){
+	  else if(isset($_POST['changelogin'])){
+         $this->procChangeLogin();
+      }
+	  else if(isset($_GET['fieldId'])) {
+			$this->procCheckUsername();
+	  }
+	  else if($session->logged_in){
          $this->procLogout();
       }
       /**
@@ -27,6 +33,30 @@ class Process
       global $session, $form;
       $retval = $session->login($_POST['user'], $_POST['pass'], isset($_POST['remember']));
       if($retval){
+		 echo "1";
+      } else{
+		 echo "0";
+      }
+   }
+   
+    function procCheckUsername(){
+      global $session;
+     // echo '["username",false]';
+	  
+	  $retval = $session->checkUsername($_GET['fieldValue']);
+	  if($retval){
+		 echo '["username",false]';
+      } else{
+		 echo '["username",true]';
+      }
+   }
+   
+   function procChangeLogin(){
+      global $session;
+      $retval = $session->changeLogin($_POST['username'], $_POST['password']);
+	  if($retval){
+		 $session->logout();
+		 $retval = $session->login($_POST['username'], $_POST['password'], isset($_POST['remember']));
 		 echo "1";
       } else{
 		 echo "0";
