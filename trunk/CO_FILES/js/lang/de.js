@@ -16,3 +16,14 @@ var ALERT_PROJECT_MOVE_ALL = "Wollen Sie alle Starttermine an das neue Startdatu
 //define('ALERT_PHASE_MOVE_ALL', "Wollen Sie die Termine aller abhängigen Abschnitte anpassen?");
 //define('ALERT_PHASE_MOVE', "%s ist abhängig von %s. Wollen Sie die Daten abgleichen?");
 var ALERT_NO_FILE = "Bitte wählen Sie eine Datei aus";
+
+var ALERT_NO_VALID_EMAIL = "Bitte geben Sie eine gültige Email Adresse an.";
+var ALERT_NO_EMAIL = "Dieser Kontakt verfügt über keine Email Adresse";
+
+var ALERT_SENDTO_EMAIL = 'besitzt noch keinen Email Eintrag';
+var ALERT_ACCESS_CONTACT_NOACCESSCODES = 'hat noch keine Zugangscodes. Möchten Sie die Zugangscodes jetzt versenden?';
+var ALERT_ACCESS_GROUP_NOACCESSCODES = 'hat noch keine Zugangscodes.';
+var ALERT_ACCESS_GROUP_NOACCESSCODES_SEND = 'übermitteln';
+var ALERT_ACCESS_IS_SYSADMIN = 'ist ein System Manager und daher automatisch ein Administrator';
+var ALERT_ACCESS_IS_GUEST = 'ist schon Beobachter';
+var ALERT_ACCESS_IS_ADMIN = 'ist schon Administrator';

@@ -136,7 +136,7 @@ font-weight: normal;
 .task-drag { width: 15px; height: 15px; display: none; background:url(../img/sort_buttons_trans.png) no-repeat 0px -60px; }
 
 .content-outline { padding: 5px 0;}
-.dialog-text { font-size:12px; padding: 10px 0 0 10px; float: left;}
+.dialog-text { font-size:12px; padding: 5px 0 5px 10px; float: left;}
 .dialog-text a { display: block; margin: 7px 0;}
 
 .dialog-text-2 { font-size:11px; padding: 10px 0 0 10px; float: left;}

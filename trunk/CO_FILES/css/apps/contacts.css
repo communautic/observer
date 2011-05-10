@@ -56,13 +56,13 @@
 #contactsActions span.actionDuplicate:hover 	{ 	background-position: -200px -206px;	}
 #contactsActions span.actionDuplicate.noactive { background-position: 0px -206px;  	}
 
-#contactsActions span.actionExport				{ 	background-position: -150px -258px;	}
+/*#contactsActions span.actionExport				{ 	background-position: -150px -258px;	}
 #contactsActions span.actionExport:hover 	{ 	background-position: -200px -258px;	}
 #contactsActions span.actionExport.noactive { background-position: 0px -258px;  	}
 
 #contactsActions span.actionImport				{ 	background-position: -150px -310px;	}
 #contactsActions span.actionImport:hover 	{ 	background-position: -200px -310px;	}
-#contactsActions span.actionImport.noactive { background-position: 0px -310px;  	}
+#contactsActions span.actionImport.noactive { background-position: 0px -310px;  	}*/
 
  
 #contacts .table-title, #contacts .textarea-title { 

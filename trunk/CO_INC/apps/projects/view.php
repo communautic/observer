@@ -33,15 +33,13 @@
 					include_once("modules/".$module."/controller.php");
 					?>
                     <div class="module-actions module-actions-modules"><?php if (${$module.'_filter'} != 0) { ?><div class="sort-outer"><span class="sort" rel="1"></span></div>
-                    
                     <div class="filter-box-outer"><form action="#"><fieldset><input name="search" type="text" class="filter filter-box" value="" size="4" /></fieldset></form></div><div class="filter-search-outer"></div><?php } ?></div>
 					<h3 rel="<?php echo($module);?>"><?php echo(${$module.'_name'});?></h3>
-                    
-            <div class="projects3-content"><div class="scrolling-content">        
-                <ul class="sortable" rel="<?php echo($module);?>"><li></li></ul>
-                </div>
-            </div>
-<?php } ?>
+					<div class="projects3-content"><div class="scrolling-content">        
+                	<ul class="sortable" rel="<?php echo($module);?>"><li></li></ul>
+                	</div>
+            		</div>
+			<?php } ?>
         </div>
     </div>
 </div>

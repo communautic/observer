@@ -24,7 +24,8 @@ class Documents extends Projects {
 			$data["html"] = ob_get_contents();
 		ob_end_clean();
 		$data["sort"] = $arr["sort"];
-		return $system->json_encode($data);
+		$data["perm"] = $arr["perm"];
+		return json_encode($data);
 	}
 
 
@@ -34,7 +35,12 @@ class Documents extends Projects {
 			$document = $arr["document"];
 			$doc = $arr["doc"];
 			$sendto = $arr["sendto"];
-			include('view/edit.php');
+			ob_start();
+				include 'view/edit.php';
+				$data["html"] = ob_get_contents();
+			ob_end_clean();
+			$data["access"] = $arr["access"];
+			return json_encode($data);
 		} else {
 			include CO_INC .'/view/default.php';
 		}

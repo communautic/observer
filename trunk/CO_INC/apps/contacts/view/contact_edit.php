@@ -38,7 +38,7 @@
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
     <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_EMAIL'];?></span></span></td>
-    <td class="tcell-right-nopadding"><input name="email" type="text" class="bg" value="<?php echo($contact->email);?>" /></td>
+    <td class="tcell-right-nopadding"><input id="email" name="email" type="text" class="bg" value="<?php echo($contact->email);?>" /></td>
   </tr>
 </table>
 <div class="content-spacer"></div>
@@ -92,38 +92,57 @@
   </tr>
 </table></div>
 <div class="content-spacer"></div>
-<!--<table border="0" cellpadding="0" cellspacing="0" class="table-content">
-	<tr>
-	  <td class="tcell-left text11"><span class="content-nav"><?php echo CONTACTS_CONTACT_USERNAME;?></span></td>
-	  <td class="tcell-right"><?php echo($contact->username);?></td>
-	</tr>
-</table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><span class="content-nav"><?php echo CONTACTS_CONTACT_PASSWORD;?></span></td>
-	  <td class="tcell-right"><?php echo($contact->pwd);?></td>
-	</tr>
-</table>-->
-<table border="0" cellpadding="0" cellspacing="0" class="table-content">
-	<tr>
-	  <td class="tcell-left text11"><span class="content-nav showDialog" request="getLanguageDialog" field="lang" append="0"><span><?php echo $lang['CONTACTS_LANGUAGE'];?></span></span></span></td>
+	  <td class="tcell-left text11"><span class="content-nav showDialog" request="getLanguageDialog" field="lang" append="0"><span><?php echo $lang['CONTACTS_LANGUAGE'];?></span></span></td>
       <td class="tcell-right"><div id="lang" class="itemlist-field"><?php echo($contact->lang);?></div></td>
 	</tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><span class="content-nav showDialog" request="getTimezoneDialog" field="timezone" append="0"><span><?php echo $lang['CONTACTS_TIMEZONE'];?></span></span></span></td>
+	  <td class="tcell-left text11"><span class="content-nav showDialog" request="getTimezoneDialog" field="timezone" append="0"><span><?php echo $lang['CONTACTS_TIMEZONE'];?></span></span></td>
       <td class="tcell-right"><div id="timezone" class="itemlist-field"><?php echo($contact->timezone);?></div></td>
 	</tr>
 </table>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
-	  <td class="tcell-left-inactive text11"><?php echo CONTACTS_CONTACT_GROUPMEMBERSHIP;?></td>
+	  <td class="tcell-left-inactive text11"><?php echo $lang['CONTACTS_GROUPMEMBERSHIP'];?></td>
 	  <td class="tcell-right-inactive"><?php echo($contact->groups);?></td>
 	</tr>
 </table>
-
+<div class="content-spacer"></div>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+	<tr>
+	  <td class="tcell-left text11"><span class="content-nav showDialog" id="accesslink" request="getAccessDialog" field="access" append="0" sql="<?php echo($contact->access_status);?>"><span><?php echo $lang['CONTACTS_ACCESSCODES'];?></span></span></td>
+	  <td class="tcell-right"><div id="access" class="itemlist-field"><?php echo($contact->access);?></div></td>
+	</tr>
+</table>
+<?php if(!empty($contact->admin)) { ?>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+	<tr>
+	  <td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_ADMIN"];?></td>
+	  <td class="tcell-right-inactive"><?php echo($contact->admin);?></td>
+	</tr>
+</table>
+<?php } ?>
+<?php if(!empty($contact->guest)) { ?>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+	<tr>
+	  <td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_GUEST"];?></td>
+	  <td class="tcell-right-inactive"><?php echo($contact->guest);?></td>
+	</tr>
+</table>
+<?php } ?>
+<?php if($contact->option_sysadmin == 1 && $session->isSysadmin()) { ?>
+<div class="content-spacer"></div>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+	<tr>
+	  <td class="tcell-left text11"><span class="content-nav showDialog" request="getSysadminDialog" field="sysadmin" append="0" sql="<?php echo($contact->sysadmin_status);?>"><span>System Manager</span></span></td>
+	  <td class="tcell-right"><div id="sysadmin" class="itemlist-field"><?php echo($contact->sysadmin);?></div></td>
+	</tr>
+</table>
+<?php } ?>
 </form>
 </div>
 </div>

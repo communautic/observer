@@ -81,16 +81,22 @@
 	var CheckAdd = function(){
 		//var $input = $(this).addClass('jNiceHidden').wrap('<span class="jNiceWrapper"></span>');
 		var $input = $(this).wrap('<span class="jNiceWrapper"></span>');
-		var $wrapper = $input.parent().append('<span class="jNiceCheckbox"></span>');
+		if($(this).hasClass('noperm')) {
+			var $wrapper = $input.parent().append('<span class="jNiceCheckbox noperm"></span>');
+		} else {
+			var $wrapper = $input.parent().append('<span class="jNiceCheckbox"></span>');
+		}
 		/* Click Handler */
 		var $a = $wrapper.find('.jNiceCheckbox').click(function(){
 				var $a = $(this);
+				if($(this).hasClass('noperm')) {
+					return false;
+				}
 				var input = $a.siblings('input')[0];
 				if (input.checked===true){
 					input.checked = false;
 					$a.removeClass('jNiceChecked');
 					$("#donedate_"+input.value).slideUp('slow');
-					
 				}
 				else {
 					input.checked = true;

@@ -11,25 +11,25 @@ class ProjectsModel extends Model {
 	  if($sort == 0) {
 		  $sortstatus = $this->getSortStatus("folder-sort-status");
 		  if(!$sortstatus) {
-		  	$order = "order by title";
+		  	$order = "order by a.title";
 			$sortcur = '1';
 		  } else {
 			  switch($sortstatus) {
 				  case "1":
-				  		$order = "order by title";
+				  		$order = "order by a.title";
 						$sortcur = '1';
 				  break;
 				  case "2":
-				  		$order = "order by title DESC";
+				  		$order = "order by a.title DESC";
 						$sortcur = '2';
 				  break;
 				  case "3":
 				  		$sortorder = $this->getSortOrder("folder-sort-order");
 				  		if(!$sortorder) {
-						  	$order = "order by title";
+						  	$order = "order by a.title";
 							$sortcur = '1';
 						  } else {
-							$order = "order by field(id,$sortorder)";
+							$order = "order by field(a.id,$sortorder)";
 							$sortcur = '3';
 						  }
 				  break;	
@@ -38,28 +38,32 @@ class ProjectsModel extends Model {
 	  } else {
 		  switch($sort) {
 				  case "1":
-				  		$order = "order by title";
+				  		$order = "order by a.title";
 						$sortcur = '1';
 				  break;
 				  case "2":
-				  		$order = "order by title DESC";
+				  		$order = "order by a.title DESC";
 						$sortcur = '2';
 				  break;
 				  case "3":
 				  		$sortorder = $this->getSortOrder("folder-sort-order");
 				  		if(!$sortorder) {
-						  	$order = "order by title";
+						  	$order = "order by a.title";
 							$sortcur = '1';
 						  } else {
-							$order = "order by field(id,$sortorder)";
+							$order = "order by field(a.id,$sortorder)";
 							$sortcur = '3';
 						  }
 				  break;	
 			  }
 	  }
 	  
-		$q ="select id, title from " . CO_TBL_PROJECTS_FOLDERS . " where status='0' and bin = '0' " . $order;
-	
+		if(!$session->isSysadmin()) {
+			$q ="select a.id, a.title from " . CO_TBL_PROJECTS_FOLDERS . " as a where a.status='0' and a.bin = '0' and (SELECT count(*) FROM co_projects_access as b, co_projects as c WHERE (b.admins REGEXP '[[:<:]]" . $session->uid . "[[:>:]]' or b.guests REGEXP '[[:<:]]" . $session->uid . "[[:>:]]') and c.projectfolder=a.id and b.pid=c.id) > 0";
+		} else {
+			$q ="select a.id, a.title from " . CO_TBL_PROJECTS_FOLDERS . " as a where a.status='0' and a.bin = '0' " . $order;
+		}
+		
 	  $this->setSortStatus("folder-sort-status",$sortcur);
       $result = mysql_query($q, $this->_db->connection);
 	  $folders = "";
@@ -75,7 +79,12 @@ class ProjectsModel extends Model {
 		  
 	  }
 	  
-	  $arr = array("folders" => $folders, "sort" => $sortcur);
+	  $access = "guest";
+	  if($session->isSysadmin()) {
+		  $access = "sysadmin";
+	  }
+	  
+	  $arr = array("folders" => $folders, "sort" => $sortcur, "access" => $access);
 	  
 	  return $arr;
    }
@@ -106,10 +115,19 @@ class ProjectsModel extends Model {
 		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
 		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
 		
+		$array["canedit"] = true;
+		if(!$session->isSysadmin()) {
+			$array["canedit"] = false;
+		}
+		
 		$folder = new Lists($array);
 		
 		// get project details
-		$q = "SELECT a.title,a.id,a.management, (SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as startdate ,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_PROJECTS . " as a where a.projectfolder='$id' and a.bin='0'";
+		$access="";
+		if(!$session->isSysadmin()) {
+			$access = " and a.id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
+	  	}
+		$q = "SELECT a.title,a.id,a.management, (SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as startdate ,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_PROJECTS . " as a where a.projectfolder='$id' and a.bin='0'" . $access;
 
 		//$q = "select a.title,a.id,a.access,a.status,(SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " WHERE phaseid=a.id) as enddate from " . CO_TBL_PHASES . " as a where a.pid = '$id' and a.bin != '1' order by startdate";
 		$result = mysql_query($q, $this->_db->connection);
@@ -125,7 +143,12 @@ class ProjectsModel extends Model {
 			$projects[] = new Lists($project);
 	  	}
 		
-		$arr = array("folder" => $folder, "projects" => $projects);
+		$access = "guest";
+		  if($session->isSysadmin()) {
+			  $access = "sysadmin";
+		  }
+		
+		$arr = array("folder" => $folder, "projects" => $projects, "access" => $access);
 		return $arr;
    }
 
@@ -215,8 +238,7 @@ class ProjectsModel extends Model {
 		
 		$access = "";
 		 if(!$session->isSysadmin()) {
-			//$access = " and id IN (" . implode(',', $session->canView) . ") ";
-			$access = " and id IN (" . implode(',', $session->canAccess) . ") ";
+			$access = " and id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
 		  }
 		
 		switch($status) {
@@ -243,7 +265,45 @@ class ProjectsModel extends Model {
 		$title = mysql_result($result,0);
 		return $title;
    }
-   
+
+
+   	function getProjectTitleFromIDs($array){
+		//$string = explode(",", $string);
+		$total = sizeof($array);
+		$data = '';
+		
+		if($total == 0) { 
+			return $data; 
+		}
+		
+		// check if project is available and build array
+		$arr = array();
+		foreach ($array as &$value) {
+			$q = "SELECT id,title FROM " . CO_TBL_PROJECTS . " where id = '$value' and bin='0'";
+			//$q = "SELECT id, firstname, lastname FROM ".CO_TBL_USERS." where id = '$value' and bin='0'";
+			$result = mysql_query($q, $this->_db->connection);
+			if(mysql_num_rows($result) > 0) {
+				while($row = mysql_fetch_assoc($result)) {
+					$arr[$row["id"]] = $row["title"];		
+				}
+			}
+		}
+		$arr_total = sizeof($arr);
+		
+		// build string
+		$i = 1;
+		foreach ($arr as $key => &$value) {
+			$data .= $value;
+			if($i < $arr_total) {
+				$data .= ', ';
+			}
+			$data .= '';	
+			$i++;
+		}
+		return $data;
+   }
+
+
    	function getProjectField($id,$field){
 		global $session;
 		$q = "SELECT $field FROM " . CO_TBL_PROJECTS . " where id = '$id'";
@@ -258,6 +318,7 @@ class ProjectsModel extends Model {
    */ 
    function getProjectList($id,$sort) {
       global $session;
+	  
 	  if($sort == 0) {
 		  $sortstatus = $this->getSortStatus("project-sort-status",$id);
 		  if(!$sortstatus) {
@@ -310,8 +371,7 @@ class ProjectsModel extends Model {
 	  
 	  $access = "";
 	  if(!$session->isSysadmin()) {
-	  	//$access = " and id IN (" . implode(',', $session->canView) . ") ";
-		$access = " and id IN (" . implode(',', $session->canAccess) . ") ";
+		$access = " and id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
 	  }
 	  $q ="select id,title,status from " . CO_TBL_PROJECTS . " where projectfolder='$id' and bin = '0' " . $access . $order;
 
@@ -321,6 +381,14 @@ class ProjectsModel extends Model {
 	  while ($row = mysql_fetch_array($result)) {
 		foreach($row as $key => $val) {
 			$array[$key] = $val;
+			if($key == "id") {
+				if($this->getProjectAccess($val) == "guest") {
+					$array["style"] = ' style ="color: #000;"';
+				} else {
+					$array["style"] = '';
+				}
+			}
+			
 		}
 		
 		// status
@@ -383,13 +451,21 @@ class ProjectsModel extends Model {
 			break;
 		}
 		
-		// get user perms
-		$array["edit"] = "1";
+		$access = $this->getProjectAccess($id);
+		$array["canedit"] = false;
+		if($access == "sysadmin" || $access == "admin") {
+			$array["canedit"] = true;
+		}
 		
 		$project = new Lists($array);
 		
+		$sql="";
+		if($access == "guest") {
+			$sql = " and a.access = '1' ";
+		}
+		
 		// get phase details
-		$q = "select a.title,a.id,a.access,a.status,(SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " WHERE phaseid=a.id) as enddate from " . CO_TBL_PHASES . " as a where a.pid = '$id' and a.bin != '1' order by startdate";
+		$q = "select a.title,a.id,a.access,a.status,(SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " WHERE phaseid=a.id) as enddate from " . CO_TBL_PHASES . " as a where a.pid = '$id' and a.bin != '1' " . $sql . " order by startdate";
 		$result = mysql_query($q, $this->_db->connection);
 	  	$phases = "";
 	  	while ($row = mysql_fetch_array($result)) {
@@ -402,7 +478,7 @@ class ProjectsModel extends Model {
 	  	}
 		// generate phase numbering
 		$num = "";
-		$qn = "select a.id,(SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " WHERE phaseid=a.id) as startdate from " . CO_TBL_PHASES . " as a where a.pid = '$id' and a.bin != '1' order by startdate";
+		$qn = "select a.id,(SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " WHERE phaseid=a.id) as startdate from " . CO_TBL_PHASES . " as a where a.pid = '$id' and a.bin != '1' " . $sql . " order by startdate";
 		$resultn = mysql_query($qn, $this->_db->connection);
 		$i = 1;
 		while ($rown = mysql_fetch_array($resultn)) {
@@ -412,7 +488,7 @@ class ProjectsModel extends Model {
 		
 		$sendto = $this->getSendtoDetails("projects",$id);
 		
-		$arr = array("project" => $project, "phases" => $phases, "num" => $num, "sendto" => $sendto);
+		$arr = array("project" => $project, "phases" => $phases, "num" => $num, "sendto" => $sendto, "access" => $access);
 		return $arr;
    }
 
@@ -692,6 +768,7 @@ class ProjectsModel extends Model {
 		$str .= '</div>';	
 		return $str;
 	 }
+
 
 
 	// STATISTIKEN
@@ -1234,6 +1311,53 @@ class ProjectsModel extends Model {
 		return $arr;
    }
 
+
+	// User Access
+	function getEditPerms($id) {
+		global $session;
+		$perms = array();
+		$q = "SELECT pid FROM co_projects_access where admins REGEXP '[[:<:]]" . $id . "[[:>:]]'";
+      	$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+			$perms[] = $row["pid"];
+		}
+		return $perms;
+   }
+
+
+   function getViewPerms($id) {
+		global $session;
+		$perms = array();
+		$q = "SELECT pid FROM co_projects_access where guests REGEXP '[[:<:]]" . $id. "[[:>:]]'";
+      	$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+			$perms[] = $row["pid"];
+		}
+		return $perms;
+   }
+
+
+   function canAccess($id) {
+	   global $session;
+	   return array_merge($this->getViewPerms($id),$this->getEditPerms($id));
+   }
+
+
+   function getProjectAccess($pid) {
+		global $session;
+		$access = "";
+		if(in_array($pid,$this->getViewPerms($session->uid))) {
+			$access = "guest";
+		}
+		if(in_array($pid,$this->getEditPerms($session->uid))) {
+			$access = "admin";
+		}
+		if($session->isSysadmin()) {
+			$access = "sysadmin";
+		}
+		return $access;
+   }
+   
 
 }
 

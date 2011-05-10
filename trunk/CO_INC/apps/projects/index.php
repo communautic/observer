@@ -2,6 +2,7 @@
 include_once(CO_INC . "/classes/ajax_header.inc");
 include_once(CO_INC . "/model.php");
 include_once(CO_INC . "/controller.php");
+
 foreach($controller->applications as $app => $display) {
 	include_once(CO_INC . "/apps/".$app."/config.php");
 	include_once(CO_INC . "/apps/".$app."/lang/" . $session->userlang . ".php");

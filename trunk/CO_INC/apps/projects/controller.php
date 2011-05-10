@@ -6,6 +6,7 @@ class Projects extends Controller {
 
 	// get all available apps
 	function __construct($name) {
+			global $session;
 			//parent::__construct();
 			$this->application = $name;
 			$this->form_url = "apps/$name/";
@@ -13,6 +14,12 @@ class Projects extends Controller {
 			$this->modules = $this->getModules($this->application);
 			$this->num_modules = sizeof((array)$this->modules);
 			$this->binDisplay = true;
+			
+			if (!$session->isSysadmin()) {
+				$this->canView = $this->model->getViewPerms($session->uid);
+				$this->canEdit = $this->model->getEditPerms($session->uid);
+				$this->canAccess = array_merge($this->canView,$this->canEdit);
+			}
 	}
 
 
@@ -25,18 +32,28 @@ class Projects extends Controller {
 			$data["html"] = ob_get_contents();
 		ob_end_clean();
 		$data["sort"] = $arr["sort"];
+		$data["access"] = $arr["access"];
 		return $system->json_encode($data);
 	}
 
 
 	function getFolderDetails($id) {
-		global $lang;
+		global $lang, $system;
 		if($arr = $this->model->getFolderDetails($id)) {
 			$folder = $arr["folder"];
 			$projects = $arr["projects"];
-				include 'view/folder_edit.php';
+			ob_start();
+			include 'view/folder_edit.php';
+			$data["html"] = ob_get_contents();
+			ob_end_clean();
+			$data["access"] = $arr["access"];
+			return $system->json_encode($data);
 		} else {
+			ob_start();
 			include CO_INC .'/view/default.php';
+			$data["html"] = ob_get_contents();
+			ob_end_clean();
+			return $system->json_encode($data);
 		}
 	}
 
@@ -133,13 +150,18 @@ class Projects extends Controller {
 
 
 	function getProjectDetails($id) {
-		global $lang;
+		global $lang, $system;
 		if($arr = $this->model->getProjectDetails($id)) {
 			$project = $arr["project"];
 			$phases = $arr["phases"];
 			$num = $arr["num"];
 			$sendto = $arr["sendto"];
-			include 'view/project_edit.php';
+			ob_start();
+				include 'view/project_edit.php';
+				$data["html"] = ob_get_contents();
+			ob_end_clean();
+			$data["access"] = $arr["access"];
+			return $system->json_encode($data);
 		}
 		else {
 			include CO_INC .'/view/default.php';
@@ -409,7 +431,12 @@ class Projects extends Controller {
 	}
 	
 	
-
+	// User Access
+	function isAdmin(){
+	  global $session;
+	  $canEdit = $this->model->getEditPerms($session->uid);
+	  return !empty($canEdit);
+   }
 
 }
 

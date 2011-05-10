@@ -30,3 +30,12 @@ input[type=checkbox] { margin: 0; padding: 0; border: 0;}
 #System { margin-top: 106px; display: none; }
 .popup { position: absolute; width: 255px; border: 1px solid #333; background-color: #f9ff7f; height: 80px;}
 .popup-inner { padding: 10px;}
+
+#top-grey-bar { position: absolute; top: 128px; left:0; height: 144px; width: 100%; background-color: #000;  z-index: 2;}
+#fl-top-green-bar { position: absolute; top: 288px; left:0; height: 24px; width: 100%; background-color: #82aa0a;  z-index: 2;}
+#fl-mid-green-bar { position: absolute; top: 369px; left:0; height: 24px; width: 100%; background-color: #82aa0a;  z-index: 2;}
+#fl-bot-green-bar { position: absolute; top: 448px; left:0; height: 24px; width: 100%; background-color: #82aa0a;  z-index: 2;}
+#fl-bot-grey-bar { position: absolute; top: 488px; left:0; height: 24px; width: 100%; background-color: #000;  z-index: 2;}
+
+.fl-bar-outer-top { height: 159px; color:#fff; }
+.fl-bar-outer { height: 80px; }

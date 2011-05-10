@@ -1,8 +1,12 @@
 <?php
 include_once(CO_INC . "/classes/session.php");
 if(!$session->logged_in){
-include(CO_INC . "/login/login.php");
-exit();
+	include(CO_INC . "/login/login.php");
+	exit();
+}
+if($session->pwd_pick != 1) {
+	include(CO_INC . "/login/firstlogin.php");
+	exit();
 }
 include_once(CO_INC . "/model.php");
 include_once(CO_INC . "/controller.php");
@@ -19,6 +23,7 @@ foreach($controller->applications as $app => $display) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><?php echo $lang["APPLICATION_NAME"];?></title>
+<link href="<?php echo CO_FILES;?>/img/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 <link href="<?php echo CO_FILES;?>/css/reset.css" rel="stylesheet" type="text/css" media="screen,projection" />
 <link href="<?php echo CO_FILES;?>/css/styles.css" rel="stylesheet" type="text/css" media="screen,projection" />
 <link href="<?php echo CO_FILES;?>/css/content.css" rel="stylesheet" type="text/css" media="screen,projection" />
@@ -36,9 +41,8 @@ foreach($controller->applications as $app => $display) {
 var num_apps = <?php echo($num_apps);?>;
 var co_files = '<?php echo CO_FILES;?>';
 </script>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js" type="text/javascript"></script>
-<!--<script type="text/javascript" src="tiny_mce/jquery.tinymce.js"></script>-->
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/jquery-ui.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.6.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/datejs/date.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/datejs/de-AT.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/datejs/time.js"></script>

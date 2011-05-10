@@ -67,6 +67,14 @@ function contactFormProcess(formData, form, poformOptions) {
 	} else {
 		formData[formData.length] = { "name": "lastname", "value": title };
 	}
+	
+	var email = $("#email").fieldValue();
+	var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+	if(email != "" && reg.test(email) == false) {
+		$.prompt(ALERT_NO_VALID_EMAIL, {callback: setTitleFocus});
+		return false;
+	}
+	
 	formData[formData.length] = processString('lang');
 	formData[formData.length] = processString('timezone');
 }
@@ -131,21 +139,12 @@ function sendGroup() {
 }
 
 function sendContactResponse() {
-	//var id = $("#projects2 .active-link").attr("rel");
-	//$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=getSendtoDetails&id="+id, success: function(html){
-		//$("#project_sendto").html(html);
-		$("#modalDialogForward").dialog('close');
-		//}
-	//});
+	$("#modalDialogForward").dialog('close');
 }
 
+
 function sendGroupResponse() {
-	//var id = $("#projects2 .active-link").attr("rel");
-	//$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=getSendtoDetails&id="+id, success: function(html){
-		//$("#project_sendto").html(html);
-		$("#modalDialogForward").dialog('close');
-		//}
-	//});
+	$("#modalDialogForward").dialog('close');
 }
 
 
@@ -207,6 +206,7 @@ function duplicateContact() {
 		}
 	});
 }
+
 
 function newGroup() {
 	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/contacts&request=newGroup", cache: false, success: function(data){
@@ -322,13 +322,13 @@ function binGroup() {
 
 
 function contactsActions(status) {
-	/*	0= new		1= print	2= send	3 =vcard  4= duplicate		5=delete */
+	/*	0= new		1= print	2= send	3 =vcard  4= duplicate	5 = access	6=delete */
 	switch(status) {
 		case 0: 	actions = ['0']; break;
-		case 1: 	actions = ['0','1','2','3','4','5']; break; // contact details
+		case 1: 	actions = ['0','1','2','3','4','5','6']; break; // contact details
 		case 2: 	actions = ['1']; break;   					// just save
 		case 3: 	actions = ['0']; break;   					// just new
-		case 4: 	actions = ['0','5']; break; // all
+		case 4: 	actions = ['0','6']; break; // all
 		default: 	actions = [];  								// none
 	}
 	$('#contactsActions > li span').each( function(index) {
@@ -398,6 +398,21 @@ function sortDragContact(order) {
 
 
 function dialogContact(offset,request,field,append,title,sql) {
+	switch(request) {
+		case "getAccessDialog":
+		if($('#email').val() == "") {
+			$.prompt(ALERT_NO_EMAIL);
+		return false;
+		}
+	$.ajax({ type: "GET", url: "/", data: 'path=apps/contacts&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
+				$("#modalDialog").html(html);
+				$("#modalDialog").dialog('option', 'position', offset);
+				$("#modalDialog").dialog('option', 'title', title);
+				$("#modalDialog").dialog('open');
+				}
+			});
+		break;
+		default:
 	$.ajax({ type: "GET", url: "/", data: 'path=apps/contacts&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
 			$("#modalDialog").html(html);
 			$("#modalDialog").dialog('option', 'position', offset);
@@ -405,6 +420,7 @@ function dialogContact(offset,request,field,append,title,sql) {
 			$("#modalDialog").dialog('open');
 			}
 		});
+	}
 }
 	
 
@@ -584,16 +600,21 @@ $(document).ready(function() {
 	// function to add selection to list
 	function log(field,id,value) {
 		closedialog = 0;
-		if($("#"+field).html() != "") {
-			$("#"+field+" .listmember:visible:last").append(", ");
-		}
 		var html = '<span class="listmember-outer"><a class="listmember" uid="' + id + '" field="'+field+'">' + value + '</a>';
-		$("#"+field).append(html);
 		var obj = getCurrentModule();
-		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
-		
-		// save to lastused
-		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=saveLastUsedContacts&id="+id});
+		if (obj.name == "access") {
+			insertContactAccess(field,id,value,html);
+		} else {
+			if($("#"+field).html() != "") {
+				$("#"+field+" .listmember:visible:last").append(", ");
+			}
+			$("#"+field).append(html);
+			var obj = getCurrentModule();
+			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+			
+			// save to lastused
+			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=saveLastUsedContacts&id="+id});
+		}
 	}
 	
 	function logGroup(field,id,value) {
@@ -674,72 +695,264 @@ $(document).ready(function() {
 		});
 	});
 	
+	function insertContactEmail(field,cid,name,html) {
+		//alert("check email");
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/contacts&request=getContactDetailsArray&id="+cid, success: function(data){
+				if(data.email == "") {
+					$.prompt(name + ' ' + ALERT_SENDTO_EMAIL);
+				} else {
+					if($("#"+field).html() != "") {
+						$("#"+field+" .listmember:visible:last").append(", ");
+					}
+					$("#"+field).append(html);
+					var obj = getCurrentModule();
+					$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+					// save to lastused
+					$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=saveLastUsedContacts&id="+cid});		
+				}
+			}
+		});
+	}
+	
+	function insertGroupEmail(field,gid) {
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/contacts&request=getGroupMemberDetails&id="+gid, success: function(data){
+			var cid;
+			var html;
+			var name;
+			var dia = 0;
+			var txt = "";
+			for(var i=0; i<data.length; i++) {
+				cid = data[i].id;
+				name = data[i].name;
+				html = '<span class="listmember-outer"><a class="listmember" uid="' + cid + '" field="'+field+'">' + name + '</a>';
+				if(data[i].email == "") {
+					dia = 1;
+					txt += name + ' ' + ALERT_SENDTO_EMAIL + '<br /><div style="height: 10px; border-bottom: 1px solid #ccc"></div>';
+
+				} else {
+							if($("#"+field).html() != "") {
+								$("#"+field+" .listmember:visible:last").append(", ");
+							}
+							$("#"+field).append(html);
+							var obj = getCurrentModule();
+							$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+
+				}
+			}//loop end
+
+			if(dia == 1) {
+				$("#modalDialog").dialog('close');
+				$.prompt(txt);
+			}	
+			} 
+		});
+	}
+
+
+	function insertContactAccess(field,cid,name,html) {
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/contacts&request=getContactDetailsArray&id="+cid, success: function(data){
+			//alert(data.username);
+			if(data.username == "") {
+				$("#modalDialog").dialog('close');
+				if(data.email == "") {
+					$.prompt(name + ' ' + ALERT_SENDTO_EMAIL);
+				} else {
+				
+				$.prompt(name + ' ' + ALERT_ACCESS_CONTACT_NOACCESSCODES,{ 
+				buttons:{Ja:true, Nein:false},
+				callback: function(v,m,f){		
+					if(v){
+						$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=generateAccess&id=" + cid, cache: false, success: function(data){
+							if($("#"+field).html() != "") {
+								$("#"+field+" .listmember:visible:last").append(", ");
+							}
+							$("#"+field).append(html);
+							var obj = getCurrentModule();
+							$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+									
+							// save to lastused
+							$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=saveLastUsedContacts&id="+cid});
+							}
+						});
+						} 
+					}
+				});
+				}
+			} else {
+					// maybe it'S a sysadmin
+				if(data.userlevel == 1) {
+					$("#modalDialog").dialog('close');
+					$.prompt(name + " " + ALERT_ACCESS_IS_SYSADMIN);
+				} else {
+					var insert = 1;
+					// check if user is in other field
+					if(field == 'admins') {
+						$('#guests .listmember:visible').each(function() {
+							if($(this).attr('uid') == cid) {
+								$("#modalDialog").dialog('close');
+								insert = 0;
+								$.prompt(name + " " + ALERT_ACCESS_IS_GUEST);
+							}
+						});
+					} else {
+						$('#admins .listmember:visible').each(function() {
+							if($(this).attr('uid') == cid) {
+								$("#modalDialog").dialog('close');
+								insert = 0;
+								$.prompt(name + " " + ALERT_ACCESS_IS_ADMIN);
+							}
+						});
+						
+					}
+					if(insert == 1) {
+						if($("#"+field).html() != "") {
+							$("#"+field+" .listmember:visible:last").append(", ");
+						}
+						$("#"+field).append(html);
+						var obj = getCurrentModule();
+						$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+								
+						// save to lastused
+						$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=saveLastUsedContacts&id="+cid});
+					}
+				}
+			}
+			}
+		});
+	}
+	
+
+	$(".addAccessFromGroup").live('click',function(e) {
+		var field = $(this).attr("field");
+		var name = $(this).attr("name");
+		var cid = $(this).attr("cid");
+		
+		var html = '<span class="listmember-outer"><a class="listmember" uid="' + cid + '" field="'+field+'">' + name + '</a>';
+		var cid
+		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=generateAccess&id=" + cid, cache: false, success: function(data){
+			if($("#"+field).html() != "") {
+				$("#"+field+" .listmember:visible:last").append(", ");
+			}
+			$("#"+field).append(html);
+			var obj = getCurrentModule();
+			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+			}
+		});
+	return false;
+	});
+	
+
+	function insertGroupAccess(field,gid) {
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/contacts&request=getGroupMemberDetails&id="+gid, success: function(data){
+			var cid;
+			var html;
+			var name;
+			var dia = 0;
+			var txt = "";
+			for(var i=0; i<data.length; i++) {
+				cid = data[i].id;
+				name = data[i].name;
+				html = '<span class="listmember-outer"><a class="listmember" uid="' + cid + '" field="'+field+'">' + name + '</a>';
+				if(data[i].username == "") {
+					dia = 1;
+					if(data[i].email == "") {
+						txt += name + ' ' + ALERT_SENDTO_EMAIL + '<br /><div style="height: 10px; border-bottom: 1px solid #ccc"></div>';
+					} else {
+						txt += name + ' ' + ALERT_ACCESS_GROUP_NOACCESSCODES + '<button value="true" class="addAccessFromGroup jqidefaultbutton" field="'+field+'" cid="'+cid+'" name="'+name+'">' + ALERT_ACCESS_GROUP_NOACCESSCODES_SEND + '</button><br /><div style="height: 10px; border-bottom: 1px solid #ccc"></div>';
+					}
+				} else {
+				// maybe it'S a sysadmin
+					if(data[i].userlevel == 1) {
+						dia = 1;
+						txt += name + ' ' + ALERT_ACCESS_IS_SYSADMIN + '<br /><div style="height: 10px; border-bottom: 1px solid #ccc"></div>';
+					} else {
+						var insert = 1;
+						// check if user is in other field
+						if(field == 'admins') {
+							$('#guests .listmember:visible').each(function() {
+								if($(this).attr('uid') == cid) {
+									dia = 1;
+									insert = 0;
+									txt += name + ' ' + ALERT_ACCESS_IS_GUEST + '<br /><div style="height: 10px; border-bottom: 1px solid #ccc"></div>';
+								}
+							});
+						} else {
+							$('#admins .listmember:visible').each(function() {
+								if($(this).attr('uid') == cid) {
+									dia = 1;
+									insert = 0;
+									txt += name + ' ' + ALERT_ACCESS_IS_ADMIN + '<br /><div style="height: 10px; border-bottom: 1px solid #ccc"></div>';
+								}
+							});
+						}
+						if(insert == 1) {
+							if($("#"+field).html() != "") {
+								$("#"+field+" .listmember:visible:last").append(", ");
+							}
+							$("#"+field).append(html);
+							var obj = getCurrentModule();
+							$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+						}
+					}
+				}
+			}//loop end
+			if(dia == 1) {
+				$("#modalDialog").dialog('close');
+				$.prompt(txt);
+			}	
+			} 
+		});
+	}
+
+
 	$('a.insertContactfromDialog').livequery('click',function() {
 		var field = $(this).attr("field");
 		var append = $(this).attr("append");
 		var cid = $(this).attr("cid");
 		var name = $(this).html();
 		var html = '<span class="listmember-outer"><a class="listmember" uid="' + cid + '" field="'+field+'">' + name + '</a>';
-
-		if($("#"+field).html() != "") {
-			$("#"+field+" .listmember:visible:last").append(", ");
-		}
-		$("#"+field).append(html);
 		var obj = getCurrentModule();
-		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
-				
-		// save to lastused
-		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=saveLastUsedContacts&id="+cid});
-
+		if (obj.name == "access") {
+			insertContactAccess(field,cid,name,html);																																
+		} else if (field == "to" || field == "cc"){
+			insertContactEmail(field,cid,name,html);	
+		} else {
+			if($("#"+field).html() != "") {
+				$("#"+field+" .listmember:visible:last").append(", ");
+			}
+			$("#"+field).append(html);
+			var obj = getCurrentModule();
+			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+					
+			// save to lastused
+			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=saveLastUsedContacts&id="+cid});
+		}
 		return false;
 	});
-	
+
+
 	$('a.insertGroupfromDialog').livequery('click',function() {
 		var field = $(this).attr("field");
 		var append = $(this).attr("append");
 		var gid = $(this).attr("gid");
+		var obj = getCurrentModule();
+		if (obj.name == "access") {
+			insertGroupAccess(field,gid);																																
+		} else if (field == "to" || field == "cc"){
+			insertGroupEmail(field,gid);	
+		} else {
 		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getUsersInGroupDialog&id="+gid+"&field="+field, success: function(data){
-			if(append == 0) {
-				$("#"+field).html(data);
-				$("#modalDialog").dialog('close');
-				var obj = getCurrentModule();
-				$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
-			} else {
-				if($("#"+field).html() != "") {
-					$("#"+field+" .listmember:visible:last").append(", ");
-				}
-					$("#"+field).append(data);
-				}
-				var obj = getCurrentModule();
-				$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+			if($("#"+field).html() != "") {
+				$("#"+field+" .listmember:visible:last").append(", ");
+			}
+				$("#"+field).append(data);
+			var obj = getCurrentModule();
+			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 			}
 		});
+		}
 		return false;
 	});
-	
-
-	/*$('a.insertGroupfromDialog').livequery('click',function() {
-		var field = $(this).attr("field");
-		var append = $(this).attr("append");
-		var gid = $(this).attr("gid");
-		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getUsersInGroupDialog&id="+gid+"&field="+field, success: function(data){
-			if(append == 0) {
-				$("#"+field).html(data);
-				$("#modalDialog").dialog('close');
-				var obj = getCurrentModule();
-				$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
-			} else {
-				if($("#"+field).html() != "") {
-					$("#"+field+" .listmember:visible:last").append(", ");
-				}
-					$("#"+field).append(data);
-				}
-				var obj = getCurrentModule();
-				$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
-			}
-		});
-		return false;
-	});*/
 
 
 	$('.append-custom-text').livequery('click',function() {
@@ -810,6 +1023,66 @@ $(document).ready(function() {
 	});
 
 
+	$('#actionAccess').live("click", function(){
+		var id = $("#contacts1 .active-link:visible").attr("rel");
+		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=generateAccess&id=" + id, cache: false, success: function(data){
+			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getContactDetails&id="+id, success: function(html){
+				$("#contacts-right").html(html);
+				contactsInnerLayout.initContent('center');
+				}
+			});
+			$("#modalDialog").dialog('close');
+			}																																			
+		});
+		return false;
+	});
+
+
+	$('#actionSysadmin').live("click", function(){
+		var id = $("#contacts1 .active-link:visible").attr("rel");
+		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=setSysadmin&id=" + id, cache: false, success: function(data){	
+			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getContactDetails&id="+id, success: function(html){
+				$("#contacts-right").html(html);
+				contactsInnerLayout.initContent('center');
+				}
+			});
+			$("#modalDialog").dialog('close');
+			}																																			
+		});
+		return false;
+	});
+
+
+	$('#actionAccessRemove').live("click", function(){
+		var id = $("#contacts1 .active-link:visible").attr("rel");
+		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=removeAccess&id=" + id, cache: false, success: function(data){
+			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getContactDetails&id="+id, success: function(html){
+				$("#contacts-right").html(html);
+				contactsInnerLayout.initContent('center');
+				}
+			});
+			$("#modalDialog").dialog('close');
+			}
+		});
+		return false;
+	});
+
+
+	$('#actionSysadminRemove').live("click", function(){
+		var id = $("#contacts1 .active-link:visible").attr("rel");
+		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=removeSysadmin&id=" + id, cache: false, success: function(data){
+			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getContactDetails&id="+id, success: function(html){
+				$("#contacts-right").html(html);
+				contactsInnerLayout.initContent('center');
+				}
+			});
+			$("#modalDialog").dialog('close');
+			}
+		});
+		return false;
+	});
+
+
 	// Recycle bin functions
 	$(".bin-deleteGroup").live('click',function(e) {
 		var id = $(this).attr("rel");
@@ -853,7 +1126,6 @@ $(document).ready(function() {
 				} 
 			}
 		});
-	
 		return false;
 	});
 
@@ -877,7 +1149,6 @@ $(document).ready(function() {
 				} 
 			}
 		});
-	
 		return false;
 	});
 
@@ -901,7 +1172,6 @@ $(document).ready(function() {
 				} 
 			}
 		});
-	
 		return false;
 	});
 

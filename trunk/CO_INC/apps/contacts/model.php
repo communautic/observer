@@ -108,8 +108,11 @@ class ContactsModel extends Model {
 
 	function setGroupDetails($id,$title,$members) {
 		global $session;
+		
+		$now = gmdate("Y-m-d H:i:s");
+		
 		$members = $this->sortUserIDsByName($members);
-		$q = "UPDATE " . CO_CONTACTS_TBL_GROUPS . " set title = '$title', members = '$members' where id='$id'";
+		$q = "UPDATE " . CO_CONTACTS_TBL_GROUPS . " set title = '$title', members = '$members', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			return true;
@@ -205,13 +208,13 @@ class ContactsModel extends Model {
 	}
    
    
-	function getContactTitle($id){
+	/*function getContactTitle($id){
 		global $session;
 		$q = "SELECT title FROM " . CO_TBL_PROJECTS . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$title = mysql_result($result,0);
 		return $title;
-	}
+	}*/
 
 
 	function getContactFieldFromID($id,$field){
@@ -296,7 +299,7 @@ class ContactsModel extends Model {
    
    
 	function getContactDetails($id) {
-		global $session;
+		global $session, $lang;
 		$q = "SELECT * FROM " . CO_TBL_USERS . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if(mysql_num_rows($result) < 1) {
@@ -310,11 +313,50 @@ class ContactsModel extends Model {
 		// dates
 		$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
 		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
+		$array["access_date"] = $this->_date->formatDate($array["access_date"],CO_DATE_FORMAT);
+		$array["sysadmin_date"] = $this->_date->formatDate($array["sysadmin_date"],CO_DATE_FORMAT);
 		
 		// other functions
 		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
 		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
+		$array["access_user"] = $this->_users->getUserFullname($array["access_user"]);
+		$array["sysadmin_user"] = $this->_users->getUserFullname($array["sysadmin_user"]);
 		$array["groups"] = $this->getGroupsByUser($id);
+		
+		$array["access"] = $lang['CONTACTS_ACCESSCODES_NO'];
+		$array["admin"] = "";
+		$array["guest"] = "";
+		$array["option_sysadmin"] = 0;
+		$array["sysadmin"] = $lang['CONTACTS_SYSADMIN_NORIGHTS'];
+		
+		if(!empty($array["username"])) {
+			$array["access"] = sprintf($lang['CONTACTS_ACCESS_ACTIVE'], $array["access_date"], $array["access_user"]);
+			$projectsmodel = new ProjectsModel();
+			$array["admin"] = $projectsmodel->getProjectTitleFromIDs($projectsmodel->getEditPerms($id));
+			$array["guest"] = $projectsmodel->getProjectTitleFromIDs($projectsmodel->getViewPerms($id));
+			$array["access_status"] = 0;
+			$array["option_sysadmin"] = 1;
+		} else {
+			if($array["access_status"] == 1) {
+				$array["access"] = sprintf($lang['CONTACTS_ACCESS_REMOVE'], $array["access_date"], $array["access_user"]);
+			} else {
+				$array["access_status"] = 1;
+			}
+		}
+		
+		if($array["userlevel"] == '0' && $array["sysadmin_status"] == '1') {
+			$array["sysadmin"] = sprintf($lang['CONTACTS_SYSADMIN_REMOVE'], $array["sysadmin_date"], $array["sysadmin_user"]);
+			$array["sysadmin_status"] = '1';
+		} else {
+			$array["sysadmin_status"] = '1';
+		}
+		
+		if($array["userlevel"] == '1') {
+			$array["admin"] = "";
+			$array["guest"] = "";
+			$array["sysadmin"] = sprintf($lang['CONTACTS_SYSADMIN_ACTIVE'], $array["sysadmin_date"], $array["sysadmin_user"]);
+			$array["sysadmin_status"] = '0';
+		}
 		
 		$contact = new Lists($array);
 		return $contact;
@@ -389,6 +431,56 @@ class ContactsModel extends Model {
 			return true;
 		}
 	}
+	
+	function setContactAccessDetails($id, $username, $password) {
+		global $session;
+		$now = gmdate("Y-m-d H:i:s");
+		
+		$pwd = md5($password);
+		
+		$q = "UPDATE " . CO_TBL_USERS . "  set username = '$username', password = '$pwd', access_user = '$session->uid', access_date = '$now', access_status='' where id='$id'";
+		
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+			return true;
+		}
+	}
+	
+	function removeAccess($id) {
+		global $session;
+		$now = gmdate("Y-m-d H:i:s");
+		
+		$q = "UPDATE " . CO_TBL_USERS . "  set username = '', password = '', pwd_pick = '0', access_status = '1', access_user = '$session->uid', access_date = '$now' where id='$id'";
+		
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+			return true;
+		}
+	}
+	
+	function setSysadmin($id) {
+		global $session;
+		$now = gmdate("Y-m-d H:i:s");
+		
+		$q = "UPDATE " . CO_TBL_USERS . "  set userlevel = '1', sysadmin_user = '$session->uid', sysadmin_date = '$now' where id='$id'";
+		
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+			return true;
+		}
+	}
+	
+	function removeSysadmin($id) {
+		global $session;
+		$now = gmdate("Y-m-d H:i:s");
+		
+		$q = "UPDATE " . CO_TBL_USERS . "  set userlevel = '', sysadmin_status = '1', sysadmin_user = '$session->uid', sysadmin_date = '$now' where id='$id'";
+		
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+			return true;
+		}
+	}
    
    
 	function newContact() {
@@ -449,6 +541,15 @@ class ContactsModel extends Model {
 		if ($result) {
 		  	return true;
 		}
+	}
+	
+	
+	function getUserFullname($id){
+		$q = "SELECT id, firstname, lastname FROM ".CO_TBL_USERS." where id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_assoc($result);
+		$user = $row["lastname"] . ' ' . $row["firstname"];
+		return $user;
 	}
 	
    /*function getContactsDialog($request,$field,$append,$title,$sql) {
@@ -603,7 +704,7 @@ class ContactsModel extends Model {
 	}
 	
 	
-	function getUserList($string,$field){
+	function getUserList($string,$field,$sql=""){
 		$users_string = explode(",", $string);
 		$users_total = sizeof($users_string);
 		$users = '';
@@ -615,7 +716,7 @@ class ContactsModel extends Model {
 		// check if user is available and build array
 		$users_arr = array();
 		foreach ($users_string as &$value) {
-			$q = "SELECT id, firstname, lastname FROM ".CO_TBL_USERS." where id = '$value' and bin='0'";
+			$q = "SELECT id, firstname, lastname FROM ".CO_TBL_USERS." where id = '$value' $sql and bin='0'";
 			$result_user = mysql_query($q, $this->_db->connection);
 			if(mysql_num_rows($result_user) > 0) {
 				while($row_user = mysql_fetch_assoc($result_user)) {
@@ -841,6 +942,7 @@ class ContactsModel extends Model {
 		$arr = array("bin" => $bin, "groups" => $groups, "contacts" => $contacts);
 		return $arr;
 	}
+	
 	
 }
 
