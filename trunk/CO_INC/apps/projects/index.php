@@ -84,6 +84,9 @@ if (!empty($_GET['request'])) {
 			}
 			echo($projects->printProjectHandbook($_GET['id'],$t));
 		break;
+		case 'checkinProject':
+			echo($projects->checkinProject($_GET['id']));
+		break;
 		case 'getProjectSend':
 			echo($projects->getProjectSend($_GET['id']));
 		break;

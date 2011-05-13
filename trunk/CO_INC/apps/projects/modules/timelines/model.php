@@ -83,6 +83,7 @@ class TimelinesModel extends ProjectsModel {
 		$today = $now->format('Y-m-d');
 		$project = array();
 		$project["phases"] = array();
+		$perms = $this->getProjectAccess($pid);
 		// get project details
 		//$q = "select title,startdate,enddate,management,team,status from " . CO_TBL_PROJECTS . " where id = '$pid'";
 		$q = "SELECT a.title,a.startdate,a.management,a.team,a.status, (SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_PROJECTS . " as a where a.id = '$pid'";
@@ -178,7 +179,9 @@ class TimelinesModel extends ProjectsModel {
 				"tasks" => $tasks
 			);
 		}
-	  return $project;
+	  //return $project;
+	  	$arr = array("project" => $project, "access" => $perms);
+		return $arr;
 	}
 
 
@@ -189,6 +192,7 @@ class TimelinesModel extends ProjectsModel {
 		$space_between_phases = 2;
 		$height_of_tasks = 10;
 		$space_between_tasks = 8;
+		$perms = $this->getProjectAccess($pid);
 		
 		$project = array();
 		$project["phases"] = array();
@@ -342,7 +346,7 @@ class TimelinesModel extends ProjectsModel {
 					} else {
 						$exists = 0;
 					}
-					if ($exists) { 
+					if ($exists == 1) { 
 						$dep = $key; 
 						$dep_key = $project['tasks'][$key]["dep_key"];
 					}
@@ -432,7 +436,10 @@ class TimelinesModel extends ProjectsModel {
 			);
 			$p++;
 		}
-	  return $project;
+	  //return $project;
+	  		$arr = array("project" => $project, "access" => $perms);
+		return $arr;
+
 	}
 
 
@@ -443,7 +450,8 @@ class TimelinesModel extends ProjectsModel {
 		$day["color"] = "#000";
 		$day["number"] = $this->_date->formatDate($date,"d");
 		if($day["number"] == "01" || ($i == 0 && $day["number"] > 01 && $day["number"] < 28)) {
-			$day["month"] = $this->_date->formatDate($date,"M y");
+			//$day["month"] = $this->_date->formatDate($date,"M y");
+			$day["month"] = utf8_encode(strftime("%b %y",strtotime($date)));
 		}
 		$day["wday"] = $this->_date->formatDate($date,"w");
 		if($day["wday"] == 1) {

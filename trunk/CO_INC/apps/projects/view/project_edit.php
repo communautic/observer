@@ -11,6 +11,14 @@
 <input type="hidden" id="path" name="path" value="<?php echo $this->form_url;?>">
 <input type="hidden" id="poformaction" name="request" value="setProjectDetails">
 <input type="hidden" name="id" value="<?php echo($project->id);?>">
+<?php if($project->showCheckout) { ?>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content" style="background-color: #eb4600">
+	<tr>
+		<td class="tcell-left text11"><span><span>in Bearbeitung</span></span></td>
+		<td class="tcell-right"><div class="itemlist-field">durch <?php echo($project->checked_out_user_text);?></div></td>
+    </tr>
+</table>
+<?php } ?>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 		<td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_DURATION"];?></td>
@@ -91,6 +99,7 @@ if(is_array($phases)) {
 	}
 }
 ?>
+<?php if($project->access != "guest") { ?>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
@@ -104,6 +113,7 @@ if(is_array($phases)) {
 		 } ?></div></td>
     </tr>
 </table>
+<?php } ?>
 </div>
 </div>
 <div>

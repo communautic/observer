@@ -63,7 +63,7 @@ class Session
       }
       /* Update users last active timestamp */
       else{
-         $database->addActiveUser($this->username, $this->time);
+         $database->addActiveUser($this->uid, $this->username, $this->time);
       }
       
       /* Remove inactive visitors from database */
@@ -193,7 +193,7 @@ class Session
       
       /* Insert userid into database and update active users table */
       $database->updateUserField($this->username, "userid", $this->userid);
-      $database->addActiveUser($this->username, $this->time);
+      $database->addActiveUser($this->uid, $this->username, $this->time);
       $database->removeActiveGuest($_SERVER['REMOTE_ADDR']);
 
       /**
@@ -562,6 +562,11 @@ class Session
          $randstr .= chr($randnum+48);
       }
       return $randstr;
+   }
+   
+   function checkUserActive($id) {
+	   global $database;
+	   return $database->checkUserActive($id);
    }
 
 

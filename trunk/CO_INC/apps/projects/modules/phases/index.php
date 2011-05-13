@@ -66,6 +66,9 @@ if (!empty($_GET['request'])) {
 		case 'getSendtoDetails':
 			echo($phases->getSendtoDetails("phases",$_GET['id']));
 		break;
+		case 'checkinPhase':
+			echo($phases->checkinPhase($_GET['id']));
+		break;
 		case 'toggleIntern':
 			echo($phases->toggleIntern($_GET['id'],$_GET['status']));
 		break;

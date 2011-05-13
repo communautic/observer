@@ -60,38 +60,38 @@ foreach($task as $value) {
             <td class="greybg"><?php echo($value->text);?></td>
         </tr>
         <tr>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
+            <td class="tcell-left-short">&nbsp;</td>
+            <td class="short">&nbsp;</td>
             <td><?php echo $lang["GLOBAL_DURATION"];?> <?php echo($value->startdate . " - " . $value->enddate);?>
             </td>
         </tr>
         <?php if(!empty($value->team) || !empty($value->team_ct)) { ?>
         <tr>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
+            <td class="tcell-left-short">&nbsp;</td>
+            <td class="short">&nbsp;</td>
             <td><?php echo $lang["PHASE_TASK_TEAM"];?> <?php echo($value->team . " " . $value->team_ct);?>
             </td>
         </tr>
         <?php } ?>
         <?php if(!empty($value->dependent_title)) { ?>
         <tr>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
+            <td class="tcell-left-short">&nbsp;</td>
+            <td class="short">&nbsp;</td>
             <td><?php echo $lang["PHASE_TASK_DEPENDENT"];?> <?php echo($value->dependent_title);?>
             </td>
         </tr>
         <?php } ?>
         <?php if(!empty($donedate)) { ?>
         <tr>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
+            <td class="tcell-left-short">&nbsp;</td>
+            <td class="short">&nbsp;</td>
             <td><?php echo $lang["PROJECT_STATUS_FINISHED"];?> <?php echo($donedate);?>
             </td>
         </tr>
         <?php } ?>
             <tr>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
+            <td class="tcell-left-short">&nbsp;</td>
+            <td class="short">&nbsp;</td>
             <td>&nbsp;</td>
         </tr>
     </table>
@@ -103,30 +103,30 @@ foreach($task as $value) {
             <td class="greybg"><img src="<?php echo(CO_FILES);?>/img/print/milestone.png" width="18" height="18" /> <?php echo($value->text);?></td>
         </tr>
         <tr>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
+            <td class="tcell-left-short">&nbsp;</td>
+            <td class="short">&nbsp;</td>
             <td><?php echo $lang["PHASE_MILESTONE_DATE"];?> <?php echo($value->startdate);?>
             </td>
         </tr>
         <?php if(!empty($value->dependent_title)) { ?>
         <tr>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
+            <td class="tcell-left-short">&nbsp;</td>
+            <td class="short">&nbsp;</td>
             <td><?php echo $lang["PHASE_TASK_DEPENDENT"];?> <?php echo($value->dependent_title);?>
             </td>
         </tr>
         <?php } ?>
         <?php if(!empty($donedate)) { ?>
         <tr>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
+            <td class="tcell-left-short">&nbsp;</td>
+            <td class="short">&nbsp;</td>
             <td><?php echo $lang["PROJECT_STATUS_FINISHED"];?> <?php echo($donedate);?>
             </td>
         </tr>
         <?php } ?>
         <tr>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
+            <td class="tcell-left-short">&nbsp;</td>
+            <td class="short">&nbsp;</td>
             <td>&nbsp;</td>
         </tr>
     </table>

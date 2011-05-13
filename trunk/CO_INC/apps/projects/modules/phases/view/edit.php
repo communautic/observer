@@ -12,6 +12,14 @@
 <input type="hidden" id="path" name="path" value="<?php echo $this->form_url;?>">
 <input type="hidden" id="poformaction" name="request" value="setDetails">
 <input type="hidden" name="id" value="<?php echo($phase->id);?>">
+<?php if($phase->showCheckout) { ?>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content" style="background-color: #eb4600">
+	<tr>
+		<td class="tcell-left text11"><span><span>in Bearbeitung</span></span></td>
+		<td class="tcell-right"><div class="itemlist-field">durch <?php echo($phase->checked_out_user_text);?></div></td>
+    </tr>
+</table>
+<?php } ?>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 		<td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_DURATION"];?></td>
@@ -72,6 +80,7 @@ foreach($task as $value) {
 	}
  } ?>
 <div id="phasetasks"></div>
+<?php if($phase->perms != "guest") { ?>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
   <tr>
@@ -98,6 +107,7 @@ foreach($task as $value) {
 		 } ?></div></td>
     </tr>
 </table>
+<?php } ?> 
 </form>
 </div>
 </div>

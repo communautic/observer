@@ -206,15 +206,6 @@ class ContactsModel extends Model {
 		}
 		return $i; 
 	}
-   
-   
-	/*function getContactTitle($id){
-		global $session;
-		$q = "SELECT title FROM " . CO_TBL_PROJECTS . " where id = '$id'";
-		$result = mysql_query($q, $this->_db->connection);
-		$title = mysql_result($result,0);
-		return $title;
-	}*/
 
 
 	function getContactFieldFromID($id,$field){
@@ -704,7 +695,7 @@ class ContactsModel extends Model {
 	}
 	
 	
-	function getUserList($string,$field,$sql=""){
+	function getUserList($string, $field, $sql="", $canedit = true){
 		$users_string = explode(",", $string);
 		$users_total = sizeof($users_string);
 		$users = '';
@@ -727,9 +718,15 @@ class ContactsModel extends Model {
 		$users_arr_total = sizeof($users_arr);
 		
 		// build string
+		
+		if($canedit) {
+			$edit = ' edit="1"';
+		} else {
+			$edit = ' edit="0"';
+		}
 		$i = 1;
 		foreach ($users_arr as $key => &$value) {
-			$users .= '<span class="listmember-outer"><a class="listmember" uid="' . $key . '" field="' . $field . '">' . $value;		
+			$users .= '<span class="listmember-outer"><a class="listmember" uid="' . $key . '" field="' . $field . '" ' . $edit . '>' . $value;		
 			if($i < $users_arr_total) {
 				$users .= ', ';
 			}
@@ -778,7 +775,7 @@ class ContactsModel extends Model {
 	}
 
 
-	function getPlaceList($string,$field){
+	function getPlaceList($string,$field,$canedit = true){
 		$users_string = explode(",", $string);
 		$users_total = sizeof($users_string);
 		$users = '';
@@ -801,9 +798,15 @@ class ContactsModel extends Model {
 		$users_arr_total = sizeof($users_arr);
 		
 		// build string
+		if($canedit) {
+			$edit = ' edit="1"';
+		} else {
+			$edit = ' edit="0"';
+		}
+		
 		$i = 1;
 		foreach ($users_arr as $key => &$value) {
-			$users .= '<span class="listmember-outer"><a class="listmember" uid="' . $key . '" field="' . $field . '">' . $value;		
+			$users .= '<span class="listmember-outer"><a class="listmember" uid="' . $key . '" field="' . $field . '" ' . $edit . '>' . $value;		
 			if($i < $users_arr_total) {
 				$users .= ', ';
 			}

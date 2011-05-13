@@ -230,7 +230,24 @@ $(document).ready(function() {
 		z--;
 	});
 	
+	
+	$('a.browseAway').click( function(e) {
+		e.preventDefault();
+		$("#intro").fadeIn();
+		var src = $(this).attr("href");
+		var obj = getCurrentModule();
+		var cid = $('#'+getCurrentApp()+' input[name="id"]').val()
+		obj.checkIn(cid);
+		setTimeout(function() { window.location.href = src; },500)
+	});
+	
+	
 	$('.toggleObservers').click( function() {
+		
+		var obj = getCurrentModule();
+		var cid = $('#'+getCurrentApp()+' input[name="id"]').val()
+		obj.checkIn(cid);
+		
 		var clickobj = $(this);
 		var app = $(this).attr("rel");
 		var zidx = $("#" + app).css('z-index');
@@ -254,6 +271,7 @@ $(document).ready(function() {
 		var inDeCrease = 1; 
 		$('.toggleObservers').removeClass("active-app");
 		clickobj.addClass("active-app");
+
 		$('.app').each(function() { //process each image
 			if($(this).css('z-index') == processZindex) {
 				$(this).animate({ 'top' : direction + $(this).height() + 'px' },'slow', function() { 																				
@@ -339,6 +357,15 @@ $(document).ready(function() {
 		}
 		var obj = getCurrentModule();
 		obj.actionDuplicate();
+		return false;
+	});
+	
+	$('span.actionRefresh').click(function(){
+		if($(this).hasClass("noactive")) {
+			return false;
+		}
+		var obj = getCurrentModule();
+		obj.actionRefresh();
 		return false;
 	});
 

@@ -38,7 +38,11 @@ class Meetings extends Projects {
 			$data["access"] = $arr["access"];
 			return json_encode($data);
 		} else {
-			include CO_INC .'/view/default.php';
+			ob_start();
+				include CO_INC .'/view/default.php';
+				$data["html"] = ob_get_contents();
+			ob_end_clean();
+			return json_encode($data);
 		}
 	}
 
@@ -112,7 +116,11 @@ class Meetings extends Projects {
 		//$to,$from,$fromName,$subject,$body,$attachment
 		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment);
 	}
-
+	
+	function checkinMeeting($id) {
+		return $this->model->checkinMeeting($id);
+	}
+	
 
 	function setDetails($pid,$id,$title,$meetingdate,$start,$end,$location,$location_ct,$participants,$participants_ct,$management,$management_ct,$task_id,$task_title,$task_text,$task,$task_sort,$documents,$meeting_access,$meeting_access_orig,$meeting_status,$meeting_status_date) {
 		if($arr = $this->model->setDetails($pid,$id,$title,$meetingdate,$start,$end,$location,$location_ct,$participants,$participants_ct,$management,$management_ct,$task_id,$task_title,$task_text,$task,$task_sort,$documents,$meeting_access,$meeting_access_orig,$meeting_status,$meeting_status_date)){
@@ -186,6 +194,7 @@ class Meetings extends Projects {
 
 	function addTask($mid,$num,$sort) {
 		$task = $this->model->addTask($mid,$num,$sort);
+		$meeting->canedit = 1;
 		foreach($task as $value) {
 			$checked = '';
 			if($value->status == 1) {

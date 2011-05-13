@@ -108,6 +108,34 @@ class PhasesModel extends ProjectsModel {
 		return $arr;
 	}
 	
+	function checkoutPhase($id) {
+		global $session;
+		
+		$q = "UPDATE " . CO_TBL_PHASES . " set checked_out = '1', checked_out_user = '$session->uid' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		if ($result) {
+			return true;
+		}
+	}
+	
+	
+	function checkinPhase($id) {
+		global $session;
+		
+		$q = "SELECT checked_out_user FROM " . CO_TBL_PHASES . " where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$user = mysql_result($result,0);
+
+		if($user == $session->uid) {
+			$q = "UPDATE " . CO_TBL_PHASES . " set checked_out = '0', checked_out_user = '0' where id='$id'";
+			$result = mysql_query($q, $this->_db->connection);
+		}
+		if ($result) {
+			return true;
+		}
+	}
+	
 	
 	// Get phase list from ids for Tooltips
 	function getPhaseDetails($string,$field){
@@ -161,6 +189,24 @@ class PhasesModel extends ProjectsModel {
 				$array[$key] = $val;
 			}
 		
+		$array["perms"] = $this->getProjectAccess($array["pid"]);
+		$array["canedit"] = false;
+		$array["showCheckout"] = false;
+		$array["checked_out_user_text"] = $this->_contactsmodel->getUserList($array['checked_out_user'],'checked_out_user_text', "", false);
+		if($array["perms"] == "sysadmin" || $array["perms"] == "admin") {
+			if($array["checked_out"] == 1 && $session->checkUserActive($array["checked_out_user"])) {
+				if($array["checked_out_user"] == $session->uid) {
+					$array["canedit"] = true;
+				} else {
+					$array["canedit"] = false;
+					$array["showCheckout"] = true;
+				}
+			} else {
+				$array["canedit"] = $this->checkoutPhase($id);
+			}
+		}
+		
+		
 		// dates
 		$array["today"] = $this->_date->formatDate("now",CO_DATE_FORMAT);
 		$array["startdate"] = $this->_date->formatDate($array["startdate"],CO_DATE_FORMAT);
@@ -179,7 +225,7 @@ class PhasesModel extends ProjectsModel {
 		$array["dependency_exists"] = $this->getDependency($id);
 		$array["projecttitle"] = $this->getProjectTitle($array['pid']);
 		$array["management"] = $this->_contactsmodel->getUserListPlain($this->getProjectField($array['pid'], 'management'));
-		$array["team"] = $this->_contactsmodel->getUserList($array['team'],'team');
+		$array["team"] = $this->_contactsmodel->getUserList($array['team'],'team', "", $array["canedit"]);
 		$array["team_ct"] = empty($array["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['team_ct'];
 		$array["documents"] = $this->_documents->getDocListFromIDs($array["documents"],'documents');
 		
@@ -217,11 +263,14 @@ class PhasesModel extends ProjectsModel {
 			break;
 		}
 		
-		$perms = $this->getProjectAccess($array["pid"]);
+		/*$perms = $this->getProjectAccess($array["pid"]);
 		$array["canedit"] = false;
 		if($perms == "sysadmin" || $perms == "admin") {
 			$array["canedit"] = true;
-		}
+		}*/
+		
+		
+		
 		
 		$phase = new Lists($array);
 		
@@ -238,7 +287,7 @@ class PhasesModel extends ProjectsModel {
 			$tasks["startdate"] = $this->_date->formatDate($tasks["startdate"],CO_DATE_FORMAT);
 			$tasks["enddate"] = $this->_date->formatDate($tasks["enddate"],CO_DATE_FORMAT);
 			$tasks["donedate"] = $this->_date->formatDate($tasks["donedate"],CO_DATE_FORMAT);
-			$tasks["team"] = $this->_contactsmodel->getUserList($tasks['team'],'team');
+			$tasks["team"] = $this->_contactsmodel->getUserList($tasks['team'],'team', "", $array["canedit"]);
 			$tasks["team_ct"] = empty($tasks["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $tasks['team_ct'];
 				
 			$tasks["dependent_title"] = "";
@@ -259,7 +308,7 @@ class PhasesModel extends ProjectsModel {
 		
 		$sendto = $this->getSendtoDetails("phases",$id);
 		
-		$arr = array("phase" => $phase, "task" => $task, "sendto" => $sendto, "access" => $perms);
+		$arr = array("phase" => $phase, "task" => $task, "sendto" => $sendto, "access" => $array["perms"]);
 		return $arr;
 	}
 

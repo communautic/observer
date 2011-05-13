@@ -24,7 +24,42 @@ class Timelines extends Projects {
 	
 	function getDetails($id,$pid) {
 		global $date,$lang;
+		
 		switch($id) {
+			case "1":
+				$arr = $this->model->getBarchartDetails($pid);
+				$project = $arr["project"];
+				ob_start();
+					include('view/barchart.php');
+					$data["html"] = ob_get_contents();
+				ob_end_clean();
+				$data["access"] = $arr["access"];
+				return json_encode($data);
+			break;
+			case "2":
+				$arr = $this->model->getDetails($pid);
+				$project = $arr["project"];
+				ob_start();
+					include('view/schedule.php');
+					$data["html"] = ob_get_contents();
+				ob_end_clean();
+				$data["access"] = $arr["access"];
+				return json_encode($data);
+			break;
+			case "3":
+				$arr = $this->model->getDetails($pid);
+				$project = $arr["project"];
+				ob_start();
+					include('view/psp.php');
+					$data["html"] = ob_get_contents();
+				ob_end_clean();
+				$data["access"] = $arr["access"];
+				return json_encode($data);
+				
+			break;
+		}
+		
+		/*switch($id) {
 			case "1":
 				$data["what"] = $id;
 				$project = $this->model->getBarchartDetails($pid);
@@ -40,7 +75,7 @@ class Timelines extends Projects {
 				$project = $this->model->getDetails($pid);
 				include('view/psp.php');
 			break;
-		}
+		}*/
 	}
 
 

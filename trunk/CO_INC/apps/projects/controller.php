@@ -164,7 +164,11 @@ class Projects extends Controller {
 			return $system->json_encode($data);
 		}
 		else {
-			include CO_INC .'/view/default.php';
+			ob_start();
+				include CO_INC .'/view/default.php';
+				$data["html"] = ob_get_contents();
+			ob_end_clean();
+			return $system->json_encode($data);
 		}
 	}
 
@@ -256,7 +260,10 @@ class Projects extends Controller {
 		}
 		
 	}
-
+	
+	function checkinProject($id) {
+		return $this->model->checkinProject($id);
+	}
 
 	function getProjectSend($id) {
 		global $lang;

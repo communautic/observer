@@ -4,9 +4,14 @@ bin.path = 'apps/bin/';
 bin.resetModuleHeights = binresetModuleHeights;
 bin.usesLayout = true;
 bin.displayname = "Bin";
+bin.actionRefresh = refreshBin;
 bin.actionBin = binBin;
+bin.checkIn = checkInBin;
 bin.modules_height = bin_num_modules*module_title_height;
 
+function refreshBin() {
+	$("#bin1 .active-link").trigger("click");
+}
 
 function binBin() {
 	var id = $("#bin1 .active-link").attr("rel");
@@ -30,9 +35,9 @@ function binBin() {
 }
 
 function binActions(status) {
-	/*	0= delete	*/
+	/*	0= refresh	1= delete	*/
 	switch(status) {
-		case 0: actions = ['0']; break;
+		case 0: actions = ['0','1']; break;
 		//case 0: actions = []; break;
 		default: 	actions = [];  	// none
 	}
@@ -71,7 +76,9 @@ function binresetModuleHeights() {
 	initScrollbar( '#bin .scrolling-content' );
 }
 
-
+function checkInBin() {
+	return true;
+}
 
 
 

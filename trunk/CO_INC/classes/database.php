@@ -214,17 +214,27 @@ class MySQLDB
       $this->num_active_guests = mysql_numrows($result);
    }
    
+   function checkUserActive($id) {
+		$q = "SELECT * FROM ".CO_TBL_ACTIVE_USERS." WHERE uid = '$id'";
+		$result = mysql_query($q, $this->connection);
+		if(mysql_num_rows($result) > 0) {
+			return true;
+		} else {
+			return false;
+		}
+   }
+   
    /**
     * addActiveUser - Updates username's last active timestamp
     * in the database, and also adds him to the table of
     * active users, or updates timestamp if already there.
     */
-   function addActiveUser($username, $time){
+   function addActiveUser($uid,$username, $time){
       $q = "UPDATE ".CO_TBL_USERS." SET timestamp = '$time' WHERE username = '$username'";
       mysql_query($q, $this->connection);
       
       if(!TRACK_VISITORS) return;
-      $q = "REPLACE INTO ".CO_TBL_ACTIVE_USERS." VALUES ('$username', '$time')";
+      $q = "REPLACE INTO ".CO_TBL_ACTIVE_USERS." VALUES ('$uid', '$username', '$time')";
       mysql_query($q, $this->connection);
       $this->calcNumActiveUsers();
    }

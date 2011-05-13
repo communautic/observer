@@ -114,7 +114,7 @@
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><span class="content-nav showDialog" id="accesslink" request="getAccessDialog" field="access" append="0" sql="<?php echo($contact->access_status);?>"><span><?php echo $lang['CONTACTS_ACCESSCODES'];?></span></span></td>
+	  <td class="tcell-left text11"><span class="<?php if($contact->id != $session->uid) { ?>content-nav showDialog<?php } ?>" id="accesslink" request="getAccessDialog" field="access" append="0" sql="<?php echo($contact->access_status);?>"><span><?php echo $lang['CONTACTS_ACCESSCODES'];?></span></span></td>
 	  <td class="tcell-right"><div id="access" class="itemlist-field"><?php echo($contact->access);?></div></td>
 	</tr>
 </table>
@@ -134,11 +134,11 @@
 	</tr>
 </table>
 <?php } ?>
-<?php if($contact->option_sysadmin == 1 && $session->isSysadmin()) { ?>
+<?php if($contact->option_sysadmin == 1) { ?>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><span class="content-nav showDialog" request="getSysadminDialog" field="sysadmin" append="0" sql="<?php echo($contact->sysadmin_status);?>"><span>System Manager</span></span></td>
+	  <td class="tcell-left text11"><span class="<?php if($session->isSysadmin() && $contact->id != $session->uid) { ?>content-nav showDialog<?php } ?>" request="getSysadminDialog" field="sysadmin" append="0" sql="<?php echo($contact->sysadmin_status);?>"><span>System Manager</span></span></td>
 	  <td class="tcell-right"><div id="sysadmin" class="itemlist-field"><?php echo($contact->sysadmin);?></div></td>
 	</tr>
 </table>

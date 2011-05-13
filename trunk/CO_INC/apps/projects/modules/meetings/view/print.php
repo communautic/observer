@@ -53,14 +53,14 @@ foreach($task as $value) {
             <td class="greybg"><?php echo($value->title);?></td>
         </tr>
         <tr>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
+            <td class="tcell-left-short">&nbsp;</td>
+            <td class="short">&nbsp;</td>
             <td><?php echo(nl2br($value->text));?>
             </td>
         </tr>
 		<tr>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
+            <td class="tcell-left-short">&nbsp;</td>
+            <td class="short">&nbsp;</td>
             <td>&nbsp;</td>
         </tr>
     </table>

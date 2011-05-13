@@ -59,6 +59,7 @@ class Controller extends MySQLDB {
 		require_once(CO_INC . "/classes/dompdf/dompdf_config.inc.php");
 		$dompdf = new DOMPDF();
 		$dompdf->load_html($html);
+		$dompdf->set_paper('a4', 'portrait'); // change 'a4' to whatever you want 
 		$dompdf->render();
 		$options['Attachment'] = 1;
 		$options['Accept-Ranges'] = 0;
@@ -89,6 +90,7 @@ class Controller extends MySQLDB {
 		require_once(CO_INC . "/classes/dompdf/dompdf_config.inc.php");
 		$dompdf = new DOMPDF();
 		$dompdf->load_html($html);
+		$dompdf->set_paper('a4', 'portrait'); // change 'a4' to whatever you want
 		$dompdf->render();
 		$pdf = $dompdf->output();
 		file_put_contents( $path, $pdf);
@@ -112,8 +114,10 @@ class Controller extends MySQLDB {
 		try {
   			$mail = new PHPMailerLite(true); //New instance, with exceptions enabled
 			$mail->CharSet = "UTF-8";
+			$mail->Encoding = 'quoted-printable';
 			//$body = file_get_contents('contents.html');
 			//$body = preg_replace('/\\\\/','', $body); //Strip backslashes
+			$body = nl2br($body);
 			$footer = $lang["GLOBAL_EMAIL_FOOTER"];
   
 			$mail->AddReplyTo($from,$fromName);

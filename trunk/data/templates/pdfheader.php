@@ -8,7 +8,7 @@ if ( isset($pdf) ) {
 	$img_w = 482; // 2 inches, in points
 	$img_h = 24; // 1 inch, in points -- change these as required
 
-    $pdf->image(CO_PATH_BASE . "/data/logo_print.png", "png", 72, 10, $img_w, $img_h);
+    $pdf->image(CO_PATH_BASE . "/data/logo_print.png", "png", 57, 12, $img_w, $img_h);
     
 	// Close the object (stop capture)
 	$pdf->close_object();
@@ -23,10 +23,10 @@ if ( isset($pdf) ) {
     // page numbering
     $lang_page = $GLOBALS['PAGE'];
     $lang_of = $GLOBALS['OF'];
-	$pdf->page_text($w-104, $h-20, "$lang_page {PAGE_NUM} $lang_of {PAGE_COUNT}", $font, 8, array(0.4,0.4,0.4));
+	$pdf->page_text($w-104, $h-22, "$lang_page {PAGE_NUM} $lang_of {PAGE_COUNT}", $font, 8, array(0.4,0.4,0.4));
 	
     // powered by
-    $pdf->image(CO_FILES . "/img/print/poweredbyco.png", "png", 72, $h-20, 135, 9);
+    $pdf->image(CO_FILES . "/img/print/poweredbyco.png", "png", 72, $h-22, 135, 9);
     
     // section image
     $section = $GLOBALS['SECTION'];

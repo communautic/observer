@@ -128,7 +128,7 @@ if (!empty($_GET['request'])) {
 		break;
 		// User context menu for lists
 		case 'getUserContext':
-			echo($contacts->getUserContext($_GET['id'],$_GET['field']));
+			echo($contacts->getUserContext($_GET['id'],$_GET['field'],$_GET['edit']));
 		break;
 		case 'getCustomTextContext':
 			echo('<div class="context"><a href="delete" class="delete-ct">' . $lang["GLOBAL_REMOVE"] . '</a><br /></div>');
