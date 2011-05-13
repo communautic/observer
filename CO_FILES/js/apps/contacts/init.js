@@ -15,7 +15,9 @@ contacts.actionSend = sendContact;
 contacts.actionSendtoResponse = sendContactResponse;
 contacts.actionSendVcard = sendContactVcard;
 contacts.actionDuplicate = duplicateContact;
+contacts.actionRefresh = refreshContact;
 contacts.actionBin = binContact;
+contacts.checkIn = checkInContact;
 contacts.poformOptions = { beforeSubmit: contactFormProcess, dataType:  'json', success: contactFormResponse };
 
 // register group object
@@ -31,7 +33,9 @@ group.actionSend = sendGroup;
 group.actionSendtoResponse = sendGroupResponse;
 group.actionSendVcard = sendGroupVcard;
 group.actionDuplicate = duplicateGroup;
+group.actionRefresh = refreshGroup;
 group.actionBin = binGroup;
+group.checkIn = checkInGroup;
 group.poformOptions = { beforeSubmit: groupFormProcess, dataType:  'json', success: groupFormResponse };
 
 
@@ -249,6 +253,15 @@ function duplicateGroup() {
 }
 
 
+function refreshContact() {
+	$("#contacts1 .active-link:visible").trigger("click");
+}
+
+
+function refreshGroup() {
+	$("#contacts1 .active-link:visible").trigger("click");
+}
+
 function binContact() {
 	var txt = ALERT_DELETE;
 	$.prompt(txt,{ 
@@ -321,8 +334,16 @@ function binGroup() {
 }
 
 
+function checkInContact() {
+	return true;
+}
+
+function checkInGroup() {
+	return true;
+}
+
 function contactsActions(status) {
-	/*	0= new		1= print	2= send	3 =vcard  4= duplicate	5 = access	6=delete */
+	/*	0= new		1= print	2= send	 3 =vcard  4= duplicate	 5 = refresh	 6=delete */
 	switch(status) {
 		case 0: 	actions = ['0']; break;
 		case 1: 	actions = ['0','1','2','3','4','5','6']; break; // contact details
@@ -985,7 +1006,8 @@ $(document).ready(function() {
 		var ele = $(this);
 		var uid = $(this).attr('uid');
 		var field = $(this).attr('field');
-		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getUserContext&id="+uid+"&field="+field, success: function(html){
+		var edit = $(this).attr('edit');
+		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getUserContext&id="+uid+"&field="+field+"&edit="+edit, success: function(html){
 				ele.parent().append(html);
 				ele.next().slideDown();
 				}

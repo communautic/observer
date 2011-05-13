@@ -41,7 +41,11 @@ class Phases extends Projects {
 			$data["access"] = $arr["access"];
 			return json_encode($data);
 		} else {
-			include CO_INC .'/view/default.php';
+			ob_start();
+				include CO_INC .'/view/default.php';
+				$data["html"] = ob_get_contents();
+			ob_end_clean();
+			return json_encode($data);
 		}
 	}
 
@@ -114,6 +118,10 @@ class Phases extends Projects {
 		
 		//$to,$from,$fromName,$subject,$body,$attachment
 		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment);
+	}
+	
+	function checkinPhase($id) {
+		return $this->model->checkinPhase($id);
 	}
 
 
@@ -205,6 +213,7 @@ class Phases extends Projects {
 	function addTask($pid,$phid,$date,$cat) {
 		global $lang;
 		$task = $this->model->addTask($pid,$phid,$date,$cat);
+		$phase->canedit = 1;
 		foreach($task as $value) {
 			$checked = '';
 			$donedate_field = 'display: none';

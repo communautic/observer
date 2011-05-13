@@ -12,6 +12,14 @@
 <input type="hidden" id="poformaction" name="request" value="setDetails">
 <input type="hidden" name="id" value="<?php echo($meeting->id);?>">
 <input type="hidden" name="pid" value="<?php echo($meeting->pid);?>">
+<?php if($meeting->showCheckout) { ?>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content" style="background-color: #eb4600">
+	<tr>
+		<td class="tcell-left text11"><span><span>in Bearbeitung</span></span></td>
+		<td class="tcell-right"><div class="itemlist-field">durch <?php echo($meeting->checked_out_user_text);?></div></td>
+    </tr>
+</table>
+<?php } ?>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 		<td class="tcell-left text11"><span class="<?php if($meeting->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["MEETING_DATE"];?></span></span></td>
@@ -59,7 +67,7 @@
 <table border="0" cellpadding="0" cellspacing="0" class="table-content addTaskTable">
 	<tr>
 		<td class="tcell-left text11">
-        <span class="content-nav addMeetingTask"><span><?php echo $lang["MEETING_GOALS"];?></span></span>
+        <span class="<?php if($meeting->canedit) { ?>content-nav addMeetingTask<?php } ?>"><span><?php echo $lang["MEETING_GOALS"];?></span></span>
         </td>
     <td class="tcell-right">&nbsp;</td>
     </tr>
@@ -73,6 +81,7 @@ foreach($task as $value) {
 include("task.php");
  } ?>
 </div>
+<?php if($meeting->perms != "guest") { ?>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
   <tr>
@@ -100,10 +109,7 @@ include("task.php");
         </td>
     </tr>
 </table>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content" height="100">
-	<tr>
-	  <td class="tcell-left text11"></td>
-</table>
+<?php } ?>
 </form>
 </div>
 </div>

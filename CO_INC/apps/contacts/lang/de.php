@@ -41,8 +41,8 @@ $lang['CONTACTS_ACCESSCODES_REMOVE'] = 'Zugangscodes entfernen';
 $lang['CONTACTS_ACCESS_ACTIVE'] = 'übermittelt am %s durch %s';
 $lang['CONTACTS_ACCESS_REMOVE'] = 'entfernt am %s durch %s';
 $lang['CONTACTS_SYSADMIN_NORIGHTS'] = 'keine Berechtigung';
-$lang['CONTACTS_SYSADMIN_ACTIVE'] = 'erteilt am %s durch %s';
-$lang['CONTACTS_SYSADMIN_REMOVE'] = 'entfernt am %s durch %s';
+$lang['CONTACTS_SYSADMIN_ACTIVE'] = 'Berechtigung erteilt am %s durch %s';
+$lang['CONTACTS_SYSADMIN_REMOVE'] = 'Berechtigung entfernt am %s durch %s';
 $lang['CONTACTS_SYSADMIN_GIVE_RIGHT'] = 'Berechtigung erteilen';
 $lang['CONTACTS_SYSADMIN_REMOVE_RIGHT'] = 'Berechtigung entfernen';
 

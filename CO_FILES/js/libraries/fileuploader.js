@@ -270,7 +270,7 @@ qq.FileUploaderBasic = function(o){
         // messages                
         messages: {
             typeError: "{file} has invalid extension. Only {extensions} are allowed.",
-            sizeError: "{file} is too large, maximum file size is {sizeLimit}.",
+            sizeError: ALERT_UPLOAD_SIZE,
             minSizeError: "{file} is too small, minimum file size is {minSizeLimit}.",
             emptyError: "{file} is empty, please select files again without it.",
             onLeave: "The files are being uploaded, if you leave now the upload will be cancelled."            
@@ -647,7 +647,7 @@ qq.extend(qq.FileUploader.prototype, {
     _bindCancelEvent: function(){
         var self = this,
             list = this._listElement;            
-        
+
         qq.attach(list, 'click', function(e){            
             e = e || window.event;
             var target = e.target || e.srcElement;
@@ -940,7 +940,7 @@ qq.UploadHandlerAbstract.prototype = {
                 
         var max = this._options.maxConnections;
         
-        if (this._queue.length >= max){
+        if (this._queue.length >= max && i < max){
             var nextId = this._queue[max-1];
             this._upload(nextId, this._params[nextId]);
         }
@@ -979,7 +979,7 @@ qq.extend(qq.UploadHandlerForm.prototype, {
     },    
     _cancel: function(id){
         this._options.onCancel(id, this.getName(id));
-        
+
         delete this._inputs[id];        
 
         var iframe = document.getElementById(id);

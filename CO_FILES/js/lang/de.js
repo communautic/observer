@@ -27,3 +27,5 @@ var ALERT_ACCESS_GROUP_NOACCESSCODES_SEND = 'übermitteln';
 var ALERT_ACCESS_IS_SYSADMIN = 'ist ein System Manager und daher automatisch ein Administrator';
 var ALERT_ACCESS_IS_GUEST = 'ist schon Beobachter';
 var ALERT_ACCESS_IS_ADMIN = 'ist schon Administrator';
+
+var ALERT_UPLOAD_SIZE = "{file} überschreitet die maximale Dateigröße von {sizeLimit}."

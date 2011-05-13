@@ -142,10 +142,11 @@ class DocumentsModel extends ProjectsModel {
 		}
 		
 		// get user perms
-		$array["edit"] = "1";
+		//$array["edit"] = "1";
 		
 		$perms = $this->getProjectAccess($array["pid"]);
 		$array["canedit"] = false;
+		$array["perms"] = $perms;
 		if($perms == "sysadmin" || $perms == "admin") {
 			$array["canedit"] = true;
 		}

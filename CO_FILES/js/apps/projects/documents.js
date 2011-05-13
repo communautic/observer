@@ -10,7 +10,9 @@ documents.actionPrint = printDocument;
 documents.actionSend = sendDocument;
 documents.actionSendtoResponse = sendDocumentResponse;
 documents.actionDuplicate = duplicateDocument;
+documents.actionRefresh = refreshDocument;
 documents.actionBin = binDocument;
+documents.checkIn = checkInDocument;
 documents.poformOptions = { beforeSerialize: documentSerialize, beforeSubmit: documentFormProcess, dataType:  'json', success: documentFormResponse };
 
 
@@ -179,6 +181,10 @@ function duplicateDocument() {
 }
 
 
+function refreshDocument() {
+	$("#projects3 .active-link:visible").trigger("click");
+}
+
 function binDocument() {
 	var txt = ALERT_DELETE;
 	var langbuttons = {};
@@ -210,6 +216,10 @@ function binDocument() {
 	});
 }
 
+
+function checkInDocument() {
+	return true;
+}
 
 function sortClickDocument(obj,sortcur,sortnew) {
 	var fid = $("#projects2 .module-click:visible").attr("rel");
@@ -285,12 +295,12 @@ function createUploader(ele){
 				'</a></td><td width="30"><a rel="" class="deleteDoc" href="#"><span class="icon-delete"></span></a></td></tr><tr><td class="tcell-left text11">Dateigr&ouml;sse</td><td class="tcell-right">' +
                 '<span class="qq-upload-spinner"></span>' +
                 '<span class="qq-upload-size"></span>' +
-				'<a class="qq-upload-cancel" href="#">Cancel</a>' +
+				'<a class="qq-upload-cancel" href="#"></a>' +
                 '<span class="qq-upload-failed-text">Failed</span>' +
 				'</td><td></td></tr></table>' +
             '</span>',   
 		action: '/',
-		sizeLimit: 10*1024*1024, // max size
+		sizeLimit: 50*1024*1024, // max size
 		params: {
 			path: 'classes/file_uploader',
 			request: 'createNew',
@@ -305,7 +315,7 @@ function createUploader(ele){
 			numdocs = $("#documents .docitem").size();
 			num = num+1;
 		},
-		onCancel: function(id, fileName){},
+		//onCancel: function(id, fileName){},
         debug: false
 	});    
 }

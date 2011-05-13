@@ -24,5 +24,5 @@ if($session->isSysadmin()) {
 }
 ?>
 </ul>
-<div id="logout"/><a href="/?path=login" title="<?php echo $lang["LOGIN_LOGOUT"];?>"><span>&nbsp;</span></a></div>
+<div id="logout"/><a href="/?path=login" class="browseAway" title="<?php echo $lang["LOGIN_LOGOUT"];?>"><span>&nbsp;</span></a></div>
 </div>

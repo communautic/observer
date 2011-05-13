@@ -6,6 +6,8 @@ access.actionDialog = dialogAccess;
 access.actionPrint = printAccess;
 access.actionSend = sendAccess;
 access.actionSendtoResponse = sendAccessResponse;
+access.actionRefresh = refreshAccess;
+access.checkIn = checkInAccess;
 access.poformOptions = { beforeSubmit: accessFormProcess, dataType:  'json', success: accessFormResponse };
 
 
@@ -15,7 +17,7 @@ function getDetailsAccess(moduleidx,liindex) {
 		$("#"+projects.name+"-right").html(html);
 		initContentScrollbar();
 		initScrollbar( '.projects3-content:visible .scrolling-content' );
-		projectsActions(10);
+		projectsActions(6);
 		}
 	});
 }
@@ -55,6 +57,9 @@ function sendAccessResponse() {
 	});
 }
 
+function refreshAccess() {
+	$("#projects3 .active-link:visible").trigger("click");
+}
 
 function dialogAccess(offset,request,field,append,title,sql) {
 	$.ajax({ type: "GET", url: "/", data: 'path=apps/projects&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
@@ -64,6 +69,10 @@ function dialogAccess(offset,request,field,append,title,sql) {
 		$("#modalDialog").dialog('open');
 		}
 	});
+}
+
+function checkInAccess() {
+	return true;
 }
 
 

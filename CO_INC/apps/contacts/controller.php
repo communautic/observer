@@ -519,7 +519,7 @@ function getContactSend($id) {
 		return $retval;
 	}
 	
-	function getUserContext($id,$field) {
+	function getUserContext($id,$field,$edit) {
 		global $lang;
 		$context = $this->model->getUserContext($id,$field);
 		include 'view/contact_context.php';

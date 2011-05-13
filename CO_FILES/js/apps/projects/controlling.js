@@ -5,6 +5,8 @@ controlling.getDetails = getDetailsControlling;
 controlling.actionDialog = dialogControlling;
 controlling.actionPrint = printControlling;
 controlling.actionSend = sendControlling;
+controlling.actionRefresh = refreshControlling;
+controlling.checkIn = checkInControlling;
 controlling.actionSendtoResponse = sendControllingResponse;
 
 function getDetailsControlling(moduleidx,liindex) {
@@ -51,6 +53,10 @@ function sendControllingResponse() {
 	$("#modalDialogForward").dialog('close');
 }
 
+function refreshControlling() {
+	$("#projects3 .active-link:visible").trigger("click");
+}
+
 function dialogControlling(offset,request,field,append,title,sql) {
 	$.ajax({ type: "GET", url: "/", data: 'path=apps/projects&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
 			$("#modalDialog").html(html);
@@ -59,4 +65,8 @@ function dialogControlling(offset,request,field,append,title,sql) {
 			$("#modalDialog").dialog('open');
 			}
 		});
+}
+
+function checkInControlling() {
+	return true;
 }

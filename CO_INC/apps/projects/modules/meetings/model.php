@@ -101,7 +101,35 @@ class MeetingsModel extends ProjectsModel {
 	  $arr = array("meetings" => $meetings, "sort" => $sortcur, "perm" => $perm);
 	  return $arr;
 	}
+	
+	function checkoutMeeting($id) {
+		global $session;
+		
+		$q = "UPDATE " . CO_TBL_MEETINGS . " set checked_out = '1', checked_out_user = '$session->uid' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		if ($result) {
+			return true;
+		}
+	}
+	
+	
+	function checkinMeeting($id) {
+		global $session;
+		
+		$q = "SELECT checked_out_user FROM " . CO_TBL_MEETINGS . " where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$user = mysql_result($result,0);
 
+		if($user == $session->uid) {
+			$q = "UPDATE " . CO_TBL_MEETINGS . " set checked_out = '0', checked_out_user = '0' where id='$id'";
+			$result = mysql_query($q, $this->_db->connection);
+		}
+		if ($result) {
+			return true;
+		}
+	}
+	
 
 	function getDetails($id) {
 		global $session, $lang;
@@ -117,6 +145,25 @@ class MeetingsModel extends ProjectsModel {
 		foreach($row as $key => $val) {
 				$array[$key] = $val;
 			}
+			
+			
+			
+		$array["perms"] = $this->getProjectAccess($array["pid"]);
+		$array["canedit"] = false;
+		$array["showCheckout"] = false;
+		$array["checked_out_user_text"] = $this->_contactsmodel->getUserList($array['checked_out_user'],'checked_out_user_text', "", false);
+		if($array["perms"] == "sysadmin" || $array["perms"] == "admin") {
+			if($array["checked_out"] == 1 && $session->checkUserActive($array["checked_out_user"])) {
+				if($array["checked_out_user"] == $session->uid) {
+					$array["canedit"] = true;
+				} else {
+					$array["canedit"] = false;
+					$array["showCheckout"] = true;
+				}
+			} else {
+				$array["canedit"] = $this->checkoutMeeting($id);
+			}
+		}
 		
 		// dates
 		$array["meeting_date"] = $this->_date->formatDate($array["meeting_date"],CO_DATE_FORMAT);
@@ -124,7 +171,7 @@ class MeetingsModel extends ProjectsModel {
 		// time
 		$array["start"] = $this->_date->formatDate($array["start"],CO_TIME_FORMAT);
 		$array["end"] = $this->_date->formatDate($array["end"],CO_TIME_FORMAT);
-		$array["location"] = $this->_contactsmodel->getPlaceList($array['location'],'location');
+		$array["location"] = $this->_contactsmodel->getPlaceList($array['location'],'location', $array["canedit"]);
 		$array["location_ct"] = empty($array["location_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['location_ct'];
 
 		$array["relates_to_text"] = "";
@@ -132,9 +179,9 @@ class MeetingsModel extends ProjectsModel {
 			$array["relates_to_text"] = $this->_phases->getPhaseTitle($array['relates_to']);
 		}
 
-		$array["participants"] = $this->_contactsmodel->getUserList($array['participants'],'participants');
+		$array["participants"] = $this->_contactsmodel->getUserList($array['participants'],'participants', "", $array["canedit"]);
 		$array["participants_ct"] = empty($array["participants_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['participants_ct'];
-		$array["management"] = $this->_contactsmodel->getUserList($array['management'],'management');
+		$array["management"] = $this->_contactsmodel->getUserList($array['management'],'management', "", $array["canedit"]);
 		$array["management_ct"] = empty($array["management_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['management_ct'];
 		$array["documents"] = $this->_documents->getDocListFromIDs($array['documents'],'documents');
 		
@@ -177,7 +224,7 @@ class MeetingsModel extends ProjectsModel {
 		}
 		
 		// get user perms
-		$array["edit"] = "1";
+		//$array["edit"] = "1";
 		
 		// get the tasks
 		$task = array();
@@ -191,16 +238,9 @@ class MeetingsModel extends ProjectsModel {
 		}
 		
 		$sendto = $this->getSendtoDetails("meetings",$id);
-		
-		$perms = $this->getProjectAccess($array["pid"]);
-		$array["canedit"] = false;
-		if($perms == "sysadmin" || $perms == "admin") {
-			$array["canedit"] = true;
-		}
-		
-		
+
 		$meeting = new Lists($array);
-		$arr = array("meeting" => $meeting, "task" => $task, "sendto" => $sendto, "access" => $perms);
+		$arr = array("meeting" => $meeting, "task" => $task, "sendto" => $sendto, "access" => $array["perms"]);
 		return $arr;
    }
 
@@ -250,6 +290,9 @@ class MeetingsModel extends ProjectsModel {
 		}
 		// posponed
 		if($meeting_status == 3) {
+			
+			$this->checkinMeeting($id);
+			
 			$q = "INSERT INTO " . CO_TBL_MEETINGS . " set pid='$pid', title = '$title " . $lang["MEETING_POSPONED"] . "', meeting_date = '$meeting_status_date', start = '$start', end = '$end', location = '$location', location_ct = '$location_ct', participants='$participants', participants_ct='$participants_ct', management='$management', management_ct='$management_ct', documents = '$documents', access='$meeting_access', $accesssql status = '0', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 			$result = mysql_query($q, $this->_db->connection);
 			if ($result) {

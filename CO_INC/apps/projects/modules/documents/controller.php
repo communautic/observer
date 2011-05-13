@@ -42,7 +42,11 @@ class Documents extends Projects {
 			$data["access"] = $arr["access"];
 			return json_encode($data);
 		} else {
-			include CO_INC .'/view/default.php';
+			ob_start();
+				include CO_INC .'/view/default.php';
+				$data["html"] = ob_get_contents();
+			ob_end_clean();
+			return json_encode($data);
 		}
 	}
 	

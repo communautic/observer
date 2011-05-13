@@ -12,7 +12,9 @@ phases.actionPrint = printPhase;
 phases.actionSend = sendPhase;
 phases.actionSendtoResponse = sendPhaseResponse;
 phases.actionDuplicate = duplicatePhase;
+phases.actionRefresh = refreshPhase;
 phases.actionBin = binPhase;
+phases.checkIn = checkInPhase;
 phases.poformOptions = { beforeSubmit: phaseFormProcess, dataType:  'json', success: phaseFormResponse };
 phases.toggleIntern = phaseToggleIntern;
 
@@ -125,6 +127,10 @@ function phaseFormResponse(data) {
 
 
 function newPhase() {
+	
+	var cid = $('#projects input[name="id"]').val()
+	phases.checkIn(cid);
+	
 	var id = $('#projects2 .module-click:visible').attr("rel");
 	var num  = parseInt($(".projects3-content:visible .module-click").size()+1);
 	$.ajax({ type: "GET", url: "/", dataType: 'json', data: 'path=apps/projects/modules/phases&request=createNew&id=' + id + '&num=' + num, cache: false, success: function(data){
@@ -175,6 +181,10 @@ function sendPhaseResponse() {
 }
 
 function duplicatePhase() {
+	
+	var cid = $('#projects input[name="id"]').val()
+	phases.checkIn(cid);
+	
 	var id = $("#projects3 .active-link:visible").attr("rel");
 	var pid = $("#projects2 .module-click:visible").attr("rel");
 	$.ajax({ type: "GET", url: "/", data: 'path=apps/projects/modules/phases&request=createDuplicate&id=' + id, cache: false, success: function(phaseid){
@@ -192,8 +202,16 @@ function duplicatePhase() {
 	});
 }
 
+function refreshPhase() {
+	$("#projects3 .active-link:visible").trigger("click");
+}
+
 
 function binPhase() {
+	
+	var cid = $('#projects input[name="id"]').val()
+	phases.checkIn(cid);
+	
 	var txt = ALERT_DELETE;
 	var langbuttons = {};
 	langbuttons[ALERT_YES] = true;
@@ -234,6 +252,15 @@ function binPhase() {
 	});
 }
 
+
+function checkInPhase(id) {
+		$.ajax({ type: "GET", url: "/", data: 'path=apps/projects/modules/phases&request=checkinPhase&id='+id, success: function(data){
+			if(!data) {
+				prompt("something wrong");
+			}
+		}
+	});
+}
 
 function sortClickPhase(obj,sortcur,sortnew) {
 	var fid = $("#projects2 .module-click:visible").attr("rel");

@@ -2,12 +2,13 @@
 <table border="0" cellpadding="0" cellspacing="0" class="table-title">
 	<tr>
 		<td class="tcell-left text11"><span class="<?php if($folder->canedit) { ?>content-nav focusTitle<?php } ?>"><span><?php echo $lang["PROJECT_FOLDER"];?></span></span></td>
-		<td><input name="title" type="text" class="title textarea-title" value="<?php echo($folder->title);?>" maxlength="100" /></td>
+		<td><?php if($folder->canedit) { ?><input name="title" type="text" class="title textarea-title" value="<?php echo($folder->title);?>" maxlength="100" /><?php } else { ?><div class="textarea-title"><?php echo($folder->title);?></div><?php } ?></td>
 	</tr>
 </table>
 </div>
 <div class="ui-layout-content"><div class="scroll-pane">
-<form action="/" method="post" name="coform" class="coform jNice">
+<?php if($folder->access == "sysadmin") { ?>
+<form action="/" method="post" name="coform" class="<?php if($folder->canedit) { ?>coform <?php } ?>">
 <input type="hidden" id="path" name="path" value="<?php echo $this->form_url;?>">
 <input type="hidden" id="poformaction" name="request" value="setFolderDetails">
 <input type="hidden" name="id" value="<?php echo($folder->id);?>">
@@ -73,6 +74,7 @@
 </table>-->
 <div class="content-spacer"></div>
 <div class="content-spacer"></div>
+<?php } ?>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 		<td class="tcell-left-inactive text11"><?php echo $lang["PROJECT_PROJECTS"];?></td>

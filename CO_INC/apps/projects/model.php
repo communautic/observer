@@ -116,8 +116,10 @@ class ProjectsModel extends Model {
 		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
 		
 		$array["canedit"] = true;
-		if(!$session->isSysadmin()) {
+		$array["access"] = "sysadmin";
+ 		if(!$session->isSysadmin()) {
 			$array["canedit"] = false;
+			$array["access"] = "guest";
 		}
 		
 		$folder = new Lists($array);
@@ -383,9 +385,9 @@ class ProjectsModel extends Model {
 			$array[$key] = $val;
 			if($key == "id") {
 				if($this->getProjectAccess($val) == "guest") {
-					$array["style"] = ' style ="color: #000;"';
+					$array["iconguest"] = ' icon-guest-active"';
 				} else {
-					$array["style"] = '';
+					$array["iconguest"] = '';
 				}
 			}
 			
@@ -403,7 +405,36 @@ class ProjectsModel extends Model {
 	  $arr = array("projects" => $projects, "sort" => $sortcur);
 	  return $arr;
    }
+	
+	
+	function checkoutProject($id) {
+		global $session;
+		
+		$q = "UPDATE " . CO_TBL_PROJECTS . " set checked_out = '1', checked_out_user = '$session->uid' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		if ($result) {
+			return true;
+		}
+	}
+	
+	
+	function checkinProject($id) {
+		global $session;
+		
+		$q = "SELECT checked_out_user FROM " . CO_TBL_PROJECTS . " where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$user = mysql_result($result,0);
 
+		if($user == $session->uid) {
+			$q = "UPDATE " . CO_TBL_PROJECTS . " set checked_out = '0', checked_out_user = '0' where id='$id'";
+			$result = mysql_query($q, $this->_db->connection);
+		}
+		if ($result) {
+			return true;
+		}
+	}
+	
 
    function getProjectDetails($id) {
 		global $session, $contactsmodel, $lang;
@@ -417,6 +448,24 @@ class ProjectsModel extends Model {
 			$array[$key] = $val;
 		}
 		
+		// perms
+		$array["access"] = $this->getProjectAccess($id);
+		$array["canedit"] = false;
+		$array["showCheckout"] = false;
+		$array["checked_out_user_text"] = $contactsmodel->getUserList($array['checked_out_user'],'checked_out_user_text', "", false);
+		if($array["access"] == "sysadmin" || $array["access"] == "admin") {
+			if($array["checked_out"] == 1 && $session->checkUserActive($array["checked_out_user"])) {
+				if($array["checked_out_user"] == $session->uid) {
+					$array["canedit"] = true;
+				} else {
+					$array["canedit"] = false;
+					$array["showCheckout"] = true;
+				}
+			} else {
+				$array["canedit"] = $this->checkoutProject($id);
+			}
+		} // EOF perms
+		
 		// dates
 		$array["startdate"] = $this->_date->formatDate($array["startdate"],CO_DATE_FORMAT);
 		$array["enddate"] = $this->_date->formatDate($array["enddate"],CO_DATE_FORMAT);
@@ -426,11 +475,11 @@ class ProjectsModel extends Model {
 		
 		// other functions
 		$array["projectfolder"] = $this->getProjectFolderDetails($array["projectfolder"],"projectfolder");
-		$array["management"] = $contactsmodel->getUserList($array['management'],'management');
+		$array["management"] = $contactsmodel->getUserList($array['management'],'management', "", $array["canedit"]);
 		$array["management_ct"] = empty($array["management_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['management_ct'];
-		$array["team"] = $contactsmodel->getUserList($array['team'],'team');
+		$array["team"] = $contactsmodel->getUserList($array['team'],'team', "", $array["canedit"]);
 		$array["team_ct"] = empty($array["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['team_ct'];
-		$array["ordered_by"] = $contactsmodel->getUserList($array['ordered_by'],'ordered_by');
+		$array["ordered_by"] = $contactsmodel->getUserList($array['ordered_by'],'ordered_by', "", $array["canedit"]);
 		$array["ordered_by_ct"] = empty($array["ordered_by_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['ordered_by_ct'];
 		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
 		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
@@ -451,16 +500,12 @@ class ProjectsModel extends Model {
 			break;
 		}
 		
-		$access = $this->getProjectAccess($id);
-		$array["canedit"] = false;
-		if($access == "sysadmin" || $access == "admin") {
-			$array["canedit"] = true;
-		}
+		
 		
 		$project = new Lists($array);
 		
 		$sql="";
-		if($access == "guest") {
+		if($array["access"] == "guest") {
 			$sql = " and a.access = '1' ";
 		}
 		
@@ -488,7 +533,7 @@ class ProjectsModel extends Model {
 		
 		$sendto = $this->getSendtoDetails("projects",$id);
 		
-		$arr = array("project" => $project, "phases" => $phases, "num" => $num, "sendto" => $sendto, "access" => $access);
+		$arr = array("project" => $project, "phases" => $phases, "num" => $num, "sendto" => $sendto, "access" => $array["access"]);
 		return $arr;
    }
 
@@ -723,6 +768,9 @@ class ProjectsModel extends Model {
 		}
 		
 		$q = "DELETE FROM co_log_sendto WHERE what='projects' and whatid='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		$q = "DELETE FROM co_projects_access WHERE pid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		$q = "DELETE FROM " . CO_TBL_PROJECTS . " WHERE id='$id'";

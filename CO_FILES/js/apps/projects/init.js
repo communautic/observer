@@ -14,8 +14,10 @@ projects.actionSend = sendProject;
 projects.actionSendtoResponse = sendProjectResponse;
 projects.actionDuplicate = duplicateProject;
 projects.actionHandbook = printProjectHandbook;
+projects.actionRefresh = refreshProject;
 projects.actionBin = binProject;
 projects.GuestHiddenModules = new Array("controlling","access");
+projects.checkIn = checkInProject;
 //projects.actionMoveProject = moveProject;
 projects.poformOptions = { beforeSubmit: projectFormProcess, dataType:  'json', success: projectFormResponse };
 //projects.sendformOptions = { beforeSubmit: projectSendProcess, dataType:  'json', success: projectSendResponse };
@@ -27,7 +29,9 @@ folder.sortclick = sortClickFolder;
 folder.sortdrag = sortDragFolder;
 folder.actionNew = newFolder;
 folder.actionPrint = printFolder;
+folder.actionRefresh = refreshFolder;
 folder.actionBin = binFolder;
+folder.checkIn = checkInFolder;
 folder.poformOptions = { beforeSubmit: folderFormProcess, dataType:  'json', success: folderFormResponse };
 
 /* Functions 
@@ -147,11 +151,20 @@ function sendProjectResponse() {
 	});
 }
 
+function refreshProject() {
+	$("#projects2 .active-link").trigger("click");
+}
+
 
 function printFolder() {
 	var id = $("#projects1 .active-link").attr("rel");
 	var url ='/?path=apps/projects&request=printFolderDetails&id='+id;
 	location.href = url;
+}
+
+
+function refreshFolder() {
+	$("#projects1 .active-link").trigger("click");
 }
 
 
@@ -165,6 +178,10 @@ function folderFormResponse(data) {
 
 
 function newProject() {
+	
+	var cid = $('#projects input[name="id"]').val()
+	projects.checkIn(cid);
+	
 	var id = $('#'+projects.name+' .module-click:visible').attr("rel");
 	$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/projects&request=newProject&id=' + id, cache: false, success: function(data){
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectList&id="+id, success: function(list){
@@ -207,6 +224,10 @@ function newFolder() {
 
 
 function duplicateProject() {
+	
+	var cid = $('#projects input[name="id"]').val()
+	projects.checkIn(cid);
+	
 	var pid = $("#projects2 .active-link").attr("rel");
 	var oid = $("#projects1 .module-click:visible").attr("rel");
 	$.ajax({ type: "GET", url: "/", data: 'path=apps/projects&request=createDuplicate&id=' + pid, cache: false, success: function(id){
@@ -230,6 +251,10 @@ function duplicateProject() {
 
 
 function binProject() {
+	
+	var cid = $('#projects input[name="id"]').val()
+	projects.checkIn(cid);
+	
 	var txt = ALERT_DELETE;
 	var langbuttons = {};
 	langbuttons[ALERT_YES] = true;
@@ -308,17 +333,18 @@ function binFolder() {
 
 
 function projectsActions(status) {
-	/*	0= new	1= print	2= send		3= duplicate	4= handbook	5 = delete*/
+	/*	0= new	1= print	2= send		3= duplicate	4= handbook		5=refresh 	6 = delete*/
 	switch(status) {
 		//case 0: 	actions = ['0','1','2','3','4']; break; // all actions
-		case 0: actions = ['0','1','2','3','4','5']; break;
+		case 0: actions = ['0','1','2','3','4','5','6']; break;
 		//case 1: 	actions = ['0','1','2','4']; break; 	// no duplicate
-		case 1: actions = ['0','5']; break;
+		case 1: actions = ['0','5','6']; break;
 		//case 2: 	actions = ['1']; break;   					// just save
 		case 3: 	actions = ['0']; break;   					// just new
-		case 4: 	actions = ['1','2','4']; break;   		// print, send, handbook
-		case 5: 	actions = ['1','2']; break;   			// print, send
-		default: 	actions = [];  								// none
+		case 4: 	actions = ['1','2','4','5']; break;   		// print, send, handbook, refresh
+		case 5: 	actions = ['1','2','5']; break;   			// print, send, refresh
+		case 6: 	actions = ['4','5']; break;   			// handbook refresh
+		default: 	actions = ['5'];  								// none
 	}
 	$('#projectsActions > li span').each( function(index) {
 		if(index in oc(actions)) {
@@ -399,6 +425,19 @@ function dialogProject(offset,request,field,append,title,sql) {
 			ct = ct.replace(CUSTOM_NOTE + " ","");
 			$("#custom-text").val(ct);
 		}
+		}
+	});
+}
+
+function checkInFolder(id) {
+	return true;
+}
+
+function checkInProject(id) {
+	$.ajax({ type: "GET", url: "/", data: 'path=apps/projects&request=checkinProject&id='+id, success: function(data){
+			if(!data) {
+				prompt("something wrong");
+			}
 		}
 	});
 }
@@ -531,11 +570,13 @@ $(document).ready(function() {
 
 
 	$("#projects1-outer > h3").click(function() {
+		var obj = getCurrentModule();
 		if(confirmNavigation()) {
 			formChanged = false;
-			var obj = getCurrentModule();
 			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 		}
+		var cid = $('#projects input[name="id"]').val()
+		obj.checkIn(cid);
 		
 		if($(this).hasClass("module-bg-active")) {
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getFolderList", success: function(data){
@@ -615,11 +656,14 @@ $(document).ready(function() {
 
 
 	$("#projects2-outer > h3").click(function(event, passed_id) {
+		var obj = getCurrentModule();
 		if(confirmNavigation()) {
 			formChanged = false;
-			var obj = getCurrentModule();
 			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 		}
+		var cid = $('#projects input[name="id"]').val()
+		obj.checkIn(cid);
+		
 		if($(this).hasClass("module-bg-active")) {
 			$("#projects1-outer > h3").trigger("click");
 		} else {
@@ -748,13 +792,17 @@ $(document).ready(function() {
 
 	$("#projects1 .module-click").live('click',function(e) {
 		if($(this).hasClass("deactivated")) {
+			$("#projects1-outer > h3").trigger("click");
 			return false;
 		}
+		var obj = getCurrentModule();
 		if(confirmNavigation()) {
 			formChanged = false;
-			var obj = getCurrentModule();
 			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 		}
+		var cid = $('#projects input[name="id"]').val()
+		obj.checkIn(cid);
+		
 		var id = $(this).attr("rel");
 		var index = $("#projects .module-click").index(this);
 		$("#projects .module-click").removeClass("active-link");
@@ -780,15 +828,18 @@ $(document).ready(function() {
 	});
 
 
-	$("#projects2 .module-click").live('click',function() {
+	$("#projects2 .module-click").live('click',function(e) {
 		if($(this).hasClass("deactivated")) {
+			$("#projects2-outer > h3").trigger("click");
 			return false;
 		}
+		var obj = getCurrentModule();
 		if(confirmNavigation()) {
 			formChanged = false;
-			var obj = getCurrentModule();
 			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 		}
+		var cid = $('#projects input[name="id"]').val()
+		obj.checkIn(cid);
 		
 		var fid = $("#projects .module-click:visible").attr("rel");
 		var id = $(this).attr("rel");
@@ -827,11 +878,13 @@ $(document).ready(function() {
 
 
 	$("#projects3 .module-click").live('click',function() {
+		var obj = getCurrentModule();
 		if(confirmNavigation()) {
 			formChanged = false;
-			var obj = getCurrentModule();
 			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 		}
+		var cid = $('#projects input[name="id"]').val()
+		obj.checkIn(cid);
 		
 		var id = $(this).attr("rel");
 		var ulidx = $("#projects3 ul").index($(this).parents("ul"));
@@ -847,11 +900,13 @@ $(document).ready(function() {
 
 
 	$("#projects3 h3").click(function(event, passed_id) {
+		var obj = getCurrentModule();
 		if(confirmNavigation()) {
 			formChanged = false;
-			var obj = getCurrentModule();
 			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 		}
+		var cid = $('#projects input[name="id"]').val()
+		obj.checkIn(cid);
 		
 		var moduleidx = $("#projects3 h3").index(this);
 		var module = $(this).attr("rel");
@@ -869,6 +924,27 @@ $(document).ready(function() {
 					.next('div').slideDown( function() {
 						$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/"+module+"&request=getList&id="+id, success: function(data){
 							$("#projects3 ul:eq("+moduleidx+")").html(data.html);
+							
+							switch (data.perm) {
+				case "sysadmin": case "admin" :
+					if(data.html == "<li></li>") {
+						projectsActions(3);
+					} else {
+						projectsActions(0);
+						$('#projects3').find('input.filter').quicksearch('#projects3 li');
+					}
+				break;
+				case "guest":
+					if(data.html == "<li></li>") {
+						projectsActions();
+					} else {
+						projectsActions(5);
+						$('#projects3').find('input.filter').quicksearch('#projects3 li');
+					}
+				break;
+			}
+							
+							
 							if(passed_id === undefined) {
 								var idx = 0;
 							} else {
@@ -897,6 +973,26 @@ $(document).ready(function() {
 	
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/"+module+"&request=getList&id="+id, success: function(data){
 					$("#projects3 ul:eq("+moduleidx+")").html(data.html);
+					
+					switch (data.perm) {
+				case "sysadmin": case "admin" :
+					if(data.html == "<li></li>") {
+						projectsActions(3);
+					} else {
+						projectsActions(0);
+						$('#projects3').find('input.filter').quicksearch('#projects3 li');
+					}
+				break;
+				case "guest":
+					if(data.html == "<li></li>") {
+						projectsActions();
+					} else {
+						projectsActions(5);
+						$('#projects3').find('input.filter').quicksearch('#projects3 li');
+					}
+				break;
+			}
+					
 					
 					if(passed_id === undefined) {
 						var idx = 0;
@@ -988,6 +1084,13 @@ $(document).ready(function() {
 	
 	// load a project
 	$(".loadProject").live('click', function() {
+		
+		var obj = getCurrentModule();
+		if(confirmNavigation()) {
+			formChanged = false;
+			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+		}
+		
 		var id = $(this).attr("rel");
 		$("#projects2-outer > h3").trigger('click', [id]);
 		return false;
@@ -996,6 +1099,15 @@ $(document).ready(function() {
 	
 	// load a phase
 	$(".loadPhase").live('click', function() {
+		
+		var obj = getCurrentModule();
+		if(confirmNavigation()) {
+			formChanged = false;
+			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+		}
+		var cid = $('#projects input[name="id"]').val()
+		obj.checkIn(cid);
+		
 		var id = $(this).attr("rel");
 		$("#projects3 h3[rel='phases']").trigger('click', [id]);
 		return false;

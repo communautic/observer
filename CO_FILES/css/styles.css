@@ -118,7 +118,7 @@ width: 325px;
 .ui-layout-west li>span:hover   { color: #fff; text-decoration: none; outline: none; cursor: pointer; }
 .ui-layout-west li>span.active-link  { color: #fff; text-decoration: none; outline: none; }
 .ui-layout-west li>span.hover-bg  { color: #fff; text-decoration: none; outline: none;}
-.ui-layout-west li>span.deactivated { color: #fff; cursor: default }
+.ui-layout-west li>span.deactivated { color: #fff; }
 .ui-layout-west li>span.deactivated:hover { color: #fff; background-color: transparent !important; }
 
 
@@ -142,6 +142,9 @@ li.ui-state-highlight { height: 13px; margin: 0 0 5px 0;}
 
 .text { /*padding-right: 30px;*/ }
 .num { position: absolute; right: 15px; font-size: 11px; top: 0;}
+.icon-guest { position: absolute; right: 15px; width: 12px; height: 10px; top: 6px; background:url(../img/apps_buttons_sprite.png) no-repeat -280px -570px; display: none;}
+.icon-guest-active { display: block}
+
 /*.phase_num { position: absolute; bottom: 0;}*/
 
 .ui-layout-resizer-west { display: none !important; width: 10px !important; height: 20px !important; }
@@ -244,12 +247,12 @@ ul.actionconsole { margin: 0 11px 0 11px;  }
 .actionconsole span.actionProjectHandbook:hover { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: pointer;}
 .actionconsole span.actionProjectHandbook.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: default; }
 
-/*.actionconsole li.listExport { display: block; height: 30px; margin-bottom: 22px; }
-.actionconsole span.actionExport { display: block; height: 30px; background: url(../img/apps_buttons_sprite.png) no-repeat;}
-.actionconsole span.actionExport:hover { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: pointer;}
-.actionconsole span.actionExport.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: default; }
+.actionconsole li.listRefresh { display: block; height: 32px; margin-bottom: 22px; }
+.actionconsole span.actionRefresh { display: block; height: 32px; background: url(../img/apps_buttons_sprite.png) no-repeat;}
+.actionconsole span.actionRefresh:hover { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: pointer;}
+.actionconsole span.actionRefresh.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: default; }
 
-.actionconsole li.listImport { display: block; height: 30px; margin-bottom: 22px; }
+/*.actionconsole li.listImport { display: block; height: 30px; margin-bottom: 22px; }
 .actionconsole span.actionImport { display: block; height: 30px; background: url(../img/apps_buttons_sprite.png) no-repeat;}
 .actionconsole span.actionImport:hover { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: pointer;}
 .actionconsole span.actionImport.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: default; }

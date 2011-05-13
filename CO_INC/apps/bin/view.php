@@ -34,6 +34,7 @@
     </div>
 	<div class="center-west">
 		<ul id="binActions" class="ui-layout-content actionconsole">
+        	<li class="listRefresh"><span class="actionRefresh" title="<?php echo $lang["ACTION_REFRESH"];?>"></span></li>
 			<li class="listBin"><span class="actionBin" title="<?php echo $lang["ACTION_DELETE"];?>"></span></li>
 		</ul>
 	</div>

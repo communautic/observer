@@ -12,7 +12,9 @@ meetings.actionPrint = printMeeting;
 meetings.actionSend = sendMeeting;
 meetings.actionSendtoResponse = sendMeetingResponse;
 meetings.actionDuplicate = duplicateMeeting;
+meetings.actionRefresh = refreshMeeting;
 meetings.actionBin = binMeeting;
+meetings.checkIn = checkInMeeting;
 meetings.poformOptions = { beforeSubmit: meetingFormProcess, dataType:  'json', success: meetingFormResponse };
 meetings.toggleIntern = meetingToggleIntern;
 
@@ -138,6 +140,10 @@ function meetingFormResponse(data) {
 
 
 function newMeeting() {
+	
+	var cid = $('#projects input[name="id"]').val()
+	meetings.checkIn(cid);
+	
 	var id = $('#projects2 .module-click:visible').attr("rel");
 	$.ajax({ type: "GET", url: "/", dataType: 'json', data: 'path=apps/projects/modules/meetings&request=createNew&id=' + id, cache: false, success: function(data){
 			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/projects/modules/meetings&request=getList&id="+id, success: function(list){
@@ -180,6 +186,10 @@ function sendMeetingResponse() {
 
 
 function duplicateMeeting() {
+	
+	var cid = $('#projects input[name="id"]').val()
+	meetings.checkIn(cid);
+	
 	var id = $("#projects3 .active-link:visible").attr("rel");
 	var pid = $("#projects2 .module-click:visible").attr("rel");
 	$.ajax({ type: "GET", url: "/", data: 'path=apps/projects/modules/meetings&request=createDuplicate&id=' + id, cache: false, success: function(mid){
@@ -198,8 +208,15 @@ function duplicateMeeting() {
 	});
 }
 
+function refreshMeeting() {
+	$("#projects3 .active-link:visible").trigger("click");
+}
 
 function binMeeting() {
+	
+	var cid = $('#projects input[name="id"]').val()
+	meetings.checkIn(cid);
+	
 	var txt = ALERT_DELETE;
 	var langbuttons = {};
 	langbuttons[ALERT_YES] = true;
@@ -230,6 +247,16 @@ function binMeeting() {
 					}
 				});
 			} 
+		}
+	});
+}
+
+
+function checkInMeeting(id) {
+		$.ajax({ type: "GET", url: "/", data: 'path=apps/projects/modules/meetings&request=checkinMeeting&id='+id, success: function(data){
+			if(!data) {
+				prompt("something wrong");
+			}
 		}
 	});
 }

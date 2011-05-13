@@ -5,8 +5,9 @@ timelines.getDetails = getDetailsTimeline;
 timelines.actionDialog = dialogTimeline;
 timelines.actionPrint = printTimeline;
 timelines.actionSend = sendTimeline;
+timelines.actionRefresh = refreshTimeline;
 timelines.actionSendtoResponse = sendTimelineResponse;
-
+timelines.checkIn = checkInTimeline;
 
 function getDetailsTimeline(moduleidx,liindex) {
 	var pid = $("#projects2 .module-click:visible").attr("rel");
@@ -14,11 +15,23 @@ function getDetailsTimeline(moduleidx,liindex) {
 	if(phaseid == undefined) {
 		return false;
 	}
-	$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/timelines&request=getDetails&id="+phaseid+"&pid="+pid, success: function(data){
-		$("#projects-right").html(data);
+	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/timelines&request=getDetails&id="+phaseid+"&pid="+pid, success: function(data){
+		$("#projects-right").html(data.html);
 		initContentScrollbar();
 		initScrollbar( '.projects3-content:visible .scrolling-content' );
-		projectsActions(4);
+			if(phaseid == "2") {
+				if(data.access == "guest") {
+					projectsActions(5);
+				} else {
+					projectsActions(4);
+				}
+			} else {
+				if(data.access == "guest") {
+					projectsActions();
+				} else {
+					projectsActions(6);
+				}
+			}
 		}
 	});
 }
@@ -53,6 +66,13 @@ function sendTimelineResponse() {
 	$("#modalDialogForward").dialog('close');
 }
 
+function refreshTimeline() {
+	$("#projects3 .active-link:visible").trigger("click");
+}
+
+function checkInTimeline() {
+	return true;
+}
 
 function dialogTimeline(offset,request,field,append,title,sql) {
 	$.ajax({ type: "GET", url: "/", data: 'path=apps/projects&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){

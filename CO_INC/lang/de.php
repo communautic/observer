@@ -1,6 +1,8 @@
 <?php
 $lang["APPLICATION_NAME"] = "company observer 6.0.7";
 
+setlocale(LC_TIME, "de_DE");
+
 /* LOGIN PAGE */
 $lang["LOGIN_USERNAME"] = "Benutzername";
 $lang["LOGIN_PASSWORD"] = "Passwort";
@@ -21,6 +23,7 @@ $lang["ACTION_PRINT"] = "drucken";
 $lang["ACTION_SENDTO"] = "weiterleiten";
 $lang["ACTION_DUPLICATE"] = "duplizieren";
 $lang["ACTION_PROJECTHANDBOOK"] = "Projekthandbuch";
+$lang["ACTION_REFRESH"] = "Aktualisieren";
 $lang["ACTION_DELETE"] = "löschen";
 
 $lang["TEXT_NOTE"] = "Notiz:";

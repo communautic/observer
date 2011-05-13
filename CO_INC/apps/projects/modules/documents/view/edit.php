@@ -44,6 +44,7 @@
 </div>
 <?php } ?>
 <div id="docs"></div>
+<?php if($document->perms != "guest") { ?>
 <div class="content-spacer"></div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
@@ -65,6 +66,7 @@
         </td>
     </tr>
 </table>
+<?php } ?>
 </div>
 </div>
 <div>

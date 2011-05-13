@@ -17,6 +17,10 @@
 #bin .hover-bg  { background-color: #666}
 #bin .hover-outline { border: 1px solid #666}
 
+#binActions span.actionRefresh				{ 	background-position: -250px -258px;	}
+#binActions span.actionRefresh:hover 	{ 	background-position: -300px -258px;	}
+#binActions span.actionRefresh.noactive { background-position: 0px -258px;  	}
+
 
 #binActions { display: block; }
 

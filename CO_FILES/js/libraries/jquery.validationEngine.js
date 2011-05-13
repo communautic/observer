@@ -1,5 +1,5 @@
 /*
- * Inline Form Validation Engine 2.1, jQuery plugin
+ * Inline Form Validation Engine 2.2, jQuery plugin
  *
  * Copyright(c) 2010, Cedric Dugas
  * http://www.position-absolute.com
@@ -46,10 +46,13 @@
                 options = methods._saveOptions(form, userOptions);
             else
                 options = form.data('jqv');
-
+			
+			var validateAttribute = (form.find("[data-validation-engine*=validate]")) ? "data-validation-engine" : "class";
+			
             if (!options.binded) {
 					if (options.bindMethod == "bind"){
-                        // bind fields
+						
+						// bind fields
                         form.find("[class*=validate]:not([type=checkbox])").bind(options.validationEventTrigger, methods._onFieldEvent);
                         form.find("[class*=validate][type=checkbox]").bind("click", methods._onFieldEvent);
 
@@ -410,16 +413,12 @@
 			var required = false;
             options.isError = false;
             options.showArrow = true;
-            optional = false;
 
             for (var i = 0; i < rules.length; i++) {
 
                 var errorMsg = undefined;
                 switch (rules[i]) {
 
-                    case "optional":
-                        optional = true;
-                        break;
                     case "required":
                         required = true;
                         errorMsg = methods._required(field, rules, i, options);
@@ -568,7 +567,7 @@
 			}
             var pattern = new RegExp(ex);
 
-            if (!pattern.test(field.attr('value')))
+            if (!pattern.test(field.val()))
                 return options.allrules[customRule].alertText;
         },
         /**
@@ -601,7 +600,7 @@
         _equals: function(field, rules, i, options) {
             var equalsField = rules[i + 1];
 
-            if (field.attr('value') != $("#" + equalsField).attr('value'))
+            if (field.val() != $("#" + equalsField).val())
                 return options.allrules.equals.alertText;
         },
         /**
@@ -616,7 +615,7 @@
          */
         _maxSize: function(field, rules, i, options) {
             var max = rules[i + 1];
-            var len = field.attr('value').length;
+            var len = field.val().length;
 
             if (len > max) {
                 var rule = options.allrules.maxSize;
@@ -635,7 +634,7 @@
          */
         _minSize: function(field, rules, i, options) {
             var min = rules[i + 1];
-            var len = field.attr('value').length;
+            var len = field.val().length;
 
             if (len < min) {
                 var rule = options.allrules.minSize;
@@ -654,7 +653,7 @@
          */
         _min: function(field, rules, i, options) {
             var min = parseFloat(rules[i + 1]);
-            var len = parseFloat(field.attr('value'));
+            var len = parseFloat(field.val());
 
             if (len < min) {
                 var rule = options.allrules.min;
@@ -674,7 +673,7 @@
          */
         _max: function(field, rules, i, options) {
             var max = parseFloat(rules[i + 1]);
-            var len = parseFloat(field.attr('value'));
+            var len = parseFloat(field.val());
 
             if (len >max ) {
                 var rule = options.allrules.max;
@@ -697,7 +696,7 @@
 
             var p=rules[i + 1];
             var pdate = (p.toLowerCase() == "now")? new Date():methods._parseDate(p);
-            var vdate = methods._parseDate(field.attr('value'));
+            var vdate = methods._parseDate(field.val());
 
             if (vdate < pdate ) {
                 var rule = options.allrules.past;
@@ -719,7 +718,7 @@
 
             var p=rules[i + 1];
             var pdate = (p.toLowerCase() == "now")? new Date():methods._parseDate(p);
-            var vdate = methods._parseDate(field.attr('value'));
+            var vdate = methods._parseDate(field.val());
 
             if (vdate > pdate ) {
                 var rule = options.allrules.future;
@@ -796,7 +795,7 @@
               for (var i = 0; i < domIds.length; i++) {
                 var id = domIds[i];
                 if ($(id).length) {
-                  var inputValue = field.closest("form").find(id).attr("value");
+                  var inputValue = field.closest("form").find(id).val();
                   var keyValue = id.replace('#', '') + '=' + escape(inputValue);
                   tmpData.push(keyValue);
                 }
@@ -812,7 +811,7 @@
                     url: rule.url,
                     cache: false,
                     dataType: "json",
-                    data: "fieldId=" + field.attr("id") + "&fieldValue=" + field.attr("value") + "&extraData=" + extraData + "&" + extraDataDynamic,
+                    data: "fieldId=" + field.attr("id") + "&fieldValue=" + field.val() + "&extraData=" + extraData + "&" + extraDataDynamic,
                     field: field,
                     rule: rule,
                     methods: methods,

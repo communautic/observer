@@ -23,3 +23,5 @@ var ALERT_ACCESS_GROUP_NOACCESSCODES_SEND = 'send';
 var ALERT_ACCESS_IS_SYSADMIN = 'is a Systhem Manager and therefore already an Administrator';
 var ALERT_ACCESS_IS_GUEST = 'is already Guest';
 var ALERT_ACCESS_IS_ADMIN = 'is already Administrator';
+
+var ALERT_UPLOAD_SIZE = "{file} is too large, maximum file size is {sizeLimit}."

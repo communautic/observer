@@ -12,7 +12,9 @@ vdocs.actionPrint = printVDoc;
 vdocs.actionSend = sendVDoc;
 vdocs.actionSendtoResponse = sendVDocResponse;
 vdocs.actionDuplicate = duplicateVDoc;
+vdocs.actionRefresh = refreshVDoc;
 vdocs.actionBin = binVDoc;
+vdocs.checkIn = checkInVDoc;
 vdocs.poformOptions = { beforeSubmit: vdocFormProcess, dataType:  'json', success: vdocFormResponse };
 vdocs.toggleIntern = vdocToggleIntern;
 
@@ -130,6 +132,10 @@ function duplicateVDoc() {
 	});
 }
 
+function refreshVDoc() {
+	$("#projects3 .active-link:visible").trigger("click");
+}
+
 
 function binVDoc() {
 	var txt = ALERT_DELETE;
@@ -167,6 +173,9 @@ function binVDoc() {
 	});
 }
 
+function checkInVDoc() {
+	return true;
+}
 
 function sortClickVDoc(obj,sortcur,sortnew) {
 	var fid = $("#projects2 .module-click:visible").attr("rel");
