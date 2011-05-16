@@ -434,7 +434,7 @@ function checkInFolder(id) {
 }
 
 function checkInProject(id) {
-	$.ajax({ type: "GET", url: "/", data: 'path=apps/projects&request=checkinProject&id='+id, success: function(data){
+	$.ajax({ type: "GET", url: "/", async: false, data: 'path=apps/projects&request=checkinProject&id='+id, success: function(data){
 			if(!data) {
 				prompt("something wrong");
 			}
@@ -677,6 +677,7 @@ $(document).ready(function() {
 					$("#projects2 ul").html(data.html);
 					$("#projects2 li").show();
 					setModuleActive($("#projects2"),index);
+					$("#projects2 .sort").attr("rel", data.sort).addClass("sort"+data.sort);
 					$('#projects2 input.filter').quicksearch('#projects2 li');
 					$("#projects2").css("overflow", "auto").animate({height: h-(projects.modules_height+96)}, function() {
 					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectDetails&id="+projectid, success: function(text){
@@ -732,7 +733,8 @@ $(document).ready(function() {
 				
 					if($("#projects1").height() != module_title_height) {
 						var idx = $("#projects2 .module-click").index($("#projects2 .module-click[rel='"+projectid+"']"));
-						setModuleActive($("#projects2"),idx)
+						setModuleActive($("#projects2"),idx);
+						$("#projects2 .sort").attr("rel", data.sort).addClass("sort"+data.sort);
 						setModuleDeactive($("#projects1"),index);
 						$("#projects1").css("overflow", "hidden").animate({height: module_title_height}, function() {
 							$("#projects-top .top-headline").html($("#projects .module-click:visible").find(".text").html());

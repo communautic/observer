@@ -253,7 +253,7 @@ function binMeeting() {
 
 
 function checkInMeeting(id) {
-		$.ajax({ type: "GET", url: "/", data: 'path=apps/projects/modules/meetings&request=checkinMeeting&id='+id, success: function(data){
+		$.ajax({ type: "GET", url: "/", async: false, data: 'path=apps/projects/modules/meetings&request=checkinMeeting&id='+id, success: function(data){
 			if(!data) {
 				prompt("something wrong");
 			}

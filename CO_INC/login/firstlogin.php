@@ -24,16 +24,13 @@ $(document).ready(function() {
 	document.com_form.username.focus();
 	
 	$('#com-form').validationEngine(); 
-	
-	$(".com-input").focus(function () {
-        $("#loginFailed").fadeOut();
-    });
+
 	$('#com-form').ajaxForm({
-        success: function(data) {
+		success: function(data) {
 			if (data == 1) {
 				document.location.href='<?php echo CO_PATH_URL;?>';
 			} else {
-				$("#loginFailed").fadeIn();
+				$('#username').focus().delay(400).blur();
 			}
         }
     });

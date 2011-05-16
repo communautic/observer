@@ -290,15 +290,12 @@ function createUploader(ele){
                 '<div class="qq-upload-list" id="documents"></div></div>' + 
              '</div>',
 		fileTemplate: '<span class="doclist-outer">' +
-                '<table cellspacing="0" cellpadding="0" border="0" class="table-content"><tr><td class="tcell-left text11">Dateiname/Format</td><td class="tcell-right"><a title="Download" rel="" class="downloadDocument" href="Download">' +
-				'<span class="qq-upload-file docitem"></span>' +
-				'</a></td><td width="30"><a rel="" class="deleteDoc" href="#"><span class="icon-delete"></span></a></td></tr><tr><td class="tcell-left text11">Dateigr&ouml;sse</td><td class="tcell-right">' +
+				'<span class="qq-upload-file docitem" style="line-height: 15px;"></span><br />' +
                 '<span class="qq-upload-spinner"></span>' +
                 '<span class="qq-upload-size"></span>' +
-				'<a class="qq-upload-cancel" href="#"></a>' +
+				'<a class="qq-upload-cancel" href="#" style="line-height: 15px;">' + UPLOAD_CANCEL + '</a>' +
                 '<span class="qq-upload-failed-text">Failed</span>' +
-				'</td><td></td></tr></table>' +
-            '</span>',   
+            '</span>',
 		action: '/',
 		sizeLimit: 50*1024*1024, // max size
 		params: {
@@ -309,13 +306,15 @@ function createUploader(ele){
 		onSubmit: function(id, fileName){},
 		onProgress: function(id, fileName, loaded, total){},
 		onComplete: function(id, fileName, data){
-			$("#documents .doclist-outer:last").attr("id","doc_"+data.id);
-			$("#documents .deleteDoc:last").attr("rel", data.id);
-			$("#documents .downloadDocument:last").attr("rel", data.id);
-			numdocs = $("#documents .docitem").size();
+			
+			numdocs = $(".doclist-outer").size();
 			num = num+1;
+			if(num == numdocs) {
+				$("#projects3 .active-link:visible").trigger("click");
+			}
 		},
-		//onCancel: function(id, fileName){},
+		onCancel: function(id, fileName){
+			},
         debug: false
 	});    
 }

@@ -9,6 +9,7 @@ var ALERT_NO_TITLE = "Please enter a title";
 var ALERT_CHANGES_NOT_SAVED = "Your changes have not yet been saved!\nWould you like to save them now?";
 var ALERT_DELETE = "Do you really want to delete this data?";
 var ALERT_DELETE_REALLY = "Do you really want to irreversible delete this data?";
+var ALERT_DELETE_BIN = "Do you really want to irreversible empty the recycle bin?";
 var ALERT_RESTORE = "Would you like to restore this data?";
 var ALERT_PROJECT_MOVE_ALL = "Would you like to change all start dates in relation to this new date?";
 var ALERT_NO_FILE = "Please select a file to upload.";
@@ -25,3 +26,5 @@ var ALERT_ACCESS_IS_GUEST = 'is already Guest';
 var ALERT_ACCESS_IS_ADMIN = 'is already Administrator';
 
 var ALERT_UPLOAD_SIZE = "{file} is too large, maximum file size is {sizeLimit}."
+var UPLOAD_FROM = "from";
+var UPLOAD_CANCEL = "Cancel";

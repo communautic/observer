@@ -59,7 +59,7 @@ class ProjectsModel extends Model {
 	  }
 	  
 		if(!$session->isSysadmin()) {
-			$q ="select a.id, a.title from " . CO_TBL_PROJECTS_FOLDERS . " as a where a.status='0' and a.bin = '0' and (SELECT count(*) FROM co_projects_access as b, co_projects as c WHERE (b.admins REGEXP '[[:<:]]" . $session->uid . "[[:>:]]' or b.guests REGEXP '[[:<:]]" . $session->uid . "[[:>:]]') and c.projectfolder=a.id and b.pid=c.id) > 0";
+			$q ="select a.id, a.title from " . CO_TBL_PROJECTS_FOLDERS . " as a where a.status='0' and a.bin = '0' and (SELECT count(*) FROM co_projects_access as b, co_projects as c WHERE (b.admins REGEXP '[[:<:]]" . $session->uid . "[[:>:]]' or b.guests REGEXP '[[:<:]]" . $session->uid . "[[:>:]]') and c.projectfolder=a.id and b.pid=c.id) > 0 " . $order;
 		} else {
 			$q ="select a.id, a.title from " . CO_TBL_PROJECTS_FOLDERS . " as a where a.status='0' and a.bin = '0' " . $order;
 		}
@@ -129,7 +129,31 @@ class ProjectsModel extends Model {
 		if(!$session->isSysadmin()) {
 			$access = " and a.id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
 	  	}
-		$q = "SELECT a.title,a.id,a.management, (SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as startdate ,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_PROJECTS . " as a where a.projectfolder='$id' and a.bin='0'" . $access;
+		
+		 $sortstatus = $this->getSortStatus("project-sort-status",$id);
+		if(!$sortstatus) {
+		  	$order = "order by a.title";
+		  } else {
+			  switch($sortstatus) {
+				  case "1":
+				  		$order = "order by a.title";
+				  break;
+				  case "2":
+				  		$order = "order by a.title DESC";
+				  break;
+				  case "3":
+				  		$sortorder = $this->getSortOrder("project-sort-order",$id);
+				  		if(!$sortorder) {
+						  	$order = "order by a.title";
+						  } else {
+							$order = "order by field(a.id,$sortorder)";
+						  }
+				  break;	
+			  }
+		  }
+		
+		
+		$q = "SELECT a.title,a.id,a.management, (SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as startdate ,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_PROJECTS . " as a where a.projectfolder='$id' and a.bin='0'" . $access . " " . $order;
 
 		//$q = "select a.title,a.id,a.access,a.status,(SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " WHERE phaseid=a.id) as enddate from " . CO_TBL_PHASES . " as a where a.pid = '$id' and a.bin != '1' order by startdate";
 		$result = mysql_query($q, $this->_db->connection);
@@ -643,8 +667,10 @@ class ProjectsModel extends Model {
 	
 	function createDuplicate($id) {
 		global $session, $lang;
+		
+		$now = gmdate("Y-m-d H:i:s");
 		// project
-		$q = "INSERT INTO " . CO_TBL_PROJECTS . " (projectfolder,title,startdate,management,team,protocol,status,planned_date,emailed_to,created_date,created_user,edited_date,edited_user) SELECT projectfolder,CONCAT(title,' ".$lang["GLOBAL_DUPLICAT"]."'),startdate,management,team,protocol,status,planned_date,emailed_to,created_date,created_user,edited_date,edited_user FROM " . CO_TBL_PROJECTS . " where id='$id'";
+		$q = "INSERT INTO " . CO_TBL_PROJECTS . " (projectfolder,title,startdate,ordered_by,management,team,protocol,status,planned_date,emailed_to,created_date,created_user,edited_date,edited_user) SELECT projectfolder,CONCAT(title,' ".$lang["GLOBAL_DUPLICAT"]."'),startdate,ordered_by,management,team,protocol,'0','$now',emailed_to,'$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_PROJECTS . " where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
 		// phases

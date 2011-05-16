@@ -9,6 +9,7 @@ var ALERT_NO_TITLE = "Bitte geben Sie einen Titel ein";
 var ALERT_CHANGES_NOT_SAVED = "Ihre aktuellen Änderungen wurden noch nicht gespeichert!\nDaten jetzt speichern?";
 var ALERT_DELETE = "Möchten Sie alle Daten in den Papierkorb verschieben?";
 var ALERT_DELETE_REALLY = "Möchten Sie die Daten unwideruflich löschen?";
+var ALERT_DELETE_BIN = "Möchten Sie wirklich alle Papierkorbinhalte unwiderruflich löschen?";
 var ALERT_RESTORE = "Möchten Sie die Daten wiederherstellen?";
 //var ALERT_CHECK_DELETE = "Um zu löschen, aktivieren Sie bitte zuerst die löschen Checkbox im Status Balken";
 //var ALERT_ZEITPLAN', "%s ist in Verzug oder wurde verschoben. Wollen Sie die Daten von %s abgleichen?");
@@ -29,3 +30,5 @@ var ALERT_ACCESS_IS_GUEST = 'ist schon Beobachter';
 var ALERT_ACCESS_IS_ADMIN = 'ist schon Administrator';
 
 var ALERT_UPLOAD_SIZE = "{file} überschreitet die maximale Dateigröße von {sizeLimit}."
+var UPLOAD_FROM = "von";
+var UPLOAD_CANCEL = "Abbrechen";

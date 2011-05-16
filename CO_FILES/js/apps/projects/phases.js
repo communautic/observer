@@ -254,7 +254,7 @@ function binPhase() {
 
 
 function checkInPhase(id) {
-		$.ajax({ type: "GET", url: "/", data: 'path=apps/projects/modules/phases&request=checkinPhase&id='+id, success: function(data){
+		$.ajax({ type: "GET", url: "/", async: false, data: 'path=apps/projects/modules/phases&request=checkinPhase&id='+id, success: function(data){
 			if(!data) {
 				prompt("something wrong");
 			}

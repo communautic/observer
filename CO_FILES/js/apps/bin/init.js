@@ -16,7 +16,7 @@ function refreshBin() {
 function binBin() {
 	var id = $("#bin1 .active-link").attr("rel");
 	//alert("work in progress - delete all in " + id);
-	var txt = ALERT_DELETE_REALLY;
+	var txt = ALERT_DELETE_BIN;
 	var langbuttons = {};
 	langbuttons[ALERT_YES] = true;
 	langbuttons[ALERT_NO] = false;

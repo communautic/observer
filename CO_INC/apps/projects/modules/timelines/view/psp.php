@@ -25,7 +25,7 @@
 	<tr>
 		<td class="tcell-left-inactive text11"><?php echo $lang["PROJECT_TITLE"];?></td>
 		<td class="tcell-right">
-			<div class="psp-item <?php echo($project["status"]);?> loadProject" rel="<?php echo($project["id"]);?>"><?php echo($project["title"]);?><br />
+			<div class="psp-item <?php echo($project["status"]);?> loadProject" rel="<?php echo($project["id"]);?>"><div style="height: 42px; overflow: hidden"><?php echo($project["title"]);?></div>
 				<div class="psp-item-startdate"><?php echo($project["startdate"]);?></div><div class="psp-item-enddate"><?php echo($project["enddate"]);?></div>
                 <div class="psp-connector-project-vert"></div>
 			</div>

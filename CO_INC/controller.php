@@ -174,8 +174,8 @@ class Controller extends MySQLDB {
 	}
 
 	
-	function writeSendtoLog($what,$whatid,$who) {
-		$this->model->writeSendtoLog($what,$whatid,$who);
+	function writeSendtoLog($what,$whatid,$who,$subject,$body) {
+		$this->model->writeSendtoLog($what,$whatid,$who,$subject,$body);
 	}
 	
 	function getSendtoDetails($what,$id) {
