@@ -126,26 +126,25 @@ foreach($project["phases"] as $key => &$value){ ?>
                 <!-- task dependency -->
 				<?php 
 				if(is_int($project["phases"][$key]["tasks"][$tkey]["dep"])){ 
-				$dep_key = $project["phases"][$key]["tasks"][$tkey]["dep"];
-				$dep_phase_key = $project["phases"][$key]["tasks"][$tkey]["dep_key"];
-				if($key != $dep_phase_key) {
-					$dep_top = -$project["phases"][$dep_phase_key]["css_height"]-2+$project["tasks"][$dep_key]["css_top"];
-					$dep_height = $project["phases"][$dep_phase_key]["tasks"][$tkey]["css_top"] - $dep_top -4;
-					if($key-1 != $dep_phase_key) {
-						//$num = $key - $dep_phase_key;
-						for($i=$dep_phase_key+1; $i < $key; $i++) {
-							$dep_height += $project["phases"][$i]["css_height"];
-							$dep_top -= $project["phases"][$i]["css_height"]+2;
+					$dep_key = $project["phases"][$key]["tasks"][$tkey]["dep"];
+					$dep_phase_key = $project["phases"][$key]["tasks"][$tkey]["dep_key"];
+					if($key != $dep_phase_key) {
+						$dep_top = -$project["phases"][$dep_phase_key]["css_height"]-2+$project["tasks"][$dep_key]["css_top"];
+						$dep_height = $project["phases"][$dep_phase_key]["tasks"][$tkey]["css_top"] - $dep_top -4;
+						if($key-1 != $dep_phase_key) {
+							for($i=$dep_phase_key+1; $i < $key; $i++) {
+								$dep_height += $project["phases"][$i]["css_height"];
+								$dep_top -= $project["phases"][$i]["css_height"]+2;
+							}
 						}
+						$dep_left = $project["phases"][$dep_phase_key]["css_left"]+$project["tasks"][$dep_key]["css_left"]+$project["tasks"][$dep_key]["css_width"]-$project["phases"][$key]["css_left"];
+						$dep_width = ($project["phases"][$key]["css_left"] + $project["phases"][$key]["tasks"][$tkey]["css_left"]) - ($project["phases"][$dep_phase_key]["css_left"]+$project["tasks"][$dep_key]["css_left"]+$project["tasks"][$dep_key]["css_width"]);
+					} else {
+						$dep_top = $project["tasks"][$dep_key]["css_top"];
+						$dep_height = $project["phases"][$dep_phase_key]["tasks"][$tkey]["css_top"] - $dep_top -6;
+						$dep_left = $project["tasks"][$dep_key]["css_left"]+$project["tasks"][$dep_key]["css_width"];
+						$dep_width = $project["phases"][$key]["tasks"][$tkey]["css_left"]-$project["tasks"][$dep_key]["css_width"]-$project["tasks"][$dep_key]["css_left"];
 					}
-					$dep_left = $project["phases"][$dep_phase_key]["css_left"]+$project["tasks"][$dep_key]["css_left"]+$project["tasks"][$dep_key]["css_width"]-$project["phases"][$key]["css_left"];
-					$dep_width = ($project["phases"][$key]["css_left"] + $project["phases"][$key]["tasks"][$tkey]["css_left"]) - ($project["phases"][$dep_phase_key]["css_left"]+$project["tasks"][$dep_key]["css_left"]+$project["tasks"][$dep_key]["css_width"]);
-				} else {
-					$dep_top = $project["tasks"][$dep_key]["css_top"];
-					$dep_height = $project["phases"][$dep_phase_key]["tasks"][$tkey]["css_top"] - $dep_top -6;
-					$dep_left = $project["tasks"][$dep_key]["css_left"]+$project["tasks"][$dep_key]["css_width"];
-					$dep_width = $project["phases"][$key]["tasks"][$tkey]["css_left"]-$project["tasks"][$dep_key]["css_width"]-$project["tasks"][$dep_key]["css_left"];
-				}
 				?>
                 <div class="barchart-dependency" style="z-index: 2; position: absolute; top: <?php echo($dep_top);?>px; left: <?php echo($dep_left);?>px; height: <?php echo($dep_height);?>px; width: <?php echo($dep_width);?>px;"><div class="barchart-arrow"></div></div>
             	<?php } ?>
@@ -172,20 +171,25 @@ foreach($project["phases"] as $key => &$value){ ?>
                 <!-- milestone dependency -->
 				<?php 
 				if(is_int($project["phases"][$key]["tasks"][$tkey]["dep"])){ 
-				$dep_key = $project["phases"][$key]["tasks"][$tkey]["dep"];
-				$dep_phase_key = $project["phases"][$key]["tasks"][$tkey]["dep_key"];
-				$dep_top = $project["tasks"][$dep_key]["css_top"];
-				$dep_height = $project["phases"][$dep_phase_key]["tasks"][$tkey]["css_top"] - $dep_top -6;
-				$dep_left = $project["tasks"][$dep_key]["css_left"]+$project["tasks"][$dep_key]["css_width"];
-				$dep_width = $project["phases"][$key]["tasks"][$tkey]["css_left"]- $project["tasks"][$dep_key]["css_left"] -$project["tasks"][$dep_key]["css_width"] +23;
-
-				//$dep_top = $project["phases"][$key]["tasks"][$dep_key]["css_top"];
-				$dep_height = $project["phases"][$key]["tasks"][$tkey]["css_top"] - $dep_top -6;
-				//$dep_left = $project["phases"][$key]["tasks"][$dep_key]["css_left"]+$project["phases"][$key]["tasks"][$dep_key]["css_width"];
-				//$dep_width = $project["phases"][$key]["tasks"][$dep_key]["css_left"] - ($project["phases"][$key]["tasks"][$tkey]["css_left"]+$project["phases"][$key]["tasks"][$tkey]["css_width"]);
-				//echo($dep_width);
-				//$dep_width = $project["phases"][$dep_phase_key]["tasks"][$dep_key]["css_left"] - ($project["phases"][$key]["tasks"][$tkey]["css_left"]+$project["phases"][$key]["tasks"][$tkey]["css_width"]);
-
+					$dep_key = $project["phases"][$key]["tasks"][$tkey]["dep"];
+					$dep_phase_key = $project["phases"][$key]["tasks"][$tkey]["dep_key"];
+					if($key != $dep_phase_key) {
+						$dep_top = -$project["phases"][$dep_phase_key]["css_height"]-2+$project["tasks"][$dep_key]["css_top"];
+						$dep_height = $project["phases"][$dep_phase_key]["tasks"][$tkey]["css_top"] - $dep_top -6;
+						if($key-1 != $dep_phase_key) {
+							for($i=$dep_phase_key+1; $i < $key; $i++) {
+								$dep_height += $project["phases"][$i]["css_height"];
+								$dep_top -= $project["phases"][$i]["css_height"]+2;
+							}
+						}
+						$dep_left = $project["phases"][$dep_phase_key]["css_left"]+$project["tasks"][$dep_key]["css_left"]+$project["tasks"][$dep_key]["css_width"]-$project["phases"][$key]["css_left"];
+						$dep_width = ($project["phases"][$key]["css_left"] + $project["phases"][$key]["tasks"][$tkey]["css_left"]) - ($project["phases"][$dep_phase_key]["css_left"]+$project["tasks"][$dep_key]["css_left"]);
+					} else {
+						$dep_top = $project["tasks"][$dep_key]["css_top"];
+						$dep_height = $project["phases"][$dep_phase_key]["tasks"][$tkey]["css_top"] - $dep_top -6;
+						$dep_left = $project["tasks"][$dep_key]["css_left"]+$project["tasks"][$dep_key]["css_width"];
+						$dep_width = $project["phases"][$key]["tasks"][$tkey]["css_left"]-$project["tasks"][$dep_key]["css_width"]-$project["tasks"][$dep_key]["css_left"]+$project["td_width"];		
+					}
 				?>
                 <div class="barchart-dependency" style="z-index: 2; position: absolute; top: <?php echo($dep_top);?>px; left: <?php echo($dep_left);?>px; height: <?php echo($dep_height);?>px; width: <?php echo($dep_width);?>px;"><div class="barchart-arrow"></div></div>
             	<?php } ?>
