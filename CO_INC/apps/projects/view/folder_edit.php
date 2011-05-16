@@ -93,7 +93,7 @@ if(is_array($projects)) {
     <tr>
 		<td class="tcell-left text11">&nbsp;</td>
 		<td class="tcell-right" width="220"><span class="text11 content-date"><?php echo $lang["GLOBAL_DURATION"];?></span><span class="text11"><?php echo($project->startdate . " - " . $project->enddate);?></span></td>
-    	<td class="tcell-right" width="190"><span class="text11"><span style="display: inline; margin-right: 20px;">Realisierungsgrad</span><?php echo($project->realisation["real"]);?>%</span></td>
+    	<td class="tcell-right" width="190"><?php if($project->perm != "guest") { ?><span class="text11"><span style="display: inline; margin-right: 20px;">Realisierungsgrad</span><?php echo($project->realisation["real"]);?>%</span><?php } ?></td>
     	<td class="tcell-right"><span class="text11"><span style="display: inline; margin-right: 20px;">Projektleitung</span><?php echo($project->management);?></span></td>
     </tr>
 </table>

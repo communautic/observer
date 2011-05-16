@@ -155,7 +155,6 @@ class ProjectsModel extends Model {
 		
 		$q = "SELECT a.title,a.id,a.management, (SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as startdate ,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_PROJECTS . " as a where a.projectfolder='$id' and a.bin='0'" . $access . " " . $order;
 
-		//$q = "select a.title,a.id,a.access,a.status,(SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " WHERE phaseid=a.id) as enddate from " . CO_TBL_PHASES . " as a where a.pid = '$id' and a.bin != '1' order by startdate";
 		$result = mysql_query($q, $this->_db->connection);
 	  	$projects = "";
 	  	while ($row = mysql_fetch_array($result)) {
@@ -166,6 +165,7 @@ class ProjectsModel extends Model {
 			$project["enddate"] = $this->_date->formatDate($project["enddate"],CO_DATE_FORMAT);
 			$project["realisation"] = $controllingmodel->getChart($project["id"], "realisation", 0);
 			$project["management"] = $contactsmodel->getUserListPlain($project['management']);
+			$project["perm"] = $this->getProjectAccess($project["id"]);
 			$projects[] = new Lists($project);
 	  	}
 		
