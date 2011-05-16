@@ -68,7 +68,7 @@ class MeetingsModel extends ProjectsModel {
 			$sql = " and access = '1' ";
 		}
 		
-		$q = "select id,title,meeting_date,access,status from " . CO_TBL_MEETINGS . " where pid = '$id' and bin != '1' " . $sql . $order;
+		$q = "select id,title,meeting_date,access,status,checked_out,checked_out_user from " . CO_TBL_MEETINGS . " where pid = '$id' and bin != '1' " . $sql . $order;
 
 		$this->setSortStatus("meeting-sort-status",$sortcur,$id);
 		$result = mysql_query($q, $this->_db->connection);
@@ -94,6 +94,13 @@ class MeetingsModel extends ProjectsModel {
 				$itemstatus = " module-item-active";
 			}
 			$array["itemstatus"] = $itemstatus;
+			
+			$checked_out_status = "";
+			if($perm !=  "guest" && $array["checked_out"] == 1 && $array["checked_out_user"] != $session->uid) {
+				$checked_out_status = "icon-checked-out-active";
+			}
+			$array["checked_out_status"] = $checked_out_status;
+			
 			
 			$meetings[] = new Lists($array);
 	  }
@@ -151,7 +158,8 @@ class MeetingsModel extends ProjectsModel {
 		$array["perms"] = $this->getProjectAccess($array["pid"]);
 		$array["canedit"] = false;
 		$array["showCheckout"] = false;
-		$array["checked_out_user_text"] = $this->_contactsmodel->getUserList($array['checked_out_user'],'checked_out_user_text', "", false);
+		$array["checked_out_user_text"] = $this->_contactsmodel->getUserListPlain($array['checked_out_user']);
+
 		if($array["perms"] == "sysadmin" || $array["perms"] == "admin") {
 			if($array["checked_out"] == 1 && $session->checkUserActive($array["checked_out_user"])) {
 				if($array["checked_out_user"] == $session->uid) {
@@ -159,6 +167,9 @@ class MeetingsModel extends ProjectsModel {
 				} else {
 					$array["canedit"] = false;
 					$array["showCheckout"] = true;
+		$array["checked_out_user_phone1"] = $this->_contactsmodel->getContactFieldFromID($array['checked_out_user'],"phone1");
+		$array["checked_out_user_email"] = $this->_contactsmodel->getContactFieldFromID($array['checked_out_user'],"email");
+
 				}
 			} else {
 				$array["canedit"] = $this->checkoutMeeting($id);

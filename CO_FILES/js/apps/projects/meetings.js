@@ -23,6 +23,13 @@ function getDetailsMeeting(moduleidx,liindex,list) {
 	var id = $("#projects3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
 	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/meetings&request=getDetails&id="+id, success: function(data){
 		$("#projects-right").html(data.html);
+		
+		if($('#checkedOut').length > 0) {
+				$("#projects3 .active-link:visible .icon-checked-out").addClass('icon-checked-out-active');
+			} else {
+				$("#projects3 .active-link:visible .icon-checked-out").removeClass('icon-checked-out-active');
+			}
+		
 		if(list == 0) {
 			switch (data.access) {
 				case "sysadmin": case "admin":
@@ -209,7 +216,19 @@ function duplicateMeeting() {
 }
 
 function refreshMeeting() {
+	var id = $("#projects3 .active-link:visible").attr("rel");
+	var pid = $("#projects2 .module-click:visible").attr("rel");
 	$("#projects3 .active-link:visible").trigger("click");
+	var id = $("#projects3 .active-link:visible").attr("rel");
+	$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/projects/modules/meetings&request=getList&id="+pid, success: function(data){																																																																				
+		$(".projects3-content:visible ul").html(data.html);
+		var liindex = $(".projects3-content:visible .module-click").index($(".projects3-content:visible .module-click[rel='"+id+"']"));
+		$(".projects3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
+		$('#projects3 input.filter').quicksearch('#projects3 li');
+		}
+	});
+	
+	
 }
 
 function binMeeting() {

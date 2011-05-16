@@ -152,7 +152,16 @@ function sendProjectResponse() {
 }
 
 function refreshProject() {
-	$("#projects2 .active-link").trigger("click");
+	var pid = $("#projects2 .active-link").attr("rel");
+	var oid = $("#projects1 .module-click:visible").attr("rel");
+	$("#projects2 .active-link:visible").trigger("click");
+	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectList&id="+oid, success: function(data){
+		$("#projects2 ul").html(data.html);
+		var idx = $("#projects2 .module-click").index($("#projects2 .module-click[rel='"+pid+"']"));
+		$("#projects2 .module-click:eq("+idx+")").addClass('active-link');
+		$('#projects2 input.filter').quicksearch('#projects3 li');
+		}
+	});
 }
 
 
@@ -851,6 +860,12 @@ $(document).ready(function() {
 		$("#projects-top .top-headline").html($("#projects .module-click:visible").find(".text").html());
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectDetails&fid="+fid+"&id="+id, success: function(text){
 			$("#projects-right").html(text.html);
+			
+			if($('#checkedOut').length > 0) {
+				$("#projects2 .active-link .icon-checked-out").addClass('icon-checked-out-active');
+			} else {
+				$("#projects2 .active-link .icon-checked-out").removeClass('icon-checked-out-active');
+			}
 			
 			switch (text.access) {
 				case "sysadmin":
