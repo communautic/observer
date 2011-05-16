@@ -306,7 +306,7 @@ class Projects extends Controller {
 		$pdf = $this->savePDF($title,$html,$attachment);
 		
 		// write sento log
-		$this->writeSendtoLog("projects",$id,$to);
+		$this->writeSendtoLog("projects",$id,$to,$subject,$body);
 		
 		//$to,$from,$fromName,$subject,$body,$attachment
 		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment);

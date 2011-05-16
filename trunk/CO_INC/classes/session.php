@@ -92,13 +92,12 @@ class Session
       global $database;  //The database connection
       /* Check if user has been remembered */
       if(isset($_COOKIE['cookname']) && isset($_COOKIE['cookid'])){
-         $this->username = $_SESSION['username'] = $_COOKIE['cookname'];
+		 $this->username = $_SESSION['username'] = $_COOKIE['cookname'];
          $this->userid   = $_SESSION['userid']   = $_COOKIE['cookid'];
       }
 
       /* Username and userid have been set and not guest */
-      if(isset($_SESSION['username']) && isset($_SESSION['userid']) &&
-         $_SESSION['username'] != GUEST_NAME){
+      if(isset($_SESSION['username']) && isset($_SESSION['userid']) && $_SESSION['username'] != GUEST_NAME){
          /* Confirm that username and userid are valid */
          if($database->confirmUserID($_SESSION['username'], $_SESSION['userid']) != 0){
             unset($_SESSION['username']);

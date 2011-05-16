@@ -41,7 +41,6 @@ class Process
    
     function procCheckUsername(){
       global $session;
-     // echo '["username",false]';
 	  
 	  $retval = $session->checkUsername($_GET['fieldValue']);
 	  if($retval){
@@ -51,16 +50,32 @@ class Process
       }
    }
    
+   function checkUsername($username){
+      global $session;
+	  
+	  $retval = $session->checkUsername($username);
+	  if($retval){
+		 return false;
+      } else{
+		 return true;
+      }
+   }
+   
    function procChangeLogin(){
       global $session;
-      $retval = $session->changeLogin($_POST['username'], $_POST['password']);
-	  if($retval){
-		 $session->logout();
-		 $retval = $session->login($_POST['username'], $_POST['password'], isset($_POST['remember']));
-		 echo "1";
-      } else{
-		 echo "0";
-      }
+	  $username = $_POST['username'];
+	  if(!$this->checkUsername($username)) {
+		  echo "0";
+	  } else {
+		  $retval = $session->changeLogin($_POST['username'], $_POST['password']);
+		  if($retval){
+			 $session->logout();
+			 $retval = $session->login($_POST['username'], $_POST['password'], isset($_POST['remember']));
+			 echo "1";
+		  } else{
+			 echo "0";
+		  }
+	  }
    }
 
 

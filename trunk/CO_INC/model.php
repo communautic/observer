@@ -175,10 +175,10 @@ class Model extends MySQLDB {
 	}
 	
 	
-	function writeSendtoLog($what,$whatid,$who) {
+	function writeSendtoLog($what,$whatid,$who,$subject,$body) {
 		global $session;
 		$now = gmdate("Y-m-d H:i:s");
-		$q = "INSERT INTO co_log_sendto SET date='$now', what='$what', whatid='$whatid', who='$who', sender='$session->uid'";
+		$q = "INSERT INTO co_log_sendto SET date='$now', what='$what', whatid='$whatid', who='$who', sender='$session->uid', subject='$subject', body='$body'";
 		$result = mysql_query($q, $this->_db->connection);
 	}
 	
