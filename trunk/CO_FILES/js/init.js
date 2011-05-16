@@ -173,6 +173,7 @@ function setModuleDeactive(elm,index) {
 	elm.find(".module-actions").hide();
 	elm.find("li:not(:eq("+index+"))").hide();
 	elm.find(".num").hide();
+	elm.find(".icon-checked-out").removeClass('icon-checked-out-active');
 	elm.prev("h3").removeClass("module-bg-active").addClass("white");
 	
 }

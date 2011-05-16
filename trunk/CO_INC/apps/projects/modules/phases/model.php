@@ -66,7 +66,7 @@ class PhasesModel extends ProjectsModel {
 			$sql = " and a.access = '1' ";
 		}
 		
-		$q = "select a.title,a.id,a.access,a.status,(SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as startdate from " . CO_TBL_PHASES . " as a where a.pid = '$id' and a.bin != '1' " . $sql . $order;
+		$q = "select a.title,a.id,a.access,a.status,a.checked_out,a.checked_out_user,(SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as startdate from " . CO_TBL_PHASES . " as a where a.pid = '$id' and a.bin != '1' " . $sql . $order;
 		
 	  	$this->setSortStatus("phase-sort-status",$sortcur,$id);
 		$result = mysql_query($q, $this->_db->connection);
@@ -89,6 +89,12 @@ class PhasesModel extends ProjectsModel {
 				$itemstatus = " module-item-active";
 			}
 			$array["itemstatus"] = $itemstatus;
+			
+			$checked_out_status = "";
+			if($perm !=  "guest" && $array["checked_out"] == 1 && $array["checked_out_user"] != $session->uid) {
+				$checked_out_status = "icon-checked-out-active";
+			}
+			$array["checked_out_status"] = $checked_out_status;
 			
 			$phases[] = new Lists($array);
 		}
@@ -191,8 +197,9 @@ class PhasesModel extends ProjectsModel {
 		
 		$array["perms"] = $this->getProjectAccess($array["pid"]);
 		$array["canedit"] = false;
-		$array["showCheckout"] = false;
-		$array["checked_out_user_text"] = $this->_contactsmodel->getUserList($array['checked_out_user'],'checked_out_user_text', "", false);
+		$array["showCheckout"] = false;		
+		$array["checked_out_user_text"] = $this->_contactsmodel->getUserListPlain($array['checked_out_user']);
+		
 		if($array["perms"] == "sysadmin" || $array["perms"] == "admin") {
 			if($array["checked_out"] == 1 && $session->checkUserActive($array["checked_out_user"])) {
 				if($array["checked_out_user"] == $session->uid) {
@@ -200,6 +207,9 @@ class PhasesModel extends ProjectsModel {
 				} else {
 					$array["canedit"] = false;
 					$array["showCheckout"] = true;
+					$array["checked_out_user_phone1"] = $this->_contactsmodel->getContactFieldFromID($array['checked_out_user'],"phone1");
+					$array["checked_out_user_email"] = $this->_contactsmodel->getContactFieldFromID($array['checked_out_user'],"email");
+
 				}
 			} else {
 				$array["canedit"] = $this->checkoutPhase($id);

@@ -79,12 +79,12 @@ class ProjectsModel extends Model {
 		  
 	  }
 	  
-	  $access = "guest";
+	  $perm = "guest";
 	  if($session->isSysadmin()) {
-		  $access = "sysadmin";
+		  $perm = "sysadmin";
 	  }
 	  
-	  $arr = array("folders" => $folders, "sort" => $sortcur, "access" => $access);
+	  $arr = array("folders" => $folders, "sort" => $sortcur, "access" => $perm);
 	  
 	  return $arr;
    }
@@ -399,7 +399,7 @@ class ProjectsModel extends Model {
 	  if(!$session->isSysadmin()) {
 		$access = " and id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
 	  }
-	  $q ="select id,title,status from " . CO_TBL_PROJECTS . " where projectfolder='$id' and bin = '0' " . $access . $order;
+	  $q ="select id,title,status,checked_out,checked_out_user from " . CO_TBL_PROJECTS . " where projectfolder='$id' and bin = '0' " . $access . $order;
 
 	  $this->setSortStatus("project-sort-status",$sortcur,$id);
       $result = mysql_query($q, $this->_db->connection);
@@ -409,9 +409,12 @@ class ProjectsModel extends Model {
 			$array[$key] = $val;
 			if($key == "id") {
 				if($this->getProjectAccess($val) == "guest") {
+					$array["access"] = "guest";
 					$array["iconguest"] = ' icon-guest-active"';
+					$array["checked_out_status"] = "";
 				} else {
 					$array["iconguest"] = '';
+					$array["access"] = "";
 				}
 			}
 			
@@ -423,6 +426,12 @@ class ProjectsModel extends Model {
 			$itemstatus = " module-item-active";
 		}
 		$array["itemstatus"] = $itemstatus;
+		
+		$checked_out_status = "";
+		if($array["access"] != "guest" && $array["checked_out"] == 1 && $array["checked_out_user"] != $session->uid) {
+			$checked_out_status = "icon-checked-out-active";
+		}
+		$array["checked_out_status"] = $checked_out_status;
 		
 		$projects[] = new Lists($array);
 	  }
@@ -476,7 +485,8 @@ class ProjectsModel extends Model {
 		$array["access"] = $this->getProjectAccess($id);
 		$array["canedit"] = false;
 		$array["showCheckout"] = false;
-		$array["checked_out_user_text"] = $contactsmodel->getUserList($array['checked_out_user'],'checked_out_user_text', "", false);
+		$array["checked_out_user_text"] = $contactsmodel->getUserListPlain($array['checked_out_user']);
+
 		if($array["access"] == "sysadmin" || $array["access"] == "admin") {
 			if($array["checked_out"] == 1 && $session->checkUserActive($array["checked_out_user"])) {
 				if($array["checked_out_user"] == $session->uid) {
@@ -484,6 +494,8 @@ class ProjectsModel extends Model {
 				} else {
 					$array["canedit"] = false;
 					$array["showCheckout"] = true;
+					$array["checked_out_user_phone1"] = $contactsmodel->getContactFieldFromID($array['checked_out_user'],"phone1");
+					$array["checked_out_user_email"] = $contactsmodel->getContactFieldFromID($array['checked_out_user'],"email");
 				}
 			} else {
 				$array["canedit"] = $this->checkoutProject($id);

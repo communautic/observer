@@ -24,6 +24,13 @@ function getDetailsPhase(moduleidx,liindex,list) {
 	var num = $("#projects3 ul:eq("+moduleidx+") .phase_num:eq("+liindex+")").html();
 	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/phases&request=getDetails&id="+phaseid+"&num="+num, success: function(data){
 		$("#projects-right").html(data.html);
+		
+		if($('#checkedOut').length > 0) {
+				$("#projects3 .active-link:visible .icon-checked-out").addClass('icon-checked-out-active');
+			} else {
+				$("#projects3 .active-link:visible .icon-checked-out").removeClass('icon-checked-out-active');
+			}
+		
 		if(list == 0) {
 			switch (data.access) {
 				case "sysadmin": case "admin":
@@ -203,7 +210,17 @@ function duplicatePhase() {
 }
 
 function refreshPhase() {
+	var id = $("#projects3 .active-link:visible").attr("rel");
+	var pid = $("#projects2 .module-click:visible").attr("rel");
 	$("#projects3 .active-link:visible").trigger("click");
+	var id = $("#projects3 .active-link:visible").attr("rel");
+	$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/projects/modules/phases&request=getList&id="+pid, success: function(data){																																																																				
+		$(".projects3-content:visible ul").html(data.html);
+		var liindex = $(".projects3-content:visible .module-click").index($(".projects3-content:visible .module-click[rel='"+id+"']"));
+		$(".projects3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
+		$('#projects3 input.filter').quicksearch('#projects3 li');
+		}
+	});
 }
 
 

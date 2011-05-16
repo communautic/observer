@@ -12,12 +12,17 @@
 <input type="hidden" id="poformaction" name="request" value="setProjectDetails">
 <input type="hidden" name="id" value="<?php echo($project->id);?>">
 <?php if($project->showCheckout) { ?>
-<table border="0" cellpadding="0" cellspacing="0" class="table-content" style="background-color: #eb4600">
+<table id="checkedOut" border="0" cellpadding="0" cellspacing="0" class="table-content" style="background-color: #eb4600">
 	<tr>
-		<td class="tcell-left text11"><span><span>in Bearbeitung</span></span></td>
-		<td class="tcell-right"><div class="itemlist-field">durch <?php echo($project->checked_out_user_text);?></div></td>
+		<td class="tcell-left text11"><strong><span><span>Warnung</span></span></strong></td>
+		<td class="tcell-right"><strong>Dieser Inhaltsbereich wird aktuell bearbeitet von: <?php echo($project->checked_out_user_text);?></strong></td>
+    </tr>
+    <tr>
+		<td class="tcell-left text11">&nbsp;</td>
+		<td class="tcell-right white"><a href="mailto:<?php echo($project->checked_out_user_email);?>"><?php echo($project->checked_out_user_email);?></a>, <?php echo($project->checked_out_user_phone1);?></td>
     </tr>
 </table>
+<div class="content-spacer"></div>
 <?php } ?>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
