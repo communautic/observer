@@ -25,6 +25,7 @@ class AccessModel extends ProjectsModel {
 
 	function getDetails($id) {
 		global $session, $contactsmodel;
+
 		// guest
 		$q = "SELECT * FROM " . CO_TBL_ACCESS . " where pid='$id'";
 		$result = mysql_query($q, $this->_db->connection);

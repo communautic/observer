@@ -350,9 +350,10 @@ function projectsActions(status) {
 		case 1: actions = ['0','5','6']; break;
 		//case 2: 	actions = ['1']; break;   					// just save
 		case 3: 	actions = ['0']; break;   					// just new
-		case 4: 	actions = ['1','2','4','5']; break;   		// print, send, handbook, refresh
+		case 4: 	actions = ['0','1','2','4','5']; break;   		// new, print, send, handbook, refresh
 		case 5: 	actions = ['1','2','5']; break;   			// print, send, refresh
 		case 6: 	actions = ['4','5']; break;   			// handbook refresh
+		case 7: 	actions = ['0','1','2','5']; break;   			// new, print, send, refresh
 		default: 	actions = ['5'];  								// none
 	}
 	$('#projectsActions > li span').each( function(index) {
@@ -518,7 +519,7 @@ function projectsresetModuleHeights() {
 
 function ProjectsModulesDisplay(access) {
 	var h = $("#projects .ui-layout-west").height();
-	if(access == "guest") {
+	if(access == "guest" || access == "guestadmin") {
 		var modLen = projects.GuestHiddenModules.length;
 		var m;
 		for(var i=0, len=modLen; i<len; ++i) {
@@ -691,33 +692,41 @@ $(document).ready(function() {
 					$("#projects2").css("overflow", "auto").animate({height: h-(projects.modules_height+96)}, function() {
 					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectDetails&id="+projectid, success: function(text){
 						$("#projects-right").html(text.html);
-							
+
 						switch (text.access) {
-							case "sysadmin":
-								if(data.html == "<li></li>") {
-									projectsActions(3);
-								} else {
-									projectsActions(0);
-									$('#projects2').find('input.filter').quicksearch('#projects2 li');
+									case "sysadmin":
+										if(data.html == "<li></li>") {
+											projectsActions(3);
+										} else {
+											projectsActions(0);
+											$('#projects2').find('input.filter').quicksearch('#projects2 li');
+										}
+									break;
+									case "admin":
+										if(data.html == "<li></li>") {
+											projectsActions(3);
+										} else {
+											projectsActions(0);
+											$('#projects2').find('input.filter').quicksearch('#projects2 li');
+										}
+									break;
+									case "guestadmin":
+										if(data.html == "<li></li>") {
+											projectsActions(3);
+										} else {
+											projectsActions(7);
+											$('#projects2').find('input.filter').quicksearch('#projects2 li');
+										}
+									break;
+									case "guest":
+										if(data.html == "<li></li>") {
+											projectsActions();
+										} else {
+											projectsActions(5);
+											$('#projects2').find('input.filter').quicksearch('#projects2 li');
+										}
+									break;
 								}
-							break;
-							case "admin":
-								if(data.html == "<li></li>") {
-									projectsActions();
-								} else {
-									projectsActions(4);
-									$('#projects2').find('input.filter').quicksearch('#projects2 li');
-								}
-							break;
-							case "guest":
-								if(data.html == "<li></li>") {
-									projectsActions();
-								} else {
-									projectsActions(5);
-									$('#projects2').find('input.filter').quicksearch('#projects2 li');
-								}
-							break;
-						}
 						initContentScrollbar();
 						}
 					});
@@ -761,9 +770,17 @@ $(document).ready(function() {
 									break;
 									case "admin":
 										if(data.html == "<li></li>") {
-											projectsActions();
+											projectsActions(3);
 										} else {
-											projectsActions(4);
+											projectsActions(0);
+											$('#projects2').find('input.filter').quicksearch('#projects2 li');
+										}
+									break;
+									case "guestadmin":
+										if(data.html == "<li></li>") {
+											projectsActions(3);
+										} else {
+											projectsActions(7);
 											$('#projects2').find('input.filter').quicksearch('#projects2 li');
 										}
 									break;
@@ -866,13 +883,15 @@ $(document).ready(function() {
 			} else {
 				$("#projects2 .active-link .icon-checked-out").removeClass('icon-checked-out-active');
 			}
-			
 			switch (text.access) {
 				case "sysadmin":
 					projectsActions(0);
 				break;
 				case "admin":
-					projectsActions(4);
+					projectsActions(0);
+				break;
+				case "guestadmin":
+					projectsActions(7);
 				break;
 				case "guest":
 					projectsActions(5);

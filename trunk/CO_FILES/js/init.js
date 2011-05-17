@@ -590,6 +590,12 @@ $(document).ready(function() {
 		dialogClass: 'sendtoWindow',
 		autoOpen: false,
 		resizable: true,
+		resize: function(event, ui) {
+			$('#sendToTextarea').height($(this).height() - 154);
+			},
+		open: function(event, ui) {
+			$('#sendToTextarea').height($(this).height() - 154);
+			},
 		width: 400,  
 		height: 320,
 		show: 'slide',

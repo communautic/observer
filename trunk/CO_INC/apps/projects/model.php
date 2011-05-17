@@ -483,6 +483,23 @@ class ProjectsModel extends Model {
 		
 		// perms
 		$array["access"] = $this->getProjectAccess($id);
+		//$canEdit = $this->getEditPerms($session->uid);
+	  	/*if(!empty($canEdit)) {
+				$array["access"] = "admin";
+		}*/
+		/*if($array["access"] == "admin") {
+			// check if owner
+			if($this->isOwnerPerms($id,$session->uid)) {
+				$array["access"] = "owner";
+			}
+		}*/
+		if($array["access"] == "guest") {
+			// check if this user is admin in some other project
+			$canEdit = $this->getEditPerms($session->uid);
+			if(!empty($canEdit)) {
+					$array["access"] = "guestadmin";
+			}
+		}
 		$array["canedit"] = false;
 		$array["showCheckout"] = false;
 		$array["checked_out_user_text"] = $contactsmodel->getUserListPlain($array['checked_out_user']);
@@ -672,6 +689,11 @@ class ProjectsModel extends Model {
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			$id = mysql_insert_id();
+			// if admin insert him to access
+			if(!$session->isSysadmin()) {
+				$accessmodel = new AccessModel();
+				$accessmodel->setDetails($id,$session->uid,"");
+			}
 			return $id;
 		}
 	}
@@ -685,6 +707,12 @@ class ProjectsModel extends Model {
 		$q = "INSERT INTO " . CO_TBL_PROJECTS . " (projectfolder,title,startdate,ordered_by,management,team,protocol,status,planned_date,emailed_to,created_date,created_user,edited_date,edited_user) SELECT projectfolder,CONCAT(title,' ".$lang["GLOBAL_DUPLICAT"]."'),startdate,ordered_by,management,team,protocol,'0','$now',emailed_to,'$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_PROJECTS . " where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
+		
+		if(!$session->isSysadmin()) {
+				$accessmodel = new AccessModel();
+				$accessmodel->setDetails($id_new,$session->uid,"");
+			}
+		
 		// phases
 		$q = "SELECT id,title,team,management FROM " . CO_TBL_PHASES . " WHERE pid = '$id' and bin='0'";
 		$result = mysql_query($q, $this->_db->connection);
@@ -698,7 +726,7 @@ class ProjectsModel extends Model {
 			$rp = mysql_query($qp, $this->_db->connection);
 			$id_p_new = mysql_insert_id();
 			// tasks
-			$qt = "SELECT id,dependent,cat,text,startdate,enddate FROM " . CO_TBL_PHASES_TASKS . " where phaseid='$phaseid' and bin='0' ORDER BY startdate,status";		
+			$qt = "SELECT id,dependent,cat,text,startdate,enddate FROM " . CO_TBL_PHASES_TASKS . " where phaseid='$phaseid' and bin='0' ORDER BY id ASC";		
 			$resultt = mysql_query($qt, $this->_db->connection);
 			while($rowt = mysql_fetch_array($resultt)) {
 				$id = $rowt["id"];
@@ -713,20 +741,26 @@ class ProjectsModel extends Model {
 				// BUILD OLD NEW TASK ID ARRAY
 				$t[$id] = $id_t_new;
 			}
-			// Updates Dependencies for new tasks
-			$qt = "SELECT id,dependent FROM " . CO_TBL_PHASES_TASKS . " where phaseid='$id_p_new' and bin='0'";		
+			
+		}
+		//print_r($t);
+		// Updates Dependencies for new tasks
+			$qt = "SELECT id,dependent FROM " . CO_TBL_PHASES_TASKS . " where pid='$id_new' and bin='0' ORDER BY id ASC";		
 			$resultt = mysql_query($qt, $this->_db->connection);
-			while($rowt = mysql_fetch_array($resultt)) {
-				$id = $rowt["id"];
+			while($rowtt = mysql_fetch_array($resultt)) {
+				$id = $rowtt["id"];
 				$dep = 0;
-				if($rowt["dependent"] != 0) {
-					$dependent = $rowt["dependent"];
+				$dependent = "";
+				if($rowtt["dependent"] != 0) {
+					$dependent = $rowtt["dependent"];
+					//if(in_array($dependent,$t)) {
 					$dep = $t[$dependent];
+					//}
 				}
 				$qtn = "UPDATE " . CO_TBL_PHASES_TASKS . " set dependent = '$dep' WHERE id='$id'";
 				$rpn = mysql_query($qtn, $this->_db->connection);
 			}
-		}
+		
 		if ($result) {
 			return $id_new;
 		}
@@ -845,8 +879,14 @@ class ProjectsModel extends Model {
 
 
 	function getProjectFolderDialog($field,$title) {
+		global $session;
 		$str = '<div class="dialog-text">';
-		$q ="select id, title from " . CO_TBL_PROJECTS_FOLDERS . " where status='0' and bin = '0' ORDER BY title";
+		//$q ="select id, title from " . CO_TBL_PROJECTS_FOLDERS . " where status='0' and bin = '0' ORDER BY title";
+		if(!$session->isSysadmin()) {
+			$q ="select a.id, a.title from " . CO_TBL_PROJECTS_FOLDERS . " as a where a.status='0' and a.bin = '0' and (SELECT count(*) FROM co_projects_access as b, co_projects as c WHERE (b.admins REGEXP '[[:<:]]" . $session->uid . "[[:>:]]' or b.guests REGEXP '[[:<:]]" . $session->uid . "[[:>:]]') and c.projectfolder=a.id and b.pid=c.id) > 0 ORDER BY title";
+		} else {
+			$q ="select id, title from " . CO_TBL_PROJECTS_FOLDERS . " where status='0' and bin = '0' ORDER BY title";
+		}
 		$result = mysql_query($q, $this->_db->connection);
 		while ($row = mysql_fetch_array($result)) {
 			$str .= '<a href="#" class="insertProjectFolderfromDialog" title="' . $row["title"] . '" field="'.$field.'" gid="'.$row["id"].'">' . $row["title"] . '</a>';
@@ -1438,11 +1478,35 @@ class ProjectsModel extends Model {
 		if(in_array($pid,$this->getEditPerms($session->uid))) {
 			$access = "admin";
 		}
+		/*if($this->isOwnerPerms($pid,$session->uid)) {
+			$access = "owner";
+		}*/
 		if($session->isSysadmin()) {
 			$access = "sysadmin";
 		}
 		return $access;
    }
+   
+   
+   /*function isOwnerPerms($id,$uid) {
+	   	$q = "SELECT id FROM co_projects where id = '$id' and created_user ='$uid'";
+      	$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result) > 0) {
+			return true;
+		} else {
+			return false;
+		}
+   }*/
+   
+   /*function isProjectOwner($uid) {
+	   	$q = "SELECT id FROM co_projects where created_user = '$uid'";
+      	$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result) > 0) {
+			return true;
+		} else {
+			return false;
+		}
+   }*/
    
 
 }
