@@ -115,7 +115,7 @@ class TimelinesModel extends ProjectsModel {
 			$sql = " and a.access = '1' ";
 		}
 		// get phase details
-		$q = "SELECT a.title,a.id,a.status,(SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin = '0') as startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " as c WHERE c.phaseid=a.id and c.bin = '0') as enddate FROM " . CO_TBL_PHASES . " as a WHERE pid = '$pid' and bin = '0' " . $sql . " ORDER BY startdate";
+		$q = "SELECT a.title,a.id,a.status,a.finished_date,(SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin = '0') as startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " as c WHERE c.phaseid=a.id and c.bin = '0') as enddate FROM " . CO_TBL_PHASES . " as a WHERE pid = '$pid' and bin = '0' " . $sql . " ORDER BY startdate";
 		$result = mysql_query($q, $this->_db->connection);
 	  	while ($row = mysql_fetch_object($result)) {
 			// phase status
@@ -168,6 +168,21 @@ class TimelinesModel extends ProjectsModel {
 					"status" => $tstatus,
 					"cat" => $rowt->cat
 				);
+			}
+			
+			
+			//$phase_overdue = array();
+			// phase overdue?
+			if($row->status == 2 && $row->finished_date > $row->enddate) {
+				//$phase_overdue["days"] = $this->_date->dateDiff($row->enddate,$row->finished_date);
+			    //$phase_overdue["width"] = $phase_overdue["days"] * $width;
+				//$phase_overdue["left"] = $phase_left + $phase_width;
+				$status = "barchart_color_overdue";
+				//if($row->finished_date > $project["enddate"]) {
+					//$project["enddate"] = $row->finished_date;
+					//$project["days"] = $this->_date->dateDiff($project["startdate"],$project["enddate"]);
+					//$project["css_width"] = ($project["days"]+1) * $width;
+				//}
 			}
 			
 			$project['phases'][] = array(

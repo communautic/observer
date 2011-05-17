@@ -5,6 +5,7 @@ $timelines_name = "Scheduling";
 define("TIMELINE_PROJECT_STRUCTURE", 'Org Chart');
 define("TIMELINE_DATES_LIST", 'Phasing');
 define("TIMELINE_PROJECT_PLAN", 'Gantt Chart');
+define("TIMELINE_DATES_MILESTONES", 'Milestones');
 
 define('TIMELINE_STATUS_PLANED', 'planned');
 define('TIMELINE_STATUS_INPROGRESS', 'in progress');

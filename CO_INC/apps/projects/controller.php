@@ -441,6 +441,9 @@ class Projects extends Controller {
 	// User Access
 	function isAdmin(){
 	  global $session;
+	  /*if($this->model->isProjectOwner($session->uid)) {
+	  	return true;
+	  }*/
 	  $canEdit = $this->model->getEditPerms($session->uid);
 	  return !empty($canEdit);
    }

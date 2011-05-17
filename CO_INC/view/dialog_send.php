@@ -23,7 +23,7 @@
         <td class="tcell-left text11"><span class="content-nav"><?php echo $lang["GLOBAL_MESSAGE"];?></span></td>
       </tr>
       <tr>
-        <td style="padding-left: 15px"><textarea name="body" rows="7"></textarea></td>
+        <td style="padding-left: 15px"><textarea name="body" id="sendToTextarea" rows="7"></textarea></td>
       </tr>
 </table>
 <div class="content-spacer"></div>

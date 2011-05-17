@@ -55,7 +55,16 @@ class Timelines extends Projects {
 				ob_end_clean();
 				$data["access"] = $arr["access"];
 				return json_encode($data);
-				
+			break;
+			case "4":
+				$arr = $this->model->getDetails($pid);
+				$project = $arr["project"];
+				ob_start();
+					include('view/milestones.php');
+					$data["html"] = ob_get_contents();
+				ob_end_clean();
+				$data["access"] = $arr["access"];
+				return json_encode($data);
 			break;
 		}
 		

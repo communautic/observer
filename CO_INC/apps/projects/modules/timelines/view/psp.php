@@ -57,24 +57,39 @@ $width = $numPhases * 170;
 		if($numTasks == 0) {
 			$taskline='';
 		}
+		
+		$datescolor = "";
+			$bg = $project["phases"][$key]["status"];
+			if($project["phases"][$key]["status"] == "barchart_color_overdue") {
+				$datescolor = "barchart_color_overdue";
+				$bg = "barchart_color_finished";
+			}
 	?>
     <div style="width: 170px; float: left;">
-        <div class="psp-item <?php echo($project["phases"][$key]["status"]);?> loadPhase" rel="<?php echo($project["phases"][$key]["id"]);?>">
+        <div class="psp-item <?php echo($bg);?> loadPhase" rel="<?php echo($project["phases"][$key]["id"]);?>">
 			<div class="psp-connector-phase-vert"></div>
             <?php if($countPhases > 1) { echo '<div class="psp-connector-phase-hori"></div>'; } ?>
 			<div style="height: 42px; overflow: hidden"><?php echo($countPhases . ". " .$project["phases"][$key]["title"]);?></div>
-            <div class="psp-item-startdate"><?php echo($project["phases"][$key]["startdate"]);?></div><div class="psp-item-enddate"><?php echo($project["phases"][$key]["enddate"]);?></div>
+            <div class="psp-item-startdate <?php echo($datescolor);?>"><?php echo($project["phases"][$key]["startdate"]);?></div><div class="psp-item-enddate <?php echo($datescolor);?>"><?php echo($project["phases"][$key]["enddate"]);?></div>
         </div>
 			<?php
-		foreach($project["phases"][$key]["tasks"] as $tkey => &$tvalue){ ?>
-			<div class="psp-item <?php echo($project["phases"][$key]["tasks"][$tkey]["status"]);?> loadPhase" rel="<?php echo($project["phases"][$key]["id"]);?>">
+		foreach($project["phases"][$key]["tasks"] as $tkey => &$tvalue){ 
+			$datescolor = "";
+			$bg = $project["phases"][$key]["tasks"][$tkey]["status"];
+			if($project["phases"][$key]["tasks"][$tkey]["status"] == "barchart_color_overdue") {
+				$datescolor = "barchart_color_overdue";
+				$bg = "barchart_color_finished";
+			}
+		?>
+        	
+			<div class="psp-item <?php echo($bg);?> loadPhase" rel="<?php echo($project["phases"][$key]["id"]);?>">
 			<div class="psp-connector-vert"></div>
 			<div style="height: 28px; overflow: hidden"><?php echo($project["phases"][$key]["tasks"][$tkey]["text"]);?></div>
 			<div style="height: 14px; overflow: hidden"><?php echo($project["phases"][$key]["tasks"][$tkey]["team"]);?></div>
             <?php if($project["phases"][$key]["tasks"][$tkey]["cat"] == 0) { ?>
-				<div class="psp-item-startdate"><?php echo($project["phases"][$key]["tasks"][$tkey]["startdate"]);?></div><div class="psp-item-enddate"><?php echo($project["phases"][$key]["tasks"][$tkey]["enddate"]);?></div>
+				<div class="psp-item-startdate <?php echo($datescolor);?>"><?php echo($project["phases"][$key]["tasks"][$tkey]["startdate"]);?></div><div class="psp-item-enddate <?php echo($datescolor);?>"><?php echo($project["phases"][$key]["tasks"][$tkey]["enddate"]);?></div>
 			<?php } else { ?>
-				<div class="psp-item-startdate"><span class="icon-milestone"></span></div><div class="psp-item-enddate"><?php echo($project["phases"][$key]["tasks"][$tkey]["enddate"]);?></div>
+				<div class="psp-item-startdate <?php echo($datescolor);?>"><span class="icon-milestone"></span></div><div class="psp-item-enddate <?php echo($datescolor);?>"><?php echo($project["phases"][$key]["tasks"][$tkey]["enddate"]);?></div>
 			<?php }?>
         </div>
 		<?php } ?>
