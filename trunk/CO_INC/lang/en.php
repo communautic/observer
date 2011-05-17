@@ -1,5 +1,5 @@
 <?php
-$lang["APPLICATION_NAME"] = "company observer 6.0.8";
+$lang["APPLICATION_NAME"] = "company observer 6.0.9";
 
 setlocale(LC_TIME, "en_EN");
 
@@ -38,6 +38,7 @@ $lang["GLOBAL_ADMIN"] = 'Administrator';
 $lang["GLOBAL_ADMINS"] = 'Administrators';
 $lang["GLOBAL_GUEST"] = 'Guest';
 $lang["GLOBAL_GUESTS"] = 'Guests';
+$lang["GLOBAL_OWNER"] = 'Owner';
 
 $lang["GLOBAL_SAVE"] = 'Save';
 $lang["GLOBAL_REMOVE"] = 'Remove';
