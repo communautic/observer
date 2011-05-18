@@ -510,7 +510,9 @@ function projectsresetModuleHeights() {
 	if($("#projects2").height() != module_title_height) {
 		//$("#projects2").css("height", h-96);
 		$("#projects2 .module-inner").css("height", h-96);
-		$("#projects2").css("overflow", "auto").animate({height: h-(projects.modules_height+96)});
+		$("#projects2").css("overflow", "auto").animate({height: h-(projects.modules_height+96)}, function() {
+			$(this).find('.west-ui-content	').height(h-(projects.modules_height+96));																							   
+		});
 	}
 	$("#projects3").css("height", h-121);
 	$("#projects3 .projects3-content").css("height", h-(projects.modules_height+121));
@@ -690,6 +692,7 @@ $(document).ready(function() {
 					$("#projects2 .sort").attr("rel", data.sort).addClass("sort"+data.sort);
 					$('#projects2 input.filter').quicksearch('#projects2 li');
 					$("#projects2").css("overflow", "auto").animate({height: h-(projects.modules_height+96)}, function() {
+					$(this).find('.west-ui-content	').height(h-(projects.modules_height+96));
 					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectDetails&id="+projectid, success: function(text){
 						$("#projects-right").html(text.html);
 
@@ -796,7 +799,9 @@ $(document).ready(function() {
 								initContentScrollbar();
 								var h = $("#projects .ui-layout-west").height();
 								if(text.access != "sysadmin") { ProjectsModulesDisplay(text.access); }
-								$("#projects2").delay(200).animate({height: h-(projects.modules_height+96)});
+								$("#projects2").delay(200).animate({height: h-(projects.modules_height+96)}, function() {
+									$(this).find('.west-ui-content	').height(h-(projects.modules_height+96));																			  
+									});
 								}
 							});
 						});
@@ -903,7 +908,9 @@ $(document).ready(function() {
 			var h = $("#projects .ui-layout-west").height();
 			$("#projects2").delay(200).animate({height: h-96}, function() {
 				if(text.access != "sysadmin") { ProjectsModulesDisplay(text.access); }
-				$(this).animate({height: h-(projects.modules_height+96)});			 
+				$(this).animate({height: h-(projects.modules_height+96)}, function() {
+				$(this).find('.west-ui-content	').height(h-(projects.modules_height+96));									   
+				});			 
 			});
 			
 			}
