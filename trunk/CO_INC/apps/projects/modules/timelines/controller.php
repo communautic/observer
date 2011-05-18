@@ -92,7 +92,8 @@ class Timelines extends Projects {
 		global $session, $lang;
 		$title = "";
 		$html = "";
-		if($project = $this->model->getDetails($pid)) {
+		if($arr = $this->model->getDetails($pid)) {
+			$project = $arr["project"];
 			ob_start();
 				if($id == 3) {
 					//include 'view/print_psp.php';
@@ -132,7 +133,8 @@ class Timelines extends Projects {
 		global $projectsmodel,$session,$users, $lang;
 		$title = "";
 		$html = "";
-		if($project = $this->model->getDetails($variable)) {
+		if($arr = $this->model->getDetails($variable)) {
+			$project = $arr["project"];
 			ob_start();
 				include 'view/print_schedule.php';
 				$html = ob_get_contents();
