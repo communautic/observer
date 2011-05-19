@@ -505,7 +505,8 @@ class ProjectsModel extends Model {
 		$array["checked_out_user_text"] = $contactsmodel->getUserListPlain($array['checked_out_user']);
 
 		if($array["access"] == "sysadmin" || $array["access"] == "admin") {
-			if($array["checked_out"] == 1 && $session->checkUserActive($array["checked_out_user"])) {
+			//if($array["checked_out"] == 1 && $session->checkUserActive($array["checked_out_user"])) {
+			if($array["checked_out"] == 1) {
 				if($array["checked_out_user"] == $session->uid) {
 					$array["canedit"] = true;
 				} else {

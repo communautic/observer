@@ -85,7 +85,7 @@
 &nbsp;
 <table border="0" cellpadding="0" cellspacing="0" width="100%" class="standard">
 	<tr>
-	  <td class="tcell-left  top grey"><?php echo CONTACTS_CONTACT_GROUPMEMBERSHIP;?></td>
+	  <td class="tcell-left  top grey"><?php echo $lang['CONTACTS_GROUPMEMBERSHIP'];?></td>
 	  <td><?php echo($contact->groups);?></td>
 	</tr>
 </table>

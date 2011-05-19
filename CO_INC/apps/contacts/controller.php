@@ -113,6 +113,14 @@ class Contacts extends Controller {
 		$title = "";
 		$html = "";
 		if($group = $this->model->getGroupDetails($id)) {
+			$members = "";
+			if(!empty($group->membersID))  {
+				$membersarray = explode(",", $group->membersID);
+				foreach ($membersarray as &$value) {
+					$contact = $this->model->getContactDetails($value);
+					$members[] = array("id" => $contact->id, "name" => $contact->lastname." ".$contact->firstname, "email" => $contact->email, "phone" => $contact->phone1);
+				}
+			}
 			ob_start();
 				include 'view/group_print.php';
 				$html = ob_get_contents();

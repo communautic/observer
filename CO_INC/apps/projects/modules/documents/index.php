@@ -90,7 +90,7 @@ if (!empty($_POST['request'])) {
 			echo($documents->setDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']),$_POST['document_access']));
 		break;
 		case 'sendDetails':
-			echo($documents->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotes($_POST['subject']), $system->checkMagicQuotes($_POST['body'])));
+			echo($documents->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
 		break;
 	}
 }
