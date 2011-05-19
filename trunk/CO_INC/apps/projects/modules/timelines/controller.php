@@ -89,21 +89,46 @@ class Timelines extends Projects {
 
 
 	function printDetails($id,$pid,$t) {
-		global $session, $lang;
+		global $session,$date,$lang;
 		$title = "";
 		$html = "";
-		if($arr = $this->model->getDetails($pid)) {
-			$project = $arr["project"];
-			ob_start();
-				if($id == 3) {
-					//include 'view/print_psp.php';
-					include 'view/print_schedule.php';
-				} else {
-					include 'view/print_schedule.php';
+		
+		switch($id) {
+			case "1":
+				if($arr = $this->model->getBarchartDetails($pid)) {
+					$project = $arr["project"];
+					ob_start();
+					include('view/barchart.php');
+						$html = ob_get_contents();
+					ob_end_clean();
+					$title = $project["title"] . " - " . TIMELINE_DATES_LIST;
 				}
-				$html = ob_get_contents();
-			ob_end_clean();
-			$title = $project["title"] . " - " . TIMELINE_DATES_LIST;
+			break;
+			case "4":
+				if($arr = $this->model->getDetails($pid)) {
+					$project = $arr["project"];
+					ob_start();
+					include('view/print_milestones.php');
+						$html = ob_get_contents();
+					ob_end_clean();
+					$title = $project["title"] . " - " . TIMELINE_DATES_MILESTONES;
+				}
+			break;
+			default:
+		
+				if($arr = $this->model->getDetails($pid)) {
+					$project = $arr["project"];
+					ob_start();
+						if($id == 3) {
+							//include 'view/print_psp.php';
+							include 'view/print_schedule.php';
+						} else {
+							include 'view/print_schedule.php';
+						}
+						$html = ob_get_contents();
+					ob_end_clean();
+					$title = $project["title"] . " - " . TIMELINE_DATES_LIST;
+				}
 		}
 		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_TIMELINE"];
 		switch($t) {
@@ -119,11 +144,19 @@ class Timelines extends Projects {
 	function getSend($id,$pid) {
 		global $projectsmodel, $lang;
 		
+		switch($id) {
+			case "4":
+				$title = TIMELINE_DATES_MILESTONES;
+			break;
+			default:
+				$title = TIMELINE_DATES_LIST;
+		}
+		
 		$form_url = "apps/projects/modules/timelines/";
 		$request = "sendDetails";
 		$to = "";
 		$cc = "";
-		$subject = $projectsmodel->getProjectTitle($pid) . " - " . TIMELINE_DATES_LIST;
+		$subject = $projectsmodel->getProjectTitle($pid) . " - " . $title;
 		$variable = $pid;
 		include CO_INC .'/view/dialog_send.php';
 	}
@@ -133,21 +166,35 @@ class Timelines extends Projects {
 		global $projectsmodel,$session,$users, $lang;
 		$title = "";
 		$html = "";
-		if($arr = $this->model->getDetails($variable)) {
-			$project = $arr["project"];
-			ob_start();
-				include 'view/print_schedule.php';
-				$html = ob_get_contents();
-			ob_end_clean();
-			$title = $project["title"] . " - " . TIMELINE_DATES_LIST;
-		}
+		
+		switch($id) {
+			case "4":
+				$arr = $this->model->getDetails($variable);
+				$project = $arr["project"];
+				ob_start();
+					include('view/print_milestones.php');
+					$html = ob_get_contents();
+				ob_end_clean();
+				$title = $project["title"] . " - " . TIMELINE_DATES_MILESTONES;
+			break;
+			default:
+				if($arr = $this->model->getDetails($variable)) {
+					$project = $arr["project"];
+					ob_start();
+						include 'view/print_schedule.php';
+						$html = ob_get_contents();
+					ob_end_clean();
+					$title = $project["title"] . " - " . TIMELINE_DATES_LIST;
+				}
+			}
+		
 		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_TIMELINE"];
 		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
 		$pdf = $this->savePDF($title,$html,$attachment);
 		
 		//$to,$from,$fromName,$subject,$body,$attachment
 		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment);
-	}
+}
 	
 }
 

@@ -87,7 +87,7 @@ color: #999;
 }
 
 .ui-layout-west h3 { margin: 0;
-padding: 0 15px 0 0; line-height: 24px; cursor:pointer; color: #000; text-align: right; border-top: 1px solid #fff; font-weight: bold; }
+padding: 0 25px 0 0; line-height: 24px; cursor:pointer; color: #000; text-align: right; border-top: 1px solid #fff; font-weight: bold; }
 
 
 /*.ui-layout-west .topul {
@@ -114,7 +114,7 @@ width: 325px;
 .ui-layout-west li a.deactivated:hover { color: #fff; background-color: transparent !important; }*/
 
 
-.ui-layout-west li>span { line-height: 20px; padding: 0 25px 0 30px; color: #fff; text-decoration: none; outline: none; display: block; position: relative; }
+.ui-layout-west li>span { line-height: 20px; padding: 0 50px 0 30px; color: #fff; text-decoration: none; outline: none; display: block; position: relative; }
 .ui-layout-west li>span:hover   { color: #fff; text-decoration: none; outline: none; cursor: pointer; }
 .ui-layout-west li>span.active-link  { color: #fff; text-decoration: none; outline: none; }
 .ui-layout-west li>span.hover-bg  { color: #fff; text-decoration: none; outline: none;}
@@ -141,10 +141,10 @@ li.ui-state-highlight { height: 13px; margin: 0 0 5px 0;}
 .module-item-active { display: inline-block; }
 
 .text { /*padding-right: 30px;*/ }
-.num { position: absolute; right: 15px; font-size: 11px; top: 0;}
-.icon-guest { position: absolute; right: 15px; width: 12px; height: 10px; top: 6px; background:url(../img/apps_buttons_sprite.png) no-repeat -280px -570px; display: none;}
+.num { position: absolute; right: 25px; font-size: 11px; top: 0;}
+.icon-guest { position: absolute; right: 25px; width: 12px; height: 10px; top: 6px; background:url(../img/apps_buttons_sprite.png) no-repeat -280px -570px; display: none;}
 .icon-guest-active { display: block}
-.icon-checked-out { position: absolute; right: 15px; width: 12px; height: 10px; top: 6px; background:url(../img/apps_buttons_sprite.png) no-repeat -100px -570px; display: none;}
+.icon-checked-out { position: absolute; right: 25px; width: 12px; height: 10px; top: 6px; background:url(../img/apps_buttons_sprite.png) no-repeat -100px -570px; display: none;}
 .icon-checked-out-active { display: block}
 
 #checkedOut { color: #fff; }

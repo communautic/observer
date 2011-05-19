@@ -142,7 +142,7 @@ class Controller extends MySQLDB {
 			}
 			}
 			
-			$mail->Subject  = $subject;
+			$mail->Subject  = stripslashes($subject);
 			
 			$mail->AltBody    = "To view the message, please use an HTML compatible email viewer!"; // optional, comment out and test
 			$mail->WordWrap   = 80;
@@ -177,7 +177,8 @@ class Controller extends MySQLDB {
 	function writeSendtoLog($what,$whatid,$who,$subject,$body) {
 		$this->model->writeSendtoLog($what,$whatid,$who,$subject,$body);
 	}
-	
+
+
 	function getSendtoDetails($what,$id) {
 		$html = "";
 		$sendto = $this->model->getSendtoDetails($what,$id);

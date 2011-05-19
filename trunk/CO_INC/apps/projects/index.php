@@ -147,7 +147,7 @@ if (!empty($_POST['request'])) {
 			echo($projects->moveProject($_POST['id'], $_POST['startdate'], $_POST['movedays']));
 		break;
 		case 'sendProjectDetails':
-			echo($projects->sendProjectDetails($_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotes($_POST['subject']), $system->checkMagicQuotes($_POST['body'])));
+			echo($projects->sendProjectDetails($_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
 		break;
 	}
 }

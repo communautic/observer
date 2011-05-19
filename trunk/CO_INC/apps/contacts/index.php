@@ -184,16 +184,16 @@ if (!empty($_POST['request'])) {
 			echo($contacts->setContactDetails($_POST['id'], $system->checkMagicQuotes($_POST['lastname']), $system->checkMagicQuotes($_POST['firstname']), $system->checkMagicQuotes($_POST['title']), $system->checkMagicQuotes($_POST['company']), $system->checkMagicQuotes($_POST['position']), $system->checkMagicQuotes($_POST['email']), $system->checkMagicQuotes($_POST['phone1']), $system->checkMagicQuotes($_POST['phone2']), $system->checkMagicQuotes($_POST['fax']), $system->checkMagicQuotes($_POST['address_line1']), $system->checkMagicQuotes($_POST['address_line2']), $system->checkMagicQuotes($_POST['address_town']), $system->checkMagicQuotes($_POST['address_postcode']), $system->checkMagicQuotes($_POST['address_country']), $_POST['lang'], $_POST['timezone']));
 		break;
 		case 'sendContactDetails':
-			echo($contacts->sendContactDetails($_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotes($_POST['subject']), $system->checkMagicQuotes($_POST['body'])));
+			echo($contacts->sendContactDetails($_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
 		break;
 		case 'sendGroupDetails':
-			echo($contacts->sendGroupDetails($_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotes($_POST['subject']), $system->checkMagicQuotes($_POST['body'])));
+			echo($contacts->sendGroupDetails($_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
 		break;
 		case 'sendContactDetailsVcard':
-			echo($contacts->sendContactDetailsVCard($_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotes($_POST['subject']), $system->checkMagicQuotes($_POST['body'])));
+			echo($contacts->sendContactDetailsVCard($_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
 		break;
 		case 'sendGroupDetailsVcard':
-			echo($contacts->sendGroupDetailsVCard($_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotes($_POST['subject']), $system->checkMagicQuotes($_POST['body'])));
+			echo($contacts->sendGroupDetailsVCard($_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
 		break;
 	}
 }

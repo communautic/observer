@@ -20,10 +20,12 @@
 </table>
 </div>
 <div class="ui-layout-content">
+<div id="leftBlind" style="z-index: 6; position: absolute; top: 0; width: 225px; height: 37px; background-color:#FFF; "></div>
+
 <div class="scroll-pane" id="barchartScroll">
 <div  class="barchart-outer" style="position: relative; font-size: 11px; width: <?php echo($project["css_width"]+225);?>px; height:<?php echo($project["css_height"]+50);?>px">
 	
-    <div id="barchart-container-left" style="position: absolute; z-index: 4; width: 225px; padding-top: 37px; background-color:#FFF; height:<?php echo($project["css_height"]-5+37);?>px">
+    <div id="barchart-container-left" style="position: absolute; z-index: 5; width: 225px; padding-top: 37px; background-color:#FFF; height:<?php echo($project["css_height"]-5+16);?>px">
 	<div style="position: relative; padding-left: 10px; height: 16px; margin: 0 15px 2px 0;"><?php echo $lang['TIMELINE_ACTION'];?>
     <div style="text-align: center; position: absolute; width: 45px; padding: 1px 5px 0 0; top: 0; right: 0; height: 16px;"><?php echo $lang['TIMELINE_TIME'];?></div></div>
 
@@ -49,9 +51,9 @@ foreach($project["phases"] as $key => &$value){ ?>
 <div id="barchart-container-right" style="margin-left: 225px; width: <?php echo($project["css_width"]);?>px;">
     
     
-    <div id="barchart-container">
+    <div id="barchart-container" style="position: relative; padding-top: 50px;">
         
-        <div style="height: 13px; padding-top: 37px;">
+        <div id="barchartTimeline" style="height: 13px; padding-top: 37px; position: absolute; z-index: 4; top: 0; background-color:#FFF">
 	<?php
 	$day = $project["startdate"];
 	$today = $date->formatDate("now","Y-m-d");
@@ -74,7 +76,7 @@ foreach($project["phases"] as $key => &$value){ ?>
 		if($day == $today) {
 			$bg = "#a0a0a0";
 			$yo["color"] = "#ffd20a";
-			$now = '<div style="position: absolute; top: 13px; width: 23px; height: ' . $project["css_height"] . 'px; background-color: #e5e5e5; z-index: 1;"></div>';
+			$now = '<div id="todayBar" style="position: absolute; top: 13px; width: ' . $project["td_width"] . 'px; height: ' . $project["css_height"] . 'px; background-color: #e5e5e5; z-index: 1;"></div>';
 		}
 		?>
         <div id="d<?php echo($i);?>" style="position: relative; background-color: <?php echo($bg);?>; width: <?php echo($project["td_width"]);?>px; height: 13px; float: left; font-size: 10px; color: <?php echo($yo["color"]);?>; text-align:center"><?php echo $now . $month . $week . $yo["number"];?></div>
@@ -161,7 +163,7 @@ foreach($project["phases"] as $key => &$value){ ?>
                 
                 <?php } else { ?>
                 <!-- milestone -->
-                <div id="task_<?php echo($project["phases"][$key]["tasks"][$tkey]["id"]);?>" class="coTooltip loadPhase2" rel="<?php echo($project["phases"][$key]["id"]);?>" style="z-index: 3; position: absolute; top: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_top"]);?>px; left: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_left"]+18);?>px; height: 10px; width: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_width"]);?>px;"><span class="icon-milestone"></span>
+                <div id="task_<?php echo($project["phases"][$key]["tasks"][$tkey]["id"]);?>" class="coTooltip loadPhase2" rel="<?php echo($project["phases"][$key]["id"]);?>" style="z-index: 3; position: absolute; top: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_top"]);?>px; left: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_left"]+ $project["td_width"] - 5);?>px; height: 10px; width: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_width"]);?>px;"><span class="icon-milestone"></span>
                 	<!-- task tooltip -->
             		<div class="coTooltipHtml" style="display: none">
 						<?php echo($project["phases"][$key]["tasks"][$tkey]["text"]);?><br />

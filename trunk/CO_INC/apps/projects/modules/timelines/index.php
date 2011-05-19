@@ -49,7 +49,7 @@ if (!empty($_GET['request'])) {
 if (!empty($_POST['request'])) {
 	switch ($_POST['request']) {
 		case 'sendDetails':
-			echo($timelines->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotes($_POST['subject']), $system->checkMagicQuotes($_POST['body'])));
+			echo($timelines->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
 		break;
 	}
 }

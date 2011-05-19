@@ -200,7 +200,7 @@ class TimelinesModel extends ProjectsModel {
 	}
 
 
-	function getBarchartDetails($pid, $width=23) {
+	function getBarchartDetails($pid, $width=17) {
 		global $session, $contactsmodel;
 		
 		// settings apart from width

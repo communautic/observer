@@ -161,7 +161,8 @@ class MeetingsModel extends ProjectsModel {
 		$array["checked_out_user_text"] = $this->_contactsmodel->getUserListPlain($array['checked_out_user']);
 
 		if($array["perms"] == "sysadmin" || $array["perms"] == "admin") {
-			if($array["checked_out"] == 1 && $session->checkUserActive($array["checked_out_user"])) {
+			//if($array["checked_out"] == 1 && $session->checkUserActive($array["checked_out_user"])) {
+			if($array["checked_out"] == 1) {
 				if($array["checked_out_user"] == $session->uid) {
 					$array["canedit"] = true;
 				} else {

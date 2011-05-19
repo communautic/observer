@@ -11,15 +11,15 @@ timelines.checkIn = checkInTimeline;
 
 function getDetailsTimeline(moduleidx,liindex) {
 	var pid = $("#projects2 .module-click:visible").attr("rel");
-	var phaseid = $("#projects3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
-	if(phaseid == undefined) {
+	var id = $("#projects3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
+	if(id == undefined) {
 		return false;
 	}
-	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/timelines&request=getDetails&id="+phaseid+"&pid="+pid, success: function(data){
+	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/timelines&request=getDetails&id="+id+"&pid="+pid, success: function(data){
 		$("#projects-right").html(data.html);
 		initContentScrollbar();
 		initScrollbar( '.projects3-content:visible .scrolling-content' );
-			if(phaseid == "2") {
+			if(id == "2" || id == "4") {
 				if(data.access == "guest") {
 					projectsActions(5);
 				} else {
@@ -130,6 +130,8 @@ $(document).ready(function() {
 		$(this).scroll(function() {
 			var $scrollingDiv = $("#barchart-container-left");
 			$scrollingDiv.stop().animate({"marginLeft": ($("#barchartScroll").scrollLeft()) + "px"}, "fast" );
+			$("#barchartTimeline").stop().animate({"marginTop": ($("#barchartScroll").scrollTop()) + "px"}, "fast" );
+			$("#todayBar").stop().height($("#barchartScroll").innerHeight()-67);
 		});
 	});
 
