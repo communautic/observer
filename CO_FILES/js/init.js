@@ -1,12 +1,11 @@
 var module_title_height = 25;
 $(window).bind('beforeunload', function() { 
-	
 	var obj = getCurrentModule();
-		var cid = $('#'+getCurrentApp()+' input[name="id"]').val()
-		obj.checkIn(cid);
-	
+	var cid = $('#'+getCurrentApp()+' input[name="id"]').val()
+	obj.checkIn(cid);
 	if(formChanged) {
-		return '' ; 
+		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+		return '';
 	}
 });
 
