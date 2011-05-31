@@ -68,7 +68,7 @@ background-color: #e1f0af; }
 #projects .ui-datepicker-trigger-action-status {
 	position: absolute;
 	left: 318px;
-	display: block; height: 13px; width: 15px; margin-top: -15px; background:								url(../../../img/apps_buttons_sprite.png) no-repeat -20px -570px
+	display: block; height: 13px; width: 15px; margin-top: -15px; background: url(../../../img/apps_buttons_sprite.png) no-repeat -20px -570px
 }
 
 #projects a.disabled { background-position: 0px -570px; }
@@ -87,6 +87,28 @@ background-color: #e1f0af; }
 #projects-right input.bg:focus {
     background-color: #e1f0af;
 }
+
+#barchart-zoom { margin: 5px 0 0 42px; }
+#barchart-zoom .zoom-xsmall { float: left; margin-right: 7px; display: block; height: 13px; width: 13px; background: url(../../img/apps_buttons_sprite.png) no-repeat 0px -590px}
+#barchart-zoom .zoom-xsmall:hover { background: url(../../img/apps_buttons_sprite.png) no-repeat -100px -590px; cursor: pointer;}
+#barchart-zoom .zoom-xsmall-active { float: left; margin-right: 7px; display: block; height: 13px; width: 13px; background: url(../../img/apps_buttons_sprite.png) no-repeat -100px -590px}
+
+#barchart-zoom .zoom-small { float: left; margin-right: 7px; display: block; height: 13px; width: 13px; background: url(../../img/apps_buttons_sprite.png) no-repeat -20px -590px}
+#barchart-zoom .zoom-small:hover { background: url(../../img/apps_buttons_sprite.png) no-repeat -120px -590px; cursor: pointer;}
+#barchart-zoom .zoom-small-active { float: left; margin-right: 7px; display: block; height: 13px; width: 13px; background: url(../../img/apps_buttons_sprite.png) no-repeat -120px -590px}
+
+#barchart-zoom .zoom-medium { float: left; margin-right: 7px; display: block; height: 13px; width: 13px; background: url(../../img/apps_buttons_sprite.png) no-repeat -40px -590px}
+#barchart-zoom .zoom-medium:hover { background: url(../../img/apps_buttons_sprite.png) no-repeat -140px -590px; cursor: pointer;}
+#barchart-zoom .zoom-medium-active { float: left; margin-right: 7px; display: block; height: 13px; width: 13px; background: url(../../img/apps_buttons_sprite.png) no-repeat -140px -590px}
+
+#barchart-zoom .zoom-large { float: left; margin-right: 7px; display: block; height: 13px; width: 13px; background: url(../../img/apps_buttons_sprite.png) no-repeat -60px -590px}
+#barchart-zoom .zoom-large:hover { background: url(../../img/apps_buttons_sprite.png) no-repeat -160px -590px; cursor: pointer;}
+#barchart-zoom .zoom-large-active { float: left; margin-right: 7px; display: block; height: 13px; width: 13px; background: url(../../img/apps_buttons_sprite.png) no-repeat -160px -590px}
+
+#barchart-zoom .zoom-xlarge { float: left; margin-right: 7px; display: block; height: 13px; width: 13px; background: url(../../img/apps_buttons_sprite.png) no-repeat -80px -590px}
+#barchart-zoom .zoom-xlarge:hover { background: url(../../img/apps_buttons_sprite.png) no-repeat -180px -590px; cursor: pointer;}
+#barchart-zoom .zoom-xlarge-active { float: left; margin-right: 7px; display: block; height: 13px; width: 13px; background: url(../../img/apps_buttons_sprite.png) no-repeat -180px -590px}
+
 
 /* PSP */
 
@@ -124,3 +146,5 @@ background-color: #e1f0af; }
  border-right: 0; 
  border-bottom:  0; 
 }
+
+#projects .SendToContent { display: none; background-color: #E5E5E5; font-style: italic; padding: 10px; }

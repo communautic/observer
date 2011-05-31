@@ -1,38 +1,29 @@
-<style>
-.psp-item { position: relative; margin-bottom: 20px; border: 1px solid #000; width: 150px; height: 56px; font-size: 11px; font-weight: bold; text-align:center}
-.psp-item-startdate { position: absolute; left: 0; bottom: 0; width: 75px; height: 13px; border-top: 1px solid #000;}
-.psp-item-enddate { position: absolute; right: 0; bottom: 0; width: 74px; height: 13px; border-top: 1px solid #000; border-left: 1px solid #000;}
-.psp-connector-project-vert { position: absolute; top: 56px; left: 75px; height: 24px; width: 1px; background-color: #000; }
-.psp-connector-phase-hori { position: absolute; top: -10px; left: -94px; height: 9px; width: 170px; border-top: 1px solid #000; border-right: 1px solid #000; }
-.psp-connector-phase-vert { position: absolute; top: 28px; left: -10px; height: 1px; width: 9px; background-color: #000; }
-.psp-connector-vert { position: absolute; top: -50px; left: -10px; height: 78px; width: 9px; border-bottom: 1px solid #000; border-left: 1px solid #000; }
+<?php
+$top = 50;
+$left = 150;
+?>
+<div style="position: absolute; width: <?php echo($project["page_width"]-24);?>px; top: <?php echo $top-$top; ?>px; left: 0px; height: 19px;  background-color: #e5e5e5; vertical-align: top; padding: 3px 0 0 24px;"><?php echo $project["folder"];?></div>
+<div style="position: absolute; width: <?php echo($project["page_width"]);?>px; top: <?php echo $top-$top; ?>px; left: 0px; height: 22px;  vertical-align: top; padding: 3px 0 0 0; text-align:center"><?php echo $project["title"];?></div>
+<div style="position: absolute; width: <?php echo($project["page_width"]-24);?>px; top: <?php echo $top-$top; ?>px; left: 0px; height: 22px;  vertical-align: top; padding: 3px 24px 0 0; text-align:right"><?php echo $date->formatDate("now","d.m.Y");;?></div>
 
-</style>
-<table border="0" cellpadding="0" cellspacing="0" class="table-content no-margin">
-	<tr>
-		<td class="tcell-left-inactive text11"><?php echo $lang["PROJECT_TITLE"];?></td>
-		<td class="tcell-right">
-			<div class="psp-item <?php echo($project["status"]);?> loadProject" rel="<?php echo($project["id"]);?>"><?php echo($project["title"]);?><br />
-				<div class="psp-item-startdate"><?php echo($project["startdate"]);?></div><div class="psp-item-enddate"><?php echo($project["enddate"]);?></div>
-                <div class="psp-connector-project-vert"></div>
-			</div>
-		</td>
-	</tr>
-</table>
+
+<div style="position: absolute; width: <?php echo($project["page_width"]);?>px; top: <?php echo $top;?>px; left: 0px; padding-left: 24px; height: 58px; color: #666666; vertical-align: top; font-size: 10px;"><?php echo $lang["PROJECT_TITLE"];?></div>
+
+<div style="position: absolute; z-index: 1; width: 170px; top: <?php echo $top;?>px; left: <?php echo($left);?>px; border: 1px solid #000; width: 150px; height: 56px; font-size: 11px; font-weight: bold; text-align:center; vertical-align: top;" class="<?php echo($project["status"]);?>"><?php echo($project["title"]);?></div>
+<div style="position: absolute; top: <?php echo $top+56;?>px; left: <?php echo($left+75);?>px; height: 24px; width: 1px; background-color: #000;"></div>
+
 <?php 
 $numPhases = sizeof($project["phases"]);
 if($numPhases > 0) { 
 $width = $numPhases * 170;
+$ptop = $top+56+24;
 ?>
-<div class="text11 tbl-inactive" style="position: absolute; padding-left: 15px; height: 58px; color: #666666;" ><?php echo $lang["PROJECT_PHASES"];?></div>
-	<div style="width: <?php echo($width+150);?>px">
-    <div style="width: 150px; float: left;">
-      <div style="height: 58px; margin-bottom: 18px;"></div>
-      <div class="text11" style="padding-left: 15px; color: #666666;"><?php echo $lang["PHASE_TASK_MILESTONE"];?></div>
-    </div>
+<div style="position: absolute; width: <?php echo($project["page_width"]);?>px; top: <?php echo $ptop;?>px; left: 0px; padding-left: 24px; height: 58px; color: #666666; background-color: #E5E5E5; vertical-align: top; font-size: 10px;"><?php echo $lang["PROJECT_PHASES"];?></div>
+ <div style="position: absolute; width: <?php echo($project["page_width"]);?>px; top: <?php echo $ptop+80;?>px; left: 0px; padding-left: 24px; height: 58px; color: #666666; vertical-align: top; font-size: 10px;"><?php echo $lang["PHASE_TASK_MILESTONE"];?></div>   
 	<?php
     
 	//echo('<div style="width: ' . $width . 'px">');
+	$pleft = $left;
 	$countPhases = 1;
 	foreach($project["phases"] as $key => &$value){ 
 		$leftline = ' class="td_border_left"';
@@ -44,32 +35,73 @@ $width = $numPhases * 170;
 		if($numTasks == 0) {
 			$taskline='';
 		}
+		
+		$datescolor = "";
+			$bg = $project["phases"][$key]["status"];
+			if($project["phases"][$key]["status"] == "barchart_color_overdue") {
+				$datescolor = "barchart_color_overdue";
+				$bg = "barchart_color_finished";
+			}
 	?>
-    <div style="width: 170px; float: left;">
-        <div class="psp-item <?php echo($project["phases"][$key]["status"]);?> loadPhase" rel="<?php echo($project["phases"][$key]["id"]);?>">
-			<div class="psp-connector-phase-vert"></div>
-            <?php if($countPhases > 1) { echo '<div class="psp-connector-phase-hori"></div>'; } ?>
-			<div style="height: 42px; overflow: hidden"><?php echo($countPhases . ". " .$project["phases"][$key]["title"]);?></div>
-            <div class="psp-item-startdate"><?php echo($project["phases"][$key]["startdate"]);?></div><div class="psp-item-enddate"><?php echo($project["phases"][$key]["enddate"]);?></div>
-        </div>
+        <div style="position: absolute; z-index: 1; width: 170px; top: <?php echo $ptop;?>px; left: <?php echo($pleft);?>px; border: 1px solid #000; width: 150px; height: 56px; font-size: 11px; font-weight: bold; text-align:center; vertical-align: top;" class="<?php echo($bg);?>"><?php echo($countPhases . ". " .$project["phases"][$key]["title"]);?></div>
+        <div class="<?php echo($datescolor);?>" style="z-index: 3; position: absolute; top: <?php echo $ptop+43;?>px; left: <?php echo($pleft);?>px; width: 75px; height: 13px; font-size: 11px; font-weight: bold; text-align:center; border-top: 1px solid #000000; vertical-align: top;"><?php echo($project["phases"][$key]["startdate"]);?></div>
+        <div class="<?php echo($datescolor);?>" style="z-index: 2; position: absolute; top: <?php echo $ptop+43;?>px; left: <?php echo($pleft+75);?>px; width: 75px; height: 13px; font-size: 11px; font-weight: bold; text-align:center; border-top: 1px solid #000; border-left: 1px solid #000; vertical-align: top;"><?php echo($project["phases"][$key]["enddate"]);?></div>
+			<div style="position: absolute; top: <?php echo $ptop+29;?>px; left: <?php echo($pleft-10);?>px; height: 1px; width: 9px; background-color: #000;"></div>
+            <?php if($countPhases > 1) { ?>
+				<div style="position: absolute; top: <?php echo $ptop-10;?>px; left: <?php echo $pleft-94;?>px; height: 9px; width: 170px; border-top: 1px solid #000; border-right: 1px solid #000;"></div>
+			<?php } ?>
+			
 			<?php
-		foreach($project["phases"][$key]["tasks"] as $tkey => &$tvalue){ ?>
-			<div class="psp-item <?php echo($project["phases"][$key]["tasks"][$tkey]["status"]);?> loadPhase" rel="<?php echo($project["phases"][$key]["id"]);?>">
-			<div class="psp-connector-vert"></div>
-			<div style="height: 28px; overflow: hidden"><?php echo($project["phases"][$key]["tasks"][$tkey]["text"]);?></div>
-			<div style="height: 14px; overflow: hidden"><?php echo($project["phases"][$key]["tasks"][$tkey]["team"]);?></div>
+				$ttop = $ptop+56+24;
+				foreach($project["phases"][$key]["tasks"] as $tkey => &$tvalue){ 
+					$datescolor = "";
+					$bg = $project["phases"][$key]["tasks"][$tkey]["status"];
+					if($project["phases"][$key]["tasks"][$tkey]["status"] == "barchart_color_overdue") {
+						$datescolor = "barchart_color_overdue";
+						$bg = "barchart_color_finished";
+					}
+				?>
+			<div style="position: absolute; z-index: 1; top: <?php echo $ttop;?>px; left: <?php echo($pleft);?>px; border: 1px solid #000; width: 150px; height: 56px;" class="<?php echo($bg);?>"></div>
+            <div style="position: absolute; z-index: 1; top: <?php echo $ttop;?>px; left: <?php echo($pleft);?>px; width: 150px; height: 26px; font-size: 11px; font-weight: bold; text-align:center; vertical-align: top;"><?php echo($project["phases"][$key]["tasks"][$tkey]["text"]);?></div>
+
+			<div style="position: absolute; z-index: 2; top: <?php echo $ttop+30;?>px; left: <?php echo($pleft);?>px; width: 150px; height: 14px; font-size: 11px; font-weight: bold; text-align:center; vertical-align: top; overflow: hidden;"><?php echo($project["phases"][$key]["tasks"][$tkey]["team"]);?></div>
             <?php if($project["phases"][$key]["tasks"][$tkey]["cat"] == 0) { ?>
-				<div class="psp-item-startdate"><?php echo($project["phases"][$key]["tasks"][$tkey]["startdate"]);?></div><div class="psp-item-enddate"><?php echo($project["phases"][$key]["tasks"][$tkey]["enddate"]);?></div>
+				<div class="<?php echo($datescolor);?>" style="z-index: 3; position: absolute; top: <?php echo $ttop+43;?>px; left: <?php echo($pleft);?>px; width: 75px; height: 13px; font-size: 11px; font-weight: bold; text-align:center; border-top: 1px solid #000000; vertical-align: top;"><?php echo($project["phases"][$key]["tasks"][$tkey]["startdate"]);?></div>
+                <div style="z-index: 2; position: absolute; top: <?php echo $ttop+43;?>px; left: <?php echo($pleft+75);?>px; width: 75px; height: 13px; font-size: 11px; font-weight: bold; text-align:center; border-top: 1px solid #000; border-left: 1px solid #000; vertical-align: top;" class="<?php echo($datescolor);?>"><?php echo($project["phases"][$key]["tasks"][$tkey]["enddate"]);?></div>
 			<?php } else { ?>
-				<div class="psp-item-startdate"><span class="icon-milestone"></span></div><div class="psp-item-enddate"><?php echo($project["phases"][$key]["tasks"][$tkey]["enddate"]);?></div>
+				<div class="<?php echo($datescolor);?>" style="z-index: 3; position: absolute; top: <?php echo $ttop+43;?>px; left: <?php echo($pleft);?>px; width: 75px; height: 13px; border-top: 1px solid #000000; vertical-align: top;"><img src="<?php echo(CO_FILES);?>/img/print/gantt_milestone.png" width="12" height="12" style= "margin: 0px 0 0 2px" /></div>
+                <div style="z-index: 2; position: absolute; top: <?php echo $ttop+43;?>px; left: <?php echo($pleft+75);?>px; width: 75px; height: 13px; font-size: 11px; font-weight: bold; text-align:center; border-top: 1px solid #000; border-left: 1px solid #000; vertical-align: top;" class="<?php echo($datescolor);?>"><?php echo($project["phases"][$key]["tasks"][$tkey]["enddate"]);?></div>
 			<?php }?>
-        </div>
-		<?php } ?>
-</div>
+        
+        <div style="position: absolute; top: <?php echo $ttop-50;?>px; left: <?php echo($pleft-10);?>px; height: 79px; width: 9px; border-bottom: 1px solid #000; border-left: 1px solid #000;"></div>
+		<?php 
+		$ttop += 56+24;
+		} ?>
+        
+
     <?php 
+	$pleft += 170;
     $countPhases++;
     }
 }
 ?>
-</div>
-</div>
+
+
+<div style="position: absolute; width: <?php echo($project["page_width"]-24);?>px; top: <?php echo $project["css_height"]+150;?>px; left: 0px; height: 19px;  background-color: #e5e5e5; vertical-align: top; padding: 3px 0 0 24px;"><?php echo TIMELINE_PROJECT_STRUCTURE;?></div>
+
+<div style="position: absolute; width: <?php echo($project["page-width"]-235);?>px; top: <?php echo $project["css_height"]+148;?>px; left: <?php echo($left+50);?>px; height: 19px; text-align:center;"><table border="0" cellspacing="0" cellpadding="0" class="timeline-legend">
+    <tr>
+        <td><span><img src="<?php echo(CO_FILES);?>/img/print/gantt_milestone.png" width="12" height="12" /> Meilenstein</span></td>
+        <td width="15"></td>
+        <td class="barchart_color_planned"><span><?php echo TIMELINE_STATUS_PLANED;?></span></td>
+        <td width="15"></td>
+        <td class="barchart_color_inprogress"><span><?php echo TIMELINE_STATUS_INPROGRESS;?></span></td>
+         <td width="15"></td>
+        <td class="barchart_color_finished"><span><?php echo TIMELINE_STATUS_FINISHED;?></span></td>
+         <td width="15"></td>
+        <td class="barchart_color_not_finished"><span><?php echo TIMELINE_STATUS_NOT_FINISHED;?></span></td>
+         <td width="15"></td>
+        <td class="barchart_color_overdue"><span><?php echo TIMELINE_STATUS_OVERDUE;?></span></td>
+    </tr>
+</table></div>
+<div style="position: absolute; width: <?php echo($project["css_width"]+$left);?>px; top: <?php echo $project["css_height"]+180;?>px; left: 0px; height: 19px; vertical-align: top; padding: 3px 0 0 24px;"><img src="<?php echo(CO_FILES);?>/img/print/poweredbyco.png" width="135" height="9" /></div>

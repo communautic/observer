@@ -5,7 +5,7 @@
 			<h2><?php echo($project->title);?></h2>
             &nbsp;
              &nbsp;
-            <h3><?php echo $lang["GLOBAL_DURATION"];?>: <?php echo($project->enddate)?> - <?php echo($project->enddate)?></h3>
+            <h3><?php echo $lang["GLOBAL_DURATION"];?>: <?php echo($project->startdate)?> - <?php echo($project->enddate)?></h3>
              <h3><?php echo $lang["GLOBAL_STATUS"];?>: <?php echo($project->status_text);?> <?php echo($project->status_date)?></h3> 
 			</td>
 	</tr>

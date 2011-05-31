@@ -78,7 +78,7 @@ class TimelinesModel extends ProjectsModel {
 
 
 	function getDetails($pid) {
-		global $session, $contactsmodel;
+		global $session, $contactsmodel, $projectsmodel;
 		$now = new DateTime("now");
 		$today = $now->format('Y-m-d');
 		$project = array();
@@ -86,16 +86,19 @@ class TimelinesModel extends ProjectsModel {
 		$perms = $this->getProjectAccess($pid);
 		// get project details
 		//$q = "select title,startdate,enddate,management,team,status from " . CO_TBL_PROJECTS . " where id = '$pid'";
-		$q = "SELECT a.title,a.startdate,a.management,a.team,a.status, (SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_PROJECTS . " as a where a.id = '$pid'";
+		$q = "SELECT a.title,a.startdate,a.management,a.team,a.status,a.projectfolder, (SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_PROJECTS . " as a where a.id = '$pid'";
 		$result = mysql_query($q, $this->_db->connection);
 	  	while ($row = mysql_fetch_object($result)) {
 			$project["id"] = $pid;
 			$project["title"] = $row->title;
+			$project["folder"] = $projectsmodel->getProjectFolderDetails($row->projectfolder,"projectfolder");
 			$project["startdate"] = $this->_date->formatDate($row->startdate,CO_DATE_FORMAT);
 			$project["enddate"] = $this->_date->formatDate($row->enddate,CO_DATE_FORMAT);
 			$project["management"] = $contactsmodel->getUserList($row->management,'management');
 			$project["team"] = $contactsmodel->getUserList($row->team,'team');
 			$project["datetime"] = $this->_date->formatDate("now",CO_DATETIME_FORMAT);
+			$project["css_width"] = 136;
+			$project["css_height"] = 170; // pixel add at bottom
 			switch($row->status) {
 				case "0":
 					$project["status"] = "barchart_color_planned";
@@ -108,7 +111,6 @@ class TimelinesModel extends ProjectsModel {
 				break;
 			}
 		}
-		
 		$access = $this->getProjectAccess($pid);
 		$sql="";
 		if($access == "guest") {
@@ -117,7 +119,9 @@ class TimelinesModel extends ProjectsModel {
 		// get phase details
 		$q = "SELECT a.title,a.id,a.status,a.finished_date,(SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin = '0') as startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " as c WHERE c.phaseid=a.id and c.bin = '0') as enddate FROM " . CO_TBL_PHASES . " as a WHERE pid = '$pid' and bin = '0' " . $sql . " ORDER BY startdate";
 		$result = mysql_query($q, $this->_db->connection);
-	  	while ($row = mysql_fetch_object($result)) {
+	  	$numTasks = array();
+		while ($row = mysql_fetch_object($result)) {
+			$project["css_width"] += 170;
 			// phase status
 			switch($row->status) {
 				case "0":
@@ -133,9 +137,12 @@ class TimelinesModel extends ProjectsModel {
 			// add tasks to phases array
 			$tasks = array();
 			$phase_id = $row->id;
+			
 			$qt = "select * from " . CO_TBL_PHASES_TASKS . " where phaseid = '$phase_id' and bin='0' order by startdate";
 			$resultt = mysql_query($qt, $this->_db->connection);
+			$numTasks[] = mysql_num_rows($resultt);
 			while ($rowt = mysql_fetch_object($resultt)) {
+				//$project["css_height"] += 56;
 				// task status
 				switch($rowt->status) {
 					case "0":
@@ -168,21 +175,13 @@ class TimelinesModel extends ProjectsModel {
 					"status" => $tstatus,
 					"cat" => $rowt->cat
 				);
+
 			}
+
 			
 			
-			//$phase_overdue = array();
-			// phase overdue?
 			if($row->status == 2 && $row->finished_date > $row->enddate) {
-				//$phase_overdue["days"] = $this->_date->dateDiff($row->enddate,$row->finished_date);
-			    //$phase_overdue["width"] = $phase_overdue["days"] * $width;
-				//$phase_overdue["left"] = $phase_left + $phase_width;
 				$status = "barchart_color_overdue";
-				//if($row->finished_date > $project["enddate"]) {
-					//$project["enddate"] = $row->finished_date;
-					//$project["days"] = $this->_date->dateDiff($project["startdate"],$project["enddate"]);
-					//$project["css_width"] = ($project["days"]+1) * $width;
-				//}
 			}
 			
 			$project['phases'][] = array(
@@ -194,6 +193,9 @@ class TimelinesModel extends ProjectsModel {
 				"tasks" => $tasks
 			);
 		}
+		$height = max($numTasks)*70;
+			$project["css_height"] += $height;
+		
 	  //return $project;
 	  	$arr = array("project" => $project, "access" => $perms);
 		return $arr;
@@ -201,7 +203,20 @@ class TimelinesModel extends ProjectsModel {
 
 
 	function getBarchartDetails($pid, $width=17) {
-		global $session, $contactsmodel;
+		global $session, $contactsmodel, $projectsmodel;
+		
+		if($width == 0) {
+		  $zoom = $this->getUserSetting("gantt-chart-zoom");
+		  if(!$zoom) {
+			$width = 17;
+		  } else {
+			$width = $zoom;
+		  }
+		} else {
+			$width = $width;
+		}
+		 $this->setUserSetting("gantt-chart-zoom",$width);
+		
 		
 		// settings apart from width
 		$space_between_phases = 2;
@@ -215,13 +230,40 @@ class TimelinesModel extends ProjectsModel {
 		$project["bg_image"] = CO_FILES . "/img/barchart_bg_".$width.".png";
 		$project["bg_image_shift"] = 0;
 		$project["td_width"] = $width;
+		
+		// zoom
+		$project["zoom-xsmall"] = "zoom-xsmall";
+		$project["zoom-small"] = "zoom-small";
+		$project["zoom-medium"] = "zoom-medium";
+		$project["zoom-large"] = "zoom-large";
+		$project["zoom-xlarge"] = "zoom-xlarge";
+		
+		switch($width) {
+			case 5:
+				$project["zoom-xsmall"] = "zoom-xsmall-active";
+			break;
+			case 11:
+				$project["zoom-small"] = "zoom-small-active";
+			break;
+			case 17:
+				$project["zoom-medium"] = "zoom-medium-active";
+			break;
+			case 23:
+				$project["zoom-large"] = "zoom-large-active";
+			break;
+			case 29:
+				$project["zoom-xlarge"] = "zoom-xlarge-active";
+			break;
+		}
+		
 		// get project details
 		//$q = "select title,startdate,enddate,management,team,status from " . CO_TBL_PROJECTS . " where id = '$pid'";
-		$q = "SELECT a.title,a.startdate,a.management,a.team,a.status, (SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_PROJECTS . " as a where a.id = '$pid'";
+		$q = "SELECT a.title,a.startdate,a.management,a.team,a.status,a.projectfolder, (SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_PROJECTS . " as a where a.id = '$pid'";
 
 		$result = mysql_query($q, $this->_db->connection);
 	  	while ($row = mysql_fetch_object($result)) {
 			$project["title"] = $row->title;
+			$project["folder"] = $projectsmodel->getProjectFolderDetails($row->projectfolder,"projectfolder");
 			$project["startdate"] = $row->startdate;
 			$project["enddate"] = $row->enddate;
 			$project["startdate_view"] = $this->_date->formatDate($row->startdate,CO_DATE_FORMAT);

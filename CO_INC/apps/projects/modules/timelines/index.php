@@ -31,7 +31,11 @@ if (!empty($_GET['request'])) {
 			echo($timelines->getList($_GET['id'],$sort));
 		break;
 		case 'getDetails':
-			echo($timelines->getDetails($_GET['id'],$_GET['pid']));
+			$zoom = 0;
+			if(!empty($_GET['zoom'])) {
+				$zoom = $_GET['zoom'];
+			}
+			echo($timelines->getDetails($_GET['id'],$_GET['pid'],$zoom));
 		break;
 		case 'printDetails':
 			$t = "pdf"; // options: pdf, html
