@@ -314,7 +314,7 @@ ul.actionconsole { margin: 0 11px 0 11px;  }
 	background-color: #a5a5a5;
 }
 
-
+div.toggleSendTo:hover { cursor:pointer }
 
 .peopleLayer-outer {position: absolute; }
 .peopleLayer {float: left; height: 14px; opacity: 0; -moz-opacity: 0; filter: alpha(opacity=0); background-color: #ccc; overflow: hidden;}

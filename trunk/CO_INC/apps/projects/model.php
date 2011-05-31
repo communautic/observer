@@ -32,7 +32,7 @@ class ProjectsModel extends Model {
 							$order = "order by field(a.id,$sortorder)";
 							$sortcur = '3';
 						  }
-				  break;	
+				  break;
 			  }
 		  }
 	  } else {

@@ -19,19 +19,23 @@ function getDetailsTimeline(moduleidx,liindex) {
 		$("#projects-right").html(data.html);
 		initContentScrollbar();
 		initScrollbar( '.projects3-content:visible .scrolling-content' );
-			if(id == "2" || id == "4") {
 				if(data.access == "guest") {
 					projectsActions(5);
 				} else {
 					projectsActions(4);
 				}
-			} else {
-				if(data.access == "guest") {
-					projectsActions();
-				} else {
-					projectsActions(6);
-				}
-			}
+		}
+	});
+}
+
+
+function getBarchartZoom(zoom) {
+	var pid = $("#projects2 .module-click:visible").attr("rel");
+	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/timelines&request=getDetails&id=1&pid="+pid+"&zoom="+zoom, success: function(data){
+		$("#projects-right").html(data.html);
+		initContentScrollbar();
+		//alert($("#slider").slider( "option" , "value"));
+		$("#slider").slider("option", "value", zoom);
 		}
 	});
 }
@@ -86,6 +90,20 @@ function dialogTimeline(offset,request,field,append,title,sql) {
 
 
 $(document).ready(function() {  
+	
+	
+	$("span.loadBarchartZoom").live('click', function(e) {
+		e.preventDefault();
+		var pid = $("#projects2 .module-click:visible").attr("rel");
+		var zoom = $(this).attr('rel');
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/timelines&request=getDetails&id=1&pid="+pid+"&zoom="+zoom, success: function(data){
+			$("#projects-right").html(data.html);
+			initContentScrollbar();
+			}
+		});
+	});
+
+
 	$(".trigger").livequery( function() {
 		$(this).tooltip({
 		position: 'center right',
@@ -97,6 +115,10 @@ $(document).ready(function() {
 	// barchart opacity with jquery
 	$(".barchart-phase-bg").livequery( function() {
 		$(this).css("opacity","0.3");
+	});
+	
+	$("#todayBar").livequery( function() {
+		$(this).css("opacity","0.4");
 	});
 
 
@@ -131,7 +153,9 @@ $(document).ready(function() {
 			var $scrollingDiv = $("#barchart-container-left");
 			$scrollingDiv.stop().animate({"marginLeft": ($("#barchartScroll").scrollLeft()) + "px"}, "fast" );
 			$("#barchartTimeline").stop().animate({"marginTop": ($("#barchartScroll").scrollTop()) + "px"}, "fast" );
-			$("#todayBar").stop().height($("#barchartScroll").innerHeight()-67);
+			if($("#barchartScroll").scrollTop() != 0) {
+				$("#todayBar").stop().height($("#barchartScroll").innerHeight()-67);
+			}
 		});
 	});
 

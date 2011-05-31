@@ -66,6 +66,50 @@ class Controller extends MySQLDB {
 		$options['compress'] = 1;
 		$dompdf->stream($title.".pdf", $options);
 	}
+	
+	function printGantt($title,$text,$width,$height) {
+		global $lang;
+		ob_start();
+			include(CO_INC . "/view/printheader.php");
+			$header = ob_get_contents();
+		ob_end_clean();		
+		$footer = "</body></html>";
+        $html = $header . $text . $footer;
+		require_once(CO_INC . "/classes/dompdf_60_beta2/dompdf_config.inc.php");
+		$dompdf = new DOMPDF();
+		$dompdf->load_html($html);
+		/*$dompdf->set_paper('a4', 'portrait');  change 'a4' to whatever you want 
+         breite, höhe pixel dividiert durch 96 * 72*/
+        $dompdf->set_paper( array(0,0, $width / 96 * 72, $height / 96 * 72), "portrait" );
+		$dompdf->render();
+		$options['Attachment'] = 1;
+		$options['Accept-Ranges'] = 0;
+		$options['compress'] = 1;
+		$dompdf->stream($title.".pdf", $options);
+	}
+    
+    
+    function printPSP($title,$text,$width,$height) {
+		global $lang;
+		ob_start();
+			include(CO_INC . "/view/printheader.php");
+			$header = ob_get_contents();
+		ob_end_clean();
+		
+		$footer = "</body></html>";
+        $html = $header . $text . $footer;
+		require_once(CO_INC . "/classes/dompdf_60_beta2/dompdf_config.inc.php");
+		$dompdf = new DOMPDF();
+		$dompdf->load_html($html);
+		//$dompdf->set_paper('a4', 'portrait'); // change 'a4' to whatever you want 
+        // breite, höhe pixel dividiert durch 96 * 72
+        $dompdf->set_paper( array(0,0, $width / 96 * 72, $height / 96 * 72), "portrait" );
+		$dompdf->render();
+		$options['Attachment'] = 1;
+		$options['Accept-Ranges'] = 0;
+		$options['compress'] = 1;
+		$dompdf->stream($title.".pdf", $options);
+	}
 
 
 	function savePDF($title,$text,$path) {
@@ -91,6 +135,24 @@ class Controller extends MySQLDB {
 		$dompdf = new DOMPDF();
 		$dompdf->load_html($html);
 		$dompdf->set_paper('a4', 'portrait'); // change 'a4' to whatever you want
+		$dompdf->render();
+		$pdf = $dompdf->output();
+		file_put_contents( $path, $pdf);
+	}
+	
+	function saveTimeline($title,$text,$path,$width,$height) {
+		global $lang;
+		ob_start();
+			include(CO_INC . "/view/printheader.php");
+			$header = ob_get_contents();
+		ob_end_clean();
+		
+		$footer = "</body></html>";
+		$html = $header . $text . $footer;
+		require_once(CO_INC . "/classes/dompdf_60_beta2/dompdf_config.inc.php");
+		$dompdf = new DOMPDF();
+		$dompdf->load_html($html);
+		$dompdf->set_paper( array(0,0, $width / 96 * 72, $height / 96 * 72), "portrait" );
 		$dompdf->render();
 		$pdf = $dompdf->output();
 		file_put_contents( $path, $pdf);
@@ -180,10 +242,12 @@ class Controller extends MySQLDB {
 
 
 	function getSendtoDetails($what,$id) {
+		global $lang;
 		$html = "";
 		$sendto = $this->model->getSendtoDetails($what,$id);
 		foreach($sendto as $value) { 
-			$html .= '<div class="text11">' . $value->who . ', ' . $value->date . '</div>';
+			$html .= '<div class="text11 toggleSendTo">' . $value->who . ', ' . $value->date . '</div>' .
+				'<div class="SendToContent">' . $lang["GLOBAL_SUBJECT"] . ': ' . $value->subject . '<br /><br />' . nl2br($value->body) . '<br></div>';
 		 }
 		return $html;
 	}

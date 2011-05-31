@@ -106,7 +106,8 @@ foreach($task as $value) {
         <?php 
 			foreach($sendto as $value) {
 				if(!empty($value->who)) {
-					echo '<div class="text11">' . $value->who . ', ' . $value->date . '</div>';
+					echo '<div class="text11 toggleSendTo">' . $value->who . ', ' . $value->date . '</div>' .
+						 '<div class="SendToContent">' . $lang["GLOBAL_SUBJECT"] . ': ' . $value->subject . '<br /><br />' . nl2br($value->body) . '<br></div>';
 				}
 		 } ?></div></td>
     </tr>

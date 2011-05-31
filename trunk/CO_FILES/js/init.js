@@ -534,6 +534,12 @@ $(document).ready(function() {
 		return false;
 	});
 	
+	$('div.toggleSendTo').live('click',function(e) {
+		e.preventDefault();
+		$(this).next().slideToggle();
+	});
+	
+	
 	
 	/*$('a.focusText').live('click',function() {
 		$(this).parent().next().find("input").focus();

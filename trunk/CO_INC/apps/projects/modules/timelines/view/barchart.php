@@ -20,8 +20,17 @@
 </table>
 </div>
 <div class="ui-layout-content">
-<div id="leftBlind" style="z-index: 6; position: absolute; top: 0; width: 225px; height: 37px; background-color:#FFF; "></div>
+<div id="leftBlind" style="z-index: 6; position: absolute; top: 0; width: 225px; height: 37px; background-color:#FFF; ">
+<div id="barchart-zoom">
+<span class="loadBarchartZoom <?php echo($project["zoom-xsmall"]);?>" rel="5"></span>
+<span class="loadBarchartZoom <?php echo($project["zoom-small"]);?>" rel="11"></span>
+<span class="loadBarchartZoom <?php echo($project["zoom-medium"]);?>" rel="17"></span>
+<span class="loadBarchartZoom <?php echo($project["zoom-large"]);?>" rel="23"></span>
+<span class="loadBarchartZoom <?php echo($project["zoom-xlarge"]);?>" rel="29"></span>
+</div>
+<!--<div id="slider" style="margin-left: 10px; width: 120px;"></div>-->
 
+</div>
 <div class="scroll-pane" id="barchartScroll">
 <div  class="barchart-outer" style="position: relative; font-size: 11px; width: <?php echo($project["css_width"]+225);?>px; height:<?php echo($project["css_height"]+50);?>px">
 	
@@ -35,7 +44,7 @@
 <?php 
 $i = 1;
 foreach($project["phases"] as $key => &$value){ ?>
-<div style="position: relative; padding-left: 10px; height: 16px; margin: 0 15px 2px 0; background-color:#e5e5e5"><div style="position: absolute; height: 16px; width: 145px; overflow: hidden; line-height: 16px;"><a class="but-scroll-to" t="<?php echo($project["phases"][$key]["css_top"]);?>" l="<?php echo($project["phases"][$key]["css_left"]);?>"><?php echo($i . ". " . $project["phases"][$key]["title"]);?></a></div><div style="text-align: right; position: absolute; width: 38px; padding: 1px 10px 0 0; top: 0; right: 0; height: 16px; border-left: 2px solid #fff;"><?php echo($project["phases"][$key]["days"]);?></div></div>
+<div style="position: relative; padding-left: 10px; height: 16px; margin: 0 15px 2px 0; background-color: #b2b2b2;"><div style="position: absolute; height: 16px; width: 145px; overflow: hidden; line-height: 16px;"><a class="but-scroll-to" t="<?php echo($project["phases"][$key]["css_top"]);?>" l="<?php echo($project["phases"][$key]["css_left"]);?>"><?php echo($i . ". " . $project["phases"][$key]["title"]);?></a></div><div style="text-align: right; position: absolute; width: 38px; padding: 1px 10px 0 0; top: 0; right: 0; height: 16px; border-left: 2px solid #fff;"><?php echo($project["phases"][$key]["days"]);?></div></div>
       
       <?php foreach($project["phases"][$key]["tasks"] as $tkey => &$tvalue){ ?>
       
@@ -68,15 +77,18 @@ foreach($project["phases"] as $key => &$value){ ?>
 		$now = "";
 		$bg = "#b2b2b2";
 		if($yo["week"] != "") {
-			$week = '<div style="position: absolute; top: -15px; width: 45px; color: #000;">KW ' . $yo["week"] . '</div>';
+			$week = '<div style="position: absolute; top: -15px; width: 45px; color: #000; text-align: left;">KW ' . $yo["week"] . '</div>';
 		}
 		if($yo["month"] != "") {
-			$month = '<div style="position: absolute; top: -30px; width: 45px; color: #000;">' . $yo["month"] . '</div>';
+			$month = '<div style="position: absolute; top: -30px; width: 45px; color: #000; text-align: left;">' . $yo["month"] . '</div>';
 		}
 		if($day == $today) {
 			$bg = "#a0a0a0";
 			$yo["color"] = "#ffd20a";
 			$now = '<div id="todayBar" style="position: absolute; top: 13px; width: ' . $project["td_width"] . 'px; height: ' . $project["css_height"] . 'px; background-color: #e5e5e5; z-index: 1;"></div>';
+		}
+		if($project["td_width"] < 17) {
+			$yo["number"] = "";
 		}
 		?>
         <div id="d<?php echo($i);?>" style="position: relative; background-color: <?php echo($bg);?>; width: <?php echo($project["td_width"]);?>px; height: 13px; float: left; font-size: 10px; color: <?php echo($yo["color"]);?>; text-align:center"><?php echo $now . $month . $week . $yo["number"];?></div>
@@ -88,7 +100,7 @@ foreach($project["phases"] as $key => &$value){ ?>
     <!-- drawing area outer -->
     <div style="position: relative; background-image:url(<?php echo($project["bg_image"]);?>); background-position: <?php echo($project["bg_image_shift"]);?>px 0px; width: <?php echo($project["css_width"]);?>px; height:<?php echo($project["css_height"]);?>px;">
 			<!-- kick off -->
-            <div class="coTooltip" style="z-index: 2; background-color: #B2B2B2; position: absolute; top: 8px; left: 1px; height: 10px; width: 22px;">
+            <div class="coTooltip" style="z-index: 2; background-color: #B2B2B2; position: absolute; top: 8px; left: 0; height: 10px; width: <?php echo($project["td_width"]);?>px;">
             	<div class="coTooltipHtml" style="display: none">
 					Kick off<br />
 					<?php echo($project["startdate_view"]);?>
@@ -185,7 +197,8 @@ foreach($project["phases"] as $key => &$value){ ?>
 							}
 						}
 						$dep_left = $project["phases"][$dep_phase_key]["css_left"]+$project["tasks"][$dep_key]["css_left"]+$project["tasks"][$dep_key]["css_width"]-$project["phases"][$key]["css_left"];
-						$dep_width = ($project["phases"][$key]["css_left"] + $project["phases"][$key]["tasks"][$tkey]["css_left"]) - ($project["phases"][$dep_phase_key]["css_left"]+$project["tasks"][$dep_key]["css_left"]);
+						$dep_width = ($project["phases"][$key]["css_left"] + $project["phases"][$key]["tasks"][$tkey]["css_left"]) +$project["td_width"] - ($project["phases"][$dep_phase_key]["css_left"]+$project["tasks"][$dep_key]["css_left"]+$project["tasks"][$dep_key]["css_width"]);
+						
 					} else {
 						$dep_top = $project["tasks"][$dep_key]["css_top"];
 						$dep_height = $project["phases"][$dep_phase_key]["tasks"][$tkey]["css_top"] - $dep_top -6;
