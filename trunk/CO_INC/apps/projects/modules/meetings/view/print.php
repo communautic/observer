@@ -4,7 +4,7 @@
         <td><strong><?php echo($meeting->title);?></strong></td>
 	</tr>
 </table>
-<table border="0" cellpadding="0" cellspacing="0" width="100%" class="standard">
+<table border="0" cellpadding="0" cellspacing="0" width="100%" class="grey">
 	<tr>
 		<td class="tcell-left"><?php echo $lang["MEETING_DATE"];?></td>
 		<td><?php echo($meeting->meeting_date)?></td>
@@ -22,8 +22,7 @@
         <td><?php echo($meeting->location);?></td>
 	</tr>
 </table>
-&nbsp;
-<table border="0" cellpadding="0" cellspacing="0" width="100%" class="standard">
+<table border="0" cellpadding="0" cellspacing="0" width="100%" class="grey">
 	<tr>
 		<td class="tcell-left"><?php echo $lang["MEETING_ATTENDEES"];?></td>
 		<td><?php echo($meeting->participants)?></td>
@@ -38,33 +37,30 @@
 	</tr>
 </table>
 &nbsp;
+<table border="0" cellpadding="0" cellspacing="0" width="100%" class="standard">
+	<tr>
+		<td class="tcell-left"><?php echo $lang["MEETING_GOALS"];?></td>
+		<td>&nbsp;</td>
+    </tr>
+</table>
 <?php
 $i = 1;
 foreach($task as $value) { 
 	$img = '&nbsp;';
 	if($value->status == 1) {
-		$img = '<img src="' . CO_FILES . '/img/print/done.png" width="18" height="18" vspace="2" /> ';
+		$img = '<img src="' . CO_FILES . '/img/print/done_grey.png" width="15" height="15" vspace="4" /> ';
 	}
      ?>
-    <table border="0" cellpadding="0" cellspacing="0" width="100%" class="standard">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" class="greyList">
         <tr>
-            <td class="tcell-left-short"><?php if($i == 1) { echo $lang["MEETING_GOALS"]; }?>&nbsp;</td>
             <td class="short"><?php echo $img;?></td>
-            <td class="greybg"><?php echo($value->title);?></td>
+            <td><strong><?php echo($value->title);?></strong></td>
         </tr>
-        <tr>
-            <td class="tcell-left-short">&nbsp;</td>
-            <td class="short">&nbsp;</td>
-            <td><?php echo(nl2br($value->text));?>
-            </td>
-        </tr>
-		<tr>
-            <td class="tcell-left-short">&nbsp;</td>
-            <td class="short">&nbsp;</td>
-            <td>&nbsp;</td>
-        </tr>
-    </table>
-    
+     </table>
+     &nbsp;<br />
+      <?php echo(nl2br($value->text));?>
+    <br />&nbsp;
+    <br />&nbsp;
 	<?php 
 	$i++;
 	}
