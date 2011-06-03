@@ -8,8 +8,13 @@ $left = 150;
 
 
 <div style="position: absolute; width: <?php echo($project["page_width"]);?>px; top: <?php echo $top;?>px; left: 0px; padding-left: 24px; height: 58px; color: #666666; vertical-align: top; font-size: 10px;"><?php echo $lang["PROJECT_TITLE"];?></div>
-
-<div style="position: absolute; z-index: 1; width: 170px; top: <?php echo $top;?>px; left: <?php echo($left);?>px; border: 1px solid #000; width: 150px; height: 56px; font-size: 11px; font-weight: bold; text-align:center; vertical-align: top;" class="<?php echo($project["status"]);?>"><?php echo($project["title"]);?></div>
+<?php
+$bg = $project["status"];
+if($bg == "barchart_color_planned") {
+	$bg = "psp_barchart_color_planned";
+}
+?>
+<div style="position: absolute; z-index: 1; width: 170px; top: <?php echo $top;?>px; left: <?php echo($left);?>px; border: 1px solid #000; width: 150px; height: 56px; font-size: 11px; font-weight: bold; text-align:center; vertical-align: top;" class="<?php echo($bg);?>"><?php echo($project["title"]);?></div>
 <div style="position: absolute; top: <?php echo $top+56;?>px; left: <?php echo($left+75);?>px; height: 24px; width: 1px; background-color: #000;"></div>
 
 <?php 
@@ -36,17 +41,21 @@ $ptop = $top+56+24;
 			$taskline='';
 		}
 		
-		$datescolor = "";
+		//$datescolor = "";
 			$bg = $project["phases"][$key]["status"];
+			if($bg == "barchart_color_planned") {
+				$bg = "psp_barchart_color_planned";
+			}
+			$datescolor = $bg;
 			if($project["phases"][$key]["status"] == "barchart_color_overdue") {
 				$datescolor = "barchart_color_overdue";
 				$bg = "barchart_color_finished";
 			}
 	?>
-        <div style="position: absolute; z-index: 1; width: 170px; top: <?php echo $ptop;?>px; left: <?php echo($pleft);?>px; border: 1px solid #000; width: 150px; height: 56px; font-size: 11px; font-weight: bold; text-align:center; vertical-align: top;" class="<?php echo($bg);?>"><?php echo($countPhases . ". " .$project["phases"][$key]["title"]);?></div>
-        <div class="<?php echo($datescolor);?>" style="z-index: 3; position: absolute; top: <?php echo $ptop+43;?>px; left: <?php echo($pleft);?>px; width: 75px; height: 13px; font-size: 11px; font-weight: bold; text-align:center; border-top: 1px solid #000000; vertical-align: top;"><?php echo($project["phases"][$key]["startdate"]);?></div>
-        <div class="<?php echo($datescolor);?>" style="z-index: 2; position: absolute; top: <?php echo $ptop+43;?>px; left: <?php echo($pleft+75);?>px; width: 75px; height: 13px; font-size: 11px; font-weight: bold; text-align:center; border-top: 1px solid #000; border-left: 1px solid #000; vertical-align: top;"><?php echo($project["phases"][$key]["enddate"]);?></div>
-			<div style="position: absolute; top: <?php echo $ptop+29;?>px; left: <?php echo($pleft-10);?>px; height: 1px; width: 9px; background-color: #000;"></div>
+        <div style="position: absolute; z-index: 1; top: <?php echo $ptop;?>px; left: <?php echo($pleft);?>px; border: 1px solid #000; width: 150px; height: 42px; font-size: 11px; font-weight: bold; text-align:center; vertical-align: top; overflow: hidden;" class="<?php echo($bg);?>"><?php echo($countPhases . ". " .$project["phases"][$key]["title"]);?></div>
+        <div class="<?php echo($datescolor);?>" style="z-index: 3; position: absolute; top: <?php echo $ptop+44;?>px; left: <?php echo($pleft);?>px; width: 74px; height: 13px; font-size: 11px; font-weight: bold; text-align:center; border-left: 1px solid #000000; border-bottom: 1px solid #000000; vertical-align: top;"><?php echo($project["phases"][$key]["startdate"]);?></div>
+        <div class="<?php echo($datescolor);?>" style="z-index: 2; position: absolute; top: <?php echo $ptop+44;?>px; left: <?php echo($pleft+75);?>px; width: 75px; height: 13px; font-size: 11px; font-weight: bold; text-align:center; border-left: 1px solid #000; border-bottom: 1px solid #000; border-right: 1px solid #000; vertical-align: top;"><?php echo($project["phases"][$key]["enddate"]);?></div>
+			<div style="position: absolute; top: <?php echo $ptop+29;?>px; left: <?php echo($pleft-10);?>px; height: 1px; width: 10px; background-color: #000;"></div>
             <?php if($countPhases > 1) { ?>
 				<div style="position: absolute; top: <?php echo $ptop-10;?>px; left: <?php echo $pleft-94;?>px; height: 9px; width: 170px; border-top: 1px solid #000; border-right: 1px solid #000;"></div>
 			<?php } ?>
@@ -54,23 +63,26 @@ $ptop = $top+56+24;
 			<?php
 				$ttop = $ptop+56+24;
 				foreach($project["phases"][$key]["tasks"] as $tkey => &$tvalue){ 
-					$datescolor = "";
 					$bg = $project["phases"][$key]["tasks"][$tkey]["status"];
+					if($bg == "barchart_color_planned") {
+				$bg = "psp_barchart_color_planned";
+			}
+					$datescolor = $bg;
 					if($project["phases"][$key]["tasks"][$tkey]["status"] == "barchart_color_overdue") {
 						$datescolor = "barchart_color_overdue";
 						$bg = "barchart_color_finished";
 					}
 				?>
-			<div style="position: absolute; z-index: 1; top: <?php echo $ttop;?>px; left: <?php echo($pleft);?>px; border: 1px solid #000; width: 150px; height: 56px;" class="<?php echo($bg);?>"></div>
-            <div style="position: absolute; z-index: 1; top: <?php echo $ttop;?>px; left: <?php echo($pleft);?>px; width: 150px; height: 26px; font-size: 11px; font-weight: bold; text-align:center; vertical-align: top;"><?php echo($project["phases"][$key]["tasks"][$tkey]["text"]);?></div>
+			<div style="position: absolute; z-index: 1; top: <?php echo $ttop;?>px; left: <?php echo($pleft);?>px; border: 1px solid #000; width: 150px; height: 42px; font-size: 11px; font-weight: bold; text-align:center; vertical-align: top;" class="<?php echo($bg);?>"><?php echo($project["phases"][$key]["tasks"][$tkey]["text"]);?></div>
+            <!--<div style="position: absolute; z-index: 1; top: <?php echo $ttop;?>px; left: <?php echo($pleft);?>px; width: 150px; height: 26px; font-size: 11px; font-weight: bold; text-align:center; vertical-align: top;"><?php echo($project["phases"][$key]["tasks"][$tkey]["text"]);?></div>-->
 
 			<div style="position: absolute; z-index: 2; top: <?php echo $ttop+30;?>px; left: <?php echo($pleft);?>px; width: 150px; height: 14px; font-size: 11px; font-weight: bold; text-align:center; vertical-align: top; overflow: hidden;"><?php echo($project["phases"][$key]["tasks"][$tkey]["team"]);?></div>
             <?php if($project["phases"][$key]["tasks"][$tkey]["cat"] == 0) { ?>
-				<div class="<?php echo($datescolor);?>" style="z-index: 3; position: absolute; top: <?php echo $ttop+43;?>px; left: <?php echo($pleft);?>px; width: 75px; height: 13px; font-size: 11px; font-weight: bold; text-align:center; border-top: 1px solid #000000; vertical-align: top;"><?php echo($project["phases"][$key]["tasks"][$tkey]["startdate"]);?></div>
-                <div style="z-index: 2; position: absolute; top: <?php echo $ttop+43;?>px; left: <?php echo($pleft+75);?>px; width: 75px; height: 13px; font-size: 11px; font-weight: bold; text-align:center; border-top: 1px solid #000; border-left: 1px solid #000; vertical-align: top;" class="<?php echo($datescolor);?>"><?php echo($project["phases"][$key]["tasks"][$tkey]["enddate"]);?></div>
+				<div class="<?php echo($datescolor);?>" style="z-index: 3; position: absolute; top: <?php echo $ttop+44;?>px; left: <?php echo($pleft);?>px; width: 74px; height: 13px; font-size: 11px; font-weight: bold; text-align:center; border-left: 1px solid #000000; border-bottom: 1px solid #000000; vertical-align: top;"><?php echo($project["phases"][$key]["tasks"][$tkey]["startdate"]);?></div>
+                <div style="z-index: 2; position: absolute; top: <?php echo $ttop+44;?>px; left: <?php echo($pleft+75);?>px; width: 75px; height: 13px; font-size: 11px; font-weight: bold; text-align:center; border-left: 1px solid #000; border-bottom: 1px solid #000; border-right: 1px solid #000; vertical-align: top;" class="<?php echo($datescolor);?>"><?php echo($project["phases"][$key]["tasks"][$tkey]["enddate"]);?></div>
 			<?php } else { ?>
-				<div class="<?php echo($datescolor);?>" style="z-index: 3; position: absolute; top: <?php echo $ttop+43;?>px; left: <?php echo($pleft);?>px; width: 75px; height: 13px; border-top: 1px solid #000000; vertical-align: top;"><img src="<?php echo(CO_FILES);?>/img/print/gantt_milestone.png" width="12" height="12" style= "margin: 0px 0 0 2px" /></div>
-                <div style="z-index: 2; position: absolute; top: <?php echo $ttop+43;?>px; left: <?php echo($pleft+75);?>px; width: 75px; height: 13px; font-size: 11px; font-weight: bold; text-align:center; border-top: 1px solid #000; border-left: 1px solid #000; vertical-align: top;" class="<?php echo($datescolor);?>"><?php echo($project["phases"][$key]["tasks"][$tkey]["enddate"]);?></div>
+				<div class="<?php echo($datescolor);?>" style="z-index: 3; position: absolute; top: <?php echo $ttop+44;?>px; left: <?php echo($pleft);?>px; width: 74px; height: 13px; border-left: 1px solid #000000; border-bottom: 1px solid #000000; vertical-align: top;"><img src="<?php echo(CO_FILES);?>/img/print/gantt_milestone.png" width="12" height="12" style= "margin: 0px 0 0 2px" /></div>
+                <div style="z-index: 2; position: absolute; top: <?php echo $ttop+44;?>px; left: <?php echo($pleft+75);?>px; width: 75px; height: 13px; font-size: 11px; font-weight: bold; text-align:center; border-left: 1px solid #000; border-bottom: 1px solid #000; border-right: 1px solid #000; vertical-align: top;" class="<?php echo($datescolor);?>"><?php echo($project["phases"][$key]["tasks"][$tkey]["enddate"]);?></div>
 			<?php }?>
         
         <div style="position: absolute; top: <?php echo $ttop-50;?>px; left: <?php echo($pleft-10);?>px; height: 79px; width: 9px; border-bottom: 1px solid #000; border-left: 1px solid #000;"></div>
@@ -93,7 +105,7 @@ $ptop = $top+56+24;
     <tr>
         <td><span><img src="<?php echo(CO_FILES);?>/img/print/gantt_milestone.png" width="12" height="12" /> Meilenstein</span></td>
         <td width="15"></td>
-        <td class="barchart_color_planned"><span><?php echo TIMELINE_STATUS_PLANED;?></span></td>
+        <td class="psp_barchart_color_planned"><span><?php echo TIMELINE_STATUS_PLANED;?></span></td>
         <td width="15"></td>
         <td class="barchart_color_inprogress"><span><?php echo TIMELINE_STATUS_INPROGRESS;?></span></td>
          <td width="15"></td>

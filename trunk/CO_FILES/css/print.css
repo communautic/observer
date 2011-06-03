@@ -29,6 +29,7 @@ h2 { font-size: 25pt; margin: 0pt; padding: 0pt;}
 h3 { margin: 0pt; padding: 0pt;}
 
 .barchart_color_planned { background-color: #4BA0C8;}
+.psp_barchart_color_planned { background-color: #c9e3ef;}
 .barchart_color_inprogress { background-color: #FFD20A;}
 .barchart_color_finished { background-color: #82aa0b;}
 .barchart_color_not_finished { background-color: #7f7f7f;}

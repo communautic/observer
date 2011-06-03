@@ -119,7 +119,8 @@ class TimelinesModel extends ProjectsModel {
 		// get phase details
 		$q = "SELECT a.title,a.id,a.status,a.finished_date,(SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin = '0') as startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " as c WHERE c.phaseid=a.id and c.bin = '0') as enddate FROM " . CO_TBL_PHASES . " as a WHERE pid = '$pid' and bin = '0' " . $sql . " ORDER BY startdate";
 		$result = mysql_query($q, $this->_db->connection);
-	  	$numTasks = array();
+	  	$numTasks = array(0);
+		//$numTasks[] = 0;
 		while ($row = mysql_fetch_object($result)) {
 			$project["css_width"] += 170;
 			// phase status
@@ -137,6 +138,8 @@ class TimelinesModel extends ProjectsModel {
 			// add tasks to phases array
 			$tasks = array();
 			$phase_id = $row->id;
+			
+			
 			
 			$qt = "select * from " . CO_TBL_PHASES_TASKS . " where phaseid = '$phase_id' and bin='0' order by startdate";
 			$resultt = mysql_query($qt, $this->_db->connection);
