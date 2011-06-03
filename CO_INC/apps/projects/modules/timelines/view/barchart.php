@@ -147,7 +147,7 @@ foreach($project["phases"] as $key => &$value){ ?>
 						$dep_height = $project["phases"][$dep_phase_key]["tasks"][$tkey]["css_top"] - $dep_top -4;
 						if($key-1 != $dep_phase_key) {
 							for($i=$dep_phase_key+1; $i < $key; $i++) {
-								$dep_height += $project["phases"][$i]["css_height"];
+								$dep_height += $project["phases"][$i]["css_height"]+2;
 								$dep_top -= $project["phases"][$i]["css_height"]+2;
 							}
 						}
@@ -192,7 +192,7 @@ foreach($project["phases"] as $key => &$value){ ?>
 						$dep_height = $project["phases"][$dep_phase_key]["tasks"][$tkey]["css_top"] - $dep_top -6;
 						if($key-1 != $dep_phase_key) {
 							for($i=$dep_phase_key+1; $i < $key; $i++) {
-								$dep_height += $project["phases"][$i]["css_height"];
+								$dep_height += $project["phases"][$i]["css_height"]+2;
 								$dep_top -= $project["phases"][$i]["css_height"]+2;
 							}
 						}

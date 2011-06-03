@@ -120,7 +120,7 @@ $top = $top-7;
 				<?php } ?>
             	<!-- task dependency -->
                 <?php if(!empty($project["phases"][$key]["tasks"][$tkey]["overdue"])){ ?>
-                <div class="barchart_color_overdue coTooltip" style="z-index: 2; position: absolute; top: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_top"]);?>px; left: <?php echo($project["phases"][$key]["tasks"][$tkey]["overdue"]["left"]);?>px; height: 10px; width: <?php echo($project["phases"][$key]["tasks"][$tkey]["overdue"]["width"]);?>px;" title="<?php echo($project["phases"][$key]["tasks"][$tkey]["overdue"]["days"]);?>"></div>
+                <div class="barchart_color_overdue coTooltip" style="z-index: 2; position: absolute; top: <?php echo($ptop[$key]+$project["phases"][$key]["tasks"][$tkey]["css_top"]);?>px; left: <?php echo($pleft[$key]+$project["phases"][$key]["tasks"][$tkey]["css_left"]+$project["phases"][$key]["tasks"][$tkey]["overdue"]["left"]);?>px; height: 10px; width: <?php echo($project["phases"][$key]["tasks"][$tkey]["overdue"]["width"]);?>px;" title="<?php echo($project["phases"][$key]["tasks"][$tkey]["overdue"]["days"]);?>"></div>
                 <?php } ?>
                 
                 <?php } else { ?>
@@ -157,7 +157,7 @@ $top = $top-7;
             	<?php } ?>
             
 			<?php if(!empty($project["phases"][$key]["overdue"])){ ?>
-			<div class="barchart_color_overdue barchart-phase-bg coTooltip" style="position: absolute; top: <?php echo($project["phases"][$key]["css_top"]);?>px; left: <?php echo($project["phases"][$key]["overdue"]["left"]);?>px; height: <?php echo($project["phases"][$key]["css_height"]);?>px; width: <?php echo($project["phases"][$key]["overdue"]["width"]);?>px;" title="<?php echo($project["phases"][$key]["overdue"]["days"]);?>"></div>
+			<div class="barchart_color_overdue barchart-phase-bg coTooltip" style="position: absolute; top: <?php echo($ptop[$key]);?>px; left: <?php echo($pleft[$key]+$project["phases"][$key]["css_width"]);?>px; height: <?php echo($project["phases"][$key]["css_height"]);?>px; width: <?php echo($project["phases"][$key]["overdue"]["width"]);?>px;" title="<?php echo($project["phases"][$key]["overdue"]["days"]);?>"></div>
             <?php } 
 			$i++;
 			 } ?>
