@@ -118,7 +118,11 @@ class Meetings extends Projects {
 	}
 	
 	function checkinMeeting($id) {
-		return $this->model->checkinMeeting($id);
+		if($id != "undefined") {
+			return $this->model->checkinMeeting($id);
+		} else {
+			return true;
+		}
 	}
 	
 

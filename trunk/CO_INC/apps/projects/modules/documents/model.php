@@ -366,12 +366,12 @@ class DocumentsModel extends ProjectsModel {
 		
 		$arr = array();
 		
-		$sql = "and access='1'";
+		//$sql = "and access='1'";
 		/*if($session->isSysadmin() || $session->isAdmin()) {
 			$sql = "";
 		}*/
 		foreach ($string as &$value) {
-			$q = "SELECT id, title FROM " . CO_TBL_DOCUMENTS_FOLDERS . " where id = '$value' $sql and bin='0'";
+			$q = "SELECT id, title FROM " . CO_TBL_DOCUMENTS_FOLDERS . " where id = '$value' and bin='0'";
 			$result = mysql_query($q, $this->_db->connection);
 			if(mysql_num_rows($result) > 0) {
 				while($row = mysql_fetch_assoc($result)) {

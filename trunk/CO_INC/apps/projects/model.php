@@ -577,7 +577,7 @@ class ProjectsModel extends Model {
 	  	}
 		// generate phase numbering
 		$num = "";
-		$qn = "select a.id,(SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " WHERE phaseid=a.id) as startdate from " . CO_TBL_PHASES . " as a where a.pid = '$id' and a.bin != '1' " . $sql . " order by startdate";
+		$qn = "select a.id,(SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " WHERE phaseid=a.id and bin='0') as startdate from " . CO_TBL_PHASES . " as a where a.pid = '$id' and a.bin != '1' " . $sql . " order by startdate";
 		$resultn = mysql_query($qn, $this->_db->connection);
 		$i = 1;
 		while ($rown = mysql_fetch_array($resultn)) {

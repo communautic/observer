@@ -262,7 +262,11 @@ class Projects extends Controller {
 	}
 	
 	function checkinProject($id) {
-		return $this->model->checkinProject($id);
+		if($id != "undefined") {
+			return $this->model->checkinProject($id);
+		} else {
+			return true;
+		}
 	}
 
 	function getProjectSend($id) {
