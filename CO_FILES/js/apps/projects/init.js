@@ -394,12 +394,17 @@ function sortDragFolder(order) {
 
 
 function sortClickProject(obj,sortcur,sortnew) {
+	
+	var cid = $('#projects input[name="id"]').val()
+	checkInProject(cid);
+	
 	var fid = $("#projects .module-click:visible").attr("rel");
 	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectList&id="+fid+"&sort="+sortnew, success: function(data){
 		  $("#projects2 ul").html(data.html);
 		  obj.attr("rel",sortnew);
 		  obj.removeClass("sort"+sortcur).addClass("sort"+sortnew);
 		  var id = $("#projects2 .module-click:eq(0)").attr("rel");
+		 $('#projects2').find('input.filter').quicksearch('#projects2 li');
 		  if(id == undefined) {
 				return false;
 			}

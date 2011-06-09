@@ -99,7 +99,7 @@ $ptop = $top+56+24;
 
 <div style="position: absolute; width: <?php echo($project["page_width"]-24);?>px; top: <?php echo $project["css_height"]+150;?>px; left: 0px; height: 19px;  background-color: #e5e5e5; vertical-align: top; padding: 3px 0 0 24px;"><?php echo TIMELINE_PROJECT_STRUCTURE;?></div>
 
-<div style="position: absolute; width: <?php echo($project["page-width"]-235);?>px; top: <?php echo $project["css_height"]+148;?>px; left: <?php echo($left+50);?>px; height: 19px; text-align:center;"><table border="0" cellspacing="0" cellpadding="0" class="timeline-legend">
+<div style="position: absolute; width: <?php echo($project["page_width"]-235);?>px; top: <?php echo $project["css_height"]+148;?>px; left: <?php echo($left+50);?>px; height: 19px; text-align:center;"><table border="0" cellspacing="0" cellpadding="0" class="timeline-legend">
     <tr>
         <td><span><img src="<?php echo(CO_FILES);?>/img/print/gantt_milestone.png" width="12" height="12" /> Meilenstein</span></td>
         <td width="15"></td>

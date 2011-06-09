@@ -121,7 +121,11 @@ class Phases extends Projects {
 	}
 	
 	function checkinPhase($id) {
-		return $this->model->checkinPhase($id);
+		if($id != "undefined") {
+			return $this->model->checkinPhase($id);
+		} else {
+			return true;
+		}
 	}
 
 

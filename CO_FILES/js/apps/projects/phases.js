@@ -280,6 +280,10 @@ function checkInPhase(id) {
 }
 
 function sortClickPhase(obj,sortcur,sortnew) {
+	
+	var cid = $('#projects input[name="id"]').val()
+	checkInPhase(cid);
+	
 	var fid = $("#projects2 .module-click:visible").attr("rel");
 	$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/projects/modules/phases&request=getList&id="+fid+"&sort="+sortnew, success: function(data){
 		$(".projects3-content:visible ul").html(data.html);

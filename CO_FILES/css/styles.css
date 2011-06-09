@@ -647,3 +647,5 @@ border:1px dashed black;
 
 .table-window input { width: 100%; font-size: 13px !important;}
 .table-window textarea { width: 100%; font-size: 13px !important;}
+
+#modalDialog { max-height: 200px; }
