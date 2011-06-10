@@ -97,7 +97,11 @@ class MeetingsModel extends ProjectsModel {
 			
 			$checked_out_status = "";
 			if($perm !=  "guest" && $array["checked_out"] == 1 && $array["checked_out_user"] != $session->uid) {
-				$checked_out_status = "icon-checked-out-active";
+				if($session->checkUserActive($array["checked_out_user"])) {
+					$checked_out_status = "icon-checked-out-active";
+				} else {
+					$this->checkinMeetingOverride($id);
+				}
 			}
 			$array["checked_out_status"] = $checked_out_status;
 			
@@ -137,6 +141,15 @@ class MeetingsModel extends ProjectsModel {
 		}
 	}
 	
+	function checkinMeetingOverride($id) {
+		global $session;
+		$q = "UPDATE " . CO_TBL_MEETINGS . " set checked_out = '0', checked_out_user = '0' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+			return true;
+		}
+	}
+	
 
 	function getDetails($id) {
 		global $session, $lang;
@@ -164,6 +177,9 @@ class MeetingsModel extends ProjectsModel {
 			//if($array["checked_out"] == 1 && $session->checkUserActive($array["checked_out_user"])) {
 			if($array["checked_out"] == 1) {
 				if($array["checked_out_user"] == $session->uid) {
+					$array["canedit"] = true;
+				} else if(!$session->checkUserActive($array["checked_out_user"])) {
+					$array["canedit"] = $this->checkoutMeeting($id);
 					$array["canedit"] = true;
 				} else {
 					$array["canedit"] = false;
