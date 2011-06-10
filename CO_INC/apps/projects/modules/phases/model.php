@@ -92,7 +92,12 @@ class PhasesModel extends ProjectsModel {
 			
 			$checked_out_status = "";
 			if($perm !=  "guest" && $array["checked_out"] == 1 && $array["checked_out_user"] != $session->uid) {
-				$checked_out_status = "icon-checked-out-active";
+				//$checked_out_status = "icon-checked-out-active";
+				if($session->checkUserActive($array["checked_out_user"])) {
+					$checked_out_status = "icon-checked-out-active";
+				} else {
+					$this->checkinPhaseOverride($id);
+				}
 			}
 			$array["checked_out_status"] = $checked_out_status;
 			
@@ -137,6 +142,16 @@ class PhasesModel extends ProjectsModel {
 			$q = "UPDATE " . CO_TBL_PHASES . " set checked_out = '0', checked_out_user = '0' where id='$id'";
 			$result = mysql_query($q, $this->_db->connection);
 		}
+		if ($result) {
+			return true;
+		}
+	}
+	
+	
+	function checkinPhaseOverride($id) {
+		global $session;
+		$q = "UPDATE " . CO_TBL_PHASES . " set checked_out = '0', checked_out_user = '0' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			return true;
 		}
@@ -204,6 +219,9 @@ class PhasesModel extends ProjectsModel {
 			//if($array["checked_out"] == 1 && $session->checkUserActive($array["checked_out_user"])) {
 			if($array["checked_out"] == 1) {
 				if($array["checked_out_user"] == $session->uid) {
+					$array["canedit"] = true;
+				} else if(!$session->checkUserActive($array["checked_out_user"])) {
+					$array["canedit"] = $this->checkoutPhase($id);
 					$array["canedit"] = true;
 				} else {
 					$array["canedit"] = false;

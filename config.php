@@ -82,8 +82,8 @@ define("SYSADMIN_LEVEL", 1);
 define("GUEST_LEVEL", 0);
 
 define("TRACK_VISITORS", true);
-define("USER_TIMEOUT", 10);
-define("GUEST_TIMEOUT", 5);
+define("USER_TIMEOUT", 60);
+define("GUEST_TIMEOUT", 60);
 define("COOKIE_EXPIRE", 60*60*24*100);  //100 days by default
 define("COOKIE_PATH", "/");  //Avaible in whole domain
 define("EMAIL_FROM_NAME", "YourName");
