@@ -13,6 +13,7 @@ phases.actionSend = sendPhase;
 phases.actionSendtoResponse = sendPhaseResponse;
 phases.actionDuplicate = duplicatePhase;
 phases.actionRefresh = refreshPhase;
+phases.actionCheckDepTasks = actionCheckDepTasks;
 phases.actionBin = binPhase;
 phases.checkIn = checkInPhase;
 phases.poformOptions = { beforeSubmit: phaseFormProcess, dataType:  'json', success: phaseFormResponse };
@@ -223,6 +224,13 @@ function refreshPhase() {
 	});
 }
 
+
+function actionCheckDepTasks(id) {
+	$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=getTaskDependencyExists&id="+id, success: function(data){																																																																				
+			 return data;
+			}
+		});
+}
 
 function binPhase() {
 	

@@ -19,7 +19,7 @@
     <tr>
       <td>&nbsp;</td>
       <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["PHASE_TASK_END"];?></span></span></td>
-      <td class="tcell-right"><?php if($phase->canedit) { ?><input name="task_enddate[<?php echo $value->id;?>]" type="text" class="input-date datepicker task_end" value="<?php echo $value->enddate;?>" /><?php } else { ?><?php echo $value->enddate;?><?php } ?></td>
+      <td class="tcell-right"><?php if($phase->canedit) { ?><input name="task_enddate[<?php echo $value->id;?>]" type="text" class="input-date datepicker task_end" value="<?php echo $value->enddate;?>" /><input name="task_movedate[<?php echo $value->id;?>]" type="hidden" value="<?php echo $value->enddate;?>" /><?php } else { ?><?php echo $value->enddate;?><?php } ?></td>
     </tr>
     <tr>
       <td>&nbsp;</td>

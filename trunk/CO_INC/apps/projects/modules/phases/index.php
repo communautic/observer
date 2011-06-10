@@ -78,6 +78,12 @@ if (!empty($_GET['request'])) {
 		case 'getTasksDialog':
 			echo($phases->getTasksDialog($_GET['sql'],$_GET['field']));
 		break;
+		case 'getTaskDependencyExists':
+			echo($phases->getTaskDependencyExists($_GET['id']));
+		break;
+		case 'moveDependendTasks':
+			echo($phases->moveDependendTasks($_GET['id'],$_GET['days']));
+		break;
 		case 'addTask':
 			echo($phases->addTask($_GET['pid'],$_GET['phid'],$_GET['date'],$_GET['cat']));
 		break;

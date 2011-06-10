@@ -239,6 +239,23 @@ class Projects extends Controller {
 					ob_end_clean();
 				}
 			}
+			// documents
+			$documents = new Documents("documents");
+			if($arrdocs = $documents->model->getList($id,"0")) {
+				$docs = $arrdocs["documents"];
+				foreach ($docs as $doc) {
+					if($arr = $documents->model->getDetails($doc->id)) {
+						$document = $arr["document"];
+						$doc = $arr["doc"];
+						$sendto = $arr["sendto"];
+						ob_start();
+							include 'modules/documents/view/print.php';
+							$html .= ob_get_contents();
+						ob_end_clean();
+					}
+				}
+				$html .= '<div style="page-break-after:always;">&nbsp;</div>';
+			}
 			// controlling
 			$controlling = new Controlling("controlling");
 			if($cont = $controlling->model->getDetails($id)) {

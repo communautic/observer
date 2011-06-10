@@ -171,7 +171,7 @@ class PhasesModel extends ProjectsModel {
 		$title = mysql_result($result,0);
 		return $title;
 	}
-
+	
 
 	function getDependency($id){
 		$q = "SELECT title FROM " . CO_TBL_PHASES . " where dependency = '$id'";
@@ -570,6 +570,31 @@ class PhasesModel extends ProjectsModel {
 	}
 
 
+	function getTaskDependencyExists($id){
+		$q = "SELECT id FROM " . CO_TBL_PHASES_TASKS . " where dependent = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result) > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	function moveDependendTasks($id,$days){
+		$q = "SELECT id, startdate, enddate FROM " . CO_TBL_PHASES_TASKS . " where dependent='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		while ($row = mysql_fetch_array($result)) {
+			$tid = $row["id"];
+			$startdate = $this->_date->addDays($row["startdate"],$days);
+			$enddate = $this->_date->addDays($row["enddate"],$days);
+			$qt = "UPDATE " . CO_TBL_PHASES_TASKS . " set startdate = '$startdate', enddate = '$enddate' where id='$tid'";
+			$res = mysql_query($qt, $this->_db->connection);
+			$this->moveDependendTasks($tid,$days);
+		}
+		return $res;
+	}
+
+
 	function addTask($pid,$phid,$date,$cat) {
 		global $session, $lang;
 		$date = $this->_date->addDays($date,1);
@@ -577,14 +602,14 @@ class PhasesModel extends ProjectsModel {
 		switch($cat) {
 			case "1": 
 				$text = $lang["PHASE_MILESTONE_NEW"];
-				$team = "";
+				//$team = "";
 			break;
 			default:
 				$text = $lang["PHASE_TASK_NEW"];
-				$team = $this->getPhaseField($phid,'team');
+				//$team = $this->getPhaseField($phid,'team');
 		}
 		
-		$q = "INSERT INTO " . CO_TBL_PHASES_TASKS . " set pid='$pid', phaseid='$phid', status = '0', text = '$text', startdate = '$date', enddate = '$date', cat = '$cat', team = '$team'";
+		$q = "INSERT INTO " . CO_TBL_PHASES_TASKS . " set pid='$pid', phaseid='$phid', status = '0', text = '$text', startdate = '$date', enddate = '$date', cat = '$cat'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id = mysql_insert_id();
 		

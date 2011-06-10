@@ -212,7 +212,25 @@ class Phases extends Projects {
 			 return "error";
 		  }
 	}
-
+	
+	function getTaskDependencyExists($id) {
+		$retval = $this->model->getTaskDependencyExists($id);
+		//return $retval;
+		if($retval){
+			 return "true";
+		  } else{
+			 return "false";
+		  }
+	}
+	
+	function moveDependendTasks($id,$days) {
+		$retval = $this->model->moveDependendTasks($id,$days);
+		if($retval){
+			return "true";
+		} else{
+			return "error";
+		}
+	}
 
 	function addTask($pid,$phid,$date,$cat) {
 		global $lang;
