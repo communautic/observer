@@ -750,7 +750,7 @@ $('.ui-datepicker-trigger-action').live('click',function() {
 					var span = new TimeSpan(date2 - date1);
 					// werktage?$("input[name='days']").val(span.getDays()+1);
 				}
-				// move entire project
+				// move entire project with kickoff
 				if(this.name == 'startdate' && $("#durationEnd").html() != "" && this.value != $("input[name='moveproject_start']").val()) {
 					//var moveproject_start = $("input[name='moveproject_start']").val();
 					var txt = ALERT_PROJECT_MOVE_ALL;
@@ -836,6 +836,32 @@ $('.ui-datepicker-trigger-action').live('click',function() {
 					var obj = getCurrentModule();
 					$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 				}
+				/*else if (this.name.match(/task_enddate/)){
+					var reg = /[0-9]+/.exec(this.name);
+					$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=getTaskDependencyExists&id="+reg, success: function(data){																																																																				
+						 if(data == "true") {
+							 var txt = ALERT_PHASE_TASKS_MOVE_ALL;
+					$.prompt(txt,{ 
+						buttons:{Ja:true, Nein:false},
+						callback: function(v,m,f){		
+							if(v){
+								var date1 = Date.parse($("input[name='task_enddate["+reg+"]']").val());
+								var date2 = Date.parse($("input[name='task_movedate["+reg+"]']").val());
+								var span = new TimeSpan(date1 - date2);
+								var days = span.getDays();
+								
+								if(days != 0) {
+								$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=moveDependendTasks&id="+reg+"&days="+days, success: function(data){
+			}
+					});
+								}
+							}
+						}
+					});
+						 }
+						}
+					});
+				}*/
 				else {
 				var obj = getCurrentModule();
 				$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);

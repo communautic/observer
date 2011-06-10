@@ -429,7 +429,11 @@ class ProjectsModel extends Model {
 		
 		$checked_out_status = "";
 		if($array["access"] != "guest" && $array["checked_out"] == 1 && $array["checked_out_user"] != $session->uid) {
-			$checked_out_status = "icon-checked-out-active";
+			if($session->checkUserActive($array["checked_out_user"])) {
+				$checked_out_status = "icon-checked-out-active";
+			} else {
+				$this->checkinProjectOverride($id);
+			}
 		}
 		$array["checked_out_status"] = $checked_out_status;
 		
@@ -463,6 +467,17 @@ class ProjectsModel extends Model {
 			$q = "UPDATE " . CO_TBL_PROJECTS . " set checked_out = '0', checked_out_user = '0' where id='$id'";
 			$result = mysql_query($q, $this->_db->connection);
 		}
+		if ($result) {
+			return true;
+		}
+	}
+	
+	function checkinProjectOverride($id) {
+		global $session;
+		
+		$q = "UPDATE " . CO_TBL_PROJECTS . " set checked_out = '0', checked_out_user = '0' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
 		if ($result) {
 			return true;
 		}
@@ -508,6 +523,9 @@ class ProjectsModel extends Model {
 			//if($array["checked_out"] == 1 && $session->checkUserActive($array["checked_out_user"])) {
 			if($array["checked_out"] == 1) {
 				if($array["checked_out_user"] == $session->uid) {
+					$array["canedit"] = true;
+				} else if(!$session->checkUserActive($array["checked_out_user"])) {
+					$array["canedit"] = $this->checkoutProject($id);
 					$array["canedit"] = true;
 				} else {
 					$array["canedit"] = false;

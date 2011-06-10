@@ -14,7 +14,7 @@ var ALERT_RESTORE = "Möchten Sie die Daten wiederherstellen?";
 //var ALERT_CHECK_DELETE = "Um zu löschen, aktivieren Sie bitte zuerst die löschen Checkbox im Status Balken";
 //var ALERT_ZEITPLAN', "%s ist in Verzug oder wurde verschoben. Wollen Sie die Daten von %s abgleichen?");
 var ALERT_PROJECT_MOVE_ALL = "Wollen Sie alle Starttermine an das neue Startdatum anpassen?";
-//define('ALERT_PHASE_MOVE_ALL', "Wollen Sie die Termine aller abhängigen Abschnitte anpassen?");
+var ALERT_PHASE_TASKS_MOVE_ALL = "Wollen Sie die Termine aller abhängigen Arbeitspakete anpassen?";
 //define('ALERT_PHASE_MOVE', "%s ist abhängig von %s. Wollen Sie die Daten abgleichen?");
 var ALERT_NO_FILE = "Bitte wählen Sie eine Datei aus";
 

@@ -1,9 +1,9 @@
 <?php
-$documents_name = "Akten";
+$documents_name = "Aktenmappen";
 
-$lang["DOCUMENT_TITLE"] = 'Akt';
-$lang["DOCUMENT_DOCUMENTS"] = 'Akten';
-$lang["DOCUMENT_NEW"] = 'Neuer Akt';
+$lang["DOCUMENT_TITLE"] = 'Aktenmappe';
+$lang["DOCUMENT_DOCUMENTS"] = 'Aktenmappe';
+$lang["DOCUMENT_NEW"] = 'Neue Aktenmappe';
 $lang["DOCUMENT_UPLOAD"] = 'Datei / Upload';
 $lang["DOCUMENT_FILENAME"] = 'Dateiname/Format';
 $lang["DOCUMENT_FILESIZE"] = 'Dateigrösse';
