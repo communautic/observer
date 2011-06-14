@@ -1,7 +1,7 @@
 <?php
-$phases_filter = 1;
-define("phases_bin" , 1);
+$projects_phases_filter = 1;
+define("projects_phases_bin" , 1);
 
-define("CO_TBL_PHASES"			,	TBL_PREFIX . "projects_phases"			);
-define("CO_TBL_PHASES_TASKS"	,	TBL_PREFIX . "projects_phases_tasks"	);
+define("CO_TBL_PROJECTS_PHASES"			,	TBL_PREFIX . "projects_phases"			);
+define("CO_TBL_PROJECTS_PHASES_TASKS"	,	TBL_PREFIX . "projects_phases_tasks"	);
 ?>

@@ -38,8 +38,8 @@
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><span class="<?php if($project->canedit) { ?>content-nav showDialog<?php } ?>" request="getProjectFolderDialog" field="projectfolder" append="1"><span><?php echo $lang["PROJECT_FOLDER"];?></span></span></td>
-        <td class="tcell-right"><div id="projectfolder" class="itemlist-field"><?php echo($project->projectfolder);?></div></td>
+	  <td class="tcell-left text11"><span class="<?php if($project->canedit) { ?>content-nav showDialog<?php } ?>" request="getProjectFolderDialog" field="folder" append="1"><span><?php echo $lang["PROJECT_FOLDER"];?></span></span></td>
+        <td class="tcell-right"><div id="folder" class="itemlist-field"><?php echo($project->folder);?></div></td>
 	</tr>
 </table>
 <div class="content-spacer"></div>

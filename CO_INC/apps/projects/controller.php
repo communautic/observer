@@ -354,8 +354,8 @@ class Projects extends Controller {
 	}
 
 
-	function setProjectDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$projectfolder,$status,$status_date) {
-		$retval = $this->model->setProjectDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$projectfolder,$status,$status_date);
+	function setProjectDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$folder,$status,$status_date) {
+		$retval = $this->model->setProjectDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$folder,$status,$status_date);
 		if($retval){
 			 return '{ "action": "edit", "id": "' . $id . '", "status": "' . $status . '"}';
 		  } else{
@@ -440,6 +440,7 @@ class Projects extends Controller {
 		global $lang, $projects;
 		if($arr = $this->model->getBin()) {
 			$bin = $arr["bin"];
+			
 			include 'view/bin.php';
 		}
 		else {

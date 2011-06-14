@@ -14,22 +14,22 @@ class MeetingsModel extends ProjectsModel {
 	  if($sort == 0) {
 		  $sortstatus = $this->getSortStatus("meeting-sort-status",$id);
 		  if(!$sortstatus) {
-				$order = "order by meeting_date DESC";
+				$order = "order by item_date DESC";
 				$sortcur = '1';
 		  } else {
 			  switch($sortstatus) {
 				  case "1":
-				  		$order = "order by meeting_date DESC";
+				  		$order = "order by item_date DESC";
 						$sortcur = '1';
 				  break;
 				  case "2":
-				  		$order = "order by meeting_date ASC";
+				  		$order = "order by item_date ASC";
 							$sortcur = '2';
 				  break;
 				  case "3":
 				  		$sortorder = $this->getSortOrder("meeting-sort-order",$id);
 				  		if(!$sortorder) {
-								$order = "order by meeting_date DESC";
+								$order = "order by item_date DESC";
 								$sortcur = '1';
 						  } else {
 								$order = "order by field(id,$sortorder)";
@@ -41,17 +41,17 @@ class MeetingsModel extends ProjectsModel {
 	  } else {
 		  switch($sort) {
 				  case "1":
-				  		$order = "order by meeting_date DESC";
+				  		$order = "order by item_date DESC";
 						$sortcur = '1';
 				  break;
 				  case "2":
-				  		$order = "order by meeting_date ASC";
+				  		$order = "order by item_date ASC";
 						$sortcur = '2';
 				  break;
 				  case "3":
 				  		$sortorder = $this->getSortOrder("meeting-sort-order",$id);
 				  		if(!$sortorder) {
-						  	$order = "order by meeting_date DESC";
+						  	$order = "order by item_date DESC";
 								$sortcur = '1';
 						  } else {
 								$order = "order by field(id,$sortorder)";
@@ -68,7 +68,7 @@ class MeetingsModel extends ProjectsModel {
 			$sql = " and access = '1' ";
 		}
 		
-		$q = "select id,title,meeting_date,access,status,checked_out,checked_out_user from " . CO_TBL_MEETINGS . " where pid = '$id' and bin != '1' " . $sql . $order;
+		$q = "select id,title,item_date,access,status,checked_out,checked_out_user from " . CO_TBL_PROJECTS_MEETINGS . " where pid = '$id' and bin != '1' " . $sql . $order;
 
 		$this->setSortStatus("meeting-sort-status",$sortcur,$id);
 		$result = mysql_query($q, $this->_db->connection);
@@ -80,7 +80,7 @@ class MeetingsModel extends ProjectsModel {
 			}
 			
 			// dates
-			$array["meeting_date"] = $this->_date->formatDate($array["meeting_date"],CO_DATE_FORMAT);
+			$array["item_date"] = $this->_date->formatDate($array["item_date"],CO_DATE_FORMAT);
 			
 			// access
 			$accessstatus = "";
@@ -116,7 +116,7 @@ class MeetingsModel extends ProjectsModel {
 	function checkoutMeeting($id) {
 		global $session;
 		
-		$q = "UPDATE " . CO_TBL_MEETINGS . " set checked_out = '1', checked_out_user = '$session->uid' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PROJECTS_MEETINGS . " set checked_out = '1', checked_out_user = '$session->uid' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
@@ -128,12 +128,12 @@ class MeetingsModel extends ProjectsModel {
 	function checkinMeeting($id) {
 		global $session;
 		
-		$q = "SELECT checked_out_user FROM " . CO_TBL_MEETINGS . " where id='$id'";
+		$q = "SELECT checked_out_user FROM " . CO_TBL_PROJECTS_MEETINGS . " where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$user = mysql_result($result,0);
 
 		if($user == $session->uid) {
-			$q = "UPDATE " . CO_TBL_MEETINGS . " set checked_out = '0', checked_out_user = '0' where id='$id'";
+			$q = "UPDATE " . CO_TBL_PROJECTS_MEETINGS . " set checked_out = '0', checked_out_user = '0' where id='$id'";
 			$result = mysql_query($q, $this->_db->connection);
 		}
 		if ($result) {
@@ -143,7 +143,7 @@ class MeetingsModel extends ProjectsModel {
 	
 	function checkinMeetingOverride($id) {
 		global $session;
-		$q = "UPDATE " . CO_TBL_MEETINGS . " set checked_out = '0', checked_out_user = '0' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PROJECTS_MEETINGS . " set checked_out = '0', checked_out_user = '0' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			return true;
@@ -156,7 +156,7 @@ class MeetingsModel extends ProjectsModel {
 		
 		$this->_documents = new DocumentsModel();
 		
-		$q = "SELECT * FROM " . CO_TBL_MEETINGS . " where id = '$id'";
+		$q = "SELECT * FROM " . CO_TBL_PROJECTS_MEETINGS . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if(mysql_num_rows($result) < 1) {
 			return false;
@@ -194,7 +194,7 @@ class MeetingsModel extends ProjectsModel {
 		}
 		
 		// dates
-		$array["meeting_date"] = $this->_date->formatDate($array["meeting_date"],CO_DATE_FORMAT);
+		$array["item_date"] = $this->_date->formatDate($array["item_date"],CO_DATE_FORMAT);
 		
 		// time
 		$array["start"] = $this->_date->formatDate($array["start"],CO_TIME_FORMAT);
@@ -256,7 +256,7 @@ class MeetingsModel extends ProjectsModel {
 		
 		// get the tasks
 		$task = array();
-		$q = "SELECT * FROM " . CO_TBL_MEETINGS_TASKS . " where mid = '$id' and bin='0' ORDER BY sort";
+		$q = "SELECT * FROM " . CO_TBL_PROJECTS_MEETINGS_TASKS . " where mid = '$id' and bin='0' ORDER BY sort";
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
 		foreach($row as $key => $val) {
@@ -295,7 +295,7 @@ class MeetingsModel extends ProjectsModel {
 			$accesssql = "access='$meeting_access', access_date='$meeting_access_date', access_user = '$session->uid',";
 		}
 		
-		$q = "UPDATE " . CO_TBL_MEETINGS . " set title = '$title', meeting_date = '$meetingdate', start = '$start', end = '$end', location = '$location', location_ct = '$location_ct', participants='$participants', participants_ct='$participants_ct', management='$management', management_ct='$management_ct', documents = '$documents', access='$meeting_access', $accesssql status = '$meeting_status', status_date = '$meeting_status_date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PROJECTS_MEETINGS . " set title = '$title', item_date = '$meetingdate', start = '$start', end = '$end', location = '$location', location_ct = '$location_ct', participants='$participants', participants_ct='$participants_ct', management='$management', management_ct='$management_ct', documents = '$documents', access='$meeting_access', $accesssql status = '$meeting_status', status_date = '$meeting_status_date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		// do existing tasks
@@ -310,7 +310,7 @@ class MeetingsModel extends ProjectsModel {
 			} else {
 				$checked_items[$key] = '0';
 			}
-			$q = "UPDATE " . CO_TBL_MEETINGS_TASKS . " set status = '$checked_items[$key]', title = '$task_title[$key]', text = '$task_text[$key]', sort = '$task_sort[$key]' WHERE id='$task_id[$key]'";
+			$q = "UPDATE " . CO_TBL_PROJECTS_MEETINGS_TASKS . " set status = '$checked_items[$key]', title = '$task_title[$key]', text = '$task_text[$key]', sort = '$task_sort[$key]' WHERE id='$task_id[$key]'";
 			$result = mysql_query($q, $this->_db->connection);
 		}
 		if ($result) {
@@ -321,13 +321,13 @@ class MeetingsModel extends ProjectsModel {
 			
 			$this->checkinMeeting($id);
 			
-			$q = "INSERT INTO " . CO_TBL_MEETINGS . " set pid='$pid', title = '$title " . $lang["MEETING_POSPONED"] . "', meeting_date = '$meeting_status_date', start = '$start', end = '$end', location = '$location', location_ct = '$location_ct', participants='$participants', participants_ct='$participants_ct', management='$management', management_ct='$management_ct', documents = '$documents', access='$meeting_access', $accesssql status = '0', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+			$q = "INSERT INTO " . CO_TBL_PROJECTS_MEETINGS . " set pid='$pid', title = '$title " . $lang["MEETING_POSPONED"] . "', item_date = '$meeting_status_date', start = '$start', end = '$end', location = '$location', location_ct = '$location_ct', participants='$participants', participants_ct='$participants_ct', management='$management', management_ct='$management_ct', documents = '$documents', access='$meeting_access', $accesssql status = '0', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 			$result = mysql_query($q, $this->_db->connection);
 			if ($result) {
 				$nid = mysql_insert_id();
 				
 				// do tasks
-				$qt = "INSERT INTO " . CO_TBL_MEETINGS_TASKS . " (mid,status,title,text,sort) SELECT '$nid',status,title,text,sort FROM " . CO_TBL_MEETINGS_TASKS . " where mid='$id'";
+				$qt = "INSERT INTO " . CO_TBL_PROJECTS_MEETINGS_TASKS . " (mid,status,title,text,sort) SELECT '$nid',status,title,text,sort FROM " . CO_TBL_PROJECTS_MEETINGS_TASKS . " where mid='$id'";
 				$resultt = mysql_query($qt, $this->_db->connection);
 				
 				$arr = array("id" => $nid, "what" => "reload");
@@ -343,7 +343,7 @@ class MeetingsModel extends ProjectsModel {
 		$now = gmdate("Y-m-d H:i:s");
 		$time = gmdate("Y-m-d H");
 		
-		$q = "INSERT INTO " . CO_TBL_MEETINGS . " set title = '" . $lang["MEETING_NEW"] . "', meeting_date='$now', start='$time', end='$time', pid = '$id', participants = '$session->uid', management = '$session->uid', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+		$q = "INSERT INTO " . CO_TBL_PROJECTS_MEETINGS . " set title = '" . $lang["MEETING_NEW"] . "', item_date='$now', start='$time', end='$time', pid = '$id', participants = '$session->uid', management = '$session->uid', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id = mysql_insert_id();
 		
@@ -358,11 +358,11 @@ class MeetingsModel extends ProjectsModel {
    	function createDuplicate($id) {
 		global $session, $lang;
 		// meeting
-		$q = "INSERT INTO " . CO_TBL_MEETINGS . " (pid,title,meeting_date,start,end,location,location_ct,length,management,management_ct,participants,participants_ct) SELECT pid,CONCAT(title,' " . $lang["GLOBAL_DUPLICAT"] . "'),meeting_date,start,end,location,location_ct,length,management,management_ct,participants,participants_ct FROM " . CO_TBL_MEETINGS . " where id='$id'";
+		$q = "INSERT INTO " . CO_TBL_PROJECTS_MEETINGS . " (pid,title,item_date,start,end,location,location_ct,length,management,management_ct,participants,participants_ct) SELECT pid,CONCAT(title,' " . $lang["GLOBAL_DUPLICAT"] . "'),item_date,start,end,location,location_ct,length,management,management_ct,participants,participants_ct FROM " . CO_TBL_PROJECTS_MEETINGS . " where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
 		// tasks
-		$qt = "INSERT INTO " . CO_TBL_MEETINGS_TASKS . " (mid,status,title,text,sort) SELECT $id_new,'0',title,text,sort FROM " . CO_TBL_MEETINGS_TASKS . " where mid='$id' and bin='0'";
+		$qt = "INSERT INTO " . CO_TBL_PROJECTS_MEETINGS_TASKS . " (mid,status,title,text,sort) SELECT $id_new,'0',title,text,sort FROM " . CO_TBL_PROJECTS_MEETINGS_TASKS . " where mid='$id' and bin='0'";
 		$resultt = mysql_query($qt, $this->_db->connection);
 		if ($result) {
 			return $id_new;
@@ -372,7 +372,7 @@ class MeetingsModel extends ProjectsModel {
 
    function binMeeting($id) {
 		global $session;
-		$q = "UPDATE " . CO_TBL_MEETINGS . " set bin = '1', bintime = NOW(), binuser= '$session->uid' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PROJECTS_MEETINGS . " set bin = '1', bintime = NOW(), binuser= '$session->uid' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 		  	return true;
@@ -380,7 +380,7 @@ class MeetingsModel extends ProjectsModel {
    }
    
    function restoreMeeting($id) {
-		$q = "UPDATE " . CO_TBL_MEETINGS . " set bin = '0' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PROJECTS_MEETINGS . " set bin = '0' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 		  	return true;
@@ -388,7 +388,7 @@ class MeetingsModel extends ProjectsModel {
    }
    
    function deleteMeeting($id) {
-		$q = "SELECT id FROM " . CO_TBL_MEETINGS_TASKS . " WHERE mid = '$id'";
+		$q = "SELECT id FROM " . CO_TBL_PROJECTS_MEETINGS_TASKS . " WHERE mid = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
 			$tid = $row["id"];
@@ -398,7 +398,7 @@ class MeetingsModel extends ProjectsModel {
 		$q = "DELETE FROM co_log_sendto WHERE what='meetings' and whatid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
-		$q = "DELETE FROM " . CO_TBL_MEETINGS . " WHERE id='$id'";
+		$q = "DELETE FROM " . CO_TBL_PROJECTS_MEETINGS . " WHERE id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 		  	return true;
@@ -408,7 +408,7 @@ class MeetingsModel extends ProjectsModel {
 
    function toggleIntern($id,$status) {
 		global $session;
-		$q = "UPDATE " . CO_TBL_MEETINGS . " set intern = '$status' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PROJECTS_MEETINGS . " set intern = '$status' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 		  	return true;
@@ -419,12 +419,12 @@ class MeetingsModel extends ProjectsModel {
    function addTask($mid,$num,$sort) {
 		global $session, $lang;
 		
-		$q = "INSERT INTO " . CO_TBL_MEETINGS_TASKS . " set mid='$mid', status = '0', title = '" . $lang["MEETING_TASK_NEW"] . "', sort='$sort'";
+		$q = "INSERT INTO " . CO_TBL_PROJECTS_MEETINGS_TASKS . " set mid='$mid', status = '0', title = '" . $lang["MEETING_TASK_NEW"] . "', sort='$sort'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id = mysql_insert_id();
 		
 		$task = array();
-		$q = "SELECT * FROM " . CO_TBL_MEETINGS_TASKS . " where id = '$id'";
+		$q = "SELECT * FROM " . CO_TBL_PROJECTS_MEETINGS_TASKS . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
 			foreach($row as $key => $val) {
@@ -439,7 +439,7 @@ class MeetingsModel extends ProjectsModel {
 
    function deleteTask($id) {
 		global $session;
-		$q = "UPDATE " . CO_TBL_MEETINGS_TASKS . " set bin = '1', bintime = NOW(), binuser= '$session->uid' WHERE id='$id'";
+		$q = "UPDATE " . CO_TBL_PROJECTS_MEETINGS_TASKS . " set bin = '1', bintime = NOW(), binuser= '$session->uid' WHERE id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if($result) {
 			return true;
@@ -448,7 +448,7 @@ class MeetingsModel extends ProjectsModel {
    
    function restoreMeetingTask($id) {
 		global $session;
-		$q = "UPDATE " . CO_TBL_MEETINGS_TASKS . " set bin = '0' WHERE id='$id'";
+		$q = "UPDATE " . CO_TBL_PROJECTS_MEETINGS_TASKS . " set bin = '0' WHERE id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if($result) {
 			return true;
@@ -457,7 +457,7 @@ class MeetingsModel extends ProjectsModel {
    
    function deleteMeetingTask($id) {
 		global $session;
-		$q = "DELETE FROM " . CO_TBL_MEETINGS_TASKS . " WHERE id='$id'";
+		$q = "DELETE FROM " . CO_TBL_PROJECTS_MEETINGS_TASKS . " WHERE id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if($result) {
 			return true;

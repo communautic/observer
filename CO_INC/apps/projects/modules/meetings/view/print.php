@@ -7,7 +7,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%" class="grey">
 	<tr>
 		<td class="tcell-left"><?php echo $lang["MEETING_DATE"];?></td>
-		<td><?php echo($meeting->meeting_date)?></td>
+		<td><?php echo($meeting->item_date)?></td>
     </tr>
 	<tr>
 	  <td class="tcell-left"><?php echo $lang["MEETING_TIME_START"];?></td>

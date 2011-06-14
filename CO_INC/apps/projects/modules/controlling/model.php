@@ -55,7 +55,7 @@ class ControllingModel extends ProjectsModel {
 			
 		}
 		
-	   $q = "SELECT COUNT(id) FROM " .  CO_TBL_PHASES. " WHERE pid='$id' $sql and bin='0'";
+	   $q = "SELECT COUNT(id) FROM " .  CO_TBL_PROJECTS_PHASES. " WHERE pid='$id' $sql and bin='0'";
 	   $result = mysql_query($q, $this->_db->connection);
 	   $count = mysql_result($result,0);
 	   return $count;
@@ -66,7 +66,7 @@ class ControllingModel extends ProjectsModel {
 	   if ($status == 1) {
 		   $sql .= " and status='1' ";
 	   }
-	   $q = "SELECT COUNT(id) FROM " .  CO_TBL_PHASES_TASKS. " WHERE pid='$id' $sql and bin='0'";
+	   $q = "SELECT COUNT(id) FROM " .  CO_TBL_PROJECTS_PHASES_TASKS. " WHERE pid='$id' $sql and bin='0'";
 	   $result = mysql_query($q, $this->_db->connection);
 	   $count = mysql_result($result,0);
 	   return $count;
@@ -78,7 +78,7 @@ class ControllingModel extends ProjectsModel {
 	   if ($status == 1) {
 		   $sql .= " and status='1' ";
 	   }
-	   $q = "SELECT COUNT(id) FROM " .  CO_TBL_MEETINGS. " WHERE pid='$id' $sql and bin='0'";
+	   $q = "SELECT COUNT(id) FROM " .  CO_TBL_PROJECTS_MEETINGS. " WHERE pid='$id' $sql and bin='0'";
 	   $result = mysql_query($q, $this->_db->connection);
 	   $count = mysql_result($result,0);
 	   return $count;
@@ -91,7 +91,7 @@ class ControllingModel extends ProjectsModel {
 		// select all projects that are active ie startdate is < today and endfdate > today or status != 2
 		$today = date("Y-m-d");
 		//$str = "";
-		$q = "SELECT a.id,a.status,(SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as startdate ,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_PROJECTS . " as a where a.bin='0'";
+		$q = "SELECT a.id,a.status,(SELECT MIN(startdate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as startdate ,(SELECT MAX(enddate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_PROJECTS . " as a where a.bin='0'";
 
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
@@ -149,7 +149,7 @@ class ControllingModel extends ProjectsModel {
 				}
 				
 				$chart["tendency"] = "tendency_negative.png";
-				$qt = "SELECT MAX(donedate) as dt,enddate FROM " . CO_TBL_PHASES_TASKS. " WHERE status='1' and pid='$id' and bin='0'";
+				$qt = "SELECT MAX(donedate) as dt,enddate FROM " . CO_TBL_PROJECTS_PHASES_TASKS. " WHERE status='1' and pid='$id' and bin='0'";
 				$resultt = mysql_query($qt, $this->_db->connection);
 				$ten = mysql_fetch_assoc($resultt);
 				if($ten["dt"] <= $ten["enddate"]) {
@@ -172,8 +172,8 @@ class ControllingModel extends ProjectsModel {
 				$tasks_done = $this->getNumTasks($id,""," and enddate < '$today'");
 				$tasks_done_ontime = $this->getNumTasks($id,1," and donedate <= enddate and enddate < '$today'");
 				
-				$meetings_done = $this->getNumMeetings($id,""," and meeting_date < '$today'");
-				$meetings_done_ontime = $this->getNumMeetings($id,1," and meeting_date < '$today'");
+				$meetings_done = $this->getNumMeetings($id,""," and item_date < '$today'");
+				$meetings_done_ontime = $this->getNumMeetings($id,1," and item_date < '$today'");
 				
 				$divider = 2; // wenn zb keine Besprech dann devider = 1
 				
@@ -194,11 +194,11 @@ class ControllingModel extends ProjectsModel {
 				$chart["real"] = round(($task_time + $meeting_time) / $divider,2);
 				
 				$chart["tendency"] = "tendency_positive.png";
-				$qt = "SELECT COUNT(id) FROM " . CO_TBL_PHASES_TASKS. " WHERE status='0' and startdate < '$today' and enddate >= '$today' and pid='$id' and bin='0'";
+				$qt = "SELECT COUNT(id) FROM " . CO_TBL_PROJECTS_PHASES_TASKS. " WHERE status='0' and startdate < '$today' and enddate >= '$today' and pid='$id' and bin='0'";
 				$resultt = mysql_query($qt, $this->_db->connection);
 				$tasks_active = mysql_result($resultt,0);
 				
-				$qo = "SELECT COUNT(id) FROM " . CO_TBL_PHASES_TASKS. " WHERE status='0' and enddate < '$today' and pid='$id' and bin='0'";
+				$qo = "SELECT COUNT(id) FROM " . CO_TBL_PROJECTS_PHASES_TASKS. " WHERE status='0' and enddate < '$today' and pid='$id' and bin='0'";
 				$resulto = mysql_query($qo, $this->_db->connection);
 				$tasks_overdue = mysql_result($resulto,0);
 				if($tasks_active + $tasks_overdue == 0) {
@@ -234,7 +234,7 @@ class ControllingModel extends ProjectsModel {
 				}
 				
 				$chart["tendency"] = "tendency_positive.png";
-				$qt = "SELECT status,donedate,enddate FROM " . CO_TBL_PHASES_TASKS. " WHERE enddate < '$today' and pid='$id' and bin='0' ORDER BY enddate DESC LIMIT 0,1";
+				$qt = "SELECT status,donedate,enddate FROM " . CO_TBL_PROJECTS_PHASES_TASKS. " WHERE enddate < '$today' and pid='$id' and bin='0' ORDER BY enddate DESC LIMIT 0,1";
 				$resultt = mysql_query($qt, $this->_db->connection);
 				$rowt = mysql_fetch_assoc($resultt);
 				if(mysql_num_rows($resultt) != 0) {

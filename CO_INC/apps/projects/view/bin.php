@@ -66,7 +66,7 @@
 
 <?php
 	foreach($projects->modules as $module => $value) {
-		if(CONSTANT($module.'_bin') == 1) {
+		if(CONSTANT('projects_'.$module.'_bin') == 1) {
 			include(CO_INC . "/apps/projects/modules/".$module."/view/bin.php");
 		}
 	}

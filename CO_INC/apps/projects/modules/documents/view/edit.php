@@ -29,8 +29,8 @@
   <table width="100%" border="0" cellpadding="0" cellspacing="0">
     <tr>
       <td class="tcell-left text11"><?php echo $lang["DOCUMENT_FILENAME"];?></td>
-      <td class="tcell-right"><a class="downloadDocument" rel="<?php echo $value->id;?>"><?php echo($value->filename)?></a></td>
- 	  <td width="30"><?php if($document->canedit) { ?><a class="deleteDoc" rel="<?php echo $value->id;?>"><span class="icon-delete"></span></a><?php } ?></td>
+      <td class="tcell-right"><a mod="projects_documents" class="downloadDocument" rel="<?php echo $value->id;?>"><?php echo($value->filename)?></a></td>
+ 	  <td width="30"><?php if($document->canedit) { ?><a class="binItem" rel="<?php echo $value->id;?>"><span class="icon-delete"></span></a><?php } ?></td>
     </tr>
     <tr>
       <td class="tcell-left text11"><?php echo $lang["DOCUMENT_FILESIZE"];?></td>

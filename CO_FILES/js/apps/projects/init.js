@@ -23,16 +23,16 @@ projects.poformOptions = { beforeSubmit: projectFormProcess, dataType:  'json', 
 //projects.sendformOptions = { beforeSubmit: projectSendProcess, dataType:  'json', success: projectSendResponse };
 
 // register folder object
-var folder = new Module('folder');
-folder.path = 'apps/projects/';
-folder.sortclick = sortClickFolder;
-folder.sortdrag = sortDragFolder;
-folder.actionNew = newFolder;
-folder.actionPrint = printFolder;
-folder.actionRefresh = refreshFolder;
-folder.actionBin = binFolder;
-folder.checkIn = checkInFolder;
-folder.poformOptions = { beforeSubmit: folderFormProcess, dataType:  'json', success: folderFormResponse };
+var projects_folder = new Module('projects_folder');
+projects_folder.path = 'apps/projects/';
+projects_folder.sortclick = sortClickFolder;
+projects_folder.sortdrag = sortDragFolder;
+projects_folder.actionNew = newFolder;
+projects_folder.actionPrint = printFolder;
+projects_folder.actionRefresh = refreshFolder;
+projects_folder.actionBin = binFolder;
+projects_folder.checkIn = checkInFolder;
+projects_folder.poformOptions = { beforeSubmit: folderFormProcess, dataType:  'json', success: folderFormResponse };
 
 /* Functions 
 - projectFormProcess
@@ -67,7 +67,7 @@ function projectFormProcess(formData, form, poformOptions) {
 			} 
 		} 
 	}*/
-	formData[formData.length] = processList('projectfolder');
+	formData[formData.length] = processList('folder');
 	formData[formData.length] = processList('ordered_by');
 	formData[formData.length] = processCustomText('ordered_by_ct');
 	formData[formData.length] = processList('management');
@@ -354,6 +354,7 @@ function projectsActions(status) {
 		case 5: 	actions = ['1','2','5']; break;   			// print, send, refresh
 		case 6: 	actions = ['4','5']; break;   			// handbook refresh
 		case 7: 	actions = ['0','1','2','5']; break;   			// new, print, send, refresh
+		case 8: 	actions = ['1','2','4','5']; break;   			// print, send, handbook, refresh
 		default: 	actions = ['5'];  								// none
 	}
 	$('#projectsActions > li span').each( function(index) {
@@ -1080,18 +1081,18 @@ $(document).ready(function() {
 	});
   
 	
-	$('a.addtask').live('click',function() {
+	/*$('a.addtask').live('click',function() {
 		var module = getCurrentModule();
 		module.addTask();
 		return false;
-	});
+	});*/
 	
-	$('a.deleteTask').live('click',function() {
+	/*$('a.deleteTask').live('click',function() {
 		var id = $(this).attr("rel");
 		var module = getCurrentModule();
 		module.deleteTask(id);
 		return false;
-	});
+	});*/
 	
 	$('a.insertAccess').live('click',function() {
 		var rel = $(this).attr("rel");
@@ -1269,6 +1270,27 @@ $(document).ready(function() {
 		});
 	
 		return false;
+	});
+	
+	// barchart opacity with jquery
+	$(".barchart-phase-bg").livequery( function() {
+		$(this).css("opacity","0.3");
+	});
+
+	$("#todayBar").livequery( function() {
+		$(this).css("opacity","0.4");
+	});
+	// becomes global Tooltip?
+	$(".coTooltip").livequery( function() {
+		$(this).tooltip({
+			track: true,
+			delay: 0,
+			fade: 200,
+			bodyHandler: function() { 
+				return $(this).find(".coTooltipHtml").html(); 
+			}, 
+			showURL: false 
+		});
 	});
 
 

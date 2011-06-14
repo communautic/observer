@@ -1,22 +1,22 @@
 /* vdocs Object */
-var vdocs = new Module('vdocs');
-vdocs.path = 'apps/projects/modules/vdocs/';
-vdocs.getDetails = getDetailsVDoc;
-vdocs.sortclick = sortClickVDoc;
-vdocs.sortdrag = sortDragVDoc;
-vdocs.actionDialog = dialogVDoc;
-//vdocs.addTask = addTaskVDoc;
-vdocs.deleteTask = deleteTask;
-vdocs.actionNew = newVDoc;
-vdocs.actionPrint = printVDoc;
-vdocs.actionSend = sendVDoc;
-vdocs.actionSendtoResponse = sendVDocResponse;
-vdocs.actionDuplicate = duplicateVDoc;
-vdocs.actionRefresh = refreshVDoc;
-vdocs.actionBin = binVDoc;
-vdocs.checkIn = checkInVDoc;
-vdocs.poformOptions = { beforeSubmit: vdocFormProcess, dataType:  'json', success: vdocFormResponse };
-vdocs.toggleIntern = vdocToggleIntern;
+var projects_vdocs = new Module('projects_vdocs');
+projects_vdocs.path = 'apps/projects/modules/vdocs/';
+projects_vdocs.getDetails = getDetailsVDoc;
+projects_vdocs.sortclick = sortClickVDoc;
+projects_vdocs.sortdrag = sortDragVDoc;
+projects_vdocs.actionDialog = dialogVDoc;
+//projects_vdocs.addTask = addTaskVDoc;
+projects_vdocs.deleteTask = deleteTask;
+projects_vdocs.actionNew = newVDoc;
+projects_vdocs.actionPrint = printVDoc;
+projects_vdocs.actionSend = sendVDoc;
+projects_vdocs.actionSendtoResponse = sendVDocResponse;
+projects_vdocs.actionDuplicate = duplicateVDoc;
+projects_vdocs.actionRefresh = refreshVDoc;
+projects_vdocs.actionBin = binVDoc;
+projects_vdocs.checkIn = checkInVDoc;
+projects_vdocs.poformOptions = { beforeSubmit: vdocFormProcess, dataType:  'json', success: vdocFormResponse };
+projects_vdocs.toggleIntern = vdocToggleIntern;
 
 
 function getDetailsVDoc(moduleidx,liindex) {

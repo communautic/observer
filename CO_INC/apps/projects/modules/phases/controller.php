@@ -287,6 +287,16 @@ class Phases extends Projects {
 		include 'view/dialog_status.php';
 	}
 
+	function getPhasesBin($id) {
+		$arr = $this->model->getPhasesBin($id);
+		return $arr;
+		/*if($retval){
+			return "true";
+		} else{
+			return "error";
+		}*/
+		//return $this->model->getBin($id);
+	}
 
 }
 
