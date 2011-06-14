@@ -27,7 +27,7 @@ class AccessModel extends ProjectsModel {
 		global $session, $contactsmodel;
 
 		// guest
-		$q = "SELECT * FROM " . CO_TBL_ACCESS . " where pid='$id'";
+		$q = "SELECT * FROM " . CO_TBL_PROJECTS_ACCESS . " where pid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if(mysql_num_rows($result) < 1) {
 			$array["pid"] = $id;
@@ -66,12 +66,12 @@ class AccessModel extends ProjectsModel {
 		
 		$now = gmdate("Y-m-d H:i:s");
 		
-		$q = "SELECT * FROM " . CO_TBL_ACCESS . " where pid='$pid'";
+		$q = "SELECT * FROM " . CO_TBL_PROJECTS_ACCESS . " where pid='$pid'";
 		$result = mysql_query($q, $this->_db->connection);
 		if(mysql_num_rows($result) < 1) {
-			$q = "INSERT INTO " . CO_TBL_ACCESS . " set pid = '$pid', admins = '$admins', guests = '$guests', edited_user = '$session->uid', edited_date = '$now', created_user = '$session->uid', created_date = '$now'";
+			$q = "INSERT INTO " . CO_TBL_PROJECTS_ACCESS . " set pid = '$pid', admins = '$admins', guests = '$guests', edited_user = '$session->uid', edited_date = '$now', created_user = '$session->uid', created_date = '$now'";
 		} else {
-			$q = "UPDATE " . CO_TBL_ACCESS . " set admins = '$admins', guests = '$guests', edited_user = '$session->uid', edited_date = '$now' where pid='$pid'";
+			$q = "UPDATE " . CO_TBL_PROJECTS_ACCESS . " set admins = '$admins', guests = '$guests', edited_user = '$session->uid', edited_date = '$now' where pid='$pid'";
 		}
 		$result = mysql_query($q, $this->_db->connection);
 		

@@ -15,7 +15,7 @@
 	</tr>
 	<tr>
 	  <td class="tcell-left"><?php echo $lang["PROJECT_FOLDER"];?></td>
-        <td><?php echo($project->projectfolder);?></td>
+        <td><?php echo($project->folder);?></td>
 	</tr>
 </table>
 &nbsp;

@@ -66,7 +66,7 @@ class DocumentsModel extends ProjectsModel {
 			$sql = " and access = '1' ";
 		}
 	  
-		$q = "select id,title,access,edited_date from " . CO_TBL_DOCUMENTS_FOLDERS . " where pid = '$id' and bin != '1' " . $sql . $order;
+		$q = "select id,title,access,edited_date from " . CO_TBL_PROJECTS_DOCUMENTS_FOLDERS . " where pid = '$id' and bin != '1' " . $sql . $order;
 
 		$this->setSortStatus("document-sort-status",$sortcur,$id);
 		$result = mysql_query($q, $this->_db->connection);
@@ -109,7 +109,7 @@ class DocumentsModel extends ProjectsModel {
 
 	function getDetails($id) {
 		global $session, $contactsmodel, $lang;
-		$q = "SELECT * FROM " . CO_TBL_DOCUMENTS_FOLDERS . " where id = '$id'";
+		$q = "SELECT * FROM " . CO_TBL_PROJECTS_DOCUMENTS_FOLDERS . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if(mysql_num_rows($result) < 1) {
 			return false;
@@ -155,7 +155,7 @@ class DocumentsModel extends ProjectsModel {
 		
 		// now get all actual documents
 		$doc = array();
-		$qt = "SELECT * FROM " . CO_TBL_DOCUMENTS . " where did = '$id' and bin='0' ORDER BY created_date DESC";
+		$qt = "SELECT * FROM " . CO_TBL_PROJECTS_DOCUMENTS . " where did = '$id' and bin='0' ORDER BY created_date DESC";
 		$resultt = mysql_query($qt, $this->_db->connection);
 		while($rowt = mysql_fetch_array($resultt)) {
 			foreach($rowt as $key => $val) {
@@ -183,7 +183,7 @@ class DocumentsModel extends ProjectsModel {
 			$access_date = $now;
 		}
 		
-		$q = "UPDATE " . CO_TBL_DOCUMENTS_FOLDERS . " set title = '$title', access='$document_access', access_date='$access_date', access_user = '$session->uid', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PROJECTS_DOCUMENTS_FOLDERS . " set title = '$title', access='$document_access', access_date='$access_date', access_user = '$session->uid', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
@@ -197,7 +197,7 @@ class DocumentsModel extends ProjectsModel {
 		
 		$now = gmdate("Y-m-d H:i:s");
 		
-		$q = "INSERT INTO " . CO_TBL_DOCUMENTS_FOLDERS . " set title = '" . $lang["DOCUMENT_NEW"] . "', pid='$id', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+		$q = "INSERT INTO " . CO_TBL_PROJECTS_DOCUMENTS_FOLDERS . " set title = '" . $lang["DOCUMENT_NEW"] . "', pid='$id', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id = mysql_insert_id();
 		if ($result) {
@@ -210,12 +210,12 @@ class DocumentsModel extends ProjectsModel {
 			
 			$now = gmdate("Y-m-d H:i:s");
 			
-			$q = "INSERT INTO " . CO_TBL_DOCUMENTS_FOLDERS . " (pid,title,created_date,created_user,edited_date,edited_user) SELECT pid,CONCAT(title,' " . $lang["GLOBAL_DUPLICAT"]. "'),'$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_DOCUMENTS_FOLDERS . " where id='$id'";
+			$q = "INSERT INTO " . CO_TBL_PROJECTS_DOCUMENTS_FOLDERS . " (pid,title,created_date,created_user,edited_date,edited_user) SELECT pid,CONCAT(title,' " . $lang["GLOBAL_DUPLICAT"]. "'),'$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_PROJECTS_DOCUMENTS_FOLDERS . " where id='$id'";
 			$result = mysql_query($q, $this->_db->connection);
 			$id_new = mysql_insert_id();
 			
 			// documents ???
-			$qt = "INSERT INTO " . CO_TBL_DOCUMENTS . " (did,filename,tempname,filesize) SELECT $id_new,filename,tempname,filesize FROM " . CO_TBL_DOCUMENTS . " where did='$id' and bin='0'";
+			$qt = "INSERT INTO " . CO_TBL_PROJECTS_DOCUMENTS . " (did,filename,tempname,filesize) SELECT $id_new,filename,tempname,filesize FROM " . CO_TBL_PROJECTS_DOCUMENTS . " where did='$id' and bin='0'";
 			$resultt = mysql_query($qt, $this->_db->connection);
 			
 			if ($result) {
@@ -226,7 +226,7 @@ class DocumentsModel extends ProjectsModel {
 
    function binDocument($id) {
 		global $session;
-		$q = "UPDATE " . CO_TBL_DOCUMENTS_FOLDERS . " set bin = '1', bintime = NOW(), binuser= '$session->uid' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PROJECTS_DOCUMENTS_FOLDERS . " set bin = '1', bintime = NOW(), binuser= '$session->uid' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 		  	return true;
@@ -234,7 +234,7 @@ class DocumentsModel extends ProjectsModel {
    }
    
    function restoreDocument($id) {
-		$q = "UPDATE " . CO_TBL_DOCUMENTS_FOLDERS . " set bin = '0' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PROJECTS_DOCUMENTS_FOLDERS . " set bin = '0' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 		  	return true;
@@ -243,7 +243,7 @@ class DocumentsModel extends ProjectsModel {
 	
 	
 	function deleteDocument($id) {
-		$q = "SELECT id FROM " . CO_TBL_DOCUMENTS . " where did = '$id'";
+		$q = "SELECT id FROM " . CO_TBL_PROJECTS_DOCUMENTS . " where did = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
 			$fid = $row["id"];
@@ -253,7 +253,7 @@ class DocumentsModel extends ProjectsModel {
 		$q = "DELETE FROM co_log_sendto WHERE what='documents' and whatid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
-		$q = "DELETE FROM " . CO_TBL_DOCUMENTS_FOLDERS . " where id = '$id'";
+		$q = "DELETE FROM " . CO_TBL_PROJECTS_DOCUMENTS_FOLDERS . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
@@ -264,7 +264,7 @@ class DocumentsModel extends ProjectsModel {
 
 	function binDocItem($id) {
 		global $session;
-		$q = "UPDATE " . CO_TBL_DOCUMENTS . " set bin = '1', bintime = NOW(), binuser= '$session->uid' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PROJECTS_DOCUMENTS . " set bin = '1', bintime = NOW(), binuser= '$session->uid' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 		  	return true;
@@ -273,7 +273,7 @@ class DocumentsModel extends ProjectsModel {
 	
 	/*function getBin($id) {
 		$arr = "";
-		$qd ="select id, title, bin, bintime, binuser from " . CO_TBL_DOCUMENTS_FOLDERS . " where pid = '$id'";
+		$qd ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_DOCUMENTS_FOLDERS . " where pid = '$id'";
 						$resultd = mysql_query($qd, $this->_db->connection);
 						while ($rowd = mysql_fetch_array($resultd)) {
 							$did = $rowd["id"];
@@ -287,7 +287,7 @@ class DocumentsModel extends ProjectsModel {
 								$arr["documents_folders"] = $documents_folders;
 							} else {
 								// files
-								$qf ="select id, filename, bin, bintime, binuser from " . CO_TBL_DOCUMENTS . " where did = '$did'";
+								$qf ="select id, filename, bin, bintime, binuser from " . CO_TBL_PROJECTS_DOCUMENTS . " where did = '$did'";
 								$resultf = mysql_query($qf, $this->_db->connection);
 								while ($rowf = mysql_fetch_array($resultf)) {
 									if($rowf["bin"] == "1") { // deleted phases
@@ -308,7 +308,7 @@ class DocumentsModel extends ProjectsModel {
 
 
 	function restoreFile($id) {
-		$q = "UPDATE " . CO_TBL_DOCUMENTS . " set bin = '0' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PROJECTS_DOCUMENTS . " set bin = '0' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 		  	return true;
@@ -317,7 +317,7 @@ class DocumentsModel extends ProjectsModel {
 	
 	
 	function deleteFile($id) {
-		$q = "SELECT tempname FROM " . CO_TBL_DOCUMENTS . " where id = '$id'";
+		$q = "SELECT tempname FROM " . CO_TBL_PROJECTS_DOCUMENTS . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$filename = mysql_result($result,0);
 		
@@ -327,7 +327,7 @@ class DocumentsModel extends ProjectsModel {
             @unlink($file);
         }
 		
-		$q = "DELETE FROM " . CO_TBL_DOCUMENTS . " where id = '$id'";
+		$q = "DELETE FROM " . CO_TBL_PROJECTS_DOCUMENTS . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
@@ -341,7 +341,7 @@ class DocumentsModel extends ProjectsModel {
 		$documents = "";
 		
 		$array["field"] = $field;
-		$q = "select id, title from " . CO_TBL_DOCUMENTS_FOLDERS . " where pid='$id' and bin = '0' order by title";
+		$q = "select id, title from " . CO_TBL_PROJECTS_DOCUMENTS_FOLDERS . " where pid='$id' and bin = '0' order by title";
 		$result = mysql_query($q, $this->_db->connection);
 	  	while ($row = mysql_fetch_array($result)) {
 			foreach($row as $key => $val) {
@@ -371,7 +371,7 @@ class DocumentsModel extends ProjectsModel {
 			$sql = "";
 		}*/
 		foreach ($string as &$value) {
-			$q = "SELECT id, title FROM " . CO_TBL_DOCUMENTS_FOLDERS . " where id = '$value' and bin='0'";
+			$q = "SELECT id, title FROM " . CO_TBL_PROJECTS_DOCUMENTS_FOLDERS . " where id = '$value' and bin='0'";
 			$result = mysql_query($q, $this->_db->connection);
 			if(mysql_num_rows($result) > 0) {
 				while($row = mysql_fetch_assoc($result)) {
@@ -384,7 +384,7 @@ class DocumentsModel extends ProjectsModel {
 		// build string
 		$i = 1;
 		foreach ($arr as $key => &$value) {
-			$users .= '<span class="docitems-outer"><a class="docitemRelated" uid="' . $key . '" field="' . $field . '">' . $value;		
+			$users .= '<span class="docitems-outer"><a href="projects_documents" class="showItemContext" uid="' . $key . '" field="' . $field . '">' . $value;		
 			if($i < $arr_total) {
 				$users .= ', ';
 			}
@@ -396,7 +396,7 @@ class DocumentsModel extends ProjectsModel {
 
 
 	function getDocContext($id,$field){
-		$q = "SELECT id,title FROM " . CO_TBL_DOCUMENTS_FOLDERS . " where id = '$id'";
+		$q = "SELECT id,title FROM " . CO_TBL_PROJECTS_DOCUMENTS_FOLDERS . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_fetch_array($result);
 		foreach($row as $key => $val) {
@@ -408,7 +408,7 @@ class DocumentsModel extends ProjectsModel {
 		$document = new Lists($array); 
 		
 		$doc = array();
-		$qt = "SELECT * FROM " . CO_TBL_DOCUMENTS . " where did = '$id' and bin='0' ORDER BY created_date DESC";
+		$qt = "SELECT * FROM " . CO_TBL_PROJECTS_DOCUMENTS . " where did = '$id' and bin='0' ORDER BY created_date DESC";
 		$resultt = mysql_query($qt, $this->_db->connection);
 		while($rowt = mysql_fetch_array($resultt)) {
 			foreach($rowt as $key => $val) {
@@ -425,7 +425,7 @@ class DocumentsModel extends ProjectsModel {
 
 
 	function downloadDocument($id) {
-		$q = "SELECT * FROM " . CO_TBL_DOCUMENTS . " where id = '$id'";
+		$q = "SELECT * FROM " . CO_TBL_PROJECTS_DOCUMENTS . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_fetch_assoc($result);
 		$filename = $row["filename"];

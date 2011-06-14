@@ -27,7 +27,7 @@
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 		<td class="tcell-left text11"><span class="<?php if($meeting->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["MEETING_DATE"];?></span></span></td>
-		<td class="tcell-right"><input name="meeting_date" type="text" class="input-date datepicker meeting_date" value="<?php echo($meeting->meeting_date)?>" /></td>
+		<td class="tcell-right"><input name="item_date" type="text" class="input-date datepicker item_date" value="<?php echo($meeting->item_date)?>" /></td>
 	</tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
@@ -71,7 +71,7 @@
 <table border="0" cellpadding="0" cellspacing="0" class="table-content addTaskTable">
 	<tr>
 		<td class="tcell-left text11">
-        <span class="<?php if($meeting->canedit) { ?>content-nav addMeetingTask<?php } ?>"><span><?php echo $lang["MEETING_GOALS"];?></span></span>
+        <span class="<?php if($meeting->canedit) { ?>content-nav newItem<?php } ?>"><span><?php echo $lang["MEETING_GOALS"];?></span></span>
         </td>
     <td class="tcell-right">&nbsp;</td>
     </tr>

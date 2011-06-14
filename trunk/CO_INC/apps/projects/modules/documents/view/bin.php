@@ -11,8 +11,8 @@
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DOCUMENT_TITLE"];?></span></td>
 		<td class="tcell-right"><?php echo($documents_folder->title);?></td>
-        <td width="30"><a href="#" class="bin-restoreDocumentFolder" rel="<?php echo $documents_folder->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="#" class="bin-deleteDocumentFolder" rel="<?php echo $documents_folder->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="30"><a href="projects_documents" class="binRestore" rel="<?php echo $documents_folder->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="30"><a href="projects_documents" class="binDelete" rel="<?php echo $documents_folder->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>
@@ -41,8 +41,8 @@
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DOCUMENT_FILENAME"];?></span></td>
 		<td class="tcell-right"><?php echo($file->filename);?></td>
-        <td width="30"><a href="#" class="bin-restoreFile" rel="<?php echo $file->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="#" class="bin-deleteFile" rel="<?php echo $file->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="30"><a href="projects_documents" class="binRestoreItem" rel="<?php echo $file->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="30"><a href="projects_documents" class="binDeleteItem" rel="<?php echo $file->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>

@@ -1,23 +1,23 @@
 /* phases Object */
-var phases = new Module('phases');
-phases.path = 'apps/projects/modules/phases/';
-phases.getDetails = getDetailsPhase;
-phases.sortclick = sortClickPhase;
-phases.sortdrag = sortDragPhase;
-phases.actionDialog = dialogPhase;
-//phases.addTask = addTaskPhase;
-phases.deleteTask = deleteTask;
-phases.actionNew = newPhase;
-phases.actionPrint = printPhase;
-phases.actionSend = sendPhase;
-phases.actionSendtoResponse = sendPhaseResponse;
-phases.actionDuplicate = duplicatePhase;
-phases.actionRefresh = refreshPhase;
-phases.actionCheckDepTasks = actionCheckDepTasks;
-phases.actionBin = binPhase;
-phases.checkIn = checkInPhase;
-phases.poformOptions = { beforeSubmit: phaseFormProcess, dataType:  'json', success: phaseFormResponse };
-phases.toggleIntern = phaseToggleIntern;
+var projects_phases = new Module('projects_phases');
+projects_phases.path = 'apps/projects/modules/phases/';
+projects_phases.getDetails = getDetailsPhase;
+projects_phases.sortclick = sortClickPhase;
+projects_phases.sortdrag = sortDragPhase;
+projects_phases.actionDialog = dialogPhase;
+//projects_phases.addTask = addTaskPhase;
+projects_phases.binTask = deleteTask;
+projects_phases.actionNew = newPhase;
+projects_phases.actionPrint = printPhase;
+projects_phases.actionSend = sendPhase;
+projects_phases.actionSendtoResponse = sendPhaseResponse;
+projects_phases.actionDuplicate = duplicatePhase;
+projects_phases.actionRefresh = refreshPhase;
+projects_phases.actionCheckDepTasks = actionCheckDepTasks;
+projects_phases.actionBin = binPhase;
+projects_phases.checkIn = checkInPhase;
+projects_phases.poformOptions = { beforeSubmit: phaseFormProcess, dataType:  'json', success: phaseFormResponse };
+projects_phases.toggleIntern = phaseToggleIntern;
 
 
 function getDetailsPhase(moduleidx,liindex,list) {
@@ -137,7 +137,7 @@ function phaseFormResponse(data) {
 function newPhase() {
 	
 	var cid = $('#projects input[name="id"]').val()
-	phases.checkIn(cid);
+	projects_phases.checkIn(cid);
 	
 	var id = $('#projects2 .module-click:visible').attr("rel");
 	var num  = parseInt($(".projects3-content:visible .module-click").size()+1);
@@ -191,7 +191,7 @@ function sendPhaseResponse() {
 function duplicatePhase() {
 	
 	var cid = $('#projects input[name="id"]').val()
-	phases.checkIn(cid);
+	projects_phases.checkIn(cid);
 	
 	var id = $("#projects3 .active-link:visible").attr("rel");
 	var pid = $("#projects2 .module-click:visible").attr("rel");
@@ -235,7 +235,7 @@ function actionCheckDepTasks(id) {
 function binPhase() {
 	
 	var cid = $('#projects input[name="id"]').val()
-	phases.checkIn(cid);
+	projects_phases.checkIn(cid);
 	
 	var txt = ALERT_DELETE;
 	var langbuttons = {};

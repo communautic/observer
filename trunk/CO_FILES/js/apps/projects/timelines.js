@@ -1,15 +1,93 @@
 /* timelines Object */
-var timelines = new Module('timelines');
-timelines.path = 'apps/projects/modules/timelines/';
-timelines.getDetails = getDetailsTimeline;
-timelines.actionDialog = dialogTimeline;
-timelines.actionPrint = printTimeline;
-timelines.actionSend = sendTimeline;
-timelines.actionRefresh = refreshTimeline;
-timelines.actionSendtoResponse = sendTimelineResponse;
-timelines.checkIn = checkInTimeline;
+function projectsTimelines(name) {
+	this.name = name;
 
-function getDetailsTimeline(moduleidx,liindex) {
+
+	this.getDetails = function(moduleidx,liindex,list) {
+		var pid = $("#projects2 .module-click:visible").attr("rel");
+		var id = $("#projects3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
+		if(id == undefined) {
+			return false;
+		}
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/timelines&request=getDetails&id="+id+"&pid="+pid, success: function(data){
+			$("#projects-right").html(data.html);
+			initContentScrollbar();
+			initScrollbar( '.projects3-content:visible .scrolling-content' );
+					if(data.access == "guest") {
+						projectsActions(5);
+					} else {
+						projectsActions(8);
+					}
+			}
+		});
+	}
+
+
+	this.checkIn = function(id) {
+		return true;
+	}
+
+
+	this.actionRefresh = function() {
+		$("#projects3 .active-link:visible").trigger("click");
+	}
+
+
+	this.actionPrint = function() {
+		var pid = $("#projects2 .module-click:visible").attr("rel");
+		var id = $("#projects3 .active-link:visible").attr("rel");
+		var url ='/?path=apps/projects/modules/timelines&request=printDetails&pid='+pid+"&id="+id;
+		location.href = url;
+	}
+
+
+	this.actionSend = function() {
+		var pid = $("#projects2 .module-click:visible").attr("rel");
+		var id = $("#projects3 .active-link:visible").attr("rel");
+		$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/timelines&request=getSend&pid="+pid+"&id="+id, success: function(html){
+			$("#modalDialogForward").html(html).dialog('open');
+			}
+		});
+	}
+
+
+	this.actionSendtoResponse = function() {
+		var id = $("#projects3 .active-link:visible").attr("rel");
+		if($("#timeline_sendto").length > 0) {
+			$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/tiomelines&request=getSendtoDetails&id="+id, success: function(html){
+				$("#timeline_sendto").html(html);
+				}
+			});
+		}
+		$("#modalDialogForward").dialog('close');
+	}
+
+
+	this.actionDialog = function(offset,request,field,append,title,sql) {
+		$.ajax({ type: "GET", url: "/", data: 'path=apps/projects&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
+			$("#modalDialog").html(html);
+			$("#modalDialog").dialog('option', 'position', offset);
+			$("#modalDialog").dialog('option', 'title', title);
+			$("#modalDialog").dialog('open');
+			}
+		});
+	}
+
+	/* Chart Specifics */
+	
+}
+
+var projects_timelines = new projectsTimelines('projects_timelines');
+//projects_timelines.path = 'apps/projects/modules/timelines/';
+//projects_timelines.getDetails = getDetailsTimeline;
+//projects_timelines.actionDialog = dialogTimeline;
+//projects_timelines.actionPrint = printTimeline;
+//projects_timelines.actionSend = sendTimeline;
+//projects_timelines.actionRefresh = refreshTimeline;
+//projects_timelines.actionSendtoResponse = sendTimelineResponse;
+//projects_timelines.checkIn = checkInTimeline;
+
+/*function getDetailsTimeline(moduleidx,liindex) {
 	var pid = $("#projects2 .module-click:visible").attr("rel");
 	var id = $("#projects3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
 	if(id == undefined) {
@@ -26,10 +104,10 @@ function getDetailsTimeline(moduleidx,liindex) {
 				}
 		}
 	});
-}
+}*/
 
 
-function getBarchartZoom(zoom) {
+/*function getBarchartZoom(zoom) {
 	var pid = $("#projects2 .module-click:visible").attr("rel");
 	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/timelines&request=getDetails&id=1&pid="+pid+"&zoom="+zoom, success: function(data){
 		$("#projects-right").html(data.html);
@@ -38,27 +116,27 @@ function getBarchartZoom(zoom) {
 		$("#slider").slider("option", "value", zoom);
 		}
 	});
-}
+}*/
 
 
-function printTimeline() {
+/*function printTimeline() {
 	var pid = $("#projects2 .module-click:visible").attr("rel");
 	var id = $("#projects3 .active-link:visible").attr("rel");
 	var url ='/?path=apps/projects/modules/timelines&request=printDetails&pid='+pid+"&id="+id;
 	location.href = url;
-}
+}*/
 
 
-function sendTimeline() {
+/*function sendTimeline() {
 	var pid = $("#projects2 .module-click:visible").attr("rel");
 	var id = $("#projects3 .active-link:visible").attr("rel");
 	$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/timelines&request=getSend&pid="+pid+"&id="+id, success: function(html){
 		$("#modalDialogForward").html(html).dialog('open');
 		}
 	});
-}
+}*/
 
-function sendTimelineResponse() {
+/*function sendTimelineResponse() {
 	var id = $("#projects3 .active-link:visible").attr("rel");
 	if($("#timeline_sendto").length > 0) {
 		$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/tiomelines&request=getSendtoDetails&id="+id, success: function(html){
@@ -68,17 +146,17 @@ function sendTimelineResponse() {
 		});
 	}
 	$("#modalDialogForward").dialog('close');
-}
+}*/
 
-function refreshTimeline() {
+/*function refreshTimeline() {
 	$("#projects3 .active-link:visible").trigger("click");
 }
 
 function checkInTimeline() {
 	return true;
-}
+}*/
 
-function dialogTimeline(offset,request,field,append,title,sql) {
+/*function dialogTimeline(offset,request,field,append,title,sql) {
 	$.ajax({ type: "GET", url: "/", data: 'path=apps/projects&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
 		$("#modalDialog").html(html);
 		$("#modalDialog").dialog('option', 'position', offset);
@@ -86,7 +164,7 @@ function dialogTimeline(offset,request,field,append,title,sql) {
 		$("#modalDialog").dialog('open');
 		}
 	});
-}
+}*/
 
 
 $(document).ready(function() {  
@@ -94,8 +172,8 @@ $(document).ready(function() {
 	
 	$("span.loadBarchartZoom").live('click', function(e) {
 		e.preventDefault();
-		var pid = $("#projects2 .module-click:visible").attr("rel");
 		var zoom = $(this).attr('rel');
+		var pid = $("#projects2 .module-click:visible").attr("rel");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/timelines&request=getDetails&id=1&pid="+pid+"&zoom="+zoom, success: function(data){
 			$("#projects-right").html(data.html);
 			initContentScrollbar();
@@ -104,25 +182,26 @@ $(document).ready(function() {
 	});
 
 
-	$(".trigger").livequery( function() {
+	/*$(".trigger").livequery( function() {
 		$(this).tooltip({
 		position: 'center right',
 		offset: [0, 15]
 		});
-	});
+	});*/
 
 
-	// barchart opacity with jquery
+	/* barchart opacity with jquery
 	$(".barchart-phase-bg").livequery( function() {
 		$(this).css("opacity","0.3");
 	});
-	
+
+
 	$("#todayBar").livequery( function() {
 		$(this).css("opacity","0.4");
-	});
+	});*/
 
 
-	$(".phaseTooltip").livequery( function() {
+	/*$(".phaseTooltip").livequery( function() {
 		$(this).tooltip({
 			track: true,
 			delay: 0,
@@ -132,10 +211,10 @@ $(document).ready(function() {
 			}, 
 			showURL: false 
 		});
-	});
+	});*/
 
 
-	$(".coTooltip").livequery( function() {
+	/*$(".coTooltip").livequery( function() {
 		$(this).tooltip({
 			track: true,
 			delay: 0,
@@ -145,16 +224,17 @@ $(document).ready(function() {
 			}, 
 			showURL: false 
 		});
-	});
+	});*/
 
 
 	$("#barchartScroll").livequery( function() {
-		$(this).scroll(function() {
+		var scroller = $(this);
+		scroller.scroll(function() {
 			var $scrollingDiv = $("#barchart-container-left");
-			$scrollingDiv.stop().animate({"marginLeft": ($("#barchartScroll").scrollLeft()) + "px"}, "fast" );
-			$("#barchartTimeline").stop().animate({"marginTop": ($("#barchartScroll").scrollTop()) + "px"}, "fast" );
-			if($("#barchartScroll").scrollTop() != 0) {
-				$("#todayBar").stop().height($("#barchartScroll").innerHeight()-67);
+			$scrollingDiv.stop().animate({"marginLeft": (scroller.scrollLeft()) + "px"}, "fast" );
+			$("#barchartTimeline").stop().animate({"marginTop": (scroller.scrollTop()) + "px"}, "fast" );
+			if(scroller.scrollTop() != 0) {
+				$("#todayBar").stop().height(scroller.innerHeight()-67);
 			}
 		});
 	});

@@ -60,7 +60,7 @@ class TimelinesModel extends ProjectsModel {
 			  }
 	  }
 	  
-		$q = "select id,title from " . CO_TBL_TIMELINE . " " . $order;
+		$q = "select id,title from " . CO_TBL_PROJECTS_TIMELINE . " " . $order;
 
 		$this->setSortStatus("timeline-sort-status",$sortcur,$id);
 		$result = mysql_query($q, $this->_db->connection);
@@ -86,12 +86,12 @@ class TimelinesModel extends ProjectsModel {
 		$perms = $this->getProjectAccess($pid);
 		// get project details
 		//$q = "select title,startdate,enddate,management,team,status from " . CO_TBL_PROJECTS . " where id = '$pid'";
-		$q = "SELECT a.title,a.startdate,a.management,a.team,a.status,a.projectfolder, (SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_PROJECTS . " as a where a.id = '$pid'";
+		$q = "SELECT a.title,a.startdate,a.management,a.team,a.status,a.folder, (SELECT MAX(enddate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_PROJECTS . " as a where a.id = '$pid'";
 		$result = mysql_query($q, $this->_db->connection);
 	  	while ($row = mysql_fetch_object($result)) {
 			$project["id"] = $pid;
 			$project["title"] = $row->title;
-			$project["folder"] = $projectsmodel->getProjectFolderDetails($row->projectfolder,"projectfolder");
+			$project["folder"] = $projectsmodel->getProjectFolderDetails($row->folder,"folder");
 			$project["startdate"] = $this->_date->formatDate($row->startdate,CO_DATE_FORMAT);
 			$project["enddate"] = $this->_date->formatDate($row->enddate,CO_DATE_FORMAT);
 			$project["management"] = $contactsmodel->getUserList($row->management,'management');
@@ -117,7 +117,7 @@ class TimelinesModel extends ProjectsModel {
 			$sql = " and a.access = '1' ";
 		}
 		// get phase details
-		$q = "SELECT a.title,a.id,a.status,a.finished_date,(SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin = '0') as startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " as c WHERE c.phaseid=a.id and c.bin = '0') as enddate FROM " . CO_TBL_PHASES . " as a WHERE pid = '$pid' and bin = '0' " . $sql . " ORDER BY startdate";
+		$q = "SELECT a.title,a.id,a.status,a.finished_date,(SELECT MIN(startdate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin = '0') as startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as c WHERE c.phaseid=a.id and c.bin = '0') as enddate FROM " . CO_TBL_PROJECTS_PHASES . " as a WHERE pid = '$pid' and bin = '0' " . $sql . " ORDER BY startdate";
 		$result = mysql_query($q, $this->_db->connection);
 	  	$numTasks = array(0);
 		//$numTasks[] = 0;
@@ -141,7 +141,7 @@ class TimelinesModel extends ProjectsModel {
 			
 			
 			
-			$qt = "select * from " . CO_TBL_PHASES_TASKS . " where phaseid = '$phase_id' and bin='0' order by startdate";
+			$qt = "select * from " . CO_TBL_PROJECTS_PHASES_TASKS . " where phaseid = '$phase_id' and bin='0' order by startdate";
 			$resultt = mysql_query($qt, $this->_db->connection);
 			$numTasks[] = mysql_num_rows($resultt);
 			while ($rowt = mysql_fetch_object($resultt)) {
@@ -261,12 +261,12 @@ class TimelinesModel extends ProjectsModel {
 		
 		// get project details
 		//$q = "select title,startdate,enddate,management,team,status from " . CO_TBL_PROJECTS . " where id = '$pid'";
-		$q = "SELECT a.title,a.startdate,a.management,a.team,a.status,a.projectfolder, (SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_PROJECTS . " as a where a.id = '$pid'";
+		$q = "SELECT a.title,a.startdate,a.management,a.team,a.status,a.folder, (SELECT MAX(enddate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_PROJECTS . " as a where a.id = '$pid'";
 
 		$result = mysql_query($q, $this->_db->connection);
 	  	while ($row = mysql_fetch_object($result)) {
 			$project["title"] = $row->title;
-			$project["folder"] = $projectsmodel->getProjectFolderDetails($row->projectfolder,"projectfolder");
+			$project["folder"] = $projectsmodel->getProjectFolderDetails($row->folder,"folder");
 			$project["startdate"] = $row->startdate;
 			$project["enddate"] = $row->enddate;
 			$project["startdate_view"] = $this->_date->formatDate($row->startdate,CO_DATE_FORMAT);
@@ -300,8 +300,8 @@ class TimelinesModel extends ProjectsModel {
 			$sql = " and a.access = '1' ";
 		}
 		// get phase details
-		//$q = "select title,id,startdate,enddate,status,dependency from " . CO_TBL_PHASES . " where pid = '$pid' and bin = '0' order by startdate";
-		$q = "SELECT a.title,a.id,a.status,a.dependency,a.finished_date, (SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . "  as b WHERE b.phaseid=a.id and b.bin='0') as startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " as c WHERE c.phaseid=a.id and c.bin='0') as enddate FROM " . CO_TBL_PHASES . " as a WHERE pid = '$pid' and bin = '0' " . $sql . " ORDER BY startdate";
+		//$q = "select title,id,startdate,enddate,status,dependency from " . CO_TBL_PROJECTS_PHASES . " where pid = '$pid' and bin = '0' order by startdate";
+		$q = "SELECT a.title,a.id,a.status,a.dependency,a.finished_date, (SELECT MIN(startdate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . "  as b WHERE b.phaseid=a.id and b.bin='0') as startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as c WHERE c.phaseid=a.id and c.bin='0') as enddate FROM " . CO_TBL_PROJECTS_PHASES . " as a WHERE pid = '$pid' and bin = '0' " . $sql . " ORDER BY startdate";
 		$result = mysql_query($q, $this->_db->connection);
 		$phase_top = 21;
 		$phase_top_next = 0;
@@ -331,7 +331,7 @@ class TimelinesModel extends ProjectsModel {
 			// add tasks to phases array
 			$tasks = array();
 			$phase_id = $row->id;
-			$qt = "select * from " . CO_TBL_PHASES_TASKS . " where phaseid = '$phase_id' and bin='0' order by startdate";
+			$qt = "select * from " . CO_TBL_PROJECTS_PHASES_TASKS . " where phaseid = '$phase_id' and bin='0' order by startdate";
 			$resultt = mysql_query($qt, $this->_db->connection);
 			$num_tasks = mysql_num_rows($resultt);
 			if( $num_tasks > 1 ) {

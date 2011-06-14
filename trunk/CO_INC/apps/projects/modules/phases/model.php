@@ -66,7 +66,7 @@ class PhasesModel extends ProjectsModel {
 			$sql = " and a.access = '1' ";
 		}
 		
-		$q = "select a.title,a.id,a.access,a.status,a.checked_out,a.checked_out_user,(SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as startdate from " . CO_TBL_PHASES . " as a where a.pid = '$id' and a.bin != '1' " . $sql . $order;
+		$q = "select a.title,a.id,a.access,a.status,a.checked_out,a.checked_out_user,(SELECT MIN(startdate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as startdate from " . CO_TBL_PROJECTS_PHASES . " as a where a.pid = '$id' and a.bin != '1' " . $sql . $order;
 		
 	  	$this->setSortStatus("phase-sort-status",$sortcur,$id);
 		$result = mysql_query($q, $this->_db->connection);
@@ -107,7 +107,7 @@ class PhasesModel extends ProjectsModel {
 		// generate phase numbering
 		$num = "";
 		
-		$qn = "select a.id,(SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as startdate from " . CO_TBL_PHASES . " as a where a.pid = '$id' and a.bin != '1'" . $sql . " order by startdate";
+		$qn = "select a.id,(SELECT MIN(startdate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as startdate from " . CO_TBL_PROJECTS_PHASES . " as a where a.pid = '$id' and a.bin != '1'" . $sql . " order by startdate";
 		$resultn = mysql_query($qn, $this->_db->connection);
 		$i = 1;
 		while ($rown = mysql_fetch_array($resultn)) {
@@ -122,7 +122,7 @@ class PhasesModel extends ProjectsModel {
 	function checkoutPhase($id) {
 		global $session;
 		
-		$q = "UPDATE " . CO_TBL_PHASES . " set checked_out = '1', checked_out_user = '$session->uid' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PROJECTS_PHASES . " set checked_out = '1', checked_out_user = '$session->uid' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
@@ -134,12 +134,12 @@ class PhasesModel extends ProjectsModel {
 	function checkinPhase($id) {
 		global $session;
 		
-		$q = "SELECT checked_out_user FROM " . CO_TBL_PHASES . " where id='$id'";
+		$q = "SELECT checked_out_user FROM " . CO_TBL_PROJECTS_PHASES . " where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$user = mysql_result($result,0);
 
 		if($user == $session->uid) {
-			$q = "UPDATE " . CO_TBL_PHASES . " set checked_out = '0', checked_out_user = '0' where id='$id'";
+			$q = "UPDATE " . CO_TBL_PROJECTS_PHASES . " set checked_out = '0', checked_out_user = '0' where id='$id'";
 			$result = mysql_query($q, $this->_db->connection);
 		}
 		if ($result) {
@@ -150,7 +150,7 @@ class PhasesModel extends ProjectsModel {
 	
 	function checkinPhaseOverride($id) {
 		global $session;
-		$q = "UPDATE " . CO_TBL_PHASES . " set checked_out = '0', checked_out_user = '0' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PROJECTS_PHASES . " set checked_out = '0', checked_out_user = '0' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			return true;
@@ -166,7 +166,7 @@ class PhasesModel extends ProjectsModel {
 		if($users_total == 0) { return $users; }
 		$i = 1;
 		foreach ($users_string as &$value) {
-			$q = "SELECT id,title from " . CO_TBL_PHASES . " where id = '$value'";
+			$q = "SELECT id,title from " . CO_TBL_PROJECTS_PHASES . " where id = '$value'";
 			$result_user = mysql_query($q, $this->_db->connection);
 			while($row_user = mysql_fetch_assoc($result_user)) {
 				$users .= '<span class="groupmember tooltip-advanced" uid="' . $row_user["id"] . '">' . $row_user["title"] . '</span><div style="display:none"><a href="delete" class="markfordeletionNEW" uid="' . $row_user["id"] . '" field="' . $field . '">X</a><br /></div>';
@@ -181,7 +181,7 @@ class PhasesModel extends ProjectsModel {
 
 
 	function getPhaseTitle($id){
-		$q = "SELECT title from " . CO_TBL_PHASES . " where id = '$id'";
+		$q = "SELECT title from " . CO_TBL_PROJECTS_PHASES . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$title = mysql_result($result,0);
 		return $title;
@@ -189,7 +189,7 @@ class PhasesModel extends ProjectsModel {
 	
 
 	function getDependency($id){
-		$q = "SELECT title FROM " . CO_TBL_PHASES . " where dependency = '$id'";
+		$q = "SELECT title FROM " . CO_TBL_PROJECTS_PHASES . " where dependency = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		return mysql_num_rows($result);
 	}
@@ -200,7 +200,7 @@ class PhasesModel extends ProjectsModel {
 		
 		$this->_documents = new DocumentsModel();
 		
-		$q = "SELECT a.*,(SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as enddate, (SELECT startdate FROM " . CO_TBL_PROJECTS . " WHERE id=a.pid) as kickoff FROM " . CO_TBL_PHASES . " as a where a.id = '$id'";
+		$q = "SELECT a.*,(SELECT MIN(startdate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as enddate, (SELECT startdate FROM " . CO_TBL_PROJECTS . " WHERE id=a.pid) as kickoff FROM " . CO_TBL_PROJECTS_PHASES . " as a where a.id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if(mysql_num_rows($result) < 1) {
 			return false;
@@ -305,7 +305,7 @@ class PhasesModel extends ProjectsModel {
 		
 		// get the tasks
 		$task = array();
-		$qt = "SELECT * FROM " . CO_TBL_PHASES_TASKS . " where phaseid = '$id' and bin='0' ORDER BY startdate,status";
+		$qt = "SELECT * FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where phaseid = '$id' and bin='0' ORDER BY startdate,status";
 		$resultt = mysql_query($qt, $this->_db->connection);
 		while($rowt = mysql_fetch_array($resultt)) {
 			foreach($rowt as $key => $val) {
@@ -322,7 +322,7 @@ class PhasesModel extends ProjectsModel {
 			$tasks["dependent_title"] = "";
 			if($tasks["dependent"] > 0) {
 				$dep = $tasks["dependent"];
-				$qta = "SELECT text FROM " . CO_TBL_PHASES_TASKS . " where id='$dep' and bin='0'";
+				$qta = "SELECT text FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where id='$dep' and bin='0'";
 				$rqta = mysql_query($qta, $this->_db->connection);
 				if(mysql_num_rows($rqta) == 0) {
 					$tasks["dependent_title"] = "";
@@ -374,7 +374,7 @@ class PhasesModel extends ProjectsModel {
 			$accesssql = "access='$phase_access', access_date='$phase_access_date', access_user = '$session->uid',";
 		}
 		
-		$q = "UPDATE " . CO_TBL_PHASES . " set title = '$title', team='$team', team_ct = '$team_ct', protocol = '$protocol', documents='$documents', $accesssql status = '$phase_status', $sql = '$phase_status_date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PROJECTS_PHASES . " set title = '$title', team='$team', team_ct = '$team_ct', protocol = '$protocol', documents='$documents', $accesssql status = '$phase_status', $sql = '$phase_status_date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		
@@ -412,7 +412,7 @@ class PhasesModel extends ProjectsModel {
 				$end = $start;
 			}
 
-			$q = "UPDATE " . CO_TBL_PHASES_TASKS . " set status = '$checked_items[$key]', donedate='$donedate', dependent = '$task_dependent[$key]', text = '$task_text[$key]', startdate = '$start', enddate = '$end', team = '$task_team_i', team_ct = '$task_team_ct_i' WHERE id='$task_id[$key]'";
+			$q = "UPDATE " . CO_TBL_PROJECTS_PHASES_TASKS . " set status = '$checked_items[$key]', donedate='$donedate', dependent = '$task_dependent[$key]', text = '$task_text[$key]', startdate = '$start', enddate = '$end', team = '$task_team_i', team_ct = '$task_team_ct_i' WHERE id='$task_id[$key]'";
 			$result = mysql_query($q, $this->_db->connection);
 		}
 		
@@ -447,13 +447,13 @@ class PhasesModel extends ProjectsModel {
 		$startdate = $row["startdate"];
 		
 		// add phase
-		$q = "INSERT INTO " . CO_TBL_PHASES . " set title = '$title', pid='$pid', management = '$management', team='$team', access='0', status = '0', planned_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+		$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES . " set title = '$title', pid='$pid', management = '$management', team='$team', access='0', status = '0', planned_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id = mysql_insert_id();
 		
 		// calculate dates to use for first task
 		// 
-		$q = "SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " WHERE pid='$pid' and bin='0'";
+		$q = "SELECT MAX(enddate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " WHERE pid='$pid' and bin='0'";
 		$result = mysql_query($q, $this->_db->connection);
 		if(mysql_result($result,0) != "") {
 			$date = mysql_result($result,0);
@@ -469,7 +469,7 @@ class PhasesModel extends ProjectsModel {
 		$text = $lang["PHASE_TASK_NEW"];
 		
 		// add first task 1 week starting from last phase or kick off plus 1 day
-		$q = "INSERT INTO " . CO_TBL_PHASES_TASKS . " set pid='$pid', phaseid='$id', status = '0', text = '" . $lang["PHASE_TASK_NEW"] . "', startdate = '$startdate', enddate = '$enddate'";
+		$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES_TASKS . " set pid='$pid', phaseid='$id', status = '0', text = '" . $lang["PHASE_TASK_NEW"] . "', startdate = '$startdate', enddate = '$enddate'";
 			$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
@@ -481,14 +481,14 @@ class PhasesModel extends ProjectsModel {
 	function createDuplicate($id) {
 		global $session, $lang;
 		// phase
-		$q = "INSERT INTO " . CO_TBL_PHASES . " (pid,title,team,management) SELECT pid,CONCAT(title,' ".$lang["GLOBAL_DUPLICAT"]."'),team,management FROM " . CO_TBL_PHASES . " where id='$id'";
+		$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES . " (pid,title,team,management) SELECT pid,CONCAT(title,' ".$lang["GLOBAL_DUPLICAT"]."'),team,management FROM " . CO_TBL_PROJECTS_PHASES . " where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
 		// tasks
-		//$qt = "INSERT INTO " . CO_TBL_PHASES_TASKS . " (pid,phaseid,cat,status,text,startdate,enddate) SELECT pid,$id_new,cat,'0',text,startdate,enddate FROM " . CO_TBL_PHASES_TASKS . " where phaseid='$id' and bin='0'";
+		//$qt = "INSERT INTO " . CO_TBL_PROJECTS_PHASES_TASKS . " (pid,phaseid,cat,status,text,startdate,enddate) SELECT pid,$id_new,cat,'0',text,startdate,enddate FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where phaseid='$id' and bin='0'";
 		//$resultt = mysql_query($qt, $this->_db->connection);
 		// tasks
-		$qt = "SELECT id,pid,dependent,cat,text,startdate,enddate FROM " . CO_TBL_PHASES_TASKS . " where phaseid='$id' and bin='0' ORDER BY startdate,status";		
+		$qt = "SELECT id,pid,dependent,cat,text,startdate,enddate FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where phaseid='$id' and bin='0' ORDER BY startdate,status";		
 		$resultt = mysql_query($qt, $this->_db->connection);
 		while($rowt = mysql_fetch_array($resultt)) {
 			$id = $rowt["id"];
@@ -498,14 +498,14 @@ class PhasesModel extends ProjectsModel {
 			$startdate = $rowt["startdate"];
 			$enddate = $rowt["enddate"];
 			$dependent = $rowt["dependent"];
-			$qtn = "INSERT INTO " . CO_TBL_PHASES_TASKS . " set pid = '$pid', phaseid = '$id_new', dependent = '$dependent', cat = '$cat', status = '0', text = '$text', startdate = '$startdate', enddate = '$enddate'";
+			$qtn = "INSERT INTO " . CO_TBL_PROJECTS_PHASES_TASKS . " set pid = '$pid', phaseid = '$id_new', dependent = '$dependent', cat = '$cat', status = '0', text = '$text', startdate = '$startdate', enddate = '$enddate'";
 			$rpn = mysql_query($qtn, $this->_db->connection);
 			$id_t_new = mysql_insert_id();
 			// BUILD OLD NEW TASK ID ARRAY
 			$t[$id] = $id_t_new;
 		}
 		// Updates Dependencies for new tasks
-		$qt = "SELECT id,dependent FROM " . CO_TBL_PHASES_TASKS . " where phaseid='$id_new' and bin='0'";		
+		$qt = "SELECT id,dependent FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where phaseid='$id_new' and bin='0'";		
 		$resultt = mysql_query($qt, $this->_db->connection);
 		while($rowt = mysql_fetch_array($resultt)) {
 			$id = $rowt["id"];
@@ -514,7 +514,7 @@ class PhasesModel extends ProjectsModel {
 				$dependent = $rowt["dependent"];
 				$dep = $t[$dependent];
 			}
-			$qtn = "UPDATE " . CO_TBL_PHASES_TASKS . " set dependent = '$dep' WHERE id='$id'";
+			$qtn = "UPDATE " . CO_TBL_PROJECTS_PHASES_TASKS . " set dependent = '$dep' WHERE id='$id'";
 			$rpn = mysql_query($qtn, $this->_db->connection);
 		}
 		
@@ -528,10 +528,10 @@ class PhasesModel extends ProjectsModel {
 
    function binPhase($id) {
 		global $session;
-		$q = "UPDATE " . CO_TBL_PHASES . " set bin = '1', bintime = NOW(), binuser= '$session->uid' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PROJECTS_PHASES . " set bin = '1', bintime = NOW(), binuser= '$session->uid' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
-		$q = "UPDATE " . CO_TBL_PHASES_TASKS . " set bin = '1' where phaseid='$id'";
+		$q = "UPDATE " . CO_TBL_PROJECTS_PHASES_TASKS . " set bin = '1' where phaseid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
@@ -541,10 +541,10 @@ class PhasesModel extends ProjectsModel {
 	
 	function restorePhase($id) {
 		global $session;
-		$q = "UPDATE " . CO_TBL_PHASES . " set bin = '0', bintime = NOW(), binuser= '$session->uid' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PROJECTS_PHASES . " set bin = '0', bintime = NOW(), binuser= '$session->uid' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
-		$q = "UPDATE " . CO_TBL_PHASES_TASKS . " set bin = '0' where phaseid='$id'";
+		$q = "UPDATE " . CO_TBL_PROJECTS_PHASES_TASKS . " set bin = '0' where phaseid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
@@ -559,10 +559,10 @@ class PhasesModel extends ProjectsModel {
 		$q = "DELETE FROM co_log_sendto WHERE what='phases' and whatid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
-		$q = "DELETE FROM " . CO_TBL_PHASES_TASKS . " where phaseid='$id'";
+		$q = "DELETE FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where phaseid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
-		$q = "DELETE FROM " . CO_TBL_PHASES . " where id='$id'";
+		$q = "DELETE FROM " . CO_TBL_PROJECTS_PHASES . " where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
@@ -573,7 +573,7 @@ class PhasesModel extends ProjectsModel {
    
 	function toggleIntern($id,$status) {
 		global $session;
-		$q = "UPDATE " . CO_TBL_PHASES . " set intern = '$status' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PROJECTS_PHASES . " set intern = '$status' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 		  	return true;
@@ -582,14 +582,14 @@ class PhasesModel extends ProjectsModel {
 	
 	
 	function getPhaseField($id,$field) {
-		$q = "SELECT $field FROM " . CO_TBL_PHASES . " where id = '$id'";
+		$q = "SELECT $field FROM " . CO_TBL_PROJECTS_PHASES . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		return mysql_result($result,0);
 	}
 
 
 	function getTaskDependencyExists($id){
-		$q = "SELECT id FROM " . CO_TBL_PHASES_TASKS . " where dependent = '$id'";
+		$q = "SELECT id FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where dependent = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if(mysql_num_rows($result) > 0) {
 			return true;
@@ -599,13 +599,13 @@ class PhasesModel extends ProjectsModel {
 	}
 	
 	function moveDependendTasks($id,$days){
-		$q = "SELECT id, startdate, enddate FROM " . CO_TBL_PHASES_TASKS . " where dependent='$id'";
+		$q = "SELECT id, startdate, enddate FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where dependent='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		while ($row = mysql_fetch_array($result)) {
 			$tid = $row["id"];
 			$startdate = $this->_date->addDays($row["startdate"],$days);
 			$enddate = $this->_date->addDays($row["enddate"],$days);
-			$qt = "UPDATE " . CO_TBL_PHASES_TASKS . " set startdate = '$startdate', enddate = '$enddate' where id='$tid'";
+			$qt = "UPDATE " . CO_TBL_PROJECTS_PHASES_TASKS . " set startdate = '$startdate', enddate = '$enddate' where id='$tid'";
 			$res = mysql_query($qt, $this->_db->connection);
 			$this->moveDependendTasks($tid,$days);
 		}
@@ -627,12 +627,12 @@ class PhasesModel extends ProjectsModel {
 				//$team = $this->getPhaseField($phid,'team');
 		}
 		
-		$q = "INSERT INTO " . CO_TBL_PHASES_TASKS . " set pid='$pid', phaseid='$phid', status = '0', text = '$text', startdate = '$date', enddate = '$date', cat = '$cat'";
+		$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES_TASKS . " set pid='$pid', phaseid='$phid', status = '0', text = '$text', startdate = '$date', enddate = '$date', cat = '$cat'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id = mysql_insert_id();
 		
 		$task = array();
-		$q = "SELECT * FROM " . CO_TBL_PHASES_TASKS . " where id = '$id'";
+		$q = "SELECT * FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
 			foreach($row as $key => $val) {
@@ -653,7 +653,7 @@ class PhasesModel extends ProjectsModel {
 
     // dialog for selecting dependent tasks
 	function getTasksDialog($id,$field) {
-		$q = "SELECT pid,startdate FROM " . CO_TBL_PHASES_TASKS . " where id = '$id'";
+		$q = "SELECT pid,startdate FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_fetch_assoc($result);
 		$pid = $row["pid"];
@@ -663,7 +663,7 @@ class PhasesModel extends ProjectsModel {
 	 	$str .= '<a href="#" class="insertTaskfromDialog" title="" field="' . $field . '" gid="">keine Abhängigkeit</a>';
 
 		
-		$q ="select id,text from " . CO_TBL_PHASES_TASKS . " where pid = '$pid' and startdate <= '$startdate' and id != '$id' and bin = '0' ORDER BY startdate";
+		$q ="select id,text from " . CO_TBL_PROJECTS_PHASES_TASKS . " where pid = '$pid' and startdate <= '$startdate' and id != '$id' and bin = '0' ORDER BY startdate";
 		$result = mysql_query($q, $this->_db->connection);
 		while ($row = mysql_fetch_array($result)) {
 			$str .= '<a href="#" class="insertTaskfromDialog" title="' . $row["text"] . '" field="' . $field . '" gid="'.$row["id"].'">' . $row["text"] . '</a>';
@@ -675,7 +675,7 @@ class PhasesModel extends ProjectsModel {
 
 	function deleteTask($id) {
 		global $session;
-		$q = "UPDATE " . CO_TBL_PHASES_TASKS . " set bin = '1', bintime = NOW(), binuser= '$session->uid' WHERE id='$id'";
+		$q = "UPDATE " . CO_TBL_PROJECTS_PHASES_TASKS . " set bin = '1', bintime = NOW(), binuser= '$session->uid' WHERE id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if($result) {
@@ -684,7 +684,7 @@ class PhasesModel extends ProjectsModel {
 	}
 
 	function restorePhaseTask($id) {
-		$q = "UPDATE " . CO_TBL_PHASES_TASKS . " set bin = '0' WHERE id='$id'";
+		$q = "UPDATE " . CO_TBL_PROJECTS_PHASES_TASKS . " set bin = '0' WHERE id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if($result) {
@@ -694,7 +694,7 @@ class PhasesModel extends ProjectsModel {
 
 	function deletePhaseTask($id) {
 		global $session;
-		$q = "DELETE FROM " . CO_TBL_PHASES_TASKS . " WHERE id='$id'";
+		$q = "DELETE FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " WHERE id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if($result) {
@@ -702,8 +702,44 @@ class PhasesModel extends ProjectsModel {
 		}
 	}
 	
-	function getBin() {
-		
+	function getPhasesBin($id) {
+		global $session, $lang;
+		$phases = "";
+		$tasks = "";
+		$qph ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_PHASES . " where pid = '$id'";
+						$resultph = mysql_query($qph, $this->_db->connection);
+						while ($rowph = mysql_fetch_array($resultph)) {
+							$phid = $rowph["id"];
+							if($rowph["bin"] == "1") { // deleted phases
+								foreach($rowph as $key => $val) {
+									$phase[$key] = $val;
+								}
+								$phase["bintime"] = $this->_date->formatDate($phase["bintime"],CO_DATETIME_FORMAT);
+								$phase["binuser"] = $this->_users->getUserFullname($phase["binuser"]);
+								$phases[] = new Lists($phase);
+								//$arr["phases"] = $phases;
+							} else {
+								// tasks
+								$qt ="select id, text, bin, bintime, binuser from " . CO_TBL_PROJECTS_PHASES_TASKS . " where phaseid = '$phid'";
+								$resultt = mysql_query($qt, $this->_db->connection);
+								while ($rowt = mysql_fetch_array($resultt)) {
+									if($rowt["bin"] == "1") { // deleted phases
+										foreach($rowt as $key => $val) {
+											$task[$key] = $val;
+										}
+										$task["bintime"] = $this->_date->formatDate($task["bintime"],CO_DATETIME_FORMAT);
+										$task["binuser"] = $this->_users->getUserFullname($task["binuser"]);
+										$tasks[] = new Lists($task);
+										//$arr["tasks"] = $tasks;
+									} 
+								}
+							}
+						}
+						
+						$arr = array("phases" => $phases, "tasks" => $tasks);
+						/*$arr["phases"] = $phases;
+						$arr["tasks"] = $tasks;*/
+		return $arr;
 	}
 	
 function test() {

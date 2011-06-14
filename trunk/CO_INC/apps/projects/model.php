@@ -59,7 +59,7 @@ class ProjectsModel extends Model {
 	  }
 	  
 		if(!$session->isSysadmin()) {
-			$q ="select a.id, a.title from " . CO_TBL_PROJECTS_FOLDERS . " as a where a.status='0' and a.bin = '0' and (SELECT count(*) FROM co_projects_access as b, co_projects as c WHERE (b.admins REGEXP '[[:<:]]" . $session->uid . "[[:>:]]' or b.guests REGEXP '[[:<:]]" . $session->uid . "[[:>:]]') and c.projectfolder=a.id and b.pid=c.id) > 0 " . $order;
+			$q ="select a.id, a.title from " . CO_TBL_PROJECTS_FOLDERS . " as a where a.status='0' and a.bin = '0' and (SELECT count(*) FROM co_projects_access as b, co_projects as c WHERE (b.admins REGEXP '[[:<:]]" . $session->uid . "[[:>:]]' or b.guests REGEXP '[[:<:]]" . $session->uid . "[[:>:]]') and c.folder=a.id and b.pid=c.id) > 0 " . $order;
 		} else {
 			$q ="select a.id, a.title from " . CO_TBL_PROJECTS_FOLDERS . " as a where a.status='0' and a.bin = '0' " . $order;
 		}
@@ -153,7 +153,7 @@ class ProjectsModel extends Model {
 		  }
 		
 		
-		$q = "SELECT a.title,a.id,a.management, (SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as startdate ,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_PROJECTS . " as a where a.projectfolder='$id' and a.bin='0'" . $access . " " . $order;
+		$q = "SELECT a.title,a.id,a.management, (SELECT MIN(startdate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as startdate ,(SELECT MAX(enddate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_PROJECTS . " as a where a.folder='$id' and a.bin='0'" . $access . " " . $order;
 
 		$result = mysql_query($q, $this->_db->connection);
 	  	$projects = "";
@@ -240,7 +240,7 @@ class ProjectsModel extends Model {
    }
    
    function deleteFolder($id) {
-		$q = "SELECT id FROM " . CO_TBL_PROJECTS . " where projectfolder = '$id'";
+		$q = "SELECT id FROM " . CO_TBL_PROJECTS . " where folder = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
 			$pid = $row["id"];
@@ -269,13 +269,13 @@ class ProjectsModel extends Model {
 		
 		switch($status) {
 			case "0":
-				$q = "select id from " . CO_TBL_PROJECTS . " where projectfolder='$id' " . $access . " and bin != '1'";
+				$q = "select id from " . CO_TBL_PROJECTS . " where folder='$id' " . $access . " and bin != '1'";
 			break;
 			case "1":
-				$q = "select id from " . CO_TBL_PROJECTS . " where projectfolder='$id' " . $access . " and status = '1' and bin != '1'";
+				$q = "select id from " . CO_TBL_PROJECTS . " where folder='$id' " . $access . " and status = '1' and bin != '1'";
 			break;
 			case "2":
-				$q = "select id from " . CO_TBL_PROJECTS . " where projectfolder='$id' " . $access . " and status = '2' and bin != '1'";
+				$q = "select id from " . CO_TBL_PROJECTS . " where folder='$id' " . $access . " and status = '2' and bin != '1'";
 			break;
 		}
 		$result = mysql_query($q, $this->_db->connection);
@@ -399,7 +399,7 @@ class ProjectsModel extends Model {
 	  if(!$session->isSysadmin()) {
 		$access = " and id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
 	  }
-	  $q ="select id,title,status,checked_out,checked_out_user from " . CO_TBL_PROJECTS . " where projectfolder='$id' and bin = '0' " . $access . $order;
+	  $q ="select id,title,status,checked_out,checked_out_user from " . CO_TBL_PROJECTS . " where folder='$id' and bin = '0' " . $access . $order;
 
 	  $this->setSortStatus("project-sort-status",$sortcur,$id);
       $result = mysql_query($q, $this->_db->connection);
@@ -486,7 +486,7 @@ class ProjectsModel extends Model {
 
    function getProjectDetails($id) {
 		global $session, $contactsmodel, $lang;
-		$q = "SELECT a.*,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_PROJECTS . " as a where id = '$id'";
+		$q = "SELECT a.*,(SELECT MAX(enddate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_PROJECTS . " as a where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if(mysql_num_rows($result) < 1) {
 			return false;
@@ -546,7 +546,7 @@ class ProjectsModel extends Model {
 		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
 		
 		// other functions
-		$array["projectfolder"] = $this->getProjectFolderDetails($array["projectfolder"],"projectfolder");
+		$array["folder"] = $this->getProjectFolderDetails($array["folder"],"folder");
 		$array["management"] = $contactsmodel->getUserList($array['management'],'management', "", $array["canedit"]);
 		$array["management_ct"] = empty($array["management_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['management_ct'];
 		$array["team"] = $contactsmodel->getUserList($array['team'],'team', "", $array["canedit"]);
@@ -582,7 +582,7 @@ class ProjectsModel extends Model {
 		}
 		
 		// get phase details
-		$q = "select a.title,a.id,a.access,a.status,(SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " WHERE phaseid=a.id) as enddate from " . CO_TBL_PHASES . " as a where a.pid = '$id' and a.bin != '1' " . $sql . " order by startdate";
+		$q = "select a.title,a.id,a.access,a.status,(SELECT MIN(startdate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " WHERE phaseid=a.id) as enddate from " . CO_TBL_PROJECTS_PHASES . " as a where a.pid = '$id' and a.bin != '1' " . $sql . " order by startdate";
 		$result = mysql_query($q, $this->_db->connection);
 	  	$phases = "";
 	  	while ($row = mysql_fetch_array($result)) {
@@ -595,7 +595,7 @@ class ProjectsModel extends Model {
 	  	}
 		// generate phase numbering
 		$num = "";
-		$qn = "select a.id,(SELECT MIN(startdate) FROM " . CO_TBL_PHASES_TASKS . " WHERE phaseid=a.id and bin='0') as startdate from " . CO_TBL_PHASES . " as a where a.pid = '$id' and a.bin != '1' " . $sql . " order by startdate";
+		$qn = "select a.id,(SELECT MIN(startdate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " WHERE phaseid=a.id and bin='0') as startdate from " . CO_TBL_PROJECTS_PHASES . " as a where a.pid = '$id' and a.bin != '1' " . $sql . " order by startdate";
 		$resultn = mysql_query($qn, $this->_db->connection);
 		$i = 1;
 		while ($rown = mysql_fetch_array($resultn)) {
@@ -612,7 +612,7 @@ class ProjectsModel extends Model {
 
    function getDates($id) {
 		global $session, $contactsmodel;
-		$q = "SELECT a.startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_PROJECTS . " as a where id = '$id'";
+		$q = "SELECT a.startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_PROJECTS . " as a where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if(mysql_num_rows($result) < 1) {
 			return false;
@@ -656,7 +656,7 @@ class ProjectsModel extends Model {
    /**
    * get details for the project folder
    */
-   function setProjectDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$projectfolder,$status,$status_date) {
+   function setProjectDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$folder,$status,$status_date) {
 		global $session, $contactsmodel;
 		
 		$startdate = $this->_date->formatDate($_POST['startdate']);
@@ -682,7 +682,7 @@ class ProjectsModel extends Model {
 
 		$now = gmdate("Y-m-d H:i:s");
 		
-		$q = "UPDATE " . CO_TBL_PROJECTS . " set title = '$title', projectfolder = '$projectfolder', startdate = '$startdate', ordered_by = '$ordered_by', ordered_by_ct = '$ordered_by_ct', management = '$management', management_ct = '$management_ct', team='$team', team_ct = '$team_ct', protocol = '$protocol', status = '$status', $sql = '$status_date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PROJECTS . " set title = '$title', folder = '$folder', startdate = '$startdate', ordered_by = '$ordered_by', ordered_by_ct = '$ordered_by_ct', management = '$management', management_ct = '$management_ct', team='$team', team_ct = '$team_ct', protocol = '$protocol', status = '$status', $sql = '$status_date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
@@ -693,7 +693,7 @@ class ProjectsModel extends Model {
 	function setAllPhasesFinished($id,$status_date) {
 		global $session;
 		$now = gmdate("Y-m-d H:i:s");
-		$q = "UPDATE " . CO_TBL_PHASES . " set status = '2', finished_date = '$status_date', edited_user = '$session->uid', edited_date = '$now' WHERE pid = '$id'";
+		$q = "UPDATE " . CO_TBL_PROJECTS_PHASES . " set status = '2', finished_date = '$status_date', edited_user = '$session->uid', edited_date = '$now' WHERE pid = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 	}
 
@@ -704,7 +704,7 @@ class ProjectsModel extends Model {
 		$now = gmdate("Y-m-d H:i:s");
 		$title = $lang["PROJECT_NEW"];
 		
-		$q = "INSERT INTO " . CO_TBL_PROJECTS . " set projectfolder = '$id', title = '$title', startdate = '$now', enddate = '$now', status = '0', planned_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+		$q = "INSERT INTO " . CO_TBL_PROJECTS . " set folder = '$id', title = '$title', startdate = '$now', enddate = '$now', status = '0', planned_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			$id = mysql_insert_id();
@@ -723,7 +723,7 @@ class ProjectsModel extends Model {
 		
 		$now = gmdate("Y-m-d H:i:s");
 		// project
-		$q = "INSERT INTO " . CO_TBL_PROJECTS . " (projectfolder,title,startdate,ordered_by,management,team,protocol,status,planned_date,emailed_to,created_date,created_user,edited_date,edited_user) SELECT projectfolder,CONCAT(title,' ".$lang["GLOBAL_DUPLICAT"]."'),startdate,ordered_by,management,team,protocol,'0','$now',emailed_to,'$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_PROJECTS . " where id='$id'";
+		$q = "INSERT INTO " . CO_TBL_PROJECTS . " (folder,title,startdate,ordered_by,management,team,protocol,status,planned_date,emailed_to,created_date,created_user,edited_date,edited_user) SELECT folder,CONCAT(title,' ".$lang["GLOBAL_DUPLICAT"]."'),startdate,ordered_by,management,team,protocol,'0','$now',emailed_to,'$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_PROJECTS . " where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
 		
@@ -733,7 +733,7 @@ class ProjectsModel extends Model {
 			}
 		
 		// phases
-		$q = "SELECT id,title,team,management FROM " . CO_TBL_PHASES . " WHERE pid = '$id' and bin='0'";
+		$q = "SELECT id,title,team,management FROM " . CO_TBL_PROJECTS_PHASES . " WHERE pid = '$id' and bin='0'";
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
 			$phaseid = $row["id"];
@@ -741,11 +741,11 @@ class ProjectsModel extends Model {
 			$team = $row["team"];
 			$management = $row["management"];
 			
-			$qp = "INSERT INTO " . CO_TBL_PHASES . " set pid='$id_new',title='$title',team='$team',management='$management'";
+			$qp = "INSERT INTO " . CO_TBL_PROJECTS_PHASES . " set pid='$id_new',title='$title',team='$team',management='$management'";
 			$rp = mysql_query($qp, $this->_db->connection);
 			$id_p_new = mysql_insert_id();
 			// tasks
-			$qt = "SELECT id,dependent,cat,text,startdate,enddate FROM " . CO_TBL_PHASES_TASKS . " where phaseid='$phaseid' and bin='0' ORDER BY id ASC";		
+			$qt = "SELECT id,dependent,cat,text,startdate,enddate FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where phaseid='$phaseid' and bin='0' ORDER BY id ASC";		
 			$resultt = mysql_query($qt, $this->_db->connection);
 			while($rowt = mysql_fetch_array($resultt)) {
 				$id = $rowt["id"];
@@ -754,7 +754,7 @@ class ProjectsModel extends Model {
 				$startdate = $rowt["startdate"];
 				$enddate = $rowt["enddate"];
 				$dependent = $rowt["dependent"];
-				$qtn = "INSERT INTO " . CO_TBL_PHASES_TASKS . " set pid = '$id_new', phaseid = '$id_p_new', dependent = '$dependent', cat = '$cat',status = '0',text = '$text',startdate = '$startdate',enddate = '$enddate'";
+				$qtn = "INSERT INTO " . CO_TBL_PROJECTS_PHASES_TASKS . " set pid = '$id_new', phaseid = '$id_p_new', dependent = '$dependent', cat = '$cat',status = '0',text = '$text',startdate = '$startdate',enddate = '$enddate'";
 				$rpn = mysql_query($qtn, $this->_db->connection);
 				$id_t_new = mysql_insert_id();
 				// BUILD OLD NEW TASK ID ARRAY
@@ -764,7 +764,7 @@ class ProjectsModel extends Model {
 		}
 		//print_r($t);
 		// Updates Dependencies for new tasks
-			$qt = "SELECT id,dependent FROM " . CO_TBL_PHASES_TASKS . " where pid='$id_new' and bin='0' ORDER BY id ASC";		
+			$qt = "SELECT id,dependent FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where pid='$id_new' and bin='0' ORDER BY id ASC";		
 			$resultt = mysql_query($qt, $this->_db->connection);
 			while($rowtt = mysql_fetch_array($resultt)) {
 				$id = $rowtt["id"];
@@ -776,7 +776,7 @@ class ProjectsModel extends Model {
 					$dep = $t[$dependent];
 					//}
 				}
-				$qtn = "UPDATE " . CO_TBL_PHASES_TASKS . " set dependent = '$dep' WHERE id='$id'";
+				$qtn = "UPDATE " . CO_TBL_PROJECTS_PHASES_TASKS . " set dependent = '$dep' WHERE id='$id'";
 				$rpn = mysql_query($qtn, $this->_db->connection);
 			}
 		
@@ -810,7 +810,7 @@ class ProjectsModel extends Model {
 		
 		$active_modules = array();
 		foreach($projects->modules as $module => $value) {
-			if(CONSTANT($module.'_bin') == 1) {
+			if(CONSTANT('projects_'.$module.'_bin') == 1) {
 				$active_modules[] = $module;
 				$arr[$module] = "";
 				$arr[$module . "_tasks"] = "";
@@ -882,13 +882,13 @@ class ProjectsModel extends Model {
 		$now = gmdate("Y-m-d H:i:s");
 		$q = "UPDATE " . CO_TBL_PROJECTS . " set startdate = '$startdate', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
-			$qt = "SELECT id, startdate, enddate FROM " . CO_TBL_PHASES_TASKS . " where pid='$id'";
+			$qt = "SELECT id, startdate, enddate FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where pid='$id'";
 			$resultt = mysql_query($qt, $this->_db->connection);
 			while ($rowt = mysql_fetch_array($resultt)) {
 				$tid = $rowt["id"];
 				$startdate = $this->_date->addDays($rowt["startdate"],$movedays);
 				$enddate = $this->_date->addDays($rowt["enddate"],$movedays);
-				$qtk = "UPDATE " . CO_TBL_PHASES_TASKS . " set startdate = '$startdate', enddate = '$enddate' where id='$tid'";
+				$qtk = "UPDATE " . CO_TBL_PROJECTS_PHASES_TASKS . " set startdate = '$startdate', enddate = '$enddate' where id='$tid'";
 				$retvaltk = mysql_query($qtk, $this->_db->connection);
 			}
 		if ($result) {
@@ -902,7 +902,7 @@ class ProjectsModel extends Model {
 		$str = '<div class="dialog-text">';
 		//$q ="select id, title from " . CO_TBL_PROJECTS_FOLDERS . " where status='0' and bin = '0' ORDER BY title";
 		if(!$session->isSysadmin()) {
-			$q ="select a.id, a.title from " . CO_TBL_PROJECTS_FOLDERS . " as a where a.status='0' and a.bin = '0' and (SELECT count(*) FROM co_projects_access as b, co_projects as c WHERE (b.admins REGEXP '[[:<:]]" . $session->uid . "[[:>:]]' or b.guests REGEXP '[[:<:]]" . $session->uid . "[[:>:]]') and c.projectfolder=a.id and b.pid=c.id) > 0 ORDER BY title";
+			$q ="select a.id, a.title from " . CO_TBL_PROJECTS_FOLDERS . " as a where a.status='0' and a.bin = '0' and (SELECT count(*) FROM co_projects_access as b, co_projects as c WHERE (b.admins REGEXP '[[:<:]]" . $session->uid . "[[:>:]]' or b.guests REGEXP '[[:<:]]" . $session->uid . "[[:>:]]') and c.folder=a.id and b.pid=c.id) > 0 ORDER BY title";
 		} else {
 			$q ="select id, title from " . CO_TBL_PROJECTS_FOLDERS . " where status='0' and bin = '0' ORDER BY title";
 		}
@@ -924,15 +924,15 @@ class ProjectsModel extends Model {
 	   if ($status == 2) {
 		   $sql .= "and status='2'";
 	   }
-	   $q = "SELECT COUNT(id) FROM " .  CO_TBL_PHASES. " WHERE pid='$id' $sql and bin='0'";
+	   $q = "SELECT COUNT(id) FROM " .  CO_TBL_PROJECTS_PHASES. " WHERE pid='$id' $sql and bin='0'";
 	   $result = mysql_query($q, $this->_db->connection);
 	   $count = mysql_result($result,0);
 	   return $count;
    }
    
    function numPhasesOnTime($id) {
-	   //$q = "SELECT COUNT(id) FROM " .  CO_TBL_PHASES. " WHERE pid='$id' $sql and bin='0'";
-	   $q = "SELECT a.id,(SELECT MAX(enddate) FROM " . CO_TBL_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as enddate FROM " . CO_TBL_PHASES . " as a where a.pid= '$id' and a.status='2' and a.finished_date <= enddate";
+	   //$q = "SELECT COUNT(id) FROM " .  CO_TBL_PROJECTS_PHASES. " WHERE pid='$id' $sql and bin='0'";
+	   $q = "SELECT a.id,(SELECT MAX(enddate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as enddate FROM " . CO_TBL_PROJECTS_PHASES . " as a where a.pid= '$id' and a.status='2' and a.finished_date <= enddate";
 
 	   $result = mysql_query($q, $this->_db->connection);
 	   $count = mysql_result($result,0);
@@ -944,7 +944,7 @@ class ProjectsModel extends Model {
 	   if ($status == 1) {
 		   $sql .= " and status='1' ";
 	   }
-	   $q = "SELECT COUNT(id) FROM " .  CO_TBL_PHASES_TASKS. " WHERE pid='$id' $sql and bin='0'";
+	   $q = "SELECT COUNT(id) FROM " .  CO_TBL_PROJECTS_PHASES_TASKS. " WHERE pid='$id' $sql and bin='0'";
 	   $result = mysql_query($q, $this->_db->connection);
 	   $count = mysql_result($result,0);
 	   return $count;
@@ -982,7 +982,7 @@ class ProjectsModel extends Model {
 				$realisation = 0;
 				$id_array = "";
 				
-				$q = "SELECT id FROM " . CO_TBL_PROJECTS. " WHERE projectfolder = '$id' and status != '0' and bin = '0'";
+				$q = "SELECT id FROM " . CO_TBL_PROJECTS. " WHERE folder = '$id' and status != '0' and bin = '0'";
 				$result = mysql_query($q, $this->_db->connection);
 				$num = mysql_num_rows($result);
 				$i = 1;
@@ -1008,7 +1008,7 @@ class ProjectsModel extends Model {
 					$chart["real"] = round(($realisation)/$num,0);
 				}
 				$chart["tendency"] = "tendency_negative.png";
-				$qt = "SELECT MAX(donedate) as dt,enddate FROM " . CO_TBL_PHASES_TASKS. " WHERE status='1' $id_array and bin='0'";
+				$qt = "SELECT MAX(donedate) as dt,enddate FROM " . CO_TBL_PROJECTS_PHASES_TASKS. " WHERE status='1' $id_array and bin='0'";
 				$resultt = mysql_query($qt, $this->_db->connection);
 				$ten = mysql_fetch_assoc($resultt);
 				if($ten["dt"] <= $ten["enddate"]) {
@@ -1028,7 +1028,7 @@ class ProjectsModel extends Model {
 				$realisation = 0;
 				$id_array = "";
 				
-				$q = "SELECT id FROM " . CO_TBL_PROJECTS. " WHERE projectfolder = '$id' and status != '0' and bin = '0'";
+				$q = "SELECT id FROM " . CO_TBL_PROJECTS. " WHERE folder = '$id' and status != '0' and bin = '0'";
 				$result = mysql_query($q, $this->_db->connection);
 				$num = mysql_num_rows($result);
 				$i = 1;
@@ -1058,11 +1058,11 @@ class ProjectsModel extends Model {
 				$today = date("Y-m-d");
 				
 				$chart["tendency"] = "tendency_positive.png";
-				$qt = "SELECT COUNT(id) FROM " . CO_TBL_PHASES_TASKS. " WHERE status='0' and startdate <= '$today' and enddate >= '$today' $id_array and bin='0'";
+				$qt = "SELECT COUNT(id) FROM " . CO_TBL_PROJECTS_PHASES_TASKS. " WHERE status='0' and startdate <= '$today' and enddate >= '$today' $id_array and bin='0'";
 				$resultt = mysql_query($qt, $this->_db->connection);
 				$tasks_active = mysql_result($resultt,0);
 				
-				$qo = "SELECT COUNT(id) FROM " . CO_TBL_PHASES_TASKS. " WHERE status='0' and enddate < '$today' $id_array and bin='0'";
+				$qo = "SELECT COUNT(id) FROM " . CO_TBL_PROJECTS_PHASES_TASKS. " WHERE status='0' and enddate < '$today' $id_array and bin='0'";
 				$resulto = mysql_query($qo, $this->_db->connection);
 				$tasks_overdue = mysql_result($resulto,0);
 				if($tasks_active + $tasks_overdue == 0) {
@@ -1087,7 +1087,7 @@ class ProjectsModel extends Model {
 				$realisation = 0;
 				$id_array = "";
 				
-				$q = "SELECT id FROM " . CO_TBL_PROJECTS. " WHERE projectfolder = '$id' and status != '0' and bin = '0'";
+				$q = "SELECT id FROM " . CO_TBL_PROJECTS. " WHERE folder = '$id' and status != '0' and bin = '0'";
 				$result = mysql_query($q, $this->_db->connection);
 				$num = mysql_num_rows($result);
 				$i = 1;
@@ -1115,7 +1115,7 @@ class ProjectsModel extends Model {
 				$today = date("Y-m-d");
 				
 				$chart["tendency"] = "tendency_positive.png";
-				$qt = "SELECT status,donedate,enddate FROM " . CO_TBL_PHASES_TASKS. " WHERE enddate < '$today' $id_array and bin='0' ORDER BY enddate DESC LIMIT 0,1";
+				$qt = "SELECT status,donedate,enddate FROM " . CO_TBL_PROJECTS_PHASES_TASKS. " WHERE enddate < '$today' $id_array and bin='0' ORDER BY enddate DESC LIMIT 0,1";
 				$resultt = mysql_query($qt, $this->_db->connection);
 				$rowt = mysql_fetch_assoc($resultt);
 				if(mysql_num_rows($resultt) != 0) {
@@ -1159,13 +1159,21 @@ class ProjectsModel extends Model {
 		
 		$active_modules = array();
 		foreach($projects->modules as $module => $value) {
-			if(CONSTANT($module.'_bin') == 1) {
+			if(CONSTANT('projects_'.$module.'_bin') == 1) {
 				$active_modules[] = $module;
 				$arr[$module] = "";
 				$arr[$module . "_tasks"] = "";
 				$arr[$module . "_folders"] = "";
 			}
 		}
+		
+		//foreach($active_modules as $module) {
+							//$name = strtoupper($module);
+							//$mod = new $name . "Model()";
+							//include("modules/meetings/controller.php");
+							//${$name} = new $name("$module");
+							
+						//}
 		
 		$q ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_FOLDERS;
 		$result = mysql_query($q, $this->_db->connection);
@@ -1181,7 +1189,7 @@ class ProjectsModel extends Model {
 				$arr["folders"] = $folders;
 			} else { // folder not binned
 				
-				$qp ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS . " where projectfolder = '$id'";
+				$qp ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS . " where folder = '$id'";
 				$resultp = mysql_query($qp, $this->_db->connection);
 				while ($rowp = mysql_fetch_array($resultp)) {
 					$pid = $rowp["id"];
@@ -1194,10 +1202,28 @@ class ProjectsModel extends Model {
 					$pros[] = new Lists($pro);
 					$arr["pros"] = $pros;
 					} else {
+						/*$module = "phases";
+						$name = ucfirst($module);
+							$function = "get" . $name . "Bin";
+							${$module} = new $name("$module");*/
+							//print_r(${$module}->$function($pid));
+							
+							//$arr["phases"] = ${$module}->$function($pid);
+							//print_r($mods);
+							//print_r($arr);//$arr[] = $res;
+							//$arr["phases"] = $res["phases"];
+							//print_r($res);
+						/*foreach($active_modules as $module) {
+							$name = ucfirst($module);
+							$function = "get" . $name . "Bin";
+							${$module} = new $name("$module");
+							echo ${$module}->$function($pid);
+							
+						}*/
 						
 						
 						// phases
-						$qph ="select id, title, bin, bintime, binuser from " . CO_TBL_PHASES . " where pid = '$pid'";
+						$qph ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_PHASES . " where pid = '$pid'";
 						$resultph = mysql_query($qph, $this->_db->connection);
 						while ($rowph = mysql_fetch_array($resultph)) {
 							$phid = $rowph["id"];
@@ -1211,7 +1237,7 @@ class ProjectsModel extends Model {
 								$arr["phases"] = $phases;
 							} else {
 								// tasks
-								$qt ="select id, text, bin, bintime, binuser from " . CO_TBL_PHASES_TASKS . " where phaseid = '$phid'";
+								$qt ="select id, text, bin, bintime, binuser from " . CO_TBL_PROJECTS_PHASES_TASKS . " where phaseid = '$phid'";
 								$resultt = mysql_query($qt, $this->_db->connection);
 								while ($rowt = mysql_fetch_array($resultt)) {
 									if($rowt["bin"] == "1") { // deleted phases
@@ -1230,7 +1256,7 @@ class ProjectsModel extends Model {
 	
 						// meetings
 						if(in_array("meetings",$active_modules)) {
-							$qm ="select id, title, bin, bintime, binuser from " . CO_TBL_MEETINGS . " where pid = '$pid'";
+							$qm ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_MEETINGS . " where pid = '$pid'";
 							$resultm = mysql_query($qm, $this->_db->connection);
 							while ($rowm = mysql_fetch_array($resultm)) {
 								$mid = $rowm["id"];
@@ -1244,7 +1270,7 @@ class ProjectsModel extends Model {
 									$arr["meetings"] = $meetings;
 								} else {
 									// meetings_tasks
-									$qmt ="select id, title, bin, bintime, binuser from " . CO_TBL_MEETINGS_TASKS . " where mid = '$mid'";
+									$qmt ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_MEETINGS_TASKS . " where mid = '$mid'";
 									$resultmt = mysql_query($qmt, $this->_db->connection);
 									while ($rowmt = mysql_fetch_array($resultmt)) {
 										if($rowmt["bin"] == "1") { // deleted phases
@@ -1260,11 +1286,45 @@ class ProjectsModel extends Model {
 								}
 							}
 						}
+						
+						
+						// analyses
+						if(in_array("analyses",$active_modules)) {
+							$qm ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_ANALYSES . " where pid = '$pid'";
+							$resultm = mysql_query($qm, $this->_db->connection);
+							while ($rowm = mysql_fetch_array($resultm)) {
+								$mid = $rowm["id"];
+								if($rowm["bin"] == "1") { // deleted analyse
+									foreach($rowm as $key => $val) {
+										$analyse[$key] = $val;
+									}
+									$analyse["bintime"] = $this->_date->formatDate($analyse["bintime"],CO_DATETIME_FORMAT);
+									$analyse["binuser"] = $this->_users->getUserFullname($analyse["binuser"]);
+									$analyses[] = new Lists($analyse);
+									$arr["analyses"] = $analyses;
+								} else {
+									// analyses_tasks
+									$qmt ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_ANALYSES_TASKS . " where mid = '$mid'";
+									$resultmt = mysql_query($qmt, $this->_db->connection);
+									while ($rowmt = mysql_fetch_array($resultmt)) {
+										if($rowmt["bin"] == "1") { // deleted phases
+											foreach($rowmt as $key => $val) {
+												$analyses_task[$key] = $val;
+											}
+											$analyses_task["bintime"] = $this->_date->formatDate($analyses_task["bintime"],CO_DATETIME_FORMAT);
+											$analyses_task["binuser"] = $this->_users->getUserFullname($analyses_task["binuser"]);
+											$analyses_tasks[] = new Lists($analyses_task);
+											$arr["analyses_tasks"] = $analyses_tasks;
+										}
+									}
+								}
+							}
+						}
 	
 	
 						// documents_folder
 						if(in_array("documents",$active_modules)) {
-							$qd ="select id, title, bin, bintime, binuser from " . CO_TBL_DOCUMENTS_FOLDERS . " where pid = '$pid'";
+							$qd ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_DOCUMENTS_FOLDERS . " where pid = '$pid'";
 							$resultd = mysql_query($qd, $this->_db->connection);
 							while ($rowd = mysql_fetch_array($resultd)) {
 								$did = $rowd["id"];
@@ -1278,7 +1338,7 @@ class ProjectsModel extends Model {
 									$arr["documents_folders"] = $documents_folders;
 								} else {
 									// files
-									$qf ="select id, filename, bin, bintime, binuser from " . CO_TBL_DOCUMENTS . " where did = '$did'";
+									$qf ="select id, filename, bin, bintime, binuser from " . CO_TBL_PROJECTS_DOCUMENTS . " where did = '$did'";
 									$resultf = mysql_query($qf, $this->_db->connection);
 									while ($rowf = mysql_fetch_array($resultf)) {
 										if($rowf["bin"] == "1") { // deleted phases
@@ -1298,7 +1358,7 @@ class ProjectsModel extends Model {
 	
 						// vdocs
 						if(in_array("vdocs",$active_modules)) {
-							$qv ="select id, title, bin, bintime, binuser from " . CO_TBL_VDOCS . " where pid = '$pid' and bin='1'";
+							$qv ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_VDOCS . " where pid = '$pid' and bin='1'";
 							$resultv = mysql_query($qv, $this->_db->connection);
 							while ($rowv = mysql_fetch_array($resultv)) {
 								$vid = $rowv["id"];
@@ -1311,12 +1371,16 @@ class ProjectsModel extends Model {
 									$arr["vdocs"] = $vdocs;
 							}
 						}
-
-
+						
+				
 					}
 				}
 			}
 	  	}
+		
+		//print_r($arr);
+		//$mod = new Lists($mods);
+
 		return $arr;
    }
    
@@ -1336,7 +1400,7 @@ class ProjectsModel extends Model {
 		
 		$active_modules = array();
 		foreach($projects->modules as $module => $value) {
-			if(CONSTANT($module.'_bin') == 1) {
+			if(CONSTANT('projects_'.$module.'_bin') == 1) {
 				$active_modules[] = $module;
 				$arr[$module] = "";
 				$arr[$module . "_tasks"] = "";
@@ -1352,7 +1416,7 @@ class ProjectsModel extends Model {
 				$this->deleteFolder($id);
 			} else { // folder not binned
 				
-				$qp ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS . " where projectfolder = '$id'";
+				$qp ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS . " where folder = '$id'";
 				$resultp = mysql_query($qp, $this->_db->connection);
 				while ($rowp = mysql_fetch_array($resultp)) {
 					$pid = $rowp["id"];
@@ -1362,7 +1426,7 @@ class ProjectsModel extends Model {
 						
 						// phases
 						$phasesmodel = new PhasesModel();
-						$qph ="select id, title, bin, bintime, binuser from " . CO_TBL_PHASES . " where pid = '$pid'";
+						$qph ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_PHASES . " where pid = '$pid'";
 						$resultph = mysql_query($qph, $this->_db->connection);
 						while ($rowph = mysql_fetch_array($resultph)) {
 							$phid = $rowph["id"];
@@ -1371,7 +1435,7 @@ class ProjectsModel extends Model {
 								$arr["phases"] = "";
 							} else {
 								// tasks
-								$qt ="select id, text, bin, bintime, binuser from " . CO_TBL_PHASES_TASKS . " where phaseid = '$phid'";
+								$qt ="select id, text, bin, bintime, binuser from " . CO_TBL_PROJECTS_PHASES_TASKS . " where phaseid = '$phid'";
 								$resultt = mysql_query($qt, $this->_db->connection);
 								while ($rowt = mysql_fetch_array($resultt)) {
 									if($rowt["bin"] == "1") { // deleted phases
@@ -1387,7 +1451,7 @@ class ProjectsModel extends Model {
 						// meetings
 						if(in_array("meetings",$active_modules)) {
 							$meetingsmodel = new MeetingsModel();
-							$qm ="select id, title, bin, bintime, binuser from " . CO_TBL_MEETINGS . " where pid = '$pid'";
+							$qm ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_MEETINGS . " where pid = '$pid'";
 							$resultm = mysql_query($qm, $this->_db->connection);
 							while ($rowm = mysql_fetch_array($resultm)) {
 								$mid = $rowm["id"];
@@ -1396,7 +1460,7 @@ class ProjectsModel extends Model {
 									$arr["meetings"] = "";
 								} else {
 									// meetings_tasks
-									$qmt ="select id, title, bin, bintime, binuser from " . CO_TBL_MEETINGS_TASKS . " where mid = '$mid'";
+									$qmt ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_MEETINGS_TASKS . " where mid = '$mid'";
 									$resultmt = mysql_query($qmt, $this->_db->connection);
 									while ($rowmt = mysql_fetch_array($resultmt)) {
 										if($rowmt["bin"] == "1") { // deleted phases
@@ -1413,7 +1477,7 @@ class ProjectsModel extends Model {
 						// documents_folder
 						if(in_array("documents",$active_modules)) {
 							$documentsmodel = new DocumentsModel();
-							$qd ="select id, title, bin, bintime, binuser from " . CO_TBL_DOCUMENTS_FOLDERS . " where pid = '$pid'";
+							$qd ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_DOCUMENTS_FOLDERS . " where pid = '$pid'";
 							$resultd = mysql_query($qd, $this->_db->connection);
 							while ($rowd = mysql_fetch_array($resultd)) {
 								$did = $rowd["id"];
@@ -1422,7 +1486,7 @@ class ProjectsModel extends Model {
 									$arr["documents_folders"] = "";
 								} else {
 									// files
-									$qf ="select id, filename, bin, bintime, binuser from " . CO_TBL_DOCUMENTS . " where did = '$did'";
+									$qf ="select id, filename, bin, bintime, binuser from " . CO_TBL_PROJECTS_DOCUMENTS . " where did = '$did'";
 									$resultf = mysql_query($qf, $this->_db->connection);
 									while ($rowf = mysql_fetch_array($resultf)) {
 										if($rowf["bin"] == "1") { // deleted phases
@@ -1438,7 +1502,7 @@ class ProjectsModel extends Model {
 	
 						// vdocs
 						if(in_array("vdocs",$active_modules)) {
-							$qv ="select id, title, bin, bintime, binuser from " . CO_TBL_VDOCS . " where pid = '$pid' and bin='1'";
+							$qv ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_VDOCS . " where pid = '$pid' and bin='1'";
 							$resultv = mysql_query($qv, $this->_db->connection);
 							while ($rowv = mysql_fetch_array($resultv)) {
 								$vid = $rowv["id"];

@@ -112,7 +112,7 @@ class PhonecallsModel extends ProjectsModel {
    }
    
    function getDependency($id){
-		$q = "SELECT title FROM " . CO_TBL_PHASES . " where id = '$id'";
+		$q = "SELECT title FROM " . CO_TBL_PROJECTS_PHASES . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		return mysql_num_rows($result);
    }
