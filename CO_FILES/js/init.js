@@ -19,7 +19,7 @@ function Application (name) {
 	this.save;
 }
 
-function Module (name) {
+function Module(name) {
     this.name = name;
 	this.save;
 }
@@ -73,11 +73,11 @@ function initScrollbar ( elem ) {
 
 };
 
-function initContentScrollbar() {
+/*function initContentScrollbar() {
 	projectsInnerLayout.initContent('center');
 	initScrollbar( '#projects-right .scrolling-content' );
 	initScrollbar( '#projects-right .scroll-pane' );
-}
+}*/
 
 
 function getCurrentApp() {
@@ -91,7 +91,7 @@ function getCurrentModule() {
 	if(cur != app) {
 		cur = app+'_'+cur;
 	}
-	console.log(cur);
+	//console.log(cur);
 	
 	var obj = window[cur];
 	return obj;
@@ -436,6 +436,14 @@ $(document).ready(function() {
 		return false;
 	});
 	
+	
+	$('a.newItemSelection').live('click',function(e) {
+		e.preventDefault();
+		var rel = $(this).attr("rel");
+		var module = getCurrentModule();
+		module.newItemSelection(rel);
+	});
+	
 	$('a.showItemContext').live('click',function(e) {
 		e.preventDefault();
 		var ele = $(this);
@@ -458,7 +466,7 @@ $(document).ready(function() {
 		var field = $(this).attr("field");
 		var append = $(this).attr("append");
 		var id = $(this).attr("did");
-		var text = $(this).html();
+		var text = $(this).attr("title");
 		var module = window[$(this).attr("mod")];
 		module.insertItem(field,append,id,text);
 	});

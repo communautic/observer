@@ -73,7 +73,7 @@ function binresetModuleHeights() {
 		$("#bin1").css("height", h-46);
 		$("#bin1 .module-inner").css("height", h-46);
 	}
-	initScrollbar( '#bin .scrolling-content' );
+	//initScrollbar( '#bin .scrolling-content' );
 }
 
 function checkInBin() {
@@ -102,7 +102,7 @@ $(document).ready(function() {
 	});
 	
 	binInnerLayout = $('#bin div.ui-layout-center').layout({
-			center__onresize:				function() { initScrollbar( '#bin .scrolling-content' ); }
+			center__onresize:				function() { }
 		,	resizeWhileDragging:		false
 		,	spacing_open:				0			// cosmetic spacing
 		,	closable: 				false

@@ -30,7 +30,7 @@ if (!empty($_GET['request'])) {
 			echo($projects->getFolderDetails($_GET['id']));
 		break;
 		case 'setFolderOrder':
-			echo($projects->setSortOrder("folder-sort",$_GET['folderItem']));
+			echo($projects->setSortOrder("projects-folder-sort",$_GET['folderItem']));
 		break;
 		case 'getFolderNew':
 			echo($projects->getFolderNew());

@@ -141,7 +141,7 @@ class Projects extends Controller {
 		$arr = $this->model->getProjectList($id,$sort);
 		$projects = $arr["projects"];
 		ob_start();
-			include('view/projects_list.php');
+			include('view/list.php');
 			$data["html"] = ob_get_contents();
 		ob_end_clean();
 		$data["sort"] = $arr["sort"];
@@ -157,7 +157,7 @@ class Projects extends Controller {
 			$num = $arr["num"];
 			$sendto = $arr["sendto"];
 			ob_start();
-				include 'view/project_edit.php';
+				include 'view/edit.php';
 				$data["html"] = ob_get_contents();
 			ob_end_clean();
 			$data["access"] = $arr["access"];
@@ -191,7 +191,7 @@ class Projects extends Controller {
 			$num = $arr["num"];
 			$sendto = $arr["sendto"];
 			ob_start();
-				include 'view/project_print.php';
+				include 'view/print.php';
 				$html = ob_get_contents();
 			ob_end_clean();
 			$title = $project->title;
@@ -223,11 +223,11 @@ class Projects extends Controller {
 				$html .= ob_get_contents();
 			ob_end_clean();
 			ob_start();
-				include 'view/project_print.php';
+				include 'view/print.php';
 				$html .= ob_get_contents();
 			ob_end_clean();
 			// phases
-			$phasescont = new Phases("phases");
+			$phasescont = new ProjectsPhases("phases");
 			foreach ($phases as $phase) {
 				if($arr = $phasescont->model->getDetails($phase->id,$num[$phase->id])) {
 					$phase = $arr["phase"];
@@ -240,11 +240,11 @@ class Projects extends Controller {
 				}
 			}
 			// documents
-			$documents = new Documents("documents");
-			if($arrdocs = $documents->model->getList($id,"0")) {
+			$projectsDocuments = new ProjectsDocuments("documents");
+			if($arrdocs = $projectsDocuments->model->getList($id,"0")) {
 				$docs = $arrdocs["documents"];
 				foreach ($docs as $doc) {
-					if($arr = $documents->model->getDetails($doc->id)) {
+					if($arr = $projectsDocuments->model->getDetails($doc->id)) {
 						$document = $arr["document"];
 						$doc = $arr["doc"];
 						$sendto = $arr["sendto"];
@@ -257,8 +257,8 @@ class Projects extends Controller {
 				$html .= '<div style="page-break-after:always;">&nbsp;</div>';
 			}
 			// controlling
-			$controlling = new Controlling("controlling");
-			if($cont = $controlling->model->getDetails($id)) {
+			$projectsControlling = new ProjectsControlling("controlling");
+			if($cont = $projectsControlling->model->getDetails($id)) {
 				$tit = $project->title;
 				ob_start();
 					include 'modules/controlling/view/print.php';
@@ -317,7 +317,7 @@ class Projects extends Controller {
 			$num = $arr["num"];
 			$sendto = $arr["sendto"];
 			ob_start();
-				include 'view/project_print.php';
+				include 'view/print.php';
 				$html = ob_get_contents();
 			ob_end_clean();
 			$title = $project->title;

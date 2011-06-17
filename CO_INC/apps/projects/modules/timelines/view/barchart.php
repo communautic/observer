@@ -1,19 +1,19 @@
 <div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-title grey">
   <tr>
-    <td class="tcell-left text11"><span class="content-nav-title"><?php echo TIMELINE_PROJECT_PLAN;?></span></td>
+    <td class="tcell-left text11"><span class="content-nav-title"><?php echo $lang["PROJECT_TIMELINE_PROJECT_PLAN"];?></span></td>
     <td>
     <table border="0" cellspacing="0" cellpadding="0" class="timeline-legend">
     <tr>
-        <td class="barchart_color_planned"><span><?php echo TIMELINE_STATUS_PLANED;?></span></td>
+        <td class="barchart_color_planned"><span><?php echo $lang["PROJECT_TIMELINE_STATUS_PLANED"];?></span></td>
         <td width="15"></td>
-        <td class="barchart_color_inprogress"><span><?php echo TIMELINE_STATUS_INPROGRESS;?></span></td>
+        <td class="barchart_color_inprogress"><span><?php echo $lang["PROJECT_TIMELINE_STATUS_INPROGRESS"];?></span></td>
          <td width="15"></td>
-        <td class="barchart_color_finished"><span><?php echo TIMELINE_STATUS_FINISHED;?></span></td>
+        <td class="barchart_color_finished"><span><?php echo $lang["PROJECT_TIMELINE_STATUS_FINISHED"];?></span></td>
          <td width="15"></td>
-        <td class="barchart_color_not_finished"><span><?php echo TIMELINE_STATUS_NOT_FINISHED;?></span></td>
+        <td class="barchart_color_not_finished"><span><?php echo $lang["PROJECT_TIMELINE_STATUS_NOT_FINISHED"];?></span></td>
          <td width="15"></td>
-        <td class="barchart_color_overdue"><span><?php echo TIMELINE_STATUS_OVERDUE;?></span></td>
+        <td class="barchart_color_overdue"><span><?php echo $lang["PROJECT_TIMELINE_STATUS_OVERDUE"];?></span></td>
     </tr>
 </table></td>
   </tr>
@@ -35,8 +35,8 @@
 <div  class="barchart-outer" style="position: relative; font-size: 11px; width: <?php echo($project["css_width"]+225);?>px; height:<?php echo($project["css_height"]+50);?>px">
 	
     <div id="barchart-container-left" style="position: absolute; z-index: 5; width: 225px; padding-top: 37px; background-color:#FFF; height:<?php echo($project["css_height"]-5+16);?>px">
-	<div style="position: relative; padding-left: 10px; height: 16px; margin: 0 15px 2px 0;"><?php echo $lang['TIMELINE_ACTION'];?>
-    <div style="text-align: center; position: absolute; width: 45px; padding: 1px 5px 0 0; top: 0; right: 0; height: 16px;"><?php echo $lang['TIMELINE_TIME'];?></div></div>
+	<div style="position: relative; padding-left: 10px; height: 16px; margin: 0 15px 2px 0;"><?php echo $lang['PROJECT_TIMELINE_ACTION'];?>
+    <div style="text-align: center; position: absolute; width: 45px; padding: 1px 5px 0 0; top: 0; right: 0; height: 16px;"><?php echo $lang['PROJECT_TIMELINE_TIME'];?></div></div>
 
 	<div style="position: relative; padding-left: 10px; height: 16px; margin: 0 15px 2px 0; background-color:#e5e5e5"><a class="but-scroll-to" t="0" l="0"><?php echo $lang['PROJECT_KICKOFF'];?></a>
     <div style="text-align: right; position: absolute; width: 38px; padding: 1px 10px 0 0; top: 0; right: 0; height: 16px; border-left: 2px solid #fff;">1</div></div>
@@ -168,7 +168,7 @@ foreach($project["phases"] as $key => &$value){ ?>
                 <div class="coTooltipHtml" style="display: none">
 						<?php echo($project["phases"][$key]["tasks"][$tkey]["text"]);?><br />
                         <?php echo($project["phases"][$key]["tasks"][$tkey]["startdate"]);?> - <?php echo($project["phases"][$key]["tasks"][$tkey]["enddate"]);?><br />
-						<?php echo($project["phases"][$key]["tasks"][$tkey]["overdue"]["days"] . " " . TIMELINE_STATUS_OVERDUE_POPUP);?>
+						<?php echo($project["phases"][$key]["tasks"][$tkey]["overdue"]["days"] . " " . $lang["PROJECT_TIMELINE_STATUS_OVERDUE_POPUP"]);?>
                     </div>
                 </div>
                 <?php } ?>
@@ -218,7 +218,7 @@ foreach($project["phases"] as $key => &$value){ ?>
             <div class="coTooltipHtml" style="display: none">
 					<?php echo($i . ". " . $project["phases"][$key]["title"]);?><br />
                     <?php echo($project["phases"][$key]["startdate"]);?> - <?php echo($project["phases"][$key]["enddate"]);?><br />
-					<?php echo($project["phases"][$key]["overdue"]["days"] . " " . TIMELINE_STATUS_OVERDUE_POPUP);?>
+					<?php echo($project["phases"][$key]["overdue"]["days"] . " " . $lang["PROJECT_TIMELINE_STATUS_OVERDUE_POPUP"]);?>
                 
                 </div>
             

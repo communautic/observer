@@ -1,10 +1,10 @@
 <?php
 
-class MeetingsModel extends ProjectsModel {
+class ProjectsMeetingsModel extends ProjectsModel {
 	
 	public function __construct() {  
      	parent::__construct();
-		$this->_phases = new PhasesModel();
+		$this->_phases = new ProjectsPhasesModel();
 		$this->_contactsmodel = new ContactsModel();
 	}
 
@@ -154,7 +154,7 @@ class MeetingsModel extends ProjectsModel {
 	function getDetails($id) {
 		global $session, $lang;
 		
-		$this->_documents = new DocumentsModel();
+		$this->_documents = new ProjectsDocumentsModel();
 		
 		$q = "SELECT * FROM " . CO_TBL_PROJECTS_MEETINGS . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
@@ -234,19 +234,19 @@ class MeetingsModel extends ProjectsModel {
 		
 		switch($array["status"]) {
 			case "0":
-				$array["status_text"] = $lang["MEETING_STATUS_PLANNED"];
+				$array["status_text"] = $lang["PROJECT_MEETING_STATUS_PLANNED"];
 				$array["status_date"] = '';
 			break;
 			case "1":
-				$array["status_text"] = $lang["MEETING_STATUS_ON_SCHEDULE"];
+				$array["status_text"] = $lang["PROJECT_MEETING_STATUS_ON_SCHEDULE"];
 				$array["status_date"] = '';
 			break;
 			case "2":
-				$array["status_text"] = $lang["MEETING_STATUS_CANCELLED"];
+				$array["status_text"] = $lang["PROJECT_MEETING_STATUS_CANCELLED"];
 				$array["status_date"] = '';
 				break;
 			case "3":
-				$array["status_text"] = $lang["MEETING_STATUS_POSPONED"];
+				$array["status_text"] = $lang["PROJECT_MEETING_STATUS_POSPONED"];
 				$array["status_date"] = $this->_date->formatDate($array["status_date"],CO_DATE_FORMAT);
 			break;
 		}
@@ -321,7 +321,7 @@ class MeetingsModel extends ProjectsModel {
 			
 			$this->checkinMeeting($id);
 			
-			$q = "INSERT INTO " . CO_TBL_PROJECTS_MEETINGS . " set pid='$pid', title = '$title " . $lang["MEETING_POSPONED"] . "', item_date = '$meeting_status_date', start = '$start', end = '$end', location = '$location', location_ct = '$location_ct', participants='$participants', participants_ct='$participants_ct', management='$management', management_ct='$management_ct', documents = '$documents', access='$meeting_access', $accesssql status = '0', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+			$q = "INSERT INTO " . CO_TBL_PROJECTS_MEETINGS . " set pid='$pid', title = '$title " . $lang["PROJECT_MEETING_POSPONED"] . "', item_date = '$meeting_status_date', start = '$start', end = '$end', location = '$location', location_ct = '$location_ct', participants='$participants', participants_ct='$participants_ct', management='$management', management_ct='$management_ct', documents = '$documents', access='$meeting_access', $accesssql status = '0', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 			$result = mysql_query($q, $this->_db->connection);
 			if ($result) {
 				$nid = mysql_insert_id();
@@ -343,7 +343,7 @@ class MeetingsModel extends ProjectsModel {
 		$now = gmdate("Y-m-d H:i:s");
 		$time = gmdate("Y-m-d H");
 		
-		$q = "INSERT INTO " . CO_TBL_PROJECTS_MEETINGS . " set title = '" . $lang["MEETING_NEW"] . "', item_date='$now', start='$time', end='$time', pid = '$id', participants = '$session->uid', management = '$session->uid', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+		$q = "INSERT INTO " . CO_TBL_PROJECTS_MEETINGS . " set title = '" . $lang["PROJECT_MEETING_NEW"] . "', item_date='$now', start='$time', end='$time', pid = '$id', participants = '$session->uid', management = '$session->uid', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id = mysql_insert_id();
 		
@@ -419,7 +419,7 @@ class MeetingsModel extends ProjectsModel {
    function addTask($mid,$num,$sort) {
 		global $session, $lang;
 		
-		$q = "INSERT INTO " . CO_TBL_PROJECTS_MEETINGS_TASKS . " set mid='$mid', status = '0', title = '" . $lang["MEETING_TASK_NEW"] . "', sort='$sort'";
+		$q = "INSERT INTO " . CO_TBL_PROJECTS_MEETINGS_TASKS . " set mid='$mid', status = '0', title = '" . $lang["PROJECT_MEETING_TASK_NEW"] . "', sort='$sort'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id = mysql_insert_id();
 		

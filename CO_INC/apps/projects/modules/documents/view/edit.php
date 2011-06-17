@@ -1,7 +1,7 @@
 <div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-title">
   <tr>
-    <td class="tcell-left text11"><span class="<?php if($document->canedit) { ?>content-nav focusTitle<?php } ?>"><span><?php echo $lang["DOCUMENT_TITLE"];?></span></span></td>
+    <td class="tcell-left text11"><span class="<?php if($document->canedit) { ?>content-nav focusTitle<?php } ?>"><span><?php echo $lang["PROJECT_DOCUMENT_TITLE"];?></span></span></td>
     <td><input name="title" type="text" class="title textarea-title" value="<?php echo($document->title);?>" maxlength="100" /></td>
   </tr>
 </table>
@@ -28,12 +28,12 @@
     	<td class="tcell-right">
   <table width="100%" border="0" cellpadding="0" cellspacing="0">
     <tr>
-      <td class="tcell-left text11"><?php echo $lang["DOCUMENT_FILENAME"];?></td>
+      <td class="tcell-left text11"><?php echo $lang["PROJECT_DOCUMENT_FILENAME"];?></td>
       <td class="tcell-right"><a mod="projects_documents" class="downloadDocument" rel="<?php echo $value->id;?>"><?php echo($value->filename)?></a></td>
  	  <td width="30"><?php if($document->canedit) { ?><a class="binItem" rel="<?php echo $value->id;?>"><span class="icon-delete"></span></a><?php } ?></td>
     </tr>
     <tr>
-      <td class="tcell-left text11"><?php echo $lang["DOCUMENT_FILESIZE"];?></td>
+      <td class="tcell-left text11"><?php echo $lang["PROJECT_DOCUMENT_FILESIZE"];?></td>
       <td class="tcell-right"><?php echo($value->filesize)?></td>
       <td></td>
     </tr>

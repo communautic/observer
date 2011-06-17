@@ -1,6 +1,6 @@
 <?php
 
-class DocumentsModel extends ProjectsModel {
+class ProjectsDocumentsModel extends ProjectsModel {
 	
 	public function __construct() {  
 		parent::__construct();
@@ -197,7 +197,7 @@ class DocumentsModel extends ProjectsModel {
 		
 		$now = gmdate("Y-m-d H:i:s");
 		
-		$q = "INSERT INTO " . CO_TBL_PROJECTS_DOCUMENTS_FOLDERS . " set title = '" . $lang["DOCUMENT_NEW"] . "', pid='$id', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+		$q = "INSERT INTO " . CO_TBL_PROJECTS_DOCUMENTS_FOLDERS . " set title = '" . $lang["PROJECT_DOCUMENT_NEW"] . "', pid='$id', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id = mysql_insert_id();
 		if ($result) {

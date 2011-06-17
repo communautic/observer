@@ -9,7 +9,7 @@ class ProjectsModel extends Model {
    function getFolderList($sort) {
       global $session;
 	  if($sort == 0) {
-		  $sortstatus = $this->getSortStatus("folder-sort-status");
+		  $sortstatus = $this->getSortStatus("projects-folder-sort-status");
 		  if(!$sortstatus) {
 		  	$order = "order by a.title";
 			$sortcur = '1';
@@ -24,7 +24,7 @@ class ProjectsModel extends Model {
 						$sortcur = '2';
 				  break;
 				  case "3":
-				  		$sortorder = $this->getSortOrder("folder-sort-order");
+				  		$sortorder = $this->getSortOrder("projects-folder-sort-order");
 				  		if(!$sortorder) {
 						  	$order = "order by a.title";
 							$sortcur = '1';
@@ -46,7 +46,7 @@ class ProjectsModel extends Model {
 						$sortcur = '2';
 				  break;
 				  case "3":
-				  		$sortorder = $this->getSortOrder("folder-sort-order");
+				  		$sortorder = $this->getSortOrder("projects-folder-sort-order");
 				  		if(!$sortorder) {
 						  	$order = "order by a.title";
 							$sortcur = '1';
@@ -64,7 +64,7 @@ class ProjectsModel extends Model {
 			$q ="select a.id, a.title from " . CO_TBL_PROJECTS_FOLDERS . " as a where a.status='0' and a.bin = '0' " . $order;
 		}
 		
-	  $this->setSortStatus("folder-sort-status",$sortcur);
+	  $this->setSortStatus("projects-folder-sort-status",$sortcur);
       $result = mysql_query($q, $this->_db->connection);
 	  $folders = "";
 	  while ($row = mysql_fetch_array($result)) {
@@ -94,7 +94,7 @@ class ProjectsModel extends Model {
    * get details for the project folder
    */
    function getFolderDetails($id) {
-		global $session, $contactsmodel, $controllingmodel;
+		global $session, $contactsmodel, $projectsControllingModel;
 		$q = "SELECT * FROM " . CO_TBL_PROJECTS_FOLDERS . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if(mysql_num_rows($result) < 1) {
@@ -163,7 +163,7 @@ class ProjectsModel extends Model {
 			}
 			$project["startdate"] = $this->_date->formatDate($project["startdate"],CO_DATE_FORMAT);
 			$project["enddate"] = $this->_date->formatDate($project["enddate"],CO_DATE_FORMAT);
-			$project["realisation"] = $controllingmodel->getChart($project["id"], "realisation", 0);
+			$project["realisation"] = $projectsControllingModel->getChart($project["id"], "realisation", 0);
 			$project["management"] = $contactsmodel->getUserListPlain($project['management']);
 			$project["perm"] = $this->getProjectAccess($project["id"]);
 			$projects[] = new Lists($project);
@@ -710,8 +710,8 @@ class ProjectsModel extends Model {
 			$id = mysql_insert_id();
 			// if admin insert him to access
 			if(!$session->isSysadmin()) {
-				$accessmodel = new AccessModel();
-				$accessmodel->setDetails($id,$session->uid,"");
+				$projectsAccessModel = new ProjectsAccessModel();
+				$projectsAccessModel->setDetails($id,$session->uid,"");
 			}
 			return $id;
 		}
@@ -728,8 +728,8 @@ class ProjectsModel extends Model {
 		$id_new = mysql_insert_id();
 		
 		if(!$session->isSysadmin()) {
-				$accessmodel = new AccessModel();
-				$accessmodel->setDetails($id_new,$session->uid,"");
+				$projectsAccessModel = new ProjectsAccessModel();
+				$projectsAccessModel->setDetails($id_new,$session->uid,"");
 			}
 		
 		// phases
@@ -829,17 +829,17 @@ class ProjectsModel extends Model {
 		}
 		
 		if(in_array("documents",$active_modules)) {
-			$documentsmodel = new DocumentsModel();
+			$projectsDocumentsModel = new ProjectsDocumentsModel();
 			$q = "SELECT id FROM co_projects_documents_folders where pid = '$id'";
 			$result = mysql_query($q, $this->_db->connection);
 			while($row = mysql_fetch_array($result)) {
 				$did = $row["id"];
-				$documentsmodel->deleteDocument($did);
+				$projectsDocumentsModel->deleteDocument($did);
 			}
 		}
 		
 		if(in_array("meetings",$active_modules)) {
-			$meetingsmodel = new MeetingsModel();
+			$projectsMeetingsModel = new ProjectsMeetingsModel();
 			$q = "SELECT id FROM co_projects_meetings where pid = '$id'";
 			$result = mysql_query($q, $this->_db->connection);
 			while($row = mysql_fetch_array($result)) {
@@ -849,12 +849,12 @@ class ProjectsModel extends Model {
 		}
 		
 		if(in_array("phases",$active_modules)) {
-			$phasesmodel = new PhasesModel();
+			$projectsPhasesModel = new ProjectsPhasesModel();
 			$q = "SELECT id FROM co_projects_phases where pid = '$id'";
 			$result = mysql_query($q, $this->_db->connection);
 			while($row = mysql_fetch_array($result)) {
 				$pid = $row["id"];
-				$phasesmodel->deletePhase($pid);
+				$projectsPhasesModel->deletePhase($pid);
 			}
 		}
 		
@@ -956,7 +956,7 @@ class ProjectsModel extends Model {
 
 
 	function getChartFolder($id, $what) { 
-		global $controllingmodel, $lang;
+		global $projectsControllingModel, $lang;
 		switch($what) {
 			case 'stability':
 				$chart = $this->getChartFolder($id, 'timeing');
@@ -988,7 +988,7 @@ class ProjectsModel extends Model {
 				$i = 1;
 				while($row = mysql_fetch_assoc($result)) {
 					$pid = $row["id"];
-					$calc = $controllingmodel->getChart($pid,'realisation',0);
+					$calc = $projectsControllingModel->getChart($pid,'realisation',0);
 					$realisation += $calc["real"];
 
 					if($i == 1) {
@@ -1034,7 +1034,7 @@ class ProjectsModel extends Model {
 				$i = 1;
 				while($row = mysql_fetch_assoc($result)) {
 					$pid = $row["id"];
-					$calc = $controllingmodel->getChart($pid,'timeing',0);
+					$calc = $projectsControllingModel->getChart($pid,'timeing',0);
 					$realisation += $calc["real"];
 
 					if($i == 1) {
@@ -1093,7 +1093,7 @@ class ProjectsModel extends Model {
 				$i = 1;
 				while($row = mysql_fetch_assoc($result)) {
 					$pid = $row["id"];
-					$calc = $controllingmodel->getChart($pid,'tasks',0);
+					$calc = $projectsControllingModel->getChart($pid,'tasks',0);
 					$realisation += $calc["real"];
 
 					if($i == 1) {
@@ -1425,13 +1425,13 @@ class ProjectsModel extends Model {
 					} else {
 						
 						// phases
-						$phasesmodel = new PhasesModel();
+						$projectsPhasesModel = new ProjectsPhasesModel();
 						$qph ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_PHASES . " where pid = '$pid'";
 						$resultph = mysql_query($qph, $this->_db->connection);
 						while ($rowph = mysql_fetch_array($resultph)) {
 							$phid = $rowph["id"];
 							if($rowph["bin"] == "1") { // deleted phases
-								$phasesmodel->deletePhase($phid);
+								$projectsPhasesModel->deletePhase($phid);
 								$arr["phases"] = "";
 							} else {
 								// tasks
@@ -1440,7 +1440,7 @@ class ProjectsModel extends Model {
 								while ($rowt = mysql_fetch_array($resultt)) {
 									if($rowt["bin"] == "1") { // deleted phases
 										$phtid = $rowt["id"];
-										$phasesmodel->deletePhaseTask($phtid);
+										$projectsPhasesModel->deletePhaseTask($phtid);
 										$arr["tasks"] = "";
 									} 
 								}
@@ -1450,13 +1450,13 @@ class ProjectsModel extends Model {
 
 						// meetings
 						if(in_array("meetings",$active_modules)) {
-							$meetingsmodel = new MeetingsModel();
+							$projectsMeetingsModel = new ProjectsMeetingsModel();
 							$qm ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_MEETINGS . " where pid = '$pid'";
 							$resultm = mysql_query($qm, $this->_db->connection);
 							while ($rowm = mysql_fetch_array($resultm)) {
 								$mid = $rowm["id"];
 								if($rowm["bin"] == "1") { // deleted meeting
-									$meetingsmodel->deleteMeeting($mid);
+									$projectsMeetingsModel->deleteMeeting($mid);
 									$arr["meetings"] = "";
 								} else {
 									// meetings_tasks
@@ -1465,7 +1465,7 @@ class ProjectsModel extends Model {
 									while ($rowmt = mysql_fetch_array($resultmt)) {
 										if($rowmt["bin"] == "1") { // deleted phases
 											$mtid = $rowmt["id"];
-											$meetingsmodel->deleteMeetingTask($mtid);
+											$projectsMeetingsModel->deleteMeetingTask($mtid);
 											$arr["meetings_tasks"] = "";
 										}
 									}
@@ -1476,13 +1476,13 @@ class ProjectsModel extends Model {
 
 						// documents_folder
 						if(in_array("documents",$active_modules)) {
-							$documentsmodel = new DocumentsModel();
+							$projectsDocumentsModel = new ProjectsDocumentsModel();
 							$qd ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_DOCUMENTS_FOLDERS . " where pid = '$pid'";
 							$resultd = mysql_query($qd, $this->_db->connection);
 							while ($rowd = mysql_fetch_array($resultd)) {
 								$did = $rowd["id"];
 								if($rowd["bin"] == "1") { // deleted meeting
-									$documentsmodel->deleteDocument($did);
+									$projectsDocumentsModel->deleteDocument($did);
 									$arr["documents_folders"] = "";
 								} else {
 									// files
@@ -1491,7 +1491,7 @@ class ProjectsModel extends Model {
 									while ($rowf = mysql_fetch_array($resultf)) {
 										if($rowf["bin"] == "1") { // deleted phases
 											$fid = $rowf["id"];
-											$documentsmodel->deleteFile($fid);
+											$projectsDocumentsModel->deleteFile($fid);
 											$arr["files"] = "";
 										}
 									}

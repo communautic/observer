@@ -38,9 +38,9 @@
             </div>
 			<div class="module-actions module-actions-modules"><div class="sort-outer"><span class="sort" rel="1"></span></div>
             <div class="filter-box-outer"><form action="#"><fieldset><input name="search" type="text" class="filter filter-box" value="" size="4" /></fieldset></form></div><div class="filter-search-outer"></div></div>
-			<h3 rel="group"><?php echo $lang['CONTACTS_GROUPS'];?></h3>    
+			<h3 rel="groups"><?php echo $lang['CONTACTS_GROUPS'];?></h3>    
             <div class="contacts1-content"><div class="scrolling-content">        
-                <ul class="sortable" rel="group"><li></li></ul>
+                <ul class="sortable" rel="groups"><li></li></ul>
                 </div>
             </div>
 

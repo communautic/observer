@@ -1,6 +1,6 @@
 <?php
 
-class ControllingModel extends ProjectsModel {
+class ProjectsControllingModel extends ProjectsModel {
 	
 	public function __construct() {  
 		parent::__construct();
@@ -12,7 +12,7 @@ class ControllingModel extends ProjectsModel {
 
 			$array["id"] = 0;
 			$array["controlling_date"] = $this->_date->formatDate("now",CO_DATE_FORMAT);
-			$array["title"] = $lang["CONTROLLING_STATUS"];
+			$array["title"] = $lang["PROJECT_CONTROLLING_STATUS"];
 			$array["itemstatus"] = "";
 			
 			$controlling[] = new Lists($array);
@@ -124,7 +124,7 @@ class ControllingModel extends ProjectsModel {
 				$tasks = $chart["real"];
 				
 				$chart["real"] = round(($timeing+$tasks)/2,0);
-				$chart["title"] = $lang["CONTROLLING_STABILITY"];
+				$chart["title"] = $lang["PROJECT_CONTROLLING_STABILITY"];
 				$chart["img_name"] = "p_" . $id . "_stability.png";
 				$chart["url"] = 'https://chart.googleapis.com/chart?chs=150x90&cht=gm&chd=t:' . $chart["real"];
 				
@@ -157,7 +157,7 @@ class ControllingModel extends ProjectsModel {
 				}
 				
 				$chart["rest"] = $this->getRest($chart["real"]);
-				$chart["title"] = $lang["CONTROLLING_REALISATION"];
+				$chart["title"] = $lang["PROJECT_CONTROLLING_REALISATION"];
 				$chart["img_name"] = "p_" . $id . "_realisation.png";
 				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
 				
@@ -212,7 +212,7 @@ class ControllingModel extends ProjectsModel {
 				}
 				
 				$chart["rest"] = $this->getRest($chart["real"]);
-				$chart["title"] = $lang["CONTROLLING_ADHERANCE"];
+				$chart["title"] = $lang["PROJECT_CONTROLLING_ADHERANCE"];
 				$chart["img_name"] = "p_" . $id . "_timeing.png";
 				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
 				
@@ -250,7 +250,7 @@ class ControllingModel extends ProjectsModel {
 				}
 				
 				$chart["rest"] = $this->getRest($chart["real"]);
-				$chart["title"] = $lang["CONTROLLING_TASKS"];
+				$chart["title"] = $lang["PROJECT_CONTROLLING_TASKS"];
 				$chart["img_name"] = "p_" . $id . "_tasks.png";
 				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
 
@@ -267,5 +267,5 @@ class ControllingModel extends ProjectsModel {
 
 }
 
-$controllingmodel = new ControllingModel();
+$projectsControllingModel = new ProjectsControllingModel();
 ?>

@@ -20,8 +20,8 @@
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang["PROJECT_FOLDER"];?></span></td>
 		<td class="tcell-right"><?php echo($folder->title);?></td>
-        <td width="30"><a href="#" class="bin-restoreFolder" rel="<?php echo $folder->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="#" class="bin-deleteFolder" rel="<?php echo $folder->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="30"><a href="projects_folder" class="binRestore" rel="<?php echo $folder->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="30"><a href="projects_folder" class="binDelete" rel="<?php echo $folder->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>

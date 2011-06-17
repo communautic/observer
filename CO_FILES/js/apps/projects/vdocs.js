@@ -23,8 +23,8 @@ function getDetailsVDoc(moduleidx,liindex) {
 	var id = $("#projects3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
 	$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/vdocs&request=getDetails&id="+id, success: function(html){
 		$("#"+projects.name+"-right").html(html);
-		initContentScrollbar();
-		initScrollbar( '.projects3-content:visible .scrolling-content' );
+		initProjectsContentScrollbar();
+		//initScrollbar( '.projects3-content:visible .scrolling-content' );
 		}
 	});
 }
@@ -77,7 +77,7 @@ function newVDoc() {
 				var num = index+1;
 				$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/vdocs&request=getDetails&id="+data.id+"&num="+num, success: function(html){
 					$("#projects-right").html(html);
-					initContentScrollbar();
+					initProjectsContentScrollbar();
 					}
 				});
 				projectsActions(0);
@@ -193,7 +193,7 @@ function sortClickVDoc(obj,sortcur,sortnew) {
 		  $.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/vdocs&request=getDetails&id="+id+"&num="+num, success: function(html){
 			  $("#"+projects.name+"-right").html(html);
 			 //initScrollbar( '#projects .scrolling-content' );
-				initContentScrollbar();
+				initProjectsContentScrollbar();
 			  }
 		  });
 	}

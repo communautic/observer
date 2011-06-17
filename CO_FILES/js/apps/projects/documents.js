@@ -128,7 +128,7 @@ function projectsDocuments(name) {
 				}
 				
 			}
-			initContentScrollbar();
+			initProjectsContentScrollbar();
 			}
 		});
 	}
@@ -510,7 +510,7 @@ var projects_documents = new projectsDocuments('projects_documents');
 			}
 			
 		}
-		initContentScrollbar();
+		initProjectsContentScrollbar();
 		}
 	});
 }*/
@@ -712,7 +712,7 @@ function sendDocumentResponse() {
 		var element = $('.cbx:eq('+idx+')');
 		$.jNice.CheckAddPO(element);
 		$('.documentouter:eq('+idx+')').slideDown(function() {
-			initContentScrollbar();								   
+			initProjectsContentScrollbar();								   
 		});
 		 }
 	});

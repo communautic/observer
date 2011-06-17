@@ -1,13 +1,13 @@
 <?php
 
-class Phases extends Projects {
+class ProjectsPhases extends Projects {
 	var $module;
 
 
 	function __construct($name) {
 			$this->module = $name;
 			$this->form_url = "apps/projects/modules/$name/";
-			$this->model = new PhasesModel();
+			$this->model = new ProjectsPhasesModel();
 			$this->binDisplay = true;
 	}
 
@@ -64,7 +64,7 @@ class Phases extends Projects {
 			ob_end_clean();
 			$title = $phase->title;
 		}
-		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_PHASE"];
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PROJECT_PRINT_PHASE"];
 		switch($t) {
 			case "html":
 				$this->printHTML($title,$html);
@@ -109,7 +109,7 @@ class Phases extends Projects {
 			ob_end_clean();
 			$title = $phase->title;
 		}
-		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_PHASE"];
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PROJECT_PRINT_PHASE"];
 		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
 		$pdf = $this->savePDF($title,$html,$attachment);
 		
@@ -300,5 +300,5 @@ class Phases extends Projects {
 
 }
 
-$phases = new Phases("phases");
+$projectsPhases = new ProjectsPhases("phases");
 ?>

@@ -8,8 +8,8 @@ $left = 235;
 <div style="position: absolute; width: <?php echo($project["page_width"]-24);?>px; top: <?php echo $top-100; ?>px; left: 0px; height: 22px;  vertical-align: top; padding: 3px 24px 0 0; text-align:right"><?php echo $date->formatDate("now","d.m.Y");;?></div>
 
 
-<div style="position: absolute; width: 163px; top: <?php echo $top; ?>px; left: 0px; padding: 1px 0 0 24px; height: 15px; vertical-align: top; font-size: 10px; line-height: 16px;"><?php echo $lang['TIMELINE_ACTION'];?></div>
-<div style="position: absolute; width: 28px; top: <?php echo $top; ?>px; left: 189px; text-align: right;  padding: 1px 10px 0 0;  height: 15px;  vertical-align: top; font-size: 10px; line-height: 16px;"><?php echo $lang['TIMELINE_TIME'];?></div>
+<div style="position: absolute; width: 163px; top: <?php echo $top; ?>px; left: 0px; padding: 1px 0 0 24px; height: 15px; vertical-align: top; font-size: 10px; line-height: 16px;"><?php echo $lang['PROJECT_TIMELINE_ACTION'];?></div>
+<div style="position: absolute; width: 28px; top: <?php echo $top; ?>px; left: 189px; text-align: right;  padding: 1px 10px 0 0;  height: 15px;  vertical-align: top; font-size: 10px; line-height: 16px;"><?php echo $lang['PROJECT_TIMELINE_TIME'];?></div>
 
 <div style="position: absolute; width: 163px; top: <?php echo $top+16; ?>px; left: 0px; padding: 1px 0 0 24px; height: 15px; background-color: #e5e5e5; vertical-align: top; font-size: 12px; line-height: 16px;"><?php echo $lang['PROJECT_KICKOFF'];?></div>
 <div style="position: absolute; width: 28px; top: <?php echo $top+16; ?>px; left: 189px; text-align: right;  padding: 1px 10px 0 0;  height: 15px;  background-color: #e5e5e5; vertical-align: top; font-size: 12px; line-height: 16px;">1</div>
@@ -161,21 +161,21 @@ $top = $top-7;
             <?php } 
 			$i++;
 			 } ?>
-<div style="position: absolute; width: <?php echo($project["page_width"]-24);?>px; top: <?php echo $project["css_height"]+150;?>px; left: 0px; height: 19px;  background-color: #e5e5e5; vertical-align: top; padding: 3px 0 0 24px;"><?php echo TIMELINE_PROJECT_PLAN;?></div>
+<div style="position: absolute; width: <?php echo($project["page_width"]-24);?>px; top: <?php echo $project["css_height"]+150;?>px; left: 0px; height: 19px;  background-color: #e5e5e5; vertical-align: top; padding: 3px 0 0 24px;"><?php echo $lang["PROJECT_TIMELINE_PROJECT_PLAN"];?></div>
 
 <div style="position: absolute; width: <?php echo($project["page_width"]-$left);?>px; top: <?php echo $project["css_height"]+148;?>px; left: <?php echo($left-18);?>px; height: 19px; text-align:center;"><table border="0" cellspacing="0" cellpadding="0" class="timeline-legend">
     <tr>
         <td><span><img src="<?php echo(CO_FILES);?>/img/print/gantt_milestone.png" width="12" height="12" /> Meilenstein</span></td>
         <td width="15"></td>
-        <td class="barchart_color_planned"><span><?php echo TIMELINE_STATUS_PLANED;?></span></td>
+        <td class="barchart_color_planned"><span><?php echo $lang["PROJECT_TIMELINE_STATUS_PLANED"];?></span></td>
         <td width="15"></td>
-        <td class="barchart_color_inprogress"><span><?php echo TIMELINE_STATUS_INPROGRESS;?></span></td>
+        <td class="barchart_color_inprogress"><span><?php echo $lang["PROJECT_TIMELINE_STATUS_INPROGRESS"];?></span></td>
          <td width="15"></td>
-        <td class="barchart_color_finished"><span><?php echo TIMELINE_STATUS_FINISHED;?></span></td>
+        <td class="barchart_color_finished"><span><?php echo $lang["PROJECT_TIMELINE_STATUS_FINISHED"];?></span></td>
          <td width="15"></td>
-        <td class="barchart_color_not_finished"><span><?php echo TIMELINE_STATUS_NOT_FINISHED;?></span></td>
+        <td class="barchart_color_not_finished"><span><?php echo $lang["PROJECT_TIMELINE_STATUS_NOT_FINISHED"];?></span></td>
          <td width="15"></td>
-        <td class="barchart_color_overdue"><span><?php echo TIMELINE_STATUS_OVERDUE;?></span></td>
+        <td class="barchart_color_overdue"><span><?php echo $lang["PROJECT_TIMELINE_STATUS_OVERDUE"];?></span></td>
     </tr>
 </table></div>
 <div style="position: absolute; width: <?php echo($project["css_width"]+$left);?>px; top: <?php echo $project["css_height"]+180;?>px; left: 0px; height: 19px; vertical-align: top; padding: 3px 0 0 24px;"><img src="<?php echo(CO_FILES);?>/img/print/poweredbyco.png" width="135" height="9" /></div>

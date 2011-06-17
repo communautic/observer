@@ -1,22 +1,20 @@
 <?php
-$timelines_name = "Zeitpläne";
+$projects_timelines_name = "Zeitpläne";
 
-// Right
-define("TIMELINE_PROJECT_STRUCTURE", 'Projektstrukturplan (PSP)');
-define("TIMELINE_DATES_LIST", 'Terminliste');
-define("TIMELINE_PROJECT_PLAN", 'Balkenplan');
-define("TIMELINE_DATES_MILESTONES", 'Meilensteinplan');
+$lang["PROJECT_TIMELINE_PROJECT_PLAN"] = "Balkenplan";
+$lang["PROJECT_TIMELINE_DATES_LIST"] = "Terminliste";
+$lang["PROJECT_TIMELINE_PROJECT_STRUCTURE"] = "Projektstrukturplan (PSP)";
+$lang["PROJECT_TIMELINE_DATES_MILESTONES"] = "Meilensteinplan";
 
-define('TIMELINE_STATUS_PLANED', 'in Planung');
-define('TIMELINE_STATUS_INPROGRESS', 'in Arbeit');
-define('TIMELINE_STATUS_FINISHED', 'abgeschlossen');
-define('TIMELINE_STATUS_NOT_FINISHED', 'nicht abgeschlossen');
-define('TIMELINE_STATUS_OVERDUE', 'außer Plan');
+$lang["PROJECT_TIMELINE_STATUS_PLANED"] = "in Planung";
+$lang["PROJECT_TIMELINE_STATUS_INPROGRESS"] = "in Arbeit";
+$lang["PROJECT_TIMELINE_STATUS_FINISHED"] = "abgeschlossen";
+$lang["PROJECT_TIMELINE_STATUS_NOT_FINISHED"] = "nicht abgeschlossen";
+$lang["PROJECT_TIMELINE_STATUS_OVERDUE"] = "außer Plan";
+$lang["PROJECT_TIMELINE_STATUS_OVERDUE_POPUP"] = "Tag/e außer Plan";
 
-define('TIMELINE_STATUS_OVERDUE_POPUP', 'Tag/e außer Plan');
+$lang['PROJECT_TIMELINE_TIME'] = 'Tage';
+$lang['PROJECT_TIMELINE_ACTION'] = 'Vorgang';
 
-$lang['TIMELINE_TIME'] = 'Tage';
-$lang['TIMELINE_ACTION'] = 'Vorgang';
-
-$lang["PRINT_TIMELINE"] = 'terminliste.png';
+$lang["PROJECT_PRINT_TIMELINE"] = 'terminliste.png';
 ?>

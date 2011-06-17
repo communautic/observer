@@ -10,7 +10,7 @@ class ContactsModel extends Model {
    function getGroupList($sort) {
       global $session;
 	  if($sort == 0) {
-		  $sortstatus = $this->getSortStatus("group-sort-status");
+		  $sortstatus = $this->getSortStatus("contacts-group-sort-status");
 		  if(!$sortstatus) {
 		  	$order = "order by title";
 			$sortcur = '1';
@@ -25,7 +25,7 @@ class ContactsModel extends Model {
 						$sortcur = '2';
 				  break;
 				  case "3":
-				  		$sortorder = $this->getSortOrder("group-sort-order");
+				  		$sortorder = $this->getSortOrder("contacts-group-sort-order");
 				  		if(!$sortorder) {
 						  	$order = "order by title";
 							$sortcur = '1';
@@ -47,7 +47,7 @@ class ContactsModel extends Model {
 						$sortcur = '2';
 				  break;
 				  case "3":
-				  		$sortorder = $this->getSortOrder("group-sort-order");
+				  		$sortorder = $this->getSortOrder("contacts-group-sort-order");
 				  		if(!$sortorder) {
 						  	$order = "order by title";
 							$sortcur = '1';
@@ -61,7 +61,7 @@ class ContactsModel extends Model {
 	  
 	  $q = "select id, title, members from " . CO_CONTACTS_TBL_GROUPS . " where bin = '0' " . $order;
 	  
-	  $this->setSortStatus("group-sort-status",$sortcur);
+	  $this->setSortStatus("contacts-group-sort-status",$sortcur);
       $result = mysql_query($q, $this->_db->connection);
 	  $groups = "";
 	  while ($row = mysql_fetch_array($result)) {
