@@ -1,6 +1,6 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%" class="grey">
 	<tr>
-        <td class="tcell-left"><?php echo TIMELINE_DATES_LIST;?></td>
+        <td class="tcell-left"><?php echo $lang["PROJECT_TIMELINE_DATES_LIST"];?></td>
         <td>&nbsp;</td>
 	</tr>
 </table>
@@ -25,7 +25,7 @@ if($numPhases > 0) {
     
     <table border="0" cellpadding="0" cellspacing="0" width="100%" class="grey">
 	<tr>
-        <td class="tcell-left"><?php echo $lang["PHASE_TITLE"];?></td>
+        <td class="tcell-left"><?php echo $lang["PROJECT_PHASE_TITLE"];?></td>
         <td><?php echo($countPhases . ". " . $project["phases"][$key]["title"]);?><br />
         <?php echo($project["phases"][$key]["startdate"]);?> - <?php echo($project["phases"][$key]["enddate"]);?></td>
 	</tr>

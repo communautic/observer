@@ -11,7 +11,7 @@ function projectsControlling(name) {
 		}
 		$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/controlling&request=getDetails&id="+phaseid+"&pid="+pid, success: function(html){
 				$("#"+projects.name+"-right").html(html);
-				initContentScrollbar();
+				initProjectsContentScrollbar();
 				projectsActions(8);
 				}
 		});
@@ -77,7 +77,7 @@ var projects_controlling = new projectsControlling('projects_controlling');
 	}
 	$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/controlling&request=getDetails&id="+phaseid+"&pid="+pid, success: function(html){
 				$("#"+projects.name+"-right").html(html);
-				initContentScrollbar();
+				initProjectsContentScrollbar();
 				projectsActions(8);
 				}
 		});

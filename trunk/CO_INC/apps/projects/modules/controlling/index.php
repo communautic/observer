@@ -22,7 +22,7 @@ include_once(CO_INC . "/apps/projects/modules/controlling/lang/" . $session->use
 include_once(CO_INC . "/apps/projects/modules/controlling/model.php");
 include_once(CO_INC . "/apps/projects/modules/controlling/controller.php");
 
-$controlling = new Controlling("controlling");
+$projectsControlling = new ProjectsControlling("controlling");
 
 if (!empty($_GET['request'])) {
 	switch ($_GET['request']) {
@@ -31,23 +31,23 @@ if (!empty($_GET['request'])) {
 			if(!empty($_GET['sort'])) {
 				$sort = $_GET['sort'];
 			}
-			echo($controlling->getList($_GET['id'],$sort));
+			echo($projectsControlling->getList($_GET['id'],$sort));
 		break;
 		case 'getDetails':
-			echo($controlling->getDetails($_GET['id'],$_GET['pid']));
+			echo($projectsControlling->getDetails($_GET['id'],$_GET['pid']));
 		break;
 		case 'printDetails':
 			$t = "pdf"; // options: pdf, html
 			if(!empty($_GET['t'])) {
 				$t = $_GET['t'];
 			}
-			echo($controlling->printDetails($_GET['id'],$_GET['pid'],$t));
+			echo($projectsControlling->printDetails($_GET['id'],$_GET['pid'],$t));
 		break;
 		case 'getSend':
-			echo($controlling->getSend($_GET['id'],$_GET['pid']));
+			echo($projectsControlling->getSend($_GET['id'],$_GET['pid']));
 		break;
 		case 'getSendtoDetails':
-			echo($controlling->getSendtoDetails("controlling",$_GET['id']));
+			echo($projectsControlling->getSendtoDetails("controlling",$_GET['id']));
 		break;
 		case 'getDailyStatistic':
 			$md5 = "8434a915e0326f424aa8228c9261524e";
@@ -55,7 +55,7 @@ if (!empty($_GET['request'])) {
 			if($md5 != $k) {
 				exit();
 			}
-			echo($controlling->getDailyStatistic());
+			echo($projectsControlling->getDailyStatistic());
 		break;
 	}
 }
@@ -63,7 +63,7 @@ if (!empty($_GET['request'])) {
 if (!empty($_POST['request'])) {
 	switch ($_POST['request']) {
 		case 'sendDetails':
-			echo($controlling->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
+			echo($projectsControlling->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
 		break;
 	}
 }

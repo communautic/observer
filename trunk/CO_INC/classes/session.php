@@ -102,6 +102,10 @@ class Session
          if($database->confirmUserID($_SESSION['username'], $_SESSION['userid']) != 0){
             unset($_SESSION['username']);
             unset($_SESSION['userid']);
+			if(isset($_COOKIE['cookname']) && isset($_COOKIE['cookid'])){
+				setcookie("cookname", "", time()-COOKIE_EXPIRE, COOKIE_PATH);
+				setcookie("cookid",   "", time()-COOKIE_EXPIRE, COOKIE_PATH);
+      		}
             return false;
          }
 
@@ -189,6 +193,7 @@ class Session
       $this->username  = $_SESSION['username'] = $this->userinfo['username'];
       $this->userid    = $_SESSION['userid']   = $this->generateRandID();
       $this->userlevel = $this->userinfo['userlevel'];
+	  $this->uid = $this->userinfo['id'];
       
       /* Insert userid into database and update active users table */
       $database->updateUserField($this->username, "userid", $this->userid);

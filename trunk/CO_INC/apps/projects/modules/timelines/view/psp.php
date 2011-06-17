@@ -1,19 +1,19 @@
 <div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-title grey">
   <tr>
-    <td class="tcell-left text11"><span class="content-nav-title"><?php echo TIMELINE_PROJECT_STRUCTURE;?></span></td>
+    <td class="tcell-left text11"><span class="content-nav-title"><?php echo $lang["PROJECT_TIMELINE_PROJECT_STRUCTURE"];?></span></td>
     <td>
     <table border="0" cellspacing="0" cellpadding="0" class="timeline-legend">
     <tr>
-        <td class="barchart_color_planned"><span><?php echo TIMELINE_STATUS_PLANED;?></span></td>
+        <td class="barchart_color_planned"><span><?php echo $lang["PROJECT_TIMELINE_STATUS_PLANED"];?></span></td>
         <td width="15"></td>
-        <td class="barchart_color_inprogress"><span><?php echo TIMELINE_STATUS_INPROGRESS;?></span></td>
+        <td class="barchart_color_inprogress"><span><?php echo $lang["PROJECT_TIMELINE_STATUS_INPROGRESS"];?></span></td>
          <td width="15"></td>
-        <td class="barchart_color_finished"><span><?php echo TIMELINE_STATUS_FINISHED;?></span></td>
+        <td class="barchart_color_finished"><span><?php echo $lang["PROJECT_TIMELINE_STATUS_FINISHED"];?></span></td>
          <td width="15"></td>
-        <td class="barchart_color_not_finished"><span><?php echo TIMELINE_STATUS_NOT_FINISHED;?></span></td>
+        <td class="barchart_color_not_finished"><span><?php echo $lang["PROJECT_TIMELINE_STATUS_NOT_FINISHED"];?></span></td>
          <td width="15"></td>
-        <td class="barchart_color_overdue"><span><?php echo TIMELINE_STATUS_OVERDUE;?></span></td>
+        <td class="barchart_color_overdue"><span><?php echo $lang["PROJECT_TIMELINE_STATUS_OVERDUE"];?></span></td>
     </tr>
 </table></td>
   </tr>
@@ -41,7 +41,7 @@ $width = $numPhases * 170;
 	<div style="width: <?php echo($width+150);?>px">
     <div style="width: 150px; float: left;">
       <div style="height: 58px; margin-bottom: 18px;"></div>
-      <div class="text11" style="padding-left: 15px; color: #666666;"><?php echo $lang["PHASE_TASK_MILESTONE"];?></div>
+      <div class="text11" style="padding-left: 15px; color: #666666;"><?php echo $lang["PROJECT_PHASE_TASK_MILESTONE"];?></div>
     </div>
 	<?php
     

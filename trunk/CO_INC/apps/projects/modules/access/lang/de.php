@@ -1,7 +1,7 @@
 <?php
-$access_name = "Zugang";
+$projects_access_name = "Zugang";
 
-$lang["ACCESSRIGHTS"] = 'Berechtigungen';
+$lang["PROJECT_ACCESSRIGHTS"] = 'Berechtigungen';
 
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/projects/access/de.php";

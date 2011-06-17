@@ -83,7 +83,7 @@ function projectsMeetings(name) {
 	}
 	
 	
-	this.poformOptions = { beforeSubmit: this.formProcess, dataType:  'json', success: this.formResponse };
+	this.poformOptions = { beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
 
 
 	this.getDetails = function(moduleidx,liindex,list) {
@@ -127,7 +127,7 @@ function projectsMeetings(name) {
 				}
 				
 			}
-			initContentScrollbar();
+			initProjectsContentScrollbar();
 			}
 		});	
 	}
@@ -237,6 +237,7 @@ function projectsMeetings(name) {
 			}
 		});
 	}
+
 
 	this.actionPrint = function() {
 		var id = $("#projects3 .active-link:visible").attr("rel");
@@ -385,7 +386,7 @@ function projectsMeetings(name) {
 				if(idx == 6) {
 				$('#projects-right .addTaskTable').clone().insertAfter('#phasetasks');
 				}
-				initContentScrollbar();
+				initProjectsContentScrollbar();
 			});
 			}
 		});
@@ -562,7 +563,7 @@ var projects_meetings = new projectsMeetings('projects_meetings');
 			}
 			
 		}
-		initContentScrollbar();
+		initProjectsContentScrollbar();
 		}
 	});
 }*/
@@ -944,7 +945,7 @@ function meetingToggleIntern(id,status,obj) {
 				if(idx == 6) {
 				$('#projects-right .addTaskTable').clone().insertAfter('#phasetasks');
 				}
-				initContentScrollbar();
+				initProjectsContentScrollbar();
 			});
 			}
 		});

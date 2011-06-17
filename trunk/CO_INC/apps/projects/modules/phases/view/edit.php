@@ -1,7 +1,7 @@
 <div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-title">
   <tr>
-    <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav focusTitle<?php } ?>"><span><?php echo $lang["PHASE_TITLE"];?></span></span></td>
+    <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav focusTitle<?php } ?>"><span><?php echo $lang["PROJECT_PHASE_TITLE"];?></span></span></td>
 	<td width="20"><div class="bold"><?php echo($phase->num) ;?>.</div></td>
     <td><input name="title" type="text" class="title textarea-title" value="<?php echo($phase->title);?>" maxlength="100" /></td>
   </tr>
@@ -40,7 +40,7 @@
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
   <tr>
-    <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="team" append="1"><span><?php echo $lang["PHASE_TEAM"];?></span></span></td>
+    <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="team" append="1"><span><?php echo $lang["PROJECT_PHASE_TEAM"];?></span></span></td>
     <td class="tcell-right"><div id="team" class="itemlist-field"><?php echo($phase->team);?></div><div id="team_ct" class="itemlist-field"><a field="team_ct" class="ct-content"><?php echo($phase->team_ct);?></a></div></td>
   </tr>
 </table>
@@ -61,7 +61,7 @@
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content addTaskTable">
 	<tr>
-		<td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav showDialog<?php } ?>" request="getPhaseTaskDialog" field="status" append="1"><span><?php echo $lang["PHASE_TASK_MILESTONE"];?></span></span>
+		<td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav showDialog<?php } ?>" request="getPhaseTaskDialog" field="status" append="1"><span><?php echo $lang["PROJECT_PHASE_TASK_MILESTONE"];?></span></span>
         </td>
     <td class="tcell-right">&nbsp;</td>
     </tr>
@@ -88,7 +88,7 @@ foreach($task as $value) {
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
   <tr>
-    <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav showDialog<?php } ?>" request="getDocumentsDialog" field="documents" append="1"><span><?php echo $lang["DOCUMENT_DOCUMENTS"];?></span></span></td>
+    <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav showDialog<?php } ?>" request="getDocumentsDialog" field="documents" append="1"><span><?php echo $lang["PROJECT_DOCUMENT_DOCUMENTS"];?></span></span></td>
     <td class="tcell-right"><div id="documents" class="itemlist-field"><?php echo($phase->documents);?></div></td>
   </tr>
 </table>

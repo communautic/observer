@@ -1,11 +1,11 @@
 <?php
-class Controlling extends Projects {
+class ProjectsControlling extends Projects {
 	var $module;
 
 	function __construct($name) {
 			$this->module = $name;
 			$this->form_url = "apps/projects/modules/$name/";
-			$this->model = new ControllingModel();
+			$this->model = new ProjectsControllingModel();
 			$this->binDisplay = false;
 	}
 
@@ -43,9 +43,9 @@ class Controlling extends Projects {
 				include 'view/print.php';
 				$html = ob_get_contents();
 			ob_end_clean();
-			$title =  $tit . " - " . $lang["CONTROLLING_STATUS"];
+			$title =  $tit . " - " . $lang["PROJECT_CONTROLLING_STATUS"];
 		}
-		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_CONTROLLING"];
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PROJECT_PRINT_CONTROLLING"];
 		switch($t) {
 			case "html":
 				$this->printHTML($title,$html);
@@ -62,7 +62,7 @@ class Controlling extends Projects {
 		$request = "sendDetails";
 		$to = "";
 		$cc = "";
-		$subject = $projectsmodel->getProjectTitle($pid) . " - " . $lang["CONTROLLING_STATUS"];
+		$subject = $projectsmodel->getProjectTitle($pid) . " - " . $lang["PROJECT_CONTROLLING_STATUS"];
 		$variable = $pid;
 		include CO_INC .'/view/dialog_send.php';
 	}
@@ -78,9 +78,9 @@ class Controlling extends Projects {
 				include 'view/print.php';
 				$html = ob_get_contents();
 			ob_end_clean();
-			$title =  $tit . " - " . $lang["CONTROLLING_STATUS"];
+			$title =  $tit . " - " . $lang["PROJECT_CONTROLLING_STATUS"];
 		}
-		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_CONTROLLING"];
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PROJECT_PRINT_CONTROLLING"];
 		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
 		$pdf = $this->savePDF($title,$html,$attachment);
 		
@@ -113,5 +113,5 @@ class Controlling extends Projects {
 	
 }
 
-$controlling = new Controlling("controlling");
+$projectsControlling = new ProjectsControlling("controlling");
 ?>

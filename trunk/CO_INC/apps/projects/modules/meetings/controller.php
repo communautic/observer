@@ -1,12 +1,12 @@
 <?php
 
-class Meetings extends Projects {
+class ProjectsMeetings extends Projects {
 	var $module;
 
 	function __construct($name) {
 			$this->module = $name;
 			$this->form_url = "apps/projects/modules/$name/";
-			$this->model = new MeetingsModel();
+			$this->model = new ProjectsMeetingsModel();
 			$this->binDisplay = true;
 	}
 
@@ -61,7 +61,7 @@ class Meetings extends Projects {
 			ob_end_clean();
 			$title = $meeting->title;
 		}
-		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_MEETING"];
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PROJECT_PRINT_MEETING"];
 		switch($t) {
 			case "html":
 				$this->printHTML($title,$html);
@@ -106,7 +106,7 @@ class Meetings extends Projects {
 			ob_end_clean();
 			$title = $meeting->title;
 		}
-		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_MEETING"];
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PROJECT_PRINT_MEETING"];
 		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
 		$pdf = $this->savePDF($title,$html,$attachment);
 		
@@ -243,5 +243,5 @@ class Meetings extends Projects {
 
 }
 
-$meetings = new Meetings("meetings");
+$projectsMeetings = new ProjectsMeetings("meetings");
 ?>

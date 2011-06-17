@@ -22,7 +22,6 @@ $lang["ACTION_NEW"] = "new";
 $lang["ACTION_PRINT"] = "print";
 $lang["ACTION_SENDTO"] = "send to";
 $lang["ACTION_DUPLICATE"] = "duplicate";
-$lang["ACTION_PROJECTHANDBOOK"] = "Project Manual";
 $lang["ACTION_REFRESH"] = "Refresh";
 $lang["ACTION_DELETE"] = "delete";
 

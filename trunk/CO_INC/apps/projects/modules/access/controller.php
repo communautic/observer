@@ -1,12 +1,12 @@
 <?php
-class Access extends Projects {
+class ProjectsAccess extends Projects {
 	var $module;
 	
 	// get all available apps
 	function __construct($name) {
 			$this->module = $name;
 			$this->form_url = "apps/projects/modules/$name/";
-			$this->model = new AccessModel();
+			$this->model = new ProjectsAccessModel();
 			$this->binDisplay = false;
 	}
 	
@@ -42,5 +42,5 @@ class Access extends Projects {
 
 }
 
-$access = new Access("access");
+$projectsAccess = new ProjectsAccess("access");
 ?>

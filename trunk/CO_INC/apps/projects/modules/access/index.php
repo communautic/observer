@@ -15,7 +15,7 @@ include_once(CO_INC . "/apps/projects/modules/access/lang/" . $session->userlang
 include_once(CO_INC . "/apps/projects/modules/access/model.php");
 include_once(CO_INC . "/apps/projects/modules/access/controller.php");
 
-$access = new Access("access");
+$projectsAccess = new ProjectsAccess("access");
 
 // GET requests
 if (!empty($_GET['request'])) {
@@ -25,10 +25,10 @@ if (!empty($_GET['request'])) {
 			if(!empty($_GET['sort'])) {
 				$sort = $_GET['sort'];
 			}
-			echo($access->getList($_GET['id'],$sort));
+			echo($projectsAccess->getList($_GET['id'],$sort));
 		break;
 		case 'getDetails':
-			echo($access->getDetails($_GET['id']));
+			echo($projectsAccess->getDetails($_GET['id']));
 		break;
 	}
 }
@@ -38,7 +38,7 @@ if (!empty($_POST['request'])) {
 	
 	switch ($_POST['request']) {
 		case 'setDetails':
-			echo($access->setDetails($_POST['pid'],$_POST['admins'],$_POST['guests']));
+			echo($projectsAccess->setDetails($_POST['pid'],$_POST['admins'],$_POST['guests']));
 		break;
 	}
 }

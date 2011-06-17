@@ -4,13 +4,13 @@ include_once("config.php");
 include_once("lang/" . $session->userlang . ".php");
 include_once("model.php");*/
 
-class Documents extends Projects {
+class ProjectsDocuments extends Projects {
 	var $module;
 
 	function __construct($name) {
 			$this->module = $name;
 			$this->form_url = "apps/projects/modules/$name/";
-			$this->model = new DocumentsModel();
+			$this->model = new ProjectsDocumentsModel();
 			$this->binDisplay = true;
 	}
 
@@ -65,7 +65,7 @@ class Documents extends Projects {
 			ob_end_clean();
 			$title = $document->title;
 		}
-		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_DOCUMENT"];
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PROJECT_PRINT_DOCUMENT"];
 		switch($t) {
 			case "html":
 				$this->printHTML($title,$html);
@@ -111,7 +111,7 @@ class Documents extends Projects {
 			ob_end_clean();
 			$title = $document->title;*/
 		}
-		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_DOCUMENT"];
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PROJECT_PRINT_DOCUMENT"];
 		//$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
 		//$pdf = $this->savePDF($title,$html,$attachment);
 		$attachment = "";
@@ -239,5 +239,5 @@ class Documents extends Projects {
 
 }
 
-$documents = new Documents("documents");
+$projectsDocuments = new ProjectsDocuments("projectsDocuments");
 ?>

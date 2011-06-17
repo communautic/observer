@@ -1,35 +1,35 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%" class="grey">
 	<tr>
-        <td class="tcell-left"><?php echo $lang["MEETING_TITLE"];?></td>
+        <td class="tcell-left"><?php echo $lang["PROJECT_MEETING_TITLE"];?></td>
         <td><strong><?php echo($meeting->title);?></strong></td>
 	</tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%" class="standard">
 	<tr>
-		<td class="tcell-left"><?php echo $lang["MEETING_DATE"];?></td>
+		<td class="tcell-left"><?php echo $lang["PROJECT_MEETING_DATE"];?></td>
 		<td><?php echo($meeting->meeting_date)?></td>
     </tr>
 	<tr>
-	  <td class="tcell-left"><?php echo $lang["MEETING_TIME_START"];?></td>
+	  <td class="tcell-left"><?php echo $lang["PROJECT_MEETING_TIME_START"];?></td>
         <td><?php echo($meeting->start);?></td>
 	</tr>
 	<tr>
-	  <td class="tcell-left"><?php echo $lang["MEETING_TIME_END"];?></td>
+	  <td class="tcell-left"><?php echo $lang["PROJECT_MEETING_TIME_END"];?></td>
         <td><?php echo($meeting->end);?></td>
 	</tr>
     <tr>
-	  <td class="tcell-left"><?php echo $lang["MEETING_PLACE"];?></td>
+	  <td class="tcell-left"><?php echo $lang["PROJECT_MEETING_PLACE"];?></td>
         <td><?php echo($meeting->location);?></td>
 	</tr>
 </table>
 &nbsp;
 <table border="0" cellpadding="0" cellspacing="0" width="100%" class="standard">
 	<tr>
-		<td class="tcell-left"><?php echo $lang["MEETING_ATTENDEES"];?></td>
+		<td class="tcell-left"><?php echo $lang["PROJECT_MEETING_ATTENDEES"];?></td>
 		<td><?php echo($meeting->participants)?></td>
     </tr>
 	<tr>
-	  <td class="tcell-left"><?php echo $lang["MEETING_MANAGEMENT"];?></td>
+	  <td class="tcell-left"><?php echo $lang["PROJECT_MEETING_MANAGEMENT"];?></td>
         <td><?php echo($meeting->management);?></td>
 	</tr>
 	<tr>
@@ -48,7 +48,7 @@ foreach($task as $value) {
      ?>
     <table border="0" cellpadding="0" cellspacing="0" width="100%" class="standard">
         <tr>
-            <td class="tcell-left-short"><?php if($i == 1) { echo $lang["MEETING_GOALS"]; }?>&nbsp;</td>
+            <td class="tcell-left-short"><?php if($i == 1) { echo $lang["PROJECT_MEETING_GOALS"]; }?>&nbsp;</td>
             <td class="short"><?php echo $img;?></td>
             <td class="greybg"><?php echo($value->title);?></td>
         </tr>

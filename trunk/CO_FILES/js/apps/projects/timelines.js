@@ -11,8 +11,8 @@ function projectsTimelines(name) {
 		}
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/timelines&request=getDetails&id="+id+"&pid="+pid, success: function(data){
 			$("#projects-right").html(data.html);
-			initContentScrollbar();
-			initScrollbar( '.projects3-content:visible .scrolling-content' );
+			initProjectsContentScrollbar();
+			//initScrollbar( '.projects3-content:visible .scrolling-content' );
 					if(data.access == "guest") {
 						projectsActions(5);
 					} else {
@@ -95,7 +95,7 @@ var projects_timelines = new projectsTimelines('projects_timelines');
 	}
 	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/timelines&request=getDetails&id="+id+"&pid="+pid, success: function(data){
 		$("#projects-right").html(data.html);
-		initContentScrollbar();
+		initProjectsContentScrollbar();
 		initScrollbar( '.projects3-content:visible .scrolling-content' );
 				if(data.access == "guest") {
 					projectsActions(5);
@@ -111,7 +111,7 @@ var projects_timelines = new projectsTimelines('projects_timelines');
 	var pid = $("#projects2 .module-click:visible").attr("rel");
 	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/timelines&request=getDetails&id=1&pid="+pid+"&zoom="+zoom, success: function(data){
 		$("#projects-right").html(data.html);
-		initContentScrollbar();
+		initProjectsContentScrollbar();
 		//alert($("#slider").slider( "option" , "value"));
 		$("#slider").slider("option", "value", zoom);
 		}
@@ -176,7 +176,7 @@ $(document).ready(function() {
 		var pid = $("#projects2 .module-click:visible").attr("rel");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/timelines&request=getDetails&id=1&pid="+pid+"&zoom="+zoom, success: function(data){
 			$("#projects-right").html(data.html);
-			initContentScrollbar();
+			initProjectsContentScrollbar();
 			}
 		});
 	});

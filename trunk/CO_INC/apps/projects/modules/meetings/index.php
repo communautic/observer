@@ -28,7 +28,7 @@ include_once(CO_INC . "/apps/projects/modules/meetings/config.php");
 include_once(CO_INC . "/apps/projects/modules/meetings/lang/" . $session->userlang . ".php");
 include_once(CO_INC . "/apps/projects/modules/meetings/model.php");
 include_once(CO_INC . "/apps/projects/modules/meetings/controller.php");
-$meetings = new Meetings("meetings");
+$projectsMeetings = new ProjectsMeetings("meetings");
 
 
 if (!empty($_GET['request'])) {
@@ -38,25 +38,25 @@ if (!empty($_GET['request'])) {
 			if(!empty($_GET['sort'])) {
 				$sort = $_GET['sort'];
 			}
-			echo($meetings->getList($_GET['id'],$sort));
+			echo($projectsMeetings->getList($_GET['id'],$sort));
 		break;
 		case 'getDetails':
-			echo($meetings->getDetails($_GET['id']));
+			echo($projectsMeetings->getDetails($_GET['id']));
 		break;
 		case 'createNew':
-			echo($meetings->createNew($_GET['id']));
+			echo($projectsMeetings->createNew($_GET['id']));
 		break;
 		case 'createDuplicate':
-			echo($meetings->createDuplicate($_GET['id']));
+			echo($projectsMeetings->createDuplicate($_GET['id']));
 		break;
 		case 'binMeeting':
-			echo($meetings->binMeeting($_GET['id']));
+			echo($projectsMeetings->binMeeting($_GET['id']));
 		break;
 		case 'restoreMeeting':
-			echo($meetings->restoreMeeting($_GET['id']));
+			echo($projectsMeetings->restoreMeeting($_GET['id']));
 		break;
 			case 'deleteMeeting':
-			echo($meetings->deleteMeeting($_GET['id']));
+			echo($projectsMeetings->deleteMeeting($_GET['id']));
 		break;
 		case 'setOrder':
 			echo($projects->setSortOrder("meeting-sort",$_GET['meetingItem'],$_GET['id']));
@@ -66,34 +66,34 @@ if (!empty($_GET['request'])) {
 			if(!empty($_GET['t'])) {
 				$t = $_GET['t'];
 			}
-			echo($meetings->printDetails($_GET['id'],$t));
+			echo($projectsMeetings->printDetails($_GET['id'],$t));
 		break;
 		case 'getSend':
-			echo($meetings->getSend($_GET['id']));
+			echo($projectsMeetings->getSend($_GET['id']));
 		break;
 		case 'getSendtoDetails':
-			echo($meetings->getSendtoDetails("meetings",$_GET['id']));
+			echo($projectsMeetings->getSendtoDetails("meetings",$_GET['id']));
 		break;
 		case 'checkinMeeting':
-			echo($meetings->checkinMeeting($_GET['id']));
+			echo($projectsMeetings->checkinMeeting($_GET['id']));
 		break;
 		case 'toggleIntern':
-			echo($meetings->toggleIntern($_GET['id'],$_GET['status']));
+			echo($projectsMeetings->toggleIntern($_GET['id'],$_GET['status']));
 		break;
 		case 'addTask':
-			echo($meetings->addTask($_GET['mid'],$_GET['num'],$_GET['sort']));
+			echo($projectsMeetings->addTask($_GET['mid'],$_GET['num'],$_GET['sort']));
 		break;
 		case 'deleteTask':
-			echo($meetings->deleteTask($_GET['id']));
+			echo($projectsMeetings->deleteTask($_GET['id']));
 		break;
 		case 'restoreMeetingTask':
-			echo($meetings->restoreMeetingTask($_GET['id']));
+			echo($projectsMeetings->restoreMeetingTask($_GET['id']));
 		break;
 			case 'deleteMeetingTask':
-			echo($meetings->deleteMeetingTask($_GET['id']));
+			echo($projectsMeetings->deleteMeetingTask($_GET['id']));
 		break;
 		case 'getMeetingStatusDialog':
-			echo($meetings->getMeetingStatusDialog());
+			echo($projectsMeetings->getMeetingStatusDialog());
 		break;
 	}
 }
@@ -132,10 +132,10 @@ if (!empty($_POST['request'])) {
 			if(isset($_POST['task_sort'])) {
 				$task_sort = $_POST['task_sort'];
 			}
-			echo($meetings->setDetails($_POST['pid'], $_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['item_date'], $_POST['meetingstart'], $_POST['meetingend'], $_POST['location'], $system->checkMagicQuotes($_POST['location_ct']), $_POST['participants'], $system->checkMagicQuotes($_POST['participants_ct']), $_POST['management'], $system->checkMagicQuotes($_POST['management_ct']),$task_id,$task_title,$task_text,$task,$task_sort,$_POST['documents'],$_POST['meeting_access'],$_POST['meeting_access_orig'],$_POST['meeting_status'],$_POST['meeting_status_date']));
+			echo($projectsMeetings->setDetails($_POST['pid'], $_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['item_date'], $_POST['meetingstart'], $_POST['meetingend'], $_POST['location'], $system->checkMagicQuotes($_POST['location_ct']), $_POST['participants'], $system->checkMagicQuotes($_POST['participants_ct']), $_POST['management'], $system->checkMagicQuotes($_POST['management_ct']),$task_id,$task_title,$task_text,$task,$task_sort,$_POST['documents'],$_POST['meeting_access'],$_POST['meeting_access_orig'],$_POST['meeting_status'],$_POST['meeting_status_date']));
 		break;
 		case 'sendDetails':
-			echo($meetings->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
+			echo($projectsMeetings->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
 		break;
 	}
 }

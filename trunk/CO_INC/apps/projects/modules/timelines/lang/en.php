@@ -1,22 +1,20 @@
 <?php
-$timelines_name = "Scheduling";
+$projects_timelines_name = "Zeitpläne";
 
-// Right
-define("TIMELINE_PROJECT_STRUCTURE", 'Org Chart');
-define("TIMELINE_DATES_LIST", 'Phasing');
-define("TIMELINE_PROJECT_PLAN", 'Gantt Chart');
-define("TIMELINE_DATES_MILESTONES", 'Milestones');
+$lang["PROJECT_TIMELINE_PROJECT_PLAN"] = "Gantt Chart";
+$lang["PROJECT_TIMELINE_DATES_LIST"] = "Phasing";
+$lang["PROJECT_TIMELINE_PROJECT_STRUCTURE"] = "Org Chart";
+$lang["PROJECT_TIMELINE_DATES_MILESTONES"] = "Milestones";
 
-define('TIMELINE_STATUS_PLANED', 'planned');
-define('TIMELINE_STATUS_INPROGRESS', 'in progress');
-define('TIMELINE_STATUS_FINISHED', 'completed');
-define('TIMELINE_STATUS_NOT_FINISHED', 'incomplete');
-define('TIMELINE_STATUS_OVERDUE', 'delayed');
+$lang["PROJECT_TIMELINE_STATUS_PLANED"] = "planned";
+$lang["PROJECT_TIMELINE_STATUS_INPROGRESS"] = "in progress";
+$lang["PROJECT_TIMELINE_STATUS_FINISHED"] = "completed";
+$lang["PROJECT_TIMELINE_STATUS_NOT_FINISHED"] = "incomplete";
+$lang["PROJECT_TIMELINE_STATUS_OVERDUE"] = "delayed";
+$lang["PROJECT_TIMELINE_STATUS_OVERDUE_POPUP"] = "day/s delayed";
 
-define('TIMELINE_STATUS_OVERDUE_POPUP', 'day/s delayed');
+$lang['PROJECT_TIMELINE_TIME'] = 'Days';
+$lang['PROJECT_TIMELINE_ACTION'] = 'Stages';
 
-$lang['TIMELINE_TIME'] = 'Days';
-$lang['TIMELINE_ACTION'] = 'Stages';
-
-$lang["PRINT_TIMELINE"] = 'phasing.png';
+$lang["PROJECT_PRINT_TIMELINE"] = 'phasing.png';
 ?>

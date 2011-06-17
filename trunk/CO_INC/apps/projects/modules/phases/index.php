@@ -21,7 +21,7 @@ include_once(CO_INC . "/apps/projects/modules/phases/lang/" . $session->userlang
 include_once(CO_INC . "/apps/projects/modules/phases/model.php");
 include_once(CO_INC . "/apps/projects/modules/phases/controller.php");
 
-$phases = new Phases("phases");
+$projectsPhases = new ProjectsPhases("phases");
 
 if (!empty($_GET['request'])) {
 	switch ($_GET['request']) {
@@ -30,25 +30,25 @@ if (!empty($_GET['request'])) {
 			if(!empty($_GET['sort'])) {
 				$sort = $_GET['sort'];
 			}
-			echo($phases->getList($_GET['id'],$sort));
+			echo($projectsPhases->getList($_GET['id'],$sort));
 		break;
 		case 'getDetails':
-			echo($phases->getDetails($_GET['id'],$_GET['num']));
+			echo($projectsPhases->getDetails($_GET['id'],$_GET['num']));
 		break;
 		case 'createNew':
-			echo($phases->createNew($_GET['id'],$_GET['num']));
+			echo($projectsPhases->createNew($_GET['id'],$_GET['num']));
 		break;
 		case 'createDuplicate':
-			echo($phases->createDuplicate($_GET['id']));
+			echo($projectsPhases->createDuplicate($_GET['id']));
 		break;
 		case 'binPhase':
-			echo($phases->binPhase($_GET['id']));
+			echo($projectsPhases->binPhase($_GET['id']));
 		break;
 		case 'restorePhase':
-			echo($phases->restorePhase($_GET['id']));
+			echo($projectsPhases->restorePhase($_GET['id']));
 		break;
 		case 'deletePhase':
-			echo($phases->deletePhase($_GET['id']));
+			echo($projectsPhases->deletePhase($_GET['id']));
 		break;
 		case 'setOrder':
 			echo($projects->setSortOrder("phase-sort",$_GET['phaseItem'],$_GET['id']));
@@ -58,46 +58,46 @@ if (!empty($_GET['request'])) {
 			if(!empty($_GET['t'])) {
 				$t = $_GET['t'];
 			}
-			echo($phases->printDetails($_GET['id'],$_GET['num'],$t));
+			echo($projectsPhases->printDetails($_GET['id'],$_GET['num'],$t));
 		break;
 		case 'getSend':
-			echo($phases->getSend($_GET['id'],$_GET['num']));
+			echo($projectsPhases->getSend($_GET['id'],$_GET['num']));
 		break;
 		case 'getSendtoDetails':
-			echo($phases->getSendtoDetails("phases",$_GET['id']));
+			echo($projectsPhases->getSendtoDetails("phases",$_GET['id']));
 		break;
 		case 'checkinPhase':
-			echo($phases->checkinPhase($_GET['id']));
+			echo($projectsPhases->checkinPhase($_GET['id']));
 		break;
 		case 'toggleIntern':
-			echo($phases->toggleIntern($_GET['id'],$_GET['status']));
+			echo($projectsPhases->toggleIntern($_GET['id'],$_GET['status']));
 		break;
 		case 'getPhaseTaskDialog':
-			echo($phases->getPhaseTaskDialog());
+			echo($projectsPhases->getPhaseTaskDialog());
 		break;
 		case 'getTasksDialog':
-			echo($phases->getTasksDialog($_GET['sql'],$_GET['field']));
+			echo($projectsPhases->getTasksDialog($_GET['sql'],$_GET['field']));
 		break;
 		case 'getTaskDependencyExists':
-			echo($phases->getTaskDependencyExists($_GET['id']));
+			echo($projectsPhases->getTaskDependencyExists($_GET['id']));
 		break;
 		case 'moveDependendTasks':
-			echo($phases->moveDependendTasks($_GET['id'],$_GET['days']));
+			echo($projectsPhases->moveDependendTasks($_GET['id'],$_GET['days']));
 		break;
 		case 'addTask':
-			echo($phases->addTask($_GET['pid'],$_GET['phid'],$_GET['date'],$_GET['cat']));
+			echo($projectsPhases->addTask($_GET['pid'],$_GET['phid'],$_GET['date'],$_GET['cat']));
 		break;
 		case 'deleteTask':
-			echo($phases->deleteTask($_GET['id']));
+			echo($projectsPhases->deleteTask($_GET['id']));
 		break;
 		case 'restorePhaseTask':
-			echo($phases->restorePhaseTask($_GET['id']));
+			echo($projectsPhases->restorePhaseTask($_GET['id']));
 		break;
 		case 'deletePhaseTask':
-			echo($phases->deletePhaseTask($_GET['id']));
+			echo($projectsPhases->deletePhaseTask($_GET['id']));
 		break;
 		case 'getPhaseStatusDialog':
-			echo($phases->getPhaseStatusDialog());
+			echo($projectsPhases->getPhaseStatusDialog());
 		break;
 	}
 }
@@ -136,10 +136,10 @@ if (!empty($_POST['request'])) {
 			if(isset($_POST['task'])) {
 				$task = $_POST['task'];
 			}
-			echo($phases->setDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['team'], $system->checkMagicQuotes($_POST['team_ct']), $system->checkMagicQuotes($_POST['protocol']), $_POST["documents"],$_POST['phase_access'], $_POST['phase_access_orig'], $_POST['phase_status'], $_POST['phase_status_date'],$task_startdate,$task_enddate,$task_donedate,$task_id,$task_text,$task,$task_cat,$task_dependent,$task_team,$task_team_ct));
+			echo($projectsPhases->setDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['team'], $system->checkMagicQuotes($_POST['team_ct']), $system->checkMagicQuotes($_POST['protocol']), $_POST["documents"],$_POST['phase_access'], $_POST['phase_access_orig'], $_POST['phase_status'], $_POST['phase_status_date'],$task_startdate,$task_enddate,$task_donedate,$task_id,$task_text,$task,$task_cat,$task_dependent,$task_team,$task_team_ct));
 		break;
 		case 'sendDetails':
-			echo($phases->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
+			echo($projectsPhases->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
 		break;
 	}
 }

@@ -33,8 +33,6 @@ $lang["PROJECT_DESCRIPTION"] = 'Description';
 $lang["PROJECT_STATUS_PLANNED"] = 'planned';
 $lang["PROJECT_STATUS_INPROGRESS"] = 'started';
 $lang["PROJECT_STATUS_FINISHED"] = 'completed';
-$lang["PROJECT_PHASES"] = 'Phases';
-$lang["PROJECT_MEETINGS"] = 'Meetings';
 
 $lang["PROJECT_HANDBOOK"] = 'Project Manual';
 

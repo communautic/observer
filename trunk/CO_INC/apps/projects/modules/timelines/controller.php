@@ -1,12 +1,12 @@
 <?php
 
-class Timelines extends Projects {
+class ProjectsTimelines extends Projects {
 	var $module;
 	
 	function __construct($name) {
 		$this->module = $name;
 		$this->form_url = "apps/projects/modules/$name/";
-		$this->model = new TimelinesModel();
+		$this->model = new ProjectsTimelinesModel();
 		$this->binDisplay = false;
 	}
 	
@@ -111,7 +111,7 @@ class Timelines extends Projects {
 					include('view/print_barchart.php');
 						$html = ob_get_contents();
 					ob_end_clean();
-					$title = $project["title"] . " - " . TIMELINE_PROJECT_PLAN;
+					$title = $project["title"] . " - " . $lang["PROJECT_TIMELINE_PROJECT_PLAN"];
 					//$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_TIMELINE"];
 					
 					
@@ -135,7 +135,7 @@ class Timelines extends Projects {
 					include('view/print_psp.php');
 						$html = ob_get_contents();
 					ob_end_clean();
-					$title = $project["title"] . " - " . TIMELINE_PROJECT_STRUCTURE;
+					$title = $project["title"] . " - " . $lang["PROJECT_TIMELINE_PROJECT_STRUCTURE"];
 					//$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_TIMELINE"];
 					$this->printPSP($title,$html,$project["page_width"], $project["page_height"]);
 				}
@@ -147,7 +147,7 @@ class Timelines extends Projects {
 					include('view/print_milestones.php');
 						$html = ob_get_contents();
 					ob_end_clean();
-					$title = $project["title"] . " - " . TIMELINE_DATES_MILESTONES;
+					$title = $project["title"] . " - " . $lang["PROJECT_TIMELINE_DATES_MILESTONES"];
 				}
 			break;
 			default:
@@ -163,10 +163,10 @@ class Timelines extends Projects {
 						}
 						$html = ob_get_contents();
 					ob_end_clean();
-					$title = $project["title"] . " - " . TIMELINE_DATES_LIST;
+					$title = $project["title"] . " - " . $lang["PROJECT_TIMELINE_DATES_LIST"];
 				}
 		}
-		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_TIMELINE"];
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PROJECT_PRINT_TIMELINE"];
 		switch($t) {
 			case "html":
 				$this->printHTML($title,$html);
@@ -225,16 +225,16 @@ class Timelines extends Projects {
 		
 		switch($id) {
 			case "1":
-				$title = TIMELINE_PROJECT_PLAN;
+				$title = $lang["PROJECT_TIMELINE_PROJECT_PLAN"];
 			break;
 			case "3":
-				$title = TIMELINE_PROJECT_STRUCTURE;
+				$title = $lang["PROJECT_TIMELINE_PROJECT_STRUCTURE"];
 			break;
 			case "4":
-				$title = TIMELINE_DATES_MILESTONES;
+				$title = $lang["PROJECT_TIMELINE_DATES_MILESTONES"];
 			break;
 			default:
-				$title = TIMELINE_DATES_LIST;
+				$title = $lang["PROJECT_TIMELINE_DATES_LIST"];
 		}
 		
 		$form_url = "apps/projects/modules/timelines/";
@@ -271,7 +271,7 @@ class Timelines extends Projects {
 					include('view/print_barchart.php');
 						$html = ob_get_contents();
 					ob_end_clean();
-					$title = $project["title"] . " - " . TIMELINE_PROJECT_PLAN;
+					$title = $project["title"] . " - " . $lang["PROJECT_TIMELINE_PROJECT_PLAN"];
 					$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
 					$pdf = $this->saveTimeline($title,$html,$attachment,$project["page_width"],$project["page_height"]);
 				
@@ -295,7 +295,7 @@ class Timelines extends Projects {
 					include('view/print_psp.php');
 						$html = ob_get_contents();
 					ob_end_clean();
-					$title = $project["title"] . " - " . TIMELINE_PROJECT_STRUCTURE;
+					$title = $project["title"] . " - " . $lang["PROJECT_TIMELINE_PROJECT_STRUCTURE"];
 					$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
 					//$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_TIMELINE"];
 					//$this->printPSP($title,$html,$project["page_width"], $project["page_height"]);
@@ -310,8 +310,8 @@ class Timelines extends Projects {
 					include('view/print_milestones.php');
 					$html = ob_get_contents();
 				ob_end_clean();
-				$title = $project["title"] . " - " . TIMELINE_DATES_MILESTONES;
-				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_TIMELINE"];
+				$title = $project["title"] . " - " . $lang["PROJECT_TIMELINE_DATES_MILESTONES"];
+				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PROJECT_PRINT_TIMELINE"];
 				$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
 				$pdf = $this->savePDF($title,$html,$attachment);
 				$this->writeSendtoLog("milestones",$variable,$to,$subject,$body);
@@ -323,8 +323,8 @@ class Timelines extends Projects {
 						include 'view/print_schedule.php';
 						$html = ob_get_contents();
 					ob_end_clean();
-					$title = $project["title"] . " - " . TIMELINE_DATES_LIST;
-					$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_TIMELINE"];
+					$title = $project["title"] . " - " . $lang["PROJECT_TIMELINE_DATES_LIST"];
+					$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PROJECT_PRINT_TIMELINE"];
 					$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
 					$pdf = $this->savePDF($title,$html,$attachment);
 					$this->writeSendtoLog("timeline",$variable,$to,$subject,$body);
@@ -337,5 +337,5 @@ class Timelines extends Projects {
 	
 }
 
-$timelines = new Timelines("timelines");
+$projectsTimelines = new ProjectsTimelines("timelines");
 ?>

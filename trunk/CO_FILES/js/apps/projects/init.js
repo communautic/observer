@@ -1,38 +1,533 @@
+function initProjectsContentScrollbar() {
+	projectsInnerLayout.initContent('center');
+	//initScrollbar( '#projects-right .scrolling-content' );
+	//initScrollbar( '#projects-right .scroll-pane' );
+}
+
 /* projects Object */
-var projects = new Application('projects');
-projects.path = 'apps/projects/';
+function projectsApplication(name) {
+	this.name = name;
+	
+	this.formProcess = function(formData, form, poformOptions) {
+		var title = $("#projects .title").fieldValue();
+		if(title == "") {
+			$.prompt(ALERT_NO_TITLE, {callback: setTitleFocus});
+			return false;
+		} else {
+			formData[formData.length] = { "name": "title", "value": title };
+		}
+	
+		formData[formData.length] = processList('folder');
+		formData[formData.length] = processList('ordered_by');
+		formData[formData.length] = processCustomText('ordered_by_ct');
+		formData[formData.length] = processList('management');
+		formData[formData.length] = processCustomText('management_ct');
+		formData[formData.length] = processList('team');
+		formData[formData.length] = processCustomText('team_ct');
+		formData[formData.length] = processList('status');
+	}
+
+	
+	this.formResponse = function(data) {
+		switch(data.action) {
+			case "edit":
+				$("#projects2 span[rel='"+data.id+"'] .text").html($("#projects .title").val());
+				$("#durationStart").html($("input[name='startdate']").val());
+				switch(data.status) {
+					case "2":
+						$("#projects2 .active-link .module-item-status").addClass("module-item-active");
+					break;
+					default:
+						$("#projects2 .active-link .module-item-status").removeClass("module-item-active");
+				}
+			break;
+			case "reload":
+				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectDetails&id="+data.id, success: function(text){
+					$("#projects-right").html(text.html);
+						initProjectsContentScrollbar();
+					}
+				});
+			break;
+		}
+	}
+
+
+	this.poformOptions = { beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
+
+
+	this.actionNew = function() {
+		var module = this;
+		var cid = $('#projects input[name="id"]').val()
+		module.checkIn(cid);
+		var id = $('#'+projects.name+' .module-click:visible').attr("rel");
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/projects&request=newProject&id=' + id, cache: false, success: function(data){
+			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectList&id="+id, success: function(list){
+				$("#projects2 ul").html(list.html);
+				var index = $("#projects2 .module-click").index($("#projects2 .module-click[rel='"+data.id+"']"));
+				setModuleActive($("#projects2"),index);
+				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectDetails&id="+data.id, success: function(text){
+					$("#projects-right").html(text.html);
+					initProjectsContentScrollbar();
+					$('#projects2 input.filter').quicksearch('#projects2 li');
+					}
+				});
+				projectsActions(0);
+				}
+			});
+			}
+		});
+	}
+
+
+	this.actionDuplicate = function() {
+		var module = this;
+		var cid = $('#projects input[name="id"]').val()
+		module.checkIn(cid);
+		var pid = $("#projects2 .active-link").attr("rel");
+		var oid = $("#projects1 .module-click:visible").attr("rel");
+		$.ajax({ type: "GET", url: "/", data: 'path=apps/projects&request=createDuplicate&id=' + pid, cache: false, success: function(id){
+			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectList&id="+oid, success: function(data){
+				$("#projects2 ul").html(data.html);
+					projectsActions(0);
+					$('#projects2 input.filter').quicksearch('#projects2 li');
+					var idx = $("#projects2 .module-click").index($("#projects2 .module-click[rel='"+id+"']"));
+					setModuleActive($("#projects2"),idx)
+					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectDetails&id="+id, success: function(text){
+							$("#"+projects.name+"-right").html(text.html);
+							initProjectsContentScrollbar();
+							$('#projects2 input.filter').quicksearch('#projects2 li');
+						}
+					});
+				}
+			});
+			}
+		});
+	}
+
+
+	this.actionBin = function() {
+		var module = this;
+		var cid = $('#projects input[name="id"]').val()
+		module.checkIn(cid);
+		var txt = ALERT_DELETE;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					var id = $("#projects2 .active-link").attr("rel");
+					var fid = $("#projects .module-click:visible").attr("rel");
+					$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=binProject&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectList&id="+fid, success: function(list){
+								$("#projects2 ul").html(list.html);
+								if(list.html == "<li></li>") {
+									projectsActions(3);
+								} else {
+									projectsActions(0);
+									setModuleActive($("#projects2"),0);
+								}
+								var id = $("#projects2 .module-click:eq(0)").attr("rel");
+								$("#projects2 .module-click:eq(0)").addClass('active-link');
+								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectDetails&fid="+fid+"&id="+id, success: function(text){
+									$("#projects-right").html(text.html);
+									initProjectsContentScrollbar();
+									$('#projects2 input.filter').quicksearch('#projects2 li');
+									}
+								});
+							}
+							});
+						}
+					}
+					});
+				} 
+			}
+		});
+	}
+
+
+	this.checkIn = function(id) {
+		$.ajax({ type: "GET", url: "/", async: false, data: 'path=apps/projects&request=checkinProject&id='+id, success: function(data){
+				if(!data) {
+					prompt("something wrong");
+				}
+			}
+		});
+	}
+
+
+	this.actionRefresh = function() {
+		var pid = $("#projects2 .active-link").attr("rel");
+		var oid = $("#projects1 .module-click:visible").attr("rel");
+		$("#projects2 .active-link:visible").trigger("click");
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectList&id="+oid, success: function(data){
+			$("#projects2 ul").html(data.html);
+			var idx = $("#projects2 .module-click").index($("#projects2 .module-click[rel='"+pid+"']"));
+			$("#projects2 .module-click:eq("+idx+")").addClass('active-link');
+			$('#projects2 input.filter').quicksearch('#projects3 li');
+			}
+		});
+	}
+	
+	this.actionHandbook = function() {
+		var obj = this;
+		if(obj.name == 'projects') {
+			var id = $("#projects2 .active-link").attr("rel");
+		} else {
+			var id = $('#projects2 .module-click:visible').attr("rel");
+		}
+		var url ='/?path=apps/projects&request=printProjectHandbook&id='+id;
+		location.href = url;	
+	}
+
+
+	this.actionPrint = function() {
+		var id = $("#projects2 .active-link").attr("rel");
+		var url ='/?path=apps/projects&request=printProjectDetails&id='+id;
+		location.href = url;
+	}
+
+
+	this.actionSend = function() {
+		var id = $("#projects2 .active-link").attr("rel");
+		$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=getProjectSend&id="+id, success: function(html){
+			$("#modalDialogForward").html(html).dialog('open');
+			}
+		});
+	}
+
+
+	this.actionSendtoResponse = function() {
+		var id = $("#projects2 .active-link").attr("rel");
+		$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=getSendtoDetails&id="+id, success: function(html){
+			$("#project_sendto").html(html);
+			$("#modalDialogForward").dialog('close');
+			}
+		});
+	}
+
+
+	this.sortclick = function (obj,sortcur,sortnew) {
+		var module = this;
+		var cid = $('#projects input[name="id"]').val()
+		module.checkIn(cid);
+		var fid = $("#projects .module-click:visible").attr("rel");
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectList&id="+fid+"&sort="+sortnew, success: function(data){
+			$("#projects2 ul").html(data.html);
+			obj.attr("rel",sortnew);
+			obj.removeClass("sort"+sortcur).addClass("sort"+sortnew);
+			var id = $("#projects2 .module-click:eq(0)").attr("rel");
+			$('#projects2').find('input.filter').quicksearch('#projects2 li');
+			if(id == undefined) {
+				return false;
+			}
+			setModuleActive($("#projects2"),'0');
+			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectDetails&id="+id, success: function(text){
+				$("#"+projects.name+"-right").html(text.html);
+				initProjectsContentScrollbar()
+				}
+			});
+			}
+		});
+	}
+
+
+	this.sortdrag = function (order) {
+		var fid = $("#projects .module-click:visible").attr("rel");
+		$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=setProjectOrder&"+order+"&id="+fid, success: function(html){
+			$("#projects2 .sort").attr("rel", "3");
+			$("#projects2 .sort").removeClass("sort1").removeClass("sort2").addClass("sort3");
+			}
+		});
+	}
+	
+	
+	this.actionDialog = function(offset,request,field,append,title,sql) {
+		$.ajax({ type: "GET", url: "/", data: 'path=apps/projects&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
+			$("#modalDialog").html(html);
+			$("#modalDialog").dialog('option', 'position', offset);
+			$("#modalDialog").dialog('option', 'title', title);
+			$("#modalDialog").dialog('open');
+			if($("#" + field + "_ct .ct-content").length > 0) {
+				var ct = $("#" + field + "_ct .ct-content").html();
+				ct = ct.replace(CUSTOM_NOTE + " ","");
+				$("#custom-text").val(ct);
+			}
+			}
+		});
+	}
+
+
+	this.insertStatusDate = function(rel,text) {
+		var html = '<div class="listmember" field="status" uid="'+rel+'" style="float: left">' + text + '</div>';
+		$("#status").html(html);
+		$("#modalDialog").dialog("close");
+		$("#status").nextAll('img').trigger('click');
+	}
+
+
+	// Recycle Bin
+	this.binDelete = function(id) {
+		var txt = ALERT_DELETE_REALLY;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=deleteProject&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$('#project_'+id).slideUp();
+						}
+					}
+					});
+				} 
+			}
+		});
+	}
+
+
+	this.binRestore = function(id) {
+		var txt = ALERT_RESTORE;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=restoreProject&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$('#project_'+id).slideUp();
+						}
+					}
+					});
+				} 
+			}
+		});
+	}
+
+
+}
+
+var projects = new projectsApplication('projects');
+//projects.path = 'apps/projects/';
 projects.resetModuleHeights = projectsresetModuleHeights;
-projects.usesLayout = true;
-projects.displayname = "Projekte";
+//projects.usesLayout = true;
+//projects.displayname = "Projekte";
 projects.modules_height = projects_num_modules*module_title_height;
-projects.sortclick = sortClickProject;
-projects.sortdrag = sortDragProject;
-projects.actionDialog = dialogProject;
-projects.actionNew = newProject;
-projects.actionPrint = printProject;
-projects.actionSend = sendProject;
-projects.actionSendtoResponse = sendProjectResponse;
-projects.actionDuplicate = duplicateProject;
-projects.actionHandbook = printProjectHandbook;
-projects.actionRefresh = refreshProject;
-projects.actionBin = binProject;
+//projects.sortclick = sortClickProject;
+//projects.sortdrag = sortDragProject;
+//projects.actionDialog = dialogProject;
+//projects.actionNew = newProject;
+//projects.actionPrint = printProject;
+//projects.actionSend = sendProject;
+//projects.actionSendtoResponse = sendProjectResponse;
+//projects.actionDuplicate = duplicateProject;
+//projects.actionHandbook = printProjectHandbook;
+//projects.actionRefresh = refreshProject;
+//projects.actionBin = binProject;
 projects.GuestHiddenModules = new Array("controlling","access");
-projects.checkIn = checkInProject;
+//projects.checkIn = checkInProject;
 //projects.actionMoveProject = moveProject;
-projects.poformOptions = { beforeSubmit: projectFormProcess, dataType:  'json', success: projectFormResponse };
+//projects.poformOptions = { beforeSubmit: projectFormProcess, dataType:  'json', success: projectFormResponse };
 //projects.sendformOptions = { beforeSubmit: projectSendProcess, dataType:  'json', success: projectSendResponse };
 
 // register folder object
-var projects_folder = new Module('projects_folder');
-projects_folder.path = 'apps/projects/';
-projects_folder.sortclick = sortClickFolder;
-projects_folder.sortdrag = sortDragFolder;
-projects_folder.actionNew = newFolder;
-projects_folder.actionPrint = printFolder;
-projects_folder.actionRefresh = refreshFolder;
-projects_folder.actionBin = binFolder;
-projects_folder.checkIn = checkInFolder;
-projects_folder.poformOptions = { beforeSubmit: folderFormProcess, dataType:  'json', success: folderFormResponse };
+function projectsFolders(name) {
+	this.name = name;
+	
+	
+	this.formProcess = function(formData, form, poformOptions) {
+		var title = $("#projects .title").fieldValue();
+		if(title == "") {
+			$.prompt(ALERT_NO_TITLE, {callback: setTitleFocus});
+			return false;
+		} else {
+			formData[formData.length] = { "name": "title", "value": title };
+		}
+	}
+	
+	
+	this.formResponse = function(data) {
+		switch(data.action) {
+			case "edit":
+				$("#projects1 span[rel='"+data.id+"'] .text").html($("#projects .title").val());
+			break;
+		}
+	}
+
+
+	this.poformOptions = { beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
+
+	
+	this.actionNew = function() {
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=newFolder", cache: false, success: function(data){
+			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getFolderList", success: function(list){
+				$("#projects1 ul").html(list.html);
+				$("#projects1 li").show();
+				var index = $("#projects1 .module-click").index($("#projects1 .module-click[rel='"+data.id+"']"));
+				setModuleActive($("#projects1"),index);
+				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getFolderDetails&id="+data.id, success: function(text){
+					$("#"+projects.name+"-right").html(text.html);
+					initProjectsContentScrollbar();
+					$('#projects1 input.filter').quicksearch('#projects1 li');
+					}
+				});
+				projectsActions(1);
+				}
+			});
+			}
+		});
+	}
+	
+	
+	this.actionBin = function() {
+		var txt = ALERT_DELETE;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					var id = $("#projects1 .active-link").attr("rel");
+					$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=binFolder&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getFolderList", success: function(data){
+								$("#projects1 ul").html(data.html);
+								if(data.html == "<li></li>") {
+									projectsActions(3);
+								} else {
+									projectsActions(1);
+								}
+								var id = $("#projects1 .module-click:eq(0)").attr("rel");
+								$("#projects1 .module-click:eq(0)").addClass('active-link');
+								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getFolderDetails&id="+id, success: function(text){
+									$("#"+projects.name+"-right").html(text.html);
+									initProjectsContentScrollbar();
+									$('#projects1 input.filter').quicksearch('#projects1 li');
+								}
+								});
+							}
+							});
+						}
+					}
+					});
+				} 
+			}
+		});
+	}
+
+
+	this.checkIn = function(id) {
+		return true;
+	}
+
+
+	this.actionRefresh = function() {
+		var id = $("#projects1 .active-link").attr("rel");
+		$("#projects1 .active-link").trigger("click");
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getFolderList", success: function(data){
+			$("#projects1 ul").html(data.html);
+			if(data.html == "<li></li>") {
+				projectsActions(3);
+			} else {
+				projectsActions(1);
+			}
+			var idx = $("#projects1 .module-click").index($("#projects1 .module-click[rel='"+id+"']"));
+			$("#projects1 .module-click:eq("+idx+")").addClass('active-link');
+			$('#projects1 input.filter').quicksearch('#projects1 li');
+			}
+		});
+	}
+	
+	
+	this.sortclick = function (obj,sortcur,sortnew) {
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getFolderList&sort="+sortnew, success: function(data){
+			$("#projects1 ul").html(data.html);
+			obj.attr("rel",sortnew);
+		  	obj.removeClass("sort"+sortcur).addClass("sort"+sortnew);
+			$('#projects1 input.filter').quicksearch('#projects1 li');
+			var id = $("#projects1 .module-click:eq(0)").attr("rel");
+			$("#projects1 .module-click:eq(0)").addClass('active-link');
+			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getFolderDetails&id="+id, success: function(text){
+				$("#projects-right").html(text.html);
+				initProjectsContentScrollbar()
+				}
+			});
+			}
+		});
+	}
+
+
+	this.sortdrag = function (order) {
+		$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=setFolderOrder&"+order, success: function(html){
+			$("#projects1 .sort").attr("rel", "3");
+			$("#projects1 .sort").removeClass("sort1").removeClass("sort2").addClass("sort3");
+			}
+		});
+	}
+	
+	
+	// Recycle Bin
+	this.binDelete = function(id) {
+		var txt = ALERT_DELETE_REALLY;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=deleteFolder&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$('#folder_'+id).slideUp();
+						}
+						}
+					});
+				} 
+			}
+		});
+	}
+	
+	
+	this.binRestore = function(id) {
+		var txt = ALERT_RESTORE;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=restoreFolder&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$('#folder_'+id).slideUp();
+						}
+						}
+					});
+				} 
+			}
+		});
+	}
+
+	
+}
+
+var projects_folder = new projectsFolders('projects_folder');
+//projects_folder.path = 'apps/projects/';
+//projects_folder.sortclick = sortClickFolder;
+//projects_folder.sortdrag = sortDragFolder;
+//projects_folder.actionNew = newFolder;
+//projects_folder.actionPrint = printFolder;
+//projects_folder.actionRefresh = refreshFolder;
+//projects_folder.actionBin = binFolder;
+//projects_folder.checkIn = checkInFolder;
+//projects_folder.poformOptions = { beforeSubmit: folderFormProcess, dataType:  'json', success: folderFormResponse };
 
 /* Functions 
 - projectFormProcess
@@ -44,7 +539,9 @@ projects_folder.poformOptions = { beforeSubmit: folderFormProcess, dataType:  'j
 - binPhase
 */
 
-function projectFormProcess(formData, form, poformOptions) {
+
+
+/*function projectFormProcess(formData, form, poformOptions) {
 	var title = $("#projects .title").fieldValue();
 	if(title == "") {
 		$.prompt(ALERT_NO_TITLE, {callback: setTitleFocus});
@@ -52,21 +549,7 @@ function projectFormProcess(formData, form, poformOptions) {
 	} else {
 		formData[formData.length] = { "name": "title", "value": title };
 	}
-	/*if($('#protocol_ifr').length > 0) {
-		var protocol = $('#protocol').tinymce().getContent();
-		for (var i=0; i < formData.length; i++) { 
-			if (formData[i].name == 'protocol') { 
-				formData[i].value = protocol;
-			} 
-		} 
-	} else {
-		var protocol = $('#protocol').html();
-		for (var i=0; i < formData.length; i++) { 
-			if (formData[i].name == 'protocol') { 
-				formData[i].value = protocol;
-			} 
-		} 
-	}*/
+
 	formData[formData.length] = processList('folder');
 	formData[formData.length] = processList('ordered_by');
 	formData[formData.length] = processCustomText('ordered_by_ct');
@@ -75,10 +558,10 @@ function projectFormProcess(formData, form, poformOptions) {
 	formData[formData.length] = processList('team');
 	formData[formData.length] = processCustomText('team_ct');
 	formData[formData.length] = processList('status');
-}
+}*/
 
 
-function folderFormProcess(formData, form, poformOptions) {
+/*function folderFormProcess(formData, form, poformOptions) {
 	var title = $("#projects .title").fieldValue();
 	if(title == "") {
 		$.prompt(ALERT_NO_TITLE, {callback: setTitleFocus});
@@ -86,10 +569,10 @@ function folderFormProcess(formData, form, poformOptions) {
 	} else {
 		formData[formData.length] = { "name": "title", "value": title };
 	}
-}
+}*/
 
 
-function projectFormResponse(data) {
+/*function projectFormResponse(data) {
 	switch(data.action) {
 		case "edit":
 			$("#projects2 span[rel='"+data.id+"'] .text").html($("#projects .title").val());
@@ -107,22 +590,22 @@ function projectFormResponse(data) {
 		case "reload":
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectDetails&id="+data.id, success: function(text){
 					$("#projects-right").html(text.html);
-						initContentScrollbar();
+						initProjectsContentScrollbar();
 					}
 				});
 		break;
 	}
-}
+}*/
 
 
-function printProject() {
+/*function printProject() {
 	var id = $("#projects2 .active-link").attr("rel");
 	var url ='/?path=apps/projects&request=printProjectDetails&id='+id;
 	location.href = url;
-}
+}*/
 
 
-function printProjectHandbook() {
+/*function printProjectHandbook() {
 	var obj = getCurrentModule();
 	if(obj.name == 'projects') {
 		var id = $("#projects2 .active-link").attr("rel");
@@ -131,27 +614,27 @@ function printProjectHandbook() {
 	}
 	var url ='/?path=apps/projects&request=printProjectHandbook&id='+id;
 	location.href = url;
-}
+}*/
 
 
-function sendProject() {
+/*function sendProject() {
 	var id = $("#projects2 .active-link").attr("rel");
 	$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=getProjectSend&id="+id, success: function(html){
 		$("#modalDialogForward").html(html).dialog('open');
 		}
 	});
-}
+}*/
 
-function sendProjectResponse() {
+/*function sendProjectResponse() {
 	var id = $("#projects2 .active-link").attr("rel");
 	$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=getSendtoDetails&id="+id, success: function(html){
 		$("#project_sendto").html(html);
 		$("#modalDialogForward").dialog('close');
 		}
 	});
-}
+}*/
 
-function refreshProject() {
+/*function refreshProject() {
 	var pid = $("#projects2 .active-link").attr("rel");
 	var oid = $("#projects1 .module-click:visible").attr("rel");
 	$("#projects2 .active-link:visible").trigger("click");
@@ -162,31 +645,31 @@ function refreshProject() {
 		$('#projects2 input.filter').quicksearch('#projects3 li');
 		}
 	});
-}
+}*/
 
 
-function printFolder() {
+/*function printFolder() {
 	var id = $("#projects1 .active-link").attr("rel");
 	var url ='/?path=apps/projects&request=printFolderDetails&id='+id;
 	location.href = url;
-}
+}*/
 
 
-function refreshFolder() {
+/*function refreshFolder() {
 	$("#projects1 .active-link").trigger("click");
-}
+}*/
 
 
-function folderFormResponse(data) {
+/*function folderFormResponse(data) {
 	switch(data.action) {
 		case "edit":
 			$("#projects1 span[rel='"+data.id+"'] .text").html($("#projects .title").val());
 		break;
 	}
-}
+}*/
 
 
-function newProject() {
+/*function newProject() {
 	
 	var cid = $('#projects input[name="id"]').val()
 	projects.checkIn(cid);
@@ -199,7 +682,7 @@ function newProject() {
 				setModuleActive($("#projects2"),index);
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectDetails&id="+data.id, success: function(text){
 					$("#projects-right").html(text.html);
-					initContentScrollbar();
+					initProjectsContentScrollbar();
 					$('#projects2 input.filter').quicksearch('#projects2 li');
 					}
 				});
@@ -208,10 +691,10 @@ function newProject() {
 			});
 		}
 	});
-}
+}*/
 
 
-function newFolder() {
+/*function newFolder() {
 	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=newFolder", cache: false, success: function(data){
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getFolderList", success: function(list){
 				$("#projects1 ul").html(list.html);
@@ -220,7 +703,7 @@ function newFolder() {
 				setModuleActive($("#projects1"),index);
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getFolderDetails&id="+data.id, success: function(text){
 					$("#"+projects.name+"-right").html(text.html);
-					initContentScrollbar();
+					initProjectsContentScrollbar();
 					$('#projects1 input.filter').quicksearch('#projects1 li');
 					}
 				});
@@ -229,10 +712,10 @@ function newFolder() {
 			});
 		}
 	});
-}
+}*/
 
 
-function duplicateProject() {
+/*function duplicateProject() {
 	
 	var cid = $('#projects input[name="id"]').val()
 	projects.checkIn(cid);
@@ -248,7 +731,7 @@ function duplicateProject() {
 					setModuleActive($("#projects2"),idx)
 					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectDetails&id="+id, success: function(text){
 							$("#"+projects.name+"-right").html(text.html);
-							initContentScrollbar();
+							initProjectsContentScrollbar();
 							$('#projects2 input.filter').quicksearch('#projects2 li');
 						}
 			   		});
@@ -256,10 +739,10 @@ function duplicateProject() {
 		});
 		}
 	});
-}
+}*/
 
 
-function binProject() {
+/*function binProject() {
 	
 	var cid = $('#projects input[name="id"]').val()
 	projects.checkIn(cid);
@@ -288,7 +771,7 @@ function binProject() {
 							$("#projects2 .module-click:eq(0)").addClass('active-link');
 							$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectDetails&fid="+fid+"&id="+id, success: function(text){
 								$("#projects-right").html(text.html);
-								initContentScrollbar();
+								initProjectsContentScrollbar();
 								$('#projects2 input.filter').quicksearch('#projects2 li');
 								}
 							});
@@ -300,10 +783,10 @@ function binProject() {
 			} 
 		}
 	});
-}
+}*/
 
 
-function binFolder() {
+/*function binFolder() {
 	var txt = ALERT_DELETE;
 	var langbuttons = {};
 	langbuttons[ALERT_YES] = true;
@@ -326,7 +809,7 @@ function binFolder() {
 							$("#projects1 .module-click:eq(0)").addClass('active-link');
 							$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getFolderDetails&id="+id, success: function(text){
 								$("#"+projects.name+"-right").html(text.html);
-								initContentScrollbar();
+								initProjectsContentScrollbar();
 								$('#projects1 input.filter').quicksearch('#projects1 li');
 							}
 							});
@@ -338,7 +821,7 @@ function binFolder() {
 			} 
 		}
 	});
-}
+}*/
 
 
 function projectsActions(status) {
@@ -367,7 +850,7 @@ function projectsActions(status) {
 }
 
 
-function sortClickFolder(obj,sortcur,sortnew) {
+/*function sortClickFolder(obj,sortcur,sortnew) {
 	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getFolderList&sort="+sortnew, success: function(data){
 		  $("#projects1 ul").html(data.html);
 		  obj.attr("rel",sortnew);
@@ -377,24 +860,24 @@ function sortClickFolder(obj,sortcur,sortnew) {
 		  $("#projects1 .module-click:eq(0)").addClass('active-link');
 		  $.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getFolderDetails&id="+id, success: function(text){
 			  $("#projects-right").html(text.html);
-			  initContentScrollbar()
+			  initProjectsContentScrollbar()
 			  }
 		  });
 	}
 	});
-}
+}*/
 
 
-function sortDragFolder(order) {
+/*function sortDragFolder(order) {
 	$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=setFolderOrder&"+order, success: function(html){
 		$("#projects1 .sort").attr("rel", "3");
 		$("#projects1 .sort").removeClass("sort1").removeClass("sort2").addClass("sort3");
 		}
 	});
-}
+}*/
 
 
-function sortClickProject(obj,sortcur,sortnew) {
+/*function sortClickProject(obj,sortcur,sortnew) {
 	
 	var cid = $('#projects input[name="id"]').val()
 	checkInProject(cid);
@@ -412,25 +895,25 @@ function sortClickProject(obj,sortcur,sortnew) {
 		  setModuleActive($("#projects2"),'0');
 		  $.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectDetails&id="+id, success: function(text){
 			  $("#"+projects.name+"-right").html(text.html);
-			  initContentScrollbar()
+			  initProjectsContentScrollbar()
 			  }
 		  });
 	}
 	});
-}
+}*/
 
 
-function sortDragProject(order) {
+/*function sortDragProject(order) {
 	var fid = $("#projects .module-click:visible").attr("rel");
 	$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=setProjectOrder&"+order+"&id="+fid, success: function(html){
 		$("#projects2 .sort").attr("rel", "3");
 		$("#projects2 .sort").removeClass("sort1").removeClass("sort2").addClass("sort3");
 		}
 	});
-}
+}*/
 
 
-function dialogProject(offset,request,field,append,title,sql) {
+/*function dialogProject(offset,request,field,append,title,sql) {
 	$.ajax({ type: "GET", url: "/", data: 'path=apps/projects&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
 		$("#modalDialog").html(html);
 		$("#modalDialog").dialog('option', 'position', offset);
@@ -443,20 +926,20 @@ function dialogProject(offset,request,field,append,title,sql) {
 		}
 		}
 	});
-}
+}*/
 
-function checkInFolder(id) {
+/*function checkInFolder(id) {
 	return true;
-}
+}*/
 
-function checkInProject(id) {
+/*function checkInProject(id) {
 	$.ajax({ type: "GET", url: "/", async: false, data: 'path=apps/projects&request=checkinProject&id='+id, success: function(data){
 			if(!data) {
 				prompt("something wrong");
 			}
 		}
 	});
-}
+}*/
 
 
 function projectsloadModuleStart() {
@@ -488,7 +971,7 @@ function projectsloadModuleStart() {
 			$("#projects1 li").show();
 			$("#projects1 .sort").attr("rel", data.sort).addClass("sort"+data.sort);
 			projectsInnerLayout.initContent('center');
-			initScrollbar( '#projects .scrolling-content' );
+			//initScrollbar( '#projects .scrolling-content' );
 			$('#projects1 input.filter').quicksearch('#projects1 li');
 			$("#projects3 .projects3-content").hide();
 			var id = $("#projects1 .module-click:eq(0)").attr("rel");
@@ -522,7 +1005,7 @@ function projectsresetModuleHeights() {
 	}
 	$("#projects3").css("height", h-121);
 	$("#projects3 .projects3-content").css("height", h-(projects.modules_height+121));
-	initScrollbar( '#projects .scrolling-content' );
+	//initScrollbar( '#projects .scrolling-content' );
 }
 
 function ProjectsModulesDisplay(access) {
@@ -569,7 +1052,7 @@ $(document).ready(function() {
 	});
 	
 	projectsInnerLayout = $('#projects div.ui-layout-center').layout({
-			center__onresize:				function() { initScrollbar( '#projects .scrolling-content' ); }
+			center__onresize:				function() {  }
 		,	resizeWhileDragging:		false
 		,	spacing_open:				0			// cosmetic spacing
 		,	closable: 				false
@@ -608,7 +1091,7 @@ $(document).ready(function() {
 						projectsActions(1);
 					}
 				}
-				initScrollbar( '#projects .scrolling-content' );
+				//initScrollbar( '#projects .scrolling-content' );
 				$('#projects1 input.filter').quicksearch('#projects1 li');
 				var id = $("#projects1 .module-click:eq(0)").attr("rel");
 				$("#projects1 .module-click:eq(0)").addClass('active-link');
@@ -616,7 +1099,7 @@ $(document).ready(function() {
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getFolderDetails&id="+id, success: function(text){
 					$("#projects-right").html(text.html);
 					//projectsInnerLayout.initContent('center');
-					initContentScrollbar();
+					initProjectsContentScrollbar();
 					var h = $("#projects .ui-layout-west").height();
 					$("#projects1").delay(200).animate({height: h-46}, function() {
 						$(this).animate({height: h-71});			 
@@ -648,7 +1131,7 @@ $(document).ready(function() {
 					
 					$("#projects1").css("overflow", "auto").animate({height: h-46}, function() {
 						$("#"+projects.name+"-right").html(text.html);
-						initScrollbar( '#projects .scrolling-content' );
+						//initScrollbar( '#projects .scrolling-content' );
 						$("#projects-current").val("folder");
 						setModuleDeactive($("#projects2"),'0');
 						setModuleDeactive($("#projects3"),'0');
@@ -658,7 +1141,7 @@ $(document).ready(function() {
 						$("#projects2 .module-inner").css("height", h-96);
 						$("#projects3 h3").removeClass("module-bg-active");
 						$("#projects3 .projects3-content:visible").slideUp();
-						initContentScrollbar();
+						initProjectsContentScrollbar();
 						$("#projects1").delay(200).animate({height: h-71});
 					});
 					}
@@ -736,7 +1219,7 @@ $(document).ready(function() {
 										}
 									break;
 								}
-						initContentScrollbar();
+						initProjectsContentScrollbar();
 						}
 					});
 					$("#projects3 h3").removeClass("module-bg-active");
@@ -802,7 +1285,7 @@ $(document).ready(function() {
 										}
 									break;
 								}
-								initContentScrollbar();
+								initProjectsContentScrollbar();
 								var h = $("#projects .ui-layout-west").height();
 								if(text.access != "sysadmin") { ProjectsModulesDisplay(text.access); }
 								$("#projects2").delay(200).animate({height: h-(projects.modules_height+96)}, function() {
@@ -814,7 +1297,7 @@ $(document).ready(function() {
 					} else {
 						$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectDetails&id="+projectid, success: function(text){
 							$("#"+projects.name+"-right").html(text.html);
-							initContentScrollbar();
+							initProjectsContentScrollbar();
 							}
 						});
 					}
@@ -909,7 +1392,7 @@ $(document).ready(function() {
 				break;
 			}
 
-			initContentScrollbar();
+			initProjectsContentScrollbar();
 			
 			var h = $("#projects .ui-layout-west").height();
 			$("#projects2").delay(200).animate({height: h-96}, function() {
@@ -1105,7 +1588,7 @@ $(document).ready(function() {
 		return false;
 	});
 	
-	$(".insertProjectStatus").live('click', function() {
+	/*$(".insertProjectStatus").live('click', function() {
 	 	var rel = $(this).attr("rel");
 		var html = '<div class="listmember" field="status" uid="'+rel+'" style="float: left">' + $(this).html() + '</div>';
 		$("#status").html(html);
@@ -1114,7 +1597,7 @@ $(document).ready(function() {
 		var obj = getCurrentModule();
 		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 		return false;
-	});
+	});*/
 
 
 	$('a.insertProjectFolderfromDialog').livequery('click',function() {
@@ -1179,7 +1662,7 @@ $(document).ready(function() {
 
 
 	// Recycle bin functions
-	$(".bin-deleteFolder").live('click',function(e) {
+	/*$(".bin-deleteFolder").live('click',function(e) {
 		var id = $(this).attr("rel");
 		var txt = ALERT_DELETE_REALLY;
 		var langbuttons = {};
@@ -1200,9 +1683,9 @@ $(document).ready(function() {
 		});
 	
 		return false;
-	});
+	});*/
 	
-	$(".bin-restoreFolder").live('click',function(e) {
+	/*$(".bin-restoreFolder").live('click',function(e) {
 		var id = $(this).attr("rel");
 		var txt = ALERT_RESTORE;
 		var langbuttons = {};
@@ -1223,10 +1706,10 @@ $(document).ready(function() {
 		});
 	
 		return false;
-	});
+	});*/
 	
 	
-	$(".bin-deleteProject").live('click',function(e) {
+	/*$(".bin-deleteProject").live('click',function(e) {
 		var id = $(this).attr("rel");
 		var txt = ALERT_DELETE_REALLY;
 		var langbuttons = {};
@@ -1247,9 +1730,9 @@ $(document).ready(function() {
 		});
 	
 		return false;
-	});
+	});*/
 	
-	$(".bin-restoreProject").live('click',function(e) {
+	/*$(".bin-restoreProject").live('click',function(e) {
 		var id = $(this).attr("rel");
 		var txt = ALERT_RESTORE;
 		var langbuttons = {};
@@ -1270,7 +1753,7 @@ $(document).ready(function() {
 		});
 	
 		return false;
-	});
+	});*/
 	
 	// barchart opacity with jquery
 	$(".barchart-phase-bg").livequery( function() {

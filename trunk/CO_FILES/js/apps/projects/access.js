@@ -16,7 +16,7 @@ function projectsAccess(name) {
 		var id = $("#projects2 .module-click:visible").attr("rel");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/access&request=getDetails&id="+id, success: function(html){
 			$("#projects-right").html(html);
-			initContentScrollbar();
+			initProjectsContentScrollbar();
 			//initScrollbar( '.projects3-content:visible .scrolling-content' );
 			projectsActions(6);
 			}
@@ -87,7 +87,7 @@ var projects_access = new projectsAccess('projects_access');
 	var id = $("#projects2 .module-click:visible").attr("rel");
 	$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/access&request=getDetails&id="+id, success: function(html){
 		$("#"+projects.name+"-right").html(html);
-		initContentScrollbar();
+		initProjectsContentScrollbar();
 		initScrollbar( '.projects3-content:visible .scrolling-content' );
 		projectsActions(6);
 		}

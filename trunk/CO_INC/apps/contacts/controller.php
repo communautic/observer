@@ -244,7 +244,7 @@ class Contacts extends Controller {
 		$arr = $this->model->getContactList($sort);
 		$contacts = $arr["contacts"];
 		ob_start();
-			include('view/contact_list.php');
+			include('view/list.php');
 			$data["html"] = ob_get_contents();
 		ob_end_clean();
 		$data["sort"] = $arr["sort"];
@@ -254,7 +254,7 @@ class Contacts extends Controller {
 	function getContactDetails($id) {
 		global $lang, $session;
 		if($contact = $this->model->getContactDetails($id)) {
-			include 'view/contact_edit.php';
+			include 'view/edit.php';
 		} else {
 			include CO_INC .'/view/default.php';
 		}
@@ -280,7 +280,7 @@ class Contacts extends Controller {
 		$html = "";
 		if($contact = $this->model->getContactDetails($id)) {
 			ob_start();
-				include 'view/contact_print.php';
+				include 'view/print.php';
 				$html = ob_get_contents();
 			ob_end_clean();
 			$title = $contact->lastname . "_" . $contact->firstname;
@@ -320,7 +320,7 @@ function getContactSend($id) {
 		$html = "";
 		if($contact = $this->model->getContactDetails($id)) {
 			ob_start();
-				include 'view/contact_print.php';
+				include 'view/print.php';
 				$html = ob_get_contents();
 			ob_end_clean();
 			$title = $contact->lastname . "_" . $contact->firstname;
@@ -358,7 +358,7 @@ function getContactSend($id) {
 		
 		/*if($contact = $this->model->getContactDetails($id)) {
 			ob_start();
-				include 'view/contact_print.php';
+				include 'view/print.php';
 				$html = ob_get_contents();
 			ob_end_clean();
 			$title = $contact->lastname . "_" . $contact->firstname;
@@ -396,7 +396,7 @@ function getContactSend($id) {
 
 	$filename = $contact->firstname."_".$contact->lastname . ".vcf";
 
-		$path = "/home/dev/public_html/data/vcards/".$filename;
+		$path = CO_PATH_DATA . "vcards/".$filename;
 		file_put_contents($path, $exportString);
 	 	return $path;
 	}

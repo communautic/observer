@@ -40,7 +40,7 @@ if (!empty($_GET['request'])) {
 			echo($contacts->getGroupSendVcard($_GET['id']));
 		break;
 		case 'setGroupOrder':
-			echo($contacts->setSortOrder("group-sort",$_GET['groupItem']));
+			echo($contacts->setSortOrder("contacts-group-sort",$_GET['groupItem']));
 		break;
 		/*case 'getGroupNew':
 			echo($contacts->getGroupNew());

@@ -1,6 +1,6 @@
 <?php
 
-class PhasesModel extends ProjectsModel {
+class ProjectsPhasesModel extends ProjectsModel {
 	
 	public function __construct() {  
 		parent::__construct();
@@ -198,7 +198,7 @@ class PhasesModel extends ProjectsModel {
 	function getDetails($id,$num) {
 		global $session, $lang;
 		
-		$this->_documents = new DocumentsModel();
+		$this->_documents = new ProjectsDocumentsModel();
 		
 		$q = "SELECT a.*,(SELECT MIN(startdate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as enddate, (SELECT startdate FROM " . CO_TBL_PROJECTS . " WHERE id=a.pid) as kickoff FROM " . CO_TBL_PROJECTS_PHASES . " as a where a.id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
@@ -435,7 +435,7 @@ class PhasesModel extends ProjectsModel {
 		
 		$now = gmdate("Y-m-d H:i:s");
 		
-		$title = $lang["PHASE_NEW"];
+		$title = $lang["PROJECT_PHASE_NEW"];
 		
 		// get some presets from project
 		$q = "SELECT startdate, management, team FROM " . CO_TBL_PROJECTS . " where id = '$pid'";
@@ -466,10 +466,10 @@ class PhasesModel extends ProjectsModel {
 			$enddate = $startdate;
 		}
 		
-		$text = $lang["PHASE_TASK_NEW"];
+		$text = $lang["PROJECT_PHASE_TASK_NEW"];
 		
 		// add first task 1 week starting from last phase or kick off plus 1 day
-		$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES_TASKS . " set pid='$pid', phaseid='$id', status = '0', text = '" . $lang["PHASE_TASK_NEW"] . "', startdate = '$startdate', enddate = '$enddate'";
+		$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES_TASKS . " set pid='$pid', phaseid='$id', status = '0', text = '" . $lang["PROJECT_PHASE_TASK_NEW"] . "', startdate = '$startdate', enddate = '$enddate'";
 			$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
@@ -619,11 +619,11 @@ class PhasesModel extends ProjectsModel {
 		
 		switch($cat) {
 			case "1": 
-				$text = $lang["PHASE_MILESTONE_NEW"];
+				$text = $lang["PROJECT_PHASE_MILESTONE_NEW"];
 				//$team = "";
 			break;
 			default:
-				$text = $lang["PHASE_TASK_NEW"];
+				$text = $lang["PROJECT_PHASE_TASK_NEW"];
 				//$team = $this->getPhaseField($phid,'team');
 		}
 		
@@ -660,13 +660,13 @@ class PhasesModel extends ProjectsModel {
 		$startdate = $row["startdate"];
 	 
 		$str = '<div class="dialog-text">';
-	 	$str .= '<a href="#" class="insertTaskfromDialog" title="" field="' . $field . '" gid="">keine Abhängigkeit</a>';
+	 	$str .= '<a href="#" mod="projects_phases" class="insertItem" title="" field="' . $field . '" did="">keine Abhängigkeit</a>';
 
 		
 		$q ="select id,text from " . CO_TBL_PROJECTS_PHASES_TASKS . " where pid = '$pid' and startdate <= '$startdate' and id != '$id' and bin = '0' ORDER BY startdate";
 		$result = mysql_query($q, $this->_db->connection);
 		while ($row = mysql_fetch_array($result)) {
-			$str .= '<a href="#" class="insertTaskfromDialog" title="' . $row["text"] . '" field="' . $field . '" gid="'.$row["id"].'">' . $row["text"] . '</a>';
+			$str .= '<a href="#" mod="projects_phases" class="insertItem" title="' . $row["text"] . '" field="' . $field . '" did="'.$row["id"].'">' . $row["text"] . '</a>';
 		}
 		$str .= '</div>';	
 		return $str;
@@ -748,5 +748,5 @@ function test() {
 
 }
 
-$phasesmodel = new PhasesModel();
+$projectsPhasesModel = new ProjectsPhasesModel();
 ?>

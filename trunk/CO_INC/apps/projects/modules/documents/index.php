@@ -15,7 +15,7 @@ include_once(CO_INC . "/apps/projects/modules/documents/lang/" . $session->userl
 include_once(CO_INC . "/apps/projects/modules/documents/model.php");
 include_once(CO_INC . "/apps/projects/modules/documents/controller.php");
 
-$documents = new Documents("documents");
+$projectsDocuments = new ProjectsDocuments("documents");
 
 if (!empty($_GET['request'])) {
 	switch ($_GET['request']) {
@@ -24,25 +24,25 @@ if (!empty($_GET['request'])) {
 			if(!empty($_GET['sort'])) {
 				$sort = $_GET['sort'];
 			}
-			echo($documents->getList($_GET['id'],$sort));
+			echo($projectsDocuments->getList($_GET['id'],$sort));
 		break;
 		case 'getDetails':
-			echo($documents->getDetails($_GET['id']));
+			echo($projectsDocuments->getDetails($_GET['id']));
 		break;
 		/*case 'getNew':
-			echo($documents->getNew($_GET['id']));
+			echo($projectsDocuments->getNew($_GET['id']));
 		break;*/
 		case 'createDuplicate':
-			echo($documents->createDuplicate($_GET['id']));
+			echo($projectsDocuments->createDuplicate($_GET['id']));
 		break;
 		case 'binDocument':
-			echo($documents->binDocument($_GET['id']));
+			echo($projectsDocuments->binDocument($_GET['id']));
 		break;
 		case 'restoreDocument':
-			echo($documents->restoreDocument($_GET['id']));
+			echo($projectsDocuments->restoreDocument($_GET['id']));
 		break;
 		case 'deleteDocument':
-			echo($documents->deleteDocument($_GET['id']));
+			echo($projectsDocuments->deleteDocument($_GET['id']));
 		break;
 		case 'setOrder':
 			echo($projects->setSortOrder("document-sort",$_GET['documentItem'],$_GET['id']));
@@ -52,34 +52,34 @@ if (!empty($_GET['request'])) {
 			if(!empty($_GET['t'])) {
 				$t = $_GET['t'];
 			}
-			echo($documents->printDetails($_GET['id'],$t));
+			echo($projectsDocuments->printDetails($_GET['id'],$t));
 		break;
 		case 'getSend':
-			echo($documents->getSend($_GET['id']));
+			echo($projectsDocuments->getSend($_GET['id']));
 		break;
 		case 'getSendtoDetails':
-			echo($documents->getSendtoDetails("documents",$_GET['id']));
+			echo($projectsDocuments->getSendtoDetails("documents",$_GET['id']));
 		break;
 		case 'getDocumentsDialog':
-			echo($documents->getDocumentsDialog($_GET['request'],$_GET['field'],$_GET['append'],$_GET['title'],$_GET['sql'],$_GET['id']));
+			echo($projectsDocuments->getDocumentsDialog($_GET['request'],$_GET['field'],$_GET['append'],$_GET['title'],$_GET['sql'],$_GET['id']));
 		break;
 		case 'createNew':
-			echo($documents->createNew($_GET['id']));
+			echo($projectsDocuments->createNew($_GET['id']));
 		break;
 		case 'downloadDocument':
-			$documents->downloadDocument($_GET['id']);
+			$projectsDocuments->downloadDocument($_GET['id']);
 		break;
 		case 'getDocContext':
-			echo($documents->getDocContext($_GET['id'],$_GET['field']));
+			echo($projectsDocuments->getDocContext($_GET['id'],$_GET['field']));
 		break;
 		case 'binDocItem':
-			echo($documents->binDocItem($_GET['id']));
+			echo($projectsDocuments->binDocItem($_GET['id']));
 		break;
 		case 'restoreFile':
-			echo($documents->restoreFile($_GET['id']));
+			echo($projectsDocuments->restoreFile($_GET['id']));
 		break;
 		case 'deleteFile':
-			echo($documents->deleteFile($_GET['id']));
+			echo($projectsDocuments->deleteFile($_GET['id']));
 		break;
 	}
 }
@@ -87,10 +87,10 @@ if (!empty($_GET['request'])) {
 if (!empty($_POST['request'])) {
 	switch ($_POST['request']) {
 		case 'setDetails':
-			echo($documents->setDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']),$_POST['document_access']));
+			echo($projectsDocuments->setDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']),$_POST['document_access']));
 		break;
 		case 'sendDetails':
-			echo($documents->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
+			echo($projectsDocuments->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
 		break;
 	}
 }

@@ -4,7 +4,7 @@ class VDocsModel extends ProjectsModel {
 	
 	public function __construct() {  
      	parent::__construct();
-		$this->_phases = new PhasesModel();
+		$this->_phases = new ProjectsPhasesModel();
 		$this->_contactsmodel = new ContactsModel();
 	}
 
@@ -196,7 +196,7 @@ class VDocsModel extends ProjectsModel {
 		$now = gmdate("Y-m-d H:i:s");
 		$time = gmdate("Y-m-d H");
 		
-		$q = "INSERT INTO " . CO_TBL_PROJECTS_VDOCS . " set title = '" . $lang["VDOC_NEW"] . "', date='$now', start='$time', end='$time', pid = '$id', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+		$q = "INSERT INTO " . CO_TBL_PROJECTS_VDOCS . " set title = '" . $lang["PROJECT_VDOC_NEW"] . "', date='$now', start='$time', end='$time', pid = '$id', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id = mysql_insert_id();
 		

@@ -1,79 +1,32 @@
 <?php
 
-class TimelinesModel extends ProjectsModel {
+class ProjectsTimelinesModel extends ProjectsModel {
 	
 	public function __construct() {  
 		parent::__construct();
 		$this->_contactsmodel = new ContactsModel();
 	}
 
-
+	
 	function getList($id,$sort) {
-		global $session;
-		if($sort == 0) {
-		  $sortstatus = $this->getSortStatus("timeline-sort-status",$id);
-		  if(!$sortstatus) {
-				$order = "order by id";
-				$sortcur = '1';
-		  } else {
-			  switch($sortstatus) {
-				  case "1":
-				  		$order = "order by id";
-						$sortcur = '1';
-				  break;
-				  case "2":
-				  		$order = "order by id DESC";
-							$sortcur = '2';
-				  break;
-				  case "3":
-				  		$sortorder = $this->getSortOrder("timeline-sort-order",$id);
-				  		if(!$sortorder) {
-								$order = "order by id";
-								$sortcur = '1';
-						  } else {
-								$order = "order by field(id,$sortorder)";
-								$sortcur = '3';
-						  }
-				  break;	
-			  }
-		  }
-	  } else {
-		  switch($sort) {
-				  case "1":
-				  		$order = "order by id";
-						$sortcur = '1';
-				  break;
-				  case "2":
-				  		$order = "order by id DESC";
-						$sortcur = '2';
-				  break;
-				  case "3":
-				  		$sortorder = $this->getSortOrder("timeline-sort-order",$id);
-				  		if(!$sortorder) {
-						  	$order = "order by id";
-								$sortcur = '1';
-						  } else {
-								$order = "order by field(id,$sortorder)";
-								$sortcur = '3';
-						  }
-				  break;	
-			  }
-	  }
-	  
-		$q = "select id,title from " . CO_TBL_PROJECTS_TIMELINE . " " . $order;
+		global $session, $lang;
 
-		$this->setSortStatus("timeline-sort-status",$sortcur,$id);
-		$result = mysql_query($q, $this->_db->connection);
-		$timelines = "";
-		while ($row = mysql_fetch_array($result)) {
-			foreach($row as $key => $val) {
-				$array[$key] = $val;
-			}
+			$array["id"] = 1;
+			$array["title"] = $lang["PROJECT_TIMELINE_PROJECT_PLAN"];
 			$timelines[] = new Lists($array);
-		}
+			$array["id"] = 2;
+			$array["title"] = $lang["PROJECT_TIMELINE_DATES_LIST"];
+			$timelines[] = new Lists($array);
+			$array["id"] = 3;
+			$array["title"] = $lang["PROJECT_TIMELINE_PROJECT_STRUCTURE"];
+			$timelines[] = new Lists($array);
+			$array["id"] = 4;
+			$array["title"] = $lang["PROJECT_TIMELINE_DATES_MILESTONES"];
+			
+			$timelines[] = new Lists($array);
 		
-		$arr = array("timelines" => $timelines, "sort" => $sortcur);
-		return $arr;
+	  $arr = array("timelines" => $timelines, "sort" => 0);
+	  return $arr;
 	}
 
 

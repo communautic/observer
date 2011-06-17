@@ -1,6 +1,6 @@
 <?php
 
-class AccessModel extends ProjectsModel {
+class ProjectsAccessModel extends ProjectsModel {
 	
 	public function __construct() {  
 		parent::__construct();
@@ -13,7 +13,7 @@ class AccessModel extends ProjectsModel {
 
 			$array["id"] = 0;
 			//$array["controlling_date"] = $this->_date->formatDate("now",CO_DATE_FORMAT);
-			$array["title"] = $lang["ACCESSRIGHTS"];
+			$array["title"] = $lang["PROJECT_ACCESSRIGHTS"];
 			$array["itemstatus"] = "";
 			
 			$access[] = new Lists($array);
