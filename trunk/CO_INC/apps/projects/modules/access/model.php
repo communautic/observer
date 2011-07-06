@@ -43,8 +43,8 @@ class ProjectsAccessModel extends ProjectsModel {
 					$array[$key] = $val;
 				}
 			
-			$array["admins"] = $this->_contactsmodel->getUserList($array['admins'],'admins',"and userlevel != '1' and username != ''");
-			$array["guests"] = $this->_contactsmodel->getUserList($array['guests'],'guests',"and userlevel != '1' and username != ''");
+			$array["admins"] = $this->_contactsmodel->getUserList($array['admins'],'projectsadmins',"and userlevel != '1' and username != ''");
+			$array["guests"] = $this->_contactsmodel->getUserList($array['guests'],'projectsguests',"and userlevel != '1' and username != ''");
 			
 			$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
 			$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);

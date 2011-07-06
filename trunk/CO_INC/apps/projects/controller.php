@@ -469,6 +469,12 @@ class Projects extends Controller {
 	  $canEdit = $this->model->getEditPerms($session->uid);
 	  return !empty($canEdit);
    }
+   
+   function isGuest(){
+	  global $session;
+	  $canView = $this->model->getViewPerms($session->uid);
+	  return !empty($canView);
+   }
 
 }
 

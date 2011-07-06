@@ -207,9 +207,9 @@ class ProjectsMeetingsModel extends ProjectsModel {
 			$array["relates_to_text"] = $this->_phases->getPhaseTitle($array['relates_to']);
 		}
 
-		$array["participants"] = $this->_contactsmodel->getUserList($array['participants'],'participants', "", $array["canedit"]);
+		$array["participants"] = $this->_contactsmodel->getUserList($array['participants'],'projectsparticipants', "", $array["canedit"]);
 		$array["participants_ct"] = empty($array["participants_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['participants_ct'];
-		$array["management"] = $this->_contactsmodel->getUserList($array['management'],'management', "", $array["canedit"]);
+		$array["management"] = $this->_contactsmodel->getUserList($array['management'],'projectsmanagement', "", $array["canedit"]);
 		$array["management_ct"] = empty($array["management_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['management_ct'];
 		$array["documents"] = $this->_documents->getDocListFromIDs($array['documents'],'documents');
 		

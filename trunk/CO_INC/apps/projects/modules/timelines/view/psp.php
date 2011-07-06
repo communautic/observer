@@ -66,7 +66,7 @@ $width = $numPhases * 170;
 			}
 	?>
     <div style="width: 170px; float: left;">
-        <div class="psp-item <?php echo($bg);?> loadPhase" rel="<?php echo($project["phases"][$key]["id"]);?>">
+        <div class="psp-item <?php echo($bg);?> loadProjectsPhase" rel="<?php echo($project["phases"][$key]["id"]);?>">
 			<div class="psp-connector-phase-vert"></div>
             <?php if($countPhases > 1) { echo '<div class="psp-connector-phase-hori"></div>'; } ?>
 			<div style="height: 42px; overflow: hidden"><?php echo($countPhases . ". " .$project["phases"][$key]["title"]);?></div>
@@ -82,7 +82,7 @@ $width = $numPhases * 170;
 			}
 		?>
         	
-			<div class="psp-item <?php echo($bg);?> loadPhase" rel="<?php echo($project["phases"][$key]["id"]);?>">
+			<div class="psp-item <?php echo($bg);?> loadProjectsPhase" rel="<?php echo($project["phases"][$key]["id"]);?>">
 			<div class="psp-connector-vert"></div>
 			<div style="height: 28px; overflow: hidden"><?php echo($project["phases"][$key]["tasks"][$tkey]["text"]);?></div>
 			<div style="height: 14px; overflow: hidden"><?php echo($project["phases"][$key]["tasks"][$tkey]["team"]);?></div>

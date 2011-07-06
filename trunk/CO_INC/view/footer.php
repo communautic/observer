@@ -7,20 +7,12 @@
 </div>
 <ul id="appnav">
 <?php
-if($session->isSysadmin()) {
-	foreach($controller->applications as $app => $display) {
-		$activeapp = "";
-		if($display == 1) {
-			$activeapp = " active-app";
-		}
-		echo '<li><span rel="'.$app.'" class="toggleObservers' . $activeapp . ' app_'.$app.'" >' . ${$app.'_name'} . '</span></li>';
+foreach($userapps as $key => $app) {
+	$activeapp = "";
+	if($key == 0) {
+		$activeapp = " active-app";
 	}
-} else if($projects->isAdmin()) {
-	// needs desktop
-	echo '<li><span rel="projects" class="toggleObservers active-app app_projects" >' . $projects_name . '</span></li>';
-	echo '<li><span rel="contacts" class="toggleObservers app_contacts" >' . $contacts_name . '</span></li>';
-} else {
-	echo '<li><span rel="projects" class="toggleObservers active-app app_projects" >' . $projects_name . '</span></li>';
+		echo '<li><span rel="'.$app.'" class="toggleObservers' . $activeapp . ' app_'.$app.'" >' . ${$app.'_name'} . '</span></li>';
 }
 ?>
 </ul>

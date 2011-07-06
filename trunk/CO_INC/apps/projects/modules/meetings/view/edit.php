@@ -32,39 +32,39 @@
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-		<td class="tcell-left text11"><span class="<?php if($meeting->canedit) { ?>content-nav showDialogTime<?php } ?>" rel="meetingstart"><span><?php echo $lang["PROJECT_MEETING_TIME_START"];?></span></span></td>
-		<td class="tcell-right"><div id="meetingstart" class="itemlist-field"><?php echo($meeting->start);?></div></td>
+		<td class="tcell-left text11"><span class="<?php if($meeting->canedit) { ?>content-nav showDialogTime<?php } ?>" rel="projectsmeetingstart"><span><?php echo $lang["PROJECT_MEETING_TIME_START"];?></span></span></td>
+		<td class="tcell-right"><div id="projectsmeetingstart" class="itemlist-field"><?php echo($meeting->start);?></div></td>
 	</tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-		<td class="tcell-left text11"><span class="<?php if($meeting->canedit) { ?>content-nav showDialogTime<?php } ?>" rel="meetingend"><span><?php echo $lang["PROJECT_MEETING_TIME_END"];?></span></span></td>
-		<td class="tcell-right"><div id="meetingend" class="itemlist-field"><?php echo($meeting->end);?></div></td>
+		<td class="tcell-left text11"><span class="<?php if($meeting->canedit) { ?>content-nav showDialogTime<?php } ?>" rel="projectsmeetingend"><span><?php echo $lang["PROJECT_MEETING_TIME_END"];?></span></span></td>
+		<td class="tcell-right"><div id="projectsmeetingend" class="itemlist-field"><?php echo($meeting->end);?></div></td>
 	</tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-		<td class="tcell-left text11"><span class="<?php if($meeting->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialogPlace" field="location" append="0"><span><?php echo $lang["PROJECT_MEETING_PLACE"];?></span></span></td>
-		<td class="tcell-right"><div id="location" class="itemlist-field"><?php echo($meeting->location);?></div><div id="location_ct" class="itemlist-field"><a field="location_ct" class="ct-content"><?php echo($meeting->location_ct);?></a></div></td>
+		<td class="tcell-left text11"><span class="<?php if($meeting->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialogPlace" field="projectslocation" append="0"><span><?php echo $lang["PROJECT_MEETING_PLACE"];?></span></span></td>
+		<td class="tcell-right"><div id="projectslocation" class="itemlist-field"><?php echo($meeting->location);?></div><div id="projectslocation_ct" class="itemlist-field"><a field="projectslocation_ct" class="ct-content"><?php echo($meeting->location_ct);?></a></div></td>
 	</tr>
 </table>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
-		<td class="tcell-left text11"><span href="#" class="<?php if($meeting->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="participants" append="1"><span><?php echo $lang["PROJECT_MEETING_ATTENDEES"];?></span></span></td>
-		<td class="tcell-right"><div id="participants" class="itemlist-field"><?php echo($meeting->participants);?></div><div id="participants_ct" class="itemlist-field"><a field="participants_ct" class="ct-content"><?php echo($meeting->participants_ct);?></a></div></td>
+		<td class="tcell-left text11"><span href="#" class="<?php if($meeting->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="projectsparticipants" append="1"><span><?php echo $lang["PROJECT_MEETING_ATTENDEES"];?></span></span></td>
+		<td class="tcell-right"><div id="projectsparticipants" class="itemlist-field"><?php echo($meeting->participants);?></div><div id="projectsparticipants_ct" class="itemlist-field"><a field="projectsparticipants_ct" class="ct-content"><?php echo($meeting->participants_ct);?></a></div></td>
 	</tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
-		<td class="tcell-left text11"><span class="<?php if($meeting->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="management" append="1"><span><?php echo $lang["PROJECT_MEETING_MANAGEMENT"];?></span></span></td>
-		<td class="tcell-right"><div id="management" class="itemlist-field"><?php echo($meeting->management);?></div><div id="management_ct" class="itemlist-field"><a field="management_ct" class="ct-content"><?php echo($meeting->management_ct);?></a></div></td>
+		<td class="tcell-left text11"><span class="<?php if($meeting->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="projectsmanagement" append="1"><span><?php echo $lang["PROJECT_MEETING_MANAGEMENT"];?></span></span></td>
+		<td class="tcell-right"><div id="projectsmanagement" class="itemlist-field"><?php echo($meeting->management);?></div><div id="projectsmanagement_ct" class="itemlist-field"><a field="projectsmanagement_ct" class="ct-content"><?php echo($meeting->management_ct);?></a></div></td>
 	</tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><span class="<?php if($meeting->canedit) { ?>content-nav showDialog<?php } ?>" request="getMeetingStatusDialog" field="status" append="1"><span><?php echo $lang["GLOBAL_STATUS"];?></span></span></td>
-        <td class="tcell-right"><div id="meeting_status" class="itemlist-field"><div class="listmember" field="meeting_status" uid="<?php echo($meeting->status);?>" style="float: left"><?php echo($meeting->status_text);?></div></div><input name="meeting_status_date" type="text" class="input-date datepicker meeting_status_date" value="<?php echo($meeting->status_date)?>" style="float: left; margin-left: 8px;" /></td>
+	  <td class="tcell-left text11"><span class="<?php if($meeting->canedit) { ?>content-nav showDialog<?php } ?>" request="getMeetingStatusDialog" field="projectsstatus" append="1"><span><?php echo $lang["GLOBAL_STATUS"];?></span></span></td>
+        <td class="tcell-right"><div id="projectsmeeting_status" class="itemlist-field"><div class="listmember" field="projectsmeeting_status" uid="<?php echo($meeting->status);?>" style="float: left"><?php echo($meeting->status_text);?></div></div><input name="meeting_status_date" type="text" class="input-date datepicker meeting_status_date" value="<?php echo($meeting->status_date)?>" style="float: left; margin-left: 8px;" /></td>
 	</tr>
 </table>
 <div class="content-spacer"></div>
@@ -75,7 +75,7 @@
         </td>
     <td class="tcell-right">&nbsp;</td>
     </tr>
-</table><div id="meetingtasks">
+</table><div id="projectsmeetingtasks">
 <?php 
 foreach($task as $value) { 
 	$checked = '';
@@ -89,21 +89,21 @@ include("task.php");
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
   <tr>
-    <td class="tcell-left text11"><span class="<?php if($meeting->canedit) { ?>content-nav showDialog<?php } ?>" request="getDocumentsDialog" field="documents" append="1"><span><?php echo $lang["PROJECT_DOCUMENT_DOCUMENTS"];?></span></span></td>
-    <td class="tcell-right"><div id="documents" class="itemlist-field"><?php echo($meeting->documents);?></div></td>
+    <td class="tcell-left text11"><span class="<?php if($meeting->canedit) { ?>content-nav showDialog<?php } ?>" request="getDocumentsDialog" field="projectsdocuments" append="1"><span><?php echo $lang["PROJECT_DOCUMENT_DOCUMENTS"];?></span></span></td>
+    <td class="tcell-right"><div id="projectsdocuments" class="itemlist-field"><?php echo($meeting->documents);?></div></td>
   </tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><span class="<?php if($meeting->canedit) { ?>content-nav showDialog<?php } ?>" request="getAccessDialog" field="meeting_access" append="1"><span><?php echo $lang["GLOBAL_ACCESS"];?></span></span></td>
-        <td class="tcell-right"><div id="meeting_access" class="itemlist-field"><div class="listmember" field="meeting_access" uid="<?php echo($meeting->access);?>" style="float: left"><?php echo($meeting->access_text);?></div></div><input type="hidden" name="meeting_access_orig" value="<?php echo($meeting->access);?>" /></td>
+	  <td class="tcell-left text11"><span class="<?php if($meeting->canedit) { ?>content-nav showDialog<?php } ?>" request="getAccessDialog" field="projectsmeeting_access" append="1"><span><?php echo $lang["GLOBAL_ACCESS"];?></span></span></td>
+        <td class="tcell-right"><div id="projectsmeeting_access" class="itemlist-field"><div class="listmember" field="projectsmeeting_access" uid="<?php echo($meeting->access);?>" style="float: left"><?php echo($meeting->access_text);?></div></div><input type="hidden" name="meeting_access_orig" value="<?php echo($meeting->access);?>" /></td>
 	</tr>
 </table>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 		<td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_EMAILED_TO"];?></td>
-		<td class="tcell-right-inactive tcell-right-nopadding"><div id="meeting_sendto">
+		<td class="tcell-right-inactive tcell-right-nopadding"><div id="projectsmeeting_sendto">
         <?php 
 			foreach($sendto as $value) { 
 				if(!empty($value->who)) {

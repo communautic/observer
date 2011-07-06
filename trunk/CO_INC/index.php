@@ -10,13 +10,49 @@ if($session->pwd_pick != 1) {
 }
 include_once(CO_INC . "/model.php");
 include_once(CO_INC . "/controller.php");
-$num_apps = 0;
+//$num_apps = 0;
 foreach($controller->applications as $app => $display) {
 	include_once(CO_INC . "/apps/".$app."/config.php");
 	include_once(CO_INC . "/apps/".$app."/lang/" . $session->userlang . ".php");
 	include_once(CO_INC . "/apps/".$app."/model.php");
 	include_once(CO_INC . "/apps/".$app."/controller.php");
-	$num_apps++;
+	//$num_apps++;
+}
+
+// build user apps array
+$num_apps = 0;
+$userapps = array();
+if($session->isSysadmin()) {
+	foreach($controller->applications as $app => $display) {
+		$userapps[] = $app;
+		$num_apps++;
+	}
+} else {
+	$adminstatus = 0;
+	foreach($controller->applications as $app => $display) {
+		if($app == "home") {
+			$userapps[] = $app;	
+		}
+		if($app == "contacts") {
+			$userapps[] = $app;	
+		}
+		foreach(${$app}->modules as $module => $value) {
+			if($module == 'access') {
+				if(${$app}->isAdmin()) {
+					$adminstatus = 1;
+					$userapps[] = $app;				
+				} else if(${$app}->isGuest()) {
+					$userapps[] = $app;
+				} else {
+					
+				}
+			}
+		}
+		$num_apps++;
+	}
+	if($adminstatus == 0) {
+		$userapps = array_values(array_diff($userapps,array('contacts')));
+	}
 }
 ?>
 <!DOCTYPE html>
@@ -35,7 +71,7 @@ foreach($controller->applications as $app => $display) {
 <?php
 foreach($controller->applications as $app => $display) {
 	echo '<link href="' . CO_FILES . '/css/apps/' . $app . '.css" rel="stylesheet" type="text/css" />';
-}
+} 
 ?>
 <script type="text/javascript">
 var num_apps = <?php echo($num_apps);?>;
@@ -64,7 +100,6 @@ var co_files = '<?php echo CO_FILES;?>';
 <script type="text/javascript">
 <?php // set app init display vars
 foreach($controller->applications as $app => $display) {
-echo "var " . $app . "_display = " . $display . ";\n";
 echo "var " . $app . "_num_modules = " . ${$app}->num_modules . ";\n";
 }
 ?>
@@ -83,7 +118,7 @@ foreach($controller->applications as $app => $display) {
 <div id="container">
 <div id="container-inner">
 <?php
-foreach($controller->applications as $app => $display) {
+foreach($userapps as $key => $app) {
 	include(CO_INC . "/apps/".$app . "/view.php");
 }?>
 </div>
