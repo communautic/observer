@@ -38,34 +38,34 @@
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><span class="<?php if($project->canedit) { ?>content-nav showDialog<?php } ?>" request="getProjectFolderDialog" field="folder" append="1"><span><?php echo $lang["PROJECT_FOLDER"];?></span></span></td>
-        <td class="tcell-right"><div id="folder" class="itemlist-field"><?php echo($project->folder);?></div></td>
+	  <td class="tcell-left text11"><span class="<?php if($project->canedit) { ?>content-nav showDialog<?php } ?>" request="getProjectFolderDialog" field="projectsfolder" append="1"><span><?php echo $lang["PROJECT_FOLDER"];?></span></span></td>
+        <td class="tcell-right"><div id="projectsfolder" class="itemlist-field"><?php echo($project->folder);?></div></td>
 	</tr>
 </table>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><span class="<?php if($project->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="ordered_by" append="0"><span><?php echo $lang["PROJECT_CLIENT"];?></span></span></td>
-	  <td class="tcell-right"><div id="ordered_by" class="itemlist-field"><?php echo($project->ordered_by);?></div><div id="ordered_by_ct" class="itemlist-field"><a field="ordered_by_ct" class="ct-content"><?php echo($project->ordered_by_ct);?></a></div></td>
+	  <td class="tcell-left text11"><span class="<?php if($project->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="projectsordered_by" append="0"><span><?php echo $lang["PROJECT_CLIENT"];?></span></span></td>
+	  <td class="tcell-right"><div id="projectsordered_by" class="itemlist-field"><?php echo($project->ordered_by);?></div><div id="projectsordered_by_ct" class="itemlist-field"><a field="projectsordered_by_ct" class="ct-content"><?php echo($project->ordered_by_ct);?></a></div></td>
 	</tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><span class="<?php if($project->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="management" append="1"><span><?php echo $lang["PROJECT_MANAGEMENT"];?></span></span></td>
-	  <td class="tcell-right"><div id="management" class="itemlist-field"><?php echo($project->management);?></div><div id="management_ct" class="itemlist-field"><a field="management_ct" class="ct-content"><?php echo($project->management_ct);?></a></div></td>
+	  <td class="tcell-left text11"><span class="<?php if($project->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="projectsmanagement" append="1"><span><?php echo $lang["PROJECT_MANAGEMENT"];?></span></span></td>
+	  <td class="tcell-right"><div id="projectsmanagement" class="itemlist-field"><?php echo($project->management);?></div><div id="projectsmanagement_ct" class="itemlist-field"><a field="projectsmanagement_ct" class="ct-content"><?php echo($project->management_ct);?></a></div></td>
 	</tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
   <tr>
-    <td class="tcell-left text11"><span class="<?php if($project->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="team" append="1"><span><?php echo $lang["PROJECT_TEAM"];?></span></span></td>
-    <td class="tcell-right"><div id="team" class="itemlist-field"><?php echo($project->team);?></div><div id="team_ct" class="itemlist-field"><a field="team_ct" class="ct-content"><?php echo($project->team_ct);?></a></div></td>
+    <td class="tcell-left text11"><span class="<?php if($project->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="projectsteam" append="1"><span><?php echo $lang["PROJECT_TEAM"];?></span></span></td>
+    <td class="tcell-right"><div id="projectsteam" class="itemlist-field"><?php echo($project->team);?></div><div id="projectsteam_ct" class="itemlist-field"><a field="projectsteam_ct" class="ct-content"><?php echo($project->team_ct);?></a></div></td>
   </tr>
 </table>
 <div class="content-spacer"></div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><span class="<?php if($project->canedit) { ?>content-nav showDialog<?php } ?>" request="getProjectStatusDialog" field="status" append="1"><span><?php echo $lang["GLOBAL_STATUS"];?></span></span></td>
-        <td class="tcell-right"><div id="status" class="itemlist-field"><div class="listmember" field="status" uid="<?php echo($project->status);?>" style="float: left"><?php echo($project->status_text);?></div></div><?php if($project->canedit) { ?><input name="status_date" type="text" class="input-date datepicker status_date" value="<?php echo($project->status_date)?>" style="float: left; margin-left: 8px;" /><?php } else { ?><div style="float: left; margin-left: 8px;"><?php echo($project->status_date)?><?php } ?></div></td>
+	  <td class="tcell-left text11"><span class="<?php if($project->canedit) { ?>content-nav showDialog<?php } ?>" request="getProjectStatusDialog" field="projectsstatus" append="1"><span><?php echo $lang["GLOBAL_STATUS"];?></span></span></td>
+        <td class="tcell-right"><div id="projectsstatus" class="itemlist-field"><div class="listmember" field="projectsstatus" uid="<?php echo($project->status);?>" style="float: left"><?php echo($project->status_text);?></div></div><?php if($project->canedit) { ?><input name="status_date" type="text" class="input-date datepicker status_date" value="<?php echo($project->status_date)?>" style="float: left; margin-left: 8px;" /><?php } else { ?><div style="float: left; margin-left: 8px;"><?php echo($project->status_date)?><?php } ?></div></td>
 	</tr>
 </table>
 <div class="content-spacer"></div>
@@ -87,10 +87,10 @@
 if(is_array($phases)) {
 	$i = 1;
 	foreach ($phases as $phase) { ?>
-    <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive loadPhase" rel="<?php echo($phase->id);?>">
+    <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive loadProjectsPhase" rel="<?php echo($phase->id);?>">
 	<tr>
 		<td class="tcell-left text11">&nbsp;</td>
-		<td class="tcell-right"><span class="loadPhase bold co-link" rel="<?php echo($phase->id);?>"><?php echo($num[$phase->id] . " " . $phase->title);?></span></td>
+		<td class="tcell-right"><span class="loadProjectsPhase bold co-link" rel="<?php echo($phase->id);?>"><?php echo($num[$phase->id] . " " . $phase->title);?></span></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11">&nbsp;</td>

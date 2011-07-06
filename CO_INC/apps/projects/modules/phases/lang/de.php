@@ -20,6 +20,7 @@ $lang["PROJECT_PHASE_TASK_START"] = 'Start';
 $lang["PROJECT_PHASE_TASK_END"] = 'Ende';
 $lang["PROJECT_PHASE_TASK_TEAM"] = 'Verantwortung';
 $lang["PROJECT_PHASE_TASK_DEPENDENT"] = 'abhängig';
+$lang["PROJECT_PHASE_TASK_DEPENDENT_NO"] = 'keine Abhängigkeit';
 
 $lang["PROJECT_PHASE_TASK_STATUS_FINISHED"] = 'erreicht am';
 

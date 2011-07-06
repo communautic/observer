@@ -157,9 +157,10 @@ class qqFileUploader {
 				
 			$fsave = '' . $filename . '.' . $ext . '';
 			$did = $_GET['did'];
+			$module = $_GET['module'];
 			//$did = $_GET['did'];
 			$now = gmdate("Y-m-d H:i:s");
-			$q = "INSERT INTO co_projects_documents set filename='$fsave', tempname='$tempname', filesize='$size', did='$did', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+			$q = "INSERT INTO co_" . $module . " set filename='$fsave', tempname='$tempname', filesize='$size', did='$did', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 			//$q = "UPDATE co_projects_documents set title = '$filename', filename='$filename', tempname='$tempname', filesize='$size', pid='$pid', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now' where id='$did'";
 			$result = mysql_query($q, $this->_db->connection);
 			$id = mysql_insert_id();

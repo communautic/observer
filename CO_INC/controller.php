@@ -15,14 +15,14 @@ class Controller extends MySQLDB {
 		$q = "select value from co_config where name='applications'";
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_result($result,0);
-		$this->applications = $system->json_decode($row);
+		$this->applications = json_decode($row);
 	}
 
 
 	function getModules($app) {
 		global $system;
 		$retval = $this->model->getModules($app);
-		$modules = $system->json_decode($retval);
+		$modules = json_decode($retval);
 		return $modules;
 	}
 

@@ -48,15 +48,15 @@
 <div class="content-spacer"></div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><span class="<?php if($document->canedit) { ?>content-nav showDialog<?php } ?>" request="getAccessDialog" field="document_access" append="1"><span><?php echo $lang["GLOBAL_ACCESS"];?></span></span></td>
-        <td class="tcell-right"><div id="document_access" class="itemlist-field"><div class="listmember" field="document_access" uid="<?php echo($document->access);?>" style="float: left"><?php echo($document->access_text);?></div></div></td>
+	  <td class="tcell-left text11"><span class="<?php if($document->canedit) { ?>content-nav showDialog<?php } ?>" request="getAccessDialog" field="projectsdocument_access" append="1"><span><?php echo $lang["GLOBAL_ACCESS"];?></span></span></td>
+        <td class="tcell-right"><div id="projectsdocument_access" class="itemlist-field"><div class="listmember" field="projectsdocument_access" uid="<?php echo($document->access);?>" style="float: left"><?php echo($document->access_text);?></div></div></td>
 	</tr>
 </table>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 		<td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_EMAILED_TO"];?></td>
-		<td class="tcell-right-inactive tcell-right-nopadding"><div id="document_sendto">
+		<td class="tcell-right-inactive tcell-right-nopadding"><div id="projectsdocument_sendto">
         <?php 
 			foreach($sendto as $value) { 
 				if(!empty($value->who)) {

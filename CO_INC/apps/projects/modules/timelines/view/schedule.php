@@ -32,10 +32,10 @@ if($numPhases > 0) {
 		}*/
 	?>
 
-<table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive loadPhase" rel="<?php echo($project["phases"][$key]["id"]);?>">
+<table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive loadProjectsPhase" rel="<?php echo($project["phases"][$key]["id"]);?>">
 	<tr>
 	  <td class="tcell-left-inactive text11"><?php echo $lang["PROJECT_PHASE_TITLE"];?></td>
-        <td class="tcell-right"><a class="loadPhase bold" rel="<?php echo($project["phases"][$key]["id"]);?>"><?php echo($countPhases . ". " . $project["phases"][$key]["title"]);?></a><br />
+        <td class="tcell-right"><a class="loadProjectsPhase bold" rel="<?php echo($project["phases"][$key]["id"]);?>"><?php echo($countPhases . ". " . $project["phases"][$key]["title"]);?></a><br />
         <span class="text11 content-date"><?php echo $lang["GLOBAL_DURATION"];?></span><span class="text11"><?php echo($project["phases"][$key]["startdate"]);?> - <?php echo($project["phases"][$key]["enddate"]);?></span><br />
         </td>
 	</tr>
@@ -46,7 +46,7 @@ if($numPhases > 0) {
 			if($project["phases"][$key]["tasks"][$tkey]["cat"] == 0) {
 		?>
             
-            <table border="0" cellspacing="0" cellpadding="0" class="table-content loadPhase" rel="<?php echo($project["phases"][$key]["id"]);?>">
+            <table border="0" cellspacing="0" cellpadding="0" class="table-content loadProjectsPhase" rel="<?php echo($project["phases"][$key]["id"]);?>">
                 <tr>
                   <td class="tcell-left-inactive text11"></td>
                    <td width="20"></td>
@@ -57,7 +57,7 @@ if($numPhases > 0) {
                 </tr>
             </table>
 			<?php } else { ?>
-            <table border="0" cellspacing="0" cellpadding="0" class="table-content loadPhase" rel="<?php echo($project["phases"][$key]["id"]);?>">
+            <table border="0" cellspacing="0" cellpadding="0" class="table-content loadProjectsPhase" rel="<?php echo($project["phases"][$key]["id"]);?>">
                 <tr>
                   <td class="tcell-left-inactive text11"></td>
                    <td width="20"></td>

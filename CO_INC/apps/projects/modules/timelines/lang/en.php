@@ -1,5 +1,5 @@
 <?php
-$projects_timelines_name = "Zeitpläne";
+$projects_timelines_name = "Scheduling";
 
 $lang["PROJECT_TIMELINE_PROJECT_PLAN"] = "Gantt Chart";
 $lang["PROJECT_TIMELINE_DATES_LIST"] = "Phasing";

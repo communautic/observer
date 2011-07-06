@@ -254,7 +254,7 @@ class ProjectsPhasesModel extends ProjectsModel {
 		$array["dependency_exists"] = $this->getDependency($id);
 		$array["projecttitle"] = $this->getProjectTitle($array['pid']);
 		$array["management"] = $this->_contactsmodel->getUserListPlain($this->getProjectField($array['pid'], 'management'));
-		$array["team"] = $this->_contactsmodel->getUserList($array['team'],'team', "", $array["canedit"]);
+		$array["team"] = $this->_contactsmodel->getUserList($array['team'],'projectsteam', "", $array["canedit"]);
 		$array["team_ct"] = empty($array["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['team_ct'];
 		$array["documents"] = $this->_documents->getDocListFromIDs($array["documents"],'documents');
 		
@@ -316,7 +316,7 @@ class ProjectsPhasesModel extends ProjectsModel {
 			$tasks["startdate"] = $this->_date->formatDate($tasks["startdate"],CO_DATE_FORMAT);
 			$tasks["enddate"] = $this->_date->formatDate($tasks["enddate"],CO_DATE_FORMAT);
 			$tasks["donedate"] = $this->_date->formatDate($tasks["donedate"],CO_DATE_FORMAT);
-			$tasks["team"] = $this->_contactsmodel->getUserList($tasks['team'],'team', "", $array["canedit"]);
+			$tasks["team"] = $this->_contactsmodel->getUserList($tasks['team'],'task_team_'.$tasks["id"], "", $array["canedit"]);
 			$tasks["team_ct"] = empty($tasks["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $tasks['team_ct'];
 				
 			$tasks["dependent_title"] = "";
@@ -653,6 +653,7 @@ class ProjectsPhasesModel extends ProjectsModel {
 
     // dialog for selecting dependent tasks
 	function getTasksDialog($id,$field) {
+		global $lang;
 		$q = "SELECT pid,startdate FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_fetch_assoc($result);
@@ -660,7 +661,7 @@ class ProjectsPhasesModel extends ProjectsModel {
 		$startdate = $row["startdate"];
 	 
 		$str = '<div class="dialog-text">';
-	 	$str .= '<a href="#" mod="projects_phases" class="insertItem" title="" field="' . $field . '" did="">keine Abhängigkeit</a>';
+	 	$str .= '<a href="#" mod="projects_phases" class="insertItem" title="" field="' . $field . '" did="">' . $lang["PROJECT_PHASE_TASK_DEPENDENT_NO"] . '</a>';
 
 		
 		$q ="select id,text from " . CO_TBL_PROJECTS_PHASES_TASKS . " where pid = '$pid' and startdate <= '$startdate' and id != '$id' and bin = '0' ORDER BY startdate";

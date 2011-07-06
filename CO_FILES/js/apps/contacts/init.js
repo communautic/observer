@@ -740,34 +740,35 @@ var contactsLayout, contactsInnerLayout;
 
 $(document).ready(function() { 
 
-	contactsLayout = $('#contacts').layout({
-			west__onresize:				function() { contactsresetModuleHeights() }
-		,	resizeWhileDragging:		true
-		,	spacing_open:				0
-		,	closable: 				false
-		,	resizable: 				false
-		,	slidable:				false
-		, 	west__size:				325
-		,	west__closable: 		true
-		,	west__resizable: 		true
-		,	center__onresize: "contactsInnerLayout.resizeAll"
-	});
-	
-	contactsInnerLayout = $('#contacts div.ui-layout-center').layout({
-			resizeWhileDragging:		false
-		,	spacing_open:				0			// cosmetic spacing
-		,	closable: 				false
-		,	resizable: 				false
-		,	slidable:				false
-		,	north__paneSelector:	".center-north"
-		,	center__paneSelector:	".center-center"
-		,	west__paneSelector:	".center-west"
-		, 	north__size:			80
-		, 	west__size:			50
-	});
-	
-	contactsloadModuleStart();
-	
+	if($('#contacts').length > 0) {
+		contactsLayout = $('#contacts').layout({
+				west__onresize:				function() { contactsresetModuleHeights() }
+			,	resizeWhileDragging:		true
+			,	spacing_open:				0
+			,	closable: 				false
+			,	resizable: 				false
+			,	slidable:				false
+			, 	west__size:				325
+			,	west__closable: 		true
+			,	west__resizable: 		true
+			,	center__onresize: "contactsInnerLayout.resizeAll"
+		});
+		
+		contactsInnerLayout = $('#contacts div.ui-layout-center').layout({
+				resizeWhileDragging:		false
+			,	spacing_open:				0			// cosmetic spacing
+			,	closable: 				false
+			,	resizable: 				false
+			,	slidable:				false
+			,	north__paneSelector:	".center-north"
+			,	center__paneSelector:	".center-center"
+			,	west__paneSelector:	".center-west"
+			, 	north__size:			80
+			, 	west__size:			50
+		});
+		
+		contactsloadModuleStart();
+	}
 
 	/**
 	* show contacts list
@@ -877,16 +878,17 @@ $(document).ready(function() {
 	function log(field,id,value) {
 		closedialog = 0;
 		var html = '<span class="listmember-outer"><a class="listmember" uid="' + id + '" field="'+field+'">' + value + '</a>';
+		var app = getCurrentApp();
 		var obj = getCurrentModule();
-		if (obj.name == "access") {
+		if (obj.name == app+"_access") {
 			insertContactAccess(field,id,value,html);
 		} else {
 			if($("#"+field).html() != "") {
 				$("#"+field+" .listmember:visible:last").append(", ");
 			}
 			$("#"+field).append(html);
-			var obj = getCurrentModule();
-			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+			//var obj = getCurrentModule();
+			$('#'+app+' .coform').ajaxSubmit(obj.poformOptions);
 			
 			// save to lastused
 			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=saveLastUsedContacts&id="+id});
@@ -1062,8 +1064,9 @@ $(document).ready(function() {
 				} else {
 					var insert = 1;
 					// check if user is in other field
-					if(field == 'admins') {
-						$('#guests .listmember:visible').each(function() {
+					var app = getCurrentApp();
+					if(field == app+'admins') {
+						$('#'+app+'guests .listmember:visible').each(function() {
 							if($(this).attr('uid') == cid) {
 								$("#modalDialog").dialog('close');
 								insert = 0;
@@ -1071,7 +1074,7 @@ $(document).ready(function() {
 							}
 						});
 					} else {
-						$('#admins .listmember:visible').each(function() {
+						$('#'+app+'admins .listmember:visible').each(function() {
 							if($(this).attr('uid') == cid) {
 								$("#modalDialog").dialog('close');
 								insert = 0;
@@ -1144,8 +1147,9 @@ $(document).ready(function() {
 					} else {
 						var insert = 1;
 						// check if user is in other field
-						if(field == 'admins') {
-							$('#guests .listmember:visible').each(function() {
+						var app = getCurrentApp();
+						if(field == app+'admins') {
+							$('#'+app+'guests .listmember:visible').each(function() {
 								if($(this).attr('uid') == cid) {
 									dia = 1;
 									insert = 0;
@@ -1153,7 +1157,7 @@ $(document).ready(function() {
 								}
 							});
 						} else {
-							$('#admins .listmember:visible').each(function() {
+							$('#'+app+'admins .listmember:visible').each(function() {
 								if($(this).attr('uid') == cid) {
 									dia = 1;
 									insert = 0;
@@ -1187,8 +1191,9 @@ $(document).ready(function() {
 		var cid = $(this).attr("cid");
 		var name = $(this).html();
 		var html = '<span class="listmember-outer"><a class="listmember" uid="' + cid + '" field="'+field+'">' + name + '</a>';
+		var app = getCurrentApp();
 		var obj = getCurrentModule();
-		if (obj.name == "access") {
+		if (obj.name == app+"_access") {
 			insertContactAccess(field,cid,name,html);																																
 		} else if (field == "to" || field == "cc"){
 			insertContactEmail(field,cid,name,html);	
@@ -1197,8 +1202,8 @@ $(document).ready(function() {
 				$("#"+field+" .listmember:visible:last").append(", ");
 			}
 			$("#"+field).append(html);
-			var obj = getCurrentModule();
-			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+			//var obj = getCurrentModule();
+			$('#'+app+' .coform').ajaxSubmit(obj.poformOptions);
 					
 			// save to lastused
 			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=saveLastUsedContacts&id="+cid});
@@ -1211,8 +1216,9 @@ $(document).ready(function() {
 		var field = $(this).attr("field");
 		var append = $(this).attr("append");
 		var gid = $(this).attr("gid");
+		var app = getCurrentApp();
 		var obj = getCurrentModule();
-		if (obj.name == "access") {
+		if (obj.name == app+"_access") {
 			insertGroupAccess(field,gid);																																
 		} else if (field == "to" || field == "cc"){
 			insertGroupEmail(field,gid);	
@@ -1222,8 +1228,8 @@ $(document).ready(function() {
 				$("#"+field+" .listmember:visible:last").append(", ");
 			}
 				$("#"+field).append(data);
-			var obj = getCurrentModule();
-			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+			//var obj = getCurrentModule();
+			$('#'+app+' .coform').ajaxSubmit(obj.poformOptions);
 			}
 		});
 		}

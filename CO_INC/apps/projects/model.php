@@ -547,11 +547,11 @@ class ProjectsModel extends Model {
 		
 		// other functions
 		$array["folder"] = $this->getProjectFolderDetails($array["folder"],"folder");
-		$array["management"] = $contactsmodel->getUserList($array['management'],'management', "", $array["canedit"]);
+		$array["management"] = $contactsmodel->getUserList($array['management'],'projectsmanagement', "", $array["canedit"]);
 		$array["management_ct"] = empty($array["management_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['management_ct'];
-		$array["team"] = $contactsmodel->getUserList($array['team'],'team', "", $array["canedit"]);
+		$array["team"] = $contactsmodel->getUserList($array['team'],'projectsteam', "", $array["canedit"]);
 		$array["team_ct"] = empty($array["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['team_ct'];
-		$array["ordered_by"] = $contactsmodel->getUserList($array['ordered_by'],'ordered_by', "", $array["canedit"]);
+		$array["ordered_by"] = $contactsmodel->getUserList($array['ordered_by'],'projectsordered_by', "", $array["canedit"]);
 		$array["ordered_by_ct"] = empty($array["ordered_by_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['ordered_by_ct'];
 		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
 		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
@@ -844,7 +844,7 @@ class ProjectsModel extends Model {
 			$result = mysql_query($q, $this->_db->connection);
 			while($row = mysql_fetch_array($result)) {
 				$mid = $row["id"];
-				$meetingsmodel->deleteMeeting($mid);
+				$projectsMeetingsModel->deleteMeeting($mid);
 			}
 		}
 		

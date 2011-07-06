@@ -122,6 +122,26 @@ function processList(list) {
 	return { "name": list, "value": itemlist };
 }
 
+function processListApps(list) {
+	var app = getCurrentApp();
+	var field = $("#"+app+list+" .listmember");
+	var items = field.size();
+	var itemlist = "";
+	field.each( function(i) {
+		if ( $(this).hasClass("deletefromlist") ) {
+			itemlist += "";
+		} else if ( $(this).hasClass("addtolist") ) {
+			itemlist += $(this).attr("uid") + ",";
+		} else {
+			itemlist += $(this).attr("uid") + ",";
+		}
+		if(items-1 == i) {
+		itemlist = itemlist.slice(0, -1)
+		}
+	})									
+	return { "name": list, "value": itemlist };
+}
+
 function processListArray(num) {
 	var items = $("#task_team_"+num+" .listmember").size();
 	var itemlist = "";
@@ -160,10 +180,37 @@ function processDocList(list) {
 	return { "name": list, "value": itemlist };
 }
 
+function processDocListApps(list) {
+	var app = getCurrentApp();
+	var field = $("#"+app+list+" .showItemContext");
+	var items = field.size();
+	var itemlist = "";
+	field.each( function(i) {
+		if ( $(this).hasClass("deletefromlist") ) {
+			itemlist += "";
+		} else if ( $(this).hasClass("addtolist") ) {
+			itemlist += $(this).attr("uid") + ",";
+		} else {
+			itemlist += $(this).attr("uid") + ",";
+		}
+		if(items-1 == i) {
+		itemlist = itemlist.slice(0, -1)
+		}
+	})									
+	return { "name": list, "value": itemlist };
+}
+
 
 
 function processCustomText(list) {
 	var text = $("#"+list+" .ct-content").html();
+	text = text.replace(CUSTOM_NOTE+" ","");	
+	return { "name": list, "value": text };
+}
+
+function processCustomTextApps(list) {
+	var app = getCurrentApp();
+	var text = $("#"+app+list+" .ct-content").html();
 	text = text.replace(CUSTOM_NOTE+" ","");	
 	return { "name": list, "value": text };
 }
@@ -176,6 +223,12 @@ function processCustomTextArray(num) {
 
 function processString(list) {
 	var text = $("#"+list).html();	
+	return { "name": list, "value": text };
+}
+
+function processStringApps(list) {
+	var app = getCurrentApp();
+	var text = $("#"+app+list).html();	
 	return { "name": list, "value": text };
 }
 

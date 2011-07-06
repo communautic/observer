@@ -84,41 +84,42 @@ function checkInBin() {
 
 var binLayout, binInnerLayout;
 
-$(document).ready(function() { 
-
-	binLayout = $('#bin').layout({
-			west__onresize:				function() { binresetModuleHeights() }
-		,	resizeWhileDragging:		true
-		,	spacing_open:				0
-		,	closable: 				false
-		,	resizable: 				false
-		,	slidable:				false
-		, 	west__size:				325
-		,	west__closable: 		true
-		,	west__resizable: 		true
-		, 	south__size:			10
-		,	center__onresize: "binInnerLayout.resizeAll"
+$(document).ready(function() {
+						   
+	if($('#bin').length > 0) {
+		binLayout = $('#bin').layout({
+				west__onresize:				function() { binresetModuleHeights() }
+			,	resizeWhileDragging:		true
+			,	spacing_open:				0
+			,	closable: 				false
+			,	resizable: 				false
+			,	slidable:				false
+			, 	west__size:				325
+			,	west__closable: 		true
+			,	west__resizable: 		true
+			, 	south__size:			10
+			,	center__onresize: "binInnerLayout.resizeAll"
+			
+		});
 		
-	});
+		binInnerLayout = $('#bin div.ui-layout-center').layout({
+				center__onresize:				function() { }
+			,	resizeWhileDragging:		false
+			,	spacing_open:				0			// cosmetic spacing
+			,	closable: 				false
+			,	resizable: 				false
+			,	slidable:				false
+			,	north__paneSelector:	".center-north"
+			,	center__paneSelector:	".center-center"
+			,	west__paneSelector:	".center-west"
+			, 	north__size:			80
+			, 	west__size:			50
+			 
 	
-	binInnerLayout = $('#bin div.ui-layout-center').layout({
-			center__onresize:				function() { }
-		,	resizeWhileDragging:		false
-		,	spacing_open:				0			// cosmetic spacing
-		,	closable: 				false
-		,	resizable: 				false
-		,	slidable:				false
-		,	north__paneSelector:	".center-north"
-		,	center__paneSelector:	".center-center"
-		,	west__paneSelector:	".center-west"
-		, 	north__size:			80
-		, 	west__size:			50
-		 
-
-	});
-	
-	binloadModuleStart();
-
+		});
+		
+		binloadModuleStart();
+	}
 
 	$("#bin1-outer > h3").click(function() {
 		if(confirmNavigation()) {

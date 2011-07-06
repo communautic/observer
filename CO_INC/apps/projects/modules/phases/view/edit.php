@@ -27,7 +27,7 @@
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 		<td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_DURATION"];?></td>
-		<td class="tcell-right-inactive"><span id="phasestartdate"><?php echo($phase->startdate);?></span> - <span id="phaseenddate"><?php echo($phase->enddate);?></span>
+		<td class="tcell-right-inactive"><span id="projectsphasestartdate"><?php echo($phase->startdate);?></span> - <span id="projectsphaseenddate"><?php echo($phase->enddate);?></span>
         <input name="kickoff" type="hidden" value="<?php echo($phase->kickoff);?>" />
         </td>
     </tr>
@@ -40,15 +40,15 @@
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
   <tr>
-    <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="team" append="1"><span><?php echo $lang["PROJECT_PHASE_TEAM"];?></span></span></td>
-    <td class="tcell-right"><div id="team" class="itemlist-field"><?php echo($phase->team);?></div><div id="team_ct" class="itemlist-field"><a field="team_ct" class="ct-content"><?php echo($phase->team_ct);?></a></div></td>
+    <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="projectsteam" append="1"><span><?php echo $lang["PROJECT_PHASE_TEAM"];?></span></span></td>
+    <td class="tcell-right"><div id="projectsteam" class="itemlist-field"><?php echo($phase->team);?></div><div id="projectsteam_ct" class="itemlist-field"><a field="projectsteam_ct" class="ct-content"><?php echo($phase->team_ct);?></a></div></td>
   </tr>
 </table>
 <div class="content-spacer"></div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav showDialog<?php } ?>" request="getPhaseStatusDialog" field="status" append="1"><span><?php echo $lang["GLOBAL_STATUS"];?></span></span></td>
-        <td class="tcell-right"><div id="phase_status" class="itemlist-field"><div class="listmember" field="phase_status" uid="<?php echo($phase->status);?>" style="float: left"><?php echo($phase->status_text);?></div></div><?php if($phase->canedit) { ?><input name="phase_status_date" type="text" class="input-date datepicker phase_status_date" value="<?php echo($phase->status_date)?>" style="float: left; margin-left: 8px;" /><?php } else { ?><div style="float: left; margin-left: 8px;"><?php echo($phase->status_date)?></div><?php } ?></td>
+	  <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav showDialog<?php } ?>" request="getPhaseStatusDialog" field="projectsstatus" append="1"><span><?php echo $lang["GLOBAL_STATUS"];?></span></span></td>
+        <td class="tcell-right"><div id="projectsphase_status" class="itemlist-field"><div class="listmember" field="projectsphase_status" uid="<?php echo($phase->status);?>" style="float: left"><?php echo($phase->status_text);?></div></div><?php if($phase->canedit) { ?><input name="phase_status_date" type="text" class="input-date datepicker phase_status_date" value="<?php echo($phase->status_date)?>" style="float: left; margin-left: 8px;" /><?php } else { ?><div style="float: left; margin-left: 8px;"><?php echo($phase->status_date)?></div><?php } ?></td>
 	</tr>
 </table>
 <div class="content-spacer"></div>
@@ -83,26 +83,26 @@ foreach($task as $value) {
 		include("milestone.php");
 	}
  } ?>
-<div id="phasetasks"></div>
+<div id="projectsphasetasks"></div>
 <?php if($phase->perms != "guest") { ?>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
   <tr>
-    <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav showDialog<?php } ?>" request="getDocumentsDialog" field="documents" append="1"><span><?php echo $lang["PROJECT_DOCUMENT_DOCUMENTS"];?></span></span></td>
-    <td class="tcell-right"><div id="documents" class="itemlist-field"><?php echo($phase->documents);?></div></td>
+    <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav showDialog<?php } ?>" request="getDocumentsDialog" field="projectsdocuments" append="1"><span><?php echo $lang["PROJECT_DOCUMENT_DOCUMENTS"];?></span></span></td>
+    <td class="tcell-right"><div id="projectsdocuments" class="itemlist-field"><?php echo($phase->documents);?></div></td>
   </tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav showDialog<?php } ?>" request="getAccessDialog" field="phase_access" title="<?php echo $lang["GLOBAL_ACCESS"];?>" append="1"><span><?php echo $lang["GLOBAL_ACCESS"];?></span></span></td>
-        <td class="tcell-right"><div id="phase_access" class="itemlist-field"><div class="listmember" field="phase_access" uid="<?php echo($phase->access);?>" style="float: left"><?php echo($phase->access_text);?></div></div><input type="hidden" name="phase_access_orig" value="<?php echo($phase->access);?>" /></td>
+	  <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav showDialog<?php } ?>" request="getAccessDialog" field="projectsphase_access" title="<?php echo $lang["GLOBAL_ACCESS"];?>" append="1"><span><?php echo $lang["GLOBAL_ACCESS"];?></span></span></td>
+        <td class="tcell-right"><div id="projectsphase_access" class="itemlist-field"><div class="listmember" field="projectsphase_access" uid="<?php echo($phase->access);?>" style="float: left"><?php echo($phase->access_text);?></div></div><input type="hidden" name="phase_access_orig" value="<?php echo($phase->access);?>" /></td>
 	</tr>
 </table>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 		<td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_EMAILED_TO"];?></td>
-		<td class="tcell-right-inactive tcell-right-nopadding"><div id="phase_sendto">
+		<td class="tcell-right-inactive tcell-right-nopadding"><div id="projects_phase_sendto">
         <?php 
 			foreach($sendto as $value) {
 				if(!empty($value->who)) {
