@@ -30,7 +30,7 @@ if($session->isSysadmin()) {
 } else {
 	$adminstatus = 0;
 	foreach($controller->applications as $app => $display) {
-		if($app == "home") {
+		if($app == "desktop") {
 			$userapps[] = $app;	
 		}
 		if($app == "contacts") {
@@ -52,6 +52,7 @@ if($session->isSysadmin()) {
 	}
 	if($adminstatus == 0) {
 		$userapps = array_values(array_diff($userapps,array('contacts')));
+		$userapps = array_values(array_diff($userapps,array('desktop')));
 	}
 }
 ?>
