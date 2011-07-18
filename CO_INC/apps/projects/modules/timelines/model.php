@@ -11,20 +11,20 @@ class ProjectsTimelinesModel extends ProjectsModel {
 	function getList($id,$sort) {
 		global $session, $lang;
 
+			$array["id"] = 3;
+			$array["title"] = $lang["PROJECT_TIMELINE_PROJECT_STRUCTURE"];
+			$timelines[] = new Lists($array);
 			$array["id"] = 1;
 			$array["title"] = $lang["PROJECT_TIMELINE_PROJECT_PLAN"];
+			$timelines[] = new Lists($array);
+			$array["id"] = 4;
+			$array["title"] = $lang["PROJECT_TIMELINE_DATES_MILESTONES"];
 			$timelines[] = new Lists($array);
 			$array["id"] = 2;
 			$array["title"] = $lang["PROJECT_TIMELINE_DATES_LIST"];
 			$timelines[] = new Lists($array);
-			$array["id"] = 3;
-			$array["title"] = $lang["PROJECT_TIMELINE_PROJECT_STRUCTURE"];
-			$timelines[] = new Lists($array);
-			$array["id"] = 4;
-			$array["title"] = $lang["PROJECT_TIMELINE_DATES_MILESTONES"];
 			
-			$timelines[] = new Lists($array);
-		
+			
 	  $arr = array("timelines" => $timelines, "sort" => 0);
 	  return $arr;
 	}
