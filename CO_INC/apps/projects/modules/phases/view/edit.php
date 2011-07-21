@@ -1,4 +1,5 @@
 <div>
+<div id="projects_phases-action-new" style="display: none"><?php echo $lang["PROJECT_PHASE_ACTION_NEW"];?></div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-title">
   <tr>
     <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav focusTitle<?php } ?>"><span><?php echo $lang["PROJECT_PHASE_TITLE"];?></span></span></td>

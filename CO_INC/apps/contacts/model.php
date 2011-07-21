@@ -220,7 +220,7 @@ class ContactsModel extends Model {
 	function getContactList($sort) {
       global $session;
 	  if($sort == 0) {
-		  $sortstatus = $this->getSortStatus("contact-sort-status");
+		  $sortstatus = $this->getSortStatus("contacts-contact-sort-status");
 		  if(!$sortstatus) {
 		  	$order = "order by lastname ASC";
 			$sortcur = '1';
@@ -235,7 +235,7 @@ class ContactsModel extends Model {
 						$sortcur = '2';
 				  break;
 				  case "3":
-				  		$sortorder = $this->getSortOrder("contact-sort-order");
+				  		$sortorder = $this->getSortOrder("contacts-contact-sort-order");
 				  		if(!$sortorder) {
 						  	$order = "order by lastname ASC";
 							$sortcur = '1';
@@ -257,7 +257,7 @@ class ContactsModel extends Model {
 						$sortcur = '2';
 				  break;
 				  case "3":
-				  		$sortorder = $this->getSortOrder("contact-sort-order");
+				  		$sortorder = $this->getSortOrder("contacts-contact-sort-order");
 				  		if(!$sortorder) {
 						  	$order = "order by lastname ASC";
 							$sortcur = '1';
@@ -271,7 +271,7 @@ class ContactsModel extends Model {
 	  
 	  $q = "select id,firstname,lastname from " . CO_TBL_USERS . " where invisible = '0' and bin = '0' " . $order;
 
-	  $this->setSortStatus("contact-sort-status",$sortcur);
+	  $this->setSortStatus("contacts-contact-sort-status",$sortcur);
       $result = mysql_query($q, $this->_db->connection);
 	  $contacts = "";
 	  while ($row = mysql_fetch_array($result)) {

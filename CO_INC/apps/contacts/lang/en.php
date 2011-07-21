@@ -10,7 +10,8 @@ $lang['CONTACTS_SINGLE_CONTACTS'] = 'Contacts';
 $lang['CONTACTS_SYSTEM_GROUP'] = 'All Contacts';
 define('CONTACTS_ADD_CONTACT_TO_GROUP', 'integrate contacts');
 define('CONTACTS_ADD_GROUP_TO_GROUP', 'integrate group');
-define('CONTACTS_GROUP_MEMBERS', 'Members');
+$lang['CONTACTS_GROUP_MEMBERS'] = 'Members';
+$lang['CONTACTS_GROUP_MEMBERS_LIST'] = 'all Members';
 
 $lang['CONTACTS_LASTNAME'] = 'Surname';
 $lang['CONTACTS_FIRSTNAME'] = 'First Name';

@@ -627,9 +627,6 @@ border:1px dashed black;
 #tabs li { border: 0; }
 
 .tinymce { background-color: #E1F0AF}
-.loadProject { cursor: pointer }
-.loadPhase { cursor: pointer }
-.loadPhase2 { cursor: pointer }
 
 /* Forwarding window */
 #modalDialogForward { padding-right: 15px;}

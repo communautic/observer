@@ -7,6 +7,7 @@ $lang["PROJECT_PHASE_TITLE"] = 'Phase';
 $lang["PROJECT_PHASES"] = 'Phasen';
 
 $lang["PROJECT_PHASE_NEW"] = 'Neue Phase';
+$lang["PROJECT_PHASE_ACTION_NEW"] = 'neue Phase anlegen';
 $lang["PROJECT_PHASE_TASK_NEW"] = 'Neues Arbeitspaket';
 $lang["PROJECT_PHASE_MILESTONE_NEW"] = 'Neuer Meilenstein';
 

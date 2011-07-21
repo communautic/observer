@@ -19,7 +19,7 @@
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
-    <td class="tcell-left text11"><span class="content-nav showDialog" request="getContactsDialog" field="members" append="1"><span><?php echo CONTACTS_GROUP_MEMBERS;?></span></span></td>
+    <td class="tcell-left text11"><span class="content-nav showDialog" request="getContactsDialog" field="members" append="1"><span><?php echo $lang['CONTACTS_GROUP_MEMBERS'];?></span></span></td>
     <td class="tcell-right"><div id="members" class="itemlist-field"><?php echo($group->members);?></div>
     </td>
   </tr>
@@ -29,7 +29,7 @@
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
-		<td class="tcell-left-inactive text11"><?php echo CONTACTS_GROUP_MEMBERS;?></td>
+		<td class="tcell-left-inactive text11"><?php echo $lang['CONTACTS_GROUP_MEMBERS_LIST'];?></td>
     <td class="tcell-right">&nbsp;</td>
     </tr>
 </table>
@@ -40,7 +40,7 @@ if(is_array($members)) {
     <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive" rel="<?php echo($member["id"]);?>">
 	<tr>
 		<td class="tcell-left text11">&nbsp;</td>
-		<td class="tcell-right"><span class="bold co-link" rel="<?php echo($member["id"]);?>"><?php echo($member["name"]);?></span></td>
+		<td class="tcell-right"><span class="bold co-link loadContactFromGroups" rel="<?php echo($member["id"]);?>"><?php echo($member["name"]);?></span></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11">&nbsp;</td>

@@ -5,14 +5,17 @@ $projects_name = "Projekte";
 // Left
 $lang["PROJECT_FOLDER"] = 'Ordner';
 $lang["PROJECT_FOLDER_NEW"] = 'Neuer Ordner';
+$lang["PROJECT_FOLDER_ACTION_NEW"] = 'neuen Ordner anlegen';
 $lang["PROJECT_PROJECTS"] = 'Projekte';
 $lang["PROJECT_NEW"] = 'Neues Projekt';
+$lang["PROJECT_ACTION_NEW"] = 'neues Projekt anlegen';
 
 // Folder Right
 $lang["PROJECT_FOLDER_PROJECTS_CREATED"] = 'Projekte insgesamt';
 $lang["PROJECT_FOLDER_PROJECTS_PLANNED"] = 'Projekte in Planung';
 $lang["PROJECT_FOLDER_PROJECTS_RUNNING"] = 'Projekte in Arbeit';
 $lang["PROJECT_FOLDER_PROJECTS_FINISHED"] = 'Projekte abgeschlossen';
+$lang["PROJECT_FOLDER_PROJECTS_STOPPED"] = 'Projekte abgebrochen';
 $lang["PROJECT_FOLDER_STATUS_ACTIVE"] = 'aktiv';
 $lang["PROJECT_FOLDER_STATUS_ARCHIVE"] = 'archiv';
 
@@ -33,6 +36,7 @@ $lang["PROJECT_DESCRIPTION"] = 'Beschreibung';
 $lang["PROJECT_STATUS_PLANNED"] = 'in Planung seit';
 $lang["PROJECT_STATUS_INPROGRESS"] = 'in Arbeit seit';
 $lang["PROJECT_STATUS_FINISHED"] = 'abgeschlossen am';
+$lang["PROJECT_STATUS_STOPPED"] = 'abgebrochen am';
 
 $lang["PROJECT_HANDBOOK"] = 'Projekthandbuch';
 

@@ -109,11 +109,14 @@ class ProjectsModel extends Model {
 		$array["plannedprojects"] = $this->getNumProjects($id, $status="0");
 		$array["activeprojects"] = $this->getNumProjects($id, $status="1");
 		$array["inactiveprojects"] = $this->getNumProjects($id, $status="2");
+		$array["stoppedprojects"] = $this->getNumProjects($id, $status="3");
 		
-		$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
+		/*$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
 		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
 		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
-		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
+		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);*/
+		$array["today"] = $this->_date->formatDate("now",CO_DATETIME_FORMAT);
+		
 		
 		$array["canedit"] = true;
 		$array["access"] = "sysadmin";
@@ -259,7 +262,7 @@ class ProjectsModel extends Model {
    * get number of projects for a project folder
    * status: 0 = all, 1 = active, 2 = abgeschlossen
    */   
-   function getNumProjects($id, $status="0") {
+   function getNumProjects($id, $status="") {
 		global $session;
 		
 		$access = "";
@@ -267,16 +270,10 @@ class ProjectsModel extends Model {
 			$access = " and id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
 		  }
 		
-		switch($status) {
-			case "0":
-				$q = "select id from " . CO_TBL_PROJECTS . " where folder='$id' " . $access . " and bin != '1'";
-			break;
-			case "1":
-				$q = "select id from " . CO_TBL_PROJECTS . " where folder='$id' " . $access . " and status = '1' and bin != '1'";
-			break;
-			case "2":
-				$q = "select id from " . CO_TBL_PROJECTS . " where folder='$id' " . $access . " and status = '2' and bin != '1'";
-			break;
+		if($status == "") {
+			$q = "select id from " . CO_TBL_PROJECTS . " where folder='$id' " . $access . " and bin != '1'";
+		} else {
+			$q = "select id from " . CO_TBL_PROJECTS . " where folder='$id' " . $access . " and status = '$status' and bin != '1'";
 		}
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_num_rows($result);
@@ -570,6 +567,10 @@ class ProjectsModel extends Model {
 				$array["status_text"] = $lang["PROJECT_STATUS_FINISHED"];
 				$array["status_date"] = $this->_date->formatDate($array["finished_date"],CO_DATE_FORMAT);
 			break;
+			case "3":
+				$array["status_text"] = $lang["PROJECT_STATUS_STOPPED"];
+				$array["status_date"] = $this->_date->formatDate($array["stopped_date"],CO_DATE_FORMAT);
+			break;
 		}
 		
 		
@@ -677,6 +678,9 @@ class ProjectsModel extends Model {
 			case "2":
 				$sql = "finished_date";
 				$this->setAllPhasesFinished($id,$status_date);
+			break;
+			case "3":
+				$sql = "stopped_date";
 			break;
 		}
 
