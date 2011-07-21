@@ -5,6 +5,7 @@ $lang["PROJECT_MEETING_TITLE"] = 'Meeting';
 $lang["PROJECT_MEETINGS"] = 'Meetings';
 
 $lang["PROJECT_MEETING_NEW"] = 'New Meeting';
+$lang["PROJECT_MEETING_ACTION_NEW"] = 'new Meeting';
 $lang["PROJECT_MEETING_TASK_NEW"] = 'New Item';
 //define('MEETING_RELATES_TO', 'bezogen auf');
 $lang["PROJECT_MEETING_DATE"] = 'Date';

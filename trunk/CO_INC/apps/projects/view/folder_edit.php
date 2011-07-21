@@ -1,4 +1,5 @@
 <div>
+<div id="projects_folder-action-new" style="display: none"><?php echo $lang["PROJECT_FOLDER_ACTION_NEW"];?></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-title">
 	<tr>
 		<td class="tcell-left text11"><span class="<?php if($folder->canedit) { ?>content-nav focusTitle<?php } ?>"><span><?php echo $lang["PROJECT_FOLDER"];?></span></span></td>
@@ -43,6 +44,12 @@
   <tr>
     <td class="text11" style="padding: 3px 0 0 8px" width="130"><?php echo $lang["PROJECT_FOLDER_PROJECTS_FINISHED"];?></td>
     <td class="text11" style="padding: 3px 0 0 0"><?php echo $folder->inactiveprojects;?></td>
+  </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
+  <tr>
+    <td class="text11" style="padding: 3px 0 0 8px" width="130"><?php echo $lang["PROJECT_FOLDER_PROJECTS_STOPPED"];?></td>
+    <td class="text11" style="padding: 3px 0 0 0"><?php echo $folder->stoppedprojects;?></td>
   </tr>
 </table>
     </div>
@@ -106,9 +113,9 @@ if(is_array($projects)) {
 <div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-footer">
   <tr>
-    <td class="left"><?php echo $lang["EDITED_BY_ON"];?> <?php echo($folder->edited_user.", ".$folder->edited_date)?></td>
+    <td class="left"><?php echo($lang["GLOBAL_FOOTER_STATUS"] . " " . $folder->today);?></td>
     <td class="middle"></td>
-    <td class="right"><?php echo $lang["CREATED_BY_ON"];?> <?php echo($folder->created_user.", ".$folder->created_date);?></td>
+    <td class="right"></td>
   </tr>
 </table>
 </div>

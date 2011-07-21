@@ -88,6 +88,10 @@ background-color: #e1f0af; }
     background-color: #e1f0af;
 }
 
+.loadProject { cursor: pointer }
+.loadProjectsPhase { cursor: pointer }
+.loadProjectsPhase2 { cursor: pointer }
+
 #barchart-zoom { margin: 5px 0 0 42px; }
 #barchart-zoom .zoom-xsmall { float: left; margin-right: 7px; display: block; height: 13px; width: 13px; background: url(../../img/apps_buttons_sprite.png) no-repeat 0px -590px}
 #barchart-zoom .zoom-xsmall:hover { background: url(../../img/apps_buttons_sprite.png) no-repeat -100px -590px; cursor: pointer;}

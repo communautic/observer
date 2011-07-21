@@ -12,7 +12,7 @@
 </table>
 <table border="0" cellspacing="0" cellpadding="0" width="100%" class="standard">
   <tr>
-    <td class="tcell-left"><?php echo CONTACTS_GROUP_MEMBERS;?></td>
+    <td class="tcell-left"><?php echo $lang['CONTACTS_GROUP_MEMBERS'];?></td>
     <td><?php echo($group->members);?></td>
   </tr>
 </table>
@@ -24,7 +24,7 @@ if(is_array($members)) {
     <table border="0" cellpadding="0" cellspacing="0" width="100%" class="standard">
 	<tr>
 		<td class="tcell-left">
-        <?php if($i == 1) { echo CONTACTS_GROUP_MEMBERS; }?>&nbsp;
+        <?php if($i == 1) { echo $lang['CONTACTS_GROUP_MEMBERS_LIST']; }?>&nbsp;
         </td>
 		<td><?php echo($member["name"]);?></td>
 	</tr>

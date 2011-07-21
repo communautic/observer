@@ -22,7 +22,7 @@ $lang["ACTION_NEW"] = "neu";
 $lang["ACTION_PRINT"] = "drucken";
 $lang["ACTION_SENDTO"] = "weiterleiten";
 $lang["ACTION_DUPLICATE"] = "duplizieren";
-$lang["ACTION_REFRESH"] = "Aktualisieren";
+$lang["ACTION_REFRESH"] = "aktualisieren";
 $lang["ACTION_DELETE"] = "löschen";
 
 $lang["TEXT_NOTE"] = "Notiz:";

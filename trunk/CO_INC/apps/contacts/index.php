@@ -68,7 +68,7 @@ if (!empty($_GET['request'])) {
 			echo($contacts->getContactList($sort));
 		break;
 		case 'setContactOrder':
-			echo($contacts->setSortOrder("contact-sort",$_GET['contactItem']));
+			echo($contacts->setSortOrder("contacts-contact-sort",$_GET['contactItem']));
 		break;
 		case 'getContactDetails':
 			echo($contacts->getContactDetails($_GET['id']));
