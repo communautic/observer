@@ -321,10 +321,7 @@ function myCustomInitInstance(ed) {
 										)
 
 
-	$("#vdocContent").livequery(function() {
-
-
-						 
+	$("#vdocContent").livequery(function() {	 
 		var vdoc = $(this);
 		$.getScript("tiny_mce/jquery.tinymce.js", function(){
 			vdoc.tinymce({

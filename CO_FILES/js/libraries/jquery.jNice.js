@@ -92,19 +92,43 @@
 				if($(this).hasClass('noperm')) {
 					return false;
 				}
-				var input = $a.siblings('input')[0];
-				if (input.checked===true){
-					input.checked = false;
-					$a.removeClass('jNiceChecked');
-					$("#donedate_"+input.value).slideUp('slow');
+				
+				var app = getCurrentApp();
+				if(app == "brainstorms") {
+					var input = $a.siblings('input')[0];
+					var itemid = input.value;
+					if (input.checked===true){
+						input.checked = false;
+						$a.removeClass('jNiceChecked');
+						$("#answer_"+itemid).slideUp();
+						var status = 0;
+					} else {
+						input.checked = true;
+						$a.addClass('jNiceChecked');
+						$("#postanswer_"+itemid).clone().attr('id','answer_'+itemid).css('display','none').appendTo('#brainstormAnswer').slideDown();
+						var status = 1;
+					}
+					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/forums&request=setItemStatus&id="+itemid+"&status=" + status, success: function(brainstorm){
+										//$("#brainstormenddate").html(brainstorm.enddate);
+									}
+								});
+					
+				} else {
+					var input = $a.siblings('input')[0];
+					if (input.checked===true){
+						input.checked = false;
+						$a.removeClass('jNiceChecked');
+						$("#donedate_"+input.value).slideUp('slow');
+					}
+					else {
+						input.checked = true;
+						$a.addClass('jNiceChecked');
+						$("#donedate_"+input.value).slideDown('slow');
+					}
+					
+					var obj = getCurrentModule();
+					$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 				}
-				else {
-					input.checked = true;
-					$a.addClass('jNiceChecked');
-					$("#donedate_"+input.value).slideDown('slow');
-				}
-				var obj = getCurrentModule();
-				$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 				return false;
 		});
 		$input.click(function(){

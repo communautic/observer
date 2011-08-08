@@ -16,7 +16,7 @@ class ProjectsDocuments extends Projects {
 
 
 	function getList($id,$sort) {
-		global $system;
+		global $system, $lang;
 		$arr = $this->model->getList($id,$sort);
 		$documents = $arr["documents"];
 		ob_start();

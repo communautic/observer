@@ -71,6 +71,8 @@ color: #333;
 .table-content .tcell-right-nopadding { padding: 0; }
 .table-content input { background-color: transparent; }
 
+.table-content-grey { width: 100%; background-color: #b2b2b2; }
+
 .tbl-inactive input.bg {
 	border: 1px solid #E5E5E5;
 	font-weight: bold;

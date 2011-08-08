@@ -90,6 +90,9 @@ if (!empty($_GET['request'])) {
 		case 'getProjectSend':
 			echo($projects->getProjectSend($_GET['id']));
 		break;
+		case 'getFolderSend':
+			echo($projects->getFolderSend($_GET['id']));
+		break;
 		case 'getSendtoDetails':
 			echo($projects->getSendtoDetails("projects",$_GET['id']));
 		break;
@@ -148,6 +151,9 @@ if (!empty($_POST['request'])) {
 		break;
 		case 'sendProjectDetails':
 			echo($projects->sendProjectDetails($_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
+		break;
+		case 'sendFolderDetails':
+			echo($projects->sendFolderDetails($_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
 		break;
 	}
 }

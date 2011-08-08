@@ -94,7 +94,7 @@ class ProjectsModel extends Model {
    * get details for the project folder
    */
    function getFolderDetails($id) {
-		global $session, $contactsmodel, $projectsControllingModel;
+		global $session, $contactsmodel, $projectsControllingModel, $lang;
 		$q = "SELECT * FROM " . CO_TBL_PROJECTS_FOLDERS . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if(mysql_num_rows($result) < 1) {
@@ -156,7 +156,7 @@ class ProjectsModel extends Model {
 		  }
 		
 		
-		$q = "SELECT a.title,a.id,a.management, (SELECT MIN(startdate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as startdate ,(SELECT MAX(enddate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_PROJECTS . " as a where a.folder='$id' and a.bin='0'" . $access . " " . $order;
+		$q = "SELECT a.title,a.id,a.management,a.status, (SELECT MIN(startdate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as startdate ,(SELECT MAX(enddate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_PROJECTS . " as a where a.folder='$id' and a.bin='0'" . $access . " " . $order;
 
 		$result = mysql_query($q, $this->_db->connection);
 	  	$projects = "";
@@ -169,6 +169,22 @@ class ProjectsModel extends Model {
 			$project["realisation"] = $projectsControllingModel->getChart($project["id"], "realisation", 0);
 			$project["management"] = $contactsmodel->getUserListPlain($project['management']);
 			$project["perm"] = $this->getProjectAccess($project["id"]);
+			
+			switch($project["status"]) {
+				case "0":
+					$project["status_text"] = $lang["PROJECT_STATUS_PLANNED_TEXT"];
+				break;
+				case "1":
+					$project["status_text"] = $lang["PROJECT_STATUS_INPROGRESS_TEXT"];
+				break;
+				case "2":
+					$project["status_text"] = $lang["PROJECT_STATUS_FINISHED_TEXT"];
+				break;
+				case "3":
+					$project["status_text"] = $lang["PROJECT_STATUS_STOPPED_TEXT"];
+				break;
+			}
+			
 			$projects[] = new Lists($project);
 	  	}
 		
@@ -421,6 +437,9 @@ class ProjectsModel extends Model {
 		$itemstatus = "";
 		if($array["status"] == 2) {
 			$itemstatus = " module-item-active";
+		}
+		if($array["status"] == 3) {
+			$itemstatus = " module-item-active-stopped";
 		}
 		$array["itemstatus"] = $itemstatus;
 		
@@ -1142,6 +1161,57 @@ class ProjectsModel extends Model {
 				$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
 				
 			break;
+			case 'status':
+
+				// all
+				$q = "SELECT id FROM " . CO_TBL_PROJECTS. " WHERE folder = '$id' and bin = '0'";
+				$result = mysql_query($q, $this->_db->connection);
+				$all = mysql_num_rows($result);
+				
+				// planned
+				$q = "SELECT id FROM " . CO_TBL_PROJECTS. " WHERE folder = '$id' and status = '0' and bin = '0'";
+				$result = mysql_query($q, $this->_db->connection);
+				$planned = mysql_num_rows($result);
+				$chart["planned"] = 0;
+				if($planned != 0) {
+					$chart["planned"] = round((100/$all)*$planned,0);
+				}
+				
+				// inprogress
+				$q = "SELECT id FROM " . CO_TBL_PROJECTS. " WHERE folder = '$id' and status = '1' and bin = '0'";
+				$result = mysql_query($q, $this->_db->connection);
+				$inprogress = mysql_num_rows($result);
+				$chart["inprogress"] = 0;
+				if($inprogress != 0) {
+					$chart["inprogress"] = round((100/$all)*$inprogress,0);
+				}
+				// finished
+				$q = "SELECT id FROM " . CO_TBL_PROJECTS. " WHERE folder = '$id' and status = '2' and bin = '0'";
+				$result = mysql_query($q, $this->_db->connection);
+				$finished = mysql_num_rows($result);
+				$chart["finished"] = 0;
+				if($finished != 0) {
+					$chart["finished"] = round((100/$all)*$finished,0);
+				}
+				
+				// stopped
+				$q = "SELECT id FROM " . CO_TBL_PROJECTS. " WHERE folder = '$id' and status = '3' and bin = '0'";
+				$result = mysql_query($q, $this->_db->connection);
+				$stopped = mysql_num_rows($result);
+				$chart["stopped"] = 0;
+				if($stopped != 0) {
+					$chart["stopped"] = round((100/$all)*$stopped,0);
+				}				
+
+				$chart["title"] = $lang["PROJECT_FOLDER_CHART_STATUS"];
+				$chart["img_name"] = 'projects_' . $id . "_status.png";
+				if($all == 0) {
+					$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:0,100&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
+				} else {
+					$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["planned"]. ',' .$chart["inprogress"] . ',' .$chart["finished"] . ',' .$chart["stopped"] . '&chs=150x90&chco=4BA0C8|FFD20A|82AA0B|7F7F7F&chf=bg,s,FFFFFF';
+				}
+				$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
+			break;
 		}
 		
 		return $chart;
@@ -1324,7 +1394,25 @@ class ProjectsModel extends Model {
 								}
 							}
 						}
-	
+
+
+						// phonecalls
+						if(in_array("phonecalls",$active_modules)) {
+							$qp ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_PHONECALLS . " where pid = '$pid'";
+							$resultp = mysql_query($qp, $this->_db->connection);
+							while ($rowp = mysql_fetch_array($resultp)) {
+								if($rowp["bin"] == "1") {
+								$idp = $rowp["id"];
+									foreach($rowp as $key => $val) {
+										$phonecall[$key] = $val;
+									}
+									$phonecall["bintime"] = $this->_date->formatDate($phonecall["bintime"],CO_DATETIME_FORMAT);
+									$phonecall["binuser"] = $this->_users->getUserFullname($phonecall["binuser"]);
+									$phonecalls[] = new Lists($phonecall);
+									$arr["phonecalls"] = $phonecalls;
+								}
+							}
+						}
 	
 						// documents_folder
 						if(in_array("documents",$active_modules)) {
@@ -1476,6 +1564,22 @@ class ProjectsModel extends Model {
 								}
 							}
 						}
+						
+						
+						// phonecalls
+						if(in_array("phonecalls",$active_modules)) {
+							$projectsPhoncallsModel = new ProjectsPhonecallsModel();
+							$qc ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_PHONECALLS . " where pid = '$pid'";
+							$resultc = mysql_query($qc, $this->_db->connection);
+							while ($rowc = mysql_fetch_array($resultc)) {
+								$cid = $rowc["id"];
+								if($rowc["bin"] == "1") {
+									echo $rowc["id"];
+									$projectsPhoncallsModel->deletePhonecall($cid);
+									$arr["phonecalls"] = "";
+								}
+							}
+						}
 
 
 						// documents_folder
@@ -1506,13 +1610,15 @@ class ProjectsModel extends Model {
 	
 						// vdocs
 						if(in_array("vdocs",$active_modules)) {
-							$qv ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_VDOCS . " where pid = '$pid' and bin='1'";
+							$qv ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_VDOCS . " where pid = '$pid'";
 							$resultv = mysql_query($qv, $this->_db->connection);
 							while ($rowv = mysql_fetch_array($resultv)) {
 								$vid = $rowv["id"];
+								if($rowv["bin"] == "1") {
 								$vdocsmodel = new VDocsModel();
 								$vdocsmodel->deleteVDoc($vid);
 								$arr["vdocs"] = "";
+								}
 							}
 						}
 

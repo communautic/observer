@@ -24,7 +24,7 @@ class Projects extends Controller {
 
 
 	function getFolderList($sort) {
-		global $system;
+		global $system, $lang;
 		$arr = $this->model->getFolderList($sort);
 		$folders = $arr["folders"];
 		ob_start();
@@ -59,18 +59,19 @@ class Projects extends Controller {
 
 
 	function printFolderDetails($id, $t) {
+		global $session,$lang;
 		$title = "";
 		$html = "";
 		if($arr = $this->model->getFolderDetails($id)) {
 			$folder = $arr["folder"];
 			$projects = $arr["projects"];
-			
 			ob_start();
 				include 'view/folder_print.php';
 				$html = ob_get_contents();
 			ob_end_clean();
 			$title = $folder->title;
 		}
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_PROJECT_FOLDER"];
 		switch($t) {
 			case "html":
 				$this->printHTML($title,$html);
@@ -81,6 +82,50 @@ class Projects extends Controller {
 		
 	}
 
+
+	function getFolderSend($id) {
+		global $lang;
+		if($arr = $this->model->getFolderDetails($id)) {
+			$folder = $arr["folder"];
+			$projects = $arr["projects"];	
+			$form_url = $this->form_url;
+			$request = "sendFolderDetails";
+			$to = "";
+			$cc = "";
+			$subject = $folder->title;
+			$variable = "";
+			include CO_INC .'/view/dialog_send.php';
+		}
+		else {
+			include CO_INC .'/view/default.php';
+		}
+	}
+
+
+	function sendFolderDetails($id,$to,$cc,$subject,$body) {
+		global $session,$users, $lang;
+		$title = "";
+		$html = "";
+		if($arr = $this->model->getFolderDetails($id)) {
+			$folder = $arr["folder"];
+			$projects = $arr["projects"];
+			//$sendto = $arr["sendto"];
+			ob_start();
+				include 'view/folder_print.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			$title = $folder->title;
+		}
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_PROJECT_FOLDER"];
+		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
+		$pdf = $this->savePDF($title,$html,$attachment);
+		
+		// write sento log
+		//$this->writeSendtoLog("projects",$id,$to,$subject,$body);
+		
+		//$to,$from,$fromName,$subject,$body,$attachment
+		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment);
+	}
 
 	function newFolder() {
 		global $session;
@@ -137,7 +182,7 @@ class Projects extends Controller {
 
 
 	function getProjectList($id,$sort) {
-		global $system;
+		global $system, $lang;
 		$arr = $this->model->getProjectList($id,$sort);
 		$projects = $arr["projects"];
 		ob_start();
@@ -427,9 +472,22 @@ class Projects extends Controller {
 
 
 	// STATISTICS
-	function getChartFolder($id,$what) {
+	function getChartFolder($id,$what,$print=0,$type=0) {
+		global $lang;
 		if($chart = $this->model->getChartFolder($id,$what)) {
-				include 'view/chart.php';
+				if($type == 1) {
+					if($print == 1) {
+						include 'view/chart_status_print.php';
+					} else {
+						include 'view/chart_status.php';
+					}
+				} else {
+					if($print == 1) {
+						include 'view/chart_print.php';
+					} else {
+						include 'view/chart.php';
+					}
+				}
 		} else {
 			include CO_INC .'/view/default.php';
 		}

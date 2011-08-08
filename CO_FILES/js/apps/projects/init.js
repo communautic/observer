@@ -33,10 +33,13 @@ function projectsApplication(name) {
 				$("#durationStart").html($("input[name='startdate']").val());
 				switch(data.status) {
 					case "2":
-						$("#projects2 .active-link .module-item-status").addClass("module-item-active");
+						$("#projects2 .active-link .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
+					break;
+					case "3":
+						$("#projects2 .active-link .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
 					break;
 					default:
-						$("#projects2 .active-link .module-item-status").removeClass("module-item-active");
+						$("#projects2 .active-link .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
 				}
 			break;
 			case "reload":
@@ -357,7 +360,7 @@ function projectsFolders(name) {
 					$('#projects1 input.filter').quicksearch('#projects1 li');
 					}
 				});
-				projectsActions(1);
+				projectsActions(9);
 				}
 			});
 			}
@@ -382,7 +385,7 @@ function projectsFolders(name) {
 								if(data.html == "<li></li>") {
 									projectsActions(3);
 								} else {
-									projectsActions(1);
+									projectsActions(9);
 								}
 								var id = $("#projects1 .module-click:eq(0)").attr("rel");
 								$("#projects1 .module-click:eq(0)").addClass('active-link');
@@ -413,10 +416,14 @@ function projectsFolders(name) {
 		$("#projects1 .active-link").trigger("click");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getFolderList", success: function(data){
 			$("#projects1 ul").html(data.html);
-			if(data.html == "<li></li>") {
-				projectsActions(3);
+			if(data.access == "guest") {
+				projectsActions();
 			} else {
-				projectsActions(1);
+				if(data.html == "<li></li>") {
+					projectsActions(3);
+				} else {
+					projectsActions(9);
+				}
 			}
 			var idx = $("#projects1 .module-click").index($("#projects1 .module-click[rel='"+id+"']"));
 			$("#projects1 .module-click:eq("+idx+")").addClass('active-link');
@@ -424,7 +431,33 @@ function projectsFolders(name) {
 			}
 		});
 	}
-	
+
+
+	this.actionPrint = function() {
+		var id = $("#projects1 .active-link").attr("rel");
+		var url ='/?path=apps/projects&request=printFolderDetails&id='+id;
+		location.href = url;
+	}
+
+
+	this.actionSend = function() {
+		var id = $("#projects1 .active-link").attr("rel");
+		$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=getFolderSend&id="+id, success: function(html){
+			$("#modalDialogForward").html(html).dialog('open');
+			}
+		});
+	}
+
+
+	this.actionSendtoResponse = function() {
+		//var id = $("#projects1 .active-link").attr("rel");
+		//$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=getSendtoDetails&id="+id, success: function(html){
+			//$("#project_sendto").html(html);
+			$("#modalDialogForward").dialog('close');
+			//}
+		//});
+	}
+
 	
 	this.sortclick = function (obj,sortcur,sortnew) {
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getFolderList&sort="+sortnew, success: function(data){
@@ -452,6 +485,21 @@ function projectsFolders(name) {
 		});
 	}
 	
+	
+	this.actionDialog = function(offset,request,field,append,title,sql) {
+		$.ajax({ type: "GET", url: "/", data: 'path=apps/projects&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
+			$("#modalDialog").html(html);
+			$("#modalDialog").dialog('option', 'position', offset);
+			$("#modalDialog").dialog('option', 'title', title);
+			$("#modalDialog").dialog('open');
+			if($("#" + field + "_ct .ct-content").length > 0) {
+				var ct = $("#" + field + "_ct .ct-content").html();
+				ct = ct.replace(CUSTOM_NOTE + " ","");
+				$("#custom-text").val(ct);
+			}
+			}
+		});
+	}
 	
 	// Recycle Bin
 	this.binDelete = function(id) {
@@ -515,6 +563,7 @@ function projectsActions(status) {
 		case 6: 	actions = ['4','5']; break;   			// handbook refresh
 		case 7: 	actions = ['0','1','2','5']; break;   			// new, print, send, refresh
 		case 8: 	actions = ['1','2','4','5']; break;   			// print, send, handbook, refresh
+		case 9:		actions = ['0','1','2','5','6']; break;
 		default: 	actions = ['5'];  								// none
 	}
 	$('#projectsActions > li span').each( function(index) {
@@ -552,7 +601,7 @@ function projectsloadModuleStart() {
 			if(data.html == "<li></li>") {
 				projectsActions(3);
 			} else {
-				projectsActions(1);
+				projectsActions(9);
 			}
 		}
 		
@@ -678,7 +727,7 @@ $(document).ready(function() {
 					if(data.html == "<li></li>") {
 						projectsActions(3);
 					} else {
-						projectsActions(1);
+						projectsActions(9);
 					}
 				}
 				//initScrollbar( '#projects .scrolling-content' );
@@ -711,7 +760,7 @@ $(document).ready(function() {
 					if(data.html == "<li></li>") {
 						projectsActions(3);
 					} else {
-						projectsActions(1);
+						projectsActions(9);
 					}
 				}
 				$('#projects1 input.filter').quicksearch('#projects1 li');
@@ -931,7 +980,7 @@ $(document).ready(function() {
 			if(text.access == "guest") {
 					projectsActions();
 				} else {
-					projectsActions(1);
+					projectsActions(9);
 				}
 			}
 		});

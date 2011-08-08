@@ -70,6 +70,10 @@ $ptop = $top+56+24;
 					$datescolor = $bg;
 					if($project["phases"][$key]["tasks"][$tkey]["status"] == "barchart_color_overdue") {
 						$datescolor = "barchart_color_overdue";
+						//$bg = "barchart_color_finished";
+					}
+					if($project["phases"][$key]["tasks"][$tkey]["status"] == "barchart_color_finished_but_overdue") {
+						$datescolor = "barchart_color_overdue";
 						$bg = "barchart_color_finished";
 					}
 				?>

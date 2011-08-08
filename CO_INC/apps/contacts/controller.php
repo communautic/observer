@@ -14,7 +14,7 @@ class Contacts extends Controller {
 	}
 	
 	function getGroupList($sort) {
-		global $system;
+		global $system, $lang;
 		$arr = $this->model->getGroupList($sort);
 		$groups = $arr["groups"];
 		ob_start();
@@ -240,7 +240,7 @@ class Contacts extends Controller {
 
 	
 	function getContactList($sort) {
-		global $system;
+		global $system, $lang;
 		$arr = $this->model->getContactList($sort);
 		$contacts = $arr["contacts"];
 		ob_start();

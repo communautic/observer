@@ -3,7 +3,7 @@ $projects_timelines_name = "Zeitpläne";
 
 $lang["PROJECT_TIMELINE_PROJECT_PLAN"] = "Balkenplan";
 $lang["PROJECT_TIMELINE_DATES_LIST"] = "Terminliste";
-$lang["PROJECT_TIMELINE_PROJECT_STRUCTURE"] = "Projektstrukturplan (PSP)";
+$lang["PROJECT_TIMELINE_PROJECT_STRUCTURE"] = "Projektstrukturplan";
 $lang["PROJECT_TIMELINE_DATES_MILESTONES"] = "Meilensteinplan";
 
 $lang["PROJECT_TIMELINE_STATUS_PLANED"] = "in Planung";

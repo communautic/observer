@@ -93,6 +93,9 @@ class ProjectsMeetingsModel extends ProjectsModel {
 			if($array["status"] == 1) {
 				$itemstatus = " module-item-active";
 			}
+			if($array["status"] == 2) {
+				$itemstatus = " module-item-active-stopped";
+			}
 			$array["itemstatus"] = $itemstatus;
 			
 			$checked_out_status = "";
@@ -295,7 +298,13 @@ class ProjectsMeetingsModel extends ProjectsModel {
 			$accesssql = "access='$meeting_access', access_date='$meeting_access_date', access_user = '$session->uid',";
 		}
 		
-		$q = "UPDATE " . CO_TBL_PROJECTS_MEETINGS . " set title = '$title', item_date = '$meetingdate', start = '$start', end = '$end', location = '$location', location_ct = '$location_ct', participants='$participants', participants_ct='$participants_ct', management='$management', management_ct='$management_ct', documents = '$documents', access='$meeting_access', $accesssql status = '$meeting_status', status_date = '$meeting_status_date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		// posponed
+		$title_add = "";
+		if($meeting_status == 3) {
+			$title_add = " " . $lang["PROJECT_MEETING_POSPONED"];
+		}
+		
+		$q = "UPDATE " . CO_TBL_PROJECTS_MEETINGS . " set title = '$title" . $title_add . "', item_date = '$meetingdate', start = '$start', end = '$end', location = '$location', location_ct = '$location_ct', participants='$participants', participants_ct='$participants_ct', management='$management', management_ct='$management_ct', documents = '$documents', access='$meeting_access', $accesssql status = '$meeting_status', status_date = '$meeting_status_date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		// do existing tasks
@@ -321,7 +330,7 @@ class ProjectsMeetingsModel extends ProjectsModel {
 			
 			$this->checkinMeeting($id);
 			
-			$q = "INSERT INTO " . CO_TBL_PROJECTS_MEETINGS . " set pid='$pid', title = '$title " . $lang["PROJECT_MEETING_POSPONED"] . "', item_date = '$meeting_status_date', start = '$start', end = '$end', location = '$location', location_ct = '$location_ct', participants='$participants', participants_ct='$participants_ct', management='$management', management_ct='$management_ct', documents = '$documents', access='$meeting_access', $accesssql status = '0', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+			$q = "INSERT INTO " . CO_TBL_PROJECTS_MEETINGS . " set pid='$pid', title = '$title', item_date = '$meeting_status_date', start = '$start', end = '$end', location = '$location', location_ct = '$location_ct', participants='$participants', participants_ct='$participants_ct', management='$management', management_ct='$management_ct', documents = '$documents', access='$meeting_access', $accesssql status = '0', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 			$result = mysql_query($q, $this->_db->connection);
 			if ($result) {
 				$nid = mysql_insert_id();

@@ -78,6 +78,10 @@ $width = $numPhases * 170;
 			$bg = $project["phases"][$key]["tasks"][$tkey]["status"];
 			if($project["phases"][$key]["tasks"][$tkey]["status"] == "barchart_color_overdue") {
 				$datescolor = "barchart_color_overdue";
+				//$bg = "barchart_color_finished";
+			}
+			if($project["phases"][$key]["tasks"][$tkey]["status"] == "barchart_color_finished_but_overdue") {
+				$datescolor = "barchart_color_overdue";
 				$bg = "barchart_color_finished";
 			}
 		?>

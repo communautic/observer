@@ -121,9 +121,9 @@ class ContactsModel extends Model {
 
 
 	function newGroup() {
-		global $session;
+		global $session, $lang;
 		$now = gmdate("Y-m-d H:i:s");
-		$q = "INSERT INTO " . CO_CONTACTS_TBL_GROUPS . " set title = 'Neue Gruppe', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+		$q = "INSERT INTO " . CO_CONTACTS_TBL_GROUPS . " set title = '" . $lang["CONTACTS_GROUPS_NEW"] . "', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 		  	$id = mysql_insert_id();
@@ -475,11 +475,11 @@ class ContactsModel extends Model {
    
    
 	function newContact() {
-		global $session;
+		global $session,$lang;
 		
 		$now = gmdate("Y-m-d H:i:s");
 		
-		$q = "INSERT INTO " . CO_TBL_USERS . " set lastname = 'Neuer Kontakt', lang = '" . CO_DEFAULT_LANGUAGE . "', timezone = '" . CO_DEFAULT_TIMEZONE . "', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+		$q = "INSERT INTO " . CO_TBL_USERS . " set lastname = '" . $lang["CONTACTS_CONTACTS_NEW"] . "', lang = '" . CO_DEFAULT_LANGUAGE . "', timezone = '" . CO_DEFAULT_TIMEZONE . "', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 		  	$id = mysql_insert_id();
