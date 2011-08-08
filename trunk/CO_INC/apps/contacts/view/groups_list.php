@@ -1,3 +1,4 @@
+<div id="contacts_groups-action-new" style="display: none"><?php echo $lang["CONTACTS_GROUPS_ACTION_NEW"];?></div>
 <?php
 if(is_array($groups)) {
 	foreach ($groups as $group) {

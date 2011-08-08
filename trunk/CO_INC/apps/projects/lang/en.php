@@ -23,6 +23,7 @@ $lang["PROJECT_FOLDER_CHART_STABILITY"] = 'Performance';
 $lang["PROJECT_FOLDER_CHART_REALISATION"] = 'Progress';
 $lang["PROJECT_FOLDER_CHART_ADHERANCE"] = 'Timeliness';
 $lang["PROJECT_FOLDER_CHART_TASKS"] = 'Stage Timeliness';
+$lang["PROJECT_FOLDER_CHART_STATUS"] = 'Status';
 
 // Project Right
 $lang["PROJECT_TITLE"] = 'Project';
@@ -38,11 +39,17 @@ $lang["PROJECT_STATUS_INPROGRESS"] = 'started';
 $lang["PROJECT_STATUS_FINISHED"] = 'completed';
 $lang["PROJECT_STATUS_STOPPED"] = 'stopped';
 
+$lang["PROJECT_STATUS_PLANNED_TEXT"] = 'planned';
+$lang["PROJECT_STATUS_INPROGRESS_TEXT"] = 'started';
+$lang["PROJECT_STATUS_FINISHED_TEXT"] = 'completed';
+$lang["PROJECT_STATUS_STOPPED_TEXT"] = 'stopped';
+
 $lang["PROJECT_HANDBOOK"] = 'Project Manual';
 
 // Print images
 $lang["PRINT_PROJECT_MANUAL"] = 'project_manual.png';
 $lang["PRINT_PROJECT"] = 'project.png';
+$lang["PRINT_PROJECT_FOLDER"] = 'project.png';
 
 
 // check for custom lang file

@@ -137,8 +137,9 @@ li.ui-state-highlight { height: 13px; margin: 0 0 5px 0;}
 
 .module-access-status { position: absolute; width: 10px; height: 13px; margin: 3px 0 0 -20px; background:url(../img/apps_buttons_sprite.png) no-repeat -120px -570px; display: none;}
 .module-access-active { display: block; }
-.module-item-status { margin: 0 0 0 10px; width: 12px; height: 9px; background:url(../img/apps_buttons_sprite.png) no-repeat -140px -570px; display: none;}
-.module-item-active { display: inline-block; }
+.module-item-status { margin: 0 0 0 10px; padding: 0 0 0 10px; width: 12px; height: 14px; background:url(../img/apps_buttons_sprite.png) no-repeat -300px -568px; display: none;}
+.module-item-active { display: inline; }
+.module-item-active-stopped { display: inline; background-position: -320px -568px;}
 
 .text { /*padding-right: 30px;*/ }
 .num { position: absolute; right: 25px; font-size: 11px; top: 0;}
@@ -277,7 +278,11 @@ ul.actionconsole { margin: 0 11px 0 11px;  }
 .icon-delete { display: block; margin: 2px 0 0 5px; width: 15px; height: 15px;  background: url(../img/apps_buttons_sprite.png) no-repeat -160px -570px; }
 .icon-restore { display: block; margin: 2px 0 0 5px; width: 15px; height: 15px;  background: url(../img/apps_buttons_sprite.png) no-repeat -260px -570px; }
 .icon-milestone { display: block; width: 15px; height: 15px;  background: url(../img/apps_buttons_sprite.png) no-repeat -180px -570px; }
-
+.icon-reply-dark { display: block; margin: 2px 0 0 5px; width: 15px; height: 15px;  background: url(../img/apps_buttons_sprite.png) no-repeat -340px -570px; }
+.icon-reply-light { display: block; margin: 2px 0 0 5px; width: 15px; height: 15px;  background: url(../img/apps_buttons_sprite.png) no-repeat -360px -570px; }
+.icon-info { display: block; margin: 2px 0 0 5px; width: 15px; height: 15px;  background: url(../img/apps_buttons_sprite.png) no-repeat -380px -570px; }
+.icon-toggle { display: block; margin: 2px 0 0 5px; width: 15px; height: 15px;  background: url(../img/apps_buttons_sprite.png) no-repeat -420px -570px; }
+.icon-toggle-active { display: block; margin: 2px 0 0 5px; width: 15px; height: 15px;  background: url(../img/apps_buttons_sprite.png) no-repeat -400px -570px; }
 
 .tooltip {
 	display: none;

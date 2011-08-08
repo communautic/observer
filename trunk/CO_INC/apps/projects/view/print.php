@@ -45,7 +45,7 @@
 </table>
 <?php if(!empty($project->protocol)) { ?>
 &nbsp;
-<table border="0" cellpadding="0" cellspacing="0" width="100%" class="grey" style="padding: 10pt 10pt 10pt 10pt;">
+<table border="0" cellpadding="0" cellspacing="0" width="100%" class="grey" style="padding: 10pt 10pt 10pt 15pt;">
 	<tr>
         <td class="tcell-left top"><?php echo $lang["PROJECT_DESCRIPTION"];?></td>
         <td><?php echo(nl2br($project->protocol));?></td>

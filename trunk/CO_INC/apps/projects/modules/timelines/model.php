@@ -62,6 +62,9 @@ class ProjectsTimelinesModel extends ProjectsModel {
 				case "2":
 					$project["status"] = "barchart_color_finished";
 				break;
+				case "3":
+					$project["status"] = "barchart_color_not_finished";
+				break;
 			}
 		}
 		$access = $this->getProjectAccess($pid);
@@ -80,6 +83,10 @@ class ProjectsTimelinesModel extends ProjectsModel {
 			switch($row->status) {
 				case "0":
 					$status = "barchart_color_planned";
+					// abbruch
+					if($project["status"] == "barchart_color_not_finished") {
+						$status = "barchart_color_not_finished";
+					}
 				break;
 				case "1":
 					$status = "barchart_color_inprogress";
@@ -104,12 +111,28 @@ class ProjectsTimelinesModel extends ProjectsModel {
 					case "0":
 						if($row->status == 0) {
 							$tstatus = "barchart_color_planned";
+							// abbruch
+							if($project["status"] == "barchart_color_not_finished") {
+								$tstatus = "barchart_color_not_finished";
+							}
 						} else if ($row->status == 1 && $today <= $rowt->startdate) {
 							$tstatus = "barchart_color_planned";
+							// abbruch
+							if($project["status"] == "barchart_color_not_finished") {
+								$tstatus = "barchart_color_not_finished";
+							}
 						} else if ($row->status == 1 && $today <= $rowt->enddate) {
 							$tstatus = "barchart_color_inprogress";
+							// abbruch
+							if($project["status"] == "barchart_color_not_finished") {
+								$tstatus = "barchart_color_not_finished";
+							}
 						} else if ($row->status == 1 && $today > $rowt->enddate) {
 							$tstatus = "barchart_color_overdue";
+							// abbruch
+							if($project["status"] == "barchart_color_not_finished") {
+								$tstatus = "barchart_color_not_finished";
+							}
 						} else {
 							$tstatus = "barchart_color_not_finished";
 						}
@@ -117,7 +140,7 @@ class ProjectsTimelinesModel extends ProjectsModel {
 					case "1":
 						$tstatus = "barchart_color_finished";
 						if($rowt->donedate > $rowt->enddate) {
-							$tstatus = "barchart_color_overdue";
+							$tstatus = "barchart_color_finished_but_overdue";
 						}
 					break;
 				}
@@ -244,6 +267,9 @@ class ProjectsTimelinesModel extends ProjectsModel {
 				case "2":
 					$project["status"] = "barchart_color_finished";
 				break;
+				case "3":
+					$project["status"] = "barchart_color_not_finished";
+				break;
 			}
 		}
 		
@@ -273,6 +299,10 @@ class ProjectsTimelinesModel extends ProjectsModel {
 			switch($row->status) {
 				case "0":
 					$status = "barchart_color_planned";
+					// abbruch
+					if($project["status"] == "barchart_color_not_finished") {
+						$status = "barchart_color_not_finished";
+					}
 				break;
 				case "1":
 					$status = "barchart_color_inprogress";
@@ -310,11 +340,23 @@ class ProjectsTimelinesModel extends ProjectsModel {
 					case "0":
 						if($row->status == 0) {
 							$tstatus = "barchart_color_planned";
+							if($project["status"] == "barchart_color_not_finished") {
+								$tstatus = "barchart_color_not_finished";
+							}
 						} else if ($row->status == 1 && $today <= $rowt->startdate) {
 							$tstatus = "barchart_color_planned";
+							if($project["status"] == "barchart_color_not_finished") {
+								$tstatus = "barchart_color_not_finished";
+							}
 						} else if ($row->status == 1 && $today <= $rowt->enddate) {
 							$tstatus = "barchart_color_inprogress";
+							if($project["status"] == "barchart_color_not_finished") {
+								$tstatus = "barchart_color_not_finished";
+							}
 						} else if ($row->status == 1 && $today > $rowt->enddate) {
+							
+							if($project["status"] != "barchart_color_not_finished") {
+								
 							$tstatus = "barchart_color_inprogress";
 							$overdue["days"] = $this->_date->dateDiff($rowt->enddate,$today);
 							$overdue["width"] = $overdue["days"] * $width;
@@ -324,6 +366,9 @@ class ProjectsTimelinesModel extends ProjectsModel {
 								$project["enddate"] = $today;
 								$project["days"] = $this->_date->dateDiff($project["startdate"],$project["enddate"]);
 								$project["css_width"] = ($project["days"]+1) * $width;
+							}
+							} else {
+								$tstatus = "barchart_color_not_finished";
 							}
 						} else {
 							$tstatus = "barchart_color_not_finished";

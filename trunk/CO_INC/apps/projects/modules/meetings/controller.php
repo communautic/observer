@@ -12,7 +12,7 @@ class ProjectsMeetings extends Projects {
 
 
 	function getList($id,$sort) {
-		global $system;
+		global $system, $lang;
 		$arr = $this->model->getList($id,$sort);
 		$meetings = $arr["meetings"];
 		ob_start();

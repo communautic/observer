@@ -5,6 +5,12 @@ $lang['CONTACTS_GROUPS'] = 'Gruppen';
 $lang['CONTACTS_CONTACT'] = 'Kontakt';
 $lang['CONTACTS_CONTACTS'] = 'Kontakte';
 
+$lang["CONTACTS_CONTACTS_NEW"] = 'Neuer Kontakt';
+$lang["CONTACTS_CONTACTS_ACTION_NEW"] = 'neuen Kontakt anlegen';
+
+$lang["CONTACTS_GROUPS_NEW"] = 'Neue Gruppe';
+$lang["CONTACTS_GROUPS_ACTION_NEW"] = 'neue Gruppe anlegen';
+
 $lang['CONTACTS_GROUP_TITLE'] = 'Gruppe';
 $lang['CONTACTS_SINGLE_CONTACTS'] = 'Kontakte';
 $lang['CONTACTS_SYSTEM_GROUP'] = 'Alle Kontakte';

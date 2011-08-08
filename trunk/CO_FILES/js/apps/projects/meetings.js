@@ -61,10 +61,13 @@ function projectsMeetings(name) {
 					}
 					switch(data.status) {
 						case "1":
-							$("#projects3 .active-link .module-item-status").addClass("module-item-active");
+							$("#projects3 .active-link .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
+						break;
+						case "2":
+							$("#projects3 .active-link .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
 						break;
 						default:
-							$("#projects3 .active-link .module-item-status").removeClass("module-item-active");
+							$("#projects3 .active-link .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
 					}
 			break;
 			case "reload":

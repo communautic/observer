@@ -1,3 +1,4 @@
+<div id="projects_phases-action-new" style="display: none"><?php echo $lang["PROJECT_PHASE_ACTION_NEW"];?></div>
 <?php
 if(is_array($phases)) {
 	$i = 1;

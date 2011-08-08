@@ -1,3 +1,4 @@
+<div id="projects_documents-action-new" style="display: none"><?php echo $lang["PROJECT_DOCUMENT_ACTION_NEW"];?></div>
 <?php
 if(is_array($documents)) {
 foreach ($documents as $document) {

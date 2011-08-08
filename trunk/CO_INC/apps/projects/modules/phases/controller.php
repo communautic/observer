@@ -13,7 +13,7 @@ class ProjectsPhases extends Projects {
 
 
 	function getList($id,$sort) {
-		global $system;
+		global $system, $lang;
 		$arr = $this->model->getList($id,$sort);
 		$phases = $arr["phases"];
 		$num = $arr["num"];
