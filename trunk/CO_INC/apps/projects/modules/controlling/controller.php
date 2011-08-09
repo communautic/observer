@@ -19,6 +19,7 @@ class ProjectsControlling extends Projects {
 			$data["html"] = ob_get_contents();
 		ob_end_clean();
 		$data["sort"] = $arr["sort"];
+		$data["title"] = "";
 		return $system->json_encode($data);
 	}
 

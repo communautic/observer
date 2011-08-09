@@ -33,6 +33,7 @@ class Projects extends Controller {
 		ob_end_clean();
 		$data["sort"] = $arr["sort"];
 		$data["access"] = $arr["access"];
+		$data["title"] = $lang["PROJECT_FOLDER_ACTION_NEW"];
 		return $system->json_encode($data);
 	}
 
@@ -190,6 +191,7 @@ class Projects extends Controller {
 			$data["html"] = ob_get_contents();
 		ob_end_clean();
 		$data["sort"] = $arr["sort"];
+		$data["title"] = $lang["PROJECT_ACTION_NEW"];
 		return $system->json_encode($data);
 	}
 

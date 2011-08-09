@@ -1,4 +1,3 @@
-<div id="projects_phonecalls-action-new" style="display: none"><?php echo $lang["PROJECT_PHONECALL_ACTION_NEW"];?></div>
 <?php
 if(is_array($phonecalls)) {
 foreach ($phonecalls as $phonecall) {

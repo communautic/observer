@@ -1,4 +1,3 @@
-<div id="projects_folder-action-new" style="display: none"><?php echo $lang["PROJECT_FOLDER_ACTION_NEW"];?></div>
 <?php
 if(is_array($folders)) {
 	foreach ($folders as $folder) {

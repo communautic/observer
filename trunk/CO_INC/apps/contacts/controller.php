@@ -22,6 +22,7 @@ class Contacts extends Controller {
 			$data["html"] = ob_get_contents();
 		ob_end_clean();
 		$data["sort"] = $arr["sort"];
+		$data["title"] = $lang["CONTACTS_GROUPS_ACTION_NEW"];
 		return $system->json_encode($data);
 	}
 	
@@ -248,6 +249,7 @@ class Contacts extends Controller {
 			$data["html"] = ob_get_contents();
 		ob_end_clean();
 		$data["sort"] = $arr["sort"];
+		$data["title"] = $lang["CONTACTS_CONTACTS_ACTION_NEW"];
 		return $system->json_encode($data);
 	}
 

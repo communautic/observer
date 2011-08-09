@@ -594,6 +594,7 @@ function projectsloadModuleStart() {
 	$("#projects-current").val("folder");
 	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getFolderList", success: function(data){
 		$("#projects1 ul").html(data.html);
+		$("#projectsActions .actionNew").attr("title",data.title);
 		
 		if(data.access == "guest") {
 			projectsActions();
@@ -815,6 +816,8 @@ $(document).ready(function() {
 				$("#projects3 .module-actions:visible").hide();
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectList&id="+id, success: function(data){
 					$("#projects2 ul").html(data.html);
+					$("#projectsActions .actionNew").attr("title",data.title);
+					
 					$("#projects2 li").show();
 					setModuleActive($("#projects2"),index);
 					$("#projects2 .sort").attr("rel", data.sort).addClass("sort"+data.sort);
@@ -874,6 +877,7 @@ $(document).ready(function() {
 				var index = $("#projects1 .module-click").index($("#projects1 .module-click[rel='"+id+"']"));
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectList&id="+id, success: function(data){
 					$("#projects2 ul").html(data.html);
+					$("#projectsActions .actionNew").attr("title",data.title);
 					if(passed_id === undefined) {
 						var projectid = $("#projects2 .module-click:eq(0)").attr("rel");
 					} else {
@@ -1095,7 +1099,7 @@ $(document).ready(function() {
 					.next('div').slideDown( function() {
 						$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/"+module+"&request=getList&id="+id, success: function(data){
 							$("#projects3 ul:eq("+moduleidx+")").html(data.html);
-							
+							$("#projectsActions .actionNew").attr("title",data.title);
 							switch (data.perm) {
 				case "sysadmin": case "admin" :
 					if(data.html == "<li></li>") {
@@ -1144,7 +1148,7 @@ $(document).ready(function() {
 	
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/"+module+"&request=getList&id="+id, success: function(data){
 					$("#projects3 ul:eq("+moduleidx+")").html(data.html);
-					
+					$("#projectsActions .actionNew").attr("title",data.title);
 					switch (data.perm) {
 				case "sysadmin": case "admin" :
 					if(data.html == "<li></li>") {
