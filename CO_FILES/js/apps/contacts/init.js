@@ -591,6 +591,8 @@ function contactsloadModuleStart() {
 	$("#contacts-current").val("contacts");
 	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/contacts&request=getContactList", success: function(data){
 		  $("#contacts1 ul:eq(0)").html(data.html);
+		  $("#contactsActions .actionNew").attr("title",data.title);
+		  
 		  if(data.html == "<li></li>") {
 			  contactsActions(0);
 		  } else {
@@ -685,6 +687,8 @@ $(document).ready(function() {
 				
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/contacts&request=get"+what+"List", success: function(data){					
 					$("#contacts1 ul:eq("+moduleidx+")").html(data.html);
+					$("#contactsActions .actionNew").attr("title",data.title);
+					
 					if(data.html == "<li></li>") {
 						contactsActions(0);
 					} else {

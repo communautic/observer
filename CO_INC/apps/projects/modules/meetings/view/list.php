@@ -1,4 +1,3 @@
-<div id="projects_meetings-action-new" style="display: none"><?php echo $lang["PROJECT_MEETING_ACTION_NEW"];?></div>
 <?php
 if(is_array($meetings)) {
 foreach ($meetings as $meeting) {

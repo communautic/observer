@@ -395,11 +395,12 @@ $(document).ready(function() {
 		var obj = getCurrentModule();
 		obj.actionNew();
 		return false;
-	}).mouseover(function() {
+	})
+	/*.mouseover(function() {
 		var obj = getCurrentModule();
 		var name = obj.name;
 		$(this).attr('title',$('#'+name+'-action-new').html());
-	})
+	})*/
 
 	
 	

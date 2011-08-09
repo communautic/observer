@@ -21,6 +21,7 @@ class ProjectsPhonecalls extends Projects {
 		ob_end_clean();
 		$data["sort"] = $arr["sort"];
 		$data["perm"] = $arr["perm"];
+		$data["title"] = $lang["PROJECT_PHONECALL_ACTION_NEW"];
 		return $system->json_encode($data);
 	}
 
