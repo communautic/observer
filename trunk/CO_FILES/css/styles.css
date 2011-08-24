@@ -252,6 +252,12 @@ ul.actionconsole { margin: 0 11px 0 11px;  }
 .actionconsole span.actionProjectHandbook:hover { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: pointer;}
 .actionconsole span.actionProjectHandbook.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: default; }
 
+.actionconsole li.listRoster { display: block; height: 35px; margin-bottom: 22px; }
+.actionconsole span.actionRoster { display: block; height: 35px; background: url(../img/apps_buttons_sprite.png) no-repeat;}
+.actionconsole span.actionRoster:hover { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: pointer;}
+.actionconsole span.actionRoster.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: default; }
+
+
 .actionconsole li.listRefresh { display: block; height: 32px; margin-bottom: 22px; }
 .actionconsole span.actionRefresh { display: block; height: 32px; background: url(../img/apps_buttons_sprite.png) no-repeat;}
 .actionconsole span.actionRefresh:hover { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: pointer;}
@@ -276,13 +282,18 @@ ul.actionconsole { margin: 0 11px 0 11px;  }
 .module-actions-modules { margin-top: 7px;}
 
 .icon-delete { display: block; margin: 2px 0 0 5px; width: 15px; height: 15px;  background: url(../img/apps_buttons_sprite.png) no-repeat -160px -570px; }
+.icon-delete-inactive { display: block; margin: 2px 0 0 5px; width: 15px; height: 15px;  background: url(../img/apps_buttons_sprite.png) no-repeat -260px -590px; }
 .icon-restore { display: block; margin: 2px 0 0 5px; width: 15px; height: 15px;  background: url(../img/apps_buttons_sprite.png) no-repeat -260px -570px; }
 .icon-milestone { display: block; width: 15px; height: 15px;  background: url(../img/apps_buttons_sprite.png) no-repeat -180px -570px; }
-.icon-reply-dark { display: block; margin: 2px 0 0 5px; width: 15px; height: 15px;  background: url(../img/apps_buttons_sprite.png) no-repeat -340px -570px; }
-.icon-reply-light { display: block; margin: 2px 0 0 5px; width: 15px; height: 15px;  background: url(../img/apps_buttons_sprite.png) no-repeat -360px -570px; }
+.icon-milestone-grey { display: block; width: 15px; height: 15px;  background: url(../img/apps_buttons_sprite.png) no-repeat -200px -590px; }
+.icon-reply { display: block; margin: 2px 0 0 0; width: 15px; height: 18px;  background: url(../img/apps_buttons_sprite.png) no-repeat -340px -570px; }
 .icon-info { display: block; margin: 2px 0 0 5px; width: 15px; height: 15px;  background: url(../img/apps_buttons_sprite.png) no-repeat -380px -570px; }
 .icon-toggle { display: block; margin: 2px 0 0 5px; width: 15px; height: 15px;  background: url(../img/apps_buttons_sprite.png) no-repeat -420px -570px; }
 .icon-toggle-active { display: block; margin: 2px 0 0 5px; width: 15px; height: 15px;  background: url(../img/apps_buttons_sprite.png) no-repeat -400px -570px; }
+.icon-toggle-post { display: block; margin: 2px 0 0 5px; width: 15px; height: 15px;  background: url(../img/apps_buttons_sprite.png) no-repeat -420px -590px; }
+.icon-toggle-post-active { display: block; margin: 2px 0 0 5px; width: 15px; height: 15px;  background: url(../img/apps_buttons_sprite.png) no-repeat -400px -590px; }
+.icon-toggle-blue { display: block; margin: 2px 0 0 5px; width: 15px; height: 15px;  background: url(../img/apps_buttons_sprite.png) no-repeat -380px -590px; }
+.icon-delete-white { display: block; margin: 2px 0 0 5px; width: 15px; height: 15px;  background: url(../img/apps_buttons_sprite.png) no-repeat -280px -590px; }
 
 .tooltip {
 	display: none;

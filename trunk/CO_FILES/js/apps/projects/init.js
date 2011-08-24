@@ -267,6 +267,15 @@ function projectsApplication(name) {
 		$("#modalDialog").dialog("close");
 		$("#projectsstatus").nextAll('img').trigger('click');
 	}
+	
+	
+	this.insertFolderFromDialog = function(field,gid,title) {
+		var html = '<a class="listmember" uid="' + gid + '" field="'+field+'">' + title + '</a>';
+		$("#"+field).html(html);
+		$("#modalDialog").dialog('close');
+		var obj = getCurrentModule();
+		$('#projects .coform').ajaxSubmit(obj.poformOptions);
+	}
 
 
 	// Recycle Bin
@@ -710,7 +719,7 @@ $(document).ready(function() {
 		projectsloadModuleStart();
 	}
 
-	$("#projects1-outer > h3").click(function() {
+	$("#projects1-outer > h3").click(function(event, passed_id) {
 		var obj = getCurrentModule();
 		if(confirmNavigation()) {
 			formChanged = false;
@@ -733,8 +742,15 @@ $(document).ready(function() {
 				}
 				//initScrollbar( '#projects .scrolling-content' );
 				$('#projects1 input.filter').quicksearch('#projects1 li');
-				var id = $("#projects1 .module-click:eq(0)").attr("rel");
-				$("#projects1 .module-click:eq(0)").addClass('active-link');
+				if(passed_id === undefined) {
+						var id = $("#projects1 .module-click:eq(0)").attr("rel");
+						$("#projects1 .module-click:eq(0)").addClass('active-link');
+					} else {
+						var id = passed_id;
+						$("#projects1 .module-click[rel='"+id+"']").addClass('active-link');
+					}
+				
+				
 				//$("#projects1 .drag:eq(0)").show();
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getFolderDetails&id="+id, success: function(text){
 					$("#projects-right").html(text.html);
@@ -1218,9 +1234,19 @@ $(document).ready(function() {
 		return false;
 	});
 	
+	
+	
+	$('a.insertProjectFolderfromDialog').livequery('click',function(e) {
+		e.preventDefault();
+		var field = $(this).attr("field");
+		var gid = $(this).attr("gid");
+		var title = $(this).attr("title");
+		var obj = getCurrentModule();
+		obj.insertFolderFromDialog(field,gid,title);
+	});
+	
 
-
-	$('a.insertProjectFolderfromDialog').livequery('click',function() {
+	/*$('a.insertProjectFolderfromDialog').livequery('click',function() {
 		var field = $(this).attr("field");
 		var gid = $(this).attr("gid");
 		var title = $(this).attr("title");
@@ -1229,7 +1255,7 @@ $(document).ready(function() {
 		$("#modalDialog").dialog('close');
 		var obj = getCurrentModule();
 		$('#projects .coform').ajaxSubmit(obj.poformOptions);
-	});
+	});*/
 	
 	
 // INTERLINKS FROM Content

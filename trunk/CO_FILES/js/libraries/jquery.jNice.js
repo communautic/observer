@@ -100,11 +100,18 @@
 					if (input.checked===true){
 						input.checked = false;
 						$a.removeClass('jNiceChecked');
-						$("#answer_"+itemid).slideUp();
+						$("#answer_"+itemid).slideUp(function() { 
+							$(this).remove();
+							if($('#brainstormAnswer').html() == "") {
+								$('#brainstormAnswerOuter').slideUp();
+							}		 
+						});
 						var status = 0;
+						
 					} else {
 						input.checked = true;
 						$a.addClass('jNiceChecked');
+						$('#brainstormAnswerOuter').slideDown();
 						$("#postanswer_"+itemid).clone().attr('id','answer_'+itemid).css('display','none').appendTo('#brainstormAnswer').slideDown();
 						var status = 1;
 					}
