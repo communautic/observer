@@ -108,8 +108,9 @@
 						
 						// Change textarea height if twin plus the height of one line differs more than 3 pixel from textarea height
 						if(Math.abs($twin.height() + lineHeight - $textarea.height()) > 3){
-							
-							var goalheight = $twin.height()+lineHeight;
+							//console.log($twin.height());
+							//var goalheight = $twin.height()+lineHeight;
+							var goalheight = $twin.height();
 							if(goalheight >= maxheight) {
 								setHeightAndOverflow(maxheight,'auto');
 							} else if(goalheight <= minheight) {

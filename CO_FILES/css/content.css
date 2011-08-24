@@ -60,6 +60,7 @@ color: #333;
 .table-content { width: 100%; margin-bottom: 1px;}
 .table-content td { vertical-align: top; padding-top: 2px;}
 .table-content .tcell-left { width: 136px; padding: 0 15px 0 0;}
+.table-content .tcell-left-100 { width: 100px; padding: 0 15px 0 0;}
 .table-content .tcell-left-shorter { width: 129px; padding: 0 15px 0 0;}
 .table-content .tcell-left-tasks { width: 94px; padding: 0 15px 0 0;}
 .table-content .tcell-left-phases-tasks { width: 110px; padding: 0 15px 0 0;}
@@ -130,8 +131,10 @@ font-weight: normal;
 	width: 300px;
 }
 
-.tbl-protocol td { background-color:#E1F0AF; padding-top: 14px; }
-.elastic { padding: 0; margin: 0 0 5px 0; width: 100%; height: 60px; background-color: #E1F0AF; border: 0; overflow: hidden; }
+.tbl-protocol td { background-color:#E1F0AF; }
+.tbl-protocol .tcell-right { padding: 5px 0 5px 0; }
+.tbl-protocol .tcell-left { padding-top: 4px; }
+.elastic { font-size: 13px; padding: 0; margin: 0 0 0 0; width: 100%; height: 18px; background-color: #E1F0AF; border: 0; overflow: hidden; }
 
 
 .meetingouter { margin-bottom: 3px;}

@@ -365,8 +365,8 @@ function projectsPhases(name) {
 		$("#modalDialog").dialog("close");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=addTask&pid=" + pid + "&phid=" + phid + "&date=" + enddate + "&enddate=" + enddate + "&cat=" + cat, success: function(html){
 			$('#projectsphasetasks').append(html);
-			var idx = parseInt($('.cbx').size() -1);
-			var element = $('.cbx:eq('+idx+')');
+			var idx = parseInt($('#projects-right .cbx').size() -1);
+			var element = $('#projects-right .cbx:eq('+idx+')');
 			$.jNice.CheckAddPO(element);
 			$('#projects-right div.phaseouter:eq('+idx+')').slideDown(function() {
 				$(this).find(":text:eq(0)").focus();

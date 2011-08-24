@@ -1574,7 +1574,6 @@ class ProjectsModel extends Model {
 							while ($rowc = mysql_fetch_array($resultc)) {
 								$cid = $rowc["id"];
 								if($rowc["bin"] == "1") {
-									echo $rowc["id"];
 									$projectsPhoncallsModel->deletePhonecall($cid);
 									$arr["phonecalls"] = "";
 								}

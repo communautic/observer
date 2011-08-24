@@ -25,6 +25,9 @@ var ALERT_ACCESS_IS_SYSADMIN = 'is a Systhem Manager and therefore already an Ad
 var ALERT_ACCESS_IS_GUEST = 'is already Guest';
 var ALERT_ACCESS_IS_ADMIN = 'is already Administrator';
 
+var ALERT_CHOOSE_FOLDER = 'Please choose a folder for this new project';
+var ALERT_FORUM_RESPONSE_EMPTY = 'Please write your answer';
+
 var ALERT_UPLOAD_SIZE = "{file} is too large, maximum file size is {sizeLimit}."
 var UPLOAD_FROM = "from";
 var UPLOAD_CANCEL = "Cancel";

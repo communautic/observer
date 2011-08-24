@@ -549,9 +549,13 @@ $(document).ready(function() {
 	});
 	
 	$('a.binItem').live('click',function() {
+		if($(this).hasClass('deactivated')) {
+			return false;
+		} else {
 		var id = $(this).attr("rel");
 		var module = getCurrentModule();
 		module.binItem(id);
+		}
 		return false;
 	});
 	
@@ -731,7 +735,7 @@ $(document).ready(function() {
 	});
 	
 	$('.selectTextarea').live('click',function() {
-		$(this).parent().next().find('textarea').focus();
+		$(this).parent().siblings().find('textarea').focus();
 		return false;
 	});
 	
@@ -1047,7 +1051,9 @@ $('.ui-datepicker-trigger-action').live('click',function() {
 					var obj = getCurrentModule();
 					$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 				}
-				/*else if (this.name.match(/task_enddate/)){
+				else if (this.name.match(/task_enddate/)){
+					var obj = getCurrentModule();
+					$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 					var reg = /[0-9]+/.exec(this.name);
 					$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=getTaskDependencyExists&id="+reg, success: function(data){																																																																				
 						 if(data == "true") {
@@ -1062,9 +1068,12 @@ $('.ui-datepicker-trigger-action').live('click',function() {
 								var days = span.getDays();
 								
 								if(days != 0) {
+									//alert(days);
 								$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=moveDependendTasks&id="+reg+"&days="+days, success: function(data){
-			}
-					});
+									//var name = obj.name;
+									obj.actionRefresh();
+									}
+								});
 								}
 							}
 						}
@@ -1072,10 +1081,12 @@ $('.ui-datepicker-trigger-action').live('click',function() {
 						 }
 						}
 					});
-				}*/
+				}
 				else {
-				var obj = getCurrentModule();
-				$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+					var obj = getCurrentModule();
+					if(obj.name != 'brainstorms_rosters') {
+						$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+					}
 				}
 	   		}
  		});
