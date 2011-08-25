@@ -4,6 +4,7 @@ $brainstorms_documents_name = "Aktenmappen";
 $lang["BRAINSTORM_DOCUMENT_TITLE"] = 'Aktenmappe';
 $lang["BRAINSTORM_DOCUMENT_DOCUMENTS"] = 'Aktenmappe';
 $lang["BRAINSTORM_DOCUMENT_NEW"] = 'Neue Aktenmappe';
+$lang["BRAINSTORM_DOCUMENT_ACTION_NEW"] = 'neue Aktenmappe anlegen';
 $lang["BRAINSTORM_DOCUMENT_UPLOAD"] = 'Datei / Upload';
 $lang["BRAINSTORM_DOCUMENT_FILENAME"] = 'Dateiname/Format';
 $lang["BRAINSTORM_DOCUMENT_FILESIZE"] = 'Dateigrösse';

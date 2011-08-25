@@ -12,7 +12,7 @@ class BrainstormsMeetings extends Brainstorms {
 
 
 	function getList($id,$sort) {
-		global $system;
+		global $system, $lang;
 		$arr = $this->model->getList($id,$sort);
 		$meetings = $arr["meetings"];
 		ob_start();
@@ -21,6 +21,7 @@ class BrainstormsMeetings extends Brainstorms {
 		ob_end_clean();
 		$data["sort"] = $arr["sort"];
 		$data["perm"] = $arr["perm"];
+		$data["title"] = $lang["BRAINSTORM_MEETING_ACTION_NEW"];
 		return $system->json_encode($data);
 	}
 
