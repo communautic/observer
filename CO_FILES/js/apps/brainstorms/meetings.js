@@ -61,10 +61,13 @@ function brainstormsMeetings(name) {
 					}
 					switch(data.status) {
 						case "1":
-							$("#brainstorms3 .active-link .module-item-status").addClass("module-item-active");
+							$("#brainstorms3 .active-link .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
+						break;
+						case "2":
+							$("#brainstorms3 .active-link .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
 						break;
 						default:
-							$("#brainstorms3 .active-link .module-item-status").removeClass("module-item-active");
+							$("#brainstorms3 .active-link .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
 					}
 			break;
 			case "reload":
