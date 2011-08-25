@@ -5,6 +5,7 @@ $lang["BRAINSTORM_MEETING_TITLE"] = 'Meeting';
 $lang["BRAINSTORM_MEETINGS"] = 'Meetings';
 
 $lang["BRAINSTORM_MEETING_NEW"] = 'New Meeting';
+$lang["BRAINSTORM_MEETING_ACTION_NEW"] = 'new Meeting';
 $lang["BRAINSTORM_MEETING_TASK_NEW"] = 'New Item';
 //define('MEETING_RELATES_TO', 'bezogen auf');
 $lang["BRAINSTORM_MEETING_DATE"] = 'Date';

@@ -16,7 +16,7 @@ class BrainstormsDocuments extends Brainstorms {
 
 
 	function getList($id,$sort) {
-		global $system;
+		global $system, $lang;
 		$arr = $this->model->getList($id,$sort);
 		$documents = $arr["documents"];
 		ob_start();
@@ -25,6 +25,7 @@ class BrainstormsDocuments extends Brainstorms {
 		ob_end_clean();
 		$data["sort"] = $arr["sort"];
 		$data["perm"] = $arr["perm"];
+		$data["title"] = $lang["BRAINSTORM_DOCUMENT_ACTION_NEW"];
 		return json_encode($data);
 	}
 
