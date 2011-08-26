@@ -27,8 +27,7 @@ $top = $top-7;
         
         	<?php
 			 } ?>
-<div style="position: absolute; width: <?php echo($brainstorm["page_width"]-24);?>px; top: <?php echo $brainstorm["css_height"]+150;?>px; left: 0px; height: 19px;  background-color: #e5e5e5; vertical-align: top; padding: 3px 0 0 24px;">izuizu</div>
+<div style="position: absolute; width: <?php echo($brainstorm["page_width"]-24);?>px; top: <?php echo $brainstorm["css_height"]+150;?>px; left: 0px; height: 19px;  background-color: #e5e5e5; vertical-align: top; padding: 3px 0 0 24px;">&nbsp;</div>
 
-<div style="position: absolute; width: <?php echo($brainstorm["page_width"]-$left);?>px; top: <?php echo $brainstorm["css_height"]+148;?>px; left: <?php echo($left-18);?>px; height: 19px; text-align:center;">
-aa</div>
+<div style="position: absolute; width: <?php echo($brainstorm["page_width"]-$left);?>px; top: <?php echo $brainstorm["css_height"]+148;?>px; left: <?php echo($left-18);?>px; height: 19px; text-align:center;">&nbsp;</div>
 <div style="position: absolute; width: <?php echo($brainstorm["css_width"]+$left);?>px; top: <?php echo $brainstorm["css_height"]+180;?>px; left: 0px; height: 19px; vertical-align: top; padding: 3px 0 0 24px;"><img src="<?php echo(CO_FILES);?>/img/print/poweredbyco.png" width="135" height="9" /></div>

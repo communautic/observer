@@ -1223,7 +1223,7 @@ $(document).ready(function() {
 	});*/
   
 	
-	$('a.insertAccess').live('click',function() {
+	/*$('a.insertAccess').live('click',function() {
 		var rel = $(this).attr("rel");
 		var field = $(this).attr("field");
 		var html = '<div class="listmember" field="'+field+'" uid="'+rel+'">' + $(this).html() + '</div>';
@@ -1232,7 +1232,7 @@ $(document).ready(function() {
 		var obj = getCurrentModule();
 		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 		return false;
-	});
+	});*/
 	
 	
 	

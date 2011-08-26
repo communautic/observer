@@ -68,7 +68,7 @@ class BrainstormsRostersModel extends BrainstormsModel {
 			$sql = " and access = '1' ";
 		}
 		
-		$q = "select id,title,checked_out,checked_out_user from " . CO_TBL_BRAINSTORMS_ROSTERS . " where pid = '$id' and bin != '1' " . $sql . $order;
+		$q = "select id,title,access,checked_out,checked_out_user from " . CO_TBL_BRAINSTORMS_ROSTERS . " where pid = '$id' and bin != '1' " . $sql . $order;
 
 		$this->setSortStatus("roster-sort-status",$sortcur,$id);
 		$result = mysql_query($q, $this->_db->connection);
@@ -87,6 +87,14 @@ class BrainstormsRostersModel extends BrainstormsModel {
 					$this->checkinRosterOverride($id);
 				}
 			}
+			
+			// access
+			$accessstatus = "";
+			if($array["access"] == 1) {
+				$accessstatus = " module-access-active";
+			}
+			$array["accessstatus"] = $accessstatus;
+			
 			$array["checked_out_status"] = $checked_out_status;
 			
 			
@@ -181,6 +189,19 @@ class BrainstormsRostersModel extends BrainstormsModel {
 		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
 		$array["current_user"] = $session->uid;
 		
+		switch($array["access"]) {
+			case "0":
+				$array["access_text"] = $lang["GLOBAL_ACCESS_INTERNAL"];
+				$array["access_footer"] = "";
+			break;
+			case "1":
+				$array["access_text"] = $lang["GLOBAL_ACCESS_PUBLIC"];
+				$array["access_user"] = $this->_users->getUserFullname($array["access_user"]);
+				$array["access_date"] = $this->_date->formatDate($array["access_date"],CO_DATETIME_FORMAT);
+				$array["access_footer"] = $lang["GLOBAL_ACCESS_FOOTER"] . " " . $array["access_user"] . ", " .$array["access_date"];
+			break;
+		}
+		
 		// build cols and notes
 		$cols = array();
 		$num_notes = array();
@@ -234,12 +255,12 @@ class BrainstormsRostersModel extends BrainstormsModel {
    }
 
 
-   function setDetails($pid,$id,$title) {
+   function setDetails($pid,$id,$title,$roster_access,$roster_access_orig) {
 		global $session, $lang;
 
 		$now = gmdate("Y-m-d H:i:s");
 		
-		/*if($roster_access == $roster_access_orig) {
+		if($roster_access == $roster_access_orig) {
 			$accesssql = "";
 		} else {
 			$roster_access_date = "";
@@ -247,9 +268,9 @@ class BrainstormsRostersModel extends BrainstormsModel {
 				$roster_access_date = $now;
 			}
 			$accesssql = "access='$roster_access', access_date='$roster_access_date', access_user = '$session->uid',";
-		}*/
+		}
 		
-		$q = "UPDATE " . CO_TBL_BRAINSTORMS_ROSTERS . " set title = '$title', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_BRAINSTORMS_ROSTERS . " set title = '$title', $accesssql edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 
 		if ($result) {
@@ -278,8 +299,10 @@ class BrainstormsRostersModel extends BrainstormsModel {
 		}
    }
    
-   function deleteRosterColumn($id) {
-		$q = "UPDATE " . CO_TBL_BRAINSTORMS_ROSTERS_COLUMNS . " set bin = '1' WHERE id='$id'";
+   function binRosterColumn($id) {
+		global $session;
+		$now = gmdate("Y-m-d H:i:s");
+		$q = "UPDATE " . CO_TBL_BRAINSTORMS_ROSTERS_COLUMNS . " set bin = '1', bintime = '$now', binuser= '$session->uid' WHERE id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			return "true";
@@ -334,7 +357,7 @@ class BrainstormsRostersModel extends BrainstormsModel {
 		$title = $row[0];
 		$text = $row[1];
 		
-		$q = "INSERT INTO " . CO_TBL_BRAINSTORMS_ROSTERS_NOTES . " set title = '$title', text = '$text', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";		
+		$q = "INSERT INTO " . CO_TBL_BRAINSTORMS_ROSTERS_NOTES . " set pid = '$pid', title = '$title', text = '$text', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";		
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			$id = mysql_insert_id();
@@ -346,7 +369,7 @@ class BrainstormsRostersModel extends BrainstormsModel {
    function saveRosterNewManualNote($pid) {
 		global $session, $lang;
 		$now = gmdate("Y-m-d H:i:s");
-		$q = "INSERT INTO " . CO_TBL_BRAINSTORMS_ROSTERS_NOTES . " set title='" . $lang["BRAINSTORM_ROSTER_ITEM_NEW"]. "', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";		
+		$q = "INSERT INTO " . CO_TBL_BRAINSTORMS_ROSTERS_NOTES . " set pid = '$pid', title='" . $lang["BRAINSTORM_ROSTER_ITEM_NEW"]. "', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";		
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			$id = mysql_insert_id();
@@ -457,17 +480,46 @@ class BrainstormsRostersModel extends BrainstormsModel {
    }
    
    function deleteRoster($id) {
-		$q = "SELECT id FROM " . CO_TBL_BRAINSTORMS_ROSTERS_TASKS . " WHERE mid = '$id'";
+		$q = "DELETE FROM " . CO_TBL_BRAINSTORMS_ROSTERS_NOTES . " WHERE pid = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
-		while($row = mysql_fetch_array($result)) {
-			$tid = $row["id"];
-			$this->deleteRosterTask($tid);
-		}
 		
-		$q = "DELETE FROM co_log_sendto WHERE what='rosters' and whatid='$id'";
+		$q = "DELETE FROM " . CO_TBL_BRAINSTORMS_ROSTERS_COLUMNS . " WHERE pid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
+		
+		/*$q = "DELETE FROM co_log_sendto WHERE what='rosters' and whatid='$id'";
+		$result = mysql_query($q, $this->_db->connection);*/
 		
 		$q = "DELETE FROM " . CO_TBL_BRAINSTORMS_ROSTERS . " WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+		  	return true;
+		}
+   }
+   
+   
+   function restoreRosterColumn($id) {
+		$q = "UPDATE " . CO_TBL_BRAINSTORMS_ROSTERS_COLUMNS . " set bin = '0' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+		  	return true;
+		}
+   }
+   
+   function deleteRosterCOLUMN($id) {
+		$q = "SELECT items FROM " . CO_TBL_BRAINSTORMS_ROSTERS_COLUMNS . " WHERE id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+			$notes = explode(",",$row['items']);
+			foreach($notes as $note) {
+				$this->deleteRosterTask($note);
+			}
+			
+		}
+		
+		/*$q = "DELETE FROM co_log_sendto WHERE what='rosters' and whatid='$id'";
+		$result = mysql_query($q, $this->_db->connection);*/
+		
+		$q = "DELETE FROM " . CO_TBL_BRAINSTORMS_ROSTERS_COLUMNS . " WHERE id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 		  	return true;
@@ -517,7 +569,7 @@ class BrainstormsRostersModel extends BrainstormsModel {
    
    function restoreRosterTask($id) {
 		global $session;
-		$q = "UPDATE " . CO_TBL_BRAINSTORMS_ROSTERS_TASKS . " set bin = '0' WHERE id='$id'";
+		$q = "UPDATE " . CO_TBL_BRAINSTORMS_ROSTERS_NOTES . " set bin = '0' WHERE id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if($result) {
 			return true;
@@ -526,7 +578,7 @@ class BrainstormsRostersModel extends BrainstormsModel {
    
    function deleteRosterTask($id) {
 		global $session;
-		$q = "DELETE FROM " . CO_TBL_BRAINSTORMS_ROSTERS_TASKS . " WHERE id='$id'";
+		$q = "DELETE FROM " . CO_TBL_BRAINSTORMS_ROSTERS_NOTES . " WHERE id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if($result) {
 			return true;

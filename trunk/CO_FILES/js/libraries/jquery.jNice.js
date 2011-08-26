@@ -93,8 +93,9 @@
 					return false;
 				}
 				
-				var app = getCurrentApp();
-				if(app == "brainstorms") {
+				var obj = getCurrentModule();
+				if(obj.name == "brainstorms_forums") {
+					
 					var input = $a.siblings('input')[0];
 					var itemid = input.value;
 					if (input.checked===true){

@@ -17,8 +17,9 @@ function brainstormsForums(name) {
 			if (formData[i].name == 'text') { 
 				formData[i].value = text;
 			} 
-		} 
-		formData[formData.length] = processListApps('forum_status');	 
+		}
+		formData[formData.length] = processListApps('forum_access');
+		formData[formData.length] = processListApps('forum_status');
 	}
 	
 	
@@ -34,14 +35,14 @@ function brainstormsForums(name) {
 					}
 				});*/
 				//var num  = $("#brainstorms3 .active-link .forum_num").html();
-				/*switch(data.access) {
+				switch(data.access) {
 					case "0":
 						$("#brainstorms3 .active-link .module-access-status").removeClass("module-access-active");
 					break;
 					case "1":
 						$("#brainstorms3 .active-link .module-access-status").addClass("module-access-active");
 					break;
-				}*/
+				}
 				switch(data.status) {
 					case "2":
 						$("#brainstorms3 .active-link .module-item-status").addClass("module-item-active");
@@ -62,11 +63,11 @@ function brainstormsForums(name) {
 		//var num = $("#brainstorms3 ul:eq("+moduleidx+") .forum_num:eq("+liindex+")").html();
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/forums&request=getDetails&id="+forumid, success: function(data){
 			$("#brainstorms-right").html(data.html);
-			if($('#checkedOut').length > 0) {
+			/*if($('#checkedOut').length > 0) {
 					$("#brainstorms3 .active-link:visible .icon-checked-out").addClass('icon-checked-out-active');
 				} else {
 					$("#brainstorms3 .active-link:visible .icon-checked-out").removeClass('icon-checked-out-active');
-				}
+				}*/
 			if(list == 0) {
 				switch (data.access) {
 					case "sysadmin": case "admin":
@@ -106,7 +107,7 @@ function brainstormsForums(name) {
 	this.actionNew = function() {
 		var module = this;
 		var cid = $('#brainstorms input[name="id"]').val()
-		module.checkIn(cid);
+		//module.checkIn(cid);
 		var id = $('#brainstorms2 .module-click:visible').attr("rel");
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: 'path=apps/brainstorms/modules/forums&request=createNew&id=' + id, cache: false, success: function(data){
 			var pid = $("#brainstorms2 .module-click:visible").attr("rel");
@@ -132,7 +133,7 @@ function brainstormsForums(name) {
 	this.actionDuplicate = function() {
 		var module = this;
 		var cid = $('#brainstorms input[name="id"]').val()
-		module.checkIn(cid);
+		//module.checkIn(cid);
 		var id = $("#brainstorms3 .active-link:visible").attr("rel");
 		var pid = $("#brainstorms2 .module-click:visible").attr("rel");
 		$.ajax({ type: "GET", url: "/", data: 'path=apps/brainstorms/modules/forums&request=createDuplicate&id=' + id, cache: false, success: function(forumid){
@@ -154,7 +155,7 @@ function brainstormsForums(name) {
 	this.actionBin = function() {
 		var module = this;
 		var cid = $('#brainstorms input[name="id"]').val()
-		module.checkIn(cid);
+		//module.checkIn(cid);
 		var txt = ALERT_DELETE;
 		var langbuttons = {};
 		langbuttons[ALERT_YES] = true;
@@ -196,12 +197,13 @@ function brainstormsForums(name) {
 	
 	
 	this.checkIn = function(id) {
-		$.ajax({ type: "GET", url: "/", async: false, data: 'path=apps/brainstorms/modules/forums&request=checkinForum&id='+id, success: function(data){
+		/*$.ajax({ type: "GET", url: "/", async: false, data: 'path=apps/brainstorms/modules/forums&request=checkinForum&id='+id, success: function(data){
 			if(!data) {
 				prompt("something wrong");
 			}
 			}
-		});
+		});*/
+		return true;
 	}
 
 
@@ -502,7 +504,7 @@ function brainstormsForums(name) {
 var brainstorms_forums = new brainstormsForums('brainstorms_forums');
 
 $(document).ready(function() {
-	
+
 	$("#brainstormsReplyText").livequery(function() {	 
 		var postReply = $(this);
 		$.getScript("tiny_mce/jquery.tinymce.js", function(){
@@ -513,30 +515,21 @@ $(document).ready(function() {
 			skin : "coBlue",
 			language: "de",
 			entity_encoding : "raw",
-        plugins : "emotions,inlinepopups,paste,directionality,noneditable,visualchars,nonbreaking,xhtmlxtras",
+        	plugins : "advlink,emotions,inlinepopups,paste,directionality,noneditable,visualchars,nonbreaking,xhtmlxtras",
 			force_br_newlines: false,
 			force_p_newlines: true,
 			theme_advanced_buttons1 : "bold,italic,underline,strikethrough,emotions",
 			theme_advanced_buttons2 : "",
 			theme_advanced_buttons3 : "",
 			theme_advanced_buttons4 : "",
-			//theme_advanced_buttons1 : "save,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
-        	//theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,code,|,forecolor,backcolor",
-       		// theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
-       // theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,pagebreak",
-	   		//theme_advanced_buttons4 : "visualchars,nonbreaking,template,pagebreak",
         	theme_advanced_toolbar_location : "top",
-       theme_advanced_toolbar_align : "left",
-        theme_advanced_statusbar_location : "none",
+       		theme_advanced_toolbar_align : "left",
+        	theme_advanced_statusbar_location : "none",
 			content_css : "tiny_mce/editor.content.css"
-		});
-																				 })
+			});
+		})
 	})
-	
-	
-	/*$("#modalDialogBrainstormsPost").livequery( function() {
-		$(this).resizable({ handles: 'n' });
-	});*/
+
 	
 	$("a.postBrainstormsReply").live("click", function(e) {
 		e.preventDefault();
@@ -545,21 +538,19 @@ $(document).ready(function() {
 			$("#brainstormsReplyID").val(rel);
 			$("#brainstormsReplyText").focus();	
 			$('#brainstorms-right .ui-layout-content').height($('#brainstorms-right .ui-layout-content').height()-99)
-							initBrainstormsContentScrollbar();								
-
+			initBrainstormsContentScrollbar();								
 		});
-		
 	});
-	
-	
+
+
 	$("#modalDialogBrainstormsPostClose").live("click", function(e) {
 		e.preventDefault();
 		$("#modalDialogBrainstormsPost").slideUp(function() {		
-					initBrainstormsContentScrollbar();									
+			initBrainstormsContentScrollbar();									
 		});
 	});
-	
-	
+
+
 	$("span.actionBrainstormsReply").live("click", function(e) {
 		e.preventDefault();
 		var id = $("#brainstorms3 .active-link:visible").attr("rel");
@@ -571,8 +562,8 @@ $(document).ready(function() {
 		var replyid = $("#brainstormsReplyID").val();
 		brainstorms_forums.insertItem(id,text,replyid);
 	});
-	
-	
+
+
 	$("div.brainstormsPostToggle").live("click", function(e) {
 		e.preventDefault();
 		var id = $(this).attr("id").replace(/post-toggle-/, "");
@@ -581,21 +572,14 @@ $(document).ready(function() {
 		if(height == 20) {
 			$(this).find('span').addClass("icon-toggle-post").removeClass("icon-toggle-post-active");
 			outer.removeClass('toggeled')
-				.animate({
-					height: outer.data('h')
-  					}, function() { 
-					
+				.animate({height: outer.data('h')}, function() { 
 					$(this).css('height','auto');
 				});
 		} else {
 			$(this).find('span').addClass("icon-toggle-post-active").removeClass("icon-toggle-post");
 			outer.data('h', outer.height());
-			outer
-				.animate({
-					height: 20
-  					}).addClass('toggeled')
+			outer.animate({height: 20}).addClass('toggeled')
 		}
 	});
 
-	
 })

@@ -39,7 +39,7 @@
 &nbsp;
 <table border="0" cellpadding="0" cellspacing="0" width="100%" class="standard">
 	<tr>
-		<td class="tcell-left"><?php echo $lang["BRAINSTORM_ROSTER_GOALS"];?></td>
+		<td class="tcell-left"><?php echo $lang["BRAINSTORM_ROSTER_NOTES"];?></td>
 		<td>&nbsp;</td>
     </tr>
 </table>

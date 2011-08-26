@@ -429,7 +429,7 @@ $('#brainstorms-outer div.note').each(function(){
 var brainstorms = new brainstormsApplication('brainstorms');
 brainstorms.resetModuleHeights = brainstormsresetModuleHeights;
 brainstorms.modules_height = brainstorms_num_modules*module_title_height;
-brainstorms.GuestHiddenModules = new Array("controlling","access");
+brainstorms.GuestHiddenModules = new Array("access");
 
 // register folder object
 function brainstormsFolders(name) {
@@ -627,7 +627,7 @@ function brainstormsActions(status) {
 		case 4: 	actions = ['0','1','4','5']; break;
 		//case 5: 	actions = ['1','2','5']; break;   			// print, send, refresh
 		case 5: 	actions = ['1','5']; break;
-		case 6: 	actions = ['4','5']; break;   			// handbook refresh
+		case 6: 	actions = ['5']; break;   			// handbook refresh
 		//case 7: 	actions = ['0','1','2','5']; break;   			// new, print, send, refresh
 		case 7: 	actions = ['0','1','5']; break;
 		//case 8: 	actions = ['1','2','4','5']; break;   			// print, send, handbook, refresh
@@ -1284,7 +1284,7 @@ $(document).ready(function() {
 	});*/
   
 	
-	$('a.insertAccess').live('click',function() {
+	/*$('a.insertAccess').live('click',function() {
 		var rel = $(this).attr("rel");
 		var field = $(this).attr("field");
 		var html = '<div class="listmember" field="'+field+'" uid="'+rel+'">' + $(this).html() + '</div>';
@@ -1293,7 +1293,7 @@ $(document).ready(function() {
 		var obj = getCurrentModule();
 		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 		return false;
-	});
+	});*/
 	
 
 
@@ -1358,7 +1358,7 @@ $(document).ready(function() {
 	});
 
 	
-	// barchart opacity with jquery
+	/* barchart opacity with jquery
 	$(".barchart-phase-bg").livequery( function() {
 		$(this).css("opacity","0.3");
 	});
@@ -1378,127 +1378,49 @@ $(document).ready(function() {
 			showURL: false 
 		});
 	});
-	
+	*/
 	
 	
 	var tmp;
 	brainstorms.initItems();
-	/*$('div.note').each(function(){
-		// Finding the biggest z-index value of the notes 
-		tmp = $(this).css('z-index');
-		if(tmp>zIndex) zIndex = tmp;
-	})
-	
-	
-	$("div.note").livequery( function() {
-		$(this).each(function(){
-		tmp = $(this).css('z-index');
-		if(tmp>brainstormszIndex) brainstormszIndex = tmp;
-	})
-		
-		.draggable({
-			containment:'#brainstorms-right',
-			cancel: 'input,textarea',
-			//stack: ".note",
-			start: function(e,ui){ ui.helper.css('z-index',++brainstormszIndex); },
-			stop: function(e,ui){
-				var x = ui.position.left;
-				var y = ui.position.top;
-				var z = brainstormszIndex;
-				var id = $(this).attr("id").replace(/note-/, "");
-				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=updateNotePosition&id="+id+"&x="+x+"&y="+y+"&z="+z, success: function(data){
-					//$("#brainstorms-top .top-subheadlineTwo").html(data.startdate + ' - <span id="brainstormenddate">' + data.enddate + '</span>');
-					}
-				});
-			}
-		})
-		.resizable({
-			start: function(e,ui){ 
-				ui.helper.css('z-index',++brainstormszIndex);
-				$(this).find("textarea").height($(this).height() - 10);
-			},
-			resize: function(e,ui){ 
-				//$(this).find("textarea").height($(this).height() - 20).width($(this).width());
-				$(this).find("div.note-text").height($(this).height() - 35);
-			},
-			stop: function(e,ui){
-				var w = ui.size.width;
-				var h = ui.size.height;
-				var id = $(this).attr("id").replace(/note-/, "");
-				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=updateNoteSize&id="+id+"&w="+w+"&h="+h, success: function(data){
-					//$("#brainstorms-top .top-subheadlineTwo").html(data.startdate + ' - <span id="brainstormenddate">' + data.enddate + '</span>');
-					}
-				});
-			}
-		});
-	});*/
-	
-	
-	
-	/*$("div.note").live("click", function(e) {
-		e.preventDefault();
-		$(this).css('z-index',++zIndex);
-	});*/
-	
-	/*$("div.brainstormsNoteDelete").live("click", function(e) {
-		e.preventDefault();
-		var id = $(this).attr("id").replace(/note-delete-/, "");
-		$(this).parents("div.note").slideUp();
-		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=binBrainstormNote&id="+id, success: function(text){
-				}
-			});
-	});*/
-	
+
+
 	$("div.brainstormsNoteToggle").live("click", function(e) {
 		e.preventDefault();
 		var id = $(this).attr("id").replace(/note-toggle-/, "");
-		//brainstorms.toggleItem(id);
 		var height = $(this).attr("rel");
 		if($(this).parents("div.note").height() == 17) {
 			$(this).find('span').addClass("icon-toggle").removeClass("icon-toggle-active");
 			$(this).parents("div.note")
-				.animate({
-					height: height+'px'
-					}, function() {
+				.animate({ height: height+'px' }, function() {
 						$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=setBrainstormNoteToggle&id="+id+"&t=0"});
 				});
 		} else {
 			$(this).find('span').addClass("icon-toggle-active").removeClass("icon-toggle");
 			$(this).parents("div.note")
-				.animate({
-					height: 17
-  					}, function() {
+				.animate({ height: 17 }, function() {
 						$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=setBrainstormNoteToggle&id="+id+"&t=1"});
 				});
 		}
 	});
-	
-	// note autosave
-	/*$("input.noteSave").live('blur', function() { 
-		alert("save me");
-	});*/
-	
-	
+
+
 	$("span.brainstormsAddNote").live("click", function(e) {
 		e.preventDefault();
-		
 		var id = $("#brainstorms2 .active-link").attr("rel");
 		var oid = $("#brainstorms1 .module-click:visible").attr("rel");
 		var z = ++brainstormszIndex;
-		//var z = 1;
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=newBrainstormNote&id="+id+"&z="+z, success: function(data){
-					//$("#brainstorms-top .top-subheadlineTwo").html(data.startdate + ' - <span id="brainstormenddate">' + data.enddate + '</span>');
-					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getBrainstormDetails&fid="+oid+"&id="+id, success: function(text){
-					//$("#brainstorms-top .top-subheadlineTwo").html(data.startdate + ' - <span id="brainstormenddate">' + data.enddate + '</span>');
-					$("#brainstorms-right").html(text.html);
-					initBrainstormsContentScrollbar();
-					}
-				});
-					}
-				});
+			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getBrainstormDetails&fid="+oid+"&id="+id, success: function(text){
+				$("#brainstorms-right").html(text.html);
+				initBrainstormsContentScrollbar();
+				}
+			});
+			}
+		});
 	});
-	
-	
+
+
 	$("#brainstorms-outer div.note-title").live("dblclick", function(e) {
 		var id = parseInt($(this).attr("id").replace(/note-title-/, ""));
 		currentBrainstormEditedNote = id;
@@ -1508,7 +1430,8 @@ $(document).ready(function() {
 		$("#note-title-" + id).replaceWith(input);
 		$("#input-note-" + id).focus();
 	});
-	
+
+
 	$("#brainstorms-outer div.note-text").live("dblclick", function(e) {
 		var id = parseInt($(this).attr("id").replace(/note-text-/, ""));
 		currentBrainstormEditedNote = id;
@@ -1516,13 +1439,12 @@ $(document).ready(function() {
 		var html = $(this).html().replace(/(<br\s*\/?>)|(<p><\/p>)/gi, "");
 		var width = $(this).width();
 		var height = $(this).height();
-		//html = html.find('br').replaceWith('\n');
 		var input = '<textarea id="input-text-' + id + '" name="input-text-' + id + '" style="width: '+ width +'px; height: '+ height +'px; border: 0;">' + html+ '</textarea>';
 		$("#note-text-" + id).replaceWith(input);
 		$("#input-text-" + id).focus();
 	});
-	
-	
+
+
 	$(document).mousedown(function(e) {
 		var obj = getCurrentModule();
 		if(obj.name == 'brainstorms') {
@@ -1541,7 +1463,5 @@ $(document).ready(function() {
 			}
 		}
 	});
-	
-	
 
 });

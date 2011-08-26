@@ -129,13 +129,13 @@ class BrainstormsRosters extends Brainstorms {
 	}
 	
 
-	function setDetails($pid,$id,$title) {
-		if($arr = $this->model->setDetails($pid,$id,$title)){
+	function setDetails($pid,$id,$title,$roster_access,$roster_access_orig) {
+		if($arr = $this->model->setDetails($pid,$id,$title,$roster_access,$roster_access_orig)){
 			if($arr["what"] == "edit") {
 				//return '{ "action": "edit" , "id": "' . $arr["id"] . '", "access": "' . $roster_access . '", "status": "' . $roster_status . '"}';
-				return '{ "action": "edit" , "id": "' . $arr["id"] . '"}';
+				return '{ "action": "edit" , "id": "' . $arr["id"] . '", "access": "' . $roster_access . '"}';
 			} else {
-				return '{ "action": "reload" , "id": "' . $arr["id"] . '"}';
+				return '{ "action": "reload" , "id": "' . $arr["id"] . '", "access": "' . $roster_access . '"}';
 			}
 		} else{
 			return "error";
@@ -161,8 +161,8 @@ class BrainstormsRosters extends Brainstorms {
 		  }
 	}
 	
-	function deleteRosterColumn($id) {
-			$retval = $this->model->deleteRosterColumn($id);
+	function binRosterColumn($id) {
+			$retval = $this->model->binRosterColumn($id);
 			if($retval){
 			 return "true";
 		  } else{
@@ -281,7 +281,25 @@ class BrainstormsRosters extends Brainstorms {
 			 return "error";
 		  }
 	}
-
+	
+	function restoreRosterColumn($id) {
+		$retval = $this->model->restoreRosterColumn($id);
+		if($retval){
+			 return "true";
+		  } else{
+			 return "error";
+		  }
+	}
+	
+	function deleteRosterColumn($id) {
+		$retval = $this->model->deleteRosterColumn($id);
+		if($retval){
+			 return "true";
+		  } else{
+			 return "error";
+		  }
+	}
+	
 	function toggleIntern($id,$status) {
 		$retval = $this->model->toggleIntern($id,$status);
 		if($retval){

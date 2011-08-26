@@ -11,22 +11,10 @@
 <input type="hidden" id="path" name="path" value="<?php echo $this->form_url;?>">
 <input type="hidden" id="poformaction" name="request" value="setDetails">
 <input type="hidden" name="id" value="<?php echo($forum->id);?>">
-<!--<?php if($forum->showCheckout) { ?>
-<table id="checkedOut" border="0" cellpadding="0" cellspacing="0" class="table-content" style="background-color: #eb4600">
-	<tr>
-		<td class="tcell-left text11"><strong><span><span>Warnung</span></span></strong></td>
-		<td class="tcell-right"><strong>Dieser Inhaltsbereich wird aktuell bearbeitet von: <?php echo($forum->checked_out_user_text);?></strong></td>
-    </tr>
-    <tr>
-		<td class="tcell-left text11">&nbsp;</td>
-		<td class="tcell-right white"><a href="mailto:<?php echo($forum->checked_out_user_email);?>"><?php echo($forum->checked_out_user_email);?></a>, <?php echo($forum->checked_out_user_phone1);?></td>
-    </tr>
-</table>
-<?php } ?>-->
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 		<td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_DURATION"];?></td>
-		<td class="tcell-right-inactive"><span id="brainstormsforumstartdate"><?php //echo($forum->startdate);?></span> - <span id="brainstormsforumenddate"><?php //echo($forum->enddate);?></span>
+		<td class="tcell-right-inactive"><span id="brainstormsforumstartdate"><?php echo($forum->startdate);?></span> - <span id="brainstormsforumenddate"><?php echo($forum->enddate);?></span>
         </td>
     </tr>
 </table>
@@ -40,7 +28,7 @@
 <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
   <tr>
     <td class="tcell-left-100 text11"><span class="<?php if($forum->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["BRAINSTORM_FORUM_QUESTION"];?></span></span></td>
-      	<td width="35" style="padding-top: 2px;"><a class="postBrainstormsReply" rel="0" title="antworten"><span class="icon-reply"></span></a></td>
+      	<td width="35" style="padding-top: 2px;"><?php if($forum->canedit) { ?><a class="postBrainstormsReply" rel="0" title="antworten"><span class="icon-reply"></span></a><?php } ?></td>
     <td class="tcell-right"><?php if($forum->canedit) { ?><textarea name="protocol" class="elastic"><?php echo(strip_tags($forum->protocol));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($forum->protocol)));?><?php } ?></td>
   	<td width="30">&nbsp;</td>
   </tr>
@@ -73,8 +61,8 @@ foreach($answers as $answer) {
 
 $postspacer = 0;
 
-function showChildren($children) {
-	global $postspacer, $forum;
+function showChildren($children,$perm) {
+	global $postspacer;
 
 	foreach($children as $child) {
 			$postspacer = 15;
@@ -91,7 +79,7 @@ function showChildren($children) {
 			}
 			include("post_child.php");
 	if(isset($child->children) && !empty($child->children)) {
-		showChildren($child->children);
+		showChildren($child->children,$perm);
 		} else {
 			$postspacer = 0;
 		}
@@ -114,7 +102,7 @@ foreach($posts as $post) {
 	}
 	include("post.php");
 	if(isset($post->children) && !empty($post->children)) {
-		showChildren($post->children);
+		showChildren($post->children,$forum->canedit);
 	} else {
 	$postspacer = 0;
 	}
@@ -125,6 +113,17 @@ foreach($posts as $post) {
 	$i++;
 } ?>
 </div>
+
+<?php if($forum->perms != "guest") { ?>
+<div class="content-spacer"></div>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
+	  <td class="tcell-left text11"><span class="<?php if($forum->canedit) { ?>content-nav showDialog<?php } ?>" request="getAccessDialog" field="brainstormsforum_access" append="1"><span><?php echo $lang["GLOBAL_ACCESS"];?></span></span></td>
+        <td class="tcell-right"><div id="brainstormsforum_access" class="itemlist-field"><div class="listmember" field="brainstormsforum_access" uid="<?php echo($forum->access);?>" style="float: left"><?php echo($forum->access_text);?></div></div><input type="hidden" name="forum_access_orig" value="<?php echo($forum->access);?>" /></td>
+	</tr>
+</table>
+<?php } ?>
+
 </form>
 </div>
 </div>

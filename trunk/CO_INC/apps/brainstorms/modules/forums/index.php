@@ -70,9 +70,9 @@ if (!empty($_GET['request'])) {
 		case 'getSendtoDetails':
 			echo($brainstormsForums->getSendtoDetails("forums",$_GET['id']));
 		break;
-		case 'checkinForum':
+		/*case 'checkinForum':
 			echo($brainstormsForums->checkinForum($_GET['id']));
-		break;
+		break;*/
 		case 'toggleIntern':
 			echo($brainstormsForums->toggleIntern($_GET['id'],$_GET['status']));
 		break;
@@ -110,7 +110,7 @@ if (!empty($_POST['request'])) {
 	
 	switch ($_POST['request']) {
 		case 'setDetails':
-			echo($brainstormsForums->setDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $system->checkMagicQuotes($_POST['protocol']), $_POST['forum_status'], $_POST['forum_status_date']));
+			echo($brainstormsForums->setDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $system->checkMagicQuotes($_POST['protocol']),$_POST['forum_access'],$_POST['forum_access_orig'], $_POST['forum_status'], $_POST['forum_status_date']));
 		break;
 		case 'sendDetails':
 			echo($brainstormsForums->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));

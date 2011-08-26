@@ -36,6 +36,7 @@ $lang["BRAINSTORM_DESCRIPTION"] = 'Beschreibung';
 $lang["BRAINSTORM_STATUS_PLANNED"] = 'in Planung seit';
 $lang["BRAINSTORM_STATUS_INPROGRESS"] = 'in Arbeit seit';
 $lang["BRAINSTORM_STATUS_FINISHED"] = 'abgeschlossen am';
+$lang["BRAINSTORM_STATUS_STOPPED"] = 'abgebrochen am';
 
 $lang["BRAINSTORM_HANDBOOK"] = 'Projekthandbuch';
 

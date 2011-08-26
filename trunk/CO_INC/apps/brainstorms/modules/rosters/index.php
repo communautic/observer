@@ -58,6 +58,12 @@ if (!empty($_GET['request'])) {
 			case 'deleteRoster':
 			echo($brainstormsRosters->deleteRoster($_GET['id']));
 		break;
+		case 'restoreRosterColumn':
+			echo($brainstormsRosters->restoreRosterColumn($_GET['id']));
+		break;
+			case 'deleteRosterColumn':
+			echo($brainstormsRosters->deleteRosterColumn($_GET['id']));
+		break;
 		case 'setOrder':
 			echo($brainstorms->setSortOrder("roster-sort",$_GET['rosterItem'],$_GET['id']));
 		break;
@@ -101,8 +107,8 @@ if (!empty($_GET['request'])) {
 		case 'newRosterColumn':
 			echo($brainstormsRosters->newRosterColumn($_GET['id'],$_GET['sort']));
 		break;
-		case 'deleteRosterColumn':
-			echo($brainstormsRosters->deleteRosterColumn($_GET['id']));
+		case 'binRosterColumn':
+			echo($brainstormsRosters->binRosterColumn($_GET['id']));
 		break;
 		case 'saveRosterItems':
 			echo($brainstormsRosters->saveRosterItems($_GET["col"],$_GET['item']));
@@ -133,7 +139,7 @@ if (!empty($_POST['request'])) {
 	
 	switch ($_POST['request']) {
 		case 'setDetails':
-			echo($brainstormsRosters->setDetails($_POST['pid'], $_POST['id'], $system->checkMagicQuotes($_POST['title'])));
+			echo($brainstormsRosters->setDetails($_POST['pid'], $_POST['id'], $system->checkMagicQuotes($_POST['title']),$_POST['roster_access'],$_POST['roster_access_orig']));
 		break;
 		case 'sendDetails':
 			echo($brainstormsRosters->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
