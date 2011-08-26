@@ -12,9 +12,9 @@ foreach($controller->applications as $app => $display) {
 
 
 // get dependend module phases
-include_once(CO_INC . "/apps/projects/modules/phases/config.php");
-include_once(CO_INC . "/apps/projects/modules/phases/model.php");
-include_once(CO_INC . "/apps/projects/modules/phases/controller.php");
+//include_once(CO_INC . "/apps/projects/modules/phases/config.php");
+//include_once(CO_INC . "/apps/projects/modules/phases/model.php");
+//include_once(CO_INC . "/apps/projects/modules/phases/controller.php");
 					
 // get dependend module documents
 include_once(CO_INC . "/apps/projects/modules/documents/config.php");

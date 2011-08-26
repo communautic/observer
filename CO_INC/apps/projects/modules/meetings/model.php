@@ -4,7 +4,7 @@ class ProjectsMeetingsModel extends ProjectsModel {
 	
 	public function __construct() {  
      	parent::__construct();
-		$this->_phases = new ProjectsPhasesModel();
+		//$this->_phases = new ProjectsPhasesModel();
 		$this->_contactsmodel = new ContactsModel();
 	}
 
@@ -205,10 +205,10 @@ class ProjectsMeetingsModel extends ProjectsModel {
 		$array["location"] = $this->_contactsmodel->getPlaceList($array['location'],'location', $array["canedit"]);
 		$array["location_ct"] = empty($array["location_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['location_ct'];
 
-		$array["relates_to_text"] = "";
+		/*$array["relates_to_text"] = "";
 		if($array['relates_to'] != "") {
 			$array["relates_to_text"] = $this->_phases->getPhaseTitle($array['relates_to']);
-		}
+		}*/
 
 		$array["participants"] = $this->_contactsmodel->getUserList($array['participants'],'projectsparticipants', "", $array["canedit"]);
 		$array["participants_ct"] = empty($array["participants_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['participants_ct'];

@@ -49,8 +49,8 @@
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang["PROJECT_TITLE"];?></span></td>
 		<td class="tcell-right"><?php echo($project->title);?></td>
-        <td width="30"><a href="#" class="bin-restoreProject" rel="<?php echo $project->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="#" class="bin-deleteProject" rel="<?php echo $project->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="30"><a href="projects" class="binRestore" rel="<?php echo $project->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="30"><a href="projects" class="binDelete" rel="<?php echo $project->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>
