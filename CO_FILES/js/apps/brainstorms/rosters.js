@@ -920,7 +920,7 @@ $(document).ready(function() {
 		var protocol = $("#rosterProtocol").val();
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/rosters&request=convertToProject&id="+id+"&kickoff="+kickoff+"&folder="+folder+"&protocol="+protocol, success: function(data){
 			$("#modalDialogRoster").slideUp(function() {		
-				initBrainstormsContentScrollbar();									
+				initBrainstormsContentScrollbar();							
 			});
 			}
 		});

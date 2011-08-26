@@ -252,7 +252,22 @@ class BrainstormsRostersModel extends BrainstormsModel {
 		$array["roster_width"] = sizeof($cols)*150;
 		
 		$roster = new Lists($array);
-		$arr = array("roster" => $roster, "cols" => $cols, "colheight" => $colheight, "console_items" => $console_items, "sendto" => $sendto, "access" => $array["perms"]);
+		
+		// get created projects
+		$ql = "SELECT * FROM co_brainstorms_rosters_log where rid = '$id' ORDER BY created_date DESC";
+		$resultl = mysql_query($ql, $this->_db->connection);
+		
+		$projects = array();
+		while($rowl = mysql_fetch_array($resultl)) {
+			$projects[]= array(
+				"fid" => $rowl['fid'],
+				"pid" => $rowl['pid'],
+				"created_date" => $this->_date->formatDate($rowl["created_date"],CO_DATETIME_FORMAT),
+				"created_user" => $this->_users->getUserFullname($rowl["created_user"])
+			);
+		}
+		
+		$arr = array("roster" => $roster, "cols" => $cols, "colheight" => $colheight, "console_items" => $console_items, "sendto" => $sendto, "access" => $array["perms"], "projects" => $projects);
 		return $arr;
    }
 
@@ -618,6 +633,7 @@ class BrainstormsRostersModel extends BrainstormsModel {
 				} else {
 					// create ap/milestone
 					$tasktitle = $cols[$key]["notes"][$tkey]['title'];
+					$taskprotocol = $cols[$key]["notes"][$tkey]['text'];
 					if($cols[$key]["notes"][$tkey]['ms'] == "1") {
 						$cat = 1;
 						$startdate = $this->_date->addDays($datecalc,"1");
@@ -628,14 +644,18 @@ class BrainstormsRostersModel extends BrainstormsModel {
 						$enddate = $this->_date->addDays($datecalc,"7");
 					}
 					$datecalc = $enddate;					
-					$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES_TASKS . " set pid='$pid', phaseid='$phaseid', cat='$cat', dependent = '$dependent', status = '0', text = '$tasktitle', startdate = '$startdate', enddate = '$enddate'";
+					$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES_TASKS . " set pid='$pid', phaseid='$phaseid', cat='$cat', dependent = '$dependent', status = '0', text = '$tasktitle', protocol = '$taskprotocol', startdate = '$startdate', enddate = '$enddate'";
 					$result = mysql_query($q, $this->_db->connection);
 					$dependent = mysql_insert_id();
 				}
 				$i++;
 			}
 		}
-		return true;
+		
+		$q = "INSERT INTO co_brainstorms_rosters_log set rid = '$id', pid = '$pid', fid = '$folder', created_user = '$session->uid', created_date = '$now'";
+		$result = mysql_query($q, $this->_db->connection);
+
+		return $pid;
 		
    }
    

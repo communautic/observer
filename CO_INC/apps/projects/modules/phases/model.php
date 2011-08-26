@@ -342,7 +342,7 @@ class ProjectsPhasesModel extends ProjectsModel {
 	}
 
 
-	function setDetails($id,$title,$team,$team_ct,$protocol,$documents,$phase_access,$phase_access_orig,$phase_status,$phase_status_date,$task_startdate,$task_enddate,$task_donedate,$task_id,$task_text,$task,$task_cat,$task_dependent,$task_team,$task_team_ct) {
+	function setDetails($id,$title,$team,$team_ct,$protocol,$documents,$phase_access,$phase_access_orig,$phase_status,$phase_status_date,$task_startdate,$task_enddate,$task_donedate,$task_id,$task_text,$task_protocol,$task,$task_cat,$task_dependent,$task_team,$task_team_ct) {
 		global $session, $system;
 
 		$phase_status_date = $this->_date->formatDate($phase_status_date);
@@ -412,7 +412,7 @@ class ProjectsPhasesModel extends ProjectsModel {
 				$end = $start;
 			}
 
-			$q = "UPDATE " . CO_TBL_PROJECTS_PHASES_TASKS . " set status = '$checked_items[$key]', donedate='$donedate', dependent = '$task_dependent[$key]', text = '$task_text[$key]', startdate = '$start', enddate = '$end', team = '$task_team_i', team_ct = '$task_team_ct_i' WHERE id='$task_id[$key]'";
+			$q = "UPDATE " . CO_TBL_PROJECTS_PHASES_TASKS . " set status = '$checked_items[$key]', donedate='$donedate', dependent = '$task_dependent[$key]', text = '$task_text[$key]', protocol = '$task_protocol[$key]', startdate = '$start', enddate = '$end', team = '$task_team_i', team_ct = '$task_team_ct_i' WHERE id='$task_id[$key]'";
 			$result = mysql_query($q, $this->_db->connection);
 		}
 		

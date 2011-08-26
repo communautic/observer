@@ -107,14 +107,18 @@ foreach($cols as $key => &$value){
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 		<td class="tcell-left-inactive text11">Projekterstellung</td>
-		<td class="tcell-right-inactive tcell-right-nopadding"><div id="project_sendto">
+		<td class="tcell-right-inactive tcell-right-nopadding"><div id="project_created">
         <?php 
-			foreach($sendto as $value) { 
+		foreach($projects as $key => &$value) { 
+				echo '<div class="text11">Projektordner: ' . $projects[$key]['fid'] . ', ' . $projects[$key]['created_user'] . ', ' . $projects[$key]['created_date'] . '</div>';
+		 }
+		 
+			/*foreach($sendto as $value) { 
 			if(!empty($value->who)) {
 				echo '<div class="text11 toggleSendTo">' . $value->who . ', ' . $value->date . '</div>' .
 				'<div class="SendToContent">' . $lang["GLOBAL_SUBJECT"] . ': ' . $value->subject . '<br /><br />' . nl2br($value->body) . '<br></div>';
 			}
-		 } ?></div></td>
+		 } */?></div></td>
     </tr>
 </table>
 <?php } ?>
@@ -125,7 +129,7 @@ foreach($cols as $key => &$value){
 <table border="0" cellspacing="0" cellpadding="0" class="table-footer">
   <tr>
     <td class="left"><?php echo $lang["EDITED_BY_ON"];?> <?php echo($roster->edited_user.", ".$roster->edited_date)?></td>
-    <td class="middle">&nbsp;</td>
+    <td class="middle"><?php echo $roster->access_footer;?></td>
     <td class="right"><?php echo $lang["CREATED_BY_ON"];?> <?php echo($roster->created_user.", ".$roster->created_date);?></td>
   </tr>
 </table>

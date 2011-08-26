@@ -89,6 +89,14 @@ foreach($task as $value) {
             </td>
         </tr>
         <?php } ?>
+        <?php if(!empty($value->protocol)) { ?>
+        <tr>
+            <td class="tcell-left-short">&nbsp;</td>
+            <td class="short">&nbsp;</td>
+            <td class="greybg"><?php echo(nl2br($value->protocol));?>
+            </td>
+        </tr>
+        <?php } ?>
             <tr>
             <td class="tcell-left-short">&nbsp;</td>
             <td class="short">&nbsp;</td>
@@ -121,6 +129,14 @@ foreach($task as $value) {
             <td class="tcell-left-short">&nbsp;</td>
             <td class="short">&nbsp;</td>
             <td><?php echo $lang["PROJECT_STATUS_FINISHED"];?> <?php echo($donedate);?>
+            </td>
+        </tr>
+        <?php } ?>
+        <?php if(!empty($value->protocol)) { ?>
+        <tr>
+            <td class="tcell-left-short">&nbsp;</td>
+            <td class="short">&nbsp;</td>
+            <td class="greybg"><?php echo(nl2br($value->protocol));?>
             </td>
         </tr>
         <?php } ?>
