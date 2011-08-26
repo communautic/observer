@@ -566,7 +566,7 @@ class BrainstormsModel extends Model {
 		// other functions
 		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
 		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
-		
+		$array["folder"] = $this->getBrainstormFolderDetails($array["folder"],"folder");
 		
 		
 		// Notes
@@ -1171,17 +1171,10 @@ class BrainstormsModel extends Model {
 				$arr[$module] = "";
 				$arr[$module . "_tasks"] = "";
 				$arr[$module . "_folders"] = "";
+				$arr[$module . "_cols"] = "";
 			}
 		}
-		
-		//foreach($active_modules as $module) {
-							//$name = strtoupper($module);
-							//$mod = new $name . "Model()";
-							//include("modules/meetings/controller.php");
-							//${$name} = new $name("$module");
-							
-						//}
-		
+				
 		$q ="select id, title, bin, bintime, binuser from " . CO_TBL_BRAINSTORMS_FOLDERS;
 		$result = mysql_query($q, $this->_db->connection);
 	  	while ($row = mysql_fetch_array($result)) {
@@ -1209,42 +1202,91 @@ class BrainstormsModel extends Model {
 					$pros[] = new Lists($pro);
 					$arr["pros"] = $pros;
 					} else {
-						/*$module = "phases";
-						$name = ucfirst($module);
-							$function = "get" . $name . "Bin";
-							${$module} = new $name("$module");*/
-							//print_r(${$module}->$function($pid));
-							
-							//$arr["phases"] = ${$module}->$function($pid);
-							//print_r($mods);
-							//print_r($arr);//$arr[] = $res;
-							//$arr["phases"] = $res["phases"];
-							//print_r($res);
-						/*foreach($active_modules as $module) {
-							$name = ucfirst($module);
-							$function = "get" . $name . "Bin";
-							${$module} = new $name("$module");
-							echo ${$module}->$function($pid);
-							
-						}*/
-						
-						
-						// phases
-						$qph ="select id, title, bin, bintime, binuser from " . CO_TBL_BRAINSTORMS_PHASES . " where pid = '$pid'";
-						$resultph = mysql_query($qph, $this->_db->connection);
-						while ($rowph = mysql_fetch_array($resultph)) {
-							$phid = $rowph["id"];
-							if($rowph["bin"] == "1") { // deleted phases
-								foreach($rowph as $key => $val) {
-									$phase[$key] = $val;
+					
+					
+					// rosters
+					if(in_array("rosters",$active_modules)) {
+						$qf ="select id, title, bin, bintime, binuser from " . CO_TBL_BRAINSTORMS_ROSTERS . " where pid = '$pid'";
+						$resultf = mysql_query($qf, $this->_db->connection);
+						while ($rowf = mysql_fetch_array($resultf)) {
+							$fid = $rowf["id"];
+							if($rowf["bin"] == "1") { // deleted phases
+								foreach($rowf as $key => $val) {
+									$forum[$key] = $val;
 								}
-								$phase["bintime"] = $this->_date->formatDate($phase["bintime"],CO_DATETIME_FORMAT);
-								$phase["binuser"] = $this->_users->getUserFullname($phase["binuser"]);
-								$phases[] = new Lists($phase);
-								$arr["phases"] = $phases;
+								$forum["bintime"] = $this->_date->formatDate($forum["bintime"],CO_DATETIME_FORMAT);
+								$forum["binuser"] = $this->_users->getUserFullname($forum["binuser"]);
+								$forums[] = new Lists($forum);
+								$arr["rosters"] = $forums;
+							} else {
+								// columns
+								
+								$qc ="select id, items, bin, bintime, binuser from " . CO_TBL_BRAINSTORMS_ROSTERS_COLUMNS . " where pid = '$fid'";
+								$resultc = mysql_query($qc, $this->_db->connection);
+								while ($rowc = mysql_fetch_array($resultc)) {
+									if($rowc["bin"] == "1") { // deleted phases
+										foreach($rowc as $key => $val) {
+											$rosters_col[$key] = $val;
+										}
+										
+										$items = '';
+										$notes = explode(",",$rosters_col['items']);
+										foreach($notes as $note) {
+											$qn = "SELECT id,title FROM " . CO_TBL_BRAINSTORMS_ROSTERS_NOTES . " where id = '$note' and bin='0'";
+											$resultn = mysql_query($qn, $this->_db->connection);
+											while($rown = mysql_fetch_object($resultn)) {
+												$items .= $rown->title . ', ';
+												//$items_used[] = $rown->id;
+											}
+										}
+										
+										$rosters_col["items"] = rtrim($items,", ");
+										
+										$rosters_col["bintime"] = $this->_date->formatDate($rosters_col["bintime"],CO_DATETIME_FORMAT);
+										$rosters_col["binuser"] = $this->_users->getUserFullname($rosters_col["binuser"]);
+										$rosters_cols[] = new Lists($rosters_col);
+										$arr["rosters_cols"] = $rosters_cols;
+									} 
+								}
+
+								
+								
+								// tasks
+								$qt ="select id, title, bin, bintime, binuser from " . CO_TBL_BRAINSTORMS_ROSTERS_NOTES . " where pid = '$fid'";
+								$resultt = mysql_query($qt, $this->_db->connection);
+								while ($rowt = mysql_fetch_array($resultt)) {
+									if($rowt["bin"] == "1") { // deleted phases
+										
+										 
+										foreach($rowt as $key => $val) {
+											$rosters_task[$key] = $val;
+										}
+										$rosters_task["bintime"] = $this->_date->formatDate($rosters_task["bintime"],CO_DATETIME_FORMAT);
+										$rosters_task["binuser"] = $this->_users->getUserFullname($rosters_task["binuser"]);
+										$rosters_tasks[] = new Lists($rosters_task);
+										$arr["rosters_tasks"] = $rosters_tasks;
+									} 
+								}
+							}
+						}
+					}
+						
+						// forums
+						$qf ="select id, title, bin, bintime, binuser from " . CO_TBL_BRAINSTORMS_FORUMS . " where pid = '$pid'";
+						$resultf = mysql_query($qf, $this->_db->connection);
+						while ($rowf = mysql_fetch_array($resultf)) {
+							$fid = $rowf["id"];
+							if($rowf["bin"] == "1") { // deleted phases
+								foreach($rowf as $key => $val) {
+									$forum[$key] = $val;
+								}
+								$forum["bintime"] = $this->_date->formatDate($forum["bintime"],CO_DATETIME_FORMAT);
+								$forum["binuser"] = $this->_users->getUserFullname($forum["binuser"]);
+								$forums[] = new Lists($forum);
+								$arr["forums"] = $forums;
 							} else {
 								// tasks
-								$qt ="select id, text, bin, bintime, binuser from " . CO_TBL_BRAINSTORMS_PHASES_TASKS . " where phaseid = '$phid'";
+								$qt ="select id, text, bin, bintime, binuser from " . CO_TBL_BRAINSTORMS_FORUMS_POSTS . " where pid = '$fid'";
 								$resultt = mysql_query($qt, $this->_db->connection);
 								while ($rowt = mysql_fetch_array($resultt)) {
 									if($rowt["bin"] == "1") { // deleted phases
@@ -1293,41 +1335,7 @@ class BrainstormsModel extends Model {
 								}
 							}
 						}
-						
-						
-						// analyses
-						if(in_array("analyses",$active_modules)) {
-							$qm ="select id, title, bin, bintime, binuser from " . CO_TBL_BRAINSTORMS_ANALYSES . " where pid = '$pid'";
-							$resultm = mysql_query($qm, $this->_db->connection);
-							while ($rowm = mysql_fetch_array($resultm)) {
-								$mid = $rowm["id"];
-								if($rowm["bin"] == "1") { // deleted analyse
-									foreach($rowm as $key => $val) {
-										$analyse[$key] = $val;
-									}
-									$analyse["bintime"] = $this->_date->formatDate($analyse["bintime"],CO_DATETIME_FORMAT);
-									$analyse["binuser"] = $this->_users->getUserFullname($analyse["binuser"]);
-									$analyses[] = new Lists($analyse);
-									$arr["analyses"] = $analyses;
-								} else {
-									// analyses_tasks
-									$qmt ="select id, title, bin, bintime, binuser from " . CO_TBL_BRAINSTORMS_ANALYSES_TASKS . " where mid = '$mid'";
-									$resultmt = mysql_query($qmt, $this->_db->connection);
-									while ($rowmt = mysql_fetch_array($resultmt)) {
-										if($rowmt["bin"] == "1") { // deleted phases
-											foreach($rowmt as $key => $val) {
-												$analyses_task[$key] = $val;
-											}
-											$analyses_task["bintime"] = $this->_date->formatDate($analyses_task["bintime"],CO_DATETIME_FORMAT);
-											$analyses_task["binuser"] = $this->_users->getUserFullname($analyses_task["binuser"]);
-											$analyses_tasks[] = new Lists($analyses_task);
-											$arr["analyses_tasks"] = $analyses_tasks;
-										}
-									}
-								}
-							}
-						}
-	
+							
 	
 						// documents_folder
 						if(in_array("documents",$active_modules)) {
@@ -1412,6 +1420,7 @@ class BrainstormsModel extends Model {
 				$arr[$module] = "";
 				$arr[$module . "_tasks"] = "";
 				$arr[$module . "_folders"] = "";
+				$arr[$module . "_cols"] = "";
 			}
 		}
 		
@@ -1431,25 +1440,67 @@ class BrainstormsModel extends Model {
 						$this->deleteBrainstorm($pid);
 					} else {
 						
-						// phases
-						$brainstormsPhasesModel = new BrainstormsPhasesModel();
-						$qph ="select id, title, bin, bintime, binuser from " . CO_TBL_BRAINSTORMS_PHASES . " where pid = '$pid'";
-						$resultph = mysql_query($qph, $this->_db->connection);
-						while ($rowph = mysql_fetch_array($resultph)) {
-							$phid = $rowph["id"];
-							if($rowph["bin"] == "1") { // deleted phases
-								$brainstormsPhasesModel->deletePhase($phid);
-								$arr["phases"] = "";
+					// rosters
+					if(in_array("rosters",$active_modules)) {
+						$brainstormsRostersModel = new BrainstormsRostersModel();
+						$qf ="select id, title, bin, bintime, binuser from " . CO_TBL_BRAINSTORMS_ROSTERS . " where pid = '$pid'";
+						$resultf = mysql_query($qf, $this->_db->connection);
+						while ($rowf = mysql_fetch_array($resultf)) {
+							$fid = $rowf["id"];
+							if($rowf["bin"] == "1") { // deleted phases
+								$brainstormsRostersModel->deleteRoster($fid);
+								$arr["rosters"] = "";
 							} else {
+								// columns
+								
+								$qc ="select id from " . CO_TBL_BRAINSTORMS_ROSTERS_COLUMNS . " where pid = '$fid'";
+								$resultc = mysql_query($qc, $this->_db->connection);
+								while ($rowc = mysql_fetch_array($resultc)) {
+									if($rowc["bin"] == "1") { // deleted phases
+										$cid = $rowc["id"];
+										$brainstormsRostersModel->deleteRosterColumn($cid);
+										$arr["rosters_cols"] = "";
+									} 
+								}
+
+								
+								
 								// tasks
-								$qt ="select id, text, bin, bintime, binuser from " . CO_TBL_BRAINSTORMS_PHASES_TASKS . " where phaseid = '$phid'";
+								$qt ="select id from " . CO_TBL_BRAINSTORMS_ROSTERS_NOTES . " where pid = '$fid'";
 								$resultt = mysql_query($qt, $this->_db->connection);
 								while ($rowt = mysql_fetch_array($resultt)) {
 									if($rowt["bin"] == "1") { // deleted phases
-										$phtid = $rowt["id"];
-										$brainstormsPhasesModel->deletePhaseTask($phtid);
-										$arr["tasks"] = "";
+										$tid = $rowt["id"];
+										$brainstormsRostersModel->deleteRosterTask($tid);
+										$arr["rosters_tasks"] = "";
 									} 
+								}
+							}
+						}
+					}
+						
+						
+						// forums
+						if(in_array("forums",$active_modules)) {
+							$brainstormsForumsModel = new BrainstormsForumsModel();
+							$qf ="select id, title, bin, bintime, binuser from " . CO_TBL_BRAINSTORMS_FORUMS . " where pid = '$pid'";
+							$resultf = mysql_query($qf, $this->_db->connection);
+							while ($rowf = mysql_fetch_array($resultf)) {
+								$fid = $rowf["id"];
+								if($rowf["bin"] == "1") { // deleted phases
+									$brainstormsForumsModel->deleteForum($fid);
+									$arr["forums"] = "";
+								} else {
+									// tasks
+									$qt ="select id, text, bin, bintime, binuser from " . CO_TBL_BRAINSTORMS_FORUMS_POSTS . " where pid = '$fid'";
+									$resultt = mysql_query($qt, $this->_db->connection);
+									while ($rowt = mysql_fetch_array($resultt)) {
+										if($rowt["bin"] == "1") { // deleted phases
+											$phtid = $rowt["id"];
+											$brainstormsForumsModel->deleteForumTask($phtid);
+											$arr["tasks"] = "";
+										} 
+									}
 								}
 							}
 						}

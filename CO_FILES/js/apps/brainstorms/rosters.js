@@ -11,6 +11,8 @@ function brainstormsRosters(name) {
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
 		}
+		
+		formData[formData.length] = processListApps('roster_access');
 	 }
 	 
 	 
@@ -18,7 +20,7 @@ function brainstormsRosters(name) {
 		 switch(data.action) {
 			case "edit":
 				$("#brainstorms3 span[rel='"+data.id+"'] .text").html($("#brainstorms .title").val());
-					/*switch(data.access) {
+					switch(data.access) {
 						case "0":
 							$("#brainstorms3 .active-link .module-access-status").removeClass("module-access-active");
 						break;
@@ -26,6 +28,7 @@ function brainstormsRosters(name) {
 							$("#brainstorms3 .active-link .module-access-status").addClass("module-access-active");
 						break;
 					}
+					/*
 					switch(data.status) {
 						case "1":
 							$("#brainstorms3 .active-link .module-item-status").addClass("module-item-active");
@@ -436,7 +439,7 @@ function brainstormsRosters(name) {
 			buttons:langbuttons,
 			callback: function(v,m,f){		
 				if(v){
-					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/rosters&request=deleteRosterColumn&id="+id, success: function(text){						
+					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/rosters&request=binRosterColumn&id="+id, success: function(text){						
 							//$('#brainstormscol_'+id).hide();
 							//$('#brainstormscol_'+id).slideUp(function(){ 
 							$('#brainstormscol_'+id).animate({width: 0}, function(){ 
@@ -493,7 +496,46 @@ function brainstormsRosters(name) {
 			}
 		});
 	}
+	
+	this.binDeleteColumn = function(id) {
+		var txt = ALERT_DELETE_REALLY;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/rosters&request=deleteRosterColumn&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$('#roster_col_'+id).slideUp();
+						}
+					}
+					});
+				} 
+			}
+		});
+	}
 
+	this.binRestoreColumn = function(id) {
+		var txt = ALERT_RESTORE;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/rosters&request=restoreRosterColumn&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$('#roster_col_'+id).slideUp();
+						}
+					}
+					});
+				} 
+			}
+		});
+	}
 
 	this.binDeleteItem = function(id) {
 		var txt = ALERT_DELETE_REALLY;
@@ -539,41 +581,32 @@ function brainstormsRosters(name) {
 	
 	
 	this.initItems = function() {
-
-	
-	$("#brainstorms-roster-outer div.note").livequery( function() {
-		$(this)
-		.draggable({
-			containment:'#brainstorms-right',
-			cancel: 'input,textarea'
-			//stack: ".note",
-			//start: function(e,ui){ ui.helper.css('z-index',++brainstormszIndex); },
-
-		})
-		.resizable({
-			minHeight: 16,
-			minWidth: 150,
-			alsoResize: '#brainstorms-roster-outer div.note-text, #input-text',
-			start: function(e,ui){ 
-				//ui.helper.css('z-index',++brainstormszIndex);
-				$(this).find("textarea").height($(this).height() - 10);
-			},
-			/*resize: function(e,ui){ 
-				//$(this).find("textarea").height($(this).height() - 20).width($(this).width());
-				$(this).find("div.note-text","#input-text").height($(this).height() - 35);
-			}*/
+		$("#brainstorms-roster-outer div.note").livequery( function() {
+			$(this)
+			.draggable({
+				containment:'#brainstorms-right',
+				cancel: 'input,textarea'
+			})
+			.resizable({
+				minHeight: 16,
+				minWidth: 150,
+				alsoResize: '#brainstorms-roster-outer div.note-text, #input-text',
+				start: function(e,ui){ 
+					$(this).find("textarea").height($(this).height() - 10);
+				}
+			});
 		});
-	});
-}
+	}
 
 
-this.actionRoster = function() {
+	this.actionRoster = function() {
 		$('#modalDialogRoster').slideDown();
 	}
 
 }
 
 var brainstorms_rosters = new brainstormsRosters('brainstorms_rosters');
+
 
 function initBrainstormsConsole() {
 	$('#brainstorms-console-notes>div').livequery( function() {
@@ -587,7 +620,6 @@ function initBrainstormsConsole() {
 			}
 		});
 	});
-
 	$('#brainstorms-console').livequery( function() {
 		$(this).draggable({handle: 'h3', containment: 'brainstorms-right', cursor: 'move'})
 		.resizable({ minHeight: 16, minWidth: 150});
@@ -598,7 +630,7 @@ function initBrainstormsConsole() {
 function initBrainstormsOuter() {
 	$('#brainstorms-roster').livequery( function() {
 		$(this).sortable({
-			items: '>div',
+			items: '>div.drag',
 			handle: 'h3',
 			cursor: 'move',
 			containment: 'parent',
@@ -613,6 +645,7 @@ function initBrainstormsOuter() {
 	});
 }
 
+
 function initBrainstormsPhases() {
 	$('#brainstorms-roster .brainstorms-phase').livequery( function() {
 		$(this).sortable({
@@ -622,92 +655,47 @@ function initBrainstormsPhases() {
 			start: function(event,ui) {
 				ui.item.removeClass('active');
 			},
-			
-		/*	receive: function(event,ui) {
-      console.log('update');    
-  },
-  beforeStop: function (event, ui) {
-	  console.log($(ui.helper).attr('id'));
-      newItem = ui.item;
-  },*/
-			/*update: function(event,ui) {
-				var col = parseInt($(this).parent().attr("id").replace(/brainstormscol_/, ""));
-				var idx = $('#brainstorms-roster .brainstorms-phase').index(this);
-				$('#brainstorms-roster .brainstorms-phase:eq('+idx+')>div').each(function() {
-						var div = $(this);
-						var attr = div.attr('id');
-						if (typeof attr == 'undefined' || attr == false) {
-							var id = div.attr('rel');
-							var pid = $(".brainstorms3-content:visible .active-link").attr("rel");
-							$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/brainstorms/modules/rosters&request=saveRosterNewNote&pid="+pid+"&id=" + id, cache: false, success: function(id){
-									div.attr('id','item_' + id);
-								}
-							});
-						}
-				});
-				var order = $('#brainstorms-roster .brainstorms-phase:eq('+idx+')').sortable("serialize");
-				$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/rosters&request=saveRosterItems&col="+col+"&"+ order, cache: false, success: function(data){
-						// calc roster height
-						var numitems = 0;
-						$('#brainstorms-roster .brainstorms-phase').each(function() {
-							var items = $(this).find('>div').size();
-							if(items > numitems) {
-								numitems = items;
-							}
-						});
-						var colheight = numitems*30+57;
-						if (colheight < 357) {
-							colheight = 357;
-						}
-						$('#brainstorms-roster .brainstorms-phase').parent().height(colheight);
-					}
-				});
-			}*/
-			
-			
 		})
 		$(this).bind('sortupdate', function(event, ui) {
-				var col = parseInt($(this).parent().attr("id").replace(/brainstormscol_/, ""));
-				var idx = $('#brainstorms-roster .brainstorms-phase').index(this);
-				$('#brainstorms-roster .brainstorms-phase:eq('+idx+')>div').each(function(index) {
-						var div = $(this);
-						if(index == 0 && div.find('span').hasClass('icon-milestone')) {
-							div.find('>span').last().remove();
-							var attr = parseInt(div.attr("id").replace(/item_/, ""));
-							$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/rosters&request=toggleMilestone&id="+attr+"&ms=0", success: function(text){
+			var col = parseInt($(this).parent().attr("id").replace(/brainstormscol_/, ""));
+			var idx = $('#brainstorms-roster .brainstorms-phase').index(this);
+			$('#brainstorms-roster .brainstorms-phase:eq('+idx+')>div').each(function(index) {
+				var div = $(this);
+				if(index == 0 && div.find('span').hasClass('icon-milestone')) {
+					div.find('>span').last().remove();
+					var attr = parseInt(div.attr("id").replace(/item_/, ""));
+					$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/rosters&request=toggleMilestone&id="+attr+"&ms=0", success: function(text){
+						}
+					});
+				}
+				var attr = div.attr('id');
+				if (typeof attr == 'undefined' || attr == false) {
+					var id = div.attr('rel');
+					var pid = $(".brainstorms3-content:visible .active-link").attr("rel");
+					$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/brainstorms/modules/rosters&request=saveRosterNewNote&pid="+pid+"&id=" + id, cache: false, success: function(id){
+						div.attr('id','item_' + id);
+						div.append('<div class="binItem-Outer"><a class="binItem" rel="'+id+'"><span class="icon-delete"></span></a></div>');
+						}
+					});
 				}
 			});
-						}
-						
-						var attr = div.attr('id');
-						if (typeof attr == 'undefined' || attr == false) {
-							var id = div.attr('rel');
-							var pid = $(".brainstorms3-content:visible .active-link").attr("rel");
-							$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/brainstorms/modules/rosters&request=saveRosterNewNote&pid="+pid+"&id=" + id, cache: false, success: function(id){
-									div.attr('id','item_' + id);
-									div.append('<div class="binItem-Outer"><a class="binItem" rel="'+id+'"><span class="icon-delete"></span></a></div>');
-								}
-							});
-						}
-				});
-				var order = $('#brainstorms-roster .brainstorms-phase:eq('+idx+')').sortable("serialize");
-				$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/rosters&request=saveRosterItems&col="+col+"&"+ order, cache: false, success: function(data){
-						// calc roster height
-						var numitems = 0;
-						$('#brainstorms-roster .brainstorms-phase').each(function() {
-							var items = $(this).find('>div').size();
-							if(items > numitems) {
-								numitems = items;
-							}
-						});
-						var colheight = numitems*30+57;
-						if (colheight < 357) {
-							colheight = 357;
-						}
-						$('#brainstorms-roster .brainstorms-phase').parent().height(colheight);
+			var order = $('#brainstorms-roster .brainstorms-phase:eq('+idx+')').sortable("serialize");
+			$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/rosters&request=saveRosterItems&col="+col+"&"+ order, cache: false, success: function(data){
+				// calc roster height
+				var numitems = 0;
+				$('#brainstorms-roster .brainstorms-phase').each(function() {
+					var items = $(this).find('>div').size();
+					if(items > numitems) {
+						numitems = items;
 					}
 				});
-
+				var colheight = numitems*30+57;
+				if (colheight < 357) {
+					colheight = 357;
+				}
+				$('#brainstorms-roster .brainstorms-phase').parent().height(colheight);
+				}
+			});
     	});
 	})
 }
@@ -716,12 +704,13 @@ var currentBrainstormRosterClickedNote = 0;
 var currentBrainstormRosterEditedNote = 0;
 
 $(document).ready(function() {
-	
+
 	initBrainstormsConsole();
 	initBrainstormsOuter();
 	initBrainstormsPhases();
 	brainstorms_rosters.initItems();
-	
+
+
 	$('#brainstorms-add-column').live("click", function(e) {
 		e.preventDefault();
 		var pid = $(".brainstorms3-content:visible .active-link").attr("rel");
@@ -730,25 +719,22 @@ $(document).ready(function() {
 		if(sor != 0) {
 			var styles = ' style="height: ' + $('#brainstorms-roster>div:eq(0)').height() + 'px"';
 		}
-		//alert(styles);
 		$("#brainstorms-roster").width($("#brainstorms-roster").width()+150);
 		$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/rosters&request=newRosterColumn&id="+pid+"&sort="+sor, cache: false, success: function(num){
-			$("#brainstorms-roster").append('<div id="brainstormscol_' + num + '"' + styles +'><h3 class="ui-widget-header">&nbsp;<div class="brainstorms-column-delete" id="brainstorms-col-delete-' + num + '"><span class="icon-delete"></span></div></h3><div class="brainstorms-phase"></div></div>').sortable("refresh");
+			$("#brainstorms-roster").append('<div id="brainstormscol_' + num + '" class="drag" ' + styles +'><h3 class="ui-widget-header">&nbsp;<div class="brainstorms-column-delete" id="brainstorms-col-delete-' + num + '"><span class="icon-delete"></span></div></h3><div class="brainstorms-phase brainstorms-phase-design"></div></div>').sortable("refresh");
 			initBrainstormsPhases();
 			}
 		});
 	})
-	
+
+
 	$("div.brainstorms-column-delete").live("click", function(e) {
 		e.preventDefault();
 		var id = $(this).attr("id").replace(/brainstorms-col-delete-/, "");
 		brainstorms_rosters.binColumn(id);
-		/*$('#brainstormscol_'+id).hide();
-		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/rosters&request=deleteRosterColumn&id="+id, success: function(text){
-				}
-			});*/
 	});
-	
+
+
 	$("span.toggleMilestone").live("click", function(e) {
 		e.preventDefault();
 		var ms = 0;
@@ -761,119 +747,147 @@ $(document).ready(function() {
 			$(this).addClass('icon-milestone-grey');
 			$('#item_'+id+'>span').last().remove();
 		}
-		
 		$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/rosters&request=toggleMilestone&id="+id+"&ms="+ms, success: function(text){
-				}
-			});
-		
-		
-		
+			}
+		});
 	});
 
 
 	$("#brainstorms-roster .brainstorms-phase").live("dblclick", function(e) {
 		e.preventDefault();
-		var clicked=$(e.target); // get the element clicked
+		var clicked=$(e.target);
 		if(clicked.parents().is('.brainstorms-phase')) {
 			return false;
 		} else {
-		var phase = $(this);
-		var idx = phase.index(this);
-		var pid = $(".brainstorms3-content:visible .active-link").attr("rel");
-		$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/rosters&request=saveRosterNewManualNote&pid="+pid, cache: false, success: function(html){
-				phase.append(html);
-				phase.trigger('sortupdate');
-			}
-		});
+			var phase = $(this);
+			var idx = phase.index(this);
+			var pid = $(".brainstorms3-content:visible .active-link").attr("rel");
+			$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/rosters&request=saveRosterNewManualNote&pid="+pid, cache: false, success: function(html){
+					phase.append(html);
+					phase.trigger('sortupdate');
+				}
+			});
 		}
 		return false;
 	});
 	$('#brainstorms-roster .brainstorms-phase').live("mousedown", function(){ return false; }) 
 
-	
-	
-$('#brainstorms-roster .brainstorms-phase>div').live('mouseover mouseout', function(event) {
-	  if (event.type == 'mouseover') {
-		$(this).find(".binItem-Outer").show();
-		
-	  } else {
-		//$(this).children(":first").animate({opacity: '0', left: '0px'});
-		$(this).find(".binItem-Outer").hide();
-	  }
+
+	$('#brainstorms-roster .brainstorms-phase>div').live('mouseover mouseout', function(event) {
+		if (event.type == 'mouseover') {
+			$(this).find(".binItem-Outer").show();
+	  	} else {
+			$(this).find(".binItem-Outer").hide();
+	  	}
 	});	
 
+	
+	$('#brainstorms-roster .brainstorms-phase>div').live("dblclick", function(e) {
+		e.preventDefault();
+		var phase = false;
+		var addtop = 50;
+		if($(this).is(':first-child')) {
+			phase = true;
+			addtop = 60;
+		}
+		if($('#input-note').is(':visible') || $('#input-text').is(':visible')) {
+			brainstorms_rosters.saveItem(currentBrainstormRosterClickedNote);
+			return false;
+		} else {
+			var id = parseInt($(this).attr("id").replace(/item_/, ""));
+			currentBrainstormRosterClickedNote = id;
+			var note = $(this);
+			var left = note.parent().parent().position();
+			left = left.left;
+			var pos = note.position();
+			var top = pos.top+addtop;
+			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/rosters&request=getRosterNote&id="+id, success: function(data){
+				$('#note-title').html(data.title);
+				$('#note-text').html(data.text);
+				$('#note-info-content').html(data.info);
+				if(phase) {
+					$('#note-milestone').hide();
+				} else {
+					$('#note-milestone').show();
+					if(data.ms == "1") {
+						$('#note-milestone').removeClass('icon-milestone-grey');	
+					} else {
+						$('#note-milestone').addClass('icon-milestone-grey');
+					}
+				}
+				$('#note').css('top', top+'px').css('left', left+'px').slideDown();
+				}
+			});
+		}
+	})
 
-	//$('#brainstorms-roster .brainstorms-phase>div:not(:first-child)').live("click", function(e) {
-	$('#brainstorms-roster .brainstorms-phase>div:not(:first-child)').live("dblclick", function(e) {
+	
+	
+	/*$('#brainstorms-roster .brainstorms-phase>div:not(:first-child)').live("dblclick", function(e) {
 		e.preventDefault();
 		if($('#input-note').is(':visible') || $('#input-text').is(':visible')) {
 			brainstorms_rosters.saveItem(currentBrainstormRosterClickedNote);
 			return false;
 		} else {
-		var id = parseInt($(this).attr("id").replace(/item_/, ""));
-		currentBrainstormRosterClickedNote = id;
-		var note = $(this);
-		var left = note.parent().parent().position();
-		left = left.left;
-		var pos = note.position();
-		var top = pos.top+50
-		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/rosters&request=getRosterNote&id="+id, success: function(data){
-					$('#note-title').html(data.title);
-					$('#note-text').html(data.text);
-					$('#note-info-content').html(data.info);
-					//$('#note .binItem').attr('rel',id);
-					$('#note-milestone').show();
-					if(data.ms == "1") {
-						$('#note-milestone').removeClass('icon-milestone-grey');
-						
-					} else {
-						$('#note-milestone').addClass('icon-milestone-grey');
-					}
-					$('#note').css('top', top+'px').css('left', left+'px').slideDown();
-					}
-				});
+			var id = parseInt($(this).attr("id").replace(/item_/, ""));
+			currentBrainstormRosterClickedNote = id;
+			var note = $(this);
+			var left = note.parent().parent().position();
+			left = left.left;
+			var pos = note.position();
+			var top = pos.top+50
+			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/rosters&request=getRosterNote&id="+id, success: function(data){
+				$('#note-title').html(data.title);
+				$('#note-text').html(data.text);
+				$('#note-info-content').html(data.info);
+				$('#note-milestone').show();
+				if(data.ms == "1") {
+					$('#note-milestone').removeClass('icon-milestone-grey');	
+				} else {
+					$('#note-milestone').addClass('icon-milestone-grey');
+				}
+				$('#note').css('top', top+'px').css('left', left+'px').slideDown();
+				}
+			});
 		}
-		
 	})
-	
-	
+
+
 	$('#brainstorms-roster .brainstorms-phase>div:first-child').live("dblclick", function(e) {
 		e.preventDefault();
-		var id = parseInt($(this).attr("id").replace(/item_/, ""));
-		currentBrainstormRosterClickedNote = id;
-		var note = $(this);
-		var left = note.parent().parent().position();
-		left = left.left;
-		var pos = note.position();
-		var top = pos.top+60;
-		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/rosters&request=getRosterNote&id="+id, success: function(data){
-					$('#note-title').html(data.title);
-					$('#note-text').html(data.text);
-					$('#note-info-content').html(data.info);
-					//$('#note .binItem').attr('rel',id);
-					//$('#note-milestone').removeClass('icon-milestone').removeClass('icon-milestone-grey');
-					$('#note-milestone').hide();
-					$('#note').css('top', top+'px').css('left', left+'px').slideDown();
-					}
-				});
-	})
-	
-	
-		//$('#brainstorms-roster .brainstorms-phase>div').live("mousedown", function(){ return false; }) 
+		if($('#input-note').is(':visible') || $('#input-text').is(':visible')) {
+			brainstorms_rosters.saveItem(currentBrainstormRosterClickedNote);
+			return false;
+		} else {
+			var id = parseInt($(this).attr("id").replace(/item_/, ""));
+			currentBrainstormRosterClickedNote = id;
+			var note = $(this);
+			var left = note.parent().parent().position();
+			left = left.left;
+			var pos = note.position();
+			var top = pos.top+60;
+			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/rosters&request=getRosterNote&id="+id, success: function(data){
+				$('#note-title').html(data.title);
+				$('#note-text').html(data.text);
+				$('#note-info-content').html(data.info);
+				$('#note-milestone').hide();
+				$('#note').css('top', top+'px').css('left', left+'px').slideDown();
+				}
+			});
+		}
+	})*/
 
-	
+
 	$("#brainstorms-notes-outer div.note-title").live("dblclick", function(e) {
-		//var id = parseInt($(this).attr("id").replace(/note-title-/, ""));
 		e.preventDefault();
 		var html = $(this).html();
 		var input = '<input type="text" id="input-note" name="input-note" value="' + html+ '" />';
 		$(this).replaceWith(input);
 		$("#input-note").focus();
-		//$("#note").enableSelection('input');
 	});
-	
+
+
 	$("#brainstorms-roster-outer div.note-text").live("dblclick", function(e) {
-		//var id = parseInt($(this).attr("id").replace(/note-text-/, ""));
 		e.preventDefault();
 		var html = $(this).html().replace(/(<br\s*\/?>)|(<p><\/p>)/gi, "");
 		var width = $(this).width();
@@ -882,16 +896,17 @@ $('#brainstorms-roster .brainstorms-phase>div').live('mouseover mouseout', funct
 		$("#note-text").replaceWith(input);
 		$("#input-text").focus();
 	});
-	
-	$("#brainstorms-notes-outer a.closeItem").live("click", function(e) {
+
+
+	/*$("#brainstorms-notes-outer a.closeItem").live("click", function(e) {
 		if(currentBrainstormRosterClickedNote != 0) {
-		brainstorms_rosters.saveItem(currentBrainstormRosterClickedNote);
+			brainstorms_rosters.saveItem(currentBrainstormRosterClickedNote);
 		} else {
 			$('#note').slideUp();
 		}
-	});
-	
-	
+	});*/
+
+
 	$('span.actionBrainstormsRostersConvert').live("click", function(e) {
 		e.preventDefault();
 		var id = $(".brainstorms3-content:visible .active-link").attr("rel");
@@ -899,26 +914,37 @@ $('#brainstorms-roster .brainstorms-phase>div').live('mouseover mouseout', funct
 		var kickoff = kickofffield.toString("yyyy-MM-dd");
 		var folder = $('#rosterprojectsfolder>span').attr('uid');
 		if(typeof folder == 'undefined' || folder == false) {
-					$.prompt(ALERT_CHOOSE_FOLDER);
-					return false;
-				}
+			$.prompt(ALERT_CHOOSE_FOLDER);
+			return false;
+		}
 		var protocol = $("#rosterProtocol").val();
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/rosters&request=convertToProject&id="+id+"&kickoff="+kickoff+"&folder="+folder+"&protocol="+protocol, success: function(data){
-				$("#modalDialogRoster").slideUp(function() {		
-					initBrainstormsContentScrollbar();									
-		});
+			$("#modalDialogRoster").slideUp(function() {		
+				initBrainstormsContentScrollbar();									
+			});
 			}
 		});
-
-		
 	})
-	
-	
+
+
 	$("#modalDialogBrainstormsRosterClose").live("click", function(e) {
 		e.preventDefault();
 		$("#modalDialogRoster").slideUp(function() {		
-					initBrainstormsContentScrollbar();									
+			initBrainstormsContentScrollbar();									
 		});
+	});
+	
+	
+	$('a.binDeleteColumn').live('click',function() {
+		var id = $(this).attr("rel");
+		brainstorms_rosters.binDeleteColumn(id);
+		return false;
+	});
+	
+	$('a.binRestoreColumn').live('click',function() {
+		var id = $(this).attr("rel");
+		brainstorms_rosters.binRestoreColumn(id);
+		return false;
 	});
 
 
@@ -936,5 +962,5 @@ $('#brainstorms-roster .brainstorms-phase>div').live('mouseover mouseout', funct
 			}
 		}
 	});
-	
+
 });

@@ -90,7 +90,7 @@ class BrainstormsForumsModel extends BrainstormsModel {
 			}
 			$array["itemstatus"] = $itemstatus;
 			
-			$checked_out_status = "";
+			/*$checked_out_status = "";
 			if($perm !=  "guest" && $array["checked_out"] == 1 && $array["checked_out_user"] != $session->uid) {
 				//$checked_out_status = "icon-checked-out-active";
 				if($session->checkUserActive($array["checked_out_user"])) {
@@ -99,7 +99,7 @@ class BrainstormsForumsModel extends BrainstormsModel {
 					$this->checkinForumOverride($id);
 				}
 			}
-			$array["checked_out_status"] = $checked_out_status;
+			$array["checked_out_status"] = $checked_out_status;*/
 			
 			$forums[] = new Lists($array);
 		}
@@ -131,7 +131,7 @@ class BrainstormsForumsModel extends BrainstormsModel {
 	}
 	
 	
-	function checkinForum($id) {
+	/*function checkinForum($id) {
 		global $session;
 		
 		$q = "SELECT checked_out_user FROM " . CO_TBL_BRAINSTORMS_FORUMS . " where id='$id'";
@@ -145,17 +145,17 @@ class BrainstormsForumsModel extends BrainstormsModel {
 		if ($result) {
 			return true;
 		}
-	}
+	}*/
 	
 	
-	function checkinForumOverride($id) {
+	/*function checkinForumOverride($id) {
 		global $session;
 		$q = "UPDATE " . CO_TBL_BRAINSTORMS_FORUMS . " set checked_out = '0', checked_out_user = '0' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			return true;
 		}
-	}
+	}*/
 	
 	
 	// Get forum list from ids for Tooltips
@@ -211,10 +211,13 @@ class BrainstormsForumsModel extends BrainstormsModel {
 		
 		$array["perms"] = $this->getBrainstormAccess($array["pid"]);
 		$array["canedit"] = false;
-		$array["showCheckout"] = false;		
-		$array["checked_out_user_text"] = $this->_contactsmodel->getUserListPlain($array['checked_out_user']);
-		
 		if($array["perms"] == "sysadmin" || $array["perms"] == "admin") {
+			$array["canedit"] = true;
+		}
+		//$array["showCheckout"] = false;		
+		//$array["checked_out_user_text"] = $this->_contactsmodel->getUserListPlain($array['checked_out_user']);
+		
+		/*if($array["perms"] == "sysadmin" || $array["perms"] == "admin") {
 			//if($array["checked_out"] == 1 && $session->checkUserActive($array["checked_out_user"])) {
 			if($array["checked_out"] == 1) {
 				if($array["checked_out_user"] == $session->uid) {
@@ -232,7 +235,7 @@ class BrainstormsForumsModel extends BrainstormsModel {
 			} else {
 				$array["canedit"] = $this->checkoutForum($id);
 			}
-		}
+		}*/
 		
 		
 		// dates
@@ -245,6 +248,8 @@ class BrainstormsForumsModel extends BrainstormsModel {
 		$array["planned_date"] = $this->_date->formatDate($array["planned_date"],CO_DATE_FORMAT);
 		$array["inprogress_date"] = $this->_date->formatDate($array["inprogress_date"],CO_DATE_FORMAT);
 		$array["finished_date"] = $this->_date->formatDate($array["finished_date"],CO_DATE_FORMAT);
+		$array["stopped_date"] = $this->_date->formatDate($array["stopped_date"],CO_DATE_FORMAT);
+
 		$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
 		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
 
@@ -266,6 +271,8 @@ class BrainstormsForumsModel extends BrainstormsModel {
 		}
 		
 		// status
+		$array["startdate"] = "";
+		$array["enddate"] = "";
 		switch($array["status"]) {
 			case "0":
 				$array["status_text"] = $lang["BRAINSTORM_STATUS_PLANNED"];
@@ -274,21 +281,26 @@ class BrainstormsForumsModel extends BrainstormsModel {
 			case "1":
 				$array["status_text"] = $lang["BRAINSTORM_STATUS_INPROGRESS"];
 				$array["status_date"] = $array["inprogress_date"];
+				$array["startdate"] = $array["inprogress_date"];
 			break;
 			case "2":
 				$array["status_text"] = $lang["BRAINSTORM_STATUS_FINISHED"];
 				$array["status_date"] = $array["finished_date"];
+				$array["startdate"] = $array["inprogress_date"];
+				$array["enddate"] = $array["finished_date"];
+			break;
+			case "3":
+				$array["status_text"] = $lang["BRAINSTORM_STATUS_STOPPED"];
+				$array["status_date"] = $array["stopped_date"];
+				$array["startdate"] = $array["inprogress_date"];
 			break;
 		}
 		
-		/*$perms = $this->getBrainstormAccess($array["pid"]);
+		$perms = $this->getBrainstormAccess($array["pid"]);
 		$array["canedit"] = false;
 		if($perms == "sysadmin" || $perms == "admin") {
 			$array["canedit"] = true;
-		}*/
-		
-		
-		
+		}
 		
 		$forum = new Lists($array);
 		
@@ -352,21 +364,15 @@ class BrainstormsForumsModel extends BrainstormsModel {
 			}
 			
 			$post = array_filter($post, create_function('$p', 'return !$p->replyid;'));
-			
-		//}
+
 		
 		//$sendto = $this->getSendtoDetails("forums",$id);
-		
-		//print_r($post);
-		
-		
-		//print_r($root);
 		$arr = array("forum" => $forum, "posts" => $post, "answers" => $answer, "access" => $array["perms"]);
 		return $arr;
 	}
 
 
-	function setDetails($id,$title,$protocol,$forum_status,$forum_status_date) {
+	function setDetails($id,$title,$protocol,$forum_access,$forum_access_orig,$forum_status,$forum_status_date) {
 		global $session, $system;
 
 		$forum_status_date = $this->_date->formatDate($forum_status_date);
@@ -384,11 +390,14 @@ class BrainstormsForumsModel extends BrainstormsModel {
 			case "2":
 				$sql = "finished_date";
 			break;
+			case "3":
+				$sql = "stopped_date";
+			break;
 		}
 		
 		$now = gmdate("Y-m-d H:i:s");
 		$accesssql = "";
-		/*if($forum_access == $forum_access_orig) {
+		if($forum_access == $forum_access_orig) {
 			$accesssql = "";
 		} else {
 			$forum_access_date = "";
@@ -396,7 +405,7 @@ class BrainstormsForumsModel extends BrainstormsModel {
 				$forum_access_date = $now;
 			}
 			$accesssql = "access='$forum_access', access_date='$forum_access_date', access_user = '$session->uid',";
-		}*/
+		}
 		
 		$q = "UPDATE " . CO_TBL_BRAINSTORMS_FORUMS . " set title = '$title', protocol = '$protocol', $accesssql status = '$forum_status', $sql = '$forum_status_date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);

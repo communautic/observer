@@ -31,14 +31,14 @@
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
-		<td class="tcell-left-inactive text11"><?php echo $lang["BRAINSTORM_FORUM_TASK_MILESTONE"];?></td>
+		<td class="tcell-left-inactive text11"><?php echo $lang["BRAINSTORM_FORUM_POSTS"];?></td>
     <td class="tcell-right">&nbsp;</td>
     </tr>
 </table>
 <?php foreach ($arr["tasks"] as $task) { ?>
     <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive" id="forum_task_<?php echo($task->id);?>" rel="<?php echo($task->id);?>">
 	<tr>
-		<td class="tcell-left text11"><span><?php echo $lang["BRAINSTORM_FORUM_TASK_MILESTONE"];?></span></td>
+		<td class="tcell-left text11"><span><?php echo $lang["BRAINSTORM_FORUM_POSTS"];?></span></td>
 		<td class="tcell-right"><?php echo($task->text);?></td>
         <td width="30"><a href="brainstorms_forums" class="binRestoreItem" rel="<?php echo $task->id;?>"><span class="icon-restore"></span></a></td>
         <td width="30"><a href="brainstorms_forums" class="binDeleteItem" rel="<?php echo $task->id;?>"><span class="icon-delete"></span></a></td>

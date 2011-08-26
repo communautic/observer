@@ -26,42 +26,54 @@
 </table>
 
 <?php } ?>
-</form>
+
 <table cellspacing="0" cellpadding="0" border="0" class="table-content">
 	<tbody><tr>
-		<td class="tcell-left text11"><span id="brainstorms-add-column" class="<?php if($roster->canedit) { ?>content-nav<?php } ?>"><span><?php echo $lang["BRAINSTORM_ROSTER_COLUMN_NEW"];?></span></span></td>
+		<td class="tcell-left text11"><span <?php if($roster->canedit) { ?>id="brainstorms-add-column"<?php } ?> class="<?php if($roster->canedit) { ?>content-nav<?php } ?>"><span><?php echo $lang["BRAINSTORM_ROSTER_COLUMN_NEW"];?></span></span></td>
     <td class="tcell-right">&nbsp;</td>
     </tr>
 </tbody></table>
 <div id="brainstorms-roster-outer">
-<div id="brainstorms-console">
-	<h3 class="ui-widget-header"><?php echo $lang['BRAINSTORM_NOTE_ADD'];?></h3>
-  	<!--<div id="freeTextItem" class="item freeTextItem">Neue Notiz</div>-->
-    <div id="brainstorms-console-notes">
-    
-    <?php 
-//print_r($cols);
-foreach($console_items as $item){ 
-	echo '<div rel="' . $item["id"] . '">' . $item["title"] . '</div>';
- } ?>
-
-    </div>
-</div>
+<?php if($roster->canedit) { ?>
+	<div id="brainstorms-console">
+		<h3 class="ui-widget-header"><?php echo $lang['BRAINSTORM_ROSTER_NOTES'];?></h3>
+    	<div id="brainstorms-console-notes">
+    	<?php 
+		foreach($console_items as $item){ 
+			echo '<div rel="' . $item["id"] . '"><span>' . $item["title"] . '</span></div>';
+		 } ?>
+    	</div>
+	</div>
+<?php } ?>
 <div id="brainstorms-roster" style="width: <?php echo($roster->roster_width);?>px">
 
 <?php 
+$drag = '';
+$brainstormsphase = '';
+if($roster->canedit) {
+	$drag = 'drag';
+	$brainstormsphase = 'brainstorms-phase';
+}
 //print_r($cols);
 foreach($cols as $key => &$value){ 
-	echo '<div id="brainstormscol_'.$cols[$key]['id'].'" style="height: ' . $colheight . 'px">' .
-	'<h3 class="ui-widget-header"><div class="brainstorms-column-delete" id="brainstorms-col-delete-'.$cols[$key]['id'].'"><span class="icon-delete"></span></div></h3>' .
-	'<div class="brainstorms-phase">';
+	echo '<div id="brainstormscol_'.$cols[$key]['id'].'" style="height: ' . $colheight . 'px" class="' . $drag . '">';
+	echo '<h3 class="ui-widget-header">';
+	if($roster->canedit) {
+		echo '<div class="brainstorms-column-delete" id="brainstorms-col-delete-'.$cols[$key]['id'].'"><span class="icon-delete"></span></div>';
+	}
+	echo '</h3>';
+	echo '<div class="' . $brainstormsphase . ' brainstorms-phase-design">';
 	$i = 0;
 	foreach($cols[$key]["notes"] as $tkey => &$tvalue){ 
 		$ms = '';
 		if($i != 0 && $cols[$key]["notes"][$tkey]['ms'] == "1") {
 			$ms = '<span class="icon-milestone"></span>';
 		}
-		echo '<div id="item_'.$cols[$key]["notes"][$tkey]['note_id'].'"><span>'.$cols[$key]["notes"][$tkey]['title'].'</span>'.$ms.'<div class="binItem-Outer"><a class="binItem" rel="'.$cols[$key]["notes"][$tkey]['note_id'].'"><span class="icon-delete"></span></a></div></div>';
+		echo '<div id="item_'.$cols[$key]["notes"][$tkey]['note_id'].'"><span>'.$cols[$key]["notes"][$tkey]['title'].'</span>'.$ms;
+		if($roster->canedit) {
+		echo '<div class="binItem-Outer"><a class="binItem" rel="'.$cols[$key]["notes"][$tkey]['note_id'].'"><span class="icon-delete"></span></a></div>';
+		}
+		echo '</div>';
 		$i++;
 	}
 	echo '</div></div>';
@@ -84,6 +96,14 @@ foreach($cols as $key => &$value){
 </div>
 
 <div class="content-spacer" style="clear: both;"></div>
+<?php if($roster->perms != "guest") { ?>
+<div class="content-spacer"></div>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
+	  <td class="tcell-left text11"><span class="<?php if($roster->canedit) { ?>content-nav showDialog<?php } ?>" request="getAccessDialog" field="brainstormsroster_access" append="1"><span><?php echo $lang["GLOBAL_ACCESS"];?></span></span></td>
+        <td class="tcell-right"><div id="brainstormsroster_access" class="itemlist-field"><div class="listmember" field="brainstormsroster_access" uid="<?php echo($roster->access);?>" style="float: left"><?php echo($roster->access_text);?></div></div><input type="hidden" name="roster_access_orig" value="<?php echo($roster->access);?>" /></td>
+	</tr>
+</table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 		<td class="tcell-left-inactive text11">Projekterstellung</td>
@@ -97,8 +117,8 @@ foreach($cols as $key => &$value){
 		 } ?></div></td>
     </tr>
 </table>
-
-
+<?php } ?>
+</form>
 </div>
 </div>
 <div>

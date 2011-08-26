@@ -588,6 +588,17 @@ $(document).ready(function() {
 		return false;
 	});
 	
+	$('a.insertAccess').live('click',function() {
+		var rel = $(this).attr("rel");
+		var field = $(this).attr("field");
+		var html = '<div class="listmember" field="'+field+'" uid="'+rel+'">' + $(this).html() + '</div>';
+		$("#"+field).html(html);
+		$("#modalDialog").dialog("close");
+		var obj = getCurrentModule();
+		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+		return false;
+	});
+	
 	
 	
 	$('span.actionSetLogin').click(function(){
