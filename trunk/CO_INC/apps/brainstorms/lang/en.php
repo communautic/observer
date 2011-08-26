@@ -25,7 +25,8 @@ $lang["BRAINSTORM_FOLDER_CHART_TASKS"] = 'Stage Timeliness';
 
 // Brainstorm Right
 $lang["BRAINSTORM_TITLE"] = 'Brainstorm';
-$lang['BRAINSTORM_KICKOFF'] = 'Kick Off';
+$lang['BRAINSTORM_NOTE_ADD'] = 'Notes';
+$lang['BRAINSTORM_NOTE_NEW'] = 'neue Note';
 
 $lang["BRAINSTORM_CLIENT"] = 'Authorised by';
 $lang["BRAINSTORM_MANAGEMENT"] = 'Brainstorm Manager';
@@ -36,6 +37,10 @@ $lang["BRAINSTORM_STATUS_PLANNED"] = 'planned';
 $lang["BRAINSTORM_STATUS_INPROGRESS"] = 'started';
 $lang["BRAINSTORM_STATUS_FINISHED"] = 'completed';
 $lang["BRAINSTORM_STATUS_STOPPED"] = 'stopped';
+
+// Bin
+$lang['BRAINSTORM_TITLE_NOTES_BIN'] = 'Brainstorms/Notes';
+$lang['BRAINSTORM_NOTE_BIN'] = 'Note';
 
 $lang["BRAINSTORM_HANDBOOK"] = 'Brainstorm Manual';
 

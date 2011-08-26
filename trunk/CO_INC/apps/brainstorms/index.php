@@ -137,6 +137,12 @@ if (!empty($_GET['request'])) {
 		case 'binBrainstormNote':
 			echo($brainstorms->binBrainstormNote($_GET['id']));
 		break;
+		case 'deleteItem':
+			echo($brainstorms->deleteItem($_GET['id']));
+		break;
+		case 'restoreItem':
+			echo($brainstorms->restoreItem($_GET['id']));
+		break;
 		case 'updateNotePosition':
 			echo($brainstorms->updateNotePosition($_GET['id'],$_GET['x'],$_GET['y'],$_GET['z']));
 		break;

@@ -404,7 +404,7 @@ class BrainstormsMeetingsModel extends BrainstormsModel {
 			$this->deleteMeetingTask($tid);
 		}
 		
-		$q = "DELETE FROM co_log_sendto WHERE what='meetings' and whatid='$id'";
+		$q = "DELETE FROM co_log_sendto WHERE what='brainstorms_meetings' and whatid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		$q = "DELETE FROM " . CO_TBL_BRAINSTORMS_MEETINGS . " WHERE id='$id'";

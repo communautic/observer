@@ -207,24 +207,25 @@ class BrainstormsRostersModel extends BrainstormsModel {
 		$num_notes = array();
 		$q = "SELECT * FROM " . CO_TBL_BRAINSTORMS_ROSTERS_COLUMNS . " where pid = '$id' and bin='0' ORDER BY sort";
 		$result = mysql_query($q, $this->_db->connection);
+		
+		
+		
 		while($row = mysql_fetch_object($result)) {
+			$colID = $row->id;
+			$qn = "SELECT * FROM " . CO_TBL_BRAINSTORMS_ROSTERS_NOTES . " where cid = '$colID' and bin='0' ORDER BY sort";
+			$resultn = mysql_query($qn, $this->_db->connection);
+			$num_notes[] = mysql_num_rows($resultn);
 			$items = array();
-			$notes = explode(",",$row->items);
-			$num_notes[] = sizeof($notes);
-			foreach($notes as $note) {
-				$qn = "SELECT * FROM " . CO_TBL_BRAINSTORMS_ROSTERS_NOTES . " where id = '$note' and bin='0'";
-				$resultn = mysql_query($qn, $this->_db->connection);
-					while($rown = mysql_fetch_object($resultn)) {
-						$items[] = array(
-						"note_id" => $rown->id,
-						"title" => $rown->title,
-						"text" => $rown->text,
-						"ms" => $rown->ms
-					);
-				}
+			while($rown = mysql_fetch_object($resultn)) {
+				$items[] = array(
+					"note_id" => $rown->id,
+					"title" => $rown->title,
+					"text" => $rown->text,
+					"ms" => $rown->ms
+				);
 			}
 			$cols[]= array(
-				"id" => $row->id,
+				"id" => $colID,
 				"notes" => $items
 			);
 		}
@@ -233,6 +234,7 @@ class BrainstormsRostersModel extends BrainstormsModel {
 		if($colheight < 357) {
 			$colheight = 357;
 		}
+		
 		// build the console
 		$console_items = array();
 		$pid = $array["pid"];
@@ -311,12 +313,10 @@ class BrainstormsRostersModel extends BrainstormsModel {
 
    function saveRosterItems($col,$items) {
 		$it = "";
-		foreach($items as $key => $val) {
-			$it .= $val . ",";
+		foreach($items as $key => $id) {
+			$q = "UPDATE " . CO_TBL_BRAINSTORMS_ROSTERS_NOTES . " set cid = '$col', sort = '$key' WHERE id='$id'";
+			$result = mysql_query($q, $this->_db->connection);
 		}
-		$it = rtrim($it, ",");
-		$q = "UPDATE " . CO_TBL_BRAINSTORMS_ROSTERS_COLUMNS . " set items = '$it' WHERE id='$col'";
-		$result = mysql_query($q, $this->_db->connection);
 		return "true";
    }
    
@@ -505,16 +505,10 @@ class BrainstormsRostersModel extends BrainstormsModel {
 		}
    }
    
-   function deleteRosterCOLUMN($id) {
-		$q = "SELECT items FROM " . CO_TBL_BRAINSTORMS_ROSTERS_COLUMNS . " WHERE id = '$id'";
+   function deleteRosterColumn($id) {
+		
+		$q = "DELETE FROM " . CO_TBL_BRAINSTORMS_ROSTERS_NOTES . " WHERE cid = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
-		while($row = mysql_fetch_array($result)) {
-			$notes = explode(",",$row['items']);
-			foreach($notes as $note) {
-				$this->deleteRosterTask($note);
-			}
-			
-		}
 		
 		/*$q = "DELETE FROM co_log_sendto WHERE what='rosters' and whatid='$id'";
 		$result = mysql_query($q, $this->_db->connection);*/

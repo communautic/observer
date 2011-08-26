@@ -522,7 +522,7 @@ class BrainstormsForumsModel extends BrainstormsModel {
 	function deleteForum($id) {
 		global $session;
 		
-		$q = "DELETE FROM co_log_sendto WHERE what='forums' and whatid='$id'";
+		$q = "DELETE FROM co_log_sendto WHERE what='brainstorms_forums' and whatid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		$q = "DELETE FROM " . CO_TBL_BRAINSTORMS_FORUMS_POSTS . " where phaseid='$id'";
