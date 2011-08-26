@@ -441,5 +441,4 @@ function brainstormsDocuments(name) {
 
 }
 
-
 var brainstorms_documents = new brainstormsDocuments('brainstorms_documents');

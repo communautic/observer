@@ -10,10 +10,11 @@
 
 .qq-upload-drop-area {
     position:absolute; width:100%; z-index:2;
-    background: #e1f0af; margin-top: -3px;
+     margin-top: -3px;
 	height: 200px;
 	text-align:center;
 }
+
 .qq-upload-drop-area span {
  line-height: 20px;
  font-size: 15px;
@@ -23,7 +24,7 @@ position: absolute;
 top: 50%;
 width: 100%;
 }
-.qq-upload-drop-area-active { background:#577207; color: #FFF}
+.qq-upload-drop-area-active { color: #FFF}
 
 .qq-upload-list {}
 .qq-upload-list li { margin:0; padding:0; line-height:15px; font-size:12px;}

@@ -315,7 +315,7 @@ class ProjectsPhonecallsModel extends ProjectsModel {
    
    function deletePhonecall($id) {
 		
-		$q = "DELETE FROM co_log_sendto WHERE what='phonecalls' and whatid='$id'";
+		$q = "DELETE FROM co_log_sendto WHERE what='projects_phonecalls' and whatid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		$q = "DELETE FROM " . CO_TBL_PROJECTS_PHONECALLS . " WHERE id='$id'";

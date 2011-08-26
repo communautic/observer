@@ -851,6 +851,16 @@ class ProjectsModel extends Model {
 			}
 		}
 		
+		if(in_array("phonecalls",$active_modules)) {
+			$projectsPhonecallsModel = new ProjectsPhonecallsModel();
+			$q = "SELECT id FROM co_projects_phonecalls where pid = '$id'";
+			$result = mysql_query($q, $this->_db->connection);
+			while($row = mysql_fetch_array($result)) {
+				$pcid = $row["id"];
+				$projectsPhonecallsModel->deletePhonecall($pcid);
+			}
+		}
+		
 		if(in_array("documents",$active_modules)) {
 			$projectsDocumentsModel = new ProjectsDocumentsModel();
 			$q = "SELECT id FROM co_projects_documents_folders where pid = '$id'";

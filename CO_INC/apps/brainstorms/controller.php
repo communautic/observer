@@ -394,6 +394,24 @@ class Brainstorms extends Controller {
 		  }
 	}
 	
+	function restoreItem($id) {
+		$retval = $this->model->restoreItem($id);
+		if($retval){
+			 return "true";
+		  } else{
+			 return "error";
+		  }
+	}
+	
+	function deleteItem($id) {
+		$retval = $this->model->deleteItem($id);
+		if($retval){
+			 return "true";
+		  } else{
+			 return "error";
+		  }
+	}
+	
 	function updateNotePosition($id,$x,$y,$z) {
 		$retval = $this->model->updateNotePosition($id,$x,$y,$z);
 		if($retval){

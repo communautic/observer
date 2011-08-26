@@ -13,7 +13,7 @@
 <input type="hidden" name="id" value="<?php echo($document->id);?>">
 </form>
 <?php if($document->canedit) { ?>
-<div class="document-uploader">		
+<div id="brainstorms_documents_uploader" class="document-uploader">		
 	<noscript>			
 	<p>Please enable JavaScript to use file uploader.</p>
 	<!-- or put a simple form for upload here -->

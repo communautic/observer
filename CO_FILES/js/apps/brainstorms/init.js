@@ -368,6 +368,51 @@ function brainstormsApplication(name) {
 			}
 		});
 	}
+	
+	
+	this.binDeleteItem = function(id) {
+		var txt = ALERT_DELETE_REALLY;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms&request=deleteItem&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$('#brainstorm_task_'+id).slideUp();
+						}
+					}
+					});
+				} 
+			}
+		});
+	}
+
+
+	this.binRestoreItem = function(id) {
+		var txt = ALERT_RESTORE;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms&request=restoreItem&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$('#brainstorm_task_'+id).slideUp();
+						}
+					}
+					});
+				} 
+			}
+		});
+	}
+
+
+
 this.initItems = function() {
 
 $('#brainstorms-outer div.note').each(function(){

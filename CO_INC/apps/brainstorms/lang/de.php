@@ -38,6 +38,10 @@ $lang["BRAINSTORM_STATUS_INPROGRESS"] = 'in Arbeit seit';
 $lang["BRAINSTORM_STATUS_FINISHED"] = 'abgeschlossen am';
 $lang["BRAINSTORM_STATUS_STOPPED"] = 'abgebrochen am';
 
+// Bin
+$lang['BRAINSTORM_TITLE_NOTES_BIN'] = 'Brainstorms/Tätigkeiten';
+$lang['BRAINSTORM_NOTE_BIN'] = 'Tätigkeit';
+
 $lang["BRAINSTORM_HANDBOOK"] = 'Projekthandbuch';
 
 // Print images

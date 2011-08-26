@@ -404,7 +404,7 @@ class ProjectsMeetingsModel extends ProjectsModel {
 			$this->deleteMeetingTask($tid);
 		}
 		
-		$q = "DELETE FROM co_log_sendto WHERE what='meetings' and whatid='$id'";
+		$q = "DELETE FROM co_log_sendto WHERE what='projects_meetings' and whatid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		$q = "DELETE FROM " . CO_TBL_PROJECTS_MEETINGS . " WHERE id='$id'";

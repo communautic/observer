@@ -237,7 +237,7 @@ class VDocsModel extends ProjectsModel {
    
    function deleteVDoc($id) {
 		
-		$q = "DELETE FROM co_log_sendto WHERE what='vdocs' and whatid='$id'";
+		$q = "DELETE FROM co_log_sendto WHERE what='projects_vdocs' and whatid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		$q = "DELETE FROM " . CO_TBL_PROJECTS_VDOCS . " WHERE id='$id'";

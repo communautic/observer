@@ -493,7 +493,7 @@ $(document).ready(function() {
 		return false;
 	});
 	
-	$(".document-uploader").livequery(function() {
+	$(".document-uploader:visible").livequery(function() {
 		var module = getCurrentModule();
 		module.createUploader($(this));
 	})

@@ -556,7 +556,7 @@ class ProjectsPhasesModel extends ProjectsModel {
 	function deletePhase($id) {
 		global $session;
 		
-		$q = "DELETE FROM co_log_sendto WHERE what='phases' and whatid='$id'";
+		$q = "DELETE FROM co_log_sendto WHERE what='projects_phases' and whatid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		$q = "DELETE FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where phaseid='$id'";

@@ -152,3 +152,6 @@ background-color: #e1f0af; }
 }
 
 #projects .SendToContent { display: none; background-color: #E5E5E5; font-style: italic; padding: 10px; }
+
+#projects .qq-upload-drop-area { background: #e1f0af; }
+#projects .qq-upload-drop-area-active { background:#577207;}

@@ -69,7 +69,7 @@
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang["BRAINSTORM_ROSTER_TITLE"];?></span></td>
 		<td class="tcell-right"><?php echo($roster_task->title);?></td>
-        <td width="30"><!--<a href="brainstorms_rosters" class="binRestoreItem" rel="<?php echo $roster_task->id;?>"><span class="icon-restore"></span></a>--></td>
+        <td width="30"><a href="brainstorms_rosters" class="binRestoreItem" rel="<?php echo $roster_task->id;?>"><span class="icon-restore"></span></a></td>
         <td width="30"><a href="brainstorms_rosters" class="binDeleteItem" rel="<?php echo $roster_task->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>

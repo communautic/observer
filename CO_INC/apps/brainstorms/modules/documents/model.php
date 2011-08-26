@@ -250,7 +250,7 @@ class BrainstormsDocumentsModel extends BrainstormsModel {
 			$this->deleteFile($fid);
 		}
 		
-		$q = "DELETE FROM co_log_sendto WHERE what='documents' and whatid='$id'";
+		$q = "DELETE FROM co_log_sendto WHERE what='brainstorms_documents' and whatid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		$q = "DELETE FROM " . CO_TBL_BRAINSTORMS_DOCUMENTS_FOLDERS . " where id = '$id'";
