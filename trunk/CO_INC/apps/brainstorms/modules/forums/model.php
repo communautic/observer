@@ -366,7 +366,7 @@ class BrainstormsForumsModel extends BrainstormsModel {
 			$post = array_filter($post, create_function('$p', 'return !$p->replyid;'));
 
 		
-		//$sendto = $this->getSendtoDetails("forums",$id);
+		//$sendto = $this->getSendtoDetails("brainstorms_forums",$id);
 		$arr = array("forum" => $forum, "posts" => $post, "answers" => $answer, "access" => $array["perms"]);
 		return $arr;
 	}

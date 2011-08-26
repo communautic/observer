@@ -228,7 +228,7 @@ class ProjectsPhonecallsModel extends ProjectsModel {
 			break;
 		}
 		
-		$sendto = $this->getSendtoDetails("phonecalls",$id);
+		$sendto = $this->getSendtoDetails("projects_phonecalls",$id);
 
 		$phonecall = new Lists($array);
 		$arr = array("phonecall" => $phonecall, "sendto" => $sendto, "access" => $array["perms"]);

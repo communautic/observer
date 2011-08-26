@@ -66,7 +66,7 @@ if (!empty($_GET['request'])) {
 			echo($projectsPhonecalls->getSend($_GET['id']));
 		break;
 		case 'getSendtoDetails':
-			echo($projectsPhonecalls->getSendtoDetails("phonecalls",$_GET['id']));
+			echo($projectsPhonecalls->getSendtoDetails("projects_phonecalls",$_GET['id']));
 		break;
 		case 'checkinPhonecall':
 			echo($projectsPhonecalls->checkinPhonecall($_GET['id']));

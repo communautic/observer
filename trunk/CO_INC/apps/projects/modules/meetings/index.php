@@ -72,7 +72,7 @@ if (!empty($_GET['request'])) {
 			echo($projectsMeetings->getSend($_GET['id']));
 		break;
 		case 'getSendtoDetails':
-			echo($projectsMeetings->getSendtoDetails("meetings",$_GET['id']));
+			echo($projectsMeetings->getSendtoDetails("projects_meetings",$_GET['id']));
 		break;
 		case 'checkinMeeting':
 			echo($projectsMeetings->checkinMeeting($_GET['id']));

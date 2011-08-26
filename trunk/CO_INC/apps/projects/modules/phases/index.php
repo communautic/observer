@@ -64,7 +64,7 @@ if (!empty($_GET['request'])) {
 			echo($projectsPhases->getSend($_GET['id'],$_GET['num']));
 		break;
 		case 'getSendtoDetails':
-			echo($projectsPhases->getSendtoDetails("phases",$_GET['id']));
+			echo($projectsPhases->getSendtoDetails("projects_phases",$_GET['id']));
 		break;
 		case 'checkinPhase':
 			echo($projectsPhases->checkinPhase($_GET['id']));

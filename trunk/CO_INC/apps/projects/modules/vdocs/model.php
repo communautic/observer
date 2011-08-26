@@ -156,7 +156,7 @@ class VDocsModel extends ProjectsModel {
 		// get user perms
 		$array["edit"] = "1";
 		
-		$sendto = $this->getSendtoDetails("vdocs",$id);
+		$sendto = $this->getSendtoDetails("projects_vdocs",$id);
 		
 		$vdoc = new Lists($array);
 		$arr = array("vdoc" => $vdoc, "sendto" => $sendto);

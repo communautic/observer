@@ -72,7 +72,7 @@ if (!empty($_GET['request'])) {
 			echo($vdocs->getSend($_GET['id']));
 		break;
 		case 'getSendtoDetails':
-			echo($vdocs->getSendtoDetails("vdocs",$_GET['id']));
+			echo($vdocs->getSendtoDetails("projects_vdocs",$_GET['id']));
 		break;
 		case 'toggleIntern':
 			echo($vdocs->toggleIntern($_GET['id'],$_GET['status']));

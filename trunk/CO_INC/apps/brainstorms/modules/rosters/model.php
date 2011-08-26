@@ -245,7 +245,7 @@ class BrainstormsRostersModel extends BrainstormsModel {
 			);
 		}
 		
-		$sendto = $this->getSendtoDetails("rosters",$id);
+		$sendto = $this->getSendtoDetails("brainstorms_rosters",$id);
 		
 		$array["roster_width"] = sizeof($cols)*150;
 		

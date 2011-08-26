@@ -166,7 +166,7 @@ class BrainstormsDocumentsModel extends BrainstormsModel {
 			$doc[] = new Lists($docs);
 		}
 		
-		$sendto = $this->getSendtoDetails("documents",$id);
+		$sendto = $this->getSendtoDetails("brainstorms_documents",$id);
 		
 		$arr = array("document" => $document, "doc" => $doc, "sendto" => $sendto, "access" => $perms);
 		return $arr;
