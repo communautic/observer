@@ -34,6 +34,7 @@ class BrainstormsRosters extends Brainstorms {
 			$console_items = $arr["console_items"];
 			$sendto = $arr["sendto"];
 			$colheight = $arr["colheight"];
+			$projects = $arr["projects"];
 			ob_start();
 				include 'view/edit.php';
 				$data["html"] = ob_get_contents();
