@@ -58,7 +58,7 @@ if (!empty($_GET['request'])) {
 			echo($projectsDocuments->getSend($_GET['id']));
 		break;
 		case 'getSendtoDetails':
-			echo($projectsDocuments->getSendtoDetails("documents",$_GET['id']));
+			echo($projectsDocuments->getSendtoDetails("projects_documents",$_GET['id']));
 		break;
 		case 'getDocumentsDialog':
 			echo($projectsDocuments->getDocumentsDialog($_GET['request'],$_GET['field'],$_GET['append'],$_GET['title'],$_GET['sql'],$_GET['id']));

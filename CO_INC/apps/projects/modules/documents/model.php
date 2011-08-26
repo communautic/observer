@@ -166,7 +166,7 @@ class ProjectsDocumentsModel extends ProjectsModel {
 			$doc[] = new Lists($docs);
 		}
 		
-		$sendto = $this->getSendtoDetails("documents",$id);
+		$sendto = $this->getSendtoDetails("projects_documents",$id);
 		
 		$arr = array("document" => $document, "doc" => $doc, "sendto" => $sendto, "access" => $perms);
 		return $arr;

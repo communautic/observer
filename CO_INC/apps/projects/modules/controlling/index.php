@@ -47,7 +47,7 @@ if (!empty($_GET['request'])) {
 			echo($projectsControlling->getSend($_GET['id'],$_GET['pid']));
 		break;
 		case 'getSendtoDetails':
-			echo($projectsControlling->getSendtoDetails("controlling",$_GET['id']));
+			echo($projectsControlling->getSendtoDetails("projects_controlling",$_GET['id']));
 		break;
 		case 'getDailyStatistic':
 			$md5 = "8434a915e0326f424aa8228c9261524e";

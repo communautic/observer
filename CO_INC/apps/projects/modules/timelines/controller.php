@@ -276,7 +276,7 @@ class ProjectsTimelines extends Projects {
 					$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
 					$pdf = $this->saveTimeline($title,$html,$attachment,$project["page_width"],$project["page_height"]);
 				
-					$this->writeSendtoLog("gantt",$variable,$to,$subject,$body);
+					$this->writeSendtoLog("projects_gantt",$variable,$to,$subject,$body);
 				}
 			break;
 			case "3":
@@ -301,7 +301,7 @@ class ProjectsTimelines extends Projects {
 					//$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_TIMELINE"];
 					//$this->printPSP($title,$html,$project["page_width"], $project["page_height"]);
 					$pdf = $this->saveTimeline($title,$html,$attachment,$project["page_width"],$project["page_height"]);
-					$this->writeSendtoLog("psp",$variable,$to,$subject,$body);
+					$this->writeSendtoLog("projects_psp",$variable,$to,$subject,$body);
 				}
 			break;
 			case "4":
@@ -315,7 +315,7 @@ class ProjectsTimelines extends Projects {
 				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PROJECT_PRINT_TIMELINE"];
 				$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
 				$pdf = $this->savePDF($title,$html,$attachment);
-				$this->writeSendtoLog("milestones",$variable,$to,$subject,$body);
+				$this->writeSendtoLog("projects_milestones",$variable,$to,$subject,$body);
 			break;
 			default:
 				if($arr = $this->model->getDetails($variable)) {
@@ -328,7 +328,7 @@ class ProjectsTimelines extends Projects {
 					$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PROJECT_PRINT_TIMELINE"];
 					$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
 					$pdf = $this->savePDF($title,$html,$attachment);
-					$this->writeSendtoLog("timeline",$variable,$to,$subject,$body);
+					$this->writeSendtoLog("projects_timeline",$variable,$to,$subject,$body);
 				}
 			}
 		

@@ -335,7 +335,7 @@ class ProjectsPhasesModel extends ProjectsModel {
 			$task[] = new Lists($tasks);
 		}
 		
-		$sendto = $this->getSendtoDetails("phases",$id);
+		$sendto = $this->getSendtoDetails("projects_phases",$id);
 		
 		$arr = array("phase" => $phase, "task" => $task, "sendto" => $sendto, "access" => $array["perms"]);
 		return $arr;

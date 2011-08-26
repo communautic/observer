@@ -123,7 +123,7 @@ class BrainstormsDocuments extends Brainstorms {
 		}
 		
 		// write sento log
-		$this->writeSendtoLog("documents",$id,$to,$subject,$body);
+		$this->writeSendtoLog("brainstorms_documents",$id,$to,$subject,$body);
 		
 		//$to,$from,$fromName,$subject,$body,$attachment
 		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment,$attachment_array);

@@ -68,7 +68,7 @@ if (!empty($_GET['request'])) {
 			echo($brainstormsForums->getSend($_GET['id'],$_GET['num']));
 		break;
 		case 'getSendtoDetails':
-			echo($brainstormsForums->getSendtoDetails("forums",$_GET['id']));
+			echo($brainstormsForums->getSendtoDetails("brainstorms_forums",$_GET['id']));
 		break;
 		/*case 'checkinForum':
 			echo($brainstormsForums->checkinForum($_GET['id']));

@@ -58,7 +58,7 @@ if (!empty($_GET['request'])) {
 			echo($brainstormsDocuments->getSend($_GET['id']));
 		break;
 		case 'getSendtoDetails':
-			echo($brainstormsDocuments->getSendtoDetails("documents",$_GET['id']));
+			echo($brainstormsDocuments->getSendtoDetails("brainstorms_documents",$_GET['id']));
 		break;
 		case 'getDocumentsDialog':
 			echo($brainstormsDocuments->getDocumentsDialog($_GET['request'],$_GET['field'],$_GET['append'],$_GET['title'],$_GET['sql'],$_GET['id']));

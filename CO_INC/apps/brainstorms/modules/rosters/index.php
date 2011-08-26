@@ -78,7 +78,7 @@ if (!empty($_GET['request'])) {
 			echo($brainstormsRosters->getSend($_GET['id']));
 		break;
 		case 'getSendtoDetails':
-			echo($brainstormsRosters->getSendtoDetails("rosters",$_GET['id']));
+			echo($brainstormsRosters->getSendtoDetails("brainstorms_rosters",$_GET['id']));
 		break;
 		case 'checkinRoster':
 			echo($brainstormsRosters->checkinRoster($_GET['id']));

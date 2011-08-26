@@ -268,7 +268,7 @@ class ProjectsMeetingsModel extends ProjectsModel {
 			$task[] = new Lists($tasks);
 		}
 		
-		$sendto = $this->getSendtoDetails("meetings",$id);
+		$sendto = $this->getSendtoDetails("projects_meetings",$id);
 
 		$meeting = new Lists($array);
 		$arr = array("meeting" => $meeting, "task" => $task, "sendto" => $sendto, "access" => $array["perms"]);
