@@ -257,10 +257,12 @@ class BrainstormsRostersModel extends BrainstormsModel {
 		$ql = "SELECT * FROM co_brainstorms_rosters_log where rid = '$id' ORDER BY created_date DESC";
 		$resultl = mysql_query($ql, $this->_db->connection);
 		
+		$projectsmodel = new ProjectsModel();
+		
 		$projects = array();
 		while($rowl = mysql_fetch_array($resultl)) {
 			$projects[]= array(
-				"fid" => $rowl['fid'],
+				"fid" => $projectsmodel->getProjectFolderDetails($rowl['fid'],'title'),
 				"pid" => $rowl['pid'],
 				"created_date" => $this->_date->formatDate($rowl["created_date"],CO_DATETIME_FORMAT),
 				"created_user" => $this->_users->getUserFullname($rowl["created_user"])
@@ -654,8 +656,14 @@ class BrainstormsRostersModel extends BrainstormsModel {
 		
 		$q = "INSERT INTO co_brainstorms_rosters_log set rid = '$id', pid = '$pid', fid = '$folder', created_user = '$session->uid', created_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
-
-		return $pid;
+		
+		$projectsmodel = new ProjectsModel();		
+		$return["fid"] = $projectsmodel->getProjectFolderDetails($folder,'title');
+		$return["pid"] = $pid;
+		$return["created_user"] = $this->_users->getUserFullname($session->uid);
+		$return["created_date"] = $this->_date->formatDate($now,CO_DATETIME_FORMAT);
+		
+		return $return;
 		
    }
    

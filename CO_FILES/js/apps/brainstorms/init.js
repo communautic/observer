@@ -179,11 +179,11 @@ function brainstormsApplication(name) {
 
 	this.actionSendtoResponse = function() {
 		var id = $("#brainstorms2 .active-link").attr("rel");
-		$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms&request=getSendtoDetails&id="+id, success: function(html){
-			$("#brainstorm_sendto").html(html);
+		//$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms&request=getSendtoDetails&id="+id, success: function(html){
+			//$("#brainstorm_sendto").html(html);
 			$("#modalDialogForward").dialog('close');
-			}
-		});
+			//}
+		//});
 	}
 
 

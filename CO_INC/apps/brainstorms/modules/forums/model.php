@@ -66,7 +66,7 @@ class BrainstormsForumsModel extends BrainstormsModel {
 			$sql = " and a.access = '1' ";
 		}
 		
-		$q = "select a.title,a.id,a.access,a.status,a.checked_out,a.checked_out_user from " . CO_TBL_BRAINSTORMS_FORUMS . " as a where a.pid = '$id' and a.bin != '1' " . $sql . $order;
+		$q = "select a.title,a.id,a.access,a.status from " . CO_TBL_BRAINSTORMS_FORUMS . " as a where a.pid = '$id' and a.bin != '1' " . $sql . $order;
 		
 	  	$this->setSortStatus("forum-sort-status",$sortcur,$id);
 		$result = mysql_query($q, $this->_db->connection);
@@ -90,30 +90,8 @@ class BrainstormsForumsModel extends BrainstormsModel {
 			}
 			$array["itemstatus"] = $itemstatus;
 			
-			/*$checked_out_status = "";
-			if($perm !=  "guest" && $array["checked_out"] == 1 && $array["checked_out_user"] != $session->uid) {
-				//$checked_out_status = "icon-checked-out-active";
-				if($session->checkUserActive($array["checked_out_user"])) {
-					$checked_out_status = "icon-checked-out-active";
-				} else {
-					$this->checkinForumOverride($id);
-				}
-			}
-			$array["checked_out_status"] = $checked_out_status;*/
-			
 			$forums[] = new Lists($array);
 		}
-		
-		// generate forum numbering
-		/*$num = "";
-		
-		$qn = "select a.id,(SELECT MIN(startdate) FROM " . CO_TBL_BRAINSTORMS_FORUMS_POSTS . " as b WHERE b.phaseid=a.id and b.bin='0') as startdate from " . CO_TBL_BRAINSTORMS_FORUMS . " as a where a.pid = '$id' and a.bin != '1'" . $sql . " order by startdate";
-		$resultn = mysql_query($qn, $this->_db->connection);
-		$i = 1;
-		while ($rown = mysql_fetch_array($resultn)) {
-			$num[$rown["id"]] = $i;
-			$i++;
-		}*/
 		
 		$arr = array("forums" => $forums, "sort" => $sortcur, "perm" => $perm);
 		return $arr;
@@ -129,33 +107,6 @@ class BrainstormsForumsModel extends BrainstormsModel {
 			return true;
 		}
 	}
-	
-	
-	/*function checkinForum($id) {
-		global $session;
-		
-		$q = "SELECT checked_out_user FROM " . CO_TBL_BRAINSTORMS_FORUMS . " where id='$id'";
-		$result = mysql_query($q, $this->_db->connection);
-		$user = mysql_result($result,0);
-
-		if($user == $session->uid) {
-			$q = "UPDATE " . CO_TBL_BRAINSTORMS_FORUMS . " set checked_out = '0', checked_out_user = '0' where id='$id'";
-			$result = mysql_query($q, $this->_db->connection);
-		}
-		if ($result) {
-			return true;
-		}
-	}*/
-	
-	
-	/*function checkinForumOverride($id) {
-		global $session;
-		$q = "UPDATE " . CO_TBL_BRAINSTORMS_FORUMS . " set checked_out = '0', checked_out_user = '0' where id='$id'";
-		$result = mysql_query($q, $this->_db->connection);
-		if ($result) {
-			return true;
-		}
-	}*/
 	
 	
 	// Get forum list from ids for Tooltips
@@ -213,38 +164,10 @@ class BrainstormsForumsModel extends BrainstormsModel {
 		$array["canedit"] = false;
 		if($array["perms"] == "sysadmin" || $array["perms"] == "admin") {
 			$array["canedit"] = true;
-		}
-		//$array["showCheckout"] = false;		
-		//$array["checked_out_user_text"] = $this->_contactsmodel->getUserListPlain($array['checked_out_user']);
-		
-		/*if($array["perms"] == "sysadmin" || $array["perms"] == "admin") {
-			//if($array["checked_out"] == 1 && $session->checkUserActive($array["checked_out_user"])) {
-			if($array["checked_out"] == 1) {
-				if($array["checked_out_user"] == $session->uid) {
-					$array["canedit"] = true;
-				} else if(!$session->checkUserActive($array["checked_out_user"])) {
-					$array["canedit"] = $this->checkoutForum($id);
-					$array["canedit"] = true;
-				} else {
-					$array["canedit"] = false;
-					$array["showCheckout"] = true;
-					$array["checked_out_user_phone1"] = $this->_contactsmodel->getContactFieldFromID($array['checked_out_user'],"phone1");
-					$array["checked_out_user_email"] = $this->_contactsmodel->getContactFieldFromID($array['checked_out_user'],"email");
-
-				}
-			} else {
-				$array["canedit"] = $this->checkoutForum($id);
-			}
-		}*/
-		
+		}		
 		
 		// dates
 		$array["today"] = $this->_date->formatDate("now",CO_DATE_FORMAT);
-		/*$array["startdate"] = $this->_date->formatDate($array["startdate"],CO_DATE_FORMAT);
-		$array["kickoff"] = $this->_date->formatDate($array["kickoff"],CO_DATE_FORMAT);
-		$array["enddate"] = $this->_date->formatDate($array["enddate"],CO_DATE_FORMAT);
-		$array["dependency_startdate"] = $this->_date->formatDate($row['dependency_startdate'],CO_DATE_FORMAT);*/
-		$array["dependency_enddate"] = $this->_date->formatDate($row['dependency_enddate'],CO_DATE_FORMAT);
 		$array["planned_date"] = $this->_date->formatDate($array["planned_date"],CO_DATE_FORMAT);
 		$array["inprogress_date"] = $this->_date->formatDate($array["inprogress_date"],CO_DATE_FORMAT);
 		$array["finished_date"] = $this->_date->formatDate($array["finished_date"],CO_DATE_FORMAT);
@@ -359,14 +282,13 @@ class BrainstormsForumsModel extends BrainstormsModel {
 			foreach ($post as $p) {
 				if($p->replyid != 0) {
 					$post[$p->replyid]->children[] = $post[$p->id];
-					//unset($post[$p->id]);
 				}
 			}
 			
 			$post = array_filter($post, create_function('$p', 'return !$p->replyid;'));
 
-		
 		//$sendto = $this->getSendtoDetails("brainstorms_forums",$id);
+		
 		$arr = array("forum" => $forum, "posts" => $post, "answers" => $answer, "access" => $array["perms"]);
 		return $arr;
 	}
@@ -376,10 +298,7 @@ class BrainstormsForumsModel extends BrainstormsModel {
 		global $session, $system;
 
 		$forum_status_date = $this->_date->formatDate($forum_status_date);
-		
-		// user lists
-		//$team = $this->_contactsmodel->sortUserIDsByName($team);
-		
+				
 		switch($forum_status) {
 			case "0":
 				$sql = "planned_date";
@@ -409,14 +328,7 @@ class BrainstormsForumsModel extends BrainstormsModel {
 		
 		$q = "UPDATE " . CO_TBL_BRAINSTORMS_FORUMS . " set title = '$title', protocol = '$protocol', $accesssql status = '$forum_status', $sql = '$forum_status_date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
-		
-		
-		
-		
-		
-		//$startdate =  $this->_date->formatDate(min($datearray),CO_DATE_FORMAT);
-		//$enddate =  $this->_date->formatDate(max($datearray),CO_DATE_FORMAT);
-		
+				
 		if ($result) {
 			$arr = array("id" => $id, "status" => "2");
 			return $arr;
@@ -426,18 +338,11 @@ class BrainstormsForumsModel extends BrainstormsModel {
 
 	function createNew($pid) {
 		global $session, $lang;
-		
 		$now = gmdate("Y-m-d H:i:s");
-		
 		$title = $lang["BRAINSTORM_FORUM_NEW"];
-		
-		// add forum
 		$q = "INSERT INTO " . CO_TBL_BRAINSTORMS_FORUMS . " set title = '$title', pid='$pid', access='0', status = '0', planned_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id = mysql_insert_id();
-		
-
-		
 		if ($result) {
 			return $id;
 		}
@@ -447,45 +352,42 @@ class BrainstormsForumsModel extends BrainstormsModel {
 	function createDuplicate($id) {
 		global $session, $lang;
 		// forum
-		$q = "INSERT INTO " . CO_TBL_BRAINSTORMS_FORUMS . " (pid,title,team,management) SELECT pid,CONCAT(title,' ".$lang["GLOBAL_DUPLICAT"]."'),team,management FROM " . CO_TBL_BRAINSTORMS_FORUMS . " where id='$id'";
+		$q = "INSERT INTO " . CO_TBL_BRAINSTORMS_FORUMS . " (pid,title,protocol) SELECT pid,CONCAT(title,' ".$lang["GLOBAL_DUPLICAT"]."'),protocol FROM " . CO_TBL_BRAINSTORMS_FORUMS . " where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
 		// tasks
 		//$qt = "INSERT INTO " . CO_TBL_BRAINSTORMS_FORUMS_POSTS . " (pid,phaseid,cat,status,text,startdate,enddate) SELECT pid,$id_new,cat,'0',text,startdate,enddate FROM " . CO_TBL_BRAINSTORMS_FORUMS_POSTS . " where phaseid='$id' and bin='0'";
 		//$resultt = mysql_query($qt, $this->_db->connection);
 		// tasks
-		$qt = "SELECT id,pid,dependent,cat,text,startdate,enddate FROM " . CO_TBL_BRAINSTORMS_FORUMS_POSTS . " where phaseid='$id' and bin='0' ORDER BY startdate,status";		
+		$qt = "SELECT id,replyid,user,datetime,text,status FROM " . CO_TBL_BRAINSTORMS_FORUMS_POSTS . " where pid='$id' and bin='0' ORDER BY id";		
 		$resultt = mysql_query($qt, $this->_db->connection);
 		while($rowt = mysql_fetch_array($resultt)) {
 			$id = $rowt["id"];
-			$pid = $rowt["pid"];
-			$cat = $rowt["cat"];
+			$replyid = $rowt["replyid"];
+			$user = $rowt["user"];
+			$datetime = $rowt["datetime"];
 			$text = $rowt["text"];
-			$startdate = $rowt["startdate"];
-			$enddate = $rowt["enddate"];
-			$dependent = $rowt["dependent"];
-			$qtn = "INSERT INTO " . CO_TBL_BRAINSTORMS_FORUMS_POSTS . " set pid = '$pid', phaseid = '$id_new', dependent = '$dependent', cat = '$cat', status = '0', text = '$text', startdate = '$startdate', enddate = '$enddate'";
+			$status = $rowt["status"];
+			$qtn = "INSERT INTO " . CO_TBL_BRAINSTORMS_FORUMS_POSTS . " set pid = '$id_new', replyid = '$replyid', user = '$user', datetime = '$datetime', text = '$text', status = '$status'";
 			$rpn = mysql_query($qtn, $this->_db->connection);
 			$id_t_new = mysql_insert_id();
 			// BUILD OLD NEW TASK ID ARRAY
 			$t[$id] = $id_t_new;
 		}
 		// Updates Dependencies for new tasks
-		$qt = "SELECT id,dependent FROM " . CO_TBL_BRAINSTORMS_FORUMS_POSTS . " where phaseid='$id_new' and bin='0'";		
+		$qt = "SELECT id,replyid FROM " . CO_TBL_BRAINSTORMS_FORUMS_POSTS . " where pid='$id_new' and bin='0'";		
 		$resultt = mysql_query($qt, $this->_db->connection);
 		while($rowt = mysql_fetch_array($resultt)) {
 			$id = $rowt["id"];
 			$dep = 0;
-			if($rowt["dependent"] != 0) {
-				$dependent = $rowt["dependent"];
+			if($rowt["replyid"] != 0) {
+				$dependent = $rowt["replyid"];
 				$dep = $t[$dependent];
 			}
-			$qtn = "UPDATE " . CO_TBL_BRAINSTORMS_FORUMS_POSTS . " set dependent = '$dep' WHERE id='$id'";
+			$qtn = "UPDATE " . CO_TBL_BRAINSTORMS_FORUMS_POSTS . " set replyid = '$dep' WHERE id='$id'";
 			$rpn = mysql_query($qtn, $this->_db->connection);
 		}
-		
-		
-		
+	
 		if ($result) {
 			return $id_new;
 		}

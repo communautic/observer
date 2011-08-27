@@ -41,7 +41,7 @@ if(isset($answers) && !empty($answers)) {
 ?>
 <table id="brainstormAnswerOuter" <?php echo($showAnswer);?> border="0" cellpadding="0" cellspacing="0" class="table-content tbl-inactive">
   <tr>
-    <td class="tcell-left-inactive text11">Antwort</td>
+    <td class="tcell-left-inactive text11"><?php echo $lang["BRAINSTORM_FORUM_ANSWERS"];?></td>
     <td class="tcell-right">
 	<div id="brainstormAnswer"><?php
 foreach($answers as $answer) { 
@@ -53,7 +53,7 @@ foreach($answers as $answer) {
 <div class="content-spacer"></div>
 <table cellspacing="0" cellpadding="0" border="0" class="table-content">
 	<tr>
-		<td class="tcell-left-inactive text11">Diskussion</td>
+		<td class="tcell-left-inactive text11"><?php echo $lang["BRAINSTORM_FORUM_DISCUSSION"];?></td>
     </tr>
 </table>
 <div id="brainstormsPosts">

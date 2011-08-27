@@ -231,76 +231,6 @@ class Brainstorms extends Controller {
 		}
 	}
 
-
-	function printBrainstormHandbook($id, $t) {
-		global $session,$lang;
-		$title = "";
-		$html = "";
-		
-		if($arr = $this->model->getBrainstormDetails($id)) {
-			$brainstorm = $arr["brainstorm"];
-			$phases = $arr["phases"];
-			$num = $arr["num"];
-			$sendto = $arr["sendto"];
-			ob_start();
-				include 'view/handbook_cover.php';
-				$html .= ob_get_contents();
-			ob_end_clean();
-			ob_start();
-				include 'view/print.php';
-				$html .= ob_get_contents();
-			ob_end_clean();
-			// phases
-			$phasescont = new BrainstormsPhases("phases");
-			foreach ($phases as $phase) {
-				if($arr = $phasescont->model->getDetails($phase->id,$num[$phase->id])) {
-					$phase = $arr["phase"];
-					$task = $arr["task"];
-					$sendto = $arr["sendto"];
-					ob_start();
-						include 'modules/phases/view/print.php';
-						$html .= ob_get_contents();
-					ob_end_clean();
-				}
-			}
-			// documents
-			$brainstormsDocuments = new BrainstormsDocuments("documents");
-			if($arrdocs = $brainstormsDocuments->model->getList($id,"0")) {
-				$docs = $arrdocs["documents"];
-				foreach ($docs as $doc) {
-					if($arr = $brainstormsDocuments->model->getDetails($doc->id)) {
-						$document = $arr["document"];
-						$doc = $arr["doc"];
-						$sendto = $arr["sendto"];
-						ob_start();
-							include 'modules/documents/view/print.php';
-							$html .= ob_get_contents();
-						ob_end_clean();
-					}
-				}
-				$html .= '<div style="page-break-after:always;">&nbsp;</div>';
-			}
-			// controlling
-			$brainstormsControlling = new BrainstormsControlling("controlling");
-			if($cont = $brainstormsControlling->model->getDetails($id)) {
-				$tit = $brainstorm->title;
-				ob_start();
-					include 'modules/controlling/view/print.php';
-					$html .= ob_get_contents();
-				ob_end_clean();
-			}
-			$title = $brainstorm->title . " - " . $lang["BRAINSTORM_HANDBOOK"];
-		}
-		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_BRAINSTORM_MANUAL"];
-		switch($t) {
-			case "html":
-				$this->printHTML($title,$html);
-			break;
-			default:
-				$this->printPDF($title,$html);
-		}
-		
-	}
 	
 	function checkinBrainstorm($id) {
 		if($id != "undefined") {
@@ -314,12 +244,11 @@ class Brainstorms extends Controller {
 		global $lang;
 		if($arr = $this->model->getBrainstormDetails($id)) {
 			$brainstorm = $arr["brainstorm"];
-			$phases = $arr["phases"];
-			$num = $arr["num"];
+			$notes = $arr["notes"];
 			
 			$form_url = $this->form_url;
 			$request = "sendBrainstormDetails";
-			$to = $brainstorm->team;
+			$to = "";
 			$cc = "";
 			$subject = $brainstorm->title;
 			$variable = "";
@@ -332,23 +261,30 @@ class Brainstorms extends Controller {
 
 
 	function sendBrainstormDetails($id,$to,$cc,$subject,$body) {
-		global $session,$users, $lang;
+		global $date,$session,$users, $lang;
 		$title = "";
 		$html = "";
-		if($arr = $this->model->getBrainstormDetails($id)) {
+		if($arr = $this->model->getBrainstormPrintDetails($id)) {
 			$brainstorm = $arr["brainstorm"];
-			$phases = $arr["phases"];
-			$num = $arr["num"];
-			$sendto = $arr["sendto"];
+			$notes = $arr["notes"];
+			
+			$brainstorm["page_width"] = $brainstorm["css_width"]+245+300;
+					$brainstorm["page_height"] = $brainstorm["css_height"]+200;
+					if($brainstorm["page_width"] < 896) {
+						$brainstorm["page_width"] = 896;
+					}
+					if($brainstorm["page_height"] < 595) {
+						$brainstorm["page_height"] = 595;
+					}
 			ob_start();
 				include 'view/print.php';
 				$html = ob_get_contents();
 			ob_end_clean();
-			$title = $brainstorm->title;
+			$title = $brainstorm["title"];
 		}
 		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_BRAINSTORM"];
 		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
-		$pdf = $this->savePDF($title,$html,$attachment);
+		$pdf = $this->saveTimeline($title,$html,$attachment,$brainstorm["page_width"],$brainstorm["page_height"]);
 		
 		// write sento log
 		$this->writeSendtoLog("brainstorms",$id,$to,$subject,$body);
