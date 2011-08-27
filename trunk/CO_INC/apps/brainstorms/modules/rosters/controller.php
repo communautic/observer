@@ -52,38 +52,72 @@ class BrainstormsRosters extends Brainstorms {
 
 
 	function printDetails($id,$t) {
-		global $session, $lang;
+		global $session,$date, $lang;
 		$title = "";
 		$html = "";
 		if($arr = $this->model->getDetails($id)) {
 			$roster = $arr["roster"];
-			$task = $arr["task"];
+			$cols = $arr["cols"];
+			$console_items = $arr["console_items"];
 			$sendto = $arr["sendto"];
+			$colheight = $arr["colheight"];
+			$projects = $arr["projects"];
+			
+			$page_width = sizeof($cols)*150+245+300;
+					$page_height = $colheight+200;
+					if($page_width < 896) {
+						$page_width = 896;
+					}
+					if($page_height < 595) {
+						$page_height = 595;
+					}
+			
+			
 			ob_start();
 				include 'view/print.php';
 				$html = ob_get_contents();
 			ob_end_clean();
 			$title = $roster->title;
+					
+					
+					$this->printBrainstormRoster($title,$html,$page_width,$page_height);
 		}
-		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["BRAINSTORM_PRINT_ROSTER"];
-		switch($t) {
-			case "html":
-				$this->printHTML($title,$html);
-			break;
-			default:
-				$this->printPDF($title,$html);
-		}
+	}
+	
+	function printBrainstormRoster($title,$text,$width,$height) {
+		global $lang;
+		ob_start();
+			include(CO_INC . "/view/printheader.php");
+			$header = ob_get_contents();
+		ob_end_clean();		
+		$footer = "</body></html>";
+        $html = $header . $text . $footer;
+		require_once(CO_INC . "/classes/dompdf_60_beta2/dompdf_config.inc.php");
+		$dompdf = new DOMPDF();
+		$dompdf->load_html($html);
+		/*$dompdf->set_paper('a4', 'portrait');  change 'a4' to whatever you want 
+         breite, höhe pixel dividiert durch 96 * 72*/
+        $dompdf->set_paper( array(0,0, $width / 96 * 72, $height / 96 * 72), "portrait" );
+		$dompdf->render();
+		$options['Attachment'] = 1;
+		$options['Accept-Ranges'] = 0;
+		$options['compress'] = 1;
+		$dompdf->stream($title.".pdf", $options);
 	}
 	
 	function getSend($id) {
 		global $lang;
 		if($arr = $this->model->getDetails($id)) {
 			$roster = $arr["roster"];
-			$task = $arr["task"];
+			$cols = $arr["cols"];
+			$console_items = $arr["console_items"];
+			$sendto = $arr["sendto"];
+			$colheight = $arr["colheight"];
+			$projects = $arr["projects"];
 			
 			$form_url = $this->form_url;
 			$request = "sendDetails";
-			$to = $roster->participants;
+			$to = "";
 			$cc = "";
 			$subject = $roster->title;
 			$variable = "";
@@ -97,13 +131,26 @@ class BrainstormsRosters extends Brainstorms {
 	
 	
 	function sendDetails($id,$variable,$to,$cc,$subject,$body) {
-		global $session, $users, $lang;
+		global $session, $date, $users, $lang;
 		$title = "";
 		$html = "";
 		if($arr = $this->model->getDetails($id)) {
 			$roster = $arr["roster"];
-			$task = $arr["task"];
+			$cols = $arr["cols"];
+			$console_items = $arr["console_items"];
 			$sendto = $arr["sendto"];
+			$colheight = $arr["colheight"];
+			$projects = $arr["projects"];
+			
+			$page_width = sizeof($cols)*150+245+300;
+					$page_height = $colheight+200;
+					if($page_width < 896) {
+						$page_width = 896;
+					}
+					if($page_height < 595) {
+						$page_height = 595;
+					}
+					
 			ob_start();
 				include 'view/print.php';
 				$html = ob_get_contents();
@@ -112,7 +159,7 @@ class BrainstormsRosters extends Brainstorms {
 		}
 		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["BRAINSTORM_PRINT_ROSTER"];
 		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
-		$pdf = $this->savePDF($title,$html,$attachment);
+		$pdf = $this->saveTimeline($title,$html,$attachment,$page_width,$page_height);
 		
 		// write sento log
 		$this->writeSendtoLog("brainstorms_rosters",$id,$to,$subject,$body);
@@ -368,9 +415,8 @@ class BrainstormsRosters extends Brainstorms {
 	
 	
 	function convertToProject($id,$kickoff,$folder,$protocol) {
-		$retval = $this->model->convertToProject($id,$kickoff,$folder,$protocol);
-		if($retval){
-			return "true";
+		if($data = $this->model->convertToProject($id,$kickoff,$folder,$protocol)){
+			return json_encode($data);
 		} else{
 			return "error";
 		}

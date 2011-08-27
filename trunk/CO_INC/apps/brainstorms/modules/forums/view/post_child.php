@@ -1,6 +1,6 @@
 <?php if(!isset($perm)) { $perm = true; } ?>
 <div id="post_<?php echo $child->id;?>" style="border-bottom: 1px solid #77713D">
-<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-inactive" style="margin-bottom: 0px;">
+<table border="0" cellpadding="0" cellspacing="0" class="table-content grey" style="margin-bottom: 0px;">
   <tr>
       <td class="tcell-left-posts text11">
       	<?php echo $child->user;?>

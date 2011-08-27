@@ -919,6 +919,8 @@ $(document).ready(function() {
 		}
 		var protocol = $("#rosterProtocol").val();
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/rosters&request=convertToProject&id="+id+"&kickoff="+kickoff+"&folder="+folder+"&protocol="+protocol, success: function(data){
+			var html = '<div class="text11">Projektordner: <span class="listmember">' + data.fid + '</span>, ' + data.created_user + ', ' + data.created_date + '</div';
+			$('#project_created').append(html);
 			$("#modalDialogRoster").slideUp(function() {		
 				initBrainstormsContentScrollbar();							
 			});

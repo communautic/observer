@@ -57,8 +57,8 @@ class BrainstormsForums extends Brainstorms {
 		$html = "";
 		if($arr = $this->model->getDetails($id,$num)) {
 			$forum = $arr["forum"];
-			$task = $arr["task"];
-			$sendto = $arr["sendto"];
+			$posts = $arr["posts"];
+			$answers = $arr["answers"];
 			ob_start();
 				include 'view/print.php';
 				$html = ob_get_contents();
@@ -79,7 +79,8 @@ class BrainstormsForums extends Brainstorms {
 		global $lang;
 		if($arr = $this->model->getDetails($id,$num)) {
 			$forum = $arr["forum"];
-			$task = $arr["task"];
+			$posts = $arr["posts"];
+			$answers = $arr["answers"];
 			
 			$form_url = $this->form_url;
 			$request = "sendDetails";
@@ -102,8 +103,8 @@ class BrainstormsForums extends Brainstorms {
 		$html = "";
 		if($arr = $this->model->getDetails($id,$variable)) {
 			$forum = $arr["forum"];
-			$task = $arr["task"];
-			$sendto = $arr["sendto"];
+			$posts = $arr["posts"];
+			$answers = $arr["answers"];
 			ob_start();
 				include 'view/print.php';
 				$html = ob_get_contents();

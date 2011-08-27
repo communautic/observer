@@ -8,6 +8,9 @@ $lang["BRAINSTORM_FORUMS"] = 'Forums';
 
 $lang["BRAINSTORM_FORUM_NEW"] = 'New Forum';
 $lang["BRAINSTORM_FORUM_ACTION_NEW"] = 'new Topic';
+$lang["BRAINSTORM_FORUM_QUESTION"] = 'Question';
+$lang["BRAINSTORM_FORUM_ANSWERS"] = 'Answer';
+$lang["BRAINSTORM_FORUM_DISCUSSION"] = 'Discussion';
 
 $lang["BRAINSTORM_FORUM_POSTS"] = 'Forum / Posts';
 
