@@ -1,5 +1,5 @@
 <div>
-<table border="0" cellspacing="0" cellpadding="0" class="table-title">
+<table border="0" cellspacing="0" cellpadding="0" class="table-title grey">
   <tr>
     <td nowrap="nowrap" class="tcell-left text11"><span class="content-nav-title"><?php echo $lang["PROJECT_ACCESSRIGHTS"];?></span></td>
     <td></td>
@@ -29,9 +29,9 @@
 <div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-footer">
   <tr>
-    <td class="left"><?php echo $lang["EDITED_BY_ON"];?> <?php echo($access->edited_user.", ".$access->edited_date)?></td>
+    <td class="left"><?php echo($lang["GLOBAL_FOOTER_STATUS"] . " " . $access->today);?></td>
     <td class="middle">&nbsp;</td>
-    <td class="right"><?php echo $lang["CREATED_BY_ON"];?> <?php echo($access->created_user.", ".$access->created_date);?></td>
+    <td class="right">&nbsp;</td>
   </tr>
 </table>
 </div>

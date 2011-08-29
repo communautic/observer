@@ -46,11 +46,13 @@ class ProjectsAccessModel extends ProjectsModel {
 			$array["admins"] = $this->_contactsmodel->getUserList($array['admins'],'projectsadmins',"and userlevel != '1' and username != ''");
 			$array["guests"] = $this->_contactsmodel->getUserList($array['guests'],'projectsguests',"and userlevel != '1' and username != ''");
 			
-			$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
+			/*$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
 			$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
 			$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
-			$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
+			$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);*/
 		}
+		
+		$array["today"] = $this->_date->formatDate("now",CO_DATETIME_FORMAT);
 		
 		$access = new Lists($array);
 	  

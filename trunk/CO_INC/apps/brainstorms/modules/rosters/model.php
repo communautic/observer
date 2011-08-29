@@ -624,6 +624,7 @@ class BrainstormsRostersModel extends BrainstormsModel {
 		$dependent = 0;
 		foreach($cols as $key => &$value){ 
 			$i = 0;
+			$num_notes = sizeof($cols[$key]["notes"]);
 			foreach($cols[$key]["notes"] as $tkey => &$tvalue){ 
 				if($i == 0) {
 					// add phase
@@ -632,6 +633,20 @@ class BrainstormsRostersModel extends BrainstormsModel {
 					$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES . " set title = '$phasetitle', pid='$pid', protocol='$phasetext', access='0', status = '0', planned_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 					$result = mysql_query($q, $this->_db->connection);
 					$phaseid = mysql_insert_id();
+					
+					if($num_notes == 1) {
+						// create ap with same name
+						$tasktitle = $phasetitle;
+						$taskprotocol = $phasetext;
+						$cat = 0;
+						$startdate = $this->_date->addDays($datecalc,"1");
+						$enddate = $this->_date->addDays($datecalc,"7");
+						$datecalc = $enddate;					
+						$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES_TASKS . " set pid='$pid', phaseid='$phaseid', cat='$cat', dependent = '$dependent', status = '0', text = '$tasktitle', protocol = '$taskprotocol', startdate = '$startdate', enddate = '$enddate'";
+						$result = mysql_query($q, $this->_db->connection);
+						$dependent = mysql_insert_id();
+					}
+					
 				} else {
 					// create ap/milestone
 					$tasktitle = $cols[$key]["notes"][$tkey]['title'];
