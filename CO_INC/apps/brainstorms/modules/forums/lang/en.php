@@ -12,6 +12,11 @@ $lang["BRAINSTORM_FORUM_QUESTION"] = 'Question';
 $lang["BRAINSTORM_FORUM_ANSWERS"] = 'Answer';
 $lang["BRAINSTORM_FORUM_DISCUSSION"] = 'Discussion';
 
+$lang["BRAINSTORM_FORUM_STATUS_PLANNED"] = 'planned';
+$lang["BRAINSTORM_FORUM_STATUS_INPROGRESS"] = 'in discussion';
+$lang["BRAINSTORM_FORUM_STATUS_FINISHED"] = 'finished';
+$lang["BRAINSTORM_FORUM_STATUS_STOPPED"] = 'stopped';
+
 $lang["BRAINSTORM_FORUM_POSTS"] = 'Forum / Posts';
 
 $lang["BRAINSTORM_PRINT_FORUM"] = 'forum.png';

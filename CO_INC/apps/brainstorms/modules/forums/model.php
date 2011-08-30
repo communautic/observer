@@ -198,22 +198,22 @@ class BrainstormsForumsModel extends BrainstormsModel {
 		$array["enddate"] = "";
 		switch($array["status"]) {
 			case "0":
-				$array["status_text"] = $lang["BRAINSTORM_STATUS_PLANNED"];
+				$array["status_text"] = $lang["BRAINSTORM_FORUM_STATUS_PLANNED"];
 				$array["status_date"] = $array["planned_date"];
 			break;
 			case "1":
-				$array["status_text"] = $lang["BRAINSTORM_STATUS_INPROGRESS"];
+				$array["status_text"] = $lang["BRAINSTORM_FORUM_STATUS_INPROGRESS"];
 				$array["status_date"] = $array["inprogress_date"];
 				$array["startdate"] = $array["inprogress_date"];
 			break;
 			case "2":
-				$array["status_text"] = $lang["BRAINSTORM_STATUS_FINISHED"];
+				$array["status_text"] = $lang["BRAINSTORM_FORUM_STATUS_FINISHED"];
 				$array["status_date"] = $array["finished_date"];
 				$array["startdate"] = $array["inprogress_date"];
 				$array["enddate"] = $array["finished_date"];
 			break;
 			case "3":
-				$array["status_text"] = $lang["BRAINSTORM_STATUS_STOPPED"];
+				$array["status_text"] = $lang["BRAINSTORM_FORUM_STATUS_STOPPED"];
 				$array["status_date"] = $array["stopped_date"];
 				$array["startdate"] = $array["inprogress_date"];
 			break;
