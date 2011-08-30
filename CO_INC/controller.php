@@ -118,6 +118,34 @@ class Controller extends MySQLDB {
 		$pdf = $dompdf->output();
 		file_put_contents( $path, $pdf);
 	}
+	
+	
+	function openHelpPDF($data) {
+		
+		$file = $data["file"];
+		$app = $data["app"];
+		$module = $data["module"];
+		
+		$fullPath = CO_INC_PATH . "/" . CO_INC . "/apps/" . $app . $module . "/lang/help/" . $file;
+		
+		if ($fd = fopen ($fullPath, "rb")) {
+			$fsize = filesize($fullPath);
+			$path_parts = pathinfo($fullPath); 
+			$ext = strtolower($path_parts["extension"]);
+			header("Content-type: application/pdf");
+			header("Content-Disposition: attachment; filename=\"".$file."\""); 
+			header("Content-length: $fsize");
+			header("Cache-control: private"); 
+			ob_clean();
+			flush();
+			while(!feof($fd)) {
+				$buffer = fread($fd, 2048);
+				echo $buffer;
+			}
+		}
+		fclose ($fd);
+		exit;
+		}
 
 
 	function printHTML($title,$text) {

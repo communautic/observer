@@ -99,6 +99,9 @@ if (!empty($_GET['request'])) {
 		case 'getPhaseStatusDialog':
 			echo($projectsPhases->getPhaseStatusDialog());
 		break;
+		case 'getHelp':
+			echo($projectsPhases->getHelp());
+		break;
 	}
 }
 

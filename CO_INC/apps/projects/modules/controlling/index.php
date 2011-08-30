@@ -57,6 +57,9 @@ if (!empty($_GET['request'])) {
 			}
 			echo($projectsControlling->getDailyStatistic());
 		break;
+		case 'getHelp':
+			echo($projectsControlling->getHelp());
+		break;
 	}
 }
 

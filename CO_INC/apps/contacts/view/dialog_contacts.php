@@ -5,6 +5,9 @@ switch($field) {
 		$hideTab3 = 1;
 	break;
 }
+/*if($title == 'nonote') {
+	$hideTab3 = 1;
+}*/
 ?>
 <div id="tabs">
 	<ul>

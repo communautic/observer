@@ -298,6 +298,14 @@ class ProjectsPhases extends Projects {
 		}*/
 		//return $this->model->getBin($id);
 	}
+	
+	function getHelp() {
+		global $lang;
+		$data["file"] =  $lang["PROJECT_PHASE_HELP"];
+		$data["app"] = "projects";
+		$data["module"] = "/modules/phases";
+		$this->openHelpPDF($data);
+	}
 
 }
 

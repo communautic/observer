@@ -241,6 +241,16 @@ class ProjectsMeetings extends Projects {
 		global $lang;
 		include 'view/dialog_status.php';
 	}
+	
+	
+	function getHelp() {
+		global $lang;
+		$data["file"] =  $lang["PROJECT_MEETING_HELP"];
+		$data["app"] = "projects";
+		$data["module"] = "/modules/meetings";
+		$this->openHelpPDF($data);
+	}
+	
 
 }
 

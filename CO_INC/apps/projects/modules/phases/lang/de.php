@@ -25,6 +25,8 @@ $lang["PROJECT_PHASE_TASK_DEPENDENT_NO"] = 'keine Abhängigkeit';
 
 $lang["PROJECT_PHASE_TASK_STATUS_FINISHED"] = 'erreicht am';
 
+$lang["PROJECT_PHASE_HELP"] = 'manual_projekte_phasen.pdf';
+
 $lang["PROJECT_PRINT_PHASE"] = 'phase.png';
 
 // check for custom lang file

@@ -10,6 +10,14 @@ class Bin extends Controller {
 			$this->num_modules = 0;
 			$this->binDisplay = false;
 	}
+	
+	function getHelp() {
+		global $lang;
+		$data["file"] = $lang["BIN_HELP"];
+		$data["app"] = "bin";
+		$data["module"] = "";
+		$this->openHelpPDF($data);
+	}
 
 }
 $bin = new Bin("bin");

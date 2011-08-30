@@ -40,6 +40,15 @@ class ProjectsAccess extends Projects {
 			 return "error";
 		  }
 	}
+	
+	function getHelp() {
+		global $lang;
+		$data["file"] =  $lang["PROJECT_ACCESS_HELP"];
+		$data["app"] = "projects";
+		$data["module"] = "/modules/access";
+		$this->openHelpPDF($data);
+	}
+	
 
 }
 

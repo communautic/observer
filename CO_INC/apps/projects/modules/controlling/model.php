@@ -257,7 +257,48 @@ class ProjectsControllingModel extends ProjectsModel {
 				if($image == 1) {
 					$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
 				}
+			break;
+			case 'status':
 
+				// all
+				$q = "SELECT id FROM " . CO_TBL_PROJECTS_PHASES. " WHERE pid = '$id' and bin = '0'";
+				$result = mysql_query($q, $this->_db->connection);
+				$all = mysql_num_rows($result);
+				
+				// planned
+				$q = "SELECT id FROM " . CO_TBL_PROJECTS_PHASES. " WHERE pid = '$id' and status = '0' and bin = '0'";
+				$result = mysql_query($q, $this->_db->connection);
+				$planned = mysql_num_rows($result);
+				$chart["planned"] = 0;
+				if($planned != 0) {
+					$chart["planned"] = round((100/$all)*$planned,0);
+				}
+				
+				// inprogress
+				$q = "SELECT id FROM " . CO_TBL_PROJECTS_PHASES. " WHERE pid = '$id' and status = '1' and bin = '0'";
+				$result = mysql_query($q, $this->_db->connection);
+				$inprogress = mysql_num_rows($result);
+				$chart["inprogress"] = 0;
+				if($inprogress != 0) {
+					$chart["inprogress"] = round((100/$all)*$inprogress,0);
+				}
+				// finished
+				$q = "SELECT id FROM " . CO_TBL_PROJECTS_PHASES. " WHERE pid = '$id' and status = '2' and bin = '0'";
+				$result = mysql_query($q, $this->_db->connection);
+				$finished = mysql_num_rows($result);
+				$chart["finished"] = 0;
+				if($finished != 0) {
+					$chart["finished"] = round((100/$all)*$finished,0);
+				}			
+
+				$chart["title"] = $lang["PROJECT_FOLDER_CHART_STATUS"];
+				$chart["img_name"] = 'projects_controlling_' . $id . "_status.png";
+				if($all == 0) {
+					$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:0,100&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
+				} else {
+					$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["planned"]. ',' .$chart["inprogress"] . ',' .$chart["finished"] . '&chs=150x90&chco=4BA0C8|FFD20A|82AA0B&chf=bg,s,FFFFFF';
+				}
+				$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
 			break;
 		}
 		

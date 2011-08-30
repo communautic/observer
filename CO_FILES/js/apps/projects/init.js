@@ -276,6 +276,11 @@ function projectsApplication(name) {
 		var obj = getCurrentModule();
 		$('#projects .coform').ajaxSubmit(obj.poformOptions);
 	}
+	
+	this.actionHelp = function() {
+		var url = "/?path=apps/projects&request=getProjectsHelp";
+		$("#documentloader").attr('src', url);
+	}
 
 
 	// Recycle Bin
@@ -509,7 +514,14 @@ function projectsFolders(name) {
 			}
 		});
 	}
-	
+
+
+	this.actionHelp = function() {
+		var url = "/?path=apps/projects&request=getProjectsFoldersHelp";
+		$("#documentloader").attr('src', url);
+	}
+
+
 	// Recycle Bin
 	this.binDelete = function(id) {
 		var txt = ALERT_DELETE_REALLY;
@@ -562,18 +574,18 @@ function projectsActions(status) {
 	/*	0= new	1= print	2= send		3= duplicate	4= handbook		5=refresh 	6 = delete*/
 	switch(status) {
 		//case 0: 	actions = ['0','1','2','3','4']; break; // all actions
-		case 0: actions = ['0','1','2','3','4','5','6']; break;
+		case 0: actions = ['0','1','2','3','4','5','6','7']; break;
 		//case 1: 	actions = ['0','1','2','4']; break; 	// no duplicate
-		case 1: actions = ['0','5','6']; break;
+		case 1: actions = ['0','5','6','7']; break;
 		//case 2: 	actions = ['1']; break;   					// just save
-		case 3: 	actions = ['0']; break;   					// just new
-		case 4: 	actions = ['0','1','2','4','5']; break;   		// new, print, send, handbook, refresh
-		case 5: 	actions = ['1','2','5']; break;   			// print, send, refresh
-		case 6: 	actions = ['4','5']; break;   			// handbook refresh
-		case 7: 	actions = ['0','1','2','5']; break;   			// new, print, send, refresh
-		case 8: 	actions = ['1','2','4','5']; break;   			// print, send, handbook, refresh
-		case 9:		actions = ['0','1','2','5','6']; break;
-		default: 	actions = ['5'];  								// none
+		case 3: 	actions = ['0','6']; break;   					// just new
+		case 4: 	actions = ['0','1','2','4','5','6']; break;   		// new, print, send, handbook, refresh
+		case 5: 	actions = ['1','2','5','6']; break;   			// print, send, refresh
+		case 6: 	actions = ['4','5','6']; break;   			// handbook refresh
+		case 7: 	actions = ['0','1','2','5','6']; break;   			// new, print, send, refresh
+		case 8: 	actions = ['1','2','4','5','6']; break;   			// print, send, handbook, refresh
+		case 9:		actions = ['0','1','2','5','6','7']; break;
+		default: 	actions = ['5','6'];  								// none
 	}
 	$('#projectsActions > li span').each( function(index) {
 		if(index in oc(actions)) {

@@ -466,7 +466,16 @@ $(document).ready(function() {
 		obj.actionRefresh();
 		return false;
 	});
-
+	
+	$('span.actionHelp').click(function(){
+		if($(this).hasClass("noactive")) {
+			return false;
+		}
+		var obj = getCurrentModule();
+		obj.actionHelp();
+		return false;
+	});
+	
 
 	$('span.actionBin').click(function(){
 		if($(this).hasClass("noactive")) {

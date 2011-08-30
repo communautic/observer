@@ -46,6 +46,9 @@ $lang["PROJECT_STATUS_STOPPED_TEXT"] = 'abgebrochen';
 
 $lang["PROJECT_HANDBOOK"] = 'Projekthandbuch';
 
+$lang["PROJECT_HELP"] = 'manual_projekte_projekte.pdf';
+$lang["PROJECT_FOLDER_HELP"] = 'manual_projekte_ordner.pdf';
+
 // Print images
 $lang["PRINT_PROJECT_MANUAL"] = 'projekthandbuch.png';
 $lang["PRINT_PROJECT"] = 'projekt.png';

@@ -21,6 +21,9 @@
 #binActions span.actionRefresh:hover 	{ 	background-position: -300px -258px;	}
 #binActions span.actionRefresh.noactive { background-position: 0px -258px;  	}
 
+#binActions span.actionHelp				{ 	background-position: -247px -51px;	}
+#binActions span.actionHelp:hover 	{ 	background-position: -297px -51px;	}
+#binActions span.actionHelp.noactive { background-position: 0px -51px;  	}
 
 #binActions { display: block; }
 

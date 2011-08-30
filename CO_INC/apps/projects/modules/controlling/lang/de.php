@@ -13,6 +13,8 @@ $lang["PROJECT_CONTROLLING_REALISATION"] = 'Realisierungsgrad';
 $lang["PROJECT_CONTROLLING_ADHERANCE"] = 'Termintreue';
 $lang["PROJECT_CONTROLLING_TASKS"] = 'Arbeitspakete in Plan';
 
+$lang["PROJECT_CONTROLLING_HELP"] = 'manual_projekte_statusbericht.pdf';
+
 $lang["PROJECT_PRINT_CONTROLLING"] = 'statusbericht.png';
 
 ?>

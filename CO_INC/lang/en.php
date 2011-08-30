@@ -16,13 +16,15 @@ $lang["LOGIN_CONFIRM"] = "confirm";
 $lang["LOGIN_COPYRIGHT"] = '<a href="http://www.communautic.com" target="_blank">All rights reserved communautic Ltd | www.communautic.com</a>';
 $lang["LOGIN_LOGIN_FAILED"] = "Incorrect login details. Please try again.";
 $lang["LOGIN_LOGOUT"] = "Logout";
+$lang["LOGIN_HELP"] = 'manual_login.pdf';
 
 /* APPS ACTION LINKS */
 $lang["ACTION_NEW"] = "new";
 $lang["ACTION_PRINT"] = "print";
 $lang["ACTION_SENDTO"] = "send to";
 $lang["ACTION_DUPLICATE"] = "duplicate";
-$lang["ACTION_REFRESH"] = "Refresh";
+$lang["ACTION_REFRESH"] = "refresh";
+$lang["ACTION_HELP"] = "help";
 $lang["ACTION_DELETE"] = "delete";
 
 $lang["TEXT_NOTE"] = "Note:";

@@ -30,6 +30,9 @@ if (!empty($_GET['request'])) {
 		case 'getDetails':
 			echo($projectsAccess->getDetails($_GET['id']));
 		break;
+		case 'getHelp':
+			echo($projectsAccess->getHelp());
+		break;
 	}
 }
 

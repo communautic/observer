@@ -48,6 +48,9 @@ if (!empty($_GET['request'])) {
 		case 'getSend':
 			echo($projectsTimelines->getSend($_GET['id'],$_GET['pid']));
 		break;
+		case 'getHelp':
+			echo($projectsTimelines->getHelp());
+		break;
 	}
 }
 

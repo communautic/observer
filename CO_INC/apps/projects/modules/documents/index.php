@@ -81,6 +81,9 @@ if (!empty($_GET['request'])) {
 		case 'deleteFile':
 			echo($projectsDocuments->deleteFile($_GET['id']));
 		break;
+		case 'getHelp':
+			echo($projectsDocuments->getHelp());
+		break;
 	}
 }
 

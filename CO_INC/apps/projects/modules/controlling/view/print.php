@@ -25,13 +25,19 @@
 &nbsp;
 <table border="0" cellpadding="0" cellspacing="0" width="100%" class="standard">
 	<tr>
-		<td><?php  
-		$projectsControlling = new ProjectsControlling("controlling");
-		$projectsControlling->getChart($cont->id,'stability',1);?>
-        </td>
-		<td><?php  $projectsControlling->getChart($cont->id,'realisation',1);?></td>
+		<td><?php $projectsControlling = new ProjectsControlling("controlling");
+		$projectsControlling->getChart($cont->id,'stability',1);?></td>
+		<td><?php $projectsControlling->getChart($cont->id,'status',1,1);?></td>
+        <td>&nbsp;</td>
+	</tr>
+</table>
+&nbsp;
+<table border="0" cellpadding="0" cellspacing="0" width="100%" class="standard">
+	<tr>
+				<td><?php  $projectsControlling->getChart($cont->id,'realisation',1);?></td>
 		<td><?php  $projectsControlling->getChart($cont->id,'timeing',1);?></td>
 		<td><?php  $projectsControlling->getChart($cont->id,'tasks',1);?></td>
+        <td>&nbsp;</td>
 	</tr>
 </table>
 <div style="page-break-after:always;">&nbsp;</div>

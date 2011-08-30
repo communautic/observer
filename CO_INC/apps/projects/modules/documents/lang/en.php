@@ -9,6 +9,8 @@ $lang["PROJECT_DOCUMENT_UPLOAD"] = 'File / Upload';
 $lang["PROJECT_DOCUMENT_FILENAME"] = 'Filename/Format';
 $lang["PROJECT_DOCUMENT_FILESIZE"] = 'Filesize';
 
+$lang["PROJECT_DOCUMENT_HELP"] = 'manual_projekte_aktenmappen.pdf';
+
 $lang["PROJECT_PRINT_DOCUMENT"] = 'document.png';
 
 // check for custom lang file

@@ -2,8 +2,9 @@
 /* -------------------------------------------------------------------------
 * INC PATH AND INC FOLDER
 * -------------------------------------------------------------------------*/
-$path = '/home/dev/public_html';
-set_include_path(get_include_path() . PATH_SEPARATOR . $path);
+//$path = '/home/dev/public_html';
+define("CO_INC_PATH"	, 		"/home/dev/public_html" 			);
+set_include_path(get_include_path() . PATH_SEPARATOR . CO_INC_PATH);
 define("CO_INC"	, 		"CO_INC" 			);
 
 // FILES PATH

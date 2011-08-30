@@ -18,14 +18,16 @@ if (!empty($_GET['request'])) {
 			if(!empty($_GET['sort'])) {
 				$sort = $_GET['sort'];
 			}
-			//echo($bin->getList($sort));
 			foreach($controller->applications as $app => $display) {
-							if(${$app}->binDisplay) {
-							echo('<li id="folderItem_"><a href="#" rel="" class="module-click"><span class="text">' . ${$app.'_name'} . '</span></a></li>');
-							}
+				if(${$app}->binDisplay) {
+					echo('<li id="folderItem_"><a href="#" rel="" class="module-click"><span class="text">' . ${$app.'_name'} . '</span></a></li>');
 				}
+			}
 		break;
-		case 'getFolderDetails':
+		case 'getHelp':
+			echo($bin->getHelp());
+		break;
+		/*case 'getFolderDetails':
 			echo($projects->getFolderDetails($_GET['id']));
 		break;
 		case 'setFolderOrder':
@@ -46,7 +48,8 @@ if (!empty($_GET['request'])) {
 		break;
 		case 'binFolder':
 			echo($projects->binFolder($_GET['id']));
-		break;
+		break;*/
+
 	}
 }
 

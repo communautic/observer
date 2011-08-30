@@ -335,6 +335,16 @@ class ProjectsTimelines extends Projects {
 		//$to,$from,$fromName,$subject,$body,$attachment
 		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment);
 }
+
+
+	function getHelp() {
+		global $lang;
+		$data["file"] =  $lang["PROJECT_TIMELINE_HELP"];
+		$data["app"] = "projects";
+		$data["module"] = "/modules/timelines";
+		$this->openHelpPDF($data);
+	}
+
 	
 }
 

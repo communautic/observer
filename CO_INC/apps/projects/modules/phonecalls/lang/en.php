@@ -17,6 +17,8 @@ $lang["PROJECT_PHONECALL_GOALS"] = 'Agenda';
 $lang["PROJECT_PHONECALL_STATUS_OUTGOING"] = 'incoming';
 $lang["PROJECT_PHONECALL_STATUS_ON_INCOMING"] = 'outgoing';
 
+$lang["PROJECT_PHONECALL_HELP"] = 'manual_projekte_telefonate.pdf';
+
 $lang["PROJECT_PRINT_PHONECALL"] = 'phonecall.png';
 
 // check for custom lang file

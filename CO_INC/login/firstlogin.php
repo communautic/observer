@@ -19,7 +19,14 @@
 
 <script type="text/javascript">
 
+function binactionHelp() {
+		var url = "/?path=apps/bin&request=getHelp";
+		$("#documentloader").attr('src', url);
+	}
+
 $(document).ready(function() {		   
+	
+	
 	$(".opac").css("opacity", "0.5");
 	document.com_form.username.focus();
 	
@@ -34,6 +41,13 @@ $(document).ready(function() {
 			}
         }
     });
+	
+	$('#loginHelp').click(function(e) {
+		e.preventDefault();
+		var url = "/?path=login/help";
+		$("#documentloader").attr('src', url);
+		
+	})
 
 });
 </script>
@@ -55,7 +69,9 @@ $(document).ready(function() {
 <input type="hidden" name="changelogin" value="1" />
 <div class="fl-bar-outer-top"><table width="445" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr>
-    <td><p style="text-align: justify"><?php echo $lang["LOGIN_SET_LOGIN"];?></p></td>
+    <td><div style="position: relative;">
+      <div id="loginHelp" title="<?php echo $lang["ACTION_HELP"];?>" style="top: 15px; left: 485px; position: absolute; width: 30px; height: 30px;">&nbsp;</div></div>
+    <p style="text-align: justify"><?php echo $lang["LOGIN_SET_LOGIN"];?></p></td>
   </tr>
   </table></div>
 <div class="fl-bar-outer"><table width="445" border="0" align="center" cellpadding="0" cellspacing="0">
@@ -91,6 +107,7 @@ $(document).ready(function() {
     <td colspan="3" valign="top" class="login-copyright"><input type="submit" name="button" id="button" value="<?php echo($lang["LOGIN_CONFIRM"]);?>" /></td>
     </tr>
 </table></form>
+<iframe id="documentloader" name="documentloader" src="about:blank" style="position: absolute; top: -1000px; left: -1000px;" /></iframe>
 </div>
 </body>
 </html>

@@ -237,6 +237,12 @@ function contactsContact(name) {
 				});
 		}
 	}
+	
+	
+	this.actionHelp = function() {
+		var url = "/?path=apps/contacts&request=getContactsHelp";
+		$("#documentloader").attr('src', url);
+	}
 
 
 	// Recycle Bin
@@ -512,6 +518,12 @@ function contactsGroups(name) {
 	}
 
 
+	this.actionHelp = function() {
+		var url = "/?path=apps/contacts&request=getContactsGroupsHelp";
+		$("#documentloader").attr('src', url);
+	}
+
+
 	// Recycle Bin
 	this.binDelete = function(id) {
 		var txt = ALERT_DELETE_REALLY;
@@ -562,12 +574,12 @@ var contacts_groups = new contactsGroups('contacts_groups');
 function contactsActions(status) {
 	/*	0= new		1= print	2= send	 3 =vcard  4= duplicate	 5 = refresh	 6=delete */
 	switch(status) {
-		case 0: 	actions = ['0']; break;
-		case 1: 	actions = ['0','1','2','3','4','5','6']; break; // contact details
-		case 2: 	actions = ['1']; break;   					// just save
-		case 3: 	actions = ['0']; break;   					// just new
-		case 4: 	actions = ['0','6']; break; // all
-		default: 	actions = [];  								// none
+		case 0: 	actions = ['0','6']; break;
+		case 1: 	actions = ['0','1','2','3','4','5','6','7']; break; // contact details
+		case 2: 	actions = ['1','6']; break;   					// just save
+		case 3: 	actions = ['0','6']; break;   					// just new
+		case 4: 	actions = ['0','6','7']; break; // all
+		default: 	actions = ['6'];  								// none
 	}
 	$('#contactsActions > li span').each( function(index) {
 		if(index in oc(actions)) {

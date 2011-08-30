@@ -416,6 +416,11 @@ function projectsMeetings(name) {
 		});
 	}
 	
+	this.actionHelp = function() {
+		var url = "/?path=apps/projects/modules/meetings&request=getHelp";
+		$("#documentloader").attr('src', url);
+	}
+	
 	
 	// Recycle Bin
 	this.binDelete = function(id) {

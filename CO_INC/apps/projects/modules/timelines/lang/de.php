@@ -16,5 +16,7 @@ $lang["PROJECT_TIMELINE_STATUS_OVERDUE_POPUP"] = "Tag/e außer Plan";
 $lang['PROJECT_TIMELINE_TIME'] = 'Tage';
 $lang['PROJECT_TIMELINE_ACTION'] = 'Vorgang';
 
+$lang["PROJECT_TIMELINE_HELP"] = 'manual_projekte_zeitplaene.pdf';
+
 $lang["PROJECT_PRINT_TIMELINE"] = 'terminliste.png';
 ?>
