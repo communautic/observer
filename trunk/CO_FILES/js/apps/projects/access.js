@@ -44,6 +44,12 @@ function projectsAccess(name) {
 		});
 	}
 
+
+	this.actionHelp = function() {
+		var url = "/?path=apps/projects/modules/access&request=getHelp";
+		$("#documentloader").attr('src', url);
+	}
+	
 }
 
 

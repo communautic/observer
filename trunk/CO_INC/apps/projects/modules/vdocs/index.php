@@ -77,6 +77,9 @@ if (!empty($_GET['request'])) {
 		case 'toggleIntern':
 			echo($vdocs->toggleIntern($_GET['id'],$_GET['status']));
 		break;
+		case 'toggleIntern':
+			echo($vdocs->toggleIntern($_GET['id'],$_GET['status']));
+		break;
 	}
 }
 

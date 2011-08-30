@@ -5,9 +5,20 @@ bin.resetModuleHeights = binresetModuleHeights;
 bin.usesLayout = true;
 bin.displayname = "Bin";
 bin.actionRefresh = refreshBin;
+bin.actionHelp = binactionHelp;
 bin.actionBin = binBin;
 bin.checkIn = checkInBin;
 bin.modules_height = bin_num_modules*module_title_height;
+
+/*function binApplication(name) {
+	
+}*/
+
+
+	function binactionHelp() {
+		var url = "/?path=apps/bin&request=getHelp";
+		$("#documentloader").attr('src', url);
+	}
 
 function refreshBin() {
 	$("#bin1 .active-link").trigger("click");
@@ -37,7 +48,7 @@ function binBin() {
 function binActions(status) {
 	/*	0= refresh	1= delete	*/
 	switch(status) {
-		case 0: actions = ['0','1']; break;
+		case 0: actions = ['0','1','2']; break;
 		//case 0: actions = []; break;
 		default: 	actions = [];  	// none
 	}

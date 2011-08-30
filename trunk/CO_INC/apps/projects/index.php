@@ -128,6 +128,12 @@ if (!empty($_GET['request'])) {
 		case 'getAccessDialog':
 			echo($projects->getAccessDialog());
 		break;
+		case 'getProjectsFoldersHelp':
+			echo($projects->getProjectsFoldersHelp());
+		break;
+		case 'getProjectsHelp':
+			echo($projects->getProjectsHelp());
+		break;
 		case 'getBin':
 			echo($projects->getBin());
 		break;

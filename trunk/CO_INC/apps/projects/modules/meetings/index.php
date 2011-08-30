@@ -95,6 +95,9 @@ if (!empty($_GET['request'])) {
 		case 'getMeetingStatusDialog':
 			echo($projectsMeetings->getMeetingStatusDialog());
 		break;
+		case 'getHelp':
+			echo($projectsMeetings->getHelp());
+		break;
 	}
 }
 

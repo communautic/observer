@@ -58,6 +58,10 @@
 #projectsActions span.actionRefresh:hover 	{ 	background-position: -100px -258px;	}
 #projectsActions span.actionRefresh.noactive { background-position: 0px -258px;  	}
 
+#projectsActions span.actionHelp				{ 	background-position: -47px -51px;	}
+#projectsActions span.actionHelp:hover 	{ 	background-position: -97px -51px;	}
+#projectsActions span.actionHelp.noactive { background-position: 0px -51px;  	}
+
 .milestone { width: 18px; height: 18px; background: url(../../../img/milestone.png) no-repeat 0px 0px; text-align: center; line-height: 19px;}
 .milestone span { margin-left: 3px; }
 .phaseouter { margin-top: 1px;}

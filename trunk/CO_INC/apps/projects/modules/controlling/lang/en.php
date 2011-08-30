@@ -13,6 +13,8 @@ $lang["PROJECT_CONTROLLING_REALISATION"] = 'Progress';
 $lang["PROJECT_CONTROLLING_ADHERANCE"] = 'Timeliness';
 $lang["PROJECT_CONTROLLING_TASKS"] = 'Stage Timeliness';
 
+$lang["PROJECT_CONTROLLING_HELP"] = 'manual_projekte_statusbericht.pdf';
+
 $lang["PROJECT_PRINT_CONTROLLING"] = 'status.png';
 
 ?>

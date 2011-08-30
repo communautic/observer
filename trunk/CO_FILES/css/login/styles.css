@@ -39,3 +39,5 @@ input[type=checkbox] { margin: 0; padding: 0; border: 0;}
 
 .fl-bar-outer-top { height: 159px; color:#fff; }
 .fl-bar-outer { height: 80px; }
+
+#loginHelp { background: url(../../img/apps_buttons_sprite.png) no-repeat -47px -51px; cursor:pointer}

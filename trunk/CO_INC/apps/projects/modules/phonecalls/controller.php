@@ -194,6 +194,15 @@ class ProjectsPhonecalls extends Projects {
 		include 'view/dialog_status.php';
 	}
 
+
+	function getHelp() {
+		global $lang;
+		$data["file"] =  $lang["PROJECT_PHONECALL_HELP"];
+		$data["app"] = "projects";
+		$data["module"] = "/modules/phonecalls";
+		$this->openHelpPDF($data);
+	}
+	
 }
 
 $projectsPhonecalls = new ProjectsPhonecalls("phonecalls");

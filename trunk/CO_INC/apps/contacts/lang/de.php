@@ -64,6 +64,9 @@ $lang['ACCESS_CODES_EMAIL'] =	'<p style="font-face: Arial, Verdana; font-size: s
 								'<p style="font-face: Arial, Verdana; font-size: small;">Bitte melden Sie sich an, indem Sie die angegebene Internetadresse aufrufen, diese Zugangsdaten (Benutzername und Passwort) eingeben und bestätigen. Im Anschluss werden Sie aufgefordert, Ihre persönlichen Zugangscodes zu kreieren. Mit diesen, neuen Zugangscodes erhalten Sie zukünftig Zugang zur Plattform (unter der gleichen Startseitenadresse wie oben angegeben).</p>' .
 								'<p style="font-face: Arial, Verdana; font-size: small;">Danke und viel Erfolg!</p>';
 
+$lang["CONTACTS_HELP"] = 'manual_kontakte_kontakte.pdf';
+$lang["PCONTACTS_GROUPS_HELP"] = 'manual_kontakte_gruppen.pdf';
+
 $lang["PRINT_GROUP"] = 'gruppe.png';
 $lang["PRINT_CONTACT"] = 'kontakt.png';
 ?>

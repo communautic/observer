@@ -98,17 +98,33 @@ class ProjectsControlling extends Projects {
 	}
 
 
-	function getChart($id,$what, $print=0) {
+	function getChart($id,$what,$print=0,$type=0) {
+		global $lang;
 		if($chart = $this->model->getChart($id,$what)) {
+			if($type == 1) {
+				if($print == 1) {
+					include 'view/chart_status_print.php';
+				} else {
+					include 'view/chart_status.php';
+				}
+			} else {
 				if($print == 1) {
 					include CO_INC .'/apps/projects/view/chart_print.php';
 				} else {
 					include CO_INC .'/apps/projects/view/chart.php';
 				}
-				
+			}
 		} else {
 			include CO_INC .'/view/default.php';
 		}
+	}
+	
+	function getHelp() {
+		global $lang;
+		$data["file"] = $lang["PROJECT_CONTROLLING_HELP"];
+		$data["app"] = "projects";
+		$data["module"] = "/modules/controlling";
+		$this->openHelpPDF($data);
 	}
 
 	

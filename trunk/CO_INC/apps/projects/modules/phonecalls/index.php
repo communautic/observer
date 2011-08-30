@@ -77,6 +77,9 @@ if (!empty($_GET['request'])) {
 		case 'getPhonecallStatusDialog':
 			echo($projectsPhonecalls->getPhonecallStatusDialog());
 		break;
+		case 'getHelp':
+			echo($projectsPhonecalls->getHelp());
+		break;
 	}
 }
 

@@ -163,6 +163,12 @@ if (!empty($_GET['request'])) {
 		case 'saveLastUsedGroups':
 			echo($contacts->saveLastUsedGroups($_GET['id']));
 		break;
+		case 'getContactsGroupsHelp':
+			echo($contacts->getContactsGroupsHelp());
+		break;
+		case 'getContactsHelp':
+			echo($contacts->getContactsHelp());
+		break;
 		case 'getBin':
 			echo($contacts->getBin());
 		break;

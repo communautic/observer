@@ -494,7 +494,23 @@ class Projects extends Controller {
 			include CO_INC .'/view/default.php';
 		}
 	}
-
+	
+	
+	function getProjectsHelp() {
+		global $lang;
+		$data["file"] = $lang["PROJECT_HELP"];
+		$data["app"] = "projects";
+		$data["module"] = "";
+		$this->openHelpPDF($data);
+	}
+	
+	function getProjectsFoldersHelp() {
+		global $lang;
+		$data["file"] =  $lang["PROJECT_FOLDER_HELP"];
+		$data["app"] = "projects";
+		$data["module"] = "";
+		$this->openHelpPDF($data);
+	}
 
 	function getBin() {
 		global $lang, $projects;

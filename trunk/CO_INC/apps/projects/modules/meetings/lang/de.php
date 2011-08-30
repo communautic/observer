@@ -23,6 +23,8 @@ $lang["PROJECT_MEETING_STATUS_CANCELLED"] = 'abgesagt';
 $lang["PROJECT_MEETING_STATUS_POSPONED"] = 'verschoben auf';
 $lang["PROJECT_MEETING_POSPONED"] = 'verschoben';
 
+$lang["PROJECT_MEETING_HELP"] = 'manual_projekte_besprechungen.pdf';
+
 $lang["PROJECT_PRINT_MEETING"] = 'besprechung.png';
 
 // check for custom lang file

@@ -10,6 +10,8 @@ $lang["PROJECT_DOCUMENT_FILENAME"] = 'Dateiname/Format';
 $lang["PROJECT_DOCUMENT_FILESIZE"] = 'Dateigrösse';
 $lang["PROJECT_DOCUMENT_FILES"] = 'Dateien';
 
+$lang["PROJECT_DOCUMENT_HELP"] = 'manual_projekte_aktenmappen.pdf';
+
 $lang["PROJECT_PRINT_DOCUMENT"] = 'akt.png';
 
 // check for custom lang file

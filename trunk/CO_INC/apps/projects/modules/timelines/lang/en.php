@@ -16,5 +16,7 @@ $lang["PROJECT_TIMELINE_STATUS_OVERDUE_POPUP"] = "day/s delayed";
 $lang['PROJECT_TIMELINE_TIME'] = 'Days';
 $lang['PROJECT_TIMELINE_ACTION'] = 'Stages';
 
+$lang["PROJECT_TIMELINE_HELP"] = 'manual_projekte_zeitplaene.pdf';
+
 $lang["PROJECT_PRINT_TIMELINE"] = 'phasing.png';
 ?>

@@ -60,6 +60,10 @@
 #contactsActions span.actionRefresh:hover 	{ 	background-position: -200px -258px;	}
 #contactsActions span.actionRefresh.noactive { background-position: 0px -258px;  	}
 
+#contactsActions span.actionHelp				{ 	background-position: -147px -51px;	}
+#contactsActions span.actionHelp:hover 	{ 	background-position: -197px -51px;	}
+#contactsActions span.actionHelp.noactive { background-position: 0px -51px;  	}
+
 /*#contactsActions span.actionImport				{ 	background-position: -150px -310px;	}
 #contactsActions span.actionImport:hover 	{ 	background-position: -200px -310px;	}
 #contactsActions span.actionImport.noactive { background-position: 0px -310px;  	}*/

@@ -238,6 +238,15 @@ class ProjectsDocuments extends Projects {
 		}
 	}
 
+
+	function getHelp() {
+		global $lang;
+		$data["file"] =  $lang["PROJECT_DOCUMENT_HELP"];
+		$data["app"] = "projects";
+		$data["module"] = "/modules/documents";
+		$this->openHelpPDF($data);
+	}
+
 }
 
 $projectsDocuments = new ProjectsDocuments("projectsDocuments");

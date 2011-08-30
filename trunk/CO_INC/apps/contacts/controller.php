@@ -550,6 +550,22 @@ function getContactSend($id) {
 		return $search;
 	}
 	
+	function getContactsHelp() {
+		global $lang;
+		$data["file"] = $lang["CONTACTS_HELP"];
+		$data["app"] = "contacts";
+		$data["module"] = "";
+		$this->openHelpPDF($data);
+	}
+	
+	function getContactsGroupsHelp() {
+		global $lang;
+		$data["file"] =  $lang["PCONTACTS_GROUPS_HELP"];
+		$data["app"] = "contacts";
+		$data["module"] = "";
+		$this->openHelpPDF($data);
+	}
+	
 	function getBin() {
 		global $lang,$contacts;
 		if($arr = $this->model->getBin()) {

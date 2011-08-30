@@ -353,6 +353,12 @@ function projectsDocuments(name) {
 			}
 		});
 	}
+	
+	
+	this.actionHelp = function() {
+		var url = "/?path=apps/projects/modules/documents&request=getHelp";
+		$("#documentloader").attr('src', url);
+	}
 
 
 	// Recycle Bin

@@ -16,6 +16,7 @@ $lang["LOGIN_CONFIRM"] = "bestätigen";
 $lang["LOGIN_COPYRIGHT"] = '<a href="http://www.communautic.com" target="_blank">Alle Rechte vorbehalten communautic Ebenbichler KG | www.communautic.com</a>';
 $lang["LOGIN_LOGIN_FAILED"] = "Benutzername oder Passwort sind nicht korrekt. Bitte versuchen Sie es erneut.";
 $lang["LOGIN_LOGOUT"] = "Abmelden";
+$lang["LOGIN_HELP"] = 'manual_login.pdf';
 
 /* APPS ACTION LINKS */
 $lang["ACTION_NEW"] = "neu";
@@ -23,6 +24,7 @@ $lang["ACTION_PRINT"] = "drucken";
 $lang["ACTION_SENDTO"] = "weiterleiten";
 $lang["ACTION_DUPLICATE"] = "duplizieren";
 $lang["ACTION_REFRESH"] = "aktualisieren";
+$lang["ACTION_HELP"] = "Hilfe aufrufen";
 $lang["ACTION_DELETE"] = "löschen";
 
 $lang["TEXT_NOTE"] = "Notiz:";
