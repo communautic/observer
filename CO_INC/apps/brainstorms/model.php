@@ -101,10 +101,10 @@ class BrainstormsModel extends Model {
 			$array[$key] = $val;
 		}
 		
-		$array["allbrainstorms"] = $this->getNumBrainstorms($id);
+		/*$array["allbrainstorms"] = $this->getNumBrainstorms($id);
 		$array["plannedbrainstorms"] = $this->getNumBrainstorms($id, $status="0");
 		$array["activebrainstorms"] = $this->getNumBrainstorms($id, $status="1");
-		$array["inactivebrainstorms"] = $this->getNumBrainstorms($id, $status="2");
+		$array["inactivebrainstorms"] = $this->getNumBrainstorms($id, $status="2");*/
 		
 		$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
 		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
@@ -149,7 +149,7 @@ class BrainstormsModel extends Model {
 		  }
 		
 		
-		$q = "SELECT title, id FROM " . CO_TBL_BRAINSTORMS . " where folder='$id' and bin='0'" . $access . " " . $order;
+		$q = "SELECT title, id, created_date, created_user FROM " . CO_TBL_BRAINSTORMS . " where folder='$id' and bin='0'" . $access . " " . $order;
 
 		$result = mysql_query($q, $this->_db->connection);
 	  	$brainstorms = "";
@@ -157,9 +157,13 @@ class BrainstormsModel extends Model {
 			foreach($row as $key => $val) {
 				$brainstorm[$key] = $val;
 			}
+			
+			$brainstorm["created_date"] = $this->_date->formatDate($brainstorm["created_date"],CO_DATE_FORMAT);
+			$brainstorm["created_user"] = $this->_users->getUserFullname($brainstorm["created_user"]);
 			$brainstorm["perm"] = $this->getBrainstormAccess($brainstorm["id"]);
 			$brainstorms[] = new Lists($brainstorm);
 	  	}
+		
 		
 		$access = "guest";
 		  if($session->isSysadmin()) {
