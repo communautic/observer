@@ -30,9 +30,14 @@ if(is_array($brainstorms)) {
     <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive loadBrainstorm" rel="<?php echo($brainstorm->id);?>">
 	<tr>
 		<td class="tcell-left text11">&nbsp;</td>
-		<td colspan="3" class="tcell-right"><span class="loadBrainstorm bold co-link" rel="<?php echo($brainstorm->id);?>"><?php echo($brainstorm->title);?></span></td>
+		<td colspan="2" class="tcell-right"><span class="loadBrainstorm bold co-link" rel="<?php echo($brainstorm->id);?>"><?php echo($brainstorm->title);?></span></td>
     	</tr>
+	    <tr>
+		<td class="tcell-left text11">&nbsp;</td>
+		<td class="tcell-right" width="180"><span class="text11"><?php echo $lang["BRAINSTORM_FOLDER_CREATED_ON"];?> <?php echo($brainstorm->created_date);?></span></td>
+        <td class="tcell-right"><span class="text11"><?php echo $lang["BRAINSTORM_FOLDER_INITIATOR"];?> <?php echo($brainstorm->created_user);?></span></td>
 
+    </tr>
 </table>
     <?php 
 	}

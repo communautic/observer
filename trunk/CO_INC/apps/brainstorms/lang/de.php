@@ -11,12 +11,15 @@ $lang["BRAINSTORM_NEW"] = 'Neue Idee';
 $lang["BRAINSTORM_ACTION_NEW"] = 'neuen Brainstrom anlegen';
 
 // Folder Right
-$lang["BRAINSTORM_FOLDER_BRAINSTORMS_CREATED"] = 'Prozesse insgesamt';
+$lang["BRAINSTORM_FOLDER_CREATED_ON"] = 'angelegt am';
+$lang["BRAINSTORM_FOLDER_INITIATOR"] = 'Initiator:';
+
+/*$lang["BRAINSTORM_FOLDER_BRAINSTORMS_CREATED"] = 'Prozesse insgesamt';
 $lang["BRAINSTORM_FOLDER_BRAINSTORMS_PLANNED"] = 'Prozesse in Planung';
 $lang["BRAINSTORM_FOLDER_BRAINSTORMS_RUNNING"] = 'Prozesse in Arbeit';
 $lang["BRAINSTORM_FOLDER_BRAINSTORMS_FINISHED"] = 'Prozesse abgeschlossen';
 $lang["BRAINSTORM_FOLDER_STATUS_ACTIVE"] = 'aktiv';
-$lang["BRAINSTORM_FOLDER_STATUS_ARCHIVE"] = 'archiv';
+$lang["BRAINSTORM_FOLDER_STATUS_ARCHIVE"] = 'archiv';*/
 
 $lang["BRAINSTORM_FOLDER_CHART_STABILITY"] = 'Projektstabilität aktuell';
 $lang["BRAINSTORM_FOLDER_CHART_REALISATION"] = 'Realisierungsgrad';
