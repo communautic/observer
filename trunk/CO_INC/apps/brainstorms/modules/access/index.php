@@ -30,6 +30,9 @@ if (!empty($_GET['request'])) {
 		case 'getDetails':
 			echo($brainstormsAccess->getDetails($_GET['id']));
 		break;
+		case 'getHelp':
+			echo($brainstormsAccess->getHelp());
+		break;
 	}
 }
 

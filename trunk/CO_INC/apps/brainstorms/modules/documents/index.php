@@ -81,6 +81,9 @@ if (!empty($_GET['request'])) {
 		case 'deleteFile':
 			echo($brainstormsDocuments->deleteFile($_GET['id']));
 		break;
+		case 'getHelp':
+			echo($brainstormsDocuments->getHelp());
+		break;
 	}
 }
 

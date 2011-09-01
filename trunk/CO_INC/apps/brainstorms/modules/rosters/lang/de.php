@@ -13,6 +13,8 @@ $lang['BRAINSTORM_ROSTER_NOTES'] = 'Tätigkeiten';
 $lang["BRAINSTORM_ROSTER_COLUMNS_BIN"] = 'Projektraster/Spalten';
 $lang["BRAINSTORM_ROSTER_NOTES_BIN"] = 'Projektraster/Tätigkeiten';
 
+$lang["BRAINSTORM_ROSTER_HELP"] = 'manual_prozesse_projektraster.pdf';
+
 $lang["BRAINSTORM_PRINT_ROSTER"] = 'besprechung.png';
 
 // check for custom lang file

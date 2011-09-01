@@ -23,6 +23,8 @@ $lang["BRAINSTORM_MEETING_STATUS_CANCELLED"] = 'cancelled';
 $lang["BRAINSTORM_MEETING_STATUS_POSPONED"] = 'posponed to';
 $lang["BRAINSTORM_MEETING_POSPONED"] = 'posponed';
 
+$lang["BRAINSTORM_MEETING_HELP"] = 'manual_prozesse_besprechungen.pdf';
+
 $lang["BRAINSTORM_PRINT_MEETING"] = 'meeting.png';
 
 // check for custom lang file

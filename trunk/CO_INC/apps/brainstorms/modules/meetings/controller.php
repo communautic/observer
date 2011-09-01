@@ -242,6 +242,15 @@ class BrainstormsMeetings extends Brainstorms {
 		include 'view/dialog_status.php';
 	}
 
+
+	function getHelp() {
+		global $lang;
+		$data["file"] =  $lang["BRAINSTORM_MEETING_HELP"];
+		$data["app"] = "brainstorms";
+		$data["module"] = "/modules/meetings";
+		$this->openHelpPDF($data);
+	}
+
 }
 
 $brainstormsMeetings = new BrainstormsMeetings("meetings");

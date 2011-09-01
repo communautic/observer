@@ -324,7 +324,10 @@ function brainstormsApplication(name) {
 	}
 	
 	
-
+	this.actionHelp = function() {
+		var url = "/?path=apps/brainstorms&request=getBrainstormsHelp";
+		$("#documentloader").attr('src', url);
+	}
 
 
 	// Recycle Bin
@@ -460,6 +463,7 @@ $('#brainstorms-outer div.note').each(function(){
 				var w = ui.size.width;
 				var h = ui.size.height;
 				var id = $(this).attr("id").replace(/note-/, "");
+				$('#note-toggle-'+id).attr('rel',h);
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=updateNoteSize&id="+id+"&w="+w+"&h="+h, success: function(data){
 					//$("#brainstorms-top .top-subheadlineTwo").html(data.startdate + ' - <span id="brainstormenddate">' + data.enddate + '</span>');
 					}
@@ -612,7 +616,13 @@ function brainstormsFolders(name) {
 		});
 	}
 	
+
+	this.actionHelp = function() {
+		var url = "/?path=apps/brainstorms&request=getBrainstormsFoldersHelp";
+		$("#documentloader").attr('src', url);
+	}
 	
+
 	// Recycle Bin
 	this.binDelete = function(id) {
 		var txt = ALERT_DELETE_REALLY;
@@ -665,21 +675,21 @@ function brainstormsActions(status) {
 	/*	0= new	1= print	2= send		3= duplicate	4= roster		5=refresh 	6 = delete*/
 	switch(status) {
 		//case 0: actions = ['0','1','2','3','5','6']; break;
-		case 0: actions = ['0','1','2','3','5','6']; break;
-		case 1: actions = ['0','5','6']; break;
-		case 3: 	actions = ['0']; break;   					// just new
+		case 0: actions = ['0','1','2','3','5','6','7']; break;
+		case 1: actions = ['0','5','6','7']; break;
+		case 3: 	actions = ['0','6']; break;   					// just new
 		//case 4: 	actions = ['0','1','2','4','5']; break;   		// new, print, send, handbook, refresh
-		case 4: 	actions = ['0','1','2','4','5']; break;
+		case 4: 	actions = ['0','1','2','4','5','6']; break;
 		//case 5: 	actions = ['1','2','5']; break;   			// print, send, refresh
-		case 5: 	actions = ['1','2','5']; break;
-		case 6: 	actions = ['5']; break;   			// handbook refresh
+		case 5: 	actions = ['1','2','5','6']; break;
+		case 6: 	actions = ['5','6']; break;   			// handbook refresh
 		//case 7: 	actions = ['0','1','2','5']; break;   			// new, print, send, refresh
-		case 7: 	actions = ['0','1','2','5']; break;
+		case 7: 	actions = ['0','1','2','5','6']; break;
 		//case 8: 	actions = ['1','2','4','5']; break;   			// print, send, handbook, refresh
-		case 8: 	actions = ['1','2','4','5']; break;
+		case 8: 	actions = ['1','2','4','5','6']; break;
 		//case 9: actions = ['0','1','2','3','4','5','6']; break;
-		case 9: actions = ['0','1','2','3','4','5','6']; break;
-		default: 	actions = ['5'];  								// none
+		case 9: actions = ['0','1','2','3','4','5','6','7']; break;
+		default: 	actions = ['5','6'];  								// none
 	}
 	$('#brainstormsActions > li span').each( function(index) {
 		if(index in oc(actions)) {

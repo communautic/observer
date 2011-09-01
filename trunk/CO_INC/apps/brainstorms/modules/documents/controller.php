@@ -237,6 +237,14 @@ class BrainstormsDocuments extends Brainstorms {
 			return "error";
 		}
 	}
+	
+	function getHelp() {
+		global $lang;
+		$data["file"] =  $lang["BRAINSTORM_DOCUMENT_HELP"];
+		$data["app"] = "brainstorms";
+		$data["module"] = "/modules/documents";
+		$this->openHelpPDF($data);
+	}
 
 }
 

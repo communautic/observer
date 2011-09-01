@@ -316,6 +316,15 @@ class BrainstormsForums extends Brainstorms {
 		//return $this->model->getBin($id);
 	}
 
+
+	function getHelp() {
+		global $lang;
+		$data["file"] =  $lang["BRAINSTORM_FORUM_HELP"];
+		$data["app"] = "brainstorms";
+		$data["module"] = "/modules/forums";
+		$this->openHelpPDF($data);
+	}
+
 }
 
 $brainstormsForums = new BrainstormsForums("forums");

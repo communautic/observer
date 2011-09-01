@@ -46,6 +46,10 @@ $lang['BRAINSTORM_NOTE_BIN'] = 'Note';
 
 $lang["BRAINSTORM_HANDBOOK"] = 'Brainstorm Manual';
 
+
+$lang["BRAINSTORM_HELP"] = 'manual_prozesse_prozesse.pdf';
+$lang["BRAINSTORM_FOLDER_HELP"] = 'manual_prozesse_ordner.pdf';
+
 // Print images
 $lang["PRINT_BRAINSTORM_MANUAL"] = 'brainstorm_manual.png';
 $lang["PRINT_BRAINSTORM"] = 'brainstorm.png';

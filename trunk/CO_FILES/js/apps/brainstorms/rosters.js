@@ -453,7 +453,12 @@ function brainstormsRosters(name) {
 		});	
 	}
 
-	
+
+	this.actionHelp = function() {
+		var url = "/?path=apps/brainstorms/modules/rosters&request=getHelp";
+		$("#documentloader").attr('src', url);
+	}
+
 	
 	// Recycle Bin
 	this.binDelete = function(id) {

@@ -10,6 +10,8 @@ $lang["BRAINSTORM_DOCUMENT_FILENAME"] = 'Dateiname/Format';
 $lang["BRAINSTORM_DOCUMENT_FILESIZE"] = 'Dateigrösse';
 $lang["BRAINSTORM_DOCUMENT_FILES"] = 'Dateien';
 
+$lang["BRAINSTORM_DOCUMENT_HELP"] = 'manual_prozesse_aktenmappen.pdf';
+
 $lang["BRAINSTORM_PRINT_DOCUMENT"] = 'akt.png';
 
 // check for custom lang file

@@ -421,7 +421,15 @@ class BrainstormsRosters extends Brainstorms {
 			return "error";
 		}
 	}
-	
+
+
+	function getHelp() {
+		global $lang;
+		$data["file"] =  $lang["BRAINSTORM_ROSTER_HELP"];
+		$data["app"] = "brainstorms";
+		$data["module"] = "/modules/rosters";
+		$this->openHelpPDF($data);
+	}
 
 }
 

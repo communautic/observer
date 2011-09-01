@@ -152,6 +152,12 @@ if (!empty($_GET['request'])) {
 		case 'setBrainstormNoteToggle':
 			echo($brainstorms->setBrainstormNoteToggle($_GET['id'],$_GET['t']));
 		break;
+		case 'getBrainstormsFoldersHelp':
+			echo($brainstorms->getBrainstormsFoldersHelp());
+		break;
+		case 'getBrainstormsHelp':
+			echo($brainstorms->getBrainstormsHelp());
+		break;
 	}
 }
 
