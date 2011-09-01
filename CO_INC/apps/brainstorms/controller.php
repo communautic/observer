@@ -474,6 +474,23 @@ class Brainstorms extends Controller {
 	}
 
 
+	function getBrainstormsHelp() {
+		global $lang;
+		$data["file"] = $lang["BRAINSTORM_HELP"];
+		$data["app"] = "brainstorms";
+		$data["module"] = "";
+		$this->openHelpPDF($data);
+	}
+	
+	function getBrainstormsFoldersHelp() {
+		global $lang;
+		$data["file"] =  $lang["BRAINSTORM_FOLDER_HELP"];
+		$data["app"] = "brainstorms";
+		$data["module"] = "";
+		$this->openHelpPDF($data);
+	}
+
+
 	function getBin() {
 		global $lang, $brainstorms;
 		if($arr = $this->model->getBin()) {

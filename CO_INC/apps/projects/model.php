@@ -611,6 +611,34 @@ class ProjectsModel extends Model {
 			}
 			$phase["startdate"] = $this->_date->formatDate($phase["startdate"],CO_DATE_FORMAT);
 			$phase["enddate"] = $this->_date->formatDate($phase["enddate"],CO_DATE_FORMAT);
+			$phaseid = $phase["id"];
+			// status
+			switch($phase["status"]) {
+				case "0":
+					$phase["status_text"] = $lang["PROJECT_STATUS_PLANNED_TEXT"];
+				break;
+				case "1":
+					$phase["status_text"] = $lang["PROJECT_STATUS_INPROGRESS_TEXT"];
+				break;
+				case "2":
+					$phase["status_text"] = $lang["PROJECT_STATUS_FINISHED_TEXT"];
+				break;
+			}
+			
+			$qs = "SELECT COUNT(id) FROM " .  CO_TBL_PROJECTS_PHASES_TASKS. " WHERE phaseid='$phaseid' and bin='0'";
+		   	$results = mysql_query($qs, $this->_db->connection);
+		   	$allTasks = mysql_result($results,0);
+			
+			$qd = "SELECT COUNT(id) FROM " .  CO_TBL_PROJECTS_PHASES_TASKS. " WHERE phaseid='$phaseid' and status = '1' and bin='0'";
+		   	$resultd = mysql_query($qd, $this->_db->connection);
+		   	$doneTasks = mysql_result($resultd,0);
+			
+			if($allTasks == 0) {
+				$phase["realisation"] = 0;
+			} else {
+				$phase["realisation"] = round((100/$allTasks)*$doneTasks,2);
+			}
+			
 			$phases[] = new Lists($phase);
 	  	}
 		// generate phase numbering

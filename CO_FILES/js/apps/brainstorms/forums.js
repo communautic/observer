@@ -412,7 +412,13 @@ function brainstormsForums(name) {
 	this.actionCheckDepTasks = function() {
 		return true;
 	}
-	
+
+
+	this.actionHelp = function() {
+		var url = "/?path=apps/brainstorms/modules/forums&request=getHelp";
+		$("#documentloader").attr('src', url);
+	}
+
 	
 	// Recycle Bin
 	this.binDelete = function(id) {

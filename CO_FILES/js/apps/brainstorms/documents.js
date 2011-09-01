@@ -355,6 +355,12 @@ function brainstormsDocuments(name) {
 	}
 
 
+	this.actionHelp = function() {
+		var url = "/?path=apps/brainstorms/modules/documents&request=getHelp";
+		$("#documentloader").attr('src', url);
+	}
+
+
 	// Recycle Bin
 	this.binDelete = function(id) {
 		var txt = ALERT_DELETE_REALLY;

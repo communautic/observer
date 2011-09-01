@@ -415,8 +415,14 @@ function brainstormsMeetings(name) {
 			}
 		});
 	}
-	
-	
+
+
+	this.actionHelp = function() {
+		var url = "/?path=apps/brainstorms/modules/meetings&request=getHelp";
+		$("#documentloader").attr('src', url);
+	}
+
+
 	// Recycle Bin
 	this.binDelete = function(id) {
 		var txt = ALERT_DELETE_REALLY;

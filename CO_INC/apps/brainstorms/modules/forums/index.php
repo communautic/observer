@@ -103,6 +103,9 @@ if (!empty($_GET['request'])) {
 		case 'getForumStatusDialog':
 			echo($brainstormsForums->getForumStatusDialog());
 		break;
+		case 'getHelp':
+			echo($brainstormsForums->getHelp());
+		break;
 	}
 }
 

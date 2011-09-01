@@ -41,6 +41,15 @@ class BrainstormsAccess extends Brainstorms {
 		  }
 	}
 
+
+	function getHelp() {
+		global $lang;
+		$data["file"] =  $lang["BRAINSTORM_ACCESS_HELP"];
+		$data["app"] = "brainstorms";
+		$data["module"] = "/modules/access";
+		$this->openHelpPDF($data);
+	}
+
 }
 
 $brainstormsAccess = new BrainstormsAccess("access");

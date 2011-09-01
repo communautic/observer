@@ -19,6 +19,8 @@ $lang["BRAINSTORM_FORUM_STATUS_STOPPED"] = 'abgebrochen am';
 
 $lang["BRAINSTORM_FORUM_POSTS"] = 'Foren / Antworten';
 
+$lang["BRAINSTORM_FORUM_HELP"] = 'manual_prozesse_foren.pdf';
+
 $lang["BRAINSTORM_PRINT_FORUM"] = 'forum.png';
 
 // check for custom lang file

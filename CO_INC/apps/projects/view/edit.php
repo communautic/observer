@@ -90,14 +90,14 @@ if(is_array($phases)) {
     <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive loadProjectsPhase" rel="<?php echo($phase->id);?>">
 	<tr>
 		<td class="tcell-left text11">&nbsp;</td>
-		<td class="tcell-right"><span class="loadProjectsPhase bold co-link" rel="<?php echo($phase->id);?>"><?php echo($num[$phase->id] . " " . $phase->title);?></span></td>
+		<td class="tcell-right" colspan="3"><span class="loadProjectsPhase bold co-link" rel="<?php echo($phase->id);?>"><?php echo($num[$phase->id] . " " . $phase->title);?></span></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11">&nbsp;</td>
-		<td class="tcell-right">
-        <span class="text11 content-date"><?php echo $lang["GLOBAL_DURATION"];?></span><span class="text11"><?php echo($phase->startdate . " - " . $phase->enddate);?></span>
-</td>
-	</tr>
+		<td class="tcell-right" width="220"><span class="text11 content-date"><?php echo $lang["GLOBAL_DURATION"];?></span><span class="text11"><?php echo($phase->startdate . " - " . $phase->enddate);?></span></td>
+		<td class="tcell-right" width="110"><span class="text11"><span style="display: inline; margin-right: 20px;"></span><?php echo($phase->status_text);?></span></td>
+	    <td class="tcell-right"><?php if($project->access != "guest") { ?><span class="text11"><span style="display: inline; margin-right: 20px;"><?php echo $lang["PROJECT_FOLDER_CHART_REALISATION"];?></span><?php echo($phase->realisation);?>%</span><?php } ?></td>
+    </tr>
 </table>
     <?php 
 	$i++;

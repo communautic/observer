@@ -44,6 +44,13 @@ function brainstormsAccess(name) {
 		});
 	}
 
+
+	this.actionHelp = function() {
+		var url = "/?path=apps/brainstorms/modules/access&request=getHelp";
+		$("#documentloader").attr('src', url);
+	}
+
+
 }
 
 

@@ -131,6 +131,9 @@ if (!empty($_GET['request'])) {
 		case 'convertToProject':
 			echo($brainstormsRosters->convertToProject($_GET['id'],$_GET['kickoff'],$_GET['folder'],$_GET['protocol']));
 		break;
+		case 'getHelp':
+			echo($brainstormsRosters->getHelp());
+		break;
 
 	}
 }
