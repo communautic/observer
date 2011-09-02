@@ -784,28 +784,30 @@ class ProjectsModel extends Model {
 			}
 		
 		// phases
-		$q = "SELECT id,title,team,management FROM " . CO_TBL_PROJECTS_PHASES . " WHERE pid = '$id' and bin='0'";
+		$q = "SELECT id,title,protocol,team,management FROM " . CO_TBL_PROJECTS_PHASES . " WHERE pid = '$id' and bin='0'";
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
 			$phaseid = $row["id"];
 			$title = $row["title"];
+			$protocol = $row["protocol"];
 			$team = $row["team"];
 			$management = $row["management"];
 			
-			$qp = "INSERT INTO " . CO_TBL_PROJECTS_PHASES . " set pid='$id_new',title='$title',team='$team',management='$management'";
+			$qp = "INSERT INTO " . CO_TBL_PROJECTS_PHASES . " set pid='$id_new',title='$title',protocol='$protocol',team='$team',management='$management'";
 			$rp = mysql_query($qp, $this->_db->connection);
 			$id_p_new = mysql_insert_id();
 			// tasks
-			$qt = "SELECT id,dependent,cat,text,startdate,enddate FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where phaseid='$phaseid' and bin='0' ORDER BY id ASC";		
+			$qt = "SELECT id,dependent,cat,text,protocol,startdate,enddate FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where phaseid='$phaseid' and bin='0' ORDER BY id ASC";		
 			$resultt = mysql_query($qt, $this->_db->connection);
 			while($rowt = mysql_fetch_array($resultt)) {
 				$id = $rowt["id"];
 				$cat = $rowt["cat"];
 				$text = $rowt["text"];
+				$protocol = $rowt["protocol"];
 				$startdate = $rowt["startdate"];
 				$enddate = $rowt["enddate"];
 				$dependent = $rowt["dependent"];
-				$qtn = "INSERT INTO " . CO_TBL_PROJECTS_PHASES_TASKS . " set pid = '$id_new', phaseid = '$id_p_new', dependent = '$dependent', cat = '$cat',status = '0',text = '$text',startdate = '$startdate',enddate = '$enddate'";
+				$qtn = "INSERT INTO " . CO_TBL_PROJECTS_PHASES_TASKS . " set pid = '$id_new', phaseid = '$id_p_new', dependent = '$dependent', cat = '$cat',status = '0',text = '$text',protocol = '$protocol', startdate = '$startdate',enddate = '$enddate'";
 				$rpn = mysql_query($qtn, $this->_db->connection);
 				$id_t_new = mysql_insert_id();
 				// BUILD OLD NEW TASK ID ARRAY
@@ -813,7 +815,6 @@ class ProjectsModel extends Model {
 			}
 			
 		}
-		//print_r($t);
 		// Updates Dependencies for new tasks
 			$qt = "SELECT id,dependent FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where pid='$id_new' and bin='0' ORDER BY id ASC";		
 			$resultt = mysql_query($qt, $this->_db->connection);
@@ -1436,12 +1437,12 @@ class ProjectsModel extends Model {
 
 						// phonecalls
 						if(in_array("phonecalls",$active_modules)) {
-							$qp ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_PHONECALLS . " where pid = '$pid'";
-							$resultp = mysql_query($qp, $this->_db->connection);
-							while ($rowp = mysql_fetch_array($resultp)) {
-								if($rowp["bin"] == "1") {
-								$idp = $rowp["id"];
-									foreach($rowp as $key => $val) {
+							$qpc ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_PHONECALLS . " where pid = '$pid'";
+							$resultpc = mysql_query($qpc, $this->_db->connection);
+							while ($rowpc = mysql_fetch_array($resultpc)) {
+								if($rowpc["bin"] == "1") {
+								$idp = $rowpc["id"];
+									foreach($rowpc as $key => $val) {
 										$phonecall[$key] = $val;
 									}
 									$phonecall["bintime"] = $this->_date->formatDate($phonecall["bintime"],CO_DATETIME_FORMAT);
@@ -1451,7 +1452,7 @@ class ProjectsModel extends Model {
 								}
 							}
 						}
-	
+						
 						// documents_folder
 						if(in_array("documents",$active_modules)) {
 							$qd ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_DOCUMENTS_FOLDERS . " where pid = '$pid'";
@@ -1501,8 +1502,6 @@ class ProjectsModel extends Model {
 									$arr["vdocs"] = $vdocs;
 							}
 						}
-						
-				
 					}
 				}
 			}

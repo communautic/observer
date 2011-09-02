@@ -66,7 +66,12 @@ if(is_array($phases)) {
 	</tr>
     <tr>
 		<td class="tcell-left">&nbsp;</td>
-		<td class="grey smalltext"><?php echo $lang["GLOBAL_DURATION"];?> <?php echo($phase->startdate . " - " . $phase->enddate);?>
+		<td class="grey smalltext"><?php echo $lang["GLOBAL_DURATION"];?> <?php echo($phase->startdate . " - " . $phase->enddate);?>&nbsp;
+</td>
+	</tr>
+        <tr>
+		<td class="tcell-left">&nbsp;</td>
+		<td class="grey smalltext"><?php if($project->access != "guest") { ?><?php echo $lang["PROJECT_FOLDER_CHART_REALISATION"];?> <?php echo($phase->realisation);?>%<?php } ?>
         <br />&nbsp;
 </td>
 	</tr>

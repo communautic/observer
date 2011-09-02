@@ -481,24 +481,22 @@ class ProjectsPhasesModel extends ProjectsModel {
 	function createDuplicate($id) {
 		global $session, $lang;
 		// phase
-		$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES . " (pid,title,team,management) SELECT pid,CONCAT(title,' ".$lang["GLOBAL_DUPLICAT"]."'),team,management FROM " . CO_TBL_PROJECTS_PHASES . " where id='$id'";
+		$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES . " (pid,title,protocol,team,management) SELECT pid,CONCAT(title,' ".$lang["GLOBAL_DUPLICAT"]."'),protocol,team,management FROM " . CO_TBL_PROJECTS_PHASES . " where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
 		// tasks
-		//$qt = "INSERT INTO " . CO_TBL_PROJECTS_PHASES_TASKS . " (pid,phaseid,cat,status,text,startdate,enddate) SELECT pid,$id_new,cat,'0',text,startdate,enddate FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where phaseid='$id' and bin='0'";
-		//$resultt = mysql_query($qt, $this->_db->connection);
-		// tasks
-		$qt = "SELECT id,pid,dependent,cat,text,startdate,enddate FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where phaseid='$id' and bin='0' ORDER BY startdate,status";		
+		$qt = "SELECT id,pid,dependent,cat,text,protocol,startdate,enddate FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where phaseid='$id' and bin='0' ORDER BY startdate,status";		
 		$resultt = mysql_query($qt, $this->_db->connection);
 		while($rowt = mysql_fetch_array($resultt)) {
 			$id = $rowt["id"];
 			$pid = $rowt["pid"];
 			$cat = $rowt["cat"];
 			$text = $rowt["text"];
+			$protocol = $rowt["protocol"];
 			$startdate = $rowt["startdate"];
 			$enddate = $rowt["enddate"];
 			$dependent = $rowt["dependent"];
-			$qtn = "INSERT INTO " . CO_TBL_PROJECTS_PHASES_TASKS . " set pid = '$pid', phaseid = '$id_new', dependent = '$dependent', cat = '$cat', status = '0', text = '$text', startdate = '$startdate', enddate = '$enddate'";
+			$qtn = "INSERT INTO " . CO_TBL_PROJECTS_PHASES_TASKS . " set pid = '$pid', phaseid = '$id_new', dependent = '$dependent', cat = '$cat', status = '0', text = '$text', protocol = '$protocol', startdate = '$startdate', enddate = '$enddate'";
 			$rpn = mysql_query($qtn, $this->_db->connection);
 			$id_t_new = mysql_insert_id();
 			// BUILD OLD NEW TASK ID ARRAY
@@ -517,9 +515,6 @@ class ProjectsPhasesModel extends ProjectsModel {
 			$qtn = "UPDATE " . CO_TBL_PROJECTS_PHASES_TASKS . " set dependent = '$dep' WHERE id='$id'";
 			$rpn = mysql_query($qtn, $this->_db->connection);
 		}
-		
-		
-		
 		if ($result) {
 			return $id_new;
 		}
