@@ -175,6 +175,15 @@ if (!empty($_GET['request'])) {
 		case 'emptyBin':
 			echo($contacts->emptyBin());
 		break;
+		case 'binItem':
+			echo($contacts->binItem($_GET['id']));
+		break;
+		case 'deleteItem':
+			echo($contacts->deleteItem($_GET['id']));
+		break;
+		case 'restoreItem':
+			echo($contacts->restoreItem($_GET['id']));
+		break;
 	}
 	
 }

@@ -55,6 +55,8 @@ $lang['CONTACTS_SYSADMIN_REMOVE_RIGHT'] = 'Berechtigung entfernen';
 
 $lang['CONTACTS_CUSTOM'] = 'Notiz';
 
+$lang['CONTACTS_AVATARS'] = 'Kontakte / Bilder';
+
 // Access codes Email
 $lang['ACCESS_CODES_EMAIL_SUBJECT'] = 'Company Observer© Zugangscodes';
 $lang['ACCESS_CODES_EMAIL'] =	'<p style="font-face: Arial, Verdana; font-size: small">Hiermit erhalten Sie Zugangscodes zur erstmaligen Anmeldung für die Online-Managementplattform Company Observer ©:</p>' .

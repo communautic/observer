@@ -106,10 +106,11 @@ class BrainstormsModel extends Model {
 		$array["activebrainstorms"] = $this->getNumBrainstorms($id, $status="1");
 		$array["inactivebrainstorms"] = $this->getNumBrainstorms($id, $status="2");*/
 		
-		$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
+		/*$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
 		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
 		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
-		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
+		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);*/
+		$array["today"] = $this->_date->formatDate("now",CO_DATETIME_FORMAT);
 		
 		$array["canedit"] = true;
 		$array["access"] = "sysadmin";
@@ -512,6 +513,7 @@ class BrainstormsModel extends Model {
 		// dates
 		$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
 		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
+		$array["today"] = $this->_date->formatDate("now",CO_DATETIME_FORMAT);
 		
 		// other functions
 		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);

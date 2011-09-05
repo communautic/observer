@@ -10,6 +10,74 @@ function contactsContact(name) {
 	this.name = name;
 
 
+	this.createUploader = function(ele){            
+		var did = $("#contacts1 .active-link:visible").attr("rel");
+		var num = 0;
+		var numdocs = 0;
+		var uploader = new qq.FileUploader({
+			element: ele[0],
+			multiple: false,
+			allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
+			classes: {
+            // used to get elements from templates
+            button: 'ui-upload-button',
+            drop: 'ui-upload-drop-area',
+            dropActive: 'ui-upload-drop-area-active',
+            list: 'ui-upload-list',
+                        
+            file: 'ui-upload-file',
+            spinner: 'ui-upload-spinner',
+            size: 'ui-upload-size',
+            cancel: 'ui-upload-cancel',
+
+            // added to list item when upload completes
+            // used in css to hide progress spinner
+            success: 'ui-upload-success',
+            fail: 'ui-upload-fail',
+        },
+			template: '<div style="position: absolute; top: 0; right: 17px; width: 15px; height: 15px; z-index: 2"><a rel="'+did+'" id="avatarBinItem" class="binItem"><span class="icon-delete"></span></a></div><div class="ui-upload-button"></div>' +
+					'<div class="ui-upload-drop-area"><span>' + FILE_DROP_AREA + '</span></div>' +
+					'<div class="ui-upload-list"></div></div>',
+			fileTemplate: '<span id="avatar" style="width: 80px;">' +
+					'<span class="ui-upload-file docitem"></span><br />' +
+					'<span class="ui-upload-spinner"></span><br />' +
+					'<span class="ui-upload-size"></span><br />' +
+					'<a class="ui-upload-cancel" href="#">' + UPLOAD_CANCEL + '</a><br />' +
+					//'<span class="ui-upload-failed-text">Failed</span>' +
+				'</span>',
+			action: '/',
+			sizeLimit: 50*1024*1024, // max size
+			params: {
+				path: 'classes/user_image',
+				request: 'createNew',
+				did: did,
+				//module: this.name
+			},
+			onSubmit: function(id, fileName){ 
+				$('#contacts-right .ui-upload-list').show();
+				$('#avatarBinItem').hide();
+			},
+			onProgress: function(id, fileName, loaded, total){},
+			onComplete: function(id, fileName, data){
+				//$('#contacts-right .ui-upload-list').hide();
+				$("#contacts1 .active-link:visible").trigger("click");
+			},
+			onCancel: function(id, fileName){
+				$('#contacts-right .ui-upload-list').hide();
+				$('#avatarBinItem').show();
+				},
+			debug: false
+		});
+		
+		var name = $('#avatarImage').css('background-image');
+		var patt=/\"|\'|\)/g;
+		var img = name.split('/').pop().replace(patt,'');
+		if(img == "avatar.jpg") {
+			$('#avatarBinItem').hide();
+		}
+	}
+	
+
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#contacts .title").fieldValue();
 		if(title == "") {
@@ -243,6 +311,26 @@ function contactsContact(name) {
 		var url = "/?path=apps/contacts&request=getContactsHelp";
 		$("#documentloader").attr('src', url);
 	}
+	
+	this.binItem = function(id) {
+		var txt = ALERT_DELETE;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=binItem&id=" + id, success: function(data){
+						if(data){
+							$("#contacts1 .active-link:visible").trigger("click");
+						} 
+						}
+					});
+				} 
+			}
+		});	
+	}
 
 
 	// Recycle Bin
@@ -279,6 +367,48 @@ function contactsContact(name) {
 					$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=restoreContact&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
 							$('#contact_'+id).slideUp();
+						}
+					}
+					});
+				} 
+			}
+		});
+	}
+	
+	
+	this.binDeleteItem = function(id) {
+		var txt = ALERT_DELETE_REALLY;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=deleteItem&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$('#contact_avatar_'+id).slideUp();
+						}
+					}
+					});
+				} 
+			}
+		});
+	}
+
+
+	this.binRestoreItem = function(id) {
+		var txt = ALERT_RESTORE;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=restoreItem&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$('#contact_avatar_'+id).slideUp();
 						}
 					}
 					});
@@ -1271,5 +1401,10 @@ $(document).ready(function() {
 		});
 		return false;
 	});
+	
+	$(".user-image-uploader:visible").livequery(function() {
+		//var module = getCurrentModule();
+		contacts.createUploader($(this));
+	})
 
 });

@@ -28,6 +28,7 @@ var ALERT_ACCESS_IS_ADMIN = 'is already Administrator';
 var ALERT_CHOOSE_FOLDER = 'Please choose a folder for this new project';
 var ALERT_FORUM_RESPONSE_EMPTY = 'Please write your answer';
 
-var ALERT_UPLOAD_SIZE = "{file} is too large, maximum file size is {sizeLimit}."
+var ALERT_UPLOAD_SIZE = "{file} is too large, maximum file size is {sizeLimit}.";
+var ALERT_UPLOAD_TYPE = "{file} has invalid extension. Only {extensions} are allowed.";
 var UPLOAD_FROM = "from";
 var UPLOAD_CANCEL = "Cancel";

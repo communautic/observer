@@ -6,7 +6,7 @@
       	<?php echo $child->user;?>
       	<table border="0" cellpadding="0" cellspacing="0">
       		<tr>
-                <td style="width: 40px;"><img src="<?php echo CO_FILES;?>/img/avatar.jpg" width="30" height="45" /></td>
+                <td style="width: 40px;"><img src="<?php echo $child->avatar;?>" width="30" height="45" /></td>
                 <td style="width: 62px;"><?php echo $child->datetime;?></td>
                 <td width="27" style="padding-top: 4px;">
                 	<input name="task[<?php echo $child->id;?>]" type="checkbox" value="<?php echo $child->id;?>" class="cbx jNiceHidden <?php if(!$perm) { ?>noperm<?php } ?>" <?php echo $checked ;?> />

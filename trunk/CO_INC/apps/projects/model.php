@@ -793,7 +793,7 @@ class ProjectsModel extends Model {
 			$team = $row["team"];
 			$management = $row["management"];
 			
-			$qp = "INSERT INTO " . CO_TBL_PROJECTS_PHASES . " set pid='$id_new',title='$title',protocol='$protocol',team='$team',management='$management'";
+			$qp = "INSERT INTO " . CO_TBL_PROJECTS_PHASES . " set pid='$id_new',title='$title',protocol='$protocol',team='$team',management='$management',created_date='$now',created_user='$session->uid',edited_date='$now',edited_user='$session->uid'";
 			$rp = mysql_query($qp, $this->_db->connection);
 			$id_p_new = mysql_insert_id();
 			// tasks

@@ -640,6 +640,33 @@ function getContactSend($id) {
 		echo sprintf($lang['CONTACTS_SYSADMIN_REMOVE'], $now, $user);
 	}
 	
+	function binItem($id) {
+		$retval = $this->model->binItem($id);
+		if($retval){
+			 return "true";
+		  } else{
+			 return "error";
+		  }
+	}
+	
+	function deleteItem($id) {
+		$retval = $this->model->deleteItem($id);
+		if($retval){
+			 return "true";
+		  } else{
+			 return "error";
+		  }
+	}
+	
+	function restoreItem($id) {
+		$retval = $this->model->restoreItem($id);
+		if($retval){
+			 return "true";
+		  } else{
+			 return "error";
+		  }
+	}
+	
 }
 
 $contacts = new Contacts("contacts");

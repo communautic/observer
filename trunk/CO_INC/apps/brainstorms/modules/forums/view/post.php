@@ -6,7 +6,7 @@
       	<?php echo $post->user;?>
       	<table border="0" cellpadding="0" cellspacing="0">
       		<tr>
-                <td style="width: 40px;"><img src="<?php echo CO_FILES;?>/img/avatar.jpg" width="30" height="45" /></td>
+                <td style="width: 40px;"><img src="<?php echo $post->avatar;?>" width="30" height="45" /></td>
                 <td style="width: 62px;"><?php echo $post->datetime;?></td>
                 <td width="27" style="padding-top: 4px;">
                     <input type="checkbox" value="<?php echo $post->id;?>" class="cbx jNiceHidden <?php if(!$forum->canedit) { ?>noperm<?php } ?>" <?php echo $checked ;?> />

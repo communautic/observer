@@ -13,6 +13,9 @@
 <input type="hidden" name="id" value="<?php echo($contact->id);?>">
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
+    <td>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+  <tr>
     <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_FIRSTNAME'];?></span></span></td>
     <td class="tcell-right-nopadding"><input name="firstname" type="text" class="title2 bg" value="<?php echo($contact->firstname);?>" /></td>
   </tr>
@@ -39,6 +42,18 @@
   <tr>
     <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_EMAIL'];?></span></span></td>
     <td class="tcell-right-nopadding"><input id="email" name="email" type="text" class="bg" value="<?php echo($contact->email);?>" /></td>
+  </tr>
+</table>
+</td>
+<td width="80" id="avatarImage" style="padding-top: 0; height: 120px; position: relative; background-image:url(<?php echo($contact->avatar);?>); background-repeat: no-repeat">
+<div id="contacts_image_uploader" class="user-image-uploader">		
+	<noscript>			
+	<p>Please enable JavaScript to use file uploader.</p>
+	<!-- or put a simple form for upload here -->
+	</noscript>
+</div>
+</td>
+<td width="15"></td>
   </tr>
 </table>
 <div class="content-spacer"></div>

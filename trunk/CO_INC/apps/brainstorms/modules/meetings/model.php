@@ -366,8 +366,11 @@ class BrainstormsMeetingsModel extends BrainstormsModel {
 
    	function createDuplicate($id) {
 		global $session, $lang;
+		
+		$now = gmdate("Y-m-d H:i:s");
+		
 		// meeting
-		$q = "INSERT INTO " . CO_TBL_BRAINSTORMS_MEETINGS . " (pid,title,item_date,start,end,location,location_ct,length,management,management_ct,participants,participants_ct) SELECT pid,CONCAT(title,' " . $lang["GLOBAL_DUPLICAT"] . "'),item_date,start,end,location,location_ct,length,management,management_ct,participants,participants_ct FROM " . CO_TBL_BRAINSTORMS_MEETINGS . " where id='$id'";
+		$q = "INSERT INTO " . CO_TBL_BRAINSTORMS_MEETINGS . " (pid,title,item_date,start,end,location,location_ct,length,management,management_ct,participants,participants_ct,created_date,created_user,edited_date,edited_user) SELECT pid,CONCAT(title,' " . $lang["GLOBAL_DUPLICAT"] . "'),item_date,start,end,location,location_ct,length,management,management_ct,participants,participants_ct,'$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_BRAINSTORMS_MEETINGS . " where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
 		// tasks

@@ -149,6 +149,8 @@ class BrainstormsForumsModel extends BrainstormsModel {
 	function getDetails($id,$view) {
 		global $session, $lang;
 		
+		$this->_documents = new BrainstormsDocumentsModel();
+		
 		$q = "SELECT * FROM " . CO_TBL_BRAINSTORMS_FORUMS . " where id = '$id'";
 
 		$result = mysql_query($q, $this->_db->connection);
@@ -179,6 +181,8 @@ class BrainstormsForumsModel extends BrainstormsModel {
 		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
 		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
 		$array["current_user"] = $session->uid;
+		
+		$array["documents"] = $this->_documents->getDocListFromIDs($array['documents'],'documents');
 		
 		switch($array["access"]) {
 			case "0":
@@ -267,7 +271,9 @@ class BrainstormsForumsModel extends BrainstormsModel {
 					}
 				}
 				
+				$posts["avatar"] = $this->_users->getAvatar($posts["user"]);
 				$posts["user"] = $this->_users->getUserFullname($posts["user"]);
+				
 				$posts["datetime"] = $this->_date->formatDate($posts["datetime"],CO_DATETIME_FORMAT);
 				$posts["children"] = array();
 				
@@ -294,7 +300,7 @@ class BrainstormsForumsModel extends BrainstormsModel {
 	}
 
 
-	function setDetails($id,$title,$protocol,$forum_access,$forum_access_orig,$forum_status,$forum_status_date) {
+	function setDetails($id,$title,$protocol,$documents,$forum_access,$forum_access_orig,$forum_status,$forum_status_date) {
 		global $session, $system;
 
 		$forum_status_date = $this->_date->formatDate($forum_status_date);
@@ -326,7 +332,7 @@ class BrainstormsForumsModel extends BrainstormsModel {
 			$accesssql = "access='$forum_access', access_date='$forum_access_date', access_user = '$session->uid',";
 		}
 		
-		$q = "UPDATE " . CO_TBL_BRAINSTORMS_FORUMS . " set title = '$title', protocol = '$protocol', $accesssql status = '$forum_status', $sql = '$forum_status_date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_BRAINSTORMS_FORUMS . " set title = '$title', protocol = '$protocol', documents = '$documents', $accesssql status = '$forum_status', $sql = '$forum_status_date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 				
 		if ($result) {
@@ -351,13 +357,13 @@ class BrainstormsForumsModel extends BrainstormsModel {
 
 	function createDuplicate($id) {
 		global $session, $lang;
+		
+		$now = gmdate("Y-m-d H:i:s");
+		
 		// forum
-		$q = "INSERT INTO " . CO_TBL_BRAINSTORMS_FORUMS . " (pid,title,protocol) SELECT pid,CONCAT(title,' ".$lang["GLOBAL_DUPLICAT"]."'),protocol FROM " . CO_TBL_BRAINSTORMS_FORUMS . " where id='$id'";
+		$q = "INSERT INTO " . CO_TBL_BRAINSTORMS_FORUMS . " (pid,title,protocol,created_date,created_user,edited_date,edited_user) SELECT pid,CONCAT(title,' ".$lang["GLOBAL_DUPLICAT"]."'),protocol,'$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_BRAINSTORMS_FORUMS . " where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
-		// tasks
-		//$qt = "INSERT INTO " . CO_TBL_BRAINSTORMS_FORUMS_POSTS . " (pid,phaseid,cat,status,text,startdate,enddate) SELECT pid,$id_new,cat,'0',text,startdate,enddate FROM " . CO_TBL_BRAINSTORMS_FORUMS_POSTS . " where phaseid='$id' and bin='0'";
-		//$resultt = mysql_query($qt, $this->_db->connection);
 		// tasks
 		$qt = "SELECT id,replyid,user,datetime,text,status FROM " . CO_TBL_BRAINSTORMS_FORUMS_POSTS . " where pid='$id' and bin='0' ORDER BY id";		
 		$resultt = mysql_query($qt, $this->_db->connection);
@@ -494,6 +500,7 @@ class BrainstormsForumsModel extends BrainstormsModel {
 		$task["id"] = $iid;
 		$task["num"] = $num;
 		$task["user"] = $this->_users->getUserFullname($session->uid);
+		$task["avatar"] = $this->_users->getAvatar($session->uid);
 		$task["datetime"] = $this->_date->formatDate($now,CO_DATETIME_FORMAT);
 		$task["text"] = $text;
 		$tasks = new Lists($task);

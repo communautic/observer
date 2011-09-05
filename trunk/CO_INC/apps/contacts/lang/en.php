@@ -54,6 +54,8 @@ $lang['CONTACTS_SYSADMIN_REMOVE_RIGHT'] = 'remove Rights';
 
 $lang['CONTACTS_CUSTOM'] = 'Note';
 
+$lang['CONTACTS_AVATARS'] = 'Contacts / Images';
+
 // Access codes Email
 $lang['ACCESS_CODES_EMAIL_SUBJECT'] = 'Company Observer© Access Codes';
 $lang['ACCESS_CODES_EMAIL'] =	'<p style="font-face: Arial, Verdana; font-size: small">Below are your access codes for the first login to the online management system Company Observer ©:</p>' .
