@@ -28,8 +28,8 @@ $lang["BRAINSTORM_FOLDER_CHART_TASKS"] = 'Arbeitspakete in Plan';
 
 // Brainstorm Right
 $lang["BRAINSTORM_TITLE"] = 'Prozess';
-$lang['BRAINSTORM_NOTE_ADD'] = 'Tätigkeiten';
-$lang['BRAINSTORM_NOTE_NEW'] = 'neue Tätigkeit';
+$lang['BRAINSTORM_NOTE_ADD'] = 'Ideen';
+$lang['BRAINSTORM_NOTE_NEW'] = 'neue Idee';
 
 $lang["BRAINSTORM_CLIENT"] = 'Projektauftraggeber';
 $lang["BRAINSTORM_MANAGEMENT"] = 'Projektleitung';
@@ -42,8 +42,8 @@ $lang["BRAINSTORM_STATUS_FINISHED"] = 'abgeschlossen am';
 $lang["BRAINSTORM_STATUS_STOPPED"] = 'abgebrochen am';
 
 // Bin
-$lang['BRAINSTORM_TITLE_NOTES_BIN'] = 'Prozesse/Tätigkeiten';
-$lang['BRAINSTORM_NOTE_BIN'] = 'Tätigkeit';
+$lang['BRAINSTORM_TITLE_NOTES_BIN'] = 'Prozesse/Ideen';
+$lang['BRAINSTORM_NOTE_BIN'] = 'Ideen';
 
 $lang["BRAINSTORM_HANDBOOK"] = 'Projekthandbuch';
 

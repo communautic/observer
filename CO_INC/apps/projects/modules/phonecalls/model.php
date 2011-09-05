@@ -286,8 +286,11 @@ class ProjectsPhonecallsModel extends ProjectsModel {
 
    	function createDuplicate($id) {
 		global $session, $lang;
+		
+		$now = gmdate("Y-m-d H:i:s");
+		
 		// phonecall
-		$q = "INSERT INTO " . CO_TBL_PROJECTS_PHONECALLS . " (pid,title,item_date,start,end,protocol,management,management_ct,status) SELECT pid,CONCAT(title,' " . $lang["GLOBAL_DUPLICAT"] . "'),item_date,start,end,protocol,management,management_ct,status FROM " . CO_TBL_PROJECTS_PHONECALLS . " where id='$id'";
+		$q = "INSERT INTO " . CO_TBL_PROJECTS_PHONECALLS . " (pid,title,item_date,start,end,protocol,management,management_ct,status,created_date,created_user,edited_date,edited_user) SELECT pid,CONCAT(title,' " . $lang["GLOBAL_DUPLICAT"] . "'),item_date,start,end,protocol,management,management_ct,status,'$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_PROJECTS_PHONECALLS . " where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
 		if ($result) {

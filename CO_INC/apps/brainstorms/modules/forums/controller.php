@@ -131,10 +131,12 @@ class BrainstormsForums extends Brainstorms {
 	}*/
 
 
-	function setDetails($id,$title,$protocol,$forum_access,$forum_access_orig,$forum_status,$forum_status_date) {
-		if($arr = $this->model->setDetails($id,$title,$protocol,$forum_access,$forum_access_orig,$forum_status,$forum_status_date)){
-			return '{ "action": "edit" , "id": "' . $arr["id"] . '", "access": "' . $forum_access . '", "status": "' . $forum_status . '", "startdate": "' . $arr["startdate"] . '", "enddate": "' . $arr["enddate"] . '"}';
-		  	//return '{ "action": "edit" , "id": "' . $arr["id"] . '", "access": "' . $forum_access . '", "status": "' . $forum_status . '"}';
+	function setDetails($id,$title,$protocol,$documents,$forum_access,$forum_access_orig,$forum_status,$forum_status_date) {
+		if($arr = $this->model->setDetails($id,$title,$protocol,$documents,$forum_access,$forum_access_orig,$forum_status,$forum_status_date)){
+			return '{ "action": "edit" , "id": "' . $arr["id"] . '", "access": "' . $forum_access . '", "status": "' . $forum_status . '"}';
+			//return '{ "action": "edit" , "id": "' . $arr["id"] . '", "access": "' . $forum_access . '", "status": "' . $forum_status . '", "startdate": "' . $arr["startdate"] . '", "enddate": "' . $arr["enddate"] . '"}';
+
+			//return '{ "action": "edit" , "id": "' . $arr["id"] . '", "access": "' . $forum_access . '", "status": "' . $forum_status . '"}';
 		  } else{
 			 return "error";
 		  }

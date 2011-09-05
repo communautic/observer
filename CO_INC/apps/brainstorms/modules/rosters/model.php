@@ -188,6 +188,7 @@ class BrainstormsRostersModel extends BrainstormsModel {
 		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
 		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
 		$array["current_user"] = $session->uid;
+		$array["today"] = $this->_date->formatDate("now",CO_DATETIME_FORMAT);
 		
 		switch($array["access"]) {
 			case "0":
@@ -442,8 +443,11 @@ class BrainstormsRostersModel extends BrainstormsModel {
 
 	function createDuplicate($id) {
 		global $session, $lang;
+		
+		$now = gmdate("Y-m-d H:i:s");
+		
 		// roster
-		$q = "INSERT INTO " . CO_TBL_BRAINSTORMS_ROSTERS . " (pid,title) SELECT pid,CONCAT(title,' " . $lang["GLOBAL_DUPLICAT"] . "') FROM " . CO_TBL_BRAINSTORMS_ROSTERS . " where id='$id'";
+		$q = "INSERT INTO " . CO_TBL_BRAINSTORMS_ROSTERS . " (pid,title,created_date,created_user,edited_date,edited_user) SELECT pid,CONCAT(title,' " . $lang["GLOBAL_DUPLICAT"] . "'),'$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_BRAINSTORMS_ROSTERS . " where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
 		// cols
@@ -451,7 +455,25 @@ class BrainstormsRostersModel extends BrainstormsModel {
 		$q = "SELECT * FROM " . CO_TBL_BRAINSTORMS_ROSTERS_COLUMNS . " WHERE pid = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
-			$col_notes = '';
+			$colID = $row["id"];
+			$sort = $row['sort'];
+			$qc = "INSERT INTO " . CO_TBL_BRAINSTORMS_ROSTERS_COLUMNS . " set pid = '$id_new', sort='$sort'";
+			$resultc = mysql_query($qc, $this->_db->connection);
+			$colID_new = mysql_insert_id();
+			
+			$qn = "SELECT * FROM " . CO_TBL_BRAINSTORMS_ROSTERS_NOTES . " where cid = '$colID' and bin='0' ORDER BY sort";
+			$resultn = mysql_query($qn, $this->_db->connection);
+			$num_notes[] = mysql_num_rows($resultn);
+			$items = array();
+			while($rown = mysql_fetch_array($resultn)) {
+				$note_id = $rown["id"];
+				$title = $rown["title"];
+				$text = $rown["text"];
+				$ms = $rown["ms"];
+				$qnn = "INSERT INTO " . CO_TBL_BRAINSTORMS_ROSTERS_NOTES . " set cid='$colID_new', title = '$title', text = '$text', ms = '$ms',created_date='$now',created_user='$session->uid',edited_date='$now',edited_user='$session->uid'";
+				$resultnn = mysql_query($qnn, $this->_db->connection);
+			}
+			/*$col_notes = '';
 			$sort = $row['sort'];
 			// notes
 			$notes = explode(",",$row["items"]);
@@ -469,9 +491,9 @@ class BrainstormsRostersModel extends BrainstormsModel {
 				}
 			}
 			$col_notes = rtrim($col_notes, ",");
+			*/
 			
-			$qc = "INSERT INTO " . CO_TBL_BRAINSTORMS_ROSTERS_COLUMNS . " set pid = '$id_new', sort = '$sort', items = '$col_notes'";
-			$resultc = mysql_query($qc, $this->_db->connection);
+			
 		}
 		if ($result) {
 			return $id_new;

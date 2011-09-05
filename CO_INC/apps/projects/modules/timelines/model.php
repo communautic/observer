@@ -47,7 +47,7 @@ class ProjectsTimelinesModel extends ProjectsModel {
 			$project["folder"] = $projectsmodel->getProjectFolderDetails($row->folder,"folder");
 			$project["startdate"] = $this->_date->formatDate($row->startdate,CO_DATE_FORMAT);
 			$project["enddate"] = $this->_date->formatDate($row->enddate,CO_DATE_FORMAT);
-			$project["management"] = $contactsmodel->getUserList($row->management,'management');
+			$project["management"] = $contactsmodel->getUserListPlain($row->management,'management');
 			$project["team"] = $contactsmodel->getUserList($row->team,'team');
 			$project["datetime"] = $this->_date->formatDate("now",CO_DATETIME_FORMAT);
 			$project["css_width"] = 136;

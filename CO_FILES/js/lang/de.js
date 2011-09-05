@@ -34,6 +34,7 @@ var ALERT_CHOOSE_FOLDER = 'Bitte wählen Sie einen Ordner für das neue Projekt'
 var ALERT_FORUM_RESPONSE_EMPTY = 'Bitte schreiben Sie einen Antworttext';
 
 
-var ALERT_UPLOAD_SIZE = "{file} überschreitet die maximale Dateigröße von {sizeLimit}."
+var ALERT_UPLOAD_SIZE = "{file} überschreitet die maximale Dateigröße von {sizeLimit}.";
+var ALERT_UPLOAD_TYPE = "{file} hat eine ungültige Dateiendung. Nur {extensions} sind erlaubt.";
 var UPLOAD_FROM = "von";
 var UPLOAD_CANCEL = "Abbrechen";

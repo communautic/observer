@@ -125,6 +125,7 @@ background-color: #fff6b5; }
 
 #brainstorms .SendToContent { display: none; background-color: #E5E5E5; font-style: italic; padding: 10px; }
 
+#brainstorms .qq-upload-button-hover {background-color:#b2a85b;}
 #brainstorms .qq-upload-drop-area { background: #fff6b5; }
 #brainstorms .qq-upload-drop-area-active { background:#b2a85b;}
 

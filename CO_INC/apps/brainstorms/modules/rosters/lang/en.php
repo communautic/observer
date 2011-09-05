@@ -8,7 +8,7 @@ $lang["BRAINSTORM_ROSTER_NEW"] = 'New Roster';
 $lang["BRAINSTORM_ROSTER_ACTION_NEW"] = 'new Roster';
 $lang["BRAINSTORM_ROSTER_COLUMN_NEW"] = 'Columns';
 $lang["BRAINSTORM_ROSTER_TASK_NEW"] = 'New Item';
-$lang['BRAINSTORM_ROSTER_NOTES'] = 'Tätigkeiten';
+$lang['BRAINSTORM_ROSTER_NOTES'] = 'Ideas';
 
 $lang["BRAINSTORM_ROSTER_COLUMNS_BIN"] = 'Roster/Columns';
 $lang["BRAINSTORM_ROSTER_NOTES_BIN"] = 'Roster/Notes';

@@ -48,9 +48,9 @@ if(is_array($brainstorms)) {
 <div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-footer">
   <tr>
-    <td class="left"><?php echo $lang["EDITED_BY_ON"];?> <?php echo($folder->edited_user.", ".$folder->edited_date)?></td>
+    <td class="left"><?php echo($lang["GLOBAL_FOOTER_STATUS"] . " " . $folder->today);?></td>
     <td class="middle"></td>
-    <td class="right"><?php echo $lang["CREATED_BY_ON"];?> <?php echo($folder->created_user.", ".$folder->created_date);?></td>
+    <td class="right"></td>
   </tr>
 </table>
 </div>

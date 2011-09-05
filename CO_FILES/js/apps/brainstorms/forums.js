@@ -18,6 +18,7 @@ function brainstormsForums(name) {
 				formData[i].value = text;
 			} 
 		}
+		formData[formData.length] = processDocListApps('documents');
 		formData[formData.length] = processListApps('forum_access');
 		formData[formData.length] = processListApps('forum_status');
 	}

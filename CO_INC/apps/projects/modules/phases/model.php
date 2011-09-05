@@ -480,8 +480,11 @@ class ProjectsPhasesModel extends ProjectsModel {
 
 	function createDuplicate($id) {
 		global $session, $lang;
+		
+		$now = gmdate("Y-m-d H:i:s");
+		
 		// phase
-		$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES . " (pid,title,protocol,team,management) SELECT pid,CONCAT(title,' ".$lang["GLOBAL_DUPLICAT"]."'),protocol,team,management FROM " . CO_TBL_PROJECTS_PHASES . " where id='$id'";
+		$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES . " (pid,title,protocol,team,management,created_date,created_user,edited_date,edited_user) SELECT pid,CONCAT(title,' ".$lang["GLOBAL_DUPLICAT"]."'),protocol,team,management,'$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_PROJECTS_PHASES . " where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
 		// tasks

@@ -100,7 +100,7 @@ foreach($project["phases"] as $key => &$value){ ?>
     <!-- drawing area outer -->
     <div style="position: relative; background-image:url(<?php echo($project["bg_image"]);?>); background-position: <?php echo($project["bg_image_shift"]);?>px 0px; width: <?php echo($project["css_width"]);?>px; height:<?php echo($project["css_height"]);?>px;">
 			<!-- kick off -->
-            <div class="coTooltip" style="z-index: 2; background-color: #B2B2B2; position: absolute; top: 8px; left: 0; height: 10px; width: <?php echo($project["td_width"]);?>px;">
+            <div class="coTooltip loadProject" rel="<?php echo($project["id"]);?>" style="z-index: 2; background-color: #B2B2B2; position: absolute; top: 8px; left: 0; height: 10px; width: <?php echo($project["td_width"]);?>px;">
             	<div class="coTooltipHtml" style="display: none">
 					Kick off<br />
 					<?php echo($project["startdate_view"]);?>

@@ -301,6 +301,14 @@ class ContactsModel extends Model {
 				$array[$key] = $val;
 			}
 		
+		/*if($array["avatar"] == "") {
+			$array["avatar"] = CO_FILES . "/img/avatar.jpg";
+		} else {
+			$array["avatar"] = CO_PATH_URL . "/data/avatars/" . $array["avatar"];
+		}*/
+		
+		$array["avatar"] = $this->_users->getAvatar($id);
+	
 		// dates
 		$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
 		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
@@ -525,6 +533,16 @@ class ContactsModel extends Model {
 	
 	function deleteContact($id) {
 		$q = "DELETE FROM " . CO_TBL_USER_SETTINGS . " WHERE uid='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		$q = "SELECT avatar FROM " . CO_CONTACTS_TBL_AVATARS . " WHERE uid='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+			$avatar = $row["avatar"];
+			@unlink(CO_PATH_BASE.'/data/avatars/' . $avatar);
+		}
+		
+		$q = "DELETE FROM " . CO_CONTACTS_TBL_AVATARS . " WHERE uid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		$q = "DELETE FROM " . CO_TBL_USERS . " WHERE id='$id'";
@@ -884,8 +902,59 @@ class ContactsModel extends Model {
 		}
 		return $system->json_encode($rows);
 	}
-   
-   
+	
+	
+	function binItem($id) {
+		global $session;
+		$q = "UPDATE " . CO_CONTACTS_TBL_AVATARS . " set bin = '1', bintime = NOW(), binuser= '$session->uid' WHERE uid='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		if($result) {
+			return true;
+		}
+	}
+	
+   function deleteItem($id) {
+		global $session;#
+		
+		$q = "SELECT avatar FROM " . CO_CONTACTS_TBL_AVATARS . " WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+			$avatar = $row["avatar"];
+			@unlink(CO_PATH_BASE.'/data/avatars/' . $avatar);
+		}
+		
+		$q = "DELETE FROM " . CO_CONTACTS_TBL_AVATARS . " WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if($result) {
+			return true;
+		}
+   }
+  
+  
+   function restoreItem($id) {
+		global $session;
+		
+		$q = "SELECT uid FROM " . CO_CONTACTS_TBL_AVATARS . " WHERE id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$uid = mysql_result($result,0);
+		
+		// check for other active item and set to bin if found
+		$q = "SELECT uid,id FROM " . CO_CONTACTS_TBL_AVATARS . " WHERE uid='$uid' and bin='0'";
+		$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result) >0) {
+			$row = mysql_fetch_row($result);
+			$aid = $row[1];
+			$q = "UPDATE " . CO_CONTACTS_TBL_AVATARS . " SET bin='1' WHERE id='$aid'";
+			$result = mysql_query($q, $this->_db->connection);
+		}
+		
+		$q = "UPDATE " . CO_CONTACTS_TBL_AVATARS . " SET bin='0' WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if($result) {
+			return true;
+		}
+   }
    
 	function getBin() {
 	   	
@@ -916,7 +985,19 @@ class ContactsModel extends Model {
 			$contacts[] = new Lists($contact);
 	  	}
 		
-		$arr = array("bin" => $bin, "groups" => $groups, "contacts" => $contacts);
+		$avatars = "";
+		$q ="select a.id, a.avatar, b.firstname, b.lastname, a.bin, a.bintime, a.binuser from " . CO_CONTACTS_TBL_AVATARS . " as a, " . CO_TBL_USERS . " as b WHERE a.uid = b.id and a.bin='1' and b.bin !='1'";
+		$result = mysql_query($q, $this->_db->connection);
+	  	while ($row = mysql_fetch_array($result)) {
+			foreach($row as $key => $val) {
+				$avatar[$key] = $val;
+			}
+			$avatar["bintime"] = $this->_date->formatDate($avatar["bintime"],CO_DATETIME_FORMAT);
+			$avatar["binuser"] = $this->_users->getUserFullname($avatar["binuser"]);
+			$avatars[] = new Lists($avatar);
+	  	}
+		
+		$arr = array("bin" => $bin, "groups" => $groups, "contacts" => $contacts, "avatars" => $avatars);
 		return $arr;
 	}
   
@@ -942,7 +1023,16 @@ class ContactsModel extends Model {
 			$this->deleteContact($id);
 	  	}
 		
-		$arr = array("bin" => $bin, "groups" => $groups, "contacts" => $contacts);
+		
+		$avatars = "";
+		$q ="select a.id, a.avatar, b.firstname, b.lastname, a.bin, a.bintime, a.binuser from " . CO_CONTACTS_TBL_AVATARS . " as a, " . CO_TBL_USERS . " as b WHERE a.uid = b.id and a.bin='1' and b.bin !='1'";
+		$result = mysql_query($q, $this->_db->connection);
+	  	while ($row = mysql_fetch_array($result)) {
+			$id = $row["id"];
+			$this->deleteItem($id);
+	  	}
+		
+		$arr = array("bin" => $bin, "groups" => $groups, "contacts" => $contacts, "avatars" => $avatars);
 		return $arr;
 	}
 	

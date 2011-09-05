@@ -128,7 +128,7 @@ foreach($cols as $key => &$value){
 <div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-footer">
   <tr>
-    <td class="left"><?php echo $lang["EDITED_BY_ON"];?> <?php echo($roster->edited_user.", ".$roster->edited_date)?></td>
+    <td class="left"><?php echo($lang["GLOBAL_FOOTER_STATUS"] . " " . $roster->today);?></td>
     <td class="middle"><?php echo $roster->access_footer;?></td>
     <td class="right"><?php echo $lang["CREATED_BY_ON"];?> <?php echo($roster->created_user.", ".$roster->created_date);?></td>
   </tr>

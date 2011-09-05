@@ -10,6 +10,19 @@ class Users extends MySQLDB
 		$user = $row_user["lastname"] . ' ' . $row_user["firstname"];
 		return $user;
 	}
+	
+	function getAvatar($id){
+		$q = "SELECT avatar FROM ".CO_CONTACTS_TBL_AVATARS." where uid = '$id' and bin = '0'";
+		$result = mysql_query($q, $this->connection);
+		$row = mysql_fetch_assoc($result);
+		$avatar = $row["avatar"];
+		if($avatar == "") {
+			$avatar = CO_FILES . "/img/avatar.jpg";
+		} else {
+			$avatar = CO_PATH_URL . "/data/avatars/" .$avatar;
+		}
+		return $avatar;
+	}
 
 }
 

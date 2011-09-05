@@ -73,7 +73,7 @@ if(is_array($notes)) {
 <div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-footer">
   <tr>
-    <td class="left"><?php echo $lang["EDITED_BY_ON"];?> <?php echo($brainstorm->edited_user.", ".$brainstorm->edited_date)?></td>
+    <td class="left"><?php echo($lang["GLOBAL_FOOTER_STATUS"] . " " . $brainstorm->today);?></td>
     <td class="middle"></td>
     <td class="right"><?php echo $lang["CREATED_BY_ON"];?> <?php echo($brainstorm->created_user.", ".$brainstorm->created_date);?></td>
   </tr>

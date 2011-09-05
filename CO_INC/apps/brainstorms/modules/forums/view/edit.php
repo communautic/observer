@@ -116,6 +116,12 @@ foreach($posts as $post) {
 
 <?php if($forum->perms != "guest") { ?>
 <div class="content-spacer"></div>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+  <tr>
+    <td class="tcell-left text11"><span class="<?php if($forum->canedit) { ?>content-nav showDialog<?php } ?>" request="getDocumentsDialog" field="brainstormsdocuments" append="1"><span><?php echo $lang["BRAINSTORM_DOCUMENT_DOCUMENTS"];?></span></span></td>
+    <td class="tcell-right"><div id="brainstormsdocuments" class="itemlist-field"><?php echo($forum->documents);?></div></td>
+  </tr>
+</table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 	  <td class="tcell-left text11"><span class="<?php if($forum->canedit) { ?>content-nav showDialog<?php } ?>" request="getAccessDialog" field="brainstormsforum_access" append="1"><span><?php echo $lang["GLOBAL_ACCESS"];?></span></span></td>
@@ -130,7 +136,7 @@ foreach($posts as $post) {
 <div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-footer">
   <tr>
-    <td class="left"><?php echo $lang["EDITED_BY_ON"];?> <?php echo($forum->edited_user.", ".$forum->edited_date)?></td>
+    <td class="left"><?php echo($lang["GLOBAL_FOOTER_STATUS"] . " " . $forum->today);?></td>
     <td class="middle"><?php echo $forum->access_footer;?></td>
     <td class="right"><?php echo $lang["CREATED_BY_ON"];?> <?php echo($forum->created_user.", ".$forum->created_date);?></td>
   </tr>
