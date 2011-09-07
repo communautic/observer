@@ -372,7 +372,7 @@ class BrainstormsForumsModel extends BrainstormsModel {
 			$replyid = $rowt["replyid"];
 			$user = $rowt["user"];
 			$datetime = $rowt["datetime"];
-			$text = $rowt["text"];
+			$text = mysql_real_escape_string($rowt["text"]);
 			$status = $rowt["status"];
 			$qtn = "INSERT INTO " . CO_TBL_BRAINSTORMS_FORUMS_POSTS . " set pid = '$id_new', replyid = '$replyid', user = '$user', datetime = '$datetime', text = '$text', status = '$status'";
 			$rpn = mysql_query($qtn, $this->_db->connection);
@@ -502,7 +502,7 @@ class BrainstormsForumsModel extends BrainstormsModel {
 		$task["user"] = $this->_users->getUserFullname($session->uid);
 		$task["avatar"] = $this->_users->getAvatar($session->uid);
 		$task["datetime"] = $this->_date->formatDate($now,CO_DATETIME_FORMAT);
-		$task["text"] = $text;
+		$task["text"] = stripslashes($text);
 		$tasks = new Lists($task);
 
 		return $tasks;

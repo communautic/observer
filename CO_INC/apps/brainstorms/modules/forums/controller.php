@@ -84,7 +84,7 @@ class BrainstormsForums extends Brainstorms {
 			
 			$form_url = $this->form_url;
 			$request = "sendDetails";
-			$to = $forum->team;
+			$to = "";
 			$cc = "";
 			$subject = $forum->title;
 			$variable = $num;

@@ -28,7 +28,7 @@
 <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
   <tr>
     <td class="tcell-left-100 text11"><span class="<?php if($forum->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["BRAINSTORM_FORUM_QUESTION"];?></span></span></td>
-      	<td width="35" style="padding-top: 2px;"><?php if($forum->canedit) { ?><a class="postBrainstormsReply" rel="0" title="antworten"><span class="icon-reply"></span></a><?php } ?></td>
+      	<td width="35" style="padding-top: 3px;"><?php if($forum->canedit) { ?><a class="postBrainstormsReply" rel="0" title="antworten"><span class="icon-reply"></span></a><?php } ?></td>
     <td class="tcell-right"><?php if($forum->canedit) { ?><textarea name="protocol" class="elastic"><?php echo(strip_tags($forum->protocol));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($forum->protocol)));?><?php } ?></td>
   	<td width="30">&nbsp;</td>
   </tr>

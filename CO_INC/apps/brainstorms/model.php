@@ -797,8 +797,8 @@ class BrainstormsModel extends Model {
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
 			$noteid = $row["id"];
-			$title = $row["title"];
-			$text = $row["text"];
+			$title = mysql_real_escape_string($row["title"]);
+			$text = mysql_real_escape_string($row["text"]);
 			$xyz = $row["xyz"];
 			$wh = $row["wh"];
 			$toggle = $row["toggle"];

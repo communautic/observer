@@ -372,8 +372,8 @@ class BrainstormsRostersModel extends BrainstormsModel {
 		$q = "SELECT title,text FROM " . CO_TBL_BRAINSTORMS_NOTES . " where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_fetch_row($result);
-		$title = $row[0];
-		$text = $row[1];
+		$title = mysql_real_escape_string($row[0]);
+		$text = mysql_real_escape_string($row[1]);
 		
 		$q = "INSERT INTO " . CO_TBL_BRAINSTORMS_ROSTERS_NOTES . " set pid = '$pid', title = '$title', text = '$text', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";		
 		$result = mysql_query($q, $this->_db->connection);
@@ -467,8 +467,8 @@ class BrainstormsRostersModel extends BrainstormsModel {
 			$items = array();
 			while($rown = mysql_fetch_array($resultn)) {
 				$note_id = $rown["id"];
-				$title = $rown["title"];
-				$text = $rown["text"];
+				$title = mysql_real_escape_string($rown["title"]);
+				$text = mysql_real_escape_string($rown["text"]);
 				$ms = $rown["ms"];
 				$qnn = "INSERT INTO " . CO_TBL_BRAINSTORMS_ROSTERS_NOTES . " set cid='$colID_new', title = '$title', text = '$text', ms = '$ms',created_date='$now',created_user='$session->uid',edited_date='$now',edited_user='$session->uid'";
 				$resultnn = mysql_query($qnn, $this->_db->connection);
@@ -628,7 +628,7 @@ class BrainstormsRostersModel extends BrainstormsModel {
 		$cols = $arr["cols"];
 		
 		$now = gmdate("Y-m-d H:i:s");
-		$title = $roster->title;
+		$title = mysql_real_escape_string($roster->title);
 		// create project
 		$q = "INSERT INTO " . CO_TBL_PROJECTS . " set folder = '$folder', title = '$title', protocol = '$protocol', startdate = '$kickoff', enddate = '$kickoff', status = '0', planned_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
@@ -650,8 +650,8 @@ class BrainstormsRostersModel extends BrainstormsModel {
 			foreach($cols[$key]["notes"] as $tkey => &$tvalue){ 
 				if($i == 0) {
 					// add phase
-					$phasetitle = $cols[$key]["notes"][$tkey]['title'];
-					$phasetext = $cols[$key]["notes"][$tkey]['text'];
+					$phasetitle = mysql_real_escape_string($cols[$key]["notes"][$tkey]['title']);
+					$phasetext = mysql_real_escape_string($cols[$key]["notes"][$tkey]['text']);
 					$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES . " set title = '$phasetitle', pid='$pid', protocol='$phasetext', access='0', status = '0', planned_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 					$result = mysql_query($q, $this->_db->connection);
 					$phaseid = mysql_insert_id();
@@ -671,8 +671,8 @@ class BrainstormsRostersModel extends BrainstormsModel {
 					
 				} else {
 					// create ap/milestone
-					$tasktitle = $cols[$key]["notes"][$tkey]['title'];
-					$taskprotocol = $cols[$key]["notes"][$tkey]['text'];
+					$tasktitle = mysql_real_escape_string($cols[$key]["notes"][$tkey]['title']);
+					$taskprotocol = mysql_real_escape_string($cols[$key]["notes"][$tkey]['text']);
 					if($cols[$key]["notes"][$tkey]['ms'] == "1") {
 						$cat = 1;
 						$startdate = $this->_date->addDays($datecalc,"1");

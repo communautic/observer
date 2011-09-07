@@ -360,11 +360,12 @@ function brainstormsRosters(name) {
 		} else {
 			var text = $("#note-text").html().replace(/(<br\s*\/?>)|(<p><\/p>)/gi, "");
 		}
-		$.ajax({ type: "POST", url: "/", data: "path=apps/brainstorms/modules/rosters&request=saveRosterNote&id="+id+"&title="+title+"&text="+text, success: function(data){
+		$.ajax({ type: "POST", url: "/", data: { path: 'apps/brainstorms/modules/rosters', request: 'saveRosterNote', id: id, title: title, text: text }, success: function(data){
+		//$.ajax({ type: "POST", url: "/", data: "path=apps/brainstorms/modules/rosters&request=saveRosterNote&id="+id+"&title="+title+"&text="+text, success: function(data){
 				
 				
 				
-				$('#item_'+id+' span:eq(0)').html(data);
+				$('#item_'+id+' span:eq(0)').html(title);
 				if($("#input-note").length > 0) {
 					var note_title = $(document.createElement('div')).attr("id", "note-title").attr("class", "note-title").html(title);
 					$("#note").find('input').replaceWith(note_title); 
@@ -373,7 +374,7 @@ function brainstormsRosters(name) {
 					//text = text.replace(/\n/g, "<br />");
 					//var width = $("#input-text-"+id).width();
 					var height = $("#input-text").height();
-					var note_text = $(document.createElement('div')).attr("id", "note-text").attr("class", "note-text").css("height",height).html(data);
+					var note_text = $(document.createElement('div')).attr("id", "note-text").attr("class", "note-text").css("height",height).html(text);
 					$("#note").find('textarea').replaceWith(note_text); 
 				}
 				$('#note').slideUp();
@@ -831,7 +832,7 @@ $(document).ready(function() {
 
 	$("#brainstorms-notes-outer div.note-title").live("dblclick", function(e) {
 		e.preventDefault();
-		var html = $(this).html();
+		var html = $(this).html().replace(/(")/gi, "&quot;");
 		var input = '<input type="text" id="input-note" name="input-note" value="' + html+ '" />';
 		$(this).replaceWith(input);
 		$("#input-note").focus();
