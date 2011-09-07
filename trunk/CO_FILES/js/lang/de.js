@@ -1,5 +1,6 @@
 var FILE_BROWSE = "Datei / Upload";
 var FILE_DROP_AREA = "Dateien hier hereinziehen";
+var FILE_DROP_AREA_IMAGE = "Bild hier hereinziehen";
 var CUSTOM_NOTE = "Notiz:";
 
 // Alerts

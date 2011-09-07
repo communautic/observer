@@ -182,10 +182,10 @@ function brainstormsForums(name) {
 								module.getDetails(moduleidx,liindex);
 								$("#brainstorms3 .brainstorms3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
 								//update Brainstorm Enddate
-								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getDates&id="+pid, success: function(brainstorm){
+								/*$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getDates&id="+pid, success: function(brainstorm){
 										$("#brainstormenddate").html(brainstorm.enddate);
 									}
-								});
+								});*/
 								}
 							});
 						}
@@ -351,7 +351,8 @@ function brainstormsForums(name) {
 
 	this.insertItem = function(id,text,replyid) {
 		var num = $('#brainstormsPosts .forumouter').size()+1;
-		$.ajax({ type: "POST", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/forums&request=addItem&id=" + id + "&text=" + text + "&replyid=" + replyid + "&num=" + num, success: function(data){
+		//$.ajax({ type: "POST", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/forums&request=addItem&id=" + id + "&text=" + text + "&replyid=" + replyid + "&num=" + num, success: function(data){
+		$.ajax({ type: "POST", url: "/", dataType:  'json', data: { path: 'apps/brainstorms/modules/forums', request: 'addItem', id: id, text: text, replyid: replyid, num: num }, success: function(data){
 				if(replyid == 0) {
 					var prev = '<div id="postouter_' + data.itemid + '" class="parent" style="border-top: 1px solid #77713D">';
 					var last = '</div><div style="height: 20px;"></div>';

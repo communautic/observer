@@ -7,55 +7,54 @@
 </table>
 </div>
 <div class="ui-layout-content"><div class="scroll-pane">
-<form action="/" method="post" class="coform jNice">
-<input type="hidden" id="path" name="path" value="<?php echo $this->form_url;?>">
-<input type="hidden" id="poformaction" name="request" value="setContactDetails">
-<input type="hidden" name="id" value="<?php echo($contact->id);?>">
-<table border="0" cellspacing="0" cellpadding="0" class="table-content">
-  <tr>
-    <td>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content">
-  <tr>
-    <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_FIRSTNAME'];?></span></span></td>
-    <td class="tcell-right-nopadding"><input name="firstname" type="text" class="title2 bg" value="<?php echo($contact->firstname);?>" /></td>
-  </tr>
-</table>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content">
-  <tr>
-    <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_CONTACT_TITLE'];?></span></span></td>
-    <td class="tcell-right-nopadding"><input name="title" id="title" type="text" class="bg" value="<?php echo($contact->title);?>" /></td>
-  </tr>
-</table>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content">
-  <tr>
-    <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_COMPANY'];?></span></span></td>
-    <td class="tcell-right-nopadding"><input name="company" id="company" type="text" class="bg" value="<?php echo($contact->company);?>" /></td>
-  </tr>
-</table>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content">
-  <tr>
-    <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_POSITION'];?></span></span></td>
-    <td class="tcell-right-nopadding"><input name="position" id="position" type="text" class="bg" value="<?php echo($contact->position);?>" /></td>
-  </tr>
-</table>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content">
-  <tr>
-    <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_EMAIL'];?></span></span></td>
-    <td class="tcell-right-nopadding"><input id="email" name="email" type="text" class="bg" value="<?php echo($contact->email);?>" /></td>
-  </tr>
-</table>
-</td>
-<td width="80" id="avatarImage" style="padding-top: 0; height: 120px; position: relative; background-image:url(<?php echo($contact->avatar);?>); background-repeat: no-repeat">
+<div id="avatarImage" width="80"  style="position: absolute; top: 0; right: 15px; height: 120px; width: 80px; background-image:url(<?php echo($contact->avatar);?>); background-repeat: no-repeat">
 <div id="contacts_image_uploader" class="user-image-uploader">		
 	<noscript>			
 	<p>Please enable JavaScript to use file uploader.</p>
 	<!-- or put a simple form for upload here -->
 	</noscript>
 </div>
-</td>
-<td width="15"></td>
+</div>
+<form action="/" method="post" class="coform jNice">
+<input type="hidden" id="path" name="path" value="<?php echo $this->form_url;?>">
+<input type="hidden" id="poformaction" name="request" value="setContactDetails">
+<input type="hidden" name="id" value="<?php echo($contact->id);?>">
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+  <tr>
+    <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_FIRSTNAME'];?></span></span></td>
+    <td class="tcell-right-nopadding"><input name="firstname" type="text" class="title2 bg" value="<?php echo($contact->firstname);?>" /></td>
+    <td width="110"></td>
   </tr>
 </table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+  <tr>
+    <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_CONTACT_TITLE'];?></span></span></td>
+    <td class="tcell-right-nopadding"><input name="title" id="title" type="text" class="bg" value="<?php echo($contact->title);?>" /></td>
+    <td width="110"></td>
+  </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+  <tr>
+    <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_COMPANY'];?></span></span></td>
+    <td class="tcell-right-nopadding"><input name="company" id="company" type="text" class="bg" value="<?php echo($contact->company);?>" /></td>
+    <td width="110"></td>
+  </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+  <tr>
+    <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_POSITION'];?></span></span></td>
+    <td class="tcell-right-nopadding"><input name="position" id="position" type="text" class="bg" value="<?php echo($contact->position);?>" /></td>
+    <td width="110"></td>
+  </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+  <tr>
+    <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_EMAIL'];?></span></span></td>
+    <td class="tcell-right-nopadding"><input id="email" name="email" type="text" class="bg" value="<?php echo($contact->email);?>" /></td>
+    <td width="110"></td>
+  </tr>
+</table>
+<div class="content-spacer"></div>
 <div class="content-spacer"></div>
 <div class="tbl-inactive">
 <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive">

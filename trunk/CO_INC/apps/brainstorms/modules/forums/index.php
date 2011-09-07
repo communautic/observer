@@ -119,7 +119,7 @@ if (!empty($_POST['request'])) {
 			echo($brainstormsForums->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
 		break;
 		case 'addItem':
-			echo($brainstormsForums->addItem($_POST['id'], $_POST['text'], $_POST['replyid'] , $_POST['num']));
+			echo($brainstormsForums->addItem($_POST['id'], $system->checkMagicQuotesTinyMCE($_POST['text']), $_POST['replyid'] , $_POST['num']));
 		break;
 	}
 }

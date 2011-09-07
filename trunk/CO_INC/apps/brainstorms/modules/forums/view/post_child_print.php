@@ -4,7 +4,7 @@
       	<?php echo $child->user;?>
       	<table border="0" cellpadding="0" cellspacing="0">
       		<tr>
-                <td style="width: 40px;"><img src="<?php echo CO_FILES;?>/img/avatar.jpg" width="30" height="45" /></td>
+                <td style="width: 40px; height: 47px;"><img src="<?php echo $post->avatar;?>" width="30" /></td>
                 <td style="width: 62px;"><?php echo $child->datetime;?></td>
                 <td width="27"><?php echo $img;?></td>
       		</tr>

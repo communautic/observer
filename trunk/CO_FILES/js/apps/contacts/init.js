@@ -35,13 +35,13 @@ function contactsContact(name) {
             success: 'ui-upload-success',
             fail: 'ui-upload-fail',
         },
-			template: '<div style="position: absolute; top: 0; right: 17px; width: 15px; height: 15px; z-index: 2"><a rel="'+did+'" id="avatarBinItem" class="binItem"><span class="icon-delete"></span></a></div><div class="ui-upload-button"></div>' +
-					'<div class="ui-upload-drop-area"><span>' + FILE_DROP_AREA + '</span></div>' +
+			template: '<div style="position: absolute; top: 2px; right: 3px; width: 15px; height: 15px; z-index: 2"><a rel="'+did+'" id="avatarBinItem" class="binItem"><span class="icon-delete"></span></a></div><div class="ui-upload-button"></div>' +
+					'<div class="ui-upload-drop-area"><span>' + FILE_DROP_AREA_IMAGE + '</span></div>' +
 					'<div class="ui-upload-list"></div></div>',
-			fileTemplate: '<span id="avatar" style="width: 80px;">' +
+			fileTemplate: '<span id="avatar" style="width: 74px;">' +
 					'<span class="ui-upload-file docitem"></span><br />' +
 					'<span class="ui-upload-spinner"></span><br />' +
-					'<span class="ui-upload-size"></span><br />' +
+					'<span class="ui-upload-size"></span><br /><br />' +
 					'<a class="ui-upload-cancel" href="#">' + UPLOAD_CANCEL + '</a><br />' +
 					//'<span class="ui-upload-failed-text">Failed</span>' +
 				'</span>',

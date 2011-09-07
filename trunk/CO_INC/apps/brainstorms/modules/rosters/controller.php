@@ -52,10 +52,28 @@ class BrainstormsRosters extends Brainstorms {
 
 
 	function printDetails($id,$t) {
-		global $session,$date, $lang;
+		global $session,$date,$lang;
 		$title = "";
 		$html = "";
+		
 		if($arr = $this->model->getDetails($id)) {
+			$roster = $arr["roster"];
+			$cols = $arr["cols"];
+			ob_start();
+					include 'view/print.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			$title = $roster->title . " - " . $lang["BRAINSTORM_ROSTER_TITLE"];
+		}
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PROJECT_PRINT_TIMELINE"];
+		switch($t) {
+			case "html":
+				$this->printHTML($title,$html);
+			break;
+			default:
+				$this->printPDF($title,$html);
+		}
+		/*if($arr = $this->model->getDetails($id)) {
 			$roster = $arr["roster"];
 			$cols = $arr["cols"];
 			$console_items = $arr["console_items"];
@@ -80,8 +98,8 @@ class BrainstormsRosters extends Brainstorms {
 			$title = $roster->title;
 					
 					
-					$this->printBrainstormRoster($title,$html,$page_width,$page_height);
-		}
+			$this->printBrainstormRoster($title,$html,$page_width,$page_height);
+		}*/
 	}
 	
 	function printBrainstormRoster($title,$text,$width,$height) {

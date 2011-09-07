@@ -494,8 +494,8 @@ class ProjectsPhasesModel extends ProjectsModel {
 			$id = $rowt["id"];
 			$pid = $rowt["pid"];
 			$cat = $rowt["cat"];
-			$text = $rowt["text"];
-			$protocol = $rowt["protocol"];
+			$text = mysql_real_escape_string($rowt["text"]);
+			$protocol = mysql_real_escape_string($rowt["protocol"]);
 			$startdate = $rowt["startdate"];
 			$enddate = $rowt["enddate"];
 			$dependent = $rowt["dependent"];

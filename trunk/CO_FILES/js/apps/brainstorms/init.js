@@ -260,7 +260,8 @@ function brainstormsApplication(name) {
 			//var text = $("#note-text-"+id).html().replace(/(<br\s*\/?>)|(<p><\/p>)/gi, "");
 			var text = $("#note-text-"+id).html().replace(/(<br\s*\/?>)|(<p><\/p>)/gi, "");
 		}
-		$.ajax({ type: "POST", url: "/", data: "path=apps/brainstorms&request=saveBrainstormNote&id="+id+"&title="+title+"&text="+text, success: function(data){
+		$.ajax({ type: "POST", url: "/", data: { path: 'apps/brainstorms', request: 'saveBrainstormNote', id: id, title: title, text: text }, success: function(data){
+		//$.ajax({ type: "POST", url: "/", data: "path=apps/brainstorms&request=saveBrainstormNote&id="+id+"&title="+title+"&text="+text, success: function(data){
 			//if(data == "true"){
 				if($("#input-note-"+id).length > 0) {
 					var note_title = $(document.createElement('div')).attr("id", "note-title-" + id).attr("class", "note-title").html(title);
@@ -270,7 +271,7 @@ function brainstormsApplication(name) {
 					//text = text.replace(/\n/g, "<br />");
 					//var width = $("#input-text-"+id).width();
 					var height = $("#input-text-"+id).height();
-					var note_text = $(document.createElement('div')).attr("id", "note-text-" + id).attr("class", "note-text").css("height",height).html(data);
+					var note_text = $(document.createElement('div')).attr("id", "note-text-" + id).attr("class", "note-text").css("height",height).html(text);
 					$("#note-" + id).find('textarea').replaceWith(note_text); 
 				}
 			//} 
@@ -1480,7 +1481,7 @@ $(document).ready(function() {
 		var id = parseInt($(this).attr("id").replace(/note-title-/, ""));
 		currentBrainstormEditedNote = id;
 		e.preventDefault();
-		var html = $(this).html();
+		var html = $(this).html().replace(/(")/gi, "&quot;");
 		var input = '<input type="text" id="input-note-' + id + '" name="input-note-' + id + '" value="' + html+ '" />';
 		$("#note-title-" + id).replaceWith(input);
 		$("#input-note-" + id).focus();

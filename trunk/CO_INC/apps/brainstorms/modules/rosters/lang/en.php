@@ -12,6 +12,7 @@ $lang['BRAINSTORM_ROSTER_NOTES'] = 'Ideas';
 
 $lang["BRAINSTORM_ROSTER_COLUMNS_BIN"] = 'Roster/Columns';
 $lang["BRAINSTORM_ROSTER_NOTES_BIN"] = 'Roster/Notes';
+$lang["BRAINSTORM_PHASE_TITLE"] = 'Phase';
 
 $lang["BRAINSTORM_ROSTER_HELP"] = 'manual_prozesse_projektraster.pdf';
 

@@ -129,7 +129,7 @@ if (!empty($_GET['request'])) {
 			echo($brainstormsRosters->binItem($_GET['id']));
 		break;
 		case 'convertToProject':
-			echo($brainstormsRosters->convertToProject($_GET['id'],$_GET['kickoff'],$_GET['folder'],$_GET['protocol']));
+			echo($brainstormsRosters->convertToProject($_GET['id'],$_GET['kickoff'],$_GET['folder'],$system->checkMagicQuotes($_GET['protocol'])));
 		break;
 		case 'getHelp':
 			echo($brainstormsRosters->getHelp());

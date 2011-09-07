@@ -788,8 +788,8 @@ class ProjectsModel extends Model {
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
 			$phaseid = $row["id"];
-			$title = $row["title"];
-			$protocol = $row["protocol"];
+			$title = mysql_real_escape_string($row["title"]);
+			$protocol = mysql_real_escape_string($row["protocol"]);
 			$team = $row["team"];
 			$management = $row["management"];
 			
@@ -802,8 +802,8 @@ class ProjectsModel extends Model {
 			while($rowt = mysql_fetch_array($resultt)) {
 				$id = $rowt["id"];
 				$cat = $rowt["cat"];
-				$text = $rowt["text"];
-				$protocol = $rowt["protocol"];
+				$text = mysql_real_escape_string($rowt["text"]);
+				$protocol = mysql_real_escape_string($rowt["protocol"]);
 				$startdate = $rowt["startdate"];
 				$enddate = $rowt["enddate"];
 				$dependent = $rowt["dependent"];
