@@ -77,7 +77,7 @@
     <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive" id="contact_avatar_<?php echo($avatar->id);?>" rel="<?php echo($avatar->id);?>">
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang['CONTACTS_CONTACT'];?></span></td>
-		<td rowspan="2" width="40"><img width="30" height="45" src="http://dev.companyobserver.com/data/avatars/<?php echo($avatar->avatar);?>"></td>
+		<td rowspan="2" width="40"><img width="30" height="45" src="<?php echo CO_PATH_URL;?>/data/avatars/<?php echo($avatar->avatar);?>"></td>
         <td class="tcell-right"><?php echo($avatar->lastname . " " . $avatar->firstname);?></td>
         <td width="30"><a href="contacts" class="binRestoreItem" rel="<?php echo $avatar->id;?>"><span class="icon-restore"></span></a></td>
         <td width="30"><a href="contacts" class="binDeleteItem" rel="<?php echo $avatar->id;?>"><span class="icon-delete"></span></a></td>
