@@ -148,6 +148,7 @@ function projectsDocuments(name) {
 				module.getDetails(moduleidx,liindex);
 				projectsActions(0);
 				$('#projects3 input.filter').quicksearch('#projects3 li');
+				setTimeout(function() { $('#projects-right .focusTitle').trigger('click'); }, 800);
 				}
 			});
 			}

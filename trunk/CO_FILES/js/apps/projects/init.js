@@ -70,6 +70,7 @@ function projectsApplication(name) {
 					$("#projects-right").html(text.html);
 					initProjectsContentScrollbar();
 					$('#projects2 input.filter').quicksearch('#projects2 li');
+					$('#projects-right .focusTitle').trigger('click');
 					}
 				});
 				projectsActions(0);
@@ -372,6 +373,7 @@ function projectsFolders(name) {
 					$("#"+projects.name+"-right").html(text.html);
 					initProjectsContentScrollbar();
 					$('#projects1 input.filter').quicksearch('#projects1 li');
+					$('#projects-right .focusTitle').trigger('click');
 					}
 				});
 				projectsActions(9);

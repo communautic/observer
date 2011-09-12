@@ -132,6 +132,7 @@ function contactsContact(name) {
 						$("#contacts-right").html(html);
 						initContactsContentScrollbar()
 						$('#contacts1 input.filter').quicksearch('#contacts1 li');
+						$('#contacts-right .focusTitle').trigger('click');
 						}
 					});
 					contactsActions(1);
@@ -475,6 +476,7 @@ function contactsGroups(name) {
 						$("#contacts-right").html(html);
 						initContactsContentScrollbar()
 						$('#contacts1 input.filter').quicksearch('#contacts1 li');
+						$('#contacts-right .focusTitle').trigger('click');
 						}
 					});
 					contactsActions(1);

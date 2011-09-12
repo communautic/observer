@@ -105,6 +105,7 @@ function brainstormsRosters(name) {
 				var moduleidx = $(".brainstorms3-content").index($(".brainstorms3-content:visible"));
 				module.getDetails(moduleidx,liindex);
 				$('#brainstorms3 input.filter').quicksearch('#brainstorms3 li');
+				setTimeout(function() { $('#brainstorms-right .focusTitle').trigger('click'); }, 800);
 				}
 			});
 			}
