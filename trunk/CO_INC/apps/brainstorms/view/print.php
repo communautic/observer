@@ -17,12 +17,19 @@ $top = $top-7;
 ?>
 <!-- drawing area outer -->
 <div style="position: absolute; top: <?php echo($top+18);?>px; left: <?php echo($left);?>px; width: <?php echo($brainstorm["css_width"]);?>px; height:<?php echo($brainstorm["css_height"]);?>px;"></div>
-			<?php 
-			foreach($notes as $note){ 
-			?>
-    <div style="font-size: 11px; position:absolute; overflow:hidden; background-color: #FFF082; vertical-align: top; border: 1px solid #77713D; width: <?php echo $note->w;?>px; height: <?php echo $note->h;?>px; left: <?php echo $note->x;?>px; top: <?php echo $note->y;?>px; z-index: <?php echo $note->x;?>;">
+	<?php 
+	foreach($notes as $note){ 
+		if($note->toggle == 0) {
+			$height = $note->h;
+		} else {
+			$height = 17;
+		}
+		?>
+    <div style="font-size: 11px; position:absolute; overflow:hidden; background-color: #FFF082; vertical-align: top; border: 1px solid #77713D; width: <?php echo $note->w;?>px; height: <?php echo $height;?>px; left: <?php echo $note->x;?>px; top: <?php echo $note->y;?>px; z-index: <?php echo $note->x;?>;">
         <div style="padding: 2px 9px 0 9px; color: #fff; background-color: #77713D; height: 16px; vertical-align: top; overflow: hidden; "><?php echo($note->title);?></div>
-        <div style="padding: 1px 9px 0 9px;"><?php echo(nl2br($note->text));?></div>
+        <?php if($note->toggle == 0) { ?>
+        	<div style="padding: 1px 9px 0 9px;"><?php echo(nl2br($note->text));?></div>
+        <?php } ?>
 	</div>	
         
         	<?php

@@ -315,6 +315,7 @@ class Brainstorms extends Controller {
 	function saveBrainstormNote($id,$title,$text) {
 		$retval = $this->model->saveBrainstormNote($id,$title,$text);
 		if($retval){
+			 $text = stripslashes($text);
 			 return nl2br($text);
 		  } else{
 			 return "error";

@@ -272,7 +272,7 @@ function brainstormsApplication(name) {
 					//text = text.replace(/\n/g, "<br />");
 					//var width = $("#input-text-"+id).width();
 					var height = $("#input-text-"+id).height();
-					var note_text = $(document.createElement('div')).attr("id", "note-text-" + id).attr("class", "note-text").css("height",height).html(text);
+					var note_text = $(document.createElement('div')).attr("id", "note-text-" + id).attr("class", "note-text").css("height",height).html(data);
 					$("#note-" + id).find('textarea').replaceWith(note_text); 
 				}
 			//} 
