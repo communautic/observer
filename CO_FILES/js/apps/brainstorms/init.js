@@ -58,6 +58,7 @@ function brainstormsApplication(name) {
 					$("#brainstorms-right").html(text.html);
 					initBrainstormsContentScrollbar();
 					$('#brainstorms2 input.filter').quicksearch('#brainstorms2 li');
+					$('#brainstorms-right .focusTitle').trigger('click');
 					}
 				});
 				brainstormsActions(0);
@@ -520,6 +521,7 @@ function brainstormsFolders(name) {
 					$("#"+brainstorms.name+"-right").html(text.html);
 					initBrainstormsContentScrollbar();
 					$('#brainstorms1 input.filter').quicksearch('#brainstorms1 li');
+					$('#brainstorms-right .focusTitle').trigger('click');
 					}
 				});
 				brainstormsActions(1);

@@ -128,6 +128,7 @@ function projectsPhases(name) {
 					var moduleidx = $(".projects3-content").index($(".projects3-content:visible"));
 					module.getDetails(moduleidx,liindex);
 					$('#projects3 input.filter').quicksearch('#projects3 li');
+					setTimeout(function() { $('#projects-right .focusTitle').trigger('click'); }, 800);
 					//update Project Enddate
 					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getDates&id="+pid, success: function(project){
 							$("#projectenddate").html(project.enddate);

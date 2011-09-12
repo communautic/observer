@@ -119,6 +119,7 @@ function brainstormsForums(name) {
 					var moduleidx = $(".brainstorms3-content").index($(".brainstorms3-content:visible"));
 					module.getDetails(moduleidx,liindex);
 					$('#brainstorms3 input.filter').quicksearch('#brainstorms3 li');
+					setTimeout(function() { $('#brainstorms-right .focusTitle').trigger('click'); }, 800);
 					//update Brainstorm Enddate
 					/*$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getDates&id="+pid, success: function(brainstorm){
 							$("#brainstormenddate").html(brainstorm.enddate);

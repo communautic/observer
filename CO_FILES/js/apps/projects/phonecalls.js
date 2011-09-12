@@ -113,6 +113,7 @@ function projectsPhonecalls(name) {
 				var moduleidx = $(".projects3-content").index($(".projects3-content:visible"));
 				module.getDetails(moduleidx,liindex);
 				$('#projects3 input.filter').quicksearch('#projects3 li');
+				setTimeout(function() { $('#projects-right .focusTitle').trigger('click'); }, 800);
 				}
 			});
 			}

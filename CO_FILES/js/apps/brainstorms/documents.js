@@ -148,6 +148,7 @@ function brainstormsDocuments(name) {
 				module.getDetails(moduleidx,liindex);
 				brainstormsActions(0);
 				$('#brainstorms3 input.filter').quicksearch('#brainstorms3 li');
+				setTimeout(function() { $('#brainstorms-right .focusTitle').trigger('click'); }, 800);
 				}
 			});
 			}
