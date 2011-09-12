@@ -303,8 +303,8 @@ class Brainstorms extends Controller {
 		  }
 	}
 	
-	function newBrainstormNote($id) {
-		$retval = $this->model->newBrainstormNote($id);
+	function newBrainstormNote($id,$z) {
+		$retval = $this->model->newBrainstormNote($id,$z);
 		if($retval){
 			 return 'true';
 		  } else{

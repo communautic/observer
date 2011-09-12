@@ -132,7 +132,7 @@ if (!empty($_GET['request'])) {
 			echo($brainstorms->emptyBin());
 		break;
 		case 'newBrainstormNote':
-			echo($brainstorms->newBrainstormNote($_GET['id']));
+			echo($brainstorms->newBrainstormNote($_GET['id'],$_GET['z']));
 		break;
 		case 'binBrainstormNote':
 			echo($brainstorms->binBrainstormNote($_GET['id']));

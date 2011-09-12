@@ -690,13 +690,13 @@ class BrainstormsModel extends Model {
 	}
 	
 	
-	function newBrainstormNote($id) {
+	function newBrainstormNote($id,$z) {
 		global $session, $contactsmodel, $lang;
 		
 		$now = gmdate("Y-m-d H:i:s");
 		$title = $lang["BRAINSTORM_NEW"];
 		
-		$q = "INSERT INTO " . CO_TBL_BRAINSTORMS_NOTES . " set pid = '$id', title = '" . $lang['BRAINSTORM_NOTE_NEW'] . "', xyz = '15x30x0', wh = '200x200', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+		$q = "INSERT INTO " . CO_TBL_BRAINSTORMS_NOTES . " set pid = '$id', title = '" . $lang['BRAINSTORM_NOTE_NEW'] . "', xyz = '15x30x" . $z . "', wh = '200x200', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			$id = mysql_insert_id();
