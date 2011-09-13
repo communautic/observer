@@ -1,0 +1,246 @@
+#brainstorms { position:absolute; height: 100%;  width: 100%; background-color:#333333;}
+#brainstorms .ui-layout-resizer-west { background-color:#B2A85B !important; }
+#brainstorms .ui-layout-resizer-west-closed { background-color:#B2A85B !important; }
+
+#brainstorms-top { height: 50px; float: left;}
+
+#brainstorms .module-bg-active { background-color: #B2A85B; color:#fff }
+
+#brainstorms1, #brainstorms2, #brainstorms3 { padding:0; overflow: hidden !important; /* prevent scrollbars auto-added by Layout */}
+#brainstorms3 { display: block;}
+#brainstorms3 .scrolling-content { width: 325px !important;}
+
+.brainstorms3-content { width: 325px;; background-color: #B2A85B; padding:0; overflow:hidden !important;}
+
+#brainstorms .ui-layout-west li>span:hover   { background-color: #77713d}
+#brainstorms .ui-layout-west li>span.active-link  { background-color: #77713d}
+#brainstorms .hover-bg  { background-color: #77713d}
+#brainstorms .hover-outline { border: 1px solid #77713d}
+
+#brainstorms .jspDrag { background: #77713d; }
+
+#brainstorms .co-link:hover { color: #b1a85b; }
+
+#brainstorms .center-center a         { color: #000; }
+#brainstorms .center-center a:link    { color: #000; }
+#brainstorms .center-center a:active  { color: #000; }
+#brainstorms .center-center a:visited { color: #000; }
+#brainstorms .center-center a:hover   { color: #b1a85b; cursor: pointer}
+
+#brainstormsActions { display: block; }
+
+#menu .app_brainstorms { color: #333; text-decoration: none; outline: none; background: url(../../img/app_propellor.png) no-repeat 36px 0px; }
+#menu .app_brainstorms:hover { color: #fff; text-decoration: none; outline: none; background: #b1a85b url(../../img/app_propellor.png) no-repeat 36px -210px; }
+#menu .app_brainstorms.active-app { color: #fff; text-decoration: none; outline: none; background: #b1a85b url(../../img/app_propellor.png) no-repeat 36px -210px; }
+
+/* Actions Menu */
+#brainstormsActions span.actionNew 				{	background-position: -350px 0px;	}
+#brainstormsActions span.actionNew:hover 			{ 	background-position:  -400px 0px;	}
+#brainstormsActions span.actionNew.noactive 		{ 	background-position:  0px 0px; 		}
+
+#brainstormsActions span.actionPrint 				{ 	background-position: -350px -102px;	}
+#brainstormsActions span.actionPrint:hover 		{ 	background-position: -400px -102px;	}
+#brainstormsActions span.actionPrint.noactive 	{ 	background-position:0px -102px;		}
+
+#brainstormsActions span.actionSend 				{ 	background-position: -350px -151px;	}
+#brainstormsActions span.actionSend:hover 		{ 	background-position: -400px -151px;	}
+#brainstormsActions span.actionSend.noactive 		{ 	background-position: 0px -151px; 	}
+
+#brainstormsActions span.actionDuplicate 			{ 	background-position: -350px -206px;	}
+#brainstormsActions span.actionDuplicate:hover 	{ 	background-position: -400px -206px;	}
+#brainstormsActions span.actionDuplicate.noactive { background-position: 0px -206px;  	}
+
+#brainstormsActions span.actionRoster 			{ 	background-position: -350px -308px;	}
+#brainstormsActions span.actionRoster:hover 	{ 	background-position: -400px -308px;	}
+#brainstormsActions span.actionRoster.noactive { background-position: 0px -308px;  	}
+
+#brainstormsActions span.actionRefresh				{ 	background-position: -350px -258px;	}
+#brainstormsActions span.actionRefresh:hover 	{ 	background-position: -400px -258px;	}
+#brainstormsActions span.actionRefresh.noactive { background-position: 0px -258px;  	}
+
+#brainstormsActions span.actionHelp				{ 	background-position: -347px -51px;	}
+#brainstormsActions span.actionHelp:hover 	{ 	background-position: -397px -51px;	}
+#brainstormsActions span.actionHelp.noactive { background-position: 0px -51px;  	}
+
+.milestone { width: 18px; height: 18px; background: url(../../../img/milestone.png) no-repeat 0px 0px; text-align: center; line-height: 19px;}
+.milestone span { margin-left: 3px; }
+.phaseouter { margin-top: 1px;}
+
+#brainstorms .table-title, #brainstorms .textarea-title { 
+background-color: #fff6b5; }
+
+#brainstorms .ui-datepicker-trigger-action-status {
+	position: absolute;
+	left: 318px;
+	display: block; height: 13px; width: 15px; margin-top: -15px; background: url(../../../img/apps_buttons_sprite.png) no-repeat -20px -570px
+}
+
+#brainstorms a.disabled { background-position: 0px -570px; }
+
+#brainstorms-right .tcell-left span span { position: relative; display: block; padding: 0 0 0 15px; }
+#brainstorms-right .tcell-left-100 span span { position: relative; display: block; padding: 0 0 0 15px; }
+
+#brainstorms-right .tcell-left-short span { display: block; padding: 0 0 0 15px; }
+
+#brainstorms-right .content-nav         { display: block; color: #000; }
+#brainstorms-right .content-nav:hover   { display: block; background-color: #B2A85B; color: #000; cursor: pointer; }
+
+.content-outline {background-color: #fff6b5;}
+
+#brainstorms-right textarea:hover,
+#brainstorms-right textarea:focus,
+#brainstorms-right input.bg:hover, 
+#brainstorms-right input.bg:focus {
+    background-color: #fff6b5;
+}
+
+.loadBrainstorm { cursor: pointer }
+.loadBrainstormsPhase { cursor: pointer }
+.loadBrainstormsPhase2 { cursor: pointer }
+
+
+.td_border_top_right {
+ border-top: 1px solid #24211D; 
+ border-right: 1px solid #24211D; 
+ border-bottom: 0; 
+ border-left:  0; 
+}
+
+.td_border_left {
+ border-top: 0; 
+ border-left: 1px solid #24211D; 
+ border-right: 0; 
+ border-bottom:  0; 
+}
+
+#brainstorms .tcell-left-posts {
+    padding: 0 0 0 15px;
+    width: 127px;
+	background-color: #B2A85B;
+}
+
+#brainstorms .tbl-protocol td, #brainstorms .elastic {
+  background-color: #FFF6B5;
+}
+
+#brainstorms .SendToContent { display: none; background-color: #E5E5E5; font-style: italic; padding: 10px; }
+
+#brainstorms .qq-upload-button-hover {background-color:#b2a85b;}
+#brainstorms .qq-upload-drop-area { background: #fff6b5; }
+#brainstorms .qq-upload-drop-area-active { background:#b2a85b;}
+
+#brainstorms .note {
+	cursor:move;
+}
+
+#brainstorms .note-design {
+	position:absolute;
+	overflow:hidden;
+	background-color: #FFF082;
+	border: 1px solid #77713D;
+	/* Adding a CSS3 shadow below the note, in the browsers which support it: 
+	-moz-box-shadow:2px 2px 0 #DDDDDD;
+	-webkit-box-shadow:2px 2px 0 #DDDDDD;
+	box-shadow:2px 2px 0 #DDDDDD;*/
+}
+
+#brainstorms-notes-outer .note {
+	position:absolute;
+	overflow:hidden;
+	cursor:move;
+	border: 1px solid #57522c;
+	background-color: #fff;
+
+	/* Adding a CSS3 shadow below the note, in the browsers which support it: 
+	-moz-box-shadow:2px 2px 0 #DDDDDD;
+	-webkit-box-shadow:2px 2px 0 #DDDDDD;
+	box-shadow:2px 2px 0 #DDDDDD;*/
+}
+
+#brainstorms .ui-widget-header {
+	background-color: #77713D;
+	height: 16px;
+    overflow: hidden;
+    padding: 1px 50px 0 9px;
+}
+
+#brainstorms-roster .ui-widget-header {
+	background-color: #666;
+		border-right: 1px solid #333;
+}
+
+#brainstorms-notes-outer .ui-widget-header {
+	background-color: #666;
+}
+
+
+#brainstorms-right .note-title {
+	padding: 1px 50px 0 9px;
+	height: 16px;
+	overflow: hidden;
+}
+
+#brainstorms-right .note-text {
+	padding: 9px;
+}
+
+#brainstorms-right .note input {
+	padding: 1px 51px 2px 8px;
+	color: #fff;
+	border: 0;
+	background-color: #77713D;
+	display: block;
+	width: 100%;
+	 box-sizing: border-box; /* css3 rec */
+        -moz-box-sizing: border-box; /* ff2 */
+        -ms-box-sizing: border-box; /* ie8 */
+        -webkit-box-sizing: border-box; /* safari3 */
+        -khtml-box-sizing: border-box; /* konqueror */
+}
+
+#brainstorms-notes-outer .note input {
+	background-color: #666;
+}
+
+#brainstorms-right .note textarea {
+	padding: 9px 8px;
+	border: 0;
+	background-color: #ffef83;
+
+}
+#brainstorms-notes-outer .note textarea {
+	background-color: #fff;
+}
+
+#brainstorms-roster { float: left; width: 100%; font-size: 11px;}
+#brainstorms-roster > div { position: relative; float: left; width: 150px; height: 357px; background-image: url(../../img/brainstorms_roster_task.jpg); background-repeat: repeat-y; background-position: 0px 27px;}
+#brainstorms-roster > div div.handle { height: 20px; background-color: #000; color:#FFF}
+#brainstorms-roster .brainstorms-column-delete { position: absolute; top: 1px; right: 10px; width: 10px; height: 10px; cursor: pointer;}
+#brainstorms-roster .roster-note-new { position: absolute; top: 1px; right: 20px; width: 10px; height: 10px; cursor: pointer;}
+
+#brainstorms-roster .brainstorms-phase-design {height: 100%; background: url(../../img/brainstorms_roster_phase.jpg) no-repeat;}
+#brainstorms-roster .brainstorms-phase-design > div {  position: relative; overflow: hidden; line-height: 25px; height: 28px; padding: 1px 14px 0 20px; background-color: #ccc; border-right: 1px solid #333; border-bottom: 1px solid #333;}
+#brainstorms-roster .brainstorms-phase-design > div.active {  background-color: #FFF6B5; }
+#brainstorms-roster .brainstorms-phase-design > div:first-child { height: 33px; padding: 6px 14px 0 20px;; background-color: #a5a5a5; font-weight: bold;}
+
+#brainstorms-roster .icon-milestone { position: absolute; left: 3px; top: 8px; }
+#brainstorms-roster .binItem-Outer { display: none; position: absolute; top: 7px; right: 4px; width: 15px; height: 15px; cursor: pointer; }
+#brainstorms-roster .brainstorms-phase-design > div:first-child .binItem-Outer { top: 12px; }
+
+
+#brainstorms-console { overflow: hidden; z-index: 100; position: absolute; top: 104px; left: 700px; width: 200px; height: 300px; border: 1px solid #000; background-color: #fff; font-size: 11px; }
+#brainstorms-console>div.item {  padding: 10px 15px; background-color: #ccc; border-top: 1px solid #7f7f7f; border-bottom: 1px solid #7f7f7f;}
+#brainstorms-console-notes { height: 90%; overflow: auto; }
+#brainstorms-console-notes div {  overflow: hidden; line-height: 25px; height: 26px; padding: 3px 14px 0 15px; background-color: #FFF082; border-bottom: 1px solid #333;}
+.ui-draggable-helper {  font-size: 11px; overflow: hidden; line-height: 25px; height: 24px; padding: 3px 14px 0 15px; background-color: #ffef83; border-bottom: 1px solid #333;}
+
+
+#brainstormsPosts { background-image:url(../../img/brainstorm_forum_bg.png); }
+#brainstormsPosts .toggeled { border-bottom: 1px solid #77713D; overflow: hidden; }
+
+#modalDialogBrainstormsPost span.coButton  { background-color: #6496db; color: #fff; }
+#modalDialogRoster span.coButton  { background-color: #77713D; color: #fff; }
+
+#brainstorms-right span.coButton:hover   { background-color: #fff; color: #000; cursor: pointer; }
+#brainstorms-right textarea { border: 0; }
+#brainstormAnswer > div { padding-bottom: 10px;}

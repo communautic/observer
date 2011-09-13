@@ -1,0 +1,112 @@
+#contacts { position:absolute; height: 100%;  width: 100%; background-color:#333333;}
+#contacts .ui-layout-resizer-west { background-color:#c88700 !important; }
+#contacts .ui-layout-resizer-west-closed { background-color:#c88700 !important; }
+
+#contacts-top { height: 50px; float: left;}
+
+#contacts .module-bg-active { background-color: #c88700; color: #fff }
+
+#contacts3 h3 { padding: 0 40px 0 6px; font-size: 12px; line-height: 24px; cursor:pointer; color: #000; text-align: right; }
+
+#contacts1, #contacts2, #contacts3 { padding:0; overflow: hidden !important; /* prevent scrollbars auto-added by Layout */}
+#contacts1 { display: block;}
+#contacts1 .scrolling-content { width: 325px !important;}
+.contacts1-content { width: 325px;; background-color: #c88700; padding:0; overflow:hidden !important;}
+
+#contacts .ui-layout-west li>span:hover   { background-color: #865b00}
+#contacts .ui-layout-west li>span.active-link  { background-color: #865b00}
+
+/*.ui-layout-west li a.deactivated { color: #fff; }
+.ui-layout-west li a.deactivated:hover { color: #fff; background-color: transparent !important; }*/
+
+#contacts .jScrollPaneDrag { background: #865b00; }
+
+#contacts .co-link:hover { color: #865b00; }
+
+#contacts .center-center a         { color: #000; }
+#contacts .center-center a:link    { color: #000; }
+#contacts .center-center a:active  { color: #000; }
+#contacts .center-center a:visited { color: #000; }
+#contacts .center-center a:hover   { color: #865b00; cursor: pointer}
+
+
+#menu .app_contacts { color: #333; text-decoration: none; outline: none; background: url(../../img/app_propellor.png) no-repeat 36px 0px; }
+#menu .app_contacts:hover { color: #fff; text-decoration: none; outline: none; background: #c98601 url(../../img/app_propellor.png) no-repeat 36px -60px; }
+#menu .app_contacts.active-app { color: #fff; text-decoration: none; outline: none; background: #c98601 url(../../img/app_propellor.png) no-repeat 36px -60px; }
+
+
+/* Actions Menu */
+#contactsActions span.actionNew 				{	background-position: -150px 0px;	}
+#contactsActions span.actionNew:hover 			{ 	background-position:  -200px 0px;	}
+#contactsActions span.actionNew.noactive 		{ 	background-position:  0px 0px; 		}
+
+#contactsActions span.actionPrint 				{ 	background-position: -150px -102px;	}
+#contactsActions span.actionPrint:hover 		{ 	background-position: -200px -102px;	}
+#contactsActions span.actionPrint.noactive 	{ 	background-position:0px -102px;		}
+
+#contactsActions span.actionSend 				{ 	background-position: -150px -151px;	}
+#contactsActions span.actionSend:hover 		{ 	background-position: -200px -151px;	}
+#contactsActions span.actionSend.noactive 		{ 	background-position: 0px -151px; 	}
+
+#contactsActions span.actionSendVcard 				{ 	background-position: -150px -359px;	}
+#contactsActions span.actionSendVcard:hover 		{ 	background-position: -200px -359px;	}
+#contactsActions span.actionSendVcard.noactive 		{ 	background-position: 0px -359px; 	}
+
+#contactsActions span.actionDuplicate 			{ 	background-position: -150px -206px;	}
+#contactsActions span.actionDuplicate:hover 	{ 	background-position: -200px -206px;	}
+#contactsActions span.actionDuplicate.noactive { background-position: 0px -206px;  	}
+
+#contactsActions span.actionRefresh				{ 	background-position: -150px -258px;	}
+#contactsActions span.actionRefresh:hover 	{ 	background-position: -200px -258px;	}
+#contactsActions span.actionRefresh.noactive { background-position: 0px -258px;  	}
+
+#contactsActions span.actionHelp				{ 	background-position: -147px -51px;	}
+#contactsActions span.actionHelp:hover 	{ 	background-position: -197px -51px;	}
+#contactsActions span.actionHelp.noactive { background-position: 0px -51px;  	}
+
+/*#contactsActions span.actionImport				{ 	background-position: -150px -310px;	}
+#contactsActions span.actionImport:hover 	{ 	background-position: -200px -310px;	}
+#contactsActions span.actionImport.noactive { background-position: 0px -310px;  	}*/
+
+ 
+#contacts .table-title, #contacts .textarea-title { 
+background-color: #e9d09a; }
+
+#contacts .ui-datepicker-trigger-action-status {
+	position: absolute;
+	left: 318px;
+display: block; height: 13px; width: 15px; margin-top: -15px; background:url(../../../img/apps_buttons_sprite.png) no-repeat -40px -570px
+}
+
+#contacts a.disabled{
+	background-position: 0px -570px
+}
+
+#contacts-right .tcell-left span span, #contacts-right .tcell-left-shorter span span { display: block; padding: 0 0 0 15px; }
+#contacts-right .tcell-left-short span { display: block; padding: 0 0 0 15px; }
+
+#contacts-right .content-nav         { display: block; color: #000; }
+#contacts-right .content-nav:hover   { display: block; background-color: #C88700; color: #000; cursor: pointer; }
+
+.content-outline {background-color: #e1f0af;}
+
+#contacts-right textarea{ font-size: 13px;
+	font-family: Arial, Helvetica, sans-serif;
+	border: 1px solid #fff;
+	width: 100%;
+}
+/*#contacts-right textarea:hover,
+#contacts-right textarea:focus,
+#contacts-right input.bg:hover, */
+#contacts-right input.bg:focus {
+    background-color: #e9d09a;
+}
+
+#contacts-right .ui-upload-button { position: absolute !important; width: 80px; height: 120px;}
+#contacts-right .qq-upload-button-hover {background-color: #E9D09A; background-image: url("../../img/avatar_hover.jpg");  background-repeat: no-repeat; }
+#contacts-right .ui-upload-drop-area { position: absolute; width: 74px; padding: 20px 3px 3px 3px; height: 97px; background: #E9D09A; opacity: 0.6; z-index: 1; font-size: 11px; text-align: center; }
+#contacts-right .ui-upload-drop-area-active { background: #E9D09A;}
+#contacts-right .ui-upload-list { display: none; position: absolute; width: 74px; padding: 3px; text-align: center; height: 114px; font-size: 11px; z-index: 2; background: #E9D09A; opacity: 0.8 }
+#contacts-right .ui-upload-file { display: none;}
+#contacts-right .ui-upload-spinner {display:inline-block; background: url("../../img/file_loading.gif"); width:15px; height:15px; vertical-align:text-bottom;}
+
