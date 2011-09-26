@@ -176,7 +176,7 @@ class BrainstormsRosters extends Brainstorms {
 			$title = $roster->title;
 		}
 		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["BRAINSTORM_PRINT_ROSTER"];
-		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
+		$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
 		$pdf = $this->saveTimeline($title,$html,$attachment,$page_width,$page_height);
 		
 		// write sento log

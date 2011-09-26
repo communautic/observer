@@ -103,7 +103,7 @@ class ProjectsPhonecalls extends Projects {
 			$title = $phonecall->title;
 		}
 		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PROJECT_PRINT_PHONECALL"];
-		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
+		$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
 		$pdf = $this->savePDF($title,$html,$attachment);
 		
 		// write sento log

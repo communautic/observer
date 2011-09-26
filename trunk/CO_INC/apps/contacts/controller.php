@@ -129,7 +129,7 @@ class Contacts extends Controller {
 			$title = $group->title;
 		}
 		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_GROUP"];
-		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
+		$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
 		$pdf = $this->savePDF($title,$html,$attachment);
 		
 		// write sento log
@@ -328,7 +328,7 @@ function getContactSend($id) {
 			$title = $contact->lastname . "_" . $contact->firstname;
 		}
 		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_CONTACT"];
-		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
+		$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
 		$pdf = $this->savePDF($title,$html,$attachment);
 		
 		// write sento log

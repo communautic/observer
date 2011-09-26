@@ -82,7 +82,7 @@ class ProjectsControlling extends Projects {
 			$title =  $tit . " - " . $lang["PROJECT_CONTROLLING_STATUS"];
 		}
 		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PROJECT_PRINT_CONTROLLING"];
-		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
+		$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
 		$pdf = $this->savePDF($title,$html,$attachment);
 		
 		// write sento log

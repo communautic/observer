@@ -9,9 +9,9 @@
 height:30px;
 }
 
-#menu .app_home { color: #333; text-decoration: none; outline: none; background: url(../../img/app_propellor.png) no-repeat 36px 0px; }
-#menu .app_home:hover { color: #fff; text-decoration: none; outline: none; background: #191919 url(../../img/app_propellor.png) no-repeat 36px -90px; }
-#menu .app_home.active-app { color: #fff; text-decoration: none; outline: none; background: #191919 url(../../img/app_propellor.png) no-repeat 36px -90px; }
+#menu .app_home { color: #333; text-decoration: none; outline: none; background: url(../../img/app_propellor.png) no-repeat 16px 0px; }
+#menu .app_home:hover { color: #fff; text-decoration: none; outline: none; background: #191919 url(../../img/app_propellor.png) no-repeat 16px -90px; }
+#menu .app_home.active-app { color: #fff; text-decoration: none; outline: none; background: #191919 url(../../img/app_propellor.png) no-repeat 16px -90px; }
 
 #columns .column {
 float:left;

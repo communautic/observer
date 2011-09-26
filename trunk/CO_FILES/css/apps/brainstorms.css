@@ -29,9 +29,9 @@
 
 #brainstormsActions { display: block; }
 
-#menu .app_brainstorms { color: #333; text-decoration: none; outline: none; background: url(../../img/app_propellor.png) no-repeat 36px 0px; }
-#menu .app_brainstorms:hover { color: #fff; text-decoration: none; outline: none; background: #b1a85b url(../../img/app_propellor.png) no-repeat 36px -210px; }
-#menu .app_brainstorms.active-app { color: #fff; text-decoration: none; outline: none; background: #b1a85b url(../../img/app_propellor.png) no-repeat 36px -210px; }
+#menu .app_brainstorms { color: #333; text-decoration: none; outline: none; background: url(../../img/app_propellor.png) no-repeat 16px 0px; }
+#menu .app_brainstorms:hover { color: #fff; text-decoration: none; outline: none; background: #b1a85b url(../../img/app_propellor.png) no-repeat 16px -210px; }
+#menu .app_brainstorms.active-app { color: #fff; text-decoration: none; outline: none; background: #b1a85b url(../../img/app_propellor.png) no-repeat 16px -210px; }
 
 /* Actions Menu */
 #brainstormsActions span.actionNew 				{	background-position: -350px 0px;	}
@@ -98,6 +98,9 @@ background-color: #fff6b5; }
 .loadBrainstormsPhase { cursor: pointer }
 .loadBrainstormsPhase2 { cursor: pointer }
 
+#brainstorms .tbl-protocol td, #brainstorms .elastic {
+  background-color: #FFF6B5;
+}
 
 .td_border_top_right {
  border-top: 1px solid #24211D; 
@@ -117,10 +120,6 @@ background-color: #fff6b5; }
     padding: 0 0 0 15px;
     width: 127px;
 	background-color: #B2A85B;
-}
-
-#brainstorms .tbl-protocol td, #brainstorms .elastic {
-  background-color: #FFF6B5;
 }
 
 #brainstorms .SendToContent { display: none; background-color: #E5E5E5; font-style: italic; padding: 10px; }

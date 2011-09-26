@@ -579,7 +579,7 @@ class BrainstormsModel extends Model {
 		$q = "select * from " . CO_TBL_BRAINSTORMS_NOTES . " where pid = '$id' and bin = '0'";
 		
 		$result = mysql_query($q, $this->_db->connection);
-	  	$notes = "";
+	  	$notes = array();
 	  	while ($row = mysql_fetch_array($result)) {
 			foreach($row as $key => $val) {
 				$note[$key] = $val;

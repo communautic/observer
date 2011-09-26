@@ -94,7 +94,7 @@ class VDocs extends Projects {
 			ob_end_clean();
 			$title = $vdoc->title;
 		}
-		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
+		$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
 		$pdf = $this->savePDF($title,$html,$attachment);
 		
 		// write sento log
