@@ -52,7 +52,7 @@ $lang["PROJECT_FOLDER_HELP"] = 'manual_projekte_ordner.pdf';
 // Print images
 $lang["PRINT_PROJECT_MANUAL"] = 'projekthandbuch.png';
 $lang["PRINT_PROJECT"] = 'projekt.png';
-$lang["PRINT_PROJECT_FOLDER"] = 'projekt.png';
+$lang["PRINT_PROJECT_FOLDER"] = 'ordner.png';
 
 
 // check for custom lang file

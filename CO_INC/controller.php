@@ -56,7 +56,7 @@ class Controller extends MySQLDB {
 		
 		$footer = "</body></html>";
 		$html = $header . '<script type="text/php">' . $headerpdf  . '</script>' . $text . $footer;
-		require_once(CO_INC . "/classes/dompdf/dompdf_config.inc.php");
+		require_once(CO_INC . "/classes/dompdf_60_beta2/dompdf_config.inc.php");
 		$dompdf = new DOMPDF();
 		$dompdf->load_html($html);
 		$dompdf->set_paper('a4', 'portrait'); // change 'a4' to whatever you want 
@@ -69,7 +69,14 @@ class Controller extends MySQLDB {
 	
 	
     
-    
+	function normal_chars($string) {
+		$string = htmlentities($string, ENT_QUOTES, 'UTF-8');
+		$string = preg_replace('~&([a-z]{1,2})(acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i', '$1', $string);
+		$string = preg_replace(array('~[^0-9a-z]~i', '~-+~'), '_', $string);
+		return trim($string);
+	}
+
+
     
 
 
@@ -92,7 +99,7 @@ class Controller extends MySQLDB {
 		
 		$footer = "</body></html>";
 		$html = $header . '<script type="text/php">' . $headerpdf . '</script>' . $text . $footer;
-		require_once(CO_INC . "/classes/dompdf/dompdf_config.inc.php");
+		require_once(CO_INC . "/classes/dompdf_60_beta2/dompdf_config.inc.php");
 		$dompdf = new DOMPDF();
 		$dompdf->load_html($html);
 		$dompdf->set_paper('a4', 'portrait'); // change 'a4' to whatever you want

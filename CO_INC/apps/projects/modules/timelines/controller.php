@@ -273,7 +273,7 @@ class ProjectsTimelines extends Projects {
 						$html = ob_get_contents();
 					ob_end_clean();
 					$title = $project["title"] . " - " . $lang["PROJECT_TIMELINE_PROJECT_PLAN"];
-					$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
+					$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
 					$pdf = $this->saveTimeline($title,$html,$attachment,$project["page_width"],$project["page_height"]);
 				
 					$this->writeSendtoLog("projects_gantt",$variable,$to,$subject,$body);
@@ -297,7 +297,7 @@ class ProjectsTimelines extends Projects {
 						$html = ob_get_contents();
 					ob_end_clean();
 					$title = $project["title"] . " - " . $lang["PROJECT_TIMELINE_PROJECT_STRUCTURE"];
-					$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
+					$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
 					//$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_TIMELINE"];
 					//$this->printPSP($title,$html,$project["page_width"], $project["page_height"]);
 					$pdf = $this->saveTimeline($title,$html,$attachment,$project["page_width"],$project["page_height"]);
@@ -313,7 +313,7 @@ class ProjectsTimelines extends Projects {
 				ob_end_clean();
 				$title = $project["title"] . " - " . $lang["PROJECT_TIMELINE_DATES_MILESTONES"];
 				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PROJECT_PRINT_TIMELINE"];
-				$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
+				$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
 				$pdf = $this->savePDF($title,$html,$attachment);
 				$this->writeSendtoLog("projects_milestones",$variable,$to,$subject,$body);
 			break;
@@ -326,7 +326,7 @@ class ProjectsTimelines extends Projects {
 					ob_end_clean();
 					$title = $project["title"] . " - " . $lang["PROJECT_TIMELINE_DATES_LIST"];
 					$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PROJECT_PRINT_TIMELINE"];
-					$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
+					$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
 					$pdf = $this->savePDF($title,$html,$attachment);
 					$this->writeSendtoLog("projects_timeline",$variable,$to,$subject,$body);
 				}

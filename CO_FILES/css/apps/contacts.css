@@ -30,9 +30,9 @@
 #contacts .center-center a:hover   { color: #865b00; cursor: pointer}
 
 
-#menu .app_contacts { color: #333; text-decoration: none; outline: none; background: url(../../img/app_propellor.png) no-repeat 36px 0px; }
-#menu .app_contacts:hover { color: #fff; text-decoration: none; outline: none; background: #c98601 url(../../img/app_propellor.png) no-repeat 36px -60px; }
-#menu .app_contacts.active-app { color: #fff; text-decoration: none; outline: none; background: #c98601 url(../../img/app_propellor.png) no-repeat 36px -60px; }
+#menu .app_contacts { color: #333; text-decoration: none; outline: none; background: url(../../img/app_propellor.png) no-repeat 16px 0px; }
+#menu .app_contacts:hover { color: #fff; text-decoration: none; outline: none; background: #c98601 url(../../img/app_propellor.png) no-repeat 16px -60px; }
+#menu .app_contacts.active-app { color: #fff; text-decoration: none; outline: none; background: #c98601 url(../../img/app_propellor.png) no-repeat 16px -60px; }
 
 
 /* Actions Menu */

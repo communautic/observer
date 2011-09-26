@@ -283,7 +283,7 @@ class Brainstorms extends Controller {
 			$title = $brainstorm["title"];
 		}
 		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_BRAINSTORM"];
-		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
+		$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
 		$pdf = $this->saveTimeline($title,$html,$attachment,$brainstorm["page_width"],$brainstorm["page_height"]);
 		
 		// write sento log

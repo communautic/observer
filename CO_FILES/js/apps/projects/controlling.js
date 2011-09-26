@@ -57,6 +57,18 @@ function projectsControlling(name) {
 		$("#modalDialogForward").dialog('close');
 	}
 	
+	
+	this.actionDialog = function(offset,request,field,append,title,sql) {
+		$.ajax({ type: "GET", url: "/", data: 'path=apps/projects&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
+			$("#modalDialog").html(html);
+			$("#modalDialog").dialog('option', 'position', offset);
+			$("#modalDialog").dialog('option', 'title', title);
+			$("#modalDialog").dialog('open');
+			}
+		});
+	}
+
+
 	this.actionHelp = function() {
 		var url = "/?path=apps/projects/modules/controlling&request=getHelp";
 		$("#documentloader").attr('src', url);

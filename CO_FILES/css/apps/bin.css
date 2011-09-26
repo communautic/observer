@@ -27,9 +27,9 @@
 
 #binActions { display: block; }
 
-#menu .app_bin { color: #333; text-decoration: none; outline: none; background: url(../../img/app_propellor.png) no-repeat 36px 0px; }
-#menu .app_bin:hover { color: #fff; text-decoration: none; outline: none; background: #999 url(../../img/app_propellor.png) no-repeat 36px -180px; }
-#menu .app_bin.active-app { color: #fff; text-decoration: none; outline: none; background: #999 url(../../img/app_propellor.png) no-repeat 36px -180px; }
+#menu .app_bin { color: #333; text-decoration: none; outline: none; background: url(../../img/app_propellor.png) no-repeat 16px 0px; }
+#menu .app_bin:hover { color: #fff; text-decoration: none; outline: none; background: #999 url(../../img/app_propellor.png) no-repeat 16px -180px; }
+#menu .app_bin.active-app { color: #fff; text-decoration: none; outline: none; background: #999 url(../../img/app_propellor.png) no-repeat 16px -180px; }
 
 
 #bin .table-title, #bin .textarea-title { 

@@ -118,7 +118,7 @@ class Projects extends Controller {
 			$title = $folder->title;
 		}
 		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_PROJECT_FOLDER"];
-		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
+		$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
 		$pdf = $this->savePDF($title,$html,$attachment);
 		
 		// write sento log
@@ -370,7 +370,7 @@ class Projects extends Controller {
 			$title = $project->title;
 		}
 		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_PROJECT"];
-		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
+		$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
 		$pdf = $this->savePDF($title,$html,$attachment);
 		
 		// write sento log

@@ -108,7 +108,7 @@ class ProjectsMeetings extends Projects {
 			$title = $meeting->title;
 		}
 		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PROJECT_PRINT_MEETING"];
-		$attachment = CO_PATH_PDF . "/" . $title . ".pdf";
+		$attachment = CO_PATH_PDF . "/" .$this->normal_chars($title) . ".pdf";
 		$pdf = $this->savePDF($title,$html,$attachment);
 		
 		// write sento log

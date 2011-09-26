@@ -29,9 +29,9 @@
 
 #projectsActions { display: block; }
 
-#menu .app_projects { color: #333; text-decoration: none; outline: none; background: url(../../img/app_propellor.png) no-repeat 36px 0px; }
-#menu .app_projects:hover { color: #fff; text-decoration: none; outline: none; background: #82aa0b url(../../img/app_propellor.png) no-repeat 36px -30px; }
-#menu .app_projects.active-app { color: #fff; text-decoration: none; outline: none; background: #82aa0b url(../../img/app_propellor.png) no-repeat 36px -30px; }
+#menu .app_projects { color: #333; text-decoration: none; outline: none; background: url(../../img/app_propellor.png) no-repeat 16px 0px; }
+#menu .app_projects:hover { color: #fff; text-decoration: none; outline: none; background: #82aa0b url(../../img/app_propellor.png) no-repeat 16px -30px; }
+#menu .app_projects.active-app { color: #fff; text-decoration: none; outline: none; background: #82aa0b url(../../img/app_propellor.png) no-repeat 16px -30px; }
 
 /* Actions Menu */
 #projectsActions span.actionNew 				{	background-position: -50px 0px;	}
@@ -95,6 +95,10 @@ background-color: #e1f0af; }
 .loadProject { cursor: pointer }
 .loadProjectsPhase { cursor: pointer }
 .loadProjectsPhase2 { cursor: pointer }
+
+#projects .tbl-protocol td, #projects .elastic {
+ background-color:#E1F0AF;
+}
 
 #barchart-zoom { margin: 5px 0 0 42px; }
 #barchart-zoom .zoom-xsmall { float: left; margin-right: 7px; display: block; height: 13px; width: 13px; background: url(../../img/apps_buttons_sprite.png) no-repeat 0px -590px}

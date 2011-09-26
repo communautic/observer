@@ -10,9 +10,9 @@ body {
 td,div { vertical-align: middle; height: 18pt;}
 td.top { vertical-align: top}
 
-table.standard { margin: 0 0 0 -15pt; padding: 0 10pt 0 15pt }
-table.grey { background-color:#E5E5E5; margin: 0 0 0 -15pt; padding: 0 10pt 0 15pt}
-table.greyList { background-color:#E5E5E5; margin: 0 0 0 -15pt; padding: 0 0 0 0}
+table.standard { margin: 0 0 0 -15pt; padding: 0 10pt 0 15pt;  border-collapse: collapse; }
+table.grey { background-color:#E5E5E5; margin: 0 0 0 -15pt; padding: 0 10pt 0 15pt; border-collapse: collapse; }
+table.greyList { background-color:#E5E5E5; margin: 0 0 0 -15pt; }
 td.greybg { background-color:#E5E5E5;}
 td.grey, div.grey { color:#666666; }
 .smalltext { font-size: 8pt; }
