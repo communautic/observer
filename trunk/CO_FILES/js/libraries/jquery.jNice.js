@@ -120,6 +120,72 @@
 									}
 								});
 					
+				} else if(obj.name == "forums") {
+					var input = $a.siblings('input')[0];
+					var itemid = input.value;
+					if (input.checked===true){
+						input.checked = false;
+						$a.removeClass('jNiceChecked');
+						$("#forumsAnswer_"+itemid).slideUp(function() { 
+							$(this).remove();
+							if($('#forumsAnswer').html() == "") {
+								$('#forumsAnswerOuter').slideUp();
+							}		 
+						});
+						var status = 0;
+						
+					} else {
+						input.checked = true;
+						$a.addClass('jNiceChecked');
+						$('#forumsAnswerOuter').slideDown();
+						$("#forumsPostanswer_"+itemid).clone().attr('id','forumsAnswer_'+itemid).css('display','none').appendTo('#forumsAnswer').slideDown();
+						var status = 1;
+					}
+					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/forums&request=setItemStatus&id="+itemid+"&status=" + status, success: function(forums){
+										//$("#brainstormenddate").html(brainstorm.enddate);
+									}
+								});
+					
+				} else if(obj.name == "clients") {
+					var input = $a.siblings('input')[0];
+					var itemid = input.value;
+					var cid = $('#clients input[name="id"]').val();
+					if (input.checked===true){
+						var txt = ALERT_CLIENT_ACCESS_REMOVE;
+						var langbuttons = {};
+						langbuttons[ALERT_YES] = true;
+						langbuttons[ALERT_NO] = false;
+						$.prompt(txt,{ 
+							buttons:langbuttons,
+							callback: function(v,m,f){		
+								if(v){
+									input.checked = false;
+									$a.removeClass('jNiceChecked');
+									$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients&request=&request=removeAccess&id="+itemid+"&cid=" + cid, success: function(brainstorm){
+										}
+									});
+								} 
+							}
+						});
+					} else {
+						var txt = ALERT_CLIENT_ACCESS;
+						var langbuttons = {};
+						langbuttons[ALERT_YES] = true;
+						langbuttons[ALERT_NO] = false;
+						$.prompt(txt,{ 
+							buttons:langbuttons,
+							callback: function(v,m,f){		
+								if(v){
+									input.checked = true;
+									$a.addClass('jNiceChecked');
+									$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients&request=&request=generateAccess&id="+itemid+"&cid=" + cid, success: function(brainstorm){
+										}
+									});
+								} 
+							}
+						});
+					}
+				
 				} else {
 					var input = $a.siblings('input')[0];
 					if (input.checked===true){
@@ -184,6 +250,73 @@
 									}
 								});
 					
+				} else if(obj.name == "forums") {
+					var input = $a.siblings('input')[0];
+					var itemid = input.value;
+					if (input.checked===true){
+						input.checked = false;
+						$a.removeClass('jNiceChecked');
+						$("#forumsAnswer_"+itemid).slideUp(function() { 
+							$(this).remove();
+							if($('#forumsAnswer').html() == "") {
+								$('#forumsAnswerOuter').slideUp();
+							}		 
+						});
+						var status = 0;
+						
+					} else {
+						input.checked = true;
+						$a.addClass('jNiceChecked');
+						$('#forumsAnswerOuter').slideDown();
+						$("#forumsPostanswer_"+itemid).clone().attr('id','forumsAnswer_'+itemid).css('display','none').appendTo('#forumsAnswer').slideDown();
+						var status = 1;
+					}
+					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/forums&request=setItemStatus&id="+itemid+"&status=" + status, success: function(forums){
+										//$("#brainstormenddate").html(brainstorm.enddate);
+									}
+								});
+					
+				} else if(obj.name == "clients") {
+					var input = $a.siblings('input')[0];
+					var itemid = input.value;
+					var cid = $('#clients input[name="id"]').val();
+					if (input.checked===true){
+						var txt = ALERT_CLIENT_ACCESS_REMOVE;
+						var langbuttons = {};
+						langbuttons[ALERT_YES] = true;
+						langbuttons[ALERT_NO] = false;
+						$.prompt(txt,{ 
+							buttons:langbuttons,
+							callback: function(v,m,f){		
+								if(v){
+									input.checked = false;
+									$a.removeClass('jNiceChecked');
+									$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients&request=&request=removeAccess&id="+itemid+"&cid=" + cid, success: function(brainstorm){
+										}
+									});
+								} 
+							}
+						});
+					} else {
+						var txt = ALERT_CLIENT_ACCESS;
+						var langbuttons = {};
+						langbuttons[ALERT_YES] = true;
+						langbuttons[ALERT_NO] = false;
+						$.prompt(txt,{ 
+							buttons:langbuttons,
+							callback: function(v,m,f){		
+								if(v){
+									input.checked = true;
+									$a.addClass('jNiceChecked');
+									$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients&request=&request=generateAccess&id="+itemid+"&cid=" + cid, success: function(brainstorm){
+										}
+									});
+								} 
+							}
+						});
+					}
+					
+				
 				} else {
 					var input = $a.siblings('input')[0];
 					if (input.checked===true){
