@@ -33,3 +33,6 @@ var ALERT_UPLOAD_SIZE = "{file} is too large, maximum file size is {sizeLimit}."
 var ALERT_UPLOAD_TYPE = "{file} has invalid extension. Only {extensions} are allowed.";
 var UPLOAD_FROM = "from";
 var UPLOAD_CANCEL = "Cancel";
+
+var ALERT_CLIENT_ACCESS = 'Möchten Sie die Bestellberechtigung jetzt vergeben?';
+var ALERT_CLIENT_ACCESS_REMOVE = 'Möchten Sie die Bestellberechtigung jetzt entziehen?';

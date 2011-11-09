@@ -11,7 +11,7 @@ class BrainstormsDocumentsModel extends BrainstormsModel {
 	function getList($id,$sort) {
 		global $session;
 	  if($sort == 0) {
-		  $sortstatus = $this->getSortStatus("document-sort-status",$id);
+		  $sortstatus = $this->getSortStatus("brainstorms-documents-sort-status",$id);
 		  if(!$sortstatus) {
 				$order = "order by title";
 				$sortcur = '1';
@@ -26,7 +26,7 @@ class BrainstormsDocumentsModel extends BrainstormsModel {
 							$sortcur = '2';
 				  break;
 				  case "3":
-				  		$sortorder = $this->getSortOrder("document-sort-order",$id);
+				  		$sortorder = $this->getSortOrder("brainstorms-documents-sort-order",$id);
 				  		if(!$sortorder) {
 								$order = "order by title";
 								$sortcur = '1';
@@ -48,7 +48,7 @@ class BrainstormsDocumentsModel extends BrainstormsModel {
 						$sortcur = '2';
 				  break;
 				  case "3":
-				  		$sortorder = $this->getSortOrder("document-sort-order",$id);
+				  		$sortorder = $this->getSortOrder("brainstorms-documents-sort-order",$id);
 				  		if(!$sortorder) {
 						  	$order = "order by title";
 								$sortcur = '1';
@@ -68,7 +68,7 @@ class BrainstormsDocumentsModel extends BrainstormsModel {
 	  
 		$q = "select id,title,access,edited_date from " . CO_TBL_BRAINSTORMS_DOCUMENTS_FOLDERS . " where pid = '$id' and bin != '1' " . $sql . $order;
 
-		$this->setSortStatus("document-sort-status",$sortcur,$id);
+		$this->setSortStatus("brainstorms-documents-sort-status",$sortcur,$id);
 		$result = mysql_query($q, $this->_db->connection);
 		$documents = "";
 		while ($row = mysql_fetch_array($result)) {

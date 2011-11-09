@@ -11,7 +11,7 @@ class ProjectsPhasesModel extends ProjectsModel {
 	function getList($id,$sort) {
 		global $session;
 		if($sort == 0) {
-			$sortstatus = $this->getSortStatus("phase-sort-status",$id);
+			$sortstatus = $this->getSortStatus("projects-phases-sort-status",$id);
 			if(!$sortstatus) {
 				$order = "order by startdate";
 				$sortcur = '1';
@@ -26,7 +26,7 @@ class ProjectsPhasesModel extends ProjectsModel {
 						$sortcur = '2';
 				  	break;
 				  	case "3":
-				  		$sortorder = $this->getSortOrder("phase-sort-order",$id);
+				  		$sortorder = $this->getSortOrder("projects-phases-sort-order",$id);
 				  		if(!$sortorder) {
 							$order = "order by startdate";
 							$sortcur = '1';
@@ -48,7 +48,7 @@ class ProjectsPhasesModel extends ProjectsModel {
 						$sortcur = '2';
 				  break;
 				  case "3":
-				  		$sortorder = $this->getSortOrder("phase-sort-order",$id);
+				  		$sortorder = $this->getSortOrder("projects-phases-sort-order",$id);
 				  		if(!$sortorder) {
 						  	$order = "order by startdate";
 								$sortcur = '1';
@@ -68,7 +68,7 @@ class ProjectsPhasesModel extends ProjectsModel {
 		
 		$q = "select a.title,a.id,a.access,a.status,a.checked_out,a.checked_out_user,(SELECT MIN(startdate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as startdate from " . CO_TBL_PROJECTS_PHASES . " as a where a.pid = '$id' and a.bin != '1' " . $sql . $order;
 		
-	  	$this->setSortStatus("phase-sort-status",$sortcur,$id);
+	  	$this->setSortStatus("projects-phases-sort-status",$sortcur,$id);
 		$result = mysql_query($q, $this->_db->connection);
 	  	$phases = "";
 		
@@ -254,6 +254,7 @@ class ProjectsPhasesModel extends ProjectsModel {
 		$array["dependency_exists"] = $this->getDependency($id);
 		$array["projecttitle"] = $this->getProjectTitle($array['pid']);
 		$array["management"] = $this->_contactsmodel->getUserListPlain($this->getProjectField($array['pid'], 'management'));
+		$array["team_print"] = $this->_contactsmodel->getUserListPlain($array["team"]);
 		$array["team"] = $this->_contactsmodel->getUserList($array['team'],'projectsteam', "", $array["canedit"]);
 		$array["team_ct"] = empty($array["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['team_ct'];
 		$array["documents"] = $this->_documents->getDocListFromIDs($array["documents"],'documents');

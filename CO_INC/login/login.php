@@ -1,3 +1,11 @@
+<?php 
+$form_path = "login";
+$form_result_path = "";
+if(isset($_GET['path'])) {
+	$form_path =  htmlentities($_GET['path']) . "/login";
+	$form_result_path =  "?path=" . htmlentities($_GET['path']);
+}
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -11,7 +19,7 @@
 <!--[if lt IE 8]>
 <link href="<?php echo CO_FILES;?>/css/login/ie.css" rel="stylesheet" type="text/css" media="screen,projection" />
 <![endif]-->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" type="text/javascript"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.form.js"></script>
 <script type="text/javascript">
 
@@ -28,21 +36,21 @@ $(document).ready(function() {
 	$('#com-form').ajaxForm({
         success: function(data) {
 			if (data == 1) {
-				document.location.href='<?php echo CO_PATH_URL;?>';
+				document.location.href='<?php echo CO_PATH_URL . $form_result_path;?>';
 			} else {
 				$("#loginFailed").fadeIn();
 			}
         }
     });
 	
-	$(".System-hover").hover(
+	/*$(".System-hover").hover(
 		function () {
 			$("#System").fadeIn();
 		}, 
 		function () {
 			$("#System").fadeOut();
 		}
-	);
+	);*/
 
 });
 </script>
@@ -58,7 +66,7 @@ $(document).ready(function() {
 <div id="top-green-bar" class="opac">&nbsp;</div>
 <div id="bot-green-bar" class="opac">&nbsp;</div>
 <div id="grey-bar" class="opac">&nbsp;</div>
-<div id="login-outer"><form id="com-form" name="com_form" method="post" action="/?path=login">
+<div id="login-outer"><form id="com-form" name="com_form" method="post" action="/?path=<?php echo $form_path; ?>">
 <input type="hidden" name="sublogin" value="1" /><div class="bar-outer"><table width="493" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr>
     <td width="121" valign="top" class="login-text"><?php echo($lang["LOGIN_USERNAME"]);?></td>
@@ -78,7 +86,7 @@ $(document).ready(function() {
       <tr>
         <td width="235" valign="top" class="login-text"><?php echo($lang["LOGIN_REMEMBER"]);?></td>
         <td width="30" class="login-text"><input type="checkbox" name="remember" value="yes" /></td>
-        <td valign="top" class="login-text right"><a href="#" class="System-hover"><?php echo($lang["LOGIN_REQUIREMENTS"]);?></a></td>
+        <td valign="top" class="login-text right"><!--<a href="#" class="System-hover"><?php echo($lang["LOGIN_REQUIREMENTS"]);?></a>-->&nbsp;</td>
       </tr>
     </table></div>
     <table width="493" border="0" align="center" cellpadding="0" cellspacing="0">
@@ -87,5 +95,16 @@ $(document).ready(function() {
     </tr>
 </table></form>
 </div>
+<script type="text/javascript"> 
+var $buoop = {vs:{i:8,f:4,o:11,s:5,n:9}} 
+$buoop.ol = window.onload; 
+window.onload=function(){ 
+ try {if ($buoop.ol) $buoop.ol();}catch (e) {} 
+ var e = document.createElement("script"); 
+ e.setAttribute("type", "text/javascript"); 
+ e.setAttribute("src", "http://browser-update.org/update.js"); 
+ document.body.appendChild(e); 
+} 
+</script> 
 </body>
 </html>

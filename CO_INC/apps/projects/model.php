@@ -1,8 +1,4 @@
 <?php
-//include_once(CO_PATH_BASE . "/model.php");
-//include_once(dirname(__FILE__)."/model/folders.php");
-//include_once(dirname(__FILE__)."/model/projects.php");
-
 class ProjectsModel extends Model {
 	
 	// Get all Project Folders
@@ -133,7 +129,7 @@ class ProjectsModel extends Model {
 			$access = " and a.id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
 	  	}
 		
-		 $sortstatus = $this->getSortStatus("project-sort-status",$id);
+		 $sortstatus = $this->getSortStatus("projects-sort-status",$id);
 		if(!$sortstatus) {
 		  	$order = "order by a.title";
 		  } else {
@@ -145,7 +141,7 @@ class ProjectsModel extends Model {
 				  		$order = "order by a.title DESC";
 				  break;
 				  case "3":
-				  		$sortorder = $this->getSortOrder("project-sort-order",$id);
+				  		$sortorder = $this->getSortOrder("projects-sort-order",$id);
 				  		if(!$sortorder) {
 						  	$order = "order by a.title";
 						  } else {
@@ -359,7 +355,7 @@ class ProjectsModel extends Model {
       global $session;
 	  
 	  if($sort == 0) {
-		  $sortstatus = $this->getSortStatus("project-sort-status",$id);
+		  $sortstatus = $this->getSortStatus("projects-sort-status",$id);
 		  if(!$sortstatus) {
 		  	$order = "order by title";
 			$sortcur = '1';
@@ -374,7 +370,7 @@ class ProjectsModel extends Model {
 						$sortcur = '2';
 				  break;
 				  case "3":
-				  		$sortorder = $this->getSortOrder("project-sort-order",$id);
+				  		$sortorder = $this->getSortOrder("projects-sort-order",$id);
 				  		if(!$sortorder) {
 						  	$order = "order by title";
 							$sortcur = '1';
@@ -396,7 +392,7 @@ class ProjectsModel extends Model {
 						$sortcur = '2';
 				  break;
 				  case "3":
-				  		$sortorder = $this->getSortOrder("project-sort-order",$id);
+				  		$sortorder = $this->getSortOrder("projects-sort-order",$id);
 				  		if(!$sortorder) {
 						  	$order = "order by title";
 							$sortcur = '1';
@@ -414,7 +410,7 @@ class ProjectsModel extends Model {
 	  }
 	  $q ="select id,title,status,checked_out,checked_out_user from " . CO_TBL_PROJECTS . " where folder='$id' and bin = '0' " . $access . $order;
 
-	  $this->setSortStatus("project-sort-status",$sortcur,$id);
+	  $this->setSortStatus("projects-sort-status",$sortcur,$id);
       $result = mysql_query($q, $this->_db->connection);
 	  $projects = "";
 	  while ($row = mysql_fetch_array($result)) {
@@ -563,10 +559,13 @@ class ProjectsModel extends Model {
 		
 		// other functions
 		$array["folder"] = $this->getProjectFolderDetails($array["folder"],"folder");
+		$array["management_print"] = $contactsmodel->getUserListPlain($array['management']);
 		$array["management"] = $contactsmodel->getUserList($array['management'],'projectsmanagement', "", $array["canedit"]);
 		$array["management_ct"] = empty($array["management_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['management_ct'];
+		$array["team_print"] = $contactsmodel->getUserListPlain($array['team']);
 		$array["team"] = $contactsmodel->getUserList($array['team'],'projectsteam', "", $array["canedit"]);
 		$array["team_ct"] = empty($array["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['team_ct'];
+		$array["ordered_by_print"] = $contactsmodel->getUserListPlain($array['ordered_by']);
 		$array["ordered_by"] = $contactsmodel->getUserList($array['ordered_by'],'projectsordered_by', "", $array["canedit"]);
 		$array["ordered_by_ct"] = empty($array["ordered_by_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['ordered_by_ct'];
 		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);

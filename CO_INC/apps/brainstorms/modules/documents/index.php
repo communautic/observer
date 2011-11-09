@@ -45,7 +45,7 @@ if (!empty($_GET['request'])) {
 			echo($brainstormsDocuments->deleteDocument($_GET['id']));
 		break;
 		case 'setOrder':
-			echo($brainstorms->setSortOrder("document-sort",$_GET['documentItem'],$_GET['id']));
+			echo($brainstorms->setSortOrder("brainstorms-documents-sort",$_GET['documentItem'],$_GET['id']));
 		break;
 		case 'printDetails':
 			$t = "pdf"; // options: pdf, html

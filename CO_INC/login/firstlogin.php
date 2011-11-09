@@ -1,5 +1,15 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
+<?php 
+$form_path = "login";
+$form_nameCheck = "";
+$form_result_path = "";
+if(isset($_GET['path'])) {
+	$form_path =  htmlentities($_GET['path']) . "/login";
+	$form_result_path =  "?path=" . htmlentities($_GET['path']);
+	$form_nameCheck = "Orders";
+}
+?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><?php echo $lang["APPLICATION_NAME"];?></title>
@@ -12,7 +22,7 @@
 <link href="<?php echo CO_FILES;?>/css/login/ie.css" rel="stylesheet" type="text/css" media="screen,projection" />
 <![endif]-->
 <link rel="stylesheet" href="<?php echo CO_FILES;?>/css/login/validationEngine.jquery.css" type="text/css"/>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" type="text/javascript"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.form.js"></script>
 <script src="<?php echo CO_FILES;?>/js/lang/validation/jquery.validationEngine-<?php echo $session->userlang;?>.js" type="text/javascript" charset="utf-8"></script>
 <script src="<?php echo CO_FILES;?>/js/libraries/jquery.validationEngine.js" type="text/javascript" charset="utf-8"></script>
@@ -35,7 +45,7 @@ $(document).ready(function() {
 	$('#com-form').ajaxForm({
 		success: function(data) {
 			if (data == 1) {
-				document.location.href='<?php echo CO_PATH_URL;?>';
+				document.location.href='<?php echo CO_PATH_URL . $form_result_path;?>';
 			} else {
 				$('#username').focus().delay(400).blur();
 			}
@@ -65,7 +75,7 @@ $(document).ready(function() {
 <div id="fl-mid-green-bar" class="opac">&nbsp;</div>
 <div id="fl-bot-green-bar" class="opac">&nbsp;</div>
 <div id="fl-bot-grey-bar" class="opac">&nbsp;</div>
-<div id="login-outer"><form id="com-form" name="com_form" method="post" action="/?path=login">
+<div id="login-outer"><form id="com-form" name="com_form" method="post" action="/?path=<?php echo $form_path; ?>">
 <input type="hidden" name="changelogin" value="1" />
 <div class="fl-bar-outer-top"><table width="445" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr>
@@ -77,7 +87,7 @@ $(document).ready(function() {
 <div class="fl-bar-outer"><table width="445" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr>
     <td width="175" valign="top" class="login-text"><?php echo($lang["LOGIN_USERNAME"]);?></td>
-    <td valign="top"><input name="username" type="text" class="validate[required,minSize[6],custom[onlyLetterNumber],ajax[ajaxUsernameCallPhp]] com-input" id="username" value="" />
+    <td valign="top"><input name="username" type="text" class="validate[required,minSize[6],custom[onlyLetterNumber],ajax[ajaxUsernameCallPhp<?php echo($form_nameCheck);?>]] com-input" id="username" value="" />
         <br /></td>
   </tr>
   <tr>

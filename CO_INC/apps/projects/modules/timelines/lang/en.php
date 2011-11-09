@@ -19,4 +19,5 @@ $lang['PROJECT_TIMELINE_ACTION'] = 'Stages';
 $lang["PROJECT_TIMELINE_HELP"] = 'manual_projekte_zeitplaene.pdf';
 
 $lang["PROJECT_PRINT_TIMELINE"] = 'phasing.png';
+$lang["PROJECT_PRINT_MILESTONES"] = 'milestones.png';
 ?>

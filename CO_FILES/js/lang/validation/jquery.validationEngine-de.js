@@ -104,6 +104,11 @@
                     "alertText": "* Dieser Benutzername ist nicht verfügbar",
                     "alertTextLoad": "* Überprüfung läuft"
                 },
+				"ajaxUsernameCallPhpOrders": {
+                    "url": "/?path=api/apps/publishers/menues/orders/login",
+                    "alertText": "* Dieser Benutzername ist nicht verfügbar",
+                    "alertTextLoad": "* Überprüfung läuft"
+                },
 				
 				"ajaxUserCall": {
                     "url": "ajaxValidateFieldUser",

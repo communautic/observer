@@ -7,11 +7,11 @@ $lang["BRAINSTORM_ROSTERS"] = 'Projektraster';
 $lang["BRAINSTORM_ROSTER_NEW"] = 'Neues Projektraster';
 $lang["BRAINSTORM_ROSTER_ACTION_NEW"] = 'neues Projektraster anlegen';
 $lang["BRAINSTORM_ROSTER_COLUMN_NEW"] = 'PSP Spalten';
-$lang["BRAINSTORM_ROSTER_ITEM_NEW"] = 'Neue Idee';
-$lang['BRAINSTORM_ROSTER_NOTES'] = 'Ideen';
+$lang["BRAINSTORM_ROSTER_ITEM_NEW"] = 'Neue Tätigkeit';
+$lang['BRAINSTORM_ROSTER_NOTES'] = 'Tätigkeiten';
 
 $lang["BRAINSTORM_ROSTER_COLUMNS_BIN"] = 'Projektraster/Spalten';
-$lang["BRAINSTORM_ROSTER_NOTES_BIN"] = 'Projektraster/Ideen';
+$lang["BRAINSTORM_ROSTER_NOTES_BIN"] = 'Projektraster/Tätigkeiten';
 $lang["BRAINSTORM_PHASE_TITLE"] = 'Phase';
 
 $lang["BRAINSTORM_ROSTER_HELP"] = 'manual_prozesse_projektraster.pdf';

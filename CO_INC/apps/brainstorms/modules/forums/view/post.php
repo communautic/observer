@@ -19,7 +19,7 @@
           
           <table width="100%" border="0" cellpadding="0" cellspacing="0">
             <tr>
-              <td class="text11"><div class="text13" style="margin-left: 7px; padding: 0 15px 15px 0;"><div id="postanswer_<?php echo $post->id;?>"><?php echo nl2br($post->text);?></div></div></td>
+              <td class="text11"><div class="text13" style="margin-left: 7px; padding: 0 15px 15px 0;"><div id="postanswer_<?php echo $post->id;?>"><?php echo $post->text;?></div></div></td>
             </tr>
           </table>
   		</td>

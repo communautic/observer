@@ -55,7 +55,7 @@ if (!empty($_GET['request'])) {
 			echo($brainstormsForums->deleteForum($_GET['id']));
 		break;
 		case 'setOrder':
-			echo($brainstorms->setSortOrder("forum-sort",$_GET['forumItem'],$_GET['id']));
+			echo($brainstorms->setSortOrder("brainstorms-forums-sort",$_GET['forumItem'],$_GET['id']));
 		break;
 		case 'printDetails':
 			$t = "pdf"; // options: pdf, html

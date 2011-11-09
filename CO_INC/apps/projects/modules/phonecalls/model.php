@@ -11,7 +11,7 @@ class ProjectsPhonecallsModel extends ProjectsModel {
 	function getList($id,$sort) {
 		global $session;
 	  if($sort == 0) {
-		  $sortstatus = $this->getSortStatus("phonecall-sort-status",$id);
+		  $sortstatus = $this->getSortStatus("projects-phonecalls-sort-status",$id);
 		  if(!$sortstatus) {
 				$order = "order by item_date DESC";
 				$sortcur = '1';
@@ -26,7 +26,7 @@ class ProjectsPhonecallsModel extends ProjectsModel {
 							$sortcur = '2';
 				  break;
 				  case "3":
-				  		$sortorder = $this->getSortOrder("phonecall-sort-order",$id);
+				  		$sortorder = $this->getSortOrder("projects-phonecalls-sort-order",$id);
 				  		if(!$sortorder) {
 								$order = "order by item_date DESC";
 								$sortcur = '1';
@@ -48,7 +48,7 @@ class ProjectsPhonecallsModel extends ProjectsModel {
 						$sortcur = '2';
 				  break;
 				  case "3":
-				  		$sortorder = $this->getSortOrder("phonecall-sort-order",$id);
+				  		$sortorder = $this->getSortOrder("projects-phonecalls-sort-order",$id);
 				  		if(!$sortorder) {
 						  	$order = "order by item_date DESC";
 								$sortcur = '1';
@@ -69,7 +69,7 @@ class ProjectsPhonecallsModel extends ProjectsModel {
 		
 		$q = "select id,title,item_date,access,status,checked_out,checked_out_user from " . CO_TBL_PROJECTS_PHONECALLS . " where pid = '$id' and bin != '1' " . $sql . $order;
 
-		$this->setSortStatus("phonecall-sort-status",$sortcur,$id);
+		$this->setSortStatus("projects-phonecalls-sort-status",$sortcur,$id);
 		$result = mysql_query($q, $this->_db->connection);
 		$phonecalls = "";
 		while ($row = mysql_fetch_array($result)) {
@@ -193,7 +193,8 @@ class ProjectsPhonecallsModel extends ProjectsModel {
 		// time
 		$array["start"] = $this->_date->formatDate($array["start"],CO_TIME_FORMAT);
 		$array["end"] = $this->_date->formatDate($array["end"],CO_TIME_FORMAT);
-
+		
+		$array["management_print"] = $this->_contactsmodel->getUserListPlain($array["management"]);
 		$array["management"] = $this->_contactsmodel->getUserList($array['management'],'projectsmanagement', "", $array["canedit"]);
 		$array["management_ct"] = empty($array["management_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['management_ct'];
 		$array["documents"] = $this->_documents->getDocListFromIDs($array['documents'],'documents');

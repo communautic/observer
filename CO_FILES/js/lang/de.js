@@ -39,3 +39,6 @@ var ALERT_UPLOAD_SIZE = "{file} überschreitet die maximale Dateigröße von {si
 var ALERT_UPLOAD_TYPE = "{file} hat eine ungültige Dateiendung. Nur {extensions} sind erlaubt.";
 var UPLOAD_FROM = "von";
 var UPLOAD_CANCEL = "Abbrechen";
+
+var ALERT_CLIENT_ACCESS = 'Möchten Sie die Bestellberechtigung jetzt vergeben?';
+var ALERT_CLIENT_ACCESS_REMOVE = 'Möchten Sie die Bestellberechtigung jetzt entziehen?';

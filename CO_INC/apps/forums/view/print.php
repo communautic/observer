@@ -1,18 +1,22 @@
-<table border="0" cellpadding="0" cellspacing="0" width="100%" class="grey">
+<table width="100%" class="title">
 	<tr>
         <td class="tcell-left"><?php echo $lang["FORUM_TITLE"];?></td>
         <td><strong><?php echo($forum->title);?></strong></td>
 	</tr>
 </table>
-<table border="0" cellpadding="0" cellspacing="0" width="100%" class="standard">
+<table width="100%" class="standard">
 	<tr>
 		<td class="tcell-left"><?php echo $lang["GLOBAL_DURATION"];?></td>
 		<td><?php echo($forum->startdate)?> - <?php echo($forum->enddate)?></td>
     </tr>
+</table>
+<table width="100%" class="standard">
 	<tr>
 	  <td class="tcell-left"><?php echo $lang["FORUM_FOLDER"];?></td>
         <td><?php echo($forum->folder);?></td>
 	</tr>
+</table>
+<table width="100%" class="standard">
     <tr>
 	  <td class="tcell-left"><?php echo $lang["GLOBAL_STATUS"];?></td>
         <td><?php echo($forum->status_text);?> <?php echo($forum->status_date)?></td>
@@ -21,7 +25,7 @@
 &nbsp;
 <?php if(!empty($forum->protocol)) { ?>
 &nbsp;
-<table border="0" cellpadding="0" cellspacing="0" width="100%" class="grey" style="padding: 10pt 10pt 10pt 15pt;">
+<table width="100%" class="protocol">
 	<tr>
         <td class="tcell-left top"><?php echo $lang["FORUM_QUESTION"];?></td>
         <td><?php echo(nl2br($forum->protocol));?></td>
@@ -35,7 +39,7 @@ if(isset($answers) && !empty($answers)) {
 	$showAnswer = ' style="display: block"';
 }
 ?>
-<table border="0" cellpadding="0" cellspacing="0" width="100%" class="grey">
+<table width="100%" class="grey">
 	<tr>
 	  <td class="tcell-left"><?php echo $lang["FORUM_ANSWERS"];?></td>
         <td><?php
@@ -46,7 +50,7 @@ foreach($answers as $answer) {
 	</tr>
 </table>
 &nbsp;
-<table border="0" cellpadding="0" cellspacing="0" width="100%" class="standard">
+<table width="100%" class="standard">
 	<tr>
 		<td class="tcell-left"><?php echo $lang["FORUM_DISCUSSION"];?></td>
 		<td>&nbsp;</td>
@@ -63,7 +67,7 @@ function showChildren($children,$perm) {
 			$postspacer += 10;
 			$img = '&nbsp;';
 			if($child->status == 1) {
-				$img = '<img src="' . CO_FILES . '/img/print/done.png" width="18" height="18" vspace="2" /> ';
+				$img = '<img src="' . CO_FILES . '/img/print/done.png" width="12" height="12" vspace="2" /> ';
 			}
 			include("post_child_print.php");
 	if(isset($child->children) && !empty($child->children)) {
@@ -79,7 +83,7 @@ $i = 1;
 foreach($posts as $post) { 
 	$img = '&nbsp;';
 	if($post->status == 1) {
-		$img = '<img src="' . CO_FILES . '/img/print/done.png" width="18" height="18" vspace="2" /> ';
+		$img = '<img src="' . CO_FILES . '/img/print/done.png" width="12" height="12" vspace="2" /> ';
 	}
 	include("post_print.php");
 	if(isset($post->children) && !empty($post->children)) {
