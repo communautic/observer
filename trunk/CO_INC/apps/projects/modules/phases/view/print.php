@@ -1,29 +1,32 @@
-<table border="0" cellpadding="0" cellspacing="0" width="100%" class="grey">
+<table width="100%" class="title">
 	<tr>
         <td class="tcell-left"><?php echo $lang["PROJECT_PHASE_TITLE"];?></td>
         <td><strong><?php echo($phase->num) ;?>. <?php echo($phase->title);?></strong></td>
 	</tr>
 </table>
-<table border="0" cellpadding="0" cellspacing="0" width="100%" class="standard">
+<table width="100%" class="standard">
 	<tr>
 		<td class="tcell-left"><?php echo $lang["GLOBAL_DURATION"];?></td>
 		<td><?php echo($phase->startdate)?> - <?php echo($phase->enddate)?></td>
     </tr>
-    <?php if(!empty($phase->management)) { ?>
+</table>
+<?php if(!empty($phase->management)) { ?>
+<table width="100%" class="standard">
 	<tr>
 	  <td class="tcell-left"><?php echo $lang["PROJECT_MANAGEMENT"];?></td>
         <td><?php echo($phase->management);?></td>
 	</tr>
-    <?php } ?>
-    <?php if(!empty($phase->team) || !empty($phase->team_ct)) { ?>
-	<tr>
+</table>
+<?php } ?>
+<?php if(!empty($phase->team_print) || !empty($phase->team_ct)) { ?>
+<table width="100%" class="standard">
+    <tr>
 	  <td class="tcell-left"><?php echo $lang["PROJECT_PHASE_TEAM"];?></td>
-        <td><?php echo($phase->team);?><br /><?php echo($phase->team_ct);?></td>
+        <td><?php echo($phase->team_print);?><br /><?php echo($phase->team_ct);?></td>
 	</tr>
     <?php } ?>
 </table>
-&nbsp;
-<table border="0" cellpadding="0" cellspacing="0" width="100%" class="standard">
+<table width="100%" class="standard">
 	<tr>
 	  <td class="tcell-left"><?php echo $lang["GLOBAL_STATUS"];?></td>
         <td><?php echo($phase->status_text);?> <?php echo($phase->status_date)?></td>
@@ -31,7 +34,7 @@
 </table>
 <?php if(!empty($phase->protocol)) { ?>
 &nbsp;
-<table border="0" cellpadding="0" cellspacing="0" width="100%" class="grey" style="padding: 10pt 10pt 10pt 15pt;">
+<table width="100%" class="protocol">
 	<tr>
         <td class="tcell-left top"><?php echo $lang["PROJECT_DESCRIPTION"];?></td>
         <td><?php echo(nl2br($phase->protocol));?></td>
@@ -46,104 +49,109 @@ foreach($task as $value) {
 	$donedate_field = 'display: none';
 	$donedate = '';
 	if($value->status == 1) {
-		$img = '<img src="' . CO_FILES . '/img/print/done.png" width="18" height="18" vspace="2" /> ';
+		$img = '<img src="' . CO_FILES . '/img/print/done.png" width="12" height="12" vspace="2" /> ';
 		$donedate_field = '';
 		$donedate = $value->donedate;
 	}
 	
 	if($value->cat == 0) { // task
      ?>
-    <table border="0" cellpadding="0" cellspacing="0" width="100%" class="standard">
+    <table width="100%" class="fourCols">
         <tr>
-            <td class="tcell-left-short"><?php if($i == 1) { echo $lang["PROJECT_PHASE_TASK_MILESTONE"]; }?>&nbsp;</td>
-            <td class="short"><?php echo $img;?></td>
-            <td class="greybg"><?php echo($value->text);?></td>
+            <td class="fourCols-one"><?php if($i == 1) { echo $lang["PROJECT_PHASE_TASK_MILESTONE"]; }?>&nbsp;</td>
+            <td class="fourCols-two"><?php echo $img;?></td>
+            <td class="fourCols-three greybg">&nbsp;</td>
+            <td class="fourCols-four greybg"><?php echo($value->text);?></td>
         </tr>
         <tr>
-            <td class="tcell-left-short">&nbsp;</td>
-            <td class="short">&nbsp;</td>
-            <td><?php echo $lang["GLOBAL_DURATION"];?> <?php echo($value->startdate . " - " . $value->enddate);?>
-            </td>
+            <td class="fourCols-one">&nbsp;</td>
+            <td class="fourCols-two">&nbsp;</td>
+            <td class="fourCols-three">&nbsp;</td>
+            <td class="grey smalltext fourCols-paddingTop"><?php echo $lang["GLOBAL_DURATION"];?> <?php echo($value->startdate . " - " . $value->enddate);?></td>
         </tr>
         <?php if(!empty($value->team) || !empty($value->team_ct)) { ?>
         <tr>
-            <td class="tcell-left-short">&nbsp;</td>
-            <td class="short">&nbsp;</td>
-            <td><?php echo $lang["PROJECT_PHASE_TASK_TEAM"];?> <?php echo($value->team . " " . $value->team_ct);?>
-            </td>
+            <td class="fourCols-one">&nbsp;</td>
+            <td class="fourCols-two">&nbsp;</td>
+            <td class="fourCols-three">&nbsp;</td>
+            <td class="grey smalltext"><?php echo $lang["PROJECT_PHASE_TASK_TEAM"];?> <?php echo($value->team . " " . $value->team_ct);?></td>
         </tr>
         <?php } ?>
         <?php if(!empty($value->dependent_title)) { ?>
         <tr>
-            <td class="tcell-left-short">&nbsp;</td>
-            <td class="short">&nbsp;</td>
-            <td><?php echo $lang["PROJECT_PHASE_TASK_DEPENDENT"];?> <?php echo($value->dependent_title);?>
-            </td>
+            <td class="fourCols-one">&nbsp;</td>
+            <td class="fourCols-two">&nbsp;</td>
+            <td class="fourCols-three">&nbsp;</td>
+            <td class="grey smalltext"><?php echo $lang["PROJECT_PHASE_TASK_DEPENDENT"];?> <?php echo($value->dependent_title);?></td>
         </tr>
         <?php } ?>
         <?php if(!empty($donedate)) { ?>
         <tr>
-            <td class="tcell-left-short">&nbsp;</td>
-            <td class="short">&nbsp;</td>
-            <td><?php echo $lang["PROJECT_STATUS_FINISHED"];?> <?php echo($donedate);?>
-            </td>
+            <td class="fourCols-one">&nbsp;</td>
+            <td class="fourCols-two">&nbsp;</td>
+            <td class="fourCols-three">&nbsp;</td>
+            <td class="grey smalltext"><?php echo $lang["PROJECT_STATUS_FINISHED"];?> <?php echo($donedate);?></td>
         </tr>
         <?php } ?>
         <?php if(!empty($value->protocol)) { ?>
         <tr>
-            <td class="tcell-left-short">&nbsp;</td>
-            <td class="short">&nbsp;</td>
-            <td class="greybg"><?php echo(nl2br($value->protocol));?>
-            </td>
+            <td class="fourCols-one">&nbsp;</td>
+            <td class="fourCols-two">&nbsp;</td>
+            <td class="fourCols-three">&nbsp;</td>
+            <td><?php echo(nl2br($value->protocol));?></td>
         </tr>
         <?php } ?>
-            <tr>
-            <td class="tcell-left-short">&nbsp;</td>
-            <td class="short">&nbsp;</td>
-            <td>&nbsp;</td>
+        
+         <tr>
+             <td class="fourCols-one">&nbsp;</td>
+            <td class="fourCols-two">&nbsp;</td>
+            <td class="fourCols-three">&nbsp;</td>
+            <td class="grey smalltext">&nbsp;</td>
         </tr>
     </table>
     <?php } else { // milestone ?>
-	    <table border="0" cellpadding="0" cellspacing="0" width="100%" class="standard">
+	    <table width="100%" class="fourCols">
         <tr>
-            <td class="tcell-left-short"><?php if($i == 1) { echo $lang["PROJECT_PHASE_TASK_MILESTONE"]; }?>&nbsp;</td>
-            <td class="short"><?php echo $img;?></td>
-            <td class="greybg"><img src="<?php echo(CO_FILES);?>/img/print/milestone.png" width="18" height="18" /> <?php echo($value->text);?></td>
+            <td class="fourCols-one"><?php if($i == 1) { echo $lang["PROJECT_PHASE_TASK_MILESTONE"]; }?>&nbsp;</td>
+            <td class="fourCols-two"><?php echo $img;?></td>
+            <td class="fourCols-three greybg"><img src="<?php echo(CO_FILES);?>/img/print/milestone.png" width="12" height="12" style="margin: 2px 0 0 3px" /></td>
+            <td class="fourCols-four greybg"><?php echo($value->text);?></td>
         </tr>
         <tr>
-            <td class="tcell-left-short">&nbsp;</td>
-            <td class="short">&nbsp;</td>
-            <td><?php echo $lang["PROJECT_PHASE_MILESTONE_DATE"];?> <?php echo($value->startdate);?>
-            </td>
+            <td class="fourCols-one">&nbsp;</td>
+            <td class="fourCols-two">&nbsp;</td>
+            <td class="fourCols-three">&nbsp;</td>
+            <td class="grey smalltext fourCols-paddingTop"><?php echo $lang["PROJECT_PHASE_MILESTONE_DATE"];?> <?php echo($value->startdate);?></td>
         </tr>
         <?php if(!empty($value->dependent_title)) { ?>
         <tr>
-            <td class="tcell-left-short">&nbsp;</td>
-            <td class="short">&nbsp;</td>
-            <td><?php echo $lang["PROJECT_PHASE_TASK_DEPENDENT"];?> <?php echo($value->dependent_title);?>
-            </td>
+            <td class="fourCols-one">&nbsp;</td>
+            <td class="fourCols-two">&nbsp;</td>
+            <td class="fourCols-three">&nbsp;</td>
+            <td class="grey smalltext"><?php echo $lang["PROJECT_PHASE_TASK_DEPENDENT"];?> <?php echo($value->dependent_title);?></td>
         </tr>
         <?php } ?>
         <?php if(!empty($donedate)) { ?>
         <tr>
-            <td class="tcell-left-short">&nbsp;</td>
-            <td class="short">&nbsp;</td>
-            <td><?php echo $lang["PROJECT_STATUS_FINISHED"];?> <?php echo($donedate);?>
-            </td>
+            <td class="fourCols-one">&nbsp;</td>
+            <td class="fourCols-two">&nbsp;</td>
+            <td class="fourCols-three">&nbsp;</td>
+            <td class="grey smalltext"><?php echo $lang["PROJECT_STATUS_FINISHED"];?> <?php echo($donedate);?></td>
         </tr>
         <?php } ?>
         <?php if(!empty($value->protocol)) { ?>
         <tr>
-            <td class="tcell-left-short">&nbsp;</td>
-            <td class="short">&nbsp;</td>
-            <td class="greybg"><?php echo(nl2br($value->protocol));?>
-            </td>
+            <td class="fourCols-one">&nbsp;</td>
+            <td class="fourCols-two">&nbsp;</td>
+            <td class="fourCols-three">&nbsp;</td>
+            <td><?php echo(nl2br($value->protocol));?></td>
         </tr>
         <?php } ?>
         <tr>
-            <td class="tcell-left-short">&nbsp;</td>
-            <td class="short">&nbsp;</td>
-            <td>&nbsp;</td>
+            <td class="fourCols-one">&nbsp;</td>
+            <td class="fourCols-two">&nbsp;</td>
+            <td class="fourCols-three">&nbsp;</td>
+            <td class="grey smalltext">&nbsp;</td>
         </tr>
     </table>
 	<?php }

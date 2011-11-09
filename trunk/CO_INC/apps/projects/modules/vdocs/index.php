@@ -59,7 +59,7 @@ if (!empty($_GET['request'])) {
 			echo($vdocs->deleteVDoc($_GET['id']));
 		break;
 		case 'setOrder':
-			echo($projects->setSortOrder("vdoc-sort",$_GET['vdocItem'],$_GET['id']));
+			echo($projects->setSortOrder("projects-vdocs-sort",$_GET['vdocItem'],$_GET['id']));
 		break;
 		case 'printDetails':
 			$t = "pdf"; // options: pdf, html

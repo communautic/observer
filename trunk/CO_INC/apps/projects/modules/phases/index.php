@@ -51,7 +51,7 @@ if (!empty($_GET['request'])) {
 			echo($projectsPhases->deletePhase($_GET['id']));
 		break;
 		case 'setOrder':
-			echo($projects->setSortOrder("phase-sort",$_GET['phaseItem'],$_GET['id']));
+			echo($projects->setSortOrder("projects-phases-sort",$_GET['phaseItem'],$_GET['id']));
 		break;
 		case 'printDetails':
 			$t = "pdf"; // options: pdf, html

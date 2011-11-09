@@ -127,7 +127,7 @@ class BrainstormsModel extends Model {
 			$access = " and id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
 	  	}
 		
-		 $sortstatus = $this->getSortStatus("brainstorm-sort-status",$id);
+		 $sortstatus = $this->getSortStatus("brainstorms-sort-status",$id);
 		if(!$sortstatus) {
 		  	$order = "order by title";
 		  } else {
@@ -139,7 +139,7 @@ class BrainstormsModel extends Model {
 				  		$order = "order by title DESC";
 				  break;
 				  case "3":
-				  		$sortorder = $this->getSortOrder("brainstorm-sort-order",$id);
+				  		$sortorder = $this->getSortOrder("brainstorms-sort-order",$id);
 				  		if(!$sortorder) {
 						  	$order = "order by title";
 						  } else {
@@ -334,7 +334,7 @@ class BrainstormsModel extends Model {
       global $session;
 	  
 	  if($sort == 0) {
-		  $sortstatus = $this->getSortStatus("brainstorm-sort-status",$id);
+		  $sortstatus = $this->getSortStatus("brainstorms-sort-status",$id);
 		  if(!$sortstatus) {
 		  	$order = "order by title";
 			$sortcur = '1';
@@ -349,7 +349,7 @@ class BrainstormsModel extends Model {
 						$sortcur = '2';
 				  break;
 				  case "3":
-				  		$sortorder = $this->getSortOrder("brainstorm-sort-order",$id);
+				  		$sortorder = $this->getSortOrder("brainstorms-sort-order",$id);
 				  		if(!$sortorder) {
 						  	$order = "order by title";
 							$sortcur = '1';
@@ -371,7 +371,7 @@ class BrainstormsModel extends Model {
 						$sortcur = '2';
 				  break;
 				  case "3":
-				  		$sortorder = $this->getSortOrder("brainstorm-sort-order",$id);
+				  		$sortorder = $this->getSortOrder("brainstorms-sort-order",$id);
 				  		if(!$sortorder) {
 						  	$order = "order by title";
 							$sortcur = '1';
@@ -389,7 +389,7 @@ class BrainstormsModel extends Model {
 	  }
 	  $q ="select id,title,checked_out,checked_out_user from " . CO_TBL_BRAINSTORMS . " where folder='$id' and bin = '0' " . $access . $order;
 
-	  $this->setSortStatus("brainstorm-sort-status",$sortcur,$id);
+	  $this->setSortStatus("brainstorms-sort-status",$sortcur,$id);
       $result = mysql_query($q, $this->_db->connection);
 	  $brainstorms = "";
 	  while ($row = mysql_fetch_array($result)) {
@@ -883,16 +883,6 @@ class BrainstormsModel extends Model {
 				$mid = $row["id"];
 				$brainstormsRostersModel->deleteRoster($mid);
 			}
-		}
-		
-		if(in_array("forums",$active_modules)) {
-			$brainstormsForumsModel = new BrainstormsForumsModel();
-			$q = "SELECT id FROM co_brainstorms_forums where pid = '$id'";
-			$result = mysql_query($q, $this->_db->connection);
-			while($row = mysql_fetch_array($result)) {
-				$fid = $row["id"];
-				$brainstormsForumsModel->deleteForum($fid);
-			}
 		}	
 		
 		$q = "DELETE FROM co_log_sendto WHERE what='brainstorms' and whatid='$id'";
@@ -1312,37 +1302,6 @@ class BrainstormsModel extends Model {
 								}
 							}
 						}
-						
-						// forums
-						$qf ="select id, title, bin, bintime, binuser from " . CO_TBL_BRAINSTORMS_FORUMS . " where pid = '$pid'";
-						$resultf = mysql_query($qf, $this->_db->connection);
-						while ($rowf = mysql_fetch_array($resultf)) {
-							$fid = $rowf["id"];
-							if($rowf["bin"] == "1") { // deleted phases
-								foreach($rowf as $key => $val) {
-									$forum[$key] = $val;
-								}
-								$forum["bintime"] = $this->_date->formatDate($forum["bintime"],CO_DATETIME_FORMAT);
-								$forum["binuser"] = $this->_users->getUserFullname($forum["binuser"]);
-								$forums[] = new Lists($forum);
-								$arr["forums"] = $forums;
-							} else {
-								// tasks
-								$qt ="select id, text, bin, bintime, binuser from " . CO_TBL_BRAINSTORMS_FORUMS_POSTS . " where pid = '$fid'";
-								$resultt = mysql_query($qt, $this->_db->connection);
-								while ($rowt = mysql_fetch_array($resultt)) {
-									if($rowt["bin"] == "1") { // deleted phases
-										foreach($rowt as $key => $val) {
-											$task[$key] = $val;
-										}
-										$task["bintime"] = $this->_date->formatDate($task["bintime"],CO_DATETIME_FORMAT);
-										$task["binuser"] = $this->_users->getUserFullname($task["binuser"]);
-										$tasks[] = new Lists($task);
-										$arr["tasks"] = $tasks;
-									} 
-								}
-							}
-						}
 	
 	
 						// meetings
@@ -1533,32 +1492,6 @@ class BrainstormsModel extends Model {
 						}
 					}
 						
-						
-						// forums
-						if(in_array("forums",$active_modules)) {
-							$brainstormsForumsModel = new BrainstormsForumsModel();
-							$qf ="select id, title, bin, bintime, binuser from " . CO_TBL_BRAINSTORMS_FORUMS . " where pid = '$pid'";
-							$resultf = mysql_query($qf, $this->_db->connection);
-							while ($rowf = mysql_fetch_array($resultf)) {
-								$fid = $rowf["id"];
-								if($rowf["bin"] == "1") { // deleted phases
-									$brainstormsForumsModel->deleteForum($fid);
-									$arr["forums"] = "";
-								} else {
-									// tasks
-									$qt ="select id, text, bin, bintime, binuser from " . CO_TBL_BRAINSTORMS_FORUMS_POSTS . " where pid = '$fid'";
-									$resultt = mysql_query($qt, $this->_db->connection);
-									while ($rowt = mysql_fetch_array($resultt)) {
-										if($rowt["bin"] == "1") { // deleted phases
-											$phtid = $rowt["id"];
-											$brainstormsForumsModel->deleteForumTask($phtid);
-											$arr["tasks"] = "";
-										} 
-									}
-								}
-							}
-						}
-
 
 						// meetings
 						if(in_array("meetings",$active_modules)) {

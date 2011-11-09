@@ -1,43 +1,57 @@
-<table border="0" cellpadding="0" cellspacing="0" width="100%" class="grey">
+<table width="100%" class="title grey">
 	<tr>
         <td class="tcell-left"><?php echo $lang["PROJECT_MEETING_TITLE"];?></td>
         <td><strong><?php echo($meeting->title);?></strong></td>
 	</tr>
 </table>
-<table border="0" cellpadding="0" cellspacing="0" width="100%" class="grey">
+<table width="100%" class="standard-grey">
 	<tr>
 		<td class="tcell-left"><?php echo $lang["PROJECT_MEETING_DATE"];?></td>
 		<td><?php echo($meeting->item_date)?></td>
     </tr>
+</table>
+<table width="100%" class="standard-grey">
 	<tr>
 	  <td class="tcell-left"><?php echo $lang["PROJECT_MEETING_TIME_START"];?></td>
         <td><?php echo($meeting->start);?></td>
 	</tr>
+</table>
+<table width="100%" class="standard-grey">
 	<tr>
 	  <td class="tcell-left"><?php echo $lang["PROJECT_MEETING_TIME_END"];?></td>
         <td><?php echo($meeting->end);?></td>
 	</tr>
+</table>
+<table width="100%" class="standard-grey">
     <tr>
 	  <td class="tcell-left"><?php echo $lang["PROJECT_MEETING_PLACE"];?></td>
         <td><?php echo($meeting->location);?></td>
 	</tr>
 </table>
-<table border="0" cellpadding="0" cellspacing="0" width="100%" class="grey">
+<?php if(!empty($meeting->participants_print) || !empty($meeting->participants_ct)) { ?>
+<table width="100%" class="standard-grey">
 	<tr>
 		<td class="tcell-left"><?php echo $lang["PROJECT_MEETING_ATTENDEES"];?></td>
-		<td><?php echo($meeting->participants)?></td>
+		<td><?php echo($meeting->participants_print)?><br /><?php echo($meeting->participants_ct);?></td>
     </tr>
+</table>
+<?php } ?>
+<?php if(!empty($meeting->management_print) || !empty($meeting->management_ct)) { ?>
+<table width="100%" class="standard-grey">
 	<tr>
 	  <td class="tcell-left"><?php echo $lang["PROJECT_MEETING_MANAGEMENT"];?></td>
-        <td><?php echo($meeting->management);?></td>
+        <td><?php echo($meeting->management_print);?><br /><?php echo($meeting->management_ct);?></td>
 	</tr>
+</table>
+<?php } ?>
+<table width="100%" class="standard-grey-paddingBottom">
 	<tr>
 	  <td class="tcell-left"><?php echo $lang["GLOBAL_STATUS"];?></td>
         <td><?php echo($meeting->status_text);?> <?php echo($meeting->status_date)?></td>
 	</tr>
 </table>
 &nbsp;
-<table border="0" cellpadding="0" cellspacing="0" width="100%" class="standard">
+<table width="100%" class="standard">
 	<tr>
 		<td class="tcell-left"><?php echo $lang["PROJECT_MEETING_GOALS"];?></td>
 		<td>&nbsp;</td>
@@ -48,18 +62,16 @@ $i = 1;
 foreach($task as $value) { 
 	$img = '&nbsp;';
 	if($value->status == 1) {
-		$img = '<img src="' . CO_FILES . '/img/print/done_grey.png" width="15" height="15" vspace="4" /> ';
+		$img = '<img src="' . CO_FILES . '/img/print/done.png" width="12" height="12" vspace="2" hspace="4" /> ';
 	}
      ?>
-    <table border="0" cellpadding="0" cellspacing="0" width="100%" class="greyList">
+    <table width="100%" class="fourCols-grey">
         <tr>
-            <td class="short"><?php echo $img;?></td>
-            <td><strong><?php echo($value->title);?></strong></td>
+            <td class="fourCols-three greybg"><?php echo $img;?></td>
+            <td class="fourCols-four greybg"><strong><?php echo($value->title);?></strong></td>
         </tr>
      </table>
-     &nbsp;<br />
       <?php echo(nl2br($value->text));?>
-    <br />&nbsp;
     <br />&nbsp;
 	<?php 
 	$i++;

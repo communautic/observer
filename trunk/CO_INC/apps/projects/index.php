@@ -62,7 +62,7 @@ if (!empty($_GET['request'])) {
 			echo($projects->getProjectList($_GET['id'],$sort));
 		break;
 		case 'setProjectOrder':
-			echo($projects->setSortOrder("project-sort",$_GET['projectItem'],$_GET['id']));
+			echo($projects->setSortOrder("projects-sort",$_GET['projectItem'],$_GET['id']));
 		break;
 		case 'getProjectDetails':
 			echo($projects->getProjectDetails($_GET['id']));

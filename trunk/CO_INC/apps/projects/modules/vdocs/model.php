@@ -12,7 +12,7 @@ class VDocsModel extends ProjectsModel {
 	function getList($id,$sort) {
 		global $session;
 	  if($sort == 0) {
-		  $sortstatus = $this->getSortStatus("vdoc-sort-status",$id);
+		  $sortstatus = $this->getSortStatus("projects-vdocs-sort-status",$id);
 		  if(!$sortstatus) {
 				$order = "order by edited_date DESC";
 				$sortcur = '1';
@@ -27,7 +27,7 @@ class VDocsModel extends ProjectsModel {
 							$sortcur = '2';
 				  break;
 				  case "3":
-				  		$sortorder = $this->getSortOrder("vdoc-sort-order",$id);
+				  		$sortorder = $this->getSortOrder("projects-vdocs-sort-order",$id);
 				  		if(!$sortorder) {
 								$order = "order by edited_date DESC";
 								$sortcur = '1';
@@ -49,7 +49,7 @@ class VDocsModel extends ProjectsModel {
 						$sortcur = '2';
 				  break;
 				  case "3":
-				  		$sortorder = $this->getSortOrder("vdoc-sort-order",$id);
+				  		$sortorder = $this->getSortOrder("projects-vdocs-sort-order",$id);
 				  		if(!$sortorder) {
 						  	$order = "order by edited_date DESC";
 								$sortcur = '1';
@@ -64,7 +64,7 @@ class VDocsModel extends ProjectsModel {
 		//$q = "select title,id,intern,startdate,enddate from " . CO_TBL_PROJECTS_PHASES . " where pid = '$id' and bin != '1' " . $order;
 		$q = "select id,title,access from " . CO_TBL_PROJECTS_VDOCS . " where pid = '$id' and bin != '1' " . $order;
 
-	  $this->setSortStatus("vdoc-sort-status",$sortcur,$id);
+	  $this->setSortStatus("projects-vdocs-sort-status",$sortcur,$id);
 	  $result = mysql_query($q, $this->_db->connection);
 	  $vdocs = "";
 	  while ($row = mysql_fetch_array($result)) {

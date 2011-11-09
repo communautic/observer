@@ -10,6 +10,6 @@
       		</tr>
       	</table>
       </td>
-      <td class="greybg" style="padding: 2pt 2pt 2pt 2pt; border-bottom: 1px solid #77713D"><?php echo nl2br($post->text);?></td>
+      <td class="greybg" style="padding: 2pt 2pt 2pt 2pt; border-bottom: 1px solid #77713D"><?php echo $post->text;?></td>
 	</tr>
 </table>

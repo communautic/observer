@@ -12,7 +12,7 @@ class BrainstormsMeetingsModel extends BrainstormsModel {
 	function getList($id,$sort) {
 		global $session;
 	  if($sort == 0) {
-		  $sortstatus = $this->getSortStatus("meeting-sort-status",$id);
+		  $sortstatus = $this->getSortStatus("brainstorms-meetings-sort-status",$id);
 		  if(!$sortstatus) {
 				$order = "order by item_date DESC";
 				$sortcur = '1';
@@ -27,7 +27,7 @@ class BrainstormsMeetingsModel extends BrainstormsModel {
 							$sortcur = '2';
 				  break;
 				  case "3":
-				  		$sortorder = $this->getSortOrder("meeting-sort-order",$id);
+				  		$sortorder = $this->getSortOrder("brainstorms-meetings-sort-order",$id);
 				  		if(!$sortorder) {
 								$order = "order by item_date DESC";
 								$sortcur = '1';
@@ -49,7 +49,7 @@ class BrainstormsMeetingsModel extends BrainstormsModel {
 						$sortcur = '2';
 				  break;
 				  case "3":
-				  		$sortorder = $this->getSortOrder("meeting-sort-order",$id);
+				  		$sortorder = $this->getSortOrder("brainstorms-meetings-sort-order",$id);
 				  		if(!$sortorder) {
 						  	$order = "order by item_date DESC";
 								$sortcur = '1';
@@ -70,7 +70,7 @@ class BrainstormsMeetingsModel extends BrainstormsModel {
 		
 		$q = "select id,title,item_date,access,status,checked_out,checked_out_user from " . CO_TBL_BRAINSTORMS_MEETINGS . " where pid = '$id' and bin != '1' " . $sql . $order;
 
-		$this->setSortStatus("meeting-sort-status",$sortcur,$id);
+		$this->setSortStatus("brainstorms-meetings-sort-status",$sortcur,$id);
 		$result = mysql_query($q, $this->_db->connection);
 		$meetings = "";
 		while ($row = mysql_fetch_array($result)) {
@@ -209,9 +209,11 @@ class BrainstormsMeetingsModel extends BrainstormsModel {
 		if($array['relates_to'] != "") {
 			$array["relates_to_text"] = $this->_phases->getPhaseTitle($array['relates_to']);
 		}
-
+		
+		$array["participants_print"] = $this->_contactsmodel->getUserListPlain($array["participants"]);
 		$array["participants"] = $this->_contactsmodel->getUserList($array['participants'],'brainstormsparticipants', "", $array["canedit"]);
 		$array["participants_ct"] = empty($array["participants_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['participants_ct'];
+		$array["management_print"] = $this->_contactsmodel->getUserListPlain($array["management"]);
 		$array["management"] = $this->_contactsmodel->getUserList($array['management'],'brainstormsmanagement', "", $array["canedit"]);
 		$array["management_ct"] = empty($array["management_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['management_ct'];
 		$array["documents"] = $this->_documents->getDocListFromIDs($array['documents'],'documents');

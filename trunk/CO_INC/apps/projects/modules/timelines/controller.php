@@ -149,6 +149,7 @@ class ProjectsTimelines extends Projects {
 						$html = ob_get_contents();
 					ob_end_clean();
 					$title = $project["title"] . " - " . $lang["PROJECT_TIMELINE_DATES_MILESTONES"];
+					$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PROJECT_PRINT_MILESTONES"];
 				}
 			break;
 			default:
@@ -165,9 +166,10 @@ class ProjectsTimelines extends Projects {
 						$html = ob_get_contents();
 					ob_end_clean();
 					$title = $project["title"] . " - " . $lang["PROJECT_TIMELINE_DATES_LIST"];
+					$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PROJECT_PRINT_TIMELINE"];
 				}
 		}
-		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PROJECT_PRINT_TIMELINE"];
+		
 		switch($t) {
 			case "html":
 				$this->printHTML($title,$html);
@@ -312,7 +314,7 @@ class ProjectsTimelines extends Projects {
 					$html = ob_get_contents();
 				ob_end_clean();
 				$title = $project["title"] . " - " . $lang["PROJECT_TIMELINE_DATES_MILESTONES"];
-				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PROJECT_PRINT_TIMELINE"];
+				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PROJECT_PRINT_MILESTONES"];
 				$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
 				$pdf = $this->savePDF($title,$html,$attachment);
 				$this->writeSendtoLog("projects_milestones",$variable,$to,$subject,$body);

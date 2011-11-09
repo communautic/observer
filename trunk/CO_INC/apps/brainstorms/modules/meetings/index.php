@@ -59,7 +59,7 @@ if (!empty($_GET['request'])) {
 			echo($brainstormsMeetings->deleteMeeting($_GET['id']));
 		break;
 		case 'setOrder':
-			echo($brainstorms->setSortOrder("meeting-sort",$_GET['meetingItem'],$_GET['id']));
+			echo($brainstorms->setSortOrder("brainstorms-meetings-sort",$_GET['meetingItem'],$_GET['id']));
 		break;
 		case 'printDetails':
 			$t = "pdf"; // options: pdf, html

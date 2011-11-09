@@ -11,7 +11,7 @@ class BrainstormsForumsModel extends BrainstormsModel {
 	function getList($id,$sort) {
 		global $session;
 		if($sort == 0) {
-			$sortstatus = $this->getSortStatus("forum-sort-status",$id);
+			$sortstatus = $this->getSortStatus("brainstorms-forums-sort-status",$id);
 			if(!$sortstatus) {
 				$order = "order by title";
 				$sortcur = '1';
@@ -26,7 +26,7 @@ class BrainstormsForumsModel extends BrainstormsModel {
 						$sortcur = '2';
 				  	break;
 				  	case "3":
-				  		$sortorder = $this->getSortOrder("forum-sort-order",$id);
+				  		$sortorder = $this->getSortOrder("brainstorms-forums-sort-order",$id);
 				  		if(!$sortorder) {
 							$order = "order by title";
 							$sortcur = '1';
@@ -48,7 +48,7 @@ class BrainstormsForumsModel extends BrainstormsModel {
 						$sortcur = '2';
 				  break;
 				  case "3":
-				  		$sortorder = $this->getSortOrder("forum-sort-order",$id);
+				  		$sortorder = $this->getSortOrder("brainstorms-forums-sort-order",$id);
 				  		if(!$sortorder) {
 						  	$order = "order by title";
 								$sortcur = '1';
@@ -68,7 +68,7 @@ class BrainstormsForumsModel extends BrainstormsModel {
 		
 		$q = "select a.title,a.id,a.access,a.status from " . CO_TBL_BRAINSTORMS_FORUMS . " as a where a.pid = '$id' and a.bin != '1' " . $sql . $order;
 		
-	  	$this->setSortStatus("forum-sort-status",$sortcur,$id);
+	  	$this->setSortStatus("brainstorms-forums-sort-status",$sortcur,$id);
 		$result = mysql_query($q, $this->_db->connection);
 	  	$forums = "";
 		
@@ -287,7 +287,11 @@ class BrainstormsForumsModel extends BrainstormsModel {
 			}
 			foreach ($post as $p) {
 				if($p->replyid != 0) {
-					$post[$p->replyid]->children[] = $post[$p->id];
+					if(array_key_exists($p->replyid,$post)) {
+						$post[$p->replyid]->children[] = $post[$p->id];
+					} else {
+						$p->replyid =0;
+					}
 				}
 			}
 			
@@ -517,9 +521,6 @@ class BrainstormsForumsModel extends BrainstormsModel {
 		if($result) {
 			return true;
 		}
-
-		
-
 	}
 
 

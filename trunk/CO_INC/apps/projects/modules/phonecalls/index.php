@@ -53,7 +53,7 @@ if (!empty($_GET['request'])) {
 			echo($projectsPhonecalls->deletePhonecall($_GET['id']));
 		break;
 		case 'setOrder':
-			echo($projects->setSortOrder("phonecall-sort",$_GET['phonecallItem'],$_GET['id']));
+			echo($projects->setSortOrder("projects-phonecalls-sort",$_GET['phonecallItem'],$_GET['id']));
 		break;
 		case 'printDetails':
 			$t = "pdf"; // options: pdf, html

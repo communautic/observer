@@ -12,7 +12,7 @@ class BrainstormsRostersModel extends BrainstormsModel {
 	function getList($id,$sort) {
 		global $session;
 	  if($sort == 0) {
-		  $sortstatus = $this->getSortStatus("roster-sort-status",$id);
+		  $sortstatus = $this->getSortStatus("brainstorms-rosters-sort-status",$id);
 		  if(!$sortstatus) {
 				$order = "order by title";
 				$sortcur = '1';
@@ -27,7 +27,7 @@ class BrainstormsRostersModel extends BrainstormsModel {
 							$sortcur = '2';
 				  break;
 				  case "3":
-				  		$sortorder = $this->getSortOrder("roster-sort-order",$id);
+				  		$sortorder = $this->getSortOrder("brainstorms-rosters-sort-order",$id);
 				  		if(!$sortorder) {
 								$order = "order by title";
 								$sortcur = '1';
@@ -49,7 +49,7 @@ class BrainstormsRostersModel extends BrainstormsModel {
 						$sortcur = '2';
 				  break;
 				  case "3":
-				  		$sortorder = $this->getSortOrder("roster-sort-order",$id);
+				  		$sortorder = $this->getSortOrder("brainstorms-rosters-sort-order",$id);
 				  		if(!$sortorder) {
 						  	$order = "order by title";
 								$sortcur = '1';
@@ -70,7 +70,7 @@ class BrainstormsRostersModel extends BrainstormsModel {
 		
 		$q = "select id,title,access,checked_out,checked_out_user from " . CO_TBL_BRAINSTORMS_ROSTERS . " where pid = '$id' and bin != '1' " . $sql . $order;
 
-		$this->setSortStatus("roster-sort-status",$sortcur,$id);
+		$this->setSortStatus("brainstorms-rosters-sort-status",$sortcur,$id);
 		$result = mysql_query($q, $this->_db->connection);
 		$rosters = "";
 		while ($row = mysql_fetch_array($result)) {

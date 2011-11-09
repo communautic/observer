@@ -1,7 +1,6 @@
-<table border="0" cellpadding="0" cellspacing="0" width="100%" class="standard" style="margin-top: 90%">
+<table border="0" cellpadding="0" cellspacing="0" width="100%" class="standard" style="margin-top: 55%">
 	<tr>
 		<td>
-			<!--<h1><?php echo $lang["PROJECT_HANDBOOK"];?></h1>-->
 			<h2><?php echo($project->title);?></h2>
             &nbsp;
              &nbsp;

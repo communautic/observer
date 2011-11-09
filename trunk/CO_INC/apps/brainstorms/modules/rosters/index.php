@@ -65,7 +65,7 @@ if (!empty($_GET['request'])) {
 			echo($brainstormsRosters->deleteRosterColumn($_GET['id']));
 		break;
 		case 'setOrder':
-			echo($brainstorms->setSortOrder("roster-sort",$_GET['rosterItem'],$_GET['id']));
+			echo($brainstorms->setSortOrder("brainstorms-rosters-sort",$_GET['rosterItem'],$_GET['id']));
 		break;
 		case 'printDetails':
 			$t = "pdf"; // options: pdf, html

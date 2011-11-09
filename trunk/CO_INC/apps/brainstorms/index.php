@@ -62,7 +62,7 @@ if (!empty($_GET['request'])) {
 			echo($brainstorms->getBrainstormList($_GET['id'],$sort));
 		break;
 		case 'setBrainstormOrder':
-			echo($brainstorms->setSortOrder("brainstorm-sort",$_GET['brainstormItem'],$_GET['id']));
+			echo($brainstorms->setSortOrder("brainstorms-sort",$_GET['brainstormItem'],$_GET['id']));
 		break;
 		case 'getBrainstormDetails':
 			echo($brainstorms->getBrainstormDetails($_GET['id']));

@@ -45,7 +45,7 @@ if (!empty($_GET['request'])) {
 			echo($projectsDocuments->deleteDocument($_GET['id']));
 		break;
 		case 'setOrder':
-			echo($projects->setSortOrder("document-sort",$_GET['documentItem'],$_GET['id']));
+			echo($projects->setSortOrder("projects-documents-sort",$_GET['documentItem'],$_GET['id']));
 		break;
 		case 'printDetails':
 			$t = "pdf"; // options: pdf, html
