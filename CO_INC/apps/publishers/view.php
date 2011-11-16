@@ -62,7 +62,6 @@
 			<li class="listDuplicate"><span class="actionDuplicate" title="<?php echo $lang["ACTION_DUPLICATE"];?>"></span></li>
 			<li class="listPublisherHandbook"><span class="actionPublisherHandbook" title="<?php echo $lang["PUBLISHER_HANDBOOK"];?>"></span></li>
             <li class="listRefresh"><span class="actionRefresh" title="<?php echo $lang["ACTION_REFRESH"];?>"></span></li>
-            <li class="listHelp"><span class="actionHelp" title="<?php echo $lang["ACTION_HELP"];?>"></span></li>
             <li class="listBin"><span class="actionBin" title="<?php echo $lang["ACTION_DELETE"];?>"></span></li>
 		</ul>
 	</div>
