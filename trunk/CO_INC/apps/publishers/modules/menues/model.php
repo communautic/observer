@@ -166,7 +166,7 @@ class PublishersMenuesModel extends PublishersModel {
 			$array[$key] = $val;
 		}
 			
-		$array["perms"] = $this->getPublisherAccess($array["pid"]);
+		$array["perms"] = $this->getPublisherAccess($array["id"]);
 		$array["canedit"] = false;
 		$array["showCheckout"] = false;
 
@@ -179,10 +179,6 @@ class PublishersMenuesModel extends PublishersModel {
 		// dates
 		$array["item_date_from"] = $this->_date->formatDate($array["item_date_from"],CO_DATE_FORMAT);
 		$array["item_date_to"] = $this->_date->formatDate($array["item_date_to"],CO_DATE_FORMAT);
-		
-		// time
-		$array["start"] = $this->_date->formatDate($array["start"],CO_TIME_FORMAT);
-		$array["end"] = $this->_date->formatDate($array["end"],CO_TIME_FORMAT);
 
 		$array["management"] = $this->_contactsmodel->getUserList($array['management'],'publishersmanagement', "", $array["canedit"]);
 		$array["management_ct"] = empty($array["management_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['management_ct'];
@@ -211,15 +207,12 @@ class PublishersMenuesModel extends PublishersModel {
 		switch($array["status"]) {
 			case "0":
 				$array["status_text"] = $lang["PUBLISHER_MENUE_STATUS_PLANNED"];
-				//$array["status_date"] = '';
 			break;
 			case "1":
 				$array["status_text"] = $lang["PUBLISHER_MENUE_STATUS_PUBLISHED"];
-				//$array["status_date"] = '';
 			break;
 			case "2":
 				$array["status_text"] = $lang["PUBLISHER_MENUE_STATUS_ARCHIVED"];
-				//$array["status_date"] = '';
 			break;
 		}
 		
@@ -268,7 +261,7 @@ class PublishersMenuesModel extends PublishersModel {
 		$now = gmdate("Y-m-d H:i:s");
 		$time = gmdate("Y-m-d H");
 		
-		$q = "INSERT INTO " . CO_TBL_PUBLISHERS_MENUES . " set title = '" . $lang["PUBLISHER_MENUE_NEW"] . "', item_date_from='$now', item_date_to='$time', status = '0', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+		$q = "INSERT INTO " . CO_TBL_PUBLISHERS_MENUES . " set title = '" . $lang["PUBLISHER_MENUE_NEW"] . "', item_date_from='$now', item_date_to='$time', status = '0', status_date='$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id = mysql_insert_id();
 				
@@ -284,7 +277,7 @@ class PublishersMenuesModel extends PublishersModel {
 		$now = gmdate("Y-m-d H:i:s");
 		
 		// menue
-		$q = "INSERT INTO " . CO_TBL_PUBLISHERS_MENUES . " (pid,title,item_date,start,end,protocol,management,management_ct,status,created_date,created_user,edited_date,edited_user) SELECT pid,CONCAT(title,' " . $lang["GLOBAL_DUPLICAT"] . "'),item_date,start,end,protocol,management,management_ct,status,'$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_PUBLISHERS_MENUES . " where id='$id'";
+		$q = "INSERT INTO " . CO_TBL_PUBLISHERS_MENUES . " (title,item_date_from,item_date_to,protocol,management,management_ct,status,status_date,mon_1,mon_2,mon_3,mon_4,mon_5,mon_6,tue_1,tue_2,tue_3,tue_4,tue_5,tue_6,wed_1,wed_2,wed_3,wed_4,wed_5,wed_6,thu_1,thu_2,thu_3,thu_4,thu_5,thu_6,fri_1,fri_2,fri_3,fri_4,fri_5,fri_6,created_date,created_user,edited_date,edited_user) SELECT CONCAT(title,' " . $lang["GLOBAL_DUPLICAT"] . "'),item_date_from,item_date_to,protocol,management,management_ct,'0','$now',mon_1,mon_2,mon_3,mon_4,mon_5,mon_6,tue_1,tue_2,tue_3,tue_4,tue_5,tue_6,wed_1,wed_2,wed_3,wed_4,wed_5,wed_6,thu_1,thu_2,thu_3,thu_4,thu_5,thu_6,fri_1,fri_2,fri_3,fri_4,fri_5,fri_6,'$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_PUBLISHERS_MENUES . " where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
 		if ($result) {

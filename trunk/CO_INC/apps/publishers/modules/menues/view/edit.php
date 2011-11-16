@@ -11,7 +11,6 @@
 <input type="hidden" id="path" name="path" value="<?php echo $this->form_url;?>">
 <input type="hidden" id="poformaction" name="request" value="setDetails">
 <input type="hidden" name="id" value="<?php echo($menue->id);?>">
-<input type="hidden" name="pid" value="<?php echo($menue->pid);?>">
 <?php if($menue->showCheckout) { ?>
 <table id="checkedOut" border="0" cellpadding="0" cellspacing="0" class="table-content" style="background-color: #eb4600">
 	<tr>
@@ -56,7 +55,67 @@
     <td class="tcell-right"><?php if($menue->canedit) { ?><textarea name="protocol" class="elastic"><?php echo(strip_tags($menue->protocol));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($menue->protocol)));?><?php } ?></td>
   </tr>
 </table>
-
+<div class="content-spacer"></div>
+<div class="content-spacer"></div>
+<table border="0" cellspacing="0" cellpadding="0" class="menue-grid">
+	<tr>
+	  <th style="width: 12%" class="first">&nbsp;</th>
+      <th>Montag</th>
+	  <th>Dienstag</th>
+       <th>Mittwoch</th>
+       <th>Donnerstag</th>
+       <th>Freitag</th>
+    </tr>
+	<tr>
+	    <td style="width: 12%">Ki S.</td>
+        <td id="mon_1" class="edit"><?php echo nl2br($menue->mon_1);?></td>
+	    <td id="tue_1" class="edit"><?php echo nl2br($menue->tue_1);?></td>
+	    <td id="wed_1" class="edit"><?php echo nl2br($menue->wed_1);?></td>
+	    <td id="thu_1" class="edit"><?php echo nl2br($menue->thu_1);?></td>
+	    <td id="fri_1" class="edit"><?php echo nl2br($menue->fri_1);?></td>
+	</tr>
+	<tr>
+    	<td style="width: 12%">Ki</td>
+		<td id="mon_2" class="edit"><?php echo nl2br($menue->mon_2);?></td>
+        <td id="tue_2" class="edit"><?php echo nl2br($menue->tue_2);?></td>
+        <td id="wed_2" class="edit"><?php echo nl2br($menue->wed_2);?></td>
+        <td id="thu_2" class="edit"><?php echo nl2br($menue->thu_2);?></td>
+        <td id="fri_2" class="edit"><?php echo nl2br($menue->fri_2);?></td>
+	</tr>
+	<tr>
+    	<td style="width: 12%">Erw S.</td>
+		<td id="mon_3" class="edit"><?php echo nl2br($menue->mon_3);?></td>
+        <td id="tue_3" class="edit"><?php echo nl2br($menue->tue_3);?></td>
+        <td id="wed_3" class="edit"><?php echo nl2br($menue->wed_3);?></td>
+        <td id="thu_3" class="edit"><?php echo nl2br($menue->thu_3);?></td>
+        <td id="fri_3" class="edit"><?php echo nl2br($menue->fri_3);?></td>
+	</tr>
+	<tr>
+    	<td style="width: 12%">Erw I</td>
+	    <td id="mon_4" class="edit"><?php echo nl2br($menue->mon_4);?></td>
+        <td id="tue_4" class="edit"><?php echo nl2br($menue->tue_4);?></td>
+        <td id="wed_4" class="edit"><?php echo nl2br($menue->wed_4);?></td>
+        <td id="thu_4" class="edit"><?php echo nl2br($menue->thu_4);?></td>
+        <td id="fri_4" class="edit"><?php echo nl2br($menue->fri_4);?></td>
+	</tr>
+	<tr>
+	    <td style="width: 12%">Erw II</td>
+        <td id="mon_5" class="edit"><?php echo nl2br($menue->mon_5);?></td>
+        <td id="tue_5" class="edit"><?php echo nl2br($menue->tue_5);?></td>
+        <td id="wed_5" class="edit"><?php echo nl2br($menue->wed_5);?></td>
+        <td id="thu_5" class="edit"><?php echo nl2br($menue->thu_5);?></td>
+        <td id="fri_5" class="edit"><?php echo nl2br($menue->fri_5);?></td>
+	</tr>
+	<tr>
+    	<td style="width: 12%">Erw III</td>
+	    <td id="mon_6" class="edit"><?php echo nl2br($menue->mon_6);?></td>
+        <td id="tue_6" class="edit"><?php echo nl2br($menue->tue_6);?></td>
+        <td id="wed_6" class="edit"><?php echo nl2br($menue->wed_6);?></td>
+        <td id="thu_6" class="edit"><?php echo nl2br($menue->thu_6);?></td>
+        <td id="fri_6" class="edit"><?php echo nl2br($menue->fri_6);?></td>
+	</tr>
+</table>
+<div class="content-spacer"></div>
 <?php if($menue->perms != "guest") { ?>
 <div class="content-spacer"></div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
@@ -65,71 +124,8 @@
         <td class="tcell-right"><div id="publishersmenue_access" class="itemlist-field"><div class="listmember" field="publishersmenue_access" uid="<?php echo($menue->access);?>" style="float: left"><?php echo($menue->access_text);?></div></div><input type="hidden" name="menue_access_orig" value="<?php echo($menue->access);?>" /></td>
 	</tr>
 </table>
-<div class="content-spacer"></div>
 <?php } ?>
 </form>
-<div style="margin: 0 15px">
-<table border="0" cellspacing="0" cellpadding="0" id="menue-grid">
-	<tr>
-	  <th style="width: 10%">&nbsp;</th>
-      <th>Montag</th>
-	  <th>Dienstag</th>
-       <th>Mittwoch</th>
-       <th>Donnerstag</th>
-       <th>Freitag</th>
-    </tr>
-	<tr>
-	    <td style="width: 10%">Ki S.</td>
-        <td id="mon_1" class="edit"><?php echo nl2br($menue->mon_1);?></td>
-	    <td id="tue_1" class="edit"><?php echo nl2br($menue->tue_1);?></td>
-	    <td id="wed_1" class="edit"><?php echo nl2br($menue->wed_1);?></td>
-	    <td id="thu_1" class="edit"><?php echo nl2br($menue->thu_1);?></td>
-	    <td id="fri_1" class="edit"><?php echo nl2br($menue->fri_1);?></td>
-	</tr>
-	<tr>
-    	<td style="width: 10%">Ki</td>
-		<td id="mon_2" class="edit"><?php echo nl2br($menue->mon_2);?></td>
-        <td id="tue_2" class="edit"><?php echo nl2br($menue->tue_2);?></td>
-        <td id="wed_2" class="edit"><?php echo nl2br($menue->wed_2);?></td>
-        <td id="thu_2" class="edit"><?php echo nl2br($menue->thu_2);?></td>
-        <td id="fri_2" class="edit"><?php echo nl2br($menue->fri_2);?></td>
-	</tr>
-	<tr>
-    	<td style="width: 10%">Erw S.</td>
-		<td id="mon_3" class="edit"><?php echo nl2br($menue->mon_3);?></td>
-        <td id="tue_3" class="edit"><?php echo nl2br($menue->tue_3);?></td>
-        <td id="wed_3" class="edit"><?php echo nl2br($menue->wed_3);?></td>
-        <td id="thu_3" class="edit"><?php echo nl2br($menue->thu_3);?></td>
-        <td id="fri_3" class="edit"><?php echo nl2br($menue->fri_3);?></td>
-	</tr>
-	<tr>
-    	<td style="width: 10%">Erw I</td>
-	    <td id="mon_4" class="edit"><?php echo nl2br($menue->mon_4);?></td>
-        <td id="tue_4" class="edit"><?php echo nl2br($menue->tue_4);?></td>
-        <td id="wed_4" class="edit"><?php echo nl2br($menue->wed_4);?></td>
-        <td id="thu_4" class="edit"><?php echo nl2br($menue->thu_4);?></td>
-        <td id="fri_4" class="edit"><?php echo nl2br($menue->fri_4);?></td>
-	</tr>
-	<tr>
-	    <td style="width: 10%">Erw II</td>
-        <td id="mon_5" class="edit"><?php echo nl2br($menue->mon_5);?></td>
-        <td id="tue_5" class="edit"><?php echo nl2br($menue->tue_5);?></td>
-        <td id="wed_5" class="edit"><?php echo nl2br($menue->wed_5);?></td>
-        <td id="thu_5" class="edit"><?php echo nl2br($menue->thu_5);?></td>
-        <td id="fri_5" class="edit"><?php echo nl2br($menue->fri_5);?></td>
-	</tr>
-	<tr>
-    	<td style="width: 10%">Erw III</td>
-	    <td id="mon_6" class="edit"><?php echo nl2br($menue->mon_6);?></td>
-        <td id="tue_6" class="edit"><?php echo nl2br($menue->tue_6);?></td>
-        <td id="wed_6" class="edit"><?php echo nl2br($menue->wed_6);?></td>
-        <td id="thu_6" class="edit"><?php echo nl2br($menue->thu_6);?></td>
-        <td id="fri_6" class="edit"><?php echo nl2br($menue->fri_6);?></td>
-	</tr>
-</table>
-</div>
-<div class="content-spacer"></div>
-<div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 		<td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_EMAILED_TO"];?></td>

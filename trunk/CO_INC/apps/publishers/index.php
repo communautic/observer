@@ -19,7 +19,7 @@ foreach($publishers->modules as $module  => $value) {
 
 if (!empty($_GET['request'])) {
 	switch ($_GET['request']) {
-		case 'getFolderList':
+		/*case 'getFolderList':
 			$sort = "0";
 			if(!empty($_GET['sort'])) {
 				$sort = $_GET['sort'];
@@ -130,7 +130,7 @@ if (!empty($_GET['request'])) {
 		break;
 		case 'getPublishersFoldersHelp':
 			echo($publishers->getPublishersFoldersHelp());
-		break;
+		break;*/
 		case 'getPublishersHelp':
 			echo($publishers->getPublishersHelp());
 		break;
@@ -144,7 +144,7 @@ if (!empty($_GET['request'])) {
 	}
 }
 
-if (!empty($_POST['request'])) {
+/*if (!empty($_POST['request'])) {
 	switch ($_POST['request']) {
 		case 'setFolderDetails':
 			echo($publishers->setFolderDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['publisherstatus']));
@@ -162,5 +162,5 @@ if (!empty($_POST['request'])) {
 			echo($publishers->sendFolderDetails($_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
 		break;
 	}
-}
+}*/
 ?>
