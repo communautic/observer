@@ -17,7 +17,7 @@ $lang["CLIENT_PHONECALL_GOALS"] = 'Agenda';
 $lang["CLIENT_PHONECALL_STATUS_OUTGOING"] = 'incoming';
 $lang["CLIENT_PHONECALL_STATUS_ON_INCOMING"] = 'outgoing';
 
-$lang["CLIENT_PHONECALL_HELP"] = 'manual_projekte_telefonate.pdf';
+$lang["CLIENT_PHONECALL_HELP"] = 'manual_kunden_telefonate.pdf';
 
 $lang["CLIENT_PRINT_PHONECALL"] = 'phonecall.png';
 

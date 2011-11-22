@@ -17,7 +17,7 @@ $lang["CLIENT_ORDER_GOALS"] = 'Agenda';
 $lang["CLIENT_ORDER_STATUS_OUTGOING"] = 'incoming';
 $lang["CLIENT_ORDER_STATUS_ON_INCOMING"] = 'outgoing';
 
-$lang["CLIENT_ORDER_HELP"] = 'manual_projekte_telefonate.pdf';
+$lang["CLIENT_ORDER_HELP"] = 'manual_kunden_bestellungen.pdf';
 
 $lang["CLIENT_PRINT_ORDER"] = 'order.png';
 

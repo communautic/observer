@@ -219,23 +219,13 @@ class Clients extends Controller {
 	}
 
 
-	function getDates($id) {
-		
-		if($client = $this->model->getDates($id)) {
-			return json_encode($client);
-		}
-	}
-
-
 	function printClientDetails($id, $t) {
 		global $session,$lang;
 		$title = "";
 		$html = "";
 		if($arr = $this->model->getClientDetails($id)) {
 			$client = $arr["client"];
-			$phases = $arr["phases"];
-			$num = $arr["num"];
-			$sendto = $arr["sendto"];
+			$order_access = $arr["orders_access"];
 			ob_start();
 				include 'view/print.php';
 				$html = ob_get_contents();
@@ -336,8 +326,7 @@ class Clients extends Controller {
 		global $lang;
 		if($arr = $this->model->getClientDetails($id)) {
 			$client = $arr["client"];
-			$phases = $arr["phases"];
-			$num = $arr["num"];
+			$order_access = $arr["orders_access"];
 			
 			$form_url = $this->form_url;
 			$request = "sendClientDetails";
@@ -359,9 +348,7 @@ class Clients extends Controller {
 		$html = "";
 		if($arr = $this->model->getClientDetails($id)) {
 			$client = $arr["client"];
-			$phases = $arr["phases"];
-			$num = $arr["num"];
-			$sendto = $arr["sendto"];
+			$order_access = $arr["orders_access"];
 			ob_start();
 				include 'view/print.php';
 				$html = ob_get_contents();
@@ -486,7 +473,7 @@ class Clients extends Controller {
 		$from = $contactsmodel->getContactFieldFromID($session->uid, 'email');
 		$fromName = $contactsmodel->getContactFieldFromID($session->uid, 'firstname') . " " . $contactsmodel->getContactFieldFromID($session->uid, 'lastname');
 		$subject = $lang['CLIENT_ACCESS_CODES_EMAIL_SUBJECT'];
-		$body = sprintf($lang['CLIENT_ACCESS_CODES_EMAIL'], CO_PATH_URL.'/?path=api/apps/publishers/menues/orders', $username, $password);
+		$body = sprintf($lang['CLIENT_ACCESS_CODES_EMAIL'], 'http://www.mama-bringts.at/?action=order', $username, $password);
 		
 		$email = $this->sendEmail($to,$cc="",$from,$fromName,$subject,$body);
 		
@@ -580,6 +567,18 @@ class Clients extends Controller {
 		}
 	}
 	
+	
+	function getExportWindow($id) {
+		global $lang;
+		if($arr = $this->model->getFolderDetails($id)) {
+			$folder = $arr["folder"];
+			$clients = $arr["clients"];	
+			include 'view/dialog_export.php';
+		}
+		else {
+			include CO_INC .'/view/default.php';
+		}
+	}	
 	
 	// User Access
 	function isAdmin(){

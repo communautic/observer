@@ -77,8 +77,8 @@ $lang['CLIENT_ACCESS_CODES_EMAIL'] =	'<p style="font-face: Arial, Verdana; font-
 
 
 
-$lang["CLIENT_HELP"] = 'manual_projekte_projekte.pdf';
-$lang["CLIENT_FOLDER_HELP"] = 'manual_projekte_ordner.pdf';
+$lang["CLIENT_HELP"] = 'manual_kunden_kunden.pdf';
+$lang["CLIENT_FOLDER_HELP"] = 'manual_kunden_ordner.pdf';
 
 // Print images
 $lang["PRINT_CLIENT_MANUAL"] = 'projekthandbuch.png';

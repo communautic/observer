@@ -23,7 +23,7 @@ $lang["CLIENT_MEETING_STATUS_CANCELLED"] = 'cancelled';
 $lang["CLIENT_MEETING_STATUS_POSPONED"] = 'posponed to';
 $lang["CLIENT_MEETING_POSPONED"] = 'posponed';
 
-$lang["CLIENT_MEETING_HELP"] = 'manual_projekte_besprechungen.pdf';
+$lang["CLIENT_MEETING_HELP"] = 'manual_kunden_besprechungen.pdf';
 
 $lang["CLIENT_PRINT_MEETING"] = 'meeting.png';
 

@@ -89,6 +89,9 @@ class ClientsOrdersModel extends ClientsModel {
 			$array["accessstatus"] = $accessstatus;
 			// status
 			$itemstatus = "";
+			if($array["status"] == 1) {
+				$itemstatus = " module-item-active";
+			}
 			$array["itemstatus"] = $itemstatus;
 			
 			$checked_out_status = "";
@@ -304,7 +307,7 @@ class ClientsOrdersModel extends ClientsModel {
    }
 
 
-   function setDetails($id,$protocol,$documents,$order_access,$order_access_orig,$order_status,$order_status_date) {
+   function setDetails($id,$title,$protocol,$documents,$order_access,$order_access_orig,$order_status,$order_status_date) {
 		global $session, $lang;
 		
 		//$order_status_date = $this->_date->formatDateGMT($order_status_date);
@@ -321,7 +324,7 @@ class ClientsOrdersModel extends ClientsModel {
 			$accesssql = "access='$order_access', access_date='$order_access_date', access_user = '$session->uid',";
 		}
 
-		$q = "UPDATE " . CO_TBL_CLIENTS_ORDERS . " set protocol = '$protocol', documents = '$documents', access='$order_access', $accesssql status = '$order_status', status_date = '$order_status_date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_CLIENTS_ORDERS . " set title = '$title', protocol = '$protocol', documents = '$documents', access='$order_access', $accesssql status = '$order_status', status_date = '$order_status_date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
@@ -400,6 +403,59 @@ class ClientsOrdersModel extends ClientsModel {
 		if ($result) {
 		  	return true;
 		}
+   }
+   
+   
+   function createExcel($folderid,$menueid) {
+	    global $session;
+		
+		// get startdatum of Menue
+		$q ="select item_date_from from co_publishers_menues WHERE id='$menueid'";
+      	$result = mysql_query($q, $this->_db->connection);
+		$date = mysql_result($result, 0);
+		$date = $this->_date->formatDate($date,CO_DATE_FORMAT);
+		
+		$q ="select id as clientid,title as clientname, contract from " . CO_TBL_CLIENTS . " WHERE folder='$folderid' and bin = '0' ORDER BY title";
+      	$result = mysql_query($q, $this->_db->connection);
+	  	$clients = "";
+		while ($row = mysql_fetch_array($result)) {
+			foreach($row as $key => $val) {
+				$array[$key] = $val;
+			}
+			$id = $array["clientid"];
+			// get order
+			$qo ="select a.* from " . CO_TBL_CLIENTS_ORDERS . " as a WHERE a.pid='$id' and a.oid='$menueid' and a.bin = '0'";
+			$resulto = mysql_query($qo, $this->_db->connection);
+			if(mysql_num_rows($resulto) < 1) {
+				// try to get the latest order
+				$qold ="select a.* from " . CO_TBL_CLIENTS_ORDERS . " as a WHERE a.pid='$id' and a.bin = '0' ORDER BY id DESC LIMIT 0,1";
+				$resultold = mysql_query($qold, $this->_db->connection);
+				if(mysql_num_rows($resultold) < 1) {
+					$array["line_1"] = 0;
+				} else {
+					$array["line_1"] = 3;
+					while ($rowold = mysql_fetch_array($resultold)) {
+						foreach($rowold as $keyold => $valold) {
+							$array[$keyold] = $valold;
+						}
+					}
+					
+				}
+				
+				
+			} else {
+				$array["line_1"] = 1;
+				while ($rowo = mysql_fetch_array($resulto)) {
+					foreach($rowo as $keyo => $valo) {
+						$array[$keyo] = $valo;
+					}
+				}
+			}
+		
+		$clients[] = new Lists($array);
+	  }
+	  $arr = array("clients" => $clients, "date"=> $date);
+	   return $arr;
    }
 
 }

@@ -46,8 +46,8 @@ $lang["CLIENT_STATUS_STOPPED_TEXT"] = 'stopped';
 
 $lang["CLIENT_HANDBOOK"] = 'Client Manual';
 
-$lang["CLIENT_HELP"] = 'manual_projekte_projekte.pdf';
-$lang["CLIENT_FOLDER_HELP"] = 'manual_projekte_ordner.pdf';
+$lang["CLIENT_HELP"] = 'manual_kunden_kunden.pdf';
+$lang["CLIENT_FOLDER_HELP"] = 'manual_kunden_ordner.pdf';
 
 // Print images
 $lang["PRINT_CLIENT_MANUAL"] = 'client_manual.png';

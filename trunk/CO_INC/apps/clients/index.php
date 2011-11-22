@@ -67,9 +67,6 @@ if (!empty($_GET['request'])) {
 		case 'getClientDetails':
 			echo($clients->getClientDetails($_GET['id']));
 		break;
-		case 'getDates':
-			echo($clients->getDates($_GET['id']));
-		break;
 		case 'printClientDetails':
 			$t = "pdf"; // options: pdf, html
 			if(!empty($_GET['t'])) {
@@ -151,6 +148,9 @@ if (!empty($_GET['request'])) {
 		break;
 		case 'emptyBin':
 			echo($clients->emptyBin());
+		break;
+		case 'getExportWindow':
+			echo($clients->getExportWindow($_GET['id']));
 		break;
 
 	}

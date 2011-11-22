@@ -557,6 +557,7 @@ class ClientsModel extends Model {
 		
 		// other functions
 		$array["folder"] = $this->getClientFolderDetails($array["folder"],"folder");
+		$array["management_print"] = $contactsmodel->getUserListPlain($array['management']);
 		$array["management"] = $contactsmodel->getUserList($array['management'],'clientsmanagement', "", $array["canedit"]);
 		$array["management_ct"] = empty($array["management_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['management_ct'];
 		
@@ -602,7 +603,7 @@ class ClientsModel extends Model {
 				$orders_access[] = new Lists($user); 
 			}
 		}
-		
+		$array["team_print"] = $contactsmodel->getUserListPlain($array['team']);
 		$array["team"] = $contactsmodel->getUserList($array['team'],'clientsteam', "", $array["canedit"]);
 		$array["team_ct"] = empty($array["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['team_ct'];
 		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
@@ -675,27 +676,6 @@ class ClientsModel extends Model {
    }
 
 
-   function getDates($id) {
-		global $session, $contactsmodel;
-		$q = "SELECT a.startdate,(SELECT MAX(enddate) FROM " . CO_TBL_CLIENTS_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_CLIENTS . " as a where id = '$id'";
-		$result = mysql_query($q, $this->_db->connection);
-		if(mysql_num_rows($result) < 1) {
-			return false;
-		}
-		$row = mysql_fetch_array($result);
-		foreach($row as $key => $val) {
-			$array[$key] = $val;
-		}
-		
-		// dates
-		$array["startdate"] = $this->_date->formatDate($array["startdate"],CO_DATE_FORMAT);
-		$array["enddate"] = $this->_date->formatDate($array["enddate"],CO_DATE_FORMAT);
-
-		$client = new Lists($array);
-		return $client;
-	}
-
-
    // Create client folder title
 	function getClientFolderDetails($string,$field){
 		$users_string = explode(",", $string);
@@ -753,13 +733,6 @@ class ClientsModel extends Model {
 			return true;
 		}
 	}
-	
-	function setAllPhasesFinished($id,$status_date) {
-		global $session;
-		$now = gmdate("Y-m-d H:i:s");
-		$q = "UPDATE " . CO_TBL_CLIENTS_PHASES . " set status = '2', finished_date = '$status_date', edited_user = '$session->uid', edited_date = '$now' WHERE pid = '$id'";
-		$result = mysql_query($q, $this->_db->connection);
-	}
 
 
 	function newClient($id) {
@@ -787,7 +760,7 @@ class ClientsModel extends Model {
 		
 		$now = gmdate("Y-m-d H:i:s");
 		// client
-		$q = "INSERT INTO " . CO_TBL_CLIENTS . " (folder,title,startdate,ordered_by,management,team,protocol,status,planned_date,emailed_to,created_date,created_user,edited_date,edited_user) SELECT folder,CONCAT(title,' ".$lang["GLOBAL_DUPLICAT"]."'),startdate,ordered_by,management,team,protocol,'0','$now',emailed_to,'$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_CLIENTS . " where id='$id'";
+		$q = "INSERT INTO " . CO_TBL_CLIENTS . " (folder,title,management,team,address,billingaddress,protocol,contract,created_date,created_user,edited_date,edited_user) SELECT folder,CONCAT(title,' ".$lang["GLOBAL_DUPLICAT"]."'),management,team,address,billingaddress,protocol,contract,'$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_CLIENTS . " where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
 		
@@ -795,56 +768,6 @@ class ClientsModel extends Model {
 				$clientsAccessModel = new ClientsAccessModel();
 				$clientsAccessModel->setDetails($id_new,$session->uid,"");
 			}
-		
-		// phases
-		$q = "SELECT id,title,protocol,team,management FROM " . CO_TBL_CLIENTS_PHASES . " WHERE pid = '$id' and bin='0'";
-		$result = mysql_query($q, $this->_db->connection);
-		while($row = mysql_fetch_array($result)) {
-			$phaseid = $row["id"];
-			$title = mysql_real_escape_string($row["title"]);
-			$protocol = mysql_real_escape_string($row["protocol"]);
-			$team = $row["team"];
-			$management = $row["management"];
-			
-			$qp = "INSERT INTO " . CO_TBL_CLIENTS_PHASES . " set pid='$id_new',title='$title',protocol='$protocol',team='$team',management='$management',created_date='$now',created_user='$session->uid',edited_date='$now',edited_user='$session->uid'";
-			$rp = mysql_query($qp, $this->_db->connection);
-			$id_p_new = mysql_insert_id();
-			// tasks
-			$qt = "SELECT id,dependent,cat,text,protocol,startdate,enddate FROM " . CO_TBL_CLIENTS_PHASES_TASKS . " where phaseid='$phaseid' and bin='0' ORDER BY id ASC";		
-			$resultt = mysql_query($qt, $this->_db->connection);
-			while($rowt = mysql_fetch_array($resultt)) {
-				$id = $rowt["id"];
-				$cat = $rowt["cat"];
-				$text = mysql_real_escape_string($rowt["text"]);
-				$protocol = mysql_real_escape_string($rowt["protocol"]);
-				$startdate = $rowt["startdate"];
-				$enddate = $rowt["enddate"];
-				$dependent = $rowt["dependent"];
-				$qtn = "INSERT INTO " . CO_TBL_CLIENTS_PHASES_TASKS . " set pid = '$id_new', phaseid = '$id_p_new', dependent = '$dependent', cat = '$cat',status = '0',text = '$text',protocol = '$protocol', startdate = '$startdate',enddate = '$enddate'";
-				$rpn = mysql_query($qtn, $this->_db->connection);
-				$id_t_new = mysql_insert_id();
-				// BUILD OLD NEW TASK ID ARRAY
-				$t[$id] = $id_t_new;
-			}
-			
-		}
-		// Updates Dependencies for new tasks
-			$qt = "SELECT id,dependent FROM " . CO_TBL_CLIENTS_PHASES_TASKS . " where pid='$id_new' and bin='0' ORDER BY id ASC";		
-			$resultt = mysql_query($qt, $this->_db->connection);
-			while($rowtt = mysql_fetch_array($resultt)) {
-				$id = $rowtt["id"];
-				$dep = 0;
-				$dependent = "";
-				if($rowtt["dependent"] != 0) {
-					$dependent = $rowtt["dependent"];
-					//if(in_array($dependent,$t)) {
-					$dep = $t[$dependent];
-					//}
-				}
-				$qtn = "UPDATE " . CO_TBL_CLIENTS_PHASES_TASKS . " set dependent = '$dep' WHERE id='$id'";
-				$rpn = mysql_query($qtn, $this->_db->connection);
-			}
-		
 		if ($result) {
 			return $id_new;
 		}
@@ -1328,54 +1251,21 @@ class ClientsModel extends Model {
 					$pros[] = new Lists($pro);
 					$arr["pros"] = $pros;
 					} else {
-						/*$module = "phases";
-						$name = ucfirst($module);
-							$function = "get" . $name . "Bin";
-							${$module} = new $name("$module");*/
-							//print_r(${$module}->$function($pid));
-							
-							//$arr["phases"] = ${$module}->$function($pid);
-							//print_r($mods);
-							//print_r($arr);//$arr[] = $res;
-							//$arr["phases"] = $res["phases"];
-							//print_r($res);
-						/*foreach($active_modules as $module) {
-							$name = ucfirst($module);
-							$function = "get" . $name . "Bin";
-							${$module} = new $name("$module");
-							echo ${$module}->$function($pid);
-							
-						}*/
+
 						
 						
-						// phases
-						$qph ="select id, title, bin, bintime, binuser from " . CO_TBL_CLIENTS_PHASES . " where pid = '$pid'";
-						$resultph = mysql_query($qph, $this->_db->connection);
-						while ($rowph = mysql_fetch_array($resultph)) {
-							$phid = $rowph["id"];
-							if($rowph["bin"] == "1") { // deleted phases
+						// orders
+						if(in_array("orders",$active_modules)) {
+							$qph ="select id, title, bin, bintime, binuser from " . CO_TBL_CLIENTS_ORDERS . " where pid = '$pid' and bin='1'";
+							$resultph = mysql_query($qph, $this->_db->connection);
+							while ($rowph = mysql_fetch_array($resultph)) {
 								foreach($rowph as $key => $val) {
-									$phase[$key] = $val;
+									$order[$key] = $val;
 								}
-								$phase["bintime"] = $this->_date->formatDate($phase["bintime"],CO_DATETIME_FORMAT);
-								$phase["binuser"] = $this->_users->getUserFullname($phase["binuser"]);
-								$phases[] = new Lists($phase);
-								$arr["phases"] = $phases;
-							} else {
-								// tasks
-								$qt ="select id, text, bin, bintime, binuser from " . CO_TBL_CLIENTS_PHASES_TASKS . " where phaseid = '$phid'";
-								$resultt = mysql_query($qt, $this->_db->connection);
-								while ($rowt = mysql_fetch_array($resultt)) {
-									if($rowt["bin"] == "1") { // deleted phases
-										foreach($rowt as $key => $val) {
-											$task[$key] = $val;
-										}
-										$task["bintime"] = $this->_date->formatDate($task["bintime"],CO_DATETIME_FORMAT);
-										$task["binuser"] = $this->_users->getUserFullname($task["binuser"]);
-										$tasks[] = new Lists($task);
-										$arr["tasks"] = $tasks;
-									} 
-								}
+								$order["bintime"] = $this->_date->formatDate($order["bintime"],CO_DATETIME_FORMAT);
+								$order["binuser"] = $this->_users->getUserFullname($order["binuser"]);
+								$orders[] = new Lists($order);
+								$arr["orders"] = $orders;
 							}
 						}
 	
@@ -1413,40 +1303,6 @@ class ClientsModel extends Model {
 							}
 						}
 						
-						
-						// analyses
-						if(in_array("analyses",$active_modules)) {
-							$qm ="select id, title, bin, bintime, binuser from " . CO_TBL_CLIENTS_ANALYSES . " where pid = '$pid'";
-							$resultm = mysql_query($qm, $this->_db->connection);
-							while ($rowm = mysql_fetch_array($resultm)) {
-								$mid = $rowm["id"];
-								if($rowm["bin"] == "1") { // deleted analyse
-									foreach($rowm as $key => $val) {
-										$analyse[$key] = $val;
-									}
-									$analyse["bintime"] = $this->_date->formatDate($analyse["bintime"],CO_DATETIME_FORMAT);
-									$analyse["binuser"] = $this->_users->getUserFullname($analyse["binuser"]);
-									$analyses[] = new Lists($analyse);
-									$arr["analyses"] = $analyses;
-								} else {
-									// analyses_tasks
-									$qmt ="select id, title, bin, bintime, binuser from " . CO_TBL_CLIENTS_ANALYSES_TASKS . " where mid = '$mid'";
-									$resultmt = mysql_query($qmt, $this->_db->connection);
-									while ($rowmt = mysql_fetch_array($resultmt)) {
-										if($rowmt["bin"] == "1") { // deleted phases
-											foreach($rowmt as $key => $val) {
-												$analyses_task[$key] = $val;
-											}
-											$analyses_task["bintime"] = $this->_date->formatDate($analyses_task["bintime"],CO_DATETIME_FORMAT);
-											$analyses_task["binuser"] = $this->_users->getUserFullname($analyses_task["binuser"]);
-											$analyses_tasks[] = new Lists($analyses_task);
-											$arr["analyses_tasks"] = $analyses_tasks;
-										}
-									}
-								}
-							}
-						}
-
 
 						// phonecalls
 						if(in_array("phonecalls",$active_modules)) {
@@ -1565,27 +1421,16 @@ class ClientsModel extends Model {
 					if($rowp["bin"] == "1") { // deleted clients
 						$this->deleteClient($pid);
 					} else {
-						
-						// phases
-						$clientsPhasesModel = new ClientsPhasesModel();
-						$qph ="select id, title, bin, bintime, binuser from " . CO_TBL_CLIENTS_PHASES . " where pid = '$pid'";
-						$resultph = mysql_query($qph, $this->_db->connection);
-						while ($rowph = mysql_fetch_array($resultph)) {
-							$phid = $rowph["id"];
-							if($rowph["bin"] == "1") { // deleted phases
-								$clientsPhasesModel->deletePhase($phid);
-								$arr["phases"] = "";
-							} else {
-								// tasks
-								$qt ="select id, text, bin, bintime, binuser from " . CO_TBL_CLIENTS_PHASES_TASKS . " where phaseid = '$phid'";
-								$resultt = mysql_query($qt, $this->_db->connection);
-								while ($rowt = mysql_fetch_array($resultt)) {
-									if($rowt["bin"] == "1") { // deleted phases
-										$phtid = $rowt["id"];
-										$clientsPhasesModel->deletePhaseTask($phtid);
-										$arr["tasks"] = "";
-									} 
-								}
+
+						// orders
+						if(in_array("orders",$active_modules)) {
+							$clientsOrdersModel = new ClientsOrdersModel();
+							$qph ="select id from " . CO_TBL_CLIENTS_ORDERS . " where pid = '$pid' and bin='1'";
+							$resultph = mysql_query($qph, $this->_db->connection);
+							while ($rowph = mysql_fetch_array($resultph)) {
+								$phid = $rowph["id"];
+								$clientsOrdersModel->deleteOrder($phid);
+								$arr["orders"] = "";
 							}
 						}
 

@@ -18,7 +18,7 @@ $lang["CLIENT_ORDER_STATUS_OPEN"] = 'offen';
 $lang["CLIENT_ORDER_STATUS_DONE"] = 'gestellt';
 
 
-$lang["CLIENT_ORDER_HELP"] = 'manual_projekte_telefonate.pdf';
+$lang["CLIENT_ORDER_HELP"] = 'manual_kunden_bestellungen.pdf';
 
 $lang["CLIENT_PRINT_ORDER"] = 'telefonat.png';
 
