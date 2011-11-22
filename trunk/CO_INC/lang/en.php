@@ -24,6 +24,7 @@ $lang["ACTION_PRINT"] = "print";
 $lang["ACTION_SENDTO"] = "send to";
 $lang["ACTION_DUPLICATE"] = "duplicate";
 $lang["ACTION_REFRESH"] = "refresh";
+$lang["ACTION_EXPORT"] = "export";
 $lang["ACTION_HELP"] = "help";
 $lang["ACTION_DELETE"] = "delete";
 
@@ -61,6 +62,7 @@ $lang["GLOBAL_BCC"] = 'BCC';
 $lang["GLOBAL_SUBJECT"] = 'Subject';
 $lang["GLOBAL_MESSAGE"] = 'Message';
 $lang["GLOBAL_SEND"] = 'Send';
+$lang["GLOBAL_EXPORT"] = 'Export';
 
 // email footer
 $lang["GLOBAL_EMAIL_FOOTER"] = 	'<p style="font-face: Arial, Verdana; font-size:small; color: #999999;">_____powered by company.observer</p>' .
