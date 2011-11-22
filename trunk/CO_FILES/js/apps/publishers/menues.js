@@ -119,14 +119,13 @@ function publishersMenues(name) {
 		var cid = $('#publishers input[name="id"]').val()
 		module.checkIn(cid);
 		var id = $("#publishers1 .active-link:visible").attr("rel");
-		var pid = $("#publishers2 .module-click:visible").attr("rel");
 		$.ajax({ type: "GET", url: "/", data: 'path=apps/publishers/modules/menues&request=createDuplicate&id=' + id, cache: false, success: function(mid){
-			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/publishers/modules/menues&request=getList&id="+pid, success: function(data){																																																																				
-				$(".publishers3-content:visible ul").html(data.html);
-				var moduleidx = $(".publishers3-content").index($(".publishers3-content:visible"));
-				var liindex = $(".publishers3-content:visible .module-click").index($(".publishers3-content:visible .module-click[rel='"+mid+"']"));
+			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/publishers/modules/menues&request=getList", success: function(data){																																																																				
+				$(".publishers1-content:visible ul").html(data.html);
+				var moduleidx = $(".publishers1-content").index($(".publishers1-content:visible"));
+				var liindex = $(".publishers1-content:visible .module-click").index($(".publishers1-content:visible .module-click[rel='"+mid+"']"));
 				module.getDetails(moduleidx,liindex);
-				$(".publishers3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
+				$(".publishers1-content:visible .module-click:eq("+liindex+")").addClass('active-link');
 				$('#publishers1 input.filter').quicksearch('#publishers1 li');
 				}
 			});
@@ -311,12 +310,38 @@ function publishersMenues(name) {
 
 	this.insertStatus = function(rel,text) {
 		var module = this;
-		var html = '<div class="listmember" field="publishersmenue_status" uid="'+rel+'" style="float: left">' + text + '</div>';
-		$("#publishersmenue_status").html(html);
-		$("#modalDialog").dialog("close");
-		//$("#publishersmenue_status").next().val("");
-		//$('#publishers .coform').ajaxSubmit(module.poformOptions);
-		$("#publishersmenue_status").nextAll('img').trigger('click');
+		if(rel == 1) {
+			var txt = ALERT_PUBLISHERS_ARCHIVE_OTHERS;
+			var langbuttons = {};
+			langbuttons[ALERT_YES] = true;
+			langbuttons[ALERT_NO] = false;
+			$.prompt(txt,{ 
+				buttons:langbuttons,
+				callback: function(v,m,f){		
+					if(v){
+						var id = $('#publishers input[name="id"]').val();
+						var html = '<div class="listmember" field="publishersmenue_status" uid="'+rel+'" style="float: left">' + text + '</div>';
+						$("#publishersmenue_status").html(html);
+						$("#modalDialog").dialog("close");
+						$("#publishersmenue_status").nextAll('img').trigger('click');
+						$.ajax({ type: "GET", url: "/", data: 'path=apps/publishers/modules/menues&request=archiveOthers&id='+id, success: function(data){
+							$('#publishers1 ul:eq(0) .module-click[rel!="'+id+'"]').find('.module-item-status').addClass('module-item-active');																										  
+							}
+						});
+					} else {
+						var html = '<div class="listmember" field="publishersmenue_status" uid="'+rel+'" style="float: left">' + text + '</div>';
+						$("#publishersmenue_status").html(html);
+						$("#modalDialog").dialog("close");
+						$("#publishersmenue_status").nextAll('img').trigger('click');
+					}
+				}
+			});
+		} else {
+			var html = '<div class="listmember" field="publishersmenue_status" uid="'+rel+'" style="float: left">' + text + '</div>';
+			$("#publishersmenue_status").html(html);
+			$("#modalDialog").dialog("close");
+			$("#publishersmenue_status").nextAll('img').trigger('click');
+		}
 	}
 	
 	// menue Items
@@ -390,7 +415,7 @@ var publishers_menues = new publishersMenues('publishers_menues');
 var currentPublishersMenueItem = '';
 
 $(document).ready(function() {
-	$("#menue-grid td.edit").live("dblclick", function(e) {
+	$("table.menue-grid td.edit").live("dblclick", function(e) {
 		e.preventDefault();
 		var id = $(this).attr("id");
 		if(currentPublishersMenueItem != '' && currentPublishersMenueItem != id) {

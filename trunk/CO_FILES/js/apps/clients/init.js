@@ -179,18 +179,6 @@ function clientsApplication(name) {
 			}
 		});
 	}
-	
-	this.actionHandbook = function() {
-		var obj = getCurrentModule();
-		if(obj.name == 'clients') {
-			var id = $("#clients2 .active-link").attr("rel");
-		} else {
-			var id = $('#clients2 .module-click:visible').attr("rel");
-		}
-		var url ='/?path=apps/clients&request=printClientHandbook&id='+id;
-		location.href = url;	
-	}
-
 
 	this.actionPrint = function() {
 		var id = $("#clients2 .active-link").attr("rel");
@@ -368,7 +356,7 @@ function clientsApplication(name) {
 var clients = new clientsApplication('clients');
 clients.resetModuleHeights = clientsresetModuleHeights;
 clients.modules_height = clients_num_modules*module_title_height;
-clients.GuestHiddenModules = new Array("controlling","access");
+clients.GuestHiddenModules = new Array("access");
 
 // register folder object
 function clientsFolders(name) {
@@ -485,6 +473,29 @@ function clientsFolders(name) {
 	}
 
 
+	this.actionExport = function() {
+		var id = $("#clients1 .active-link").attr("rel");
+		$.ajax({ type: "GET", url: "/", data: "path=apps/clients&request=getExportWindow&id="+id, success: function(html){
+			$("#modalDialogClientsCreateExcel").html(html).dialog('open');
+			}
+		});
+	}
+
+
+	this.actionDoExport = function() {
+		var folderid = $("#clients1 .active-link").attr("rel");
+		var menueid = $("#clientsExportMenue .listmember").attr("uid");
+		if (menueid === undefined) {
+			$('#autoopenExportMenue').trigger('click');
+			return false;
+		} else {
+			$("#modalDialogClientsCreateExcel").dialog('close');
+			var url ='/?path=apps/clients/modules/orders&request=createExcel&folderid='+folderid+'&menueid='+menueid;
+			location.href = url;
+		}
+	}
+	
+
 	this.actionPrint = function() {
 		var id = $("#clients1 .active-link").attr("rel");
 		var url ='/?path=apps/clients&request=printFolderDetails&id='+id;
@@ -538,19 +549,40 @@ function clientsFolders(name) {
 	}
 	
 	
+	this.insertItem = function(field,append,id,text) {
+		var html = '<span class="listmember-outer"><a class="listmember" uid="' + id + '" field="'+field+'">' + text + '</a>';
+		$("#"+field).html(html);
+		$("#modalDialog").dialog('close');
+		/*var obj = getCurrentModule();
+		$('#projects .coform').ajaxSubmit(obj.poformOptions);*/
+	}
+	
 	this.actionDialog = function(offset,request,field,append,title,sql) {
-		$.ajax({ type: "GET", url: "/", data: 'path=apps/clients&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
-			$("#modalDialog").html(html);
-			$("#modalDialog").dialog('option', 'position', offset);
-			$("#modalDialog").dialog('option', 'title', title);
-			$("#modalDialog").dialog('open');
-			if($("#" + field + "_ct .ct-content").length > 0) {
-				var ct = $("#" + field + "_ct .ct-content").html();
-				ct = ct.replace(CUSTOM_NOTE + " ","");
-				$("#custom-text").val(ct);
-			}
-			}
-		});
+		switch(request) {
+			case "getMenuesDialog":
+				$.ajax({ type: "GET", url: "/", data: 'path=apps/publishers/modules/menues&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
+					$("#modalDialog").html(html);
+					$("#modalDialog").dialog('option', 'position', offset);
+					$("#modalDialog").dialog('option', 'title', title);
+					$("#modalDialog").dialog('open');
+					}
+				});
+			break;
+			default:
+				$.ajax({ type: "GET", url: "/", data: 'path=apps/clients&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
+					$("#modalDialog").html(html);
+					$("#modalDialog").dialog('option', 'position', offset);
+					$("#modalDialog").dialog('option', 'title', title);
+					$("#modalDialog").dialog('open');
+					if($("#" + field + "_ct .ct-content").length > 0) {
+						var ct = $("#" + field + "_ct .ct-content").html();
+						ct = ct.replace(CUSTOM_NOTE + " ","");
+						$("#custom-text").val(ct);
+					}
+					}
+				});
+		}
+		
 	}
 
 
@@ -612,17 +644,20 @@ function clientsActions(status) {
 	/*	0= new	1= print	2= send		3= duplicate	4= handbook		5=refresh 	6 = delete*/
 	switch(status) {
 		//case 0: 	actions = ['0','1','2','3','4']; break; // all actions
-		case 0: actions = ['0','1','2','3','4','5','6','7']; break;
+		case 0: actions = ['0','1','2','3','5','6','7']; break;
 		//case 1: 	actions = ['0','1','2','4']; break; 	// no duplicate
 		case 1: actions = ['0','5','6','7']; break;
 		//case 2: 	actions = ['1']; break;   					// just save
-		case 3: 	actions = ['0','6']; break;   					// just new
-		case 4: 	actions = ['0','1','2','4','5','6']; break;   		// new, print, send, handbook, refresh
+		case 3: 	actions = ['0','5','6']; break;   					// just new
+		case 4: 	actions = ['0','1','2','5','6','7']; break;   		// new, print, send, handbook, refresh
 		case 5: 	actions = ['1','2','5','6']; break;   			// print, send, refresh
-		case 6: 	actions = ['4','5','6']; break;   			// handbook refresh
+		case 6: 	actions = ['5','6']; break;   			// handbook refresh
 		case 7: 	actions = ['0','1','2','5','6']; break;   			// new, print, send, refresh
-		case 8: 	actions = ['1','2','4','5','6']; break;   			// print, send, handbook, refresh
-		case 9:		actions = ['0','1','2','5','6','7']; break;
+		case 8: 	actions = ['1','2','5','6']; break;   			// print, send, handbook, refresh
+		case 9:		actions = ['0','1','2','4','5','6','7']; break;
+		// orders
+		case 10:	actions = ['1','2','5','6','7']; break;   			// print, send, refresh, help, delete
+		
 		default: 	actions = ['5','6'];  								// none
 	}
 	$('#clientsActions > li span').each( function(index) {
@@ -633,10 +668,6 @@ function clientsActions(status) {
 		}
 	})
 }
-
-
-
-
 
 
 function clientsloadModuleStart() {
@@ -1247,7 +1278,7 @@ $(document).ready(function() {
 					$("#clients2").css("overflow", "hidden").animate({height: module_title_height}, function() {
 						$("#clients-top .top-subheadline").html($("#clients2 .module-click:visible").find(".text").html());
 						$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients&request=getDates&id="+id, success: function(data){
-							$("#clients-top .top-subheadlineTwo").html(data.startdate + ' - <span id="clientenddate">' + data.enddate + '</span>');
+							//$("#clients-top .top-subheadlineTwo").html(data.startdate + ' - <span id="clientenddate">' + data.enddate + '</span>');
 						}
 						});
 					});
@@ -1422,6 +1453,23 @@ $(document).ready(function() {
 		});
 		return false;
 	});
+	
+	
+	$("#modalDialogClientsCreateExcel").dialog({  
+		dialogClass: 'ClientsExportWindow',
+		autoOpen: false,
+		resizable: true,
+		/*resize: function(event, ui) {
+			$('#sendToTextarea').height($(this).height() - 154);
+			},
+		open: function(event, ui) {
+			$('#sendToTextarea').height($(this).height() - 154);
+			},*/
+		width: 400,  
+		height: 320,
+		show: 'slide',
+		hide: 'slide'
+	})
 
 
 });

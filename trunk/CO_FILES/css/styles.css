@@ -257,6 +257,10 @@ ul.actionconsole { margin: 0 11px 0 11px;  }
 .actionconsole span.actionRoster:hover { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: pointer;}
 .actionconsole span.actionRoster.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: default; }
 
+.actionconsole li.listExport { display: block; height: 35px; margin-bottom: 22px; }
+.actionconsole span.actionExport { display: block; height: 35px; background: url(../img/apps_buttons_sprite.png) no-repeat;}
+.actionconsole span.actionExport:hover { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: pointer;}
+.actionconsole span.actionExport.noactive { background: url(../img/apps_buttons_sprite.png) no-repeat; cursor: default; }
 
 .actionconsole li.listRefresh { display: block; height: 32px; margin-bottom: 22px; }
 .actionconsole span.actionRefresh { display: block; height: 32px; background: url(../img/apps_buttons_sprite.png) no-repeat;}
