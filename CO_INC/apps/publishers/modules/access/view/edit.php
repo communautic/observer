@@ -10,7 +10,6 @@
 <form action="/" method="post" class="coform jNice">
 <input type="hidden" id="path" name="path" value="<?php echo $this->form_url;?>">
 <input type="hidden" id="poformaction" name="request" value="setDetails">
-<input type="hidden" name="pid" value="<?php echo($access->pid);?>">
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 		<td class="tcell-left text11"><span class="content-nav showDialog" request="getContactsDialog" field="publishersadmins" append="1"><span><?php echo $lang["GLOBAL_ADMINS"];?></span></span></td>
