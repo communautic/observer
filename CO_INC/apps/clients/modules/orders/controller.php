@@ -124,8 +124,8 @@ class ClientsOrders extends Clients {
 	}
 	
 
-	function setDetails($id,$protocol,$documents,$order_access,$order_access_orig,$order_status,$order_status_date) {
-		if($arr = $this->model->setDetails($id,$protocol,$documents,$order_access,$order_access_orig,$order_status,$order_status_date)){
+	function setDetails($id,$title,$protocol,$documents,$order_access,$order_access_orig,$order_status,$order_status_date) {
+		if($arr = $this->model->setDetails($id,$title,$protocol,$documents,$order_access,$order_access_orig,$order_status,$order_status_date)){
 			return '{ "action": "edit" , "id": "' . $arr["id"] . '", "access": "' . $order_access . '", "status": "' . $order_status . '"}';
 		} else{
 			return "error";
@@ -194,6 +194,111 @@ class ClientsOrders extends Clients {
 		global $lang;
 		include 'view/dialog_status.php';
 	}
+	
+	
+	function createExcel($folderid,$menueid) {
+		global $system, $lang;
+		$arr = $this->model->createExcel($folderid,$menueid);
+		$clients = $arr["clients"];
+		$date = $arr["date"];
+
+		require_once(CO_INC . "/classes/phpExcel/PHPExcel.php");
+		$objPHPExcel = new PHPExcel();
+		$objPHPExcel->getProperties()->setCreator("company observer")
+									 ->setTitle("company observer Export");
+		
+	
+				
+			$objPHPExcel->setActiveSheetIndex(0)
+					->setCellValue('B1', 'Montag')
+					->setCellValue('B2', $date)
+					->setCellValue('D1', 'Dienstag')
+					->setCellValue('F1', 'Mittwoch')
+					->setCellValue('H1', 'Donnerstag')
+					->setCellValue('J1', 'Freitag')
+					->setCellValue('L1', 'Anmerkungen');
+				
+			
+			$row = 3;
+			foreach($clients as $client) {
+				$col = 0;
+                $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $client->clientname);
+				// line 1
+				if($client->line_1 == 1 || $client->line_1 == 3) {
+					$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col+1, $row, $client->mon);
+					$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col+2, $row, $client->mon_note);
+					$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col+3, $row, $client->tue);
+					$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col+4, $row, $client->tue_note);
+					$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col+5, $row, $client->wed);
+					$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col+6, $row, $client->wed_note);
+					$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col+7, $row, $client->thu);
+					$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col+8, $row, $client->thu_note);
+					$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col+9, $row, $client->fri);
+					$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col+10, $row, $client->fri_note);
+					if($client->line_1 == 3) {
+						$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col+11, $row, 'automatische Bestellung');
+					}
+				} else {
+					$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col+11, $row, 'Keine Bestellungen vorhanden');
+				}
+				
+				//line 2
+				if($client->contract > "4") {
+						$row++;
+						$col = 0;
+						if(array_key_exists('mon_2', $client)) {
+							$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col+1, $row, $client->mon_2);
+						}
+						if(array_key_exists('tue_2', $client)) {
+							$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col+3, $row, $client->tue_2);
+						}
+						if(array_key_exists('wed_2', $client)) {
+							$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col+5, $row, $client->wed_2);
+						}
+						if(array_key_exists('thu_2', $client)) {
+							$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col+7, $row, $client->thu_2);
+						}
+						if(array_key_exists('fri_2', $client)) {
+							$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col+9, $row, $client->fri_2);
+						}
+
+				}
+				
+				// line 3
+				if($client->contract > "6") {
+						$row++;
+						$col = 0;
+						if(array_key_exists('mon_3', $client)) {
+							$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col+1, $row, $client->mon_3);
+						}
+						if(array_key_exists('tue_3', $client)) {
+							$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col+3, $row, $client->tue_3);
+						}
+						if(array_key_exists('wed_3', $client)) {
+							$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col+5, $row, $client->wed_3);
+						}
+						if(array_key_exists('thu_3', $client)) {
+							$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col+7, $row, $client->thu_3);
+						}
+						if(array_key_exists('fri_3', $client)) {
+							$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col+9, $row, $client->fri_3);
+						}
+				}
+                $row++;
+            }
+	
+		$objPHPExcel->getActiveSheet()->setTitle('Export');
+		$objPHPExcel->setActiveSheetIndex(0);
+
+		header('Content-Type: application/vnd.ms-excel');
+		header('Content-Disposition: attachment;filename="companyobserver.xls"');
+		header('Cache-Control: max-age=0');
+		
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+		$objWriter->save('php://output');
+		
+	}
+
 
 
 	function getHelp() {

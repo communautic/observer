@@ -10,7 +10,7 @@ $lang["CLIENT_DOCUMENT_FILENAME"] = 'Dateiname/Format';
 $lang["CLIENT_DOCUMENT_FILESIZE"] = 'Dateigrösse';
 $lang["CLIENT_DOCUMENT_FILES"] = 'Dateien';
 
-$lang["CLIENT_DOCUMENT_HELP"] = 'manual_projekte_aktenmappen.pdf';
+$lang["CLIENT_DOCUMENT_HELP"] = 'manual_kunden_aktenmappen.pdf';
 
 $lang["CLIENT_PRINT_DOCUMENT"] = 'akt.png';
 

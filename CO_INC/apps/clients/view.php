@@ -60,7 +60,7 @@
 			<li class="listPrint"><span class="actionPrint" title="<?php echo $lang["ACTION_PRINT"];?>"></span></li>
 			<li class="listSend"><span class="actionSend" title="<?php echo $lang["ACTION_SENDTO"];?>"></span></li>
 			<li class="listDuplicate"><span class="actionDuplicate" title="<?php echo $lang["ACTION_DUPLICATE"];?>"></span></li>
-			<li class="listClientHandbook"><span class="actionClientHandbook" title="<?php echo $lang["CLIENT_HANDBOOK"];?>"></span></li>
+            <li class="listExport"><span class="actionExport" title="<?php echo $lang["ACTION_EXPORT"];?>"></span></li>
             <li class="listRefresh"><span class="actionRefresh" title="<?php echo $lang["ACTION_REFRESH"];?>"></span></li>
             <li class="listHelp"><span class="actionHelp" title="<?php echo $lang["ACTION_HELP"];?>"></span></li>
             <li class="listBin"><span class="actionBin" title="<?php echo $lang["ACTION_DELETE"];?>"></span></li>
@@ -68,4 +68,5 @@
 	</div>
 	<div class="center-center" id="clients-right"></div>
 </div>
+<div id="modalDialogClientsCreateExcel" title="Excel Export"></div>
 </div>

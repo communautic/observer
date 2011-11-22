@@ -80,6 +80,9 @@ if (!empty($_GET['request'])) {
 		case 'getHelp':
 			echo($clientsOrders->getHelp());
 		break;
+		case 'createExcel':
+			echo($clientsOrders->createExcel($_GET['folderid'],$_GET['menueid']));
+		break;
 	}
 }
 
@@ -87,7 +90,7 @@ if (!empty($_POST['request'])) {
 	
 	switch ($_POST['request']) {
 		case 'setDetails':
-			echo($clientsOrders->setDetails($_POST['id'], $system->checkMagicQuotes($_POST['protocol']),$_POST['documents'],$_POST['order_access'],$_POST['order_access_orig'],$_POST['order_status'],$_POST['order_status_date']));
+			echo($clientsOrders->setDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $system->checkMagicQuotes($_POST['protocol']),$_POST['documents'],$_POST['order_access'],$_POST['order_access_orig'],$_POST['order_status'],$_POST['order_status_date']));
 		break;
 		case 'sendDetails':
 			echo($clientsOrders->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));

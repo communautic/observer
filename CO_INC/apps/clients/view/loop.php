@@ -26,7 +26,7 @@
       <td class="tcell-right text11"><?php echo($oa->access_email);?></td>
     </tr>
     <?php if($oa->access_text != '') { ?>
-        <tr>
+        <tr id="access_tr_<?php echo $oa->id;?>">
       <td>&nbsp;</td>
       <td class="tcell-left text11" colspan="2"><span><span><?php echo($oa->access_text);?></span></span></td>
     </tr>
