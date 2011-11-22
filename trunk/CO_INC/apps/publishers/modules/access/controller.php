@@ -35,7 +35,7 @@ class PublishersAccess extends Publishers {
 	function setDetails($admins,$guests) {
 		$retval = $this->model->setDetails($admins,$guests);
 		if($retval){
-			 return '{ "action": "edit" , "id": "' . $retval . '"}';
+			 return '{ "action": "edit"}';
 		  } else{
 			 return "error";
 		  }

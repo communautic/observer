@@ -78,7 +78,7 @@ class PublishersAccessModel extends PublishersModel {
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
-			return $pid;
+			return "true";
 		}
    }
 

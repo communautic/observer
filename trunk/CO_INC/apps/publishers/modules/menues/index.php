@@ -80,6 +80,12 @@ if (!empty($_GET['request'])) {
 		case 'getHelp':
 			echo($publishersMenues->getHelp());
 		break;
+		case 'archiveOthers':
+			echo($publishersMenues->archiveOthers($_GET['id']));
+		break;
+		case 'getMenuesDialog':
+			echo($publishersMenues->getMenuesDialog($_GET['field']));
+		break;
 	}
 }
 

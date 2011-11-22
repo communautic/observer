@@ -256,6 +256,27 @@ class PublishersMenues extends Publishers {
 	}
 
 
+	function archiveOthers($id) {
+		$retval = $this->model->archiveOthers($id);
+		if($retval){
+			 return "true";
+		  } else{
+			 return "error";
+		  }	
+	}
+
+
+	function getMenuesDialog($field) {
+		$retval = $this->model->getMenuesDialog($field);
+		if($retval){
+			 return $retval;
+		  } else{
+			 return "error";
+		  }	
+	}
+	
+	
+
 	function getHelp() {
 		global $lang;
 		$data["file"] =  $lang["PUBLISHER_MENUE_HELP"];

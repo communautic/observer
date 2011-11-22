@@ -335,6 +335,31 @@ class PublishersMenuesModel extends PublishersModel {
 		  	return true;
 		}
    }
+   
+   
+   function archiveOthers($id) {
+	    $now = gmdate("Y-m-d");
+		$q = "UPDATE " . CO_TBL_PUBLISHERS_MENUES . " set status='2', status_date='$now' WHERE status='1' and id!='$id' and bin='0'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+			return true;
+		}
+	}
+	
+	
+	// dialog for selecting dependent tasks
+	function getMenuesDialog($field) {
+		global $lang;
+	
+		$str = '<div class="dialog-text">';
+		$q = "SELECT id,title FROM " . CO_TBL_PUBLISHERS_MENUES . " where status!='0' and bin='0' order by item_date_from DESC ";
+		$result = mysql_query($q, $this->_db->connection);
+		while ($row = mysql_fetch_array($result)) {
+			$str .= '<a href="#" mod="clients_folder" class="insertItem" title="' . $row["title"] . '" field="' . $field . '" did="'.$row["id"].'" append="0">' . $row["title"] . '</a>';
+		}
+		$str .= '</div>';	
+		return $str;
+	}
 
 }
 ?>
