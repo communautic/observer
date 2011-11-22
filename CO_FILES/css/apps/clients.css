@@ -50,9 +50,9 @@
 #clientsActions span.actionDuplicate:hover 	{ 	background-position: -600px -206px;	}
 #clientsActions span.actionDuplicate.noactive { background-position: 0px -206px;  	}
 
-#clientsActions span.actionClientHandbook 			{ 	background-position: -550px -413px;	}
-#clientsActions span.actionClientHandbook:hover 	{ 	background-position: -600px -413px;	}
-#clientsActions span.actionClientHandbook.noactive { background-position: 0px -413px;  	}
+#clientsActions  span.actionExport 			{ 	background-position: -550px -466px;	}
+#clientsActions  span.actionExport:hover 	{ 	background-position: -600px -466px;	}
+#clientsActions  span.actionExport.noactive { background-position: 0px -466px;  	}
 
 #clientsActions span.actionRefresh				{ 	background-position: -550px -258px;	}
 #clientsActions span.actionRefresh:hover 	{ 	background-position: -600px -258px;	}
@@ -120,5 +120,14 @@ background-color: #dcd2ff; }
 #clients .qq-upload-drop-area-active { background:#695394;}
 #clients .qq-upload-button-hover {background-color:#9b78dc;}
 
-.menutbl  { border-collapse; margin: 5px 0;}
+.menutbl  { border-collapse: collapse; margin: 5px 0;}
 .menutbl td { border: 1px solid #666; color: #666; text-align: center; padding: 5px 15px; }
+
+.ClientsExportWindow { background-color: #9B78DC; }
+.ClientsExportWindow .ui-widget-header { background-color: #695394; }
+.ClientsExportWindow .ui-state-hover .ui-icon, .ClientsExportWindow .ui-state-focus .ui-icon { background-color: #b3cbef; }
+
+.ClientsExportWindow span.coButton  { background-color: #695394; color: #fff; }
+.ClientsExportWindow span.coButton:hover   { background-color: #fff; color: #000; cursor: pointer; }
+.ClientsExportWindow input { border: 0;}
+.ClientsExportWindow textarea { border: 0; height: 140px;}

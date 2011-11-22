@@ -162,6 +162,8 @@
 									input.checked = false;
 									$a.removeClass('jNiceChecked');
 									$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients&request=&request=removeAccess&id="+itemid+"&cid=" + cid, success: function(brainstorm){
+										$('#access_tr_'+itemid).slideUp();
+										console.log(itemid);
 										}
 									});
 								} 
@@ -292,6 +294,8 @@
 									input.checked = false;
 									$a.removeClass('jNiceChecked');
 									$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients&request=&request=removeAccess&id="+itemid+"&cid=" + cid, success: function(brainstorm){
+										$('#access_tr_'+itemid).slideUp();
+										console.log(itemid);
 										}
 									});
 								} 

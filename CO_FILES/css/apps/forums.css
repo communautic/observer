@@ -104,12 +104,7 @@ background-color: #C1D5F0; }
 #forums .qq-upload-drop-area { background: #C1D5F0; }
 #forums .qq-upload-drop-area-active { background:#436593;}
 #forums .qq-upload-button-hover { background: #6496DC; }
-#forums-right .menues-table { border-collapse; }
-#menue-grid  { width: 100%; }
-#menue-grid th { text-align: center; height: 30px;}
-#menue-grid td { width: 20%; border: 1px solid #000; text-align: center; height: 40px;}
-#menue-grid .elastic { background-color:#C1D5F0; }
-
+#forums-right .menues-table { border-collapse: collapse; }
 
 #forums-right .tcell-left-posts {
     padding: 0 0 0 15px;

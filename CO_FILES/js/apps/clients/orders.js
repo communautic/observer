@@ -21,7 +21,7 @@ function clientsOrders(name) {
 	 this.formResponse = function(data) {
 		 switch(data.action) {
 			case "edit":
-				//$("#clients3 span[rel='"+data.id+"'] .text").html($("#clients .item_date").val() + ' - ' +$("#clients .title").val());
+				$("#clients3 span[rel='"+data.id+"'] .text").html($("#clients .title").val());
 					switch(data.access) {
 						case "0":
 							$("#clients3 .active-link .module-access-status").removeClass("module-access-active");
@@ -30,16 +30,13 @@ function clientsOrders(name) {
 							$("#clients3 .active-link .module-access-status").addClass("module-access-active");
 						break;
 					}
-					/*switch(data.status) {
+					switch(data.status) {
 						case "1":
-							$("#clients3 .active-link .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
-						break;
-						case "2":
-							$("#clients3 .active-link .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
-						break;
-						default:
-							$("#clients3 .active-link .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
-					}*/
+						$("#clients3 .active-link .module-item-status").addClass("module-item-active");
+					break;
+					default:
+						$("#clients3 .active-link .module-item-status").removeClass("module-item-active");
+					}
 			break;
 		}
 	}
@@ -52,7 +49,7 @@ function clientsOrders(name) {
 		var id = $("#clients3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients/modules/orders&request=getDetails&id="+id, success: function(data){
 			$("#clients-right").html(data.html);
-			
+			clientsActions(10);
 			if($('#checkedOut').length > 0) {
 					$("#clients3 .active-link:visible .icon-checked-out").addClass('icon-checked-out-active');
 				} else {
@@ -62,27 +59,27 @@ function clientsOrders(name) {
 			if(list == 0) {
 				switch (data.access) {
 					case "sysadmin": case "admin":
-						clientsActions(0);
+						clientsActions(10);
 					break;
 					case "guest":
-						clientsActions(5);
+						clientsActions(10);
 					break;
 				}
 			} else {
 				switch (data.access) {
 					case "sysadmin": case "admin" :
 						if(list == "<li></li>") {
-							clientsActions(3);
+							clientsActions(10);
 						} else {
-							clientsActions(0);
+							clientsActions(10);
 							$('#clients3').find('input.filter').quicksearch('#clients3 li');
 						}
 					break;
 					case "guest":
 						if(list == "<li></li>") {
-							clientsActions();
+							clientsActions(10);
 						} else {
-							clientsActions(5);
+							clientsActions(10);
 							$('#clients3').find('input.filter').quicksearch('#clients3 li');
 						}
 					break;
@@ -157,9 +154,9 @@ function clientsOrders(name) {
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients/modules/orders&request=getList&id="+pid, success: function(data){
 									$(".clients3-content:visible ul").html(data.html);
 									if(data.html == "<li></li>") {
-										clientsActions(3);
+										clientsActions(10);
 									} else {
-										clientsActions(0);
+										clientsActions(10);
 										$('#clients3 input.filter').quicksearch('#clients3 li');
 									}
 									var moduleidx = $(".clients3-content").index($(".clients3-content:visible"));
