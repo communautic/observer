@@ -32,7 +32,7 @@
 <table width="100%" class="standard-grey">
 	<tr>
 		<td class="tcell-left"><?php echo $lang["BRAINSTORM_MEETING_ATTENDEES"];?></td>
-		<td><?php echo($meeting->participants)?></td>
+		<td><?php echo($meeting->participants_print)?><br /><?php echo($meeting->participants_ct);?></td>
     </tr>
 </table>
 <?php } ?>
@@ -40,7 +40,7 @@
 <table width="100%" class="standard-grey">
 	<tr>
 	  <td class="tcell-left"><?php echo $lang["BRAINSTORM_MEETING_MANAGEMENT"];?></td>
-        <td><?php echo($meeting->management);?></td>
+        <td><?php echo($meeting->management_print);?><br /><?php echo($meeting->management_ct);?></td>
 	</tr>
 </table>
 <?php } ?>

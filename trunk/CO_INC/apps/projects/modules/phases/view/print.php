@@ -24,8 +24,8 @@
 	  <td class="tcell-left"><?php echo $lang["PROJECT_PHASE_TEAM"];?></td>
         <td><?php echo($phase->team_print);?><br /><?php echo($phase->team_ct);?></td>
 	</tr>
-    <?php } ?>
 </table>
+<?php } ?>
 <table width="100%" class="standard">
 	<tr>
 	  <td class="tcell-left"><?php echo $lang["GLOBAL_STATUS"];?></td>
