@@ -1,0 +1,154 @@
+textarea {
+    resize: none;
+}
+
+.text11 { font-size: 11px; line-height: 20px; }
+.text13 { font-size: 13px; }
+.bold { font-weight: bold}
+strong { font-weight: bold}
+.content-spacer { height: 15px; }
+.content-line-grey { height: 2px; background-color:#E5E5E5}
+.content-date { width: 60px; display: block; float: left;}
+
+.content-nav-title { padding: 0 0 0 15px; }
+
+.table-title { width: 100%;
+margin: 0 0 10px 0;
+height: 28px;
+vertical-align: top
+}
+
+.grey { 
+background-color: #e5e5e5 !important;
+}
+
+.table-title .tcell-left { width: 135px; padding: 0 15px 0 0; vertical-align: middle; }
+
+.textarea-title {
+	font-size: 15px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	border: 0;
+	width: 100%;
+	height: 18px;
+}
+
+.tbl-inactive { width: 100%;
+background-color: #e5e5e5;
+color: #333;
+}
+
+.tbl-inactive { 
+background-color: #e5e5e5;
+}
+
+.table-footer { width: 100%;
+margin: 10px 0 0 0;
+height: 25px;
+vertical-align: middle;
+background-color: #e5e5e5;
+font-size:11px;
+color: #333;
+}
+
+.table-footer td { width: 33%; }
+.table-footer td.left { padding: 0 0 0 15px; }
+.table-footer td.middle { padding: 0; text-align: center; }
+.table-footer td.right { padding: 0 15px 0 0; text-align: right;}
+
+
+.table-content { width: 100%; margin-bottom: 1px;}
+.table-content td { vertical-align: top; padding-top: 2px;}
+.table-content .tcell-left { width: 136px; padding: 0 15px 0 0;}
+.table-content .tcell-left-100 { width: 100px; padding: 4px 15px 4px 0;}
+.table-content .tcell-left-shorter { width: 129px; padding: 0 15px 0 0;}
+.table-content .tcell-left-tasks { width: 94px; padding: 0 15px 0 0;}
+.table-content .tcell-left-phases-tasks { width: 110px; padding: 0 15px 0 0;}
+.table-content .tcell-left-short { width: 136px; padding: 0;}
+.table-content .tcell-left-inactive { width: 136px; padding: 0 0 0 15px; color:#666}
+.table-content .tcell-right { padding: 2px 0 0 0; }
+.table-content .tcell-right-inactive { padding: 3px 0 0 0; color:#666}
+.table-content .tcell-right-para { padding: 0 0 6px 0; }
+.table-content .tcell-right-nopadding { padding: 0; }
+.table-content input { background-color: transparent; }
+
+.table-content-grey { width: 100%; background-color: #b2b2b2; }
+
+.tbl-inactive input.bg {
+	border: 1px solid #E5E5E5;
+	font-weight: bold;
+}
+.table-content input.bg { font-size: 13px;
+font-weight: normal;
+	font-family: Arial, Helvetica, sans-serif;
+	border: 0;
+	width: 99%;
+	height: 16px;
+	padding: 2px 0 2px 5px;
+}
+
+#projects .table-content input.bg { 
+	font-weight: bold;
+}
+
+.no-margin { margin: 0;}
+
+/*.table-footer { width: 100%; }
+.table-footer td { vertical-align: top;}
+.table-footer .tcell-left { width: 136px; padding: 0 0 0 15px;}
+.table-footer .tcell-right { }*/
+
+
+    input, textarea {
+    -webkit-appearance:none;
+    -webkit-border-radius:0px;
+    }
+
+.textarea-underline-bold {
+	font-size: 13px;
+	font-family: Arial, Helvetica, sans-serif;
+	overflow: hidden;
+	border: 0;
+	border-bottom: 1px solid #666;
+	font-weight: bold;
+	width: 99%;
+	padding-left: 1px;
+	height: 15px;
+}
+
+.input-date {
+	border: 0;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	width: 110px;
+}
+
+.input-field {
+	border: 0;
+	border-bottom: 1px solid #fff;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	width: 300px;
+}
+
+.tbl-protocol { margin: 0;}
+.tbl-protocol .tcell-right { padding: 6px 0 2px 0; }
+.tbl-protocol .tcell-left { padding: 4px 15px 4px 0; }
+.elastic { font-size: 13px; padding: 0; margin: 0 0 0 0; width: 100%; height: 17px; border: 0; overflow: hidden; }
+
+
+.meetingouter { margin-bottom: 3px;}
+.task-drag { width: 15px; height: 15px; display: none; background:url(../img/sort_buttons_trans.png) no-repeat 0px -60px; }
+
+.content-outline { padding: 5px 0;}
+.dialog-text { font-size:12px; padding: 5px 0 5px 10px; float: left;}
+.dialog-text a { display: block; margin: 7px 0;}
+
+.dialog-text-2 { font-size:11px; padding: 10px 0 0 10px; float: left;}
+.dialog-text-2 a { display: block; margin: 3px 0;}
+
+div.coButton-outer { width: 100px; margin:auto; text-align: center; }
+span.coButton  { width: 100px; background-color: #666; display: block; padding: 4px; text-align:center }
+span.coButton:hover   { background-color: #333; color: #fff; cursor: pointer; }
+
+#custom-text { height: 105px; margin-bottom: 5px;}
