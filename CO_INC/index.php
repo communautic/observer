@@ -109,7 +109,8 @@ echo "var " . $app . "_num_modules = " . ${$app}->num_modules . ";\n";
 ?>
 </script>
 <?php // include app specific js
-foreach($controller->applications as $app => $display) {
+//foreach($controller->applications as $app => $display) {
+foreach($userapps as $key => $app) {
 	echo '<script type="text/javascript" src="' . CO_FILES . '/js/apps/' . $app . '/init.js"></script>';
 	foreach(${$app}->modules as $module => $value) {
 		echo '<script type="text/javascript" src="' . CO_FILES . '/js/apps/' . $app . '/' . $module . '.js"></script>';
