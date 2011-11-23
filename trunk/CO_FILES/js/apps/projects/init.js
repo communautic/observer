@@ -580,7 +580,7 @@ function projectsActions(status) {
 		//case 1: 	actions = ['0','1','2','4']; break; 	// no duplicate
 		case 1: actions = ['0','5','6','7']; break;
 		//case 2: 	actions = ['1']; break;   					// just save
-		case 3: 	actions = ['0','6']; break;   					// just new
+		case 3: 	actions = ['0','5','6']; break;   					// just new
 		case 4: 	actions = ['0','1','2','4','5','6']; break;   		// new, print, send, handbook, refresh
 		case 5: 	actions = ['1','2','5','6']; break;   			// print, send, refresh
 		case 6: 	actions = ['4','5','6']; break;   			// handbook refresh
@@ -694,6 +694,45 @@ function ProjectsModulesDisplay(access) {
 }
 
 
+function ProjectsExternalLoad(f,p,ph) { // eg from Desktop
+	// select folder
+	$("#projects .active-link").removeClass("active-link");
+	$("#projects1 .module-click[rel='"+f+"']").addClass('active-link');
+	// move up folder
+	$("#projects1").css("overflow", "hidden").height(module_title_height);
+	var index = $("#projects1 .module-click").index($("#projects1 .module-click[rel='"+f+"']"));
+	setModuleDeactive($("#projects1"),index);
+	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectList&id="+f, success: function(data){
+		$("#projects2 ul").html(data.html);
+		$("#projects-top .top-headline").html($("#projects .module-click:visible").find(".text").html());
+		var idx = $("#projects2 .module-click").index($("#projects2 .module-click[rel='"+p+"']"));
+		setModuleDeactive($("#projects2"),idx);
+		//$("#projects-current").val("projects");
+		$("#projects2").css("overflow", "hidden").height(module_title_height);
+		
+		// phase
+		var moduleidx = 0;
+		var module = 'phases';
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/"+module+"&request=getList&id="+p, success: function(data){
+		$("#projects-top .top-subheadline").html($("#projects2 .module-click:visible").find(".text").html());
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getDates&id="+p, success: function(data){
+							$("#projects-top .top-subheadlineTwo").html(data.startdate + ' - <span id="projectenddate">' + data.enddate + '</span>');
+						}
+						});
+					$("#projects-current").val("phases");
+					$("#projects3 ul:eq("+moduleidx+")").html(data.html);
+					$("#projects3 h3[rel='phases']").addClass("module-bg-active").next('div').show();
+					var idx = $("#projects3 ul:eq("+moduleidx+") .module-click").index($("#projects3 ul:eq("+moduleidx+") .module-click[rel='"+ph+"']"));
+					$("#projects3 ul:eq("+moduleidx+") .module-click:eq("+idx+")").addClass('active-link');
+					projects_phases.getDetails(0,idx,0);
+					$('span.app_projects').trigger('click');
+					}
+					});
+		}
+	});
+}
+
+
 var projectsLayout, projectsInnerLayout;
 
 $(document).ready(function() {
@@ -708,7 +747,7 @@ $(document).ready(function() {
 			,	slidable:				false
 			, 	west__size:				325
 			,	west__closable: 		true
-			,	west__resizable: 		true
+			//,	west__resizable: 		true
 			, 	south__size:			10
 			,	center__onresize: "projectsInnerLayout.resizeAll"
 			
@@ -733,7 +772,12 @@ $(document).ready(function() {
 		projectsloadModuleStart();
 	}
 
-	$("#projects1-outer > h3").click(function(event, passed_id) {
+	$("#projects1-outer > h3").click(function(event, passed_id, speed) {
+		if(speed == undefined) {
+			speed = 400;
+		} else {
+			speed = speed;
+		}
 		var obj = getCurrentModule();
 		if(confirmNavigation()) {
 			formChanged = false;
@@ -742,7 +786,7 @@ $(document).ready(function() {
 		var cid = $('#projects input[name="id"]').val()
 		obj.checkIn(cid);
 		
-		if($(this).hasClass("module-bg-active")) {
+		if($(this).hasClass("module-bg-active")) { //folders are activated
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getFolderList", success: function(data){
 				$("#projects1 ul").html(data.html);
 				if(data.access == "guest") {
@@ -771,8 +815,8 @@ $(document).ready(function() {
 					//projectsInnerLayout.initContent('center');
 					initProjectsContentScrollbar();
 					var h = $("#projects .ui-layout-west").height();
-					$("#projects1").delay(200).animate({height: h-46}, function() {
-						$(this).animate({height: h-71});			 
+					$("#projects1").delay(200).animate({height: h-46}, speed, function() {
+						$(this).animate({height: h-71},speed);			 
 					});
 					}
 				 });
@@ -799,7 +843,7 @@ $(document).ready(function() {
 					$("#projects1 li").show();
 					setModuleActive($("#projects1"),index);
 					
-					$("#projects1").css("overflow", "auto").animate({height: h-46}, function() {
+					$("#projects1").css("overflow", "auto").animate({height: h-46}, speed, function() {
 						$("#"+projects.name+"-right").html(text.html);
 						//initScrollbar( '#projects .scrolling-content' );
 						$("#projects-current").val("folder");
@@ -812,7 +856,7 @@ $(document).ready(function() {
 						$("#projects3 h3").removeClass("module-bg-active");
 						$("#projects3 .projects3-content:visible").slideUp();
 						initProjectsContentScrollbar();
-						$("#projects1").delay(200).animate({height: h-71});
+						$("#projects1").delay(200).animate({height: h-71}, speed);
 					});
 					}
 				 });
@@ -826,7 +870,12 @@ $(document).ready(function() {
 	});
 
 
-	$("#projects2-outer > h3").click(function(event, passed_id) {
+	$("#projects2-outer > h3").click(function(event, passed_id, speed) {
+		if(speed == undefined) {
+			speed = 400;
+		} else {
+			speed = speed;
+		}
 		var obj = getCurrentModule();
 		if(confirmNavigation()) {
 			formChanged = false;
@@ -852,45 +901,44 @@ $(document).ready(function() {
 					setModuleActive($("#projects2"),index);
 					$("#projects2 .sort").attr("rel", data.sort).addClass("sort"+data.sort);
 					$('#projects2 input.filter').quicksearch('#projects2 li');
-					$("#projects2").css("overflow", "auto").animate({height: h-(projects.modules_height+96)}, function() {
-					$(this).find('.west-ui-content	').height(h-(projects.modules_height+96));
-					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectDetails&id="+projectid, success: function(text){
-						$("#projects-right").html(text.html);
-
-						switch (text.access) {
-									case "sysadmin":
-										if(data.html == "<li></li>") {
-											projectsActions(3);
-										} else {
-											projectsActions(0);
-											$('#projects2').find('input.filter').quicksearch('#projects2 li');
-										}
-									break;
-									case "admin":
-										if(data.html == "<li></li>") {
-											projectsActions(3);
-										} else {
-											projectsActions(0);
-											$('#projects2').find('input.filter').quicksearch('#projects2 li');
-										}
-									break;
-									case "guestadmin":
-										if(data.html == "<li></li>") {
-											projectsActions(3);
-										} else {
-											projectsActions(7);
-											$('#projects2').find('input.filter').quicksearch('#projects2 li');
-										}
-									break;
-									case "guest":
-										if(data.html == "<li></li>") {
-											projectsActions();
-										} else {
-											projectsActions(5);
-											$('#projects2').find('input.filter').quicksearch('#projects2 li');
-										}
-									break;
-								}
+					$("#projects2").css("overflow", "auto").animate({height: h-(projects.modules_height+96)}, speed , function() {
+						$(this).find('.west-ui-content	').height(h-(projects.modules_height+96));
+						$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectDetails&id="+projectid, success: function(text){
+							$("#projects-right").html(text.html);
+							switch (text.access) {
+								case "sysadmin":
+									if(data.html == "<li></li>") {
+										projectsActions(3);
+									} else {
+										projectsActions(0);
+										$('#projects2').find('input.filter').quicksearch('#projects2 li');
+									}
+								break;
+								case "admin":
+									if(data.html == "<li></li>") {
+										projectsActions(3);
+									} else {
+										projectsActions(0);
+										$('#projects2').find('input.filter').quicksearch('#projects2 li');
+									}
+								break;
+								case "guestadmin":
+									if(data.html == "<li></li>") {
+										projectsActions(3);
+									} else {
+										projectsActions(7);
+										$('#projects2').find('input.filter').quicksearch('#projects2 li');
+									}
+								break;
+								case "guest":
+									if(data.html == "<li></li>") {
+										projectsActions();
+									} else {
+										projectsActions(5);
+										$('#projects2').find('input.filter').quicksearch('#projects2 li');
+									}
+								break;
+							}
 						initProjectsContentScrollbar();
 						}
 					});
@@ -919,7 +967,7 @@ $(document).ready(function() {
 						setModuleActive($("#projects2"),idx);
 						$("#projects2 .sort").attr("rel", data.sort).addClass("sort"+data.sort);
 						setModuleDeactive($("#projects1"),index);
-						$("#projects1").css("overflow", "hidden").animate({height: module_title_height}, function() {
+						$("#projects1").css("overflow", "hidden").animate({height: module_title_height},speed, function() {
 							$("#projects-top .top-headline").html($("#projects .module-click:visible").find(".text").html());
 							$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectDetails&id="+projectid, success: function(text){
 								$("#projects-right").html(text.html);
@@ -961,8 +1009,8 @@ $(document).ready(function() {
 								initProjectsContentScrollbar();
 								var h = $("#projects .ui-layout-west").height();
 								if(text.access != "sysadmin") { ProjectsModulesDisplay(text.access); }
-								$("#projects2").delay(200).animate({height: h-(projects.modules_height+96)}, function() {
-									$(this).find('.west-ui-content	').height(h-(projects.modules_height+96));																			  
+								$("#projects2").delay(200).animate({height: h-(projects.modules_height+96)}, speed, function() {
+									$(this).find('.west-ui-content	').height(h-(projects.modules_height+96));
 									});
 								}
 							});
@@ -1341,6 +1389,11 @@ $(document).ready(function() {
 			showURL: false 
 		});
 	});
+	
+	/*$('#projectsWidgetContent a').live('click', function(e) {
+		e.preventDefault();
+		ProjectsExternalLoad($(this).attr('rel'));					 
+	})*/
 
 
 });

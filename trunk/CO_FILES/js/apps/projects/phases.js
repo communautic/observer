@@ -70,7 +70,7 @@ function projectsPhases(name) {
 	this.getDetails = function(moduleidx,liindex,list) {
 		var phaseid = $("#projects3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
 		var num = $("#projects3 ul:eq("+moduleidx+") .phase_num:eq("+liindex+")").html();
-		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/phases&request=getDetails&id="+phaseid+"&num="+num, success: function(data){
+		$.ajax({ type: "GET", url: "/", dataType:  'json', async: false, data: "path=apps/projects/modules/phases&request=getDetails&id="+phaseid+"&num="+num, success: function(data){
 			$("#projects-right").html(data.html);
 			if($('#checkedOut').length > 0) {
 					$("#projects3 .active-link:visible .icon-checked-out").addClass('icon-checked-out-active');
