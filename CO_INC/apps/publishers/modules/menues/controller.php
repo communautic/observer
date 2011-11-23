@@ -70,7 +70,7 @@ class PublishersMenues extends Publishers {
 		}
 	}
 	
-	function printMenue($id) {
+	/*function printMenue($id) {
 		global $session, $lang;
 		$title = "";
 		$html = "";
@@ -83,8 +83,6 @@ class PublishersMenues extends Publishers {
 			ob_end_clean();
 			$title = $menue->title;
 		}
-		//$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PUBLISHER_PRINT_MENUE"];
-		//$this->printPDF($title,$html);
 		
 		ob_start();
 			include("view/printheader.php");
@@ -111,15 +109,7 @@ class PublishersMenues extends Publishers {
 		$options['Accept-Ranges'] = 0;
 		$options['compress'] = 1;
 		$dompdf->stream($title.".pdf", $options);
-		
-		
-		/*$dompdf = new DOMPDF();
-		$dompdf->load_html($html);
-		$dompdf->set_paper('a4', 'landscape'); // change 'a4' to whatever you want
-		$dompdf->render();
-		$pdf = $dompdf->output();
-		file_put_contents( CO_PATH_BASE . "/data/menues/kinder.pdf", $pdf);*/
-	}
+	}*/
 	
 	
 	function getSend($id) {

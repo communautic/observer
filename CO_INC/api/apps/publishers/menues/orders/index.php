@@ -170,7 +170,7 @@ if($error == "") {
 		  
 		  $arr = $publishersMenues->model->getDetails($id);
 		 $menue = $arr["menue"];
-		  $path = CO_PATH_PDF . "/testorder.pdf";
+		  $path = CO_PATH_PDF . "/bestellung_" . date('d-m-Y') . ".pdf";
 		  
 		  //create pdf
 		  ob_start();

@@ -458,6 +458,24 @@ $(document).ready(function() {
 		return false;
 	});
 	
+	$('span.actionExport').click(function(){
+		if($(this).hasClass("noactive")) {
+			return false;
+		}
+		var obj = getCurrentModule();
+		obj.actionExport();
+		return false;
+	});
+	
+	$('span.actionDoExport').live('click', function(){
+		if($(this).hasClass("noactive")) {
+			return false;
+		}
+		var obj = getCurrentModule();
+		obj.actionDoExport();
+		return false;
+	});
+	
 	$('span.actionRefresh').click(function(){
 		if($(this).hasClass("noactive")) {
 			return false;
@@ -499,6 +517,14 @@ $(document).ready(function() {
 		var text = $(this).html();
 		var module = getCurrentModule();
 		module.insertStatusDate(rel,text);
+		return false;
+	});
+	
+	$('a.insertContract').live('click',function() {
+		var rel = $(this).attr("rel");
+		var text = $(this).html();
+		var module = getCurrentModule();
+		module.insertContract(rel,text);
 		return false;
 	});
 	

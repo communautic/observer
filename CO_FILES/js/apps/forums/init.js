@@ -665,7 +665,7 @@ function forumsActions(status) {
 		//case 1: 	actions = ['0','1','2','4']; break; 	// no duplicate
 		case 1: actions = ['0','4','5','6']; break;
 		//case 2: 	actions = ['1']; break;   					// just save
-		case 3: 	actions = ['0','5']; break;   					// just new
+		case 3: 	actions = ['0','4','5']; break;   					// just new
 		case 4: 	actions = ['0','1','2','4','5']; break;   		// new, print, send, handbook, refresh
 		case 5: 	actions = ['1','2','4','5']; break;   			// print, send, refresh
 		case 6: 	actions = ['4','5']; break;   			// handbook refresh
