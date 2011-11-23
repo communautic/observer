@@ -58,7 +58,7 @@ function brainstormsRosters(name) {
 			if(list == 0) {
 				switch (data.access) {
 					case "sysadmin": case "admin":
-						brainstormsActions(9);
+						brainstormsActions(10);
 					break;
 					case "guest":
 						brainstormsActions(5);
@@ -70,7 +70,7 @@ function brainstormsRosters(name) {
 						if(list == "<li></li>") {
 							brainstormsActions(3);
 						} else {
-							brainstormsActions(9);
+							brainstormsActions(10);
 							$('#brainstorms3').find('input.filter').quicksearch('#brainstorms3 li');
 						}
 					break;
@@ -155,7 +155,7 @@ function brainstormsRosters(name) {
 									if(data.html == "<li></li>") {
 										brainstormsActions(3);
 									} else {
-										brainstormsActions(9);
+										brainstormsActions(10);
 										$('#brainstorms3 input.filter').quicksearch('#brainstorms3 li');
 									}
 									var moduleidx = $(".brainstorms3-content").index($(".brainstorms3-content:visible"));

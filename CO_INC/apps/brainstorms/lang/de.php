@@ -53,6 +53,7 @@ $lang["BRAINSTORM_FOLDER_HELP"] = 'manual_prozesse_ordner.pdf';
 // Print images
 $lang["PRINT_BRAINSTORM_MANUAL"] = 'projekthandbuch.png';
 $lang["PRINT_BRAINSTORM"] = 'projekt.png';
+$lang["PRINT_BRAINSTORM_FOLDER"] = 'ordner.png';
 
 
 // check for custom lang file

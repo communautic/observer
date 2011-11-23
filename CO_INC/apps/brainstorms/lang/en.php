@@ -52,7 +52,7 @@ $lang["BRAINSTORM_FOLDER_HELP"] = 'manual_prozesse_ordner.pdf';
 // Print images
 $lang["PRINT_BRAINSTORM_MANUAL"] = 'brainstorm_manual.png';
 $lang["PRINT_BRAINSTORM"] = 'brainstorm.png';
-
+$lang["PRINT_BRAINSTORM_FOLDER"] = 'folder.png';
 
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/brainstorms/en.php";
