@@ -45,6 +45,9 @@ if (!empty($_GET['request'])) {
 			}
 			echo($brainstorms->printFolderDetails($_GET['id'],$t));
 		break;
+		case 'getFolderSend':
+			echo($brainstorms->getFolderSend($_GET['id']));
+		break;
 		case 'binFolder':
 			echo($brainstorms->binFolder($_GET['id']));
 		break;
@@ -165,6 +168,9 @@ if (!empty($_POST['request'])) {
 	switch ($_POST['request']) {
 		case 'setFolderDetails':
 			echo($brainstorms->setFolderDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['brainstormstatus']));
+		break;
+		case 'sendFolderDetails':
+			echo($brainstorms->sendFolderDetails($_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
 		break;
 		case 'setBrainstormDetails':
 			echo($brainstorms->setBrainstormDetails($_POST['id'], $system->checkMagicQuotes($_POST['title'])));

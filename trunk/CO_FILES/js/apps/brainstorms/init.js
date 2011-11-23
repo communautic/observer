@@ -524,7 +524,7 @@ function brainstormsFolders(name) {
 					$('#brainstorms-right .focusTitle').trigger('click');
 					}
 				});
-				brainstormsActions(1);
+				brainstormsActions(9);
 				}
 			});
 			}
@@ -549,7 +549,7 @@ function brainstormsFolders(name) {
 								if(data.html == "<li></li>") {
 									brainstormsActions(3);
 								} else {
-									brainstormsActions(1);
+									brainstormsActions(9);
 								}
 								var id = $("#brainstorms1 .module-click:eq(0)").attr("rel");
 								$("#brainstorms1 .module-click:eq(0)").addClass('active-link');
@@ -583,7 +583,7 @@ function brainstormsFolders(name) {
 			if(data.html == "<li></li>") {
 				brainstormsActions(3);
 			} else {
-				brainstormsActions(1);
+				brainstormsActions(9);
 			}
 			var idx = $("#brainstorms1 .module-click").index($("#brainstorms1 .module-click[rel='"+id+"']"));
 			$("#brainstorms1 .module-click:eq("+idx+")").addClass('active-link');
@@ -592,7 +592,34 @@ function brainstormsFolders(name) {
 		});
 	}
 	
-	
+
+	this.actionPrint = function() {
+		var id = $("#brainstorms1 .active-link").attr("rel");
+		var url ='/?path=apps/brainstorms&request=printFolderDetails&id='+id;
+		location.href = url;
+	}
+
+
+	this.actionSend = function() {
+		var id = $("#brainstorms1 .active-link").attr("rel");
+		$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms&request=getFolderSend&id="+id, success: function(html){
+			$("#modalDialogForward").html(html).dialog('open');
+			}
+		});
+	}
+
+
+	this.actionSendtoResponse = function() {
+		//var id = $("#projects1 .active-link").attr("rel");
+		//$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=getSendtoDetails&id="+id, success: function(html){
+			//$("#project_sendto").html(html);
+			$("#modalDialogForward").dialog('close');
+			//}
+		//});
+	}
+
+
+
 	this.sortclick = function (obj,sortcur,sortnew) {
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getFolderList&sort="+sortnew, success: function(data){
 			$("#brainstorms1 ul").html(data.html);
@@ -615,6 +642,22 @@ function brainstormsFolders(name) {
 		$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms&request=setFolderOrder&"+order, success: function(html){
 			$("#brainstorms1 .sort").attr("rel", "3");
 			$("#brainstorms1 .sort").removeClass("sort1").removeClass("sort2").addClass("sort3");
+			}
+		});
+	}
+	
+	
+	this.actionDialog = function(offset,request,field,append,title,sql) {
+		$.ajax({ type: "GET", url: "/", data: 'path=apps/brainstorms&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
+			$("#modalDialog").html(html);
+			$("#modalDialog").dialog('option', 'position', offset);
+			$("#modalDialog").dialog('option', 'title', title);
+			$("#modalDialog").dialog('open');
+			if($("#" + field + "_ct .ct-content").length > 0) {
+				var ct = $("#" + field + "_ct .ct-content").html();
+				ct = ct.replace(CUSTOM_NOTE + " ","");
+				$("#custom-text").val(ct);
+			}
 			}
 		});
 	}
@@ -680,7 +723,7 @@ function brainstormsActions(status) {
 		//case 0: actions = ['0','1','2','3','5','6']; break;
 		case 0: actions = ['0','1','2','3','5','6','7']; break;
 		case 1: actions = ['0','5','6','7']; break;
-		case 3: 	actions = ['0','6']; break;   					// just new
+		case 3: 	actions = ['0','5','6']; break;   					// just new
 		//case 4: 	actions = ['0','1','2','4','5']; break;   		// new, print, send, handbook, refresh
 		case 4: 	actions = ['0','1','2','4','5','6']; break;
 		//case 5: 	actions = ['1','2','5']; break;   			// print, send, refresh
@@ -691,7 +734,8 @@ function brainstormsActions(status) {
 		//case 8: 	actions = ['1','2','4','5']; break;   			// print, send, handbook, refresh
 		case 8: 	actions = ['1','2','4','5','6']; break;
 		//case 9: actions = ['0','1','2','3','4','5','6']; break;
-		case 9: actions = ['0','1','2','3','4','5','6','7']; break;
+		case 9: actions = ['0','1','2','5','6','7']; break;
+		case 10: actions = ['0','1','2','3','4','5','6','7']; break;
 		default: 	actions = ['5','6'];  								// none
 	}
 	$('#brainstormsActions > li span').each( function(index) {
@@ -730,7 +774,7 @@ function brainstormsloadModuleStart() {
 			if(data.html == "<li></li>") {
 				brainstormsActions(3);
 			} else {
-				brainstormsActions(1);
+				brainstormsActions(9);
 			}
 		}
 		
@@ -862,7 +906,7 @@ $(document).ready(function() {
 					if(data.html == "<li></li>") {
 						brainstormsActions(3);
 					} else {
-						brainstormsActions(1);
+						brainstormsActions(9);
 					}
 				}
 				//initScrollbar( '#brainstorms .scrolling-content' );
@@ -895,7 +939,7 @@ $(document).ready(function() {
 					if(data.html == "<li></li>") {
 						brainstormsActions(3);
 					} else {
-						brainstormsActions(1);
+						brainstormsActions(9);
 					}
 				}
 				$('#brainstorms1 input.filter').quicksearch('#brainstorms1 li');
@@ -1117,7 +1161,7 @@ $(document).ready(function() {
 			if(text.access == "guest") {
 					brainstormsActions();
 				} else {
-					brainstormsActions(1);
+					brainstormsActions(9);
 				}
 			}
 		});

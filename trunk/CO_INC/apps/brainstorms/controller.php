@@ -60,6 +60,7 @@ class Brainstorms extends Controller {
 
 
 	function printFolderDetails($id, $t) {
+		global $lang, $system;
 		$title = "";
 		$html = "";
 		if($arr = $this->model->getFolderDetails($id)) {
@@ -80,6 +81,51 @@ class Brainstorms extends Controller {
 				$this->printPDF($title,$html);
 		}
 		
+	}
+
+
+	function getFolderSend($id) {
+		global $lang;
+		if($arr = $this->model->getFolderDetails($id)) {
+			$folder = $arr["folder"];
+			$brainstorms = $arr["brainstorms"];
+			$form_url = $this->form_url;
+			$request = "sendFolderDetails";
+			$to = "";
+			$cc = "";
+			$subject = $folder->title;
+			$variable = "";
+			include CO_INC .'/view/dialog_send.php';
+		}
+		else {
+			include CO_INC .'/view/default.php';
+		}
+	}
+
+
+	function sendFolderDetails($id,$to,$cc,$subject,$body) {
+		global $session,$users, $lang;
+		$title = "";
+		$html = "";
+		if($arr = $this->model->getFolderDetails($id)) {
+			$folder = $arr["folder"];
+			$brainstorms = $arr["brainstorms"];
+			//$sendto = $arr["sendto"];
+			ob_start();
+				include 'view/folder_print.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			$title = $folder->title;
+		}
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_BRAINSTORM_FOLDER"];
+		$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
+		$pdf = $this->savePDF($title,$html,$attachment);
+		
+		// write sento log
+		//$this->writeSendtoLog("forums",$id,$to,$subject,$body);
+		
+		//$to,$from,$fromName,$subject,$body,$attachment
+		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment);
 	}
 
 
