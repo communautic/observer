@@ -23,10 +23,10 @@ function publishersActions(status) {
 		case 3: 	actions = ['0','4']; break;   					// just new
 		case 4: 	actions = ['0','1','2','4']; break;   		// new, print, send, handbook, refresh
 		case 5: 	actions = ['1','2']; break;   			// print, send, refresh
-		case 6: 	actions = ['4','5']; break;   			// handbook refresh
+		case 6: 	actions = ['4']; break;   			// handbook refresh
 		case 7: 	actions = ['0','1','2']; break;   			// new, print, send, refresh
 		case 8: 	actions = ['1','2','4']; break;   			// print, send, handbook, refresh
-		case 9:		actions = ['0','1','2','5']; break;
+		case 9:		actions = ['0','1','2','4','5']; break;
 		default: 	actions = [];  								// none
 	}
 	$('#publishersActions > li span').each( function(index) {
