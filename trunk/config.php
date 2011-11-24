@@ -1,4 +1,11 @@
 <?php
+// PROTOCOL
+$protocol = "https://";
+if($protocol == "https://" && strtolower(@$_SERVER['HTTPS']) != 'on')  {
+	$redirect= "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+     header("Location: $redirect");
+}
+
 /* -------------------------------------------------------------------------
 * INC PATH AND INC FOLDER
 * -------------------------------------------------------------------------*/
@@ -8,7 +15,7 @@ set_include_path(get_include_path() . PATH_SEPARATOR . CO_INC_PATH);
 define("CO_INC"	, 		"CO_INC" 			);
 
 // FILES PATH
-define("CO_FILES"	, 		"http://dev.companyobserver.com/CO_FILES" );
+define("CO_FILES"	, 		$protocol . "dev.companyobserver.com/CO_FILES" );
 
 /* -------------------------------------------------------------------------
 * Database Configuration
@@ -22,7 +29,7 @@ define("CO_DB_DATABASE"	,		"dev" 		);
 * Global Site Settings
 * -------------------------------------------------------------------------*/
 define("CO_PATH_BASE"	, 		"/home/dev/public_html"	);
-define("CO_PATH_URL"	, 		"http://dev.companyobserver.com" 			);
+define("CO_PATH_URL"	, 		$protocol . "dev.companyobserver.com" 			);
 
 
 /* Default Language */

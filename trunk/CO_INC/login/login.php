@@ -19,7 +19,7 @@ if(isset($_GET['path'])) {
 <!--[if lt IE 8]>
 <link href="<?php echo CO_FILES;?>/css/login/ie.css" rel="stylesheet" type="text/css" media="screen,projection" />
 <![endif]-->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
+<script src="<?php echo $protocol;?>ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.form.js"></script>
 <script type="text/javascript">
 
@@ -102,7 +102,8 @@ window.onload=function(){
  try {if ($buoop.ol) $buoop.ol();}catch (e) {} 
  var e = document.createElement("script"); 
  e.setAttribute("type", "text/javascript"); 
- e.setAttribute("src", "http://browser-update.org/update.js"); 
+ //e.setAttribute("src", "http://browser-update.org/update.js"); 
+ e.setAttribute("src", "<?php echo CO_FILES;?>/js/libraries/browser-update.js"); 
  document.body.appendChild(e); 
 } 
 </script> 
