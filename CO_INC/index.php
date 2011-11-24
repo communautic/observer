@@ -81,8 +81,8 @@ foreach($controller->applications as $app => $display) {
 var num_apps = <?php echo($num_apps);?>;
 var co_files = '<?php echo CO_FILES;?>';
 </script>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+<script src="<?php echo $protocol;?>ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="<?php echo $protocol;?>ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/datejs/date.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/datejs/de-AT.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/datejs/time.js"></script>
