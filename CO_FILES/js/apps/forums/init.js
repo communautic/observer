@@ -1295,10 +1295,10 @@ $(document).ready(function() {
 					setModuleDeactive($("#forums2"),index);
 					$("#forums2").css("overflow", "hidden").animate({height: module_title_height}, function() {
 						$("#forums-top .top-subheadline").html($("#forums2 .module-click:visible").find(".text").html());
-						$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/forums&request=getDates&id="+id, success: function(data){
+						/*$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/forums&request=getDates&id="+id, success: function(data){
 							$("#forums-top .top-subheadlineTwo").html(data.startdate + ' - <span id="forumenddate">' + data.enddate + '</span>');
 						}
-						});
+						});*/
 					});
 					h3click.addClass("module-bg-active")
 						.next('div').slideDown(function() {
