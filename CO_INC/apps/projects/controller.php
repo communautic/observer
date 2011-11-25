@@ -552,6 +552,27 @@ class Projects extends Controller {
 	  return !empty($canView);
    }
 
+	function getWidgetAlerts() {
+		global $lang, $system;
+		if($arr = $this->model->getWidgetAlerts()) {
+			$reminders = $arr["reminders"];
+			$kickoffs = $arr["kickoffs"];
+			$alerts = $arr["alerts"];
+			ob_start();
+			include 'view/widget.php';
+			$data["html"] = ob_get_contents();
+			ob_end_clean();
+			$data["widgetaction"] = $arr["widgetaction"];
+			return json_encode($data);
+		} else {
+			ob_start();
+			include CO_INC .'/view/default.php';
+			$data["html"] = ob_get_contents();
+			ob_end_clean();
+			return json_encode($data);
+		}
+	}
+
 }
 
 $projects = new Projects("projects");
