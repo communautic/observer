@@ -54,6 +54,31 @@ $lang["PRINT_PROJECT_MANUAL"] = 'projekthandbuch.png';
 $lang["PRINT_PROJECT"] = 'projekt.png';
 $lang["PRINT_PROJECT_FOLDER"] = 'ordner.png';
 
+// Dektop Widget
+$lang["PROJECT_WIDGET_REMINDER_MILESTONE"] 	= 	'<div>Für morgen planen Sie die Erreichung des <strong>Meilensteins</strong><br />' .
+											 	'<strong>%1$s</strong></div>' .
+											 	'im Projekt <strong>%2$s</strong></div>';
+
+$lang["PROJECT_WIDGET_REMINDER_TASK"] 		= 	'<div>Für morgen planen Sie die Erreichung des <strong>Arbeitspakets</strong><br />' .
+											 	'<strong>%1$s</strong><br />' .
+											 	'im Projekt <strong>%2$s</strong></div>';
+
+$lang["PROJECT_WIDGET_REMINDER_KICKOFF"] 	= 	'<div>Für morgen planen Sie den Kick Off des <strong>Projekts</strong><br />' .
+											 	'<strong>%1$s</strong></div>';
+
+$lang["PROJECT_WIDGET_ALERT_MILESTONE"] 	= 	'<div>Der Abschluss des <strong>Meilensteins</strong><br />' .
+											 	'<strong>%1$s</strong><br />' .
+											 	'im Projekt <strong>%2$s</strong><br />' .
+												'ist <strong>ausser Plan</strong><br />' .
+												'<a href="javascript:void()" onClick="ProjectsExternalLoad(%3$s,%4$s,%5$s);	">Link</a></div>';
+
+$lang["PROJECT_WIDGET_ALERT_TASK"] 			= 	'<div>Der Abschluss des <strong>Arbeitspakets</strong><br />' .
+											 	'<strong>%1$s</strong><br />' .
+											 	'im Projekt <strong>%2$s</strong><br />' .
+												'ist <strong>ausser Plan</strong><br />' .
+												'<a href="javascript:void()" onClick="ProjectsExternalLoad(%3$s,%4$s,%5$s);	">Link</a></div>';
+
+
 
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/projects/de.php";

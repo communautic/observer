@@ -58,7 +58,16 @@ class ProjectsAccessModel extends ProjectsModel {
 	  
 		return $access;
    }
-
+	
+	
+   /*function writeProjectsWidgetReminder($string) {
+	   $users = explode(",",$string);
+	   foreach($users as $user) {
+			$q = "INSERT INTO " . CO_TBL_PROJECTS_DESKTOP . " set uid = '$user',";
+			$result = mysql_query($q, $this->_db->connection);
+	   }
+   }*/
+	
 
    function setDetails($pid,$admins,$guests) {
 		global $session;
@@ -76,6 +85,8 @@ class ProjectsAccessModel extends ProjectsModel {
 			$q = "UPDATE " . CO_TBL_PROJECTS_ACCESS . " set admins = '$admins', guests = '$guests', edited_user = '$session->uid', edited_date = '$now' where pid='$pid'";
 		}
 		$result = mysql_query($q, $this->_db->connection);
+		
+		//$this->writeProjectsWidgetReminder($admins);
 		
 		if ($result) {
 			return $pid;

@@ -1736,6 +1736,99 @@ class ProjectsModel extends Model {
 		}
    }*/
    
+   
+   function existUserProjectsWidgets() {
+		global $session;
+		$q = "select count(*) as num from " . CO_TBL_PROJECTS_DESKTOP . " where uid='$session->uid'";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_assoc($result);
+		if($row["num"] < 1) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	
+	function getUserProjectsWidgets() {
+		global $session;
+		$q = "select * from " . CO_TBL_PROJECTS_DESKTOP . " where uid='$session->uid'";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_assoc($result);
+		return $row;
+	}
+
+
+   function getWidgetAlerts() {
+		global $session, $date;
+	  	
+		$now = new DateTime("now");
+		$today = $date->formatDate("now","Y-m-d");
+		$tomorrow = $date->addDays($today, 1);
+		$string = "";
+		
+		$access = "";
+		if(!$session->isSysadmin()) {
+			$access = " and c.id IN (" . implode(',', $this->getEditPerms($session->uid)) . ") ";
+		}
+
+		// reminders
+		$q ="select a.cat,a.text,c.title as projectitle from " . CO_TBL_PROJECTS_PHASES_TASKS . " as a,  " . CO_TBL_PROJECTS_PHASES . " as b,  " . CO_TBL_PROJECTS . " as c where a.phaseid = b.id and a.pid = c.id and b.status='1' and a.bin = '0' and a.enddate = '$tomorrow'" . $access;
+		$result = mysql_query($q, $this->_db->connection);
+		$reminders = "";
+		while ($row = mysql_fetch_array($result)) {
+			foreach($row as $key => $val) {
+				$array[$key] = $val;
+			}
+			$reminders[] = new Lists($array);
+		}
+
+		// kick offs
+		$q ="select title from " . CO_TBL_PROJECTS . " as c where c.bin = '0' and c.startdate = '$tomorrow'" . $access;
+		$result = mysql_query($q, $this->_db->connection);
+		$kickoffs = "";
+		$array = "";
+		while ($row = mysql_fetch_array($result)) {
+			foreach($row as $key => $val) {
+				$array[$key] = $val;
+			}
+			$kickoffs[] = new Lists($array);
+		}
+
+		// alerts
+		$q ="select c.folder,a.pid,a.phaseid,a.cat,a.text,c.title as projectitle from " . CO_TBL_PROJECTS_PHASES_TASKS . " as a,  " . CO_TBL_PROJECTS_PHASES . " as b,  " . CO_TBL_PROJECTS . " as c where a.phaseid = b.id and a.pid = c.id and b.status='1' and a.status='0' and a.bin = '0' and a.enddate <= '$today'" . $access . " and (c.management REGEXP '[[:<:]]" . $session->uid . "[[:>:]]' or (a.cat = '0' and a.team REGEXP '[[:<:]]" . $session->uid . "[[:>:]]'))";
+		$result = mysql_query($q, $this->_db->connection);
+		$alerts = "";
+		$array = "";
+		while ($row = mysql_fetch_array($result)) {
+			foreach($row as $key => $val) {
+				$array[$key] = $val;
+			}
+			$string .= $array["folder"] . "," . $array["pid"] . "," . $array["phaseid"] . ",";
+			$alerts[] = new Lists($array);
+		}
+
+		if(!$this->existUserProjectsWidgets()) {
+			$q = "insert into " . CO_TBL_PROJECTS_DESKTOP . " set uid='$session->uid', value='$string'";
+			$result = mysql_query($q, $this->_db->connection);
+			$widgetaction = "open";
+		} else {
+			$row = $this->getUserProjectsWidgets();
+			$id = $row["id"];
+			if($string == $row["value"]) {
+				$widgetaction = "";
+			} else {
+				$widgetaction = "open";
+			}
+			$q = "UPDATE " . CO_TBL_PROJECTS_DESKTOP . " set value='$string' WHERE id = '$id'";
+			$result = mysql_query($q, $this->_db->connection);
+		}
+		
+		$arr = array("reminders" => $reminders, "kickoffs" => $kickoffs, "alerts" => $alerts, "widgetaction" => $widgetaction);
+		return $arr;
+   }
+
+   
 
 }
 

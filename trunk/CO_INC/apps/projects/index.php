@@ -140,6 +140,9 @@ if (!empty($_GET['request'])) {
 		case 'emptyBin':
 			echo($projects->emptyBin());
 		break;
+		case 'getWidgetAlerts':
+			echo($projects->getWidgetAlerts());
+		break;
 
 	}
 }
