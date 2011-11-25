@@ -1,0 +1,111 @@
+#publishers { position:absolute; height: 100%;  width: 100%; background-color:#333333;}
+#publishers .ui-layout-resizer-west { background-color:#6496DC !important; }
+#publishers .ui-layout-resizer-west-closed { background-color:#6496DC !important; }
+
+#publishers-top { height: 50px; float: left;}
+
+#publishers .module-bg-active { background-color: #6496DC; color:#fff }
+
+#publishers1, #publishers2, #publishers3 { padding:0; overflow: hidden !important; /* prevent scrollbars auto-added by Layout */}
+#publishers3 { display: block;}
+#publishers3 .scrolling-content { width: 325px !important;}
+
+.publishers1-content { width: 325px;; background-color: #6496DC; padding:0; overflow:hidden !important;}
+
+#publishers .ui-layout-west li>span:hover   { background-color: #436593}
+#publishers .ui-layout-west li>span.active-link  { background-color: #436593}
+#publishers .hover-bg  { background-color: #436593}
+#publishers .hover-outline { border: 1px solid #436593}
+
+#publishers .jspDrag { background: #436593; }
+
+#publishers .co-link:hover { color: #82aa0b; }
+
+#publishers .center-center a         { color: #000; }
+#publishers .center-center a:link    { color: #000; }
+#publishers .center-center a:active  { color: #000; }
+#publishers .center-center a:visited { color: #000; }
+#publishers .center-center a:hover   { color: #82aa0b; cursor: pointer}
+
+#publishersActions { display: block; }
+
+#menu .app_publishers { color: #333; text-decoration: none; outline: none; background: url(../../img/app_propellor.png) no-repeat 16px 0px; }
+#menu .app_publishers:hover { color: #fff; text-decoration: none; outline: none; background: #6496DC url(../../img/app_propellor.png) no-repeat 16px -120px; }
+#menu .app_publishers.active-app { color: #fff; text-decoration: none; outline: none; background: #6496DC url(../../img/app_propellor.png) no-repeat 16px -120px; }
+
+/* Actions Menu */
+#publishersActions span.actionNew 				{	background-position: -650px 0px;	}
+#publishersActions span.actionNew:hover 			{ 	background-position:  -700px 0px;	}
+#publishersActions span.actionNew.noactive 		{ 	background-position:  0px 0px; 		}
+
+#publishersActions span.actionPrint 				{ 	background-position: -650px -102px;	}
+#publishersActions span.actionPrint:hover 		{ 	background-position: -700px -102px;	}
+#publishersActions span.actionPrint.noactive 	{ 	background-position:0px -102px;		}
+
+#publishersActions span.actionSend 				{ 	background-position: -650px -151px;	}
+#publishersActions span.actionSend:hover 		{ 	background-position: -700px -151px;	}
+#publishersActions span.actionSend.noactive 		{ 	background-position: 0px -151px; 	}
+
+#publishersActions span.actionDuplicate 			{ 	background-position: -650px -206px;	}
+#publishersActions span.actionDuplicate:hover 	{ 	background-position: -700px -206px;	}
+#publishersActions span.actionDuplicate.noactive { background-position: 0px -206px;  	}
+
+#publishersActions span.actionPublisherHandbook 			{ 	background-position: -650px -413px;	}
+#publishersActions span.actionPublisherHandbook:hover 	{ 	background-position: -700px -413px;	}
+#publishersActions span.actionPublisherHandbook.noactive { background-position: 0px -413px;  	}
+
+#publishersActions span.actionRefresh				{ 	background-position: -650px -258px;	}
+#publishersActions span.actionRefresh:hover 	{ 	background-position: -700px -258px;	}
+#publishersActions span.actionRefresh.noactive { background-position: 0px -258px;  	}
+
+#publishersActions span.actionHelp				{ 	background-position: -647px -51px;	}
+#publishersActions span.actionHelp:hover 	{ 	background-position: -697px -51px;	}
+#publishersActions span.actionHelp.noactive { background-position: 0px -51px;  	}
+
+.milestone { width: 18px; height: 18px; background: url(../../../img/milestone.png) no-repeat 0px 0px; text-align: center; line-height: 19px;}
+.milestone span { margin-left: 3px; }
+.phaseouter { margin-top: 1px;}
+
+#publishers .table-title, #publishers .textarea-title { 
+background-color: #C1D5F0; }
+
+#publishers .ui-datepicker-trigger-action-status {
+	position: absolute;
+	left: 318px;
+	display: block; height: 13px; width: 15px; margin-top: -15px; background: url(../../../img/apps_buttons_sprite.png) no-repeat -20px -570px
+}
+
+#publishers a.disabled { background-position: 0px -570px; }
+
+#publishers-right .tcell-left span span { position: relative; display: block; padding: 0 0 0 15px; }
+#publishers-right .tcell-left-short span { display: block; padding: 0 0 0 15px; }
+
+#publishers-right .content-nav         { display: block; color: #000; }
+#publishers-right .content-nav:hover   { display: block; background-color: #6496DC; color: #000; cursor: pointer; }
+
+.content-outline {background-color: #C1D5F0;}
+
+#publishers-right textarea:hover,
+#publishers-right textarea:focus,
+#publishers-right input.bg:hover, 
+#publishers-right input.bg:focus {
+    background-color: #C1D5F0;
+}
+
+.loadPublisher { cursor: pointer }
+.loadPublishersPhase { cursor: pointer }
+.loadPublishersPhase2 { cursor: pointer }
+
+#publishers .tbl-protocol td, #publishers .elastic {
+ background-color:#C1D5F0;
+}
+
+#publishers .SendToContent { display: none; background-color: #E5E5E5; font-style: italic; padding: 10px; }
+
+#publishers-right .menues-table { border-collapse: collapse; }
+#publishers-right .menue-grid  { width: 100%; }
+#publishers-right .menue-grid th { text-align: center; height: 30px; font-weight: bold; color: #666; border: 1px solid #666; }
+#publishers-right .menue-grid td { width: 18%; border: 1px solid #666; text-align: center; height: 40px;}
+#publishers-right .menue-grid td.edit { background-color: #E5E5E5}
+#publishers-right .menue-grid th.first { border: 0; }
+#publishers-right .menue-grid .elastic { background-color:#C1D5F0; }

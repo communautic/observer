@@ -1,0 +1,127 @@
+#forums { position:absolute; height: 100%;  width: 100%; background-color:#333333;}
+#forums .ui-layout-resizer-west { background-color:#6496DC !important; }
+#forums .ui-layout-resizer-west-closed { background-color:#6496DC !important; }
+
+#forums-top { height: 50px; float: left;}
+
+#forums .module-bg-active { background-color: #6496DC; color:#fff }
+
+#forums1, #forums2, #forums3 { padding:0; overflow: hidden !important; /* prevent scrollbars auto-added by Layout */}
+#forums3 { display: block;}
+#forums3 .scrolling-content { width: 325px !important;}
+
+.forums3-content { width: 325px;; background-color: #6496DC; padding:0; overflow:hidden !important;}
+
+#forums .ui-layout-west li>span:hover   { background-color: #436593}
+#forums .ui-layout-west li>span.active-link  { background-color: #436593}
+#forums .hover-bg  { background-color: #436593}
+#forums .hover-outline { border: 1px solid #436593}
+
+#forums .jspDrag { background: #436593; }
+
+#forums .co-link:hover { color: #82aa0b; }
+
+#forums .center-center a         { color: #000; }
+#forums .center-center a:link    { color: #000; }
+#forums .center-center a:active  { color: #000; }
+#forums .center-center a:visited { color: #000; }
+#forums .center-center a:hover   { color: #82aa0b; cursor: pointer}
+
+#forumsActions { display: block; }
+
+#menu .app_forums { color: #333; text-decoration: none; outline: none; background: url(../../img/app_propellor.png) no-repeat 16px 0px; }
+#menu .app_forums:hover { color: #fff; text-decoration: none; outline: none; background: #6496DC url(../../img/app_propellor.png) no-repeat 16px -120px; }
+#menu .app_forums.active-app { color: #fff; text-decoration: none; outline: none; background: #6496DC url(../../img/app_propellor.png) no-repeat 16px -120px; }
+
+/* Actions Menu */
+#forumsActions span.actionNew 				{	background-position: -650px 0px;	}
+#forumsActions span.actionNew:hover 			{ 	background-position:  -700px 0px;	}
+#forumsActions span.actionNew.noactive 		{ 	background-position:  0px 0px; 		}
+
+#forumsActions span.actionPrint 				{ 	background-position: -650px -102px;	}
+#forumsActions span.actionPrint:hover 		{ 	background-position: -700px -102px;	}
+#forumsActions span.actionPrint.noactive 	{ 	background-position:0px -102px;		}
+
+#forumsActions span.actionSend 				{ 	background-position: -650px -151px;	}
+#forumsActions span.actionSend:hover 		{ 	background-position: -700px -151px;	}
+#forumsActions span.actionSend.noactive 		{ 	background-position: 0px -151px; 	}
+
+#forumsActions span.actionDuplicate 			{ 	background-position: -650px -206px;	}
+#forumsActions span.actionDuplicate:hover 	{ 	background-position: -700px -206px;	}
+#forumsActions span.actionDuplicate.noactive { background-position: 0px -206px;  	}
+
+#forumsActions span.actionForumHandbook 			{ 	background-position: -650px -413px;	}
+#forumsActions span.actionForumHandbook:hover 	{ 	background-position: -700px -413px;	}
+#forumsActions span.actionForumHandbook.noactive { background-position: 0px -413px;  	}
+
+#forumsActions span.actionRefresh				{ 	background-position: -650px -258px;	}
+#forumsActions span.actionRefresh:hover 	{ 	background-position: -700px -258px;	}
+#forumsActions span.actionRefresh.noactive { background-position: 0px -258px;  	}
+
+#forumsActions span.actionHelp				{ 	background-position: -647px -51px;	}
+#forumsActions span.actionHelp:hover 	{ 	background-position: -697px -51px;	}
+#forumsActions span.actionHelp.noactive { background-position: 0px -51px;  	}
+
+.milestone { width: 18px; height: 18px; background: url(../../../img/milestone.png) no-repeat 0px 0px; text-align: center; line-height: 19px;}
+.milestone span { margin-left: 3px; }
+.phaseouter { margin-top: 1px;}
+
+#forums .table-title, #forums .textarea-title { 
+background-color: #C1D5F0; }
+
+#forums .ui-datepicker-trigger-action-status {
+	position: absolute;
+	left: 318px;
+	display: block; height: 13px; width: 15px; margin-top: -15px; background: url(../../../img/apps_buttons_sprite.png) no-repeat -20px -570px
+}
+
+#forums a.disabled { background-position: 0px -570px; }
+
+#forums-right .tcell-left span span { position: relative; display: block; padding: 0 0 0 15px; }
+#forums-right .tcell-left-short span { display: block; padding: 0 0 0 15px; }
+
+#forums-right .content-nav         { display: block; color: #000; }
+#forums-right .content-nav:hover   { display: block; background-color: #6496DC; color: #000; cursor: pointer; }
+
+.content-outline {background-color: #C1D5F0;}
+
+#forums-right textarea:hover,
+#forums-right textarea:focus,
+#forums-right input.bg:hover, 
+#forums-right input.bg:focus {
+    background-color: #C1D5F0;
+}
+
+.loadForum { cursor: pointer }
+
+#forums .tbl-protocol td, #forums .elastic {
+ background-color:#C1D5F0;
+}
+
+#forums-right .tcell-left-100 span span { position: relative; display: block; padding: 0 0 0 15px; }
+#forums .SendToContent { display: none; background-color: #E5E5E5; font-style: italic; padding: 10px; }
+
+#forums .qq-upload-drop-area { background: #C1D5F0; }
+#forums .qq-upload-drop-area-active { background:#436593;}
+#forums .qq-upload-button-hover { background: #6496DC; }
+#forums-right .menues-table { border-collapse: collapse; }
+
+#forums-right .tcell-left-posts {
+    padding: 0 0 0 15px;
+    width: 127px;
+	background-color: #6496DC;
+	color: #fff;
+}
+
+#forumsPosts { background-image:url(../../img/forums_thread_bg.png); }
+#forumsPosts .toggeled { border-bottom: 1px solid #436593; overflow: hidden; }
+
+#modalDialogForumsPost span.coButton  { background-color: #6496db; color: #fff; }
+
+#forums-right span.coButton:hover   { background-color: #fff; color: #000; cursor: pointer; }
+#forumsAnswer > div { padding-bottom: 8px;}
+
+#forums-right .icon-toggle-post { background-position: -460px -590px; }
+#forums-right .icon-toggle-post-active { background-position: -440px -590px; }
+
+#forumsAnswerOuter td { padding-top: 4px;}
