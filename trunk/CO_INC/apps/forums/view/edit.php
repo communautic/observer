@@ -119,17 +119,6 @@ foreach($posts as $post) {
 	$i++;
 } ?>
 </div>
-
-<?php if($forum->access != "guest") { ?>
-<!--<div class="content-spacer"></div>
-<table border="0" cellpadding="0" cellspacing="0" class="table-content">
-  <tr>
-    <td class="tcell-left text11"><span class="<?php if($forum->canedit) { ?>content-nav showDialog<?php } ?>" request="getDocumentsDialog" field="brainstormsdocuments" append="1"><span><?php echo $lang["DOCUMENT_DOCUMENTS"];?></span></span></td>
-    <td class="tcell-right"><div id="brainstormsdocuments" class="itemlist-field"><?php echo($forum->documents);?></div></td>
-  </tr>
-</table>-->
-<?php } ?>
-
 </form>
 </div>
 </div>
