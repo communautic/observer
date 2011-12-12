@@ -1,5 +1,5 @@
 <?php
-$lang["APPLICATION_NAME"] = "company observer 6.1.4";
+$lang["APPLICATION_NAME"] = "company observer 6.1.5";
 
 setlocale(LC_TIME, "en_EN");
 
@@ -19,6 +19,7 @@ $lang["LOGIN_LOGOUT"] = "Logout";
 $lang["LOGIN_HELP"] = 'manual_login.pdf';
 
 /* APPS ACTION LINKS */
+$lang["ACTION_CLOSE"] = "hide";
 $lang["ACTION_NEW"] = "new";
 $lang["ACTION_PRINT"] = "print";
 $lang["ACTION_SENDTO"] = "send to";
