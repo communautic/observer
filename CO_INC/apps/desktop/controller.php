@@ -143,10 +143,21 @@ class Desktop extends Controller {
 	
 	
 	function savePostit($id,$text) {
-		$retval = $this->model->savePostit($id,$text);
+		global $lang;
+		if($date = $this->model->savePostit($id,$text)){
+			 $data["text"] = nl2br(stripslashes($text));
+			 $data["date"] = $date;
+			 $data["days"] = $lang["GLOBAL_TODAY"];
+			 return json_encode($data);
+		  } else{
+			 return "error";
+		  }
+	}
+	
+	function forwardPostit($id,$users) {
+		$retval = $this->model->forwardPostit($id,$users);
 		if($retval){
-			 $text = stripslashes($text);
-			 return nl2br($text);
+			 return "true";
 		  } else{
 			 return "error";
 		  }
@@ -162,6 +173,13 @@ class Desktop extends Controller {
 		  }
 	}
 
+	function getDesktopHelp() {
+		global $lang;
+		$data["file"] = $lang["DESKTOP_HELP"];
+		$data["app"] = "desktop";
+		$data["module"] = "";
+		$this->openHelpPDF($data);
+	}
 	
 
 }

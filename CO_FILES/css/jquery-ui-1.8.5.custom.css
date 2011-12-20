@@ -302,13 +302,13 @@
  * http://docs.jquery.com/UI/Resizable#theming
  */
 .ui-resizable { position: relative;}
-.ui-resizable-handle { position: absolute;font-size: 0.1px;z-index: 99999; display: block;}
+.ui-resizable-handle { position: absolute;font-size: 0.1px;z-index: 99998; display: block;}
 .ui-resizable-disabled .ui-resizable-handle, .ui-resizable-autohide .ui-resizable-handle { display: none; }
 .ui-resizable-n { cursor: n-resize; height: 10px; width: 100%; top: -5px; left: 0; }
 .ui-resizable-s { cursor: s-resize; height: 10px; width: 100%; bottom: -5px; left: 0; }
 .ui-resizable-e { cursor: e-resize; width: 10px; right: -5px; top: 0; height: 100%; }
 .ui-resizable-w { cursor: w-resize; width: 10px; left: -5px; top: 0; height: 100%; }
-.ui-resizable-se { cursor: se-resize; width: 12px; height: 12px; right: 0px; bottom: 0px; z-index: 99999 !important;}
+.ui-resizable-se { cursor: se-resize; width: 12px; height: 12px; right: 0px; bottom: 0px; z-index: 99998 !important;}
 .ui-resizable-sw { cursor: sw-resize; width: 9px; height: 9px; left: -5px; bottom: -5px; }
 .ui-resizable-nw { cursor: nw-resize; width: 9px; height: 9px; left: -5px; top: -5px; }
 .ui-resizable-ne { cursor: ne-resize; width: 9px; height: 9px; right: -5px; top: -5px;}/*
@@ -587,11 +587,42 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 /* workarounds */
 * html .ui-autocomplete { width:1px; } /* without this, the menu expands to 100% in IE6 */
 
-.sendtoWindow { background-color: #b3cbef; }
-.sendtoWindow .ui-widget-header { background-color: #6496db; }
+.sendtoWindow .ui-corner-all {
+	border-radius: 0;
+}
+
+.sendtoWindow { background-color: #b2cbee; border: 0; 
+border-radius: 8px;
+box-shadow: 4px 4px 6px #666666;
+}
+.sendtoWindow .ui-widget-header { 
+color: #000;
+border-radius: 8px 8px 0 0;
+background: rgb(213,227,246);
+background: -moz-linear-gradient(top,  rgba(213,227,246,1) 0%, rgba(120,164,225,1) 50%, rgba(100,150,220,1) 51%, rgba(100,150,220,1) 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(213,227,246,1)), color-stop(50%,rgba(120,164,225,1)), color-stop(51%,rgba(100,150,220,1)), color-stop(100%,rgba(100,150,220,1)));
+background: -webkit-linear-gradient(top,  rgba(213,227,246,1) 0%,rgba(120,164,225,1) 50%,rgba(100,150,220,1) 51%,rgba(100,150,220,1) 100%);
+background: -o-linear-gradient(top,  rgba(213,227,246,1) 0%,rgba(120,164,225,1) 50%,rgba(100,150,220,1) 51%,rgba(100,150,220,1) 100%);
+background: -ms-linear-gradient(top,  rgba(213,227,246,1) 0%,rgba(120,164,225,1) 50%,rgba(100,150,220,1) 51%,rgba(100,150,220,1) 100%);
+background: linear-gradient(top,  rgba(213,227,246,1) 0%,rgba(120,164,225,1) 50%,rgba(100,150,220,1) 51%,rgba(100,150,220,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d5e3f6', endColorstr='#6496dc',GradientType=0 );
+
+}
+
+.sendtoWindow .ui-widget-content { 
+border-right: 4px solid #6699cc;
+border-bottom: 4px solid #6699cc;
+border-left: 4px solid #6699cc;
+border-radius:  0 0 8px 8px;
+
+}
+
+
+
+
 .sendtoWindow .ui-state-hover .ui-icon, .sendtoWindow .ui-state-focus .ui-icon { background-color: #b3cbef; }
 
-.sendtoWindow span.coButton  { background-color: #6496db; color: #fff; }
+.sendtoWindow span.coButton  { background-color: #6496db; color: #fff; border-radius: 4px; font-weight: bold; }
 .sendtoWindow span.coButton:hover   { background-color: #fff; color: #000; cursor: pointer; }
 .sendtoWindow input { border: 0;}
 .sendtoWindow textarea { border: 0; height: 140px;}

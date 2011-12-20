@@ -6,6 +6,7 @@ var CUSTOM_NOTE = "Notiz:";
 // Alerts
 var ALERT_YES = "Ja";
 var ALERT_NO = "Nein";
+var ALERT_LOGOUT = "Möchten Sie sich abmelden?";
 var ALERT_NO_TITLE = "Bitte geben Sie einen Titel ein";
 var ALERT_CHANGES_NOT_SAVED = "Ihre aktuellen Änderungen wurden noch nicht gespeichert!\nDaten jetzt speichern?";
 var ALERT_DELETE = "Möchten Sie alle Daten in den Papierkorb verschieben?";

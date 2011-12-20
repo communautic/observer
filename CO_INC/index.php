@@ -60,7 +60,7 @@ if($session->isSysadmin()) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="viewport" content="user-scalable=yes, width=device-width, initial-scale=1.0;" />
+<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0;" />
 <title><?php echo $lang["APPLICATION_NAME"];?></title>
 <link href="<?php echo CO_FILES;?>/img/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 <link href="<?php echo CO_FILES;?>/css/reset.css" rel="stylesheet" type="text/css" media="screen,projection" />
@@ -70,6 +70,7 @@ if($session->isSysadmin()) {
 <link href="<?php echo CO_FILES;?>/css/jNice.css" rel="stylesheet" type="text/css" media="screen,projection" />
 <link href="<?php echo CO_FILES;?>/css/impromptu.css" rel="stylesheet" type="text/css" media="screen,projection" />
 <link href="<?php echo CO_FILES;?>/css/fileuploader.css" rel="stylesheet" type="text/css" media="screen,projection" />
+<link href="<?php echo CO_FILES;?>/css/jquery.hoverscroll.css" rel="stylesheet" type="text/css" media="screen,projection" />
 <link href="<?php echo CO_FILES;?>/css/mobile.css" type="text/css" rel="stylesheet" media="only screen and (min-device-width: 768px) and (max-device-width: 1024px)" />
 <!-- include app specific css -->
 <?php
@@ -81,7 +82,7 @@ foreach($controller->applications as $app => $display) {
 var num_apps = <?php echo($num_apps);?>;
 var co_files = '<?php echo CO_FILES;?>';
 </script>
-<script src="<?php echo $protocol;?>ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
+<script src="<?php echo $protocol;?>ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="<?php echo $protocol;?>ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/datejs/date.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/datejs/de-AT.js"></script>
@@ -99,6 +100,7 @@ var co_files = '<?php echo CO_FILES;?>';
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/fileuploader.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.scrollTo.min.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.elastic.js"></script>
+<script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.hoverscroll.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/lang/<?php echo($session->userlang); ?>.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/init.js"></script>
 <script type="text/javascript">
@@ -119,6 +121,7 @@ foreach($userapps as $key => $app) {
 ?>
 </head>
 <body>
+<div id="background"><img src="<?php echo CO_FILES;?>/img/background.jpg" width="100%" height="100%" /></div>
 <div id="intro"><div id="intro-content"><p><img src="<?php echo CO_FILES;?>/img/ajax-loader.gif" alt="Loading" width="32" height="32" /></p></div></div>
 <div id="container">
 <div id="container-inner">

@@ -55,30 +55,21 @@ $lang["PRINT_PROJECT"] = 'projekt.png';
 $lang["PRINT_PROJECT_FOLDER"] = 'ordner.png';
 
 // Dektop Widget
-$lang["PROJECT_WIDGET_REMINDER_MILESTONE"] 	= 	'<div>Für morgen planen Sie die Erreichung des <strong>Meilensteins</strong><br />' .
-											 	'<strong>%1$s</strong></div>' .
-											 	'im Projekt <strong>%2$s</strong></div>';
+$lang["PROJECT_WIDGET_TITLE_MILESTONE"] 	=	'Meilenstein';
+$lang["PROJECT_WIDGET_REMINDER_MILESTONE"] 	= 	'Für <span class="yellow">morgen</span> ist die Erreichung des Meilensteins "%1$s" im Projekt "%2$s" geplant';
 
-$lang["PROJECT_WIDGET_REMINDER_TASK"] 		= 	'<div>Für morgen planen Sie die Erreichung des <strong>Arbeitspakets</strong><br />' .
-											 	'<strong>%1$s</strong><br />' .
-											 	'im Projekt <strong>%2$s</strong></div>';
+$lang["PROJECT_WIDGET_TITLE_TASK"] 			=	'Arbeitspaket';
+$lang["PROJECT_WIDGET_REMINDER_TASK"] 		= 	'Für <span class="yellow">morgen</span> ist die Erreichung des Arbeitspaketes "%1$s" im Projekt "%2$s" geplant';
 
-$lang["PROJECT_WIDGET_REMINDER_KICKOFF"] 	= 	'<div>Für morgen planen Sie den Kick Off des <strong>Projekts</strong><br />' .
-											 	'<strong>%1$s</strong></div>';
+$lang["PROJECT_WIDGET_TITLE_KICKOFF"] 		=	'Kick Off';
+$lang["PROJECT_WIDGET_REMINDER_KICKOFF"] 	= 	'Für <span class="yellow">morgen</span> ist der Kick Off des Projektes "%1$s" geplant';
 
-$lang["PROJECT_WIDGET_ALERT_MILESTONE"] 	= 	'<div>Der Abschluss des <strong>Meilensteins</strong><br />' .
-											 	'<strong>%1$s</strong><br />' .
-											 	'im Projekt <strong>%2$s</strong><br />' .
-												'ist <strong>ausser Plan</strong><br />' .
-												'<a href="javascript:void()" onClick="ProjectsExternalLoad(%3$s,%4$s,%5$s);	">Link</a></div>';
+$lang["PROJECT_WIDGET_ALERT_TASK"] 			= 	'Der Arbeitspaket Fälligkeitstermin für "%1$s" im Projekt "%2$s" ist <span class="yellow">außer Plan</span>';
+$lang["PROJECT_WIDGET_ALERT_MILESTONE"] 	= 	'Der Meilenstein Fälligkeitstermin für "%1$s" im Projekt "%2$s" ist <span class="yellow">außer Plan</span>';
 
-$lang["PROJECT_WIDGET_ALERT_TASK"] 			= 	'<div>Der Abschluss des <strong>Arbeitspakets</strong><br />' .
-											 	'<strong>%1$s</strong><br />' .
-											 	'im Projekt <strong>%2$s</strong><br />' .
-												'ist <strong>ausser Plan</strong><br />' .
-												'<a href="javascript:void()" onClick="ProjectsExternalLoad(%3$s,%4$s,%5$s);	">Link</a></div>';
-
-
+$lang["PROJECT_WIDGET_TITLE_PROJECT"]		=	'Projekt';
+$lang["PROJECT_WIDGET_INVITATION_ADMIN"]	=	'Sie wurden als <span class="yellow">Administrator</span> für das Projekt "%1$s" freigeschalten';
+$lang["PROJECT_WIDGET_INVITATION_GUEST"]	=	'Sie wurden als <span class="yellow">Beobachter</span> für das Projekt "%1$s" freigeschalten';
 
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/projects/de.php";

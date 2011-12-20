@@ -22,6 +22,9 @@ if (!empty($_GET['request'])) {
 		case 'setWidgetStatus':
 			echo($desktop->setWidgetStatus($_GET["object"],$_GET["status"]));
 		break;
+		case 'getPostIts':
+			echo($desktop->getPostIts());
+		break;
 		case 'newPostit':
 			echo($desktop->newPostit($_GET['z']));
 		break;
@@ -34,6 +37,9 @@ if (!empty($_GET['request'])) {
 		case 'deletePostit':
 			echo($desktop->deletePostit($_GET['id']));
 		break;
+		case 'getDesktopHelp':
+			echo($desktop->getDesktopHelp());
+		break;
 	}
 }
 
@@ -41,6 +47,11 @@ if (!empty($_POST['request'])) {
 	switch ($_POST['request']) {
 		case 'savePostit':
 			echo($desktop->savePostit($_POST['id'],$system->checkMagicQuotes($_POST['text'])));
+		break;
+	}
+	switch ($_POST['request']) {
+		case 'forwardPostit':
+			echo($desktop->forwardPostit($_POST['id'],$_POST['users']));
 		break;
 	}
 }

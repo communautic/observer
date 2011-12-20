@@ -14,13 +14,6 @@ $lang["BRAINSTORM_ACTION_NEW"] = 'neuen Prozess anlegen';
 $lang["BRAINSTORM_FOLDER_CREATED_ON"] = 'angelegt am';
 $lang["BRAINSTORM_FOLDER_INITIATOR"] = 'Initiative:';
 
-/*$lang["BRAINSTORM_FOLDER_BRAINSTORMS_CREATED"] = 'Prozesse insgesamt';
-$lang["BRAINSTORM_FOLDER_BRAINSTORMS_PLANNED"] = 'Prozesse in Planung';
-$lang["BRAINSTORM_FOLDER_BRAINSTORMS_RUNNING"] = 'Prozesse in Arbeit';
-$lang["BRAINSTORM_FOLDER_BRAINSTORMS_FINISHED"] = 'Prozesse abgeschlossen';
-$lang["BRAINSTORM_FOLDER_STATUS_ACTIVE"] = 'aktiv';
-$lang["BRAINSTORM_FOLDER_STATUS_ARCHIVE"] = 'archiv';*/
-
 $lang["BRAINSTORM_FOLDER_CHART_STABILITY"] = 'Projektstabilität aktuell';
 $lang["BRAINSTORM_FOLDER_CHART_REALISATION"] = 'Realisierungsgrad';
 $lang["BRAINSTORM_FOLDER_CHART_ADHERANCE"] = 'Termintreue';
@@ -55,6 +48,10 @@ $lang["PRINT_BRAINSTORM_MANUAL"] = 'projekthandbuch.png';
 $lang["PRINT_BRAINSTORM"] = 'projekt.png';
 $lang["PRINT_BRAINSTORM_FOLDER"] = 'ordner.png';
 
+// Dektop Widget
+$lang["BRAINSTORM_WIDGET_TITLE_BRAINSTORM"]		=	'Prozess';
+$lang["BRAINSTORM_WIDGET_INVITATION_ADMIN"]	=	'Sie wurden als <span class="yellow">Administrator</span> für den Prozess "%1$s" freigeschalten';
+$lang["BRAINSTORM_WIDGET_INVITATION_GUEST"]	=	'Sie wurden als <span class="yellow">Beobachter</span> für den Prozess "%1$s" freigeschalten';
 
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/brainstorms/de.php";

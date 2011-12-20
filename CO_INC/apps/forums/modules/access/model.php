@@ -59,6 +59,41 @@ class ForumsAccessModel extends ForumsModel {
 		return $access;
    }
 
+	function writeWidgetReminder($pid,$string,$perm = 0) {
+		if($string != "") {
+			$users = explode(",",$string);
+		} else {
+			$users = array();
+		}
+	   
+		// select all users that have reminders for this project
+		$qall = "SELECT uid FROM " . CO_TBL_FORUMS_DESKTOP . " where pid='$pid' and perm ='$perm'";
+		$resultall = mysql_query($qall, $this->_db->connection);
+		$all = array();
+		while($rowall = mysql_fetch_array($resultall)) {
+			$all[] = $rowall['uid'];
+		}
+
+		foreach($users as $user) {
+			if(in_array($user,$all)) {
+				$key = array_search($user, $all);
+				unset($all[$key]);
+			} else {
+				$q = "SELECT * FROM " . CO_TBL_FORUMS_DESKTOP . " where pid='$pid' and uid='$user' and perm ='$perm'";
+				$result = mysql_query($q, $this->_db->connection);
+				if(mysql_num_rows($result) < 1) {
+					$q = "INSERT INTO " . CO_TBL_FORUMS_DESKTOP . " set pid='$pid', uid = '$user', perm ='$perm'";
+					$result = mysql_query($q, $this->_db->connection);
+				}
+			}
+		}
+		// last delete obsolte
+	   foreach($all as $u) {
+		   $q = "DELETE FROM " . CO_TBL_FORUMS_DESKTOP . " WHERE uid = '$u' and pid = '$pid'";
+		   $result = mysql_query($q, $this->_db->connection);
+	   }
+   }
+
 
    function setDetails($pid,$admins,$guests) {
 		global $session;
@@ -76,6 +111,9 @@ class ForumsAccessModel extends ForumsModel {
 			$q = "UPDATE " . CO_TBL_FORUMS_ACCESS . " set admins = '$admins', guests = '$guests', edited_user = '$session->uid', edited_date = '$now' where pid='$pid'";
 		}
 		$result = mysql_query($q, $this->_db->connection);
+		
+		$this->writeWidgetReminder($pid,$admins);
+		$this->writeWidgetReminder($pid,$guests,1);
 		
 		if ($result) {
 			return $pid;

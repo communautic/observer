@@ -4,7 +4,7 @@ function forumsDocuments(name) {
 	
 	
 	this.createUploader = function(ele){            
-		var did = $("#forums3 .active-link:visible").attr("rel");
+		var did = $('#forums').data("third");
 		var num = 0;
 		var numdocs = 0;
 		var uploader = new qq.FileUploader({
@@ -37,7 +37,7 @@ function forumsDocuments(name) {
 				numdocs = $(".doclist-outer").size();
 				num = num+1;
 				if(num == numdocs) {
-					$("#forums3 .active-link:visible").trigger("click");
+					$("#forums3 ul[rel=documents] .active-link").trigger("click");
 				}
 			},
 			onCancel: function(id, fileName){
@@ -64,16 +64,16 @@ function forumsDocuments(name) {
 		 switch(data.action) {
 			case "edit":
 				var module = getCurrentModule();
-				$("#forums3 span[rel='"+data.id+"'] .text").html($("#forums .title").val());
-				var moduleidx = $(".forums3-content").index($(".forums3-content:visible"));
-				var liindex = $(".forums3-content:visible .module-click").index($(".forums3-content:visible .module-click[rel='"+data.id+"']"));
+				$("#forums3 ul[rel=documents] .active-link").find(".text").html($("#forums .title").val());
+				var moduleidx = $("#forums3 ul").index($("#forums3 ul[rel=documents]"));
+				var liindex = $("#forums3 ul[rel=documents] .module-click").index($("#forums3 ul[rel=documents] .module-click[rel='"+data.id+"']"));
 				module.getDetails(moduleidx,liindex);
 				switch(data.access) {
 					case "0":
-						$("#forums3 .active-link .module-access-status").removeClass("module-access-active");
+						$("#forums3 ul[rel=documents] .active-link .module-access-status").removeClass("module-access-active");
 					break;
 					case "1":
-						$("#forums3 .active-link .module-access-status").addClass("module-access-active");
+						$("#forums3 ul[rel=documents] .active-link .module-access-status").addClass("module-access-active");
 					break;
 				}
 			break;
@@ -97,6 +97,7 @@ function forumsDocuments(name) {
 
 	this.getDetails = function(moduleidx,liindex,list) {
 		var id = $("#forums3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
+		$('#forums').data({ "third" : id});
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/forums/modules/documents&request=getDetails&id="+id, success: function(data){
 			$("#forums-right").html(data.html);
 			if(list == 0) {
@@ -115,7 +116,6 @@ function forumsDocuments(name) {
 							forumsActions(3);
 						} else {
 							forumsActions(0);
-							$('#forums3').find('input.filter').quicksearch('#forums3 li');
 						}
 					break;
 					case "guest":
@@ -123,7 +123,6 @@ function forumsDocuments(name) {
 							forumsActions();
 						} else {
 							forumsActions(5);
-							$('#forums3').find('input.filter').quicksearch('#forums3 li');
 						}
 					break;
 				}
@@ -137,18 +136,16 @@ function forumsDocuments(name) {
 
 	this.actionNew = function() {	
 		var module = this;
-		var id = $('#forums2 .module-click:visible').attr("rel");
+		var id = $('#forums').data('second');
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: 'path=apps/forums/modules/documents&request=createNew&id=' + id, cache: false, success: function(data){
-			var pid = $("#forums2 .module-click:visible").attr("rel");
-			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/forums/modules/documents&request=getList&id="+pid, success: function(ldata){
-				$(".forums3-content:visible ul").html(ldata.html);
-				var liindex = $(".forums3-content:visible .module-click").index($(".forums3-content:visible .module-click[rel='"+data.id+"']"));
-				$(".forums3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
-				var moduleidx = $(".forums3-content").index($(".forums3-content:visible"));
+			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/forums/modules/documents&request=getList&id="+id, success: function(ldata){						
+				$("#forums3 ul[rel=documents]").html(ldata.html);
+				var liindex = $("#forums3 ul[rel=documents] .module-click").index($("#forums3 ul[rel=documents] .module-click[rel='"+data.id+"']"));
+				$("#forums3 ul[rel=documents] .module-click:eq("+liindex+")").addClass('active-link');
+				var moduleidx = $("#forums3 ul").index($("#forums3 ul[rel=documents]"));
 				module.getDetails(moduleidx,liindex);
 				forumsActions(0);
-				$('#forums3 input.filter').quicksearch('#forums3 li');
-				setTimeout(function() { $('#forums-right .focusTitle').trigger('click'); }, 800);
+				setTimeout(function() { $('#forums-right .focusTitle').trigger('click'); }, 800);		
 				}
 			});
 			}
@@ -158,17 +155,16 @@ function forumsDocuments(name) {
 
 	this.actionDuplicate = function() {
 		var module = this;
-		var id = $("#forums3 .active-link:visible").attr("rel");
-		var pid = $("#forums2 .module-click:visible").attr("rel");
+		var id = $("#forums").data("third");
+		var pid = $("#forums").data("second");
 		$.ajax({ type: "GET", url: "/", data: 'path=apps/forums/modules/documents&request=createDuplicate&id=' + id, cache: false, success: function(did){
 			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/forums/modules/documents&request=getList&id="+pid, success: function(data){																																																																				
-				$(".forums3-content:visible ul").html(data.html);
-				var moduleidx = $(".forums3-content").index($(".forums3-content:visible"));
-				var liindex = $(".forums3-content:visible .module-click").index($(".forums3-content:visible .module-click[rel='"+did+"']"));
+				$("#forums3 ul[rel=documents]").html(data.html);
+				var moduleidx = $("#forums3 ul").index($("#forums3 ul[rel=documents]"));
+				var liindex = $("#forums3 ul[rel=documents] .module-click").index($("#forums3 ul[rel=documents] .module-click[rel='"+did+"']"));
 				module.getDetails(moduleidx,liindex);
-				$(".forums3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
+				$("#forums3 ul[rel=documents] .module-click:eq("+liindex+")").addClass('active-link');
 				forumsActions(0);
-				$('#forums3 input.filter').quicksearch('#forums3 li');
 				}
 			});
 			}
@@ -186,18 +182,17 @@ function forumsDocuments(name) {
 			buttons:langbuttons,
 			callback: function(v,m,f){		
 				if(v){
-					var id = $("#forums3 .active-link:visible").attr("rel");
-					var pid = $("#forums2 .module-click:visible").attr("rel");
+					var id = $("#forums").data("third");
+					var pid = $("#forums").data("second");
 					$.ajax({ type: "GET", url: "/", data: "path=apps/forums/modules/documents&request=binDocument&id=" + id, cache: false, success: function(data){
 							if(data == "true") {
 								$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/forums/modules/documents&request=getList&id="+pid, success: function(data){
-								$(".forums3-content:visible ul").html(data.html);
-								var moduleidx = $(".forums3-content").index($(".forums3-content:visible"));
+								$("#forums3 ul[rel=documents]").html(data.html);
+								var moduleidx = $("#forums3 ul").index($("#forums3 ul[rel=documents]"));
 								var liindex = 0;
 								module.getDetails(moduleidx,liindex);
-								$("#forums3 .forums3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
+								$("#forums3 ul[rel=documents] .module-click:eq("+liindex+")").addClass('active-link');
 								forumsActions(0);
-								$('#forums3 input.filter').quicksearch('#forums3 li');
 								}
 							});
 							}
@@ -215,19 +210,27 @@ function forumsDocuments(name) {
 
 
 	this.actionRefresh = function() {
-		$("#forums3 .active-link:visible").trigger("click");
+		var id = $("#forums").data("third");
+		var pid = $("#forums").data("second");
+		$("#forums3 ul[rel=documents] .active-link").trigger("click");
+		$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/forums/modules/documents&request=getList&id="+pid, success: function(data){																																																																				
+			$("#forums3 ul[rel=documents]").html(data.html);
+			var liindex = $("#forums3 ul[rel=documents] .module-click").index($("#forums3 ul[rel=documents] .module-click[rel='"+id+"']"));
+			$("#forums3 ul[rel=documents] .module-click:eq("+liindex+")").addClass('active-link');
+			}
+		});
 	}
 	
 	
 	this.actionPrint = function() {
-		var id = $("#forums3 .active-link:visible").attr("rel");
+		var id = $("#forums").data("third");
 		var url ='/?path=apps/forums/modules/documents&request=printDetails&id='+id;
 		location.href = url;
 	}
 
 
 	this.actionSend = function() {
-		var id = $("#forums3 .active-link:visible").attr("rel");
+		var id = $("#forums").data("third");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/forums/modules/documents&request=getSend&id="+id, success: function(html){
 			$("#modalDialogForward").html(html).dialog('open');
 			}
@@ -236,7 +239,7 @@ function forumsDocuments(name) {
 
 
 	this.actionSendtoResponse = function() {
-		var id = $("#forums3 .active-link:visible").attr("rel");
+		var id = $("#forums").data("third");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/forums/modules/documents&request=getSendtoDetails&id="+id, success: function(html){
 			$("#forumsdocument_sendto").html(html);
 			$("#modalDialogForward").dialog('close');
@@ -249,24 +252,24 @@ function forumsDocuments(name) {
 		var module = this;
 		var fid = $("#forums2 .module-click:visible").attr("rel");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/forums/modules/documents&request=getList&id="+fid+"&sort="+sortnew, success: function(data){
-			$(".forums3-content:visible ul").html(data.html);
+			$("#forums3 ul[rel=documents]").html(data.html);
 			obj.attr("rel",sortnew);
 			obj.removeClass("sort"+sortcur).addClass("sort"+sortnew);
-			var id = $(".forums3-content:visible .module-click:eq(0)").attr("rel");
+			var id = $("#forums3 ul[rel=documents] .module-click:eq(0)").attr("rel");
+			$('#forums').data('third',id);
 			if(id == undefined) {
 				return false;
 			}
-			var moduleidx = $(".forums3-content").index($(".forums3-content:visible"));
-			var liindex = 0;
-			module.getDetails(moduleidx,liindex);
-			$("#forums3 .forums3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
+			var moduleidx = $("#forums3 ul").index($("#forums3 ul[rel=documents]"));
+			module.getDetails(moduleidx,0);
+			$("#forums3 ul[rel=documents] .module-click:eq(0)").addClass('active-link');
 			}
 		});
 	}
 	
 	
 	this.sortdrag = function (order) {
-		var fid = $("#forums2 .module-click:visible").attr("rel");
+		var fid = $("#forums").data("second");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/forums/modules/documents&request=setOrder&"+order+"&id="+fid, success: function(html){
 			$("#forums3 .sort:visible").attr("rel", "3");
 			$("#forums3 .sort:visible").removeClass("sort1").removeClass("sort2").addClass("sort3");
@@ -447,6 +450,5 @@ function forumsDocuments(name) {
 	}
 
 }
-
 
 var forums_documents = new forumsDocuments('forums_documents');

@@ -1,4 +1,4 @@
-<div>
+<div class="table-title-outer">
 <div id="brainstorms_folder-action-new" style="display: none"><?php echo $lang["BRAINSTORM_FOLDER_ACTION_NEW"];?></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-title">
 	<tr>

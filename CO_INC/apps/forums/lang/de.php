@@ -34,6 +34,13 @@ $lang["FORUM_FOLDER_HELP"] = 'manual_foren_ordner.pdf';
 $lang["PRINT_FORUM"] = 'forum.png';
 $lang["PRINT_FORUM_FOLDER"] = 'ordner.png';
 
+// Dektop Widget
+$lang["FORUM_WIDGET_TITLE_BRAINSTORM"]		=	'Foren';
+$lang["FORUM_WIDGET_INVITATION_ADMIN"]	=	'Sie wurden als <span class="yellow">Administrator</span> für das Forum "%1$s" freigeschalten';
+$lang["FORUM_WIDGET_INVITATION_GUEST"]	=	'Sie wurden als <span class="yellow">Beobachter</span> für das Forum "%1$s" freigeschalten';
+
+$lang["FORUM_WIDGET_NEW_POST"]				=	'Forumaktivität';
+$lang["FROUM_WIDGET_REMINDER_NEW_POST"]		=	'Neue Einträge zur Fragestellung "%1$s"';
 
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/forums/de.php";

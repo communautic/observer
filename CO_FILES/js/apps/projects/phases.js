@@ -35,29 +35,30 @@ function projectsPhases(name) {
 	this.formResponse = function(data) {
 		switch(data.action) {
 			case "edit":
-				$("#projects3 span[rel='"+data.id+"'] .text").html($("#projects .title").val());
+				$("#projects3 ul[rel=phases] .active-link").find(".text").html($("#projects-right .title").val());
 				$("#projectsphasestartdate").html(data.startdate);
 				$("#projectsphaseenddate").html(data.enddate);
-				var pid = $('#projects2 .module-click:visible').attr("rel");
+				var pid = $('#projects').data("second");
+
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getDates&id="+pid, success: function(project){
 						$("#projectenddate").html(project.enddate);
 					}
 				});
-				var num  = $("#projects3 .active-link .phase_num").html();
+				
 				switch(data.access) {
 					case "0":
-						$("#projects3 .active-link .module-access-status").removeClass("module-access-active");
+						$("#projects3 ul[rel=phases] .active-link .module-access-status").removeClass("module-access-active");
 					break;
 					case "1":
-						$("#projects3 .active-link .module-access-status").addClass("module-access-active");
+						$("#projects3 ul[rel=phases] .active-link .module-access-status").addClass("module-access-active");
 					break;
 				}
 				switch(data.status) {
 					case "2":
-						$("#projects3 .active-link .module-item-status").addClass("module-item-active");
+						$("#projects3 ul[rel=phases] .active-link .module-item-status").addClass("module-item-active");
 					break;
 					default:
-						$("#projects3 .active-link .module-item-status").removeClass("module-item-active");
+						$("#projects3 ul[rel=phases] .active-link .module-item-status").removeClass("module-item-active");
 				}
 			break;
 		}	
@@ -69,13 +70,14 @@ function projectsPhases(name) {
 	
 	this.getDetails = function(moduleidx,liindex,list) {
 		var phaseid = $("#projects3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
+		$('#projects').data({ "third" : phaseid});
 		var num = $("#projects3 ul:eq("+moduleidx+") .phase_num:eq("+liindex+")").html();
 		$.ajax({ type: "GET", url: "/", dataType:  'json', async: false, data: "path=apps/projects/modules/phases&request=getDetails&id="+phaseid+"&num="+num, success: function(data){
 			$("#projects-right").html(data.html);
 			if($('#checkedOut').length > 0) {
-					$("#projects3 .active-link:visible .icon-checked-out").addClass('icon-checked-out-active');
+					$("#projects3 ul[rel=phases] .active-link .icon-checked-out").addClass('icon-checked-out-active');
 				} else {
-					$("#projects3 .active-link:visible .icon-checked-out").removeClass('icon-checked-out-active');
+					$("#projects3 ul[rel=phases] .active-link .icon-checked-out").removeClass('icon-checked-out-active');
 				}
 			if(list == 0) {
 				switch (data.access) {
@@ -93,7 +95,6 @@ function projectsPhases(name) {
 							projectsActions(3);
 						} else {
 							projectsActions(0);
-							$('#projects3').find('input.filter').quicksearch('#projects3 li');
 						}
 					break;
 					case "guest":
@@ -101,7 +102,6 @@ function projectsPhases(name) {
 							projectsActions();
 						} else {
 							projectsActions(5);
-							$('#projects3').find('input.filter').quicksearch('#projects3 li');
 						}
 					break;
 				}
@@ -117,20 +117,17 @@ function projectsPhases(name) {
 		var module = this;
 		var cid = $('#projects input[name="id"]').val()
 		module.checkIn(cid);
-		var id = $('#projects2 .module-click:visible').attr("rel");
-		var num  = parseInt($(".projects3-content:visible .module-click").size()+1);
+		var id = $('#projects').data('second');
+		var num  = parseInt($("#projects3 ul[rel=phases] li").size()+1);
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: 'path=apps/projects/modules/phases&request=createNew&id=' + id + '&num=' + num, cache: false, success: function(data){
-			var pid = $("#projects2 .module-click:visible").attr("rel");
-				$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/projects/modules/phases&request=getList&id="+pid, success: function(ldata){
-					$(".projects3-content:visible ul").html(ldata.html);
-					var liindex = $(".projects3-content:visible .module-click").index($(".projects3-content:visible .module-click[rel='"+data.id+"']"));
-					$(".projects3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
-					var moduleidx = $(".projects3-content").index($(".projects3-content:visible"));
+				$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/projects/modules/phases&request=getList&id="+id, success: function(ldata){
+					$("#projects3 ul[rel=phases]").html(ldata.html);
+					var liindex = $("#projects3 ul[rel=phases] .module-click").index($("#projects3 ul[rel=phases] .module-click[rel='"+data.id+"']"));
+					$("#projects3 ul[rel=phases] .module-click:eq("+liindex+")").addClass('active-link');
+					var moduleidx = $("#projects3 ul").index($("#projects3 ul[rel=phases]"));
 					module.getDetails(moduleidx,liindex);
-					$('#projects3 input.filter').quicksearch('#projects3 li');
 					setTimeout(function() { $('#projects-right .focusTitle').trigger('click'); }, 800);
-					//update Project Enddate
-					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getDates&id="+pid, success: function(project){
+					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getDates&id="+id, success: function(project){
 							$("#projectenddate").html(project.enddate);
 						}
 					});
@@ -145,17 +142,16 @@ function projectsPhases(name) {
 		var module = this;
 		var cid = $('#projects input[name="id"]').val()
 		module.checkIn(cid);
-		var id = $("#projects3 .active-link:visible").attr("rel");
-		var pid = $("#projects2 .module-click:visible").attr("rel");
+		var id = $("#projects").data("third");
+		var pid = $("#projects").data("second");
 		$.ajax({ type: "GET", url: "/", data: 'path=apps/projects/modules/phases&request=createDuplicate&id=' + id, cache: false, success: function(phaseid){
 			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/projects/modules/phases&request=getList&id="+pid, success: function(data){																																																																				
-				$(".projects3-content:visible ul").html(data.html);
-				var moduleidx = $(".projects3-content").index($(".projects3-content:visible"));
-				var liindex = $(".projects3-content:visible .module-click").index($(".projects3-content:visible .module-click[rel='"+phaseid+"']"));
+				$("#projects3 ul[rel=phases]").html(data.html);
+				var moduleidx = $("#projects3 ul").index($("#projects3 ul[rel=phases]"));
+				var liindex = $("#projects3 ul[rel=phases] .module-click").index($("#projects3 ul[rel=phases] .module-click[rel='"+phaseid+"']"));
 				module.getDetails(moduleidx,liindex);
-				$(".projects3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
+				$("#projects3 ul[rel=phases] .module-click:eq("+liindex+")").addClass('active-link');
 				projectsActions(0);
-				$('#projects3 input.filter').quicksearch('#projects3 li');
 				}
 			});
 			}
@@ -175,23 +171,21 @@ function projectsPhases(name) {
 			buttons:langbuttons,
 			callback: function(v,m,f){		
 				if(v){
-					var id = $("#projects3 .active-link:visible").attr("rel");
-					var pid = $("#projects2 .module-click:visible").attr("rel");
+					var id = $("#projects").data("third");
+					var pid = $("#projects").data("second");
 					$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=binPhase&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
 							$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/projects/modules/phases&request=getList&id="+pid, success: function(data){
-								$(".projects3-content:visible ul").html(data.html);
+								$("#projects3 ul[rel=phases]").html(data.html);
 								if(data.html == "<li></li>") {
 									projectsActions(3);
 								} else {
 									projectsActions(0);
-									$('#projects3 input.filter').quicksearch('#projects3 li');
 								}
-								var moduleidx = $(".projects3-content").index($(".projects3-content:visible"));
+								var moduleidx = $("#projects3 ul").index($("#projects3 ul[rel=phases]"));
 								var liindex = 0;
 								module.getDetails(moduleidx,liindex);
-								$("#projects3 .projects3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
-								//update Project Enddate
+								$("#projects3 ul[rel=phases] .module-click:eq("+liindex+")").addClass('active-link');
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getDates&id="+pid, success: function(project){
 										$("#projectenddate").html(project.enddate);
 									}
@@ -205,8 +199,8 @@ function projectsPhases(name) {
 			}
 		});
 	}
-	
-	
+
+
 	this.checkIn = function(id) {
 		$.ajax({ type: "GET", url: "/", async: false, data: 'path=apps/projects/modules/phases&request=checkinPhase&id='+id, success: function(data){
 			if(!data) {
@@ -218,31 +212,29 @@ function projectsPhases(name) {
 
 
 	this.actionRefresh = function() {
-		var id = $("#projects3 .active-link:visible").attr("rel");
-		var pid = $("#projects2 .module-click:visible").attr("rel");
-		$("#projects3 .active-link:visible").trigger("click");
-		var id = $("#projects3 .active-link:visible").attr("rel");
+		var id = $("#projects").data("third");
+		var pid = $("#projects").data("second");
+		$("#projects3 ul[rel=phases] .active-link").trigger("click");
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/projects/modules/phases&request=getList&id="+pid, success: function(data){																																																																				
-			$(".projects3-content:visible ul").html(data.html);
-			var liindex = $(".projects3-content:visible .module-click").index($(".projects3-content:visible .module-click[rel='"+id+"']"));
-			$(".projects3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
-			$('#projects3 input.filter').quicksearch('#projects3 li');
+			$("#projects3 ul[rel=phases]").html(data.html);
+			var liindex = $("#projects3 ul[rel=phases] .module-click").index($("#projects3 ul[rel=phases] .module-click[rel='"+id+"']"));
+			$("#projects3 ul[rel=phases] .module-click:eq("+liindex+")").addClass('active-link');
 			}
 		});
 	}
 
 
 	this.actionPrint = function() {
-		var id = $("#projects3 .active-link:visible").attr("rel");
-		var num = $("#projects3 .active-link:visible").find(".phase_num").html();
+		var id = $("#projects").data("third");
+		var num = $("#projects3 ul[rel=phases] .active-link").find(".phase_num").html();
 		var url ='/?path=apps/projects/modules/phases&request=printDetails&id='+id+"&num="+num;
 		location.href = url;
 	}
 
 
 	this.actionSend = function() {
-		var id = $("#projects3 .active-link:visible").attr("rel");
-		var num = $("#projects3 .active-link:visible").find(".phase_num").html();
+		var id = $("#projects").data("third");
+		var num = $("#projects3 ul[rel=phases] .active-link").find(".phase_num").html();
 		$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=getSend&id="+id+"&num="+num, success: function(html){
 			$("#modalDialogForward").html(html).dialog('open');
 			}
@@ -251,7 +243,7 @@ function projectsPhases(name) {
 
 
 	this.actionSendtoResponse = function() {
-		var id = $("#projects3 .active-link:visible").attr("rel");
+		var id = $("#projects").data("third");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=getSendtoDetails&id="+id, success: function(html){
 			$("#projects_phase_sendto").html(html);
 			$("#modalDialogForward").dialog('close');
@@ -264,26 +256,26 @@ function projectsPhases(name) {
 		var module = this;
 		var cid = $('#projects input[name="id"]').val()
 		module.checkIn(cid);
-		var fid = $("#projects2 .module-click:visible").attr("rel");
+		var fid = $("#projects").data("second");
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/projects/modules/phases&request=getList&id="+fid+"&sort="+sortnew, success: function(data){
-			$(".projects3-content:visible ul").html(data.html);
+			$("#projects3 ul[rel=phases]").html(data.html);
 			obj.attr("rel",sortnew);
 			obj.removeClass("sort"+sortcur).addClass("sort"+sortnew);
-			var id = $(".projects3-content:visible .module-click:eq(0)").attr("rel");
+			var id = $("#projects3 ul[rel=phases] .module-click:eq(0)").attr("rel");
+			$('#projects').data('third',id);
 			if(id == undefined) {
 				return false;
 			}
-			var moduleidx = $(".projects3-content").index($(".projects3-content:visible"));
-			var liindex = 0;
-			module.getDetails(moduleidx,liindex);
-			$("#projects3 .projects3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
+			var moduleidx = $("#projects3 ul").index($("#projects3 ul[rel=phases]"));
+			module.getDetails(moduleidx,0);
+			$("#projects3 ul[rel=phases] .module-click:eq(0)").addClass('active-link');
 			}
 		});
 	}
 
 
 	this.sortdrag = function (order) {
-		var fid = $("#projects2 .module-click:visible").attr("rel");
+		var fid = $("#projects").data("second");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=setOrder&"+order+"&id="+fid, success: function(html){
 			$("#projects3 .sort:visible").attr("rel", "3");
 			$("#projects3 .sort:visible").removeClass("sort1").removeClass("sort2").addClass("sort3");
@@ -322,7 +314,7 @@ function projectsPhases(name) {
 				});
 			break;
 			case "getDocumentsDialog":
-				var id = $("#projects2 .module-click:visible").attr("rel");
+				var id = $("#projects").data("second");
 				$.ajax({ type: "GET", url: "/", data: 'path=apps/projects/modules/documents&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql+'&id=' + id, success: function(html){
 					$("#modalDialog").html(html);
 					$("#modalDialog").dialog('option', 'position', offset);
@@ -360,8 +352,8 @@ function projectsPhases(name) {
 	
 	this.newItemSelection = function(rel) {
 		var enddate = $("#projectsphaseenddate").html();
-		var pid = $("#projects2 .module-click:visible").attr("rel");
-		var phid = $(".projects3-content:visible .active-link").attr("rel");
+		var pid = $("#projects").data("second");
+		var phid = $("#projects").data("third");
 		var cat = rel;
 		$("#modalDialog").dialog("close");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=addTask&pid=" + pid + "&phid=" + phid + "&date=" + enddate + "&enddate=" + enddate + "&cat=" + cat, success: function(html){

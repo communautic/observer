@@ -143,6 +143,9 @@ if (!empty($_GET['request'])) {
 		case 'getWidgetAlerts':
 			echo($projects->getWidgetAlerts());
 		break;
+		case 'markNoticeRead':
+			echo($projects->markNoticeRead($_GET['pid']));
+		break;
 
 	}
 }

@@ -13,11 +13,10 @@ function projectsAccess(name) {
 
 
 	this.getDetails = function(moduleidx,liindex,list) {
-		var id = $("#projects2 .module-click:visible").attr("rel");
+		var id = $("#projects").data('second');
 		$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/access&request=getDetails&id="+id, success: function(html){
 			$("#projects-right").html(html);
 			initProjectsContentScrollbar();
-			//initScrollbar( '.projects3-content:visible .scrolling-content' );
 			projectsActions(6);
 			}
 		});
@@ -30,7 +29,7 @@ function projectsAccess(name) {
 
 
 	this.actionRefresh = function() {
-		$("#projects3 .active-link:visible").trigger("click");
+		$("#projects3 ul[rel=access] .active-link").trigger("click");
 	}
 
 
@@ -51,6 +50,5 @@ function projectsAccess(name) {
 	}
 	
 }
-
 
 var projects_access = new projectsAccess('projects_access');

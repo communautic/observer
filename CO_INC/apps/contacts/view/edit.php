@@ -1,4 +1,4 @@
-<div>
+<div class="table-title-outer">
 <table border="0" cellpadding="0" cellspacing="0" class="table-title">
 	<tr>
 		<td class="tcell-left text11"><span class="content-nav focusTitle"><span><?php echo $lang['CONTACTS_LASTNAME'];?></span></span></td>
@@ -160,7 +160,7 @@
 </form>
 </div>
 </div>
-<div>
+<div class="table-footer-outer">
 <table border="0" cellspacing="0" cellpadding="0" class="table-footer">
   <tr>
     <td class="left"><?php echo $lang["EDITED_BY_ON"];?> <?php echo($contact->edited_user.", ".$contact->edited_date)?></td>

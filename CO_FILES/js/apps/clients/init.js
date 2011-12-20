@@ -63,20 +63,25 @@ function clientsApplication(name) {
 	this.poformOptions = { beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
 
 
+	this.actionClose = function() {
+		clientsLayout.toggle('west');
+	}
+
+	
 	this.actionNew = function() {
 		var module = this;
 		var cid = $('#clients input[name="id"]').val()
 		module.checkIn(cid);
-		var id = $('#'+clients.name+' .module-click:visible').attr("rel");
+		var id = $('#clients').data('first');
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/clients&request=newClient&id=' + id, cache: false, success: function(data){
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients&request=getClientList&id="+id, success: function(list){
 				$("#clients2 ul").html(list.html);
 				var index = $("#clients2 .module-click").index($("#clients2 .module-click[rel='"+data.id+"']"));
 				setModuleActive($("#clients2"),index);
+				$('#clients').data({ "second" : data.id });				
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients&request=getClientDetails&id="+data.id, success: function(text){
 					$("#clients-right").html(text.html);
 					initClientsContentScrollbar();
-					$('#clients2 input.filter').quicksearch('#clients2 li');
 					$('#clients-right .focusTitle').trigger('click');
 					}
 				});
@@ -92,19 +97,18 @@ function clientsApplication(name) {
 		var module = this;
 		var cid = $('#clients input[name="id"]').val()
 		module.checkIn(cid);
-		var pid = $("#clients2 .active-link").attr("rel");
-		var oid = $("#clients1 .module-click:visible").attr("rel");
+		var pid = $("#clients").data("second");
+		var oid = $("#clients").data("first");
 		$.ajax({ type: "GET", url: "/", data: 'path=apps/clients&request=createDuplicate&id=' + pid, cache: false, success: function(id){
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients&request=getClientList&id="+oid, success: function(data){
 				$("#clients2 ul").html(data.html);
 					clientsActions(0);
-					$('#clients2 input.filter').quicksearch('#clients2 li');
 					var idx = $("#clients2 .module-click").index($("#clients2 .module-click[rel='"+id+"']"));
 					setModuleActive($("#clients2"),idx)
 					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients&request=getClientDetails&id="+id, success: function(text){
-							$("#"+clients.name+"-right").html(text.html);
+						$("#clients").data("second",id);							
+						$("#"+clients.name+"-right").html(text.html);
 							initClientsContentScrollbar();
-							$('#clients2 input.filter').quicksearch('#clients2 li');
 						}
 					});
 				}
@@ -126,8 +130,8 @@ function clientsApplication(name) {
 			buttons:langbuttons,
 			callback: function(v,m,f){		
 				if(v){
-					var id = $("#clients2 .active-link").attr("rel");
-					var fid = $("#clients .module-click:visible").attr("rel");
+					var id = $("#clients").data("second");
+					var fid = $("#clients").data("first");
 					$.ajax({ type: "GET", url: "/", data: "path=apps/clients&request=binClient&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
 							$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients&request=getClientList&id="+fid, success: function(list){
@@ -139,11 +143,11 @@ function clientsApplication(name) {
 									setModuleActive($("#clients2"),0);
 								}
 								var id = $("#clients2 .module-click:eq(0)").attr("rel");
+								$("#clients").data("second", id);								
 								$("#clients2 .module-click:eq(0)").addClass('active-link');
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients&request=getClientDetails&fid="+fid+"&id="+id, success: function(text){
 									$("#clients-right").html(text.html);
 									initClientsContentScrollbar();
-									$('#clients2 input.filter').quicksearch('#clients2 li');
 									}
 								});
 							}
@@ -168,27 +172,26 @@ function clientsApplication(name) {
 
 
 	this.actionRefresh = function() {
-		var pid = $("#clients2 .active-link").attr("rel");
-		var oid = $("#clients1 .module-click:visible").attr("rel");
-		$("#clients2 .active-link:visible").trigger("click");
+		var pid = $('#clients').data('first');
+		var oid = $('#clients').data('second');
+		$("#clients2 .active-link").trigger("click");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients&request=getClientList&id="+oid, success: function(data){
 			$("#clients2 ul").html(data.html);
 			var idx = $("#clients2 .module-click").index($("#clients2 .module-click[rel='"+pid+"']"));
 			$("#clients2 .module-click:eq("+idx+")").addClass('active-link');
-			$('#clients2 input.filter').quicksearch('#clients3 li');
 			}
 		});
 	}
 
 	this.actionPrint = function() {
-		var id = $("#clients2 .active-link").attr("rel");
+		var id = $("#clients").data("second");
 		var url ='/?path=apps/clients&request=printClientDetails&id='+id;
 		location.href = url;
 	}
 
 
 	this.actionSend = function() {
-		var id = $("#clients2 .active-link").attr("rel");
+		var id = $("#clients").data("second");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/clients&request=getClientSend&id="+id, success: function(html){
 			$("#modalDialogForward").html(html).dialog('open');
 			}
@@ -197,7 +200,7 @@ function clientsApplication(name) {
 
 
 	this.actionSendtoResponse = function() {
-		var id = $("#clients2 .active-link").attr("rel");
+		var id = $("#clients").data("second");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/clients&request=getSendtoDetails&id="+id, success: function(html){
 			$("#client_sendto").html(html);
 			$("#modalDialogForward").dialog('close');
@@ -216,7 +219,7 @@ function clientsApplication(name) {
 			obj.attr("rel",sortnew);
 			obj.removeClass("sort"+sortcur).addClass("sort"+sortnew);
 			var id = $("#clients2 .module-click:eq(0)").attr("rel");
-			$('#clients2').find('input.filter').quicksearch('#clients2 li');
+			$('#clients').data('second',id);
 			if(id == undefined) {
 				return false;
 			}
@@ -394,9 +397,9 @@ function clientsFolders(name) {
 				var index = $("#clients1 .module-click").index($("#clients1 .module-click[rel='"+data.id+"']"));
 				setModuleActive($("#clients1"),index);
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients&request=getFolderDetails&id="+data.id, success: function(text){
+					$("#clients").data("first",data.id);					
 					$("#"+clients.name+"-right").html(text.html);
 					initClientsContentScrollbar();
-					$('#clients1 input.filter').quicksearch('#clients1 li');
 					$('#clients-right .focusTitle').trigger('click');
 					}
 				});
@@ -417,7 +420,7 @@ function clientsFolders(name) {
 			buttons:langbuttons,
 			callback: function(v,m,f){		
 				if(v){
-					var id = $("#clients1 .active-link").attr("rel");
+					var id = $("#clients").data("first");
 					$.ajax({ type: "GET", url: "/", data: "path=apps/clients&request=binFolder&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
 							$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients&request=getFolderList", success: function(data){
@@ -428,11 +431,11 @@ function clientsFolders(name) {
 									clientsActions(9);
 								}
 								var id = $("#clients1 .module-click:eq(0)").attr("rel");
+								$("#clients").data("first",id);								
 								$("#clients1 .module-click:eq(0)").addClass('active-link');
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients&request=getFolderDetails&id="+id, success: function(text){
 									$("#"+clients.name+"-right").html(text.html);
 									initClientsContentScrollbar();
-									$('#clients1 input.filter').quicksearch('#clients1 li');
 								}
 								});
 							}
@@ -452,7 +455,7 @@ function clientsFolders(name) {
 
 
 	this.actionRefresh = function() {
-		var id = $("#clients1 .active-link").attr("rel");
+		var id = $("#clients").data("first");
 		$("#clients1 .active-link").trigger("click");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients&request=getFolderList", success: function(data){
 			$("#clients1 ul").html(data.html);
@@ -467,14 +470,13 @@ function clientsFolders(name) {
 			}
 			var idx = $("#clients1 .module-click").index($("#clients1 .module-click[rel='"+id+"']"));
 			$("#clients1 .module-click:eq("+idx+")").addClass('active-link');
-			$('#clients1 input.filter').quicksearch('#clients1 li');
 			}
 		});
 	}
 
 
 	this.actionExport = function() {
-		var id = $("#clients1 .active-link").attr("rel");
+		var id = $("#clients").data("first");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/clients&request=getExportWindow&id="+id, success: function(html){
 			$("#modalDialogClientsCreateExcel").html(html).dialog('open');
 			}
@@ -483,7 +485,7 @@ function clientsFolders(name) {
 
 
 	this.actionDoExport = function() {
-		var folderid = $("#clients1 .active-link").attr("rel");
+		var folderid = $("#clients").data("first");
 		var menueid = $("#clientsExportMenue .listmember").attr("uid");
 		if (menueid === undefined) {
 			$('#autoopenExportMenue').trigger('click');
@@ -497,14 +499,14 @@ function clientsFolders(name) {
 	
 
 	this.actionPrint = function() {
-		var id = $("#clients1 .active-link").attr("rel");
+		var id = $("#clients").data("first");
 		var url ='/?path=apps/clients&request=printFolderDetails&id='+id;
 		location.href = url;
 	}
 
 
 	this.actionSend = function() {
-		var id = $("#clients1 .active-link").attr("rel");
+		var id = $("#clients").data("first");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/clients&request=getFolderSend&id="+id, success: function(html){
 			$("#modalDialogForward").html(html).dialog('open');
 			}
@@ -513,12 +515,7 @@ function clientsFolders(name) {
 
 
 	this.actionSendtoResponse = function() {
-		//var id = $("#clients1 .active-link").attr("rel");
-		//$.ajax({ type: "GET", url: "/", data: "path=apps/clients&request=getSendtoDetails&id="+id, success: function(html){
-			//$("#client_sendto").html(html);
 			$("#modalDialogForward").dialog('close');
-			//}
-		//});
 	}
 
 	
@@ -527,8 +524,8 @@ function clientsFolders(name) {
 			$("#clients1 ul").html(data.html);
 			obj.attr("rel",sortnew);
 		  	obj.removeClass("sort"+sortcur).addClass("sort"+sortnew);
-			$('#clients1 input.filter').quicksearch('#clients1 li');
 			var id = $("#clients1 .module-click:eq(0)").attr("rel");
+			$('#clients').data('first',id);			
 			$("#clients1 .module-click:eq(0)").addClass('active-link');
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients&request=getFolderDetails&id="+id, success: function(text){
 				$("#clients-right").html(text.html);
@@ -671,21 +668,33 @@ function clientsActions(status) {
 
 
 function clientsloadModuleStart() {
-	var h = $("#clients .ui-layout-west").height();
-	$("#clients1 .module-inner").css("height", h-71);
+	var h = $("#clients div.ui-layout-west").height();
+	$("#clients .ui-layout-west .radius-helper").height(h);
+	$("#clients .secondLevelOuter").css('top',h-27);
+	$("#clients .thirdLevelOuter").css('top',150);
+	$('#clients1').data('status','open');
+	$('#clients2').data('status','closed');
+	$('#clients3').data('status','closed');
+	$("#clients1").height(h-98);
+	$("#clients1 .module-inner").height(h-98);
 	$("#clients1 .module-actions").show();
 	$("#clients2 .module-actions").hide();
 	$("#clients2 li").show();
-	$("#clients2").css("height", h-96).removeClass("module-active");
-	$("#clients2 .module-inner").css("height", h-96);
+	$("#clients2").height(h-125-clients_num_modules*27).removeClass("module-active");
+	$("#clients2 .module-inner").height(h-125-clients_num_modules*27);
 	$("#clients3 .module-actions").hide();
-	$("#clients3").css("height", h-121);
-	$("#clients3 .clients3-content").css("height", h-(clients.modules_height+121));
+	$("#clients3").height(h-150);
+	$("#clients3 .clients3-content").height(h-(clients.modules_height+152));
+	$("#clients3 div.thirdLevel").height(h-(clients.modules_height+150-27));
 	$("#clients-current").val("folder");
+	$("#clients3 div.thirdLevel").each(function(i) { 
+		var position = $(this).position();
+		var t = position.top+h-150;
+		$(this).animate({top: t})
+	})
 	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients&request=getFolderList", success: function(data){
 		$("#clients1 ul").html(data.html);
 		$("#clientsActions .actionNew").attr("title",data.title);
-		
 		if(data.access == "guest") {
 			clientsActions();
 		} else {
@@ -695,23 +704,16 @@ function clientsloadModuleStart() {
 				clientsActions(9);
 			}
 		}
-		
-		$("#clients1").css("overflow", "auto").animate({height: h-71}, function() {
-			$("#clients1 li").show();
-			$("#clients1 .sort").attr("rel", data.sort).addClass("sort"+data.sort);
+		$("#clients1 li").show();
+		$("#clients1 .sort").attr("rel", data.sort).addClass("sort"+data.sort);
+		clientsInnerLayout.initContent('center');
+		var id = $("#clients1 .module-click:eq(0)").attr("rel");
+		$('#clients').data({ "current" : "folders" , "first" : id , "second" : 0 , "third" : 0});
+		$("#clients1 .module-click:eq(0)").addClass('active-link');
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients&request=getFolderDetails&id="+id, success: function(text){
+			$("#"+clients.name+"-right").html(text.html);
 			clientsInnerLayout.initContent('center');
-			//initScrollbar( '#clients .scrolling-content' );
-			$('#clients1 input.filter').quicksearch('#clients1 li');
-			$("#clients3 .clients3-content").hide();
-			var id = $("#clients1 .module-click:eq(0)").attr("rel");
-			$("#clients1 .module-click:eq(0)").addClass('active-link');
-			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients&request=getFolderDetails&id="+id, success: function(text){
-				$("#"+clients.name+"-right").html(text.html);
-				clientsInnerLayout.initContent('center');
-				$('#clients1 input.filter').quicksearch('#clients1 li');
-				$("#clients3 .clients3-content").hide();
-				}
-			});
+			}
 		});
 	}
 	});
@@ -719,46 +721,149 @@ function clientsloadModuleStart() {
 
 
 function clientsresetModuleHeights() {
-	
-	var h = $("#clients .ui-layout-west").height();
-	if($("#clients1").height() != module_title_height) {
-		$("#clients1").css("height", h-71);
-		$("#clients1 .module-inner").css("height", h-71);
+	var h = $("#clients div.ui-layout-west").height();
+	$("#clients .ui-layout-west .radius-helper").height(h);
+	$("#clients1").height(h-98);
+	$("#clients1 .module-inner").height(h-98);
+	$("#clients2").height(h-125-clients_num_modules*27);
+	$("#clients2 .module-inner").height(h-125-clients_num_modules*27);
+	$("#clients3").height(h-150);
+	$("#clients3 .clients3-content").height(h-(clients.modules_height+152));
+	$("#clients3 div.thirdLevel").height(h-(clients.modules_height+150-27));
+	if($('#clients1').data('status') == 'open') {
+		$("#clients2-outer").css('top',h-27);
+		$("#clients3 div.thirdLevel").each(function(i) { 
+			var t = h-150+i*27;
+			$(this).animate({top: t})
+		})
 	}
-	if($("#clients2").height() != module_title_height) {
-		//$("#clients2").css("height", h-96);
-		$("#clients2 .module-inner").css("height", h-96);
-		$("#clients2").css("overflow", "auto").animate({height: h-(clients.modules_height+96)}, function() {
-			$(this).find('.west-ui-content	').height(h-(clients.modules_height+96));																							   
-		});
+	if($('#clients2').data('status') == 'open') {	
+		var curmods = $("#clients3 div.thirdLevel:not(.deactivated)").size();
+		$("#clients2").height(h-125-curmods*27).removeClass("module-active");
+		$("#clients2 .module-inner").height(h-125-curmods*27);
+		$("#clients3 .clients3-content").height(h-(curmods*27+152));
+		$("#clients3 div.thirdLevel").height(h-(curmods*27+150-27));
+		$("#clients3 div.thirdLevel:not(.deactivated)").each(function(i) { 
+			var t = h-150-curmods*27+i*27;
+			$(this).animate({top: t})
+		})
 	}
-	$("#clients3").css("height", h-121);
-	$("#clients3 .clients3-content").css("height", h-(clients.modules_height+121));
-	//initScrollbar( '#clients .scrolling-content' );
+	if($('#clients3').data('status') == 'open') {
+		var obj = getCurrentModule();
+		var idx = $('#clients3 .thirdLevel:not(.deactivated)').index($('#clients3 .thirdLevel:not(.deactivated)[id='+obj.name+']'));	
+		var curmods = $("#clients3 div.thirdLevel:not(.deactivated)").size();
+		$("#clients2").height(h-125-curmods*27).removeClass("module-active");
+		$("#clients2 .module-inner").height(h-125-curmods*27);
+		$("#clients3 .clients3-content").height(h-(curmods*27+152));
+		$("#clients3 div.thirdLevel").height(h-(curmods*27+150-27));
+		$("#clients3 div.thirdLevel:not(.deactivated)").each(function(i) { 
+		if(i > idx) {
+			var pos = $(this).position();
+				var t = h-150-curmods*27+i*27;
+				$(this).animate({top: t})
+			}
+		})
+	}
 }
 
-function ClientsModulesDisplay(access) {
-	var h = $("#clients .ui-layout-west").height();
+
+function Clients2ModulesDisplay(access) {
+	var h = $("#clients div.ui-layout-west").height();
 	if(access == "guest" || access == "guestadmin") {
 		var modLen = clients.GuestHiddenModules.length;
-		var m;
-		for(var i=0, len=modLen; i<len; ++i) {
-			m = $('h3[rel="'+clients.GuestHiddenModules[i]+'"]');
-			m.hide();
-		}
-		clients.modules_height = clients_num_modules*module_title_height - modLen*module_title_height;
-		$("#clients3 .clients3-content").css("height", h-(clients.modules_height+121));
+		var p_num_modules = clients_num_modules-modLen;
+		var p_modules_height = p_num_modules*module_title_height;
+		$("#clients3 .clients3-content").height(h-(p_modules_height+152));
+		$("#clients3 div.thirdLevel").height(h-(p_modules_height+150-27));
+		$("#clients2").height(h-125-p_num_modules*27).removeClass("module-active");
+		$("#clients2 .module-inner").height(h-125-p_num_modules*27);
+		var a = 0;
+		var t = $("#clients2").height();
+		$("#clients2").animate({height: t+p_modules_height})
+		$("#clients2-outer").animate({top: 96}, function() {
+			$("#clients3 div.thirdLevel").each(function(i) { 
+				var rel = $(this).find('h3').attr('rel');
+				if(clients.GuestHiddenModules.indexOf(rel) >= 0 ) {
+					$(this).addClass('deactivated').animate({top: 9999})	
+				} else {
+					var t = $("#clients3").height()-p_num_modules*27+a*27;
+						$(this).animate({top: t})			
+					a = a+1;
+				}
+			})
+			$("#clients-top .top-headline").html($("#clients1 .deactivated").find(".text").html());
+			$("#clients2").animate({height: t})
+		})
 	} else {
-		var modLen = clients.GuestHiddenModules.length;
-		var m;
-		for(var i=0, len=modLen; i<len; ++i) {
-			m = $('h3[rel="'+clients.GuestHiddenModules[i]+'"]');
-			m.show();
-		}
-		clients.modules_height = clients_num_modules*module_title_height;
-		$("#clients3 .clients3-content").css("height", h-(clients.modules_height+121));
+		$("#clients3 .clients3-content").height(h-(clients.modules_height+152));
+		$("#clients3 div.thirdLevel").height(h-(clients.modules_height+150-27));
+		$("#clients2 .module-inner").height(h-125-clients_num_modules*27);
+		var t = h-125-clients.modules_height;
+		$("#clients2").animate({height: t+clients.modules_height})
+		$("#clients2-outer").animate({top: 96}, function() {
+			$("#clients3 div.thirdLevel").each(function(i) { 
+				var t = $("#clients3").height()-clients.modules_height+i*27;
+				$(this).animate({top: t})			
+			})
+			$("#clients-top .top-headline").html($("#clients1 .deactivated").find(".text").html());
+			$("#clients2").animate({height: t})
+		})
 	}
 }
+
+
+function ClientsModulesDisplay(access) {
+	var h = $("#clients div.ui-layout-west").height();
+	if(access == "guest" || access == "guestadmin") {
+		var modLen = clients.GuestHiddenModules.length;
+		var p_num_modules = clients_num_modules-modLen;
+		p_modules_height = p_num_modules*module_title_height;
+		$("#clients3 .clients3-content").height(h-(p_modules_height+152));
+		$("#clients3 div.thirdLevel").height(h-(p_modules_height+150-27));
+		$("#clients2").height(h-125-p_num_modules*27).removeClass("module-active");
+		$("#clients2 .module-inner").height(h-125-p_num_modules*27);
+		var a = 0;
+		
+		var t = $("#clients2").height();
+		$("#clients2").animate({height: t+clients_num_modules*27}, function() {
+			$(this).animate({height: t});
+		})
+		
+		$("#clients3 div.thirdLevel").each(function(i) { 
+			var rel = $(this).find('h3').attr('rel');
+			if(clients.GuestHiddenModules.indexOf(rel) >= 0 ) {
+				$(this).addClass('deactivated').animate({top: 9999})	
+			} else {
+				var t = $("#clients3").height()-p_num_modules*27+a*27;
+				var position = $(this).position();
+				var d = position.top+clients_num_modules*27;
+				$(this).animate({top: d}, function() {
+					$(this).animate({top: t})			
+				})
+				a = a+1;
+			}
+		})
+	} else {
+		$("#clients3 .clients3-content").height(h-(clients.modules_height+152));
+		$("#clients3 div.thirdLevel").height(h-(clients.modules_height+150-27));
+		$("#clients2 .module-inner").height(h-125-clients_num_modules*27);
+		var curmods = $("#clients3 div.thirdLevel:not(.deactivated)").size();
+		var t = h-125-clients_num_modules*27;
+		$("#clients2").animate({height: t+clients_num_modules*27}, function() {
+			$(this).animate({height: t});
+		})
+		$("#clients3 div.thirdLevel").each(function(i) { 
+			$(this).removeClass('deactivated');
+			var t = $("#clients3").height()-clients_num_modules*27+i*27;
+				var position = $(this).position();
+				var d = h-150+i*27;
+				$(this).animate({top: d}, function() {
+					$(this).animate({top: t})			
+				})
+		})
+	}
+}
+
 
 
 var clientsLayout, clientsInnerLayout;
@@ -770,37 +875,41 @@ $(document).ready(function() {
 				west__onresize:				function() { clientsresetModuleHeights() }
 			,	resizeWhileDragging:		true
 			,	spacing_open:				0
-			,	closable: 				false
-			,	resizable: 				false
-			,	slidable:				false
-			, 	west__size:				325
-			,	west__closable: 		true
-			,	west__resizable: 		true
-			, 	south__size:			10
+			,	spacing_closed:				0
+			,	closable: 					false
+			,	resizable: 					false
+			,	slidable:					false
+			, 	west__size:					325
+			,	west__closable: 			true
 			,	center__onresize: "clientsInnerLayout.resizeAll"
 			
 		});
 		
 		clientsInnerLayout = $('#clients div.ui-layout-center').layout({
 				center__onresize:				function() {  }
-			,	resizeWhileDragging:		false
-			,	spacing_open:				0			// cosmetic spacing
-			,	closable: 				false
-			,	resizable: 				false
-			,	slidable:				false
-			,	north__paneSelector:	".center-north"
-			,	center__paneSelector:	".center-center"
-			,	west__paneSelector:	".center-west"
-			, 	north__size:			80
-			, 	west__size:			50
-			 
-	
+			,	resizeWhileDragging:		true
+			,	spacing_open:				0
+			,	closable: 					false
+			,	resizable: 					false
+			,	slidable:					false
+			,	north__paneSelector:		".center-north"
+			,	center__paneSelector:		".center-center"
+			,	west__paneSelector:			".center-west"
+			, 	north__size:				68
+			, 	west__size:					60
 		});
 		
 		clientsloadModuleStart();
 	}
 
-	$("#clients1-outer > h3").click(function(event, passed_id) {
+
+	$("#clients1-outer > h3").on('click', function(e, passed_id) {
+		e.preventDefault();
+		navThreeTitleFirst('clients',$(this),passed_id)
+	});
+
+
+	/*$("#clients1-outer > h3").click(function(event, passed_id) {
 		var obj = getCurrentModule();
 		if(confirmNavigation()) {
 			formChanged = false;
@@ -890,10 +999,16 @@ $(document).ready(function() {
 		$("#clients-top .top-subheadline").html("");
 		$("#clients-top .top-subheadlineTwo").html("");
 		return false;
+	});*/
+
+
+	$("#clients2-outer > h3").on('click', function(e, passed_id) {
+		e.preventDefault();
+		navThreeTitleSecond('clients',$(this),passed_id)
 	});
 
 
-	$("#clients2-outer > h3").click(function(event, passed_id) {
+	/*$("#clients2-outer > h3").click(function(event, passed_id) {
 		var obj = getCurrentModule();
 		if(confirmNavigation()) {
 			formChanged = false;
@@ -1049,10 +1164,16 @@ $(document).ready(function() {
 		$("#clients-top .top-subheadline").html("");
 		$("#clients-top .top-subheadlineTwo").html("");
 		return false;
+	});*/
+
+
+	$(document).on('click', '#clients1 .module-click',function(e) {
+		e.preventDefault();
+		navItemFirst('clients',$(this))
 	});
+	
 
-
-	$("#clients1 .module-click").live('click',function(e) {
+	/*$("#clients1 .module-click").live('click',function(e) {
 		if($(this).hasClass("deactivated")) {
 			$("#clients1-outer > h3").trigger("click");
 			return false;
@@ -1087,10 +1208,16 @@ $(document).ready(function() {
 		});
 		
 		return false;
+	});*/
+
+
+	$(document).on('click', '#clients2 .module-click',function(e) {
+		e.preventDefault();
+		navItemSecond('clients',$(this))
 	});
+	
 
-
-	$("#clients2 .module-click").live('click',function(e) {
+	/*$("#clients2 .module-click").live('click',function(e) {
 		if($(this).hasClass("deactivated")) {
 			$("#clients2-outer > h3").trigger("click");
 			return false;
@@ -1146,10 +1273,16 @@ $(document).ready(function() {
 			
 		});
 		return false;
+	});*/
+
+
+	$(document).on('click', '#clients3 .module-click',function(e) {
+		e.preventDefault();
+		navItemThird('clients',$(this))
 	});
 
 
-	$("#clients3 .module-click").live('click',function() {
+	/*$("#clients3 .module-click").live('click',function() {
 		var obj = getCurrentModule();
 		if(confirmNavigation()) {
 			formChanged = false;
@@ -1168,10 +1301,11 @@ $(document).ready(function() {
 		var list = 0;
 		obj.getDetails(ulidx,index,list);
 		 return false;
-	});
+	});*/
 
 
-	$("#clients3 h3").click(function(event, passed_id) {
+	$("#clients3 h3").on('click', function(e, passed_id) {
+		e.preventDefault();
 		var obj = getCurrentModule();
 		if(confirmNavigation()) {
 			formChanged = false;
@@ -1188,114 +1322,131 @@ $(document).ready(function() {
 			$("#clients2-outer > h3").trigger("click");
 		} else {
 			// module 3 allready activated
-			if($("#clients2").height() == module_title_height) {
-				var id = $("#clients2 .module-click:visible").attr("rel");
-				$("#clients3 h3").removeClass("module-bg-active");
-				
+			if($('#clients3').data('status') == 'open') {
+				var id = $("#clients").data('second');
+				var mod = getCurrentModule();
+				var todeactivate = mod.name.replace(/clients_/, "");
+				$('#clients3 h3[rel='+todeactivate+']').removeClass("module-bg-active");
+				$("#clients3 .module-actions:visible").hide();
+				var curmoduleidx = $("#clients3 h3").index($('#clients3 h3[rel='+todeactivate+']'));
+				var t = moduleidx*module_title_height;
 				h3click.addClass("module-bg-active")
-					.next('div').slideDown( function() {
-						$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients/modules/"+module+"&request=getList&id="+id, success: function(data){
-							$("#clients3 ul:eq("+moduleidx+")").html(data.html);
-							$("#clientsActions .actionNew").attr("title",data.title);
-							switch (data.perm) {
-				case "sysadmin": case "admin" :
-					if(data.html == "<li></li>") {
-						clientsActions(3);
+				$("#clients3 div.thirdLevel:not(.deactivated)").each(function(i) { 
+					if(i <= moduleidx) {
+						var mx = i*module_title_height;
+						$(this).animate({top: mx})
 					} else {
-						clientsActions(0);
-						$('#clients3').find('input.filter').quicksearch('#clients3 li');
+						if(i <= curmoduleidx) {
+							var position = $(this).position();
+							var h = position.top+$(this).height()-27;
+							$(this).animate({top: h})
+						} else {
+							var position = $(this).position();
+							var h = position.top;
+							$(this).animate({top: h})
+						}
 					}
-				break;
-				case "guest":
-					if(data.html == "<li></li>") {
-						clientsActions();
-					} else {
-						clientsActions(5);
-						$('#clients3').find('input.filter').quicksearch('#clients3 li');
-					}
-				break;
-			}
-							
-							
-							if(passed_id === undefined) {
-								var idx = 0;
-							} else {
-								var idx = $("#clients3 ul:eq("+moduleidx+") .module-click").index($("#clients3 ul:eq("+moduleidx+") .module-click[rel='"+passed_id+"']"));
-							}
+				})
 
-							$("#clients3 ul:eq("+moduleidx+") .module-click:eq("+idx+")").addClass('active-link');
-							$("#clients3 .module-actions:visible").hide();
-							var obj = getCurrentModule();
-							obj.getDetails(moduleidx,idx,data.html);
-							$(this).prev("h3").removeClass("module-bg-active");	
-							$("#clients3 .module-actions:eq("+moduleidx+")").show();
-							$("#clients3 .sort:eq("+moduleidx+")").attr("rel", data.sort).addClass("sort"+data.sort);
-							}
-						});			 
-					})
-					.siblings('div:visible').slideUp()
-				
+				setTimeout(function() {
+					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients/modules/"+module+"&request=getList&id="+id, success: function(data){
+						$("#clients3 ul:eq("+moduleidx+")").html(data.html);
+						$("#clientsActions .actionNew").attr("title",data.title);
+						switch (data.perm) {
+							case "sysadmin": case "admin" :
+								if(data.html == "<li></li>") {
+									clientsActions(3);
+								} else {
+									clientsActions(0);
+								}
+							break;
+							case "guest":
+								if(data.html == "<li></li>") {
+									clientsActions();
+								} else {
+									clientsActions(5);
+								}
+							break;
+						}
+						if(passed_id === undefined) {
+							var idx = 0;
+						} else {
+							var idx = $("#clients3 ul:eq("+moduleidx+") .module-click").index($("#clients3 ul:eq("+moduleidx+") .module-click[rel='"+passed_id+"']"));
+						}
+						$("#clients3 ul:eq("+moduleidx+") .module-click:eq("+idx+")").addClass('active-link');
+						var obj = getCurrentModule();
+						obj.getDetails(moduleidx,idx,data.html);
+						$(this).prev("h3").removeClass("module-bg-active");	
+						$("#clients3 .module-actions:eq("+moduleidx+")").show();
+						$("#clients3 .sort:eq("+moduleidx+")").attr("rel", data.sort).addClass("sort"+data.sort);
+						}
+					});			 
+				}, 400);				
 			} else {
 				// load and slide up module 3
-				var id = $("#clients2 .active-link").attr("rel");
+				var id = $("#clients").data('second');
+				$('#clients2').data('status','closed');
+				$('#clients3').data('status','open');
 				if(id == undefined) {
 					return false;
 				}
 				var index = $("#clients2 .module-click").index($("#clients2 .module-click[rel='"+id+"']"));
-	
-				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients/modules/"+module+"&request=getList&id="+id, success: function(data){
-					$("#clients3 ul:eq("+moduleidx+")").html(data.html);
-					$("#clientsActions .actionNew").attr("title",data.title);
-					switch (data.perm) {
-				case "sysadmin": case "admin" :
-					if(data.html == "<li></li>") {
-						clientsActions(3);
-					} else {
-						clientsActions(0);
-						$('#clients3').find('input.filter').quicksearch('#clients3 li');
-					}
-				break;
-				case "guest":
-					if(data.html == "<li></li>") {
-						clientsActions();
-					} else {
-						clientsActions(5);
-						$('#clients3').find('input.filter').quicksearch('#clients3 li');
-					}
-				break;
-			}
-					
-					
-					if(passed_id === undefined) {
-						var idx = 0;
-					} else {
-						var idx = $("#clients3 ul:eq("+moduleidx+") .module-click").index($("#clients3 ul:eq("+moduleidx+") .module-click[rel='"+passed_id+"']"));
-					}
-					
-					$("#clients3 ul:eq("+moduleidx+") .module-click:eq("+idx+")").addClass('active-link');
-					$("#clients3 .module-actions:visible").hide();
-					setModuleDeactive($("#clients2"),index);
-					$("#clients2").css("overflow", "hidden").animate({height: module_title_height}, function() {
-						$("#clients-top .top-subheadline").html($("#clients2 .module-click:visible").find(".text").html());
-						$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients&request=getDates&id="+id, success: function(data){
-							//$("#clients-top .top-subheadlineTwo").html(data.startdate + ' - <span id="clientenddate">' + data.enddate + '</span>');
+				$("#clients3 .module-actions:visible").hide();
+				h3click.addClass("module-bg-active");
+				setModuleDeactive($("#clients2"),index);
+				$("#clients3 div.thirdLevel").each(function(i) { 
+					if(i <= moduleidx) {
+						var position = $(this).position();
+							var h = i*27;
+							$(this).animate({top: h})
 						}
-						});
-					});
-					h3click.addClass("module-bg-active")
-						.next('div').slideDown(function() {
+					if(i == clients_num_modules-1) {
+						setTimeout(function() {
+							$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients/modules/"+module+"&request=getList&id="+id, success: function(data){
+								$("#clients3 ul:eq("+moduleidx+")").html(data.html);
+								$("#clientsActions .actionNew").attr("title",data.title);
+								switch (data.perm) {
+									case "sysadmin": case "admin" :
+										if(data.html == "<li></li>") {
+											clientsActions(3);
+										} else {
+											clientsActions(0);
+										}
+									break;
+									case "guest":
+										if(data.html == "<li></li>") {
+											clientsActions();
+										} else {
+											clientsActions(5);
+										}
+									break;
+								}	
+								if(passed_id === undefined) {
+									var idx = 0;
+								} else {
+									var idx = $("#clients3 ul:eq("+moduleidx+") .module-click").index($("#clients3 ul:eq("+moduleidx+") .module-click[rel='"+passed_id+"']"));
+								}
+								$("#clients3 ul:eq("+moduleidx+") .module-click:eq("+idx+")").addClass('active-link');
+								$("#clients-top .top-subheadline").html(', ' + $("#clients2 .deactivated").find(".text").html());
+								/*$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients&request=getDates&id="+id, success: function(data){
+									$("#clients-top .top-subheadlineTwo").html(data.startdate + ' - <span id="clientenddate">' + data.enddate + '</span>');
+									}
+								});*/
 							var obj = getCurrentModule();
 							obj.getDetails(moduleidx,idx,data.html);
 							$("#clients3 .sort:eq("+moduleidx+")").attr("rel", data.sort).addClass("sort"+data.sort);
 							$("#clients3 .module-actions:eq("+moduleidx+")").show();
+							}
 						})
-					}
-				});
-			}
-			$("#clients-current").val(module);
+					}, 400);
+				}
+			})
 		}
-		return false;
-	});
+		$("#clients-current").val(module);
+		$('#clients').data({ "current" : module});
+	}
+});
+
 
  
     /*$("#clients .loadModuleStart").click(function() {
@@ -1363,7 +1514,7 @@ $(document).ready(function() {
 	});
 
 	
-	// load a phase
+	/* load a phase
 	$(".loadClientsPhase").live('click', function() {
 		
 		var obj = getCurrentModule();
@@ -1383,38 +1534,7 @@ $(document).ready(function() {
 		var id = $(this).attr("rel");
 		$("#clients3 h3[rel='phases']").trigger('click', [id]);
 		return false;
-	});
-
-
-	$('span.actionClientHandbook').click(function(){
-		if($(this).hasClass("noactive")) {
-			return false;
-		}
-		clients.actionHandbook();
-		return false;
-	});
-
-	
-	// barchart opacity with jquery
-	$(".barchart-phase-bg").livequery( function() {
-		$(this).css("opacity","0.3");
-	});
-
-	$("#todayBar").livequery( function() {
-		$(this).css("opacity","0.4");
-	});
-	// becomes global Tooltip?
-	$(".coTooltip").livequery( function() {
-		$(this).tooltip({
-			track: true,
-			delay: 0,
-			fade: 200,
-			bodyHandler: function() { 
-				return $(this).find(".coTooltipHtml").html(); 
-			}, 
-			showURL: false 
-		});
-	});
+	});*/
 	
 	
 	$('#actionAccessOrders').live("click", function(){

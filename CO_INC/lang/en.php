@@ -33,6 +33,8 @@ $lang["TEXT_NOTE"] = "Note:";
 	
 $lang["CREATED_BY_ON"]		= 	'created:';
 $lang["EDITED_BY_ON"] 		= 	'edited:';
+$lang["SENDTO_BY_ON"] 		= 	'forwarded to:';
+$lang["SENDFROM_BY_ON"] 	= 	'forwarded by:';
 $lang["DELETED_BY_ON"] 		= 	'deleted';
 $lang["INTERNAL_CHANGED"] 	= 	'released:';
 
@@ -64,6 +66,10 @@ $lang["GLOBAL_SUBJECT"] = 'Subject';
 $lang["GLOBAL_MESSAGE"] = 'Message';
 $lang["GLOBAL_SEND"] = 'Send';
 $lang["GLOBAL_EXPORT"] = 'Export';
+
+$lang["GLOBAL_TODAY"] = 'Today';
+$lang["GLOBAL_YESTERDAY"] = 'Yesterday';
+$lang["GLOBAL_DAYS_AGO"] = '%1$s days ago';
 
 // email footer
 $lang["GLOBAL_EMAIL_FOOTER"] = 	'<p style="font-face: Arial, Verdana; font-size:small; color: #999999;">_____powered by company.observer</p>' .

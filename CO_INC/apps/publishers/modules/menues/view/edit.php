@@ -1,5 +1,6 @@
-<div>
-<table border="0" cellspacing="0" cellpadding="0" class="table-title">
+<div class="table-title-outer">
+
+<table border="0" cellpadding="0" cellspacing="0" class="table-title">
   <tr>
     <td class="tcell-left text11"><span class="<?php if($menue->canedit) { ?>content-nav focusTitle<?php } ?>"><span><?php echo $lang["PUBLISHER_MENUE_TITLE"];?></span></span></td>
     <td><input name="title" type="text" class="title textarea-title" value="<?php echo($menue->title);?>" maxlength="100" /></td>

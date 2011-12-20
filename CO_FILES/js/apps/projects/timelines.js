@@ -4,20 +4,20 @@ function projectsTimelines(name) {
 
 
 	this.getDetails = function(moduleidx,liindex,list) {
-		var pid = $("#projects2 .module-click:visible").attr("rel");
 		var id = $("#projects3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
+		$('#projects').data({ "third" : id});
+		var pid = $('#projects').data('second');
 		if(id == undefined) {
 			return false;
 		}
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/timelines&request=getDetails&id="+id+"&pid="+pid, success: function(data){
 			$("#projects-right").html(data.html);
 			initProjectsContentScrollbar();
-			//initScrollbar( '.projects3-content:visible .scrolling-content' );
-					if(data.access == "guest") {
-						projectsActions(5);
-					} else {
-						projectsActions(8);
-					}
+				if(data.access == "guest") {
+					projectsActions(5);
+				} else {
+					projectsActions(8);
+				}
 			}
 		});
 	}
@@ -29,21 +29,21 @@ function projectsTimelines(name) {
 
 
 	this.actionRefresh = function() {
-		$("#projects3 .active-link:visible").trigger("click");
+		$("#projects3 ul[rel=timelines] .active-link").trigger("click");
 	}
 
 
 	this.actionPrint = function() {
-		var pid = $("#projects2 .module-click:visible").attr("rel");
-		var id = $("#projects3 .active-link:visible").attr("rel");
+		var id = $("#projects").data("third");
+		var pid = $("#projects").data("second");
 		var url ='/?path=apps/projects/modules/timelines&request=printDetails&pid='+pid+"&id="+id;
 		location.href = url;
 	}
 
 
 	this.actionSend = function() {
-		var pid = $("#projects2 .module-click:visible").attr("rel");
-		var id = $("#projects3 .active-link:visible").attr("rel");
+		var id = $("#projects").data("third");
+		var pid = $("#projects").data("second");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/timelines&request=getSend&pid="+pid+"&id="+id, success: function(html){
 			$("#modalDialogForward").html(html).dialog('open');
 			}
@@ -52,7 +52,7 @@ function projectsTimelines(name) {
 
 
 	this.actionSendtoResponse = function() {
-		var id = $("#projects3 .active-link:visible").attr("rel");
+		var id = $("#projects").data("third");
 		if($("#timeline_sendto").length > 0) {
 			$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/tiomelines&request=getSendtoDetails&id="+id, success: function(html){
 				$("#timeline_sendto").html(html);
@@ -79,20 +79,17 @@ function projectsTimelines(name) {
 		$("#documentloader").attr('src', url);
 	}
 
-
 }
-
 
 var projects_timelines = new projectsTimelines('projects_timelines');
 
 
 $(document).ready(function() {  
-	
-	
+
 	$("span.loadBarchartZoom").live('click', function(e) {
 		e.preventDefault();
 		var zoom = $(this).attr('rel');
-		var pid = $("#projects2 .module-click:visible").attr("rel");
+		var pid = $("#projects").data("second");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/timelines&request=getDetails&id=1&pid="+pid+"&zoom="+zoom, success: function(data){
 			$("#projects-right").html(data.html);
 			initProjectsContentScrollbar();

@@ -1636,6 +1636,87 @@ class BrainstormsModel extends Model {
 		}
    }*/
    
+   
+     function existUserBrainstormsWidgets() {
+		global $session;
+		$q = "select count(*) as num from " . CO_TBL_BRAINSTORMS_DESKTOP_SETTINGS . " where uid='$session->uid'";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_assoc($result);
+		if($row["num"] < 1) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	
+	function getUserBrainstormsWidgets() {
+		global $session;
+		$q = "select * from " . CO_TBL_BRAINSTORMS_DESKTOP_SETTINGS . " where uid='$session->uid'";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_assoc($result);
+		return $row;
+	}
+
+
+   function getWidgetAlerts() {
+		global $session, $date;
+	  	
+		$now = new DateTime("now");
+		$today = $date->formatDate("now","Y-m-d");
+		$tomorrow = $date->addDays($today, 1);
+		$string = "";
+		
+		$access = "";
+		if(!$session->isSysadmin()) {
+			$access = " and c.id IN (" . implode(',', $this->getEditPerms($session->uid)) . ") ";
+		}
+		
+		// project notices for this user
+		$q ="select a.id as pid,a.folder,a.title as brainstormtitle,b.perm from " . CO_TBL_BRAINSTORMS . " as a,  " . CO_TBL_BRAINSTORMS_DESKTOP . " as b where a.id = b.pid and b.uid = '$session->uid' and b.status = '0'";
+		$result = mysql_query($q, $this->_db->connection);
+		$notices = "";
+		$array = "";
+		while ($row = mysql_fetch_array($result)) {
+			foreach($row as $key => $val) {
+				$array[$key] = $val;
+			}
+			$string .= $array["folder"] . "," . $array["pid"] . ",";
+			$notices[] = new Lists($array);
+		}
+		
+
+		if(!$this->existUserBrainstormsWidgets()) {
+			$q = "insert into " . CO_TBL_BRAINSTORMS_DESKTOP_SETTINGS . " set uid='$session->uid', value='$string'";
+			$result = mysql_query($q, $this->_db->connection);
+			$widgetaction = "open";
+		} else {
+			$row = $this->getUserBrainstormsWidgets();
+			$id = $row["id"];
+			if($string == $row["value"]) {
+				$widgetaction = "";
+			} else {
+				$widgetaction = "open";
+			}
+			$q = "UPDATE " . CO_TBL_BRAINSTORMS_DESKTOP_SETTINGS . " set value='$string' WHERE id = '$id'";
+			$result = mysql_query($q, $this->_db->connection);
+		}
+		
+		$arr = array("notices" => $notices, "widgetaction" => $widgetaction);
+		return $arr;
+   }
+
+   
+	function markNoticeRead($pid) {
+		global $session, $date;
+		
+		$q ="UPDATE " . CO_TBL_BRAINSTORMS_DESKTOP . " SET status = '1' WHERE uid = '$session->uid' and pid = '$pid'";
+		$result = mysql_query($q, $this->_db->connection);
+		return true;
+
+	}
+
+   
 
 }
 

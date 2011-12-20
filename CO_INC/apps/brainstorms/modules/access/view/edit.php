@@ -1,4 +1,4 @@
-<div>
+<div class="table-title-outer">
 <table border="0" cellspacing="0" cellpadding="0" class="table-title grey">
   <tr>
     <td nowrap="nowrap" class="tcell-left text11"><span class="content-nav-title"><?php echo $lang["BRAINSTORM_ACCESSRIGHTS"];?></span></td>

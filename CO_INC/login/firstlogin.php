@@ -80,7 +80,7 @@ $(document).ready(function() {
 <div class="fl-bar-outer-top"><table width="445" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr>
     <td><div style="position: relative;">
-      <div id="loginHelp" title="<?php echo $lang["ACTION_HELP"];?>" style="top: 15px; left: 485px; position: absolute; width: 30px; height: 30px;">&nbsp;</div></div>
+      <div id="loginHelp" title="<?php echo $lang["ACTION_HELP"];?>" style="top: 15px; left: 485px; position: absolute; width: 44px; height: 34px;">&nbsp;</div></div>
     <p style="text-align: justify"><?php echo $lang["LOGIN_SET_LOGIN"];?></p></td>
   </tr>
   </table></div>
