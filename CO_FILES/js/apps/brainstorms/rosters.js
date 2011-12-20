@@ -234,7 +234,7 @@ function brainstormsRosters(name) {
 
 
 	this.sortdrag = function (order) {
-		var fid = $("#brainstorms2 .module-click:visible").attr("rel");
+		var fid = $("#brainstorms").data("second");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/rosters&request=setOrder&"+order+"&id="+fid, success: function(html){
 			$("#brainstorms3 .sort:visible").attr("rel", "3");
 			$("#brainstorms3 .sort:visible").removeClass("sort1").removeClass("sort2").addClass("sort3");

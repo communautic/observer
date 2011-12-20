@@ -22,21 +22,21 @@ function publishersMenues(name) {
 	 this.formResponse = function(data) {
 		 switch(data.action) {
 			case "edit":
-				$("#publishers1 span[rel='"+data.id+"'] .text").html($("#publishers .title").val());
+				$("#publishers1 ul[rel=menues] .active-link").find(".text").html($("#publishers .title").val());
 					switch(data.access) {
 						case "0":
-							$("#publishers1 .active-link .module-access-status").removeClass("module-access-active");
+							$("#publishers1 ul[rel=menues] .active-link .module-access-status").removeClass("module-access-active");
 						break;
 						case "1":
-							$("#publishers1 .active-link .module-access-status").addClass("module-access-active");
+							$("#publishers1 ul[rel=menues] .active-link .module-access-status").addClass("module-access-active");
 						break;
 					}
 					switch(data.status) {
 						case "2":
-							$("#publishers1 .active-link .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
+							$("#publishers1 ul[rel=menues] .active-link .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
 						break;
 						default:
-							$("#publishers1 .active-link .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
+							$("#publishers1 ul[rel=menues] .active-link .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
 					}
 			break;
 		}
@@ -48,13 +48,14 @@ function publishersMenues(name) {
 
 	this.getDetails = function(moduleidx,liindex,list) {
 		var id = $("#publishers1 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
+		$('#publishers').data({ "first" : id});
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/publishers/modules/menues&request=getDetails&id="+id, success: function(data){
 			$("#publishers-right").html(data.html);
 			
 			if($('#checkedOut').length > 0) {
-					$("#publishers1 .active-link:visible .icon-checked-out").addClass('icon-checked-out-active');
+					$("#publishers1 ul[rel=menues] .active-link .icon-checked-out").addClass('icon-checked-out-active');
 				} else {
-					$("#publishers1 .active-link:visible .icon-checked-out").removeClass('icon-checked-out-active');
+					$("#publishers1 ul[rel=menues] .active-link .icon-checked-out").removeClass('icon-checked-out-active');
 				}
 			
 			if(list == 0) {
@@ -73,7 +74,6 @@ function publishersMenues(name) {
 							publishersActions(3);
 						} else {
 							publishersActions(0);
-							$('#publishers1').find('input.filter').quicksearch('#publishers1 li');
 						}
 					break;
 					case "guest":
@@ -81,7 +81,6 @@ function publishersMenues(name) {
 							publishersActions();
 						} else {
 							publishersActions(5);
-							$('#publishers1').find('input.filter').quicksearch('#publishers1 li');
 						}
 					break;
 				}
@@ -98,14 +97,14 @@ function publishersMenues(name) {
 		var cid = $('#publishers input[name="id"]').val()
 		module.checkIn(cid);
 	
+
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: 'path=apps/publishers/modules/menues&request=createNew', cache: false, success: function(data){
 			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/publishers/modules/menues&request=getList", success: function(list){
-				$(".publishers1-content:visible ul").html(list.html);
-				var liindex = $(".publishers1-content:visible .module-click").index($(".publishers1-content:visible .module-click[rel='"+data.id+"']"));
-				$(".publishers1-content:visible .module-click:eq("+liindex+")").addClass('active-link');
-				var moduleidx = $(".publishers1-content").index($(".publishers1-content:visible"));
+				$("#publishers1 ul[rel=menues]").html(list.html);
+				var liindex = $("#publishers1 ul[rel=menues] .module-click").index($("#publishers1 ul[rel=menues] .module-click[rel='"+data.id+"']"));
+				$("#publishers1 ul[rel=menues] .module-click:eq("+liindex+")").addClass('active-link');
+				var moduleidx = $("#publishers1 ul").index($("#publishers1 ul[rel=menues]"));
 				module.getDetails(moduleidx,liindex);
-				$('#publishers1 input.filter').quicksearch('#publishers1 li');
 				setTimeout(function() { $('#publishers-right .focusTitle').trigger('click'); }, 800);
 				}
 			});
@@ -118,15 +117,14 @@ function publishersMenues(name) {
 		var module = this;
 		var cid = $('#publishers input[name="id"]').val()
 		module.checkIn(cid);
-		var id = $("#publishers1 .active-link:visible").attr("rel");
+		var id = $("#publishers").data("first");
 		$.ajax({ type: "GET", url: "/", data: 'path=apps/publishers/modules/menues&request=createDuplicate&id=' + id, cache: false, success: function(mid){
 			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/publishers/modules/menues&request=getList", success: function(data){																																																																				
-				$(".publishers1-content:visible ul").html(data.html);
-				var moduleidx = $(".publishers1-content").index($(".publishers1-content:visible"));
-				var liindex = $(".publishers1-content:visible .module-click").index($(".publishers1-content:visible .module-click[rel='"+mid+"']"));
+				$("#publishers1 ul[rel=menues]").html(data.html);
+				var moduleidx = $("#publishers1 ul").index($("#publishers1 ul[rel=menues]"));
+				var liindex = $("#publishers1 ul[rel=menues] .module-click").index($("#publishers1 ul[rel=menues] .module-click[rel='"+mid+"']"));
 				module.getDetails(moduleidx,liindex);
-				$(".publishers1-content:visible .module-click:eq("+liindex+")").addClass('active-link');
-				$('#publishers1 input.filter').quicksearch('#publishers1 li');
+				$("#publishers1 ul[rel=menues] .module-click:eq("+liindex+")").addClass('active-link');
 				}
 			});
 			}
@@ -146,22 +144,21 @@ function publishersMenues(name) {
 			buttons:langbuttons,
 			callback: function(v,m,f){		
 				if(v){
-					var id = $("#publishers1 .active-link:visible").attr("rel");
+					var id = $("#publishers").data("first");
 					//var pid = $("#publishers2 .module-click:visible").attr("rel");
 					$.ajax({ type: "GET", url: "/", data: "path=apps/publishers/modules/menues&request=binMenue&id=" + id, cache: false, success: function(data){
 							if(data == "true") {
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/publishers/modules/menues&request=getList", success: function(data){
-									$(".publishers1-content:visible ul").html(data.html);
+									$("#publishers1 ul[rel=menues]").html(data.html);
 									if(data.html == "<li></li>") {
 										publishersActions(3);
 									} else {
 										publishersActions(0);
-										$('#publishers1 input.filter').quicksearch('#publishers1 li');
 									}
-									var moduleidx = $(".publishers1-content").index($(".publishers1-content:visible"));
+									var moduleidx = $("#publishers1 ul").index($("#publishers1 ul[rel=menues]"));
 									var liindex = 0;
 									module.getDetails(moduleidx,liindex);
-									$("#publishers1 .publishers1-content:visible .module-click:eq("+liindex+")").addClass('active-link');
+									$("#publishers1 ul[rel=menues] .module-click:eq("+liindex+")").addClass('active-link');
 								}
 								});
 							}
@@ -179,28 +176,26 @@ function publishersMenues(name) {
 	
 	
 	this.actionRefresh = function() {
-		var id = $("#publishers1 .active-link:visible").attr("rel");
-		$("#publishers1 .active-link:visible").trigger("click");
-		var id = $("#publishers1 .active-link:visible").attr("rel");
+		var id = $("#publishers").data("first");
+		$("#publishers1 ul[rel=menues] .active-link").trigger("click");
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/publishers/modules/menues&request=getList", success: function(data){																																																																				
-			$(".publishers1-content:visible ul").html(data.html);
-			var liindex = $(".publishers1-content:visible .module-click").index($(".publishers1-content:visible .module-click[rel='"+id+"']"));
-			$(".publishers1-content:visible .module-click:eq("+liindex+")").addClass('active-link');
-			$('#publishers1 input.filter').quicksearch('#publishers1 li');
+			$("#publishers1 ul[rel=menues]").html(data.html);
+			var liindex = $("#publishers1 ul[rel=menues] .module-click").index($("#publishers1 ul[rel=menues] .module-click[rel='"+id+"']"));
+			$("#publishers1 ul[rel=menues] .module-click:eq("+liindex+")").addClass('active-link');
 			}
 		});
 	}
 
 
 	this.actionPrint = function() {
-		var id = $("#publishers1 .active-link:visible").attr("rel");
+		var id = $("#publishers").data("first");
 		var url ='/?path=apps/publishers/modules/menues&request=printDetails&id='+id;
 		location.href = url;
 	}
 
 
 	this.actionSend = function() {
-		var id = $("#publishers1 .active-link:visible").attr("rel");
+		var id = $("#publishers").data("first");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/publishers/modules/menues&request=getSend&id="+id, success: function(html){
 			$("#modalDialogForward").html(html).dialog('open');
 			}
@@ -209,7 +204,7 @@ function publishersMenues(name) {
 
 
 	this.actionSendtoResponse = function() {
-		var id = $("#publishers1 .active-link:visible").attr("rel");
+		var id = $("#publishers").data("first");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/publishers/modules/menues&request=getSendtoDetails&id="+id, success: function(html){
 			$("#publishersmenue_sendto").html(html);
 			$("#modalDialogForward").dialog('close');
@@ -225,17 +220,18 @@ function publishersMenues(name) {
 		
 		//var fid = $("#publishers2 .module-click:visible").attr("rel");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/publishers/modules/menues&request=getList&sort="+sortnew, success: function(data){
-			$(".publishers1-content:visible ul").html(data.html);
+			$("#publishers1 ul[rel=menues]").html(data.html);
 			obj.attr("rel",sortnew);
 			obj.removeClass("sort"+sortcur).addClass("sort"+sortnew);
-			var id = $(".publishers1-content:visible .module-click:eq(0)").attr("rel");
+			var id = $("#publishers1 ul[rel=menues] .module-click:eq(0)").attr("rel");
+			$("#publishers").data("first",id);
 			if(id == undefined) {
 				return false;
 			}
-			var moduleidx = $(".publishers1-content").index($(".publishers1-content:visible"));
+			var moduleidx = $("#publishers1 ul").index($("#publishers1 ul[rel=menues]"));
 			var liindex = 0;
 			module.getDetails(moduleidx,liindex);
-			$("#publishers .publishers1-content:visible .module-click:eq("+liindex+")").addClass('active-link');
+			$("#publishers1 ul[rel=menues] .module-click:eq("+liindex+")").addClass('active-link');
 		}
 		});
 	}
@@ -282,7 +278,7 @@ function publishersMenues(name) {
 				});
 			break;
 			case "getDocumentsDialog":
-				var id = $("#publishers2 .module-click:visible").attr("rel");
+				var id = $("#publishers").data("first");
 				$.ajax({ type: "GET", url: "/", data: 'path=apps/publishers/modules/documents&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql+'&id=' + id, success: function(html){
 					$("#modalDialog").html(html);
 					$("#modalDialog").dialog('option', 'position', offset);
@@ -346,7 +342,7 @@ function publishersMenues(name) {
 	
 	// menue Items
 	this.saveItem = function(what) {
-		var id = $("#publishers1 .active-link:visible").attr("rel");
+		var id = $("#publishers").data("first");
 		var text = $("#input-text").val();
 		$.ajax({ type: "POST", url: "/", data: { path: 'apps/publishers/modules/menues', request: 'saveItem', id: id, what: what, text: text }, success: function(data){
 				//var note_text = $(document.createElement('div')).attr("id", "note-text").attr("class", "note-text").css("height",height).html(text);

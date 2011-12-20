@@ -475,7 +475,7 @@ $(document).ready(function() {
 		obj.actionExport();
 	});
 	
-	$('span.actionDoExport').on('click', function(e){
+	$(document).on('click', 'span.actionDoExport',function(e) {
 		e.preventDefault();
 		if($(this).hasClass("noactive")) {
 			return false;
@@ -1504,7 +1504,7 @@ function navItemSecond(objectname, clicked) {
 	var cid = $('#'+objectname+' input[name="id"]').val()
 	obj.checkIn(cid);
 	
-	var fid = $('#'+objectname+' .module-click:visible').attr("rel");
+	var fid = $('#'+objectname+'1 .deactivated').attr("rel");
 	var id = clicked.attr("rel");
 	$('#'+objectname).data({ "second" : id});
 	var index = $('#'+objectname+' .module-click').index(this);

@@ -21,21 +21,21 @@ function clientsOrders(name) {
 	 this.formResponse = function(data) {
 		 switch(data.action) {
 			case "edit":
-				$("#clients3 span[rel='"+data.id+"'] .text").html($("#clients .title").val());
+				$("#clients3 ul[rel=orders] .active-link").find(".text").html($("#clients .title").val());
 					switch(data.access) {
 						case "0":
-							$("#clients3 .active-link .module-access-status").removeClass("module-access-active");
+							$("#clients3 ul[rel=orders] .active-link .module-access-status").removeClass("module-access-active");
 						break;
 						case "1":
-							$("#clients3 .active-link .module-access-status").addClass("module-access-active");
+							$("#clients3 ul[rel=orders] .active-link .module-access-status").addClass("module-access-active");
 						break;
 					}
 					switch(data.status) {
 						case "1":
-						$("#clients3 .active-link .module-item-status").addClass("module-item-active");
+						$("#clients3 ul[rel=orders] .active-link .module-item-status").addClass("module-item-active");
 					break;
 					default:
-						$("#clients3 .active-link .module-item-status").removeClass("module-item-active");
+						$("#clients3 ul[rel=orders] .active-link .module-item-status").removeClass("module-item-active");
 					}
 			break;
 		}
@@ -47,13 +47,14 @@ function clientsOrders(name) {
 
 	this.getDetails = function(moduleidx,liindex,list) {
 		var id = $("#clients3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
+		$('#clients').data({ "third" : id});		
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients/modules/orders&request=getDetails&id="+id, success: function(data){
 			$("#clients-right").html(data.html);
 			clientsActions(10);
 			if($('#checkedOut').length > 0) {
-					$("#clients3 .active-link:visible .icon-checked-out").addClass('icon-checked-out-active');
+					$("#clients3 ul[rel=orders] .active-link .icon-checked-out").addClass('icon-checked-out-active');
 				} else {
-					$("#clients3 .active-link:visible .icon-checked-out").removeClass('icon-checked-out-active');
+					$("#clients3 ul[rel=orders] .active-link .icon-checked-out").removeClass('icon-checked-out-active');
 				}
 			
 			if(list == 0) {
@@ -72,7 +73,6 @@ function clientsOrders(name) {
 							clientsActions(10);
 						} else {
 							clientsActions(10);
-							$('#clients3').find('input.filter').quicksearch('#clients3 li');
 						}
 					break;
 					case "guest":
@@ -80,7 +80,6 @@ function clientsOrders(name) {
 							clientsActions(10);
 						} else {
 							clientsActions(10);
-							$('#clients3').find('input.filter').quicksearch('#clients3 li');
 						}
 					break;
 				}
@@ -97,15 +96,14 @@ function clientsOrders(name) {
 		var cid = $('#clients input[name="id"]').val()
 		module.checkIn(cid);
 	
-		var id = $('#clients2 .module-click:visible').attr("rel");
+		var id = $('#clients').data('second');
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: 'path=apps/clients/modules/orders&request=createNew&id=' + id, cache: false, success: function(data){
 			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/clients/modules/orders&request=getList&id="+id, success: function(list){
-				$(".clients3-content:visible ul").html(list.html);
+				$(".clients3 ul[rel=orders]").html(list.html);
 				var liindex = $(".clients3-content:visible .module-click").index($(".clients3-content:visible .module-click[rel='"+data.id+"']"));
-				$(".clients3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
-				var moduleidx = $(".clients3-content").index($(".clients3-content:visible"));
+				$("#clients3 ul[rel=orders] .module-click:eq("+liindex+")").addClass('active-link');
+				var moduleidx = $("#clients3 ul").index($("#clients3 ul[rel=orders]"));
 				module.getDetails(moduleidx,liindex);
-				$('#clients3 input.filter').quicksearch('#clients3 li');
 				setTimeout(function() { $('#clients-right .focusTitle').trigger('click'); }, 800);
 				}
 			});
@@ -118,16 +116,15 @@ function clientsOrders(name) {
 		var module = this;
 		var cid = $('#clients input[name="id"]').val()
 		module.checkIn(cid);
-		var id = $("#clients3 .active-link:visible").attr("rel");
-		var pid = $("#clients2 .module-click:visible").attr("rel");
+		var id = $("#clients").data("third");
+		var pid = $("#clients").data("second");
 		$.ajax({ type: "GET", url: "/", data: 'path=apps/clients/modules/orders&request=createDuplicate&id=' + id, cache: false, success: function(mid){
 			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/clients/modules/orders&request=getList&id="+pid, success: function(data){																																																																				
-				$(".clients3-content:visible ul").html(data.html);
-				var moduleidx = $(".clients3-content").index($(".clients3-content:visible"));
-				var liindex = $(".clients3-content:visible .module-click").index($(".clients3-content:visible .module-click[rel='"+mid+"']"));
+				$("#clients3 ul[rel=meetings]").html(data.html);
+				var moduleidx = $("#clients3 ul").index($("#clients3 ul[rel=orders]"));
+				var liindex = $("#clients3 ul[rel=orders] .module-click").index($("#clients3 ul[rel=orders] .module-click[rel='"+mid+"']"));
 				module.getDetails(moduleidx,liindex);
-				$(".clients3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
-				$('#clients3 input.filter').quicksearch('#clients3 li');
+				$("#clients3 ul[rel=orders] .module-click:eq("+liindex+")").addClass('active-link');
 				}
 			});
 			}
@@ -147,23 +144,22 @@ function clientsOrders(name) {
 			buttons:langbuttons,
 			callback: function(v,m,f){		
 				if(v){
-					var id = $("#clients3 .active-link:visible").attr("rel");
-					var pid = $("#clients2 .module-click:visible").attr("rel");
+					var id = $("#clients").data("third");
+					var pid = $("#clients").data("second");
 					$.ajax({ type: "GET", url: "/", data: "path=apps/clients/modules/orders&request=binOrder&id=" + id, cache: false, success: function(data){
 							if(data == "true") {
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients/modules/orders&request=getList&id="+pid, success: function(data){
-									$(".clients3-content:visible ul").html(data.html);
+									$("#clients3 ul[rel=orders]").html(data.html);
 									if(data.html == "<li></li>") {
 										clientsActions(10);
 									} else {
 										clientsActions(10);
-										$('#clients3 input.filter').quicksearch('#clients3 li');
 									}
-									var moduleidx = $(".clients3-content").index($(".clients3-content:visible"));
+									var moduleidx = $("#clients3 ul").index($("#clients3 ul[rel=orders]"));
 									var liindex = 0;
 									module.getDetails(moduleidx,liindex);
-									$("#clients3 .clients3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
-								}
+									$("#clients3 ul[rel=orders] .module-click:eq("+liindex+")").addClass('active-link');
+									}
 								});
 							}
 						}
@@ -185,29 +181,27 @@ function clientsOrders(name) {
 	
 	
 	this.actionRefresh = function() {
-		var id = $("#clients3 .active-link:visible").attr("rel");
-		var pid = $("#clients2 .module-click:visible").attr("rel");
-		$("#clients3 .active-link:visible").trigger("click");
-		var id = $("#clients3 .active-link:visible").attr("rel");
+		var id = $("#clients").data("third");
+		var pid = $("#clients").data("second");
+		$("#clients3 ul[rel=meetings] .active-link").trigger("click");
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/clients/modules/orders&request=getList&id="+pid, success: function(data){																																																																				
-			$(".clients3-content:visible ul").html(data.html);
-			var liindex = $(".clients3-content:visible .module-click").index($(".clients3-content:visible .module-click[rel='"+id+"']"));
-			$(".clients3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
-			$('#clients3 input.filter').quicksearch('#clients3 li');
+			$("#clients3 ul[rel=orders]").html(data.html);
+			var liindex = $("#clients3 ul[rel=orders] .module-click").index($("#clients3 ul[rel=orders] .module-click[rel='"+id+"']"));
+			$("#clients3 ul[rel=orders] .module-click:eq("+liindex+")").addClass('active-link');
 			}
 		});
 	}
 
 
 	this.actionPrint = function() {
-		var id = $("#clients3 .active-link:visible").attr("rel");
+		var id = $("#clients").data("third");
 		var url ='/?path=apps/clients/modules/orders&request=printDetails&id='+id;
 		location.href = url;
 	}
 
 
 	this.actionSend = function() {
-		var id = $("#clients3 .active-link:visible").attr("rel");
+		var id = $("#clients").data("third");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/clients/modules/orders&request=getSend&id="+id, success: function(html){
 			$("#modalDialogForward").html(html).dialog('open');
 			}
@@ -216,7 +210,7 @@ function clientsOrders(name) {
 
 
 	this.actionSendtoResponse = function() {
-		var id = $("#clients3 .active-link:visible").attr("rel");
+		var id = $("#clients").data("third");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/clients/modules/orders&request=getSendtoDetails&id="+id, success: function(html){
 			$("#clientsorder_sendto").html(html);
 			$("#modalDialogForward").dialog('close');
@@ -232,24 +226,24 @@ function clientsOrders(name) {
 		
 		var fid = $("#clients2 .module-click:visible").attr("rel");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients/modules/orders&request=getList&id="+fid+"&sort="+sortnew, success: function(data){
-			$(".clients3-content:visible ul").html(data.html);
+			$("#clients3 ul[rel=orders]").html(data.html);
 			obj.attr("rel",sortnew);
 			obj.removeClass("sort"+sortcur).addClass("sort"+sortnew);
-			var id = $(".clients3-content:visible .module-click:eq(0)").attr("rel");
+			var id = $("#clients3 ul[rel=orders] .module-click:eq(0)").attr("rel");
+			$('#clients').data('third',id);
 			if(id == undefined) {
 				return false;
 			}
-			var moduleidx = $(".clients3-content").index($(".clients3-content:visible"));
-			var liindex = 0;
-			module.getDetails(moduleidx,liindex);
-			$("#clients3 .clients3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
+			var moduleidx = $("#clients3 ul").index($("#clients3 ul[rel=orders]"));
+			module.getDetails(moduleidx,0);
+			$("#clients3 ul[rel=meetings] .module-click:eq("+liindex+")").addClass('active-link');
 		}
 		});
 	}
 
 
 	this.sortdrag = function (order) {
-		var fid = $("#clients2 .module-click:visible").attr("rel");
+		var fid = $("#clients").data("second");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/clients/modules/orders&request=setOrder&"+order+"&id="+fid, success: function(html){
 			$("#clients3 .sort:visible").attr("rel", "3");
 			$("#clients3 .sort:visible").removeClass("sort1").removeClass("sort2").addClass("sort3");
@@ -258,15 +252,6 @@ function clientsOrders(name) {
 	}
 
 
-	/*this.toggleIntern = function(id,status,obj) {
-		$.ajax({ type: "GET", url: "/", data: "path=apps/clients/modules/orders&request=toggleIntern&id=" + id + "&status=" + status, cache: false, success: function(data){
-			if(data == "true") {
-				obj.toggleClass("module-item-active")
-			}
-			}
-		});
-	}*/
-	
 	this.actionDialog = function(offset,request,field,append,title,sql) {
 		switch(request) {
 			case "getAccessDialog":
@@ -289,7 +274,7 @@ function clientsOrders(name) {
 				});
 			break;
 			case "getDocumentsDialog":
-				var id = $("#clients2 .module-click:visible").attr("rel");
+				var id = $("#clients").data("second");
 				$.ajax({ type: "GET", url: "/", data: 'path=apps/clients/modules/documents&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql+'&id=' + id, success: function(html){
 					$("#modalDialog").html(html);
 					$("#modalDialog").dialog('option', 'position', offset);

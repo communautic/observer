@@ -230,7 +230,7 @@ $(document).ready(function() {
 		e.preventDefault();
 		var z = ++desktopzIndex;
 		$.ajax({ type: "GET", url: "/", data: "path=apps/desktop&request=newPostit&z="+z, success: function(data){
-				$("#desktopPostIts").append(data);
+				//$("#desktopPostIts").append(data);
 				desktoploadModuleStart();
 			}
 		});

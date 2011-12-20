@@ -13,11 +13,10 @@ function clientsAccess(name) {
 
 
 	this.getDetails = function(moduleidx,liindex,list) {
-		var id = $("#clients2 .module-click:visible").attr("rel");
+		var id = $("#clients").data('second');
 		$.ajax({ type: "GET", url: "/", data: "path=apps/clients/modules/access&request=getDetails&id="+id, success: function(html){
 			$("#clients-right").html(html);
 			initClientsContentScrollbar();
-			//initScrollbar( '.clients3-content:visible .scrolling-content' );
 			clientsActions(6);
 			}
 		});
@@ -30,7 +29,7 @@ function clientsAccess(name) {
 
 
 	this.actionRefresh = function() {
-		$("#clients3 .active-link:visible").trigger("click");
+		$("#clients3 ul[rel=access] .active-link").trigger("click");
 	}
 
 
@@ -51,6 +50,5 @@ function clientsAccess(name) {
 	}
 	
 }
-
 
 var clients_access = new clientsAccess('clients_access');

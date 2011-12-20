@@ -16,7 +16,6 @@ function publishersAccess(name) {
 		$.ajax({ type: "GET", url: "/", data: "path=apps/publishers/modules/access&request=getDetails", success: function(html){
 			$("#publishers-right").html(html);
 			initPublishersContentScrollbar();
-			//initScrollbar( '.publishers3-content:visible .scrolling-content' );
 			publishersActions(6);
 			}
 		});
@@ -29,7 +28,7 @@ function publishersAccess(name) {
 
 
 	this.actionRefresh = function() {
-		$("#publishers1 .active-link:visible").trigger("click");
+		$("#publishers1 ul[rel=access] .active-link").trigger("click");
 	}
 
 
