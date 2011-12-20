@@ -130,7 +130,7 @@ class ClientsModel extends Model {
 		// get client details
 		$access="";
 		if(!$session->isSysadmin()) {
-			$access = " and a.id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
+			$access = " and id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
 	  	}
 		
 		 $sortstatus = $this->getSortStatus("clients-sort-status",$id);

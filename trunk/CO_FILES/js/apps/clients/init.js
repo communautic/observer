@@ -654,8 +654,8 @@ function clientsActions(status) {
 		case 9:		actions = ['0','1','2','4','5','6','7']; break;
 		// orders
 		case 10:	actions = ['1','2','5','6','7']; break;   			// print, send, refresh, help, delete
-		
-		default: 	actions = ['5','6'];  								// none
+		//case 11:	actions = ['4','5','6']; break;
+		default: 	actions = ['4','5','6'];  								// none
 	}
 	$('#clientsActions > li span').each( function(index) {
 		if(index in oc(actions)) {

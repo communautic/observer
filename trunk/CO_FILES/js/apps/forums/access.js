@@ -13,11 +13,10 @@ function forumsAccess(name) {
 
 
 	this.getDetails = function(moduleidx,liindex,list) {
-		var id = $("#forums2 .module-click:visible").attr("rel");
+		var id = $("#forums").data('second');
 		$.ajax({ type: "GET", url: "/", data: "path=apps/forums/modules/access&request=getDetails&id="+id, success: function(html){
 			$("#forums-right").html(html);
 			initForumsContentScrollbar();
-			//initScrollbar( '.forums3-content:visible .scrolling-content' );
 			forumsActions(6);
 			}
 		});
@@ -30,7 +29,7 @@ function forumsAccess(name) {
 
 
 	this.actionRefresh = function() {
-		$("#forums3 .active-link:visible").trigger("click");
+		$("#forums3 ul[rel=access] .active-link").trigger("click");
 	}
 
 

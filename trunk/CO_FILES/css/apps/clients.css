@@ -22,10 +22,10 @@
 #clients .hover-bg  { background-color: #695394}
 #clients .hover-outline { border: 1px solid #695394}
 
-#clients .module-access-status {  border-right: 1px solid #82aa0a; }
-#clients .module-item-status {  border-left: 1px solid #82aa0a; }
-#clients .icon-guest {  border-left: 1px solid #82aa0a; }
-#clients .icon-checked-out {  border-left: 1px solid #82aa0a; }
+#clients .module-access-status {  border-right: 1px solid #9B78DC; }
+#clients .module-item-status {  border-left: 1px solid #9B78DC; }
+#clients .icon-guest {  border-left: 1px solid #9B78DC; }
+#clients .icon-checked-out {  border-left: 1px solid #9B78DC; }
 
 #clients .co-link:hover { color: #9b78dc; }
 

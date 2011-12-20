@@ -15,7 +15,10 @@
 #publishers .hover-bg  { background-color: #436593}
 #publishers .hover-outline { border: 1px solid #436593}
 
-#publishers .jspDrag { background: #436593; }
+#publishers .module-access-status {  border-right: 1px solid #6496DC; }
+#publishers .module-item-status {  border-left: 1px solid #6496DC; }
+#publishers .icon-guest {  border-left: 1px solid #6496DC; }
+#publishers .icon-checked-out {  border-left: 1px solid #6496DC; }
 
 #publishers .co-link:hover { color: #82aa0b; }
 

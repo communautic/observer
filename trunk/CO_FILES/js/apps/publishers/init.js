@@ -5,6 +5,10 @@ function initPublishersContentScrollbar() {
 /* publishers Object */
 function publishersApplication(name) {
 	this.name = name;
+	
+	this.actionClose = function() {
+		publishersLayout.toggle('west');
+	}
 }
 
 var publishers = new publishersApplication('publishers');
@@ -59,6 +63,7 @@ function publishersloadModuleStart() {
 			  $('#publishers1').find('input.filter').quicksearch('#publishers1 li');
 		  }
 		  var id = $("#publishers1 ul:eq(0) .module-click:eq(0)").attr("rel");
+		  $("#publishers").data("first",id);
 		  $("#publishers1 .sort").attr("rel", data.sort).addClass("sort"+data.sort);
 		  var id = $("#publishers1 .module-click:eq(0)").attr("rel");
 		  $("#publishers1 .module-click:eq(0)").addClass('active-link');

@@ -149,12 +149,6 @@ function forumsApplication(name) {
 
 
 	this.checkIn = function(id) {
-		/*$.ajax({ type: "GET", url: "/", async: false, data: 'path=apps/forums&request=checkinForum&id='+id, success: function(data){
-				if(!data) {
-					prompt("something wrong");
-				}
-			}
-		});*/
 		return true;
 	}
 
@@ -1322,7 +1316,7 @@ $("#forumsReplyText").livequery(function() {
 
 	$("span.actionForumsReply").live("click", function(e) {
 		e.preventDefault();
-		var id = $("#forums2 .active-link:visible").attr("rel");
+		var id = $("#forums").data('second');
 		var text = $("#forumsReplyText").val();
 		if(text == "") {
 			$.prompt(ALERT_FORUM_RESPONSE_EMPTY);

@@ -1,7 +1,7 @@
 <div id="contacts" class="app">
 <input name="contacts-current" id="contacts-current" type="hidden" value="" />
 <div class="ui-layout-west">
-<div class="radius-helper">
+<div class="radius-helper"><img src="<?php echo CO_FILES;?>/img/border-radius-fix-bl.png" width="8" height="8" class="border-radius-fix-bl" alt=""/><img src="<?php echo CO_FILES;?>/img/border-radius-fix-br.png" width="8" height="8" class="border-radius-fix-br" alt=""/>
 <?php include(CO_INC . "/view/logo.php"); ?>	
 	<div id="contacts1-outer">
 		<div id="contacts1">
