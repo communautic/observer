@@ -1,4 +1,5 @@
-<div>
+<div class="table-title-outer">
+
 <table border="0" cellpadding="0" cellspacing="0" class="table-title">
 	<tr>
 		<td class="tcell-left text11"><span class="content-nav focusTitle"><span><?php echo $lang['CONTACTS_GROUP_TITLE'];?></span></span></td>

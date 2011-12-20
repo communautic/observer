@@ -1,10 +1,8 @@
-#bin { position:absolute; height: 100%;  width: 100%; background-color:#333333;}
-#bin .ui-layout-resizer-west { background-color:#82aa0a !important; }
-#bin .ui-layout-resizer-west-closed { background-color:#82aa0a !important; }
-
-#bin-top { height: 50px; float: left;}
-
-#bin .module-bg-active { background-color: #999; color:#fff }
+#bin .module-bg-active {
+	border-top: 1px solid #fff;
+	border-bottom: 1px solid #666;
+	background: #999;
+}
 
 #bin1, #bin2, #bin3 { padding:0; overflow: hidden !important; /* prevent scrollbars auto-added by Layout */}
 #bin3 { display: block;}
@@ -12,24 +10,24 @@
 
 .bin3-content { width: 325px;; background-color: #82aa0a; padding:0; overflow:hidden !important;}
 
-#bin .ui-layout-west li>span:hover   { background-color: #666}
-#bin .ui-layout-west li>span.active-link  { background-color: #666}
+#bin .ui-layout-west li>span:hover   { background-color: #E5E5E5}
+#bin .ui-layout-west li>span.active-link  { background-color: #E5E5E5}
 #bin .hover-bg  { background-color: #666}
 #bin .hover-outline { border: 1px solid #666}
 
-#binActions span.actionRefresh				{ 	background-position: -250px -258px;	}
-#binActions span.actionRefresh:hover 	{ 	background-position: -300px -258px;	}
-#binActions span.actionRefresh.noactive { background-position: 0px -258px;  	}
-
-#binActions span.actionHelp				{ 	background-position: -247px -51px;	}
-#binActions span.actionHelp:hover 	{ 	background-position: -297px -51px;	}
-#binActions span.actionHelp.noactive { background-position: 0px -51px;  	}
-
-#binActions { display: block; }
-
-#menu .app_bin { color: #333; text-decoration: none; outline: none; background: url(../../img/app_propellor.png) no-repeat 16px 0px; }
-#menu .app_bin:hover { color: #fff; text-decoration: none; outline: none; background: #999 url(../../img/app_propellor.png) no-repeat 16px -180px; }
-#menu .app_bin.active-app { color: #fff; text-decoration: none; outline: none; background: #999 url(../../img/app_propellor.png) no-repeat 16px -180px; }
+#menu .app_bin { }
+#menu .app_bin:hover, #menu .app_bin.active-app { 
+	border: 1px solid #7f7f7f;
+	border-top-color: #b2b2b2;
+	background: #999;
+	background: -moz-linear-gradient(top,  rgba(215,215,215,1) 0%, rgba(127,127,127,1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(215,215,215,1)), color-stop(100%,rgba(127,127,127,1)));
+	background: -webkit-linear-gradient(top,  rgba(215,215,215,1) 0%,rgba(127,127,127,1) 100%);
+	background: -o-linear-gradient(top,  rgba(215,215,215,1) 0%,rgba(127,127,127,1) 100%);
+	background: -ms-linear-gradient(top,  rgba(215,215,215,1) 0%,rgba(127,127,127,1) 100%);
+	background: linear-gradient(top,  rgba(215,215,215,1) 0%,rgba(127,127,127,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d7d7d7', endColorstr='#7f7f7f',GradientType=0 );
+}
 
 
 #bin .table-title, #bin .textarea-title { 
@@ -38,7 +36,7 @@ background-color: #e1f0af; }
 
 
 #bin a.disabled{
-	background-position: 0px -570px
+	background-position: 0px 0px
 }
 /*.table-content input.bg:hover, .table-content input.bg:focus {
     border: 1px solid #82AA0A;

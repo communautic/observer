@@ -25,25 +25,15 @@ function clientsPhonecalls(name) {
 	 this.formResponse = function(data) {
 		 switch(data.action) {
 			case "edit":
-				$("#clients3 span[rel='"+data.id+"'] .text").html($("#clients .item_date").val() + ' - ' +$("#clients .title").val());
+				$("#clients3 ul[rel=phonecalls] .active-link").find(".text").html($("#clients .item_date").val() + ' - ' +$("#clients .title").val());
 					switch(data.access) {
 						case "0":
-							$("#clients3 .active-link .module-access-status").removeClass("module-access-active");
+							$("#clients3 ul[rel=phonecalls] .active-link .module-access-status").removeClass("module-access-active");
 						break;
 						case "1":
-							$("#clients3 .active-link .module-access-status").addClass("module-access-active");
+							$("#clients3 ul[rel=phonecalls] .active-link .module-access-status").addClass("module-access-active");
 						break;
 					}
-					/*switch(data.status) {
-						case "1":
-							$("#clients3 .active-link .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
-						break;
-						case "2":
-							$("#clients3 .active-link .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
-						break;
-						default:
-							$("#clients3 .active-link .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
-					}*/
 			break;
 		}
 	}
@@ -54,13 +44,14 @@ function clientsPhonecalls(name) {
 
 	this.getDetails = function(moduleidx,liindex,list) {
 		var id = $("#clients3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
+		$('#clients').data({ "third" : id});
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients/modules/phonecalls&request=getDetails&id="+id, success: function(data){
 			$("#clients-right").html(data.html);
 			
 			if($('#checkedOut').length > 0) {
-					$("#clients3 .active-link:visible .icon-checked-out").addClass('icon-checked-out-active');
+					$("#clients3 ul[rel=phonecalls] .active-link .icon-checked-out").addClass('icon-checked-out-active');
 				} else {
-					$("#clients3 .active-link:visible .icon-checked-out").removeClass('icon-checked-out-active');
+					$("#clients3 ul[rel=phonecalls] .active-link .icon-checked-out").removeClass('icon-checked-out-active');
 				}
 			
 			if(list == 0) {
@@ -79,7 +70,6 @@ function clientsPhonecalls(name) {
 							clientsActions(3);
 						} else {
 							clientsActions(0);
-							$('#clients3').find('input.filter').quicksearch('#clients3 li');
 						}
 					break;
 					case "guest":
@@ -87,7 +77,6 @@ function clientsPhonecalls(name) {
 							clientsActions();
 						} else {
 							clientsActions(5);
-							$('#clients3').find('input.filter').quicksearch('#clients3 li');
 						}
 					break;
 				}
@@ -104,15 +93,14 @@ function clientsPhonecalls(name) {
 		var cid = $('#clients input[name="id"]').val()
 		module.checkIn(cid);
 	
-		var id = $('#clients2 .module-click:visible').attr("rel");
+		var id = $('#clients').data('second');
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: 'path=apps/clients/modules/phonecalls&request=createNew&id=' + id, cache: false, success: function(data){
 			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/clients/modules/phonecalls&request=getList&id="+id, success: function(list){
-				$(".clients3-content:visible ul").html(list.html);
-				var liindex = $(".clients3-content:visible .module-click").index($(".clients3-content:visible .module-click[rel='"+data.id+"']"));
-				$(".clients3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
-				var moduleidx = $(".clients3-content").index($(".clients3-content:visible"));
+				$("#clients3 ul[rel=phonecalls]").html(list.html);
+				var liindex = $("#clients3 ul[rel=phonecalls] .module-click").index($("#clients3 ul[rel=phonecalls] .module-click[rel='"+data.id+"']"));
+				$("#clients3 ul[rel=phonecalls] .module-click:eq("+liindex+")").addClass('active-link');
+				var moduleidx = $("#clients3 ul").index($("#clients3 ul[rel=phonecalls]"));
 				module.getDetails(moduleidx,liindex);
-				$('#clients3 input.filter').quicksearch('#clients3 li');
 				setTimeout(function() { $('#clients-right .focusTitle').trigger('click'); }, 800);
 				}
 			});
@@ -125,16 +113,15 @@ function clientsPhonecalls(name) {
 		var module = this;
 		var cid = $('#clients input[name="id"]').val()
 		module.checkIn(cid);
-		var id = $("#clients3 .active-link:visible").attr("rel");
-		var pid = $("#clients2 .module-click:visible").attr("rel");
+		var id = $("#clients").data("third");
+		var pid = $("#clients").data("second");
 		$.ajax({ type: "GET", url: "/", data: 'path=apps/clients/modules/phonecalls&request=createDuplicate&id=' + id, cache: false, success: function(mid){
 			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/clients/modules/phonecalls&request=getList&id="+pid, success: function(data){																																																																				
-				$(".clients3-content:visible ul").html(data.html);
-				var moduleidx = $(".clients3-content").index($(".clients3-content:visible"));
-				var liindex = $(".clients3-content:visible .module-click").index($(".clients3-content:visible .module-click[rel='"+mid+"']"));
+				$("#clients3 ul[rel=phonecalls]").html(data.html);
+				var moduleidx = $("#clients3 ul").index($("#clients3 ul[rel=phonecalls]"));
+				var liindex = $("#clients3 ul[rel=phonecalls] .module-click").index($("#clients3 ul[rel=phonecalls] .module-click[rel='"+mid+"']"));
 				module.getDetails(moduleidx,liindex);
-				$(".clients3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
-				$('#clients3 input.filter').quicksearch('#clients3 li');
+				$("#clients3 ul[rel=phonecalls] .module-click:eq("+liindex+")").addClass('active-link');
 				}
 			});
 			}
@@ -154,22 +141,21 @@ function clientsPhonecalls(name) {
 			buttons:langbuttons,
 			callback: function(v,m,f){		
 				if(v){
-					var id = $("#clients3 .active-link:visible").attr("rel");
-					var pid = $("#clients2 .module-click:visible").attr("rel");
+					var id = $("#clients").data("third");
+					var pid = $("#clients").data("second");
 					$.ajax({ type: "GET", url: "/", data: "path=apps/clients/modules/phonecalls&request=binPhonecall&id=" + id, cache: false, success: function(data){
 							if(data == "true") {
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients/modules/phonecalls&request=getList&id="+pid, success: function(data){
-									$(".clients3-content:visible ul").html(data.html);
+									$("#clients3 ul[rel=phonecalls]").html(data.html);
 									if(data.html == "<li></li>") {
 										clientsActions(3);
 									} else {
 										clientsActions(0);
-										$('#clients3 input.filter').quicksearch('#clients3 li');
 									}
-									var moduleidx = $(".clients3-content").index($(".clients3-content:visible"));
+									var moduleidx = $("#clients3 ul").index($("#clients3 ul[rel=phonecalls]"));
 									var liindex = 0;
 									module.getDetails(moduleidx,liindex);
-									$("#clients3 .clients3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
+									$("#clients3 ul[rel=phonecalls] .module-click:eq("+liindex+")").addClass('active-link');
 								}
 								});
 							}
@@ -192,29 +178,27 @@ function clientsPhonecalls(name) {
 	
 	
 	this.actionRefresh = function() {
-		var id = $("#clients3 .active-link:visible").attr("rel");
-		var pid = $("#clients2 .module-click:visible").attr("rel");
-		$("#clients3 .active-link:visible").trigger("click");
-		var id = $("#clients3 .active-link:visible").attr("rel");
+		var id = $("#clients").data("third");
+		var pid = $("#clients").data("second");
+		$("#clients3 ul[rel=phonecalls] .active-link").trigger("click");
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/clients/modules/phonecalls&request=getList&id="+pid, success: function(data){																																																																				
-			$(".clients3-content:visible ul").html(data.html);
-			var liindex = $(".clients3-content:visible .module-click").index($(".clients3-content:visible .module-click[rel='"+id+"']"));
-			$(".clients3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
-			$('#clients3 input.filter').quicksearch('#clients3 li');
+			$("#clients3 ul[rel=phonecalls]").html(data.html);
+			var liindex = $("#clients3 ul[rel=phonecalls] .module-click").index($("#clients3 ul[rel=phonecalls] .module-click[rel='"+id+"']"));
+			$("#clients3 ul[rel=phonecalls] .module-click:eq("+liindex+")").addClass('active-link');
 			}
 		});
 	}
 
 
 	this.actionPrint = function() {
-		var id = $("#clients3 .active-link:visible").attr("rel");
+		var id = $("#clients").data("third");
 		var url ='/?path=apps/clients/modules/phonecalls&request=printDetails&id='+id;
 		location.href = url;
 	}
 
 
 	this.actionSend = function() {
-		var id = $("#clients3 .active-link:visible").attr("rel");
+		var id = $("#clients").data("third");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/clients/modules/phonecalls&request=getSend&id="+id, success: function(html){
 			$("#modalDialogForward").html(html).dialog('open');
 			}
@@ -223,7 +207,7 @@ function clientsPhonecalls(name) {
 
 
 	this.actionSendtoResponse = function() {
-		var id = $("#clients3 .active-link:visible").attr("rel");
+		var id = $("#clients").data("third");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/clients/modules/phonecalls&request=getSendtoDetails&id="+id, success: function(html){
 			$("#clientsphonecall_sendto").html(html);
 			$("#modalDialogForward").dialog('close');
@@ -239,24 +223,24 @@ function clientsPhonecalls(name) {
 		
 		var fid = $("#clients2 .module-click:visible").attr("rel");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients/modules/phonecalls&request=getList&id="+fid+"&sort="+sortnew, success: function(data){
-			$(".clients3-content:visible ul").html(data.html);
+			$("#clients3 ul[rel=phonecalls]").html(data.html);
 			obj.attr("rel",sortnew);
 			obj.removeClass("sort"+sortcur).addClass("sort"+sortnew);
-			var id = $(".clients3-content:visible .module-click:eq(0)").attr("rel");
+			var id = $("#clients3 ul[rel=phonecalls] .module-click:eq(0)").attr("rel");
+			$('#clients').data('third',id);
 			if(id == undefined) {
 				return false;
 			}
-			var moduleidx = $(".clients3-content").index($(".clients3-content:visible"));
-			var liindex = 0;
-			module.getDetails(moduleidx,liindex);
-			$("#clients3 .clients3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
+			var moduleidx = $("#clients3 ul").index($("#clients3 ul[rel=phonecalls]"));
+			module.getDetails(moduleidx,0);
+			$("#clients3 ul[rel=phonecalls] .module-click:eq(0)").addClass('active-link');
 		}
 		});
 	}
 
 
 	this.sortdrag = function (order) {
-		var fid = $("#clients2 .module-click:visible").attr("rel");
+		var fid = $("#clients").data("second");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/clients/modules/phonecalls&request=setOrder&"+order+"&id="+fid, success: function(html){
 			$("#clients3 .sort:visible").attr("rel", "3");
 			$("#clients3 .sort:visible").removeClass("sort1").removeClass("sort2").addClass("sort3");
@@ -265,15 +249,6 @@ function clientsPhonecalls(name) {
 	}
 
 
-	/*this.toggleIntern = function(id,status,obj) {
-		$.ajax({ type: "GET", url: "/", data: "path=apps/clients/modules/phonecalls&request=toggleIntern&id=" + id + "&status=" + status, cache: false, success: function(data){
-			if(data == "true") {
-				obj.toggleClass("module-item-active")
-			}
-			}
-		});
-	}*/
-	
 	this.actionDialog = function(offset,request,field,append,title,sql) {
 		switch(request) {
 			case "getAccessDialog":
@@ -296,7 +271,7 @@ function clientsPhonecalls(name) {
 				});
 			break;
 			case "getDocumentsDialog":
-				var id = $("#clients2 .module-click:visible").attr("rel");
+				var id = $("#clients").data("second");
 				$.ajax({ type: "GET", url: "/", data: 'path=apps/clients/modules/documents&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql+'&id=' + id, success: function(html){
 					$("#modalDialog").html(html);
 					$("#modalDialog").dialog('option', 'position', offset);

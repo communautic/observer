@@ -44,20 +44,26 @@ function brainstormsApplication(name) {
 	this.poformOptions = { beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
 
 
+	this.actionClose = function() {
+		brainstormsLayout.toggle('west');
+	}
+
+	
 	this.actionNew = function() {
 		var module = this;
 		var cid = $('#brainstorms input[name="id"]').val()
 		module.checkIn(cid);
-		var id = $('#'+brainstorms.name+' .module-click:visible').attr("rel");
+		var id = $('#brainstorms').data('first');
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/brainstorms&request=newBrainstorm&id=' + id, cache: false, success: function(data){
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getBrainstormList&id="+id, success: function(list){
 				$("#brainstorms2 ul").html(list.html);
 				var index = $("#brainstorms2 .module-click").index($("#brainstorms2 .module-click[rel='"+data.id+"']"));
 				setModuleActive($("#brainstorms2"),index);
+				$('#brainstorms').data({ "second" : data.id });				
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getBrainstormDetails&id="+data.id, success: function(text){
 					$("#brainstorms-right").html(text.html);
 					initBrainstormsContentScrollbar();
-					$('#brainstorms2 input.filter').quicksearch('#brainstorms2 li');
+					
 					$('#brainstorms-right .focusTitle').trigger('click');
 					}
 				});
@@ -73,19 +79,20 @@ function brainstormsApplication(name) {
 		var module = this;
 		var cid = $('#brainstorms input[name="id"]').val()
 		module.checkIn(cid);
-		var pid = $("#brainstorms2 .active-link").attr("rel");
-		var oid = $("#brainstorms1 .module-click:visible").attr("rel");
+		var pid = $("#brainstorms").data("second");
+		var oid = $("#brainstorms").data("first");
 		$.ajax({ type: "GET", url: "/", data: 'path=apps/brainstorms&request=createDuplicate&id=' + pid, cache: false, success: function(id){
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getBrainstormList&id="+oid, success: function(data){
 				$("#brainstorms2 ul").html(data.html);
 					brainstormsActions(0);
-					$('#brainstorms2 input.filter').quicksearch('#brainstorms2 li');
 					var idx = $("#brainstorms2 .module-click").index($("#brainstorms2 .module-click[rel='"+id+"']"));
 					setModuleActive($("#brainstorms2"),idx)
 					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getBrainstormDetails&id="+id, success: function(text){
+							$("#brainstorms").data("second",id);
 							$("#"+brainstorms.name+"-right").html(text.html);
 							initBrainstormsContentScrollbar();
-							$('#brainstorms2 input.filter').quicksearch('#brainstorms2 li');
+			
+				
 						}
 					});
 				}
@@ -107,8 +114,8 @@ function brainstormsApplication(name) {
 			buttons:langbuttons,
 			callback: function(v,m,f){		
 				if(v){
-					var id = $("#brainstorms2 .active-link").attr("rel");
-					var fid = $("#brainstorms .module-click:visible").attr("rel");
+					var id = $("#brainstorms").data("second");
+					var fid = $("#brainstorms").data("first");
 					$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms&request=binBrainstorm&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
 							$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getBrainstormList&id="+fid, success: function(list){
@@ -120,11 +127,12 @@ function brainstormsApplication(name) {
 									setModuleActive($("#brainstorms2"),0);
 								}
 								var id = $("#brainstorms2 .module-click:eq(0)").attr("rel");
+								$("#brainstorms").data("second", id);
 								$("#brainstorms2 .module-click:eq(0)").addClass('active-link');
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getBrainstormDetails&fid="+fid+"&id="+id, success: function(text){
 									$("#brainstorms-right").html(text.html);
 									initBrainstormsContentScrollbar();
-									$('#brainstorms2 input.filter').quicksearch('#brainstorms2 li');
+									
 									}
 								});
 							}
@@ -149,28 +157,27 @@ function brainstormsApplication(name) {
 
 
 	this.actionRefresh = function() {
-		var pid = $("#brainstorms2 .active-link").attr("rel");
-		var oid = $("#brainstorms1 .module-click:visible").attr("rel");
-		$("#brainstorms2 .active-link:visible").trigger("click");
+		var oid = $('#brainstorms').data('first');
+		var pid = $('#brainstorms').data('second');
+		$("#brainstorms2 .active-link").trigger("click");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getBrainstormList&id="+oid, success: function(data){
 			$("#brainstorms2 ul").html(data.html);
 			var idx = $("#brainstorms2 .module-click").index($("#brainstorms2 .module-click[rel='"+pid+"']"));
 			$("#brainstorms2 .module-click:eq("+idx+")").addClass('active-link');
-			$('#brainstorms2 input.filter').quicksearch('#brainstorms3 li');
 			}
 		});
 	}
 
 
 	this.actionPrint = function() {
-		var id = $("#brainstorms2 .active-link").attr("rel");
+		var id = $("#brainstorms").data("second");
 		var url ='/?path=apps/brainstorms&request=printBrainstormDetails&id='+id;
 		location.href = url;
 	}
 
 
 	this.actionSend = function() {
-		var id = $("#brainstorms2 .active-link").attr("rel");
+		var id = $("#brainstorms").data("second");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms&request=getBrainstormSend&id="+id, success: function(html){
 			$("#modalDialogForward").html(html).dialog('open');
 			}
@@ -179,7 +186,7 @@ function brainstormsApplication(name) {
 
 
 	this.actionSendtoResponse = function() {
-		var id = $("#brainstorms2 .active-link").attr("rel");
+		var id = $("#brainstorms").data("second");
 		//$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms&request=getSendtoDetails&id="+id, success: function(html){
 			//$("#brainstorm_sendto").html(html);
 			$("#modalDialogForward").dialog('close');
@@ -198,7 +205,7 @@ function brainstormsApplication(name) {
 			obj.attr("rel",sortnew);
 			obj.removeClass("sort"+sortcur).addClass("sort"+sortnew);
 			var id = $("#brainstorms2 .module-click:eq(0)").attr("rel");
-			$('#brainstorms2').find('input.filter').quicksearch('#brainstorms2 li');
+			$('#brainstorms').data('second',id);
 			if(id == undefined) {
 				return false;
 			}
@@ -417,6 +424,10 @@ function brainstormsApplication(name) {
 	}
 
 
+	this.markNoticeRead = function(pid) {
+		$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms&request=markNoticeRead&pid=" + pid, cache: false});
+	}
+
 
 this.initItems = function() {
 
@@ -518,9 +529,9 @@ function brainstormsFolders(name) {
 				var index = $("#brainstorms1 .module-click").index($("#brainstorms1 .module-click[rel='"+data.id+"']"));
 				setModuleActive($("#brainstorms1"),index);
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getFolderDetails&id="+data.id, success: function(text){
+					$("#brainstorms").data("first",data.id);
 					$("#"+brainstorms.name+"-right").html(text.html);
 					initBrainstormsContentScrollbar();
-					$('#brainstorms1 input.filter').quicksearch('#brainstorms1 li');
 					$('#brainstorms-right .focusTitle').trigger('click');
 					}
 				});
@@ -541,7 +552,7 @@ function brainstormsFolders(name) {
 			buttons:langbuttons,
 			callback: function(v,m,f){		
 				if(v){
-					var id = $("#brainstorms1 .active-link").attr("rel");
+					var id = $("#brainstorms").data("first");
 					$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms&request=binFolder&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
 							$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getFolderList", success: function(data){
@@ -552,11 +563,11 @@ function brainstormsFolders(name) {
 									brainstormsActions(9);
 								}
 								var id = $("#brainstorms1 .module-click:eq(0)").attr("rel");
+								$("#brainstorms").data("first",id);
 								$("#brainstorms1 .module-click:eq(0)").addClass('active-link');
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getFolderDetails&id="+id, success: function(text){
 									$("#"+brainstorms.name+"-right").html(text.html);
 									initBrainstormsContentScrollbar();
-									$('#brainstorms1 input.filter').quicksearch('#brainstorms1 li');
 								}
 								});
 							}
@@ -576,7 +587,7 @@ function brainstormsFolders(name) {
 
 
 	this.actionRefresh = function() {
-		var id = $("#brainstorms1 .active-link").attr("rel");
+		var id = $("#brainstorms").data("first");
 		$("#brainstorms1 .active-link").trigger("click");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getFolderList", success: function(data){
 			$("#brainstorms1 ul").html(data.html);
@@ -587,21 +598,20 @@ function brainstormsFolders(name) {
 			}
 			var idx = $("#brainstorms1 .module-click").index($("#brainstorms1 .module-click[rel='"+id+"']"));
 			$("#brainstorms1 .module-click:eq("+idx+")").addClass('active-link');
-			$('#brainstorms1 input.filter').quicksearch('#brainstorms1 li');
 			}
 		});
 	}
 	
 
 	this.actionPrint = function() {
-		var id = $("#brainstorms1 .active-link").attr("rel");
+		var id = $("#brainstorms").data("first");
 		var url ='/?path=apps/brainstorms&request=printFolderDetails&id='+id;
 		location.href = url;
 	}
 
 
 	this.actionSend = function() {
-		var id = $("#brainstorms1 .active-link").attr("rel");
+		var id = $("#brainstorms").data("first");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms&request=getFolderSend&id="+id, success: function(html){
 			$("#modalDialogForward").html(html).dialog('open');
 			}
@@ -610,12 +620,7 @@ function brainstormsFolders(name) {
 
 
 	this.actionSendtoResponse = function() {
-		//var id = $("#projects1 .active-link").attr("rel");
-		//$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=getSendtoDetails&id="+id, success: function(html){
-			//$("#project_sendto").html(html);
 			$("#modalDialogForward").dialog('close');
-			//}
-		//});
 	}
 
 
@@ -625,8 +630,8 @@ function brainstormsFolders(name) {
 			$("#brainstorms1 ul").html(data.html);
 			obj.attr("rel",sortnew);
 		  	obj.removeClass("sort"+sortcur).addClass("sort"+sortnew);
-			$('#brainstorms1 input.filter').quicksearch('#brainstorms1 li');
 			var id = $("#brainstorms1 .module-click:eq(0)").attr("rel");
+			$('#brainstorms').data('first',id);
 			$("#brainstorms1 .module-click:eq(0)").addClass('active-link');
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getFolderDetails&id="+id, success: function(text){
 				$("#brainstorms-right").html(text.html);
@@ -752,22 +757,39 @@ function brainstormsActions(status) {
 
 
 
+
+
+
+
 function brainstormsloadModuleStart() {
 	var h = $("#brainstorms .ui-layout-west").height();
-	$("#brainstorms1 .module-inner").css("height", h-71);
+	$("#brainstorms .ui-layout-west .radius-helper").height(h);
+	$("#brainstorms .secondLevelOuter").css('top',h-27);	
+	$("#brainstorms .thirdLevelOuter").css('top',150);
+	$('#brainstorms1').data('status','open');
+	$('#brainstorms2').data('status','closed');
+	$('#brainstorms3').data('status','closed');
+	$("#brainstorms1").height(h-98);	
+	$("#brainstorms1 .module-inner").height(h-98);
 	$("#brainstorms1 .module-actions").show();
 	$("#brainstorms2 .module-actions").hide();
 	$("#brainstorms2 li").show();
-	$("#brainstorms2").css("height", h-96).removeClass("module-active");
-	$("#brainstorms2 .module-inner").css("height", h-96);
+	$("#brainstorms2").height(h-125-brainstorms_num_modules*27).removeClass("module-active");
+	$("#brainstorms2 .module-inner").height(h-125-brainstorms_num_modules*27);
 	$("#brainstorms3 .module-actions").hide();
-	$("#brainstorms3").css("height", h-121);
-	$("#brainstorms3 .brainstorms3-content").css("height", h-(brainstorms.modules_height+121));
+	$("#brainstorms3").height(h-150);
+	$("#brainstorms3 .brainstorms3-content").height(h-(brainstorms.modules_height+152));
+	$("#brainstorms3 div.thirdLevel").height(h-(brainstorms.modules_height+150-27));
 	$("#brainstorms-current").val("folder");
+	$("#brainstorms3 div.thirdLevel").each(function(i) { 
+		var position = $(this).position();
+		var t = position.top+h-150;
+		$(this).animate({top: t})
+	})
 	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getFolderList", success: function(data){
 		$("#brainstorms1 ul").html(data.html);
 		$("#brainstormsActions .actionNew").attr("title",data.title);
-		
+
 		if(data.access == "guest") {
 			brainstormsActions();
 		} else {
@@ -777,68 +799,305 @@ function brainstormsloadModuleStart() {
 				brainstormsActions(9);
 			}
 		}
-		
-		$("#brainstorms1").css("overflow", "auto").animate({height: h-71}, function() {
-			$("#brainstorms1 li").show();
-			$("#brainstorms1 .sort").attr("rel", data.sort).addClass("sort"+data.sort);
+		$("#brainstorms1 li").show();
+		$("#brainstorms1 .sort").attr("rel", data.sort).addClass("sort"+data.sort);
+		brainstormsInnerLayout.initContent('center');
+		var id = $("#brainstorms1 .module-click:eq(0)").attr("rel");
+		$('#brainstorms').data({ "current" : "folders" , "first" : id , "second" : 0 , "third" : 0});
+		$("#brainstorms1 .module-click:eq(0)").addClass('active-link');
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getFolderDetails&id="+id, success: function(text){
+			$("#"+brainstorms.name+"-right").html(text.html);
 			brainstormsInnerLayout.initContent('center');
-			//initScrollbar( '#brainstorms .scrolling-content' );
-			$('#brainstorms1 input.filter').quicksearch('#brainstorms1 li');
-			$("#brainstorms3 .brainstorms3-content").hide();
-			var id = $("#brainstorms1 .module-click:eq(0)").attr("rel");
-			$("#brainstorms1 .module-click:eq(0)").addClass('active-link');
-			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getFolderDetails&id="+id, success: function(text){
-				$("#"+brainstorms.name+"-right").html(text.html);
-				brainstormsInnerLayout.initContent('center');
-				$('#brainstorms1 input.filter').quicksearch('#brainstorms1 li');
-				$("#brainstorms3 .brainstorms3-content").hide();
-				}
-			});
+			}
 		});
-	}
+	}	
 	});
 }
 
 
 function brainstormsresetModuleHeights() {
-	
-	var h = $("#brainstorms .ui-layout-west").height();
-	if($("#brainstorms1").height() != module_title_height) {
-		$("#brainstorms1").css("height", h-71);
-		$("#brainstorms1 .module-inner").css("height", h-71);
+	var h = $("#brainstorms div.ui-layout-west").height();
+	$("#brainstorms .ui-layout-west .radius-helper").height(h);
+	$("#brainstorms1").height(h-98);
+	$("#brainstorms1 .module-inner").height(h-98);
+	$("#brainstorms2").height(h-125-brainstorms_num_modules*27);
+	$("#brainstorms2 .module-inner").height(h-125-brainstorms_num_modules*27);
+	$("#brainstorms3").height(h-150);
+	$("#brainstorms3 .brainstorms3-content").height(h-(brainstorms.modules_height+152));
+	$("#brainstorms3 div.thirdLevel").height(h-(brainstorms.modules_height+150-27));
+	if($('#brainstorms1').data('status') == 'open') {
+		$("#brainstorms2-outer").css('top',h-27);
+		$("#brainstorms3 div.thirdLevel").each(function(i) { 
+			var t = h-150+i*27;
+			$(this).animate({top: t})
+		})
 	}
-	if($("#brainstorms2").height() != module_title_height) {
-		//$("#brainstorms2").css("height", h-96);
-		$("#brainstorms2 .module-inner").css("height", h-96);
-		$("#brainstorms2").css("overflow", "auto").animate({height: h-(brainstorms.modules_height+96)}, function() {
-			$(this).find('.west-ui-content	').height(h-(brainstorms.modules_height+96));																							   
-		});
+	if($('#brainstorms2').data('status') == 'open') {	
+		var curmods = $("#brainstorms3 div.thirdLevel:not(.deactivated)").size();
+		$("#brainstorms2").height(h-125-curmods*27).removeClass("module-active");
+		$("#brainstorms2 .module-inner").height(h-125-curmods*27);
+		$("#brainstorms3 .brainstorms3-content").height(h-(curmods*27+152));
+		$("#brainstorms3 div.thirdLevel").height(h-(curmods*27+150-27));
+		$("#brainstorms3 div.thirdLevel:not(.deactivated)").each(function(i) { 
+			var t = h-150-curmods*27+i*27;
+			$(this).animate({top: t})
+		})
 	}
-	$("#brainstorms3").css("height", h-121);
-	$("#brainstorms3 .brainstorms3-content").css("height", h-(brainstorms.modules_height+121));
-	//initScrollbar( '#brainstorms .scrolling-content' );
+	if($('#brainstorms3').data('status') == 'open') {
+		var obj = getCurrentModule();
+		var idx = $('#brainstorms3 .thirdLevel:not(.deactivated)').index($('#brainstorms3 .thirdLevel:not(.deactivated)[id='+obj.name+']'));	
+		var curmods = $("#brainstorms3 div.thirdLevel:not(.deactivated)").size();
+		$("#brainstorms2").height(h-125-curmods*27).removeClass("module-active");
+		$("#brainstorms2 .module-inner").height(h-125-curmods*27);
+		$("#brainstorms3 .brainstorms3-content").height(h-(curmods*27+152));
+		$("#brainstorms3 div.thirdLevel").height(h-(curmods*27+150-27));
+		$("#brainstorms3 div.thirdLevel:not(.deactivated)").each(function(i) { 
+		if(i > idx) {
+			var pos = $(this).position();
+				var t = h-150-curmods*27+i*27;
+				$(this).animate({top: t})
+			}
+		})
+	}
 }
 
-function BrainstormsModulesDisplay(access) {
-	var h = $("#brainstorms .ui-layout-west").height();
+function Brainstorms2ModulesDisplay(access) {
+	var h = $("#brainstorms div.ui-layout-west").height();
 	if(access == "guest" || access == "guestadmin") {
 		var modLen = brainstorms.GuestHiddenModules.length;
-		var m;
-		for(var i=0, len=modLen; i<len; ++i) {
-			m = $('h3[rel="'+brainstorms.GuestHiddenModules[i]+'"]');
-			m.hide();
-		}
-		brainstorms.modules_height = brainstorms_num_modules*module_title_height - modLen*module_title_height;
-		$("#brainstorms3 .brainstorms3-content").css("height", h-(brainstorms.modules_height+121));
+		var p_num_modules = brainstorms_num_modules-modLen;
+		var p_modules_height = p_num_modules*module_title_height;
+		$("#brainstorms3 .brainstorms3-content").height(h-(p_modules_height+152));
+		$("#brainstorms3 div.thirdLevel").height(h-(p_modules_height+150-27));
+		$("#brainstorms2").height(h-125-p_num_modules*27).removeClass("module-active");
+		$("#brainstorms2 .module-inner").height(h-125-p_num_modules*27);
+		var a = 0;
+		var t = $("#brainstorms2").height();
+		$("#brainstorms2").animate({height: t+p_modules_height})
+		$("#brainstorms2-outer").animate({top: 96}, function() {
+			$("#brainstorms3 div.thirdLevel").each(function(i) { 
+				var rel = $(this).find('h3').attr('rel');
+				if(brainstorms.GuestHiddenModules.indexOf(rel) >= 0 ) {
+					$(this).addClass('deactivated').animate({top: 9999})	
+				} else {
+					var t = $("#brainstorms3").height()-p_num_modules*27+a*27;
+						$(this).animate({top: t})			
+					a = a+1;
+				}
+			})
+			$("#brainstorms-top .top-headline").html($("#brainstorms1 .deactivated").find(".text").html());
+			$("#brainstorms2").animate({height: t})
+		})
 	} else {
+		$("#brainstorms3 .brainstorms3-content").height(h-(brainstorms.modules_height+152));
+		$("#brainstorms3 div.thirdLevel").height(h-(brainstorms.modules_height+150-27));
+		$("#brainstorms2 .module-inner").height(h-125-brainstorms_num_modules*27);
+		var t = h-125-brainstorms.modules_height;
+		$("#brainstorms2").animate({height: t+brainstorms.modules_height})
+		$("#brainstorms2-outer").animate({top: 96}, function() {
+			$("#brainstorms3 div.thirdLevel").each(function(i) { 
+				var t = $("#brainstorms3").height()-brainstorms.modules_height+i*27;
+				$(this).animate({top: t})			
+			})
+			$("#brainstorms-top .top-headline").html($("#brainstorms1 .deactivated").find(".text").html());
+			$("#brainstorms2").animate({height: t})
+		})
+	}
+}
+
+
+function BrainstormsModulesDisplay(access) {
+	var h = $("#brainstorms div.ui-layout-west").height();
+	if(access == "guest" || access == "guestadmin") {
 		var modLen = brainstorms.GuestHiddenModules.length;
-		var m;
-		for(var i=0, len=modLen; i<len; ++i) {
-			m = $('h3[rel="'+brainstorms.GuestHiddenModules[i]+'"]');
-			m.show();
-		}
-		brainstorms.modules_height = brainstorms_num_modules*module_title_height;
-		$("#brainstorms3 .brainstorms3-content").css("height", h-(brainstorms.modules_height+121));
+		var p_num_modules = brainstorms_num_modules-modLen;
+		p_modules_height = p_num_modules*module_title_height;
+		$("#brainstorms3 .brainstorms3-content").height(h-(p_modules_height+152));
+		$("#brainstorms3 div.thirdLevel").height(h-(p_modules_height+150-27));
+		$("#brainstorms2").height(h-125-p_num_modules*27).removeClass("module-active");
+		$("#brainstorms2 .module-inner").height(h-125-p_num_modules*27);
+		var a = 0;
+		
+		var t = $("#brainstorms2").height();
+		$("#brainstorms2").animate({height: t+brainstorms_num_modules*27}, function() {
+			$(this).animate({height: t});
+		})
+		
+		$("#brainstorms3 div.thirdLevel").each(function(i) { 
+			var rel = $(this).find('h3').attr('rel');
+			if(brainstorms.GuestHiddenModules.indexOf(rel) >= 0 ) {
+				$(this).addClass('deactivated').animate({top: 9999})	
+			} else {
+				var t = $("#brainstorms3").height()-p_num_modules*27+a*27;
+				var position = $(this).position();
+				var d = position.top+brainstorms_num_modules*27;
+				$(this).animate({top: d}, function() {
+					$(this).animate({top: t})			
+				})
+				a = a+1;
+			}
+		})
+	} else {
+		$("#brainstorms3 .brainstorms3-content").height(h-(brainstorms.modules_height+152));
+		$("#brainstorms3 div.thirdLevel").height(h-(brainstorms.modules_height+150-27));
+		$("#brainstorms2 .module-inner").height(h-125-brainstorms_num_modules*27);
+		var curmods = $("#brainstorms3 div.thirdLevel:not(.deactivated)").size();
+		var t = h-125-brainstorms_num_modules*27;
+		$("#brainstorms2").animate({height: t+brainstorms_num_modules*27}, function() {
+			$(this).animate({height: t});
+		})
+		$("#brainstorms3 div.thirdLevel").each(function(i) { 
+			$(this).removeClass('deactivated');
+			var t = $("#brainstorms3").height()-brainstorms_num_modules*27+i*27;
+				var position = $(this).position();
+				var d = h-150+i*27;
+				$(this).animate({top: d}, function() {
+					$(this).animate({top: t})			
+				})
+		})
+	}
+}
+
+
+function BrainstormsExternalLoad(what,f,p,ph) { // from Desktop
+	if(what == 'brainstorms') {
+		$('#brainstorms').data({ "first" : f});
+		var index = $('#brainstorms1 .module-click').index($('#brainstorms1 .module-click[rel='+f+']'));
+		$.ajax({ type: "GET", url: "/", dataType:  'json', async: false, data: "path=apps/brainstorms&request=getBrainstormList&id="+f, success: function(data){
+			$("#brainstorms2 ul").html(data.html);
+			setModuleDeactive($("#brainstorms1"),index);
+			$('#brainstorms1').find('li:eq('+index+')').show();
+			$("#brainstorms-top .top-headline").html($("#brainstorms1 .deactivated").find(".text").html());
+			}
+		})
+		$('#brainstorms').data({ "second" : p});
+		var index = $("#brainstorms2 .module-click").index($("#brainstorms2 .module-click[rel='"+p+"']"));
+		setModuleActive($("#brainstorms2"),index);
+		$("#brainstorms2-outer").css('top', 96);
+		$('#brainstorms3 h3').removeClass("module-bg-active");
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getBrainstormDetails&fid="+f+"&id="+p, success: function(text){
+			$("#brainstorms-current").val(what);
+			$('#brainstorms').data({ "current" : what});
+			$('#brainstorms').data({ "second" : p});
+			$('#brainstorms1').data('status','closed');
+			$('#brainstorms2').data('status','open');
+			$('#brainstorms3').data('status','closed');
+			$("#brainstorms-right").html(text.html);		
+			if($('#checkedOut').length > 0) {
+				$("#brainstorms2 .active-link .icon-checked-out").addClass('icon-checked-out-active');
+			} else {
+				$("#brainstorms2 .active-link .icon-checked-out").removeClass('icon-checked-out-active');
+			}
+			switch (text.access) {
+				case "sysadmin":
+					brainstormsActions(0);
+				break;
+				case "admin":
+					brainstormsActions(0);
+				break;
+				case "guestadmin":
+					brainstormsActions(7);
+				break;
+				case "guest":
+					brainstormsActions(5);
+				break;
+			}
+			initBrainstormsContentScrollbar();
+			if(text.access != "sysadmin" || text.access != "admin") { 
+				var h = $("#brainstorms div.ui-layout-west").height();
+				var modLen = brainstorms.GuestHiddenModules.length;
+				var p_num_modules = brainstorms_num_modules-modLen;
+				p_modules_height = p_num_modules*module_title_height;
+				$("#brainstorms3 .brainstorms3-content").height(h-(p_modules_height+152));
+				$("#brainstorms3 div.thirdLevel").height(h-(p_modules_height+150-27));
+				$("#brainstorms2").height(h-125-p_num_modules*27).removeClass("module-active");
+				$("#brainstorms2 .module-inner").height(h-125-p_num_modules*27);
+				var a = 0;
+				$("#brainstorms3 div.thirdLevel").each(function(i) { 
+					var rel = $(this).find('h3').attr('rel');
+					if(brainstorms.GuestHiddenModules.indexOf(rel) >= 0 ) {
+						$(this).addClass('deactivated').animate({top: 9999})	
+					} else {
+						var t = $("#brainstorms3").height()-p_num_modules*27+a*27;
+						$(this).animate({top: t})			
+						a = a+1;
+					}
+				})
+				$('span.app_brainstorms').trigger('click');
+			} else {
+				$("#brainstorms3 div.thirdLevel:not(.deactivated)").each(function(i) { 
+					var t = h-150-brainstorms_num_modules*27+i*27;
+					$(this).animate({top: t})
+				})
+				$('span.app_brainstorms').trigger('click');
+			}
+			}
+		});
+	}
+	
+	if(what == 'phases') {
+		$('#brainstorms').data({ "first" : f});
+		var index = $('#brainstorms1 .module-click').index($('#brainstorms1 .module-click[rel='+f+']'));
+		$.ajax({ type: "GET", url: "/", dataType:  'json', async: false, data: "path=apps/brainstorms&request=getBrainstormList&id="+f, success: function(data){
+			$("#brainstorms2 ul").html(data.html);
+				setModuleDeactive($("#brainstorms1"),index);
+				$('#brainstorms1').find('li:eq('+index+')').show();
+				$("#brainstorms-top .top-headline").html($("#brainstorms1 .deactivated").find(".text").html());
+			}
+		})
+		$('#brainstorms').data({ "second" : p});
+			
+		var index = $("#brainstorms2 .module-click").index($("#brainstorms2 .module-click[rel='"+p+"']"));
+		setModuleDeactive($("#brainstorms2"),index);
+		$("#brainstorms2-outer").css('top', 96);
+		$('#brainstorms3 h3').removeClass("module-bg-active");
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/"+what+"&request=getList&id="+p, success: function(data){
+			$("#brainstorms-current").val(what);
+			$('#brainstorms').data({ "current" : what});
+			$('#brainstorms').data({ "third" : ph});
+			$('#brainstorms1').data('status','closed');
+			$('#brainstorms2').data('status','closed');
+			$('#brainstorms3').data('status','open');
+			$('#brainstorms3 ul[rel='+what+']').html(data.html);
+			$("#brainstormsActions .actionNew").attr("title",data.title);
+			switch (data.perm) {
+				case "sysadmin": case "admin" :
+					if(data.html == "<li></li>") {
+						brainstormsActions(3);
+					} else {
+						brainstormsActions(0);
+					}
+				break;
+				case "guest":
+					if(data.html == "<li></li>") {
+						brainstormsActions();
+					} else {
+						brainstormsActions(5);
+					}
+				break;
+			}
+			$("#brainstorms3 div.thirdLevel").each(function(i) { 
+				if(i == 0) {
+				var t = 0;
+				} else {
+					var n = $(this).height();
+					var t = n+i*module_title_height-27;
+				}
+				$(this).animate({top: t})
+			})		
+			$('#brainstorms3 ul[rel='+what+'] .module-click[rel='+ph+']').addClass('active-link');
+			var idx = $('#brainstorms3 ul[rel='+what+'] .module-click').index($('#brainstorms3 ul[rel='+what+'] .module-click[rel='+ph+']'));
+			brainstorms_phases.getDetails(0,idx,data.html);
+			$("#brainstorms3 .module-actions:eq(0)").show();
+			$("#brainstorms3 .sort:eq(0)").attr("rel", data.sort).addClass("sort"+data.sort);
+			$("#brainstorms-top .top-subheadline").html(', ' + $("#brainstorms2 .module-click:visible").find(".text").html());
+			/*$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getDates&id="+p, success: function(data){
+				$("#brainstorms-top .top-subheadlineTwo").html(data.startdate + ' - <span id="projectenddate">' + data.enddate + '</span>');
+				$('span.app_brainstorms').trigger('click');
+				}
+			});*/
+			}
+		});
 	}
 }
 
@@ -858,48 +1117,57 @@ $(document).ready(function() {
 				west__onresize:				function() { brainstormsresetModuleHeights() }
 			,	resizeWhileDragging:		true
 			,	spacing_open:				0
-			,	closable: 				false
-			,	resizable: 				false
-			,	slidable:				false
-			, 	west__size:				325
-			,	west__closable: 		true
-			,	west__resizable: 		true
-			, 	south__size:			10
+			,	spacing_closed:				0
+			,	closable: 					false
+			,	resizable: 					false
+			,	slidable:					false
+			, 	west__size:					325
+			,	west__closable: 			true
 			,	center__onresize: "brainstormsInnerLayout.resizeAll"
 			
 		});
 		
 		brainstormsInnerLayout = $('#brainstorms div.ui-layout-center').layout({
 				center__onresize:				function() {  }
-			,	resizeWhileDragging:		false
-			,	spacing_open:				0			// cosmetic spacing
-			,	closable: 				false
-			,	resizable: 				false
-			,	slidable:				false
-			,	north__paneSelector:	".center-north"
-			,	center__paneSelector:	".center-center"
-			,	west__paneSelector:	".center-west"
-			, 	north__size:			80
-			, 	west__size:			50
-			 
-	
+			,	resizeWhileDragging:		true
+			,	spacing_open:				0
+			,	closable: 					false
+			,	resizable: 					false
+			,	slidable:					false
+			,	north__paneSelector:		".center-north"
+			,	center__paneSelector:		".center-center"
+			,	west__paneSelector:			".center-west"
+			, 	north__size:				68
+			, 	west__size:					60
 		});
 		
 		brainstormsloadModuleStart();
 	}
 
-	$("#brainstorms1-outer > h3").click(function() {
+
+	$("#brainstorms1-outer > h3").on('click', function(e, passed_id) {
+		e.preventDefault();
+		navThreeTitleFirst('brainstorms',$(this),passed_id)
+	});
+	
+
+	/*$("#brainstorms1-outer > h3").on('click', function(e) {
+		e.preventDefault();
 		var obj = getCurrentModule();
 		if(confirmNavigation()) {
 			formChanged = false;
 			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 		}
+		$('#brainstorms1').data('status','open');
+		$('#brainstorms2').data('status','closed');
+		$('#brainstorms3').data('status','closed');
 		var cid = $('#brainstorms input[name="id"]').val()
 		obj.checkIn(cid);
 		
 		if($(this).hasClass("module-bg-active")) {
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getFolderList", success: function(data){
 				$("#brainstorms1 ul").html(data.html);
+				$("#brainstormsActions .actionNew").attr("title",data.title);
 				if(data.access == "guest") {
 					brainstormsActions();
 				} else {
@@ -909,30 +1177,49 @@ $(document).ready(function() {
 						brainstormsActions(9);
 					}
 				}
-				//initScrollbar( '#brainstorms .scrolling-content' );
-				$('#brainstorms1 input.filter').quicksearch('#brainstorms1 li');
 				var id = $("#brainstorms1 .module-click:eq(0)").attr("rel");
+				
+
+
+
+		
 				$("#brainstorms1 .module-click:eq(0)").addClass('active-link');
-				//$("#brainstorms1 .drag:eq(0)").show();
+				$('#brainstorms').data("first" , id );				
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getFolderDetails&id="+id, success: function(text){
 					$("#brainstorms-right").html(text.html);
-					//brainstormsInnerLayout.initContent('center');
 					initBrainstormsContentScrollbar();
 					var h = $("#brainstorms .ui-layout-west").height();
-					$("#brainstorms1").delay(200).animate({height: h-46}, function() {
-						$(this).animate({height: h-71});			 
+					$("#brainstorms1").delay(200).animate({height: h-71}, function() {
+						$(this).animate({height: h-98});			 
+					});
+					$("#brainstorms2-outer").delay(200).animate({top: h}, function() {
+						$(this).animate({top: h-27});
 					});
 					}
 				 });
 				}
 			});
-		} else {
-			var h = $("#brainstorms .ui-layout-west").height();
+		} else { //module slide out
+			var h = $("#brainstorms div.ui-layout-west").height();
 			var id = $("#brainstorms1 .module-click:visible").attr("rel");
+			$('#brainstorms').data({"first" : id});			
 			var index = $("#brainstorms1 .module-click").index($("#brainstorms1 .module-click[rel='"+id+"']"));
-			
+			$('#brainstorms3').data('status','closed');
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getFolderList", success: function(data){
 				$("#brainstorms1 ul").html(data.html);
+				setModuleActive($("#brainstorms1"),index);
+				$("#brainstorms-current").val("folder");
+				setModuleDeactive($("#brainstorms2"),'0');
+				setModuleDeactive($("#brainstorms3"),'0');
+				$("#brainstorms2-outer").animate({top: h-27});
+				$("#brainstorms2 li").show();
+				$("#brainstorms2").prev("h3").removeClass("white");
+				$("#brainstorms3 h3").removeClass("module-bg-active");
+				$("#brainstorms3 div.thirdLevel").each(function(i) { 
+					var t = h-150+i*27;
+					$(this).animate({top: t})
+				})
+				$("#brainstormsActions .actionNew").attr("title",data.title);
 				if(data.access == "guest") {
 					brainstormsActions();
 				} else {
@@ -942,39 +1229,33 @@ $(document).ready(function() {
 						brainstormsActions(9);
 					}
 				}
-				$('#brainstorms1 input.filter').quicksearch('#brainstorms1 li');
-				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getFolderDetails&id="+id, success: function(text){
-					$("#brainstorms1 li").show();
-					setModuleActive($("#brainstorms1"),index);
-					
-					$("#brainstorms1").css("overflow", "auto").animate({height: h-46}, function() {
-						$("#"+brainstorms.name+"-right").html(text.html);
-						//initScrollbar( '#brainstorms .scrolling-content' );
-						$("#brainstorms-current").val("folder");
-						setModuleDeactive($("#brainstorms2"),'0');
-						setModuleDeactive($("#brainstorms3"),'0');
-						$("#brainstorms2 li").show();
-						$("#brainstorms2").css("height", h-96).removeClass("module-active");
-						$("#brainstorms2").prev("h3").removeClass("white");
-						$("#brainstorms2 .module-inner").css("height", h-96);
-						$("#brainstorms3 h3").removeClass("module-bg-active");
-						$("#brainstorms3 .brainstorms3-content:visible").slideUp();
+				setTimeout(function() {				
+					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getFolderDetails&id="+id, success: function(text){
+						$("#brainstorms1 li").show();
+						$("#brainstorms-right").html(text.html);
 						initBrainstormsContentScrollbar();
-						$("#brainstorms1").delay(200).animate({height: h-71});
-					});
-					}
-				 });
+						}
+					 });
+				}, 400)
 				}
 			});
 		}
+		$('#brainstorms').data({ "current" : "folders"});		
 		$("#brainstorms-top .top-headline").html("");
 		$("#brainstorms-top .top-subheadline").html("");
 		$("#brainstorms-top .top-subheadlineTwo").html("");
-		return false;
+	});*/
+
+
+	$("#brainstorms2-outer > h3").on('click', function(e, passed_id) {
+		e.preventDefault();
+		navThreeTitleSecond('brainstorms',$(this),passed_id)
 	});
 
+	/*$("#brainstorms2-outer > h3").on('click', function(e, passed_id) {
+		e.preventDefault();
 
-	$("#brainstorms2-outer > h3").click(function(event, passed_id) {
+		$('#brainstorms3').data('status','closed');
 		var obj = getCurrentModule();
 		if(confirmNavigation()) {
 			formChanged = false;
@@ -986,72 +1267,80 @@ $(document).ready(function() {
 		if($(this).hasClass("module-bg-active")) {
 			$("#brainstorms1-outer > h3").trigger("click");
 		} else {
-			if($("#brainstorms2").height() == module_title_height) {
-				var h = $("#brainstorms .ui-layout-west").height();
-				var id = $("#brainstorms1 .module-click:visible").attr("rel");
-				var brainstormid = $("#brainstorms2 .module-click:visible").attr("rel");
+			if($("#brainstorms1").data('status') == 'closed') { // resize module
+				$('#brainstorms2').data('status','open');				
+				var h = $("#brainstorms div.ui-layout-west").height();
+				var id = $('#brainstorms').data('first');
+				if(passed_id === undefined) {
+						var brainstormid = $('#brainstormids').data('second');
+					} else {
+						var brainstormid = passed_id;					
+						}
+				$('#brainstorm').data({ "second" : brainstormid});
 				var index = $("#brainstorms2 .module-click").index($("#brainstorms2 .module-click[rel='"+brainstormid+"']"));
-				$("#brainstorms3 .module-actions:visible").hide();
+				$("#brainstorms3 .module-actions").hide();
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getBrainstormList&id="+id, success: function(data){
 					$("#brainstorms2 ul").html(data.html);
 					$("#brainstormsActions .actionNew").attr("title",data.title);
 					$("#brainstorms2 li").show();
 					setModuleActive($("#brainstorms2"),index);
 					$("#brainstorms2 .sort").attr("rel", data.sort).addClass("sort"+data.sort);
-					$('#brainstorms2 input.filter').quicksearch('#brainstorms2 li');
-					$("#brainstorms2").css("overflow", "auto").animate({height: h-(brainstorms.modules_height+96)}, function() {
-					$(this).find('.west-ui-content	').height(h-(brainstorms.modules_height+96));
+					
+					$(this).find('.west-ui-content').height(h-(brainstorms.modules_height+125));
 					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getBrainstormDetails&id="+brainstormid, success: function(text){
 						$("#brainstorms-right").html(text.html);
-
 						switch (text.access) {
-									case "sysadmin":
-										if(data.html == "<li></li>") {
-											brainstormsActions(3);
-										} else {
-											brainstormsActions(0);
-											$('#brainstorms2').find('input.filter').quicksearch('#brainstorms2 li');
-										}
-									break;
-									case "admin":
-										if(data.html == "<li></li>") {
-											brainstormsActions(3);
-										} else {
-											brainstormsActions(0);
-											$('#brainstorms2').find('input.filter').quicksearch('#brainstorms2 li');
-										}
-									break;
-									case "guestadmin":
-										if(data.html == "<li></li>") {
-											brainstormsActions(3);
-										} else {
-											brainstormsActions(7);
-											$('#brainstorms2').find('input.filter').quicksearch('#brainstorms2 li');
-										}
-									break;
-									case "guest":
-										if(data.html == "<li></li>") {
-											brainstormsActions();
-										} else {
-											brainstormsActions(5);
-											$('#brainstorms2').find('input.filter').quicksearch('#brainstorms2 li');
-										}
-									break;
-								}
+								case "sysadmin":
+									if(data.html == "<li></li>") {
+										brainstormsActions(3);
+									} else {
+										brainstormsActions(0);
+									}
+								break;
+								case "admin":
+									if(data.html == "<li></li>") {
+										brainstormsActions(3);
+									} else {
+										brainstormsActions(0);
+									}
+								break;
+								case "guestadmin":
+									if(data.html == "<li></li>") {
+										brainstormsActions(3);
+									} else {
+										brainstormsActions(7);
+									}
+								break;
+								case "guest":
+									if(data.html == "<li></li>") {
+										brainstormsActions();
+									} else {
+										brainstormsActions(5);
+									}
+								break;
+							}
+						
+							if(text.access != "sysadmin") {
+								Brainstorms2ModulesDisplay(text.access); 
+							} else {
+								$("#brainstorms3 div.thirdLevel").each(function(i) { 
+									var t = $("#brainstorms3").height()-brainstorms_num_modules*27+i*27;
+									$(this).animate({top: t})
+								}) 
+							}
 						initBrainstormsContentScrollbar();
 						}
 					});
 					$("#brainstorms3 h3").removeClass("module-bg-active");
-					});
-					$(".brainstorms3-content").slideUp();
 					}
 				});
 			} else {
-				var id = $("#brainstorms1 .active-link").attr("rel");
+				var id = $("#brainstorms").data("first");
 				if(id == undefined) {
 					return false;
 				}
 				var index = $("#brainstorms1 .module-click").index($("#brainstorms1 .module-click[rel='"+id+"']"));
+				setModuleDeactive($("#brainstorms1"),index);				
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getBrainstormList&id="+id, success: function(data){
 					$("#brainstorms2 ul").html(data.html);
 					$("#brainstormsActions .actionNew").attr("title",data.title);
@@ -1060,59 +1349,63 @@ $(document).ready(function() {
 					} else {
 						var brainstormid = passed_id;					
 					}
-				
-					if($("#brainstorms1").height() != module_title_height) {
+					$('#brainstorms').data({ "second" : brainstormid});
+					if($('#brainstorms1').data('status') == 'open') { // slide up module					
+						$('#brainstorms1').data('status','closed');
+						$('#brainstorms2').data('status','open');						
 						var idx = $("#brainstorms2 .module-click").index($("#brainstorms2 .module-click[rel='"+brainstormid+"']"));
 						setModuleActive($("#brainstorms2"),idx);
 						$("#brainstorms2 .sort").attr("rel", data.sort).addClass("sort"+data.sort);
-						setModuleDeactive($("#brainstorms1"),index);
-						$("#brainstorms1").css("overflow", "hidden").animate({height: module_title_height}, function() {
-							$("#brainstorms-top .top-headline").html($("#brainstorms .module-click:visible").find(".text").html());
-							$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getBrainstormDetails&id="+brainstormid, success: function(text){
-								$("#brainstorms-right").html(text.html);
-
-								switch (text.access) {
-									case "sysadmin":
-										if(data.html == "<li></li>") {
-											brainstormsActions(3);
-										} else {
-											brainstormsActions(0);
-											$('#brainstorms2').find('input.filter').quicksearch('#brainstorms2 li');
-										}
-									break;
-									case "admin":
-										if(data.html == "<li></li>") {
-											brainstormsActions(3);
-										} else {
-											brainstormsActions(0);
-											$('#brainstorms2').find('input.filter').quicksearch('#brainstorms2 li');
-										}
-									break;
-									case "guestadmin":
-										if(data.html == "<li></li>") {
-											brainstormsActions(3);
-										} else {
-											brainstormsActions(7);
-											$('#brainstorms2').find('input.filter').quicksearch('#brainstorms2 li');
-										}
-									break;
-									case "guest":
-										if(data.html == "<li></li>") {
-											brainstormsActions();
-										} else {
-											brainstormsActions(5);
-											$('#brainstorms2').find('input.filter').quicksearch('#brainstorms2 li');
-										}
-									break;
-								}
-								initBrainstormsContentScrollbar();
-								var h = $("#brainstorms .ui-layout-west").height();
-								if(text.access != "sysadmin") { BrainstormsModulesDisplay(text.access); }
-								$("#brainstorms2").delay(200).animate({height: h-(brainstorms.modules_height+96)}, function() {
-									$(this).find('.west-ui-content	').height(h-(brainstorms.modules_height+96));																			  
-									});
-								}
-							});
+						var h = $("#brainstorms div.ui-layout-west").height();						
+						$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getBrainstormDetails&id="+brainstormid, success: function(text){
+							$("#brainstorms-right").html(text.html);
+							switch (text.access) {
+								case "sysadmin":
+									if(data.html == "<li></li>") {
+										brainstormsActions(3);
+									} else {
+										brainstormsActions(0);
+									}
+								break;
+								case "admin":
+									if(data.html == "<li></li>") {
+										brainstormsActions(3);
+									} else {
+										brainstormsActions(0);
+									}
+								break;
+								case "guestadmin":
+									if(data.html == "<li></li>") {
+										brainstormsActions(3);
+									} else {
+										brainstormsActions(7);
+									}
+								break;
+								case "guest":
+									if(data.html == "<li></li>") {
+										brainstormsActions();
+									} else {
+										brainstormsActions(5);
+									}
+								break;
+							}
+							initBrainstormsContentScrollbar();
+								if(text.access != "sysadmin") { 
+									BrainstormsModulesDisplay(text.access);
+								} else {
+								var t = $("#brainstorms2").height();
+								$("#brainstorms2").animate({height: t+brainstorms_num_modules*27})
+								$("#brainstorms2-outer").animate({top: 96}, function() {
+									$("#brainstorms3 div.thirdLevel").each(function(i) { 
+										var position = $(this).position();
+										var t = position.top-brainstorms_num_modules*module_title_height;
+										$(this).animate({top: t})
+									})					  								  
+									$("#brainstorms-top .top-headline").html($("#brainstorms1 .deactivated").find(".text").html());
+									$("#brainstorms2").animate({height: t})
+								})
+							}
+						}
 						});
 					} else {
 						$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getBrainstormDetails&id="+brainstormid, success: function(text){
@@ -1125,14 +1418,20 @@ $(document).ready(function() {
 				});
 			}
 		}
+		$('#brainstorms').data({ "current" : "brainstorms"});		
 		$("#brainstorms-current").val("brainstorms");
 		$("#brainstorms-top .top-subheadline").html("");
 		$("#brainstorms-top .top-subheadlineTwo").html("");
-		return false;
+	});*/
+
+
+	$(document).on('click', '#brainstorms1 .module-click',function(e) {
+		e.preventDefault();
+		navItemFirst('brainstorms',$(this))
 	});
 
-
-	$("#brainstorms1 .module-click").live('click',function(e) {
+	/*$(document).on('click', '#brainstorms1 .module-click',function(e) {
+		e.preventDefault();		
 		if($(this).hasClass("deactivated")) {
 			$("#brainstorms1-outer > h3").trigger("click");
 			return false;
@@ -1146,15 +1445,19 @@ $(document).ready(function() {
 		obj.checkIn(cid);
 		
 		var id = $(this).attr("rel");
+		$('#brainstorms').data({ "first" : id});
 		var index = $("#brainstorms .module-click").index(this);
 		$("#brainstorms .module-click").removeClass("active-link");
 		$(this).addClass("active-link");
 
-		var h = $("#brainstorms .ui-layout-west").height();
-		$("#brainstorms1").delay(200).animate({height: h-46}, function() {
-			$(this).animate({height: h-71});
+		var h = $("#brainstorms div.ui-layout-west").height();
+		$("#brainstorms1").delay(200).animate({height: h-71}, function() {
+			$(this).animate({height: h-98});
 		});
-			
+		$("#brainstorms2-outer").delay(200).animate({top: h}, function() {
+			$(this).animate({top: h-27});
+		});
+
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getFolderDetails&id="+id, success: function(text){
 			$("#brainstorms-right").html(text.html);
 			brainstormsInnerLayout.initContent('center');
@@ -1165,12 +1468,17 @@ $(document).ready(function() {
 				}
 			}
 		});
-		
-		return false;
+	});*/
+
+
+	$(document).on('click', '#brainstorms2 .module-click',function(e) {
+		e.preventDefault();
+		navItemSecond('brainstorms',$(this))
 	});
 
 
-	$("#brainstorms2 .module-click").live('click',function(e) {
+	/*$(document).on('click', '#brainstorms2 .module-click',function(e) {
+		e.preventDefault();		
 		if($(this).hasClass("deactivated")) {
 			$("#brainstorms2-outer > h3").trigger("click");
 			return false;
@@ -1185,13 +1493,13 @@ $(document).ready(function() {
 		
 		var fid = $("#brainstorms .module-click:visible").attr("rel");
 		var id = $(this).attr("rel");
+		$('#brainstorms').data({ "second" : id});		
 		var index = $("#brainstorms .module-click").index(this);
 		$("#brainstorms .module-click").removeClass("active-link");
 		$(this).addClass("active-link");
-		$("#brainstorms-top .top-headline").html($("#brainstorms .module-click:visible").find(".text").html());
+		$("#brainstorms-top .top-headline").html($("#brainstorms1 .deactivated").find(".text").html());
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getBrainstormDetails&fid="+fid+"&id="+id, success: function(text){
 			$("#brainstorms-right").html(text.html);
-			
 			if($('#checkedOut').length > 0) {
 				$("#brainstorms2 .active-link .icon-checked-out").addClass('icon-checked-out-active');
 			} else {
@@ -1213,23 +1521,35 @@ $(document).ready(function() {
 			}
 
 			initBrainstormsContentScrollbar();
-			
-			var h = $("#brainstorms .ui-layout-west").height();
-			$("#brainstorms2").delay(200).animate({height: h-96}, function() {
-				if(text.access != "sysadmin") { BrainstormsModulesDisplay(text.access); }
-				$(this).animate({height: h-(brainstorms.modules_height+96)}, function() {
-				$(this).find('.west-ui-content	').height(h-(brainstorms.modules_height+96));									   
-				});			 
-			});
-			
+			if(text.access != "sysadmin") { 
+				BrainstormsModulesDisplay(text.access); 
+			} else {
+				var t = $("#brainstorms2").height();
+				$("#brainstorms2").animate({height: t+brainstorms_num_modules*27}, function() {
+					$(this).animate({height: t});
+				})
+				$("#brainstorms3 div.thirdLevel").each(function(i) { 
+					var position = $(this).position();
+					var t = position.top+brainstorms_num_modules*27;
+					$(this).animate({top: t}, function() {
+						$(this).animate({top: position.top});
+					})
+				})
 			}
-			
+			}
 		});
-		return false;
+	});*/
+
+
+	$(document).on('click', '#brainstorms3 .module-click',function(e) {
+		e.preventDefault();
+		navItemThird('brainstorms',$(this))
 	});
 
 
-	$("#brainstorms3 .module-click").live('click',function() {
+
+	/*$(document).on('click', '#brainstorms3 .module-click',function(e) {
+		e.preventDefault();
 		var obj = getCurrentModule();
 		if(confirmNavigation()) {
 			formChanged = false;
@@ -1239,6 +1559,7 @@ $(document).ready(function() {
 		obj.checkIn(cid);
 		
 		var id = $(this).attr("rel");
+		$('#brainstorms').data({ "third" : id});
 		var ulidx = $("#brainstorms3 ul").index($(this).parents("ul"));
 		var index = $("#brainstorms3 ul:eq("+ulidx+") .module-click").index($("#brainstorms3 ul:eq("+ulidx+") .module-click[rel='"+id+"']"));
 		$("#brainstorms3 .module-click").removeClass("active-link");
@@ -1247,11 +1568,11 @@ $(document).ready(function() {
 		var obj = getCurrentModule();
 		var list = 0;
 		obj.getDetails(ulidx,index,list);
-		 return false;
-	});
+	});*/
 
 
-	$("#brainstorms3 h3").click(function(event, passed_id) {
+	$("#brainstorms3 h3").on('click', function(e, passed_id) {
+		e.preventDefault();
 		var obj = getCurrentModule();
 		if(confirmNavigation()) {
 			formChanged = false;
@@ -1268,138 +1589,130 @@ $(document).ready(function() {
 			$("#brainstorms2-outer > h3").trigger("click");
 		} else {
 			// module 3 allready activated
-			if($("#brainstorms2").height() == module_title_height) {
-				var id = $("#brainstorms2 .module-click:visible").attr("rel");
-				$("#brainstorms3 h3").removeClass("module-bg-active");
-				
+			if($('#brainstorms3').data('status') == 'open') {
+				var id = $("#brainstorms").data('second');				
+				var mod = getCurrentModule();
+				var todeactivate = mod.name.replace(/brainstorms_/, "");				
+				$('#brainstorms3 h3[rel='+todeactivate+']').removeClass("module-bg-active");
+				$("#brainstorms3 .module-actions:visible").hide();
+				var curmoduleidx = $("#brainstorms3 h3").index($('#brainstorms3 h3[rel='+todeactivate+']'));
+				var t = moduleidx*module_title_height;
 				h3click.addClass("module-bg-active")
-					.next('div').slideDown( function() {
-						$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/"+module+"&request=getList&id="+id, success: function(data){
-							$("#brainstorms3 ul:eq("+moduleidx+")").html(data.html);
-							$("#brainstormsActions .actionNew").attr("title",data.title);
-							
-							switch (data.perm) {
-				case "sysadmin": case "admin" :
-					if(data.html == "<li></li>") {
-						brainstormsActions(3);
+				$("#brainstorms3 div.thirdLevel:not(.deactivated)").each(function(i) { 
+					if(i <= moduleidx) {
+						var mx = i*module_title_height;
+						$(this).animate({top: mx})
 					} else {
-						brainstormsActions(0);
-						$('#brainstorms3').find('input.filter').quicksearch('#brainstorms3 li');
+						if(i <= curmoduleidx) {
+							var position = $(this).position();
+							var h = position.top+$(this).height()-27;
+							$(this).animate({top: h})
+						} else {
+							var position = $(this).position();
+							var h = position.top;
+							$(this).animate({top: h})
+						}
 					}
-				break;
-				case "guest":
-					if(data.html == "<li></li>") {
-						brainstormsActions();
-					} else {
-						brainstormsActions(5);
-						$('#brainstorms3').find('input.filter').quicksearch('#brainstorms3 li');
-					}
-				break;
-			}
-							
-							
-							if(passed_id === undefined) {
-								var idx = 0;
-							} else {
-								var idx = $("#brainstorms3 ul:eq("+moduleidx+") .module-click").index($("#brainstorms3 ul:eq("+moduleidx+") .module-click[rel='"+passed_id+"']"));
-							}
+				})
 
-							$("#brainstorms3 ul:eq("+moduleidx+") .module-click:eq("+idx+")").addClass('active-link');
-							$("#brainstorms3 .module-actions:visible").hide();
-							var obj = getCurrentModule();
-							obj.getDetails(moduleidx,idx,data.html);
-							$(this).prev("h3").removeClass("module-bg-active");	
-							$("#brainstorms3 .module-actions:eq("+moduleidx+")").show();
-							$("#brainstorms3 .sort:eq("+moduleidx+")").attr("rel", data.sort).addClass("sort"+data.sort);
-							}
-						});			 
-					})
-					.siblings('div:visible').slideUp()
-				
+				setTimeout(function() {
+					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/"+module+"&request=getList&id="+id, success: function(data){
+						$("#brainstorms3 ul:eq("+moduleidx+")").html(data.html);
+						$("#brainstormsActions .actionNew").attr("title",data.title);	
+						switch (data.perm) {
+							case "sysadmin": case "admin" :
+								if(data.html == "<li></li>") {
+									brainstormsActions(3);
+								} else {
+									brainstormsActions(0);
+								}
+							break;
+							case "guest":
+								if(data.html == "<li></li>") {
+									brainstormsActions();
+								} else {
+									brainstormsActions(5);
+								}
+							break;
+						}
+						if(passed_id === undefined) {
+							var idx = 0;
+						} else {
+							var idx = $("#brainstorms3 ul:eq("+moduleidx+") .module-click").index($("#brainstorms3 ul:eq("+moduleidx+") .module-click[rel='"+passed_id+"']"));
+						}
+						$("#brainstorms3 ul:eq("+moduleidx+") .module-click:eq("+idx+")").addClass('active-link');
+						var obj = getCurrentModule();
+						obj.getDetails(moduleidx,idx,data.html);
+						$(this).prev("h3").removeClass("module-bg-active");	
+						$("#brainstorms3 .module-actions:eq("+moduleidx+")").show();
+						$("#brainstorms3 .sort:eq("+moduleidx+")").attr("rel", data.sort).addClass("sort"+data.sort);
+						}
+					});			 
+				}, 400);
 			} else {
 				// load and slide up module 3
-				var id = $("#brainstorms2 .active-link").attr("rel");
+				var id = $("#brainstorms").data('second');
+				$('#brainstorms2').data('status','closed');
+				$('#brainstorms3').data('status','open');
 				if(id == undefined) {
 					return false;
 				}
 				var index = $("#brainstorms2 .module-click").index($("#brainstorms2 .module-click[rel='"+id+"']"));
-	
-				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/"+module+"&request=getList&id="+id, success: function(data){
-					$("#brainstorms3 ul:eq("+moduleidx+")").html(data.html);
-					$("#brainstormsActions .actionNew").attr("title",data.title);
-					
-					switch (data.perm) {
-				case "sysadmin": case "admin" :
-					if(data.html == "<li></li>") {
-						brainstormsActions(3);
-					} else {
-						brainstormsActions(0);
-						$('#brainstorms3').find('input.filter').quicksearch('#brainstorms3 li');
+				$("#brainstorms3 .module-actions:visible").hide();
+				h3click.addClass("module-bg-active");
+				setModuleDeactive($("#brainstorms2"),index);
+				$("#brainstorms3 div.thirdLevel").each(function(i) { 
+					if(i <= moduleidx) {
+						var position = $(this).position();
+							var h = i*27;
+							$(this).animate({top: h})
+						}
+					if(i == brainstorms_num_modules-1) {
+						setTimeout(function() {
+							$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/"+module+"&request=getList&id="+id, success: function(data){
+								$("#brainstorms3 ul:eq("+moduleidx+")").html(data.html);
+								$("#brainstormsActions .actionNew").attr("title",data.title);	
+								switch (data.perm) {
+									case "sysadmin": case "admin" :
+										if(data.html == "<li></li>") {
+											brainstormsActions(3);
+										} else {
+											brainstormsActions(0);
+										}
+									break;
+									case "guest":
+										if(data.html == "<li></li>") {
+											brainstormsActions();
+										} else {
+											brainstormsActions(5);
+										}
+									break;
+								}
+								if(passed_id === undefined) {
+									var idx = 0;
+								} else {
+									var idx = $("#brainstorms3 ul:eq("+moduleidx+") .module-click").index($("#brainstorms3 ul:eq("+moduleidx+") .module-click[rel='"+passed_id+"']"));
+								}
+								$("#brainstorms3 ul:eq("+moduleidx+") .module-click:eq("+idx+")").addClass('active-link');
+								$("#brainstorms-top .top-subheadline").html(', ' + $("#brainstorms2 .deactivated").find(".text").html());
+								var obj = getCurrentModule();
+								obj.getDetails(moduleidx,idx,data.html);
+								$("#brainstorms3 .sort:eq("+moduleidx+")").attr("rel", data.sort).addClass("sort"+data.sort);
+								$("#brainstorms3 .module-actions:eq("+moduleidx+")").show();
+								}
+							});
+						}, 400);
 					}
-				break;
-				case "guest":
-					if(data.html == "<li></li>") {
-						brainstormsActions();
-					} else {
-						brainstormsActions(5);
-						$('#brainstorms3').find('input.filter').quicksearch('#brainstorms3 li');
-					}
-				break;
-			}
-					
-					
-					if(passed_id === undefined) {
-						var idx = 0;
-					} else {
-						var idx = $("#brainstorms3 ul:eq("+moduleidx+") .module-click").index($("#brainstorms3 ul:eq("+moduleidx+") .module-click[rel='"+passed_id+"']"));
-					}
-					
-					$("#brainstorms3 ul:eq("+moduleidx+") .module-click:eq("+idx+")").addClass('active-link');
-					$("#brainstorms3 .module-actions:visible").hide();
-					setModuleDeactive($("#brainstorms2"),index);
-					$("#brainstorms2").css("overflow", "hidden").animate({height: module_title_height}, function() {
-						$("#brainstorms-top .top-subheadline").html($("#brainstorms2 .module-click:visible").find(".text").html());
-						/*$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getDates&id="+id, success: function(data){
-							$("#brainstorms-top .top-subheadlineTwo").html(data.startdate + ' - <span id="brainstormenddate">' + data.enddate + '</span>');
-							}
-						});*/
-					});
-					h3click.addClass("module-bg-active")
-						.next('div').slideDown(function() {
-							var obj = getCurrentModule();
-							obj.getDetails(moduleidx,idx,data.html);
-							$("#brainstorms3 .sort:eq("+moduleidx+")").attr("rel", data.sort).addClass("sort"+data.sort);
-							$("#brainstorms3 .module-actions:eq("+moduleidx+")").show();
-						})
-					}
-				});
+				})
 			}
 			$("#brainstorms-current").val(module);
+			$('#brainstorms').data({ "current" : module});
 		}
-		return false;
 	});
 
- 
-    /*$("#brainstorms .loadModuleStart").click(function() {
-		loadModuleStart();
-		return false;
-	});*/
-  
-	
-	/*$('a.insertAccess').live('click',function() {
-		var rel = $(this).attr("rel");
-		var field = $(this).attr("field");
-		var html = '<div class="listmember" field="'+field+'" uid="'+rel+'">' + $(this).html() + '</div>';
-		$("#"+field).html(html);
-		$("#modalDialog").dialog("close");
-		var obj = getCurrentModule();
-		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
-		return false;
-	});*/
-	
 
-
-	$('a.insertBrainstormFolderfromDialog').livequery('click',function() {
+	$('a.insertBrainstormFolderfromDialog').livequery('click',function(e) {
+		e.preventDefault();
 		var field = $(this).attr("field");
 		var gid = $(this).attr("gid");
 		var title = $(this).attr("title");
@@ -1429,7 +1742,7 @@ $(document).ready(function() {
 
 	
 	// load a phase
-	$(".loadBrainstormsPhase").live('click', function() {
+	/*$(".loadBrainstormsPhase").live('click', function() {
 		
 		var obj = getCurrentModule();
 		if(confirmNavigation()) {
@@ -1448,7 +1761,7 @@ $(document).ready(function() {
 		var id = $(this).attr("rel");
 		$("#brainstorms3 h3[rel='phases']").trigger('click', [id]);
 		return false;
-	});
+	});*/
 
 
 	$('span.actionRoster').click(function(){
@@ -1459,30 +1772,7 @@ $(document).ready(function() {
 		return false;
 	});
 
-	
-	/* barchart opacity with jquery
-	$(".barchart-phase-bg").livequery( function() {
-		$(this).css("opacity","0.3");
-	});
 
-	$("#todayBar").livequery( function() {
-		$(this).css("opacity","0.4");
-	});
-	// becomes global Tooltip?
-	$(".coTooltip").livequery( function() {
-		$(this).tooltip({
-			track: true,
-			delay: 0,
-			fade: 200,
-			bodyHandler: function() { 
-				return $(this).find(".coTooltipHtml").html(); 
-			}, 
-			showURL: false 
-		});
-	});
-	*/
-	
-	
 	var tmp;
 	brainstorms.initItems();
 
@@ -1509,8 +1799,10 @@ $(document).ready(function() {
 
 	$("span.brainstormsAddNote").live("click", function(e) {
 		e.preventDefault();
-		var id = $("#brainstorms2 .active-link").attr("rel");
-		var oid = $("#brainstorms1 .module-click:visible").attr("rel");
+		//var id = $("#brainstorms2 .active-link").attr("rel");
+		//var oid = $("#brainstorms1 .module-click:visible").attr("rel");
+		var oid = $('#brainstorms').data('first');
+		var id = $('#brainstorms').data('second');	
 		var z = ++brainstormszIndex;
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=newBrainstormNote&id="+id+"&z="+z, success: function(data){
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getBrainstormDetails&fid="+oid+"&id="+id, success: function(text){

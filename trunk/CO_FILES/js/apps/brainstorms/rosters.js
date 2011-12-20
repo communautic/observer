@@ -28,14 +28,6 @@ function brainstormsRosters(name) {
 							$("#brainstorms3 .active-link .module-access-status").addClass("module-access-active");
 						break;
 					}
-					/*
-					switch(data.status) {
-						case "1":
-							$("#brainstorms3 .active-link .module-item-status").addClass("module-item-active");
-						break;
-						default:
-							$("#brainstorms3 .active-link .module-item-status").removeClass("module-item-active");
-					}*/
 			break;
 		}
 	}
@@ -46,13 +38,14 @@ function brainstormsRosters(name) {
 
 	this.getDetails = function(moduleidx,liindex,list) {
 		var id = $("#brainstorms3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
+		$('#brainstorms').data({ "third" : id});
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/rosters&request=getDetails&id="+id, success: function(data){
 			$("#brainstorms-right").html(data.html);
 			
 			if($('#checkedOut').length > 0) {
-					$("#brainstorms3 .active-link:visible .icon-checked-out").addClass('icon-checked-out-active');
+					$("#brainstorms3 ul[rel=rosters] .active-link .icon-checked-out").addClass('icon-checked-out-active');
 				} else {
-					$("#brainstorms3 .active-link:visible .icon-checked-out").removeClass('icon-checked-out-active');
+					$("#brainstorms3 ul[rel=rosters] .active-link .icon-checked-out").removeClass('icon-checked-out-active');
 				}
 			
 			if(list == 0) {
@@ -71,7 +64,6 @@ function brainstormsRosters(name) {
 							brainstormsActions(3);
 						} else {
 							brainstormsActions(10);
-							$('#brainstorms3').find('input.filter').quicksearch('#brainstorms3 li');
 						}
 					break;
 					case "guest":
@@ -79,7 +71,6 @@ function brainstormsRosters(name) {
 							brainstormsActions();
 						} else {
 							brainstormsActions(5);
-							$('#brainstorms3').find('input.filter').quicksearch('#brainstorms3 li');
 						}
 					break;
 				}
@@ -96,15 +87,14 @@ function brainstormsRosters(name) {
 		var cid = $('#brainstorms input[name="id"]').val()
 		module.checkIn(cid);
 	
-		var id = $('#brainstorms2 .module-click:visible').attr("rel");
+		var id = $('#brainstorms').data('second');
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: 'path=apps/brainstorms/modules/rosters&request=createNew&id=' + id, cache: false, success: function(data){
 			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/brainstorms/modules/rosters&request=getList&id="+id, success: function(list){
-				$(".brainstorms3-content:visible ul").html(list.html);
-				var liindex = $(".brainstorms3-content:visible .module-click").index($(".brainstorms3-content:visible .module-click[rel='"+data.id+"']"));
-				$(".brainstorms3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
-				var moduleidx = $(".brainstorms3-content").index($(".brainstorms3-content:visible"));
+				$("#brainstorms3 ul[rel=rosters]").html(list.html);
+				var liindex = $("#brainstorms3 ul[rel=rosters] .module-click").index($("#brainstorms3 ul[rel=rosters] .module-click[rel='"+data.id+"']"));
+				$("#brainstorms3 ul[rel=rosters] .module-click:eq("+liindex+")").addClass('active-link');
+				var moduleidx = $("#brainstorms3 ul").index($("#brainstorms3 ul[rel=rosters]"));
 				module.getDetails(moduleidx,liindex);
-				$('#brainstorms3 input.filter').quicksearch('#brainstorms3 li');
 				setTimeout(function() { $('#brainstorms-right .focusTitle').trigger('click'); }, 800);
 				}
 			});
@@ -117,16 +107,15 @@ function brainstormsRosters(name) {
 		var module = this;
 		var cid = $('#brainstorms input[name="id"]').val()
 		module.checkIn(cid);
-		var id = $("#brainstorms3 .active-link:visible").attr("rel");
-		var pid = $("#brainstorms2 .module-click:visible").attr("rel");
+		var id = $("#brainstorms").data("third");
+		var pid = $("#brainstorms").data("second");
 		$.ajax({ type: "GET", url: "/", data: 'path=apps/brainstorms/modules/rosters&request=createDuplicate&id=' + id, cache: false, success: function(mid){
 			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/brainstorms/modules/rosters&request=getList&id="+pid, success: function(data){																																																																				
-				$(".brainstorms3-content:visible ul").html(data.html);
-				var moduleidx = $(".brainstorms3-content").index($(".brainstorms3-content:visible"));
-				var liindex = $(".brainstorms3-content:visible .module-click").index($(".brainstorms3-content:visible .module-click[rel='"+mid+"']"));
+				$("#brainstorms3 ul[rel=rosters]").html(data.html);
+				var moduleidx = $("#brainstorms3 ul").index($("#brainstorms3 ul[rel=rosters]"));
+				var liindex = $("#brainstorms3 ul[rel=rosters] .module-click").index($("#brainstorms3 ul[rel=rosters] .module-click[rel='"+mid+"']"));
 				module.getDetails(moduleidx,liindex);
-				$(".brainstorms3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
-				$('#brainstorms3 input.filter').quicksearch('#brainstorms3 li');
+				$("#brainstorms3 ul[rel=rosters] .module-click:eq("+liindex+")").addClass('active-link');
 				}
 			});
 			}
@@ -146,22 +135,21 @@ function brainstormsRosters(name) {
 			buttons:langbuttons,
 			callback: function(v,m,f){		
 				if(v){
-					var id = $("#brainstorms3 .active-link:visible").attr("rel");
-					var pid = $("#brainstorms2 .module-click:visible").attr("rel");
+					var id = $("#brainstorms").data("third");
+					var pid = $("#brainstorms").data("second");
 					$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/rosters&request=binRoster&id=" + id, cache: false, success: function(data){
 							if(data == "true") {
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/rosters&request=getList&id="+pid, success: function(data){
-									$(".brainstorms3-content:visible ul").html(data.html);
+									$("#brainstorms3 ul[rel=rosters]").html(data.html);
 									if(data.html == "<li></li>") {
 										brainstormsActions(3);
 									} else {
 										brainstormsActions(10);
-										$('#brainstorms3 input.filter').quicksearch('#brainstorms3 li');
 									}
-									var moduleidx = $(".brainstorms3-content").index($(".brainstorms3-content:visible"));
+									var moduleidx = $("#brainstorms3 ul").index($("#brainstorms3 ul[rel=rosters]"));
 									var liindex = 0;
 									module.getDetails(moduleidx,liindex);
-									$("#brainstorms3 .brainstorms3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
+									$("#brainstorms3 ul[rel=rosters] .module-click:eq("+liindex+")").addClass('active-link');
 								}
 								});
 							}
@@ -184,29 +172,27 @@ function brainstormsRosters(name) {
 	
 	
 	this.actionRefresh = function() {
-		var id = $("#brainstorms3 .active-link:visible").attr("rel");
-		var pid = $("#brainstorms2 .module-click:visible").attr("rel");
-		$("#brainstorms3 .active-link:visible").trigger("click");
-		var id = $("#brainstorms3 .active-link:visible").attr("rel");
+		var id = $("#brainstorms").data("third");
+		var pid = $("#brainstorms").data("second");
+		$("#brainstorms3 ul[rel=rosters] .active-link").trigger("click");
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/brainstorms/modules/rosters&request=getList&id="+pid, success: function(data){																																																																				
-			$(".brainstorms3-content:visible ul").html(data.html);
-			var liindex = $(".brainstorms3-content:visible .module-click").index($(".brainstorms3-content:visible .module-click[rel='"+id+"']"));
-			$(".brainstorms3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
-			$('#brainstorms3 input.filter').quicksearch('#brainstorms3 li');
+			$("#brainstorms3 ul[rel=rosters]").html(data.html);
+			var liindex = $("#brainstorms3 ul[rel=mrosters] .module-click").index($("#brainstorms3 ul[rel=rosters] .module-click[rel='"+id+"']"));
+			$("#brainstorms3 ul[rel=rosters] .module-click:eq("+liindex+")").addClass('active-link');
 			}
 		});
 	}
 
 
 	this.actionPrint = function() {
-		var id = $("#brainstorms3 .active-link:visible").attr("rel");
+		var id = $("#brainstorms").data("third");
 		var url ='/?path=apps/brainstorms/modules/rosters&request=printDetails&id='+id;
 		location.href = url;
 	}
 
 
 	this.actionSend = function() {
-		var id = $("#brainstorms3 .active-link:visible").attr("rel");
+		var id = $("#brainstorms").data("third");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/rosters&request=getSend&id="+id, success: function(html){
 			$("#modalDialogForward").html(html).dialog('open');
 			}
@@ -215,7 +201,7 @@ function brainstormsRosters(name) {
 
 
 	this.actionSendtoResponse = function() {
-		var id = $("#brainstorms3 .active-link:visible").attr("rel");
+		var id = $("#brainstorms").data("third");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/rosters&request=getSendtoDetails&id="+id, success: function(html){
 			$("#brainstormsroster_sendto").html(html);
 			$("#modalDialogForward").dialog('close');
@@ -231,17 +217,17 @@ function brainstormsRosters(name) {
 		
 		var fid = $("#brainstorms2 .module-click:visible").attr("rel");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/rosters&request=getList&id="+fid+"&sort="+sortnew, success: function(data){
-			$(".brainstorms3-content:visible ul").html(data.html);
+			$("#brainstorms3 ul[rel=rosters]").html(data.html);
 			obj.attr("rel",sortnew);
 			obj.removeClass("sort"+sortcur).addClass("sort"+sortnew);
-			var id = $(".brainstorms3-content:visible .module-click:eq(0)").attr("rel");
+			var id = $("#brainstorms3 ul[rel=rosters] .module-click:eq(0)").attr("rel");
+			$('#brainstorms').data('third',id);
 			if(id == undefined) {
 				return false;
 			}
-			var moduleidx = $(".brainstorms3-content").index($(".brainstorms3-content:visible"));
-			var liindex = 0;
-			module.getDetails(moduleidx,liindex);
-			$("#brainstorms3 .brainstorms3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
+			var moduleidx = $("#brainstorms3 ul").index($("#brainstorms3 ul[rel=rosters]"));
+			module.getDetails(moduleidx,0);
+			$("#brainstorms3 ul[rel=rosters] .module-click:eq(0)").addClass('active-link');
 		}
 		});
 	}
@@ -256,15 +242,6 @@ function brainstormsRosters(name) {
 		});
 	}
 
-
-	/*this.toggleIntern = function(id,status,obj) {
-		$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/rosters&request=toggleIntern&id=" + id + "&status=" + status, cache: false, success: function(data){
-			if(data == "true") {
-				obj.toggleClass("module-item-active")
-			}
-			}
-		});
-	}*/
 	
 	this.actionDialog = function(offset,request,field,append,title,sql) {
 		switch(request) {
@@ -298,7 +275,7 @@ function brainstormsRosters(name) {
 				});
 			break;
 			case "getDocumentsDialog":
-				var id = $("#brainstorms2 .module-click:visible").attr("rel");
+				var id = $("#brainstorms").data("second");
 				$.ajax({ type: "GET", url: "/", data: 'path=apps/brainstorms/modules/documents&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql+'&id=' + id, success: function(html){
 					$("#modalDialog").html(html);
 					$("#modalDialog").dialog('option', 'position', offset);
@@ -386,7 +363,7 @@ function brainstormsRosters(name) {
 
 
 	this.newItem = function() {
-		var mid = $(".brainstorms3-content:visible .active-link").attr("rel");
+		var mid = $("#brainstorms").data("third");
 		var num = parseInt($("#brainstorms-right .task_sort").size());
 		$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/rosters&request=addTask&mid=" + mid + "&num=" + num + "&sort=" + num, success: function(html){
 			$('#brainstormsrostertasks').append(html);
@@ -678,7 +655,7 @@ function initBrainstormsPhases() {
 				var attr = div.attr('id');
 				if (typeof attr == 'undefined' || attr == false) {
 					var id = div.attr('rel');
-					var pid = $(".brainstorms3-content:visible .active-link").attr("rel");
+					var pid = $("#brainstorms").data("third");
 					$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/brainstorms/modules/rosters&request=saveRosterNewNote&pid="+pid+"&id=" + id, cache: false, success: function(id){
 						div.attr('id','item_' + id);
 						div.append('<div class="binItem-Outer"><a class="binItem" rel="'+id+'"><span class="icon-delete"></span></a></div>');
@@ -720,7 +697,7 @@ $(document).ready(function() {
 
 	$('#brainstorms-add-column').live("click", function(e) {
 		e.preventDefault();
-		var pid = $(".brainstorms3-content:visible .active-link").attr("rel");
+		var pid = $("#brainstorms").data("third");
 		var sor = $('#brainstorms-roster>div').size();
 		var styles = '';
 		if(sor != 0) {
@@ -768,7 +745,7 @@ $(document).ready(function() {
 		} else {
 			var phase = $(this);
 			var idx = phase.index(this);
-			var pid = $(".brainstorms3-content:visible .active-link").attr("rel");
+			var pid = $("#brainstorms").data("third");
 			$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/rosters&request=saveRosterNewManualNote&pid="+pid, cache: false, success: function(html){
 					phase.append(html);
 					phase.trigger('sortupdate');
@@ -853,7 +830,7 @@ $(document).ready(function() {
 
 	$('span.actionBrainstormsRostersConvert').live("click", function(e) {
 		e.preventDefault();
-		var id = $(".brainstorms3-content:visible .active-link").attr("rel");
+		var id = $("#brainstorms").data("third");
 		var kickofffield = Date.parse($("#brainstorms input[name='kickoff']").val());
 		var kickoff = kickofffield.toString("yyyy-MM-dd");
 		var folder = $('#rosterprojectsfolder>span').attr('uid');

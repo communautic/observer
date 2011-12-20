@@ -13,11 +13,10 @@ function brainstormsAccess(name) {
 
 
 	this.getDetails = function(moduleidx,liindex,list) {
-		var id = $("#brainstorms2 .module-click:visible").attr("rel");
+		var id = $("#brainstorms").data('second');
 		$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/access&request=getDetails&id="+id, success: function(html){
 			$("#brainstorms-right").html(html);
 			initBrainstormsContentScrollbar();
-			//initScrollbar( '.brainstorms3-content:visible .scrolling-content' );
 			brainstormsActions(6);
 			}
 		});
@@ -30,7 +29,7 @@ function brainstormsAccess(name) {
 
 
 	this.actionRefresh = function() {
-		$("#brainstorms3 .active-link:visible").trigger("click");
+		$("#brainstorms3 ul[rel=access] .active-link").trigger("click");
 	}
 
 
@@ -49,9 +48,7 @@ function brainstormsAccess(name) {
 		var url = "/?path=apps/brainstorms/modules/access&request=getHelp";
 		$("#documentloader").attr('src', url);
 	}
-
-
+	
 }
-
 
 var brainstorms_access = new brainstormsAccess('brainstorms_access');

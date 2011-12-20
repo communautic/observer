@@ -558,6 +558,7 @@ class Projects extends Controller {
 			$reminders = $arr["reminders"];
 			$kickoffs = $arr["kickoffs"];
 			$alerts = $arr["alerts"];
+			$notices = $arr["notices"];
 			ob_start();
 			include 'view/widget.php';
 			$data["html"] = ob_get_contents();
@@ -571,6 +572,17 @@ class Projects extends Controller {
 			ob_end_clean();
 			return json_encode($data);
 		}
+	}
+	
+	
+	function markNoticeRead($pid) {
+		global $lang, $system;
+		$retval = $this->model->markNoticeRead($pid);
+		if($retval){
+			 return $retval;
+		  } else{
+			 return "error";
+		  }
 	}
 
 }

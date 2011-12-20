@@ -1,4 +1,4 @@
-<div>
+<div class="table-title-outer">
 <table border="0" cellpadding="0" cellspacing="0" class="table-title">
 	<tr>
 		<td class="tcell-left text11"><span class="<?php if($folder->canedit) { ?>content-nav focusTitle<?php } ?>"><span><?php echo $lang["PROJECT_FOLDER"];?></span></span></td>
@@ -112,7 +112,7 @@ if(is_array($projects)) {
 ?>
 </div>
 </div>
-<div>
+<div class="table-footer-outer">
 <table border="0" cellspacing="0" cellpadding="0" class="table-footer">
   <tr>
     <td class="left"><?php echo($lang["GLOBAL_FOOTER_STATUS"] . " " . $folder->today);?></td>

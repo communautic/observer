@@ -964,10 +964,52 @@ class ForumsModel extends Model {
 		$task["datetime"] = $this->_date->formatDate($now,CO_DATETIME_FORMAT);
 		$task["text"] = stripslashes($text);
 		$tasks = new Lists($task);
-
+	
+		$this->writeNewPostsWidgetAlert($id);
+		
 		return $tasks;
 
 	}
+	
+	
+	
+	function writeNewPostsWidgetAlert($pid) {
+		global $session;
+		$users = "";
+		// select all users that have reminders for this project
+		$q = "SELECT admins,guests FROM co_forums_access where pid='$pid'";
+		$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+			if($row['admins'] != "") {
+				$users .= $row['admins'] . ',';
+			}
+			if($row['guests'] != "") {
+				$users .= $row['guests'] . ',';
+			}
+		}
+		
+		$q = "SELECT a.created_user FROM " . CO_TBL_FORUMS_FOLDERS . " as a, " . CO_TBL_FORUMS . " as b where b.folder = a.id and b.id='$pid'";
+		$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+			if($row['created_user'] != "") {
+				$users .= $row['created_user'] . ',';
+			}
+		}
+		$users = rtrim($users, ",");
+		if($users != "") {
+			$users = explode(",",$users);
+		} else {
+			$users = array();
+		}
+		foreach($users as $user) {
+			if($user != $session->uid) {
+				$q = "INSERT INTO " . CO_TBL_FORUMS_DESKTOP . " set pid='$pid', uid = '$user', newpost='1'";
+				$result = mysql_query($q, $this->_db->connection);
+			}
+		}
+		
+   }
+
 	
 	
 	function setItemStatus($id,$status) {
@@ -1282,7 +1324,111 @@ class ForumsModel extends Model {
 			return false;
 		}
    }*/
+	   
+
+
+     function existUserForumsWidgets() {
+		global $session;
+		$q = "select count(*) as num from " . CO_TBL_FORUMS_DESKTOP_SETTINGS . " where uid='$session->uid'";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_assoc($result);
+		if($row["num"] < 1) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	
+	function getUserForumsWidgets() {
+		global $session;
+		$q = "select * from " . CO_TBL_FORUMS_DESKTOP_SETTINGS . " where uid='$session->uid'";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_assoc($result);
+		return $row;
+	}
+
+
+   function getWidgetAlerts() {
+		global $session, $date;
+	  	
+		$now = new DateTime("now");
+		$today = $date->formatDate("now","Y-m-d");
+		$tomorrow = $date->addDays($today, 1);
+		$string = "";
+		
+		$access = "";
+		if(!$session->isSysadmin()) {
+			$access = " and c.id IN (" . implode(',', $this->getEditPerms($session->uid)) . ")";
+		}
+		
+		// reminders = neue posts für initiator und admins
+		//$q ="select c.folder,c.id as pid,c.title as title from  " . CO_TBL_FORUMS . " as c where c.status='1' and c.bin = '0' " . $access;
+		$reminders = "";
+		$q ="select a.id as pid,a.folder,a.title as forumtitle from " . CO_TBL_FORUMS . " as a,  " . CO_TBL_FORUMS_DESKTOP . " as b where a.id = b.pid and b.newpost = '1' and b.uid = '$session->uid'";
+		$result = mysql_query($q, $this->_db->connection);
+		while ($row = mysql_fetch_array($result)) {
+			foreach($row as $key => $val) {
+				$array[$key] = $val;
+			}
+			$string .= $array["folder"] . "," . $array["pid"] . ",";
+			$reminders[] = new Lists($array);
+		}
+
+		
+		// notices for this user
+		$q ="select a.id as pid,a.folder,a.title as brainstormtitle,b.perm from " . CO_TBL_FORUMS . " as a,  " . CO_TBL_FORUMS_DESKTOP . " as b where a.id = b.pid and b.uid = '$session->uid' and b.status = '0' and newpost!='1'";
+		$result = mysql_query($q, $this->_db->connection);
+		$notices = "";
+		$array = "";
+		while ($row = mysql_fetch_array($result)) {
+			foreach($row as $key => $val) {
+				$array[$key] = $val;
+			}
+			$string .= $array["folder"] . "," . $array["pid"] . ",";
+			$notices[] = new Lists($array);
+		}
+		
+
+		if(!$this->existUserForumsWidgets()) {
+			$q = "insert into " . CO_TBL_FORUMS_DESKTOP_SETTINGS . " set uid='$session->uid', value='$string'";
+			$result = mysql_query($q, $this->_db->connection);
+			$widgetaction = "open";
+		} else {
+			$row = $this->getUserForumsWidgets();
+			$id = $row["id"];
+			if($string == $row["value"]) {
+				$widgetaction = "";
+			} else {
+				$widgetaction = "open";
+			}
+			$q = "UPDATE " . CO_TBL_FORUMS_DESKTOP_SETTINGS . " set value='$string' WHERE id = '$id'";
+			$result = mysql_query($q, $this->_db->connection);
+		}
+		
+		$arr = array("reminders" => $reminders, "notices" => $notices, "widgetaction" => $widgetaction);
+		return $arr;
+   }
+
    
+	function markNoticeRead($pid) {
+		global $session, $date;
+		
+		$q ="UPDATE " . CO_TBL_FORUMS_DESKTOP . " SET status = '1' WHERE uid = '$session->uid' and pid = '$pid' and newpost='0'";
+		$result = mysql_query($q, $this->_db->connection);
+		return true;
+
+	}
+
+
+	function markNewPostRead($pid) {
+		global $session, $date;
+		
+		$q ="DELETE FROM " . CO_TBL_FORUMS_DESKTOP . " WHERE uid = '$session->uid' and pid = '$pid' and newpost='1'";
+		$result = mysql_query($q, $this->_db->connection);
+		return true;
+
+	}
 
 }
 

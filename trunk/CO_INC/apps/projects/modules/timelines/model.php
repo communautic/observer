@@ -196,7 +196,6 @@ class ProjectsTimelinesModel extends ProjectsModel {
 		}
 		 $this->setUserSetting("gantt-chart-zoom",$width);
 		
-		
 		// settings apart from width
 		$space_between_phases = 2;
 		$height_of_tasks = 10;
@@ -241,6 +240,7 @@ class ProjectsTimelinesModel extends ProjectsModel {
 
 		$result = mysql_query($q, $this->_db->connection);
 	  	while ($row = mysql_fetch_object($result)) {
+			$project["id"] = $pid;
 			$project["title"] = $row->title;
 			$project["folder"] = $projectsmodel->getProjectFolderDetails($row->folder,"folder");
 			$project["startdate"] = $row->startdate;

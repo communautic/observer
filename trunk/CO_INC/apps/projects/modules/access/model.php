@@ -60,13 +60,40 @@ class ProjectsAccessModel extends ProjectsModel {
    }
 	
 	
-   /*function writeProjectsWidgetReminder($string) {
-	   $users = explode(",",$string);
-	   foreach($users as $user) {
-			$q = "INSERT INTO " . CO_TBL_PROJECTS_DESKTOP . " set uid = '$user',";
-			$result = mysql_query($q, $this->_db->connection);
+	function writeProjectsWidgetReminder($pid,$string,$perm = 0) {
+		if($string != "") {
+			$users = explode(",",$string);
+		} else {
+			$users = array();
+		}
+	   
+		// select all users that have reminders for this project
+		$qall = "SELECT uid FROM " . CO_TBL_PROJECTS_DESKTOP . " where pid='$pid' and perm ='$perm'";
+		$resultall = mysql_query($qall, $this->_db->connection);
+		$all = array();
+		while($rowall = mysql_fetch_array($resultall)) {
+			$all[] = $rowall['uid'];
+		}
+
+		foreach($users as $user) {
+			if(in_array($user,$all)) {
+				$key = array_search($user, $all);
+				unset($all[$key]);
+			} else {
+				$q = "SELECT * FROM " . CO_TBL_PROJECTS_DESKTOP . " where pid='$pid' and uid='$user' and perm ='$perm'";
+				$result = mysql_query($q, $this->_db->connection);
+				if(mysql_num_rows($result) < 1) {
+					$q = "INSERT INTO " . CO_TBL_PROJECTS_DESKTOP . " set pid='$pid', uid = '$user', perm ='$perm'";
+					$result = mysql_query($q, $this->_db->connection);
+				}
+			}
+		}
+		// last delete obsolte
+	   foreach($all as $u) {
+		   $q = "DELETE FROM " . CO_TBL_PROJECTS_DESKTOP . " WHERE uid = '$u' and pid = '$pid'";
+		   $result = mysql_query($q, $this->_db->connection);
 	   }
-   }*/
+   }
 	
 
    function setDetails($pid,$admins,$guests) {
@@ -86,7 +113,8 @@ class ProjectsAccessModel extends ProjectsModel {
 		}
 		$result = mysql_query($q, $this->_db->connection);
 		
-		//$this->writeProjectsWidgetReminder($admins);
+		$this->writeProjectsWidgetReminder($pid,$admins);
+		$this->writeProjectsWidgetReminder($pid,$guests,1);
 		
 		if ($result) {
 			return $pid;

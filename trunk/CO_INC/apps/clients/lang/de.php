@@ -65,14 +65,14 @@ $lang["CLIENT_HANDBOOK"] = 'Projekthandbuch';
 
 
 // Access codes Email
-$lang['CLIENT_ACCESS_CODES_EMAIL_SUBJECT'] = 'mama-bringts Bestellberechtigung';
-$lang['CLIENT_ACCESS_CODES_EMAIL'] =	'<p style="font-face: Arial, Verdana; font-size: small">Hiermit erhalten Sie Ihre Zugangscodes zur erstmaligen Anmeldung für das Online-Bestellsystem von mama-bringts ©:</p>' .
+$lang['CLIENT_ACCESS_CODES_EMAIL_SUBJECT'] = 'mama-bringt\'s Bestellberechtigung';
+$lang['CLIENT_ACCESS_CODES_EMAIL'] =	'<p style="font-face: Arial, Verdana; font-size: small">Hiermit erhalten Sie Ihre Zugangscodes zur erstmaligen Anmeldung für das Online-Bestellsystem von mama-bringt\'s ©:</p>' .
 								'<p style="font-face: Arial, Verdana; font-size: small">Internetadresse: <a href="%1$s">%1$s</a></p>' .
     							'<p style="font-face: Arial, Verdana; font-size: small">Benutzername: %2$s<br />' .
     							'Passwort: %3$s</p>' .
 								'<p style="font-face: Arial, Verdana; font-size: small;">Bitte melden Sie sich an, indem Sie 1. die eingangs angegebene Internetadresse aufrufen und 2. die hier angegebenen Zugangsdaten (Benutzername und Passwort) eingeben und bestätigen. 3. Im Anschluss werden Sie aufgefordert, Ihre individuellen Zugangscodes zu kreieren. Mit diesen, neuen Zugangscodes erhalten Sie zukünftig Zugang zum Bestellservice auf www.mama-bringts.at</p>' .
 								'<p style="font-face: Arial, Verdana; font-size: small;">Herzlichen Dank für die Zusammenarbeit, Ihr</p>' .
-								'<p style="font-face: Arial, Verdana; font-size: small;">mama-bringts Team</p>';
+								'<p style="font-face: Arial, Verdana; font-size: small;">mama-bringt\'s Team</p>';
 
 
 

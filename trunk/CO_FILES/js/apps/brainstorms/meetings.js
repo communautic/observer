@@ -50,35 +50,35 @@ function brainstormsMeetings(name) {
 	 this.formResponse = function(data) {
 		 switch(data.action) {
 			case "edit":
-				$("#brainstorms3 span[rel='"+data.id+"'] .text").html($("#brainstorms .item_date").val() + ' - ' +$("#brainstorms .title").val());
+				$("#brainstorms3 ul[rel=meetings] .active-link").find(".text").html($("#brainstorms .item_date").val() + ' - ' +$("#brainstorms .title").val());
 					switch(data.access) {
 						case "0":
-							$("#brainstorms3 .active-link .module-access-status").removeClass("module-access-active");
+							$("#brainstorms3 ul[rel=meetings] .active-link .module-access-status").removeClass("module-access-active");
 						break;
 						case "1":
-							$("#brainstorms3 .active-link .module-access-status").addClass("module-access-active");
+							$("#brainstorms3 ul[rel=meetings] .active-link .module-access-status").addClass("module-access-active");
 						break;
 					}
 					switch(data.status) {
 						case "1":
-							$("#brainstorms3 .active-link .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
+							$("#brainstorms3 ul[rel=meetings] .active-link .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
 						break;
 						case "2":
-							$("#brainstorms3 .active-link .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
+							$("#brainstorms3 ul[rel=meetings] .active-link .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
 						break;
 						default:
-							$("#brainstorms3 .active-link .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
+							$("#brainstorms3 ul[rel=meetings] .active-link .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
 					}
 			break;
 			case "reload":
 				var module = getCurrentModule();
-				var id = $("#brainstorms2 .module-click:visible").attr("rel");
+				var id = $('#brainstorms').data('second');
 				$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/brainstorms/modules/meetings&request=getList&id="+id, success: function(list){
-					$(".brainstorms3-content:visible ul").html(list.html);
-					var moduleidx = $(".brainstorms3-content").index($(".brainstorms3-content:visible"));
-					var liindex = $(".brainstorms3-content:visible .module-click").index($(".brainstorms3-content:visible .module-click[rel='"+data.id+"']"));
+					$('#brainstorms3 ul[rel=meetings]').html(list.html);
+					var moduleidx = $("#brainstorms3 ul").index($("#brainstorms3 ul[rel=meetings]"));
+					var liindex = $("#brainstorms3 ul[rel=meetings] .module-click").index($("#brainstorms3 ul[rel=meetings] .module-click[rel='"+data.id+"']"));
 					module.getDetails(moduleidx,liindex);
-					$("#brainstorms3 .brainstorms3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
+					$("#brainstorms3 ul[rel=meetings] .module-click:eq("+liindex+")").addClass('active-link');
 					}
 				});
 			break;
@@ -91,13 +91,14 @@ function brainstormsMeetings(name) {
 
 	this.getDetails = function(moduleidx,liindex,list) {
 		var id = $("#brainstorms3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
+		$('#brainstorms').data({ "third" : id});
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/meetings&request=getDetails&id="+id, success: function(data){
 			$("#brainstorms-right").html(data.html);
 			
 			if($('#checkedOut').length > 0) {
-					$("#brainstorms3 .active-link:visible .icon-checked-out").addClass('icon-checked-out-active');
+					$("#brainstorms3 ul[rel=meetings] .active-link .icon-checked-out").addClass('icon-checked-out-active');
 				} else {
-					$("#brainstorms3 .active-link:visible .icon-checked-out").removeClass('icon-checked-out-active');
+					$("#brainstorms3 ul[rel=meetings] .active-link .icon-checked-out").removeClass('icon-checked-out-active');
 				}
 			
 			if(list == 0) {
@@ -116,7 +117,6 @@ function brainstormsMeetings(name) {
 							brainstormsActions(3);
 						} else {
 							brainstormsActions(0);
-							$('#brainstorms3').find('input.filter').quicksearch('#brainstorms3 li');
 						}
 					break;
 					case "guest":
@@ -124,7 +124,6 @@ function brainstormsMeetings(name) {
 							brainstormsActions();
 						} else {
 							brainstormsActions(5);
-							$('#brainstorms3').find('input.filter').quicksearch('#brainstorms3 li');
 						}
 					break;
 				}
@@ -141,15 +140,14 @@ function brainstormsMeetings(name) {
 		var cid = $('#brainstorms input[name="id"]').val()
 		module.checkIn(cid);
 	
-		var id = $('#brainstorms2 .module-click:visible').attr("rel");
+		var id = $('#brainstorms').data('second');
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: 'path=apps/brainstorms/modules/meetings&request=createNew&id=' + id, cache: false, success: function(data){
 			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/brainstorms/modules/meetings&request=getList&id="+id, success: function(list){
-				$(".brainstorms3-content:visible ul").html(list.html);
-				var liindex = $(".brainstorms3-content:visible .module-click").index($(".brainstorms3-content:visible .module-click[rel='"+data.id+"']"));
-				$(".brainstorms3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
-				var moduleidx = $(".brainstorms3-content").index($(".brainstorms3-content:visible"));
+				$("#brainstorms3 ul[rel=meetings]").html(list.html);
+				var liindex = $("#brainstorms3 ul[rel=meetings] .module-click").index($("#brainstorms3 ul[rel=meetings] .module-click[rel='"+data.id+"']"));
+				$("#brainstorms3 ul[rel=meetings] .module-click:eq("+liindex+")").addClass('active-link');
+				var moduleidx = $("#brainstorms3 ul").index($("#brainstorms3 ul[rel=meetings]"));
 				module.getDetails(moduleidx,liindex);
-				$('#brainstorms3 input.filter').quicksearch('#brainstorms3 li');
 				setTimeout(function() { $('#brainstorms-right .focusTitle').trigger('click'); }, 800);
 				}
 			});
@@ -162,16 +160,15 @@ function brainstormsMeetings(name) {
 		var module = this;
 		var cid = $('#brainstorms input[name="id"]').val()
 		module.checkIn(cid);
-		var id = $("#brainstorms3 .active-link:visible").attr("rel");
-		var pid = $("#brainstorms2 .module-click:visible").attr("rel");
+		var id = $("#brainstorms").data("third");
+		var pid = $("#brainstorms").data("second");
 		$.ajax({ type: "GET", url: "/", data: 'path=apps/brainstorms/modules/meetings&request=createDuplicate&id=' + id, cache: false, success: function(mid){
 			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/brainstorms/modules/meetings&request=getList&id="+pid, success: function(data){																																																																				
-				$(".brainstorms3-content:visible ul").html(data.html);
-				var moduleidx = $(".brainstorms3-content").index($(".brainstorms3-content:visible"));
-				var liindex = $(".brainstorms3-content:visible .module-click").index($(".brainstorms3-content:visible .module-click[rel='"+mid+"']"));
+				$("#brainstorms3 ul[rel=meetings]").html(data.html);
+				var moduleidx = $("#brainstorms3 ul").index($("#brainstorms3 ul[rel=meetings]"));
+				var liindex = $("#brainstorms3 ul[rel=meetings] .module-click").index($("#brainstorms3 ul[rel=meetings] .module-click[rel='"+mid+"']"));
 				module.getDetails(moduleidx,liindex);
-				$(".brainstorms3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
-				$('#brainstorms3 input.filter').quicksearch('#brainstorms3 li');
+				$("#brainstorms3 ul[rel=meetings] .module-click:eq("+liindex+")").addClass('active-link');
 				}
 			});
 			}
@@ -191,23 +188,22 @@ function brainstormsMeetings(name) {
 			buttons:langbuttons,
 			callback: function(v,m,f){		
 				if(v){
-					var id = $("#brainstorms3 .active-link:visible").attr("rel");
-					var pid = $("#brainstorms2 .module-click:visible").attr("rel");
+					var id = $("#brainstorms").data("third");
+					var pid = $("#brainstorms").data("second");
 					$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/meetings&request=binMeeting&id=" + id, cache: false, success: function(data){
 							if(data == "true") {
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/meetings&request=getList&id="+pid, success: function(data){
-									$(".brainstorms3-content:visible ul").html(data.html);
+									$("#brainstorms3 ul[rel=meetings]").html(data.html);
 									if(data.html == "<li></li>") {
 										brainstormsActions(3);
 									} else {
 										brainstormsActions(0);
-										$('#brainstorms3 input.filter').quicksearch('#brainstorms3 li');
 									}
-									var moduleidx = $(".brainstorms3-content").index($(".brainstorms3-content:visible"));
+									var moduleidx = $("#brainstorms3 ul").index($("#brainstorms3 ul[rel=meetings]"));
 									var liindex = 0;
 									module.getDetails(moduleidx,liindex);
-									$("#brainstorms3 .brainstorms3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
-								}
+									$("#brainstorms3 ul[rel=meetings] .module-click:eq("+liindex+")").addClass('active-link');
+									}
 								});
 							}
 						}
@@ -229,29 +225,27 @@ function brainstormsMeetings(name) {
 	
 	
 	this.actionRefresh = function() {
-		var id = $("#brainstorms3 .active-link:visible").attr("rel");
-		var pid = $("#brainstorms2 .module-click:visible").attr("rel");
-		$("#brainstorms3 .active-link:visible").trigger("click");
-		var id = $("#brainstorms3 .active-link:visible").attr("rel");
+		var id = $("#brainstorms").data("third");
+		var pid = $("#brainstorms").data("second");
+		$("#brainstorms3 ul[rel=meetings] .active-link").trigger("click");
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/brainstorms/modules/meetings&request=getList&id="+pid, success: function(data){																																																																				
-			$(".brainstorms3-content:visible ul").html(data.html);
-			var liindex = $(".brainstorms3-content:visible .module-click").index($(".brainstorms3-content:visible .module-click[rel='"+id+"']"));
-			$(".brainstorms3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
-			$('#brainstorms3 input.filter').quicksearch('#brainstorms3 li');
+			$("#brainstorms3 ul[rel=meetings]").html(data.html);
+			var liindex = $("#brainstorms3 ul[rel=meetings] .module-click").index($("#brainstorms3 ul[rel=meetings] .module-click[rel='"+id+"']"));
+			$("#brainstorms3 ul[rel=meetings] .module-click:eq("+liindex+")").addClass('active-link');
 			}
 		});
 	}
 
 
 	this.actionPrint = function() {
-		var id = $("#brainstorms3 .active-link:visible").attr("rel");
+		var id = $("#brainstorms").data("third");
 		var url ='/?path=apps/brainstorms/modules/meetings&request=printDetails&id='+id;
 		location.href = url;
 	}
 
 
 	this.actionSend = function() {
-		var id = $("#brainstorms3 .active-link:visible").attr("rel");
+		var id = $("#brainstorms").data("third");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/meetings&request=getSend&id="+id, success: function(html){
 			$("#modalDialogForward").html(html).dialog('open');
 			}
@@ -260,7 +254,7 @@ function brainstormsMeetings(name) {
 
 
 	this.actionSendtoResponse = function() {
-		var id = $("#brainstorms3 .active-link:visible").attr("rel");
+		var id = $("#brainstorms").data("third");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/meetings&request=getSendtoDetails&id="+id, success: function(html){
 			$("#brainstormsmeeting_sendto").html(html);
 			$("#modalDialogForward").dialog('close');
@@ -276,24 +270,24 @@ function brainstormsMeetings(name) {
 		
 		var fid = $("#brainstorms2 .module-click:visible").attr("rel");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/meetings&request=getList&id="+fid+"&sort="+sortnew, success: function(data){
-			$(".brainstorms3-content:visible ul").html(data.html);
+			$("#brainstorms3 ul[rel=meetings]").html(data.html);
 			obj.attr("rel",sortnew);
 			obj.removeClass("sort"+sortcur).addClass("sort"+sortnew);
-			var id = $(".brainstorms3-content:visible .module-click:eq(0)").attr("rel");
+			var id = $("#brainstorms3 ul[rel=meetings] .module-click:eq(0)").attr("rel");
+			$('#brainstorms').data('third',id);
 			if(id == undefined) {
 				return false;
 			}
-			var moduleidx = $(".brainstorms3-content").index($(".brainstorms3-content:visible"));
-			var liindex = 0;
-			module.getDetails(moduleidx,liindex);
-			$("#brainstorms3 .brainstorms3-content:visible .module-click:eq("+liindex+")").addClass('active-link');
+			var moduleidx = $("#brainstorms3 ul").index($("#brainstorms3 ul[rel=meetings]"));
+			module.getDetails(moduleidx,0);
+			$("#brainstorms3 ul[rel=meetings] .module-click:eq(0)").addClass('active-link');
 		}
 		});
 	}
 
 
 	this.sortdrag = function (order) {
-		var fid = $("#brainstorms2 .module-click:visible").attr("rel");
+		var fid = $("#brainstorms").data("second");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/meetings&request=setOrder&"+order+"&id="+fid, success: function(html){
 			$("#brainstorms3 .sort:visible").attr("rel", "3");
 			$("#brainstorms3 .sort:visible").removeClass("sort1").removeClass("sort2").addClass("sort3");
@@ -302,15 +296,6 @@ function brainstormsMeetings(name) {
 	}
 
 
-	/*this.toggleIntern = function(id,status,obj) {
-		$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/meetings&request=toggleIntern&id=" + id + "&status=" + status, cache: false, success: function(data){
-			if(data == "true") {
-				obj.toggleClass("module-item-active")
-			}
-			}
-		});
-	}*/
-	
 	this.actionDialog = function(offset,request,field,append,title,sql) {
 		switch(request) {
 			case "getAccessDialog":
@@ -333,7 +318,7 @@ function brainstormsMeetings(name) {
 				});
 			break;
 			case "getDocumentsDialog":
-				var id = $("#brainstorms2 .module-click:visible").attr("rel");
+				var id = $("#brainstorms").data("second");
 				$.ajax({ type: "GET", url: "/", data: 'path=apps/brainstorms/modules/documents&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql+'&id=' + id, success: function(html){
 					$("#modalDialog").html(html);
 					$("#modalDialog").dialog('option', 'position', offset);
@@ -378,7 +363,7 @@ function brainstormsMeetings(name) {
 
 
 	this.newItem = function() {
-		var mid = $(".brainstorms3-content:visible .active-link").attr("rel");
+		var mid = $("#brainstorms").data("third");
 		var num = parseInt($("#brainstorms-right .task_sort").size());
 		$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/meetings&request=addTask&mid=" + mid + "&num=" + num + "&sort=" + num, success: function(html){
 			$('#brainstormsmeetingtasks').append(html);
@@ -416,14 +401,13 @@ function brainstormsMeetings(name) {
 			}
 		});
 	}
-
-
+	
 	this.actionHelp = function() {
 		var url = "/?path=apps/brainstorms/modules/meetings&request=getHelp";
 		$("#documentloader").attr('src', url);
 	}
-
-
+	
+	
 	// Recycle Bin
 	this.binDelete = function(id) {
 		var txt = ALERT_DELETE_REALLY;
@@ -509,6 +493,5 @@ function brainstormsMeetings(name) {
 	}
 
 }
-
 
 var brainstorms_meetings = new brainstormsMeetings('brainstorms_meetings');

@@ -161,6 +161,12 @@ if (!empty($_GET['request'])) {
 		case 'getBrainstormsHelp':
 			echo($brainstorms->getBrainstormsHelp());
 		break;
+		case 'getWidgetAlerts':
+			echo($brainstorms->getWidgetAlerts());
+		break;
+		case 'markNoticeRead':
+			echo($brainstorms->markNoticeRead($_GET['pid']));
+		break;
 	}
 }
 

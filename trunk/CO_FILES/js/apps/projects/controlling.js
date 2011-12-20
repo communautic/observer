@@ -4,13 +4,14 @@ function projectsControlling(name) {
 
 
 	this.getDetails = function(moduleidx,liindex,list) {
-		var phaseid = $("#projects3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
-		var pid = $("#projects2 .module-click:visible").attr("rel");
-		if(phaseid == undefined) {
+		var id = $("#projects3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
+		$('#projects').data({ "third" : id});
+		var pid = $('#projects').data('second');
+		if(id == undefined) {
 			return false;
 		}
-		$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/controlling&request=getDetails&id="+phaseid+"&pid="+pid, success: function(html){
-				$("#"+projects.name+"-right").html(html);
+		$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/controlling&request=getDetails&id="+id+"&pid="+pid, success: function(html){
+				$("#projects-right").html(html);
 				initProjectsContentScrollbar();
 				projectsActions(8);
 				}
@@ -24,21 +25,21 @@ function projectsControlling(name) {
 
 
 	this.actionRefresh = function() {
-		$("#projects3 .active-link:visible").trigger("click");
+		$("#projects3 ul[rel=controlling] .active-link").trigger("click");
 	}
 
 
 	this.actionPrint = function() {
-		var pid = $("#projects2 .module-click:visible").attr("rel");
-		var id = $("#projects3 .active-link:visible").attr("rel");
+		var id = $("#projects").data("third");
+		var pid = $("#projects").data("second");
 		var url ='/?path=apps/projects/modules/controlling&request=printDetails&pid='+pid+"&id="+id;
 		location.href = url;
 	}
 
 
 	this.actionSend = function() {
-		var pid = $("#projects2 .module-click:visible").attr("rel");
-		var id = $("#projects3 .active-link:visible").attr("rel");
+		var id = $("#projects").data("third");
+		var pid = $("#projects").data("second");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/controlling&request=getSend&pid="+pid+"&id="+id, success: function(html){
 			$("#modalDialogForward").html(html).dialog('open');
 			}
@@ -47,7 +48,7 @@ function projectsControlling(name) {
 
 
 	this.actionSendtoResponse = function() {
-		var id = $("#projects3 .active-link:visible").attr("rel");
+		var id = $("#projects").data("third");
 		if($("#controlling_sendto").length > 0) {
 			$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/controlling&request=getSendtoDetails&id="+id, success: function(html){
 				$("#controlling_sendto").html(html);
@@ -65,7 +66,7 @@ function projectsControlling(name) {
 			$("#modalDialog").dialog('option', 'title', title);
 			$("#modalDialog").dialog('open');
 			}
-		});
+		})
 	}
 
 

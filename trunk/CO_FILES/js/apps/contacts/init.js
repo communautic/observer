@@ -11,7 +11,7 @@ function contactsContact(name) {
 
 
 	this.createUploader = function(ele){            
-		var did = $("#contacts1 .active-link:visible").attr("rel");
+		var did = $("#contacts").data("first");
 		var num = 0;
 		var numdocs = 0;
 		var uploader = new qq.FileUploader({
@@ -60,7 +60,7 @@ function contactsContact(name) {
 			onProgress: function(id, fileName, loaded, total){},
 			onComplete: function(id, fileName, data){
 				//$('#contacts-right .ui-upload-list').hide();
-				$("#contacts1 .active-link:visible").trigger("click");
+				$("#contacts1 .active-link:eq(0)").trigger("click");
 			},
 			onCancel: function(id, fileName){
 				$('#contacts-right .ui-upload-list').hide();
@@ -112,8 +112,14 @@ function contactsContact(name) {
 	this.poformOptions = { beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
 
 
+	this.actionClose = function() {
+		contactsLayout.toggle('west');
+	}
+
+
 	this.getDetails = function(moduleidx,liindex) {
 		var id = $("#contacts1 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
+		$('#contacts').data({"first" : id});
 		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getContactDetails&id="+id, success: function(html){
 			$("#contacts-right").html(html);
 			contactsInnerLayout.initContent('center');
@@ -126,12 +132,12 @@ function contactsContact(name) {
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/contacts&request=newContact', cache: false, success: function(data){
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/contacts&request=getContactList", success: function(list){
 					$("#contacts1 ul:eq(0)").html(list.html);
-					var index = $("#contacts1 .module-click").index($("#contacts1 .module-click[rel='"+data.id+"']"));
+					var index = $('#contacts1 ul:eq(0) .module-click').index($('#contacts1 ul:eq(0) .module-click[rel='+data.id+']'));
 					$("#contacts1 ul:eq(0) .module-click:eq("+index+")").addClass('active-link');
+					$('#contacts').data({ "first" : data.id });
 					$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getContactDetails&id="+data.id, success: function(html){
 						$("#contacts-right").html(html);
 						initContactsContentScrollbar()
-						$('#contacts1 input.filter').quicksearch('#contacts1 li');
 						$('#contacts-right .focusTitle').trigger('click');
 						}
 					});
@@ -144,18 +150,19 @@ function contactsContact(name) {
 	
 	
 	this.actionDuplicate = function() {
-		var id = $("#contacts1 .active-link:visible").attr("rel");
+		var id = $("#contacts").data("first");
 		$.ajax({ type: "GET", url: "/", data: 'path=apps/contacts&request=duplicateContact&id=' + id, cache: false, success: function(cid){
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/contacts&request=getContactList", success: function(list){
-					$("#contacts1 ul:eq(0)").html(list.html);
-						contactsActions(1);
-						var index = $("#contacts1 ul:eq(0) .module-click").index($("#contacts1 .module-click[rel='"+cid+"']"));
-						$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getContactDetails&id="+cid, success: function(html){
-								$("#contacts-right").html(html);
-								initContactsContentScrollbar()
-								$('#contacts1 input.filter').quicksearch('#contacts1 li');
-							}
-						});
+				$("#contacts1 ul:eq(0)").html(list.html);
+				contactsActions(1);
+				var index = $("#contacts1 ul:eq(0) .module-click").index($('#contacts1 .module-click[rel='+cid+']'));
+				$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getContactDetails&id="+cid, success: function(html){
+					$('#contacts1 .module-click:eq('+index+')').addClass('active-link');
+					$("#contacts").data("first", cid);
+					$("#contacts-right").html(html);
+					initContactsContentScrollbar()
+					}
+				});
 				}
 			});
 			}
@@ -169,7 +176,7 @@ function contactsContact(name) {
 			buttons:{Ja:true, Nein:false},
 			callback: function(v,m,f){		
 				if(v){
-					var id = $("#contacts1 .active-link:visible").attr("rel");
+					var id = $("#contacts").data("first");
 					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/contacts&request=binContact&id=" + id, cache: false, success: function(data){
 						if(data.status == "true") {
 							//$('#totalContacts').html("(" + data.num + ")");
@@ -181,11 +188,11 @@ function contactsContact(name) {
 									contactsActions(1);
 								}
 								var id = $("#contacts1 ul:eq(0) .module-click:eq(0)").attr("rel");
+								$("#contacts").data("first", id);
 								$("#contacts1 ul:eq(0) .module-click:eq(0)").addClass('active-link');
 								$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getContactDetails&id="+id, success: function(html){
 									$("#contacts-right").html(html);
 									initContactsContentScrollbar()
-									$('#contacts1 input.filter').quicksearch('#contacts1 li');
 									}
 								});
 								}
@@ -205,8 +212,8 @@ function contactsContact(name) {
 	
 	
 	this.actionRefresh = function() {
-		var id = $("#contacts1 .active-link:visible").attr("rel");
-		$("#contacts1 .active-link:visible").trigger("click");
+		var id = $("#contacts").data("first");
+		$("#contacts1 .active-link:eq(0)").trigger("click");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/contacts&request=getContactList", success: function(data){
 			$("#contacts1 ul:eq(0)").html(data.html);
 			if(data.html == "<li></li>") {
@@ -216,21 +223,20 @@ function contactsContact(name) {
 			}
 			var idx = $("#contacts1 ul:eq(0) .module-click").index($("#contacts1 ul:eq(0) .module-click[rel='"+id+"']"));
 			$("#contacts1 ul:eq(0) .module-click:eq("+idx+")").addClass('active-link');
-			$('#contacts1 input.filter').quicksearch('#contacts1 li');
 			}
 		});	
 	}
 
 
 	this.actionPrint = function() {
-		var id = $("#contacts1 .active-link:visible").attr("rel");
+		var id = $("#contacts").data("first");
 		var url ='/?path=apps/contacts&request=printContactDetails&id='+id;
 		location.href = url;
 	}
 
 
 	this.actionSend = function() {
-		var id = $("#contacts1 .active-link:visible").attr("rel");
+		var id = $("#contacts").data("first");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getContactSend&id="+id, success: function(html){
 			$("#modalDialogForward").html(html).dialog('open');
 			}
@@ -244,7 +250,7 @@ function contactsContact(name) {
 
 
 	this.actionSendVcard = function() {
-		var id = $("#contacts1 .active-link:visible").attr("rel");
+		var id = $("#contacts").data("first");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getContactSendVcard&id="+id, success: function(html){
 			$("#modalDialogForward").html(html).dialog('open');
 			}
@@ -258,6 +264,7 @@ function contactsContact(name) {
 			  obj.attr("rel",sortnew);
 			  obj.removeClass("sort"+sortcur).addClass("sort"+sortnew);
 			  var id = $("#contacts1 ul:eq(0) .module-click:eq(0)").attr("rel");
+			  $('#contacts').data('first',id);
 			  if(id == undefined) {
 					return false;
 				}
@@ -324,7 +331,7 @@ function contactsContact(name) {
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=binItem&id=" + id, success: function(data){
 						if(data){
-							$("#contacts1 .active-link:visible").trigger("click");
+							$("#contacts1 ul:eq(0) .active-link").trigger("click");
 						} 
 						}
 					});
@@ -458,6 +465,7 @@ function contactsGroups(name) {
 	
 	this.getDetails = function(moduleidx,liindex,list) {
 		var id = $("#contacts1 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
+		$('#contacts').data({"first" : id});
 		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getGroupDetails&id="+id, success: function(html){
 			$("#contacts-right").html(html);
 			contactsInnerLayout.initContent('center');
@@ -470,12 +478,12 @@ function contactsGroups(name) {
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/contacts&request=newGroup", cache: false, success: function(data){
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/contacts&request=getGroupList", success: function(list){
 					$("#contacts1 ul:eq(1)").html(list.html);
-					var index = $("#contacts1 ul:eq(1) .module-click").index($("#contacts1 .module-click[rel='"+data.id+"']"));
+					var index = $('#contacts1 ul:eq(1) .module-click').index($('#contacts1 ul:eq(1) .module-click[rel='+data.id+']'));
 					$("#contacts1 ul:eq(1) .module-click:eq("+index+")").addClass('active-link');
+					$('#contacts').data({ "first" : data.id });
 					$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getGroupDetails&id="+data.id, success: function(html){
 						$("#contacts-right").html(html);
 						initContactsContentScrollbar()
-						$('#contacts1 input.filter').quicksearch('#contacts1 li');
 						$('#contacts-right .focusTitle').trigger('click');
 						}
 					});
@@ -488,7 +496,7 @@ function contactsGroups(name) {
 
 
 	this.actionDuplicate = function() {
-		var id = $("#contacts1 .active-link:visible").attr("rel");
+		var id = $("#contacts").data("first");
 		$.ajax({ type: "GET", url: "/", data: 'path=apps/contacts&request=duplicateGroup&id=' + id, cache: false, success: function(gid){
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/contacts&request=getGroupList", success: function(list){
 				$("#contacts1 ul:eq(1)").html(list.html);
@@ -496,9 +504,9 @@ function contactsGroups(name) {
 				var index = $("#contacts1 ul:eq(1) .module-click").index($("#contacts1 .module-click[rel='"+gid+"']"));
 				$("#contacts1 ul:eq(1) .module-click:eq("+index+")").addClass('active-link');
 				$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getGroupDetails&id="+gid, success: function(html){
+					$("#contacts").data("first", gid);
 					$("#contacts-right").html(html);
 					initContactsContentScrollbar()
-					$('#contacts1 input.filter').quicksearch('#contacts1 li');
 					}
 			   	});
 				}
@@ -514,7 +522,7 @@ function contactsGroups(name) {
 			buttons:{Ja:true, Nein:false},
 			callback: function(v,m,f){		
 				if(v){
-					var id = $("#contacts1 .active-link:visible").attr("rel");
+					var id = $("#contacts").data("first");
 					$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=binGroup&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
 							$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/contacts&request=getGroupList", success: function(data){
@@ -522,10 +530,11 @@ function contactsGroups(name) {
 									contactsActions(0);
 								} else {
 									contactsActions(1);
-									$('#contacts1').find('input.filter').quicksearch('#contacts1 li');
+									//$('#contacts1').find('input.filter').quicksearch('#contacts1 li');
 								}
 								$("#contacts1 ul:eq(1)").html(data.html);
 								var id = $("#contacts1 ul:eq(1) .module-click:eq(0)").attr("rel");
+								$("#contacts").data("first", id);
 								$("#contacts1 ul:eq(1) .module-click:eq(0)").addClass('active-link');
 								$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getGroupDetails&id="+id, success: function(html){
 									$("#contacts-right").html(html);
@@ -549,8 +558,8 @@ function contactsGroups(name) {
 
 
 	this.actionRefresh = function() {
-		var id = $("#contacts1 .active-link:visible").attr("rel");
-		$("#contacts1 .active-link:visible").trigger("click");
+		var id = $("#contacts").data("first");
+		$("#contacts1 ul:eq(1) .active-link").trigger("click");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/contacts&request=getGroupList", success: function(data){
 			$("#contacts1 ul:eq(1)").html(data.html);
 			if(data.html == "<li></li>") {
@@ -560,21 +569,20 @@ function contactsGroups(name) {
 			}
 			var idx = $("#contacts1 ul:eq(1) .module-click").index($("#contacts1 ul:eq(1) .module-click[rel='"+id+"']"));
 			$("#contacts1 ul:eq(1) .module-click:eq("+idx+")").addClass('active-link');
-			$('#contacts1 input.filter').quicksearch('#contacts1 li');
 			}
 		});
 	}
 
 
 	this.actionPrint = function() {
-		var id = $("#contacts1 .active-link:visible").attr("rel");
+		var id = $("#contacts").data("first");
 		var url ='/?path=apps/contacts&request=printGroupDetails&id='+id;
 		location.href = url;
 	}
 
 
 	this.actionSend = function() {
-		var id = $("#contacts1 .active-link:visible").attr("rel");
+		var id = $("#contacts").data("first");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getGroupSend&id="+id, success: function(html){
 			$("#modalDialogForward").html(html).dialog('open');
 			}
@@ -588,7 +596,7 @@ function contactsGroups(name) {
 
 
 	this.actionSendVcard = function() {
-		var id = $("#contacts1 .active-link:visible").attr("rel");
+		var id = $("#contacts").data("first");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getGroupSendVcard&id="+id, success: function(html){
 			$("#modalDialogForward").html(html).dialog('open');
 			}
@@ -603,6 +611,7 @@ function contactsGroups(name) {
 			obj.removeClass("sort"+sortcur).addClass("sort"+sortnew);
 			  
 			var id = $("#contacts1 ul:eq(1) .module-click:eq(0)").attr("rel");
+			$('#contacts').data('first',id);
 			$("#contacts1 ul:eq(1) .module-click:eq(0)").addClass('active-link');
 			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getGroupDetails&id="+id, success: function(html){
 				$("#contacts-right").html(html);
@@ -724,28 +733,28 @@ function contactsActions(status) {
 
 
 	
-
+//87
 function contactsloadModuleStart() {
 	var h = $("#contacts .ui-layout-west").height();
-	$("#contacts1 h3:eq(0)").addClass("module-bg-active")
-	$("#contacts1 .module-inner").css("height", h-71);
+	$("#contacts .ui-layout-west .radius-helper").height(h);
+	$("#contacts1 h3:eq(0)").addClass("module-bg-active");
+	//$("#contacts1 .module-inner").css("height", h-87);
 	$("#contacts1 .module-actions:eq(0)").show();
 	$("#contacts1 .module-actions:eq(1)").hide();
-	$(".contacts1-content").css("height", h-(contacts.modules_height*2+71));
+	$(".contacts1-content").css("height", h-(contacts.modules_height*2+96));
 	$("#contacts-current").val("contacts");
 	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/contacts&request=getContactList", success: function(data){
 		  $("#contacts1 ul:eq(0)").html(data.html);
 		  $("#contactsActions .actionNew").attr("title",data.title);
-		  
 		  if(data.html == "<li></li>") {
 			  contactsActions(0);
 		  } else {
 			  contactsActions(1);
-			  $('#contacts1').find('input.filter').quicksearch('#contacts1 li');
 		  }
 		  var id = $("#contacts1 ul:eq(0) .module-click:eq(0)").attr("rel");
 		  $("#contacts1 .sort").attr("rel", data.sort).addClass("sort"+data.sort);
 		  var id = $("#contacts1 .module-click:eq(0)").attr("rel");
+		  $('#contacts').data({ "current" : "contacts" , "first" : id});
 		  $("#contacts1 .module-click:eq(0)").addClass('active-link');
 		  $.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getContactDetails&id="+id, success: function(html){
 			  $("#contacts-right").html(html);
@@ -759,8 +768,9 @@ function contactsloadModuleStart() {
 
 function contactsresetModuleHeights() {
 	var h = $("#contacts .ui-layout-west").height();
-	$(".contacts1-content").css("height", h-(contacts.modules_height*2+71));
-	$("#contacts1 .module-inner").css("height", h-71);
+	$("#contacts .ui-layout-west .radius-helper").height(h);
+	$(".contacts1-content").css("height", h-(contacts.modules_height*2+96));
+	//$("#contacts1 .module-inner").css("height", h-96);
 }
 
 
@@ -773,26 +783,26 @@ $(document).ready(function() {
 				west__onresize:				function() { contactsresetModuleHeights() }
 			,	resizeWhileDragging:		true
 			,	spacing_open:				0
-			,	closable: 				false
-			,	resizable: 				false
-			,	slidable:				false
-			, 	west__size:				325
-			,	west__closable: 		true
-			,	west__resizable: 		true
+			,	spacing_closed:				0
+			,	closable: 					false
+			,	resizable: 					false
+			,	slidable:					false
+			, 	west__size:					325
+			,	west__closable: 			true
 			,	center__onresize: "contactsInnerLayout.resizeAll"
 		});
 		
 		contactsInnerLayout = $('#contacts div.ui-layout-center').layout({
-				resizeWhileDragging:		false
-			,	spacing_open:				0			// cosmetic spacing
-			,	closable: 				false
-			,	resizable: 				false
-			,	slidable:				false
-			,	north__paneSelector:	".center-north"
-			,	center__paneSelector:	".center-center"
-			,	west__paneSelector:	".center-west"
-			, 	north__size:			80
-			, 	west__size:			50
+				resizeWhileDragging:		true
+			,	spacing_open:				0
+			,	closable: 					false
+			,	resizable: 					false
+			,	slidable:					false
+			,	north__paneSelector:		".center-north"
+			,	center__paneSelector:		".center-center"
+			,	west__paneSelector:			".center-west"
+			, 	north__size:				68
+			, 	west__size:					60
 		});
 		
 		contactsloadModuleStart();
@@ -828,6 +838,7 @@ $(document).ready(function() {
 					what = "Contact";
 				}
 				$("#contacts-current").val(module);
+				$('#contacts').data({ "current" : module});
 				
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/contacts&request=get"+what+"List", success: function(data){					
 					$("#contacts1 ul:eq("+moduleidx+")").html(data.html);
@@ -837,7 +848,6 @@ $(document).ready(function() {
 						contactsActions(0);
 					} else {
 						contactsActions(1);
-						$('#contacts1').find('input.filter').quicksearch('#contacts1 li');
 					}
 				
 					if(passed_id === undefined) {
@@ -876,7 +886,7 @@ $(document).ready(function() {
 		$(this).addClass("active-link");
 		var module = $(this).parents("ul").attr("rel");
 		var id = $(this).attr("rel");
-		
+		$('#contacts').data({"first" : id});
 		var what;
 		if(module == "groups") {
 			what = "Group";
@@ -894,10 +904,10 @@ $(document).ready(function() {
 	});
 
 
-    $("#contacts .loadModuleStart").click(function() {
+    /*$("#contacts .loadModuleStart").click(function() {
 		loadModuleStart();
 		return false;
-	});
+	});*/
   
 		
 	// ************************
@@ -1346,7 +1356,7 @@ $(document).ready(function() {
 
 
 	$('#actionAccess').live("click", function(){
-		var id = $("#contacts1 .active-link:visible").attr("rel");
+		var id = $("#contacts").data("first");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=generateAccess&id=" + id, cache: false, success: function(data){
 			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getContactDetails&id="+id, success: function(html){
 				$("#contacts-right").html(html);
@@ -1361,7 +1371,7 @@ $(document).ready(function() {
 
 
 	$('#actionSysadmin').live("click", function(){
-		var id = $("#contacts1 .active-link:visible").attr("rel");
+		var id = $("#contacts").data("first");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=setSysadmin&id=" + id, cache: false, success: function(data){	
 			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getContactDetails&id="+id, success: function(html){
 				$("#contacts-right").html(html);
@@ -1376,7 +1386,7 @@ $(document).ready(function() {
 
 
 	$('#actionAccessRemove').live("click", function(){
-		var id = $("#contacts1 .active-link:visible").attr("rel");
+		var id = $("#contacts").data("first");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=removeAccess&id=" + id, cache: false, success: function(data){
 			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getContactDetails&id="+id, success: function(html){
 				$("#contacts-right").html(html);
@@ -1391,7 +1401,7 @@ $(document).ready(function() {
 
 
 	$('#actionSysadminRemove').live("click", function(){
-		var id = $("#contacts1 .active-link:visible").attr("rel");
+		var id = $("#contacts").data("first");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=removeSysadmin&id=" + id, cache: false, success: function(data){
 			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getContactDetails&id="+id, success: function(html){
 				$("#contacts-right").html(html);
@@ -1405,7 +1415,6 @@ $(document).ready(function() {
 	});
 	
 	$(".user-image-uploader:visible").livequery(function() {
-		//var module = getCurrentModule();
 		contacts.createUploader($(this));
 	})
 

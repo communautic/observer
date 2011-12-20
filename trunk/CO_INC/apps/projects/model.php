@@ -1739,7 +1739,7 @@ class ProjectsModel extends Model {
    
    function existUserProjectsWidgets() {
 		global $session;
-		$q = "select count(*) as num from " . CO_TBL_PROJECTS_DESKTOP . " where uid='$session->uid'";
+		$q = "select count(*) as num from " . CO_TBL_PROJECTS_DESKTOP_SETTINGS . " where uid='$session->uid'";
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_fetch_assoc($result);
 		if($row["num"] < 1) {
@@ -1752,7 +1752,7 @@ class ProjectsModel extends Model {
 	
 	function getUserProjectsWidgets() {
 		global $session;
-		$q = "select * from " . CO_TBL_PROJECTS_DESKTOP . " where uid='$session->uid'";
+		$q = "select * from " . CO_TBL_PROJECTS_DESKTOP_SETTINGS . " where uid='$session->uid'";
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_fetch_assoc($result);
 		return $row;
@@ -1772,19 +1772,20 @@ class ProjectsModel extends Model {
 			$access = " and c.id IN (" . implode(',', $this->getEditPerms($session->uid)) . ") ";
 		}
 
-		// reminders
-		$q ="select a.cat,a.text,c.title as projectitle from " . CO_TBL_PROJECTS_PHASES_TASKS . " as a,  " . CO_TBL_PROJECTS_PHASES . " as b,  " . CO_TBL_PROJECTS . " as c where a.phaseid = b.id and a.pid = c.id and b.status='1' and a.bin = '0' and a.enddate = '$tomorrow'" . $access;
+		// reminders = meilensteine, arbeitspakete deren Phase in Planung oder in Arbeit ist - für Admins / Sysadmins die auch Projektleiter sind oder die für einen MS oder AP verantwortlich sind
+		$q ="select c.folder,a.pid,a.phaseid,a.cat,a.text,c.title as projectitle from " . CO_TBL_PROJECTS_PHASES_TASKS . " as a,  " . CO_TBL_PROJECTS_PHASES . " as b,  " . CO_TBL_PROJECTS . " as c where a.phaseid = b.id and a.pid = c.id and (b.status='0' or b.status='1') and a.status='0' and a.bin = '0' and a.enddate = '$tomorrow'" . $access . " and (c.management REGEXP '[[:<:]]" . $session->uid . "[[:>:]]' or (a.cat = '0' and a.team REGEXP '[[:<:]]" . $session->uid . "[[:>:]]'))";
 		$result = mysql_query($q, $this->_db->connection);
 		$reminders = "";
 		while ($row = mysql_fetch_array($result)) {
 			foreach($row as $key => $val) {
 				$array[$key] = $val;
 			}
+			$string .= $array["folder"] . "," . $array["pid"] . "," . $array["phaseid"] . ",";
 			$reminders[] = new Lists($array);
 		}
 
-		// kick offs
-		$q ="select title from " . CO_TBL_PROJECTS . " as c where c.bin = '0' and c.startdate = '$tomorrow'" . $access;
+		// Kick off = Admins / Sysadmins die auch Projektleiter sind
+		$q ="select c.folder,c.id as pid,c.title from " . CO_TBL_PROJECTS . " as c where bin = '0' and startdate = '$tomorrow'" . $access . " and c.management REGEXP '[[:<:]]" . $session->uid . "[[:>:]]'";
 		$result = mysql_query($q, $this->_db->connection);
 		$kickoffs = "";
 		$array = "";
@@ -1792,10 +1793,11 @@ class ProjectsModel extends Model {
 			foreach($row as $key => $val) {
 				$array[$key] = $val;
 			}
+			$string .= $array["folder"] . "," . $array["pid"] . ",";
 			$kickoffs[] = new Lists($array);
 		}
 
-		// alerts
+		// alerts = meilensteine, arbeitspakete deren Phase in Arbeit ist - für Admins / Sysadmins die auch Projektleiter sind oder die für einen MS oder AP verantwortlich sind
 		$q ="select c.folder,a.pid,a.phaseid,a.cat,a.text,c.title as projectitle from " . CO_TBL_PROJECTS_PHASES_TASKS . " as a,  " . CO_TBL_PROJECTS_PHASES . " as b,  " . CO_TBL_PROJECTS . " as c where a.phaseid = b.id and a.pid = c.id and b.status='1' and a.status='0' and a.bin = '0' and a.enddate <= '$today'" . $access . " and (c.management REGEXP '[[:<:]]" . $session->uid . "[[:>:]]' or (a.cat = '0' and a.team REGEXP '[[:<:]]" . $session->uid . "[[:>:]]'))";
 		$result = mysql_query($q, $this->_db->connection);
 		$alerts = "";
@@ -1807,9 +1809,23 @@ class ProjectsModel extends Model {
 			$string .= $array["folder"] . "," . $array["pid"] . "," . $array["phaseid"] . ",";
 			$alerts[] = new Lists($array);
 		}
+		
+		// project notices for this user
+		$q ="select a.id as pid,a.folder,a.title as projectitle,b.perm from " . CO_TBL_PROJECTS . " as a,  " . CO_TBL_PROJECTS_DESKTOP . " as b where a.id = b.pid and b.uid = '$session->uid' and b.status = '0'";
+		$result = mysql_query($q, $this->_db->connection);
+		$notices = "";
+		$array = "";
+		while ($row = mysql_fetch_array($result)) {
+			foreach($row as $key => $val) {
+				$array[$key] = $val;
+			}
+			$string .= $array["folder"] . "," . $array["pid"] . ",";
+			$notices[] = new Lists($array);
+		}
+		
 
 		if(!$this->existUserProjectsWidgets()) {
-			$q = "insert into " . CO_TBL_PROJECTS_DESKTOP . " set uid='$session->uid', value='$string'";
+			$q = "insert into " . CO_TBL_PROJECTS_DESKTOP_SETTINGS . " set uid='$session->uid', value='$string'";
 			$result = mysql_query($q, $this->_db->connection);
 			$widgetaction = "open";
 		} else {
@@ -1820,16 +1836,23 @@ class ProjectsModel extends Model {
 			} else {
 				$widgetaction = "open";
 			}
-			$q = "UPDATE " . CO_TBL_PROJECTS_DESKTOP . " set value='$string' WHERE id = '$id'";
+			$q = "UPDATE " . CO_TBL_PROJECTS_DESKTOP_SETTINGS . " set value='$string' WHERE id = '$id'";
 			$result = mysql_query($q, $this->_db->connection);
 		}
 		
-		$arr = array("reminders" => $reminders, "kickoffs" => $kickoffs, "alerts" => $alerts, "widgetaction" => $widgetaction);
+		$arr = array("reminders" => $reminders, "kickoffs" => $kickoffs, "alerts" => $alerts, "notices" => $notices, "widgetaction" => $widgetaction);
 		return $arr;
    }
 
    
+	function markNoticeRead($pid) {
+		global $session, $date;
+		
+		$q ="UPDATE " . CO_TBL_PROJECTS_DESKTOP . " SET status = '1' WHERE uid = '$session->uid' and pid = '$pid'";
+		$result = mysql_query($q, $this->_db->connection);
+		return true;
 
+	}
 }
 
 $projectsmodel = new ProjectsModel(); // needed for direct calls to functions eg echo $projectsmodel ->getProjectTitle(1);

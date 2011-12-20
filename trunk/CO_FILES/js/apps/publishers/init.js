@@ -42,10 +42,10 @@ function publishersActions(status) {
 function publishersloadModuleStart() {
 	var h = $("#publishers .ui-layout-west").height();
 	$("#publishers1 h3:eq(0)").addClass("module-bg-active")
-	$("#publishers1 .module-inner").css("height", h-71);
+	$("#publishers1 .module-inner").css("height", h-96);
 	$("#publishers1 .module-actions:eq(0)").show();
 	$("#publishers1 .module-actions:eq(1)").hide();
-	$(".publishers1-content").css("height", h-71);
+	$(".publishers1-content").css("height", h-96);
 	//$(".publishers1-content").css("height", h-(publishers.modules_height*2+71));
 	$("#publishers-current").val("menues");
 	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/publishers/modules/menues&request=getList", success: function(data){
@@ -74,8 +74,8 @@ function publishersloadModuleStart() {
 
 function publishersresetModuleHeights() {
 	var h = $("#publishers .ui-layout-west").height();
-	$(".publishers1-content").css("height", h-71);
-	$("#publishers1 .module-inner").css("height", h-71);
+	$(".publishers1-content").css("height", h-96);
+	$("#publishers1 .module-inner").css("height", h-96);
 }
 
 function PublishersModulesDisplay(access) {
@@ -111,31 +111,28 @@ $(document).ready(function() {
 				west__onresize:				function() { publishersresetModuleHeights() }
 			,	resizeWhileDragging:		true
 			,	spacing_open:				0
-			,	closable: 				false
-			,	resizable: 				false
-			,	slidable:				false
-			, 	west__size:				325
-			,	west__closable: 		true
-			,	west__resizable: 		true
-			, 	south__size:			10
+			,	spacing_closed:				0
+			,	closable: 					false
+			,	resizable: 					false
+			,	slidable:					false
+			, 	west__size:					325
+			,	west__closable: 			true
 			,	center__onresize: "publishersInnerLayout.resizeAll"
 			
 		});
 		
 		publishersInnerLayout = $('#publishers div.ui-layout-center').layout({
 				center__onresize:				function() {  }
-			,	resizeWhileDragging:		false
-			,	spacing_open:				0			// cosmetic spacing
-			,	closable: 				false
-			,	resizable: 				false
-			,	slidable:				false
-			,	north__paneSelector:	".center-north"
-			,	center__paneSelector:	".center-center"
-			,	west__paneSelector:	".center-west"
-			, 	north__size:			80
-			, 	west__size:			50
-			 
-	
+			,	resizeWhileDragging:		true
+			,	spacing_open:				0
+			,	closable: 					false
+			,	resizable: 					false
+			,	slidable:					false
+			,	north__paneSelector:		".center-north"
+			,	center__paneSelector:		".center-center"
+			,	west__paneSelector:			".center-west"
+			, 	north__size:				68
+			, 	west__size:					60
 		});
 		
 		publishersloadModuleStart();

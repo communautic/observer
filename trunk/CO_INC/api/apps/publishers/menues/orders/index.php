@@ -197,18 +197,18 @@ if($error == "") {
 			$body =	'<p style="font-face: Arial, Verdana; font-size: small">Ihre Bestellung ist bei uns eingelangt.</p>' .
 								'<p style="font-face: Arial, Verdana; font-size: small">Im Anhang finden Sie die Bestätigung Ihrer Bestellung. Das Dokument liegt im PDF-Format bei. (Acrobat Reader wird benötigt)</p>' .
 								'<p style="font-face: Arial, Verdana; font-size: small;">Herzlichen Dank für die Zusammenarbeit, Ihr</p>' .
-								'<p style="font-face: Arial, Verdana; font-size: small;">mama-bringts Team</p>';
+								'<p style="font-face: Arial, Verdana; font-size: small;">mama-bringt\'s Team</p>';
 			
 			
 			//$body = $message;
 			//$footer = $lang["GLOBAL_EMAIL_FOOTER"];
   
 			$mail->AddReplyTo("info@mama-bringts.at","mama-brints");
-			$mail->SetFrom("info@mama-bringts.at","mama-bringts");
+			$mail->SetFrom("info@mama-bringts.at","mama-bringt's");
 			
 			$mail->AddAddress($session->email,$session->firstname . " " . $session->lastname);
 			
-			$mail->Subject  = stripslashes("mama-bringts Bestellbestätigung");
+			$mail->Subject  = stripslashes("mama-bringt's Bestellbestätigung");
 			
 			$mail->AltBody    = "To view the message, please use an HTML compatible email viewer!"; // optional, comment out and test
 			$mail->WordWrap   = 80;

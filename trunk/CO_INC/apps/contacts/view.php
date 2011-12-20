@@ -1,19 +1,17 @@
 <div id="contacts" class="app">
 <input name="contacts-current" id="contacts-current" type="hidden" value="" />
 <div class="ui-layout-west">
+<div class="radius-helper">
 <?php include(CO_INC . "/view/logo.php"); ?>	
-    
 	<div id="contacts1-outer">
 		<div id="contacts1">
-			<div class="module-actions module-actions-modules"><div class="sort-outer"><span class="sort" rel="1"></span></div>
-			<div class="filter-box-outer"><form action="#"><fieldset><input name="search" type="text" class="filter filter-box" value="" size="4" /></fieldset></form></div><div class="filter-search-outer"></div></div>
+			<div class="module-actions module-actions-modules"><div class="sort-outer"><span class="sort" rel="1"></span></div></div>
 			<h3 rel="contacts"><?php echo $lang['CONTACTS_CONTACTS'];?></h3>    
             <div class="contacts1-content"><div class="scrolling-content">        
                 <ul class="sortable" rel="contacts"><li></li></ul>
                 </div>
             </div>
-			<div class="module-actions module-actions-modules"><div class="sort-outer"><span class="sort" rel="1"></span></div>
-            <div class="filter-box-outer"><form action="#"><fieldset><input name="search" type="text" class="filter filter-box" value="" size="4" /></fieldset></form></div><div class="filter-search-outer"></div></div>
+			<div class="module-actions module-actions-modules"><div class="sort-outer"><span class="sort" rel="1"></span></div></div>
 			<h3 rel="groups"><?php echo $lang['CONTACTS_GROUPS'];?></h3>    
             <div class="contacts1-content"><div class="scrolling-content">        
                 <ul class="sortable" rel="groups"><li></li></ul>
@@ -23,15 +21,18 @@
         </div>
     </div>
 </div>
+</div>
 
     <!-- center -->
     <div class="ui-layout-center">
     <div class="center-north">
-    	<div id="contacts-top">
-        	<div class="top-headline"></div>
-            <div class="top-subheadline"></div>
+        <div class="spinner"><img src="<?php echo CO_FILES;?>/img/waiting.gif" alt="Loading" width="16" height="16" /></div>
+    	<div class="listClose"><span class="actionClose" title="<?php echo $lang["ACTION_CLOSE"];?>"></span></div>
+    	<div id="app-top">
+        <div id="contacts-top" class="titles">
+        	<span class="top-headline"></span> &nbsp; <span class="top-subheadline"></span> &nbsp; <span class="top-subheadlineTwo"></span>
         </div>
-        <div class="info-top"><img src="data/logo.jpg" border="0" /></div>
+        </div>
     </div>
     <div class="center-west">
         <ul id="contactsActions" class="ui-layout-content actionconsole">

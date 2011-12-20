@@ -145,8 +145,15 @@ if (!empty($_GET['request'])) {
 		case 'restoreItem':
 			echo($forums->restoreItem($_GET['id']));
 		break;
-
-
+		case 'getWidgetAlerts':
+			echo($forums->getWidgetAlerts());
+		break;
+		case 'markNoticeRead':
+			echo($forums->markNoticeRead($_GET['pid']));
+		break;
+		case 'markNewPostRead':
+			echo($forums->markNewPostRead($_GET['pid']));
+		break;
 	}
 }
 

@@ -1,6 +1,7 @@
 <div id="publishers" class="app">
 <input name="publishers-current" id="publishers-current" type="hidden" value="" />
 <div class="ui-layout-west">
+<div class="radius-helper"><img src="<?php echo CO_FILES;?>/img/border-radius-fix-bl.png" width="8" height="8" class="border-radius-fix-bl" alt=""/><img src="<?php echo CO_FILES;?>/img/border-radius-fix-br.png" width="8" height="8" class="border-radius-fix-br" alt=""/>
 <?php include(CO_INC . "/view/logo.php"); ?>
 	<div id="publishers1-outer">
 		<div id="publishers1">
@@ -21,16 +22,18 @@
         </div>
     </div>
 </div>
+</div>
 
 <!-- center -->
 <div class="ui-layout-center">
     <div class="center-north">
-    	<div id="publishers-top">
-        	<div class="top-headline"></div>
-            <div class="top-subheadline"></div>
-            <div class="top-subheadlineTwo"></div>
+    	<div class="spinner"><img src="<?php echo CO_FILES;?>/img/waiting.gif" alt="Loading" width="16" height="16" /></div>
+    	<div class="listClose"><span class="actionClose" title="<?php echo $lang["ACTION_CLOSE"];?>"></span></div>
+    	<div id="app-top">
+    	<div id="publishers-top" class="titles">
+        	<span class="top-headline"></span><span class="top-subheadline"></span><span class="top-subheadlineTwo"></span>
         </div>
-        <div class="info-top"><img src="data/logo.jpg" border="0" /></div>
+        </div>
     </div>
 	<div class="center-west">
 		<ul id="publishersActions" class="ui-layout-content actionconsole">

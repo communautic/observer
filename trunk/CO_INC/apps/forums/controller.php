@@ -519,6 +519,48 @@ class Forums extends Controller {
 	  $canView = $this->model->getViewPerms($session->uid);
 	  return !empty($canView);
    }
+   
+
+  	function getWidgetAlerts() {
+		global $lang, $system;
+		if($arr = $this->model->getWidgetAlerts()) {
+			$reminders = $arr["reminders"];
+			$notices = $arr["notices"];
+			ob_start();
+			include 'view/widget.php';
+			$data["html"] = ob_get_contents();
+			ob_end_clean();
+			$data["widgetaction"] = $arr["widgetaction"];
+			return json_encode($data);
+		} else {
+			ob_start();
+			include CO_INC .'/view/default.php';
+			$data["html"] = ob_get_contents();
+			ob_end_clean();
+			return json_encode($data);
+		}
+	}
+	
+	
+	function markNoticeRead($pid) {
+		global $lang, $system;
+		$retval = $this->model->markNoticeRead($pid);
+		if($retval){
+			 return $retval;
+		  } else{
+			 return "error";
+		  }
+	}
+
+	function markNewPostRead($pid) {
+		global $lang, $system;
+		$retval = $this->model->markNewPostRead($pid);
+		if($retval){
+			 return $retval;
+		  } else{
+			 return "error";
+		  }
+	}
 
 }
 

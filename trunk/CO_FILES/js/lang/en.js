@@ -6,6 +6,7 @@ var CUSTOM_NOTE = "manual entry:";
 // Alerts
 var ALERT_YES = "Yes";
 var ALERT_NO = "No";
+var ALERT_LOGOUT = "Do you really want to logout?";
 var ALERT_NO_TITLE = "Please enter a title";
 var ALERT_CHANGES_NOT_SAVED = "Your changes have not yet been saved!\nWould you like to save them now?";
 var ALERT_DELETE = "Do you really want to delete this data?";

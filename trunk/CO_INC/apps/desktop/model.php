@@ -31,7 +31,10 @@ class DesktopModel extends Model {
 	
 	
 	function getPostIts() {
-		global $session;
+		global $session,$lang, $contactsmodel;
+		
+		$now = gmdate("Y-m-d H:i:s");
+		
 		// Notes
 		$q = "select * from " . CO_TBL_DESKTOP_POSTITS . " where uid = '$session->uid'";
 		
@@ -41,6 +44,32 @@ class DesktopModel extends Model {
 			foreach($row as $key => $val) {
 				$note[$key] = $val;
 			}
+			$days = $this->_date->dateDiff($note['edited_date'],$now);
+			switch($days) {
+				case 0:
+					$note["days"] = $lang["GLOBAL_TODAY"];
+				break;
+				case 1:
+					$note["days"] = $lang["GLOBAL_YESTERDAY"];
+				break;
+				default:
+				$note["days"] = sprintf($lang["GLOBAL_DAYS_AGO"], $days);
+			}
+			
+			$note["date"] = $this->_date->formatDate($note['edited_date'],CO_DATETIME_FORMAT);
+			
+			
+			// dates
+			$note["created_date"] = $this->_date->formatDate($note["created_date"],CO_DATETIME_FORMAT);
+			$note["edited_date"] = $this->_date->formatDate($note["edited_date"],CO_DATETIME_FORMAT);
+			
+			// other functions
+			$note["created_user"] = $this->_users->getUserFullname($note["created_user"]);
+			$note["edited_user"] = $this->_users->getUserFullname($note["edited_user"]);
+			
+			$note["sendto"] = $contactsmodel->getUserListPlain($note['sendto']);
+			$note["sendfrom"] = $contactsmodel->getUserListPlain($note['sendfrom']);
+			
 			
 			$notes[] = new Lists($note);
 	  	}
@@ -51,9 +80,11 @@ class DesktopModel extends Model {
 	
 	
 	function newPostit($z) {
-		global $session;
+		global $session,$lang;
 		
-		$q = "INSERT INTO " . CO_TBL_DESKTOP_POSTITS . " set uid = '$session->uid', xyz = '15x30x" . $z . "', wh = '200x200'";
+		$now = gmdate("Y-m-d H:i:s");
+		
+		$q = "INSERT INTO " . CO_TBL_DESKTOP_POSTITS . " set uid = '$session->uid', xyz = '15x70x" . $z . "', wh = '200x200', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			$id = mysql_insert_id();
@@ -62,6 +93,18 @@ class DesktopModel extends Model {
 		$note["wh"] = '200x200';
 		$note["id"] = $id;
 		$note["text"] = "";
+		$note["date"] = $this->_date->formatDate($now,CO_DATETIME_FORMAT);
+		$days = $this->_date->dateDiff($now,$now);
+		switch($days) {
+				case 0:
+					$note["days"] = $lang["GLOBAL_TODAY"];
+				break;
+				case 1:
+					$note["days"] = $lang["GLOBAL_YESTERDAY"];
+				break;
+				default:
+				$note["days"] = sprintf($lang["GLOBAL_DAYS_AGO"], $days);
+			}
 		$notes[] = new Lists($note);
 		$arr = array("notes" => $notes);
 		return $arr;
@@ -80,6 +123,9 @@ class DesktopModel extends Model {
 
 	function updatePostitSize($id,$w,$h) {
 		global $session;
+		
+		$now = gmdate("Y-m-d H:i:s");
+		
 		$q = "UPDATE " . CO_TBL_DESKTOP_POSTITS . " set wh='".$w."x".$h."' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
@@ -89,8 +135,57 @@ class DesktopModel extends Model {
 
 
 	function savePostit($id,$text) {
-		$q = "UPDATE " . CO_TBL_DESKTOP_POSTITS . " set text = '$text' WHERE id='$id'";
+		global $session;
+		
+		$now = gmdate("Y-m-d H:i:s");
+		
+		$q = "UPDATE " . CO_TBL_DESKTOP_POSTITS . " set text = '$text', edited_user = '$session->uid', edited_date = '$now' WHERE id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
+		
+		$date = $this->_date->formatDate($now,CO_DATETIME_FORMAT);
+		if ($result) {
+			return $date;
+		}
+	}
+	
+	
+	function forwardPostit($id,$users) {
+		global $session, $contactsmodel;
+
+		$now = gmdate("Y-m-d H:i:s");
+		
+		$q = "SELECT * FROM " . CO_TBL_DESKTOP_POSTITS . " WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+			$text = $row['text'];
+			//$xyz = $row['xyz'];
+			$wh = $row['wh'];
+			$edited_user = $row['edited_user'];
+			$sendto = $row['sendto'];
+		}
+		
+		$users = rtrim($users,',');
+		if($users == "") {
+			return true;
+		}
+		$users = $contactsmodel->sortUserIDsByName($users);
+		$users_arr = explode(",",$users);
+		
+		foreach($users_arr as $user) {
+			$q = "INSERT INTO " . CO_TBL_DESKTOP_POSTITS . " set text = '$text', uid = '$user', xyz = '15x70x1000', wh = '$wh', sendfrom ='$session->uid', created_user = '$edited_user', created_date = '$now', edited_user = '$edited_user', edited_date = '$now'";
+			$result = mysql_query($q, $this->_db->connection);
+		}
+		
+		if($sendto == "") {
+			$sendto = $users;
+		} else {
+			$sendto = $sendto . ',' . $users;
+		}
+		
+		// Update original
+		$q = "UPDATE " . CO_TBL_DESKTOP_POSTITS . " set sendto='$sendto' WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
 		if ($result) {
 			return true;
 		}
