@@ -1,0 +1,86 @@
+#contacts .module-bg-active { 
+	border-top: 1px solid #fff;
+	border-bottom: 1px solid #ffd296;
+	background: #c88700;
+}
+
+/*#contacts3 h3 { padding: 0 40px 0 6px; font-size: 12px; line-height: 24px; cursor:pointer; color: #000; text-align: right; }*/
+
+#contacts1, #contacts2, #contacts3 { padding:0; overflow: hidden !important; /* prevent scrollbars auto-added by Layout */}
+#contacts1 { display: block;}
+#contacts1 .scrolling-content { width: 325px !important;}
+.contacts1-content { width: 325px;; background-color: #c88700; padding:0; overflow:hidden !important;}
+
+#contacts .ui-layout-west li>span:hover   { background-color: #E9D09A}
+#contacts .ui-layout-west li>span.active-link  { background-color: #E9D09A}
+
+/*.ui-layout-west li a.deactivated { color: #fff; }
+.ui-layout-west li a.deactivated:hover { color: #fff; background-color: transparent !important; }*/
+
+#contacts .jScrollPaneDrag { background: #865b00; }
+
+#contacts .co-link:hover { color: #865b00; }
+
+#contacts .center-center a         { color: #000; }
+#contacts .center-center a:link    { color: #000; }
+#contacts .center-center a:active  { color: #000; }
+#contacts .center-center a:visited { color: #000; }
+#contacts .center-center a:hover   { color: #865b00; cursor: pointer}
+
+
+#menu .app_contacts { }
+#menu .app_contacts:hover, #menu .app_contacts.active-app {
+	border: 1px solid #664100;
+	border-top-color: #c88700;
+	background: rgb(253,208,145);
+	background: -moz-linear-gradient(top,  rgba(253,208,145,1) 0%, rgba(145,85,0,1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(253,208,145,1)), color-stop(100%,rgba(145,85,0,1)));
+	background: -webkit-linear-gradient(top,  rgba(253,208,145,1) 0%,rgba(145,85,0,1) 100%);
+	background: -o-linear-gradient(top,  rgba(253,208,145,1) 0%,rgba(145,85,0,1) 100%);
+	background: -ms-linear-gradient(top,  rgba(253,208,145,1) 0%,rgba(145,85,0,1) 100%);
+	background: linear-gradient(top,  rgba(253,208,145,1) 0%,rgba(145,85,0,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fdd091', endColorstr='#915500',GradientType=0 );
+}
+
+ 
+#contacts .table-title, #contacts .textarea-title { 
+background-color: #e9d09a; }
+
+#contacts .ui-datepicker-trigger-action-status {
+	position: absolute;
+	left: 318px;
+display: block; height: 13px; width: 15px; margin-top: -15px; background:url(../../../img/icons.png) no-repeat -40px 0px
+}
+
+#contacts a.disabled{
+	background-position: 0px 0px
+}
+
+#contacts-right .tcell-left span span, #contacts-right .tcell-left-shorter span span { display: block; padding: 0 0 0 15px; }
+#contacts-right .tcell-left-short span { display: block; padding: 0 0 0 15px; }
+
+#contacts-right .content-nav         { display: block; color: #000; }
+#contacts-right .content-nav:hover   { display: block; background-color: #C88700; color: #000; cursor: pointer; }
+
+.content-outline {background-color: #e1f0af;}
+
+#contacts-right textarea{ font-size: 13px;
+	font-family: Arial, Helvetica, sans-serif;
+	border: 1px solid #fff;
+	width: 100%;
+}
+/*#contacts-right textarea:hover,
+#contacts-right textarea:focus,
+#contacts-right input.bg:hover, */
+#contacts-right input.bg:focus {
+    background-color: #e9d09a;
+}
+
+#contacts-right .ui-upload-button { position: absolute !important; width: 80px; height: 120px;}
+#contacts-right .qq-upload-button-hover {background-color: #E9D09A; background-image: url("../../img/avatar_hover.jpg");  background-repeat: no-repeat; }
+#contacts-right .ui-upload-drop-area { position: absolute; width: 74px; padding: 20px 3px 3px 3px; height: 97px; background: #E9D09A; opacity: 0.6; z-index: 1; font-size: 11px; text-align: center; }
+#contacts-right .ui-upload-drop-area-active { background: #E9D09A;}
+#contacts-right .ui-upload-list { display: none; position: absolute; width: 74px; padding: 3px; text-align: center; height: 114px; font-size: 11px; z-index: 2; background: #E9D09A; opacity: 0.8 }
+#contacts-right .ui-upload-file { display: none;}
+#contacts-right .ui-upload-spinner {display:inline-block; background: url("../../img/file_loading.gif"); width:15px; height:15px; vertical-align:text-bottom;}
+
