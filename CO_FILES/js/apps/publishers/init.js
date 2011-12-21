@@ -78,6 +78,9 @@ function publishersloadModuleStart() {
 
 
 function publishersresetModuleHeights() {
+	if(getCurrentApp() != 'publishers') {
+		$('#publishers').css('top',2*$('#container-inner').height());
+	}
 	var h = $("#publishers .ui-layout-west").height();
 	$(".publishers1-content").css("height", h-96);
 	$("#publishers1 .module-inner").css("height", h-96);

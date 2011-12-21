@@ -85,6 +85,9 @@ function binloadModuleStart() {
 
 
 function binresetModuleHeights() {
+	if(getCurrentApp() != 'bin') {
+		$('#bin').css('top',2*$('#container-inner').height());
+	}
 	var h = $("#bin .ui-layout-west").height();
 	$("#bin .ui-layout-west .radius-helper").height(h);
 	if($("#bin1").height() != module_title_height) {

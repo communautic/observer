@@ -816,6 +816,9 @@ function brainstormsloadModuleStart() {
 
 
 function brainstormsresetModuleHeights() {
+	if(getCurrentApp() != 'brainstorms') {
+		$('#brainstorms').css('top',2*$('#container-inner').height());
+	}
 	var h = $("#brainstorms div.ui-layout-west").height();
 	$("#brainstorms .ui-layout-west .radius-helper").height(h);
 	$("#brainstorms1").height(h-98);

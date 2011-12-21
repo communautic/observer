@@ -721,6 +721,9 @@ function clientsloadModuleStart() {
 
 
 function clientsresetModuleHeights() {
+	if(getCurrentApp() != 'clients') {
+		$('#clients').css('top',2*$('#container-inner').height());
+	}
 	var h = $("#clients div.ui-layout-west").height();
 	$("#clients .ui-layout-west .radius-helper").height(h);
 	$("#clients1").height(h-98);

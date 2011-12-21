@@ -740,6 +740,9 @@ function forumsloadModuleStart() {
 
 
 function forumsresetModuleHeights() {
+	if(getCurrentApp() != 'forums') {
+		$('#forums').css('top',2*$('#container-inner').height());
+	}
 	var h = $("#forums div.ui-layout-west").height();
 	$("#forums .ui-layout-west .radius-helper").height(h);
 	$("#forums1").height(h-98);

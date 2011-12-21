@@ -16,6 +16,7 @@ define("CO_INC"	, 		"CO_INC" 			);
 
 // FILES PATH
 define("CO_FILES"	, 		$protocol . "dev.companyobserver.com/CO_FILES" );
+//define("CO_FILES"	, 		$protocol . "c664.ssl.cf3.rackcdn.com/6.2" );
 
 /* -------------------------------------------------------------------------
 * Database Configuration

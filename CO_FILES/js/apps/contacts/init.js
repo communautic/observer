@@ -767,6 +767,9 @@ function contactsloadModuleStart() {
 
 
 function contactsresetModuleHeights() {
+	if(getCurrentApp() != 'contacts') {
+		$('#contacts').css('top',2*$('#container-inner').height());
+	}
 	var h = $("#contacts .ui-layout-west").height();
 	$("#contacts .ui-layout-west .radius-helper").height(h);
 	$(".contacts1-content").css("height", h-(contacts.modules_height*2+96));
