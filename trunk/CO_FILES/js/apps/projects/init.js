@@ -655,6 +655,13 @@ function projectsloadModuleStart() {
 
 
 function projectsresetModuleHeights() {
+	if(getCurrentApp() != 'projects') {
+		$('#projects').css('top',2*$('#container-inner').height());
+	}
+	// fix for now - move desktop if not active
+	if(getCurrentApp() != 'desktop') {
+		$('#desktop').css('top',2*$('#container-inner').height());
+	}
 	var h = $("#projects div.ui-layout-west").height();
 	$("#projects .ui-layout-west .radius-helper").height(h);
 	$("#projects1").height(h-98);
