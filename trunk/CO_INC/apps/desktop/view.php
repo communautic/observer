@@ -4,7 +4,6 @@
 <div id="desktopSpinner" class="spinner"><img src="<?php echo CO_FILES;?>/img/waiting_dark.gif" alt="Loading" width="16" height="16" /></div>
 <div id="desktopLicense"><span class="small"><?php echo $lang["DESKTOP_LIZENSE"];?></span> <span class="large"><?php echo CO_LICENSE;?></span></div>
 </div>
-<!--<div class="spinner" style="display: none;"><img width="16" height="16" alt="Loading" src="<?php echo CO_FILES;?>/img/waiting.gif"></div>-->
 </div>
 	<div id="desktopActions">
     	<div id="desktopActionsTrans"></div>
