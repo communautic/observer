@@ -183,39 +183,36 @@ $(document).ready(function() {
 
 	$('#desktop .postit').livequery( function() {
 		$(this).draggable({
-					containment:'#desktop',
-					cancel: '.nodrag',
-					start: function(e,ui){ ui.helper.css('z-index',++desktopzIndex); },
-					stop: function(e,ui){
-						var x = ui.position.left;
-						var y = ui.position.top;
-						var z = desktopzIndex;
-						var id = $(this).attr("id").replace(/postit-/, "");
-						$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/desktop&request=updatePostitPosition&id="+id+"&x="+x+"&y="+y+"&z="+z});
-					}
-				})
-				.resizable({
-					minHeight: 110,
-					minWidth: 200,
-					start: function(e,ui){ 
-						ui.helper.css('z-index',++desktopzIndex);
-						$(this).find("textarea").height($(this).height()-80);
-					},
-					resize: function(e,ui){ 
-						$(this).find("div.postit-text").height($(this).height()-80);
-					},
-					stop: function(e,ui){
-						var w = ui.size.width;
-						var h = ui.size.height;
-						var id = $(this).attr("id").replace(/postit-/, "");
-						$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/desktop&request=updatePostitSize&id="+id+"&w="+w+"&h="+h, success: function(data){
-							//$("#brainstorms-top .top-subheadlineTwo").html(data.startdate + ' - <span id="brainstormenddate">' + data.enddate + '</span>');
-							}
-						});
-					}
-
-						   
-				});
+			containment:'#desktop',
+			cancel: '.nodrag,textarea',
+			start: function(e,ui){ ui.helper.css('z-index',++desktopzIndex); },
+				stop: function(e,ui){
+					var x = ui.position.left;
+					var y = ui.position.top;
+					var z = desktopzIndex;
+					var id = $(this).attr("id").replace(/postit-/, "");
+					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/desktop&request=updatePostitPosition&id="+id+"&x="+x+"&y="+y+"&z="+z});
+				}
+			})
+			.resizable({
+				minHeight: 110,
+				minWidth: 200,
+				start: function(e,ui){ 
+					ui.helper.css('z-index',++desktopzIndex);
+					$(this).find("textarea").height($(this).height()-80);
+				},
+				resize: function(e,ui){ 
+					$(this).find("div.postit-text").height($(this).height()-80);
+				},
+				stop: function(e,ui){
+					var w = ui.size.width;
+					var h = ui.size.height;
+					var id = $(this).attr("id").replace(/postit-/, "");
+					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/desktop&request=updatePostitSize&id="+id+"&w="+w+"&h="+h, success: function(data){
+						}
+					});
+				}	   
+			});
 	});
 	
 	
