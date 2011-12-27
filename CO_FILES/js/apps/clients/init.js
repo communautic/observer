@@ -357,7 +357,7 @@ function clientsApplication(name) {
 }
 
 var clients = new clientsApplication('clients');
-clients.resetModuleHeights = clientsresetModuleHeights;
+//clients.resetModuleHeights = clientsresetModuleHeights;
 clients.modules_height = clients_num_modules*module_title_height;
 clients.GuestHiddenModules = new Array("access");
 
@@ -667,7 +667,7 @@ function clientsActions(status) {
 }
 
 
-function clientsloadModuleStart() {
+/*function clientsloadModuleStart() {
 	var h = $("#clients div.ui-layout-west").height();
 	$("#clients .ui-layout-west .radius-helper").height(h);
 	$("#clients .secondLevelOuter").css('top',h-27);
@@ -717,10 +717,10 @@ function clientsloadModuleStart() {
 		});
 	}
 	});
-}
+}*/
 
 
-function clientsresetModuleHeights() {
+/*function clientsresetModuleHeights() {
 	if(getCurrentApp() != 'clients') {
 		$('#clients').css('top',2*$('#container-inner').height());
 	}
@@ -767,7 +767,7 @@ function clientsresetModuleHeights() {
 			}
 		})
 	}
-}
+}*/
 
 
 function Clients2ModulesDisplay(access) {
@@ -875,7 +875,7 @@ $(document).ready(function() {
 						   
 	if($('#clients').length > 0) {
 		clientsLayout = $('#clients').layout({
-				west__onresize:				function() { clientsresetModuleHeights() }
+				west__onresize:				function() { resetModuleHeightsnavThree('clients'); }
 			,	resizeWhileDragging:		true
 			,	spacing_open:				0
 			,	spacing_closed:				0
@@ -901,8 +901,8 @@ $(document).ready(function() {
 			, 	north__size:				68
 			, 	west__size:					60
 		});
-		
-		clientsloadModuleStart();
+
+		loadModuleStartnavThree('clients');
 	}
 
 
@@ -915,6 +915,12 @@ $(document).ready(function() {
 	$("#clients2-outer > h3").on('click', function(e, passed_id) {
 		e.preventDefault();
 		navThreeTitleSecond('clients',$(this),passed_id)
+	});
+
+
+	$("#clients3 h3").on('click', function(e, passed_id) {
+		e.preventDefault();
+		navThreeTitleThird('clients',$(this),passed_id)
 	});
 
 
@@ -936,7 +942,7 @@ $(document).ready(function() {
 	});
 
 
-	$("#clients3 h3").on('click', function(e, passed_id) {
+	/*$("#clients3 h3").on('click', function(e, passed_id) {
 		e.preventDefault();
 		var obj = getCurrentModule();
 		if(confirmNavigation()) {
@@ -1060,10 +1066,7 @@ $(document).ready(function() {
 								}
 								$("#clients3 ul:eq("+moduleidx+") .module-click:eq("+idx+")").addClass('active-link');
 								$("#clients-top .top-subheadline").html(', ' + $("#clients2 .deactivated").find(".text").html());
-								/*$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients&request=getDates&id="+id, success: function(data){
-									$("#clients-top .top-subheadlineTwo").html(data.startdate + ' - <span id="clientenddate">' + data.enddate + '</span>');
-									}
-								});*/
+
 							var obj = getCurrentModule();
 							obj.getDetails(moduleidx,idx,data.html);
 							$("#clients3 .sort:eq("+moduleidx+")").attr("rel", data.sort).addClass("sort"+data.sort);
@@ -1077,7 +1080,7 @@ $(document).ready(function() {
 		$("#clients-current").val(module);
 		$('#clients').data({ "current" : module});
 	}
-});
+});*/
 
 
  
