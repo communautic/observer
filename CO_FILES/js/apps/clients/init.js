@@ -7,8 +7,14 @@ function clientsApplication(name) {
 	this.name = name;
 	
 
-	this.init = function(formData, form, poformOptions) {
-		this.first = $('#clients1');
+	this.init = function() {
+		this.$app = $('#clients');
+		this.$appContent = $('#clients-right');
+		this.$first = $('#clients1');
+		this.$second = $('#clients2');
+		this.$third = $('#clients3');
+		this.$thirdDiv = $('#clients3 div.thirdLevel');
+		this.$layoutWest = $('#clients div.ui-layout-west');
 	}
 	
 	
@@ -821,7 +827,7 @@ function clientsActions(status) {
 }*/
 
 
-function ClientsModulesDisplay(access) {
+/*function ClientsModulesDisplay(access) {
 	var h = $("#clients div.ui-layout-west").height();
 	if(access == "guest" || access == "guestadmin") {
 		var modLen = clients.GuestHiddenModules.length;
@@ -871,7 +877,7 @@ function ClientsModulesDisplay(access) {
 				})
 		})
 	}
-}
+}*/
 
 
 

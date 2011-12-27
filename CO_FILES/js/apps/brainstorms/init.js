@@ -6,8 +6,14 @@ function initBrainstormsContentScrollbar() {
 function brainstormsApplication(name) {
 	this.name = name;
 	
-	this.init = function(formData, form, poformOptions) {
-		this.first = $('#brainstorms1');
+	this.init = function() {
+		this.$app = $('#brainstorms');
+		this.$appContent = $('#brainstorms-right');
+		this.$first = $('#brainstorms1');
+		this.$second = $('#brainstorms2');
+		this.$third = $('#brainstorms3');
+		this.$thirdDiv = $('#brainstorms3 div.thirdLevel');
+		this.$layoutWest = $('#brainstorms div.ui-layout-west');
 	}
 	
 	this.formProcess = function(formData, form, poformOptions) {
@@ -913,7 +919,7 @@ function brainstormsActions(status) {
 }*/
 
 
-function BrainstormsModulesDisplay(access) {
+/*function BrainstormsModulesDisplay(access) {
 	var h = $("#brainstorms div.ui-layout-west").height();
 	if(access == "guest" || access == "guestadmin") {
 		var modLen = brainstorms.GuestHiddenModules.length;
@@ -963,7 +969,7 @@ function BrainstormsModulesDisplay(access) {
 				})
 		})
 	}
-}
+}*/
 
 
 function BrainstormsExternalLoad(what,f,p,ph) { // from Desktop
