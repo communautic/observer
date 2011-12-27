@@ -128,12 +128,13 @@ class Controller extends MySQLDB {
 	
 	
 	function openHelpPDF($data) {
-		
+		global $session;
 		$file = $data["file"];
-		$app = $data["app"];
-		$module = $data["module"];
+		//$app = $data["app"];
+		//$module = $data["module"];
 		
-		$fullPath = CO_INC_PATH . "/" . CO_INC . "/apps/" . $app . $module . "/lang/help/" . $file;
+		//$fullPath = CO_INC_PATH . "/" . CO_INC . "/apps/" . $app . $module . "/lang/help/" . $file;
+		$fullPath = CO_FILES . "/help/" . $session->userlang . "/" . $file;
 		
 		if ($fd = fopen ($fullPath, "rb")) {
 			$fsize = filesize($fullPath);
