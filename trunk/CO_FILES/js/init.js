@@ -1180,26 +1180,26 @@ function loadModuleStartnavThree(objectname) {
 	var objectnameCaps = objectFirst.toUpperCase() + objectname.substr(1);
 	var num_modules = window[objectname+'_num_modules'];
 	
-	var h = $('#'+objectname+' div.ui-layout-west').height();
-	$('#'+objectname+' .ui-layout-west .radius-helper').height(h);
+	var h = object.$layoutWest.height();
+	$('#'+objectname+' div.radius-helper').height(h);
 	$('#'+objectname+' .secondLevelOuter').css('top',h-27);
 	$('#'+objectname+' .thirdLevelOuter').css('top',150);
-	object.first.data('status','open');
-	$('#'+objectname+'2').data('status','closed');
-	$('#'+objectname+'3').data('status','closed');
-	object.first.height(h-98);
+	object.$first.data('status','open');
+	object.$second.data('status','closed');
+	object.$third.data('status','closed');
+	object.$first.height(h-98);
 	$('#'+objectname+'1 .module-inner').height(h-98);
 	$('#'+objectname+'1 .module-actions').show();
 	$('#'+objectname+'2 .module-actions').hide();
 	$('#'+objectname+'2 li').show();
-	$('#'+objectname+'2').height(h-125-num_modules*27).removeClass("module-active");
+	object.$second.height(h-125-num_modules*27).removeClass("module-active");
 	$('#'+objectname+'2 .module-inner').height(h-125-num_modules*27);
 	$('#'+objectname+'3 .module-actions').hide();
-	$('#'+objectname+'3').height(h-150);
+	object.$third.height(h-150);
 	$('#'+objectname+'3 .'+objectname+'3-content').height(h-(object.modules_height+152));
-	$('#'+objectname+'3 div.thirdLevel').height(h-(object.modules_height+150-27));
+	object.$thirdDiv.height(h-(object.modules_height+150-27));
 	$('#'+objectname+'-current').val("folder");
-	$('#'+objectname+'3 div.thirdLevel').each(function(i) { 
+	object.$thirdDiv.each(function(i) { 
 		var position = $(this).position();
 		var t = position.top+h-150;
 		$(this).animate({top: t})
@@ -1220,10 +1220,10 @@ function loadModuleStartnavThree(objectname) {
 		$('#'+objectname+'1 .sort').attr("rel", data.sort).addClass("sort"+data.sort);
 		//projectsInnerLayout.initContent('center');
 		var id = $('#'+objectname+'1 .module-click:eq(0)').attr("rel");
-		$('#'+objectname).data({ "current" : "folders" , "first" : id , "second" : 0 , "third" : 0});
+		object.$app.data({ "current" : "folders" , "first" : id , "second" : 0 , "third" : 0});
 		$('#'+objectname+'1 .module-click:eq(0)').addClass('active-link');
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+objectname+"&request=getFolderDetails&id="+id, success: function(text){
-			$('#'+objectname+'-right').html(text.html);
+			object.$appContent.html(text.html);
 				window['init'+objectnameCaps+'ContentScrollbar']();
 			}
 		});
@@ -1242,47 +1242,47 @@ function resetModuleHeightsnavThree(objectname) {
 	var app = getCurrentApp();
 	
 	if(app != objectname) {
-		$('#'+objectname).css('top',t);
+		object.$app.css('top',t);
 	}
 	// fix for now - move desktop if not active
 	if(app != 'desktop' && $('#desktop').css('top') != t) {
 		$('#desktop').css('top',t);
 	}
-	var h = $('#'+objectname+' div.ui-layout-west').height();
-	$('#'+objectname+' div.ui-layout-west .radius-helper').height(h);
-	object.first.height(h-98);
+	var h = object.$layoutWest.height();
+	$('#'+objectname+' div.radius-helper').height(h);
+	object.$first.height(h-98);
 	$('#'+objectname+'1 .module-inner').height(h-98);
-	$('#'+objectname+'2').height(h-125-num_modules*27);
+	object.$second.height(h-125-num_modules*27);
 	$('#'+objectname+'2 .module-inner').height(h-125-num_modules*27);
-	$('#'+objectname+'3').height(h-150);
+	object.$third.height(h-150);
 	$('#'+objectname+'3 .'+objectname+'3-content').height(h-(object.modules_height+152));
-	$('#'+objectname+'3 div.thirdLevel').height(h-(object.modules_height+150-27));
-	if(object.first.data('status') == 'open') {
+	object.$thirdDiv.height(h-(object.modules_height+150-27));
+	if(object.$first.data('status') == 'open') {
 		$('#'+objectname+'2-outer').css('top',h-27);
-		$('#'+objectname+'3 div.thirdLevel').each(function(i) { 
+		object.$thirdDiv.each(function(i) { 
 			var t = h-150+i*27;
 			$(this).animate({top: t})
 		})
 	}
-	if($('#'+objectname+'2').data('status') == 'open') {	
+	if(object.$second.data('status') == 'open') {	
 		var curmods = $('#'+objectname+'3 div.thirdLevel:not(.deactivated)').size();
-		$('#'+objectname+'2').height(h-125-curmods*27).removeClass("module-active");
+		object.$second.height(h-125-curmods*27).removeClass("module-active");
 		$('#'+objectname+'2 .module-inner').height(h-125-curmods*27);
 		$('#'+objectname+'3 .'+objectname+'3-content').height(h-(curmods*27+152));
-		$('#'+objectname+'3 div.thirdLevel').height(h-(curmods*27+150-27));
+		object.$thirdDiv.height(h-(curmods*27+150-27));
 		$('#'+objectname+'3 div.thirdLevel:not(.deactivated)').each(function(i) { 
 			var t = h-150-curmods*27+i*27;
 			$(this).animate({top: t})
 		})
 	}
-	if($('#'+objectname+'3').data('status') == 'open') {
+	if(object.$third.data('status') == 'open') {
 		var obj = getCurrentModule();
 		var idx = $('#'+objectname+'3 .thirdLevel:not(.deactivated)').index($('#'+objectname+'3 .thirdLevel:not(.deactivated)[id='+obj.name+']'));	
 		var curmods = $('#'+objectname+'3 div.thirdLevel:not(.deactivated)').size();
-		$('#'+objectname+'2').height(h-125-curmods*27).removeClass("module-active");
+		object.$second.height(h-125-curmods*27).removeClass("module-active");
 		$('#'+objectname+'2 .module-inner').height(h-125-curmods*27);
 		$('#'+objectname+'3 .'+objectname+'3-content').height(h-(curmods*27+152));
-		$('#'+objectname+'3 div.thirdLevel').height(h-(curmods*27+150-27));
+		object.$thirdDiv.height(h-(curmods*27+150-27));
 		$('#'+objectname+'3 div.thirdLevel:not(.deactivated)').each(function(i) { 
 		if(i > idx) {
 			var pos = $(this).position();
@@ -1294,49 +1294,105 @@ function resetModuleHeightsnavThree(objectname) {
 }
 
 
+function modulesDisplay(objectname,access) { // when clicking on level two item
+	var object = window[objectname];
+	var num_modules = window[objectname+'_num_modules'];
+
+	var h = object.$layoutWest.height();
+	if(access == "guest" || access == "guestadmin") {
+		var modLen = object.GuestHiddenModules.length;
+		var p_num_modules = num_modules-modLen;
+		p_modules_height = p_num_modules*module_title_height;
+		$('#'+objectname+'3 .'+objectname+'3-content').height(h-(p_modules_height+152));
+		object.$thirdDiv.height(h-(p_modules_height+150-27));
+		object.$second.height(h-125-p_num_modules*27).removeClass("module-active");
+		$('#'+objectname+'2 .module-inner').height(h-125-p_num_modules*27);
+		var a = 0;
+		
+		var t = object.$second.height();
+		object.$second.animate({height: t+num_modules*27}, function() {
+			$(this).animate({height: t});
+		})
+		
+		object.$thirdDiv.each(function(i) { 
+			var rel = $(this).find('h3').attr('rel');
+			if(object.GuestHiddenModules.indexOf(rel) >= 0 ) {
+				$(this).addClass('deactivated').animate({top: 9999})	
+			} else {
+				var t = object.$third.height()-p_num_modules*27+a*27;
+				var position = $(this).position();
+				var d = position.top+num_modules*27;
+				$(this).animate({top: d}, function() {
+					$(this).animate({top: t})			
+				})
+				a = a+1;
+			}
+		})
+	} else {
+		$('#'+objectname+'3 .'+objectname+'3-content').height(h-(object.modules_height+152));
+		object.$thirdDiv.height(h-(object.modules_height+150-27));
+		$('#'+objectname+'2 .module-inner').height(h-125-num_modules*27);
+		var curmods = $('#'+objectname+'3 div.thirdLevel:not(.deactivated)').size();
+		var t = h-125-num_modules*27;
+		object.$second.animate({height: t+num_modules*27}, function() {
+			$(this).animate({height: t});
+		})
+		object.$thirdDiv.each(function(i) { 
+			$(this).removeClass('deactivated');
+			var t = object.$third.height()-num_modules*27+i*27;
+				var position = $(this).position();
+				var d = h-150+i*27;
+				$(this).animate({top: d}, function() {
+					$(this).animate({top: t})			
+				})
+		})
+	}
+}
+
+
 function modulesDisplayTwo(objectname,access) { // when opening level Two
 	var object = window[objectname];
 	var num_modules = window[objectname+'_num_modules'];
 
-	var h = $('#'+objectname+' div.ui-layout-west').height();
+	var h = object.$layoutWest.height();
 	if(access == "guest" || access == "guestadmin") {
 		var modLen = object.GuestHiddenModules.length;
 		var p_num_modules = num_modules-modLen;
 		var p_modules_height = p_num_modules*module_title_height;
 		$('#'+objectname+'3 .'+objectname+'3-content').height(h-(p_modules_height+152));
-		$('#'+objectname+'3 div.thirdLevel').height(h-(p_modules_height+150-27));
-		$('#'+objectname+'2').height(h-125-p_num_modules*27).removeClass("module-active");
+		object.$thirdDiv.height(h-(p_modules_height+150-27));
+		object.$second.height(h-125-p_num_modules*27).removeClass("module-active");
 		$('#'+objectname+'2 .module-inner').height(h-125-p_num_modules*27);
 		var a = 0;
-		var t = $('#'+objectname+'2').height();
-		$('#'+objectname+'2').animate({height: t+p_modules_height})
+		var t = object.$second.height();
+		object.$second.animate({height: t+p_modules_height})
 		$('#'+objectname+'2-outer').animate({top: 96}, function() {
-			$('#'+objectname+'3 div.thirdLevel').each(function(i) { 
+			object.$thirdDiv.each(function(i) { 
 				var rel = $(this).find('h3').attr('rel');
 				if(object.GuestHiddenModules.indexOf(rel) >= 0 ) {
 					$(this).addClass('deactivated').animate({top: 9999})	
 				} else {
-					var t = $('#'+objectname+'3').height()-p_num_modules*27+a*27;
+					var t = object.$third.height()-p_num_modules*27+a*27;
 						$(this).animate({top: t})			
 					a = a+1;
 				}
 			})
 			$('#'+objectname+'-top .top-headline').html($('#'+objectname+'1 .deactivated').find(".text").html());
-			$('#'+objectname+'2').animate({height: t})
+			object.$second.animate({height: t})
 		})
 	} else {
 		$('#'+objectname+'3 .'+objectname+'3-content').height(h-(object.modules_height+152));
-		$('#'+objectname+'3 div.thirdLevel').height(h-(object.modules_height+150-27));
+		object.$thirdDiv.height(h-(object.modules_height+150-27));
 		$('#'+objectname+'2 .module-inner').height(h-125-num_modules*27);
 		var t = h-125-object.modules_height;
-		$('#'+objectname+'2').animate({height: t+object.modules_height})
+		object.$second.animate({height: t+object.modules_height})
 		$('#'+objectname+'2-outer').animate({top: 96}, function() {
-			$('#'+objectname+'3 div.thirdLevel').each(function(i) { 
-				var t = $('#'+objectname+'3').height()-object.modules_height+i*27;
+			object.$thirdDiv.each(function(i) { 
+				var t = object.$third.height()-object.modules_height+i*27;
 				$(this).animate({top: t})			
 			})
 			$('#'+objectname+'-top .top-headline').html($('#'+objectname+'1 .deactivated').find(".text").html());
-			$('#'+objectname+'2').animate({height: t})
+			object.$second.animate({height: t})
 		})
 	}
 }
@@ -1360,11 +1416,11 @@ function navThreeTitleFirst(objectname, clicked, passed_id) {
 		obj.checkIn(cid);
 	}
 	
-	object.first.data('status','open');
-	$('#'+objectname+'2').data('status','closed');
-	$('#'+objectname+'3').data('status','closed');
-	$('#'+objectname).data({ 'second' : 0 });
-	$('#'+objectname).data({ 'third' : 0 });
+	object.$first.data('status','open');
+	object.$second.data('status','closed');
+	object.$third.data('status','closed');
+	object.$app.data({ 'second' : 0 });
+	object.$app.data({ 'third' : 0 });
 
 	
 	if(clicked.hasClass("module-bg-active")) { //module active
@@ -1387,12 +1443,12 @@ function navThreeTitleFirst(objectname, clicked, passed_id) {
 				var id = passed_id;
 				$('#'+objectname+'1 .module-click[rel='+id+']').addClass('active-link');
 			}
-			$('#'+objectname).data('first' , id );
+			object.$app.data('first' , id );
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/" + objectname +"&request=getFolderDetails&id="+id, success: function(text){
-				$('#'+objectname+'-right').html(text.html);
+				object.$appContent.html(text.html);
 				window['init'+objectnameCaps+'ContentScrollbar']();
-				var h = $('#'+objectname+' div.ui-layout-west').height();
-				object.first.delay(200).animate({height: h-71}, function() {
+				var h = object.$layoutWest.height();
+				object.$first.delay(200).animate({height: h-71}, function() {
 					$(this).animate({height: h-98});
 				});
 				$('#'+objectname+'2-outer').delay(200).animate({top: h}, function() {
@@ -1403,22 +1459,22 @@ function navThreeTitleFirst(objectname, clicked, passed_id) {
 			}
 		});
 	} else { //module slide out
-		var h = $('#'+objectname+' div.ui-layout-west').height();
+		var h = object.$layoutWest.height();
 		var id = $('#'+objectname+'1 .module-click:visible').attr("rel");
-		$('#'+objectname).data({'first' : id});
+		object.$app.data({'first' : id});
 		var index = $('#'+objectname+'1 .module-click').index($('#'+objectname+'1 .module-click[rel='+id+']'));
-		$('#'+objectname+'3').data('status','closed');
+		object.$third.data('status','closed');
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/" + objectname +"&request=getFolderList", success: function(data){
 			$('#'+objectname+'1 ul').html(data.html);
-			setModuleActive(object.first,index);
+			setModuleActive(object.$first,index);
 			$('#'+objectname+'-current').val('folder');
-			setModuleDeactive($('#'+objectname+'2'),'0');
-			setModuleDeactive($('#'+objectname+'3'),'0');
+			setModuleDeactive(object.$second,'0');
+			setModuleDeactive(object.$third,'0');
 			$('#'+objectname+'2-outer').animate({top: h-27});
 			$('#'+objectname+'2 li').show();
-			$('#'+objectname+'2').prev("h3").removeClass("white");
+			object.$second.prev("h3").removeClass("white");
 			$('#'+objectname+'3 h3').removeClass("module-bg-active");
-			$('#'+objectname+'3 div.thirdLevel').each(function(i) { 
+			object.$thirdDiv.each(function(i) { 
 				var t = h-150+i*27;
 				$(this).animate({top: t})
 			})
@@ -1435,7 +1491,7 @@ function navThreeTitleFirst(objectname, clicked, passed_id) {
 			setTimeout(function() {
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/" + objectname +"&request=getFolderDetails&id="+id, success: function(text){
 					$('#'+objectname+'1 li').show();
-					$('#'+objectname+'-right').html(text.html);
+					object.$appContent.html(text.html);
 					window['init'+objectnameCaps+'ContentScrollbar']();
 					}
 				 });
@@ -1443,7 +1499,7 @@ function navThreeTitleFirst(objectname, clicked, passed_id) {
 			}
 		});
 	}
-	$('#'+objectname).data({ "current" : "folder" });
+	object.$app.data({ "current" : "folder" });
 	$('#'+objectname+'-top .top-headline').html("");
 	$('#'+objectname+'-top .top-subheadline').html("");
 	$('#'+objectname+'-top .top-subheadlineTwo').html("");
@@ -1457,8 +1513,8 @@ function navThreeTitleSecond(objectname, clicked, passed_id) {
 	var objectnameCapsSingular = objectnameCaps.slice(0,-1);
 	var num_modules = window[objectname+'_num_modules'];
 	
-	$('#'+objectname+'3').data('status','closed');
-	$('#'+objectname).data({ 'third' : 0 });
+	object.$third.data('status','closed');
+	object.$app.data({ 'third' : 0 });
 	
 	var obj = getCurrentModule();
 	if(confirmNavigation()) {
@@ -1473,27 +1529,27 @@ function navThreeTitleSecond(objectname, clicked, passed_id) {
 	if(clicked.hasClass("module-bg-active")) {
 		$('#'+objectname+'1-outer > h3').trigger("click");
 	} else {
-		if(object.first.data('status') == 'closed') { // resize module
-			$('#'+objectname+'2').data('status','open');
-			var h = $('#'+objectname+' div.ui-layout-west').height();
-			var id = $('#'+objectname).data('first');
+		if(object.$first.data('status') == 'closed') { // resize module
+			object.$second.data('status','open');
+			var h = object.$layoutWest.height();
+			var id = object.$app.data('first');
 			if(passed_id === undefined) {
-				var objecctid = $('#'+objectname).data('second');
+				var objecctid = object.$app.data('second');
 			} else {
 				var objecctid = passed_id;					
 			}
-			$('#'+objectname).data({ "second" : objecctid});
+			object.$app.data({ "second" : objecctid});
 			var index = $('#'+objectname+'2 .module-click').index($('#'+objectname+'2 .module-click[rel='+objecctid+']'));
 			$('#'+objectname+'3 .module-actions').hide();
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/" + objectname +"&request=get"+objectnameCapsSingular+"List&id="+id, success: function(data){
 				$('#'+objectname+'2 ul').html(data.html);
 				$('#'+objectname+'Actions .actionNew').attr('title',data.title);	
 				$('#'+objectname+'2 li').show();
-				setModuleActive($('#'+objectname+'2'),index);
+				setModuleActive(object.$second,index);
 				$('#'+objectname+'2 .sort').attr('rel', data.sort).addClass('sort'+data.sort);
 					//$(this).find('.west-ui-content').height(h-(object.modules_height+125));
 					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+objectname+"&request=get"+objectnameCapsSingular+"Details&id="+objecctid, success: function(text){
-						$('#'+objectname+'-right').html(text.html);
+						object.$appContent.html(text.html);
 						switch (text.access) {
 							case "sysadmin":
 								if(data.html == "<li></li>") {
@@ -1526,11 +1582,10 @@ function navThreeTitleSecond(objectname, clicked, passed_id) {
 						}
 						
 						if(text.access != "sysadmin") {								
-							//window[objectnameCaps+'2ModulesDisplay'](text.access);
 							window['modulesDisplayTwo'](objectname,text.access);
 						} else {
-							$('#'+objectname+'3 div.thirdLevel').each(function(i) { 
-								var t = $('#'+objectname+'3').height()-num_modules*27+i*27;
+							object.$thirdDiv.each(function(i) { 
+								var t = object.$third.height()-num_modules*27+i*27;
 								$(this).animate({top: t})
 							}) 
 						}
@@ -1541,12 +1596,12 @@ function navThreeTitleSecond(objectname, clicked, passed_id) {
 				}
 			});
 		} else {
-			var id = $('#'+objectname).data('first');
+			var id = object.$app.data('first');
 			if(id == undefined) {
 				return false;
 			}
 			var index = $('#'+objectname+'1 .module-click').index($('#'+objectname+'1 .module-click[rel='+id+']'));
-			setModuleDeactive(object.first,index);
+			setModuleDeactive(object.$first,index);
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+objectname+"&request=get"+objectnameCapsSingular+"List&id="+id, success: function(data){
 				$('#'+objectname+'2 ul').html(data.html);
 				$('#'+objectname+'Actions .actionNew').attr('title',data.title);
@@ -1555,16 +1610,16 @@ function navThreeTitleSecond(objectname, clicked, passed_id) {
 				} else {
 					var objecctid = passed_id;					
 				}
-				$('#'+objectname).data({ "second" : objecctid});
-				if(object.first.data('status') == 'open') { // slide up module
-					object.first.data('status','closed');
-					$('#'+objectname+'2').data('status','open');
+				object.$app.data({ "second" : objecctid});
+				if(object.$first.data('status') == 'open') { // slide up module
+					object.$first.data('status','closed');
+					object.$second.data('status','open');
 					var idx = $('#'+objectname+'2 .module-click').index($('#'+objectname+'2 .module-click[rel='+objecctid+']'));
-					setModuleActive($('#'+objectname+'2'),idx);
+					setModuleActive(object.$second,idx);
 					$('#'+objectname+'2 .sort').attr('rel', data.sort).addClass('sort'+data.sort);
-					var h = $('#'+objectname+' div.ui-layout-west').height();
+					var h = object.$layoutWest.height();
 					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+objectname+"&request=get"+objectnameCapsSingular+"Details&id="+objecctid, success: function(text){
-						$('#'+objectname+'-right').html(text.html);
+						object.$appContent.html(text.html);
 						switch (text.access) {
 							case "sysadmin":
 								if(data.html == "<li></li>") {
@@ -1597,19 +1652,18 @@ function navThreeTitleSecond(objectname, clicked, passed_id) {
 						}
 						window['init'+objectnameCaps+'ContentScrollbar']();
 						if(text.access != "sysadmin") { 
-							//window[objectnameCaps+'2ModulesDisplay'](text.access);
 							window['modulesDisplayTwo'](objectname,text.access);
 						} else {
-							var t = $('#'+objectname+'2').height();
-							$('#'+objectname+'2').animate({height: t+num_modules*27})
+							var t = object.$second.height();
+							object.$second.animate({height: t+num_modules*27})
 							$('#'+objectname+'2-outer').animate({top: 96}, function() {
-								$('#'+objectname+'3 div.thirdLevel').each(function(i) { 
+								object.$thirdDiv.each(function(i) { 
 									var position = $(this).position();
 									var t = position.top-num_modules*module_title_height;
 									$(this).animate({top: t})
 								})					  								  
 								$('#'+objectname+'-top .top-headline').html($('#'+objectname+'1 .deactivated').find('.text').html());
-								$('#'+objectname+'2').animate({height: t})
+								object.$second.animate({height: t})
 							})
 						}
 					}
@@ -1619,7 +1673,7 @@ function navThreeTitleSecond(objectname, clicked, passed_id) {
 			});
 		}
 	}
-	$('#'+objectname).data({ "current" : objectname});
+	object.$app.data({ "current" : objectname});
 	$('#'+objectname+'-current').val(objectname);
 	$('#'+objectname+'-top .top-subheadline').html("");
 	$('#'+objectname+'-top .top-subheadlineTwo').html("");
@@ -1650,8 +1704,8 @@ function navThreeTitleThird(objectname, clicked, passed_id) {
 			$('#'+objectname+'2-outer > h3').trigger("click");
 		} else {
 			// module 3 allready activated
-			if($('#'+objectname+'3').data('status') == 'open') {
-				var id = $('#'+objectname).data('second');
+			if(object.$third.data('status') == 'open') {
+				var id = object.$app.data('second');
 				var mod = getCurrentModule();
 				var todeactivate = mod.name.replace(objectname+'_', "");
 				$('#'+objectname+'3 h3[rel='+todeactivate+']').removeClass("module-bg-active");	
@@ -1711,17 +1765,17 @@ function navThreeTitleThird(objectname, clicked, passed_id) {
 				}, 400);
 			} else {
 				// load and slide up module 3
-				var id = $('#'+objectname).data('second');
+				var id = object.$app.data('second');
 				if(id == undefined || id == 0) {
 					return false;
 				}
-				$('#'+objectname+'2').data('status','closed');
-				$('#'+objectname+'3').data('status','open');
+				object.$second.data('status','closed');
+				object.$third.data('status','open');
 				var index = $('#'+objectname+'2 .module-click').index($('#'+objectname+'2 .module-click[rel='+id+']'));			
 				$('#'+objectname+'3 .module-actions:visible').hide();
 				clicked.addClass("module-bg-active");
-				setModuleDeactive($('#'+objectname+'2'),index);
-				$('#'+objectname+'3 div.thirdLevel').each(function(i) { 
+				setModuleDeactive(object.$second,index);
+				object.$thirdDiv.each(function(i) { 
 					if(i <= moduleidx) {
 						var position = $(this).position();
 							var h = i*27;
@@ -1771,7 +1825,7 @@ function navThreeTitleThird(objectname, clicked, passed_id) {
 				})
 			}
 			$('#'+objectname+'-current').val(module);
-			$('#'+objectname).data({ "current" : module});
+			object.$app.data({ "current" : module});
 		}
 }
 
@@ -1794,20 +1848,20 @@ function navItemFirst(objectname, clicked) {
 	obj.checkIn(cid);
 	
 	var id = clicked.attr("rel");
-	$('#'+objectname).data({ "first" : id});
+	object.$app.data({ "first" : id});
 	var index = $('#'+objectname+' .module-click').index(this);
 	$('#'+objectname+' .module-click').removeClass("active-link");
 	clicked.addClass("active-link");
 
-	var h = $('#'+objectname+' div.ui-layout-west').height();
-	object.first.delay(200).animate({height: h-71}, function() {
+	var h = object.$layoutWest.height();
+	object.$first.delay(200).animate({height: h-71}, function() {
 		$(this).animate({height: h-98});
 	});
 	$('#'+objectname+'2-outer').delay(200).animate({top: h}, function() {
 		$(this).animate({top: h-27});
 	});
 	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+objectname+"&request=getFolderDetails&id="+id, success: function(text){
-		$('#'+objectname+'-right').html(text.html);
+		object.$appContent.html(text.html);
 		window['init'+objectnameCaps+'ContentScrollbar']();
 		if(text.access == "guest") {
 				window[objectname+'Actions']();
@@ -1840,13 +1894,13 @@ function navItemSecond(objectname, clicked) {
 	
 	var fid = $('#'+objectname+'1 .deactivated').attr("rel");
 	var id = clicked.attr("rel");
-	$('#'+objectname).data({ "second" : id});
+	object.$app.data({ "second" : id});
 	var index = $('#'+objectname+' .module-click').index(this);
 	$('#'+objectname+' .module-click').removeClass("active-link");
 	clicked.addClass("active-link");
 	$('#'+objectname+'-top .top-headline').html($('#'+objectname+'1 .deactivated').find(".text").html());
 	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+objectname+"&request=get"+objectnameCapsSingular+"Details&fid="+fid+"&id="+id, success: function(text){
-		$('#'+objectname+'-right').html(text.html);		
+		object.$appContent.html(text.html);		
 		if($('#checkedOut').length > 0) {
 			$('#'+objectname+'2 .active-link .icon-checked-out').addClass('icon-checked-out-active');
 		} else {
@@ -1869,13 +1923,13 @@ function navItemSecond(objectname, clicked) {
 
 		window['init'+objectnameCaps+'ContentScrollbar']();
 		if(text.access != "sysadmin") { 
-			window[objectnameCaps+'ModulesDisplay'](text.access);
+			window['modulesDisplay'](objectname,text.access);
 		} else {
-			var t = $('#'+objectname+'2').height();
-			$('#'+objectname+'2').animate({height: t+num_modules*27}, function() {
+			var t = object.$second.height();
+			object.$second.animate({height: t+num_modules*27}, function() {
 				$(this).animate({height: t});
 			})
-			$('#'+objectname+'3 div.thirdLevel').each(function(i) { 
+			object.$thirdDiv.each(function(i) { 
 				var position = $(this).position();
 				var t = position.top+num_modules*27;
 				$(this).animate({top: t}, function() {
@@ -1900,7 +1954,7 @@ function navItemThird(objectname, clicked) {
 	obj.checkIn(cid);
 	
 	var id = clicked.attr("rel");
-	$('#'+objectname).data({ "third" : id});
+	object.$app.data({ "third" : id});
 	var ulidx = $('#'+objectname+'3 ul').index(clicked.parents("ul"));
 	var index = $('#'+objectname+'3 ul:eq('+ulidx+') .module-click').index($('#'+objectname+'3 ul:eq('+ulidx+') .module-click[rel='+id+']'));
 	$('#'+objectname+'3 .module-click').removeClass("active-link");

@@ -6,8 +6,14 @@ function initForumsContentScrollbar() {
 function forumsApplication(name) {
 	this.name = name;
 	
-	this.init = function(formData, form, poformOptions) {
-		this.first = $('#forums1');
+	this.init = function() {
+		this.$app = $('#forums');
+		this.$appContent = $('#forums-right');
+		this.$first = $('#forums1');
+		this.$second = $('#forums2');
+		this.$third = $('#forums3');
+		this.$thirdDiv = $('#forums3 div.thirdLevel');
+		this.$layoutWest = $('#forums div.ui-layout-west');
 	}
 	
 	this.formProcess = function(formData, form, poformOptions) {
@@ -839,7 +845,7 @@ function forumsActions(status) {
 }*/
 
 
-function ForumsModulesDisplay(access) {
+/*function ForumsModulesDisplay(access) {
 	var h = $("#forums div.ui-layout-west").height();
 	if(access == "guest" || access == "guestadmin") {
 		var modLen = forums.GuestHiddenModules.length;
@@ -889,7 +895,7 @@ function ForumsModulesDisplay(access) {
 				})
 		})
 	}
-}
+}*/
 
 
 function ForumsExternalLoad(what,f,p,ph) { // from Desktop
