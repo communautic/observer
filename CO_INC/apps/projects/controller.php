@@ -499,8 +499,8 @@ class Projects extends Controller {
 	function getProjectsHelp() {
 		global $lang;
 		$data["file"] = $lang["PROJECT_HELP"];
-		$data["app"] = "projects";
-		$data["module"] = "";
+		//$data["app"] = "projects";
+		//$data["module"] = "";
 		$this->openHelpPDF($data);
 	}
 	
