@@ -6,6 +6,10 @@ function initForumsContentScrollbar() {
 function forumsApplication(name) {
 	this.name = name;
 	
+	this.init = function(formData, form, poformOptions) {
+		this.first = $('#forums1');
+	}
+	
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#forums input.title").fieldValue();
 		if(title == "") {
@@ -790,7 +794,7 @@ function forumsActions(status) {
 
 
 
-function Forums2ModulesDisplay(access) {
+/*function Forums2ModulesDisplay(access) {
 	var h = $("#forums div.ui-layout-west").height();
 	if(access == "guest" || access == "guestadmin") {
 		var modLen = forums.GuestHiddenModules.length;
@@ -832,7 +836,7 @@ function Forums2ModulesDisplay(access) {
 			$("#forums2").animate({height: t})
 		})
 	}
-}
+}*/
 
 
 function ForumsModulesDisplay(access) {
@@ -1035,7 +1039,9 @@ function ForumsExternalLoad(what,f,p,ph) { // from Desktop
 var forumsLayout, forumsInnerLayout;
 
 $(document).ready(function() {
-						   
+	
+	forums.init();
+	
 	if($('#forums').length > 0) {
 		forumsLayout = $('#forums').layout({
 				west__onresize:				function() { resetModuleHeightsnavThree('forums'); }

@@ -40,7 +40,7 @@ $numPhases = sizeof($project["phases"]);
 if($numPhases > 0) { 
 $width = $numPhases * 170;
 ?>
-<div class="text11 tbl-inactive" style="position: absolute; padding-left: 15px; height: 58px; color: #666666;" ><?php echo $lang["PROJECT_PHASES"];?></div>
+<div class="text11 tbl-inactive" style="position: absolute; height: 58px; color: #666666;" ><span style="padding-left: 15px;"><?php echo $lang["PROJECT_PHASES"];?></span></div>
 	<div style="width: <?php echo($width+150);?>px">
     <div style="width: 150px; float: left;">
       <div style="height: 58px; margin-bottom: 18px;"></div>

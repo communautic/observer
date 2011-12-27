@@ -6,6 +6,11 @@ function initProjectsContentScrollbar() {
 function projectsApplication(name) {
 	this.name = name;
 	
+	this.init = function(formData, form, poformOptions) {
+		this.first = $('#projects1');
+	}
+
+
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#projects input.title").fieldValue();
 		if(title == "") {
@@ -708,7 +713,7 @@ function projectsActions(status) {
 }*/
 
 
-function Projects2ModulesDisplay(access) {
+/*function Projects2ModulesDisplay(access) {
 	var h = $("#projects div.ui-layout-west").height();
 	if(access == "guest" || access == "guestadmin") {
 		var modLen = projects.GuestHiddenModules.length;
@@ -750,7 +755,7 @@ function Projects2ModulesDisplay(access) {
 			$("#projects2").animate({height: t})
 		})
 	}
-}
+}*/
 
 
 function ProjectsModulesDisplay(access) {
@@ -952,7 +957,9 @@ function ProjectsExternalLoad(what,f,p,ph) { // from Desktop
 var projectsLayout, projectsInnerLayout;
 
 $(document).ready(function() {
-						   
+	
+	projects.init();
+	
 	if($('#projects').length > 0) {
 		projectsLayout = $('#projects').layout({
 				west__onresize:				function() { resetModuleHeightsnavThree('projects'); }

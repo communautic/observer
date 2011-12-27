@@ -6,6 +6,12 @@ function initClientsContentScrollbar() {
 function clientsApplication(name) {
 	this.name = name;
 	
+
+	this.init = function(formData, form, poformOptions) {
+		this.first = $('#clients1');
+	}
+	
+	
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#clients input.title").fieldValue();
 		if(title == "") {
@@ -770,7 +776,7 @@ function clientsActions(status) {
 }*/
 
 
-function Clients2ModulesDisplay(access) {
+/*function Clients2ModulesDisplay(access) {
 	var h = $("#clients div.ui-layout-west").height();
 	if(access == "guest" || access == "guestadmin") {
 		var modLen = clients.GuestHiddenModules.length;
@@ -812,7 +818,7 @@ function Clients2ModulesDisplay(access) {
 			$("#clients2").animate({height: t})
 		})
 	}
-}
+}*/
 
 
 function ClientsModulesDisplay(access) {
@@ -872,7 +878,9 @@ function ClientsModulesDisplay(access) {
 var clientsLayout, clientsInnerLayout;
 
 $(document).ready(function() {
-						   
+	
+	clients.init();
+	
 	if($('#clients').length > 0) {
 		clientsLayout = $('#clients').layout({
 				west__onresize:				function() { resetModuleHeightsnavThree('clients'); }

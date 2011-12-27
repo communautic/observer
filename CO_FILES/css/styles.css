@@ -167,14 +167,14 @@ li.ui-state-highlight { height: 13px; margin: 0 0 5px 0;}
 .module-access-active { display: block; }
 .module-item-status { position: absolute; width: 22px; height: 22px; top: 0; right: 0; background:url(../img/icons.png) no-repeat -294px 7px; z-index: 1; display: none;}
 /*.module-item-status { margin: 0 0 0 10px; padding: 0 0 0 10px; width: 12px; height: 14px; background:url(../img/icons.png) no-repeat -300px 2px; display: none;}*/
-.deactivated .module-item-status { border: 0;}
+.deactivated .module-item-status { border: 0 !important;}
 .module-item-active { display: block; }
 .module-item-active-stopped { display: block; background-position: -315px 7px;}
 
 .text { /*padding-right: 30px;*/ }
 .num { position: absolute; right: 25px; font-size: 11px; top: 0;}
 .icon-guest { position: absolute; width: 22px; height: 22px; top: 0; right: 23px; background:url(../img/icons.png) no-repeat -275px 8px; z-index: 1; display: none;}
-.deactivated .icon-guest { border: 0;}
+.deactivated .icon-guest { border: 0 !important;}
 .icon-guest-active { display: block }
 .icon-checked-out { position: absolute; width: 22px; height: 22px;  top: 0; right: 23px; background:url(../img/icons.png) no-repeat -94px 7px; z-index: 1; display: none;}
 .icon-checked-out-active { display: block }
@@ -256,7 +256,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f2f2', end
 }
 
 #app-top .titles { padding: 8px 0 0 15px; }
-.top-headline, .top-subheadline, .top-subheadlineTwo { font-size: 19px; color:#717880; text-shadow: 1px 1px 1px #fff; }
+.top-headline, .top-subheadline, .top-subheadlineTwo { font-size: 19px; color:#717880; text-shadow: 0px 1px 1px #fff; }
 .top-subheadlineTwo { padding-left: 33px; font-size: 14px; }
 /*.info-top {  position: absolute; right: 0; height: 80px; text-align: right; margin:  0 15px 0 0;}
 
@@ -286,9 +286,12 @@ div.thirdLevel { position: absolute; width: 100%; z-index: 1;}
 					margin-bottom: 4px;
 					overflow: hidden;
 					overflow-y: auto;
+					-webkit-overflow-scrolling : touch;
 				}
 
-.scroll-pane { width: 100%; height: 100%; overflow: auto; position: relative; }
+.scroll-pane { width: 100%; height: 100%; overflow: auto; position: relative; 
+-webkit-overflow-scrolling : touch;
+}
 
 
 #menu { 
