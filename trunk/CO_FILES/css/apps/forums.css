@@ -8,7 +8,14 @@
 #forums3 { display: block;}
 #forums3 .scrolling-content { width: 325px !important;}
 
-.forums3-content { width: 325px;; background-color: #6496DC; padding:0; overflow:hidden !important;}
+.forums3-content {
+	width: 100%; 
+	padding:0; 
+	overflow:hidden !important;
+	background: #6496DC;
+	border-bottom: 1px solid #5A690A;
+    border-top: 1px solid #FFFFFF;
+}
 
 #forums .ui-layout-west li>span:hover   { background-color: #C1D5F0}
 #forums .ui-layout-west li>span.active-link  { background-color: #C1D5F0}

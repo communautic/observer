@@ -6,6 +6,10 @@ function initBrainstormsContentScrollbar() {
 function brainstormsApplication(name) {
 	this.name = name;
 	
+	this.init = function(formData, form, poformOptions) {
+		this.first = $('#brainstorms1');
+	}
+	
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#brainstorms input.title").fieldValue();
 		if(title == "") {
@@ -864,7 +868,7 @@ function brainstormsActions(status) {
 	}
 }*/
 
-function Brainstorms2ModulesDisplay(access) {
+/*function Brainstorms2ModulesDisplay(access) {
 	var h = $("#brainstorms div.ui-layout-west").height();
 	if(access == "guest" || access == "guestadmin") {
 		var modLen = brainstorms.GuestHiddenModules.length;
@@ -906,7 +910,7 @@ function Brainstorms2ModulesDisplay(access) {
 			$("#brainstorms2").animate({height: t})
 		})
 	}
-}
+}*/
 
 
 function BrainstormsModulesDisplay(access) {
@@ -1114,7 +1118,9 @@ function setcEN(id) {
 }
 
 $(document).ready(function() {
-						   
+	
+	brainstorms.init();
+	
 	if($('#brainstorms').length > 0) {
 		brainstormsLayout = $('#brainstorms').layout({
 				west__onresize:				function() { resetModuleHeightsnavThree('brainstorms'); }

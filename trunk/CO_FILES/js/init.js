@@ -1184,10 +1184,10 @@ function loadModuleStartnavThree(objectname) {
 	$('#'+objectname+' .ui-layout-west .radius-helper').height(h);
 	$('#'+objectname+' .secondLevelOuter').css('top',h-27);
 	$('#'+objectname+' .thirdLevelOuter').css('top',150);
-	$('#'+objectname+'1').data('status','open');
+	object.first.data('status','open');
 	$('#'+objectname+'2').data('status','closed');
 	$('#'+objectname+'3').data('status','closed');
-	$('#'+objectname+'1').height(h-98);
+	object.first.height(h-98);
 	$('#'+objectname+'1 .module-inner').height(h-98);
 	$('#'+objectname+'1 .module-actions').show();
 	$('#'+objectname+'2 .module-actions').hide();
@@ -1250,14 +1250,14 @@ function resetModuleHeightsnavThree(objectname) {
 	}
 	var h = $('#'+objectname+' div.ui-layout-west').height();
 	$('#'+objectname+' div.ui-layout-west .radius-helper').height(h);
-	$('#'+objectname+'1').height(h-98);
+	object.first.height(h-98);
 	$('#'+objectname+'1 .module-inner').height(h-98);
 	$('#'+objectname+'2').height(h-125-num_modules*27);
 	$('#'+objectname+'2 .module-inner').height(h-125-num_modules*27);
 	$('#'+objectname+'3').height(h-150);
 	$('#'+objectname+'3 .'+objectname+'3-content').height(h-(object.modules_height+152));
 	$('#'+objectname+'3 div.thirdLevel').height(h-(object.modules_height+150-27));
-	if($('#'+objectname+'1').data('status') == 'open') {
+	if(object.first.data('status') == 'open') {
 		$('#'+objectname+'2-outer').css('top',h-27);
 		$('#'+objectname+'3 div.thirdLevel').each(function(i) { 
 			var t = h-150+i*27;
@@ -1294,6 +1294,55 @@ function resetModuleHeightsnavThree(objectname) {
 }
 
 
+function modulesDisplayTwo(objectname,access) { // when opening level Two
+	var object = window[objectname];
+	var num_modules = window[objectname+'_num_modules'];
+
+	var h = $('#'+objectname+' div.ui-layout-west').height();
+	if(access == "guest" || access == "guestadmin") {
+		var modLen = object.GuestHiddenModules.length;
+		var p_num_modules = num_modules-modLen;
+		var p_modules_height = p_num_modules*module_title_height;
+		$('#'+objectname+'3 .'+objectname+'3-content').height(h-(p_modules_height+152));
+		$('#'+objectname+'3 div.thirdLevel').height(h-(p_modules_height+150-27));
+		$('#'+objectname+'2').height(h-125-p_num_modules*27).removeClass("module-active");
+		$('#'+objectname+'2 .module-inner').height(h-125-p_num_modules*27);
+		var a = 0;
+		var t = $('#'+objectname+'2').height();
+		$('#'+objectname+'2').animate({height: t+p_modules_height})
+		$('#'+objectname+'2-outer').animate({top: 96}, function() {
+			$('#'+objectname+'3 div.thirdLevel').each(function(i) { 
+				var rel = $(this).find('h3').attr('rel');
+				if(object.GuestHiddenModules.indexOf(rel) >= 0 ) {
+					$(this).addClass('deactivated').animate({top: 9999})	
+				} else {
+					var t = $('#'+objectname+'3').height()-p_num_modules*27+a*27;
+						$(this).animate({top: t})			
+					a = a+1;
+				}
+			})
+			$('#'+objectname+'-top .top-headline').html($('#'+objectname+'1 .deactivated').find(".text").html());
+			$('#'+objectname+'2').animate({height: t})
+		})
+	} else {
+		$('#'+objectname+'3 .'+objectname+'3-content').height(h-(object.modules_height+152));
+		$('#'+objectname+'3 div.thirdLevel').height(h-(object.modules_height+150-27));
+		$('#'+objectname+'2 .module-inner').height(h-125-num_modules*27);
+		var t = h-125-object.modules_height;
+		$('#'+objectname+'2').animate({height: t+object.modules_height})
+		$('#'+objectname+'2-outer').animate({top: 96}, function() {
+			$('#'+objectname+'3 div.thirdLevel').each(function(i) { 
+				var t = $('#'+objectname+'3').height()-object.modules_height+i*27;
+				$(this).animate({top: t})			
+			})
+			$('#'+objectname+'-top .top-headline').html($('#'+objectname+'1 .deactivated').find(".text").html());
+			$('#'+objectname+'2').animate({height: t})
+		})
+	}
+}
+
+
+
 function navThreeTitleFirst(objectname, clicked, passed_id) {
 	var object = window[objectname];
 	var objectFirst = objectname.substr(0, 1);
@@ -1305,12 +1354,18 @@ function navThreeTitleFirst(objectname, clicked, passed_id) {
 	if(confirmNavigation()) {
 		formChanged = false;
 		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+	}	
+	var cid = $('#'+objectname+' input[name="id"]').val()
+	if(cid != undefined) {
+		obj.checkIn(cid);
 	}
-	$('#'+objectname+'1').data('status','open');
+	
+	object.first.data('status','open');
 	$('#'+objectname+'2').data('status','closed');
 	$('#'+objectname+'3').data('status','closed');
-	var cid = $('#'+objectname+' input[name="id"]').val()
-	obj.checkIn(cid);
+	$('#'+objectname).data({ 'second' : 0 });
+	$('#'+objectname).data({ 'third' : 0 });
+
 	
 	if(clicked.hasClass("module-bg-active")) { //module active
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/" + objectname +"&request=getFolderList", success: function(data){
@@ -1332,12 +1387,12 @@ function navThreeTitleFirst(objectname, clicked, passed_id) {
 				var id = passed_id;
 				$('#'+objectname+'1 .module-click[rel='+id+']').addClass('active-link');
 			}
-			$('#'+objectname).data("first" , id );
+			$('#'+objectname).data('first' , id );
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/" + objectname +"&request=getFolderDetails&id="+id, success: function(text){
 				$('#'+objectname+'-right').html(text.html);
 				window['init'+objectnameCaps+'ContentScrollbar']();
 				var h = $('#'+objectname+' div.ui-layout-west').height();
-				$('#'+objectname+'1').delay(200).animate({height: h-71}, function() {
+				object.first.delay(200).animate({height: h-71}, function() {
 					$(this).animate({height: h-98});
 				});
 				$('#'+objectname+'2-outer').delay(200).animate({top: h}, function() {
@@ -1350,12 +1405,12 @@ function navThreeTitleFirst(objectname, clicked, passed_id) {
 	} else { //module slide out
 		var h = $('#'+objectname+' div.ui-layout-west').height();
 		var id = $('#'+objectname+'1 .module-click:visible').attr("rel");
-		$('#'+objectname).data({"first" : id});
+		$('#'+objectname).data({'first' : id});
 		var index = $('#'+objectname+'1 .module-click').index($('#'+objectname+'1 .module-click[rel='+id+']'));
 		$('#'+objectname+'3').data('status','closed');
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/" + objectname +"&request=getFolderList", success: function(data){
 			$('#'+objectname+'1 ul').html(data.html);
-			setModuleActive($('#'+objectname+'1'),index);
+			setModuleActive(object.first,index);
 			$('#'+objectname+'-current').val('folder');
 			setModuleDeactive($('#'+objectname+'2'),'0');
 			setModuleDeactive($('#'+objectname+'3'),'0');
@@ -1403,18 +1458,22 @@ function navThreeTitleSecond(objectname, clicked, passed_id) {
 	var num_modules = window[objectname+'_num_modules'];
 	
 	$('#'+objectname+'3').data('status','closed');
+	$('#'+objectname).data({ 'third' : 0 });
+	
 	var obj = getCurrentModule();
 	if(confirmNavigation()) {
 		formChanged = false;
 		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 	}
 	var cid = $('#'+objectname+' input[name="id"]').val()
-	obj.checkIn(cid);
+	if(cid != undefined) {
+		obj.checkIn(cid);
+	}
 	
 	if(clicked.hasClass("module-bg-active")) {
 		$('#'+objectname+'1-outer > h3').trigger("click");
 	} else {
-		if($('#'+objectname+'1').data('status') == 'closed') { // resize module
+		if(object.first.data('status') == 'closed') { // resize module
 			$('#'+objectname+'2').data('status','open');
 			var h = $('#'+objectname+' div.ui-layout-west').height();
 			var id = $('#'+objectname).data('first');
@@ -1467,10 +1526,10 @@ function navThreeTitleSecond(objectname, clicked, passed_id) {
 						}
 						
 						if(text.access != "sysadmin") {								
-							window[objectnameCaps+'2ModulesDisplay'](text.access);
+							//window[objectnameCaps+'2ModulesDisplay'](text.access);
+							window['modulesDisplayTwo'](objectname,text.access);
 						} else {
 							$('#'+objectname+'3 div.thirdLevel').each(function(i) { 
-								
 								var t = $('#'+objectname+'3').height()-num_modules*27+i*27;
 								$(this).animate({top: t})
 							}) 
@@ -1487,7 +1546,7 @@ function navThreeTitleSecond(objectname, clicked, passed_id) {
 				return false;
 			}
 			var index = $('#'+objectname+'1 .module-click').index($('#'+objectname+'1 .module-click[rel='+id+']'));
-			setModuleDeactive($('#'+objectname+'1'),index);
+			setModuleDeactive(object.first,index);
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+objectname+"&request=get"+objectnameCapsSingular+"List&id="+id, success: function(data){
 				$('#'+objectname+'2 ul').html(data.html);
 				$('#'+objectname+'Actions .actionNew').attr('title',data.title);
@@ -1497,8 +1556,8 @@ function navThreeTitleSecond(objectname, clicked, passed_id) {
 					var objecctid = passed_id;					
 				}
 				$('#'+objectname).data({ "second" : objecctid});
-				if($('#'+objectname+'1').data('status') == 'open') { // slide up module
-					$('#'+objectname+'1').data('status','closed');
+				if(object.first.data('status') == 'open') { // slide up module
+					object.first.data('status','closed');
 					$('#'+objectname+'2').data('status','open');
 					var idx = $('#'+objectname+'2 .module-click').index($('#'+objectname+'2 .module-click[rel='+objecctid+']'));
 					setModuleActive($('#'+objectname+'2'),idx);
@@ -1538,7 +1597,8 @@ function navThreeTitleSecond(objectname, clicked, passed_id) {
 						}
 						window['init'+objectnameCaps+'ContentScrollbar']();
 						if(text.access != "sysadmin") { 
-							window[objectnameCaps+'2ModulesDisplay'](text.access);
+							//window[objectnameCaps+'2ModulesDisplay'](text.access);
+							window['modulesDisplayTwo'](objectname,text.access);
 						} else {
 							var t = $('#'+objectname+'2').height();
 							$('#'+objectname+'2').animate({height: t+num_modules*27})
@@ -1579,7 +1639,9 @@ function navThreeTitleThird(objectname, clicked, passed_id) {
 			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 		}
 		var cid = $('#'+objectname+' input[name="id"]').val()
-		obj.checkIn(cid);
+		if(cid != undefined) {
+			obj.checkIn(cid);
+		}
 		
 		var moduleidx = $('#'+objectname+'3 h3').index(clicked);
 		var module = clicked.attr("rel");
@@ -1650,11 +1712,11 @@ function navThreeTitleThird(objectname, clicked, passed_id) {
 			} else {
 				// load and slide up module 3
 				var id = $('#'+objectname).data('second');
-				$('#'+objectname+'2').data('status','closed');
-				$('#'+objectname+'3').data('status','open');
-				if(id == undefined) {
+				if(id == undefined || id == 0) {
 					return false;
 				}
+				$('#'+objectname+'2').data('status','closed');
+				$('#'+objectname+'3').data('status','open');
 				var index = $('#'+objectname+'2 .module-click').index($('#'+objectname+'2 .module-click[rel='+id+']'));			
 				$('#'+objectname+'3 .module-actions:visible').hide();
 				clicked.addClass("module-bg-active");
@@ -1715,6 +1777,7 @@ function navThreeTitleThird(objectname, clicked, passed_id) {
 
 
 function navItemFirst(objectname, clicked) {		
+	var object = window[objectname];
 	var objectFirst = objectname.substr(0, 1);
 	var objectnameCaps = objectFirst.toUpperCase() + objectname.substr(1);
 	
@@ -1737,7 +1800,7 @@ function navItemFirst(objectname, clicked) {
 	clicked.addClass("active-link");
 
 	var h = $('#'+objectname+' div.ui-layout-west').height();
-	$('#'+objectname+'1').delay(200).animate({height: h-71}, function() {
+	object.first.delay(200).animate({height: h-71}, function() {
 		$(this).animate({height: h-98});
 	});
 	$('#'+objectname+'2-outer').delay(200).animate({top: h}, function() {
@@ -1757,6 +1820,7 @@ function navItemFirst(objectname, clicked) {
 
 
 function navItemSecond(objectname, clicked) {		
+	var object = window[objectname];
 	var objectFirst = objectname.substr(0, 1);
 	var objectnameCaps = objectFirst.toUpperCase() + objectname.substr(1);
 	var objectnameCapsSingular = objectnameCaps.slice(0,-1);
@@ -1825,6 +1889,8 @@ function navItemSecond(objectname, clicked) {
 
 
 function navItemThird(objectname, clicked) {		
+	var object = window[objectname];
+	
 	var obj = getCurrentModule();
 	if(confirmNavigation()) {
 		formChanged = false;
