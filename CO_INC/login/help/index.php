@@ -1,6 +1,10 @@
 <?php
-$file = $lang["LOGIN_HELP"] = 'manual_login.pdf';
-$fullPath = CO_INC_PATH . "/" . CO_INC . "/lang/help/" . $file;
+//include_once("../../../config.php");
+//include_once(CO_INC . "/classes/session.php");
+//$file = $lang["LOGIN_HELP"] = 'manual_login.pdf';
+$file = 'manual_login.pdf';
+//$fullPath = CO_INC_PATH . "/" . CO_INC . "/lang/help/" . $file;
+$fullPath = CO_FILES . "/help/de/" . $file;
 		
 if ($fd = fopen ($fullPath, "rb")) {
 	$fsize = filesize($fullPath);
