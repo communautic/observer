@@ -332,7 +332,7 @@ function projectsApplication(name) {
 }
 
 var projects = new projectsApplication('projects');
-projects.resetModuleHeights = projectsresetModuleHeights;
+//projects.resetModuleHeights = projectsresetModuleHeights;
 projects.modules_height = projects_num_modules*module_title_height;
 projects.GuestHiddenModules = new Array("controlling","access");
 
@@ -601,7 +601,7 @@ function projectsActions(status) {
 
 // 98 = 98
 
-function projectsloadModuleStart() {
+/*function projectsloadModuleStart() {
 	var h = $("#projects div.ui-layout-west").height();
 	$("#projects .ui-layout-west .radius-helper").height(h);
 	$("#projects .secondLevelOuter").css('top',h-27);
@@ -651,10 +651,10 @@ function projectsloadModuleStart() {
 		});
 	}
 	});
-}
+}*/
 
 
-function projectsresetModuleHeights() {
+/*function projectsresetModuleHeights() {
 	if(getCurrentApp() != 'projects') {
 		$('#projects').css('top',2*$('#container-inner').height());
 	}
@@ -705,7 +705,7 @@ function projectsresetModuleHeights() {
 			}
 		})
 	}
-}
+}*/
 
 
 function Projects2ModulesDisplay(access) {
@@ -955,7 +955,7 @@ $(document).ready(function() {
 						   
 	if($('#projects').length > 0) {
 		projectsLayout = $('#projects').layout({
-				west__onresize:				function() { projectsresetModuleHeights() }
+				west__onresize:				function() { resetModuleHeightsnavThree('projects'); }
 			,	resizeWhileDragging:		true
 			,	spacing_open:				0
 			,	spacing_closed:				0
@@ -980,8 +980,8 @@ $(document).ready(function() {
 			, 	north__size:				68
 			, 	west__size:					60
 		});
-		
-		projectsloadModuleStart();
+
+		loadModuleStartnavThree('projects');
 	}
 
 
@@ -994,6 +994,12 @@ $(document).ready(function() {
 	$("#projects2-outer > h3").on('click', function(e, passed_id) {
 		e.preventDefault();
 		navThreeTitleSecond('projects',$(this),passed_id)
+	});
+
+
+	$("#projects3 h3").on('click', function(e, passed_id) {
+		e.preventDefault();
+		navThreeTitleThird('projects',$(this),passed_id)
 	});
 
 
@@ -1015,7 +1021,7 @@ $(document).ready(function() {
 	});
 
 
-	$("#projects3 h3").on('click', function(e, passed_id) {
+	/*$("#projects3 h3").on('click', function(e, passed_id) {
 		e.preventDefault();
 		var obj = getCurrentModule();
 		if(confirmNavigation()) {
@@ -1156,7 +1162,7 @@ $(document).ready(function() {
 			$("#projects-current").val(module);
 			$('#projects').data({ "current" : module});
 		}
-	});
+	});*/
 
  
 	$('a.insertProjectFolderfromDialog').livequery('click',function(e) {

@@ -32,6 +32,7 @@ define("CO_PATH_BASE"	, 		"/home/dev/public_html"	);
 define("CO_PATH_URL"	, 		$protocol . "dev.companyobserver.com" 			);
 
 define("CO_LICENSE"				, 			"Recheis Teigwaren GmbH" 			);
+
 /* Default Language */
 define("CO_DEFAULT_LANGUAGE"	, 			"de" 								);
 define("CO_DEFAULT_TIMEZONE"	, 			"Europe/Vienna" 					);

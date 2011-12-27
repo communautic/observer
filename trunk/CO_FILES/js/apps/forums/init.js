@@ -418,7 +418,7 @@ function forumsApplication(name) {
 }
 
 var forums = new forumsApplication('forums');
-forums.resetModuleHeights = forumsresetModuleHeights;
+//forums.resetModuleHeights = forumsresetModuleHeights;
 forums.modules_height = forums_num_modules*module_title_height;
 forums.GuestHiddenModules = new Array("access");
 
@@ -686,7 +686,7 @@ function forumsActions(status) {
 }
 
 
-function forumsloadModuleStart() {
+/*function forumsloadModuleStart() {
 	var h = $("#forums div.ui-layout-west").height();
 	$("#forums .ui-layout-west .radius-helper").height(h);
 	$("#forums .secondLevelOuter").css('top',h-27);
@@ -736,10 +736,10 @@ function forumsloadModuleStart() {
 		});
 	}
 	});
-}
+}*/
 
 
-function forumsresetModuleHeights() {
+/*function forumsresetModuleHeights() {
 	if(getCurrentApp() != 'forums') {
 		$('#forums').css('top',2*$('#container-inner').height());
 	}
@@ -786,7 +786,7 @@ function forumsresetModuleHeights() {
 			}
 		})
 	}
-}
+}*/
 
 
 
@@ -1038,7 +1038,7 @@ $(document).ready(function() {
 						   
 	if($('#forums').length > 0) {
 		forumsLayout = $('#forums').layout({
-				west__onresize:				function() { forumsresetModuleHeights() }
+				west__onresize:				function() { resetModuleHeightsnavThree('forums'); }
 			,	resizeWhileDragging:		true
 			,	spacing_open:				0
 			,	spacing_closed:				0
@@ -1064,8 +1064,8 @@ $(document).ready(function() {
 			, 	north__size:				68
 			, 	west__size:					60
 		});
-		
-		forumsloadModuleStart();
+
+		loadModuleStartnavThree('forums');
 	}
 
 
@@ -1078,6 +1078,12 @@ $(document).ready(function() {
 	$("#forums2-outer > h3").on('click', function(e, passed_id) {
 		e.preventDefault();
 		navThreeTitleSecond('forums',$(this),passed_id)
+	});
+
+
+	$("#forums3 h3").on('click', function(e, passed_id) {
+		e.preventDefault();
+		navThreeTitleThird('forums',$(this),passed_id)
 	});
 
 
@@ -1099,7 +1105,7 @@ $(document).ready(function() {
 	});
 
 
-	$("#forums3 h3").on('click', function(e, passed_id) {
+	/*$("#forums3 h3").on('click', function(e, passed_id) {
 		e.preventDefault();
 		var obj = getCurrentModule();
 		if(confirmNavigation()) {
@@ -1223,10 +1229,7 @@ $(document).ready(function() {
 						}
 						$("#forums3 ul:eq("+moduleidx+") .module-click:eq("+idx+")").addClass('active-link');
 						$("#forums-top .top-subheadline").html(', ' + $("#forums2 .module-click:visible").find(".text").html());
-						/*$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/forums&request=getDates&id="+id, success: function(data){
-							$("#forums-top .top-subheadlineTwo").html(data.startdate + ' - <span id="forumenddate">' + data.enddate + '</span>');
-						}
-						});*/
+
 						var obj = getCurrentModule();
 						obj.getDetails(moduleidx,idx,data.html);
 						$("#forums3 .sort:eq("+moduleidx+")").attr("rel", data.sort).addClass("sort"+data.sort);
@@ -1240,7 +1243,7 @@ $(document).ready(function() {
 			$("#forums-current").val(module);
 		$('#forums').data({ "current" : module});
 		}
-	});
+	});*/
 
 
 	$('a.insertForumFolderfromDialog').livequery('click',function(e) {

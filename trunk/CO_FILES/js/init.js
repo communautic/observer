@@ -1172,6 +1172,128 @@ function confirmNavigation() {
 }
 
 
+// Three Levels of Nav
+
+function loadModuleStartnavThree(objectname) {
+	var object = window[objectname];
+	var objectFirst = objectname.substr(0, 1);
+	var objectnameCaps = objectFirst.toUpperCase() + objectname.substr(1);
+	var num_modules = window[objectname+'_num_modules'];
+	
+	var h = $('#'+objectname+' div.ui-layout-west').height();
+	$('#'+objectname+' .ui-layout-west .radius-helper').height(h);
+	$('#'+objectname+' .secondLevelOuter').css('top',h-27);
+	$('#'+objectname+' .thirdLevelOuter').css('top',150);
+	$('#'+objectname+'1').data('status','open');
+	$('#'+objectname+'2').data('status','closed');
+	$('#'+objectname+'3').data('status','closed');
+	$('#'+objectname+'1').height(h-98);
+	$('#'+objectname+'1 .module-inner').height(h-98);
+	$('#'+objectname+'1 .module-actions').show();
+	$('#'+objectname+'2 .module-actions').hide();
+	$('#'+objectname+'2 li').show();
+	$('#'+objectname+'2').height(h-125-num_modules*27).removeClass("module-active");
+	$('#'+objectname+'2 .module-inner').height(h-125-num_modules*27);
+	$('#'+objectname+'3 .module-actions').hide();
+	$('#'+objectname+'3').height(h-150);
+	$('#'+objectname+'3 .'+objectname+'3-content').height(h-(object.modules_height+152));
+	$('#'+objectname+'3 div.thirdLevel').height(h-(object.modules_height+150-27));
+	$('#'+objectname+'-current').val("folder");
+	$('#'+objectname+'3 div.thirdLevel').each(function(i) { 
+		var position = $(this).position();
+		var t = position.top+h-150;
+		$(this).animate({top: t})
+	})
+	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+objectname+"&request=getFolderList", success: function(data){
+		$('#'+objectname+'1 ul').html(data.html);
+		$('#'+objectname+'Actions .actionNew').attr("title",data.title);
+		if(data.access == "guest") {
+			window[objectname+'Actions']();
+		} else {
+			if(data.html == "<li></li>") {
+				window[objectname+'Actions'](3);
+			} else {
+				window[objectname+'Actions'](9);
+			}
+		}
+		$('#'+objectname+'1 li').show();
+		$('#'+objectname+'1 .sort').attr("rel", data.sort).addClass("sort"+data.sort);
+		//projectsInnerLayout.initContent('center');
+		var id = $('#'+objectname+'1 .module-click:eq(0)').attr("rel");
+		$('#'+objectname).data({ "current" : "folders" , "first" : id , "second" : 0 , "third" : 0});
+		$('#'+objectname+'1 .module-click:eq(0)').addClass('active-link');
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+objectname+"&request=getFolderDetails&id="+id, success: function(text){
+			$('#'+objectname+'-right').html(text.html);
+				window['init'+objectnameCaps+'ContentScrollbar']();
+			}
+		});
+	}
+	});
+}
+
+
+function resetModuleHeightsnavThree(objectname) {
+	var object = window[objectname];
+	var objectFirst = objectname.substr(0, 1);
+	var objectnameCaps = objectFirst.toUpperCase() + objectname.substr(1);
+	var num_modules = window[objectname+'_num_modules'];	
+	
+	var t = 2*$('#container-inner').height();
+	var app = getCurrentApp();
+	
+	if(app != objectname) {
+		$('#'+objectname).css('top',t);
+	}
+	// fix for now - move desktop if not active
+	if(app != 'desktop' && $('#desktop').css('top') != t) {
+		$('#desktop').css('top',t);
+	}
+	var h = $('#'+objectname+' div.ui-layout-west').height();
+	$('#'+objectname+' div.ui-layout-west .radius-helper').height(h);
+	$('#'+objectname+'1').height(h-98);
+	$('#'+objectname+'1 .module-inner').height(h-98);
+	$('#'+objectname+'2').height(h-125-num_modules*27);
+	$('#'+objectname+'2 .module-inner').height(h-125-num_modules*27);
+	$('#'+objectname+'3').height(h-150);
+	$('#'+objectname+'3 .'+objectname+'3-content').height(h-(object.modules_height+152));
+	$('#'+objectname+'3 div.thirdLevel').height(h-(object.modules_height+150-27));
+	if($('#'+objectname+'1').data('status') == 'open') {
+		$('#'+objectname+'2-outer').css('top',h-27);
+		$('#'+objectname+'3 div.thirdLevel').each(function(i) { 
+			var t = h-150+i*27;
+			$(this).animate({top: t})
+		})
+	}
+	if($('#'+objectname+'2').data('status') == 'open') {	
+		var curmods = $('#'+objectname+'3 div.thirdLevel:not(.deactivated)').size();
+		$('#'+objectname+'2').height(h-125-curmods*27).removeClass("module-active");
+		$('#'+objectname+'2 .module-inner').height(h-125-curmods*27);
+		$('#'+objectname+'3 .'+objectname+'3-content').height(h-(curmods*27+152));
+		$('#'+objectname+'3 div.thirdLevel').height(h-(curmods*27+150-27));
+		$('#'+objectname+'3 div.thirdLevel:not(.deactivated)').each(function(i) { 
+			var t = h-150-curmods*27+i*27;
+			$(this).animate({top: t})
+		})
+	}
+	if($('#'+objectname+'3').data('status') == 'open') {
+		var obj = getCurrentModule();
+		var idx = $('#'+objectname+'3 .thirdLevel:not(.deactivated)').index($('#'+objectname+'3 .thirdLevel:not(.deactivated)[id='+obj.name+']'));	
+		var curmods = $('#'+objectname+'3 div.thirdLevel:not(.deactivated)').size();
+		$('#'+objectname+'2').height(h-125-curmods*27).removeClass("module-active");
+		$('#'+objectname+'2 .module-inner').height(h-125-curmods*27);
+		$('#'+objectname+'3 .'+objectname+'3-content').height(h-(curmods*27+152));
+		$('#'+objectname+'3 div.thirdLevel').height(h-(curmods*27+150-27));
+		$('#'+objectname+'3 div.thirdLevel:not(.deactivated)').each(function(i) { 
+		if(i > idx) {
+			var pos = $(this).position();
+				var t = h-150-curmods*27+i*27;
+				$(this).animate({top: t})
+			}
+		})
+	}
+}
+
+
 function navThreeTitleFirst(objectname, clicked, passed_id) {
 	var object = window[objectname];
 	var objectFirst = objectname.substr(0, 1);
@@ -1441,6 +1563,154 @@ function navThreeTitleSecond(objectname, clicked, passed_id) {
 	$('#'+objectname+'-current').val(objectname);
 	$('#'+objectname+'-top .top-subheadline').html("");
 	$('#'+objectname+'-top .top-subheadlineTwo').html("");
+}
+
+
+function navThreeTitleThird(objectname, clicked, passed_id) {
+	var object = window[objectname];
+	var objectFirst = objectname.substr(0, 1);
+	var objectnameCaps = objectFirst.toUpperCase() + objectname.substr(1);
+	var objectnameCapsSingular = objectnameCaps.slice(0,-1);
+	var num_modules = window[objectname+'_num_modules'];
+	
+		var obj = getCurrentModule();
+		if(confirmNavigation()) {
+			formChanged = false;
+			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+		}
+		var cid = $('#'+objectname+' input[name="id"]').val()
+		obj.checkIn(cid);
+		
+		var moduleidx = $('#'+objectname+'3 h3').index(clicked);
+		var module = clicked.attr("rel");
+		// module open and  active 
+		if(clicked.hasClass("module-bg-active")) {
+			$('#'+objectname+'2-outer > h3').trigger("click");
+		} else {
+			// module 3 allready activated
+			if($('#'+objectname+'3').data('status') == 'open') {
+				var id = $('#'+objectname).data('second');
+				var mod = getCurrentModule();
+				var todeactivate = mod.name.replace(objectname+'_', "");
+				$('#'+objectname+'3 h3[rel='+todeactivate+']').removeClass("module-bg-active");	
+				$('#'+objectname+'3 .module-actions:visible').hide();
+				var curmoduleidx = $('#'+objectname+'3 h3').index($('#'+objectname+'3 h3[rel='+todeactivate+']'));
+				var t = moduleidx*module_title_height;
+				clicked.addClass("module-bg-active")
+				$('#'+objectname+'3 div.thirdLevel:not(.deactivated)').each(function(i) { 
+					if(i <= moduleidx) {
+						var mx = i*module_title_height;
+						$(this).animate({top: mx})
+					} else {
+						if(i <= curmoduleidx) {
+							var position = $(this).position();
+							var h = position.top+$(this).height()-27;
+							$(this).animate({top: h})
+						} else {
+							var position = $(this).position();
+							var h = position.top;
+							$(this).animate({top: h})
+						}
+					}
+				})
+				
+				setTimeout(function() {
+					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+objectname+"/modules/"+module+"&request=getList&id="+id, success: function(data){
+						$('#'+objectname+'3 ul:eq('+moduleidx+')').html(data.html);
+						$('#'+objectname+'Actions .actionNew').attr("title",data.title);
+						switch (data.perm) {
+							case "sysadmin": case "admin" :
+								if(data.html == "<li></li>") {
+									window[objectname+'Actions'](3);
+								} else {
+									window[objectname+'Actions'](0);
+								}
+							break;
+							case "guest":
+								if(data.html == "<li></li>") {
+									window[objectname+'Actions']();
+								} else {
+									window[objectname+'Actions'](5);
+								}
+							break;
+						}
+						if(passed_id === undefined) {
+							var idx = 0;
+						} else {
+							var idx = $('#'+objectname+'3 ul:eq('+moduleidx+') .module-click').index($('#'+objectname+'3 ul:eq('+moduleidx+') .module-click[rel='+passed_id+']'));
+						}
+						$('#'+objectname+'3 ul:eq('+moduleidx+') .module-click:eq('+idx+')').addClass('active-link');
+						var obj = getCurrentModule();
+						obj.getDetails(moduleidx,idx,data.html);
+						$('#'+objectname+'3 .module-actions:eq('+moduleidx+')').show();
+						$('#'+objectname+'3 .sort:eq('+moduleidx+')').attr("rel", data.sort).addClass("sort"+data.sort);
+						}
+					});		
+				}, 400);
+			} else {
+				// load and slide up module 3
+				var id = $('#'+objectname).data('second');
+				$('#'+objectname+'2').data('status','closed');
+				$('#'+objectname+'3').data('status','open');
+				if(id == undefined) {
+					return false;
+				}
+				var index = $('#'+objectname+'2 .module-click').index($('#'+objectname+'2 .module-click[rel='+id+']'));			
+				$('#'+objectname+'3 .module-actions:visible').hide();
+				clicked.addClass("module-bg-active");
+				setModuleDeactive($('#'+objectname+'2'),index);
+				$('#'+objectname+'3 div.thirdLevel').each(function(i) { 
+					if(i <= moduleidx) {
+						var position = $(this).position();
+							var h = i*27;
+							$(this).animate({top: h})
+						}
+					if(i == num_modules-1) {
+						setTimeout(function() {
+							$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+objectname+"/modules/"+module+"&request=getList&id="+id, success: function(data){
+								$('#'+objectname+'3 ul:eq('+moduleidx+')').html(data.html);
+								$('#'+objectname+'Actions .actionNew').attr("title",data.title);
+								switch (data.perm) {
+									case "sysadmin": case "admin" :
+										if(data.html == "<li></li>") {
+											window[objectname+'Actions'](3);
+										} else {
+											window[objectname+'Actions'](0);
+										}
+									break;
+									case "guest":
+										if(data.html == "<li></li>") {
+											window[objectname+'Actions']();
+										} else {
+											window[objectname+'Actions'](5);
+										}
+									break;
+								}
+								if(passed_id === undefined) {
+									var idx = 0;
+								} else {
+									var idx = $('#'+objectname+'3 ul:eq('+moduleidx+') .module-click').index($('#'+objectname+'3 ul:eq('+moduleidx+') .module-click[rel='+passed_id+']'));
+								}
+								$('#'+objectname+'3 ul:eq('+moduleidx+') .module-click:eq('+idx+')').addClass('active-link');
+								$('#'+objectname+'-top .top-subheadline').html(', ' + $('#'+objectname+'2 .deactivated').find(".text").html());
+								if(objectname == 'projects' ) {
+									$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+objectname+"&request=getDates&id="+id, success: function(data){
+									$('#'+objectname+'-top .top-subheadlineTwo').html(data.startdate + ' - <span id="projectenddate">' + data.enddate + '</span>');
+									}
+								}); }
+								var obj = getCurrentModule();
+								obj.getDetails(moduleidx,idx,data.html);
+								$('#'+objectname+'3 .sort:eq('+moduleidx+')').attr("rel", data.sort).addClass("sort"+data.sort);
+								$('#'+objectname+'3 .module-actions:eq('+moduleidx+')').show();
+								}
+							});
+						}, 400);
+					}
+				})
+			}
+			$('#'+objectname+'-current').val(module);
+			$('#'+objectname).data({ "current" : module});
+		}
 }
 
 
