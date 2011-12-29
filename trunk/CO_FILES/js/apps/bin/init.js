@@ -132,7 +132,8 @@ $(document).ready(function() {
 		binloadModuleStart();
 	}
 
-	$("#bin1-outer > h3").click(function() {
+	$("#bin1-outer > h3").on('click', function(e) {
+		e.preventDefault();
 		if(confirmNavigation()) {
 			formChanged = false;
 			var obj = getCurrentModule();
@@ -146,11 +147,10 @@ $(document).ready(function() {
 			binInnerLayout.initContent('center');
 			}
 		 });
-		return false;
 	});
 
-
-	$("#bin1 .module-click").live('click',function(e) {
+	$(document).on('click', '#bin1 .module-click', function(e) {
+		e.preventDefault();
 		if($(this).hasClass("deactivated")) {
 			return false;
 		}
@@ -158,14 +158,12 @@ $(document).ready(function() {
 		var index = $("#bin .module-click").index(this);
 		$("#bin .module-click").removeClass("active-link");
 		$(this).addClass("active-link");
-			
 		$.ajax({ type: "GET", url: "/", data: "path=apps/"+ id +"&request=getBin", success: function(html){
 			$("#bin-right").html(html);
 			binInnerLayout.initContent('center');
 			}
 		});
 		binActions(0);
-		return false;
 	});
 
 

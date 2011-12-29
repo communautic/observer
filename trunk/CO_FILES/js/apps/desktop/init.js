@@ -131,11 +131,7 @@ var currentDesktopPostit = 0;
 $(document).ready(function() { 
 	desktoploadModuleStart()
 	
-	/*var refreshId = setInterval(function() {
-		desktoploadModuleStart()
-	}, 5000);*/
-	
-	$('#desktopWidgetsRefresh').click(function(e) {
+	$('#desktopWidgetsRefresh').on('click', function(e) {
 		e.preventDefault();
 		desktoploadModuleStart();
 	});
@@ -161,14 +157,9 @@ $(document).ready(function() {
 			}
 		});
 	});
-	
-	/*$('a.collapse').toggle(function () {
-		$(this).css({backgroundPosition: '-13px 0'}).parent().next().slideUp();
-	},function () {
-		$(this).css({backgroundPosition: ''}).parent().next().slideDown();
-	}); */
-	
-	$('a.collapse').click(function(e) {
+
+
+	$('a.collapse').on('click', function(e) {
 		e.preventDefault();
 		var  object = $(this).attr('rel');
 		var status = 1;
@@ -216,28 +207,27 @@ $(document).ready(function() {
 	});
 	
 	
-		$('#desktopActions').draggable({
-					containment:'#desktop',
-					handle: '#desktopActionsDrag'
-				})
-		$('#desktopActionsTrans').css('opacity',0.8);
+	$('#desktopActions').draggable({
+		containment:'#desktop',
+		handle: '#desktopActionsDrag'
+	})
+	$('#desktopActionsTrans').css('opacity',0.8);
 
 
-	$("#desktopNewPostit").click( function(e) {
+	$("#desktopNewPostit").on('click', function(e) {
 		e.preventDefault();
 		var z = ++desktopzIndex;
 		$.ajax({ type: "GET", url: "/", data: "path=apps/desktop&request=newPostit&z="+z, success: function(data){
-				//$("#desktopPostIts").append(data);
 				desktoploadModuleStart();
 			}
 		});
 	});
 
 
-	$("#desktop div.postit-text").live("dblclick", function(e) {
+	$(document).on('dblclick', '#desktop div.postit-text', function(e) {
+		e.preventDefault();
 		var id = parseInt($(this).attr("id").replace(/postit-text-/, ""));
 		currentDesktopPostit = id;
-		e.preventDefault();
 		var html = $(this).html().replace(/(<br\s*\/?>)|(<p><\/p>)/gi, "");
 		var width = $(this).width();
 		var height = $(this).height();
@@ -246,7 +236,7 @@ $(document).ready(function() {
 		$("#postit-text-" + id).focus();
 	});
 	
-	
+
 	$(document).on('click', '#desktop .projectsLink', function(e) {
 		e.preventDefault();
 		var href = $(this).attr('rel').split(",");
@@ -281,8 +271,7 @@ $(document).ready(function() {
 		forums.markNewPostRead(href[2]);
 	});
 
-	
-	$('a.forwardItem').live('click', function(e){
+	$(document).on('click', 'a.forwardItem', function(e) {
 		e.preventDefault();
 		var id = $(this).attr('rel');
 		var w = $('#postit-'+id).width()
@@ -290,13 +279,13 @@ $(document).ready(function() {
 		$('#postit-window-'+id).css('left',-p).slideDown();
 	});
 	
-	$('a.forwardClose').live('click', function(e){
+	$(document).on('click', 'a.forwardClose', function(e) {
 		e.preventDefault();
 		var id = $(this).attr('rel');
 		$('#postit-window-'+id).slideUp();
 	});
 	
-	$('span.actionForwardPostit').live('click', function(e){
+	$(document).on('click', 'span.actionForwardPostit', function(e) {
 		e.preventDefault();
 		var id = $(this).attr('rel');
 		var users = '';
@@ -305,21 +294,8 @@ $(document).ready(function() {
 		})
 		desktop.forwardItem(id,users);
 	});
-	
-	
-	/*$(".widgetItemOuter").live('mouseover mouseout', function(event) {
-		if (event.type == 'mouseover') {
-    // do something on mouseover
-	//$(this).wrap('<div class="widgetItemOuter-hover" />');
-	$(this).parent().css('opacity',0.1);
-		  } else {
-    // do something on mouseout
-	$(this).unwrap();
-  }
-});*/
 
 
-	
 	$(document).mousedown(function(e) {
 		var obj = getCurrentModule();
 		if(obj.name == 'desktop') {

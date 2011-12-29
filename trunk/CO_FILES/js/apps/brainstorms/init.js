@@ -905,25 +905,25 @@ $(document).ready(function() {
 	});
 
 
-	$(document).on('click', '#brainstorms1 .module-click',function(e) {
+	$('#brainstorms1').on('click', 'span.module-click',function(e) {
 		e.preventDefault();
 		navItemFirst('brainstorms',$(this))
 	});
 
 
-	$(document).on('click', '#brainstorms2 .module-click',function(e) {
+	$('#brainstorms2').on('click', 'span.module-click',function(e) {
 		e.preventDefault();
 		navItemSecond('brainstorms',$(this))
 	});
 
 
-	$(document).on('click', '#brainstorms3 .module-click',function(e) {
+	$('#brainstorms3').on('click', 'span.module-click',function(e) {
 		e.preventDefault();
 		navItemThird('brainstorms',$(this))
 	});
 
-
-	$('a.insertBrainstormFolderfromDialog').livequery('click',function(e) {
+	
+	$(document).on('click', 'a.insertBrainstormFolderfromDialog', function(e) {
 		e.preventDefault();
 		var field = $(this).attr("field");
 		var gid = $(this).attr("gid");
@@ -939,34 +939,31 @@ $(document).ready(function() {
 // INTERLINKS FROM Content
 	
 	// load a brainstorm
-	$(".loadBrainstorm").live('click', function() {
-		
+	$(document).on('click', '.loadBrainstorm', function(e) {
+		e.preventDefault();
 		var obj = getCurrentModule();
 		if(confirmNavigation()) {
 			formChanged = false;
 			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 		}
-		
 		var id = $(this).attr("rel");
 		$("#brainstorms2-outer > h3").trigger('click', [id]);
-		return false;
 	});
 
 
-	$('span.actionRoster').click(function(){
+	$('span.actionRoster').on('click', function(e){
+		e.preventDefault();
 		if($(this).hasClass("noactive")) {
 			return false;
 		}
 		brainstorms_rosters.actionRoster();
-		return false;
 	});
 
 
 	var tmp;
 	brainstorms.initItems();
 
-
-	$("div.brainstormsNoteToggle").live("click", function(e) {
+	$(document).on('click', 'div.brainstormsNoteToggle', function(e) {
 		e.preventDefault();
 		var id = $(this).attr("id").replace(/note-toggle-/, "");
 		var height = $(this).attr("rel");
@@ -986,10 +983,8 @@ $(document).ready(function() {
 	});
 
 
-	$("span.brainstormsAddNote").live("click", function(e) {
+	$(document).on('click', 'span.brainstormsAddNote', function(e) {
 		e.preventDefault();
-		//var id = $("#brainstorms2 .active-link").attr("rel");
-		//var oid = $("#brainstorms1 .module-click:visible").attr("rel");
 		var oid = $('#brainstorms').data('first');
 		var id = $('#brainstorms').data('second');	
 		var z = ++brainstormszIndex;
@@ -1003,22 +998,20 @@ $(document).ready(function() {
 		});
 	});
 
-
-	$("#brainstorms-outer div.note-title").live("dblclick", function(e) {
+	$(document).on('dblclick', '#brainstorms-outer div.note-title', function(e) {
+		e.preventDefault();
 		var id = parseInt($(this).attr("id").replace(/note-title-/, ""));
 		currentBrainstormEditedNote = id;
-		e.preventDefault();
 		var html = $(this).html().replace(/(")/gi, "&quot;");
 		var input = '<input type="text" id="input-note-' + id + '" name="input-note-' + id + '" value="' + html+ '" />';
 		$("#note-title-" + id).replaceWith(input);
 		$("#input-note-" + id).focus();
 	});
 
-
-	$("#brainstorms-outer div.note-text").live("dblclick", function(e) {
+	$(document).on('dblclick', '#brainstorms-outer div.note-text', function(e) {
+		e.preventDefault();
 		var id = parseInt($(this).attr("id").replace(/note-text-/, ""));
 		currentBrainstormEditedNote = id;
-		e.preventDefault();
 		var html = $(this).html().replace(/(<br\s*\/?>)|(<p><\/p>)/gi, "");
 		var width = $(this).width();
 		var height = $(this).height();

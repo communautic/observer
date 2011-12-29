@@ -86,7 +86,7 @@ var projects_timelines = new projectsTimelines('projects_timelines');
 
 $(document).ready(function() {  
 
-	$("span.loadBarchartZoom").live('click', function(e) {
+	$(document).on('click', 'span.loadBarchartZoom',function(e) {
 		e.preventDefault();
 		var zoom = $(this).attr('rel');
 		var pid = $("#projects").data("second");
@@ -111,11 +111,11 @@ $(document).ready(function() {
 	});
 
 
-	$('.but-scroll-to').live('click', function() {
+	$(document).on('click', '.but-scroll-to',function(e) {
+		e.preventDefault();
 		var t = $(this).attr('t');
 		var l = $(this).attr('l');
 		$('.scroll-pane').scrollTo(l,t);
-		return false;
 	});
 	
 });
