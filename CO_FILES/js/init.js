@@ -347,9 +347,8 @@ $(document).ready(function() {
 			$(this).css('top',2*top);
 		}
 	});
-	
-	
-	$('a.browseAway').click( function(e) {
+
+	$('a.browseAway').on('click', function(e) {
 		e.preventDefault();
 		$("#intro").fadeIn();
 		var src = $(this).attr("href");
@@ -358,8 +357,7 @@ $(document).ready(function() {
 		obj.checkIn(cid);
 		setTimeout(function() { window.location.href = src; },500)
 	});
-	
-	
+
 	$('span.logout').on('click', function(e) {
 		e.preventDefault();
 		var txt = ALERT_LOGOUT;
@@ -422,7 +420,7 @@ $(document).ready(function() {
 	})
 	
 	// title autosave
-	$("input.bg, input.title, textarea.elastic").live('blur', function() { 
+	$(document).on('blur', 'input.bg, input.title, textarea.elastic',function() {
 		if(confirmNavigation()) {
 			formChanged = false;
 			var obj = getCurrentModule();
@@ -512,52 +510,49 @@ $(document).ready(function() {
 		obj.actionBin();
 	});
 	
-	$('a.insertStatus').live('click',function() {
+	$(document).on('click','a.insertStatus',function(e) {
+		e.preventDefault();
 		var rel = $(this).attr("rel");
 		var text = $(this).html();
 		var module = getCurrentModule();
 		module.insertStatus(rel,text);
-		return false;
 	});
-	
-	//$(document).on('click', 'a', fn);
-	//$('a.insertStatusDate').live('click',function() {
-	$(document).on('click', 'a.insertStatusDate',function(e) {
+
+	$(document).on('click','a.insertStatusDate',function(e) {
 		e.preventDefault();
 		var rel = $(this).attr("rel");
 		var text = $(this).html();
 		var module = getCurrentModule();
 		module.insertStatusDate(rel,text);
 	});
-	
-	$('a.insertContract').live('click',function(e) {
+
+	$(document).on('click','a.insertContract',function(e) {
 		e.preventDefault();
 		var rel = $(this).attr("rel");
 		var text = $(this).html();
 		var module = getCurrentModule();
 		module.insertContract(rel,text);
 	});
-	
+
 	$(".document-uploader:visible").livequery(function() {
 		var module = getCurrentModule();
 		module.createUploader($(this));
 	})
-	
-	$('span.newItem').live('click',function() {
+
+	$(document).on('click','span.newItem',function(e) {
+		e.preventDefault();
 		var module = getCurrentModule();
 		module.newItem();
-		return false;
 	});
-	
-	
-	$('a.newItemSelection').live('click',function(e) {
+
+	$(document).on('click','a.newItemSelection',function(e) {
 		e.preventDefault();
 		var rel = $(this).attr("rel");
 		var module = getCurrentModule();
 		module.newItemSelection(rel);
 	});
-	
-	$('a.showItemContext').live('click',function(e) {
+
+	$(document).on('click','a.showItemContext',function(e) {
 		e.preventDefault();
 		var ele = $(this);
 		var uid = $(this).attr('uid');
@@ -565,16 +560,15 @@ $(document).ready(function() {
 		var module = window[$(this).attr("href")];
 		module.showItemContext(ele,uid,field);
 	});	
-	
-	
-	$('a.downloadDocument').live('click',function(e) {
+
+	$(document).on('click','a.downloadDocument',function(e) {
 		e.preventDefault();
 		var id = $(this).attr("rel");
 		var module = window[$(this).attr("mod")];
 		module.downloadDocument(id);
 	});
-	
-	$('a.insertItem').live('click',function(e) {
+
+	$(document).on('click','a.insertItem',function(e) {
 		e.preventDefault();
 		var field = $(this).attr("field");
 		var append = $(this).attr("append");
@@ -584,56 +578,55 @@ $(document).ready(function() {
 		module.insertItem(field,append,id,text);
 	});
 
-	
-	$('a.removeItem').live('click',function() {
+	$(document).on('click','a.removeItem',function(e) {
+		e.preventDefault();
 		var field = $(this).attr('field');
 		var clicked = $(this);
 		var module = window[$(this).attr("href")];
 		module.removeItem(clicked,field);
-		return false;
 	});
-	
-	$('a.binItem').live('click',function() {
+
+	$(document).on('click','a.binItem',function(e) {
+		e.preventDefault();
 		if($(this).hasClass('deactivated')) {
 			return false;
 		} else {
-		var id = $(this).attr("rel");
-		var module = getCurrentModule();
-		module.binItem(id);
+			var id = $(this).attr("rel");
+			var module = getCurrentModule();
+			module.binItem(id);
 		}
-		return false;
 	});
 	
-	$('a.binDelete').live('click',function() {
+	$(document).on('click','a.binDelete',function(e) {
+		e.preventDefault();
 		var id = $(this).attr("rel");
 		var module = window[$(this).attr("href")];
 		module.binDelete(id);
-		return false;
 	});
-	
-	$('a.binRestore').live('click',function() {
+
+	$(document).on('click','a.binRestore',function(e) {
+		e.preventDefault();
 		var id = $(this).attr("rel");
 		var module = window[$(this).attr("href")];
 		module.binRestore(id);
-		return false;
 	});
-	
-	// tasks & files
-	$('a.binDeleteItem').live('click',function() {
+
+	$(document).on('click','a.binDeleteItem',function(e) {
+		e.preventDefault();
 		var id = $(this).attr("rel");
 		var module = window[$(this).attr("href")];
 		module.binDeleteItem(id);
-		return false;
 	});
-	
-	$('a.binRestoreItem').live('click',function() {
+
+	$(document).on('click','a.binRestoreItem',function(e) {
+		e.preventDefault();
 		var id = $(this).attr("rel");
 		var module = window[$(this).attr("href")];
 		module.binRestoreItem(id);
-		return false;
 	});
 	
-	$('a.insertAccess').live('click',function() {
+	$(document).on('click','a.insertAccess',function(e) {
+		e.preventDefault();
 		var rel = $(this).attr("rel");
 		var field = $(this).attr("field");
 		var html = '<div class="listmember" field="'+field+'" uid="'+rel+'">' + $(this).html() + '</div>';
@@ -641,22 +634,21 @@ $(document).ready(function() {
 		$("#modalDialog").dialog("close");
 		var obj = getCurrentModule();
 		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
-		return false;
 	});
 	
 	
 	
-	$('span.actionSetLogin').click(function(){
+	/*$('span.actionSetLogin').click(function(){
 		var username = $("#username").val();
 		var password = $("#password").val();
 		$.ajax({ type: "POST", url: "/", data: "path=login&changelogin=1&username="+username+"&password="+password, success: function(html){
 				  $("#intro-password").fadeOut();
 					}
 				});
-	});
-	
-	
-	$(".sort").click(function() {
+	});*/
+
+	$(".sort").on('click', function(e) {
+		e.preventDefault();
 		var obj = $(this);
 		var sortcur = parseInt($(this).attr("rel"));
 		if(sortcur < 3) {
@@ -666,7 +658,6 @@ $(document).ready(function() {
 		}
 		var module = getCurrentModule();
 		module.sortclick(obj,sortcur,sortnew);
-		return false;
 	});
 
 	$(".sortable").sortable({
@@ -681,22 +672,17 @@ $(document).ready(function() {
 			module.sortdrag(order);
 	  	}
 	});
-	
-	
-	//var sendobj;
-	$('.sendForm').livequery(function() {
-		//var obj = getCurrentModule();
-		$(this).ajaxForm(sendformOptions);
-		//sendobj = obj;
-	});
-	
-	$('.actionSendForm').live("click", function(e) {
-		$('.sendForm').ajaxSubmit(sendformOptions);
-		e.preventDefault();
-	});
-		
 
+	$('.sendForm').livequery(function() {
+		$(this).ajaxForm(sendformOptions);
+	});
+	
+	$(document).on('click', 'span.actionSendForm',function(e) {
+		e.preventDefault();
+		$('.sendForm').ajaxSubmit(sendformOptions);
 		
+	});
+
 	$('.spinner').ajaxStart(function() {
 		$(this).show();
 			}).ajaxStop(function() {
@@ -736,7 +722,7 @@ $(document).ready(function() {
 	});
 	
 	// Radio fields with date fields next
-	$(".jNiceRadio").live('click',function() {
+	/*$(".jNiceRadio").live('click',function() {
 		if($(this).next("input").length > 0) {
 			var field = $(this).next("input").attr("title");
 			if (field != "") {
@@ -745,46 +731,28 @@ $(document).ready(function() {
 			$("#projects .ui-datepicker-trigger-action-status").addClass("disabled");
 			 $("#"+field+" ~ a").removeClass("disabled");
 		}
-	});
+	});*/
 
-	
-	// content nav focus title
-	$('.focusTitle').live('click',function() {
+	$(document).on('click', 'span.focusTitle',function(e) {
+		e.preventDefault();
 		var app = getCurrentApp();
 		$("#"+app+ " .title").focus();
-		// IE Fix
-		//setTimeout(function() { $("#"+app+ " .title").focus(); }, 500);
-		return false;
 	});
-	
-	
-	$('.selectTextfield').live('click',function() {
+
+	$(document).on('click', '.selectTextfield',function(e) {
+		e.preventDefault();
 		$(this).parent().next().find('input').focus();
-		return false;
 	});
-	
-	$('.selectTextarea').live('click',function() {
+
+	$(document).on('click', '.selectTextarea',function(e) {
+		e.preventDefault();
 		$(this).parent().siblings().find('textarea').focus();
-		return false;
 	});
-	
-	$('div.toggleSendTo').live('click',function(e) {
+
+	$(document).on('click', 'div.toggleSendTo',function(e) {
 		e.preventDefault();
 		$(this).next().slideToggle();
 	});
-	
-	// meetings show drag icon for sorting - currently DEACTIVE
-	/*$(".table-task tr").live('mouseover mouseout', function(event) {
-	  if (event.type == 'mouseover') {
-		$(this).find(".task-drag").show();
-		//.animate({opacity: '1', left: '-20px'});
-		
-	  } else {
-		//$(this).children(":first").animate({opacity: '0', left: '0px'});
-		$(this).find(".task-drag").hide();
-	  }
-	});*/
-
 
 	$("#modalDialog").dialog({  
 		autoOpen: false,
@@ -797,7 +765,8 @@ $(document).ready(function() {
 	})
 
 
-	$('.showDialog').live('click',function() {
+	$(document).on('click', '.showDialog',function(e) {
+		e.preventDefault();
 		var offsetsubtract = 150;
 		if($(this).attr("offsetsubract") > 0) {
 			var offsetsubtract = 150 - $(this).attr("offsetsubract");
@@ -823,7 +792,6 @@ $(document).ready(function() {
 			$("#modalDialog").html("");
 			module.actionDialog(offset,request,field,append,title,sql);
 		}
-		return false;
 	});
 
 
@@ -856,7 +824,8 @@ $(document).ready(function() {
 	});
 
 
-	$('.showDialogTime').live('click',function() {
+	$(document).on('click', '.showDialogTime',function(e) {
+		e.preventDefault();
 		var offset = $(this).offset();
 		var field = $(this).attr("rel");
 		var title = $(this).attr("title"); //header of dialog
@@ -880,107 +849,79 @@ $(document).ready(function() {
 			$("#modalDialogTime").dialog('option', 'title', title);
 			$("#modalDialogTime").dialog('open');
 		}
-		return false;
 	});
 
-
-	$(".coTime-hr-btn").live("click", function() {
-			var obj = $(this).attr("title");
-			var val = $(this).html();
-			var curval = $("#"+obj).html();
-			var valnew = curval.replace(/^[0-9]{2}/,val);
-			$("#"+obj).html(valnew);
-			var obje = getCurrentModule();
-			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obje.poformOptions);
-			return false;
-	});
-	
-	$(".coTime-min-ten-btn").live("click", function() {
-			var obj = $(this).attr("title");
-			var val = $(this).html();
-			var curval = $("#"+obj).html();
-			var valnew = curval.replace(/:[0-9]{1}/,":"+val);
-			$("#"+obj).html(valnew);
-			var obje = getCurrentModule();
-			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obje.poformOptions);
-			return false;
-	});
-	
-	$(".coTime-min-one-btn").live("click", function() {
-			var obj = $(this).attr("title");
-			var val = $(this).html();
-			var curval = $("#"+obj).html();
-			var valnew = curval.replace(/[0-9]{1}$/,val);
-			$("#"+obj).html(valnew);
-			var obje = getCurrentModule();
-			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obje.poformOptions);
-			return false;
+	$(document).on('click', '.coTime-hr-btn',function(e) {
+		e.preventDefault();
+		var obj = $(this).attr("title");
+		var val = $(this).html();
+		var curval = $("#"+obj).html();
+		var valnew = curval.replace(/^[0-9]{2}/,val);
+		$("#"+obj).html(valnew);
+		var obje = getCurrentModule();
+		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obje.poformOptions);
 	});
 
-	$(".insertStringFromDialog").live("click", function() {
-			var field = $(this).attr("rel");
-			var val = $(this).html();
-			$('#'+field).html(val);
-			var obj = getCurrentModule();
-			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
-			$("#modalDialog").dialog("close");
-			return false;
+	$(document).on('click', '.coTime-min-ten-btn',function(e) {
+		e.preventDefault();
+		var obj = $(this).attr("title");
+		var val = $(this).html();
+		var curval = $("#"+obj).html();
+		var valnew = curval.replace(/:[0-9]{1}/,":"+val);
+		$("#"+obj).html(valnew);
+		var obje = getCurrentModule();
+		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obje.poformOptions);
 	});
-	
 
-
-
-$("#tabs").livequery(function() { 
-	$(this).tabs({
-		//select: function(){closedialog = 1;}
+	$(document).on('click', '.coTime-min-one-btn',function(e) {
+		e.preventDefault();
+		var obj = $(this).attr("title");
+		var val = $(this).html();
+		var curval = $("#"+obj).html();
+		var valnew = curval.replace(/[0-9]{1}$/,val);
+		$("#"+obj).html(valnew);
+		var obje = getCurrentModule();
+		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obje.poformOptions);
 	});
-});
 
+	$(document).on('click', '.insertStringFromDialog',function(e) {
+		e.preventDefault();
+		var field = $(this).attr("rel");
+		var val = $(this).html();
+		$('#'+field).html(val);
+		var obj = getCurrentModule();
+		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+		$("#modalDialog").dialog("close");
+	});
 
-// init datepicker
-$('.ui-datepicker-trigger-action').live('click',function() { 
-	//$(this).prev().trigger('click');
-	$(this).parent().next().find('img').trigger('click');
-	return false;
-});
+	$("#tabs").livequery(function() { 
+		$(this).tabs({
+			//select: function(){closedialog = 1;}
+		});
+	});
 
-
-
-
-
+	// init datepicker
+	$(document).on('click', '.ui-datepicker-trigger-action',function(e) {
+		e.preventDefault();
+		$(this).parent().next().find('img').trigger('click');
+	});
 
 	// init datepickers dialog_button.png
 	$('.datepicker').livequery(function() { 
 		$(this).datepicker({ dateFormat: 'dd.mm.yy', showOn: 'button', buttonText:"", buttonImage: co_files+'/img/pixel.gif',  buttonImageOnly: true, showButtonPanel: true, changeMonth: true, changeYear: true, showAnim: 'slide',
-		beforeShow: function(input,inst) {
-			/*var offset = $("#"+input.name + "_alt").offset();
-			//offset = [offset.left+26,offset.top+14];
-			
-			inst.dpDiv.css("left",offset.left+'px').css("top",offset.top+'px');*/
-			if(input.name == 'enddate') {
-				$(this).datepicker('option', 'minDate', new Date(Date.parse($("input[name='startdate']").val())));
-			}
-			if(input.name.match(/task_startdate/)) {
-				//alert("yes");
+			beforeShow: function(input,inst) {
+				if(input.name == 'enddate') {
+					$(this).datepicker('option', 'minDate', new Date(Date.parse($("input[name='startdate']").val())));
+				}
+				if(input.name.match(/task_startdate/)) {
 					$(this).datepicker('option', 'minDate', new Date(Date.parse($("input[name='kickoff']").val())));
-			}
-			if(input.name.match(/task_enddate/)) {
+				}
+				if(input.name.match(/task_enddate/)) {
 					var reg = /[0-9]+/.exec(input.name);
-					//alert(reg);
 					$(this).datepicker('option', 'minDate', new Date(Date.parse($("input[name='task_startdate["+reg+"]']").val())));
-			}
-			
-				//alert(inst.id);
-			/*if(input.name == 'meeting_status_end') {
-				$(this).datepicker('option', 'minDate', new Date(Date.parse($("input[name='meeting_date']").val())));
-			}*/
+				}
 			},
-		/*onSelect: function(dateText, inst) {
-			$("#"+this.name + "_alt").html(dateText);
-			$(this).hide;
-			},*/
-
-		onClose: function(dateText, inst) {
+			onClose: function(dateText, inst) {
 				if(this.name == 'startdate' || this.name == 'enddate') {
 					var date1 = Date.parse($("input[name='startdate']").val());
 					var date2 = Date.parse($("input[name='enddate']").val());
@@ -1004,42 +945,15 @@ $('.ui-datepicker-trigger-action').live('click',function() {
 								var days = span.getDays();
 								var app = getCurrentApp();
 								var obj = getCurrentModule();
-								//alert(app);
-								//alert(obj);
 								switch(obj.name) {
 									case 'projects': // duplicate project
 										$("#"+app+" input[name='request']").val("moveProject").after('<input type="hidden" value="' + days + '" name="movedays"/>');
-										//$("#poform").append('<input type="hidden" value="1" name="moveproject"/>');
-										//$("#poform").append('<input type="hidden" value="' + days + '" name="movedays"/>');
-										//$("#actionSave").trigger('click');
 										$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 									break;
 									case 'phase': // duplicate phase
-										/*$("input[name='editphase']").remove();
-										$("#poform").append('<input type="hidden" value="1" name="movephase"/>');
-										$("#poform").append('<input type="hidden" value="' + days + '" name="movedays"/>');
-										$("#actionSave").trigger('click');*/
 										alert("move phase");
 									break;
 								}
-								//$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
-								//projects.actionMoveProject(days);
-								
-								/*switch($("#pocurrent").val()) {
-									case 'project': // duplicate project
-										$("input[name='editproject']").remove();
-										$("#poform").append('<input type="hidden" value="1" name="moveproject"/>');
-										$("#poform").append('<input type="hidden" value="' + days + '" name="movedays"/>');
-										$("#actionSave").trigger('click');
-									break;
-									case 'phase': // duplicate phase
-										$("input[name='editphase']").remove();
-										$("#poform").append('<input type="hidden" value="1" name="movephase"/>');
-										$("#poform").append('<input type="hidden" value="' + days + '" name="movedays"/>');
-										$("#actionSave").trigger('click');
-									break;
-								}*/
-									
 							} else {
 								var obj = getCurrentModule();
 								$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
@@ -1099,9 +1013,7 @@ $('.ui-datepicker-trigger-action').live('click',function() {
 										var days = span.getDays();
 										
 										if(days != 0) {
-											//alert(days);
 										$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=moveDependendTasks&id="+reg+"&days="+days, success: function(data){
-											//var name = obj.name;
 											obj.actionRefresh();
 											}
 										});

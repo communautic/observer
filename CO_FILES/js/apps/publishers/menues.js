@@ -405,13 +405,13 @@ function publishersMenues(name) {
 
 }
 
-
 var publishers_menues = new publishersMenues('publishers_menues');
 
 var currentPublishersMenueItem = '';
 
 $(document).ready(function() {
-	$("table.menue-grid td.edit").live("dblclick", function(e) {
+	
+	$(document).on('dblclick', 'table.menue-grid td.edit', function(e) {
 		e.preventDefault();
 		var id = $(this).attr("id");
 		if(currentPublishersMenueItem != '' && currentPublishersMenueItem != id) {

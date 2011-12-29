@@ -832,25 +832,25 @@ $(document).ready(function() {
 	});
 
 
-	$(document).on('click', '#forums1 .module-click',function(e) {
+	$('#forums1').on('click', 'span.module-click',function(e) {
 		e.preventDefault();
 		navItemFirst('forums',$(this))
 	});
 
 
-	$(document).on('click', '#forums2 .module-click',function(e) {
+	$('#forums2').on('click', 'span.module-click',function(e) {
 		e.preventDefault();
 		navItemSecond('forums',$(this))
 	});
 
 
-	$(document).on('click', '#forums3 .module-click',function(e) {
+	$('#forums3').on('click', 'span.module-click',function(e) {
 		e.preventDefault();
 		navItemThird('forums',$(this))
 	});
 
 
-	$('a.insertForumFolderfromDialog').livequery('click',function(e) {
+	$(document).on('click', 'a.insertForumFolderfromDialog', function(e) {
 		e.preventDefault();
 		var field = $(this).attr("field");
 		var gid = $(this).attr("gid");
@@ -864,21 +864,19 @@ $(document).ready(function() {
 // INTERLINKS FROM Content
 	
 	// load a forum
-	$(".loadForum").live('click', function() {
-		
+	$(document).on('click', '.loadForum', function(e) {
+		e.preventDefault();		
 		var obj = getCurrentModule();
 		if(confirmNavigation()) {
 			formChanged = false;
 			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 		}
-		
 		var id = $(this).attr("rel");
 		$("#forums2-outer > h3").trigger('click', [id]);
-		return false;
 	});
 
 
-$("#forumsReplyText").livequery(function() {	 
+	$("#forumsReplyText").livequery(function() {	 
 		var postReply = $(this);
 		$.getScript("tiny_mce/jquery.tinymce.js", function(){
 			postReply.tinymce({
@@ -903,8 +901,8 @@ $("#forumsReplyText").livequery(function() {
 		})
 	})
 
-	
-	$("a.postForumsReply").live("click", function(e) {
+
+	$(document).on('click', 'a.postForumsReply', function(e) {
 		e.preventDefault();
 		var rel = $(this).attr("rel");
 		$("#modalDialogForumsPost").slideDown(function() {
@@ -916,7 +914,7 @@ $("#forumsReplyText").livequery(function() {
 	});
 
 
-	$("#modalDialogForumsPostClose").live("click", function(e) {
+	$(document).on('click', '#modalDialogForumsPostClose', function(e) {
 		e.preventDefault();
 		$("#modalDialogForumsPost").slideUp(function() {		
 			initForumsContentScrollbar();									
@@ -924,7 +922,7 @@ $("#forumsReplyText").livequery(function() {
 	});
 
 
-	$("span.actionForumsReply").live("click", function(e) {
+	$(document).on('click', 'span.actionForumsReply', function(e) {
 		e.preventDefault();
 		var id = $("#forums").data('second');
 		var text = $("#forumsReplyText").val();
@@ -937,7 +935,7 @@ $("#forumsReplyText").livequery(function() {
 	});
 
 
-	$("div.forumsPostToggle").live("click", function(e) {
+	$(document).on('click', 'div.forumsPostToggle', function(e) {
 		e.preventDefault();
 		var id = $(this).attr("id").replace(/post-toggle-/, "");
 		var outer = $('#forumsPostouter_'+id);

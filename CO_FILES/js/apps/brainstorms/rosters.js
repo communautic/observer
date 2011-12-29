@@ -695,7 +695,7 @@ $(document).ready(function() {
 	brainstorms_rosters.initItems();
 
 
-	$('#brainstorms-add-column').live("click", function(e) {
+	$(document).on('click', '#brainstorms-add-column', function(e) {
 		e.preventDefault();
 		var pid = $("#brainstorms").data("third");
 		var sor = $('#brainstorms-roster>div').size();
@@ -711,15 +711,13 @@ $(document).ready(function() {
 		});
 	})
 
-
-	$("div.brainstorms-column-delete").live("click", function(e) {
+	$(document).on('click', 'div.brainstorms-column-delete', function(e) {
 		e.preventDefault();
 		var id = $(this).attr("id").replace(/brainstorms-col-delete-/, "");
 		brainstorms_rosters.binColumn(id);
 	});
 
-
-	$("span.toggleMilestone").live("click", function(e) {
+	$(document).on('click', 'span.toggleMilestone', function(e) {
 		e.preventDefault();
 		var ms = 0;
 		var id = currentBrainstormRosterClickedNote;
@@ -737,7 +735,7 @@ $(document).ready(function() {
 	});
 
 
-	$("#brainstorms-roster .brainstorms-phase").live("dblclick", function(e) {
+	$(document).on('dblclick', '#brainstorms-roster .brainstorms-phase', function(e) {
 		e.preventDefault();
 		var clicked=$(e.target);
 		if(clicked.parents().is('.brainstorms-phase')) {
@@ -752,21 +750,18 @@ $(document).ready(function() {
 				}
 			});
 		}
-		return false;
 	});
-	$('#brainstorms-roster .brainstorms-phase').live("mousedown", function(){ return false; }) 
+	$(document).on('mousedown', '#brainstorms-roster .brainstorms-phase', function(){ return false; }) 
 
-
-	$('#brainstorms-roster .brainstorms-phase>div').live('mouseover mouseout', function(event) {
-		if (event.type == 'mouseover') {
+	$(document).on('mouseover mouseout', '#brainstorms-roster .brainstorms-phase>div', function(e){ 
+		if (e.type == 'mouseover') {
 			$(this).find(".binItem-Outer").show();
 	  	} else {
 			$(this).find(".binItem-Outer").hide();
 	  	}
 	});	
 
-	
-	$('#brainstorms-roster .brainstorms-phase>div').live("dblclick", function(e) {
+	$(document).on('dblclick', '#brainstorms-roster .brainstorms-phase>div', function(e) {
 		e.preventDefault();
 		var phase = false;
 		var addtop = 50;
@@ -807,8 +802,7 @@ $(document).ready(function() {
 		}
 	})
 
-
-	$("#brainstorms-notes-outer div.note-title").live("dblclick", function(e) {
+	$(document).on('dblclick', '#brainstorms-notes-outer div.note-title', function(e) {
 		e.preventDefault();
 		var html = $(this).html().replace(/(")/gi, "&quot;");
 		var input = '<input type="text" id="input-note" name="input-note" value="' + html+ '" />';
@@ -816,8 +810,7 @@ $(document).ready(function() {
 		$("#input-note").focus();
 	});
 
-
-	$("#brainstorms-roster-outer div.note-text").live("dblclick", function(e) {
+	$(document).on('dblclick', '#brainstorms-roster-outer div.note-text', function(e) {
 		e.preventDefault();
 		var html = $(this).html().replace(/(<br\s*\/?>)|(<p><\/p>)/gi, "");
 		var width = $(this).width();
@@ -828,7 +821,7 @@ $(document).ready(function() {
 	});
 
 
-	$('span.actionBrainstormsRostersConvert').live("click", function(e) {
+	$(document).on('click', 'span.actionBrainstormsRostersConvert', function(e) {
 		e.preventDefault();
 		var id = $("#brainstorms").data("third");
 		var kickofffield = Date.parse($("#brainstorms input[name='kickoff']").val());
@@ -849,25 +842,23 @@ $(document).ready(function() {
 		});
 	})
 
-
-	$("#modalDialogBrainstormsRosterClose").live("click", function(e) {
+	$(document).on('click', '#modalDialogBrainstormsRosterClose', function(e) {
 		e.preventDefault();
 		$("#modalDialogRoster").slideUp(function() {		
 			initBrainstormsContentScrollbar();									
 		});
 	});
 	
-	
-	$('a.binDeleteColumn').live('click',function() {
+	$(document).on('click', 'a.binDeleteColumn', function(e) {
+		e.preventDefault();
 		var id = $(this).attr("rel");
 		brainstorms_rosters.binDeleteColumn(id);
-		return false;
 	});
 	
-	$('a.binRestoreColumn').live('click',function() {
+	$(document).on('click', 'a.binRestoreColumn', function(e) {
+		e.preventDefault();
 		var id = $(this).attr("rel");
 		brainstorms_rosters.binRestoreColumn(id);
-		return false;
 	});
 
 

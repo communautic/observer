@@ -736,25 +736,25 @@ $(document).ready(function() {
 	});
 
 
-	$(document).on('click', '#clients1 .module-click',function(e) {
+	$('#clients1').on('click', 'span.module-click',function(e) {
 		e.preventDefault();
 		navItemFirst('clients',$(this))
 	});
 
 
-	$(document).on('click', '#clients2 .module-click',function(e) {
+	$('#clients2').on('click', 'span.module-click',function(e) {
 		e.preventDefault();
 		navItemSecond('clients',$(this))
 	});
 
 
-	$(document).on('click', '#clients3 .module-click',function(e) {
+	$('#clients3').on('click', 'span.module-click',function(e) {
 		e.preventDefault();
 		navItemThird('clients',$(this))
 	});
 
-	
-	$('a.insertClientFolderfromDialog').livequery('click',function(e) {
+
+	$(document).on('click', 'a.insertClientFolderfromDialog', function(e) {
 		e.preventDefault();
 		var field = $(this).attr("field");
 		var gid = $(this).attr("gid");
@@ -767,55 +767,40 @@ $(document).ready(function() {
 // INTERLINKS FROM Content
 	
 	// load a client
-	$(".loadClient").live('click', function() {
-		
+	$(document).on('click', '.loadClient', function(e) {	
+		e.preventDefault();
 		var obj = getCurrentModule();
 		if(confirmNavigation()) {
 			formChanged = false;
 			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 		}
-		
 		var id = $(this).attr("rel");
 		$("#clients2-outer > h3").trigger('click', [id]);
-		return false;
 	});
-	
-	
-	$('#actionAccessOrders').live("click", function(){
+
+	$(document).on('click', '#actionAccessOrders', function(e) {	
+		e.preventDefault();
 		var div = $(this).attr("rel");
 		var id = parseInt(div.replace(/client_/, ""));
 		var cid = $("#clients2 .active-link:visible").attr("rel");
-		
 		$.ajax({ type: "GET", url: "/", data: "path=apps/clients&request=generateAccess&id=" + id + "&cid=" + cid, cache: false, success: function(data){
-			/*$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getContactDetails&id="+id, success: function(html){
-				$("#contacts-right").html(html);
-				contactsInnerLayout.initContent('center');
-				}
-			});*/
 			$("#"+div).html(data);
 			var prev = $("#"+div).parent().prev().find('span').attr('sql','0');
 			$("#modalDialog").dialog('close');
 			}																																			
 		});
-		return false;
 	});
-	
-	$('#actionAccessOrdersRemove').live("click", function(){
+
+	$(document).on('click', '#actionAccessOrdersRemove', function(e) {	
+		e.preventDefault();
 		var div = $(this).attr("rel");
 		var id = parseInt(div.replace(/client_/, ""));
-		
 		$.ajax({ type: "GET", url: "/", data: "path=apps/clients&request=removeAccess&id=" + id, cache: false, success: function(data){
-			/*$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getContactDetails&id="+id, success: function(html){
-				$("#contacts-right").html(html);
-				contactsInnerLayout.initContent('center');
-				}
-			});*/
 			$("#"+div).html(data);
 			var prev = $("#"+div).parent().prev().find('span').attr('sql','1');
 			$("#modalDialog").dialog('close');
 			}
 		});
-		return false;
 	});
 	
 	
@@ -823,12 +808,6 @@ $(document).ready(function() {
 		dialogClass: 'ClientsExportWindow',
 		autoOpen: false,
 		resizable: true,
-		/*resize: function(event, ui) {
-			$('#sendToTextarea').height($(this).height() - 154);
-			},
-		open: function(event, ui) {
-			$('#sendToTextarea').height($(this).height() - 154);
-			},*/
 		width: 400,  
 		height: 320,
 		show: 'slide',

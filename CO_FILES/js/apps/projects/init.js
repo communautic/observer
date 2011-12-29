@@ -802,28 +802,26 @@ $(document).ready(function() {
 		navThreeTitleThird('projects',$(this),passed_id)
 	});
 
-
-	$(document).on('click', '#projects1 .module-click',function(e) {
+	$('#projects1').on('click', 'span.module-click', function(e) {
+	//$(document).on('click', '#projects1 .module-click',function(e) {
 		e.preventDefault();
 		navItemFirst('projects',$(this))
 	});
 
 
-	$(document).on('click', '#projects2 .module-click',function(e) {
+	$('#projects2').on('click', 'span.module-click', function(e) {
 		e.preventDefault();
 		navItemSecond('projects',$(this))
 	});
 
 
-	$(document).on('click', '#projects3 .module-click',function(e) {
+	$('#projects3').on('click', 'span.module-click',function(e) {
 		e.preventDefault();
 		navItemThird('projects',$(this))
 	});
 
 
-
- 
-	$('a.insertProjectFolderfromDialog').livequery('click',function(e) {
+	$(document).on('click', 'a.insertProjectFolderfromDialog',function(e) {
 		e.preventDefault();
 		var field = $(this).attr("field");
 		var gid = $(this).attr("gid");
@@ -833,10 +831,11 @@ $(document).ready(function() {
 	});
 
 
-// INTERLINKS FROM Content
+	// INTERLINKS FROM Content
 	
 	// load a project
-	$(".loadProject").live('click', function() {
+	$(document).on('click', '.loadProject',function(e) {
+		e.preventDefault();
 		var obj = getCurrentModule();
 		if(confirmNavigation()) {
 			formChanged = false;
@@ -844,12 +843,11 @@ $(document).ready(function() {
 		}
 		var id = $(this).attr("rel");
 		$("#projects2-outer > h3").trigger('click', [id]);
-		return false;
 	});
 
-	
 	// load a phase
-	$(".loadProjectsPhase").live('click', function() {
+	$(document).on('click', '.loadProjectsPhase',function(e) {
+		e.preventDefault();
 		var obj = getCurrentModule();
 		if(confirmNavigation()) {
 			formChanged = false;
@@ -860,22 +858,21 @@ $(document).ready(function() {
 		
 		var id = $(this).attr("rel");
 		$("#projects3 h3[rel='phases']").trigger('click', [id]);
-		return false;
 	});
 	
-	$(".loadProjectsPhase2").live('click', function() {
+	$(document).on('click', '.loadProjectsPhase2',function(e) {
+		e.preventDefault();
 		var id = $(this).attr("rel");
 		$("#projects3 h3[rel='phases']").trigger('click', [id]);
-		return false;
 	});
 
 
-	$('span.actionProjectHandbook').click(function(){
+	$('span.actionProjectHandbook').on('click',function(e){
+		e.preventDefault();
 		if($(this).hasClass("noactive")) {
 			return false;
 		}
 		projects.actionHandbook();
-		return false;
 	});
 
 	
