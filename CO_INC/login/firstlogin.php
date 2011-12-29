@@ -22,7 +22,7 @@ if(isset($_GET['path'])) {
 <link href="<?php echo CO_FILES;?>/css/login/ie.css" rel="stylesheet" type="text/css" media="screen,projection" />
 <![endif]-->
 <link rel="stylesheet" href="<?php echo CO_FILES;?>/css/login/validationEngine.jquery.css" type="text/css"/>
-<script src="<?php echo $protocol;?>ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
+<script src="<?php echo $protocol;?>ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.form.js"></script>
 <script src="<?php echo CO_FILES;?>/js/lang/validation/jquery.validationEngine-<?php echo $session->userlang;?>.js" type="text/javascript" charset="utf-8"></script>
 <script src="<?php echo CO_FILES;?>/js/libraries/jquery.validationEngine.js" type="text/javascript" charset="utf-8"></script>
@@ -35,8 +35,7 @@ function binactionHelp() {
 	}
 
 $(document).ready(function() {		   
-	
-	
+
 	$(".opac").css("opacity", "0.5");
 	document.com_form.username.focus();
 	
@@ -52,11 +51,10 @@ $(document).ready(function() {
         }
     });
 	
-	$('#loginHelp').click(function(e) {
+	$('#loginHelp').on('click', function(e) {
 		e.preventDefault();
 		var url = "/?path=login/help";
 		$("#documentloader").attr('src', url);
-		
 	})
 
 });
