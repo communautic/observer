@@ -746,8 +746,8 @@ function ProjectsExternalLoad(what,f,p,ph) { // from Desktop
 	}
 }
 
-
 var projectsLayout, projectsInnerLayout;
+
 
 $(document).ready(function() {
 	
