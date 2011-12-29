@@ -60,7 +60,8 @@ if($session->isSysadmin()) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0;" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0" />
 <title><?php echo $lang["APPLICATION_NAME"];?></title>
 <link href="<?php echo CO_FILES;?>/img/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 <link href="<?php echo CO_FILES;?>/css/reset.css" rel="stylesheet" type="text/css" media="screen,projection" />
@@ -102,6 +103,13 @@ var co_files = '<?php echo CO_FILES;?>';
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.elastic.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.hoverscroll.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/lang/<?php echo($session->userlang); ?>.js"></script>
+<?php // include mobile js
+if(strpos($_SERVER['HTTP_USER_AGENT'], 'iPhone') || strpos($_SERVER['HTTP_USER_AGENT'], 'iPad')){ 
+?>
+<script type="text/javascript" src="<?php echo CO_FILES;?>/js/mobile/jquery.ui.touch-punch.min.js"></script>
+<script type="text/javascript" src="<?php echo CO_FILES;?>/js/mobile/jquery.doubletap.js"></script>
+<script type="text/javascript" src="<?php echo CO_FILES;?>/js/mobile/init.js"></script>
+<?php }?>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/init.js"></script>
 <script type="text/javascript">
 <?php // set app init display vars
