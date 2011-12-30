@@ -112,14 +112,12 @@ class Desktop extends Controller {
 
 
 	function newPostit($z) {
-		if($arr = $this->model->newPostit($z)) {
-			$posts = $arr["notes"];
-			ob_start();
-				include 'view/postits.php';
-				$html = ob_get_contents();
-			ob_end_clean();
-			echo $html;
-		}
+		$retval = $this->model->newPostit($z);
+		if($retval){
+			 return 'true';
+		  } else{
+			 return "error";
+		  }
 	}
 	
 	function updatePostitPosition($id,$x,$y,$z) {
