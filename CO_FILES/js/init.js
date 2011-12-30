@@ -1132,6 +1132,9 @@ function loadModuleStartnavThree(objectname) {
 		$('#'+objectname+'1 .sort').attr("rel", data.sort).addClass("sort"+data.sort);
 		//projectsInnerLayout.initContent('center');
 		var id = $('#'+objectname+'1 .module-click:eq(0)').attr("rel");
+		if(id === undefined) {
+			id = 0;
+		}
 		object.$app.data({ "current" : "folders" , "first" : id , "second" : 0 , "third" : 0});
 		$('#'+objectname+'1 .module-click:eq(0)').addClass('active-link');
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+objectname+"&request=getFolderDetails&id="+id, success: function(text){
@@ -1509,7 +1512,7 @@ function navThreeTitleSecond(objectname, clicked, passed_id) {
 			});
 		} else {
 			var id = object.$app.data('first');
-			if(id == undefined) {
+			if(id == undefined || id == 0) {
 				return false;
 			}
 			var index = $('#'+objectname+'1 .module-click').index($('#'+objectname+'1 .module-click[rel='+id+']'));
