@@ -54,6 +54,12 @@ $lang["PRINT_BRAINSTORM_MANUAL"] = 'brainstorm_manual.png';
 $lang["PRINT_BRAINSTORM"] = 'brainstorm.png';
 $lang["PRINT_BRAINSTORM_FOLDER"] = 'folder.png';
 
+// Dektop Widget
+$lang["BRAINSTORM_WIDGET_NO_ACTIVITY"]		=	'Currently there are no notices';
+$lang["BRAINSTORM_WIDGET_TITLE_BRAINSTORM"]	=	'Brainstorm';
+$lang["BRAINSTORM_WIDGET_INVITATION_ADMIN"]	=	'You have been invited as <span class="yellow">Administrator</span> to the brainstorm "%1$s"';
+$lang["BRAINSTORM_WIDGET_INVITATION_GUEST"]	=	'You have been invited as <span class="yellow">Guest</span> to the brainstorm "%1$s"';
+
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/brainstorms/en.php";
 if(file_exists($custom_lang)) {

@@ -31,8 +31,25 @@ $lang['CLIENT_KICKOFF'] = 'Kick Off';
 
 $lang["CLIENT_CLIENT"] = 'Authorised by';
 $lang["CLIENT_MANAGEMENT"] = 'Client Manager';
-$lang["CLIENT_TEAM"] = 'Client Team';
-$lang["CLIENT_DESCRIPTION"] = 'Description';
+$lang["CLIENT_CONTRACT"] = 'Contract';
+
+$lang["CLIENT_CONTRACT_ONE"] = 'Kindermenü ohne Suppe';
+$lang["CLIENT_CONTRACT_TWO"] = 'Kindermenü mit Suppe';
+$lang["CLIENT_CONTRACT_THREE"] = 'Erw. I ohne Suppe';
+$lang["CLIENT_CONTRACT_FOUR"] = 'Erw. I mit Suppe';
+$lang["CLIENT_CONTRACT_FIVE"] = 'Erw. II ohne Suppe';
+$lang["CLIENT_CONTRACT_SIX"] = 'Erw. II mit Suppe';
+$lang["CLIENT_CONTRACT_SEVEN"] = 'Erw. III ohne Suppe';
+$lang["CLIENT_CONTRACT_EIGHT"] = 'Erw. IIII mit Suppe';
+
+
+$lang["CLIENT_TEAM"] = 'Ansprechpartner';
+$lang["CLIENT_ADDRESS"] = 'Lieferadresse';
+$lang["CLIENT_BILLING_ADDRESS"] = 'Rechnungsadresse';
+
+$lang["CLIENT_DESCRIPTION"] = 'Notizen';
+
+$lang['CLIENTS_ACCESS_ACTIVE'] = 'Berechtigung erteilt am %s durch %s';
 
 $lang["CLIENT_STATUS_PLANNED"] = 'planned';
 $lang["CLIENT_STATUS_INPROGRESS"] = 'started';
@@ -43,8 +60,19 @@ $lang["CLIENT_STATUS_PLANNED_TEXT"] = 'planned';
 $lang["CLIENT_STATUS_INPROGRESS_TEXT"] = 'started';
 $lang["CLIENT_STATUS_FINISHED_TEXT"] = 'completed';
 $lang["CLIENT_STATUS_STOPPED_TEXT"] = 'stopped';
+$lang["CLIENT_HANDBOOK"] = 'Projekthandbuch';
 
-$lang["CLIENT_HANDBOOK"] = 'Client Manual';
+
+// Access codes Email
+$lang['CLIENT_ACCESS_CODES_EMAIL_SUBJECT'] = 'mama-bringt\'s Bestellberechtigung';
+$lang['CLIENT_ACCESS_CODES_EMAIL'] =	'<p style="font-face: Arial, Verdana; font-size: small">Hiermit erhalten Sie Ihre Zugangscodes zur erstmaligen Anmeldung für das Online-Bestellsystem von mama-bringt\'s ©:</p>' .
+								'<p style="font-face: Arial, Verdana; font-size: small">Internetadresse: <a href="%1$s">%1$s</a></p>' .
+    							'<p style="font-face: Arial, Verdana; font-size: small">Benutzername: %2$s<br />' .
+    							'Passwort: %3$s</p>' .
+								'<p style="font-face: Arial, Verdana; font-size: small;">Bitte melden Sie sich an, indem Sie 1. die eingangs angegebene Internetadresse aufrufen und 2. die hier angegebenen Zugangsdaten (Benutzername und Passwort) eingeben und bestätigen. 3. Im Anschluss werden Sie aufgefordert, Ihre individuellen Zugangscodes zu kreieren. Mit diesen, neuen Zugangscodes erhalten Sie zukünftig Zugang zum Bestellservice auf www.mama-bringts.at</p>' .
+								'<p style="font-face: Arial, Verdana; font-size: small;">Herzlichen Dank für die Zusammenarbeit, Ihr</p>' .
+								'<p style="font-face: Arial, Verdana; font-size: small;">mama-bringt\'s Team</p>';
+
 
 $lang["CLIENT_HELP"] = 'manual_kunden_kunden.pdf';
 $lang["CLIENT_FOLDER_HELP"] = 'manual_kunden_ordner.pdf';

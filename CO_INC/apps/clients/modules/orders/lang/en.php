@@ -14,8 +14,8 @@ $lang["CLIENT_ORDER_TIME_END"] = 'End';
 $lang["CLIENT_ORDER_MANAGEMENT"] = 'With';
 $lang["CLIENT_ORDER_GOALS"] = 'Agenda';
 
-$lang["CLIENT_ORDER_STATUS_OUTGOING"] = 'incoming';
-$lang["CLIENT_ORDER_STATUS_ON_INCOMING"] = 'outgoing';
+$lang["CLIENT_ORDER_STATUS_OPEN"] = 'offen';
+$lang["CLIENT_ORDER_STATUS_DONE"] = 'gestellt';
 
 $lang["CLIENT_ORDER_HELP"] = 'manual_kunden_bestellungen.pdf';
 

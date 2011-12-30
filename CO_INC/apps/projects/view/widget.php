@@ -64,6 +64,6 @@ if(is_array($notices)) {
 
 
 if($message == 1) {
-	echo('Keine aktuellen Benachrichtigungen');
+	echo $lang["PROJECT_WIDGET_NO_ACTIVITY"];
 }
 ?>

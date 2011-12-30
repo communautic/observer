@@ -1,5 +1,4 @@
 <div class="table-title-outer">
-
 <table border="0" cellpadding="0" cellspacing="0" class="table-title">
   <tr>
     <td class="tcell-left text11"><span class="<?php if($document->canedit) { ?>content-nav focusTitle<?php } ?>"><span><?php echo $lang["BRAINSTORM_DOCUMENT_TITLE"];?></span></span></td>

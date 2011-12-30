@@ -1,5 +1,4 @@
 <div class="table-title-outer">
-
 <table border="0" cellpadding="0" cellspacing="0" class="table-title">
   <tr>
     <td class="tcell-left text11"><span class="<?php if($meeting->canedit) { ?>content-nav focusTitle<?php } ?>"><span><?php echo $lang["CLIENT_MEETING_TITLE"];?></span></span></td>

@@ -33,6 +33,6 @@ if(is_array($notices)) {
 }
 
 if($message == 1) {
-	echo('Keine aktuellen Benachrichtigungen');
+	echo $lang["FORUM_WIDGET_NO_ACTIVITY"];
 }
 ?>
