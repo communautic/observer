@@ -86,28 +86,10 @@ class DesktopModel extends Model {
 		
 		$q = "INSERT INTO " . CO_TBL_DESKTOP_POSTITS . " set uid = '$session->uid', xyz = '15x70x" . $z . "', wh = '200x200', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
+		
 		if ($result) {
-			$id = mysql_insert_id();
+			return true;
 		}
-		$note["xyz"] = '15x30x' . $z;
-		$note["wh"] = '200x200';
-		$note["id"] = $id;
-		$note["text"] = "";
-		$note["date"] = $this->_date->formatDate($now,CO_DATETIME_FORMAT);
-		$days = $this->_date->dateDiff($now,$now);
-		switch($days) {
-				case 0:
-					$note["days"] = $lang["GLOBAL_TODAY"];
-				break;
-				case 1:
-					$note["days"] = $lang["GLOBAL_YESTERDAY"];
-				break;
-				default:
-				$note["days"] = sprintf($lang["GLOBAL_DAYS_AGO"], $days);
-			}
-		$notes[] = new Lists($note);
-		$arr = array("notes" => $notes);
-		return $arr;
 	}
 	
 

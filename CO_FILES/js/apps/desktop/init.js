@@ -1,11 +1,11 @@
 function desktopApplication(name) {
 	this.name = name;
-	//this.poformOptions = { };
+
 	this.checkIn = function(id) {
 		return true;
 	}
 	
-		this.actionDialog = function(offset,request,field,append,title,sql) {
+	this.actionDialog = function(offset,request,field,append,title,sql) {
 		$.ajax({ type: "GET", url: "/", data: 'path=apps/projects&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
 			$("#modalDialog").html(html);
 			$("#modalDialog").dialog('option', 'position', offset);
@@ -31,7 +31,7 @@ function desktopApplication(name) {
 		});
 	}
 	
-		// notes
+	// notes
 	this.saveItem = function(id) {
 		if($("#postit-text-"+id).length > 0) {
 			var text = $("#postit-text-"+id).val();
@@ -39,13 +39,6 @@ function desktopApplication(name) {
 			var text = $("#postit-text-"+id).html().replace(/(<br\s*\/?>)|(<p><\/p>)/gi, "");
 		}
 		$.ajax({ type: "POST", url: "/", dataType:  'json', data: { path: 'apps/desktop', request: 'savePostit', id: id, text: text }, success: function(data){
-				/*if($("#postit-text-"+id).length > 0) {
-					var height = $("#postit-text-"+id).height();
-					var note_text = $(document.createElement('div')).attr("id", "postit-text-" + id).attr("class", "postit-text").css("height",height).html(data.text);
-					$("#postit-" + id).find('textarea').replaceWith(note_text);
-					$("#postit-date-" + id).html(data.date);
-					$("#postit-days-" + id).html(data.days);
-				}*/
 				desktoploadModuleStart();
 			}
 		});
@@ -82,9 +75,6 @@ function desktopApplication(name) {
 }
 
 var desktop = new desktopApplication('desktop');
-//desktop.resetModuleHeights = desktopresetModuleHeights;
-//desktop.usesLayout = false;
-//desktop.poformOptions = { };
 
 function desktoploadModuleStart() {
 
