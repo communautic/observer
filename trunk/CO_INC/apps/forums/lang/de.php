@@ -35,6 +35,7 @@ $lang["PRINT_FORUM"] = 'forum.png';
 $lang["PRINT_FORUM_FOLDER"] = 'ordner.png';
 
 // Dektop Widget
+$lang["FORUM_WIDGET_NO_ACTIVITY"]		=	'Keine aktuellen Benachrichtigungen';
 $lang["FORUM_WIDGET_TITLE_BRAINSTORM"]		=	'Foren';
 $lang["FORUM_WIDGET_INVITATION_ADMIN"]	=	'Sie wurden als <span class="yellow">Administrator</span> für das Forum "%1$s" freigeschalten';
 $lang["FORUM_WIDGET_INVITATION_GUEST"]	=	'Sie wurden als <span class="yellow">Beobachter</span> für das Forum "%1$s" freigeschalten';

@@ -49,6 +49,7 @@ $lang["PRINT_BRAINSTORM"] = 'projekt.png';
 $lang["PRINT_BRAINSTORM_FOLDER"] = 'ordner.png';
 
 // Dektop Widget
+$lang["BRAINSTORM_WIDGET_NO_ACTIVITY"]		=	'Keine aktuellen Benachrichtigungen';
 $lang["BRAINSTORM_WIDGET_TITLE_BRAINSTORM"]		=	'Prozess';
 $lang["BRAINSTORM_WIDGET_INVITATION_ADMIN"]	=	'Sie wurden als <span class="yellow">Administrator</span> für den Prozess "%1$s" freigeschalten';
 $lang["BRAINSTORM_WIDGET_INVITATION_GUEST"]	=	'Sie wurden als <span class="yellow">Beobachter</span> für den Prozess "%1$s" freigeschalten';
