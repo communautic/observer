@@ -1673,7 +1673,7 @@ class BrainstormsModel extends Model {
 		}
 		
 		// project notices for this user
-		$q ="select a.id as pid,a.folder,a.title as brainstormtitle,b.perm from " . CO_TBL_BRAINSTORMS . " as a,  " . CO_TBL_BRAINSTORMS_DESKTOP . " as b where a.id = b.pid and b.uid = '$session->uid' and b.status = '0'";
+		$q ="select a.id as pid,a.folder,a.title as brainstormtitle,b.perm from " . CO_TBL_BRAINSTORMS . " as a,  " . CO_TBL_BRAINSTORMS_DESKTOP . " as b where a.id = b.pid and a.bin = '0' and b.uid = '$session->uid' and b.status = '0'";
 		$result = mysql_query($q, $this->_db->connection);
 		$notices = "";
 		$array = "";

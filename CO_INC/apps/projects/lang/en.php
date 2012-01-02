@@ -57,20 +57,20 @@ $lang["PRINT_PROJECT_FOLDER"] = 'folder.png';
 // Dektop Widget
 $lang["PROJECT_WIDGET_NO_ACTIVITY"]			=	'Currently there are no notices';
 $lang["PROJECT_WIDGET_TITLE_MILESTONE"] 	=	'Milestone';
-$lang["PROJECT_WIDGET_REMINDER_MILESTONE"] 	= 	'Für <span class="yellow">morgen</span> ist die Erreichung des Meilensteins "%1$s" im Projekt "%2$s" geplant';
+$lang["PROJECT_WIDGET_REMINDER_MILESTONE"] 	= 	'<span class="yellow">Tomorrow</span> you planned to reach the Milestone "%1$s" of the Project "%2$s"';
 
 $lang["PROJECT_WIDGET_TITLE_TASK"] 			=	'Stage';
-$lang["PROJECT_WIDGET_REMINDER_TASK"] 		= 	'Für <span class="yellow">morgen</span> ist die Erreichung des Arbeitspaketes "%1$s" im Projekt "%2$s" geplant';
+$lang["PROJECT_WIDGET_REMINDER_TASK"] 		= 	'<span class="yellow">Tomorrow</span> you planned to reach the Stage "%1$s" of the Project "%2$s"';
 
 $lang["PROJECT_WIDGET_TITLE_KICKOFF"] 		=	'Kick Off';
-$lang["PROJECT_WIDGET_REMINDER_KICKOFF"] 	= 	'Für <span class="yellow">morgen</span> ist der Kick Off des Projektes "%1$s" geplant';
+$lang["PROJECT_WIDGET_REMINDER_KICKOFF"] 	= 	'<span class="yellow">Tomorrow</span> you planned the Kick Off for the Project "%1$s"';
 
-$lang["PROJECT_WIDGET_ALERT_TASK"] 			= 	'Der Arbeitspaket Fälligkeitstermin für "%1$s" im Projekt "%2$s" ist <span class="yellow">außer Plan</span>';
-$lang["PROJECT_WIDGET_ALERT_MILESTONE"] 	= 	'Der Meilenstein Fälligkeitstermin für "%1$s" im Projekt "%2$s" ist <span class="yellow">außer Plan</span>';
+$lang["PROJECT_WIDGET_ALERT_TASK"] 			= 	'The Stage "%1$s" in the Project "%2$s" is <span class="yellow">out of plan</span>';
+$lang["PROJECT_WIDGET_ALERT_MILESTONE"] 	= 	'The Milestone "%1$s" in the Project "%2$s" is <span class="yellow">out of plan</span>';
 
 $lang["PROJECT_WIDGET_TITLE_PROJECT"]		=	'Projekt';
-$lang["PROJECT_WIDGET_INVITATION_ADMIN"]	=	'You have been invited as <span class="yellow">Administrator</span> to the project "%1$s"';
-$lang["PROJECT_WIDGET_INVITATION_GUEST"]	=	'You have been invited as <span class="yellow">Guest</span> to the project "%1$s"';
+$lang["PROJECT_WIDGET_INVITATION_ADMIN"]	=	'You have been invited as <span class="yellow">Administrator</span> to the Project "%1$s"';
+$lang["PROJECT_WIDGET_INVITATION_GUEST"]	=	'You have been invited as <span class="yellow">Guest</span> to the Project "%1$s"';
 
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/projects/en.php";

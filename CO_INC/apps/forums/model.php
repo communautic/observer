@@ -1365,7 +1365,7 @@ class ForumsModel extends Model {
 		// reminders = neue posts für initiator und admins
 		//$q ="select c.folder,c.id as pid,c.title as title from  " . CO_TBL_FORUMS . " as c where c.status='1' and c.bin = '0' " . $access;
 		$reminders = "";
-		$q ="select a.id as pid,a.folder,a.title as forumtitle from " . CO_TBL_FORUMS . " as a,  " . CO_TBL_FORUMS_DESKTOP . " as b where a.id = b.pid and b.newpost = '1' and b.uid = '$session->uid' GROUP BY pid ORDER BY b.id DESC";
+		$q ="select a.id as pid,a.folder,a.title as forumtitle from " . CO_TBL_FORUMS . " as a,  " . CO_TBL_FORUMS_DESKTOP . " as b where a.id = b.pid and b.newpost = '1' and a.bin = '0' and b.uid = '$session->uid' GROUP BY pid ORDER BY b.id DESC";
 		$result = mysql_query($q, $this->_db->connection);
 		while ($row = mysql_fetch_array($result)) {
 			foreach($row as $key => $val) {
@@ -1377,7 +1377,7 @@ class ForumsModel extends Model {
 
 		
 		// notices for this user
-		$q ="select a.id as pid,a.folder,a.title as brainstormtitle,b.perm from " . CO_TBL_FORUMS . " as a,  " . CO_TBL_FORUMS_DESKTOP . " as b where a.id = b.pid and b.uid = '$session->uid' and b.status = '0' and newpost!='1'";
+		$q ="select a.id as pid,a.folder,a.title as brainstormtitle,b.perm from " . CO_TBL_FORUMS . " as a,  " . CO_TBL_FORUMS_DESKTOP . " as b where a.id = b.pid and a.bin = '0' and b.uid = '$session->uid' and b.status = '0' and newpost!='1'";
 		$result = mysql_query($q, $this->_db->connection);
 		$notices = "";
 		$array = "";
