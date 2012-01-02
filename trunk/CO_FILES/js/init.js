@@ -1877,3 +1877,155 @@ function navItemThird(objectname, clicked) {
 	var list = 0;
 	obj.getDetails(ulidx,index,list);
 }
+
+
+
+function externalLoadThreeLevels(objectname,f,p,ph) { // from Desktop
+	var object = window[objectname];
+	var objectFirst = objectname.substr(0, 1);
+	var objectnameCaps = objectFirst.toUpperCase() + objectname.substr(1);
+	var objectnameCapsSingular = objectnameCaps.slice(0,-1);
+	var num_modules = window[objectname+'_num_modules'];
+	
+	if(objectname == 'projects' || objectname == 'brainstorms' || objectname == 'forums') {
+		object.$first.data({ "first" : f});
+		var index = $('#'+objectname+'1 .module-click').index($('#'+objectname+'1 .module-click[rel='+f+']'));
+		$.ajax({ type: "GET", url: "/", dataType:  'json', async: false, data: "path=apps/" + objectname +"&request=get"+objectnameCapsSingular+"List&id="+f, success: function(data){
+			$('#'+objectname+'2 ul').html(data.html);
+			setModuleDeactive(object.$first,index);
+			object.$first.find('li:eq('+index+')').show();
+			$('#'+objectname+'-top .top-headline').html($('#'+objectname+'1 .deactivated').find(".text").html());
+			}
+		})
+		object.$second.data({ "second" : p});
+		var index = $('#'+objectname+'2 .module-click').index($('#'+objectname+'2 .module-click[rel='+p+']'));
+		setModuleActive(object.$second,index);
+		$('#'+objectname+'2-outer').css('top', 96);
+		$('#'+objectname+'3 h3').removeClass("module-bg-active");
+		$('#'+objectname+'3 .module-actions').hide();
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/" + objectname +"&request=get"+objectnameCapsSingular+"Details&fid="+f+"&id="+p, success: function(text){
+			$('#'+objectname+'-current').val(objectname);
+			object.$app.data({ "current" : objectname});
+			object.$app.data({ "second" : p});
+			object.$first.data('status','closed');
+			object.$second.data('status','open');
+			object.$third.data('status','closed');
+			object.$appContent.html(text.html);		
+			if($('#checkedOut').length > 0) {
+				$('#'+objectname+'2 .active-link .icon-checked-out').addClass('icon-checked-out-active');
+			} else {
+				$('#'+objectname+'2 .active-link .icon-checked-out').removeClass('icon-checked-out-active');
+			}
+			switch (text.access) {
+				case "sysadmin":
+					window[objectname+'Actions'](0);
+				break;
+				case "admin":
+					window[objectname+'Actions'](0);
+				break;
+				case "guestadmin":
+					window[objectname+'Actions'](7);
+				break;
+				case "guest":
+					window[objectname+'Actions'](5);
+				break;
+			}
+			window['init'+objectnameCaps+'ContentScrollbar']();
+			if(text.access == "guest" || text.access != "guestadmin") { 
+				var h = object.$layoutWest.height();
+				var modLen = object.GuestHiddenModules.length;
+				var p_num_modules = num_modules-modLen;
+				p_modules_height = p_num_modules*module_title_height;
+				$('#'+objectname+'3 .'+objectname+'3-content').height(h-(p_modules_height+152));
+				object.$thirdDiv.height(h-(p_modules_height+150-27));
+				object.$second.height(h-125-p_num_modules*27).removeClass("module-active");
+				$('#'+objectname+'2 .module-inner').height(h-125-p_num_modules*27);
+				var a = 0;
+				object.$thirdDiv.each(function(i) { 
+					var rel = $(this).find('h3').attr('rel');
+					if(object.GuestHiddenModules.indexOf(rel) >= 0 ) {
+						$(this).addClass('deactivated').animate({top: 9999})	
+					} else {
+						var t = object.$third.height()-p_num_modules*27+a*27;
+						$(this).animate({top: t})			
+						a = a+1;
+					}
+				})
+				$('span.app_'+objectname).trigger('click');
+			} else {
+				$('#'+objectname+'3 div.thirdLevel:not(.deactivated)').each(function(i) { 
+					var t = h-150-num_modules*27+i*27;
+					$(this).animate({top: t})
+				})
+				$('span.app_'+objectname).trigger('click');
+			}
+			}
+		});
+	}
+	
+	if(objectname == 'phases') {
+		$('#projects').data({ "first" : f});
+		var index = $('#projects1 .module-click').index($('#projects1 .module-click[rel='+f+']'));
+		$.ajax({ type: "GET", url: "/", dataType:  'json', async: false, data: "path=apps/projects&request=getProjectList&id="+f, success: function(data){
+			$("#projects2 ul").html(data.html);
+				setModuleDeactive($("#projects1"),index);
+				$('#projects1').find('li:eq('+index+')').show();
+				$("#projects-top .top-headline").html($("#projects1 .deactivated").find(".text").html());
+			}
+		})
+		$('#projects').data({ "second" : p});
+			
+		var index = $("#projects2 .module-click").index($("#projects2 .module-click[rel='"+p+"']"));
+		setModuleDeactive($("#projects2"),index);
+		$("#projects2-outer").css('top', 96);
+		$('#projects3 h3').removeClass("module-bg-active");
+		$('#projects3 .module-actions').hide();
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/"+objectname+"&request=getList&id="+p, success: function(data){
+			$("#projects-current").val(objectname);
+			$('#projects').data({ "current" : objectname});
+			$('#projects').data({ "third" : ph});
+			$('#projects1').data('status','closed');
+			$('#projects2').data('status','closed');
+			$('#projects3').data('status','open');
+			$('#projects3 ul[rel='+objectname+']').html(data.html);
+			$("#projectsActions .actionNew").attr("title",data.title);
+			switch (data.perm) {
+				case "sysadmin": case "admin" :
+					if(data.html == "<li></li>") {
+						projectsActions(3);
+					} else {
+						projectsActions(0);
+					}
+				break;
+				case "guest":
+					if(data.html == "<li></li>") {
+						projectsActions();
+					} else {
+						projectsActions(5);
+					}
+				break;
+			}
+			$("#projects3 div.thirdLevel").each(function(i) { 
+				if(i == 0) {
+				var t = 0;
+				} else {
+					var n = $(this).height();
+					var t = n+i*module_title_height-27;
+				}
+				$(this).animate({top: t})
+			})
+			$('#projects3 ul[rel='+objectname+'] .module-click[rel='+ph+']').addClass('active-link');
+			var idx = $('#projects3 ul[rel='+objectname+'] .module-click').index($('#projects3 ul[rel='+objectname+'] .module-click[rel='+ph+']'));
+			projects_phases.getDetails(0,idx,data.html);
+			$("#projects3 .module-actions:eq(0)").show();
+			$("#projects3 .sort:eq(0)").attr("rel", data.sort).addClass("sort"+data.sort);
+			$("#projects-top .top-subheadline").html(', ' + $("#projects2 .module-click:visible").find(".text").html());
+			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getDates&id="+p, success: function(data){
+				$("#projects-top .top-subheadlineTwo").html(data.startdate + ' - <span id="projectenddate">' + data.enddate + '</span>');
+				$('span.app_projects').trigger('click');
+				}
+			});
+			}
+		});
+	}
+}

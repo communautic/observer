@@ -230,34 +230,34 @@ $(document).ready(function() {
 	$(document).on('click', '#desktop .projectsLink', function(e) {
 		e.preventDefault();
 		var href = $(this).attr('rel').split(",");
-		ProjectsExternalLoad(href[0],href[1],href[2],href[3]);
+		externalLoadThreeLevels(href[0],href[1],href[2],href[3]);
 	});
 	
 	$(document).on('click', '#desktop .projectsLinkMarkRead', function(e) {
 		e.preventDefault();
 		var href = $(this).attr('rel').split(",");
-		ProjectsExternalLoad(href[0],href[1],href[2],href[3]);
+		externalLoadThreeLevels(href[0],href[1],href[2],href[3]);
 		projects.markNoticeRead(href[2]);
 	});
 	
 	$(document).on('click', '#desktop .brainstormsLinkMarkRead', function(e) {
 		e.preventDefault();
 		var href = $(this).attr('rel').split(",");
-		BrainstormsExternalLoad(href[0],href[1],href[2],href[3]);
+		externalLoadThreeLevels(href[0],href[1],href[2],href[3]);
 		brainstorms.markNoticeRead(href[2]);
 	});
 	
 	$(document).on('click', '#desktop .forumsLinkMarkRead', function(e) {
 		e.preventDefault();
 		var href = $(this).attr('rel').split(",");
-		ForumsExternalLoad(href[0],href[1],href[2],href[3]);
+		externalLoadThreeLevels(href[0],href[1],href[2],href[3]);
 		forums.markNoticeRead(href[2]);
 	});
 	
 	$(document).on('click', '#desktop .forumsLinkNewPostRead', function(e) {
 		e.preventDefault();
 		var href = $(this).attr('rel').split(",");
-		ForumsExternalLoad(href[0],href[1],href[2],href[3]);
+		externalLoadThreeLevels(href[0],href[1],href[2],href[3]);
 		forums.markNewPostRead(href[2]);
 	});
 
