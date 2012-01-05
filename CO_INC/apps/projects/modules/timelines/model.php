@@ -115,7 +115,7 @@ class ProjectsTimelinesModel extends ProjectsModel {
 							if($project["status"] == "barchart_color_not_finished") {
 								$tstatus = "barchart_color_not_finished";
 							}
-						} else if ($row->status == 1 && $today <= $rowt->startdate) {
+						} else if ($row->status == 1 && $today < $rowt->startdate) {
 							$tstatus = "barchart_color_planned";
 							// abbruch
 							if($project["status"] == "barchart_color_not_finished") {
@@ -343,7 +343,7 @@ class ProjectsTimelinesModel extends ProjectsModel {
 							if($project["status"] == "barchart_color_not_finished") {
 								$tstatus = "barchart_color_not_finished";
 							}
-						} else if ($row->status == 1 && $today <= $rowt->startdate) {
+						} else if ($row->status == 1 && $today < $rowt->startdate) {
 							$tstatus = "barchart_color_planned";
 							if($project["status"] == "barchart_color_not_finished") {
 								$tstatus = "barchart_color_not_finished";
