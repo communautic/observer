@@ -894,6 +894,9 @@ class ForumsModel extends Model {
 		$q = "DELETE FROM co_forums_access WHERE pid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
+		$q = "DELETE FROM co_forums_desktop WHERE pid='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
 		$q = "DELETE FROM " . CO_TBL_FORUMS_POSTS . " WHERE pid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		

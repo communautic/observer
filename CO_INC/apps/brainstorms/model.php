@@ -891,6 +891,9 @@ class BrainstormsModel extends Model {
 		$q = "DELETE FROM co_brainstorms_access WHERE pid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
+		$q = "DELETE FROM co_brainstorms_desktop WHERE pid='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
 		$q = "DELETE FROM " . CO_TBL_BRAINSTORMS_NOTES . " WHERE pid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
