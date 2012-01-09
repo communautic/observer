@@ -96,7 +96,7 @@ if(is_array($projects)) {
     <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive loadProject" rel="<?php echo($project->id);?>">
 	<tr>
 		<td class="tcell-left text11">&nbsp;</td>
-		<td colspan="4" class="tcell-right"><span class="loadProject bold co-link" rel="<?php echo($project->id);?>"><?php echo($project->title);?></span></td>
+		<td colspan="4" class="tcell-right"><span class="bold co-link"><?php echo($project->title);?></span></td>
     	</tr>
     <tr>
 		<td class="tcell-left text11">&nbsp;</td>

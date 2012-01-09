@@ -29,7 +29,7 @@ if(is_array($clients)) {
     <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive loadClient" rel="<?php echo($client->id);?>">
 	<tr>
 		<td class="tcell-left text11">&nbsp;</td>
-		<td class="tcell-right"><span class="loadClient bold co-link" rel="<?php echo($client->id);?>"><?php echo($client->title);?></span></td>
+		<td class="tcell-right"><span class="bold co-link"><?php echo($client->title);?></span></td>
     	</tr>
     <tr>
 		<td class="tcell-left text11">&nbsp;</td>

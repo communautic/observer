@@ -693,7 +693,7 @@ $(document).ready(function() {
 	// INTERLINKS FROM Content
 	
 	// load a project
-	$(document).on('click', '.loadProject',function(e) {
+	$(document).on('click', '.loadProject', function(e) {
 		e.preventDefault();
 		var obj = getCurrentModule();
 		if(confirmNavigation()) {
@@ -705,22 +705,14 @@ $(document).ready(function() {
 	});
 
 	// load a phase
-	$(document).on('click', '.loadProjectsPhase',function(e) {
+	$(document).on('click', '.loadProjectsPhase', function(e) {
 		e.preventDefault();
 		var obj = getCurrentModule();
 		if(confirmNavigation()) {
 			formChanged = false;
 			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 		}
-		var cid = $('#projects input[name="id"]').val()
-		obj.checkIn(cid);
 		
-		var id = $(this).attr("rel");
-		$("#projects3 h3[rel='phases']").trigger('click', [id]);
-	});
-	
-	$(document).on('click', '.loadProjectsPhase2',function(e) {
-		e.preventDefault();
 		var id = $(this).attr("rel");
 		$("#projects3 h3[rel='phases']").trigger('click', [id]);
 	});
