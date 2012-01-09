@@ -925,6 +925,9 @@ class ProjectsModel extends Model {
 		$q = "DELETE FROM co_projects_access WHERE pid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
+		$q = "DELETE FROM co_projects_desktop WHERE pid='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
 		$q = "DELETE FROM " . CO_TBL_PROJECTS . " WHERE id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
