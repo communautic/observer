@@ -91,7 +91,7 @@ if(is_array($phases)) {
     <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive loadProjectsPhase" rel="<?php echo($phase->id);?>">
 	<tr>
 		<td class="tcell-left text11">&nbsp;</td>
-		<td class="tcell-right" colspan="3"><span class="loadProjectsPhase bold co-link" rel="<?php echo($phase->id);?>"><?php echo($num[$phase->id] . " " . $phase->title);?></span></td>
+		<td class="tcell-right" colspan="3"><span class="bold co-link"><?php echo($num[$phase->id] . " " . $phase->title);?></span></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11">&nbsp;</td>

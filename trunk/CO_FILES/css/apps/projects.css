@@ -85,7 +85,6 @@ background-color: #e1f0af; }
 
 .loadProject { cursor: pointer }
 .loadProjectsPhase { cursor: pointer }
-.loadProjectsPhase2 { cursor: pointer }
 
 #projects .tbl-protocol td, #projects .elastic {
  background-color:#E1F0AF;

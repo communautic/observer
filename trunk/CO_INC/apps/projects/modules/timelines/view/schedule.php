@@ -10,7 +10,7 @@
 <table border="0" cellpadding="0" cellspacing="0" class="table-content loadProject" rel="<?php echo($project["id"]);?>">
 	<tr>
 		<td class="tcell-left-inactive text11"><?php echo $lang["PROJECT_TITLE"];?></td>
-		<td class="tcell-right bold"><a class="loadProject" rel="<?php echo($project["id"]);?>"><?php echo($project["title"]);?></a></td>
+		<td class="tcell-right bold"><span class="co-link"><?php echo($project["title"]);?></span></td>
     </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content loadProject" rel="<?php echo($project["id"]);?>">
@@ -26,16 +26,12 @@ if($numPhases > 0) {
 	$countPhases = 1;
 	foreach($project["phases"] as $key => &$value){ 
 		$numTasks = sizeof($project["phases"][$key]["tasks"]);
-		/*$taskline='class="td_border_top_right"';
-		if($numTasks == 0) {
-			$taskline='';
-		}*/
 	?>
 
 <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive loadProjectsPhase" rel="<?php echo($project["phases"][$key]["id"]);?>">
 	<tr>
 	  <td class="tcell-left-inactive text11"><?php echo $lang["PROJECT_PHASE_TITLE"];?></td>
-        <td class="tcell-right"><a class="loadProjectsPhase bold" rel="<?php echo($project["phases"][$key]["id"]);?>"><?php echo($countPhases . ". " . $project["phases"][$key]["title"]);?></a><br />
+        <td class="tcell-right"><span class="co-link bold"><?php echo($countPhases . ". " . $project["phases"][$key]["title"]);?></span><br />
         <span class="text11 content-date"><?php echo $lang["GLOBAL_DURATION"];?></span><span class="text11"><?php echo($project["phases"][$key]["startdate"]);?> - <?php echo($project["phases"][$key]["enddate"]);?></span><br />
         </td>
 	</tr>

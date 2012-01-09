@@ -30,7 +30,7 @@ if(is_array($forums)) {
     <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive loadForum" rel="<?php echo($forum->id);?>">
 	<tr>
 		<td class="tcell-left text11">&nbsp;</td>
-		<td colspan="4" class="tcell-right"><span class="loadForum bold co-link" rel="<?php echo($forum->id);?>"><?php echo($forum->title);?></span></td>
+		<td colspan="4" class="tcell-right"><span class="bold co-link"><?php echo($forum->title);?></span></td>
     	</tr>
     <tr>
 		<td class="tcell-left text11">&nbsp;</td>
