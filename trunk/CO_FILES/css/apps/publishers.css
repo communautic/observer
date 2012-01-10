@@ -6,9 +6,9 @@
 
 #publishers1, #publishers2, #publishers3 { padding:0; overflow: hidden !important; /* prevent scrollbars auto-added by Layout */}
 #publishers3 { display: block;}
-#publishers3 .scrolling-content { width: 325px !important;}
+#publishers3 .scrolling-content { width: 100% !important;}
 
-.publishers1-content { width: 325px;; background-color: #6496DC; padding:0; overflow:hidden !important;}
+.publishers1-content { width: 100%; background-color: #6496DC; padding:0; overflow:hidden !important;}
 
 #publishers .ui-layout-west li>span:hover   { background-color: #C1D5F0}
 #publishers .ui-layout-west li>span.active-link  { background-color: #C1D5F0}

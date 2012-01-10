@@ -6,7 +6,7 @@
 
 #forums1, #forums2, #forums3 { padding:0; overflow: hidden !important; /* prevent scrollbars auto-added by Layout */}
 #forums3 { display: block;}
-#forums3 .scrolling-content { width: 325px !important;}
+#forums3 .scrolling-content { width: 100% !important;}
 
 .forums3-content {
 	width: 100%; 

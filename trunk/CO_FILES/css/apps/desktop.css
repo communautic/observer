@@ -103,13 +103,10 @@ width: 25%;
 
 #desktopcolumns .widget-head h3 { font-weight: bold; font-size: 13px; padding: 0 25px 0 25px; color: #333; }
 
-/*#sortable1, #sortable2, #sortable3, #sortable4 { margin: 0; padding: 0; float: left; width: 350px; min-height: 500px; }
-.widget-title { height: 25px; }
-.widget-title h3 { color: #000; font-weight: bold; padding: 4px 0 0 20px; }
-.widget-content { text-align: center; padding: 0 2px 2px 2px; }
-*/
 #desktop .widget-content { 
-border-radius: 3px 3px 3px 3px;
+	max-height: 300px;
+	overflow: auto;
+	border-radius: 3px 3px 3px 3px;
     margin: 0 4px 3px;
     padding: 10px 12px;
 }
@@ -177,12 +174,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eef4fb', end
 .widgetIconAlert { position: absolute; top: -1px; margin-left: -30px; width: 24px; height: 26px; background: url(../..//img/icons.png) no-repeat -60px -40px; }
 .widgetIconNotice { position: absolute; top: -1px; margin-left: -30px; width: 24px; height: 26px; background: url(../..//img/icons.png) no-repeat -90px -40px; }
 span.yellow { color: #FFD20A }
-
-
-/*#item_forumsWidget { background-color: #6496DC; }
-#forumsWidgetContent { background-color: #436593; }
-#item_todoWidget { background-color:#A5A5A5; }
-#todoWidgetContent { background-color:#666;}*/
 
 #desktop .widget-head a.collapse {
 background:url("../../img/icons.png") no-repeat scroll -440px 0px transparent;
