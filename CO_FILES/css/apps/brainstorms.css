@@ -6,7 +6,7 @@
 
 #brainstorms1, #brainstorms2, #brainstorms3 { position: relative; padding: 0; }
 #brainstorms3 { display: block;}
-#brainstorms3 .scrolling-content { width: 325px !important;}
+#brainstorms3 .scrolling-content { width: 100% !important; }
 
 .brainstorms3-content { 
 	width: 100%; 

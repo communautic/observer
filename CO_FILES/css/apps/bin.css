@@ -5,10 +5,10 @@
 }
 
 #bin1, #bin2, #bin3 { padding:0; overflow: hidden !important; /* prevent scrollbars auto-added by Layout */}
-#bin3 { display: block;}
+/*#bin3 { display: block;}
 #bin3 .scrolling-content { width: 325px !important;}
 
-.bin3-content { width: 325px;; background-color: #82aa0a; padding:0; overflow:hidden !important;}
+.bin3-content { width: 325px;; background-color: #82aa0a; padding:0; overflow:hidden !important;}*/
 
 #bin .ui-layout-west li>span:hover   { background-color: #E5E5E5}
 #bin .ui-layout-west li>span.active-link  { background-color: #E5E5E5}
