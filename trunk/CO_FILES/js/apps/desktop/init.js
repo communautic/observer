@@ -78,6 +78,7 @@ var desktop = new desktopApplication('desktop');
 
 function desktoploadModuleStart() {
 
+	if(getCurrentApp() == 'desktop') {
 	if(typeof projects == "object") {
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getWidgetAlerts", success: function(data){
 			$("#projectsWidgetContent").html(data.html);
@@ -109,10 +110,13 @@ function desktoploadModuleStart() {
 	}
 	
 	// postits
-	$.ajax({ type: "GET", url: "/", data: "path=apps/desktop&request=getPostIts", success: function(data){
+	if(currentDesktopPostit == 0) {
+		$.ajax({ type: "GET", url: "/", data: "path=apps/desktop&request=getPostIts", success: function(data){
 			$("#desktopPostIts").html(data);
 			}
 		});
+	}
+	}
 }
 
 var desktopzIndex = 0; // zindex notes for mindmap
@@ -120,6 +124,11 @@ var currentDesktopPostit = 0;
 
 $(document).ready(function() { 
 	desktoploadModuleStart()
+	
+	var refreshId = setInterval(function() {
+		desktoploadModuleStart()
+	}, 30000);
+	
 	
 	$('#desktopWidgetsRefresh').on('click', function(e) {
 		e.preventDefault();
