@@ -54,9 +54,9 @@ $lang["GLOBAL_DURATION"] 	= 	'Dauer';
 $lang["GLOBAL_EMAILED_TO"] 	= 	'Weiterleitung';
 $lang["GLOBAL_DUPLICAT"] 	= 	'Duplikat';
 
-$lang["GLOBAL_ACCESS"] = 'Freigabe';
-$lang["GLOBAL_ACCESS_INTERNAL"] = 'zur internen Nutzung';
-$lang["GLOBAL_ACCESS_PUBLIC"] = 'öffentlich';
+$lang["GLOBAL_ACCESS"] = 'Beobachter';
+$lang["GLOBAL_ACCESS_INTERNAL"] = 'nicht freigegeben';
+$lang["GLOBAL_ACCESS_PUBLIC"] = 'freigegeben';
 $lang["GLOBAL_ACCESS_FOOTER"] = 'freigegeben:';
 $lang["GLOBAL_FOOTER_STATUS"] = 'Stand';
 
