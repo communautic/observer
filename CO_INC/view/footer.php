@@ -1,8 +1,5 @@
 <div id="menu">
-<div id="menu-user">
-<div style="float: left;"><?php echo($lang["GLOBAL_USER"]);?> <?php echo($users->getUserFullname($session->uid));?></div>
-<div style="float: right;"><?php echo($date->formatDate(date("d.m.Y"), "d.m.Y"));?></div>
-</div>
+<div id="menu-user"><?php echo($users->getUserFullname($session->uid));?>, <?php echo($date->formatDate(date("d.m.Y"), "d.m.Y"));?></div>
 <div id="logout-outer">
     <div id="logout"><span class="logout" title="<?php echo $lang["LOGIN_LOGOUT"];?>"><div id="logout-icon"></div></span></div>
 </div>

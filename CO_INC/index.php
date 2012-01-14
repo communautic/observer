@@ -103,6 +103,7 @@ var co_files = '<?php echo CO_FILES;?>';
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.elastic.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.hoverscroll.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/lang/<?php echo($session->userlang); ?>.js"></script>
+<script type="text/javascript" src="<?php echo CO_FILES;?>/js/init.js"></script>
 <?php // include mobile js
 if(strpos($_SERVER['HTTP_USER_AGENT'], 'iPhone') || strpos($_SERVER['HTTP_USER_AGENT'], 'iPad')){ 
 ?>
@@ -110,7 +111,7 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], 'iPhone') || strpos($_SERVER['HTTP_USER_A
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/mobile/jquery.doubletap.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/mobile/init.js"></script>
 <?php }?>
-<script type="text/javascript" src="<?php echo CO_FILES;?>/js/init.js"></script>
+
 <script type="text/javascript">
 <?php // set app init display vars
 foreach($controller->applications as $app => $display) {
