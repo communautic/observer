@@ -7,6 +7,13 @@ jQuery.fn.nl2br = function(){
 //jQuery("textarea").nl2br();
 
 
+function iOS(){
+    return (
+        (navigator.platform.indexOf("iPhone") != -1) ||
+        (navigator.platform.indexOf("iPad") != -1)
+    );
+}
+
 var module_title_height = 27;
 $(window).bind('beforeunload', function() { 
 	var obj = getCurrentModule();
@@ -660,6 +667,7 @@ $(document).ready(function() {
 		module.sortclick(obj,sortcur,sortnew);
 	});
 
+	if(!iOS()){
 	$(".sortable").sortable({
 		//handle: '.drag',
 		containment: 'parent',
@@ -672,6 +680,7 @@ $(document).ready(function() {
 			module.sortdrag(order);
 	  	}
 	});
+	}
 
 	$('.sendForm').livequery(function() {
 		$(this).ajaxForm(sendformOptions);
