@@ -473,7 +473,7 @@ class Clients extends Controller {
 		$from = $contactsmodel->getContactFieldFromID($session->uid, 'email');
 		$fromName = $contactsmodel->getContactFieldFromID($session->uid, 'firstname') . " " . $contactsmodel->getContactFieldFromID($session->uid, 'lastname');
 		$subject = $lang['CLIENT_ACCESS_CODES_EMAIL_SUBJECT'];
-		$body = sprintf($lang['CLIENT_ACCESS_CODES_EMAIL'], 'http://www.mama-bringts.at/?action=order', $username, $password);
+		$body = sprintf($lang['CLIENT_ACCESS_CODES_EMAIL'], 'https://mama-bringts.companyobserver.com/?path=api/apps/publishers/menues/orders', $username, $password);
 		
 		$email = $this->sendEmail($to,$cc="",$from,$fromName,$subject,$body);
 		
