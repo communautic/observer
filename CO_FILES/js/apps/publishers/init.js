@@ -147,8 +147,9 @@ $(document).ready(function() {
 	}
 
 
-	$("#publishers1 h3").on('click', function(e, passed_id) {
+	$("#publishers1").on('click', 'h3', function(e, passed_id) {
 		e.preventDefault();
+		prevent_dblclick(e)
 		if(confirmNavigation()) {
 			formChanged = false;
 			var obj = getCurrentModule();
@@ -200,8 +201,10 @@ $(document).ready(function() {
 		}
 	});
 
-	$(document).on('click', '#publishers1 .module-click', function(e) {
+	//$(document).on('click', '#publishers1 .module-click', function(e) {
+	$('#publishers1').on('click', 'span.module-click',function(e) {
 		e.preventDefault();
+		prevent_dblclick(e)
 		if(confirmNavigation()) {
 			formChanged = false;
 			var obj = getCurrentModule();

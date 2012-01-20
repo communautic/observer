@@ -31,14 +31,14 @@ function brainstormsApplication(name) {
 		switch(data.action) {
 			case "edit":
 				$("#brainstorms2 span[rel='"+data.id+"'] .text").html($("#brainstorms .title").val());
-				$("#durationStart").html($("input[name='startdate']").val());
+				/*$("#durationStart").html($("input[name='startdate']").val());
 				switch(data.status) {
 					case "2":
-						$("#brainstorms2 .active-link .module-item-status").addClass("module-item-active");
+						$("#brainstorms2 span[rel='"+data.id+"'] .module-item-status").addClass("module-item-active");
 					break;
 					default:
-						$("#brainstorms2 .active-link .module-item-status").removeClass("module-item-active");
-				}
+						$("#brainstorms2 span[rel='"+data.id+"'] .module-item-status").removeClass("module-item-active");
+				}*/
 			break;
 			case "reload":
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getBrainstormDetails&id="+data.id, success: function(text){
@@ -182,7 +182,7 @@ function brainstormsApplication(name) {
 	this.actionPrint = function() {
 		var id = $("#brainstorms").data("second");
 		var url ='/?path=apps/brainstorms&request=printBrainstormDetails&id='+id;
-		location.href = url;
+		$("#documentloader").attr('src', url);
 	}
 
 
@@ -616,7 +616,7 @@ function brainstormsFolders(name) {
 	this.actionPrint = function() {
 		var id = $("#brainstorms").data("first");
 		var url ='/?path=apps/brainstorms&request=printFolderDetails&id='+id;
-		location.href = url;
+		$("#documentloader").attr('src', url);
 	}
 
 
@@ -807,39 +807,45 @@ $(document).ready(function() {
 	}
 
 
-	$("#brainstorms1-outer > h3").on('click', function(e, passed_id) {
+	$("#brainstorms1-outer").on('click', 'h3', function(e, passed_id) {
 		e.preventDefault();
 		navThreeTitleFirst('brainstorms',$(this),passed_id)
+		prevent_dblclick(e)
 	});
 
 
-	$("#brainstorms2-outer > h3").on('click', function(e, passed_id) {
+	$("#brainstorms2-outer").on('click', 'h3', function(e, passed_id) {
 		e.preventDefault();
 		navThreeTitleSecond('brainstorms',$(this),passed_id)
+		prevent_dblclick(e)
 	});
 
 
-	$("#brainstorms3 h3").on('click', function(e, passed_id) {
+	$("#brainstorms3").on('click', 'h3', function(e, passed_id) {
 		e.preventDefault();
 		navThreeTitleThird('brainstorms',$(this),passed_id)
+		prevent_dblclick(e)
 	});
 
 
-	$('#brainstorms1').on('click', 'span.module-click',function(e) {
+	$('#brainstorms1').on('click', 'span.module-click', function(e) {
 		e.preventDefault();
 		navItemFirst('brainstorms',$(this))
+		prevent_dblclick(e)
 	});
 
 
-	$('#brainstorms2').on('click', 'span.module-click',function(e) {
+	$('#brainstorms2').on('click', 'span.module-click', function(e) {
 		e.preventDefault();
 		navItemSecond('brainstorms',$(this))
+		prevent_dblclick(e)
 	});
 
 
-	$('#brainstorms3').on('click', 'span.module-click',function(e) {
+	$('#brainstorms3').on('click', 'span.module-click', function(e) {
 		e.preventDefault();
 		navItemThird('brainstorms',$(this))
+		prevent_dblclick(e)
 	});
 
 	

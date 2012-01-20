@@ -27,5 +27,7 @@ $(document).ready(function() {
         });
     });*/
 
+
+	//$(".sortable").('disable');
 	
 });

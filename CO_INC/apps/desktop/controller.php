@@ -111,8 +111,8 @@ class Desktop extends Controller {
 	}
 
 
-	function newPostit($z) {
-		$retval = $this->model->newPostit($z);
+	function newPostit($z,$x) {
+		$retval = $this->model->newPostit($z,$x);
 		if($retval){
 			 return 'true';
 		  } else{

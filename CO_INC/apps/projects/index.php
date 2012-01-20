@@ -146,7 +146,9 @@ if (!empty($_GET['request'])) {
 		case 'markNoticeRead':
 			echo($projects->markNoticeRead($_GET['pid']));
 		break;
-
+		case 'getSearch':
+			echo($projects->getSearch($system->checkMagicQuotesTinyMCE($_GET['string'])));
+		break;
 	}
 }
 
@@ -167,6 +169,7 @@ if (!empty($_POST['request'])) {
 		case 'sendFolderDetails':
 			echo($projects->sendFolderDetails($_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
 		break;
+		
 	}
 }
 ?>

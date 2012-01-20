@@ -198,7 +198,7 @@ function clientsApplication(name) {
 	this.actionPrint = function() {
 		var id = $("#clients").data("second");
 		var url ='/?path=apps/clients&request=printClientDetails&id='+id;
-		location.href = url;
+		$("#documentloader").attr('src', url);
 	}
 
 
@@ -505,7 +505,7 @@ function clientsFolders(name) {
 		} else {
 			$("#modalDialogClientsCreateExcel").dialog('close');
 			var url ='/?path=apps/clients/modules/orders&request=createExcel&folderid='+folderid+'&menueid='+menueid;
-			location.href = url;
+			$("#documentloader").attr('src', url);
 		}
 	}
 	
@@ -513,7 +513,7 @@ function clientsFolders(name) {
 	this.actionPrint = function() {
 		var id = $("#clients").data("first");
 		var url ='/?path=apps/clients&request=printFolderDetails&id='+id;
-		location.href = url;
+		$("#documentloader").attr('src', url);
 	}
 
 
@@ -718,39 +718,45 @@ $(document).ready(function() {
 	}
 
 
-	$("#clients1-outer > h3").on('click', function(e, passed_id) {
+	$("#clients1-outer").on('click', 'h3', function(e, passed_id) {
 		e.preventDefault();
 		navThreeTitleFirst('clients',$(this),passed_id)
+		prevent_dblclick(e)
 	});
 
 
-	$("#clients2-outer > h3").on('click', function(e, passed_id) {
+	$("#clients2-outer").on('click', 'h3', function(e, passed_id) {
 		e.preventDefault();
 		navThreeTitleSecond('clients',$(this),passed_id)
+		prevent_dblclick(e)
 	});
 
 
-	$("#clients3 h3").on('click', function(e, passed_id) {
+	$("#clients3").on('click', 'h3', function(e, passed_id) {
 		e.preventDefault();
 		navThreeTitleThird('clients',$(this),passed_id)
+		prevent_dblclick(e)
 	});
 
 
 	$('#clients1').on('click', 'span.module-click',function(e) {
 		e.preventDefault();
 		navItemFirst('clients',$(this))
+		prevent_dblclick(e)
 	});
 
 
 	$('#clients2').on('click', 'span.module-click',function(e) {
 		e.preventDefault();
 		navItemSecond('clients',$(this))
+		prevent_dblclick(e)
 	});
 
 
 	$('#clients3').on('click', 'span.module-click',function(e) {
 		e.preventDefault();
 		navItemThird('clients',$(this))
+		prevent_dblclick(e)
 	});
 
 

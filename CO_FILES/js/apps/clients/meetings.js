@@ -50,24 +50,24 @@ function clientsMeetings(name) {
 	 this.formResponse = function(data) {
 		 switch(data.action) {
 			case "edit":
-				$("#clients3 ul[rel=meetings] .active-link").find(".text").html($("#clients .item_date").val() + ' - ' +$("#clients .title").val());
+				$("#clients3 ul[rel=meetings] span[rel="+data.id+"] .text").html($("#clients .item_date").val() + ' - ' +$("#clients .title").val());
 					switch(data.access) {
 						case "0":
-							$("#clients3 ul[rel=meetings] .active-link .module-access-status").removeClass("module-access-active");
+							$("#clients3 ul[rel=meetings] span[rel="+data.id+"] .module-access-status").removeClass("module-access-active");
 						break;
 						case "1":
-							$("#clients3 ul[rel=meetings] .active-link .module-access-status").addClass("module-access-active");
+							$("#clients3 ul[rel=meetings] span[rel="+data.id+"] .module-access-status").addClass("module-access-active");
 						break;
 					}
 					switch(data.status) {
 						case "1":
-							$("#clients3 ul[rel=meetings] .active-link .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
+							$("#clients3 ul[rel=meetings] span[rel="+data.id+"] .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
 						break;
 						case "2":
-							$("#clients3 ul[rel=meetings] .active-link .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
+							$("#clients3 ul[rel=meetings] span[rel="+data.id+"] .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
 						break;
 						default:
-							$("#clients3 ul[rel=meetings] .active-link .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
+							$("#clients3 ul[rel=meetings] span[rel="+data.id+"] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
 					}
 			break;
 			case "reload":
@@ -240,7 +240,7 @@ function clientsMeetings(name) {
 	this.actionPrint = function() {
 		var id = $("#clients").data("third");
 		var url ='/?path=apps/clients/modules/meetings&request=printDetails&id='+id;
-		location.href = url;
+		$("#documentloader").attr('src', url);
 	}
 
 

@@ -35,7 +35,7 @@ function projectsPhases(name) {
 	this.formResponse = function(data) {
 		switch(data.action) {
 			case "edit":
-				$("#projects3 ul[rel=phases] .active-link").find(".text").html($("#projects-right .title").val());
+				$("#projects3 ul[rel=phases] span[rel="+data.id+"] .text").html($("#projects .title").val());
 				$("#projectsphasestartdate").html(data.startdate);
 				$("#projectsphaseenddate").html(data.enddate);
 				var pid = $('#projects').data("second");
@@ -47,18 +47,18 @@ function projectsPhases(name) {
 				
 				switch(data.access) {
 					case "0":
-						$("#projects3 ul[rel=phases] .active-link .module-access-status").removeClass("module-access-active");
+						$("#projects3 ul[rel=phases] span[rel="+data.id+"] .module-access-status").removeClass("module-access-active");
 					break;
 					case "1":
-						$("#projects3 ul[rel=phases] .active-link .module-access-status").addClass("module-access-active");
+						$("#projects3 ul[rel=phases] span[rel="+data.id+"] .module-access-status").addClass("module-access-active");
 					break;
 				}
 				switch(data.status) {
 					case "2":
-						$("#projects3 ul[rel=phases] .active-link .module-item-status").addClass("module-item-active");
+						$("#projects3 ul[rel=phases] span[rel="+data.id+"] .module-item-status").addClass("module-item-active");
 					break;
 					default:
-						$("#projects3 ul[rel=phases] .active-link .module-item-status").removeClass("module-item-active");
+						$("#projects3 ul[rel=phases] span[rel="+data.id+"] .module-item-status").removeClass("module-item-active");
 				}
 			break;
 		}	
@@ -72,7 +72,7 @@ function projectsPhases(name) {
 		var phaseid = $("#projects3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
 		$('#projects').data({ "third" : phaseid});
 		var num = $("#projects3 ul:eq("+moduleidx+") .phase_num:eq("+liindex+")").html();
-		$.ajax({ type: "GET", url: "/", dataType:  'json', async: false, data: "path=apps/projects/modules/phases&request=getDetails&id="+phaseid+"&num="+num, success: function(data){
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/phases&request=getDetails&id="+phaseid+"&num="+num, success: function(data){
 			$("#projects-right").html(data.html);
 			if($('#checkedOut').length > 0) {
 					$("#projects3 ul[rel=phases] .active-link .icon-checked-out").addClass('icon-checked-out-active');
@@ -228,7 +228,7 @@ function projectsPhases(name) {
 		var id = $("#projects").data("third");
 		var num = $("#projects3 ul[rel=phases] .active-link").find(".phase_num").html();
 		var url ='/?path=apps/projects/modules/phases&request=printDetails&id='+id+"&num="+num;
-		location.href = url;
+		$("#documentloader").attr('src', url);
 	}
 
 

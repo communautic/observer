@@ -402,7 +402,7 @@ class ContactsModel extends Model {
    }
 
 
-	function getRelatedDocuments($id){
+	/*function getRelatedDocuments($id){
 		$string = "";
 		$q = "SELECT title from " . PO_TBL_DOCUMENTS . " where related_to = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
@@ -416,7 +416,7 @@ class ContactsModel extends Model {
 			$i++;
 		}
 		return $string;
-   }
+   }*/
 
 
 	function setContactDetails($id, $lastname, $firstname, $title, $company, $position, $email, $phone1, $phone2, $fax, $address_line1, $address_line2, $address_town, $address_postcode, $address_country, $lang,$timezone) {

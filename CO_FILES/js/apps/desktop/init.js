@@ -77,45 +77,53 @@ function desktopApplication(name) {
 var desktop = new desktopApplication('desktop');
 
 function desktoploadModuleStart() {
-
 	if(getCurrentApp() == 'desktop') {
-	if(typeof projects == "object") {
-		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getWidgetAlerts", success: function(data){
-			$("#projectsWidgetContent").html(data.html);
-			if(data.widgetaction == 'open' && $('#projectsWidgetContent').is(':hidden')) {
-				$('#item_projectsWidget a.collapse').trigger('click');
+		if(typeof projects == "object") {
+			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getWidgetAlerts", success: function(data){
+				$("#projectsWidgetContent").html(data.html);
+				if(data.widgetaction == 'open' && $('#projectsWidgetContent').is(':hidden')) {
+					$('#item_projectsWidget a.collapse').trigger('click');
+				}
+				}
+			});
+		}
+		
+		if(typeof brainstorms == "object") {
+			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getWidgetAlerts", success: function(data){
+				$("#brainstormsWidgetContent").html(data.html);
+				if(data.widgetaction == 'open' && $('#brainstormsWidgetContent').is(':hidden')) {
+					$('#item_brainstormsWidget a.collapse').trigger('click');
+				}
+				}
+			});
+		}
+		
+		if(typeof forums == "object") {
+			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/forums&request=getWidgetAlerts", success: function(data){
+				$("#forumsWidgetContent").html(data.html);
+				if(data.widgetaction == 'open' && $('#forumsWidgetContent').is(':hidden')) {
+					$('#item_forumsWidget a.collapse').trigger('click');
+				}
+				}
+			});
+		}
+		
+		// postits
+		if(currentDesktopPostit == 0) {
+			var doit = 1;
+			$("#desktopPostIts div.sendtoWindow").each(function() {
+				if($(this).is(':visible'))	{
+					doit = 0;
+				}
+			})
+				
+			if(doit == 1) {
+			$.ajax({ type: "GET", url: "/", data: "path=apps/desktop&request=getPostIts", success: function(data){
+				$("#desktopPostIts").html(data);
+				}
+			});
 			}
-			}
-		});
-	}
-	
-	if(typeof brainstorms == "object") {
-		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getWidgetAlerts", success: function(data){
-			$("#brainstormsWidgetContent").html(data.html);
-			if(data.widgetaction == 'open' && $('#brainstormsWidgetContent').is(':hidden')) {
-				$('#item_brainstormsWidget a.collapse').trigger('click');
-			}
-			}
-		});
-	}
-	
-	if(typeof forums == "object") {
-		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/forums&request=getWidgetAlerts", success: function(data){
-			$("#forumsWidgetContent").html(data.html);
-			if(data.widgetaction == 'open' && $('#forumsWidgetContent').is(':hidden')) {
-				$('#item_forumsWidget a.collapse').trigger('click');
-			}
-			}
-		});
-	}
-	
-	// postits
-	if(currentDesktopPostit == 0) {
-		$.ajax({ type: "GET", url: "/", data: "path=apps/desktop&request=getPostIts", success: function(data){
-			$("#desktopPostIts").html(data);
-			}
-		});
-	}
+		}
 	}
 }
 
@@ -127,11 +135,12 @@ $(document).ready(function() {
 	
 	var refreshId = setInterval(function() {
 		desktoploadModuleStart()
-	}, 30000);
+	}, 300000);
 	
 	
 	$('#desktopWidgetsRefresh').on('click', function(e) {
 		e.preventDefault();
+		prevent_dblclick(e)
 		desktoploadModuleStart();
 	});
 
@@ -173,7 +182,7 @@ $(document).ready(function() {
 
 	$('#desktop .postit').livequery( function() {
 		$(this).draggable({
-			containment:'#desktop',
+			containment:'#desktop-inner',
 			cancel: '.nodrag,textarea',
 			start: function(e,ui){ ui.helper.css('z-index',++desktopzIndex); },
 				stop: function(e,ui){
@@ -185,8 +194,8 @@ $(document).ready(function() {
 				}
 			})
 			.resizable({
-				minHeight: 110,
-				minWidth: 200,
+				minHeight: 130,
+				minWidth: 300,
 				start: function(e,ui){ 
 					ui.helper.css('z-index',++desktopzIndex);
 					$(this).find("textarea").height($(this).height()-80);
@@ -207,7 +216,7 @@ $(document).ready(function() {
 	
 	
 	$('#desktopActions').draggable({
-		containment:'#desktop',
+		containment:'#desktop-inner',
 		handle: '#desktopActionsDrag'
 	})
 	$('#desktopActionsTrans').css('opacity',0.8);
@@ -215,8 +224,15 @@ $(document).ready(function() {
 
 	$("#desktopNewPostit").on('click', function(e) {
 		e.preventDefault();
-		var z = ++desktopzIndex;
-		$.ajax({ type: "GET", url: "/", data: "path=apps/desktop&request=newPostit&z="+z, success: function(data){
+		prevent_dblclick(e)
+		var zMax = Math.max.apply(null,$.map($('#desktopPostIts div.postit'), function(e,n){
+				return parseInt($(e).css('z-index'))||1 ;
+				})
+			);
+		var z = zMax + 1;
+		desktopzIndex = z;
+		var x = $('#desktop').width()/2 - 112;
+		$.ajax({ type: "GET", url: "/", data: "path=apps/desktop&request=newPostit&z="+z+"&x=" + x, success: function(data){
 				desktoploadModuleStart();
 			}
 		});

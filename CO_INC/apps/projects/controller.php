@@ -516,7 +516,6 @@ class Projects extends Controller {
 		global $lang, $projects;
 		if($arr = $this->model->getBin()) {
 			$bin = $arr["bin"];
-			
 			include 'view/bin.php';
 		}
 		else {
@@ -583,6 +582,17 @@ class Projects extends Controller {
 		  } else{
 			 return "error";
 		  }
+	}
+	
+	function getSearch($string) {
+		global $lang;
+		if($arr = $this->model->getSearch()) {
+			$search = $arr["search"];
+			include 'view/search.php';
+		}
+		else {
+			include CO_INC .'/view/default.php';
+		}
 	}
 
 }

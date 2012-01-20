@@ -50,24 +50,24 @@ function projectsMeetings(name) {
 	 this.formResponse = function(data) {
 		 switch(data.action) {
 			case "edit":
-				$("#projects3 ul[rel=meetings] .active-link").find(".text").html($("#projects .item_date").val() + ' - ' +$("#projects .title").val());
+				$("#projects3 ul[rel=meetings] span[rel="+data.id+"] .text").html($("#projects .item_date").val() + ' - ' +$("#projects .title").val());
 					switch(data.access) {
 						case "0":
-							$("#projects3 ul[rel=meetings] .active-link .module-access-status").removeClass("module-access-active");
+							$("#projects3 ul[rel=meetings] span[rel="+data.id+"] .module-access-status").removeClass("module-access-active");
 						break;
 						case "1":
-							$("#projects3 ul[rel=meetings] .active-link .module-access-status").addClass("module-access-active");
+							$("#projects3 ul[rel=meetings] span[rel="+data.id+"] .module-access-status").addClass("module-access-active");
 						break;
 					}
 					switch(data.status) {
 						case "1":
-							$("#projects3 ul[rel=meetings] .active-link .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
+							$("#projects3 ul[rel=meetings] span[rel="+data.id+"] .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
 						break;
 						case "2":
-							$("#projects3 ul[rel=meetings] .active-link .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
+							$("#projects3 ul[rel=meetings] span[rel="+data.id+"] .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
 						break;
 						default:
-							$("#projects3 ul[rel=meetings] .active-link .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
+							$("#projects3 ul[rel=meetings] span[rel="+data.id+"] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
 					}
 			break;
 			case "reload":
@@ -240,7 +240,7 @@ function projectsMeetings(name) {
 	this.actionPrint = function() {
 		var id = $("#projects").data("third");
 		var url ='/?path=apps/projects/modules/meetings&request=printDetails&id='+id;
-		location.href = url;
+		$("#documentloader").attr('src', url);
 	}
 
 

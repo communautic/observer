@@ -50,24 +50,24 @@ function brainstormsMeetings(name) {
 	 this.formResponse = function(data) {
 		 switch(data.action) {
 			case "edit":
-				$("#brainstorms3 ul[rel=meetings] .active-link").find(".text").html($("#brainstorms .item_date").val() + ' - ' +$("#brainstorms .title").val());
+				$("#brainstorms3 ul[rel=meetings] span[rel="+data.id+"] .text").html($("#brainstorms .item_date").val() + ' - ' +$("#brainstorms .title").val());
 					switch(data.access) {
 						case "0":
-							$("#brainstorms3 ul[rel=meetings] .active-link .module-access-status").removeClass("module-access-active");
+							$("#brainstorms3 ul[rel=meetings] span[rel="+data.id+"] .module-access-status").removeClass("module-access-active");
 						break;
 						case "1":
-							$("#brainstorms3 ul[rel=meetings] .active-link .module-access-status").addClass("module-access-active");
+							$("#brainstorms3 ul[rel=meetings] span[rel="+data.id+"] .module-access-status").addClass("module-access-active");
 						break;
 					}
 					switch(data.status) {
 						case "1":
-							$("#brainstorms3 ul[rel=meetings] .active-link .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
+							$("#brainstorms3 ul[rel=meetings] span[rel="+data.id+"] .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
 						break;
 						case "2":
-							$("#brainstorms3 ul[rel=meetings] .active-link .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
+							$("#brainstorms3 ul[rel=meetings] span[rel="+data.id+"] .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
 						break;
 						default:
-							$("#brainstorms3 ul[rel=meetings] .active-link .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
+							$("#brainstorms3 ul[rel=meetings] span[rel="+data.id+"] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
 					}
 			break;
 			case "reload":
@@ -240,7 +240,7 @@ function brainstormsMeetings(name) {
 	this.actionPrint = function() {
 		var id = $("#brainstorms").data("third");
 		var url ='/?path=apps/brainstorms/modules/meetings&request=printDetails&id='+id;
-		location.href = url;
+		$("#documentloader").attr('src', url);
 	}
 
 

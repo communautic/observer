@@ -25,13 +25,13 @@ function projectsPhonecalls(name) {
 	 this.formResponse = function(data) {
 		 switch(data.action) {
 			case "edit":
-				$("#projects3 ul[rel=phonecalls] .active-link").find(".text").html($("#projects .item_date").val() + ' - ' +$("#projects .title").val());
+				$("#projects3 ul[rel=phonecalls] span[rel="+data.id+"] .text").html($("#projects .item_date").val() + ' - ' +$("#projects .title").val());
 					switch(data.access) {
 						case "0":
-							$("#projects3 ul[rel=phonecalls] .active-link .module-access-status").removeClass("module-access-active");
+							$("#projects3 ul[rel=phonecalls] span[rel="+data.id+"] .module-access-status").removeClass("module-access-active");
 						break;
 						case "1":
-							$("#projects3 ul[rel=phonecalls] .active-link .module-access-status").addClass("module-access-active");
+							$("#projects3 ul[rel=phonecalls] span[rel="+data.id+"] .module-access-status").addClass("module-access-active");
 						break;
 					}
 			break;
@@ -193,7 +193,7 @@ function projectsPhonecalls(name) {
 	this.actionPrint = function() {
 		var id = $("#projects").data("third");
 		var url ='/?path=apps/projects/modules/phonecalls&request=printDetails&id='+id;
-		location.href = url;
+		$("#documentloader").attr('src', url);
 	}
 
 
