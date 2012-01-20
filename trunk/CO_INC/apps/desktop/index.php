@@ -26,7 +26,7 @@ if (!empty($_GET['request'])) {
 			echo($desktop->getPostIts());
 		break;
 		case 'newPostit':
-			echo($desktop->newPostit($_GET['z']));
+			echo($desktop->newPostit($_GET['z'],$_GET['x']));
 		break;
 		case 'updatePostitPosition':
 			echo($desktop->updatePostitPosition($_GET['id'],$_GET['x'],$_GET['y'],$_GET['z']));

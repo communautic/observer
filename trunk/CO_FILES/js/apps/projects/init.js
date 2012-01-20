@@ -43,13 +43,13 @@ function projectsApplication(name) {
 				$("#durationStart").html($("input[name='startdate']").val());
 				switch(data.status) {
 					case "2":
-						$("#projects2 .active-link .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
+						$("#projects2 span[rel='"+data.id+"'] .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
 					break;
 					case "3":
-						$("#projects2 .active-link .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
+						$("#projects2 span[rel='"+data.id+"'] .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
 					break;
 					default:
-						$("#projects2 .active-link .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
+						$("#projects2 span[rel='"+data.id+"'] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
 				}
 			break;
 			case "reload":
@@ -189,14 +189,14 @@ function projectsApplication(name) {
 	this.actionHandbook = function() {
 		var id = $("#projects").data("second");
 		var url ='/?path=apps/projects&request=printProjectHandbook&id='+id;
-		location.href = url;	
+		$("#documentloader").attr('src', url);	
 	}
 
 
 	this.actionPrint = function() {
 		var id = $("#projects").data("second");
 		var url ='/?path=apps/projects&request=printProjectDetails&id='+id;
-		location.href = url;
+		$("#documentloader").attr('src', url);
 	}
 
 
@@ -465,7 +465,7 @@ function projectsFolders(name) {
 	this.actionPrint = function() {
 		var id = $("#projects").data("first");
 		var url ='/?path=apps/projects&request=printFolderDetails&id='+id;
-		location.href = url;
+		$("#documentloader").attr('src', url);
 	}
 
 
@@ -644,42 +644,47 @@ $(document).ready(function() {
 	}
 
 
-	$("#projects1-outer > h3").on('click', function(e, passed_id) {
+	$("#projects1-outer").on('click', 'h3', function(e, passed_id) {
 		e.preventDefault();
 		navThreeTitleFirst('projects',$(this),passed_id)
+		prevent_dblclick(e)
 	});
 
 
-	$("#projects2-outer > h3").on('click', function(e, passed_id) {
+	$("#projects2-outer").on('click', 'h3', function(e, passed_id) {
 		e.preventDefault();
 		navThreeTitleSecond('projects',$(this),passed_id)
+		prevent_dblclick(e)
 	});
 
 
-	$("#projects3 h3").on('click', function(e, passed_id) {
+	$("#projects3").on('click', 'h3', function(e, passed_id) {
 		e.preventDefault();
 		navThreeTitleThird('projects',$(this),passed_id)
+		prevent_dblclick(e)
 	});
 
 	$('#projects1').on('click', 'span.module-click', function(e) {
-	//$(document).on('click', '#projects1 .module-click',function(e) {
 		e.preventDefault();
 		navItemFirst('projects',$(this))
+		prevent_dblclick(e)
 	});
 
 
 	$('#projects2').on('click', 'span.module-click', function(e) {
 		e.preventDefault();
 		navItemSecond('projects',$(this))
+		prevent_dblclick(e)
 	});
 
 
-	$('#projects3').on('click', 'span.module-click',function(e) {
+	$('#projects3').on('click', 'span.module-click', function(e) {
 		e.preventDefault();
 		navItemThird('projects',$(this))
+		prevent_dblclick(e)
 	});
-
-
+	
+	
 	$(document).on('click', 'a.insertProjectFolderfromDialog',function(e) {
 		e.preventDefault();
 		var field = $(this).attr("field");

@@ -25,13 +25,13 @@ function clientsPhonecalls(name) {
 	 this.formResponse = function(data) {
 		 switch(data.action) {
 			case "edit":
-				$("#clients3 ul[rel=phonecalls] .active-link").find(".text").html($("#clients .item_date").val() + ' - ' +$("#clients .title").val());
+				$("#clients3 ul[rel=phonecalls] span[rel="+data.id+"] .text").html($("#clients .item_date").val() + ' - ' +$("#clients .title").val());
 					switch(data.access) {
 						case "0":
-							$("#clients3 ul[rel=phonecalls] .active-link .module-access-status").removeClass("module-access-active");
+							$("#clients3 ul[rel=phonecalls] span[rel="+data.id+"] .module-access-status").removeClass("module-access-active");
 						break;
 						case "1":
-							$("#clients3 ul[rel=phonecalls] .active-link .module-access-status").addClass("module-access-active");
+							$("#clients3 ul[rel=phonecalls] span[rel="+data.id+"] .module-access-status").addClass("module-access-active");
 						break;
 					}
 			break;
@@ -193,7 +193,7 @@ function clientsPhonecalls(name) {
 	this.actionPrint = function() {
 		var id = $("#clients").data("third");
 		var url ='/?path=apps/clients/modules/phonecalls&request=printDetails&id='+id;
-		location.href = url;
+		$("#documentloader").attr('src', url);
 	}
 
 

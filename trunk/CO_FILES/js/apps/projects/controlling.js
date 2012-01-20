@@ -33,7 +33,7 @@ function projectsControlling(name) {
 		var id = $("#projects").data("third");
 		var pid = $("#projects").data("second");
 		var url ='/?path=apps/projects/modules/controlling&request=printDetails&pid='+pid+"&id="+id;
-		location.href = url;
+		$("#documentloader").attr('src', url);
 	}
 
 

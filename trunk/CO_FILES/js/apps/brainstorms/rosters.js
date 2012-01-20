@@ -22,10 +22,10 @@ function brainstormsRosters(name) {
 				$("#brainstorms3 span[rel='"+data.id+"'] .text").html($("#brainstorms .title").val());
 					switch(data.access) {
 						case "0":
-							$("#brainstorms3 .active-link .module-access-status").removeClass("module-access-active");
+							$("#brainstorms3 span[rel="+data.id+"] .module-access-status").removeClass("module-access-active");
 						break;
 						case "1":
-							$("#brainstorms3 .active-link .module-access-status").addClass("module-access-active");
+							$("#brainstorms3 span[rel="+data.id+"] .module-access-status").addClass("module-access-active");
 						break;
 					}
 			break;
@@ -187,7 +187,7 @@ function brainstormsRosters(name) {
 	this.actionPrint = function() {
 		var id = $("#brainstorms").data("third");
 		var url ='/?path=apps/brainstorms/modules/rosters&request=printDetails&id='+id;
-		location.href = url;
+		$("#documentloader").attr('src', url);
 	}
 
 

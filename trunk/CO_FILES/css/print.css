@@ -43,7 +43,7 @@ td.greybg { background-color:#E5E5E5;}
 td.grey, div.grey { color:#666666; }
 .smalltext { font-size: 8pt; }
 
-p { margin: 0;}
+p { margin: 0; }
 
 .tcell-left { width: 127pt; font-size: 8pt; padding-top: 3pt; }
 .tcell-left-short { width: 120pt; font-size: 8pt; padding-top: 3pt;}

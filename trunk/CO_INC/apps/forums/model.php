@@ -587,6 +587,7 @@ class ForumsModel extends Model {
 			case "0":
 				$array["status_text"] = $lang["FORUM_STATUS_PLANNED"];
 				$array["status_date"] = $array["planned_date"];
+				$array["startdate"] = $array["planned_date"];
 			break;
 			case "1":
 				$array["status_text"] = $lang["FORUM_STATUS_INPROGRESS"];
@@ -603,6 +604,7 @@ class ForumsModel extends Model {
 				$array["status_text"] = $lang["FORUM_STATUS_STOPPED"];
 				$array["status_date"] = $array["stopped_date"];
 				$array["startdate"] = $array["inprogress_date"];
+				$array["enddate"] = $array["stopped_date"];
 			break;
 		}
 		

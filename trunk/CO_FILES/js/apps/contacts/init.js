@@ -231,7 +231,7 @@ function contactsContact(name) {
 	this.actionPrint = function() {
 		var id = $("#contacts").data("first");
 		var url ='/?path=apps/contacts&request=printContactDetails&id='+id;
-		location.href = url;
+		$("#documentloader").attr('src', url);
 	}
 
 
@@ -577,7 +577,7 @@ function contactsGroups(name) {
 	this.actionPrint = function() {
 		var id = $("#contacts").data("first");
 		var url ='/?path=apps/contacts&request=printGroupDetails&id='+id;
-		location.href = url;
+		$("#documentloader").attr('src', url);
 	}
 
 
@@ -814,8 +814,10 @@ $(document).ready(function() {
 	/**
 	* show contacts list
 	*/
-	$("#contacts1 h3").on('click', function(e, passed_id) {
+	//$("#contacts1 h3").on('click', function(e, passed_id) {
+	$("#contacts1").on('click', 'h3', function(e, passed_id) {
 		e.preventDefault();
+		prevent_dblclick(e)
 		if(confirmNavigation()) {
 			formChanged = false;
 			var obj = getCurrentModule();
@@ -875,8 +877,10 @@ $(document).ready(function() {
 		}
 	});
 
-	$('#contacts1').on('click', '.module-click', function(e) {
+	//$('#contacts1').on('click', '.module-click', function(e) {
+	$('#contacts1').on('click', 'span.module-click',function(e) {
 		e.preventDefault();		
+		prevent_dblclick(e)
 		if(confirmNavigation()) {
 			formChanged = false;
 			var obj = getCurrentModule();

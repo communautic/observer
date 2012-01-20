@@ -63,17 +63,17 @@ function clientsDocuments(name) {
 	 this.formResponse = function(data) {
 		 switch(data.action) {
 			case "edit":
-				var module = getCurrentModule();
-				$("#clients3 ul[rel=documents] .active-link").find(".text").html($("#clients .title").val());
+				//var module = getCurrentModule();
+				$("#clients3 ul[rel=documents] span[rel="+data.id+"] .text").html($("#clients .title").val());
 				var moduleidx = $("#clients3 ul").index($("#clients3 ul[rel=documents]"));
 				var liindex = $("#clients3 ul[rel=documents] .module-click").index($("#clients3 ul[rel=documents] .module-click[rel='"+data.id+"']"));
-				module.getDetails(moduleidx,liindex);
+				//module.getDetails(moduleidx,liindex);
 				switch(data.access) {
 					case "0":
-						$("#clients3 ul[rel=documents] .active-link .module-access-status").removeClass("module-access-active");
+						$("#clients3 ul[rel=documents] span[rel="+data.id+"] .module-access-status").removeClass("module-access-active");
 					break;
 					case "1":
-						$("#clients3 ul[rel=documents] .active-link .module-access-status").addClass("module-access-active");
+						$("#clients3 ul[rel=documents] span[rel="+data.id+"] .module-access-status").addClass("module-access-active");
 					break;
 				}
 			break;
@@ -225,7 +225,7 @@ function clientsDocuments(name) {
 	this.actionPrint = function() {
 		var id = $("#clients").data("third");
 		var url ='/?path=apps/clients/modules/documents&request=printDetails&id='+id;
-		location.href = url;
+		$("#documentloader").attr('src', url);
 	}
 
 

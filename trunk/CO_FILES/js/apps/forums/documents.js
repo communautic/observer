@@ -63,17 +63,17 @@ function forumsDocuments(name) {
 	 this.formResponse = function(data) {
 		 switch(data.action) {
 			case "edit":
-				var module = getCurrentModule();
-				$("#forums3 ul[rel=documents] .active-link").find(".text").html($("#forums .title").val());
+				//var module = getCurrentModule();
+				$("#forums3 ul[rel=documents] span[rel="+data.id+"] .text").html($("#forums .title").val());
 				var moduleidx = $("#forums3 ul").index($("#forums3 ul[rel=documents]"));
 				var liindex = $("#forums3 ul[rel=documents] .module-click").index($("#forums3 ul[rel=documents] .module-click[rel='"+data.id+"']"));
-				module.getDetails(moduleidx,liindex);
+				//module.getDetails(moduleidx,liindex);
 				switch(data.access) {
 					case "0":
-						$("#forums3 ul[rel=documents] .active-link .module-access-status").removeClass("module-access-active");
+						$("#forums3 ul[rel=documents] span[rel="+data.id+"] .module-access-status").removeClass("module-access-active");
 					break;
 					case "1":
-						$("#forums3 ul[rel=documents] .active-link .module-access-status").addClass("module-access-active");
+						$("#forums3 ul[rel=documents] span[rel="+data.id+"] .module-access-status").addClass("module-access-active");
 					break;
 				}
 			break;
@@ -225,7 +225,7 @@ function forumsDocuments(name) {
 	this.actionPrint = function() {
 		var id = $("#forums").data("third");
 		var url ='/?path=apps/forums/modules/documents&request=printDetails&id='+id;
-		location.href = url;
+		$("#documentloader").attr('src', url);
 	}
 
 

@@ -79,12 +79,12 @@ class DesktopModel extends Model {
 	}
 	
 	
-	function newPostit($z) {
+	function newPostit($z,$x) {
 		global $session,$lang;
 		
 		$now = gmdate("Y-m-d H:i:s");
 		
-		$q = "INSERT INTO " . CO_TBL_DESKTOP_POSTITS . " set uid = '$session->uid', xyz = '15x70x" . $z . "', wh = '200x200', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+		$q = "INSERT INTO " . CO_TBL_DESKTOP_POSTITS . " set uid = '$session->uid', xyz = '" . $x . "x100x" . $z . "', wh = '300x300', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {

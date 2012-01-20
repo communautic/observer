@@ -21,21 +21,21 @@ function clientsOrders(name) {
 	 this.formResponse = function(data) {
 		 switch(data.action) {
 			case "edit":
-				$("#clients3 ul[rel=orders] .active-link").find(".text").html($("#clients .title").val());
+				$("#clients3 ul[rel=orders] span[rel="+data.id+"] .text").html($("#clients .title").val());
 					switch(data.access) {
 						case "0":
-							$("#clients3 ul[rel=orders] .active-link .module-access-status").removeClass("module-access-active");
+							$("#clients3 ul[rel=orders] span[rel="+data.id+"] .module-access-status").removeClass("module-access-active");
 						break;
 						case "1":
-							$("#clients3 ul[rel=orders] .active-link .module-access-status").addClass("module-access-active");
+							$("#clients3 ul[rel=orders] span[rel="+data.id+"] .module-access-status").addClass("module-access-active");
 						break;
 					}
 					switch(data.status) {
 						case "1":
-						$("#clients3 ul[rel=orders] .active-link .module-item-status").addClass("module-item-active");
+						$("#clients3 ul[rel=orders] span[rel="+data.id+"] .module-item-status").addClass("module-item-active");
 					break;
 					default:
-						$("#clients3 ul[rel=orders] .active-link .module-item-status").removeClass("module-item-active");
+						$("#clients3 ul[rel=orders] span[rel="+data.id+"] .module-item-status").removeClass("module-item-active");
 					}
 			break;
 		}
@@ -196,7 +196,7 @@ function clientsOrders(name) {
 	this.actionPrint = function() {
 		var id = $("#clients").data("third");
 		var url ='/?path=apps/clients/modules/orders&request=printDetails&id='+id;
-		location.href = url;
+		$("#documentloader").attr('src', url);
 	}
 
 

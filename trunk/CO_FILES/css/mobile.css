@@ -8,6 +8,6 @@ body { width: 1024px; height: 728px; }
 #logout-outer {left: 20px;}
 #appnav-outer { left: 80px; }
 
-#desktop, .scroll-pane, .scrolling-content { -webkit-overflow-scrolling : touch; }
+#desktop-inner, .scroll-pane, .scrolling-content { -webkit-overflow-scrolling : touch; }
 
 .ui-layout-west li>span:hover   { background-color: transparent; }

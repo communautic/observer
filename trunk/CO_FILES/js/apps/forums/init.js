@@ -37,13 +37,13 @@ function forumsApplication(name) {
 				//$("#durationStart").html($("input[name='startdate']").val());
 				switch(data.status) {
 					case "2":
-						$("#forums2 .active-link .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
+						$("#forums2 span[rel='"+data.id+"'] .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
 					break;
 					case "3":
-						$("#forums2 .active-link .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
+						$("#forums2 span[rel='"+data.id+"'] .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
 					break;
 					default:
-						$("#forums2 .active-link .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
+						$("#forums2 span[rel='"+data.id+"'] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
 				}
 			break;
 			case "reload":
@@ -179,7 +179,7 @@ function forumsApplication(name) {
 	this.actionPrint = function() {
 		var id = $("#forums").data("second");
 		var url ='/?path=apps/forums&request=printForumDetails&id='+id;
-		location.href = url;
+		$("#documentloader").attr('src', url);
 	}
 
 
@@ -549,7 +549,7 @@ function forumsFolders(name) {
 	this.actionPrint = function() {
 		var id = $("#forums").data("first");
 		var url ='/?path=apps/forums&request=printFolderDetails&id='+id;
-		location.href = url;
+		$("#documentloader").attr('src', url);
 	}
 
 
@@ -735,39 +735,45 @@ $(document).ready(function() {
 	}
 
 
-	$("#forums1-outer > h3").on('click', function(e, passed_id) {
+	$("#forums1-outer").on('click', 'h3', function(e, passed_id) {
 		e.preventDefault();
 		navThreeTitleFirst('forums',$(this),passed_id)
+		prevent_dblclick(e)
 	});
 
 
-	$("#forums2-outer > h3").on('click', function(e, passed_id) {
+	$("#forums2-outer").on('click', 'h3', function(e, passed_id) {
 		e.preventDefault();
 		navThreeTitleSecond('forums',$(this),passed_id)
+		prevent_dblclick(e)
 	});
 
 
-	$("#forums3 h3").on('click', function(e, passed_id) {
+	$("#forums3").on('click', 'h3', function(e, passed_id) {
 		e.preventDefault();
 		navThreeTitleThird('forums',$(this),passed_id)
+		prevent_dblclick(e)
 	});
 
 
 	$('#forums1').on('click', 'span.module-click',function(e) {
 		e.preventDefault();
 		navItemFirst('forums',$(this))
+		prevent_dblclick(e)
 	});
 
 
 	$('#forums2').on('click', 'span.module-click',function(e) {
 		e.preventDefault();
 		navItemSecond('forums',$(this))
+		prevent_dblclick(e)
 	});
 
 
 	$('#forums3').on('click', 'span.module-click',function(e) {
 		e.preventDefault();
 		navItemThird('forums',$(this))
+		prevent_dblclick(e)
 	});
 
 

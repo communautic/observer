@@ -22,21 +22,21 @@ function publishersMenues(name) {
 	 this.formResponse = function(data) {
 		 switch(data.action) {
 			case "edit":
-				$("#publishers1 ul[rel=menues] .active-link").find(".text").html($("#publishers .title").val());
+				$("#publishers1 ul[rel=menues] span[rel="+data.id+"] .text").html($("#publishers .title").val());
 					switch(data.access) {
 						case "0":
-							$("#publishers1 ul[rel=menues] .active-link .module-access-status").removeClass("module-access-active");
+							$("#publishers1 ul[rel=menues] span[rel="+data.id+"] .module-access-status").removeClass("module-access-active");
 						break;
 						case "1":
-							$("#publishers1 ul[rel=menues] .active-link .module-access-status").addClass("module-access-active");
+							$("#publishers1 ul[rel=menues] span[rel="+data.id+"] .module-access-status").addClass("module-access-active");
 						break;
 					}
 					switch(data.status) {
 						case "2":
-							$("#publishers1 ul[rel=menues] .active-link .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
+							$("#publishers1 ul[rel=menues] span[rel="+data.id+"] .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
 						break;
 						default:
-							$("#publishers1 ul[rel=menues] .active-link .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
+							$("#publishers1 ul[rel=menues] span[rel="+data.id+"] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
 					}
 			break;
 		}
@@ -190,7 +190,7 @@ function publishersMenues(name) {
 	this.actionPrint = function() {
 		var id = $("#publishers").data("first");
 		var url ='/?path=apps/publishers/modules/menues&request=printDetails&id='+id;
-		location.href = url;
+		$("#documentloader").attr('src', url);
 	}
 
 
