@@ -1,10 +1,10 @@
 <?php
 
-class VDocsModel extends ProjectsModel {
+class ProjectsVDocsModel extends ProjectsModel {
 	
 	public function __construct() {  
      	parent::__construct();
-		$this->_phases = new ProjectsPhasesModel();
+		//$this->_phases = new ProjectsPhasesModel();
 		$this->_contactsmodel = new ContactsModel();
 	}
 
@@ -61,8 +61,15 @@ class VDocsModel extends ProjectsModel {
 			  }
 	  }
 	  
+	  
+	  $perm = $this->getProjectAccess($id);
+		$sql ="";
+		if( $perm ==  "guest") {
+			$sql = " and access = '1' ";
+		}
+		
 		//$q = "select title,id,intern,startdate,enddate from " . CO_TBL_PROJECTS_PHASES . " where pid = '$id' and bin != '1' " . $order;
-		$q = "select id,title,access from " . CO_TBL_PROJECTS_VDOCS . " where pid = '$id' and bin != '1' " . $order;
+		$q = "select id,title,access,checked_out,checked_out_user from " . CO_TBL_PROJECTS_VDOCS . " where pid = '$id' and bin != '1' " . $sql . $order;
 
 	  $this->setSortStatus("projects-vdocs-sort-status",$sortcur,$id);
 	  $result = mysql_query($q, $this->_db->connection);
@@ -81,41 +88,61 @@ class VDocsModel extends ProjectsModel {
 			}
 			$array["accessstatus"] = $accessstatus;
 			
+			$checked_out_status = "";
+			if($perm !=  "guest" && $array["checked_out"] == 1 && $array["checked_out_user"] != $session->uid) {
+				if($session->checkUserActive($array["checked_out_user"])) {
+					$checked_out_status = "icon-checked-out-active";
+				} else {
+					$this->checkinVDocsOverride($id);
+				}
+			}
+			$array["checked_out_status"] = $checked_out_status;
+			
 			$vdocs[] = new Lists($array);
 	  }
 		
-	  $arr = array("vdocs" => $vdocs, "sort" => $sortcur);
+	  $arr = array("vdocs" => $vdocs, "sort" => $sortcur, "perm" => $perm);
 	  return $arr;
 	}
 
-	
-	// Get vdoc list from ids for Tooltips
-	function getVDocDetails($string,$field){
-		$users_string = explode(",", $string);
-		$users_total = sizeof($users_string);
-		$users = '';
-		if($users_total == 0) { return $users; }
-		$i = 1;
-		foreach ($users_string as &$value) {
-			$q = "SELECT id,title from " . CO_TBL_PROJECTS_VDOCS . " where id = '$value'";
-			$result_user = mysql_query($q, $this->_db->connection);
-			while($row_user = mysql_fetch_assoc($result_user)) {
-				$users .= '<span class="groupmember tooltip-advanced" uid="' . $row_user["id"] . '">' . $row_user["title"] . '</span><div style="display:none"><a href="delete" class="markfordeletionNEW" uid="' . $row_user["id"] . '" field="' . $field . '">X</a><br /></div>';
-				if($i < $users_total) {
-					$users .= ', ';
-				}
-			}
-			$i++;
-		}
-		return $users;
-   }
 
-
-	/*function getDependency($id){
-		$q = "SELECT title FROM " . CO_TBL_PROJECTS_PHASES . " where id = '$id'";
+	function checkoutVDocs($id) {
+		global $session;
+		
+		$q = "UPDATE " . CO_TBL_PROJECTS_VDOCS . " set checked_out = '1', checked_out_user = '$session->uid' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
-		return mysql_num_rows($result);
-	}*/
+		
+		if ($result) {
+			return true;
+		}
+	}
+	
+	
+	function checkinVDocs($id) {
+		global $session;
+		
+		$q = "SELECT checked_out_user FROM " . CO_TBL_PROJECTS_VDOCS . " where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$user = mysql_result($result,0);
+
+		if($user == $session->uid) {
+			$q = "UPDATE " . CO_TBL_PROJECTS_VDOCS . " set checked_out = '0', checked_out_user = '0' where id='$id'";
+			$result = mysql_query($q, $this->_db->connection);
+		}
+		if ($result) {
+			return true;
+		}
+	}
+
+
+	function checkinVDocsOverride($id) {
+		global $session;
+		$q = "UPDATE " . CO_TBL_PROJECTS_VDOCS . " set checked_out = '0', checked_out_user = '0' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+			return true;
+		}
+	}
 
 
 	function getDetails($id) {
@@ -132,6 +159,32 @@ class VDocsModel extends ProjectsModel {
 		foreach($row as $key => $val) {
 				$array[$key] = $val;
 			}
+			
+		$array["perms"] = $this->getProjectAccess($array["pid"]);
+		$array["canedit"] = false;
+		$array["showCheckout"] = false;
+		$array["checked_out_user_text"] = $this->_contactsmodel->getUserListPlain($array['checked_out_user']);
+
+		if($array["perms"] == "sysadmin" || $array["perms"] == "admin") {
+			//if($array["checked_out"] == 1 && $session->checkUserActive($array["checked_out_user"])) {
+			if($array["checked_out"] == 1) {
+				if($array["checked_out_user"] == $session->uid) {
+					$array["canedit"] = true;
+				} else if(!$session->checkUserActive($array["checked_out_user"])) {
+					$array["canedit"] = $this->checkoutVDocs($id);
+					$array["canedit"] = true;
+				} else {
+					$array["canedit"] = false;
+					$array["showCheckout"] = true;
+		$array["checked_out_user_phone1"] = $this->_contactsmodel->getContactFieldFromID($array['checked_out_user'],"phone1");
+		$array["checked_out_user_email"] = $this->_contactsmodel->getContactFieldFromID($array['checked_out_user'],"email");
+
+				}
+			} else {
+				$array["canedit"] = $this->checkoutVDocs($id);
+			}
+		}
+
 		
 		$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
 		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
@@ -154,12 +207,12 @@ class VDocsModel extends ProjectsModel {
 		
 		
 		// get user perms
-		$array["edit"] = "1";
+		//$array["edit"] = "1";
 		
 		$sendto = $this->getSendtoDetails("projects_vdocs",$id);
 		
 		$vdoc = new Lists($array);
-		$arr = array("vdoc" => $vdoc, "sendto" => $sendto);
+		$arr = array("vdoc" => $vdoc, "sendto" => $sendto, "access" => $array["perms"]);
 		return $arr;
    }
 
@@ -196,7 +249,7 @@ class VDocsModel extends ProjectsModel {
 		$now = gmdate("Y-m-d H:i:s");
 		$time = gmdate("Y-m-d H");
 		
-		$q = "INSERT INTO " . CO_TBL_PROJECTS_VDOCS . " set title = '" . $lang["PROJECT_VDOC_NEW"] . "', date='$now', start='$time', end='$time', pid = '$id', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+		$q = "INSERT INTO " . CO_TBL_PROJECTS_VDOCS . " set title = '" . $lang["PROJECT_VDOC_NEW"] . "', pid = '$id', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id = mysql_insert_id();
 		
@@ -209,7 +262,7 @@ class VDocsModel extends ProjectsModel {
    	function createDuplicate($id) {
 		global $session, $lang;
 		// vdoc
-		$q = "INSERT INTO " . CO_TBL_PROJECTS_VDOCS . " (pid,title,date,start,end,location,location_ct,length,management,management_ct,participants,participants_ct) SELECT pid,CONCAT(title,' " . $lang["GLOBAL_DUPLICAT"] . "'),date,start,end,location,location_ct,length,management,management_ct,participants,participants_ct FROM " . CO_TBL_PROJECTS_VDOCS . " where id='$id'";
+		$q = "INSERT INTO " . CO_TBL_PROJECTS_VDOCS . " (pid,title,content) SELECT pid,CONCAT(title,' " . $lang["GLOBAL_DUPLICAT"] . "'),content FROM " . CO_TBL_PROJECTS_VDOCS . " where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
 		if ($result) {

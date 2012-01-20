@@ -1,18 +1,18 @@
 <?php
 
-class VDocs extends Projects {
+class ProjectsVDocs extends Projects {
 	var $module;
 
 	function __construct($name) {
 			$this->module = $name;
 			$this->form_url = "apps/projects/modules/$name/";
-			$this->model = new VDocsModel();
+			$this->model = new ProjectsVDocsModel();
 			$this->binDisplay = true;
 	}
 
 
 	function getList($id,$sort) {
-		global $system;
+		global $system, $lang;
 		$arr = $this->model->getList($id,$sort);
 		$vdocs = $arr["vdocs"];
 		ob_start();
@@ -20,6 +20,8 @@ class VDocs extends Projects {
 			$data["html"] = ob_get_contents();
 		ob_end_clean();
 		$data["sort"] = $arr["sort"];
+		$data["perm"] = $arr["perm"];
+		$data["title"] = $lang["PROJECT_VDOC_ACTION_NEW"];
 		return $system->json_encode($data);
 	}
 
@@ -29,20 +31,28 @@ class VDocs extends Projects {
 		if($arr = $this->model->getDetails($id)) {
 			$vdoc = $arr["vdoc"];
 			$sendto = $arr["sendto"];
-			include('view/edit.php');
+			ob_start();
+				include 'view/edit.php';
+				$data["html"] = ob_get_contents();
+			ob_end_clean();
+			$data["access"] = $arr["access"];
+			return json_encode($data);
 		} else {
-			include CO_INC .'/view/default.php';
+			ob_start();
+				include CO_INC .'/view/default.php';
+				$data["html"] = ob_get_contents();
+			ob_end_clean();
+			return json_encode($data);
 		}
 	}
 
 
 	function printDetails($id,$t) {
-		global $lang;
+		global $session, $lang;
 		$title = "";
 		$html = "";
 		if($arr = $this->model->getDetails($id)) {
 			$vdoc = $arr["vdoc"];
-			$task = $arr["task"];
 			$sendto = $arr["sendto"];
 			ob_start();
 				include 'view/print.php';
@@ -50,6 +60,7 @@ class VDocs extends Projects {
 			ob_end_clean();
 			$title = $vdoc->title;
 		}
+		//$GLOBALS['SECTION'] = "";
 		switch($t) {
 			case "html":
 				$this->printHTML($title,$html);
@@ -63,11 +74,9 @@ class VDocs extends Projects {
 		global $lang;
 		if($arr = $this->model->getDetails($id)) {
 			$vdoc = $arr["vdoc"];
-			$task = $arr["task"];
-			
 			$form_url = $this->form_url;
 			$request = "sendDetails";
-			$to = $vdoc->participants;
+			$to = "";
 			$cc = "";
 			$subject = $vdoc->title;
 			$variable = "";
@@ -86,7 +95,6 @@ class VDocs extends Projects {
 		$html = "";
 		if($arr = $this->model->getDetails($id)) {
 			$vdoc = $arr["vdoc"];
-			$task = $arr["task"];
 			$sendto = $arr["sendto"];
 			ob_start();
 				include 'view/print.php';
@@ -104,6 +112,14 @@ class VDocs extends Projects {
 		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment);
 	}
 
+
+	function checkinVDoc($id) {
+		if($id != "undefined") {
+			return $this->model->checkinVDocs($id);
+		} else {
+			return true;
+		}
+	}
 
 	function setDetails($pid,$id,$title,$content,$vdoc_access,$vdoc_access_orig) {
 		if($arr = $this->model->setDetails($pid,$id,$title,$content,$vdoc_access,$vdoc_access_orig)){
@@ -175,7 +191,15 @@ class VDocs extends Projects {
 	}
 
 
+	function getHelp() {
+		global $lang;
+		$data["file"] =  $lang["PROJECT_VDOC_HELP"];
+		$data["app"] = "projects";
+		$data["module"] = "/modules/vdocs";
+		$this->openHelpPDF($data);
+	}
+
 }
 
-$vdocs = new VDocs("vdocs");
+$projectsVDocs = new ProjectsVDocs("vdocs");
 ?>
