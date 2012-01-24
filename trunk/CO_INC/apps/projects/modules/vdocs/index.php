@@ -68,6 +68,9 @@ if (!empty($_GET['request'])) {
 			}
 			echo($projectsVDocs->printDetails($_GET['id'],$t));
 		break;
+		case 'exportDetails':
+			echo($projectsVDocs->exportDetails($_GET['id']));
+		break;
 		case 'getSend':
 			echo($projectsVDocs->getSend($_GET['id']));
 		break;
@@ -85,6 +88,7 @@ if (!empty($_GET['request'])) {
 		break;
 		case 'getHelp':
 			echo($projectsVDocs->getHelp());
+		break;
 	}
 }
 

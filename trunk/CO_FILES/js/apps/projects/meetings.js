@@ -75,6 +75,7 @@ function projectsMeetings(name) {
 				var id = $('#projects').data('second');
 				$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/projects/modules/meetings&request=getList&id="+id, success: function(list){
 					$('#projects3 ul[rel=meetings]').html(list.html);
+					$('#projects_meetings_items').html(list.items);
 					var moduleidx = $("#projects3 ul").index($("#projects3 ul[rel=meetings]"));
 					var liindex = $("#projects3 ul[rel=meetings] .module-click").index($("#projects3 ul[rel=meetings] .module-click[rel='"+data.id+"']"));
 					module.getDetails(moduleidx,liindex);
@@ -144,6 +145,7 @@ function projectsMeetings(name) {
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: 'path=apps/projects/modules/meetings&request=createNew&id=' + id, cache: false, success: function(data){
 			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/projects/modules/meetings&request=getList&id="+id, success: function(list){
 				$("#projects3 ul[rel=meetings]").html(list.html);
+				$('#projects_meetings_items').html(list.items);
 				var liindex = $("#projects3 ul[rel=meetings] .module-click").index($("#projects3 ul[rel=meetings] .module-click[rel='"+data.id+"']"));
 				$("#projects3 ul[rel=meetings] .module-click:eq("+liindex+")").addClass('active-link');
 				var moduleidx = $("#projects3 ul").index($("#projects3 ul[rel=meetings]"));
@@ -165,6 +167,7 @@ function projectsMeetings(name) {
 		$.ajax({ type: "GET", url: "/", data: 'path=apps/projects/modules/meetings&request=createDuplicate&id=' + id, cache: false, success: function(mid){
 			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/projects/modules/meetings&request=getList&id="+pid, success: function(data){																																																																				
 				$("#projects3 ul[rel=meetings]").html(data.html);
+				$('#projects_meetings_items').html(data.items);
 				var moduleidx = $("#projects3 ul").index($("#projects3 ul[rel=meetings]"));
 				var liindex = $("#projects3 ul[rel=meetings] .module-click").index($("#projects3 ul[rel=meetings] .module-click[rel='"+mid+"']"));
 				module.getDetails(moduleidx,liindex);
@@ -194,6 +197,7 @@ function projectsMeetings(name) {
 							if(data == "true") {
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/meetings&request=getList&id="+pid, success: function(data){
 									$("#projects3 ul[rel=meetings]").html(data.html);
+									$('#projects_meetings_items').html(data.items);
 									if(data.html == "<li></li>") {
 										projectsActions(3);
 									} else {
@@ -230,6 +234,7 @@ function projectsMeetings(name) {
 		$("#projects3 ul[rel=meetings] .active-link").trigger("click");
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/projects/modules/meetings&request=getList&id="+pid, success: function(data){																																																																				
 			$("#projects3 ul[rel=meetings]").html(data.html);
+			$('#projects_meetings_items').html(data.items);
 			var liindex = $("#projects3 ul[rel=meetings] .module-click").index($("#projects3 ul[rel=meetings] .module-click[rel='"+id+"']"));
 			$("#projects3 ul[rel=meetings] .module-click:eq("+liindex+")").addClass('active-link');
 			}
@@ -271,6 +276,7 @@ function projectsMeetings(name) {
 		var fid = $("#projects2 .module-click:visible").attr("rel");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/meetings&request=getList&id="+fid+"&sort="+sortnew, success: function(data){
 			$("#projects3 ul[rel=meetings]").html(data.html);
+			$('#projects_meetings_items').html(data.items);
 			obj.attr("rel",sortnew);
 			obj.removeClass("sort"+sortcur).addClass("sort"+sortnew);
 			var id = $("#projects3 ul[rel=meetings] .module-click:eq(0)").attr("rel");

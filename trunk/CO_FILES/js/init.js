@@ -1556,6 +1556,7 @@ function navThreeTitleSecond(objectname, clicked, passed_id) {
 					$('#'+objectname+'2 .sort').attr('rel', data.sort).addClass('sort'+data.sort);
 					var h = object.$layoutWest.height();
 					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+objectname+"&request=get"+objectnameCapsSingular+"Details&id="+objecctid, success: function(text){
+						object.getNavModulesNumItems(objecctid)
 						object.$appContent.html(text.html);
 						switch (text.access) {
 							case "sysadmin":
@@ -1864,7 +1865,8 @@ function navItemSecond(objectname, clicked) {
 		} else {
 			var t = object.$second.height();
 			object.$second.animate({height: t+num_modules*27}, function() {
-				$(this).animate({height: t});
+				object.getNavModulesNumItems(id)
+				$(this).animate({height: t})
 			})
 			object.$thirdDiv.each(function(i) { 
 				var position = $(this).position();
@@ -1873,6 +1875,7 @@ function navItemSecond(objectname, clicked) {
 					$(this).animate({top: position.top});
 				})
 			})
+
 		}
 		}
 	});
@@ -1926,6 +1929,7 @@ function externalLoadThreeLevels(objectname,f,p,ph) { // from Desktop
 		$('#'+objectname+'3 h3').removeClass("module-bg-active");
 		$('#'+objectname+'3 .module-actions').hide();
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/" + objectname +"&request=get"+objectnameCapsSingular+"Details&fid="+f+"&id="+p, success: function(text){
+			object.getNavModulesNumItems(p)
 			$('#'+objectname+'-current').val(objectname);
 			object.$app.data({ "current" : objectname});
 			object.$app.data({ "second" : p});
@@ -1996,7 +2000,7 @@ function externalLoadThreeLevels(objectname,f,p,ph) { // from Desktop
 			}
 		})
 		$('#projects').data({ "second" : p});
-			
+		projects.getNavModulesNumItems(p)
 		var index = $("#projects2 .module-click").index($("#projects2 .module-click[rel='"+p+"']"));
 		setModuleDeactive($("#projects2"),index);
 		$("#projects2-outer").css('top', 96);

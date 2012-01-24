@@ -38,6 +38,7 @@
                     <div id="projects_<?php echo($module);?>" class="thirdLevel" style="top: <?php echo($i*27);?>px">
                         <div class="module-actions module-actions-modules"><?php if (${'projects_'.$module.'_filter'} != 0) { ?><div class="sort-outer"><span class="sort" rel="1"></span></div><?php } ?></div>
                         <h3 rel="<?php echo($module);?>"><?php echo(${'projects_'.$module.'_name'});?></h3>
+                        <div style="position: absolute; right: 3px; top: 7px; font-size: 11px; color: #333;" id="<?php echo('projects_'.$module.'_items');?>"></div>
                         <div class="projects3-content"><div class="scrolling-content">        
                         <ul class="sortable" rel="<?php echo($module);?>"><li></li></ul>
                         </div>
@@ -68,6 +69,7 @@
 			<li class="listPrint"><span class="actionPrint" title="<?php echo $lang["ACTION_PRINT"];?>"></span></li>
 			<li class="listSend"><span class="actionSend" title="<?php echo $lang["ACTION_SENDTO"];?>"></span></li>
 			<li class="listDuplicate"><span class="actionDuplicate" title="<?php echo $lang["ACTION_DUPLICATE"];?>"></span></li>
+            <li class="listExport"><span class="actionExport" title="<?php echo $lang["ACTION_EXPORT"];?>"></span></li>
 			<li class="listProjectHandbook"><span class="actionProjectHandbook" title="<?php echo $lang["PROJECT_HANDBOOK"];?>"></span></li>
             <li class="listRefresh"><span class="actionRefresh" title="<?php echo $lang["ACTION_REFRESH"];?>"></span></li>
             <li class="listHelp"><span class="actionHelp" title="<?php echo $lang["ACTION_HELP"];?>"></span></li>

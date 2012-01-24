@@ -12,8 +12,8 @@
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang["PROJECT_VDOC_TITLE"];?></span></td>
 		<td class="tcell-right"><?php echo($vdoc->title);?></td>
-        <td width="30"><a href="#" class="bin-restoreVDoc" rel="<?php echo $vdoc->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="#" class="bin-deleteVDoc" rel="<?php echo $vdoc->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="30"><a href="projects_vdocs" class="binRestore" rel="<?php echo $vdoc->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="30"><a href="projects_vdocs" class="binDelete" rel="<?php echo $vdoc->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>
