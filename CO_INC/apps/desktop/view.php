@@ -19,7 +19,7 @@
         </div>
     </div>
     <div id="desktopPostIts"></div>
-  	<div id="desktopcolumns" style="position: relative;">
+  	<div id="desktopcolumns">
         <ul id="column1" class="column"><?php $desktop->getColumnWidgets(1); ?></ul>
         <ul id="column2" class="column"><?php $desktop->getColumnWidgets(2); ?></ul>
         <ul id="column3" class="column"><?php $desktop->getColumnWidgets(3); ?></ul>
