@@ -26,10 +26,10 @@
 </table>
 <?php } ?>
 <?php if($vdoc->canedit) { ?>
-<div style=" margin-top: 80px;  margin-left: 15px;">
-<textarea id="projectsvdocContent" name="content" class="vdoc" style="width: 630px; height: 400px; visibility:hidden" ><?php echo($vdoc->content);?></textarea>
+<div style=" margin-top: 55px;  margin-left: 15px;">
+<textarea id="projectsvdocContent" name="content" class="vdoc" style="width: 635px; height: 400px; visibility:hidden" ><?php echo($vdoc->content);?></textarea>
 <?php } else { ?>
-<div style=" margin-top: 20px;  margin-left: 15px; border: 1px solid #ccc; width: 630px; ">
+<div style=" margin-top: 20px;  margin-left: 15px; border: 1px solid #ccc; width: 635px;">
 <?php echo($vdoc->content);?>
 <?php } ?>
 </div>
@@ -48,7 +48,10 @@
 		<td class="tcell-right-inactive tcell-right-nopadding"><div id="projectsvdoc_sendto">
         <?php 
 			foreach($sendto as $value) { 
-			echo '<div class="text11">' . $value->who . ', ' . $value->date . '</div>';
+				if(!empty($value->who)) {
+					echo '<div class="text11 toggleSendTo">' . $value->who . ', ' . $value->date . '</div>' .
+						 '<div class="SendToContent">' . $lang["GLOBAL_SUBJECT"] . ': ' . $value->subject . '<br /><br />' . nl2br($value->body) . '<br></div>';
+				}
 		 } ?></div>
         </td>
     </tr>

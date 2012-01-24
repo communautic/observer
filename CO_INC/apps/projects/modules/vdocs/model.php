@@ -14,22 +14,22 @@ class ProjectsVDocsModel extends ProjectsModel {
 	  if($sort == 0) {
 		  $sortstatus = $this->getSortStatus("projects-vdocs-sort-status",$id);
 		  if(!$sortstatus) {
-				$order = "order by edited_date DESC";
+				$order = "order by title";
 				$sortcur = '1';
 		  } else {
 			  switch($sortstatus) {
 				  case "1":
-				  		$order = "order by edited_date DESC";
+				  		$order = "order by title";
 						$sortcur = '1';
 				  break;
 				  case "2":
-				  		$order = "order by edited_date ASC";
+				  		$order = "order by title DESC";
 							$sortcur = '2';
 				  break;
 				  case "3":
 				  		$sortorder = $this->getSortOrder("projects-vdocs-sort-order",$id);
 				  		if(!$sortorder) {
-								$order = "order by edited_date DESC";
+								$order = "order by title";
 								$sortcur = '1';
 						  } else {
 								$order = "order by field(id,$sortorder)";
@@ -41,17 +41,17 @@ class ProjectsVDocsModel extends ProjectsModel {
 	  } else {
 		  switch($sort) {
 				  case "1":
-				  		$order = "order by edited_date DESC";
+				  		$order = "order by title";
 						$sortcur = '1';
 				  break;
 				  case "2":
-				  		$order = "order by edited_date ASC";
+				  		$order = "order by title DESC";
 						$sortcur = '2';
 				  break;
 				  case "3":
 				  		$sortorder = $this->getSortOrder("projects-vdocs-sort-order",$id);
 				  		if(!$sortorder) {
-						  	$order = "order by edited_date DESC";
+						  	$order = "order by title";
 								$sortcur = '1';
 						  } else {
 								$order = "order by field(id,$sortorder)";

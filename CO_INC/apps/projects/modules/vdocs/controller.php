@@ -70,6 +70,24 @@ class ProjectsVDocs extends Projects {
 		}
 	}
 	
+	
+	function exportDetails($id) {
+		global $session, $lang;
+		$title = "";
+		$html = "";
+		if($arr = $this->model->getDetails($id)) {
+			$vdoc = $arr["vdoc"];
+			$sendto = $arr["sendto"];
+			ob_start();
+				include 'view/word.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			$title = $this->normal_chars($vdoc->title);
+			$this->exportWord($title,$html);
+		}
+				
+	}
+	
 	function getSend($id) {
 		global $lang;
 		if($arr = $this->model->getDetails($id)) {

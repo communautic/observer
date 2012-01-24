@@ -146,6 +146,9 @@ if (!empty($_GET['request'])) {
 		case 'markNoticeRead':
 			echo($projects->markNoticeRead($_GET['pid']));
 		break;
+		case 'getNavModulesNumItems':
+			echo($projects->getNavModulesNumItems($_GET['id']));
+		break;
 		case 'getSearch':
 			echo($projects->getSearch($system->checkMagicQuotesTinyMCE($_GET['string'])));
 		break;

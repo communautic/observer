@@ -870,12 +870,12 @@ class ProjectsModel extends Model {
 		}
 		
 		if(in_array("vdocs",$active_modules)) {
-			$vdocsmodel = new VDocsModel();
+			$projectsVDocsmodel = new ProjectsVDocsModel();
 			$q = "SELECT id FROM co_projects_vdocs where pid = '$id'";
 			$result = mysql_query($q, $this->_db->connection);
 			while($row = mysql_fetch_array($result)) {
 				$vid = $row["id"];
-				$vdocsmodel->deleteVDoc($vid);
+				$projectsVDocsmodel->deleteVDoc($vid);
 			}
 		}
 		
@@ -1648,14 +1648,14 @@ class ProjectsModel extends Model {
 	
 						// vdocs
 						if(in_array("vdocs",$active_modules)) {
+							$projectsVDocsModel = new ProjectsVDocsModel();
 							$qv ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_VDOCS . " where pid = '$pid'";
 							$resultv = mysql_query($qv, $this->_db->connection);
 							while ($rowv = mysql_fetch_array($resultv)) {
 								$vid = $rowv["id"];
 								if($rowv["bin"] == "1") {
-								$vdocsmodel = new VDocsModel();
-								$vdocsmodel->deleteVDoc($vid);
-								$arr["vdocs"] = "";
+									$projectsVDocsModel->deleteVDoc($vid);
+									$arr["vdocs"] = "";
 								}
 							}
 						}
@@ -1855,6 +1855,15 @@ class ProjectsModel extends Model {
 		$result = mysql_query($q, $this->_db->connection);
 		return true;
 
+	}
+	
+	
+	function getNavModulesNumItems($id) {
+		$projectsMeetingsModel = new ProjectsMeetingsModel();
+		$data["projects_meetings_items"] = $projectsMeetingsModel->getNavNumItems($id);
+		/*$projectsPhonecallsModel = new ProjectsPhonecallsModel();
+		$data["projects_phonecalls_items"] = $projectsPhonecallsModel->getNavNumItems($id);*/
+		return $data;
 	}
 	
 	

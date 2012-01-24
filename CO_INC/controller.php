@@ -37,6 +37,21 @@ class Controller extends MySQLDB {
 	}
 
 
+	function exportWord($title,$text) {
+		global $lang;
+		ob_start();
+			include(CO_INC . "/view/wordheader.php");
+			$header = ob_get_contents();
+		ob_end_clean();
+		
+		$footer = "</body></html>";
+		$html = $header . $text . $footer;
+		header("Content-type: application/vnd.ms-word");
+		header("Content-Disposition: attachment; Filename=" . $title . ".doc");
+		echo $html;
+	}
+	
+	
 	function printPDF($title,$text) {
 		global $lang;
 		ob_start();
@@ -66,7 +81,6 @@ class Controller extends MySQLDB {
 		$options['compress'] = 1;
 		$dompdf->stream($title.".pdf", $options);
 	}
-	
 	
     
 	function normal_chars($string) {
