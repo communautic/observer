@@ -97,6 +97,7 @@ function projectsVDocs(name) {
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: 'path=apps/projects/modules/vdocs&request=createNew&id=' + id, cache: false, success: function(data){
 			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/projects/modules/vdocs&request=getList&id="+id, success: function(list){
 				$("#projects3 ul[rel=vdocs]").html(list.html);
+				$('#projects_vdocs_items').html(list.items);
 				var liindex = $("#projects3 ul[rel=vdocs] .module-click").index($("#projects3 ul[rel=vdocs] .module-click[rel='"+data.id+"']"));
 				$("#projects3 ul[rel=vdocs] .module-click:eq("+liindex+")").addClass('active-link');
 				var moduleidx = $("#projects3 ul").index($("#projects3 ul[rel=vdocs]"));
@@ -118,6 +119,7 @@ function projectsVDocs(name) {
 		$.ajax({ type: "GET", url: "/", data: 'path=apps/projects/modules/vdocs&request=createDuplicate&id=' + id, cache: false, success: function(mid){
 			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/projects/modules/vdocs&request=getList&id="+pid, success: function(data){																																																																				
 				$("#projects3 ul[rel=vdocs]").html(data.html);
+				$('#projects_vdocs_items').html(data.items);
 				var moduleidx = $("#projects3 ul").index($("#projects3 ul[rel=vdocs]"));
 				var liindex = $("#projects3 ul[rel=vdocs] .module-click").index($("#projects3 ul[rel=vdocs] .module-click[rel='"+mid+"']"));
 				module.getDetails(moduleidx,liindex);
@@ -147,6 +149,7 @@ function projectsVDocs(name) {
 							if(data == "true") {
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/vdocs&request=getList&id="+pid, success: function(data){
 									$("#projects3 ul[rel=vdocs]").html(data.html);
+									$('#projects_vdocs_items').html(data.items);
 									if(data.html == "<li></li>") {
 										projectsActions(3);
 									} else {
@@ -184,6 +187,7 @@ function projectsVDocs(name) {
 		$("#projects3 ul[rel=vdocs] .active-link").trigger("click");
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/projects/modules/vdocs&request=getList&id="+pid, success: function(data){																																																																				
 			$("#projects3 ul[rel=vdocs]").html(data.html);
+			$('#projects_vdocs_items').html(data.items);
 			var liindex = $("#projects3 ul[rel=vdocs] .module-click").index($("#projects3 ul[rel=vdocs] .module-click[rel='"+id+"']"));
 			$("#projects3 ul[rel=vdocs] .module-click:eq("+liindex+")").addClass('active-link');
 			}
@@ -233,6 +237,7 @@ function projectsVDocs(name) {
 		var fid = $("#projects2 .module-click:visible").attr("rel");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/vdocs&request=getList&id="+fid+"&sort="+sortnew, success: function(data){
 			$("#projects3 ul[rel=vdocs]").html(data.html);
+			$('#projects_vdocs_items').html(data.items);
 			obj.attr("rel",sortnew);
 			obj.removeClass("sort"+sortcur).addClass("sort"+sortnew);
 			var id = $("#projects3 ul[rel=vdocs] .module-click:eq(0)").attr("rel");
