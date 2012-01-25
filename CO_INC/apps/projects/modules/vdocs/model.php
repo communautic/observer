@@ -70,9 +70,10 @@ class ProjectsVDocsModel extends ProjectsModel {
 		
 		//$q = "select title,id,intern,startdate,enddate from " . CO_TBL_PROJECTS_PHASES . " where pid = '$id' and bin != '1' " . $order;
 		$q = "select id,title,access,checked_out,checked_out_user from " . CO_TBL_PROJECTS_VDOCS . " where pid = '$id' and bin != '1' " . $sql . $order;
-
 	  $this->setSortStatus("projects-vdocs-sort-status",$sortcur,$id);
 	  $result = mysql_query($q, $this->_db->connection);
+	  $items = mysql_num_rows($result);
+	  
 	  $vdocs = "";
 	  while ($row = mysql_fetch_array($result)) {
 
@@ -101,10 +102,24 @@ class ProjectsVDocsModel extends ProjectsModel {
 			$vdocs[] = new Lists($array);
 	  }
 		
-	  $arr = array("vdocs" => $vdocs, "sort" => $sortcur, "perm" => $perm);
+	  $arr = array("vdocs" => $vdocs, "items" => $items, "sort" => $sortcur, "perm" => $perm);
 	  return $arr;
 	}
 
+
+	function getNavNumItems($id) {
+		$perm = $this->getProjectAccess($id);
+		$sql ="";
+		if( $perm ==  "guest") {
+			$sql = " and access = '1' ";
+		}
+		$q = "select count(*) as items from " . CO_TBL_PROJECTS_VDOCS . " where pid = '$id' and bin != '1' " . $sql;
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_array($result);
+		$items = $row['items'];
+		return $items;
+	}
+	
 
 	function checkoutVDocs($id) {
 		global $session;
