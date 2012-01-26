@@ -91,6 +91,7 @@ function brainstormsRosters(name) {
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: 'path=apps/brainstorms/modules/rosters&request=createNew&id=' + id, cache: false, success: function(data){
 			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/brainstorms/modules/rosters&request=getList&id="+id, success: function(list){
 				$("#brainstorms3 ul[rel=rosters]").html(list.html);
+				$('#brainstorms_rosters_items').html(list.items);
 				var liindex = $("#brainstorms3 ul[rel=rosters] .module-click").index($("#brainstorms3 ul[rel=rosters] .module-click[rel='"+data.id+"']"));
 				$("#brainstorms3 ul[rel=rosters] .module-click:eq("+liindex+")").addClass('active-link');
 				var moduleidx = $("#brainstorms3 ul").index($("#brainstorms3 ul[rel=rosters]"));
@@ -112,6 +113,7 @@ function brainstormsRosters(name) {
 		$.ajax({ type: "GET", url: "/", data: 'path=apps/brainstorms/modules/rosters&request=createDuplicate&id=' + id, cache: false, success: function(mid){
 			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/brainstorms/modules/rosters&request=getList&id="+pid, success: function(data){																																																																				
 				$("#brainstorms3 ul[rel=rosters]").html(data.html);
+				$('#brainstorms_rosters_items').html(data.items);
 				var moduleidx = $("#brainstorms3 ul").index($("#brainstorms3 ul[rel=rosters]"));
 				var liindex = $("#brainstorms3 ul[rel=rosters] .module-click").index($("#brainstorms3 ul[rel=rosters] .module-click[rel='"+mid+"']"));
 				module.getDetails(moduleidx,liindex);
@@ -141,6 +143,7 @@ function brainstormsRosters(name) {
 							if(data == "true") {
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/rosters&request=getList&id="+pid, success: function(data){
 									$("#brainstorms3 ul[rel=rosters]").html(data.html);
+									$('#brainstorms_rosters_items').html(data.items);
 									if(data.html == "<li></li>") {
 										brainstormsActions(3);
 									} else {
@@ -177,6 +180,7 @@ function brainstormsRosters(name) {
 		$("#brainstorms3 ul[rel=rosters] .active-link").trigger("click");
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/brainstorms/modules/rosters&request=getList&id="+pid, success: function(data){																																																																				
 			$("#brainstorms3 ul[rel=rosters]").html(data.html);
+			$('#brainstorms_rosters_items').html(data.items);
 			var liindex = $("#brainstorms3 ul[rel=mrosters] .module-click").index($("#brainstorms3 ul[rel=rosters] .module-click[rel='"+id+"']"));
 			$("#brainstorms3 ul[rel=rosters] .module-click:eq("+liindex+")").addClass('active-link');
 			}
@@ -218,6 +222,7 @@ function brainstormsRosters(name) {
 		var fid = $("#brainstorms2 .module-click:visible").attr("rel");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/rosters&request=getList&id="+fid+"&sort="+sortnew, success: function(data){
 			$("#brainstorms3 ul[rel=rosters]").html(data.html);
+			$('#brainstorms_rosters_items').html(data.items);
 			obj.attr("rel",sortnew);
 			obj.removeClass("sort"+sortcur).addClass("sort"+sortnew);
 			var id = $("#brainstorms3 ul[rel=rosters] .module-click:eq(0)").attr("rel");

@@ -596,6 +596,11 @@ class Clients extends Controller {
 	  return !empty($canView);
    }
 
+	function getNavModulesNumItems($id) {
+		$arr = $this->model->getNavModulesNumItems($id);
+		return json_encode($arr);
+	}
+
 }
 
 $clients = new Clients("clients");

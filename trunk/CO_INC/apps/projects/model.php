@@ -1859,10 +1859,28 @@ class ProjectsModel extends Model {
 	
 	
 	function getNavModulesNumItems($id) {
-		$projectsMeetingsModel = new ProjectsMeetingsModel();
-		$data["projects_meetings_items"] = $projectsMeetingsModel->getNavNumItems($id);
-		/*$projectsPhonecallsModel = new ProjectsPhonecallsModel();
-		$data["projects_phonecalls_items"] = $projectsPhonecallsModel->getNavNumItems($id);*/
+		global $projects;
+		$active_modules = array();
+		foreach($projects->modules as $module => $value) {
+			$active_modules[] = $module;
+		}
+		
+		if(in_array("meetings",$active_modules)) {
+			$projectsMeetingsModel = new ProjectsMeetingsModel();
+			$data["projects_meetings_items"] = $projectsMeetingsModel->getNavNumItems($id);
+		}
+		if(in_array("phonecalls",$active_modules)) {
+			$projectsPhonecallsModel = new ProjectsPhonecallsModel();
+			$data["projects_phonecalls_items"] = $projectsPhonecallsModel->getNavNumItems($id);
+		}
+		if(in_array("documents",$active_modules)) {
+			$projectsDocumentsModel = new ProjectsDocumentsModel();
+			$data["projects_documents_items"] = $projectsDocumentsModel->getNavNumItems($id);
+		}
+		if(in_array("vdocs",$active_modules)) {
+			$projectsVDocsModel = new ProjectsVDocsModel();
+			$data["projects_vdocs_items"] = $projectsVDocsModel->getNavNumItems($id);
+		}
 		return $data;
 	}
 	

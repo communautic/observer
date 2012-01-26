@@ -1435,6 +1435,20 @@ class ForumsModel extends Model {
 
 	}
 
+
+	function getNavModulesNumItems($id) {
+		global $forums;
+		$active_modules = array();
+		foreach($forums->modules as $module => $value) {
+			$active_modules[] = $module;
+		}
+		if(in_array("documents",$active_modules)) {
+			$forumsDocumentsModel = new ForumsDocumentsModel();
+			$data["forums_documents_items"] = $forumsDocumentsModel->getNavNumItems($id);
+		}
+		return $data;
+	}
+
 }
 
 $forumsmodel = new ForumsModel(); // needed for direct calls to functions eg echo $forumsmodel ->getForumTitle(1);

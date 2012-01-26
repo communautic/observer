@@ -140,6 +140,7 @@ function projectsDocuments(name) {
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: 'path=apps/projects/modules/documents&request=createNew&id=' + id, cache: false, success: function(data){
 			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/projects/modules/documents&request=getList&id="+id, success: function(ldata){						
 				$("#projects3 ul[rel=documents]").html(ldata.html);
+				$('#projects_documents_items').html(ldata.items);
 				var liindex = $("#projects3 ul[rel=documents] .module-click").index($("#projects3 ul[rel=documents] .module-click[rel='"+data.id+"']"));
 				$("#projects3 ul[rel=documents] .module-click:eq("+liindex+")").addClass('active-link');
 				var moduleidx = $("#projects3 ul").index($("#projects3 ul[rel=documents]"));
@@ -160,6 +161,7 @@ function projectsDocuments(name) {
 		$.ajax({ type: "GET", url: "/", data: 'path=apps/projects/modules/documents&request=createDuplicate&id=' + id, cache: false, success: function(did){
 			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/projects/modules/documents&request=getList&id="+pid, success: function(data){																																																																				
 				$("#projects3 ul[rel=documents]").html(data.html);
+				$('#projects_documents_items').html(data.items);
 				var moduleidx = $("#projects3 ul").index($("#projects3 ul[rel=documents]"));
 				var liindex = $("#projects3 ul[rel=documents] .module-click").index($("#projects3 ul[rel=documents] .module-click[rel='"+did+"']"));
 				module.getDetails(moduleidx,liindex);
@@ -188,6 +190,7 @@ function projectsDocuments(name) {
 							if(data == "true") {
 								$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/projects/modules/documents&request=getList&id="+pid, success: function(data){
 								$("#projects3 ul[rel=documents]").html(data.html);
+								$('#projects_documents_items').html(data.items);
 								var moduleidx = $("#projects3 ul").index($("#projects3 ul[rel=documents]"));
 								var liindex = 0;
 								module.getDetails(moduleidx,liindex);
@@ -215,6 +218,7 @@ function projectsDocuments(name) {
 		$("#projects3 ul[rel=documents] .active-link").trigger("click");
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/projects/modules/documents&request=getList&id="+pid, success: function(data){																																																																				
 			$("#projects3 ul[rel=documents]").html(data.html);
+			$('#projects_documents_items').html(data.items);
 			var liindex = $("#projects3 ul[rel=documents] .module-click").index($("#projects3 ul[rel=documents] .module-click[rel='"+id+"']"));
 			$("#projects3 ul[rel=documents] .module-click:eq("+liindex+")").addClass('active-link');
 			}
@@ -253,6 +257,7 @@ function projectsDocuments(name) {
 		var fid = $("#projects2 .module-click:visible").attr("rel");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/documents&request=getList&id="+fid+"&sort="+sortnew, success: function(data){
 			$("#projects3 ul[rel=documents]").html(data.html);
+			$('#projects_documents_items').html(data.items);
 			obj.attr("rel",sortnew);
 			obj.removeClass("sort"+sortcur).addClass("sort"+sortnew);
 			var id = $("#projects3 ul[rel=documents] .module-click:eq(0)").attr("rel");

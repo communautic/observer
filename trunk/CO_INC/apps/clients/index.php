@@ -152,7 +152,9 @@ if (!empty($_GET['request'])) {
 		case 'getExportWindow':
 			echo($clients->getExportWindow($_GET['id']));
 		break;
-
+		case 'getNavModulesNumItems':
+			echo($clients->getNavModulesNumItems($_GET['id']));
+		break;
 	}
 }
 

@@ -1719,7 +1719,32 @@ class BrainstormsModel extends Model {
 
 	}
 
-   
+  
+	function getNavModulesNumItems($id) {
+		global $brainstorms;
+		$active_modules = array();
+		foreach($brainstorms->modules as $module => $value) {
+			$active_modules[] = $module;
+		}
+		if(in_array("rosters",$active_modules)) {
+			$brainstormsRostersModel = new BrainstormsRostersModel();
+			$data["brainstorms_rosters_items"] = $brainstormsRostersModel->getNavNumItems($id);
+		}
+		if(in_array("meetings",$active_modules)) {
+			$brainstormsMeetingsModel = new BrainstormsMeetingsModel();
+			$data["brainstorms_meetings_items"] = $brainstormsMeetingsModel->getNavNumItems($id);
+		}
+		if(in_array("documents",$active_modules)) {
+			$brainstormsDocumentsModel = new BrainstormsDocumentsModel();
+			$data["brainstorms_documents_items"] = $brainstormsDocumentsModel->getNavNumItems($id);
+		}
+		if(in_array("vdocs",$active_modules)) {
+			$brainstormsVDocsModel = new BrainstormsVDocsModel();
+			$data["brainstorms_vdocs_items"] = $brainstormsVDocsModel->getNavNumItems($id);
+		}
+		return $data;
+	}
+
 
 }
 

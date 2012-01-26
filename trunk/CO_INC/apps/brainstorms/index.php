@@ -167,6 +167,9 @@ if (!empty($_GET['request'])) {
 		case 'markNoticeRead':
 			echo($brainstorms->markNoticeRead($_GET['pid']));
 		break;
+		case 'getNavModulesNumItems':
+			echo($brainstorms->getNavModulesNumItems($_GET['id']));
+		break;
 	}
 }
 

@@ -154,6 +154,9 @@ if (!empty($_GET['request'])) {
 		case 'markNewPostRead':
 			echo($forums->markNewPostRead($_GET['pid']));
 		break;
+		case 'getNavModulesNumItems':
+			echo($forums->getNavModulesNumItems($_GET['id']));
+		break;
 	}
 }
 

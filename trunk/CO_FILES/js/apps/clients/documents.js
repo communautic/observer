@@ -140,6 +140,7 @@ function clientsDocuments(name) {
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: 'path=apps/clients/modules/documents&request=createNew&id=' + id, cache: false, success: function(data){
 			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/clients/modules/documents&request=getList&id="+id, success: function(ldata){						
 				$("#clients3 ul[rel=documents]").html(ldata.html);
+				$('#clients_documents_items').html(ldata.items);
 				var liindex = $("#clients3 ul[rel=documents] .module-click").index($("#clients3 ul[rel=documents] .module-click[rel='"+data.id+"']"));
 				$("#clients3 ul[rel=documents] .module-click:eq("+liindex+")").addClass('active-link');
 				var moduleidx = $("#clients3 ul").index($("#clients3 ul[rel=documents]"));
@@ -160,6 +161,7 @@ function clientsDocuments(name) {
 		$.ajax({ type: "GET", url: "/", data: 'path=apps/clients/modules/documents&request=createDuplicate&id=' + id, cache: false, success: function(did){
 			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/clients/modules/documents&request=getList&id="+pid, success: function(data){																																																																				
 				$("#clients3 ul[rel=documents]").html(data.html);
+				$('#clients_documents_items').html(data.items);
 				var moduleidx = $("#clients3 ul").index($("#clients3 ul[rel=documents]"));
 				var liindex = $("#clients3 ul[rel=documents] .module-click").index($("#clients3 ul[rel=documents] .module-click[rel='"+did+"']"));
 				module.getDetails(moduleidx,liindex);
@@ -188,6 +190,7 @@ function clientsDocuments(name) {
 							if(data == "true") {
 								$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/clients/modules/documents&request=getList&id="+pid, success: function(data){
 								$("#clients3 ul[rel=documents]").html(data.html);
+								$('#clients_documents_items').html(data.items);
 								var moduleidx = $("#clients3 ul").index($("#clients3 ul[rel=documents]"));
 								var liindex = 0;
 								module.getDetails(moduleidx,liindex);
@@ -215,6 +218,7 @@ function clientsDocuments(name) {
 		$("#clients3 ul[rel=documents] .active-link").trigger("click");
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/clients/modules/documents&request=getList&id="+pid, success: function(data){																																																																				
 			$("#clients3 ul[rel=documents]").html(data.html);
+			$('#clients_documents_items').html(data.items);
 			var liindex = $("#clients3 ul[rel=documents] .module-click").index($("#clients3 ul[rel=documents] .module-click[rel='"+id+"']"));
 			$("#clients3 ul[rel=documents] .module-click:eq("+liindex+")").addClass('active-link');
 			}
@@ -253,6 +257,7 @@ function clientsDocuments(name) {
 		var fid = $("#clients2 .module-click:visible").attr("rel");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients/modules/documents&request=getList&id="+fid+"&sort="+sortnew, success: function(data){
 			$("#clients3 ul[rel=documents]").html(data.html);
+			$('#clients_documents_items').html(data.items);
 			obj.attr("rel",sortnew);
 			obj.removeClass("sort"+sortcur).addClass("sort"+sortnew);
 			var id = $("#clients3 ul[rel=documents] .module-click:eq(0)").attr("rel");

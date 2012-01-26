@@ -97,6 +97,7 @@ function projectsPhonecalls(name) {
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: 'path=apps/projects/modules/phonecalls&request=createNew&id=' + id, cache: false, success: function(data){
 			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/projects/modules/phonecalls&request=getList&id="+id, success: function(list){
 				$("#projects3 ul[rel=phonecalls]").html(list.html);
+				$('#projects_phonecalls_items').html(list.items);
 				var liindex = $("#projects3 ul[rel=phonecalls] .module-click").index($("#projects3 ul[rel=phonecalls] .module-click[rel='"+data.id+"']"));
 				$("#projects3 ul[rel=phonecalls] .module-click:eq("+liindex+")").addClass('active-link');
 				var moduleidx = $("#projects3 ul").index($("#projects3 ul[rel=phonecalls]"));
@@ -118,6 +119,7 @@ function projectsPhonecalls(name) {
 		$.ajax({ type: "GET", url: "/", data: 'path=apps/projects/modules/phonecalls&request=createDuplicate&id=' + id, cache: false, success: function(mid){
 			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/projects/modules/phonecalls&request=getList&id="+pid, success: function(data){																																																																				
 				$("#projects3 ul[rel=phonecalls]").html(data.html);
+				$('#projects_phonecalls_items').html(data.items);
 				var moduleidx = $("#projects3 ul").index($("#projects3 ul[rel=phonecalls]"));
 				var liindex = $("#projects3 ul[rel=phonecalls] .module-click").index($("#projects3 ul[rel=phonecalls] .module-click[rel='"+mid+"']"));
 				module.getDetails(moduleidx,liindex);
@@ -147,6 +149,7 @@ function projectsPhonecalls(name) {
 							if(data == "true") {
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/phonecalls&request=getList&id="+pid, success: function(data){
 									$("#projects3 ul[rel=phonecalls]").html(data.html);
+									$('#projects_phonecalls_items').html(data.items);
 									if(data.html == "<li></li>") {
 										projectsActions(3);
 									} else {
@@ -183,6 +186,7 @@ function projectsPhonecalls(name) {
 		$("#projects3 ul[rel=phonecalls] .active-link").trigger("click");
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/projects/modules/phonecalls&request=getList&id="+pid, success: function(data){																																																																				
 			$("#projects3 ul[rel=phonecalls]").html(data.html);
+			$('#projects_phonecalls_items').html(data.items);
 			var liindex = $("#projects3 ul[rel=phonecalls] .module-click").index($("#projects3 ul[rel=phonecalls] .module-click[rel='"+id+"']"));
 			$("#projects3 ul[rel=phonecalls] .module-click:eq("+liindex+")").addClass('active-link');
 			}
@@ -224,6 +228,7 @@ function projectsPhonecalls(name) {
 		var fid = $("#projects2 .module-click:visible").attr("rel");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/phonecalls&request=getList&id="+fid+"&sort="+sortnew, success: function(data){
 			$("#projects3 ul[rel=phonecalls]").html(data.html);
+			$('#projects_phonecalls_items').html(data.items);
 			obj.attr("rel",sortnew);
 			obj.removeClass("sort"+sortcur).addClass("sort"+sortnew);
 			var id = $("#projects3 ul[rel=phonecalls] .module-click:eq(0)").attr("rel");

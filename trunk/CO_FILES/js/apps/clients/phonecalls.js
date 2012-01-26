@@ -97,6 +97,7 @@ function clientsPhonecalls(name) {
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: 'path=apps/clients/modules/phonecalls&request=createNew&id=' + id, cache: false, success: function(data){
 			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/clients/modules/phonecalls&request=getList&id="+id, success: function(list){
 				$("#clients3 ul[rel=phonecalls]").html(list.html);
+				$('#clients_phonecalls_items').html(list.items);
 				var liindex = $("#clients3 ul[rel=phonecalls] .module-click").index($("#clients3 ul[rel=phonecalls] .module-click[rel='"+data.id+"']"));
 				$("#clients3 ul[rel=phonecalls] .module-click:eq("+liindex+")").addClass('active-link');
 				var moduleidx = $("#clients3 ul").index($("#clients3 ul[rel=phonecalls]"));
@@ -118,6 +119,7 @@ function clientsPhonecalls(name) {
 		$.ajax({ type: "GET", url: "/", data: 'path=apps/clients/modules/phonecalls&request=createDuplicate&id=' + id, cache: false, success: function(mid){
 			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/clients/modules/phonecalls&request=getList&id="+pid, success: function(data){																																																																				
 				$("#clients3 ul[rel=phonecalls]").html(data.html);
+				$('#clients_phonecalls_items').html(data.items);
 				var moduleidx = $("#clients3 ul").index($("#clients3 ul[rel=phonecalls]"));
 				var liindex = $("#clients3 ul[rel=phonecalls] .module-click").index($("#clients3 ul[rel=phonecalls] .module-click[rel='"+mid+"']"));
 				module.getDetails(moduleidx,liindex);
@@ -147,6 +149,7 @@ function clientsPhonecalls(name) {
 							if(data == "true") {
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients/modules/phonecalls&request=getList&id="+pid, success: function(data){
 									$("#clients3 ul[rel=phonecalls]").html(data.html);
+									$('#clients_phonecalls_items').html(data.items);
 									if(data.html == "<li></li>") {
 										clientsActions(3);
 									} else {
@@ -183,6 +186,7 @@ function clientsPhonecalls(name) {
 		$("#clients3 ul[rel=phonecalls] .active-link").trigger("click");
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/clients/modules/phonecalls&request=getList&id="+pid, success: function(data){																																																																				
 			$("#clients3 ul[rel=phonecalls]").html(data.html);
+			$('#clients_phonecalls_items').html(data.items);
 			var liindex = $("#clients3 ul[rel=phonecalls] .module-click").index($("#clients3 ul[rel=phonecalls] .module-click[rel='"+id+"']"));
 			$("#clients3 ul[rel=phonecalls] .module-click:eq("+liindex+")").addClass('active-link');
 			}
@@ -224,6 +228,7 @@ function clientsPhonecalls(name) {
 		var fid = $("#clients2 .module-click:visible").attr("rel");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients/modules/phonecalls&request=getList&id="+fid+"&sort="+sortnew, success: function(data){
 			$("#clients3 ul[rel=phonecalls]").html(data.html);
+			$('#clients_phonecalls_items').html(data.items);
 			obj.attr("rel",sortnew);
 			obj.removeClass("sort"+sortcur).addClass("sort"+sortnew);
 			var id = $("#clients3 ul[rel=phonecalls] .module-click:eq(0)").attr("rel");

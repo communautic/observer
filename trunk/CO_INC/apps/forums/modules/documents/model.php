@@ -67,9 +67,10 @@ class ForumsDocumentsModel extends ForumsModel {
 		}
 	  
 		$q = "select id,title,access,edited_date from " . CO_TBL_FORUMS_DOCUMENTS_FOLDERS . " where pid = '$id' and bin != '1' " . $sql . $order;
-
 		$this->setSortStatus("forums-documents-sort-status",$sortcur,$id);
 		$result = mysql_query($q, $this->_db->connection);
+		$items = mysql_num_rows($result);
+		
 		$documents = "";
 		while ($row = mysql_fetch_array($result)) {
 			foreach($row as $key => $val) {
@@ -89,10 +90,24 @@ class ForumsDocumentsModel extends ForumsModel {
 			$documents[] = new Lists($array);
 	  }
 		
-	  $arr = array("documents" => $documents, "sort" => $sortcur, "perm" => $perm);
+	  $arr = array("documents" => $documents, "items" => $items, "sort" => $sortcur, "perm" => $perm);
 	  return $arr;
 	}
 
+
+	function getNavNumItems($id) {
+		$perm = $this->getForumAccess($id);
+		$sql ="";
+		if( $perm ==  "guest") {
+			$sql = " and access = '1' ";
+		}
+		$q = "select count(*) as items from " . CO_TBL_FORUMS_DOCUMENTS_FOLDERS . " where pid = '$id' and bin != '1' " . $sql;
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_array($result);
+		$items = $row['items'];
+		return $items;
+	}
+	
 
    	function formatBytes($bytes, $precision = 2) {
 		$units = array('B', 'KB', 'MB', 'GB', 'TB');

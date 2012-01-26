@@ -38,7 +38,7 @@
                     <div id="projects_<?php echo($module);?>" class="thirdLevel" style="top: <?php echo($i*27);?>px">
                         <div class="module-actions module-actions-modules"><?php if (${'projects_'.$module.'_filter'} != 0) { ?><div class="sort-outer"><span class="sort" rel="1"></span></div><?php } ?></div>
                         <h3 rel="<?php echo($module);?>"><?php echo(${'projects_'.$module.'_name'});?></h3>
-                        <div style="position: absolute; right: 3px; top: 7px; font-size: 11px; color: #333;" id="<?php echo('projects_'.$module.'_items');?>"></div>
+                        <div class="numItems" id="<?php echo('projects_'.$module.'_items');?>"></div>
                         <div class="projects3-content"><div class="scrolling-content">        
                         <ul class="sortable" rel="<?php echo($module);?>"><li></li></ul>
                         </div>

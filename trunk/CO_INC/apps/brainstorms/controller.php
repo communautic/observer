@@ -608,6 +608,10 @@ class Brainstorms extends Controller {
 		  }
 	}
 
+	function getNavModulesNumItems($id) {
+		$arr = $this->model->getNavModulesNumItems($id);
+		return json_encode($arr);
+	}
 
 }
 

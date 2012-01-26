@@ -586,9 +586,7 @@ class Projects extends Controller {
 	
 	
 	function getNavModulesNumItems($id) {
-		//global $lang;
 		$arr = $this->model->getNavModulesNumItems($id);
-		//$data = $arr["data"];
 		return json_encode($arr);
 	}
 	

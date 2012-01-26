@@ -100,6 +100,7 @@ function clientsOrders(name) {
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: 'path=apps/clients/modules/orders&request=createNew&id=' + id, cache: false, success: function(data){
 			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/clients/modules/orders&request=getList&id="+id, success: function(list){
 				$(".clients3 ul[rel=orders]").html(list.html);
+				$('#clients_orders_items').html(list.items);
 				var liindex = $(".clients3-content:visible .module-click").index($(".clients3-content:visible .module-click[rel='"+data.id+"']"));
 				$("#clients3 ul[rel=orders] .module-click:eq("+liindex+")").addClass('active-link');
 				var moduleidx = $("#clients3 ul").index($("#clients3 ul[rel=orders]"));
@@ -121,6 +122,7 @@ function clientsOrders(name) {
 		$.ajax({ type: "GET", url: "/", data: 'path=apps/clients/modules/orders&request=createDuplicate&id=' + id, cache: false, success: function(mid){
 			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/clients/modules/orders&request=getList&id="+pid, success: function(data){																																																																				
 				$("#clients3 ul[rel=meetings]").html(data.html);
+				$('#clients_orders_items').html(data.items);
 				var moduleidx = $("#clients3 ul").index($("#clients3 ul[rel=orders]"));
 				var liindex = $("#clients3 ul[rel=orders] .module-click").index($("#clients3 ul[rel=orders] .module-click[rel='"+mid+"']"));
 				module.getDetails(moduleidx,liindex);
@@ -150,6 +152,7 @@ function clientsOrders(name) {
 							if(data == "true") {
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients/modules/orders&request=getList&id="+pid, success: function(data){
 									$("#clients3 ul[rel=orders]").html(data.html);
+									$('#clients_orders_items').html(data.items);
 									if(data.html == "<li></li>") {
 										clientsActions(10);
 									} else {
@@ -186,6 +189,7 @@ function clientsOrders(name) {
 		$("#clients3 ul[rel=meetings] .active-link").trigger("click");
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/clients/modules/orders&request=getList&id="+pid, success: function(data){																																																																				
 			$("#clients3 ul[rel=orders]").html(data.html);
+			$('#clients_orders_items').html(data.items);
 			var liindex = $("#clients3 ul[rel=orders] .module-click").index($("#clients3 ul[rel=orders] .module-click[rel='"+id+"']"));
 			$("#clients3 ul[rel=orders] .module-click:eq("+liindex+")").addClass('active-link');
 			}
@@ -227,6 +231,7 @@ function clientsOrders(name) {
 		var fid = $("#clients2 .module-click:visible").attr("rel");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients/modules/orders&request=getList&id="+fid+"&sort="+sortnew, success: function(data){
 			$("#clients3 ul[rel=orders]").html(data.html);
+			$('#clients_orders_items').html(data.items);
 			obj.attr("rel",sortnew);
 			obj.removeClass("sort"+sortcur).addClass("sort"+sortnew);
 			var id = $("#clients3 ul[rel=orders] .module-click:eq(0)").attr("rel");

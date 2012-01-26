@@ -68,9 +68,10 @@ class ClientsPhonecallsModel extends ClientsModel {
 		}
 		
 		$q = "select id,title,item_date,access,status,checked_out,checked_out_user from " . CO_TBL_CLIENTS_PHONECALLS . " where pid = '$id' and bin != '1' " . $sql . $order;
-
 		$this->setSortStatus("clients-phonecalls-sort-status",$sortcur,$id);
 		$result = mysql_query($q, $this->_db->connection);
+		$items = mysql_num_rows($result);
+		
 		$phonecalls = "";
 		while ($row = mysql_fetch_array($result)) {
 
@@ -104,10 +105,22 @@ class ClientsPhonecallsModel extends ClientsModel {
 			$phonecalls[] = new Lists($array);
 	  }
 		
-	  $arr = array("phonecalls" => $phonecalls, "sort" => $sortcur, "perm" => $perm);
+	  $arr = array("phonecalls" => $phonecalls, "items" => $items, "sort" => $sortcur, "perm" => $perm);
 	  return $arr;
 	}
 
+	function getNavNumItems($id) {
+		$perm = $this->getClientAccess($id);
+		$sql ="";
+		if( $perm ==  "guest") {
+			$sql = " and access = '1' ";
+		}
+		$q = "select count(*) as items from " . CO_TBL_CLIENTS_PHONECALLS . " where pid = '$id' and bin != '1' " . $sql;
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_array($result);
+		$items = $row['items'];
+		return $items;
+	}
 
 	function checkoutPhonecall($id) {
 		global $session;

@@ -69,9 +69,10 @@ class BrainstormsRostersModel extends BrainstormsModel {
 		}
 		
 		$q = "select id,title,access,checked_out,checked_out_user from " . CO_TBL_BRAINSTORMS_ROSTERS . " where pid = '$id' and bin != '1' " . $sql . $order;
-
 		$this->setSortStatus("brainstorms-rosters-sort-status",$sortcur,$id);
 		$result = mysql_query($q, $this->_db->connection);
+		$items = mysql_num_rows($result);
+		
 		$rosters = "";
 		while ($row = mysql_fetch_array($result)) {
 
@@ -101,7 +102,7 @@ class BrainstormsRostersModel extends BrainstormsModel {
 			$rosters[] = new Lists($array);
 	  }
 		
-	  $arr = array("rosters" => $rosters, "sort" => $sortcur, "perm" => $perm);
+	  $arr = array("rosters" => $rosters, "items" => $items, "sort" => $sortcur, "perm" => $perm);
 	  return $arr;
 	}
 	
@@ -116,6 +117,22 @@ class BrainstormsRostersModel extends BrainstormsModel {
 		}
 	}
 	
+	
+	function getNavNumItems($id) {
+		$perm = $this->getBrainstormAccess($id);
+		$sql ="";
+		if( $perm ==  "guest") {
+			$sql = " and access = '1' ";
+		}
+		$q = "select count(*) as items from " . CO_TBL_BRAINSTORMS_ROSTERS . " where pid = '$id' and bin != '1' " . $sql;
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_array($result);
+		$items = $row['items'];
+		/*if($items == 0) {
+			$items = "";
+		}*/
+		return $items;
+	}
 	
 	function checkinRoster($id) {
 		global $session;

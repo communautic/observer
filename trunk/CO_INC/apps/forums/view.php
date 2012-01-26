@@ -38,6 +38,7 @@
                     <div id="forums_<?php echo($module);?>" class="thirdLevel" style="top: <?php echo($i*27);?>px">
                         <div class="module-actions module-actions-modules"><?php if (${'forums_'.$module.'_filter'} != 0) { ?><div class="sort-outer"><span class="sort" rel="1"></span></div><?php } ?></div>
                         <h3 rel="<?php echo($module);?>"><?php echo(${'forums_'.$module.'_name'});?></h3>
+                        <div class="numItems" id="<?php echo('forums_'.$module.'_items');?>"></div>
                         <div class="forums3-content"><div class="scrolling-content">        
                         <ul class="sortable" rel="<?php echo($module);?>"><li></li></ul>
                         </div>

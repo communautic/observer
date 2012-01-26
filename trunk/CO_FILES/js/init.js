@@ -1860,6 +1860,7 @@ function navItemSecond(objectname, clicked) {
 		}
 
 		window['init'+objectnameCaps+'ContentScrollbar']();
+		$('.'+objectname+'3-content ul').html('');
 		if(text.access != "sysadmin") { 
 			window['modulesDisplay'](objectname,text.access);
 		} else {

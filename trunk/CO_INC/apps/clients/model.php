@@ -1621,7 +1621,34 @@ class ClientsModel extends Model {
 			return true;
 		}
 	}
-   
+  
+  
+ 	function getNavModulesNumItems($id) {
+		global $clients;
+		$active_modules = array();
+		foreach($clients->modules as $module => $value) {
+			$active_modules[] = $module;
+		}
+		if(in_array("orders",$active_modules)) {
+			$clientsOrdersModel = new ClientsOrdersModel();
+			$data["clients_orders_items"] = $clientsOrdersModel->getNavNumItems($id);
+		}		
+		if(in_array("meetings",$active_modules)) {
+			$clientsMeetingsModel = new ClientsMeetingsModel();
+			$data["clients_meetings_items"] = $clientsMeetingsModel->getNavNumItems($id);
+		}
+		if(in_array("phonecalls",$active_modules)) {
+			$clientsPhonecallsModel = new ClientsPhonecallsModel();
+			$data["clients_phonecalls_items"] = $clientsPhonecallsModel->getNavNumItems($id);
+		}
+		if(in_array("documents",$active_modules)) {
+			$clientsDocumentsModel = new ClientsDocumentsModel();
+			$data["clients_documents_items"] = $clientsDocumentsModel->getNavNumItems($id);
+		}
+		return $data;
+	}
+ 
+ 
 
 }
 

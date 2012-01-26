@@ -68,9 +68,10 @@ class ClientsOrdersModel extends ClientsModel {
 		}
 		
 		$q = "select id,title,item_date,access,status,checked_out,checked_out_user from " . CO_TBL_CLIENTS_ORDERS . " where pid = '$id' and bin != '1' " . $sql . $order;
-
 		$this->setSortStatus("clients-orders-sort-status",$sortcur,$id);
 		$result = mysql_query($q, $this->_db->connection);
+		$items = mysql_num_rows($result);
+		
 		$orders = "";
 		while ($row = mysql_fetch_array($result)) {
 
@@ -107,10 +108,22 @@ class ClientsOrdersModel extends ClientsModel {
 			$orders[] = new Lists($array);
 	  }
 		
-	  $arr = array("orders" => $orders, "sort" => $sortcur, "perm" => $perm);
+	  $arr = array("orders" => $orders, "items" => $items, "sort" => $sortcur, "perm" => $perm);
 	  return $arr;
 	}
-
+	
+	function getNavNumItems($id) {
+		$perm = $this->getClientAccess($id);
+		$sql ="";
+		if( $perm ==  "guest") {
+			$sql = " and access = '1' ";
+		}
+		$q = "select count(*) as items from " . CO_TBL_CLIENTS_ORDERS . " where pid = '$id' and bin != '1' " . $sql;
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_array($result);
+		$items = $row['items'];
+		return $items;
+	}
 
 	function checkoutOrder($id) {
 		global $session;
