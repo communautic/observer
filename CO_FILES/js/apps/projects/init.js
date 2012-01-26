@@ -69,17 +69,17 @@ function projectsApplication(name) {
 	this.actionClose = function() {
 		projectsLayout.toggle('west');
 	}
-	
+
+
 	this.getNavModulesNumItems = function(id) {
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/projects&request=getNavModulesNumItems&id=' + id, success: function(data){
-		//$('.navItems').html('50');
 				$.each( data, function(k, v){
-   //alert( "Key: " + k + ", Value: " + v );
-   $('#'+k).html(v);
- });
-																															   			}
-																																				   		});
+   					$('#'+k).html(v);
+ 				});
+			}
+		});
 	}
+
 
 	this.actionNew = function() {
 		var module = this;

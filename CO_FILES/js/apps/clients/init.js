@@ -79,6 +79,16 @@ function clientsApplication(name) {
 		clientsLayout.toggle('west');
 	}
 
+
+	this.getNavModulesNumItems = function(id) {
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/clients&request=getNavModulesNumItems&id=' + id, success: function(data){
+				$.each( data, function(k, v){
+   					$('#'+k).html(v);
+ 				});
+			}
+		});
+	}
+
 	
 	this.actionNew = function() {
 		var module = this;

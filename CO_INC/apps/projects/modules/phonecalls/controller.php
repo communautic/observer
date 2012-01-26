@@ -19,6 +19,7 @@ class ProjectsPhonecalls extends Projects {
 			include('view/list.php');
 			$data["html"] = ob_get_contents();
 		ob_end_clean();
+		$data["items"] = $arr["items"];
 		$data["sort"] = $arr["sort"];
 		$data["perm"] = $arr["perm"];
 		$data["title"] = $lang["PROJECT_PHONECALL_ACTION_NEW"];

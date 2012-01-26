@@ -64,6 +64,16 @@ function forumsApplication(name) {
 		forumsLayout.toggle('west');
 	}
 
+
+	this.getNavModulesNumItems = function(id) {
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/forums&request=getNavModulesNumItems&id=' + id, success: function(data){
+				$.each( data, function(k, v){
+   					$('#'+k).html(v);
+ 				});
+			}
+		});
+	}
+
 	
 	this.actionNew = function() {
 		var module = this;

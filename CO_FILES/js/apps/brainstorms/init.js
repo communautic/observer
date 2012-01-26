@@ -58,6 +58,16 @@ function brainstormsApplication(name) {
 		brainstormsLayout.toggle('west');
 	}
 
+
+	this.getNavModulesNumItems = function(id) {
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/brainstorms&request=getNavModulesNumItems&id=' + id, success: function(data){
+				$.each( data, function(k, v){
+   					$('#'+k).html(v);
+ 				});
+			}
+		});
+	}
+	
 	
 	this.actionNew = function() {
 		var module = this;

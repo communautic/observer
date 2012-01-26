@@ -562,6 +562,12 @@ class Forums extends Controller {
 		  }
 	}
 
+
+	function getNavModulesNumItems($id) {
+		$arr = $this->model->getNavModulesNumItems($id);
+		return json_encode($arr);
+	}
+	
 }
 
 $forums = new Forums("forums");

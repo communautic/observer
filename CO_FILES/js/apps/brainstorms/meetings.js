@@ -75,6 +75,7 @@ function brainstormsMeetings(name) {
 				var id = $('#brainstorms').data('second');
 				$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/brainstorms/modules/meetings&request=getList&id="+id, success: function(list){
 					$('#brainstorms3 ul[rel=meetings]').html(list.html);
+					$('#brainstorms_meetings_items').html(list.items);
 					var moduleidx = $("#brainstorms3 ul").index($("#brainstorms3 ul[rel=meetings]"));
 					var liindex = $("#brainstorms3 ul[rel=meetings] .module-click").index($("#brainstorms3 ul[rel=meetings] .module-click[rel='"+data.id+"']"));
 					module.getDetails(moduleidx,liindex);
@@ -144,6 +145,7 @@ function brainstormsMeetings(name) {
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: 'path=apps/brainstorms/modules/meetings&request=createNew&id=' + id, cache: false, success: function(data){
 			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/brainstorms/modules/meetings&request=getList&id="+id, success: function(list){
 				$("#brainstorms3 ul[rel=meetings]").html(list.html);
+				$('#brainstorms_meetings_items').html(list.items);
 				var liindex = $("#brainstorms3 ul[rel=meetings] .module-click").index($("#brainstorms3 ul[rel=meetings] .module-click[rel='"+data.id+"']"));
 				$("#brainstorms3 ul[rel=meetings] .module-click:eq("+liindex+")").addClass('active-link');
 				var moduleidx = $("#brainstorms3 ul").index($("#brainstorms3 ul[rel=meetings]"));
@@ -165,6 +167,7 @@ function brainstormsMeetings(name) {
 		$.ajax({ type: "GET", url: "/", data: 'path=apps/brainstorms/modules/meetings&request=createDuplicate&id=' + id, cache: false, success: function(mid){
 			$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/brainstorms/modules/meetings&request=getList&id="+pid, success: function(data){																																																																				
 				$("#brainstorms3 ul[rel=meetings]").html(data.html);
+				$('#brainstorms_meetings_items').html(data.items);
 				var moduleidx = $("#brainstorms3 ul").index($("#brainstorms3 ul[rel=meetings]"));
 				var liindex = $("#brainstorms3 ul[rel=meetings] .module-click").index($("#brainstorms3 ul[rel=meetings] .module-click[rel='"+mid+"']"));
 				module.getDetails(moduleidx,liindex);
@@ -194,6 +197,7 @@ function brainstormsMeetings(name) {
 							if(data == "true") {
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/meetings&request=getList&id="+pid, success: function(data){
 									$("#brainstorms3 ul[rel=meetings]").html(data.html);
+									$('#brainstorms_meetings_items').html(data.items);
 									if(data.html == "<li></li>") {
 										brainstormsActions(3);
 									} else {
@@ -230,6 +234,7 @@ function brainstormsMeetings(name) {
 		$("#brainstorms3 ul[rel=meetings] .active-link").trigger("click");
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/brainstorms/modules/meetings&request=getList&id="+pid, success: function(data){																																																																				
 			$("#brainstorms3 ul[rel=meetings]").html(data.html);
+			$('#brainstorms_meetings_items').html(data.items);
 			var liindex = $("#brainstorms3 ul[rel=meetings] .module-click").index($("#brainstorms3 ul[rel=meetings] .module-click[rel='"+id+"']"));
 			$("#brainstorms3 ul[rel=meetings] .module-click:eq("+liindex+")").addClass('active-link');
 			}
@@ -271,6 +276,7 @@ function brainstormsMeetings(name) {
 		var fid = $("#brainstorms2 .module-click:visible").attr("rel");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/meetings&request=getList&id="+fid+"&sort="+sortnew, success: function(data){
 			$("#brainstorms3 ul[rel=meetings]").html(data.html);
+			$('#brainstorms_meetings_items').html(data.items);
 			obj.attr("rel",sortnew);
 			obj.removeClass("sort"+sortcur).addClass("sort"+sortnew);
 			var id = $("#brainstorms3 ul[rel=meetings] .module-click:eq(0)").attr("rel");
