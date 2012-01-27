@@ -51,7 +51,7 @@ function brainstormsRosters(name) {
 			if(list == 0) {
 				switch (data.access) {
 					case "sysadmin": case "admin":
-						brainstormsActions(10);
+						brainstormsActions(12);
 					break;
 					case "guest":
 						brainstormsActions(5);
@@ -63,7 +63,7 @@ function brainstormsRosters(name) {
 						if(list == "<li></li>") {
 							brainstormsActions(3);
 						} else {
-							brainstormsActions(10);
+							brainstormsActions(12);
 						}
 					break;
 					case "guest":
@@ -146,8 +146,9 @@ function brainstormsRosters(name) {
 									$('#brainstorms_rosters_items').html(data.items);
 									if(data.html == "<li></li>") {
 										brainstormsActions(3);
+										alert('yo');
 									} else {
-										brainstormsActions(10);
+										brainstormsActions(12);
 									}
 									var moduleidx = $("#brainstorms3 ul").index($("#brainstorms3 ul[rel=rosters]"));
 									var liindex = 0;

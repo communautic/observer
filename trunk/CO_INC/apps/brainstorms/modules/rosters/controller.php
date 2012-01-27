@@ -12,7 +12,7 @@ class BrainstormsRosters extends Brainstorms {
 
 
 	function getList($id,$sort) {
-		global $system,$lang;
+		global $system, $lang;
 		$arr = $this->model->getList($id,$sort);
 		$rosters = $arr["rosters"];
 		ob_start();
