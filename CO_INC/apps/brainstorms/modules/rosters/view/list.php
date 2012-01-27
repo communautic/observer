@@ -1,4 +1,3 @@
-<div id="brainstorms_rosters-action-new" style="display: none"><?php echo $lang["BRAINSTORM_ROSTER_ACTION_NEW"];?></div>
 <?php
 if(is_array($rosters)) {
 foreach ($rosters as $roster) {

@@ -746,22 +746,32 @@ function brainstormsActions(status) {
 	/*	0= new	1= print	2= send		3= duplicate	4= roster		5=refresh 	6 = delete*/
 	switch(status) {
 		//case 0: actions = ['0','1','2','3','5','6']; break;
-		case 0: actions = ['0','1','2','3','5','6','7']; break;
-		case 1: actions = ['0','5','6','7']; break;
-		case 3: 	actions = ['0','5','6']; break;   					// just new
+		case 0: actions = ['0','1','2','3','6','7','8']; break;
+		case 1: actions = ['0','6','7','8']; break;
+		case 3: 	actions = ['0','6','7']; break;   					// just new
 		//case 4: 	actions = ['0','1','2','4','5']; break;   		// new, print, send, handbook, refresh
-		case 4: 	actions = ['0','1','2','4','5','6']; break;
+		case 4: 	actions = ['0','1','2','5','6','7']; break;
 		//case 5: 	actions = ['1','2','5']; break;   			// print, send, refresh
-		case 5: 	actions = ['1','2','5','6']; break;
-		case 6: 	actions = ['5','6']; break;   			// handbook refresh
+		case 5: 	actions = ['1','2','6','7']; break;
+		case 6: 	actions = ['6','7']; break;   			// handbook refresh
 		//case 7: 	actions = ['0','1','2','5']; break;   			// new, print, send, refresh
-		case 7: 	actions = ['0','1','2','5','6']; break;
+		case 7: 	actions = ['0','1','2','6','7']; break;
 		//case 8: 	actions = ['1','2','4','5']; break;   			// print, send, handbook, refresh
-		case 8: 	actions = ['1','2','4','5','6']; break;
+		case 8: 	actions = ['1','2','5','6','7']; break;
 		//case 9: actions = ['0','1','2','3','4','5','6']; break;
-		case 9: actions = ['0','1','2','5','6','7']; break;
-		case 10: actions = ['0','1','2','3','4','5','6','7']; break;
-		default: 	actions = ['5','6'];  								// none
+		case 9: actions = ['0','1','2','6','7','8']; break;
+		
+		// vdocs
+		// 0 == 10
+		case 10: actions = ['0','1','2','3','4','6','7','8']; break;
+		// 5 == 11
+		case 11: 	actions = ['1','2','4','6','7']; break;   			// print, send, refresh
+		
+		// rosters
+		case 12: actions = ['0','1','2','3','5','6','7','8']; break;
+		
+		
+		default: 	actions = ['6','7'];  								// none
 	}
 	$('#brainstormsActions > li span').each( function(index) {
 		if(index in oc(actions)) {
