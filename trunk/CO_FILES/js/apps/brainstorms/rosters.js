@@ -182,7 +182,7 @@ function brainstormsRosters(name) {
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/brainstorms/modules/rosters&request=getList&id="+pid, success: function(data){																																																																				
 			$("#brainstorms3 ul[rel=rosters]").html(data.html);
 			$('#brainstorms_rosters_items').html(data.items);
-			var liindex = $("#brainstorms3 ul[rel=mrosters] .module-click").index($("#brainstorms3 ul[rel=rosters] .module-click[rel='"+id+"']"));
+			var liindex = $("#brainstorms3 ul[rel=rosters] .module-click").index($("#brainstorms3 ul[rel=rosters] .module-click[rel='"+id+"']"));
 			$("#brainstorms3 ul[rel=rosters] .module-click:eq("+liindex+")").addClass('active-link');
 			}
 		});
