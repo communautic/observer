@@ -6,7 +6,7 @@ $lang["PROJECT_VDOC_NEW"] = 'New VDoc';
 $lang["PROJECT_VDOC_TASK_NEW"] = 'New Topic';
 $lang["PROJECT_VDOC_ACTION_NEW"] = 'new virtual document';
 
-$lang["PROJECT_VDOC_HELP"] = 'manual_projekte_Textbeittraege.pdf';
+$lang["PROJECT_VDOC_HELP"] = 'manual_projekte_Textbeitraege.pdf';
 
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/projects/vdocs/en.php";
