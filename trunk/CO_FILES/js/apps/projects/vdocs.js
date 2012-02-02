@@ -357,7 +357,6 @@ $(document).ready(function() {
 		ed.onKeyUp.add(function(ed, l) {
 								var content = ed.getContent();
 			if (content != $("#"+ele).data('initial_value')) {
-				 //alert('changed');
 				formChanged = true;
 				$("#"+ele).data('initial_value', content);
 			}
@@ -365,7 +364,6 @@ $(document).ready(function() {
 		ed.onChange.add(function(ed, l) {
 			var content = ed.getContent();
 			if (content != $("#"+ele).data('initial_value')) {
-				 //alert('changed');
 				formChanged = true;
 				$("#"+ele).data('initial_value', content);
 			}
@@ -373,7 +371,6 @@ $(document).ready(function() {
 		ed.onPaste.add(function(ed, l) {
 			var content = ed.getContent();
 			if (content != $("#"+ele).data('initial_value')) {
-				 //alert('changed');
 				formChanged = true;
 				$("#"+ele).data('initial_value', content);
 			}
@@ -424,7 +421,7 @@ $(document).ready(function() {
 			doctype: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">',
 			theme : "advanced",
 			skin : "coVDocs",
-			language: "de",
+			language: co_lang,
 			entity_encoding : "raw",
         	plugins : "autosave,autoresize,pagebreak,emotions,inlinepopups,paste,visualchars,nonbreaking,xhtmlxtras",
 			force_br_newlines: false,
