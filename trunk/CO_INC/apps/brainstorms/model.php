@@ -845,15 +845,6 @@ class BrainstormsModel extends Model {
 			}
 		}
 		
-		if(in_array("vdocs",$active_modules)) {
-			$vdocsmodel = new VDocsModel();
-			$q = "SELECT id FROM co_brainstorms_vdocs where pid = '$id'";
-			$result = mysql_query($q, $this->_db->connection);
-			while($row = mysql_fetch_array($result)) {
-				$vid = $row["id"];
-				$vdocsmodel->deleteVDoc($vid);
-			}
-		}
 		
 		if(in_array("documents",$active_modules)) {
 			$brainstormsDocumentsModel = new BrainstormsDocumentsModel();
@@ -883,7 +874,29 @@ class BrainstormsModel extends Model {
 				$mid = $row["id"];
 				$brainstormsRostersModel->deleteRoster($mid);
 			}
-		}	
+		}
+		
+		if(in_array("grids",$active_modules)) {
+			$brainstormsGridsModel = new BrainstormsGridsModel();
+			$q = "SELECT id FROM co_brainstorms_grids where pid = '$id'";
+			$result = mysql_query($q, $this->_db->connection);
+			while($row = mysql_fetch_array($result)) {
+				$mid = $row["id"];
+				$brainstormsGridsModel->deleteGrid($mid);
+			}
+		}
+		
+		
+		if(in_array("vdocs",$active_modules)) {
+			$brainstormsVDocsmodel = new BrainstormsVDocsModel();
+			$q = "SELECT id FROM co_brainstorms_vdocs where pid = '$id'";
+			$result = mysql_query($q, $this->_db->connection);
+			while($row = mysql_fetch_array($result)) {
+				$vid = $row["id"];
+				$brainstormsVDocsmodel->deleteVDoc($vid);
+			}
+		}
+		
 		
 		$q = "DELETE FROM co_log_sendto WHERE what='brainstorms' and whatid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
@@ -1305,6 +1318,68 @@ class BrainstormsModel extends Model {
 								}
 							}
 						}
+						
+						
+						// grids
+						if(in_array("grids",$active_modules)) {
+							$qf ="select id, title, bin, bintime, binuser from " . CO_TBL_BRAINSTORMS_GRIDS . " where pid = '$pid'";
+							$resultf = mysql_query($qf, $this->_db->connection);
+							while ($rowf = mysql_fetch_array($resultf)) {
+								$fid = $rowf["id"];
+								if($rowf["bin"] == "1") { // deleted phases
+									foreach($rowf as $key => $val) {
+										$forum[$key] = $val;
+									}
+									$forum["bintime"] = $this->_date->formatDate($forum["bintime"],CO_DATETIME_FORMAT);
+									$forum["binuser"] = $this->_users->getUserFullname($forum["binuser"]);
+									$forums[] = new Lists($forum);
+									$arr["grids"] = $forums;
+								} else {
+									// columns
+									
+									$qc ="select id, bin, bintime, binuser from " . CO_TBL_BRAINSTORMS_GRIDS_COLUMNS . " where pid = '$fid'";
+									$resultc = mysql_query($qc, $this->_db->connection);
+									while ($rowc = mysql_fetch_array($resultc)) {
+										$cid = $rowc["id"];
+										if($rowc["bin"] == "1") { // deleted phases
+											foreach($rowc as $key => $val) {
+												$grids_col[$key] = $val;
+											}
+											
+											$items = '';
+											$qn = "SELECT title FROM " . CO_TBL_BRAINSTORMS_GRIDS_NOTES . " where cid = '$cid' and bin='0' ORDER BY sort";
+											$resultn = mysql_query($qn, $this->_db->connection);
+											while($rown = mysql_fetch_object($resultn)) {
+												$items .= $rown->title . ', ';
+													//$items_used[] = $rown->id;
+											}
+											$grids_col["items"] = rtrim($items,", ");
+											
+											
+											$grids_col["bintime"] = $this->_date->formatDate($grids_col["bintime"],CO_DATETIME_FORMAT);
+											$grids_col["binuser"] = $this->_users->getUserFullname($grids_col["binuser"]);
+											$grids_cols[] = new Lists($grids_col);
+											$arr["grids_cols"] = $grids_cols;
+										} else {
+											// notes
+											$qt ="select id, title, bin, bintime, binuser from " . CO_TBL_BRAINSTORMS_GRIDS_NOTES . " WHERE cid = '$cid' ORDER BY sort";
+											$resultt = mysql_query($qt, $this->_db->connection);
+											while ($rowt = mysql_fetch_array($resultt)) {
+												if($rowt["bin"] == "1") { // deleted phases
+													foreach($rowt as $key => $val) {
+														$grids_task[$key] = $val;
+													}
+													$grids_task["bintime"] = $this->_date->formatDate($grids_task["bintime"],CO_DATETIME_FORMAT);
+													$grids_task["binuser"] = $this->_users->getUserFullname($grids_task["binuser"]);
+													$grids_tasks[] = new Lists($grids_task);
+													$arr["grids_tasks"] = $grids_tasks;
+												} 
+											}
+										}
+									}
+								}
+							}
+						}		
 	
 	
 						// meetings
@@ -1495,6 +1570,42 @@ class BrainstormsModel extends Model {
 						}
 					}
 						
+					// grids
+					if(in_array("grids",$active_modules)) {
+						$brainstormsGridsModel = new BrainstormsGridsModel();
+						$qf ="select id, title, bin, bintime, binuser from " . CO_TBL_BRAINSTORMS_GRIDS . " where pid = '$pid'";
+						$resultf = mysql_query($qf, $this->_db->connection);
+						while ($rowf = mysql_fetch_array($resultf)) {
+							$fid = $rowf["id"];
+							if($rowf["bin"] == "1") { // deleted phases
+								$brainstormsGridsModel->deleteGrid($fid);
+								$arr["grids"] = "";
+							} else {
+								// columns
+								
+								$qc ="select id,bin from " . CO_TBL_BRAINSTORMS_GRIDS_COLUMNS . " where pid = '$fid'";
+								$resultc = mysql_query($qc, $this->_db->connection);
+								while ($rowc = mysql_fetch_array($resultc)) {
+									$cid = $rowc["id"];
+									if($rowc["bin"] == "1") { // deleted phases
+										$brainstormsGridsModel->deleteGridColumn($cid);
+										$arr["grids_cols"] = "";
+									} else {
+										// notes
+										$qt ="select id,bin from " . CO_TBL_BRAINSTORMS_GRIDS_NOTES . " where cid = '$cid'";
+										$resultt = mysql_query($qt, $this->_db->connection);
+										while ($rowt = mysql_fetch_array($resultt)) {
+											if($rowt["bin"] == "1") { // deleted phases
+												$tid = $rowt["id"];
+												$brainstormsGridsModel->deleteGridTask($tid);
+												$arr["grids_tasks"] = "";
+											} 
+										}
+									}
+								}
+							}
+						}
+					}
 
 						// meetings
 						if(in_array("meetings",$active_modules)) {
@@ -1550,13 +1661,15 @@ class BrainstormsModel extends Model {
 	
 						// vdocs
 						if(in_array("vdocs",$active_modules)) {
-							$qv ="select id, title, bin, bintime, binuser from " . CO_TBL_BRAINSTORMS_VDOCS . " where pid = '$pid' and bin='1'";
+							$brainstormsVDocsModel = new BrainstormsVDocsModel();
+							$qv ="select id, title, bin, bintime, binuser from " . CO_TBL_BRAINSTORMS_VDOCS . " where pid = '$pid'";
 							$resultv = mysql_query($qv, $this->_db->connection);
 							while ($rowv = mysql_fetch_array($resultv)) {
 								$vid = $rowv["id"];
-								$vdocsmodel = new VDocsModel();
-								$vdocsmodel->deleteVDoc($vid);
-								$arr["vdocs"] = "";
+								if($rowv["bin"] == "1") {
+									$brainstormsVDocsModel->deleteVDoc($vid);
+									$arr["vdocs"] = "";
+								}
 							}
 						}
 
@@ -1729,6 +1842,10 @@ class BrainstormsModel extends Model {
 		if(in_array("rosters",$active_modules)) {
 			$brainstormsRostersModel = new BrainstormsRostersModel();
 			$data["brainstorms_rosters_items"] = $brainstormsRostersModel->getNavNumItems($id);
+		}
+		if(in_array("grids",$active_modules)) {
+			$brainstormsGridsModel = new BrainstormsGridsModel();
+			$data["brainstorms_grids_items"] = $brainstormsGridsModel->getNavNumItems($id);
 		}
 		if(in_array("meetings",$active_modules)) {
 			$brainstormsMeetingsModel = new BrainstormsMeetingsModel();
