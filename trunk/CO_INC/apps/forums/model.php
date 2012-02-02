@@ -890,6 +890,17 @@ class ForumsModel extends Model {
 			}
 		}
 		
+		
+		if(in_array("vdocs",$active_modules)) {
+			$forumsVDocsmodel = new ForumsVDocsModel();
+			$q = "SELECT id FROM co_forums_vdocs where pid = '$id'";
+			$result = mysql_query($q, $this->_db->connection);
+			while($row = mysql_fetch_array($result)) {
+				$vid = $row["id"];
+				$forumsVDocsmodel->deleteVDoc($vid);
+			}
+		}
+		
 		$q = "DELETE FROM co_log_sendto WHERE what='forums' and whatid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
@@ -1163,6 +1174,23 @@ class ForumsModel extends Model {
 								}
 							}
 						}
+						
+						// vdocs
+						if(in_array("vdocs",$active_modules)) {
+							$qv ="select id, title, bin, bintime, binuser from " . CO_TBL_FORUMS_VDOCS . " where pid = '$pid' and bin='1'";
+							$resultv = mysql_query($qv, $this->_db->connection);
+							while ($rowv = mysql_fetch_array($resultv)) {
+								$vid = $rowv["id"];
+									foreach($rowv as $key => $val) {
+										$vdoc[$key] = $val;
+									}
+									$vdoc["bintime"] = $this->_date->formatDate($vdoc["bintime"],CO_DATETIME_FORMAT);
+									$vdoc["binuser"] = $this->_users->getUserFullname($vdoc["binuser"]);
+									$vdocs[] = new Lists($vdoc);
+									$arr["vdocs"] = $vdocs;
+							}
+						}
+						
 	
 					}
 				}
@@ -1248,6 +1276,20 @@ class ForumsModel extends Model {
 											$arr["files"] = "";
 										}
 									}
+								}
+							}
+						}
+						
+						// vdocs
+						if(in_array("vdocs",$active_modules)) {
+							$forumsVDocsModel = new ForumsVDocsModel();
+							$qv ="select id, title, bin, bintime, binuser from " . CO_TBL_FORUMS_VDOCS . " where pid = '$pid'";
+							$resultv = mysql_query($qv, $this->_db->connection);
+							while ($rowv = mysql_fetch_array($resultv)) {
+								$vid = $rowv["id"];
+								if($rowv["bin"] == "1") {
+									$forumsVDocsModel->deleteVDoc($vid);
+									$arr["vdocs"] = "";
 								}
 							}
 						}
@@ -1446,6 +1488,12 @@ class ForumsModel extends Model {
 			$forumsDocumentsModel = new ForumsDocumentsModel();
 			$data["forums_documents_items"] = $forumsDocumentsModel->getNavNumItems($id);
 		}
+		
+		if(in_array("vdocs",$active_modules)) {
+			$forumsVDocsModel = new ForumsVDocsModel();
+			$data["forums_vdocs_items"] = $forumsVDocsModel->getNavNumItems($id);
+		}
+		
 		return $data;
 	}
 
