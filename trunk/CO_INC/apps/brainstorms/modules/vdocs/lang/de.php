@@ -6,7 +6,7 @@ $lang["BRAINSTORM_VDOC_VDOCS"] = 'Textbeiträge';
 $lang["BRAINSTORM_VDOC_NEW"] = 'Neuer Textbeitrag';
 $lang["BRAINSTORM_VDOC_ACTION_NEW"] = 'neuen Texbeitrag anlegen';
 
-$lang["BRAINSTORM_VDOC_HELP"] = 'manual_prozesse_Textbeittraege.pdf';
+$lang["BRAINSTORM_VDOC_HELP"] = 'manual_prozesse_Textbeitraege.pdf';
 
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/brainstorms/vdocs/de.php";
