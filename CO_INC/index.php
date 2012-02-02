@@ -82,6 +82,7 @@ foreach($controller->applications as $app => $display) {
 <script type="text/javascript">
 var num_apps = <?php echo($num_apps);?>;
 var co_files = '<?php echo CO_FILES;?>';
+var co_lang = '<?php echo $session->userlang;?>';
 </script>
 <script src="<?php echo $protocol;?>ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="<?php echo $protocol;?>ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
