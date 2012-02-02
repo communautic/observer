@@ -408,11 +408,22 @@ $(document).ready(function() {
 		var clickobj = $(this);
 		var app = $(this).attr("rel");
 		var app_active = $('#appnav span.active-app').attr('rel');
+		
 		if(app != app_active) {
 			$('#appnav span.toggleObservers[rel=' +  app_active + ']').removeClass("active-app");
 			clickobj.addClass("active-app");
-			$('#'+app_active).css('top',2*$('#'+app_active).height() + 'px')																					   
+			var targetheight = 2*$('#'+app_active).height();
+			$('#'+app_active).css('top', targetheight + 'px');
+			var vdoctoolbar = $('#'+app_active+' div.mceExternalToolbar');
+			if($('#'+app_active).data("current") == 'vdocs') {
+				vdoctoolbar.css('top', targetheight + 130 + 'px !important');
+			}
 			$('#'+app).animate({ 'top' : 0 })
+			var appobject = window[app];
+			var vdoct = $('#'+app+' div.mceExternalToolbar');
+			if($('#'+app).data("current") == 'vdocs') {
+				vdoct.show().animate({ 'top' : '130px !important' })
+			}
 		}
 	});
 
