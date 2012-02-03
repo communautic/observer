@@ -61,7 +61,7 @@ class ForumsVDocs extends Forums {
 			ob_end_clean();
 			$title = $vdoc->title;
 		}
-		//$GLOBALS['SECTION'] = "";
+		$GLOBALS['SECTION'] = "blank.png";
 		switch($t) {
 			case "html":
 				$this->printHTML($title,$html);
@@ -121,6 +121,7 @@ class ForumsVDocs extends Forums {
 			ob_end_clean();
 			$title = $vdoc->title;
 		}
+		$GLOBALS['SECTION'] = "blank.png";
 		$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
 		$pdf = $this->savePDF($title,$html,$attachment);
 		
