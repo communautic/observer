@@ -67,6 +67,7 @@ $lang["GLOBAL_MESSAGE"] = 'Message';
 $lang["GLOBAL_SEND"] = 'Send';
 $lang["GLOBAL_EXPORT"] = 'Export';
 
+$lang["GLOBAL_DAYS"] = 'days';
 $lang["GLOBAL_TODAY"] = 'Today';
 $lang["GLOBAL_YESTERDAY"] = 'Yesterday';
 $lang["GLOBAL_DAYS_AGO"] = '%1$s days ago';
