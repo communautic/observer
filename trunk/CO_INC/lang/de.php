@@ -34,8 +34,8 @@ $lang["TEXT_NOTE"] = "Notiz:";
 $lang["CREATED_BY_ON"]		= 	'angelegt:';
 $lang["EDITED_BY_ON"] 		= 	'aktualisiert:';
 $lang["CREATED_BY_ON"]		= 	'angelegt:';
-$lang["SENDTO_BY_ON"] 		= 	'Weiterleitung an:';
-$lang["SENDFROM_BY_ON"] 	= 	'Weiterleitung durch:';
+$lang["SENDTO_BY_ON"] 		= 	'weitergeleitet an:';
+$lang["SENDFROM_BY_ON"] 	= 	'erhalten von:';
 $lang["DELETED_BY_ON"] 		= 	'gelöscht';
 $lang["INTERNAL_CHANGED"] 	= 	'freigegeben:';
 
@@ -68,6 +68,7 @@ $lang["GLOBAL_MESSAGE"] = 'Inhalt';
 $lang["GLOBAL_SEND"] = 'Senden';
 $lang["GLOBAL_EXPORT"] = 'Exportieren';
 
+$lang["GLOBAL_DAYS"] = 'Tage';
 $lang["GLOBAL_TODAY"] = 'Heute';
 $lang["GLOBAL_YESTERDAY"] = 'Gestern';
 $lang["GLOBAL_DAYS_AGO"] = 'vor %1$s Tagen';

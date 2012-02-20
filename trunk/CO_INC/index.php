@@ -85,7 +85,7 @@ var co_files = '<?php echo CO_FILES;?>';
 var co_lang = '<?php echo $session->userlang;?>';
 </script>
 <script src="<?php echo $protocol;?>ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="<?php echo $protocol;?>ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+<script type="text/javascript" src="<?php echo $protocol;?>ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/datejs/date.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/datejs/de-AT.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/datejs/time.js"></script>
