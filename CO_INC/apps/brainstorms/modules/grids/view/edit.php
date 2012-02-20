@@ -27,26 +27,64 @@
 </table>
 
 <?php } ?>
-
-<table cellspacing="0" cellpadding="0" border="0" class="table-content">
-	<tbody><tr>
-		<td class="tcell-left text11"><span <?php if($grid->canedit) { ?>id="brainstorms-add-column"<?php } ?> class="<?php if($grid->canedit) { ?>content-nav<?php } ?>"><span><?php echo $lang["BRAINSTORM_GRID_COLUMN_NEW"];?></span></span></td>
-    <td class="tcell-right">&nbsp;</td>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+	<tr>
+		<td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_DURATION"];?></td>
+		<td class="tcell-right-inactive"><span id="brainstormGridDays"><?php echo $grid->grid_days;?></span> <?php echo $lang["GLOBAL_DAYS"];?></td>
     </tr>
-</tbody></table>
-<div id="brainstorms-grid-outer">
+</table>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+	<tr>
+	  <td class="tcell-left text11"><span class="<?php if($grid->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="brainstormsowner" append="0"><span><?php echo $lang["BRAINSTORM_GRID_OWNER"];?></span></span></td>
+	  <td class="tcell-right"><div id="brainstormsowner" class="itemlist-field"><?php echo($grid->owner);?></div><div id="brainstormsowner_ct" class="itemlist-field"><a field="brainstormsowner_ct" class="ct-content"><?php echo($grid->owner_ct);?></a></div></td>
+	</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+	<tr>
+	  <td class="tcell-left text11"><span class="<?php if($grid->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="brainstormsmanagement" append="1"><span><?php echo $lang["BRAINSTORM_GRID_MANAGEMENT"];?></span></span></td>
+	  <td class="tcell-right"><div id="brainstormsmanagement" class="itemlist-field"><?php echo($grid->management);?></div><div id="brainstormsmanagement_ct" class="itemlist-field"><a field="brainstormsmanagement_ct" class="ct-content"><?php echo($grid->management_ct);?></a></div></td>
+	</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+  <tr>
+    <td class="tcell-left text11"><span class="<?php if($grid->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="brainstormsteam" append="1"><span><?php echo $lang["BRAINSTORM_GRID_TEAM"];?></span></span></td>
+    <td class="tcell-right"><div id="brainstormsteam" class="itemlist-field"><?php echo($grid->team);?></div><div id="brainstormsteam_ct" class="itemlist-field"><a field="brainstormsteam_ct" class="ct-content"><?php echo($grid->team_ct);?></a></div></td>
+  </tr>
+</table>
+<div class="content-spacer"></div>
+<table cellspacing="0" cellpadding="0" border="0" class="table-content">
+	<tr>
+		<td class="tcell-left text11"><span <?php if($grid->canedit) { ?>id="brainstorms-add-column"<?php } ?> class="<?php if($grid->canedit) { ?>content-nav<?php } ?>"><span><?php echo $lang["BRAINSTORM_GRID_COLUMN_NEW"];?></span></span></td>
+    <td class="tcell-right">
+    <table border="0" cellspacing="0" cellpadding="0" class="timeline-legend">
+    <tr>
+        <td class="barchart_color_planned"><span><?php echo $lang["BRAINSTORM_GRID_STATUS_PLANED"];?></span></td>
+        <td width="15"></td>
+        <td class="barchart_color_inprogress"><span><?php echo $lang["BRAINSTORM_GRID_STATUS_INPROGRESS"];?></span></td>
+         <td width="15"></td>
+        <td class="barchart_color_finished"><span><?php echo $lang["BRAINSTORM_GRID_STATUS_FINISHED"];?></span></td>
+    </tr>
+</table>
+    </td>
+    </tr>
+</table>
 <?php if($grid->canedit) { ?>
 	<div id="brainstorms-console">
-		<h3 class="ui-widget-header"><?php echo $lang['BRAINSTORM_GRID_NOTES'];?></h3>
-    	<div id="brainstorms-console-notes">
+		<div class="widget-head">
+        	<a class="collapse">COLLAPSE</a>
+            <h3><?php echo $lang['BRAINSTORM_GRID_NOTES'];?></h3>
+        </div>
+        <div id="brainstorms-console-notes">
     	<?php 
 		foreach($console_items as $item){ 
-			echo '<div rel="' . $item["id"] . '"><span>' . $item["title"] . '</span></div>';
+			echo '<div rel="' . $item["id"] . '" class="droppable"><div class="statusItem"></div><div class="itemTitle">' . $item["title"] . '</div><div class="dragItem"></div></div>';
 		 } ?>
-    	</div>
+        </div>
 	</div>
 <?php } ?>
-<div id="brainstorms-grid" style="width: <?php echo($grid->grid_width);?>px">
+<div class="content-spacer"></div>
+<div id="brainstorms-grid-outer">
+<div id="brainstorms-grid" style="height: <?php echo($colheight);?>px; width: <?php echo($grid->grid_width);?>px;">
 
 <?php 
 $drag = '';
@@ -54,42 +92,93 @@ $brainstormsphase = '';
 if($grid->canedit) {
 	$drag = 'drag';
 	$brainstormsphase = 'brainstorms-phase';
+	$checkbox = '';
+} else {
+	$checkbox = 'noperm';
 }
 //print_r($cols);
 foreach($cols as $key => &$value){ 
-	echo '<div id="gridscol_'.$cols[$key]['id'].'" style="height: ' . $colheight . 'px" class="' . $drag . '">';
-	echo '<h3 class="ui-widget-header">';
-	if($grid->canedit) {
-		echo '<div class="brainstorms-column-delete" id="brainstorms-col-delete-'.$cols[$key]['id'].'"><span class="icon-delete"></span></div>';
+	echo '<div id="gridscol_'.$cols[$key]['id'].'" style="height: ' . $colheight . 'px;">';
+	//echo '<h3 class="ui-widget-header">
+			if($grid->canedit) {
+		echo '<div class="dragCol dragColActive"><div class="brainstorms-column-delete" id="brainstorms-col-delete-'.$cols[$key]['id'].'"><span class="icon-delete"></span></div></div>';
+	} else {
+		echo '<div class="dragCol"></div>';
 	}
-	echo '</h3>';
-	echo '<div class="' . $brainstormsphase . ' brainstorms-phase-design">';
-	$i = 0;
-	foreach($cols[$key]["notes"] as $tkey => &$tvalue){ 
-		$ms = '';
-		if($i != 0 && $cols[$key]["notes"][$tkey]['ms'] == "1") {
-			$ms = '<span class="icon-milestone"></span>';
-		}
-		echo '<div id="item_'.$cols[$key]["notes"][$tkey]['note_id'].'"><span>'.$cols[$key]["notes"][$tkey]['title'].'</span>'.$ms;
-		if($grid->canedit) {
-		echo '<div class="binItem-Outer"><a class="binItem" rel="'.$cols[$key]["notes"][$tkey]['note_id'].'"><span class="icon-delete"></span></a></div>';
+		echo '<div class="brainstorms-col-title ' . $cols[$key]['status'] . '">';
+		if($cols[$key]['titletext'] != "") {
+			echo '<div id="item_'.$cols[$key]['titleid'].'" rel="'.$cols[$key]['titleid'].'" class="droppable colTitle">';
+			echo '<div class="statusItem"><input name="" type="checkbox" value="'.$cols[$key]['titleid'].'" class="cbx jNiceHidden" /></div>';
+			echo '<div class="itemTitle">'.$cols[$key]['titletext'].'</div>';
+			if($grid->canedit) {
+				echo '<div class="dragItem"></div>';
+			}
+			echo '</div>';
+		} else {
+			echo '<span class="newNoteItem newNoteTitle"></span>';
 		}
 		echo '</div>';
-		$i++;
+
+	echo '<div class="' . $brainstormsphase . ' brainstorms-phase-design" style="height: ' . $listheight . 'px;">';
+	foreach($cols[$key]["notes"] as $tkey => &$tvalue){ 
+		$checked = "";
+		if ($cols[$key]["notes"][$tkey]['status'] == 1) {
+			$checked = ' checked="checked"';
+		}
+		echo '<div id="item_'.$cols[$key]["notes"][$tkey]['note_id'].'" rel="'.$cols[$key]["notes"][$tkey]['note_id'].'" class="droppable">';
+		echo '<div class="statusItem"><input name="" type="checkbox" value="'.$cols[$key]["notes"][$tkey]['note_id'].'" class="cbx jNiceHidden ' . $checkbox . '" ' . $checked . '/></div>';
+		echo '<div class="itemTitle">'.$cols[$key]["notes"][$tkey]['title'].'</div>';
+		if($grid->canedit) {
+			echo '<div class="dragItem"></div>';
+		}
+		echo '</div>';
 	}
-	echo '</div></div>';
+	echo '<span class="newNoteItem newNote"></span>';
+	echo '</div>';
+	echo '<div class="brainstorms-col-footer">';
+	
+	echo '<div class="brainstorms-col-footer-stagegate">';
+		
+	$stagegatestatus = "";
+	if($cols[$key]['status'] == "finished" ) {
+		$stagegatestatus = "active";
+	}
+	echo '<div class="brainstorms-stagegate   ' . $stagegatestatus . '"></div>';
+
+	echo '<div class="brainstorms-col-stagegate">';
+		if($cols[$key]['stagegatetext'] != "") {
+			echo '<div id="item_'.$cols[$key]['stagegateid'].'" rel="'.$cols[$key]['stagegateid'].'" class="droppable colStagegate">';
+			echo '<div class="statusItem"><input name="" type="checkbox" value="'.$cols[$key]['stagegateid'].'" class="cbx jNiceHidden" /></div>';
+			echo '<div class="itemTitle">'.$cols[$key]['stagegatetext'].'</div>';
+			if($grid->canedit) {
+				echo '<div class="dragItem"></div>';
+			}
+			echo '</div>';
+		}  else {
+			echo '<span class="newNoteItem newNoteStagegate"></span>';
+		}
+
+		echo '</div>';
+		echo '</div>';
+		echo '<div class="brainstorms-col-footer-days">';
+		echo '<div><input class="colDays" name="" type="text" value="'.$cols[$key]['coldays'].'" size="3" maxlength="3" style="margin" /></div>';
+		echo '</div>';
+		
+	echo '</div>';
+	echo '</div>';
+	
+	
  } ?>
 
  </div>
   <div id="brainstorms-notes-outer" class="brainstorms-notes-outer">
-      <div id="note" class="note" style="width: 200px; height: 200px; font-size: 11px; display: none;">
-        <h3 id="note-header" class="ui-widget-header">
+      <div id="note" class="note note-design" style="width: 200px; height: 200px; display: none;">
+        <h3 id="note-header">
         <div id="note-title" class="note-title"></div>
-        <div id="note-info" class="brainstormsNoteInfo coTooltip" style="position: absolute; top: 0px; right: 28px; width: 15px; height: 15px; cursor: pointer;"><span class="icon-info"></span>
+        <div id="note-info" class="brainstormsNoteInfo coTooltip" style="position: absolute; top: 4px; right: 28px; width: 15px; height: 15px; cursor: pointer;"><span class="icon-info"></span>
         	<div style="display: none" class="coTooltipHtml" id="note-info-content"></div>
         </div>
-        <div id="ms-toggle" style="position: absolute; top: 2px; right: 6px; width: 15px; height: 15px; cursor: pointer;"><span id="note-milestone" class="toggleMilestone icon-milestone"></span></div>
-        <!--<div id="note-save" style="position: absolute; top: 1px; right: 6px; width: 15px; height: 15px; cursor: pointer;"><a rel="" class="closeItem"><span class="icon-delete-white"></span></a></div>-->
+        <div id="note-save" style="position: absolute; top: 5px; right: 10px; width: 15px; height: 15px; cursor: pointer;"><a rel="" class="binItem"><span class="icon-delete"></span></a></div>
         </h3>
         <div id="note-text" class="note-text" style="height: 165px;"></div>
 	</div>

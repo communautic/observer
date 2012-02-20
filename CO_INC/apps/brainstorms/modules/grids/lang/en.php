@@ -14,7 +14,7 @@ $lang["BRAINSTORM_GRID_COLUMNS_BIN"] = 'Grid/Columns';
 $lang["BRAINSTORM_GRID_NOTES_BIN"] = 'Grid/Notes';
 $lang["BRAINSTORM_PHASE_TITLE"] = 'Phase';
 
-$lang["BRAINSTORM_GRID_HELP"] = 'manual_prozesse_projektraster.pdf';
+$lang["BRAINSTORM_GRID_HELP"] = 'manual_prozesse_prozessraster.pdf';
 
 $lang["BRAINSTORM_PRINT_GRID"] = 'grid.png';
 

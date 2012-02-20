@@ -161,7 +161,7 @@ class BrainstormsGridsModel extends BrainstormsModel {
 	
 
 	function getDetails($id) {
-		global $session, $lang;
+		global $session, $contactsmodel, $lang;
 		
 		$q = "SELECT * FROM " . CO_TBL_BRAINSTORMS_GRIDS . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
@@ -199,6 +199,21 @@ class BrainstormsGridsModel extends BrainstormsModel {
 				$array["canedit"] = $this->checkoutGrid($id);
 			}
 		}
+		$array["owner_print"] = $contactsmodel->getUserListPlain($array['owner']);
+		$array["owner_convert"] = $array['owner'];
+		$array["owner"] = $contactsmodel->getUserList($array['owner'],'brainstormgridowner', "", $array["canedit"]);
+		$array["owner_ct_convert"] = $array['owner_ct'];
+		$array["owner_ct"] = empty($array["owner_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['owner_ct'];
+		$array["management_print"] = $contactsmodel->getUserListPlain($array['management']);
+		$array["management_convert"] = $array['management'];
+		$array["management"] = $contactsmodel->getUserList($array['management'],'brainstormgridmanagement', "", $array["canedit"]);
+		$array["management_ct_convert"] = $array['management_ct'];
+		$array["management_ct"] = empty($array["management_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['management_ct'];
+		$array["team_print"] = $contactsmodel->getUserListPlain($array['team']);
+		$array["team_convert"] = $array['team'];
+		$array["team"] = $contactsmodel->getUserList($array['team'],'brainstormgridteam', "", $array["canedit"]);
+		$array["team_ct_convert"] = $array['team_ct'];
+		$array["team_ct"] = empty($array["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['team_ct'];
 				
 		$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
 		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
@@ -222,35 +237,86 @@ class BrainstormsGridsModel extends BrainstormsModel {
 		
 		// build cols and notes
 		$cols = array();
-		$num_notes = array();
+		$num_notes = array('0');
 		$q = "SELECT * FROM " . CO_TBL_BRAINSTORMS_GRIDS_COLUMNS . " where pid = '$id' and bin='0' ORDER BY sort";
 		$result = mysql_query($q, $this->_db->connection);
-		
-		
-		
+		$days = 0;
 		while($row = mysql_fetch_object($result)) {
 			$colID = $row->id;
+			$coldays = $row->days;
+			$days += $coldays;
+			$titleid = 0;
+			$titletext = '';
+			$titletextcontent = '';
+			$stagegateid = 0;
+			$stagegatetext = '';
+			$stagegatetextcontent = '';
+			//$qn = "SELECT * FROM " . CO_TBL_BRAINSTORMS_GRIDS_NOTES . " where cid = '$colID' and bin='0' ORDER BY istitle DESC,isstagegate ASC,sort ASC";
 			$qn = "SELECT * FROM " . CO_TBL_BRAINSTORMS_GRIDS_NOTES . " where cid = '$colID' and bin='0' ORDER BY sort";
 			$resultn = mysql_query($qn, $this->_db->connection);
-			$num_notes[] = mysql_num_rows($resultn);
+			//$num_notes[] = mysql_num_rows($resultn);
 			$items = array();
+			$n = 0;
+			$nchecked = 0;
 			while($rown = mysql_fetch_object($resultn)) {
-				$items[] = array(
-					"note_id" => $rown->id,
-					"title" => $rown->title,
-					"text" => $rown->text,
-					"ms" => $rown->ms
-				);
+				if($rown->istitle == 1) {
+					$titleid = $rown->id;
+					$titletext = $rown->title;
+					$titletextcontent = $rown->text;
+				} else if ($rown->isstagegate == 1) {
+					$stagegateid = $rown->id;
+					$stagegatetext = $rown->title;
+					$stagegatetextcontent = $rown->text;
+				} else {
+					$items[] = array(
+						"note_id" => $rown->id,
+						"title" => $rown->title,
+						"text" => $rown->text,
+						"status" => $rown->status
+					);
+					if($rown->status == 1) {
+						$nchecked++;
+					}
+					$n++;
+				}
 			}
+			$num_notes[] = $n;
+			if($n == 0 && $titleid == 0) {
+				$colstatus = '';
+			}
+			if(($n > 0 || $titleid > 0) && $nchecked == 0) {
+				$colstatus = 'planned';
+			}
+			
+			if($nchecked > 0 && $nchecked < $n ) {
+				$colstatus = 'progress';
+			}
+			
+			if($n != 0 && $n == $nchecked) {
+				$colstatus = 'finished';
+			}
+			
 			$cols[]= array(
 				"id" => $colID,
+				"status" => $colstatus,
+				"coldays" => $coldays,
+				"titleid" => $titleid,
+				"titletext" => $titletext,
+				"titletextcontent" => $titletextcontent,
+				"stagegateid" => $stagegateid,
+				"stagegatetext" => $stagegatetext,
+				"stagegatetextcontent" => $stagegatetextcontent,
 				"notes" => $items
 			);
 		}
 		
-		$colheight=  max($num_notes)*30+57;
-		if($colheight < 357) {
-			$colheight = 357;
+		$colheight=  max($num_notes)*27+78+80;
+		if($colheight < 266) {
+			$colheight = 266;
+		}
+		$listheight = max($num_notes)*27+27;
+		if($listheight < 135) {
+			$listheight = 135;
 		}
 		
 		// build the console
@@ -268,6 +334,7 @@ class BrainstormsGridsModel extends BrainstormsModel {
 		$sendto = $this->getSendtoDetails("brainstorms_grids",$id);
 		
 		$array["grid_width"] = sizeof($cols)*230;
+		$array["grid_days"] = $days;
 		
 		$grid = new Lists($array);
 		
@@ -287,13 +354,13 @@ class BrainstormsGridsModel extends BrainstormsModel {
 			);
 		}
 		
-		$arr = array("grid" => $grid, "cols" => $cols, "colheight" => $colheight, "console_items" => $console_items, "sendto" => $sendto, "access" => $array["perms"], "projects" => $projects);
+		$arr = array("grid" => $grid, "cols" => $cols, "colheight" => $colheight, "listheight" => $listheight, "console_items" => $console_items, "sendto" => $sendto, "access" => $array["perms"], "projects" => $projects);
 		return $arr;
    }
 
 
-   function setDetails($pid,$id,$title,$grid_access,$grid_access_orig) {
-		global $session, $lang;
+   function setDetails($pid,$id,$title,$owner,$owner_ct,$management,$management_ct,$team,$team_ct,$grid_access,$grid_access_orig) {
+		global $session, $contactsmodel, $lang;
 
 		$now = gmdate("Y-m-d H:i:s");
 		
@@ -307,7 +374,11 @@ class BrainstormsGridsModel extends BrainstormsModel {
 			$accesssql = "access='$grid_access', access_date='$grid_access_date', access_user = '$session->uid',";
 		}
 		
-		$q = "UPDATE " . CO_TBL_BRAINSTORMS_GRIDS . " set title = '$title', $accesssql edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$owner = $contactsmodel->sortUserIDsByName($owner);
+		$management = $contactsmodel->sortUserIDsByName($management);
+		$team = $contactsmodel->sortUserIDsByName($team);
+		
+		$q = "UPDATE " . CO_TBL_BRAINSTORMS_GRIDS . " set title = '$title', owner = '$owner', owner_ct = '$owner_ct', management = '$management', management_ct = '$management_ct', team = '$team', team_ct = '$team_ct', $accesssql edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 
 		if ($result) {
@@ -326,6 +397,12 @@ class BrainstormsGridsModel extends BrainstormsModel {
 		return "true";
    }
 
+
+   function saveGridColDays($id,$days) {
+			$q = "UPDATE " . CO_TBL_BRAINSTORMS_GRIDS_COLUMNS . " set days = '$days' WHERE id='$id'";
+			$result = mysql_query($q, $this->_db->connection);
+		return "true";
+   }
 
    function newGridColumn($id,$sort) {
 		$q = "INSERT INTO " . CO_TBL_BRAINSTORMS_GRIDS_COLUMNS . " set pid = '$id',sort = '$sort'";
@@ -349,7 +426,7 @@ class BrainstormsGridsModel extends BrainstormsModel {
    function saveGridItems($col,$items) {
 		$it = "";
 		foreach($items as $key => $id) {
-			$q = "UPDATE " . CO_TBL_BRAINSTORMS_GRIDS_NOTES . " set cid = '$col', sort = '$key' WHERE id='$id'";
+			$q = "UPDATE " . CO_TBL_BRAINSTORMS_GRIDS_NOTES . " set istitle = '0', isstagegate = '0', cid = '$col', sort = '$key' WHERE id='$id'";
 			$result = mysql_query($q, $this->_db->connection);
 		}
 		return "true";
@@ -401,10 +478,94 @@ class BrainstormsGridsModel extends BrainstormsModel {
 	}	
 
 
+   function saveGridNewNoteTitle($pid,$id,$col) {
+		global $session, $contactsmodel, $lang;
+		$now = gmdate("Y-m-d H:i:s");
+		$q = "SELECT title,text FROM " . CO_TBL_BRAINSTORMS_NOTES . " where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_row($result);
+		$title = mysql_real_escape_string($row[0]);
+		$text = mysql_real_escape_string($row[1]);
+		
+		$q = "INSERT INTO " . CO_TBL_BRAINSTORMS_GRIDS_NOTES . " set pid = '$pid', cid = '$col', istitle = '1', isstagegate = '0', title = '$title', text = '$text', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";		
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+			$id = mysql_insert_id();
+			return $id;
+		}
+	}	
+
+
+   function saveGridNoteTitle($id,$col) {
+		global $session;
+		$now = gmdate("Y-m-d H:i:s");
+		
+		$q = "UPDATE " . CO_TBL_BRAINSTORMS_GRIDS_NOTES . " set cid = '$col', istitle = '1', isstagegate = '0', edited_user = '$session->uid', edited_date = '$now' WHERE id = '$id'";		
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+			return $id;
+		}
+	}
+
+
+
+
+   function saveGridNewNoteStagegate($pid,$id,$col) {
+		global $session, $contactsmodel, $lang;
+		$now = gmdate("Y-m-d H:i:s");
+		$q = "SELECT title,text FROM " . CO_TBL_BRAINSTORMS_NOTES . " where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_row($result);
+		$title = mysql_real_escape_string($row[0]);
+		$text = mysql_real_escape_string($row[1]);
+		
+		$q = "INSERT INTO " . CO_TBL_BRAINSTORMS_GRIDS_NOTES . " set pid = '$pid', cid = '$col', istitle = '0', isstagegate = '1', title = '$title', text = '$text', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";		
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+			$id = mysql_insert_id();
+			return $id;
+		}
+	}	
+
+
+   function saveGridNoteStagegate($id,$col) {
+		global $session;
+		$now = gmdate("Y-m-d H:i:s");
+		
+		$q = "UPDATE " . CO_TBL_BRAINSTORMS_GRIDS_NOTES . " set cid = '$col', istitle = '0', isstagegate = '1', edited_user = '$session->uid', edited_date = '$now' WHERE id = '$id'";		
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+			return $id;
+		}
+	}
+
+
    function saveGridNewManualNote($pid) {
 		global $session, $lang;
 		$now = gmdate("Y-m-d H:i:s");
 		$q = "INSERT INTO " . CO_TBL_BRAINSTORMS_GRIDS_NOTES . " set pid = '$pid', title='" . $lang["BRAINSTORM_GRID_ITEM_NEW"]. "', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";		
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+			$id = mysql_insert_id();
+			return $id;
+		}
+	}
+
+   function saveGridNewManualTitle($pid,$col) {
+		global $session, $lang;
+		$now = gmdate("Y-m-d H:i:s");
+		$q = "INSERT INTO " . CO_TBL_BRAINSTORMS_GRIDS_NOTES . " set pid = '$pid', cid='$col', istitle = '1', title='" . $lang["BRAINSTORM_GRID_TITLE_NEW"]. "', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";		
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+			$id = mysql_insert_id();
+			return $id;
+		}
+	}
+	
+   function saveGridNewManualStagegate($pid,$col) {
+		global $session, $lang;
+		$now = gmdate("Y-m-d H:i:s");
+		$q = "INSERT INTO " . CO_TBL_BRAINSTORMS_GRIDS_NOTES . " set pid = '$pid', cid='$col', isstagegate = '1', title='" . $lang["BRAINSTORM_GRID_STAGEGATE_NEW"]. "', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";		
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			$id = mysql_insert_id();
@@ -449,8 +610,8 @@ class BrainstormsGridsModel extends BrainstormsModel {
 		$this->newGridColumn($id,0);
 		$this->newGridColumn($id,1);
 		$this->newGridColumn($id,2);
-		$this->newGridColumn($id,3);
-		$this->newGridColumn($id,4);
+		/*$this->newGridColumn($id,3);
+		$this->newGridColumn($id,4);*/
 		
 		if ($result) {
 			return $id;
@@ -617,6 +778,15 @@ class BrainstormsGridsModel extends BrainstormsModel {
 		}
    }
    
+   	function setItemStatus($id,$status) {
+		
+		$q = "UPDATE " . CO_TBL_BRAINSTORMS_GRIDS_NOTES . " set status = '$status' WHERE id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if($result) {
+			return true;
+		}
+	}
+   
    function restoreGridTask($id) {
 		global $session;
 		$q = "UPDATE " . CO_TBL_BRAINSTORMS_GRIDS_NOTES . " set bin = '0' WHERE id='$id'";
@@ -640,32 +810,65 @@ class BrainstormsGridsModel extends BrainstormsModel {
 		
 		// get grid details
 		$arr = $this->getDetails($id);
-		//		$arr = array("grid" => $grid, "cols" => $cols, "colheight" => $colheight, "console_items" => $console_items, "sendto" => $sendto, "access" => $array["perms"]);
 		$grid = $arr["grid"];
 		$cols = $arr["cols"];
 		
 		$now = gmdate("Y-m-d H:i:s");
 		$title = mysql_real_escape_string($grid->title);
 		// create project
-		$q = "INSERT INTO " . CO_TBL_PROJECTS . " set folder = '$folder', title = '$title', protocol = '$protocol', startdate = '$kickoff', enddate = '$kickoff', status = '0', planned_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+		$q = "INSERT INTO " . CO_TBL_PROJECTS . " set folder = '$folder', title = '$title', ordered_by = '$grid->owner_convert', ordered_by_ct = '$grid->owner_ct_convert', management = '$grid->management_convert', management_ct = '$grid->management_ct_convert', team = '$grid->team_convert', team_ct = '$grid->team_ct_convert', protocol = '$protocol', startdate = '$kickoff', enddate = '$kickoff', status = '0', planned_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
-		//if ($result) {
-			$pid = mysql_insert_id();
-			// if admin insert him to access
-			if(!$session->isSysadmin()) {
-				$projectsAccessModel = new ProjectsAccessModel();
-				$projectsAccessModel->setDetails($id,$session->uid,"");
-			}
-		//}
+		$pid = mysql_insert_id();
+		// if admin insert him to access
+		if(!$session->isSysadmin()) {
+			$projectsAccessModel = new ProjectsAccessModel();
+			$projectsAccessModel->setDetails($id,$session->uid,"");
+		}
 		
 		// loop through cols
 		$datecalc = $kickoff;
 		$dependent = 0;
 		foreach($cols as $key => &$value){ 
-			$i = 0;
+			//$i = 0;
 			$num_notes = sizeof($cols[$key]["notes"]);
+			
+			// write title
+			if($cols[$key]['titletext'] != "") {
+				$phasetitle = mysql_real_escape_string($cols[$key]['titletext']);
+				$phasetext = mysql_real_escape_string($cols[$key]['titletextcontent']);
+				$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES . " set title = '$phasetitle', pid='$pid', team = '$grid->team_convert', team_ct = '$grid->team_ct_convert', protocol='$phasetext', access='0', status = '0', planned_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+				$result = mysql_query($q, $this->_db->connection);
+				$phaseid = mysql_insert_id();
+				
+				if($num_notes == 0) {
+					// create ap with same name
+					$tasktitle = $phasetitle;
+					$taskprotocol = $phasetext;
+					$cat = 0;
+					$startdate = $this->_date->addDays($datecalc,"1");
+					$enddate = $this->_date->addDays($datecalc,"7");
+					$datecalc = $enddate;
+					$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES_TASKS . " set pid='$pid', phaseid='$phaseid', cat='$cat', dependent = '$dependent', status = '0', text = '$tasktitle', protocol = '$taskprotocol', startdate = '$startdate', enddate = '$enddate'";
+					$result = mysql_query($q, $this->_db->connection);
+					$dependent = mysql_insert_id();
+				}
+
+			} else {
+				// no title set
+				if($num_notes > 0 || $cols[$key]['stagegatetext'] != "") {
+					$phasetitle = 'Neue Phase';
+					$phasetext = "";
+					$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES . " set title = '$phasetitle', pid='$pid', team = '$grid->team_convert', team_ct = '$grid->team_ct_convert', protocol='$phasetext', access='0', status = '0', planned_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+					$result = mysql_query($q, $this->_db->connection);
+					$phaseid = mysql_insert_id();
+					
+				}
+				
+			}
+			
 			foreach($cols[$key]["notes"] as $tkey => &$tvalue){ 
-				if($i == 0) {
+				/*if($i == 0) {
+					if($cols[$key]["notes"][$tkey]['istitle'] == 1) {
 					// add phase
 					$phasetitle = mysql_real_escape_string($cols[$key]["notes"][$tkey]['title']);
 					$phasetext = mysql_real_escape_string($cols[$key]["notes"][$tkey]['text']);
@@ -673,38 +876,55 @@ class BrainstormsGridsModel extends BrainstormsModel {
 					$result = mysql_query($q, $this->_db->connection);
 					$phaseid = mysql_insert_id();
 					
-					if($num_notes == 1) {
-						// create ap with same name
-						$tasktitle = $phasetitle;
-						$taskprotocol = $phasetext;
-						$cat = 0;
-						$startdate = $this->_date->addDays($datecalc,"1");
-						$enddate = $this->_date->addDays($datecalc,"7");
-						$datecalc = $enddate;					
-						$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES_TASKS . " set pid='$pid', phaseid='$phaseid', cat='$cat', dependent = '$dependent', status = '0', text = '$tasktitle', protocol = '$taskprotocol', startdate = '$startdate', enddate = '$enddate'";
-						$result = mysql_query($q, $this->_db->connection);
-						$dependent = mysql_insert_id();
+						if($num_notes == 1) {
+							// create ap with same name
+							$tasktitle = $phasetitle;
+							$taskprotocol = $phasetext;
+							$cat = 0;
+							$startdate = $this->_date->addDays($datecalc,"1");
+							$enddate = $this->_date->addDays($datecalc,"7");
+							$datecalc = $enddate;					
+							$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES_TASKS . " set pid='$pid', phaseid='$phaseid', cat='$cat', dependent = '$dependent', status = '0', text = '$tasktitle', protocol = '$taskprotocol', startdate = '$startdate', enddate = '$enddate'";
+							$result = mysql_query($q, $this->_db->connection);
+							$dependent = mysql_insert_id();
+						}
+					
+					} else {
+						
 					}
 					
-				} else {
-					// create ap/milestone
+				} else {*/
+					// create aps
 					$tasktitle = mysql_real_escape_string($cols[$key]["notes"][$tkey]['title']);
 					$taskprotocol = mysql_real_escape_string($cols[$key]["notes"][$tkey]['text']);
-					if($cols[$key]["notes"][$tkey]['ms'] == "1") {
+					/*if($cols[$key]["notes"][$tkey]['isstagegate'] == "1") {
 						$cat = 1;
 						$startdate = $this->_date->addDays($datecalc,"1");
 						$enddate = $this->_date->addDays($datecalc,"1");
-					} else {
-						$cat = 0;
+					} else {*/
+						//$cat = 0;
 						$startdate = $this->_date->addDays($datecalc,"1");
 						$enddate = $this->_date->addDays($datecalc,"7");
-					}
+					//}
 					$datecalc = $enddate;					
-					$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES_TASKS . " set pid='$pid', phaseid='$phaseid', cat='$cat', dependent = '$dependent', status = '0', text = '$tasktitle', protocol = '$taskprotocol', startdate = '$startdate', enddate = '$enddate'";
+					$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES_TASKS . " set pid='$pid', phaseid='$phaseid', cat='0', dependent = '$dependent', status = '0', text = '$tasktitle', protocol = '$taskprotocol', startdate = '$startdate', enddate = '$enddate'";
 					$result = mysql_query($q, $this->_db->connection);
 					$dependent = mysql_insert_id();
+				//}
+				//$i++;
+				
 				}
-				$i++;
+				
+				if($cols[$key]['stagegatetext'] != "") {
+					$mstitle = mysql_real_escape_string($cols[$key]['stagegatetext']);
+					$msprotocol = mysql_real_escape_string($cols[$key]['stagegatetextcontent']);
+					$startdate = $this->_date->addDays($datecalc,"1");
+					$enddate = $this->_date->addDays($datecalc,"1");
+					$datecalc = $enddate;
+					$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES_TASKS . " set pid='$pid', phaseid='$phaseid', cat='1', dependent = '$dependent', status = '0', text = '$mstitle', protocol = '$msprotocol', startdate = '$startdate', enddate = '$enddate'";
+					$result = mysql_query($q, $this->_db->connection);
+					$dependent = mysql_insert_id();
+
 			}
 		}
 		

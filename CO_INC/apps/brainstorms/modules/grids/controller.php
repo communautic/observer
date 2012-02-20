@@ -35,6 +35,7 @@ class BrainstormsGrids extends Brainstorms {
 			$console_items = $arr["console_items"];
 			$sendto = $arr["sendto"];
 			$colheight = $arr["colheight"];
+			$listheight = $arr["listheight"];
 			$projects = $arr["projects"];
 			ob_start();
 				include 'view/edit.php';
@@ -196,8 +197,8 @@ class BrainstormsGrids extends Brainstorms {
 	}
 	
 
-	function setDetails($pid,$id,$title,$grid_access,$grid_access_orig) {
-		if($arr = $this->model->setDetails($pid,$id,$title,$grid_access,$grid_access_orig)){
+	function setDetails($pid,$id,$title,$owner,$owner_ct,$management,$management_ct,$team,$team_ct,$grid_access,$grid_access_orig) {
+		if($arr = $this->model->setDetails($pid,$id,$title,$owner,$owner_ct,$management,$management_ct,$team,$team_ct,$grid_access,$grid_access_orig)){
 			if($arr["what"] == "edit") {
 				//return '{ "action": "edit" , "id": "' . $arr["id"] . '", "access": "' . $grid_access . '", "status": "' . $grid_status . '"}';
 				return '{ "action": "edit" , "id": "' . $arr["id"] . '", "access": "' . $grid_access . '"}';
@@ -212,6 +213,15 @@ class BrainstormsGrids extends Brainstorms {
 
 	function saveGridColumns($cols) {
 			$retval = $this->model->saveGridColumns($cols);
+			if($retval){
+			 return 'true';
+		  } else{
+			 return "error";
+		  }
+	}
+	
+	function saveGridColDays($id,$days) {
+			$retval = $this->model->saveGridColDays($id,$days);
 			if($retval){
 			 return 'true';
 		  } else{
@@ -238,12 +248,16 @@ class BrainstormsGrids extends Brainstorms {
 	}
 	
 	function saveGridItems($col,$items) {
-			$retval = $this->model->saveGridItems($col,$items);
-			if($retval){
-			 return 'true';
-		  } else{
-			 return "error";
-		  }
+			if($items != "") {
+				$retval = $this->model->saveGridItems($col,$items);
+				if($retval){
+					 return 'true';
+				  } else{
+					 return "error";
+				  }
+			} else {
+				return 'true';
+			}
 	}
 	
 	function getGridNote($id) {
@@ -273,15 +287,82 @@ class BrainstormsGrids extends Brainstorms {
 		  }
 	}	
 	
+	function saveGridNewNoteTitle($pid,$id,$col) {
+			$retval = $this->model->saveGridNewNoteTitle($pid,$id,$col);
+			if($retval){
+			 return $retval;
+		  } else{
+			 return "error";
+		  }
+	}
+	
+	function saveGridNoteTitle($id,$col) {
+			$retval = $this->model->saveGridNoteTitle($id,$col);
+			if($retval){
+			 return $retval;
+		  } else{
+			 return "error";
+		  }
+	}
+	
+	function saveGridNewNoteStagegate($pid,$id,$col) {
+			$retval = $this->model->saveGridNewNoteStagegate($pid,$id,$col);
+			if($retval){
+			 return $retval;
+		  } else{
+			 return "error";
+		  }
+	}
+	
+	function saveGridNoteStagegate($id,$col) {
+			$retval = $this->model->saveGridNoteStagegate($id,$col);
+			if($retval){
+			 return $retval;
+		  } else{
+			 return "error";
+		  }
+	}
+	
 	function saveGridNewManualNote($pid) {
 			global $lang;
 			$retval = $this->model->saveGridNewManualNote($pid);
 			if($retval){
-				$html = '<div id="item_' . $retval . '"><span>' . $lang["BRAINSTORM_GRID_ITEM_NEW"] . '</span><div class="binItem-Outer"><a class="binItem" rel="'.$retval.'"><span class="icon-delete"></span></a></div></div>';
+				$html = '<div id="item_' . $retval . '" class="droppable"><div class="statusItem"><input name="" type="checkbox" value="' . $retval . '" class="cbx jNiceHidden" /></div><div class="itemTitle">' . $lang["BRAINSTORM_GRID_ITEM_NEW"] . '</div><div class="dragItem"></div></div>';
 			 return $html;
 		  } else{
 			 return "error";
 		  }
+	}
+	
+	function saveGridNewManualTitle($pid,$col) {
+			global $lang;
+			$retval = $this->model->saveGridNewManualTitle($pid,$col);
+			if($retval){
+				$html = '<div class="droppable colTitle planned" rel="' . $retval . '" id="item_' . $retval . '"><div class="statusItem"><span class="jNiceWrapper"><input type="checkbox" class="cbx jNiceHidden " value="' . $retval . '" name=""><span class="jNiceCheckbox"></span></span></div><div class="itemTitle">' . $lang["BRAINSTORM_GRID_TITLE_NEW"] . '</div><div class="dragItem"></div></div>';
+			 return $html;
+		  } else{
+			 return "error";
+		  }
+	}
+	
+	function saveGridNewManualStagegate($pid,$col) {
+			global $lang;
+			$retval = $this->model->saveGridNewManualStagegate($pid,$col);
+			if($retval){
+				$html = '<div class="droppable colStagegate" rel="' . $retval . '" id="item_' . $retval . '"><div class="statusItem"><span class="jNiceWrapper"><input type="checkbox" class="cbx jNiceHidden " value="' . $retval . '" name=""><span class="jNiceCheckbox"></span></span></div><div class="itemTitle">' . $lang["BRAINSTORM_GRID_STAGEGATE_NEW"] . '</div><div class="dragItem"></div></div>';
+			 return $html;
+		  } else{
+			 return "error";
+		  }
+	}
+	
+	function setItemStatus($id,$status) {
+		$retval = $this->model->setItemStatus($id,$status);
+		if($retval){
+			return "true";
+		} else{
+			return "error";
+		}
 	}
 
 	function saveGridNote($id,$title,$text) {
