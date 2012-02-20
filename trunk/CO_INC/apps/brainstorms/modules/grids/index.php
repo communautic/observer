@@ -102,7 +102,10 @@ if (!empty($_GET['request'])) {
 			echo($brainstormsGrids->getGridStatusDialog());
 		break;
 		case 'saveGridColumns':
-			echo($brainstormsGrids->saveGridColumns($_GET['brainstormscol']));
+			echo($brainstormsGrids->saveGridColumns($_GET['gridscol']));
+		break;
+		case 'saveGridColDays':
+			echo($brainstormsGrids->saveGridColDays($_GET['id'],$_GET['days']));
 		break;
 		case 'newGridColumn':
 			echo($brainstormsGrids->newGridColumn($_GET['id'],$_GET['sort']));
@@ -111,7 +114,11 @@ if (!empty($_GET['request'])) {
 			echo($brainstormsGrids->binGridColumn($_GET['id']));
 		break;
 		case 'saveGridItems':
-			echo($brainstormsGrids->saveGridItems($_GET["col"],$_GET['item']));
+			$item = ""; // options: pdf, html
+			if(!empty($_GET['item'])) {
+				$item = $_GET['item'];
+			}
+			echo($brainstormsGrids->saveGridItems($_GET["col"],$item));
 		break;
 		case 'getGridNote':
 			echo($brainstormsGrids->getGridNote($_GET["id"]));
@@ -119,14 +126,35 @@ if (!empty($_GET['request'])) {
 		case 'saveGridNewNote':
 			echo($brainstormsGrids->saveGridNewNote($_GET["pid"],$_GET["id"]));
 		break;
+		case 'saveGridNoteTitle':
+			echo($brainstormsGrids->saveGridNoteTitle($_GET["id"],$_GET["col"]));
+		break;
+		case 'saveGridNoteStagegate':
+			echo($brainstormsGrids->saveGridNoteStagegate($_GET["id"],$_GET["col"]));
+		break;
+		case 'saveGridNewNoteTitle':
+			echo($brainstormsGrids->saveGridNewNoteTitle($_GET["pid"],$_GET["id"],$_GET["col"]));
+		break;
+		case 'saveGridNewNoteStagegate':
+			echo($brainstormsGrids->saveGridNewNoteStagegate($_GET["pid"],$_GET["id"],$_GET["col"]));
+		break;
 		case 'saveGridNewManualNote':
 			echo($brainstormsGrids->saveGridNewManualNote($_GET["pid"]));
+		break;
+		case 'saveGridNewManualTitle':
+			echo($brainstormsGrids->saveGridNewManualTitle($_GET["pid"],$_GET["col"]));
+		break;
+		case 'saveGridNewManualStagegate':
+			echo($brainstormsGrids->saveGridNewManualStagegate($_GET["pid"],$_GET["col"]));
 		break;
 		case 'toggleMilestone':
 			echo($brainstormsGrids->toggleMilestone($_GET['id'],$_GET['ms']));
 		break;
 		case 'binItem':
 			echo($brainstormsGrids->binItem($_GET['id']));
+		break;
+		case 'setItemStatus':
+			echo($brainstormsGrids->setItemStatus($_GET['id'],$_GET["status"]));
 		break;
 		case 'convertToProject':
 			echo($brainstormsGrids->convertToProject($_GET['id'],$_GET['kickoff'],$_GET['folder'],$system->checkMagicQuotes($_GET['protocol'])));
@@ -142,7 +170,7 @@ if (!empty($_POST['request'])) {
 	
 	switch ($_POST['request']) {
 		case 'setDetails':
-			echo($brainstormsGrids->setDetails($_POST['pid'], $_POST['id'], $system->checkMagicQuotes($_POST['title']),$_POST['grid_access'],$_POST['grid_access_orig']));
+			echo($brainstormsGrids->setDetails($_POST['pid'], $_POST['id'], $system->checkMagicQuotes($_POST['title']), $system->checkMagicQuotes($_POST['owner']), $system->checkMagicQuotes($_POST['owner_ct']), $system->checkMagicQuotes($_POST['management']), $system->checkMagicQuotes($_POST['management_ct']), $system->checkMagicQuotes($_POST['team']), $system->checkMagicQuotes($_POST['team_ct']),$_POST['grid_access'],$_POST['grid_access_orig']));
 		break;
 		case 'sendDetails':
 			echo($brainstormsGrids->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
