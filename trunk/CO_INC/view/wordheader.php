@@ -3,12 +3,14 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Saves as a Word Doc</title>
-</head>
-<style>
-body {
-    font-family: Arial;
-	font-size: 10pt;
+<style TYPE="text/css">
+@page { margin: 2cm }
+p { 
+    font-family:"Arial","sans-serif";
+	font-size:10.0pt;
+	margin: 0.08pt;
 }
-p { margin-bottom: 0.10cm }
+hr { height: 1pt; color: #000; background-color: #000; border: 0; }
 </style>
+</head>
 <body>

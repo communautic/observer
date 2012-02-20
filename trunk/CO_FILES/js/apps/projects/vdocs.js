@@ -422,7 +422,7 @@ $(document).ready(function() {
 			theme : "advanced",
 			skin : "coVDocs",
 			language: co_lang,
-			entity_encoding : "raw",
+			//entity_encoding : "raw",
         	plugins : "autosave,autoresize,pagebreak,emotions,inlinepopups,paste,visualchars,nonbreaking,xhtmlxtras",
 			force_br_newlines: false,
 			force_p_newlines: true,
