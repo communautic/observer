@@ -28,13 +28,13 @@
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 		<td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_DURATION"];?></td>
-		<td class="tcell-right-inactive"><span id="durationStart"><?php echo($project->startdate)?></span> - <span id="durationEnd"><?php echo($project->enddate)?></span></td>
+		<td class="tcell-right-inactive"><span id="productionDurationStart"><?php echo($project->startdate)?></span> - <span id="productionDurationEnd"><?php echo($project->enddate)?></span></td>
     </tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 	  <td class="tcell-left text11"><span class="<?php if($project->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang['PROJECT_KICKOFF'];?></span></span></td>
-		<td class="tcell-right"><?php if($project->canedit) { ?><input name="startdate" type="text" class="input-date datepicker" value="<?php echo($project->startdate)?>" /><input name="moveproject_start" type="hidden" value="<?php echo($project->startdate)?>" /><?php } else { ?><?php echo($project->startdate)?><?php } ?></td>
+		<td class="tcell-right"><?php if($project->canedit) { ?><input name="startdate" type="text" class="input-date datepicker" value="<?php echo($project->startdate)?>" /><input id="moveproject_start" name="moveproject_start" type="hidden" value="<?php echo($project->startdate)?>" /><?php } else { ?><?php echo($project->startdate)?><?php } ?></td>
 	</tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
