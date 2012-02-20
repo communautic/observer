@@ -526,7 +526,7 @@ class BrainstormsModel extends Model {
 		if($array["access"] == "guest") {
 			$sql = " and a.access = '1' ";
 		}
-		
+		$now = gmdate("Y-m-d H:i:s");
 		// Notes
 		$q = "select * from " . CO_TBL_BRAINSTORMS_NOTES . " where pid = '$id' and bin = '0'";
 		
@@ -536,6 +536,20 @@ class BrainstormsModel extends Model {
 			foreach($row as $key => $val) {
 				$note[$key] = $val;
 			}
+			
+			$days = $this->_date->dateDiff($note['edited_date'],$now);
+			switch($days) {
+				case 0:
+					$note["days"] = $lang["GLOBAL_TODAY"];
+				break;
+				case 1:
+					$note["days"] = $lang["GLOBAL_YESTERDAY"];
+				break;
+				default:
+				$note["days"] = sprintf($lang["GLOBAL_DAYS_AGO"], $days);
+			}
+			
+			$note["date"] = $this->_date->formatDate($note['edited_date'],CO_DATETIME_FORMAT);
 			
 			// dates
 			$note["created_date"] = $this->_date->formatDate($note["created_date"],CO_DATETIME_FORMAT);
@@ -715,7 +729,7 @@ class BrainstormsModel extends Model {
 		}
 	}
 	
-	function binBrainstormNote($id) {
+	/*function binBrainstormNote($id) {
 		global $session;
 		$now = gmdate("Y-m-d H:i:s");
 		$q = "UPDATE " . CO_TBL_BRAINSTORMS_NOTES . " set bin = '1', bintime = '$now', binuser= '$session->uid' where id='$id'";
@@ -723,8 +737,18 @@ class BrainstormsModel extends Model {
 		if ($result) {
 		  	return true;
 		}
-   }
+   }*/
   
+  
+	function deleteBrainstormNote($id) {
+		global $session;
+		$now = gmdate("Y-m-d H:i:s");
+		$q = "DELETE FROM " . CO_TBL_BRAINSTORMS_NOTES . " where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+		  	return true;
+		}
+   }
     function restoreItem($id) {
 		$q = "UPDATE " . CO_TBL_BRAINSTORMS_NOTES . " set bin = '0' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
@@ -746,7 +770,7 @@ class BrainstormsModel extends Model {
 		
 		$now = gmdate("Y-m-d H:i:s");
 		
-		$q = "UPDATE " . CO_TBL_BRAINSTORMS_NOTES . " set xyz='".$x."x".$y."x".$z."', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_BRAINSTORMS_NOTES . " set xyz='".$x."x".$y."x".$z."' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			return true;
@@ -759,7 +783,7 @@ class BrainstormsModel extends Model {
 		
 		$now = gmdate("Y-m-d H:i:s");
 		
-		$q = "UPDATE " . CO_TBL_BRAINSTORMS_NOTES . " set wh='".$w."x".$h."', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_BRAINSTORMS_NOTES . " set wh='".$w."x".$h."' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			return true;
@@ -767,7 +791,7 @@ class BrainstormsModel extends Model {
 	}
 
 
-	function setBrainstormNoteToggle($id,$t) {
+	/*function setBrainstormNoteToggle($id,$t) {
 		global $session;
 		
 		$now = gmdate("Y-m-d H:i:s");
@@ -777,7 +801,7 @@ class BrainstormsModel extends Model {
 		if ($result) {
 			return true;
 		}
-	}
+	}*/
 	
 	function createDuplicate($id) {
 		global $session, $lang;
@@ -1244,6 +1268,7 @@ class BrainstormsModel extends Model {
 					} else {
 						
 						// brainstorm notes
+						// remove in future .. in there for compatibility as notes get immediatly deleted
 						$qt ="select id, title, bin, bintime, binuser from " . CO_TBL_BRAINSTORMS_NOTES . " WHERE pid = '$pid'";
 						$resultt = mysql_query($qt, $this->_db->connection);
 						while ($rowt = mysql_fetch_array($resultt)) {
@@ -1522,6 +1547,7 @@ class BrainstormsModel extends Model {
 					
 					
 					// brainstorm notes
+					// remove in future .. in there for compatibility as notes get immediatly deleted
 					$qt ="select id, title, bin, bintime, binuser from " . CO_TBL_BRAINSTORMS_NOTES . " WHERE pid = '$pid'";
 					$resultt = mysql_query($qt, $this->_db->connection);
 					while ($rowt = mysql_fetch_array($resultt)) {
@@ -1782,11 +1808,6 @@ class BrainstormsModel extends Model {
 		$today = $date->formatDate("now","Y-m-d");
 		$tomorrow = $date->addDays($today, 1);
 		$string = "";
-		
-		$access = "";
-		if(!$session->isSysadmin()) {
-			$access = " and c.id IN (" . implode(',', $this->getEditPerms($session->uid)) . ") ";
-		}
 		
 		// project notices for this user
 		$q ="select a.id as pid,a.folder,a.title as brainstormtitle,b.perm from " . CO_TBL_BRAINSTORMS . " as a,  " . CO_TBL_BRAINSTORMS_DESKTOP . " as b where a.id = b.pid and a.bin = '0' and b.uid = '$session->uid' and b.status = '0'";

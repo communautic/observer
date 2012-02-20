@@ -27,42 +27,132 @@ class Desktop extends Controller {
 		$image = self::saveImage($chart_url ,$local_image_path,$image_name);
 	}
 	
+	
 	public function getColumnWidgets($id) {
 		global $lang, $system, $userapps;
-		// check if user has settings
-		//echo $this->model->existDesktopSetting('desktop-widgets');
-		//if($this->model->existDesktopSetting('desktop-widgets') == false) {
+			
+			// get default desktop widgets
+			// get all widgets for user
+			// check if in settings a default is not included
+			// array merge 
+			/*$widgets_def_1 = explode(",", DEFAULT_WIDGETS_1);
+			$widgets_def_2 = explode(",", DEFAULT_WIDGETS_2);
+			$widgets_def_3 = explode(",", DEFAULT_WIDGETS_3);
+			$widgets_def_4 = explode(",", DEFAULT_WIDGETS_4);
+			
+			if(!$this->model->existUserSetting('desktop-widgets',$id)) {
+				$widgets = explode(",", DEFAULT_WIDGETS_1);
+			} else {
+				$widgets = $this->model->getColumnWidgets($id);
+			}
+			
+			foreach */
+			
+			// all user
+			$widgets_user = array();
+			if(!$this->model->existUserSetting('desktop-widgets',1)) {
+					$widgets1 = explode(",", DEFAULT_WIDGETS_1);
+				} else {
+					$widgets1 = $this->model->getColumnWidgets(1);
+			}
+			$widgets_user = array_merge($widgets_user, $widgets1);
+			
+			if(!$this->model->existUserSetting('desktop-widgets',2)) {
+					$widgets2 = explode(",", DEFAULT_WIDGETS_2);
+				} else {
+					$widgets2 = $this->model->getColumnWidgets(2);
+			}
+			$widgets_user = array_merge($widgets_user, $widgets2);
+			
+			if(!$this->model->existUserSetting('desktop-widgets',3)) {
+					$widgets3 = explode(",", DEFAULT_WIDGETS_3);
+				} else {
+					$widgets3 = $this->model->getColumnWidgets(3);
+			}
+			$widgets_user = array_merge($widgets_user, $widgets3);
+			
+			if(!$this->model->existUserSetting('desktop-widgets',4)) {
+					$widgets4 = explode(",", DEFAULT_WIDGETS_4);
+				} else {
+					$widgets4 = $this->model->getColumnWidgets(4);
+			}
+			$widgets_user = array_merge($widgets_user, $widgets4);
+			
+			/*if($this->model->existUserSetting('desktop-widgets',1)) {
+				$widgets_user = array_merge($widgets_user,$this->model->getColumnWidgets(1));
+			}
+			if($this->model->existUserSetting('desktop-widgets',2)) {
+				$widgets_user = array_merge($widgets_user,$this->model->getColumnWidgets(2));
+			}
+			if($this->model->existUserSetting('desktop-widgets',3)) {
+				$widgets_user = array_merge($widgets_user,$this->model->getColumnWidgets(3));
+			}
+			if($this->model->existUserSetting('desktop-widgets',4)) {
+				$widgets_user = array_merge($widgets_user,$this->model->getColumnWidgets(4));
+			}*/
+			
+			//print_r($widgets_user);
+			
+			// all widgets
+			//$widgets_all = explode(",", DEFAULT_WIDGETS_1 . ',' . DEFAULT_WIDGETS_2 . ',' . DEFAULT_WIDGETS_3 . ',' . DEFAULT_WIDGETS_4);
+			//print_r($widgets_all);
+			
+			/*foreach ($widgets_all as $widgets) {
+				${$widget.'_status'}  = $this->model->getUserSetting('desktop-widget-' . $widget);
+			}*/
+			
+			
 			switch($id) {
 				case 1:
-					if(!$this->model->existUserSetting('desktop-widgets',$id)) {
+					/*$default_widgets = explode(",", DEFAULT_WIDGETS_1);
+					$user_widgets = $this->model->getColumnWidgets($id);
+					foreach ($default_widgets as $d) {
+						if(in_array($d,$widgets_user)) {
+							$widgets = $user_widgets;
+						} else {
+							$widgets = array_push($user_widgets, $d);
+						}
+					}*/
+					/*if(!$this->model->existUserSetting('desktop-widgets',$id)) {
 						$widgets = explode(",", DEFAULT_WIDGETS_1);
 					} else {
 						$widgets = $this->model->getColumnWidgets($id);
-					}
+					}*/
+					$widgets = $widgets1;
 				break;
 				case 2:
-					if(!$this->model->existUserSetting('desktop-widgets',$id)) {
+					/*if(!$this->model->existUserSetting('desktop-widgets',$id)) {
 						$widgets = explode(",", DEFAULT_WIDGETS_2);
 					} else {
 						$widgets = $this->model->getColumnWidgets($id);
-					}
+					}*/
+					$widgets = $widgets2;
 				break;
 				case 3:
-					if(!$this->model->existUserSetting('desktop-widgets',$id)) {
+					/*if(!$this->model->existUserSetting('desktop-widgets',$id)) {
 						$widgets = explode(",", DEFAULT_WIDGETS_3);
 					} else {
 						$widgets = $this->model->getColumnWidgets($id);
-					}
-					
+					}*/
+					$widgets = $widgets3;
 				break;
 				case 4:
-					if(!$this->model->existUserSetting('desktop-widgets',$id)) {
+					/*if(!$this->model->existUserSetting('desktop-widgets',$id)) {
 						$widgets = explode(",", DEFAULT_WIDGETS_4);
 					} else {
 						$widgets = $this->model->getColumnWidgets($id);
+					}*/
+					$widgets = $widgets4;
+					$widgets_all = explode(",", DEFAULT_WIDGETS_1 . ',' . DEFAULT_WIDGETS_2 . ',' . DEFAULT_WIDGETS_3 . ',' . DEFAULT_WIDGETS_4);
+					foreach ($userapps as $app) {
+						if(in_array($app,$widgets_all) && !in_array($app,$widgets_user)) {
+								$widgets[] = $app;
+						}
 					}
+			
 				break;
 			}
+			
 		
 		if(is_array($widgets)) {
 			foreach ($widgets as $widget) {

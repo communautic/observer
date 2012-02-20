@@ -6,12 +6,12 @@ if(is_array($posts)) {
 		list($width,$height) = explode('x',$postit->wh);
 	?>
     <div id="postit-<?php echo($postit->id);?>" class="postit postit-design" style="width: <?php echo $width;?>px; height: <?php echo $height;?>px; left: <?php echo $left;?>px; top: <?php echo $top;?>px; z-index: <?php echo $zindex;?>;">
-        <div id="postit-header" style="height: 20px; margin-bottom: 14px; border-bottom: 1px solid #A9563C; color: #A9563C; font-weight: bold;"><span id="postit-days-<?php echo($postit->id);?>" style="display: inline-block; width: 50%;"><?php echo $postit->days;?></span><span id="postit-date-<?php echo($postit->id);?>" style="display: inline-block; width: 50%; text-align: right;"><?php echo $postit->date;?></span></div>
+        <div class="postit-header"><span class="postit-header-left"><?php echo $postit->days;?></span><span class="postit-header-right"><?php echo $postit->date;?></span></div>
         <div id="postit-text-<?php echo($postit->id);?>" class="postit-text" style="height: <?php echo $height-80;?>px;"><?php echo(nl2br($postit->text));?></div>
-        <div id="postit-footer" style="position: absolute; width: 100%; bottom: 10px; text-align: center; height: 25px;">
-        	<span id="postit-forward-<?php echo($postit->id);?>" style="display: inline-block; width: 23px; height: 20px; cursor: pointer; margin-right: 35px; "><a rel="<?php echo($postit->id);?>" class="forwardItem"><span class="desktop-icon-forward"></span></a></span>
-        	<span id="postit-delete-<?php echo($postit->id);?>" style="display: inline-block; width: 20px; height: 25px; cursor: pointer; margin-right: 35px;"><a rel="<?php echo($postit->id);?>" class="binItem"><span class="desktop-icon-delete"></span></a></span>
-        	<span id="postit-info-<?php echo($postit->id);?>" class="coTooltip" style="display: inline-block; width: 20px; height: 25px; cursor: pointer;"><span class="desktop-icon-info"></span><div class="coTooltipHtml" style="display: none">
+        <div class="postit-footer">
+        	<span id="postit-forward-<?php echo($postit->id);?>" class="postit-forward"><a rel="<?php echo($postit->id);?>" class="forwardItem"><span class="desktop-icon-forward"></span></a></span>
+        	<span id="postit-delete-<?php echo($postit->id);?>" class="postit-delete"><a rel="<?php echo($postit->id);?>" class="binItem"><span class="desktop-icon-delete"></span></a></span>
+        	<span id="postit-info-<?php echo($postit->id);?>" class="postit-info coTooltip"><span class="desktop-icon-info"></span><div class="coTooltipHtml" style="display: none">
             	<?php echo $lang["SENDTO_BY_ON"];?> <?php echo($postit->sendto)?><br>
 				<?php echo $lang["SENDFROM_BY_ON"];?> <?php echo($postit->sendfrom);?><br>
 				<?php echo $lang["EDITED_BY_ON"];?> <?php echo($postit->edited_user.", ".$postit->edited_date)?><br>

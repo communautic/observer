@@ -88,6 +88,16 @@ function desktoploadModuleStart() {
 			});
 		}
 		
+		if(typeof productions == "object") {
+			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/productions&request=getWidgetAlerts", success: function(data){
+				$("#productionsWidgetContent").html(data.html);
+				if(data.widgetaction == 'open' && $('#productionsWidgetContent').is(':hidden')) {
+					$('#item_productionsWidget a.collapse').trigger('click');
+				}
+				}
+			});
+		}
+		
 		if(typeof brainstorms == "object") {
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getWidgetAlerts", success: function(data){
 				$("#brainstormsWidgetContent").html(data.html);
@@ -167,7 +177,7 @@ $(document).ready(function() {
 	});
 
 
-	$('a.collapse').on('click', function(e) {
+	$('#desktopcolumns a.collapse').on('click', function(e) {
 		e.preventDefault();
 		var  object = $(this).attr('rel');
 		var status = 1;
@@ -184,6 +194,8 @@ $(document).ready(function() {
 		$(this).draggable({
 			containment:'#desktop-inner',
 			cancel: '.nodrag,textarea',
+			cursor: 'move',
+			handle: '.postit-header',
 			start: function(e,ui){ ui.helper.css('z-index',++desktopzIndex); },
 				stop: function(e,ui){
 					var x = ui.position.left;
@@ -239,14 +251,14 @@ $(document).ready(function() {
 	});
 
 
-	$(document).on('dblclick', '#desktop div.postit-text', function(e) {
+	$(document).on('click', '#desktop div.postit-text', function(e) {
 		e.preventDefault();
 		var id = parseInt($(this).attr("id").replace(/postit-text-/, ""));
 		currentDesktopPostit = id;
 		var html = $(this).html().replace(/(<br\s*\/?>)|(<p><\/p>)/gi, "");
-		var width = $(this).width();
+		//var width = $(this).width();
 		var height = $(this).height();
-		var input = '<textarea id="postit-text-' + id + '" name="postit-text-' + id + '" style="width: '+ width +'px; height: '+ height +'px; border: 0;">' + html+ '</textarea>';
+		var input = '<textarea id="postit-text-' + id + '" name="postit-text-' + id + '" style="height: '+ height +'px; border: 0;">' + html+ '</textarea>';
 		$("#postit-text-" + id).replaceWith(input);
 		$("#postit-text-" + id).focus();
 	});
@@ -263,6 +275,20 @@ $(document).ready(function() {
 		var href = $(this).attr('rel').split(",");
 		externalLoadThreeLevels(href[0],href[1],href[2],href[3]);
 		projects.markNoticeRead(href[2]);
+	});
+	
+	
+	$(document).on('click', '#desktop .productionsLink', function(e) {
+		e.preventDefault();
+		var href = $(this).attr('rel').split(",");
+		externalLoadThreeLevels(href[0],href[1],href[2],href[3]);
+	});
+	
+	$(document).on('click', '#desktop .productionsLinkMarkRead', function(e) {
+		e.preventDefault();
+		var href = $(this).attr('rel').split(",");
+		externalLoadThreeLevels(href[0],href[1],href[2],href[3]);
+		productions.markNoticeRead(href[2]);
 	});
 	
 	$(document).on('click', '#desktop .brainstormsLinkMarkRead', function(e) {

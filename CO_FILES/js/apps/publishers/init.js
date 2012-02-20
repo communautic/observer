@@ -9,6 +9,12 @@ function publishersApplication(name) {
 	this.actionClose = function() {
 		publishersLayout.toggle('west');
 	}
+	
+	this.datepickerOnClose = function(dp) {
+		var obj = getCurrentModule();
+		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+	}
+	
 }
 
 var publishers = new publishersApplication('publishers');

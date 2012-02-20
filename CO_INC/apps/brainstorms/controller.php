@@ -368,15 +368,24 @@ class Brainstorms extends Controller {
 		  }
 	}
 	
-	function binBrainstormNote($id) {
+	/*function binBrainstormNote($id) {
 		$retval = $this->model->binBrainstormNote($id);
 		if($retval){
 			 return "true";
 		  } else{
 			 return "error";
 		  }
+	}*/
+
+	function deleteBrainstormNote($id) {
+		$retval = $this->model->deleteBrainstormNote($id);
+		if($retval){
+			 return "true";
+		  } else{
+			 return "error";
+		  }
 	}
-	
+
 	function restoreItem($id) {
 		$retval = $this->model->restoreItem($id);
 		if($retval){
@@ -415,14 +424,14 @@ class Brainstorms extends Controller {
 	}
 	
 	
-	function setBrainstormNoteToggle($id,$t) {
+	/*function setBrainstormNoteToggle($id,$t) {
 		$retval = $this->model->setBrainstormNoteToggle($id,$t);
 		if($retval){
 			 return 'true';
 		  } else{
 			 return "error";
 		  }
-	}
+	}*/
 
 
 	function createDuplicate($id) {

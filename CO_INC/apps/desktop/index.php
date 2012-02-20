@@ -17,7 +17,7 @@ if (!empty($_GET['request'])) {
 			if(isset($_GET["item"])) {
 				$item = $_GET["item"];
 			}
-			echo($desktop->updateColum($_GET["col"],$_GET["item"]));
+			echo($desktop->updateColum($_GET["col"],$item));
 		break;
 		case 'setWidgetStatus':
 			echo($desktop->setWidgetStatus($_GET["object"],$_GET["status"]));

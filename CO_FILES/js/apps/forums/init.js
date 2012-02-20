@@ -435,6 +435,13 @@ function forumsApplication(name) {
 		$.ajax({ type: "GET", url: "/", data: "path=apps/forums&request=markNewPostRead&pid=" + pid, cache: false});
 	}
 
+
+	this.datepickerOnClose = function(dp) {
+		var obj = getCurrentModule();
+		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+	}
+
+
 }
 
 var forums = new forumsApplication('forums');
