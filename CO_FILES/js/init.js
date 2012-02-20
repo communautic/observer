@@ -955,115 +955,9 @@ $(document).ready(function() {
 				}
 			},
 			onClose: function(dateText, inst) {
-				if(this.name == 'startdate' || this.name == 'enddate') {
-					var date1 = Date.parse($("input[name='startdate']").val());
-					var date2 = Date.parse($("input[name='enddate']").val());
-					var span = new TimeSpan(date2 - date1);
-					// werktage?$("input[name='days']").val(span.getDays()+1);
-				}
-				// move entire project with kickoff
-				if(this.name == 'startdate' && $("#durationEnd").html() != "" && this.value != $("input[name='moveproject_start']").val()) {
-					//var moveproject_start = $("input[name='moveproject_start']").val();
-					var txt = ALERT_PROJECT_MOVE_ALL;
-					var langbuttons = {};
-					langbuttons[ALERT_YES] = true;
-					langbuttons[ALERT_NO] = false;
-					$.prompt(txt,{ 
-						buttons:langbuttons,
-						callback: function(v,m,f){		
-							if(v){
-								var date1 = Date.parse($("input[name='startdate']").val());
-								var date2 = Date.parse($("input[name='moveproject_start']").val());
-								var span = new TimeSpan(date1 - date2);
-								var days = span.getDays();
-								var app = getCurrentApp();
-								var obj = getCurrentModule();
-								switch(obj.name) {
-									case 'projects': // duplicate project
-										$("#"+app+" input[name='request']").val("moveProject").after('<input type="hidden" value="' + days + '" name="movedays"/>');
-										$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
-									break;
-									case 'phase': // duplicate phase
-										alert("move phase");
-									break;
-								}
-							} else {
-								var obj = getCurrentModule();
-								$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
-							}	
-						}
-					});
-				}
-				else if(this.name == 'enddate' && $("input[name='moveproject_end']").length > 0 && this.value != $("input[name='moveproject_end']").val()) {
-					var txt = ALERT_PROJECT_MOVE_ALL;
-					var langbuttons = {};
-					langbuttons[ALERT_YES] = true;
-					langbuttons[ALERT_NO] = false;
-					$.prompt(txt,{ 
-						buttons:langbuttons,
-						callback: function(v,m,f){		
-							if(v){
-								var date1 = Date.parse($("input[name='enddate']").val());
-								var date2 = Date.parse($("input[name='moveproject_end']").val());
-								var span = new TimeSpan(date1 - date2);
-								var days = span.getDays();
-								$("input[name='editphase']").remove();
-								$("#poform").append('<input type="hidden" value="1" name="movephase"/>');
-								$("#poform").append('<input type="hidden" value="' + days + '" name="movedays"/>');
-								$("#actionSave").trigger('click');	
-							} else {
-
-							}	
-						}
-					});
-				}
-				else if (this.name.match(/task_startdate/)){
-					var reg = /[0-9]+/.exec(this.name);
-					var end = $("input[name='task_enddate["+reg+"]']").val();
-					if(Date.parse(end) < Date.parse(this.value)) {
-						$("input[name='task_enddate["+reg+"]']").val(this.value)
-					}
-					var obj = getCurrentModule();
-					$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
-				}
-				else if (this.name.match(/task_enddate/)){
-					var obj = getCurrentModule();
-					$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
-					var reg = /[0-9]+/.exec(this.name);
-					$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=getTaskDependencyExists&id="+reg, success: function(data){																																																																				
-						 if(data == "true") {
-							 var txt = ALERT_PHASE_TASKS_MOVE_ALL;
-							 var langbuttons = {};
-							langbuttons[ALERT_YES] = true;
-							langbuttons[ALERT_NO] = false;
-							$.prompt(txt,{ 
-								buttons:langbuttons,
-								callback: function(v,m,f){		
-									if(v){
-										var date1 = Date.parse($("input[name='task_enddate["+reg+"]']").val());
-										var date2 = Date.parse($("input[name='task_movedate["+reg+"]']").val());
-										var span = new TimeSpan(date1 - date2);
-										var days = span.getDays();
-										
-										if(days != 0) {
-										$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=moveDependendTasks&id="+reg+"&days="+days, success: function(data){
-											obj.actionRefresh();
-											}
-										});
-										}
-									}
-								}
-							});
-						 }
-						}
-					});
-				}
-				else {
-					var obj = getCurrentModule();
-					if(obj.name != 'brainstorms_rosters') {
-						$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
-					}
-				}
+				var app = getCurrentApp();
+				var object = window[app];
+				object.datepickerOnClose(this);				
 	   		}
  		});
 	}); 
@@ -1758,7 +1652,7 @@ function navThreeTitleThird(objectname, clicked, passed_id) {
 								}
 								$('#'+objectname+'3 ul:eq('+moduleidx+') .module-click:eq('+idx+')').addClass('active-link');
 								$('#'+objectname+'-top .top-subheadline').html(', ' + $('#'+objectname+'2 .deactivated').find(".text").html());
-								if(objectname == 'projects' ) {
+								if(objectname == 'projects' || objectname == 'productions') {
 									$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+objectname+"&request=getDates&id="+id, success: function(data){
 									$('#'+objectname+'-top .top-subheadlineTwo').html(data.startdate + ' - <span id="projectenddate">' + data.enddate + '</span>');
 									}
@@ -1924,7 +1818,7 @@ function externalLoadThreeLevels(objectname,f,p,ph) { // from Desktop
 	var objectnameCapsSingular = objectnameCaps.slice(0,-1);
 	var num_modules = window[objectname+'_num_modules'];
 	
-	if(objectname == 'projects' || objectname == 'brainstorms' || objectname == 'forums') {
+	if(objectname == 'projects' || objectname == 'productions' || objectname == 'brainstorms' || objectname == 'forums') {
 		object.$first.data({ "first" : f});
 		var index = $('#'+objectname+'1 .module-click').index($('#'+objectname+'1 .module-click[rel='+f+']'));
 		$.ajax({ type: "GET", url: "/", dataType:  'json', async: false, data: "path=apps/" + objectname +"&request=get"+objectnameCapsSingular+"List&id="+f, success: function(data){
