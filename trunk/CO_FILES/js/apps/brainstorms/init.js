@@ -310,7 +310,7 @@ function brainstormsApplication(name) {
 	
 	this.toggleItem = function(id) {
 		var height = $(this).attr("rel");
-		if($(this).parents("div.note").height() == 17) {
+		if($(this).parents("div.note").height() == 20) {
 			$(this).find('span').addClass("icon-toggle").removeClass("icon-toggle-active");
 			$(this).parents("div.note")
 				.animate({
@@ -322,7 +322,7 @@ function brainstormsApplication(name) {
 			$(this).find('span').addClass("icon-toggle-active").removeClass("icon-toggle");
 			$(this).parents("div.note")
 				.animate({
-					height: 17
+					height: 20
   					}, function() {
 						$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=setBrainstormNoteToggle&id="+id+"&t=1"});
 				});
@@ -331,7 +331,7 @@ function brainstormsApplication(name) {
 	
 	
 	this.binItem = function(id) {
-		var txt = ALERT_DELETE;
+		var txt = ALERT_DELETE_REALLY;
 		var langbuttons = {};
 		langbuttons[ALERT_YES] = true;
 		langbuttons[ALERT_NO] = false;
@@ -339,7 +339,7 @@ function brainstormsApplication(name) {
 			buttons:langbuttons,
 			callback: function(v,m,f){		
 				if(v){
-					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=binBrainstormNote&id="+id, success: function(data){
+					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=deleteBrainstormNote&id="+id, success: function(data){
 						if(data){
 							$("#note-"+id).slideUp(function(){ 
 								$(this).remove();
@@ -449,6 +449,14 @@ function brainstormsApplication(name) {
 	}
 
 
+	this.datepickerOnClose = function(dp) {
+		var obj = getCurrentModule();
+		if(obj.name != 'brainstorms_rosters' || obj.name != 'brainstorms_grids') {
+			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+		}
+	}
+
+
 this.initItems = function() {
 
 $('#brainstorms-outer div.note').each(function(){
@@ -465,9 +473,11 @@ $('#brainstorms-outer div.note').each(function(){
 	})
 		
 		.draggable({
-			containment:'#brainstorms-right',
+			containment:'#brainstorms-right .scroll-pane',
 			cancel: 'input,textarea',
 			//stack: ".note",
+			handle: '.postit-header',
+			cursor: 'move',
 			start: function(e,ui){ ui.helper.css('z-index',++brainstormszIndex); },
 			stop: function(e,ui){
 				var x = ui.position.left;
@@ -482,15 +492,16 @@ $('#brainstorms-outer div.note').each(function(){
 		})
 		.resizable({
 			//alsoResize: '#brainstorms-roster-outer div.note-text, #input-text',
-			minHeight: 16,
-			minWidth: 150,
+			minHeight: 130, // try to hide footer with 50
+			minWidth: 200,
 			start: function(e,ui){ 
 				ui.helper.css('z-index',++brainstormszIndex);
-				$(this).find("textarea").height($(this).height() - 10);
+				$(this).find("textarea").height($(this).height() - 100);
 			},
 			resize: function(e,ui){ 
 				//$(this).find("textarea").height($(this).height() - 20).width($(this).width());
-				$(this).find("div.note-text").height($(this).height() - 35);
+				$(this).find("div.note-text").height($(this).height() - 100);
+				$(this).find("textarea").height($(this).height() - 100);
 			},
 			stop: function(e,ui){
 				var w = ui.size.width;
@@ -897,23 +908,23 @@ $(document).ready(function() {
 	});
 
 
-	$('span.actionRoster').on('click', function(e){
+	$('span.actionConvert').on('click', function(e){
 		e.preventDefault();
 		if($(this).hasClass("noactive")) {
 			return false;
 		}
-		brainstorms_rosters.actionRoster();
+		brainstorms_grids.actionConvert();
 	});
 
 
 	var tmp;
 	brainstorms.initItems();
 
-	$(document).on('click', 'div.brainstormsNoteToggle', function(e) {
+	/*$(document).on('click', 'div.brainstormsNoteToggle', function(e) {
 		e.preventDefault();
 		var id = $(this).attr("id").replace(/note-toggle-/, "");
 		var height = $(this).attr("rel");
-		if($(this).parents("div.note").height() == 17) {
+		if($(this).parents("div.note").height() == 20) {
 			$(this).find('span').addClass("icon-toggle").removeClass("icon-toggle-active");
 			$(this).parents("div.note")
 				.animate({ height: height+'px' }, function() {
@@ -922,18 +933,24 @@ $(document).ready(function() {
 		} else {
 			$(this).find('span').addClass("icon-toggle-active").removeClass("icon-toggle");
 			$(this).parents("div.note")
-				.animate({ height: 17 }, function() {
+				.animate({ height: 20 }, function() {
 						$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=setBrainstormNoteToggle&id="+id+"&t=1"});
 				});
 		}
-	});
+	});*/
 
 
 	$(document).on('click', 'span.brainstormsAddNote', function(e) {
 		e.preventDefault();
 		var oid = $('#brainstorms').data('first');
 		var id = $('#brainstorms').data('second');	
-		var z = ++brainstormszIndex;
+		//var z = ++brainstormszIndex;
+		var zMax = Math.max.apply(null,$.map($('#brainstorms-outer div.note'), function(e,n){
+				return parseInt($(e).css('z-index'))||1 ;
+				})
+			);
+		var z = zMax + 1;
+		brainstormszIndex = z;
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=newBrainstormNote&id="+id+"&z="+z, success: function(data){
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getBrainstormDetails&fid="+oid+"&id="+id, success: function(text){
 				$("#brainstorms-right").html(text.html);
@@ -944,7 +961,7 @@ $(document).ready(function() {
 		});
 	});
 
-	$(document).on('dblclick', '#brainstorms-outer div.note-title', function(e) {
+	$(document).on('click', '#brainstorms-outer div.note-title', function(e) {
 		e.preventDefault();
 		var id = parseInt($(this).attr("id").replace(/note-title-/, ""));
 		currentBrainstormEditedNote = id;
@@ -954,14 +971,14 @@ $(document).ready(function() {
 		$("#input-note-" + id).focus();
 	});
 
-	$(document).on('dblclick', '#brainstorms-outer div.note-text', function(e) {
+	$(document).on('click', '#brainstorms-outer div.note-text', function(e) {
 		e.preventDefault();
 		var id = parseInt($(this).attr("id").replace(/note-text-/, ""));
 		currentBrainstormEditedNote = id;
 		var html = $(this).html().replace(/(<br\s*\/?>)|(<p><\/p>)/gi, "");
-		var width = $(this).width();
+		//var width = $(this).width();
 		var height = $(this).height();
-		var input = '<textarea id="input-text-' + id + '" name="input-text-' + id + '" style="width: '+ width +'px; height: '+ height +'px; border: 0;">' + html+ '</textarea>';
+		var input = '<textarea id="input-text-' + id + '" name="input-text-' + id + '" style=" height: '+ height +'px; border: 0;">' + html+ '</textarea>';
 		$("#note-text-" + id).replaceWith(input);
 		$("#input-text-" + id).focus();
 	});

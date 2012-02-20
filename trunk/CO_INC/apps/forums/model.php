@@ -1404,11 +1404,6 @@ class ForumsModel extends Model {
 		$tomorrow = $date->addDays($today, 1);
 		$string = "";
 		
-		$access = "";
-		if(!$session->isSysadmin()) {
-			$access = " and c.id IN (" . implode(',', $this->getEditPerms($session->uid)) . ")";
-		}
-		
 		// reminders = neue posts für initiator und admins
 		//$q ="select c.folder,c.id as pid,c.title as title from  " . CO_TBL_FORUMS . " as c where c.status='1' and c.bin = '0' " . $access;
 		$reminders = "";

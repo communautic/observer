@@ -376,6 +376,11 @@ function clientsApplication(name) {
 	}
 
 
+	this.datepickerOnClose = function(dp) {
+		var obj = getCurrentModule();
+		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+	}
+
 }
 
 var clients = new clientsApplication('clients');

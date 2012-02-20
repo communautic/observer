@@ -137,8 +137,11 @@ if (!empty($_GET['request'])) {
 		case 'newBrainstormNote':
 			echo($brainstorms->newBrainstormNote($_GET['id'],$_GET['z']));
 		break;
-		case 'binBrainstormNote':
+		/*case 'binBrainstormNote':
 			echo($brainstorms->binBrainstormNote($_GET['id']));
+		break;*/
+		case 'deleteBrainstormNote':
+			echo($brainstorms->deleteBrainstormNote($_GET['id']));
 		break;
 		case 'deleteItem':
 			echo($brainstorms->deleteItem($_GET['id']));
@@ -152,9 +155,9 @@ if (!empty($_GET['request'])) {
 		case 'updateNoteSize':
 			echo($brainstorms->updateNoteSize($_GET['id'],$_GET['w'],$_GET['h']));
 		break;
-		case 'setBrainstormNoteToggle':
+		/*case 'setBrainstormNoteToggle':
 			echo($brainstorms->setBrainstormNoteToggle($_GET['id'],$_GET['t']));
-		break;
+		break;*/
 		case 'getBrainstormsFoldersHelp':
 			echo($brainstorms->getBrainstormsFoldersHelp());
 		break;

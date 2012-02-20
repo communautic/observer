@@ -142,10 +142,48 @@
 						var status = 1;
 					}
 					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/forums&request=setItemStatus&id="+itemid+"&status=" + status, success: function(forums){
+									}
+								});
+				
+				} else if(obj.name == "brainstorms_grids") {
+					var input = $a.siblings('input')[0];
+					var itemid = input.value;
+					var col = $('div.brainstorms-phase').index($a.closest('div.brainstorms-phase'));
+					var ncbx = $('div.brainstorms-phase:eq('+col+') input:checkbox').length;
+					if (input.checked===true){
+						input.checked = false;
+						$a.removeClass('jNiceChecked');
+						var n = $('div.brainstorms-phase:eq('+col+') input:checked').length;
+						if(n == 0) {
+							$('div.brainstorms-col-title:eq('+col+')').removeClass('progress').removeClass('finished').addClass('planned');
+						}
+						if(ncbx > n && n > 0) {
+							$('div.brainstorms-col-title:eq('+col+')').removeClass('planned').removeClass('finished').addClass('progress');
+						}
+						$('div.brainstorms-col-footer:eq('+col+') .brainstorms-stagegate').removeClass('active');
+						var status = 0;
+						
+					} else {
+						input.checked = true;
+						$a.addClass('jNiceChecked');
+						var n = $('div.brainstorms-phase:eq('+col+') input:checked').length;
+						
+						if(ncbx > n && n > 0) {
+							$('div.brainstorms-col-title:eq('+col+')').removeClass('planned').removeClass('finished').addClass('progress');
+						}
+						
+						if(ncbx == n) {
+							$('div.brainstorms-col-title:eq('+col+')').removeClass('planned').removeClass('progress').addClass('finished');
+							$('div.brainstorms-col-footer:eq('+col+') .brainstorms-stagegate').addClass('active');
+						}
+						//$('#forumsAnswerOuter').slideDown();
+						//$("#forumsPostanswer_"+itemid).clone().attr('id','forumsAnswer_'+itemid).css('display','none').appendTo('#forumsAnswer').slideDown();
+						var status = 1;
+					}
+					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/grids&request=setItemStatus&id="+itemid+"&status=" + status, success: function(forums){
 										//$("#brainstormenddate").html(brainstorm.enddate);
 									}
 								});
-					
 				} else if(obj.name == "clients") {
 					var input = $a.siblings('input')[0];
 					var itemid = input.value;
@@ -224,7 +262,6 @@
 		
 		var $a = $wrapper.find('.jNiceCheckbox').click(function(){
 				var $a = $(this);
-				
 				var obj = getCurrentModule();
 				if(obj.name == "brainstorms_forums") {
 					var input = $a.siblings('input')[0];
@@ -277,7 +314,49 @@
 										//$("#brainstormenddate").html(brainstorm.enddate);
 									}
 								});
-					
+			
+							} else if(obj.name == "brainstorms_grids") {
+					var input = $a.siblings('input')[0];
+					var itemid = input.value;
+					var col = $('div.brainstorms-phase').index($a.closest('div.brainstorms-phase'));
+					var ncbx = $('div.brainstorms-phase:eq('+col+') input:checkbox').length;
+					if (input.checked===true){
+						input.checked = false;
+						$a.removeClass('jNiceChecked');
+						var n = $('div.brainstorms-phase:eq('+col+') input:checked').length;
+						if(n == 0) {
+							$('div.brainstorms-col-title:eq('+col+')').removeClass('progress').removeClass('finished').addClass('planned');
+						}
+						if(ncbx > n && n > 0) {
+							$('div.brainstorms-col-title:eq('+col+')').removeClass('planned').removeClass('finished').addClass('progress');
+						}
+						$('div.brainstorms-col-footer:eq('+col+') .brainstorms-stagegate').removeClass('active');
+						var status = 0;
+						
+					} else {
+						input.checked = true;
+						$a.addClass('jNiceChecked');
+						var n = $('div.brainstorms-phase:eq('+col+') input:checked').length;
+						
+						if(ncbx > n && n > 0) {
+							$('div.brainstorms-col-title:eq('+col+')').removeClass('planned').removeClass('finished').addClass('progress');
+						}
+						
+						if(ncbx == n) {
+							$('div.brainstorms-col-title:eq('+col+')').removeClass('planned').removeClass('progress').addClass('finished');
+							$('div.brainstorms-col-footer:eq('+col+') .brainstorms-stagegate').addClass('active');
+						}
+						//$('#forumsAnswerOuter').slideDown();
+						//$("#forumsPostanswer_"+itemid).clone().attr('id','forumsAnswer_'+itemid).css('display','none').appendTo('#forumsAnswer').slideDown();
+						var status = 1;
+					}
+					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/grids&request=setItemStatus&id="+itemid+"&status=" + status, success: function(forums){
+										//$("#brainstormenddate").html(brainstorm.enddate);
+									}
+								});
+
+			
+			
 				} else if(obj.name == "clients") {
 					var input = $a.siblings('input')[0];
 					var itemid = input.value;
