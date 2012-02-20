@@ -53,6 +53,7 @@ p { margin: 0; }
 h1 { font-size: 36pt; margin: 0pt; padding: 0pt;}
 h2 { font-size: 25pt; margin: 0pt; padding: 0pt;}
 h3 { margin: 0pt; padding: 0pt;}
+hr { height: 1pt; color: #000; background-color: #000; border: 0; }
 
 .barchart_color_planned { background-color: #c8e3f0;}
 .psp_barchart_color_planned { background-color: #c9e3ef;}
