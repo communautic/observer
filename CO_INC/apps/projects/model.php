@@ -1034,7 +1034,7 @@ class ProjectsModel extends Model {
 				
 				$chart["real"] = round(($timeing+$tasks)/2,0);
 				$chart["title"] = $lang["PROJECT_FOLDER_CHART_STABILITY"];
-				$chart["img_name"] = $id . "_stability.png";
+				$chart["img_name"] = "project_" . $id . "_stability.png";
 				$chart["url"] = 'https://chart.googleapis.com/chart?chs=150x90&cht=gm&chd=t:' . $chart["real"];
 				
 				$chart["tendency"] = "tendency_negative.png";
@@ -1084,7 +1084,7 @@ class ProjectsModel extends Model {
 				
 				$chart["rest"] = $this->getRest($chart["real"]);
 				$chart["title"] = $lang["PROJECT_FOLDER_CHART_REALISATION"];
-				$chart["img_name"] = $id . "_realisation.png";
+				$chart["img_name"] = "project_" . $id . "_realisation.png";
 				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
 				
 				$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
@@ -1144,7 +1144,7 @@ class ProjectsModel extends Model {
 				
 				$chart["rest"] = $this->getRest($chart["real"]);
 				$chart["title"] = $lang["PROJECT_FOLDER_CHART_ADHERANCE"];
-				$chart["img_name"] = $id . "_timeing.png";
+				$chart["img_name"] = "project_" . $id . "_timeing.png";
 				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
 			
 				$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
@@ -1199,7 +1199,7 @@ class ProjectsModel extends Model {
 				
 				$chart["rest"] = $this->getRest($chart["real"]);
 				$chart["title"] = $lang["PROJECT_FOLDER_CHART_TASKS"];
-				$chart["img_name"] = $id . "_tasks.png";
+				$chart["img_name"] = "project_" . $id . "_tasks.png";
 				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
 			
 				$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
