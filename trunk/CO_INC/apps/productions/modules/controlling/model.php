@@ -125,7 +125,7 @@ class ProductionsControllingModel extends ProductionsModel {
 				
 				$chart["real"] = round(($timeing+$tasks)/2,0);
 				$chart["title"] = $lang["PRODUCTION_CONTROLLING_STABILITY"];
-				$chart["img_name"] = "p_" . $id . "_stability.png";
+				$chart["img_name"] = "production_" . $id . "_stability.png";
 				$chart["url"] = 'https://chart.googleapis.com/chart?chs=150x90&cht=gm&chd=t:' . $chart["real"];
 				
 				$chart["tendency"] = "tendency_negative.png";
@@ -158,7 +158,7 @@ class ProductionsControllingModel extends ProductionsModel {
 				
 				$chart["rest"] = $this->getRest($chart["real"]);
 				$chart["title"] = $lang["PRODUCTION_CONTROLLING_REALISATION"];
-				$chart["img_name"] = "p_" . $id . "_realisation.png";
+				$chart["img_name"] = "production_" . $id . "_realisation.png";
 				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
 				
 				if($image == 1) {
@@ -213,7 +213,7 @@ class ProductionsControllingModel extends ProductionsModel {
 				
 				$chart["rest"] = $this->getRest($chart["real"]);
 				$chart["title"] = $lang["PRODUCTION_CONTROLLING_ADHERANCE"];
-				$chart["img_name"] = "p_" . $id . "_timeing.png";
+				$chart["img_name"] = "production_" . $id . "_timeing.png";
 				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
 				
 				if($image == 1) {
@@ -251,7 +251,7 @@ class ProductionsControllingModel extends ProductionsModel {
 				
 				$chart["rest"] = $this->getRest($chart["real"]);
 				$chart["title"] = $lang["PRODUCTION_CONTROLLING_TASKS"];
-				$chart["img_name"] = "p_" . $id . "_tasks.png";
+				$chart["img_name"] = "production_" . $id . "_tasks.png";
 				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
 
 				if($image == 1) {

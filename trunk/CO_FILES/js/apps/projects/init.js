@@ -812,13 +812,13 @@ $(document).ready(function() {
 	});
 
 
-	$('span.actionProjectHandbook').on('click',function(e){
+	/*$('span.actionHandbook').on('click',function(e){
 		e.preventDefault();
 		if($(this).hasClass("noactive")) {
 			return false;
 		}
 		projects.actionHandbook();
-	});
+	});*/
 
 	
 	// barchart opacity with jquery

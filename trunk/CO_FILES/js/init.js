@@ -495,6 +495,16 @@ $(document).ready(function() {
 		obj.actionDuplicate();
 	});
 	
+	$('span.actionHandbook').on('click', function(e){
+		e.preventDefault();
+		if($(this).hasClass("noactive")) {
+			return false;
+		}
+		var app = getCurrentApp();
+		var obj = window[app];
+		obj.actionHandbook();
+	});
+	
 	$('span.actionExport').on('click', function(e){
 		e.preventDefault();
 		if($(this).hasClass("noactive")) {
