@@ -358,14 +358,12 @@ function brainstormsGrids(name) {
 				
 				$('#item_'+id+' div.itemTitle').html(title);
 				if($("#input-note").length > 0) {
-					var note_title = $(document.createElement('div')).attr("id", "note-title").attr("class", "note-title").html(title);
+					var note_title = $(document.createElement('div')).attr("id", "note-title").attr("class", "note-title note-title-design").html(title);
 					$("#note").find('input').replaceWith(note_title); 
 				}
 				if($("#input-text").length > 0) {
-					//text = text.replace(/\n/g, "<br />");
-					//var width = $("#input-text-"+id).width();
 					var height = $("#input-text").height();
-					var note_text = $(document.createElement('div')).attr("id", "note-text").attr("class", "note-text").css("height",height).html(text);
+					var note_text = $(document.createElement('div')).attr("id", "note-text").attr("class", "note-text note-text-design").css("height",height).html(text);
 					$("#note").find('textarea').replaceWith(note_text); 
 				}
 				$('#note').slideUp();

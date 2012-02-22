@@ -935,7 +935,7 @@ border:1px dashed black;
 	width: 100%;
 }
 
-.postit-text, .note-text {
+.postit-text, .note-text-design {
 	font-family: 'Comic Sans MS', 'Marker Felt';
 	font-size: 16px;
 	overflow: hidden;
