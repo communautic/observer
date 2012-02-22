@@ -180,13 +180,13 @@ foreach($cols as $key => &$value){
   <div id="brainstorms-notes-outer" class="brainstorms-notes-outer">
       <div id="note" class="note note-design" style="width: 203px; height: 150px; display: none;">
         <h3 id="note-header">
-        <div id="note-title" class="note-title"></div>
-        <div id="note-info" class="brainstormsNoteInfo coTooltip" style="position: absolute; top: 4px; right: 28px; width: 15px; height: 15px; cursor: pointer;"><span class="icon-info"></span>
+        <div id="note-title" class="note-title note-title-design"></div>
+        <div id="note-info" class="brainstormsNoteInfo coTooltip" style="position: absolute; top: 8px; right: 28px; width: 15px; height: 15px; cursor: pointer;"><span class="icon-info"></span>
         	<div style="display: none" class="coTooltipHtml" id="note-info-content"></div>
         </div>
-        <div id="note-save" style="position: absolute; top: 5px; right: 10px; width: 15px; height: 15px; cursor: pointer;"><a rel="" class="binItem"><span class="icon-delete"></span></a></div>
+        <div id="note-save" style="position: absolute; top: 9px; right: 10px; width: 15px; height: 15px; cursor: pointer;"><a rel="" class="binItem"><span class="icon-delete"></span></a></div>
         </h3>
-        <div id="note-text" class="note-text" style="height: 165px;"></div>
+        <div id="note-text" class="note-text note-text-design" style="height: 110px;"></div>
 	</div>
     </div>
 </div>

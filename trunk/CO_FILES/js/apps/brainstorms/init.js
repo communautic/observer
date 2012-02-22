@@ -292,14 +292,14 @@ function brainstormsApplication(name) {
 		//$.ajax({ type: "POST", url: "/", data: "path=apps/brainstorms&request=saveBrainstormNote&id="+id+"&title="+title+"&text="+text, success: function(data){
 			//if(data == "true"){
 				if($("#input-note-"+id).length > 0) {
-					var note_title = $(document.createElement('div')).attr("id", "note-title-" + id).attr("class", "note-title").html(title);
+					var note_title = $(document.createElement('div')).attr("id", "note-title-" + id).attr("class", "note-title note-title-design").html(title);
 					$("#note-" + id).find('input').replaceWith(note_title); 
 				}
 				if($("#input-text-"+id).length > 0) {
 					//text = text.replace(/\n/g, "<br />");
 					//var width = $("#input-text-"+id).width();
 					var height = $("#input-text-"+id).height();
-					var note_text = $(document.createElement('div')).attr("id", "note-text-" + id).attr("class", "note-text").css("height",height).html(data);
+					var note_text = $(document.createElement('div')).attr("id", "note-text-" + id).attr("class", "note-text note-text-design").css("height",height).html(data);
 					$("#note-" + id).find('textarea').replaceWith(note_text); 
 				}
 			//} 

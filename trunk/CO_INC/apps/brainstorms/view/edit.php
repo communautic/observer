@@ -51,9 +51,9 @@ if(is_array($notes)) {
     <div id="note-<?php echo($note->id);?>" class="<?php if($brainstorm->canedit) { ?>note<?php } ?> postit-design" style="width: <?php echo $width;?>px; height: <?php echo $height;?>px; left: <?php echo $left;?>px; top: <?php echo $top;?>px; z-index: <?php echo $zindex;?>;">   
        <div class="postit-header"><span id="postit-days-" class="postit-header-left"><?php echo $note->days;?></span><span id="postit-date-" class="postit-header-right"><?php echo $note->date;?></span></div>
         <h3 id="note-header-<?php echo($note->id);?>">
-        <div id="note-title-<?php echo($note->id);?>" <?php if($brainstorm->canedit) { ?>class="note-title<?php } ?>"><?php echo($note->title);?></div>
+        <div id="note-title-<?php echo($note->id);?>" class="note-title-design <?php if($brainstorm->canedit) { ?>note-title<?php } ?>"><?php echo($note->title);?></div>
         </h3>
-        <div id="note-text-<?php echo($note->id);?>" <?php if($brainstorm->canedit) { ?>class="note-text"<?php } ?> style="height: <?php echo $height-90;?>px;"><?php echo(nl2br($note->text));?></div>
+        <div id="note-text-<?php echo($note->id);?>" class="note-text-design <?php if($brainstorm->canedit) { ?>note-text<?php } ?>" style="height: <?php echo $height-90;?>px;"><?php echo(nl2br($note->text));?></div>
 		<div class="postit-footer">
         	<?php if($brainstorm->canedit) { ?><span id="note-delete-<?php echo($note->id);?>" class="postit-delete"><a rel="<?php echo($note->id);?>" class="binItem"><span class="desktop-icon-delete"></span></a></span><?php } ?>
         	<span class="postit-info  coTooltip"><span class="desktop-icon-info"></span><div class="coTooltipHtml" style="display: none">
