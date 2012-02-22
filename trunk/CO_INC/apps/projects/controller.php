@@ -463,7 +463,7 @@ class Projects extends Controller {
 
 	function getProjectStatusDialog() {
 		global $lang;
-		include 'view/dialog_project_status.php';
+		include 'view/dialog_status.php';
 	}
 
 

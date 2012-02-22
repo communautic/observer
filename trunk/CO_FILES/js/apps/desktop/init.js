@@ -267,13 +267,13 @@ $(document).ready(function() {
 	$(document).on('click', '#desktop .projectsLink', function(e) {
 		e.preventDefault();
 		var href = $(this).attr('rel').split(",");
-		externalLoadThreeLevels(href[0],href[1],href[2],href[3]);
+		externalLoadThreeLevels(href[0],href[1],href[2],href[3],'projects');
 	});
 	
 	$(document).on('click', '#desktop .projectsLinkMarkRead', function(e) {
 		e.preventDefault();
 		var href = $(this).attr('rel').split(",");
-		externalLoadThreeLevels(href[0],href[1],href[2],href[3]);
+		externalLoadThreeLevels(href[0],href[1],href[2],href[3],'projects');
 		projects.markNoticeRead(href[2]);
 	});
 	
@@ -281,34 +281,34 @@ $(document).ready(function() {
 	$(document).on('click', '#desktop .productionsLink', function(e) {
 		e.preventDefault();
 		var href = $(this).attr('rel').split(",");
-		externalLoadThreeLevels(href[0],href[1],href[2],href[3]);
+		externalLoadThreeLevels(href[0],href[1],href[2],href[3],'productions');
 	});
 	
 	$(document).on('click', '#desktop .productionsLinkMarkRead', function(e) {
 		e.preventDefault();
 		var href = $(this).attr('rel').split(",");
-		externalLoadThreeLevels(href[0],href[1],href[2],href[3]);
+		externalLoadThreeLevels(href[0],href[1],href[2],href[3],'productions');
 		productions.markNoticeRead(href[2]);
 	});
 	
 	$(document).on('click', '#desktop .brainstormsLinkMarkRead', function(e) {
 		e.preventDefault();
 		var href = $(this).attr('rel').split(",");
-		externalLoadThreeLevels(href[0],href[1],href[2],href[3]);
+		externalLoadThreeLevels(href[0],href[1],href[2],href[3],'brainstorms');
 		brainstorms.markNoticeRead(href[2]);
 	});
 	
 	$(document).on('click', '#desktop .forumsLinkMarkRead', function(e) {
 		e.preventDefault();
 		var href = $(this).attr('rel').split(",");
-		externalLoadThreeLevels(href[0],href[1],href[2],href[3]);
+		externalLoadThreeLevels(href[0],href[1],href[2],href[3],'forums');
 		forums.markNoticeRead(href[2]);
 	});
 	
 	$(document).on('click', '#desktop .forumsLinkNewPostRead', function(e) {
 		e.preventDefault();
 		var href = $(this).attr('rel').split(",");
-		externalLoadThreeLevels(href[0],href[1],href[2],href[3]);
+		externalLoadThreeLevels(href[0],href[1],href[2],href[3],'forums');
 		forums.markNewPostRead(href[2]);
 	});
 
