@@ -109,13 +109,15 @@ foreach($cols as $key => &$value){
 		if($cols[$key]['titletext'] != "") {
 			echo '<div id="item_'.$cols[$key]['titleid'].'" rel="'.$cols[$key]['titleid'].'" class="droppable colTitle">';
 			echo '<div class="statusItem"><input name="" type="checkbox" value="'.$cols[$key]['titleid'].'" class="cbx jNiceHidden" /></div>';
-			echo '<div class="itemTitle">'.$cols[$key]['titletext'].'</div>';
+			echo '<div class="itemTitle ' . $checkbox . '">'.$cols[$key]['titletext'].'</div>';
 			if($grid->canedit) {
 				echo '<div class="dragItem"></div>';
 			}
 			echo '</div>';
 		} else {
+			if($grid->canedit) {
 			echo '<span class="newNoteItem newNoteTitle"></span>';
+			}
 		}
 		echo '</div>';
 
@@ -127,13 +129,15 @@ foreach($cols as $key => &$value){
 		}
 		echo '<div id="item_'.$cols[$key]["notes"][$tkey]['note_id'].'" rel="'.$cols[$key]["notes"][$tkey]['note_id'].'" class="droppable">';
 		echo '<div class="statusItem"><input name="" type="checkbox" value="'.$cols[$key]["notes"][$tkey]['note_id'].'" class="cbx jNiceHidden ' . $checkbox . '" ' . $checked . '/></div>';
-		echo '<div class="itemTitle">'.$cols[$key]["notes"][$tkey]['title'].'</div>';
+		echo '<div class="itemTitle  ' . $checkbox . '">'.$cols[$key]["notes"][$tkey]['title'].'</div>';
 		if($grid->canedit) {
 			echo '<div class="dragItem"></div>';
 		}
 		echo '</div>';
 	}
+	if($grid->canedit) {
 	echo '<span class="newNoteItem newNote"></span>';
+	}
 	echo '</div>';
 	echo '<div class="brainstorms-col-footer">';
 	
@@ -149,19 +153,21 @@ foreach($cols as $key => &$value){
 		if($cols[$key]['stagegatetext'] != "") {
 			echo '<div id="item_'.$cols[$key]['stagegateid'].'" rel="'.$cols[$key]['stagegateid'].'" class="droppable colStagegate">';
 			echo '<div class="statusItem"><input name="" type="checkbox" value="'.$cols[$key]['stagegateid'].'" class="cbx jNiceHidden" /></div>';
-			echo '<div class="itemTitle">'.$cols[$key]['stagegatetext'].'</div>';
+			echo '<div class="itemTitle ' . $checkbox . '">'.$cols[$key]['stagegatetext'].'</div>';
 			if($grid->canedit) {
 				echo '<div class="dragItem"></div>';
 			}
 			echo '</div>';
 		}  else {
+			if($grid->canedit) {
 			echo '<span class="newNoteItem newNoteStagegate"></span>';
+			}
 		}
 
 		echo '</div>';
 		echo '</div>';
 		echo '<div class="brainstorms-col-footer-days">';
-		echo '<div><input class="colDays" name="" type="text" value="'.$cols[$key]['coldays'].'" size="3" maxlength="3" style="margin" /></div>';
+		echo '<div><input class="colDays ' . $checkbox . '" name="" type="text" value="'.$cols[$key]['coldays'].'" size="3" maxlength="3" style="margin" /></div>';
 		echo '</div>';
 		
 	echo '</div>';
@@ -172,7 +178,7 @@ foreach($cols as $key => &$value){
 
  </div>
   <div id="brainstorms-notes-outer" class="brainstorms-notes-outer">
-      <div id="note" class="note note-design" style="width: 200px; height: 200px; display: none;">
+      <div id="note" class="note note-design" style="width: 203px; height: 150px; display: none;">
         <h3 id="note-header">
         <div id="note-title" class="note-title"></div>
         <div id="note-info" class="brainstormsNoteInfo coTooltip" style="position: absolute; top: 4px; right: 28px; width: 15px; height: 15px; cursor: pointer;"><span class="icon-info"></span>

@@ -58,7 +58,7 @@ class BrainstormsGrids extends Brainstorms {
 		$title = "";
 		$html = "";
 		
-		if($arr = $this->model->getDetails($id)) {
+		/*if($arr = $this->model->getDetails($id)) {
 			$grid = $arr["grid"];
 			$cols = $arr["cols"];
 			ob_start();
@@ -74,23 +74,24 @@ class BrainstormsGrids extends Brainstorms {
 			break;
 			default:
 				$this->printPDF($title,$html);
-		}
-		/*if($arr = $this->model->getDetails($id)) {
+		}*/
+		if($arr = $this->model->getDetails($id)) {
 			$grid = $arr["grid"];
 			$cols = $arr["cols"];
 			$console_items = $arr["console_items"];
 			$sendto = $arr["sendto"];
 			$colheight = $arr["colheight"];
+			$listheight = $arr["listheight"];
 			$projects = $arr["projects"];
 			
 			$page_width = sizeof($cols)*150+245+300;
-					$page_height = $colheight+200;
-					if($page_width < 896) {
-						$page_width = 896;
-					}
-					if($page_height < 595) {
-						$page_height = 595;
-					}
+			$page_height = $colheight+200;
+			if($page_width < 896) {
+				$page_width = 896;
+			}
+			if($page_height < 595) {
+				$page_height = 595;
+			}
 			
 			
 			ob_start();
@@ -100,11 +101,11 @@ class BrainstormsGrids extends Brainstorms {
 			$title = $grid->title;
 					
 					
-			$this->printBrainstormGrid($title,$html,$page_width,$page_height);
-		}*/
+			$this->printGrid($title,$html,$page_width,$page_height);
+		}
 	}
 	
-	function printBrainstormGrid($title,$text,$width,$height) {
+	function printGrid($title,$text,$width,$height) {
 		global $lang;
 		ob_start();
 			include(CO_INC . "/view/printheader.php");

@@ -575,7 +575,7 @@ function brainstormsGrids(name) {
 	
 	
 	
-	this.initItems = function() {
+	//this.initItems = function() {
 		/*$("#brainstorms-grid-outer div.note").livequery( function() {
 			$(this)
 			.draggable({
@@ -591,7 +591,7 @@ function brainstormsGrids(name) {
 				}
 			});
 		});*/
-	}
+	//}
 
 
 	this.actionConvert = function() {
@@ -911,7 +911,7 @@ $(document).ready(function() {
 	initBrainstormsConsole();
 	initBrainstormsOuter();
 	initBrainstormsPhases();
-	brainstorms_grids.initItems();
+	//brainstorms_grids.initItems();
 	
 	$(document).on('click', '#brainstorms-console a.collapse', function(e) {
 		e.preventDefault();
@@ -924,7 +924,10 @@ $(document).ready(function() {
 	
 	
 	$("#brainstorms-grid input.colDays").livequery(function () {
-          $(this).data('initial_value', $(this).val());
+          if($(this).hasClass('noperm')) {
+			  return false;
+		  }
+		  $(this).data('initial_value', $(this).val());
 		  $(this).keydown(function(event) {
 			// Allow only backspace and delete
 			if ( event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 32 ) {
@@ -973,7 +976,7 @@ $(document).ready(function() {
 		$("#brainstorms-grid").width($("#brainstorms-grid").width()+230);
 		$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/grids&request=newGridColumn&id="+pid+"&sort="+sor, cache: false, success: function(num){
 			//$("#brainstorms-grid").append('<div id="gridscol_' + num + '" class="drag" ' + styles +'><h3 class="ui-widget-header">&nbsp;<div class="brainstorms-column-delete" id="brainstorms-col-delete-' + num + '"><span class="icon-delete"></span></div></h3><div class="brainstorms-phase brainstorms-phase-design"></div></div>').sortable("refresh");
-			$("#brainstorms-grid").append('<div id="gridscol_' + num + '" ' + styles +'><div id="brainstorms-col-delete-' + num + '" class="brainstorms-column-delete"><span class="icon-delete"></span></div><div class="dragCol"></div><div class="brainstorms-col-title"></div><div class="brainstorms-phase brainstorms-phase-design ui-sortable"></div><div class="brainstorms-col-footer"><div class="brainstorms-col-footer-stagegate"><div class="brainstorms-stagegate"></div><div class="brainstorms-col-stagegate ui-droppable"></div></div><div class="brainstorms-col-footer-days"><div style=""><input type="text" style="margin" maxlength="3" size="3" value="0" name="" class="colDays"></div></div></div></div>').sortable("refresh");
+			$("#brainstorms-grid").append('<div id="gridscol_' + num + '" ' + styles +'><div id="brainstorms-col-delete-' + num + '" class="brainstorms-column-delete"><span class="icon-delete"></span></div><div class="dragCol"></div><div class="brainstorms-col-title"><span class="newNoteItem newNoteTitle"></span></div><div class="brainstorms-phase brainstorms-phase-design ui-sortable"><span class="newNoteItem newNote"></span></div><div class="brainstorms-col-footer"><div class="brainstorms-col-footer-stagegate"><div class="brainstorms-stagegate"></div><div class="brainstorms-col-stagegate ui-droppable"><span class="newNoteItem newNoteStagegate"></span></div></div><div class="brainstorms-col-footer-days"><div style=""><input type="text" style="margin" maxlength="3" size="3" value="0" name="" class="colDays"></div></div></div></div>').sortable("refresh");
 			initBrainstormsPhases();
 			}
 		});
@@ -1084,12 +1087,17 @@ $(document).ready(function() {
 
 	$(document).on('click', '#brainstorms-grid div.itemTitle', function(e) {
 		e.preventDefault()
-		var addtop = 165;
-		var addleft = 19;
+		if($(this).hasClass('noperm')) {
+			return false;
+		}
+		var addtop = 162;
+		var addleft = 15;
 		if($(this).parent().hasClass('colStagegate')) {
+			var idx = $('#brainstorms-grid .newNote').index(this);
 			var f = $('#brainstorms-grid .brainstorms-col-footer:eq(0)').position();
-			addtop = f.top;
-			addtop = f.left;
+			var l = $(this).parent().parent().parent().parent().parent().position();
+			addtop = f.top+addtop;
+			addleft = l.left+addleft;
 		}
 		if($('#input-note').is(':visible') || $('#input-text').is(':visible')) {
 			brainstorms_grids.saveItem(currentBrainstormGridClickedNote);

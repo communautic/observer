@@ -182,11 +182,6 @@ background-color: #fff6b5; }
 	
 }
 
-#brainstorms div.note-design h3 {
-	border-bottom: 1px solid #d8d19c;
-	height: 21px;
-	margin-bottom: 8px;
-}
 
 #brainstorms .postit-header { margin-bottom: 0; }
 #brainstorms-right .note-title {
@@ -235,9 +230,10 @@ background-color: #fff6b5; }
 	width: 100%;
 
 }
-/*#brainstorms-notes-outer .note textarea {
-	background-color: #fff;
-}*/
+#brainstorms-notes-outer .note-title, #brainstorms-notes-outer .note-text, #brainstorms-notes-outer input, #brainstorms-notes-outer textarea {
+	font-family: Arial,Verdana,Helvetica,sans-serif !important;
+	font-size: 13px !important;
+}
 
 #brainstorms-roster { float: left; width: 100%; font-size: 11px;}
 #brainstorms-roster > div { position: relative; float: left; width: 150px; height: 357px; background-image: url(../../img/brainstorms_roster_task.jpg); background-repeat: repeat-y; background-position: 0px 27px;}
