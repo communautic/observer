@@ -463,7 +463,7 @@ class Productions extends Controller {
 
 	function getProductionStatusDialog() {
 		global $lang;
-		include 'view/dialog_production_status.php';
+		include 'view/dialog_status.php';
 	}
 
 
