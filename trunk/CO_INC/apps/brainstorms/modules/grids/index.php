@@ -147,9 +147,9 @@ if (!empty($_GET['request'])) {
 		case 'saveGridNewManualStagegate':
 			echo($brainstormsGrids->saveGridNewManualStagegate($_GET["pid"],$_GET["col"]));
 		break;
-		case 'toggleMilestone':
+		/*case 'toggleMilestone':
 			echo($brainstormsGrids->toggleMilestone($_GET['id'],$_GET['ms']));
-		break;
+		break;*/
 		case 'binItem':
 			echo($brainstormsGrids->binItem($_GET['id']));
 		break;

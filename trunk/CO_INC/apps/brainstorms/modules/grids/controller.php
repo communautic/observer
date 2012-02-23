@@ -84,16 +84,14 @@ class BrainstormsGrids extends Brainstorms {
 			$listheight = $arr["listheight"];
 			$projects = $arr["projects"];
 			
-			$page_width = sizeof($cols)*150+245+300;
-			$page_height = $colheight+200;
+			$page_width = sizeof($cols)*203+100+100;
+			$page_height = $grid->max_items*20+5+20+142+100;
 			if($page_width < 896) {
 				$page_width = 896;
 			}
 			if($page_height < 595) {
 				$page_height = 595;
 			}
-			
-			
 			ob_start();
 				include 'view/print.php';
 				$html = ob_get_contents();
@@ -161,17 +159,14 @@ class BrainstormsGrids extends Brainstorms {
 			$console_items = $arr["console_items"];
 			$sendto = $arr["sendto"];
 			$colheight = $arr["colheight"];
+			$listheight = $arr["listheight"];
 			$projects = $arr["projects"];
 			
-			$page_width = sizeof($cols)*230+245+300;
-					$page_height = $colheight+200;
-					if($page_width < 896) {
-						$page_width = 896;
-					}
-					if($page_height < 595) {
-						$page_height = 595;
-					}
-					
+			$page_width = sizeof($cols)*203+100+100;
+			$page_height = $grid->max_items*20+5+20+142+100;
+			if($page_width < 896) {
+				$page_width = 896;
+			}
 			ob_start();
 				include 'view/print.php';
 				$html = ob_get_contents();
@@ -272,7 +267,7 @@ class BrainstormsGrids extends Brainstorms {
 			$data["text"] = $note->text;
 			$data["info"] = $lang["EDITED_BY_ON"] . ' ' . $note->edited_user.', ' . $note->edited_date . '<br>'
 . $lang["CREATED_BY_ON"]  . ' ' . $note->created_user . ', ' . $note->created_date;
-            $data["ms"] = $note->ms;
+            //$data["ms"] = $note->ms;
 			return json_encode($data);
 		} else{
 			return "error";
@@ -375,14 +370,14 @@ class BrainstormsGrids extends Brainstorms {
 		  }
 	}
 	
-	function toggleMilestone($id,$ms) {
+	/*function toggleMilestone($id,$ms) {
 		$retval = $this->model->toggleMilestone($id,$ms);
 		if($retval){
 			 return true;
 		  } else{
 			 return "error";
 		  }
-	}
+	}*/
 
 	function createNew($id) {
 		$retval = $this->model->createNew($id);

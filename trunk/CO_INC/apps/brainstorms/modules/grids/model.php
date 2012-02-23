@@ -446,7 +446,7 @@ class BrainstormsGridsModel extends BrainstormsModel {
 			$n["title"] = $row["title"];
 			$n["text"] = nl2br($row["text"]);
 			
-			$n["ms"] = $row["ms"];
+			//$n["ms"] = $row["ms"];
 						// dates
 			$n["created_date"] = $this->_date->formatDate($row["created_date"],CO_DATETIME_FORMAT);
 			$n["edited_date"] = $this->_date->formatDate($row["edited_date"],CO_DATETIME_FORMAT);
@@ -587,7 +587,7 @@ class BrainstormsGridsModel extends BrainstormsModel {
 	}
 	
 	
-	  function toggleMilestone($id,$ms) {
+	  /*function toggleMilestone($id,$ms) {
 		global $session;
 		$now = gmdate("Y-m-d H:i:s");
 		$q = "UPDATE " . CO_TBL_BRAINSTORMS_GRIDS_NOTES . " set ms = '$ms', edited_user = '$session->uid', edited_date = '$now' WHERE id='$id'";
@@ -596,7 +596,7 @@ class BrainstormsGridsModel extends BrainstormsModel {
 			return true;
 		}
 
-	}
+	}*/
 
 	function createNew($id) {
 		global $session, $lang;
@@ -627,53 +627,36 @@ class BrainstormsGridsModel extends BrainstormsModel {
 		$now = gmdate("Y-m-d H:i:s");
 		
 		// grid
-		$q = "INSERT INTO " . CO_TBL_BRAINSTORMS_GRIDS . " (pid,title,created_date,created_user,edited_date,edited_user) SELECT pid,CONCAT(title,' " . $lang["GLOBAL_DUPLICAT"] . "'),'$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_BRAINSTORMS_GRIDS . " where id='$id'";
+		$q = "INSERT INTO " . CO_TBL_BRAINSTORMS_GRIDS . " (pid,title,owner,owner_ct,management,management_ct,team,team_ct,created_date,created_user,edited_date,edited_user) SELECT pid,CONCAT(title,' " . $lang["GLOBAL_DUPLICAT"] . "'),owner,owner_ct,management,management_ct,team,team_ct,'$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_BRAINSTORMS_GRIDS . " where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
 		// cols
 		
-		$q = "SELECT * FROM " . CO_TBL_BRAINSTORMS_GRIDS_COLUMNS . " WHERE pid = '$id'";
+		$q = "SELECT * FROM " . CO_TBL_BRAINSTORMS_GRIDS_COLUMNS . " WHERE pid = '$id' and bin='0'";
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
 			$colID = $row["id"];
 			$sort = $row['sort'];
-			$qc = "INSERT INTO " . CO_TBL_BRAINSTORMS_GRIDS_COLUMNS . " set pid = '$id_new', sort='$sort'";
+			$days = $row['days'];
+			$qc = "INSERT INTO " . CO_TBL_BRAINSTORMS_GRIDS_COLUMNS . " set pid = '$id_new', sort='$sort', days='$days'";
 			$resultc = mysql_query($qc, $this->_db->connection);
 			$colID_new = mysql_insert_id();
 			
-			$qn = "SELECT * FROM " . CO_TBL_BRAINSTORMS_GRIDS_NOTES . " where cid = '$colID' and bin='0' ORDER BY sort";
+			$qn = "SELECT * FROM " . CO_TBL_BRAINSTORMS_GRIDS_NOTES . " where cid = '$colID' and bin='0'";
 			$resultn = mysql_query($qn, $this->_db->connection);
 			$num_notes[] = mysql_num_rows($resultn);
 			$items = array();
 			while($rown = mysql_fetch_array($resultn)) {
 				$note_id = $rown["id"];
+				$sort = $rown["sort"];
+				$istitle = $rown["istitle"];
+				$isstagegate = $rown["isstagegate"];
 				$title = mysql_real_escape_string($rown["title"]);
 				$text = mysql_real_escape_string($rown["text"]);
-				$ms = $rown["ms"];
-				$qnn = "INSERT INTO " . CO_TBL_BRAINSTORMS_GRIDS_NOTES . " set cid='$colID_new', title = '$title', text = '$text', ms = '$ms',created_date='$now',created_user='$session->uid',edited_date='$now',edited_user='$session->uid'";
+				//$ms = $rown["ms"];
+				$qnn = "INSERT INTO " . CO_TBL_BRAINSTORMS_GRIDS_NOTES . " set cid='$colID_new', sort = '$sort', istitle = '$istitle', isstagegate = '$isstagegate', title = '$title', text = '$text', created_date='$now',created_user='$session->uid',edited_date='$now',edited_user='$session->uid'";
 				$resultnn = mysql_query($qnn, $this->_db->connection);
 			}
-			/*$col_notes = '';
-			$sort = $row['sort'];
-			// notes
-			$notes = explode(",",$row["items"]);
-			foreach($notes as $note) {
-				$qn = "SELECT * FROM " . CO_TBL_BRAINSTORMS_GRIDS_NOTES . " where id = '$note' and bin='0'";
-				$resultn = mysql_query($qn, $this->_db->connection);
-					while($rown = mysql_fetch_array($resultn)) {
-						$note_id = $rown["id"];
-						$title = $rown["title"];
-						$text = $rown["text"];
-						$ms = $rown["ms"];
-						$qnn = "INSERT INTO " . CO_TBL_BRAINSTORMS_GRIDS_NOTES . " set title = '$title', text = '$text', ms = '$ms'";
-						$resultnn = mysql_query($qnn, $this->_db->connection);
-						$col_notes .= mysql_insert_id() . ',';
-				}
-			}
-			$col_notes = rtrim($col_notes, ",");
-			*/
-			
-			
 		}
 		if ($result) {
 			return $id_new;
