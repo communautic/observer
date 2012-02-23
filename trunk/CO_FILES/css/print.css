@@ -2,7 +2,7 @@
  	  margin: 0;
  	}
 body {
-    margin: 70pt 57pt 40pt 72pt;
+    margin: 70pt 57pt 72pt 72pt;
     font-family: Arial, Helvetica, sans-serif;
 	font-size: 10pt;
 }
@@ -38,8 +38,11 @@ table.fourCols td { vertical-align:top; }
 table.chart { border-collapse: collapse; }
 
 table.grey { background-color:#E5E5E5; margin: 0 0 0 -15pt; padding: 0 10pt 0 15pt; border-collapse: collapse; }
+table.blue { background-color:#C9E1EC; margin: 0 0 0 -15pt; padding: 0 10pt 0 15pt; border-collapse: collapse; }
+
 table.greyList { background-color:#E5E5E5; margin: 0 0 0 -15pt; }
 td.greybg { background-color:#E5E5E5;}
+td.greybgDark { background-color:#BFBFBF;}
 td.grey, div.grey { color:#666666; }
 .smalltext { font-size: 8pt; }
 
@@ -55,12 +58,12 @@ h2 { font-size: 25pt; margin: 0pt; padding: 0pt;}
 h3 { margin: 0pt; padding: 0pt;}
 hr { height: 1pt; color: #000; background-color: #000; border: 0; }
 
-.barchart_color_planned { background-color: #c8e3f0;}
-.psp_barchart_color_planned { background-color: #c9e3ef;}
+.barchart_color_planned { background-color: #C9E3EF;}
+.psp_barchart_color_planned { background-color: #C9E3EF;}
 .barchart_color_inprogress { background-color: #FFD20A;}
-.barchart_color_finished { background-color: #82aa0b;}
-.barchart_color_not_finished { background-color: #808081;}
-.barchart_color_overdue { background-color: #EB4600;}
+.barchart_color_finished { background-color: #A0C80F;}
+.barchart_color_not_finished { background-color: #B2B2B2;}
+.barchart_color_overdue { background-color: #EB7D5A;}
 
 .barchart-dependency { border-left:  1px solid #333; border-bottom:  1px solid #333; }
 
