@@ -87,7 +87,7 @@ function productionsMeetings(name) {
 	}
 	
 	
-	this.poformOptions = { beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
+	this.poformOptions = { async: false, beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
 
 
 	this.getDetails = function(moduleidx,liindex,list) {

@@ -9,7 +9,7 @@ function forumsAccess(name) {
 	 }
 	 
 	 
-	this.poformOptions = { beforeSubmit: this.formProcess, dataType:  'json' };
+	this.poformOptions = { async: false, beforeSubmit: this.formProcess, dataType:  'json' };
 
 
 	this.getDetails = function(moduleidx,liindex,list) {
