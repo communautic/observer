@@ -63,7 +63,7 @@ function projectsApplication(name) {
 	}
 
 
-	this.poformOptions = { beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
+	this.poformOptions = { async: false, beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
 
 
 	this.actionClose = function() {
@@ -457,7 +457,7 @@ function projectsFolders(name) {
 	}
 
 
-	this.poformOptions = { beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
+	this.poformOptions = { async: false, beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
 
 	
 	this.actionNew = function() {

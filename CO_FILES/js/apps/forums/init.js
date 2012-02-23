@@ -57,7 +57,7 @@ function forumsApplication(name) {
 	}
 
 
-	this.poformOptions = { beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
+	this.poformOptions = { async: false, beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
 
 
 	this.actionClose = function() {
@@ -474,7 +474,7 @@ function forumsFolders(name) {
 	}
 
 
-	this.poformOptions = { beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
+	this.poformOptions = { async: false, beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
 
 	
 	this.actionNew = function() {
