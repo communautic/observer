@@ -47,6 +47,9 @@ if(is_array($notes)) {
 			$height = 20;
 			$toggle_class = "-active";
 		}*/
+		if($height < 130) {
+			$height = 130;
+		}
 	?>
     <div id="note-<?php echo($note->id);?>" class="<?php if($brainstorm->canedit) { ?>note<?php } ?> postit-design" style="width: <?php echo $width;?>px; height: <?php echo $height;?>px; left: <?php echo $left;?>px; top: <?php echo $top;?>px; z-index: <?php echo $zindex;?>;">   
        <div class="postit-header"><span id="postit-days-" class="postit-header-left"><?php echo $note->days;?></span><span id="postit-date-" class="postit-header-right"><?php echo $note->date;?></span></div>
