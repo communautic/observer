@@ -57,24 +57,6 @@ class BrainstormsGrids extends Brainstorms {
 		global $session,$date,$lang;
 		$title = "";
 		$html = "";
-		
-		/*if($arr = $this->model->getDetails($id)) {
-			$grid = $arr["grid"];
-			$cols = $arr["cols"];
-			ob_start();
-					include 'view/print.php';
-				$html = ob_get_contents();
-			ob_end_clean();
-			$title = $grid->title . " - " . $lang["BRAINSTORM_GRID_TITLE"];
-		}
-		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PROJECT_PRINT_TIMELINE"];
-		switch($t) {
-			case "html":
-				$this->printHTML($title,$html);
-			break;
-			default:
-				$this->printPDF($title,$html);
-		}*/
 		if($arr = $this->model->getDetails($id)) {
 			$grid = $arr["grid"];
 			$cols = $arr["cols"];
@@ -85,7 +67,7 @@ class BrainstormsGrids extends Brainstorms {
 			$projects = $arr["projects"];
 			
 			$page_width = sizeof($cols)*203+100+100;
-			$page_height = $grid->max_items*20+5+20+142+100;
+			$page_height = $grid->max_items*20+5+20+142+100+100;
 			if($page_width < 896) {
 				$page_width = 896;
 			}
@@ -163,7 +145,7 @@ class BrainstormsGrids extends Brainstorms {
 			$projects = $arr["projects"];
 			
 			$page_width = sizeof($cols)*203+100+100;
-			$page_height = $grid->max_items*20+5+20+142+100;
+			$page_height = $grid->max_items*20+5+20+142+100+100;
 			if($page_width < 896) {
 				$page_width = 896;
 			}

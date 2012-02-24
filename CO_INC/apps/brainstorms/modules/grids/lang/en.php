@@ -6,8 +6,21 @@ $lang["BRAINSTORM_GRIDS"] = 'Grids';
 
 $lang["BRAINSTORM_GRID_NEW"] = 'New Grid';
 $lang["BRAINSTORM_GRID_ACTION_NEW"] = 'new Grid';
+
+$lang["BRAINSTORM_GRID_OWNER"] = 'Owner';
+$lang["BRAINSTORM_GRID_MANAGEMENT"] = 'Manager';
+$lang["BRAINSTORM_GRID_TEAM"] = 'Team';
+
 $lang["BRAINSTORM_GRID_COLUMN_NEW"] = 'Columns';
+$lang["BRAINSTORM_GRID_STATUS_PLANED"] = "planned";
+$lang["BRAINSTORM_GRID_STATUS_INPROGRESS"] = "in progress";
+$lang["BRAINSTORM_GRID_STATUS_FINISHED"] = "completed";
+
+$lang["BRAINSTORM_GRID_TITLE_MAIN"] = 'Main Stage';
+
+$lang["BRAINSTORM_GRID_TITLE_NEW"] = 'Neuer main stage';
 $lang["BRAINSTORM_GRID_ITEM_NEW"] = 'New Item';
+$lang["BRAINSTORM_GRID_STAGEGATE_NEW"] = 'New Stagegate';
 $lang['BRAINSTORM_GRID_NOTES'] = 'Ideas';
 
 $lang["BRAINSTORM_GRID_COLUMNS_BIN"] = 'Grid/Columns';
