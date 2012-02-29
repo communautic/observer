@@ -404,13 +404,21 @@ function brainstormsGrids(name) {
 				if(v){
 					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/grids&request=binItem&id="+id, success: function(data){
 						if(data){
-							//$("#note").slideUp(function(){ 
-								$("#item_"+id).slideUp(function() { 
-										phase = $(this).parent();
-										$(this).remove();
-										phase.trigger('sortupdate');
-									});
-							//});
+							$("#item_"+id).slideUp(function() { 
+									phase = $(this).parent();
+									if($(this).hasClass('colTitle')) {
+										phase = $(this).parent().next();
+										$(this).parent().html('<span class="newNoteItem newNoteTitle"></span>');
+										
+									}
+									if($(this).hasClass('colStagegate')) {
+										phase = $(this).parent().parent().parent().prev();
+										$(this).parent().html('<span class="newNoteItem newNoteStagegate"></span>');
+									}
+									//phase = $(this).parent();
+									$(this).remove();
+									phase.trigger('sortupdate');
+								});
 						} 
 						}
 					});
@@ -803,15 +811,23 @@ function initBrainstormsPhases() {
 		$(this).sortable({
 			items: '>div',
 			handle: '.dragItem',
+			//tolerance: 'intersect',
 			connectWith: ['.brainstorms-phase','.brainstorms-col-title','.brainstorms-col-stagegate'],
-			start: function(event,ui) {
+			//,
+			//start: function(event,ui) {
 				//ui.item.removeClass('active');
 				//ui.item.addClass("ui-draggable-helper");
+			//},
+			/*start: function(e, ui) {
+				ui.item.addClass("ui-draggable-helper-grid-list");
 			},
-			stop: function(event,ui) {
+			stop: function(e, ui) {
+				ui.item.removeClass("ui-draggable-helper-grid-list");
+			}*/
+			//stop: function(event,ui) {
 				//ui.item.removeClass('active');
 				//ui.item.removeClass("ui-draggable-helper");
-			}
+			//}
 		})
 		$(this).bind('sortupdate', function(event, ui) {
 			var col = parseInt($(this).parent().attr("id").replace(/gridscol_/, ""));
