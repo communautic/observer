@@ -31,7 +31,7 @@ define("CO_DB_DATABASE"	,		"dev" 		);
 define("CO_PATH_BASE"	, 		"/home/dev/public_html"	);
 define("CO_PATH_URL"	, 		$protocol . "dev.companyobserver.com" 			);
 
-define("CO_LICENSE"				, 			"Recheis Teigwaren GmbH" 			);
+define("CO_LICENSE"				, 			"communautic KG" 			);
 
 /* Default Language */
 define("CO_DEFAULT_LANGUAGE"	, 			"de" 								);
