@@ -1,18 +1,47 @@
 <?php
 $top = 50;
 $left = 150;
+$varheight = 100;
 ?>
 <div style="position: absolute; width: <?php echo($page_width-24);?>px; top: <?php echo $top-$top; ?>px; left: 0px; height: 19px;  background-color: #e5e5e5; vertical-align: top; padding: 3px 0 0 24px;"><?php echo $grid->title;?></div>
 <div style="position: absolute; width: <?php echo($page_width);?>px; top: <?php echo $top-$top; ?>px; left: 0px; height: 22px;  vertical-align: top; padding: 3px 0 0 0; text-align:center"><?php //echo $grid->title;?></div>
 <div style="position: absolute; width: <?php echo($page_width-24);?>px; top: <?php echo $top-$top; ?>px; left: 0px; height: 22px;  vertical-align: top; padding: 3px 24px 0 0; text-align:right"><?php echo $date->formatDate("now","d.m.Y");;?></div>
 
-<div style="position: absolute; width: 95px; top: 64px; left: 0px; padding-left: 24px; height: 38px; vertical-align: top; font-size: 10px;"><?php echo $lang["BRAINSTORM_GRID_COLUMN_NEW"];?></div>
-<div style="position: absolute; width: <?php echo($page_width);?>px; top: 96px; left: 0px; padding-left: 24px; height: 46px; color: #666666; background-color: #E5E5E5; vertical-align: top; font-size: 10px;"><?php echo $lang["BRAINSTORM_GRID_TITLE_MAIN"];?></div>
-<div style="position: absolute; width: 100px; top: 146px; left: 0px; padding-left: 24px; height: 20px; color: #666666; vertical-align: top; font-size: 10px;">Teilprozesse</div>
+<div style="position: absolute; left: 24px; top: 30px; width: <?php echo($page_width-24);?>px;">
+<table width="100%" class="standard">
+	<tr>
+		<td class="tcell-left"><?php echo $lang["GLOBAL_DURATION"];?></td>
+		<td class="smalltext"><?php echo $grid->grid_days;?> <?php echo $lang["GLOBAL_DAYS"];?></td>
+    </tr>
+</table>
+<table width="100%" class="standard">
+	<tr>
+		<td class="tcell-left"><?php echo $lang["BRAINSTORM_GRID_OWNER"];?></td>
+		<td class="smalltext"><?php echo($grid->owner_print);?> <?php echo($grid->owner_ct);?></td>
+    </tr>
+</table>
+<table width="100%" class="standard">
+	<tr>
+		<td class="tcell-left"><?php echo $lang["BRAINSTORM_GRID_MANAGEMENT"];?></td>
+		<td class="smalltext"><?php echo($grid->management_print);?> <?php echo($grid->management_ct);?></td>
+    </tr>
+</table>
+<table width="100%" class="standard">
+	<tr>
+		<td class="tcell-left"><?php echo $lang["BRAINSTORM_GRID_TEAM"];?></td>
+		<td class="smalltext"><?php echo($grid->team);?> <?php echo($grid->team_ct);?></td>
+    </tr>
+</table>
+</div>
+
+
+<div style="position: absolute; width: 95px; top: <?php echo(64+$varheight);?>px; left: 0px; padding-left: 24px; height: 38px; vertical-align: top; font-size: 10px;"><?php echo $lang["BRAINSTORM_GRID_COLUMN_NEW"];?></div>
+<div style="position: absolute; width: <?php echo($page_width);?>px; top: <?php echo(96+$varheight);?>px; left: 0px; padding-left: 24px; height: 46px; color: #666666; background-color: #E5E5E5; vertical-align: top; font-size: 10px;"><?php echo $lang["BRAINSTORM_GRID_TITLE_MAIN"];?></div>
+<div style="position: absolute; width: 100px; top: <?php echo(146+$varheight);?>px; left: 0px; padding-left: 24px; height: 20px; color: #666666; vertical-align: top; font-size: 10px;">Teilprozesse</div>
 <?php
 $left = 130;
 // days
-$daysadd = 145+$grid->max_items*20; ?>
+$daysadd = $varheight+145+$grid->max_items*20; ?>
 <div style="position: absolute; width: 100px; top: <?php echo $daysadd+5;?>px; left: 0px; padding-left: 24px; height: 20px; color: #666666; vertical-align: top; font-size: 10px;">Dauer / Tage</div>
 <?php
 foreach($cols as $key => &$value){ 
@@ -31,10 +60,10 @@ switch($cols[$key]['status']) {
 	break;	
 }
 ?>
-<div style="position: absolute; left: <?php echo($left);?>px; top: 96px; width: 183px; font-size: 10px; height: 46px;"><img src="<?php echo CO_FILES;?>/img/print/<?php echo $bg;?>" width="183" height="46" /></div>
-	<div style="position: absolute; left: <?php echo($left+20);?>px; top: 111px; width: 183px; font-size: 12px; height: 46px; color: #000; z-index: 1;"><?php echo $cols[$key]['titletext']; ?></div>
+<div style="position: absolute; left: <?php echo($left);?>px; top: <?php echo(96+$varheight);?>px; width: 183px; font-size: 10px; height: 46px;"><img src="<?php echo CO_FILES;?>/img/print/<?php echo $bg;?>" width="183" height="46" /></div>
+	<div style="position: absolute; left: <?php echo($left+20);?>px; top: <?php echo(111+$varheight);?>px; width: 183px; font-size: 12px; height: 46px; color: #000; z-index: 1;"><?php echo $cols[$key]['titletext']; ?></div>
 	<?php
-	$ntop = 142;
+	$ntop = $varheight+142;
 	foreach($cols[$key]["notes"] as $tkey => &$tvalue){ 
 		$img = "";
 		if ($cols[$key]["notes"][$tkey]['status'] == 1) {
@@ -54,9 +83,9 @@ switch($cols[$key]['status']) {
 		$img = '<img src="' . CO_FILES . '/img/print/grid_stagegate_done.png" width="13" height="13" />';
 	}
 ?>
-<div style="position: absolute; left: <?php echo($left-20);?>px; top: <?php echo($top);?>px; width: 100px; font-size: 10px; color: #666;">GATE</div>
-<div style="position: absolute; left: <?php echo($left-20);?>px; top: <?php echo($top+16);?>px; width: 100px; font-size: 10px; z-index: 1;"><?php echo $cols[$key]['stagegatetext'];?></div>
-<div style="position: absolute; left: <?php echo($left-16);?>px; top: 113px; width: 20px;"><?php echo $img;?></div>
+<div style="position: absolute; left: <?php echo($left-20);?>px; top: <?php echo($varheight+$top);?>px; width: 100px; font-size: 10px; color: #666;">GATE</div>
+<div style="position: absolute; left: <?php echo($left-20);?>px; top: <?php echo($varheight+$top+16);?>px; width: 100px; font-size: 10px; z-index: 1;"><?php echo $cols[$key]['stagegatetext'];?></div>
+<div style="position: absolute; left: <?php echo($left-16);?>px; top: <?php echo($varheight+$top+113);?>px; width: 20px;"><?php echo $img;?></div>
     <?php
  } ?>
 <div style="position: absolute; width: <?php echo($page_width-24);?>px; top: <?php echo $page_height-50;?>px; left: 0px; height: 19px;  background-color: #e5e5e5; vertical-align: top; padding: 3px 0 0 24px;"><?php echo $lang["BRAINSTORM_GRID_TITLE"];?></div>
