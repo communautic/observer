@@ -50,17 +50,19 @@ $top = 58;
 $bg = '';
 switch($cols[$key]['status']) {
 	case 'planned':
-		$bg = 'grid_planned.png';
+		$bg = '<img src="<?php echo CO_FILES;?>/img/print/grid_planned.png" width="183" height="46" />';
 	break;
 	case 'progress':
-		$bg = 'grid_progress.png';
+		$bg = '<img src="<?php echo CO_FILES;?>/img/print/grid_progress.png" width="183" height="46" />';
 	break;
 	case 'finished':
-		$bg = 'grid_finished.png';
-	break;	
+		$bg = '<img src="<?php echo CO_FILES;?>/img/print/grid_finished.png" width="183" height="46" />';
+	break;
+	default:
+		$bg = '';
 }
 ?>
-<div style="position: absolute; left: <?php echo($left);?>px; top: <?php echo(96+$varheight);?>px; width: 183px; font-size: 10px; height: 46px;"><img src="<?php echo CO_FILES;?>/img/print/<?php echo $bg;?>" width="183" height="46" /></div>
+<div style="position: absolute; left: <?php echo($left);?>px; top: <?php echo(96+$varheight);?>px; width: 183px; font-size: 10px; height: 46px;"><?php echo $bg;?></div>
 	<div style="position: absolute; left: <?php echo($left+20);?>px; top: <?php echo(111+$varheight);?>px; width: 183px; font-size: 12px; height: 46px; color: #000; z-index: 1;"><?php echo $cols[$key]['titletext']; ?></div>
 	<?php
 	$ntop = $varheight+142;
