@@ -980,33 +980,16 @@ var formChanged = false;
 
 $(document).ready(function() {
     
-	$(".textarea-title").livequery(function () {
-          $(this).data('initial_value', $(this).val());
-		  $(this).keyup(function() {
-          if ($(this).val() != $(this).data('initial_value')) {
-			  formChanged = true;
-			  $(this).data('initial_value', $(this).val());
-		  }
-		});
-     });
-	
-	$(".bg").livequery(function () {
-          $(this).data('initial_value', $(this).val());
-		  $(this).keyup(function() {
-          if ($(this).val() != $(this).data('initial_value')) {
-			  formChanged = true;
-			  $(this).data('initial_value', $(this).val());
-		  }
-		});
-     });
-	
-	$(".elastic").livequery(function () {
-          $(this).data('initial_value', $(this).val());
-		  $(this).keyup(function() {
-          if ($(this).val() != $(this).data('initial_value')) {
-			  formChanged = true;
-			  $(this).data('initial_value', $(this).val());
-		  }
+	$('.textarea-title, .bg, .elastic').livequery(function () {
+          var e = $(this);
+		  e.data('initial_value', e.val());
+		  e.bind('keyup paste cut', function() {
+          setTimeout(function() {
+			  if (e.val() != e.data('initial_value')) {
+				  formChanged = true;
+				  e.data('initial_value', e.val());
+			  }
+		  }, 100);
 		});
      });
 });
