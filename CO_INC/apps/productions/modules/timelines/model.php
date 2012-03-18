@@ -501,7 +501,7 @@ class ProductionsTimelinesModel extends ProductionsModel {
 	}
 
 
-	function barchartCalendar($date,$i) {
+	/*function barchartCalendar($date,$i) {
 		$day = array();
 		$day["month"] = "";
 		$day["week"] = "";
@@ -520,7 +520,7 @@ class ProductionsTimelinesModel extends ProductionsModel {
 		}
 
 		return $day;
-	}
+	}*/
 
 
 	// first try with json result - maybe we need it again ???

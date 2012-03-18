@@ -194,6 +194,240 @@ class ProductionsModel extends Model {
    }
 
 
+   function getFolderDetailsMultiView($id, $view, $width=17) {
+		global $session, $contactsmodel, $productionsControllingModel;
+		$now = new DateTime("now");
+		$today = $now->format('Y-m-d');
+		
+		if($width == 0) {
+		  $zoom = $this->getUserSetting("productions-multiview-chart-zoom");
+		  if(!$zoom) {
+			$width = 17;
+		  } else {
+			$width = $zoom;
+		  }
+		} else {
+			$width = $width;
+		}
+		$this->setUserSetting("productions-multiview-chart-zoom",$width);
+		
+		// settings apart from width
+		$space_between_phases = 2;
+		$height_of_tasks = 10;
+		
+		$array["bg_image"] = CO_FILES . "/img/barchart_bg_".$width.".png";
+		$array["bg_image_shift"] = 0;
+		$array["td_width"] = $width;
+		
+		// zoom
+		$array["zoom_xsmall"] = "zoom-xsmall";
+		$array["zoom_small"] = "zoom-small";
+		$array["zoom_medium"] = "zoom-medium";
+		$array["zoom_large"] = "zoom-large";
+		$array["zoom_xlarge"] = "zoom-xlarge";
+		
+		switch($width) {
+			case 5:
+				$array["zoom_xsmall"] = "zoom-xsmall-active";
+			break;
+			case 11:
+				$array["zoom_small"] = "zoom-small-active";
+			break;
+			case 17:
+				$array["zoom_medium"] = "zoom-medium-active";
+			break;
+			case 23:
+				$array["zoom_large"] = "zoom-large-active";
+			break;
+			case 29:
+				$array["zoom_xlarge"] = "zoom-xlarge-active";
+			break;
+		}
+		
+		$q = "SELECT * FROM " . CO_TBL_PRODUCTIONS_FOLDERS . " where id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result) < 1) {
+			return false;
+		}
+		$row = mysql_fetch_assoc($result);
+		foreach($row as $key => $val) {
+			$array[$key] = $val;
+		}	
+		
+		$array["canedit"] = true;
+		$array["access"] = "sysadmin";
+ 		if(!$session->isSysadmin()) {
+			$array["canedit"] = false;
+			$array["access"] = "guest";
+		}
+
+		// get production details
+		$access="";
+		if(!$session->isSysadmin()) {
+			$access = " and a.id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
+	  	}
+		
+		$start = array();
+		$q = "SELECT startdate as kickoff, (SELECT MIN(startdate) FROM " . CO_TBL_PRODUCTIONS_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as startdate ,(SELECT MAX(enddate) FROM " . CO_TBL_PRODUCTIONS_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_PRODUCTIONS . " as a where a.folder='$id' and a.bin='0'" . $access . " ORDER BY startdate ASC";
+		$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result) > 0) {
+			while ($row = mysql_fetch_array($result)) {
+				if($row['startdate'] == '') {
+					$start[] = $row['kickoff'];
+				} else {
+					$start[] = $row['startdate'];
+				}
+			}
+		
+			$array["startdate"] = min($start);
+		} else {
+			
+			return false;
+		}
+		
+		switch($view) {
+			case 'Timeline':
+				$order = "startdate ASC";
+			break;
+			case 'Management':
+				$order = "name ASC";
+			break;
+		}
+				
+		$q = "SELECT a.title,a.id,a.management,a.status,startdate as kickoff, (SELECT CONCAT(c.lastname,' ', SUBSTRING(c.firstname,1,1),'.') FROM co_users as c WHERE a.management = c.id)  as name, (SELECT MIN(startdate) FROM " . CO_TBL_PRODUCTIONS_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as startdate ,(SELECT MAX(enddate) FROM " . CO_TBL_PRODUCTIONS_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_PRODUCTIONS . " as a where a.folder='$id' and a.bin='0'" . $access . " ORDER BY " . $order;
+		$result = mysql_query($q, $this->_db->connection);
+	  	$productions = "";
+		
+		$end = array();
+		$css_top = 11;
+		$numProductions = mysql_num_rows($result);
+
+	  	while ($row = mysql_fetch_array($result)) {
+			foreach($row as $key => $val) {
+				$production[$key] = $val;
+			}
+			$production["kickoff_only"] = false;
+			if($production["enddate"] == '') {
+				$production["enddate"] = $production["kickoff"];
+			}
+			$end[] = $production["enddate"];
+			if($production["startdate"] == '') {
+				$production["startdate"] = $production["kickoff"];
+				$production["kickoff_only"] = true;
+				$production["kickoff_space"] = round($width/2)-8;
+			}
+			$pid = $production["id"];
+			$production["days"] = $this->_date->dateDiff($production["startdate"],$production["enddate"])+1;
+			$production_start = $this->_date->dateDiff($array["startdate"],$production["startdate"]);
+			$production["css_left"] = $production_start * $width;
+			
+			$production["startdate"] = $this->_date->formatDate($production["startdate"],CO_DATE_FORMAT);
+			$production["enddate"] = $this->_date->formatDate($production["enddate"],CO_DATE_FORMAT);
+			$production["management"] = $contactsmodel->getUserListPlain($production['management']);
+			$production["realisation"] = $productionsControllingModel->getChart($production["id"], "realisation", 0);
+			$production["perm"] = $this->getProductionAccess($production["id"]);
+			$production["css_top"] = $css_top;
+			$production["css_width"] = ($production["days"]) * $width;
+			
+			switch($production["status"]) {
+				case "0":
+					$production["status"] = "barchart_color_planned";
+				break;
+				case "1":
+					$production["status"] = "barchart_color_inprogress";
+				break;
+				case "2":
+					$production["status"] = "barchart_color_finished";
+				break;
+				case "3":
+					$production["status"] = "barchart_color_not_finished";
+				break;
+			}
+			
+			// tasks loop
+			
+			$qt = "select * from " . CO_TBL_PRODUCTIONS_PHASES_TASKS . " where pid = '$pid' and bin='0' order by startdate";
+			$resultt = mysql_query($qt, $this->_db->connection);
+			while ($rowt = mysql_fetch_object($resultt)) {
+				switch($rowt->status) {
+					case "0":
+						/*if($row->status == 0) {
+							$tstatus = "barchart_color_planned";
+							// abbruch
+							if($production["status"] == "barchart_color_not_finished") {
+								$tstatus = "barchart_color_not_finished";
+							}
+						} else if ($row->status == 1 && $today < $rowt->startdate) {
+							$tstatus = "barchart_color_planned";
+							// abbruch
+							if($production["status"] == "barchart_color_not_finished") {
+								$tstatus = "barchart_color_not_finished";
+							}
+						} else if ($row->status == 1 && $today <= $rowt->enddate) {
+							$tstatus = "barchart_color_inprogress";
+							// abbruch
+							if($production["status"] == "barchart_color_not_finished") {
+								$tstatus = "barchart_color_not_finished";
+							}
+						} else */
+						if ($production["status"] == "barchart_color_inprogress" && $today > $rowt->enddate) {
+							$production["status"] = "barchart_color_overdue";
+							
+						}
+					break;
+					/*case "1":
+						$tstatus = "barchart_color_finished";
+						if($rowt->donedate > $rowt->enddate) {
+							$tstatus = "barchart_color_finished_but_overdue";
+						}
+					break;*/
+				}
+			}
+			
+			
+			
+			$productions[] = new Lists($production);
+			$css_top =  $css_top+38;
+	  	}
+		
+		$array["days"] = $this->_date->dateDiff($array["startdate"],max($end));
+		$array["css_width"] = ($array["days"]+1) * $width;
+		$array["css_height"] = $numProductions*38; // pixel add at bottom
+		//$production["css_height"] += $space_between_phases;
+		
+		$folder = new Lists($array);
+		
+		$access = "guest";
+		  if($session->isSysadmin()) {
+			  $access = "sysadmin";
+		  }
+		
+		$arr = array("folder" => $folder, "productions" => $productions, "access" => $access);
+		return $arr;
+   }
+
+
+/*function barchartCalendar($date,$i) {
+		$day = array();
+		$day["month"] = "";
+		$day["week"] = "";
+		$day["color"] = "#000";
+		$day["number"] = $this->_date->formatDate($date,"d");
+		if($day["number"] == "01" || ($i == 0 && $day["number"] > 01 && $day["number"] < 28)) {
+			//$day["month"] = $this->_date->formatDate($date,"M y");
+			$day["month"] = utf8_encode(strftime("%b %y",strtotime($date)));
+		}
+		$day["wday"] = $this->_date->formatDate($date,"w");
+		if($day["wday"] == 1) {
+			$day["week"] = $this->_date->formatDate($date,"W");
+		}
+		if($day["wday"] == 0 || $day["wday"] == 6) {
+			$day["color"] = "#fff";
+		}
+
+		return $day;
+	}*/
+
    /**
    * get details for the production folder
    */

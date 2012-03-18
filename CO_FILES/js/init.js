@@ -676,17 +676,6 @@ $(document).ready(function() {
 		var obj = getCurrentModule();
 		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 	});
-	
-	
-	
-	/*$('span.actionSetLogin').click(function(){
-		var username = $("#username").val();
-		var password = $("#password").val();
-		$.ajax({ type: "POST", url: "/", data: "path=login&changelogin=1&username="+username+"&password="+password, success: function(html){
-				  $("#intro-password").fadeOut();
-					}
-				});
-	});*/
 
 	$(".sort").on('click', function(e) {
 		e.preventDefault();
@@ -735,14 +724,12 @@ $(document).ready(function() {
 	// bind clicks to close diaolgs
 	//$(document).bind('click', function(e) {
 	$(document).mousedown(function(e) {
-								  // alert("y");
 		var clicked=$(e.target); // get the element clicked
 		if(clicked.is('.context') || clicked.parents().is('.context')) { 
-			//alert(clicked.index());
 		} else {
 			$('.context').slideUp(function() {
-										   $(this).remove()
-										   });
+				$(this).remove()
+			});
 		}
 		if($('#modalDialog').dialog("isOpen")) {
 			if(clicked.is('#modalDialog') || clicked.parents().is('#modalDialog')) { 
@@ -763,18 +750,6 @@ $(document).ready(function() {
 	$('form.jNice').livequery(function() { 
 		$(this).jNice();
 	});
-	
-	// Radio fields with date fields next
-	/*$(".jNiceRadio").live('click',function() {
-		if($(this).next("input").length > 0) {
-			var field = $(this).next("input").attr("title");
-			if (field != "") {
-				$("#"+field).val(Date.today().toString('dd.MM.yyyy'));
-			}
-			$("#projects .ui-datepicker-trigger-action-status").addClass("disabled");
-			 $("#"+field+" ~ a").removeClass("disabled");
-		}
-	});*/
 
 	$(document).on('click', 'span.focusTitle',function(e) {
 		e.preventDefault();
@@ -796,6 +771,20 @@ $(document).ready(function() {
 		e.preventDefault();
 		$(this).next().slideToggle();
 	});
+	
+	$(document).on('click', 'span.loadBarchartZoom',function(e) {
+		e.preventDefault();
+		var zoom = $(this).attr('rel');
+		var module = getCurrentModule();
+		module.loadBarchartZoom(zoom);
+	});
+	
+	/*$(document).on('click', '.but-scroll-to',function(e) {
+		e.preventDefault();
+		var t = $(this).attr('t');
+		var l = $(this).attr('l');
+		$('.scroll-pane').scrollTo(l,t);
+	});*/
 
 	$("#modalDialog").dialog({  
 		autoOpen: false,
@@ -942,6 +931,38 @@ $(document).ready(function() {
 			//select: function(){closedialog = 1;}
 		});
 	});
+	
+	
+	$(document).on('click', 'div.contentTabs ul.contentTabsList span',function(e) {
+		e.preventDefault();
+		var what = $(this).attr('rel');
+		var i = $('div.contentTabs ul.contentTabsList span').index(this);
+		$('div.contentTabs ul.contentTabsList span').each(function (index) {
+			if(i == index) {
+				$(this).addClass('active');
+			} else {
+				$(this).removeClass('active');
+			}
+		})
+		var obj = getCurrentModule();
+		obj.actionLoadTab(what);
+	});
+	
+	$(document).on('click', 'div.contentSubTabs ul span',function(e) {
+		e.preventDefault();
+		var what = $(this).attr('rel');
+		var i = $('div.contentSubTabs ul span').index(this);
+		$('div.contentSubTabs ul span').each(function (index) {
+			if(i == index) {
+				$(this).addClass('active');
+			} else {
+				$(this).removeClass('active');
+			}
+		})
+		var obj = getCurrentModule();
+		obj.actionLoadSubTab(what);
+	});
+	
 
 	// init datepicker
 	$(document).on('click', '.ui-datepicker-trigger-action',function(e) {

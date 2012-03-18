@@ -525,6 +525,37 @@ function projectsFolders(name) {
 	}
 
 
+	this.actionLoadTab = function(what) {
+		var id = $("#projects").data("first");
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/projects&request=get'+what+'&id='+id, success: function(data){
+			$('#projectsFoldersTabsContent').empty().html(data.html);
+			initProjectsContentScrollbar()
+			}
+		});
+	}
+
+
+	this.actionLoadSubTab = function(view) {
+		var id = $("#projects").data("first");
+		var what = $('#projectsFoldersTabs ul.contentTabsList span[class=active]').attr('rel');
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/projects&request=get'+what+'&view='+view+'&id='+id, success: function(data){
+			$('#projectsFoldersTabsContent').empty().html(data.html);
+			initProjectsContentScrollbar()
+			}
+		});
+	}
+
+
+	this.loadBarchartZoom = function(zoom) {
+		var id = $("#projects").data("first");
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/projects&request=getFolderDetailsMultiView&id='+id+'&zoom='+zoom, success: function(data){
+			$('#projectsFoldersTabsContent').html(data.html);
+			initProjectsContentScrollbar()
+			}
+		});
+	}
+
+
 	this.actionRefresh = function() {
 		var id = $("#projects").data("first");
 		$("#projects1 .active-link").trigger("click");
@@ -548,14 +579,24 @@ function projectsFolders(name) {
 
 	this.actionPrint = function() {
 		var id = $("#projects").data("first");
-		var url ='/?path=apps/projects&request=printFolderDetails&id='+id;
+		var what = $('#projectsFoldersTabs ul.contentTabsList span[class=active]').attr('rel');
+		if(what == 'FolderDetailsMultiView') {
+			var view= $('#projectsFoldersSubTabs ul span[class~=active]').attr('rel');
+			what = what + '&view=' + view;
+		}
+		var url ='/?path=apps/projects&request=print'+what+'&id='+id;
 		$("#documentloader").attr('src', url);
 	}
 
 
 	this.actionSend = function() {
 		var id = $("#projects").data("first");
-		$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=getFolderSend&id="+id, success: function(html){
+		var what = $('#projectsFoldersTabs ul.contentTabsList span[class=active]').attr('rel');
+		if(what == 'FolderDetailsMultiView') {
+			var view= $('#projectsFoldersSubTabs ul span[class~=active]').attr('rel');
+			what = what + '&view=' + view;
+		}
+		$.ajax({ type: "GET", url: "/", data: 'path=apps/projects&request=getSend'+what+'&id='+id, success: function(html){
 			$("#modalDialogForward").html(html).dialog('open');
 			}
 		});

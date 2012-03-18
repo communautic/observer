@@ -205,6 +205,28 @@ class Model extends MySQLDB {
 		}
 		return $sendto;
 	}
+	
+	
+	function barchartCalendar($date,$i) {
+		$day = array();
+		$day["month"] = "";
+		$day["week"] = "";
+		$day["color"] = "#000";
+		$day["number"] = $this->_date->formatDate($date,"d");
+		if($day["number"] == "01" || ($i == 0 && $day["number"] > 01 && $day["number"] < 28)) {
+			//$day["month"] = $this->_date->formatDate($date,"M y");
+			$day["month"] = utf8_encode(strftime("%b %y",strtotime($date)));
+		}
+		$day["wday"] = $this->_date->formatDate($date,"w");
+		if($day["wday"] == 1) {
+			$day["week"] = $this->_date->formatDate($date,"W");
+		}
+		if($day["wday"] == 0 || $day["wday"] == 6) {
+			$day["color"] = "#fff";
+		}
+
+		return $day;
+	}
 
 }
 

@@ -72,8 +72,18 @@ function productionsTimelines(name) {
 			}
 		});
 	}
-	
-	
+
+
+	this.loadBarchartZoom = function(zoom) {
+		var pid = $("#productions").data("second");
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/productions/modules/timelines&request=getDetails&id=1&pid="+pid+"&zoom="+zoom, success: function(data){
+			$("#productions-right").html(data.html);
+			initProductionsContentScrollbar();
+			}
+		});
+	}
+
+
 	this.actionHelp = function() {
 		var url = "/?path=apps/productions/modules/timelines&request=getHelp";
 		$("#documentloader").attr('src', url);
@@ -85,18 +95,6 @@ var productions_timelines = new productionsTimelines('productions_timelines');
 
 
 $(document).ready(function() {  
-
-	$(document).on('click', 'span.loadBarchartZoom',function(e) {
-		e.preventDefault();
-		var zoom = $(this).attr('rel');
-		var pid = $("#productions").data("second");
-		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/productions/modules/timelines&request=getDetails&id=1&pid="+pid+"&zoom="+zoom, success: function(data){
-			$("#productions-right").html(data.html);
-			initProductionsContentScrollbar();
-			}
-		});
-	});
-
 
 	$("#barchartScroll").livequery( function() {
 		var scroller = $(this);

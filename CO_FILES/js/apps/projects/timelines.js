@@ -72,6 +72,16 @@ function projectsTimelines(name) {
 			}
 		});
 	}
+
+
+	this.loadBarchartZoom = function(zoom) {
+		var pid = $("#projects").data("second");
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/timelines&request=getDetails&id=1&pid="+pid+"&zoom="+zoom, success: function(data){
+			$("#projects-right").html(data.html);
+			initProjectsContentScrollbar();
+			}
+		});
+	}
 	
 	
 	this.actionHelp = function() {
@@ -85,18 +95,6 @@ var projects_timelines = new projectsTimelines('projects_timelines');
 
 
 $(document).ready(function() {  
-
-	$(document).on('click', 'span.loadBarchartZoom',function(e) {
-		e.preventDefault();
-		var zoom = $(this).attr('rel');
-		var pid = $("#projects").data("second");
-		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/timelines&request=getDetails&id=1&pid="+pid+"&zoom="+zoom, success: function(data){
-			$("#projects-right").html(data.html);
-			initProjectsContentScrollbar();
-			}
-		});
-	});
-
 
 	$("#barchartScroll").livequery( function() {
 		var scroller = $(this);

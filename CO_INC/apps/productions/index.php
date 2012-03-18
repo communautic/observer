@@ -29,6 +29,23 @@ if (!empty($_GET['request'])) {
 		case 'getFolderDetails':
 			echo($productions->getFolderDetails($_GET['id']));
 		break;
+		case 'getFolderDetailsList':
+			echo($productions->getFolderDetailsList($_GET['id']));
+		break;
+		case 'getFolderDetailsMultiView':
+			$zoom = 0;
+			if(!empty($_GET['zoom'])) {
+				$zoom = $_GET['zoom'];
+			}
+			$view = "Timeline";
+			if(!empty($_GET['view'])) {
+				$view = $_GET['view'];
+			}
+			echo($productions->getFolderDetailsMultiView($_GET['id'],$view,$zoom));
+		break;
+		case 'getFolderDetailsStatus':
+			echo($productions->getFolderDetailsStatus($_GET['id']));
+		break;
 		case 'setFolderOrder':
 			echo($productions->setSortOrder("productions-folder-sort",$_GET['folderItem']));
 		break;
@@ -44,6 +61,19 @@ if (!empty($_GET['request'])) {
 				$t = $_GET['t'];
 			}
 			echo($productions->printFolderDetails($_GET['id'],$t));
+		break;
+		case 'printFolderDetailsList':
+			echo($productions->printFolderDetailsList($_GET['id']));
+		break;
+		case 'printFolderDetailsMultiView':
+			$view = "Timeline";
+			if(!empty($_GET['view'])) {
+				$view = $_GET['view'];
+			}
+			echo($productions->printFolderDetailsMultiView($_GET['id'],$view));
+		break;
+		case 'printFolderDetailsStatus':
+			echo($productions->printFolderDetailsList($_GET['id']));
 		break;
 		case 'binFolder':
 			echo($productions->binFolder($_GET['id']));
@@ -92,6 +122,19 @@ if (!empty($_GET['request'])) {
 		break;
 		case 'getFolderSend':
 			echo($productions->getFolderSend($_GET['id']));
+		break;
+		case 'getSendFolderDetailsList':
+			echo($productions->getSendFolderDetailsList($_GET['id']));
+		break;
+		case 'getSendFolderDetailsMultiView':
+			$view = "Timeline";
+			if(!empty($_GET['view'])) {
+				$view = $_GET['view'];
+			}
+			echo($productions->getSendFolderDetailsMultiView($_GET['id'],$view));
+		break;
+		case 'getSendFolderDetailsStatus':
+			echo($productions->getSendFolderDetailsList($_GET['id']));
 		break;
 		case 'getSendtoDetails':
 			echo($productions->getSendtoDetails("productions",$_GET['id']));
@@ -172,7 +215,12 @@ if (!empty($_POST['request'])) {
 		case 'sendFolderDetails':
 			echo($productions->sendFolderDetails($_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
 		break;
-		
+		case 'sendFolderDetailsList':
+			echo($productions->sendFolderDetailsList($_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
+		break;
+		case 'sendFolderDetailsMultiView':
+			echo($productions->sendFolderDetailsMultiView($_POST['variable'], $_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
+		break;
 	}
 }
 ?>
