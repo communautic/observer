@@ -72,8 +72,7 @@ $top = $top-7;
 <!-- drawing area outer -->
 <div style="position: absolute; top: <?php echo($top+18);?>px; left: <?php echo($left);?>px; background-image:url(<?php echo($production["bg_image"]);?>); background-position: <?php echo($production["bg_image_shift"]);?>px 0px; width: <?php echo($production["css_width"]);?>px; height:<?php echo($production["css_height"]);?>px;"></div>
 	<!-- kick off -->
-	<div style="z-index: 2; background-color: #B2B2B2; position: absolute; top: <?php echo($top+18+8);?>px; left: <?php echo($left);?>px; height: 10px; width: <?php echo($production["td_width"]);?>px; font-size: 11px;"></div>
-
+	<div style="z-index: 2; position: absolute; top: <?php echo($top+18+5);?>px; left: <?php echo($left+1);?>px; height: 10px; width: <?php echo($production["td_width"]);?>px; font-size: 11px;"><img src="<?php echo CO_FILES;?>/img/kickoff.png" width="16" height="16" alt="" /></div>
             <!-- phase loop -->
 			<?php 
 			$i = 1;

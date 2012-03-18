@@ -525,6 +525,37 @@ function productionsFolders(name) {
 	}
 
 
+	this.actionLoadTab = function(what) {
+		var id = $("#productions").data("first");
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/productions&request=get'+what+'&id='+id, success: function(data){
+			$('#productionsFoldersTabsContent').empty().html(data.html);
+			initProductionsContentScrollbar()
+			}
+		});
+	}
+	
+	
+	this.actionLoadSubTab = function(view) {
+		var id = $("#productions").data("first");
+		var what = $('#productionsFoldersTabs ul.contentTabsList span[class=active]').attr('rel');
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/productions&request=get'+what+'&view='+view+'&id='+id, success: function(data){
+			$('#productionsFoldersTabsContent').empty().html(data.html);
+			initProductionsContentScrollbar()
+			}
+		});
+	}
+
+
+	this.loadBarchartZoom = function(zoom) {
+		var id = $("#productions").data("first");
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/productions&request=getFolderDetailsMultiView&id='+id+'&zoom='+zoom, success: function(data){
+			$('#productionsFoldersTabsContent').html(data.html);
+			initProductionsContentScrollbar()
+			}
+		});
+	}
+
+
 	this.actionRefresh = function() {
 		var id = $("#productions").data("first");
 		$("#productions1 .active-link").trigger("click");
@@ -548,14 +579,24 @@ function productionsFolders(name) {
 
 	this.actionPrint = function() {
 		var id = $("#productions").data("first");
-		var url ='/?path=apps/productions&request=printFolderDetails&id='+id;
+		var what = $('#productionsFoldersTabs ul.contentTabsList span[class=active]').attr('rel');
+		if(what == 'FolderDetailsMultiView') {
+			var view= $('#productionsFoldersSubTabs ul span[class~=active]').attr('rel');
+			what = what + '&view=' + view;
+		}
+		var url ='/?path=apps/productions&request=print'+what+'&id='+id;
 		$("#documentloader").attr('src', url);
 	}
 
 
 	this.actionSend = function() {
 		var id = $("#productions").data("first");
-		$.ajax({ type: "GET", url: "/", data: "path=apps/productions&request=getFolderSend&id="+id, success: function(html){
+		var what = $('#productionsFoldersTabs ul.contentTabsList span[class=active]').attr('rel');
+		if(what == 'FolderDetailsMultiView') {
+			var view= $('#productionsFoldersSubTabs ul span[class~=active]').attr('rel');
+			what = what + '&view=' + view;
+		}
+		$.ajax({ type: "GET", url: "/", data: 'path=apps/productions&request=getSend'+what+'&id='+id, success: function(html){
 			$("#modalDialogForward").html(html).dialog('open');
 			}
 		});

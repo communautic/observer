@@ -29,6 +29,23 @@ if (!empty($_GET['request'])) {
 		case 'getFolderDetails':
 			echo($projects->getFolderDetails($_GET['id']));
 		break;
+		case 'getFolderDetailsList':
+			echo($projects->getFolderDetailsList($_GET['id']));
+		break;
+		case 'getFolderDetailsMultiView':
+			$zoom = 0;
+			if(!empty($_GET['zoom'])) {
+				$zoom = $_GET['zoom'];
+			}
+			$view = "Timeline";
+			if(!empty($_GET['view'])) {
+				$view = $_GET['view'];
+			}
+			echo($projects->getFolderDetailsMultiView($_GET['id'],$view,$zoom));
+		break;
+		case 'getFolderDetailsStatus':
+			echo($projects->getFolderDetailsStatus($_GET['id']));
+		break;
 		case 'setFolderOrder':
 			echo($projects->setSortOrder("projects-folder-sort",$_GET['folderItem']));
 		break;
@@ -44,6 +61,19 @@ if (!empty($_GET['request'])) {
 				$t = $_GET['t'];
 			}
 			echo($projects->printFolderDetails($_GET['id'],$t));
+		break;
+		case 'printFolderDetailsList':
+			echo($projects->printFolderDetailsList($_GET['id']));
+		break;
+		case 'printFolderDetailsMultiView':
+			$view = "Timeline";
+			if(!empty($_GET['view'])) {
+				$view = $_GET['view'];
+			}
+			echo($projects->printFolderDetailsMultiView($_GET['id'],$view));
+		break;
+		case 'printFolderDetailsStatus':
+			echo($projects->printFolderDetailsList($_GET['id']));
 		break;
 		case 'binFolder':
 			echo($projects->binFolder($_GET['id']));
@@ -92,6 +122,19 @@ if (!empty($_GET['request'])) {
 		break;
 		case 'getFolderSend':
 			echo($projects->getFolderSend($_GET['id']));
+		break;
+		case 'getSendFolderDetailsList':
+			echo($projects->getSendFolderDetailsList($_GET['id']));
+		break;
+		case 'getSendFolderDetailsMultiView':
+			$view = "Timeline";
+			if(!empty($_GET['view'])) {
+				$view = $_GET['view'];
+			}
+			echo($projects->getSendFolderDetailsMultiView($_GET['id'],$view));
+		break;
+		case 'getSendFolderDetailsStatus':
+			echo($projects->getSendFolderDetailsList($_GET['id']));
 		break;
 		case 'getSendtoDetails':
 			echo($projects->getSendtoDetails("projects",$_GET['id']));
@@ -172,7 +215,12 @@ if (!empty($_POST['request'])) {
 		case 'sendFolderDetails':
 			echo($projects->sendFolderDetails($_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
 		break;
-		
+		case 'sendFolderDetailsList':
+			echo($projects->sendFolderDetailsList($_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
+		break;
+		case 'sendFolderDetailsMultiView':
+			echo($projects->sendFolderDetailsMultiView($_POST['variable'], $_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
+		break;
 	}
 }
 ?>

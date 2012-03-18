@@ -11,6 +11,10 @@ $lang["PRODUCTION_NEW"] = 'Neue Produktion';
 $lang["PRODUCTION_ACTION_NEW"] = 'neue Produktion anlegen';
 
 // Folder Right
+$lang["PRODUCTION_FOLDER_TAB_PRODUCTIONS"] = 'Projektliste';
+$lang["PRODUCTION_FOLDER_TAB_MULTIVIEW"] = 'Multiprojektübersicht';
+$lang["PRODUCTION_FOLDER_TAB_STATUS"] = 'Ordnerstatus';
+
 $lang["PRODUCTION_FOLDER_PRODUCTIONS_CREATED"] = 'Produktionen insgesamt';
 $lang["PRODUCTION_FOLDER_PRODUCTIONS_PLANNED"] = 'in Planung';
 $lang["PRODUCTION_FOLDER_PRODUCTIONS_RUNNING"] = 'in Arbeit';

@@ -57,7 +57,68 @@ class Projects extends Controller {
 			return $system->json_encode($data);
 		}
 	}
+	
 
+	function getFolderDetailsList($id) {
+		global $lang, $system;
+		if($arr = $this->model->getFolderDetails($id)) {
+			$folder = $arr["folder"];
+			$projects = $arr["projects"];
+			ob_start();
+			include 'view/folder_edit_list.php';
+			$data["html"] = ob_get_contents();
+			ob_end_clean();
+			$data["access"] = $arr["access"];
+			return $system->json_encode($data);
+		} else {
+			ob_start();
+			include CO_INC .'/view/default.php';
+			$data["html"] = ob_get_contents();
+			ob_end_clean();
+			return $system->json_encode($data);
+		}
+	}
+	
+	
+	function getFolderDetailsMultiView($id,$view,$zoom) {
+		global $date, $lang, $system;
+		if($arr = $this->model->getFolderDetailsMultiView($id,$view,$zoom)) {
+		$folder = $arr["folder"];
+		$projects = $arr["projects"];
+		ob_start();
+			include('view/folder_edit_multiview.php');
+			$data["html"] = ob_get_contents();
+		ob_end_clean();
+		$data["access"] = $arr["access"];
+		return $system->json_encode($data);
+		} else {
+			ob_start();
+			include CO_INC .'/view/default.php';
+			$data["html"] = ob_get_contents();
+			ob_end_clean();
+			return $system->json_encode($data);
+		}
+	}
+
+	function getFolderDetailsStatus($id) {
+		global $lang, $system;
+		if($arr = $this->model->getFolderDetails($id)) {
+			$folder = $arr["folder"];
+			$projects = $arr["projects"];
+			ob_start();
+			include 'view/folder_edit_status.php';
+			$data["html"] = ob_get_contents();
+			ob_end_clean();
+			$data["access"] = $arr["access"];
+			return $system->json_encode($data);
+		} else {
+			ob_start();
+			include CO_INC .'/view/default.php';
+			$data["html"] = ob_get_contents();
+			ob_end_clean();
+			return $system->json_encode($data);
+		}
+	}
 
 	function printFolderDetails($id, $t) {
 		global $session,$lang;
@@ -82,6 +143,89 @@ class Projects extends Controller {
 		}
 		
 	}
+	
+	
+	function printFolderDetailsList($id) {
+		global $session,$lang;
+		$title = "";
+		$html = "";
+		if($arr = $this->model->getFolderDetails($id)) {
+			$folder = $arr["folder"];
+			$projects = $arr["projects"];
+			ob_start();
+				include 'view/folder_print_list.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			$title = $folder->title;
+		}
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_PROJECT_FOLDER"];
+		$this->printPDF($title,$html);
+	}
+
+
+	function printFolderDetailsMultiView($id,$view) {
+		global $date, $lang, $system;
+		if($arr = $this->model->getFolderDetailsMultiView($id,$view)) {
+			  $folder = $arr["folder"];
+			  $projects = $arr["projects"];
+			  
+			  $folder->page_width = $folder->css_width+245+20;
+			  $folder->page_height = $folder->css_height+200;
+			  if($folder->page_width < 896) {
+				  $folder->page_width = 896;
+			  }
+			  if($folder->page_height < 595) {
+				  $folder->page_height = 595;
+			  }
+			  
+			  ob_start();
+			  include('view/folder_print_multiview.php');
+				  $html = ob_get_contents();
+			  ob_end_clean();
+			  $title = $folder->title . " - " . $lang["PROJECT_TIMELINE_PROJECT_PLAN"];
+			  
+			  $this->printGantt($title,$html,$folder->page_width,$folder->page_height);
+		}
+	}
+	
+	
+	function printGantt($title,$text,$width,$height) {
+		global $lang;
+		ob_start();
+			include(CO_INC . "/view/printheader.php");
+			$header = ob_get_contents();
+		ob_end_clean();		
+		$footer = "</body></html>";
+        $html = $header . $text . $footer;
+		require_once(CO_INC . "/classes/dompdf_60_beta2/dompdf_config.inc.php");
+		$dompdf = new DOMPDF();
+		$dompdf->load_html($html);
+		/*$dompdf->set_paper('a4', 'portrait');  change 'a4' to whatever you want 
+         breite, höhe pixel dividiert durch 96 * 72*/
+        $dompdf->set_paper( array(0,0, $width / 96 * 72, $height / 96 * 72), "portrait" );
+		$dompdf->render();
+		$options['Attachment'] = 1;
+		$options['Accept-Ranges'] = 0;
+		$options['compress'] = 1;
+		$dompdf->stream($title.".pdf", $options);
+	}
+
+	function printFolderDetailsStatus($id) {
+		global $session,$lang;
+		$title = "";
+		$html = "";
+		if($arr = $this->model->getFolderDetails($id)) {
+			$folder = $arr["folder"];
+			$projects = $arr["projects"];
+			ob_start();
+				include 'view/folder_print_list.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			$title = $folder->title;
+		}
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_PROJECT_FOLDER"];
+		$this->printPDF($title,$html);
+	}
 
 
 	function getFolderSend($id) {
@@ -102,6 +246,43 @@ class Projects extends Controller {
 		}
 	}
 
+
+	function getSendFolderDetailsList($id) {
+		global $lang;
+		if($arr = $this->model->getFolderDetails($id)) {
+			$folder = $arr["folder"];
+			$projects = $arr["projects"];	
+			$form_url = $this->form_url;
+			$request = "sendFolderDetailsList";
+			$to = "";
+			$cc = "";
+			$subject = $folder->title;
+			$variable = "";
+			include CO_INC .'/view/dialog_send.php';
+		}
+		else {
+			include CO_INC .'/view/default.php';
+		}
+	}
+
+
+	function getSendFolderDetailsMultiView($id,$view) {
+		global $lang;
+		if($arr = $this->model->getFolderDetailsMultiview($id,$view)) {
+			$folder = $arr["folder"];
+			$projects = $arr["projects"];	
+			$form_url = $this->form_url;
+			$request = "sendFolderDetailsMultiView";
+			$to = "";
+			$cc = "";
+			$subject = $folder->title;
+			$variable = $view;
+			include CO_INC .'/view/dialog_send.php';
+		}
+		else {
+			include CO_INC .'/view/default.php';
+		}
+	}
 
 	function sendFolderDetails($id,$to,$cc,$subject,$body) {
 		global $session,$users, $lang;
@@ -125,6 +306,55 @@ class Projects extends Controller {
 		//$this->writeSendtoLog("projects",$id,$to,$subject,$body);
 		
 		//$to,$from,$fromName,$subject,$body,$attachment
+		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment);
+	}
+	
+	
+	function sendFolderDetailsList($id,$to,$cc,$subject,$body) {
+		global $session,$users, $lang;
+		$title = "";
+		$html = "";
+		if($arr = $this->model->getFolderDetails($id)) {
+			$folder = $arr["folder"];
+			$projects = $arr["projects"];
+			ob_start();
+				include 'view/folder_print_list.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			$title = $folder->title;
+		}
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_PROJECT_FOLDER"];
+		$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
+		$pdf = $this->savePDF($title,$html,$attachment);
+		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment);
+	}
+
+
+	function sendFolderDetailsMultiView($variable,$id,$to,$cc,$subject,$body) {
+		global $session,$users,$date,$lang;
+		$title = "";
+		$html = "";
+		if($arr = $this->model->getFolderDetailsMultiView($id,$variable)) {
+			 $folder = $arr["folder"];
+			  $projects = $arr["projects"];
+			  
+			  $folder->page_width = $folder->css_width+245+20;
+			  $folder->page_height = $folder->css_height+200;
+			  if($folder->page_width < 896) {
+				  $folder->page_width = 896;
+			  }
+			  if($folder->page_height < 595) {
+				  $folder->page_height = 595;
+			  }
+			ob_start();
+				include 'view/folder_print_multiview.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			$title = $folder->title;
+		}
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_PROJECT_FOLDER"];
+		$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
+		$pdf = $this->saveTimeline($title,$html,$attachment,$folder->page_width,$folder->page_height);
 		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment);
 	}
 

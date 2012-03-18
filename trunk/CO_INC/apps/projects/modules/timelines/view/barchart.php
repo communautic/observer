@@ -34,21 +34,21 @@
 <div class="scroll-pane" id="barchartScroll">
 <div  class="barchart-outer" style="position: relative; font-size: 11px; width: <?php echo($project["css_width"]+225);?>px; height:<?php echo($project["css_height"]+50);?>px">
 	
-    <div id="barchart-container-left" style="position: absolute; z-index: 5; width: 225px; padding-top: 37px; background-color:#FFF; height:<?php echo($project["css_height"]-5+16);?>px">
-	<div style="position: relative; padding-left: 10px; height: 16px; margin: 0 15px 2px 0;"><?php echo $lang['PROJECT_TIMELINE_ACTION'];?>
+    <div id="barchart-container-left" style="position: absolute; z-index: 5; width: 220px; padding-top: 37px; background-color:#FFF; height:<?php echo($project["css_height"]-5+16);?>px">
+	<div style="position: relative; padding-left: 10px; height: 16px; margin: 0 10px 2px 0;"><?php echo $lang['PROJECT_TIMELINE_ACTION'];?>
     <div style="text-align: center; position: absolute; width: 45px; padding: 1px 5px 0 0; top: 0; right: 0; height: 16px;"><?php echo $lang['PROJECT_TIMELINE_TIME'];?></div></div>
 
-	<div style="position: relative; padding-left: 10px; height: 16px; margin: 0 15px 2px 0; background-color:#e5e5e5"><a class="but-scroll-to" t="0" l="0"><?php echo $lang['PROJECT_KICKOFF'];?></a>
+	<div style="position: relative; padding-left: 10px; height: 16px; margin: 0 10px 2px 0; background-color:#e5e5e5"><a class="but-scroll-to" t="0" l="0"><?php echo $lang['PROJECT_KICKOFF'];?></a>
     <div style="text-align: right; position: absolute; width: 38px; padding: 1px 10px 0 0; top: 0; right: 0; height: 16px; border-left: 2px solid #fff;">1</div></div>
 
 <?php 
 $i = 1;
 foreach($project["phases"] as $key => &$value){ ?>
-<div style="position: relative; padding-left: 10px; height: 16px; margin: 0 15px 2px 0; background-color: #b2b2b2;"><div style="position: absolute; height: 16px; width: 145px; overflow: hidden; line-height: 16px;"><a class="but-scroll-to" t="<?php echo($project["phases"][$key]["css_top"]);?>" l="<?php echo($project["phases"][$key]["css_left"]);?>"><?php echo($i . ". " . $project["phases"][$key]["title"]);?></a></div><div style="text-align: right; position: absolute; width: 38px; padding: 1px 10px 0 0; top: 0; right: 0; height: 16px; border-left: 2px solid #fff;"><?php echo($project["phases"][$key]["days"]);?></div></div>
+<div style="position: relative; padding-left: 10px; height: 16px; margin: 0 10px 2px 0; background-color: #b2b2b2;"><div style="position: absolute; height: 16px; width: 145px; overflow: hidden; line-height: 16px;"><a class="but-scroll-to" t="<?php echo($project["phases"][$key]["css_top"]);?>" l="<?php echo($project["phases"][$key]["css_left"]);?>"><?php echo($i . ". " . $project["phases"][$key]["title"]);?></a></div><div style="text-align: right; position: absolute; width: 38px; padding: 1px 10px 0 0; top: 0; right: 0; height: 16px; border-left: 2px solid #fff;"><?php echo($project["phases"][$key]["days"]);?></div></div>
       
       <?php foreach($project["phases"][$key]["tasks"] as $tkey => &$tvalue){ ?>
       
-      <div style="position: relative; padding: 0 50px 0 25px; height: 16px; margin: 0 15px 2px 0; background-color:#e5e5e5">
+      <div style="position: relative; padding: 0 50px 0 25px; height: 16px; margin: 0 10px 2px 0; background-color:#e5e5e5">
 	  	<div style="height: 16px; overflow: hidden; line-height: 16px;"><a class="but-scroll-to" t="<?php echo($project["phases"][$key]["css_top"]+$project["phases"][$key]["tasks"][$tkey]["css_top"]);?>" l="<?php echo($project["phases"][$key]["css_left"]+$project["phases"][$key]["tasks"][$tkey]["css_left"]);?>"><?php echo($project["phases"][$key]["tasks"][$tkey]["text"]);?></a></div>
         <div style="text-align: right; position: absolute; width: 38px; padding: 1px 10px 0 0; top: 0; right: 0; height: 16px; border-left: 2px solid #fff;"><?php echo($project["phases"][$key]["tasks"][$tkey]["days"]);?></div>
       </div>
@@ -100,7 +100,7 @@ foreach($project["phases"] as $key => &$value){ ?>
     <!-- drawing area outer -->
     <div style="position: relative; background-image:url(<?php echo($project["bg_image"]);?>); background-position: <?php echo($project["bg_image_shift"]);?>px 0px; width: <?php echo($project["css_width"]);?>px; height:<?php echo($project["css_height"]);?>px;">
 			<!-- kick off -->
-            <div class="coTooltip loadProject" rel="<?php echo($pid);?>" style="z-index: 2; background-color: #B2B2B2; position: absolute; top: 8px; left: 0; height: 10px; width: <?php echo($project["td_width"]);?>px;">
+            <div class="coTooltip loadProject" rel="<?php echo($pid);?>" style="z-index: 2; position: absolute; top: 5px; left: <?php echo(round($project["td_width"]/2)-8);?>px; height: 16px; width: 16px;"><img src="<?php echo CO_FILES;?>/img/kickoff.png" width="16" height="16" alt="" />
             	<div class="coTooltipHtml" style="display: none">
 					Kick off<br />
 					<?php echo($project["startdate_view"]);?>
