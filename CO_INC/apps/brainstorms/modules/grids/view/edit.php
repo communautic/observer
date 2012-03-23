@@ -178,15 +178,15 @@ foreach($cols as $key => &$value){
 
  </div>
   <div id="brainstorms-notes-outer" class="brainstorms-notes-outer">
-      <div id="note" class="note note-design" style="width: 203px; height: 150px; display: none;">
+      <div id="brainstorms-grid-note" class="note note-design" style="width: 203px; height: 150px; display: none;">
         <h3 id="note-header">
-        <div id="note-title" class="note-title note-title-design"></div>
-        <div id="note-info" class="brainstormsNoteInfo coTooltip" style="position: absolute; top: 8px; right: 28px; width: 15px; height: 15px; cursor: pointer;"><span class="icon-info"></span>
-        	<div style="display: none" class="coTooltipHtml" id="note-info-content"></div>
+        <div id="brainstorms-grid-note-title" class="note-title note-title-design"></div>
+        <div id="brainstorms-grid-note-info" class="brainstormsNoteInfo coTooltip" style="position: absolute; top: 8px; right: 28px; width: 15px; height: 15px; cursor: pointer;"><span class="icon-info"></span>
+        	<div style="display: none" class="coTooltipHtml" id="brainstorms-grid-note-info-content"></div>
         </div>
-        <div id="note-save" style="position: absolute; top: 9px; right: 10px; width: 15px; height: 15px; cursor: pointer;"><a rel="" class="binItem"><span class="icon-delete"></span></a></div>
+        <div id="brainstorms-grid-note-save" style="position: absolute; top: 9px; right: 10px; width: 15px; height: 15px; cursor: pointer;"><a rel="" class="binItem"><span class="icon-delete"></span></a></div>
         </h3>
-        <div id="note-text" class="note-text note-text-design" style="height: 110px;"></div>
+        <div id="brainstorms-grid-note-text" class="note-text note-text-design" style="height: 110px;"></div>
 	</div>
     </div>
 </div>
