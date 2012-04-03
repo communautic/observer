@@ -28,8 +28,99 @@ class DesktopModel extends Model {
 		$object = 'desktop-widget-' . $object;
 		return $this->setUserSetting($object,$status);
 	}
-	
-	
+
+
+   function existUserCheckpointsWidgets() {
+		global $session;
+		$q = "select count(*) as num from " . CO_TBL_DESKTOP_SETTINGS . " where uid='$session->uid'";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_assoc($result);
+		if($row["num"] < 1) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+
+	function getUserCheckpointsWidgets() {
+		global $session;
+		$q = "select * from " . CO_TBL_DESKTOP_SETTINGS . " where uid='$session->uid'";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_assoc($result);
+		return $row;
+	}
+
+
+	function getCheckpoints() {
+		global $session,$lang;
+		
+		$now = gmdate("Y-m-d");
+		$string = "";
+		
+		$q = "select * from " . CO_TBL_USERS_CHECKPOINTS . " where uid = '$session->uid' and date <= '$now' ORDER BY date DESC";
+		$result = mysql_query($q, $this->_db->connection);
+		$checkpoints = "";
+		while ($row = mysql_fetch_array($result)) {
+			foreach($row as $key => $val) {
+				$checkpoint[$key] = $val;
+			}
+			
+			global ${$checkpoint['app']};
+			$checkpoint_details  = ${$checkpoint['app']}->getCheckpointDetails($checkpoint['app'],$checkpoint['module'],$checkpoint['app_id']);
+			
+			if(is_array($checkpoint_details)) {
+			foreach($checkpoint_details as $k => $v) {
+				$checkpoint[$k] = $v;
+			} 
+			
+			$string .= $checkpoint["folder"] . "," . $checkpoint["app_id"] . "," . $checkpoint["app_id_app"] . ",";
+			
+			$days = $this->_date->dateDiff($checkpoint['date'],$now);
+			switch($days) {
+				case 0:
+					$checkpoint["days"] = $lang["GLOBAL_TODAY"];
+				break;
+				case 1:
+					$checkpoint["days"] = $lang["GLOBAL_YESTERDAY"];
+				break;
+				default:
+					$checkpoint["days"] = sprintf($lang["GLOBAL_DAYS_AGO"], $days);
+			}
+			$checkpoints[] = new Lists($checkpoint);
+			}
+	  	}
+		
+		if(!$this->existUserCheckpointsWidgets()) {
+			$q = "insert into " . CO_TBL_DESKTOP_SETTINGS . " set uid='$session->uid', value='$string'";
+			$result = mysql_query($q, $this->_db->connection);
+			$widgetaction = "open";
+		} else {
+			$row = $this->getUserCheckpointsWidgets();
+			$id = $row["id"];
+			if($string == $row["value"]) {
+				$widgetaction = "";
+			} else {
+				$widgetaction = "open";
+			}
+			$q = "UPDATE " . CO_TBL_DESKTOP_SETTINGS . " set value='$string' WHERE id = '$id'";
+			$result = mysql_query($q, $this->_db->connection);
+		}
+
+		$arr = array("checkpoints" => $checkpoints,"widgetaction" => $widgetaction);
+		return $arr;
+	}
+
+
+	function markCheckpointRead($app,$module,$id) {
+		global $session;
+		$q = "DELETE FROM " . CO_TBL_USERS_CHECKPOINTS . " where uid = '$session->uid' and app = '$app' and module = '$module' and app_id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+		  	return true;
+		}
+	}
+
 	function getPostIts() {
 		global $session,$lang, $contactsmodel;
 		
@@ -37,7 +128,6 @@ class DesktopModel extends Model {
 		
 		// Notes
 		$q = "select * from " . CO_TBL_DESKTOP_POSTITS . " where uid = '$session->uid'";
-		
 		$result = mysql_query($q, $this->_db->connection);
 	  	$notes = "";
 	  	while ($row = mysql_fetch_array($result)) {

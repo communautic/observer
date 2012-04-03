@@ -72,6 +72,10 @@ function desktopApplication(name) {
 		$("#documentloader").attr('src', url);
 	}
 	
+	this.markCheckpointRead = function(app,module,id) {
+		$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/desktop&request=markCheckpointRead&app=" + app + "&module=" + module + "&id=" + id, cache: false });
+	}
+	
 }
 
 var desktop = new desktopApplication('desktop');
@@ -118,6 +122,15 @@ function desktoploadModuleStart() {
 			});
 		}
 		
+		//checkpoints
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/desktop&request=getCheckpoints", success: function(data){
+			$("#checkpointsWidgetContent").empty().html(data.html);
+			if(data.widgetaction == 'open' && $('#checkpointsWidgetContent').is(':hidden')) {
+				$('#item_checkpointsWidget a.collapse').trigger('click');
+			}
+			}
+		});
+		
 		// postits
 		if(currentDesktopPostit == 0) {
 			var doit = 1;
@@ -135,6 +148,7 @@ function desktoploadModuleStart() {
 			}
 		}
 	}
+		
 }
 
 var desktopzIndex = 0; // zindex notes for mindmap
@@ -310,6 +324,20 @@ $(document).ready(function() {
 		var href = $(this).attr('rel').split(",");
 		externalLoadThreeLevels(href[0],href[1],href[2],href[3],'forums');
 		forums.markNewPostRead(href[2]);
+	});
+	
+	$(document).on('click', '#desktop .checkpointMarkRead', function(e) {
+		e.preventDefault();
+		var href = $(this).attr('rel').split(",");
+		var app = href[0];
+		var module = href[4];
+		if(app == module) {
+			var id = href[2];
+		} else {
+			var id = href[3];
+		}
+		desktop.markCheckpointRead(app,module,id);
+		externalLoadThreeLevels(href[4],href[1],href[2],href[3],href[0]);
 	});
 
 	$(document).on('click', 'a.forwardItem', function(e) {

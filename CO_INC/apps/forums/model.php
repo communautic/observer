@@ -567,6 +567,8 @@ class ForumsModel extends Model {
 		
 		$array["folder"] = $this->getForumFolderDetails($array["folder"],"folder");
 		// dates
+		$today = date("Y-m-d");
+
 		$array["today"] = $this->_date->formatDate("now",CO_DATE_FORMAT);
 		$array["planned_date"] = $this->_date->formatDate($array["planned_date"],CO_DATE_FORMAT);
 		$array["inprogress_date"] = $this->_date->formatDate($array["inprogress_date"],CO_DATE_FORMAT);
@@ -588,22 +590,32 @@ class ForumsModel extends Model {
 				$array["status_text"] = $lang["FORUM_STATUS_PLANNED"];
 				$array["status_date"] = $array["planned_date"];
 				$array["startdate"] = $array["planned_date"];
+				//$array["enddate"] = $this->_date->formatDate($today,CO_DATE_FORMAT);
 			break;
 			case "1":
 				$array["status_text"] = $lang["FORUM_STATUS_INPROGRESS"];
 				$array["status_date"] = $array["inprogress_date"];
 				$array["startdate"] = $array["inprogress_date"];
+				//$array["enddate"] = $this->_date->formatDate($today,CO_DATE_FORMAT);
 			break;
 			case "2":
 				$array["status_text"] = $lang["FORUM_STATUS_FINISHED"];
 				$array["status_date"] = $array["finished_date"];
-				$array["startdate"] = $array["inprogress_date"];
+				if($array["inprogress_date"] == '') {
+					$array["startdate"] = $array["planned_date"];
+				} else {
+					$array["startdate"] = $array["inprogress_date"];
+				}
 				$array["enddate"] = $array["finished_date"];
 			break;
 			case "3":
 				$array["status_text"] = $lang["FORUM_STATUS_STOPPED"];
 				$array["status_date"] = $array["stopped_date"];
-				$array["startdate"] = $array["inprogress_date"];
+				if($array["inprogress_date"] == '') {
+					$array["startdate"] = $array["planned_date"];
+				} else {
+					$array["startdate"] = $array["inprogress_date"];
+				}
 				$array["enddate"] = $array["stopped_date"];
 			break;
 		}

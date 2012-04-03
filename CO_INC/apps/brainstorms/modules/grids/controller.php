@@ -241,15 +241,10 @@ class BrainstormsGrids extends Brainstorms {
 	function getGridNote($id) {
 		global $lang;
 		if($note = $this->model->getGridNote($id)){
-			//ob_start();
-			//include('view/note.php');
-			//$data["html"] = ob_get_contents();
-		//ob_end_clean();
 			$data["title"] = $note->title;
 			$data["text"] = $note->text;
 			$data["info"] = $lang["EDITED_BY_ON"] . ' ' . $note->edited_user.', ' . $note->edited_date . '<br>'
 . $lang["CREATED_BY_ON"]  . ' ' . $note->created_user . ', ' . $note->created_date;
-            //$data["ms"] = $note->ms;
 			return json_encode($data);
 		} else{
 			return "error";

@@ -498,6 +498,22 @@ function brainstormsMeetings(name) {
 		});
 	}
 
+
+	this.manageCheckpoint = function(action,date) {
+		var pid = $('#brainstorms').data('third');
+		switch(action) {
+			case 'new':
+				$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/meetings&request=newCheckpoint&id=" + pid + "&date=" + date, cache: false });
+			break;
+			case 'update':
+				$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/meetings&request=updateCheckpoint&id=" + pid + "&date=" + date, cache: false });			
+			break;
+			case 'delete':
+				$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/meetings&request=deleteCheckpoint&id=" + pid, cache: false });
+			break;
+		}
+	}
+
 }
 
 var brainstorms_meetings = new brainstormsMeetings('brainstorms_meetings');

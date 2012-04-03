@@ -195,6 +195,15 @@ if (!empty($_GET['request'])) {
 		case 'getSearch':
 			echo($projects->getSearch($system->checkMagicQuotesTinyMCE($_GET['string'])));
 		break;
+		case 'newCheckpoint':
+			echo($projects->newCheckpoint($_GET['id'],$_GET['date']));
+		break;
+		case 'updateCheckpoint':
+			echo($projects->updateCheckpoint($_GET['id'],$_GET['date']));
+		break;
+		case 'deleteCheckpoint':
+			echo($projects->deleteCheckpoint($_GET['id']));
+		break;
 	}
 }
 

@@ -424,6 +424,21 @@ function projectsApplication(name) {
 	}
 
 
+	this.manageCheckpoint = function(action,date) {
+		var pid = $('#projects').data('second');
+		switch(action) {
+			case 'new':
+				$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=newCheckpoint&id=" + pid + "&date=" + date, cache: false });
+			break;
+			case 'update':
+				$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=updateCheckpoint&id=" + pid + "&date=" + date, cache: false });			
+			break;
+			case 'delete':
+				$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=deleteCheckpoint&id=" + pid, cache: false });
+			break;
+		}
+	}
+
 }
 
 var projects = new projectsApplication('projects');
@@ -778,21 +793,21 @@ $(document).ready(function() {
 		e.preventDefault();
 		navThreeTitleFirst('projects',$(this),passed_id)
 		prevent_dblclick(e)
-	});
+	}).disableSelection();
 
 
 	$("#projects2-outer").on('click', 'h3', function(e, passed_id) {
 		e.preventDefault();
 		navThreeTitleSecond('projects',$(this),passed_id)
 		prevent_dblclick(e)
-	});
+	}).disableSelection();
 
 
 	$("#projects3").on('click', 'h3', function(e, passed_id) {
 		e.preventDefault();
 		navThreeTitleThird('projects',$(this),passed_id)
 		prevent_dblclick(e)
-	});
+	}).disableSelection();
 
 	$('#projects1').on('click', 'span.module-click', function(e) {
 		e.preventDefault();

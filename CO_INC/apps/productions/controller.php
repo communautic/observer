@@ -833,6 +833,32 @@ class Productions extends Controller {
 			include CO_INC .'/view/default.php';
 		}
 	}
+	
+	
+ 	function newCheckpoint($id,$date){
+		$this->model->newCheckpoint($id,$date);
+		return true;
+   }
+
+ 	function updateCheckpoint($id,$date){
+		$this->model->updateCheckpoint($id,$date);
+		return true;
+   }
+
+ 	function deleteCheckpoint($id){
+		$this->model->deleteCheckpoint($id);
+		return true;
+   }
+   
+   function getCheckpointDetails($app,$module,$id) {
+	   global $productions;
+	   $retval = $this->model->getCheckpointDetails($app,$module,$id);
+	   if($retval){
+			 return $retval;
+		  } else{
+			 return "error";
+		  }
+   }
 
 }
 

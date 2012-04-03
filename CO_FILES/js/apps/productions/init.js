@@ -778,21 +778,21 @@ $(document).ready(function() {
 		e.preventDefault();
 		navThreeTitleFirst('productions',$(this),passed_id)
 		prevent_dblclick(e)
-	});
+	}).disableSelection();
 
 
 	$("#productions2-outer").on('click', 'h3', function(e, passed_id) {
 		e.preventDefault();
 		navThreeTitleSecond('productions',$(this),passed_id)
 		prevent_dblclick(e)
-	});
+	}).disableSelection();
 
 
 	$("#productions3").on('click', 'h3', function(e, passed_id) {
 		e.preventDefault();
 		navThreeTitleThird('productions',$(this),passed_id)
 		prevent_dblclick(e)
-	});
+	}).disableSelection();
 
 	$('#productions1').on('click', 'span.module-click', function(e) {
 		e.preventDefault();

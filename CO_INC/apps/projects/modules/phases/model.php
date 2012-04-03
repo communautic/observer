@@ -293,6 +293,20 @@ class ProjectsPhasesModel extends ProjectsModel {
 			break;
 		}
 		
+		
+				// checkpoint
+		$array["checkpoint"] = 0;
+		$array["checkpoint_date"] = "";
+		$q = "SELECT date FROM " . CO_TBL_USERS_CHECKPOINTS . " where uid='$session->uid' and app = 'projects' and module = 'phases' and app_id = '$id' LIMIT 1";
+		$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result) > 0) {
+			while ($row = mysql_fetch_assoc($result)) {
+			$array["checkpoint"] = 1;
+			$array["checkpoint_date"] = $this->_date->formatDate($row['date'],CO_DATE_FORMAT);
+			}
+		}
+		
+		
 		/*$perms = $this->getProjectAccess($array["pid"]);
 		$array["canedit"] = false;
 		if($perms == "sysadmin" || $perms == "admin") {
@@ -741,10 +755,52 @@ class ProjectsPhasesModel extends ProjectsModel {
 						$arr["tasks"] = $tasks;*/
 		return $arr;
 	}
-	
-function test() {
-		echo "dxasddas";	
-	}
+
+
+	function newCheckpoint($id,$date){
+		global $session;
+		$date = $this->_date->formatDate($date);
+		$q = "INSERT INTO " . CO_TBL_USERS_CHECKPOINTS . " SET uid = '$session->uid', date = '$date', app = 'projects', module = 'phases', app_id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+			return true;
+		}
+   }
+
+ 	function updateCheckpoint($id,$date){
+		global $session;
+		$date = $this->_date->formatDate($date);
+		$q = "UPDATE " . CO_TBL_USERS_CHECKPOINTS . " SET date = '$date' WHERE uid = '$session->uid' and app = 'projects' and module = 'phases' and app_id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+			return true;
+		}
+   }
+
+ 	function deleteCheckpoint($id){
+		global $session;
+		$q = "DELETE FROM " . CO_TBL_USERS_CHECKPOINTS . " WHERE uid = '$session->uid'and app = 'projects' and module = 'phases' and app_id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+			return true;
+		}
+   }
+
+
+    function getCheckpointDetails($id){
+		global $lang;
+		$row = "";
+		$q = "SELECT a.pid,a.title,b.folder FROM " . CO_TBL_PROJECTS_PHASES . " as a, " . CO_TBL_PROJECTS . " as b WHERE a.pid = b.id and a.id='$id' and a.bin='0'";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_array($result);
+		if(mysql_num_rows($result) > 0) {
+			$row['checkpoint_app_name'] = $lang["PROJECT_PHASE_TITLE"];
+			$row['app_id'] = $row['pid'];
+			$row['app_id_app'] = $id;
+		}
+		return $row;
+   }
+
 
 }
 

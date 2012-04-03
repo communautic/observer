@@ -119,7 +119,7 @@ foreach($cols as $key => &$value){
 			echo '<span class="newNoteItem newNoteTitle"></span>';
 			}
 		}
-		echo '</div>';
+		echo '</div><div class="grids-spacer"></div>';
 
 	echo '<div class="' . $brainstormsphase . ' brainstorms-phase-design" style="height: ' . $listheight . 'px;">';
 	foreach($cols[$key]["notes"] as $tkey => &$tvalue){ 
@@ -138,7 +138,7 @@ foreach($cols as $key => &$value){
 	if($grid->canedit) {
 	echo '<span class="newNoteItem newNote"></span>';
 	}
-	echo '</div>';
+	echo '</div><div class="grids-spacer"></div>';
 	echo '<div class="brainstorms-col-footer">';
 	
 	echo '<div class="brainstorms-col-footer-stagegate">';
@@ -230,11 +230,11 @@ foreach($cols as $key => &$value){
   </tr>
 </table>
 </div>
-<div id="modalDialogGrid" style="z-index: 200; position: absolute; bottom: 0; width: 100%; height: 170px; background-color: #FFF6B5; display: none;">
+<div id="modalDialogBrainstormsGrid" style="z-index: 200; position: absolute; bottom: 0; width: 100%; height: 170px; background-color: #e5e5e5; display: none;">
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
   <tr>
     <td valign="top">
-    <div style="height: 22px; background-color: #77713D;"></div>
+    <div style="height: 22px; background-color: #999;"></div>
     <div class="content-spacer"></div>
     <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
@@ -244,20 +244,20 @@ foreach($cols as $key => &$value){
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><span class="content-nav showDialog" request="getProjectFolderDialog" field="gridprojectsfolder" append="1"><span><?php echo $lang["PROJECT_FOLDER"];?></span></span></td>
-        <td class="tcell-right"><div id="gridprojectsfolder" class="itemlist-field"></div></td>
+	  <td class="tcell-left text11"><span class="content-nav showDialog" request="getProjectFolderDialog" field="brainstormsgridprojectsfolder" append="1"><span><?php echo $lang["PROJECT_FOLDER"];?></span></span></td>
+        <td class="tcell-right"><div id="brainstormsgridprojectsfolder" class="itemlist-field"></div></td>
 	</tr>
 </table>
-<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
-		<td class="tcell-left text11"><span class="content-nav selectTextarea"><span><?php echo $lang["PROJECT_DESCRIPTION"];?></span></span></td>
-        <td class="tcell-right"><textarea id="gridProtocol" name="protocol" class="elastic" style="background-color: #fff; max-height: 54px;"></textarea></td>
+		<td class="tcell-left text11" style="padding: 4px 15px 4px 0;"><span class="content-nav selectTextarea"><span><?php echo $lang["PROJECT_DESCRIPTION"];?></span></span></td>
+        <td class="tcell-right" style="padding: 6px 0 2px 0;"><textarea id="gridProtocol" name="protocol" class="elastic" style="background-color: #fff; max-height: 54px;"></textarea></td>
 	</tr>
 </table>
     <div class="coButton-outer" style="margin: 0 0 0 150px;"><span class="content-nav actionBrainstormsGridsConvert coButton">erstellen</span></div>
     
     </td>
-  	<td width="40" valign="top"><div id="modalDialogBrainstormsGridClose" style="height: 17px; padding-top: 5px; background-color: #77713D; cursor: pointer;"><span class="icon-toggle"></span></div></td>
+  	<td width="40" valign="top"><div id="modalDialogBrainstormsGridClose" style="height: 17px; padding-top: 5px; background-color: #999; cursor: pointer;"><span class="icon-toggle-down"></span></div></td>
   </tr>
 </table>
 

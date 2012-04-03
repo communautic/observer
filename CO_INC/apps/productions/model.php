@@ -2385,6 +2385,43 @@ class ProductionsModel extends Model {
 		return $arr;
    }
 
+
+    function getCheckpointDetails($app,$module,$id){
+		global $lang, $session, $productions;
+		$row = "";
+		if($app =='productions' && $module == 'productions') {
+			$q = "SELECT title,folder FROM " . CO_TBL_PRODUCTIONS . " WHERE id='$id' and bin='0'";
+			$result = mysql_query($q, $this->_db->connection);
+			$row = mysql_fetch_array($result);
+			if(mysql_num_rows($result) > 0) {
+				$row['checkpoint_app_name'] = $lang["PRODUCTION_TITLE"];
+				$row['app_id_app'] = '0';
+			}
+			return $row;
+		} else {
+			$active_modules = array();
+			foreach($productions->modules as $m => $v) {
+					$active_modules[] = $m;
+			}
+			/*if($module == 'phases' && in_array("phases",$active_modules)) {
+				include_once("modules/".$module."/config.php");
+				include_once("modules/".$module."/lang/" . $session->userlang . ".php");
+				include_once("modules/".$module."/model.php");
+				$projectsPhasesModel = new ProjectsPhasesModel();
+				$row = $projectsPhasesModel->getCheckpointDetails($id);
+				return $row;
+			}*/
+			if($module == 'meetings' && in_array("meetings",$active_modules)) {
+				include_once("modules/".$module."/config.php");
+				include_once("modules/".$module."/lang/" . $session->userlang . ".php");
+				include_once("modules/".$module."/model.php");
+				$productionsMeetingsModel = new ProductionsMeetingsModel();
+				$row = $productionsMeetingsModel->getCheckpointDetails($id);
+				return $row;
+			}
+		}
+   }
+
 	
 	
 }

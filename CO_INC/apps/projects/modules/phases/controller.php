@@ -307,6 +307,23 @@ class ProjectsPhases extends Projects {
 		$this->openHelpPDF($data);
 	}
 
+
+ 	function newCheckpoint($id,$date){
+		$this->model->newCheckpoint($id,$date);
+		return true;
+   }
+
+ 	function updateCheckpoint($id,$date){
+		$this->model->updateCheckpoint($id,$date);
+		return true;
+   }
+
+ 	function deleteCheckpoint($id){
+		$this->model->deleteCheckpoint($id);
+		return true;
+   }
+
+
 }
 
 $projectsPhases = new ProjectsPhases("phases");

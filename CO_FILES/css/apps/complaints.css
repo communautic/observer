@@ -238,7 +238,7 @@ background-color: #dcd2ff; }
 }
 
 #complaints-grid { margin-left: 15px; float: left; position: relative; width: 100%; font-size: 11px; }
-#complaints-grid > div { position: relative; float: left; width: 223px; margin-right: 5px; min-height: 266px; background-image: url(../../img/brainstorms_grid_prozess.png); background-repeat: repeat-y; background-position: 0px 78px; border-top: 1px solid #a6a6a6; border-right: 1px solid #7f7f7f; border-left: 1px solid #a6a6a6; }
+#complaints-grid > div { position: relative; float: left; width: 223px; margin-right: 5px; min-height: 274px; background-image: url(../../img/brainstorms_grid_prozess.png); background-repeat: repeat-y; background-position: 0px 82px; border-top: 1px solid #a6a6a6; border-right: 1px solid #7f7f7f; border-left: 1px solid #a6a6a6; }
 #complaints-grid > div div.handle { height: 20px; background-color: #000; color:#FFF}
 #complaints-grid .complaints-column-delete { position: absolute; top: 4px; right: 10px; width: 10px; height: 10px; cursor: pointer; z-index: 3;}
 #complaints-grid .roster-note-new { position: absolute; top: 1px; right: 20px; width: 10px; height: 10px; cursor: pointer;}
@@ -327,9 +327,11 @@ background: url("../../img/brainstorms_grid_stagegate.png") no-repeat scroll 1px
 	background-position: -440px 0;
 }
 
+#modalDialogComplaintsGrid span.coButton  { background-color: #9B78DC; color: #fff; }
+#modalDialogComplaintsGrid span.coButton:hover   { background-color: #fff; color: #000; cursor: pointer; }
+
 /* forums */
 #complaintsForumsPosts { background-image:url(../../img/forums_thread_bg.png); }
 #complaintsForumsPosts .toggeled { border-bottom: 1px solid #436593; overflow: hidden; }
-
-#complaints-right .icon-toggle-post { background-position: -460px -20px; }
-#complaints-right .icon-toggle-post-active { background-position: -440px -20px; }
+#modalDialogComplaintsForumsPost span.coButton  { background-color: #9B78DC; color: #fff; }
+#modalDialogComplaintsForumsPost span.coButton:hover   { background-color: #fff; color: #000; cursor: pointer; }

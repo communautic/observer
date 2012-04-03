@@ -107,7 +107,6 @@
 							}		 
 						});
 						var status = 0;
-						
 					} else {
 						input.checked = true;
 						$a.addClass('jNiceChecked');
@@ -116,10 +115,9 @@
 						var status = 1;
 					}
 					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/forums&request=setItemStatus&id="+itemid+"&status=" + status, success: function(brainstorm){
-										//$("#brainstormenddate").html(brainstorm.enddate);
-									}
-								});
-					
+						}
+					});
+
 				} else if(obj.name == "forums") {
 					var input = $a.siblings('input')[0];
 					var itemid = input.value;
@@ -133,7 +131,6 @@
 							}		 
 						});
 						var status = 0;
-						
 					} else {
 						input.checked = true;
 						$a.addClass('jNiceChecked');
@@ -142,9 +139,33 @@
 						var status = 1;
 					}
 					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/forums&request=setItemStatus&id="+itemid+"&status=" + status, success: function(forums){
-									}
-								});
-				
+						}
+					});
+
+				} else if(obj.name == "complaints_forums") {
+					var input = $a.siblings('input')[0];
+					var itemid = input.value;
+					if (input.checked===true){
+						input.checked = false;
+						$a.removeClass('jNiceChecked');
+						$("#complaintsForumsAnswer_"+itemid).slideUp(function() { 
+							$(this).remove();
+							if($('#complaintsForumsAnswer').html() == "") {
+								$('#complaintsForumsAnswerOuter').slideUp();
+							}		 
+						});
+						var status = 0;
+					} else {
+						input.checked = true;
+						$a.addClass('jNiceChecked');
+						$('#complaintsForumsAnswerOuter').slideDown();
+						$("#complaintsForumsPostanswer_"+itemid).clone().attr('id','complaintsForumsAnswer_'+itemid).css('display','none').appendTo('#complaintsForumsAnswer').slideDown();
+						var status = 1;
+					}
+					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/complaints/modules/forums&request=setItemStatus&id="+itemid+"&status=" + status, success: function(forums){
+						}
+					});
+
 				} else if(obj.name == "brainstorms_grids") {
 					var input = $a.siblings('input')[0];
 					var itemid = input.value;
@@ -162,28 +183,56 @@
 						}
 						$('div.brainstorms-col-footer:eq('+col+') .brainstorms-stagegate').removeClass('active');
 						var status = 0;
-						
 					} else {
 						input.checked = true;
 						$a.addClass('jNiceChecked');
 						var n = $('div.brainstorms-phase:eq('+col+') input:checked').length;
-						
 						if(ncbx > n && n > 0) {
 							$('div.brainstorms-col-title:eq('+col+')').removeClass('planned').removeClass('finished').addClass('progress');
 						}
-						
 						if(ncbx == n) {
 							$('div.brainstorms-col-title:eq('+col+')').removeClass('planned').removeClass('progress').addClass('finished');
 							$('div.brainstorms-col-footer:eq('+col+') .brainstorms-stagegate').addClass('active');
 						}
-						//$('#forumsAnswerOuter').slideDown();
-						//$("#forumsPostanswer_"+itemid).clone().attr('id','forumsAnswer_'+itemid).css('display','none').appendTo('#forumsAnswer').slideDown();
 						var status = 1;
 					}
 					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/grids&request=setItemStatus&id="+itemid+"&status=" + status, success: function(forums){
-										//$("#brainstormenddate").html(brainstorm.enddate);
-									}
-								});
+						}
+					});
+				} else if(obj.name == "complaints_grids") {
+					var input = $a.siblings('input')[0];
+					var itemid = input.value;
+					var col = $('div.complaints-phase').index($a.closest('div.complaints-phase'));
+					var ncbx = $('div.complaints-phase:eq('+col+') input:checkbox').length;
+					if (input.checked===true){
+						input.checked = false;
+						$a.removeClass('jNiceChecked');
+						var n = $('div.complaints-phase:eq('+col+') input:checked').length;
+						if(n == 0) {
+							$('div.complaints-col-title:eq('+col+')').removeClass('progress').removeClass('finished').addClass('planned');
+						}
+						if(ncbx > n && n > 0) {
+							$('div.complaints-col-title:eq('+col+')').removeClass('planned').removeClass('finished').addClass('progress');
+						}
+						$('div.complaints-col-footer:eq('+col+') .complaints-stagegate').removeClass('active');
+						var status = 0;
+					} else {
+						input.checked = true;
+						$a.addClass('jNiceChecked');
+						var n = $('div.complaints-phase:eq('+col+') input:checked').length;
+						if(ncbx > n && n > 0) {
+							$('div.complaints-col-title:eq('+col+')').removeClass('planned').removeClass('finished').addClass('progress');
+						}
+						if(ncbx == n) {
+							$('div.complaints-col-title:eq('+col+')').removeClass('planned').removeClass('progress').addClass('finished');
+							$('div.complaints-col-footer:eq('+col+') .complaints-stagegate').addClass('active');
+						}
+						var status = 1;
+					}
+					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/complaints/modules/grids&request=setItemStatus&id="+itemid+"&status=" + status, success: function(forums){
+						}
+					});
+					
 				} else if(obj.name == "clients") {
 					var input = $a.siblings('input')[0];
 					var itemid = input.value;
@@ -314,8 +363,33 @@
 										//$("#brainstormenddate").html(brainstorm.enddate);
 									}
 								});
-			
-							} else if(obj.name == "brainstorms_grids") {
+
+				} else if(obj.name == "complaints_forums") {
+					var input = $a.siblings('input')[0];
+					var itemid = input.value;
+					if (input.checked===true){
+						input.checked = false;
+						$a.removeClass('jNiceChecked');
+						$("#complaintsForumsAnswer_"+itemid).slideUp(function() { 
+							$(this).remove();
+							if($('#complaintsForumsAnswer').html() == "") {
+								$('#complaintsForumsAnswerOuter').slideUp();
+							}		 
+						});
+						var status = 0;
+					} else {
+						input.checked = true;
+						$a.addClass('jNiceChecked');
+						$('#complaintsForumsAnswerOuter').slideDown();
+						$("#complaintsForumsPostanswer_"+itemid).clone().attr('id','complaintsForumsAnswer_'+itemid).css('display','none').appendTo('#complaintsForumsAnswer').slideDown();
+						var status = 1;
+					}
+					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/complaints/modules/forums&request=setItemStatus&id="+itemid+"&status=" + status, success: function(forums){
+						}
+					});
+
+					
+					} else if(obj.name == "brainstorms_grids") {
 					var input = $a.siblings('input')[0];
 					var itemid = input.value;
 					var col = $('div.brainstorms-phase').index($a.closest('div.brainstorms-phase'));
@@ -355,7 +429,46 @@
 									}
 								});
 
-			
+					} else if(obj.name == "complaints_grids") {
+					var input = $a.siblings('input')[0];
+					var itemid = input.value;
+					var col = $('div.complaints-phase').index($a.closest('div.complaints-phase'));
+					var ncbx = $('div.complaints-phase:eq('+col+') input:checkbox').length;
+					if (input.checked===true){
+						input.checked = false;
+						$a.removeClass('jNiceChecked');
+						var n = $('div.complaints-phase:eq('+col+') input:checked').length;
+						if(n == 0) {
+							$('div.complaints-col-title:eq('+col+')').removeClass('progress').removeClass('finished').addClass('planned');
+						}
+						if(ncbx > n && n > 0) {
+							$('div.complaints-col-title:eq('+col+')').removeClass('planned').removeClass('finished').addClass('progress');
+						}
+						$('div.complaints-col-footer:eq('+col+') .complaints-stagegate').removeClass('active');
+						var status = 0;
+						
+					} else {
+						input.checked = true;
+						$a.addClass('jNiceChecked');
+						var n = $('div.complaints-phase:eq('+col+') input:checked').length;
+						
+						if(ncbx > n && n > 0) {
+							$('div.complaints-col-title:eq('+col+')').removeClass('planned').removeClass('finished').addClass('progress');
+						}
+						
+						if(ncbx == n) {
+							$('div.complaints-col-title:eq('+col+')').removeClass('planned').removeClass('progress').addClass('finished');
+							$('div.complaints-col-footer:eq('+col+') .complaints-stagegate').addClass('active');
+						}
+						//$('#forumsAnswerOuter').slideDown();
+						//$("#forumsPostanswer_"+itemid).clone().attr('id','forumsAnswer_'+itemid).css('display','none').appendTo('#forumsAnswer').slideDown();
+						var status = 1;
+					}
+					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/complaints/modules/grids&request=setItemStatus&id="+itemid+"&status=" + status, success: function(forums){
+										//$("#brainstormenddate").html(brainstorm.enddate);
+									}
+								});
+
 			
 				} else if(obj.name == "clients") {
 					var input = $a.siblings('input')[0];

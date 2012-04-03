@@ -1884,6 +1884,34 @@ class BrainstormsModel extends Model {
 	}
 
 
+    function getCheckpointDetails($app,$module,$id){
+		global $lang, $session, $brainstorms;
+		$row = "";
+		if($app =='brainstorms' && $module == 'brainstorms') {
+			$q = "SELECT title,folder FROM " . CO_TBL_BRAINSTORMS . " WHERE id='$id' and bin='0'";
+			$result = mysql_query($q, $this->_db->connection);
+			$row = mysql_fetch_array($result);
+			if(mysql_num_rows($result) > 0) {
+				$row['checkpoint_app_name'] = $lang["BRAINSTORM_TITLE"];
+				$row['app_id_app'] = '0';
+			}
+			return $row;
+		} else {
+			$active_modules = array();
+			foreach($brainstorms->modules as $m => $v) {
+					$active_modules[] = $m;
+			}
+			if($module == 'meetings' && in_array("meetings",$active_modules)) {
+				include_once("modules/".$module."/config.php");
+				include_once("modules/".$module."/lang/" . $session->userlang . ".php");
+				include_once("modules/".$module."/model.php");
+				$brainstormsMeetingsModel = new BrainstormsMeetingsModel();
+				$row = $brainstormsMeetingsModel->getCheckpointDetails($id);
+				return $row;
+			}
+		}
+   }
+
 }
 
 $brainstormsmodel = new BrainstormsModel(); // needed for direct calls to functions eg echo $brainstormsmodel ->getBrainstormTitle(1);
