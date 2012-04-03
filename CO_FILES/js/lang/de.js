@@ -44,3 +44,5 @@ var UPLOAD_CANCEL = "Abbrechen";
 var ALERT_CLIENT_ACCESS = 'Möchten Sie die Bestellberechtigung jetzt vergeben?';
 var ALERT_CLIENT_ACCESS_REMOVE = 'Möchten Sie die Bestellberechtigung jetzt entziehen?';
 var ALERT_PUBLISHERS_ARCHIVE_OTHERS = 'Möchten Sie alle anderen publizierten Daten archivieren?';
+
+var DATEPICKER_CLEAR = 'Löschen';

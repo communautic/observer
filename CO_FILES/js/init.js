@@ -1058,7 +1058,7 @@ $(document).ready(function() {
 			beforeShow: function(input,inst) {
 				setTimeout(function() {
 					var buttonPane = $( input ).datepicker( "widget" ).find( ".ui-datepicker-buttonpane" );
-					$( "<button>", {text: "Clear", click: function() {
+					$( "<button>", {text: DATEPICKER_CLEAR, click: function() {
 							$.datepicker._clearDate( input );
 						}
 				  	}).appendTo( buttonPane ).addClass("ui-datepicker-clear ui-state-default ui-priority-secondary ui-corner-all");
@@ -1068,7 +1068,7 @@ $(document).ready(function() {
 			onChangeMonthYear: function( input, inst ) {
 				setTimeout(function() {
 					var buttonPane = $( input ).datepicker( "widget" ).find( ".ui-datepicker-buttonpane" );
-					$( "<button>", {text: "Clear", click: function() {
+					$( "<button>", {text: DATEPICKER_CLEAR, click: function() {
 							$.datepicker._clearDate( input );
 						}
 				  	}).appendTo( buttonPane ).addClass("ui-datepicker-clear ui-state-default ui-priority-secondary ui-corner-all");
