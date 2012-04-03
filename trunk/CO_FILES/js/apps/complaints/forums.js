@@ -424,7 +424,7 @@ function complaintsForums(name) {
 			buttons:langbuttons,
 			callback: function(v,m,f){		
 				if(v){
-					$.ajax({ type: "GET", url: "/", data: "path=apps/complaints/modules/forums&request=deleteForumTask&id=" + id, cache: false, success: function(data){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/complaints/modules/forums&request=deleteItem&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
 							$('#forum_task_'+id).slideUp();
 						}
@@ -445,7 +445,7 @@ function complaintsForums(name) {
 			buttons:langbuttons,
 			callback: function(v,m,f){		
 				if(v){
-					$.ajax({ type: "GET", url: "/", data: "path=apps/complaints/modules/forums&request=restoreForumTask&id=" + id, cache: false, success: function(data){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/complaints/modules/forums&request=restoreItem&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
 							$('#forum_task_'+id).slideUp();
 						}
@@ -458,14 +458,34 @@ function complaintsForums(name) {
 	
 	
 	this.openReplyWindow= function(id) {
-		$("#modalDialogComplaintsForumsPost").slideDown(function() {
+		/*$("#modalDialogComplaintsForumsPost").slideDown(function() {
 			$(this).find('.forumsReplyID').val(id);
-			//$("#forumsReplyID").val(rel);
 			$(this).find('.forumsReplyText').focus();
-			//$("#forumsReplyText").focus();	
 			$('#complaints-right .ui-layout-content').height($('#complaints-right .ui-layout-content').height()-99)
 			initComplaintsContentScrollbar();
-		})
+		})*/
+		
+		var dia = $("#modalDialogComplaintsForumsPost");
+		if(dia.is(':visible')) {
+			dia.slideUp(function() {
+				initComplaintsContentScrollbar();	
+				dia.slideDown(function() {
+					dia.find('.forumsReplyID').val(id);
+					dia.find('.forumsReplyText').focus();
+					$('#complaints-right .ui-layout-content').height($('#complaints-right .ui-layout-content').height()-99)
+					initComplaintsContentScrollbar();								
+				});
+			});
+		} else {
+			dia.slideDown(function() {
+				$(this).find('.forumsReplyID').val(id);
+			$(this).find('.forumsReplyText').focus();
+			$('#complaints-right .ui-layout-content').height($('#complaints-right .ui-layout-content').height()-99)
+			initComplaintsContentScrollbar();								
+			});
+		}
+		
+		
 	}
 	
 	
@@ -512,19 +532,19 @@ function complaintsForums(name) {
 		});
 	}
 
-	this.togglePost = function(id) {
+	this.togglePost = function(id,obj) {
 		var outer = $('#complaintsForumsPostouter_'+id);
 		var height = outer.height();
-		if(height == 20) {
-			$(this).find('span').addClass("icon-toggle-post").removeClass("icon-toggle-post-active");
+		if(height == 22) {
+			obj.find('span').addClass("icon-toggle-post").removeClass("icon-toggle-post-active");
 			outer.removeClass('toggeled')
 				.animate({height: outer.data('h')}, function() { 
 					$(this).css('height','auto');
 				});
 		} else {
-			$(this).find('span').addClass("icon-toggle-post-active").removeClass("icon-toggle-post");
+			obj.find('span').addClass("icon-toggle-post-active").removeClass("icon-toggle-post");
 			outer.data('h', outer.height());
-			outer.animate({height: 20}).addClass('toggeled')
+			outer.animate({height: 22}).addClass('toggeled')
 		}
 	}
 
