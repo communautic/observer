@@ -842,21 +842,21 @@ $(document).ready(function() {
 		e.preventDefault();
 		navThreeTitleFirst('brainstorms',$(this),passed_id)
 		prevent_dblclick(e)
-	});
+	}).disableSelection();
 
 
 	$("#brainstorms2-outer").on('click', 'h3', function(e, passed_id) {
 		e.preventDefault();
 		navThreeTitleSecond('brainstorms',$(this),passed_id)
 		prevent_dblclick(e)
-	});
+	}).disableSelection();
 
 
 	$("#brainstorms3").on('click', 'h3', function(e, passed_id) {
 		e.preventDefault();
 		navThreeTitleThird('brainstorms',$(this),passed_id)
 		prevent_dblclick(e)
-	});
+	}).disableSelection();
 
 
 	$('#brainstorms1').on('click', 'span.module-click', function(e) {
@@ -908,13 +908,13 @@ $(document).ready(function() {
 	});
 
 
-	$('span.actionConvert').on('click', function(e){
+	/*$('span.actionConvert').on('click', function(e){
 		e.preventDefault();
 		if($(this).hasClass("noactive")) {
 			return false;
 		}
 		brainstorms_grids.actionConvert();
-	});
+	});*/
 
 
 	var tmp;

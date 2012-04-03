@@ -47,7 +47,7 @@ function brainstormsGrids(name) {
 		var id = $("#brainstorms3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
 		$('#brainstorms').data({ "third" : id});
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/grids&request=getDetails&id="+id, success: function(data){
-			$("#brainstorms-right").html(data.html);
+			$("#brainstorms-right").empty().html(data.html);
 			
 			if($('#checkedOut').length > 0) {
 					$("#brainstorms3 ul[rel=grids] .active-link .icon-checked-out").addClass('icon-checked-out-active');
@@ -344,12 +344,12 @@ function brainstormsGrids(name) {
 		if($("#input-note").length > 0) {
 			var title = $("#input-note").val();
 		} else {
-			var title = $("#note-title").html();
+			var title = $("#brainstorms-grid-note-title").html();
 		}
 		if($("#input-text").length > 0) {
 			var text = $("#input-text").val();
 		} else {
-			var text = $("#note-text").html().replace(/(<br\s*\/?>)|(<p><\/p>)/gi, "");
+			var text = $("#brainstorms-grid-note-text").html().replace(/(<br\s*\/?>)|(<p><\/p>)/gi, "");
 		}
 		$.ajax({ type: "POST", url: "/", data: { path: 'apps/brainstorms/modules/grids', request: 'saveGridNote', id: id, title: title, text: text }, success: function(data){
 		//$.ajax({ type: "POST", url: "/", data: "path=apps/brainstorms/modules/grids&request=saveGridNote&id="+id+"&title="+title+"&text="+text, success: function(data){
@@ -358,15 +358,15 @@ function brainstormsGrids(name) {
 				
 				$('#item_'+id+' div.itemTitle').html(title);
 				if($("#input-note").length > 0) {
-					var note_title = $(document.createElement('div')).attr("id", "note-title").attr("class", "note-title note-title-design").html(title);
-					$("#note").find('input').replaceWith(note_title); 
+					var note_title = $(document.createElement('div')).attr("id", "brainstorms-grid-note-title").attr("class", "note-title note-title-design").html(title);
+					$("#brainstorms-grid-note").find('input').replaceWith(note_title); 
 				}
 				if($("#input-text").length > 0) {
 					var height = $("#input-text").height();
-					var note_text = $(document.createElement('div')).attr("id", "note-text").attr("class", "note-text note-text-design").css("height",height).html(text);
-					$("#note").find('textarea').replaceWith(note_text); 
+					var note_text = $(document.createElement('div')).attr("id", "brainstorms-grid-note-text").attr("class", "note-text note-text-design").css("height",height).html(text);
+					$("#brainstorms-grid-note").find('textarea').replaceWith(note_text); 
 				}
-				$('#note').slideUp();
+				$('#brainstorms-grid-note').slideUp();
 				currentBrainstormGridClickedNote = 0;
 			}
 		});
@@ -578,115 +578,96 @@ function brainstormsGrids(name) {
 			}
 		});
 	}
-	
-	
-	
-	//this.initItems = function() {
-		/*$("#brainstorms-grid-outer div.note").livequery( function() {
-			$(this)
-			.draggable({
-				containment:'#brainstorms-right',
-				cancel: 'input,textarea'
-			})
-			.resizable({
-				minHeight: 16,
-				minWidth: 230,
-				alsoResize: '#brainstorms-grid-outer div.note-text, #input-text',
-				start: function(e,ui){ 
-					$(this).find("textarea").height($(this).height() - 10);
-				}
-			});
-		});*/
-	//}
 
 
 	this.actionConvert = function() {
-		$('#modalDialogGrid').slideDown();
+		$('#modalDialogBrainstormsGrid').slideDown();
 	}
 
 }
 
 var brainstorms_grids = new brainstormsGrids('brainstorms_grids');
 
+var currentBrainstormGridClickedNote = 0;
+var currentBrainstormGridEditedNote = 0;
 
-function initBrainstormsConsole() {
+$(document).ready(function() {
+
+// console
 	$('#brainstorms-console-notes>div').livequery( function() {
 		$(this).draggable({
-			//cursor: 'move',
 			connectToSortable: ".brainstorms-phase",
 			helper: "clone",
 			appendTo: '#brainstorms-right',
 			zIndex: 102,
 			revert: 'invalid',
-			//revert: 'invalid',
 			start: function(e, ui) {
 				$(ui.helper).addClass("ui-draggable-helper-grid");
 			}
 		});
 	});
+
 	$('#brainstorms-console').livequery( function() {
 		$(this).draggable({handle: 'h3', containment: '#brainstorms-right .scroll-pane', cursor: 'move'})
 		.resizable({ minHeight: 25, minWidth: 230});
 	});
-}
 
-
-function initBrainstormsOuter() {
+// grid outer
 	$('#brainstorms-grid').livequery( function() {
 		$(this).sortable({
 			items: '>div',
 			handle: 'h3',
-			//cursor: 'move',
 			handle: '.dragColActive',
 			axis: 'x',
 			tolerance: 'pointer',
 			containment: '#brainstorms-grid',
 			update: function(event,ui) {
 				var order = $(this).sortable("serialize");
-				//console.log('?id='+id+'&'+ order);
 				$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/grids&request=saveGridColumns&"+ order, cache: false, success: function(data){
 					}
 				});
 			}
 		})
 	});
-}
 
-
-function initBrainstormsPhases() {
-	
-	// Title
+// Title
 	$('#brainstorms-grid .brainstorms-col-title').livequery( function() {
 		$(this).droppable({
 			accept: '.droppable',
-			tolerance: 'fit',
 			drop: function( event, ui ) {
 				var tocopy = false;
+				var orig = false;
+				var attr = ui.draggable.attr('id');
 				if($(this).find('>div').length > 0) {
 					tocopy = $(this).html();
+					orig = $(this).find('>div').attr('id');
+					if(attr != 'undefined') {
+						if(orig == attr) {
+							return false;	
+						}
+					}
 				}
-				// check if dropped from console
 				var idx = $('#brainstorms-grid .brainstorms-col-title').index(this);
 				if(tocopy) {
 					$('#brainstorms-grid .brainstorms-phase:eq('+idx+')').prepend(tocopy);
+					$('#brainstorms-grid .brainstorms-phase:eq('+idx+') > div:eq(0)').removeClass('colTitle').removeClass('ui-sortable-helper').removeClass('ui-draggable').removeClass('ui-draggable-dragging').attr('style','');
 				}
 				var insert = ui.draggable.clone();
-				$(this).html(insert.attr('style','').addClass('colTitle')).addClass('planned');
-				var attr = ui.draggable.attr('id');
+				$(this).html(insert.attr('style','').addClass('colTitle').removeClass('ui-sortable-helper')).addClass('planned');
 				var pid = $("#brainstorms").data("third");
 				var col = parseInt($(this).parent().attr("id").replace(/gridscol_/, ""));
 				
 				if(ui.draggable.hasClass('colStagegate')) {
-						var id = ui.draggable.attr('rel');
-						$('#brainstorms-grid div[id=item_'+id+']').remove();
-						insert.attr('id','item_' + id).removeClass('colStagegate');
-						$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/brainstorms/modules/grids&request=saveGridNoteTitle&id=" + id + "&col="+col, cache: false, success: function(id){
-								$('#brainstorms-grid .brainstorms-phase:eq('+idx+')').trigger('sortupdate');
-							}
-						});
+					var id = ui.draggable.attr('rel');
+					$('#brainstorms-grid div[id=item_'+id+']').remove();
+					insert.attr('id','item_' + id).removeClass('colStagegate');
+					$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/brainstorms/modules/grids&request=saveGridNoteTitle&id=" + id + "&col="+col, cache: false, success: function(id){
+							$('#brainstorms-grid .brainstorms-phase:eq('+idx+')').trigger('sortupdate');
+						}
+					});
 				} else if (typeof attr == 'undefined' || attr == false) {
 					var id = ui.draggable.attr('rel');
-					$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/brainstorms/modules/grids&request=saveGridNewNoteTitle&pid="+pid+"&id=" + id+"&col="+col, cache: false, success: function(id){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/grids&request=saveGridNewNoteTitle&pid="+pid+"&id=" + id+"&col="+col, cache: false, success: function(id){
 						insert.attr('id','item_' + id).attr('rel',id);
 						var e = '<input name="" type="checkbox" value="'+id+'" class="cbx jNiceHidden" />';
 						var e = insert.find('div.statusItem').html(e);
@@ -695,29 +676,26 @@ function initBrainstormsPhases() {
 						$('#brainstorms-grid .brainstorms-phase:eq('+idx+')').trigger('sortupdate');
 						}
 					});
-				
 				} else { // if dropped from list
-						
-						if(ui.draggable.hasClass('colTitle')) {
-							ui.draggable.parent().html('<span class="newNoteItem newNoteTitle"></span>');
+					if(ui.draggable.hasClass('colTitle')) {
+						ui.draggable.parent().html('<span class="newNoteItem newNoteTitle"></span>');
+					}
+					var dragidx = $('#brainstorms-grid .brainstorms-phase').index(ui.draggable.parent());
+					ui.draggable.remove();
+					var id = attr.replace(/item_/, "");
+					$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/brainstorms/modules/grids&request=saveGridNoteTitle&id=" + id + "&col="+col, cache: false, success: function(id){
+						if(dragidx != idx) {
+							$('#brainstorms-grid .brainstorms-phase:eq('+idx+')').trigger('sortupdate');
 						}
-						ui.draggable.remove();
-						var id = attr.replace(/item_/, "");
-						$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/brainstorms/modules/grids&request=saveGridNoteTitle&id=" + id + "&col="+col, cache: false, success: function(id){
-								$('#brainstorms-grid .brainstorms-phase:eq('+idx+')').trigger('sortupdate');
-							}
-						});
-					//}
+						}
+					});
 				}
-				
 			}
 		})	
 	})
 
-
 	$('#brainstorms-grid .brainstorms-col-title>div').livequery( function() {
 		$(this).draggable({
-			//cursor: 'move',
 			connectToSortable: ".brainstorms-phase",
 			helper: "clone",
 			handle: '.dragItem',
@@ -730,39 +708,42 @@ function initBrainstormsPhases() {
 		});
 	})
 
-	
-		// Title
+
+// Stagegate
 	$('#brainstorms-grid .brainstorms-col-stagegate').livequery( function() {
 		$(this).droppable({
 			accept: '.droppable',
-			//tolerance: 'fit',
 			drop: function( event, ui ) {
 				var tocopy = false;
+				var orig = false;
+				var attr = ui.draggable.attr('id');
 				if($(this).find('>div').length > 0) {
 					tocopy = $(this).html();
+					orig = $(this).find('>div').attr('id');
+					if(attr != 'undefined') {
+						if(orig == attr) {
+							return false;	
+						}
+					}
 				}
-				
-				// check if dropped from console
 				var idx = $('#brainstorms-grid .brainstorms-col-stagegate').index(this);
 				if(tocopy) {
-					$('#brainstorms-grid .brainstorms-phase:eq('+idx+')').append(tocopy);
+					$('#brainstorms-grid .brainstorms-phase:eq('+idx+')').prepend(tocopy);
+					$('#brainstorms-grid .brainstorms-phase:eq('+idx+') > div:eq(0)').removeClass('colStagegate').removeClass('ui-sortable-helper').removeClass('ui-draggable').removeClass('ui-draggable-dragging').attr('style','');
 				}
 				var insert = ui.draggable.clone();
-				$(this).html(insert.attr('style','').addClass('colStagegate'));
-				var attr = ui.draggable.attr('id');
+				$(this).html(insert.attr('style','').addClass('colStagegate').removeClass('ui-sortable-helper'));
+				//var attr = ui.draggable.attr('id');
 				var pid = $("#brainstorms").data("third");
 				var col = parseInt($(this).parent().parent().parent().attr("id").replace(/gridscol_/, ""));
 				if(ui.draggable.hasClass('colTitle')) {
-
-							//alert('title moved');
-	
-						var id = ui.draggable.attr('rel');
-						$('#brainstorms-grid div[id=item_'+id+']').remove();
-						insert.attr('id','item_' + id).removeClass('colTitle');
-						$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/brainstorms/modules/grids&request=saveGridNoteStagegate&id=" + id + "&col="+col, cache: false, success: function(id){
-								$('#brainstorms-grid .brainstorms-phase:eq('+idx+')').trigger('sortupdate');
-							}
-						});
+					var id = ui.draggable.attr('rel');
+					$('#brainstorms-grid div[id=item_'+id+']').remove();
+					insert.attr('id','item_' + id).removeClass('colTitle');
+					$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/brainstorms/modules/grids&request=saveGridNoteStagegate&id=" + id + "&col="+col, cache: false, success: function(id){
+						$('#brainstorms-grid .brainstorms-phase:eq('+idx+')').trigger('sortupdate');
+						}
+					});
 				} else if (typeof attr == 'undefined' || attr == false) {
 					var id = ui.draggable.attr('rel');
 					$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/brainstorms/modules/grids&request=saveGridNewNoteStagegate&pid="+pid+"&id=" + id+"&col="+col, cache: false, success: function(id){
@@ -775,13 +756,16 @@ function initBrainstormsPhases() {
 						}
 					});
 				} else { // if dropped from list
-						if(ui.draggable.hasClass('colStagegate')) {
-							ui.draggable.parent().html('<span class="newNoteItem newNoteStagegate"></span>');
-						}
+					if(ui.draggable.hasClass('colStagegate')) {
+						ui.draggable.parent().html('<span class="newNoteItem newNoteStagegate"></span>');
+					}
+					var dragidx = $('#brainstorms-grid .brainstorms-phase').index(ui.draggable.parent());
 					ui.draggable.remove();
 					var id = attr.replace(/item_/, "");
 					$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/brainstorms/modules/grids&request=saveGridNoteStagegate&id=" + id + "&col="+col, cache: false, success: function(id){
+						if(dragidx != idx) {
 							$('#brainstorms-grid .brainstorms-phase:eq('+idx+')').trigger('sortupdate');
+						}
 						}
 					});
 				}
@@ -789,10 +773,8 @@ function initBrainstormsPhases() {
 		})	
 	})
 
-
 	$('#brainstorms-grid .brainstorms-col-stagegate>div').livequery( function() {
 		$(this).draggable({
-			//cursor: 'move',
 			connectToSortable: ".brainstorms-phase",
 			helper: "clone",
 			handle: '.dragItem',
@@ -804,32 +786,27 @@ function initBrainstormsPhases() {
 			}
 		});
 	})
-	
-	
-	// Liste
+
+
+// SORTABLE LIST
 	$('#brainstorms-grid .brainstorms-phase').livequery( function() {
 		$(this).sortable({
 			items: '>div',
 			handle: '.dragItem',
-			//tolerance: 'intersect',
-			connectWith: ['.brainstorms-phase','.brainstorms-col-title','.brainstorms-col-stagegate'],
-			//,
-			//start: function(event,ui) {
-				//ui.item.removeClass('active');
-				//ui.item.addClass("ui-draggable-helper");
-			//},
-			/*start: function(e, ui) {
-				ui.item.addClass("ui-draggable-helper-grid-list");
-			},
-			stop: function(e, ui) {
-				ui.item.removeClass("ui-draggable-helper-grid-list");
-			}*/
-			//stop: function(event,ui) {
-				//ui.item.removeClass('active');
-				//ui.item.removeClass("ui-draggable-helper");
-			//}
-		})
-		$(this).bind('sortupdate', function(event, ui) {
+			connectWith: '.brainstorms-phase,.brainstorms-col-title,.brainstorms-col-stagegate',
+			receive: function (event, ui) { // add this handler
+				setTimeout(function() {
+					if(ui.item.hasClass('colTitle')) {
+						ui.item.parent().html('<span class="newNoteItem newNoteTitle"></span>');
+						ui.item.remove();
+					}
+					if(ui.item.hasClass('colStagegate')) {
+						ui.item.parent().html('<span class="newNoteItem newNoteStagegate"></span>');
+						ui.item.remove();
+					}
+				}, 100);
+			}
+		}).disableSelection().bind('sortupdate', function(event, ui) {
 			var col = parseInt($(this).parent().attr("id").replace(/gridscol_/, ""));
 			var idx = $('#brainstorms-grid .brainstorms-phase').index(this);
 			$('#brainstorms-grid .brainstorms-phase:eq('+idx+')>div').each(function(index) {
@@ -837,13 +814,8 @@ function initBrainstormsPhases() {
 				var attr = div.attr('id');
 				if (typeof attr == 'undefined' || attr == false) {
 					if(div.hasClass('colTitle') || div.hasClass('colStagegate')) {
-							//alert('title stagegate moved');
-						
-						div.removeClass('colTitle').removeClass('colStagegate').removeClass('ui-draggable').removeClass('ui-draggable-dragging').attr('style','');
 						var id = div.attr('rel');
-						$('div[id=item_'+id+']').parent().html('<span class="newNoteItem newNoteTitle"></span>');
-						$('div[id=item_'+id+']').remove();
-						$
+						div.removeClass('colTitle'). removeClass('colStagegate').removeClass('ui-draggable').removeClass('ui-draggable-dragging').attr('style','');
 						div.attr('id','item_' + id);
 						var e = '<input name="" type="checkbox" value="'+id+'" class="cbx jNiceHidden" />';
 						var e = div.find('div.statusItem').html(e);
@@ -851,21 +823,22 @@ function initBrainstormsPhases() {
 						$.jNice.CheckAddPO(element);						
 					} else {
 						var id = div.attr('rel');
-						var pid = $("#brainstorms").data("third");
-						$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/brainstorms/modules/grids&request=saveGridNewNote&pid="+pid+"&id=" + id, cache: false, success: function(id){
-							div.attr('id','item_' + id);
-							var e = '<input name="" type="checkbox" value="'+id+'" class="cbx jNiceHidden" />';
-							var e = div.find('div.statusItem').html(e);
-							var element = div.find('input');
-							$.jNice.CheckAddPO(element);
-							}
-						});
+						if (typeof id != 'undefined') {
+							var pid = $("#brainstorms").data("third");
+							$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/brainstorms/modules/grids&request=saveGridNewNote&pid="+pid+"&id=" + id, cache: false, success: function(id){
+								div.attr('id','item_' + id);
+								var e = '<input name="" type="checkbox" value="'+id+'" class="cbx jNiceHidden" />';
+								var e = div.find('div.statusItem').html(e);
+								var element = div.find('input');
+								$.jNice.CheckAddPO(element);
+								}
+							});
+						}
 					}
 				}
 			});
 			var order = $('#brainstorms-grid .brainstorms-phase:eq('+idx+')').sortable("serialize");
-			$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/grids&request=saveGridItems&col="+col+"&"+ order, cache: false, success: function(data){
-				
+			$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/brainstorms/modules/grids&request=saveGridItems&col="+col+"&"+ order, cache: false, success: function(data){
 				var titleset = $('div.brainstorms-col-title:eq('+idx+')').html();
 				var title = 0;
 				if(titleset != "" && titleset != '<span class="newNoteItem newNoteTitle"></span>') {
@@ -873,37 +846,37 @@ function initBrainstormsPhases() {
 				}
 				var ncbx = $('div.brainstorms-phase:eq('+idx+') input:checkbox').length;
 				var n = $('div.brainstorms-phase:eq('+idx+') input:checked').length;
-						if(ncbx > 0 || title == 1) {
-							$('div.brainstorms-col-title:eq('+idx+')').removeClass('progress').removeClass('finished').addClass('planned');
-							$('div.brainstorms-col-footer:eq('+idx+') .brainstorms-stagegate').removeClass('active');
-						}
-						if(ncbx == 0 && title == 0) {
-							$('div.brainstorms-col-title:eq('+idx+')').removeClass('progress').removeClass('finished').removeClass('planned');
-							$('div.brainstorms-col-footer:eq('+idx+') .brainstorms-stagegate').removeClass('active');
-						}
-						if(ncbx > n && n > 0) {
-							$('div.brainstorms-col-title:eq('+idx+')').removeClass('planned').removeClass('finished').addClass('progress');
-							$('div.brainstorms-col-footer:eq('+idx+') .brainstorms-stagegate').removeClass('active');
-						}
-						if(ncbx > 0 && n == ncbx) {
-							$('div.brainstorms-col-title:eq('+idx+')').removeClass('planned').removeClass('finished').addClass('finished');
-							$('div.brainstorms-col-footer:eq('+idx+') .brainstorms-stagegate').addClass('active');
-						}
+				if(ncbx > 0 || title == 1) {
+					$('div.brainstorms-col-title:eq('+idx+')').removeClass('progress').removeClass('finished').addClass('planned');
+					$('div.brainstorms-col-footer:eq('+idx+') .brainstorms-stagegate').removeClass('active');
+				}
+				if(ncbx == 0 && title == 0) {
+					$('div.brainstorms-col-title:eq('+idx+')').removeClass('progress').removeClass('finished').removeClass('planned');
+					$('div.brainstorms-col-footer:eq('+idx+') .brainstorms-stagegate').removeClass('active');
+				}
+				if(ncbx > n && n > 0) {
+					$('div.brainstorms-col-title:eq('+idx+')').removeClass('planned').removeClass('finished').addClass('progress');
+					$('div.brainstorms-col-footer:eq('+idx+') .brainstorms-stagegate').removeClass('active');
+				}
+				if(ncbx > 0 && n == ncbx) {
+					$('div.brainstorms-col-title:eq('+idx+')').removeClass('planned').removeClass('finished').addClass('finished');
+					$('div.brainstorms-col-footer:eq('+idx+') .brainstorms-stagegate').addClass('active');
+				}
 				// calc grid height
 				var numitems = 0;
 				$('#brainstorms-grid .brainstorms-phase').each(function() {
 					var items = $(this).find('>div').size();
 					// set new
-					var t = items*27+78;
+					var t = items*27+78+4;
 					$(this).find('>span').animate({top: t});
 					
 					if(items > numitems) {
 						numitems = items;
 					}
 				});
-				var colheight = numitems*27+78+80;
-				if (colheight < 266) {
-					colheight = 266;
+				var colheight = numitems*27+78+80+8;
+				if (colheight < 266+8) {
+					colheight = 266+8;
 				}
 				var listheight = numitems*27+27;
 				if (listheight < 135) {
@@ -915,17 +888,6 @@ function initBrainstormsPhases() {
 			});
     	});
 	})
-}
-
-var currentBrainstormGridClickedNote = 0;
-var currentBrainstormGridEditedNote = 0;
-
-$(document).ready(function() {
-
-	initBrainstormsConsole();
-	initBrainstormsOuter();
-	initBrainstormsPhases();
-	//brainstorms_grids.initItems();
 	
 	$(document).on('click', '#brainstorms-console a.collapse', function(e) {
 		e.preventDefault();
@@ -983,15 +945,31 @@ $(document).ready(function() {
 		var pid = $("#brainstorms").data("third");
 		var sor = $('#brainstorms-grid>div').size();
 		var styles = '';
-		if(sor != 0) {
-			var styles = ' style="height: ' + $('#brainstorms-grid>div:eq(0)').height() + 'px"';
-			//var height = ' style="height: ' + $('#brainstorms-grid>div:eq(0)').height() + 'px"';
-		}
 		$("#brainstorms-grid").width($("#brainstorms-grid").width()+230);
 		$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/grids&request=newGridColumn&id="+pid+"&sort="+sor, cache: false, success: function(num){
-			//$("#brainstorms-grid").append('<div id="gridscol_' + num + '" class="drag" ' + styles +'><h3 class="ui-widget-header">&nbsp;<div class="brainstorms-column-delete" id="brainstorms-col-delete-' + num + '"><span class="icon-delete"></span></div></h3><div class="brainstorms-phase brainstorms-phase-design"></div></div>').sortable("refresh");
-			$("#brainstorms-grid").append('<div id="gridscol_' + num + '" ' + styles +'><div id="brainstorms-col-delete-' + num + '" class="brainstorms-column-delete"><span class="icon-delete"></span></div><div class="dragCol"></div><div class="brainstorms-col-title"><span class="newNoteItem newNoteTitle"></span></div><div class="brainstorms-phase brainstorms-phase-design ui-sortable"><span class="newNoteItem newNote"></span></div><div class="brainstorms-col-footer"><div class="brainstorms-col-footer-stagegate"><div class="brainstorms-stagegate"></div><div class="brainstorms-col-stagegate ui-droppable"><span class="newNoteItem newNoteStagegate"></span></div></div><div class="brainstorms-col-footer-days"><div style=""><input type="text" style="margin" maxlength="3" size="3" value="0" name="" class="colDays"></div></div></div></div>').sortable("refresh");
-			initBrainstormsPhases();
+			$("#brainstorms-grid").append('<div id="gridscol_' + num + '"><div id="brainstorms-col-delete-' + num + '" class="brainstorms-column-delete"><span class="icon-delete"></span></div><div class="dragCol"></div><div class="brainstorms-col-title"><span class="newNoteItem newNoteTitle"></span></div><div class="grids-spacer"></div><div class="brainstorms-phase brainstorms-phase-design ui-sortable"><span class="newNoteItem newNote"></span></div><div class="grids-spacer"></div><div class="brainstorms-col-footer"><div class="brainstorms-col-footer-stagegate"><div class="brainstorms-stagegate"></div><div class="brainstorms-col-stagegate ui-droppable"><span class="newNoteItem newNoteStagegate"></span></div></div><div class="brainstorms-col-footer-days"><div style=""><input type="text" style="margin" maxlength="3" size="3" value="0" name="" class="colDays"></div></div></div></div>').sortable("refresh");
+			// calc grid height
+				var numitems = 0;
+				$('#brainstorms-grid .brainstorms-phase').each(function() {
+					var items = $(this).find('>div').size();
+					// set new
+					var t = items*27+78+4;
+					$(this).find('>span').animate({top: t});
+					
+					if(items > numitems) {
+						numitems = items;
+					}
+				});
+				var colheight = numitems*27+78+80+8;
+				if (colheight < 266+8) {
+					colheight = 266+8;
+				}
+				var listheight = numitems*27+27;
+				if (listheight < 135) {
+					listheight = 135;
+				}
+				$('#brainstorms-grid .brainstorms-phase').height(listheight).parent().animate({height: colheight});
+				$('#brainstorms-grid').animate({height: colheight+1});
 			}
 		});
 	})
@@ -1002,60 +980,13 @@ $(document).ready(function() {
 		brainstorms_grids.binColumn(id);
 	});
 
-	/*$(document).on('click', 'span.toggleMilestone', function(e) {
-		e.preventDefault();
-		var ms = 0;
-		var id = currentBrainstormGridClickedNote;
-		if($(this).hasClass('icon-milestone-grey')) {
-			$(this).removeClass('icon-milestone-grey');
-			$('#item_'+id).append('<span class="icon-milestone"></span>');
-			var ms = 1;
-		} else {
-			$(this).addClass('icon-milestone-grey');
-			$('#item_'+id+'>span').last().remove();
-		}
-		$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/grids&request=toggleMilestone&id="+id+"&ms="+ms, success: function(text){
-			}
-		});
-	});*/
 
-
-	/*$(document).on('dblclick', '#brainstorms-grid .brainstorms-phase', function(e) {
-		e.preventDefault();
-		var clicked=$(e.target);
-		if(clicked.parents().is('.brainstorms-phase')) {
-			return false;
-		} else {
-			var phase = $(this);
-			var idx = phase.index(this);
-			var pid = $("#brainstorms").data("third");
-			$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/grids&request=saveGridNewManualNote&pid="+pid, cache: false, success: function(html){
-					phase.append(html);
-					var element = phase.find('input:last');
-					$.jNice.CheckAddPO(element);
-					phase.trigger('sortupdate');
-				}
-			});
-		}
-	});
-	$(document).on('mousedown', '#brainstorms-grid .brainstorms-phase', function(){ return false; }) */
-
-	/*$(document).on('mouseover mouseout', '#brainstorms-grid .brainstorms-phase>div', function(e){ 
-		if (e.type == 'mouseover') {
-			$(this).find(".binItem-Outer").show();
-	  	} else {
-			$(this).find(".binItem-Outer").hide();
-	  	}
-	});	*/
-	
-	
-	$(document).on('click', '#brainstorms-grid .newNote', function(e) {
+	$(document).on('click', '#brainstorms-grid span.newNote', function(e) {
 		e.preventDefault();
 			//var clicked = $(this);
 			var idx = $('#brainstorms-grid .newNote').index(this);
 			var pid = $("#brainstorms").data("third");
 			$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/grids&request=saveGridNewManualNote&pid="+pid, cache: false, success: function(html){
-					
 					var phase = $('#brainstorms-grid .brainstorms-phase:eq('+idx+')');
 					phase.append(html);
 					var element = phase.find('input:last');
@@ -1068,34 +999,33 @@ $(document).ready(function() {
 	
 	$(document).on('click', '#brainstorms-grid .newNoteTitle', function(e) {
 		e.preventDefault();
-			//var clicked = $(this);
-			//var idx = $('#brainstorms-grid .newNoteTitle').index(this);
-			var col = parseInt($(this).parent().parent().attr("id").replace(/gridscol_/, ""));
-			var pid = $("#brainstorms").data("third");
-			$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/grids&request=saveGridNewManualTitle&pid="+pid+"&col="+col, cache: false, success: function(html){	
-					//var phase = $('#brainstorms-grid .brainstorms-col-title:eq('+idx+')');
-					var phase = $('#gridscol_'+col+' .brainstorms-col-title');
-					phase.html(html);
-					var element = phase.find('input');
-					$.jNice.CheckAddPO(element);
-					phase.next().trigger('sortupdate');
-				}
-			});
+		var col = parseInt($(this).parent().parent().attr("id").replace(/gridscol_/, ""));
+		var pid = $("#brainstorms").data("third");
+		$(this).parent().addClass('planned');
+		$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/grids&request=saveGridNewManualTitle&pid="+pid+"&col="+col, cache: false, success: function(html){	
+				//var phase = $('#brainstorms-grid .brainstorms-col-title:eq('+idx+')');
+				var phase = $('#gridscol_'+col+' .brainstorms-col-title');
+				phase.html(html);
+				var element = phase.find('input');
+				$.jNice.CheckAddPO(element);
+				phase.next().trigger('sortupdate');
+			}
+		});
 	});
 	
 	
 	$(document).on('click', '#brainstorms-grid .newNoteStagegate', function(e) {
 		e.preventDefault();
-			var col = parseInt($(this).parent().parent().parent().parent().attr("id").replace(/gridscol_/, ""));
-			var pid = $("#brainstorms").data("third");
-			$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/grids&request=saveGridNewManualStagegate&pid="+pid+"&col="+col, cache: false, success: function(html){	
-					var phase = $('#gridscol_'+col+' .brainstorms-col-stagegate');
-					phase.html(html);
-					var element = phase.find('input');
-					$.jNice.CheckAddPO(element);
-					phase.prev().trigger('sortupdate');
-				}
-			});
+		var col = parseInt($(this).parent().parent().parent().parent().attr("id").replace(/gridscol_/, ""));
+		var pid = $("#brainstorms").data("third");
+		$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/grids&request=saveGridNewManualStagegate&pid="+pid+"&col="+col, cache: false, success: function(html){	
+				var phase = $('#gridscol_'+col+' .brainstorms-col-stagegate');
+				phase.html(html);
+				var element = phase.find('input');
+				$.jNice.CheckAddPO(element);
+				phase.prev().trigger('sortupdate');
+			}
+		});
 	});
 
 
@@ -1118,19 +1048,20 @@ $(document).ready(function() {
 			return false;
 		} else {
 			var id = parseInt($(this).parent().attr("id").replace(/item_/, ""));
-			currentBrainstormGridClickedNote = id;
+			
 			var note = $(this).parent();
 			var left = note.parent().parent().position();
 			left = left.left+addleft;
 			var pos = note.position();
 			var top = pos.top+addtop;
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/grids&request=getGridNote&id="+id, success: function(data){
-				$('#note-title').html(data.title);
-				$('#note-text').html(data.text);
-				$('#note-save a').attr('rel',id);
-				$('#note-info-content').html(data.info);
-				$('#note-info').css('right','28px');
-				$('#note').css('top', top+'px').css('left', left+'px').slideDown();
+				currentBrainstormGridClickedNote = id;
+				$('#brainstorms-grid-note-title').html(data.title);
+				$('#brainstorms-grid-note-text').html(data.text);
+				$('#brainstorms-grid-note-save a').attr('rel',id);
+				$('#brainstorms-grid-note-info-content').html(data.info);
+				$('#brainstorms-grid-note-info').css('right','28px');
+				$('#brainstorms-grid-note').css('top', top+'px').css('left', left+'px').slideDown();
 				}
 			});
 		}
@@ -1150,7 +1081,7 @@ $(document).ready(function() {
 		var width = $(this).width();
 		var height = $(this).height();
 		var input = '<textarea id="input-text" name="input-text" style="width: '+ width +'px; height: '+ height +'px; border: 0;">' + html+ '</textarea>';
-		$("#note-text").replaceWith(input);
+		$("#brainstorms-grid-note-text").replaceWith(input);
 		$("#input-text").focus();
 	});
 
@@ -1160,7 +1091,7 @@ $(document).ready(function() {
 		var id = $("#brainstorms").data("third");
 		var kickofffield = Date.parse($("#brainstorms input[name='kickoff']").val());
 		var kickoff = kickofffield.toString("yyyy-MM-dd");
-		var folder = $('#gridprojectsfolder>span').attr('uid');
+		var folder = $('#brainstormsgridprojectsfolder>span').attr('uid');
 		if(typeof folder == 'undefined' || folder == false) {
 			$.prompt(ALERT_CHOOSE_FOLDER);
 			return false;
@@ -1169,7 +1100,7 @@ $(document).ready(function() {
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/grids&request=convertToProject&id="+id+"&kickoff="+kickoff+"&folder="+folder+"&protocol="+protocol, success: function(data){
 			var html = '<div class="text11">Projektordner: <span class="listmember">' + data.fid + '</span>, ' + data.created_user + ', ' + data.created_date + '</div';
 			$('#project_created').append(html);
-			$("#modalDialogGrid").slideUp(function() {		
+			$("#modalDialogBrainstormsGrid").slideUp(function() {		
 				initBrainstormsContentScrollbar();							
 			});
 			}
@@ -1178,21 +1109,9 @@ $(document).ready(function() {
 
 	$(document).on('click', '#modalDialogBrainstormsGridClose', function(e) {
 		e.preventDefault();
-		$("#modalDialogGrid").slideUp(function() {		
+		$("#modalDialogBrainstormsGrid").slideUp(function() {		
 			initBrainstormsContentScrollbar();									
 		});
-	});
-	
-	$(document).on('click', 'a.binDeleteColumn', function(e) {
-		e.preventDefault();
-		var id = $(this).attr("rel");
-		brainstorms_grids.binDeleteColumn(id);
-	});
-	
-	$(document).on('click', 'a.binRestoreColumn', function(e) {
-		e.preventDefault();
-		var id = $(this).attr("rel");
-		brainstorms_grids.binRestoreColumn(id);
 	});
 
 

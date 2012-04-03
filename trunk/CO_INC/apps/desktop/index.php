@@ -22,6 +22,12 @@ if (!empty($_GET['request'])) {
 		case 'setWidgetStatus':
 			echo($desktop->setWidgetStatus($_GET["object"],$_GET["status"]));
 		break;
+		case 'getCheckpoints':
+			echo($desktop->getCheckpoints());
+		break;
+		case 'markCheckpointRead':
+			echo($desktop->markCheckpointRead($_GET["app"],$_GET["module"],$_GET["id"]));
+		break;
 		case 'getPostIts':
 			echo($desktop->getPostIts());
 		break;

@@ -98,6 +98,15 @@ if (!empty($_GET['request'])) {
 		case 'getHelp':
 			echo($brainstormsMeetings->getHelp());
 		break;
+		case 'newCheckpoint':
+			echo($brainstormsMeetings->newCheckpoint($_GET['id'],$_GET['date']));
+		break;
+		case 'updateCheckpoint':
+			echo($brainstormsMeetings->updateCheckpoint($_GET['id'],$_GET['date']));
+		break;
+		case 'deleteCheckpoint':
+			echo($brainstormsMeetings->deleteCheckpoint($_GET['id']));
+		break;
 	}
 }
 

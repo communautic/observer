@@ -194,8 +194,8 @@ function clientsApplication(name) {
 
 
 	this.actionRefresh = function() {
-		var pid = $('#clients').data('first');
-		var oid = $('#clients').data('second');
+		var oid = $('#clients').data('first');
+		var pid = $('#clients').data('second');
 		$("#clients2 .active-link").trigger("click");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients&request=getClientList&id="+oid, success: function(data){
 			$("#clients2 ul").html(data.html);
@@ -737,21 +737,21 @@ $(document).ready(function() {
 		e.preventDefault();
 		navThreeTitleFirst('clients',$(this),passed_id)
 		prevent_dblclick(e)
-	});
+	}).disableSelection();
 
 
 	$("#clients2-outer").on('click', 'h3', function(e, passed_id) {
 		e.preventDefault();
 		navThreeTitleSecond('clients',$(this),passed_id)
 		prevent_dblclick(e)
-	});
+	}).disableSelection();
 
 
 	$("#clients3").on('click', 'h3', function(e, passed_id) {
 		e.preventDefault();
 		navThreeTitleThird('clients',$(this),passed_id)
 		prevent_dblclick(e)
-	});
+	}).disableSelection();
 
 
 	$('#clients1').on('click', 'span.module-click',function(e) {

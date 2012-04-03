@@ -252,6 +252,21 @@ class BrainstormsMeetings extends Brainstorms {
 		$this->openHelpPDF($data);
 	}
 
+ 	function newCheckpoint($id,$date){
+		$this->model->newCheckpoint($id,$date);
+		return true;
+   }
+
+ 	function updateCheckpoint($id,$date){
+		$this->model->updateCheckpoint($id,$date);
+		return true;
+   }
+
+ 	function deleteCheckpoint($id){
+		$this->model->deleteCheckpoint($id);
+		return true;
+   }
+   
 }
 
 $brainstormsMeetings = new BrainstormsMeetings("meetings");

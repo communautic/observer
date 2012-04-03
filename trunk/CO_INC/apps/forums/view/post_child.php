@@ -24,7 +24,7 @@
           </table>
           
   		</td>
-       <td width="25"><div id="post-toggle-<?php echo($child->id);?>" class="forumsPostToggle" style="width: 15px; height: 15px; cursor: pointer;"><span class="icon-toggle-post"></span></div></td>
+       <td width="25"><div class="togglePost" rel="<?php echo($child->id);?>" style="width: 15px; height: 15px; cursor: pointer;"><span class="icon-toggle-post"></span></div></td>
        <?php if($perm) { ?><td width="15"><a class="binItem<?php echo $postdellink;?>" rel="<?php echo $child->id;?>"><span class="<?php echo $postdelclass;?>"></span></a></td><?php } ?>
 	</tr>
 </table>

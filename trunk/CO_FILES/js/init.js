@@ -104,7 +104,8 @@ function initScrollbar ( elem ) {
 
 
 function getCurrentApp() {
-	var app = $(".active-app").attr("rel");
+	var app = $("#appnav .active-app").attr("rel");
+	//console.log(app);
 	return app;
 }
 
@@ -425,7 +426,7 @@ $(document).ready(function() {
 				vdoct.show().animate({ 'top' : '130px !important' })
 			}
 		}
-	});
+	}).disableSelection();
 
 
 	$('.coform').livequery(function() {
@@ -532,6 +533,17 @@ $(document).ready(function() {
 		obj.actionRefresh();
 	});
 	
+	
+	$('span.actionConvert').on('click', function(e){
+		e.preventDefault();
+		if($(this).hasClass("noactive")) {
+			return false;
+		}
+		var obj = getCurrentModule();
+		obj.actionConvert();
+	});
+
+
 	$('span.actionHelp').on('click', function(e){
 		e.preventDefault();
 		if($(this).hasClass("noactive")) {
@@ -666,6 +678,20 @@ $(document).ready(function() {
 		module.binRestoreItem(id);
 	});
 	
+	$(document).on('click','a.binDeleteColumn',function(e) {
+		e.preventDefault();
+		var id = $(this).attr("rel");
+		var module = window[$(this).attr("href")];
+		module.binDeleteColumn(id);
+	});
+
+	$(document).on('click','a.binRestoreColumn',function(e) {
+		e.preventDefault();
+		var id = $(this).attr("rel");
+		var module = window[$(this).attr("href")];
+		module.binRestoreColumn(id);
+	});
+	
 	$(document).on('click','a.insertAccess',function(e) {
 		e.preventDefault();
 		var rel = $(this).attr("rel");
@@ -676,7 +702,38 @@ $(document).ready(function() {
 		var obj = getCurrentModule();
 		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 	});
-
+	
+	// forums app specific
+	$(document).on('click','a.openReplyWindow',function(e) {
+		e.preventDefault();
+		var id = $(this).attr("rel");
+		var module = getCurrentModule();
+		module.openReplyWindow(id);
+	});
+	
+	$(document).on('click','div.closeReplyWindow',function(e) {
+		e.preventDefault();
+		var module = getCurrentModule();
+		module.closeReplyWindow();
+	});
+	
+	$(document).on('click','span.postReply',function(e) {
+		e.preventDefault();
+		var module = getCurrentModule();
+		module.postReply();
+	});
+	
+	$(document).on('click','div.togglePost',function(e) {
+		e.preventDefault();
+		var id = $(this).attr("rel");
+		var obj = $(this);
+		var module = getCurrentModule();
+		module.togglePost(id,obj);
+	});
+	
+	
+	
+	
 	$(".sort").on('click', function(e) {
 		e.preventDefault();
 		var obj = $(this);
@@ -991,7 +1048,53 @@ $(document).ready(function() {
 				object.datepickerOnClose(this);				
 	   		}
  		});
+	});
+	
+	$('.checkpointdp').livequery(function() {
+		var chpexistsSpan = $(this).next();
+		
+		
+		$(this).datepicker({ dateFormat: 'dd.mm.yy', showOn: 'button', buttonText:"", buttonImage: co_files+'/img/pixel.gif',  buttonImageOnly: true, showButtonPanel: true, changeMonth: true, changeYear: true, showAnim: 'slide',
+			beforeShow: function(input,inst) {
+				setTimeout(function() {
+					var buttonPane = $( input ).datepicker( "widget" ).find( ".ui-datepicker-buttonpane" );
+					$( "<button>", {text: "Clear", click: function() {
+							$.datepicker._clearDate( input );
+						}
+				  	}).appendTo( buttonPane ).addClass("ui-datepicker-clear ui-state-default ui-priority-secondary ui-corner-all");
+				}, 1 );
+				
+			},
+			onChangeMonthYear: function( input, inst ) {
+				setTimeout(function() {
+					var buttonPane = $( input ).datepicker( "widget" ).find( ".ui-datepicker-buttonpane" );
+					$( "<button>", {text: "Clear", click: function() {
+							$.datepicker._clearDate( input );
+						}
+				  	}).appendTo( buttonPane ).addClass("ui-datepicker-clear ui-state-default ui-priority-secondary ui-corner-all");
+				}, 1 );
+			},
+			onClose: function(dateText, inst) {
+				var action;
+				var chpexists = chpexistsSpan.html();
+				if(chpexists == 0 && dateText == "") {
+					return true;
+				}
+				if (chpexists == 0 && dateText != "") {
+					action  = 'new';
+					chpexistsSpan.html('1');
+				} else if (chpexists == 1 && dateText == "") {
+					action  = 'delete';
+					chpexistsSpan.html('0');
+				} else {
+					action  = 'update';
+				}
+				var obj = getCurrentModule();
+				obj.manageCheckpoint(action,dateText);
+	   		}
+ 		});
 	}); 
+
 
 
 });
@@ -1832,7 +1935,7 @@ function externalLoadThreeLevels(objectname,f,p,ph,app) { // from Desktop
 	var objectnameCapsSingular = objectnameCaps.slice(0,-1);
 	var num_modules = window[objectname+'_num_modules'];
 	
-	if(objectname == 'projects' || objectname == 'productions' || objectname == 'brainstorms' || objectname == 'forums') {
+	if(objectname == 'projects' || objectname == 'productions' || objectname == 'brainstorms' || objectname == 'forums' || objectname == 'complaints') {
 		object.$first.data({ "first" : f});
 		var index = $('#'+objectname+'1 .module-click').index($('#'+objectname+'1 .module-click[rel='+f+']'));
 		$.ajax({ type: "GET", url: "/", dataType:  'json', async: false, data: "path=apps/" + objectname +"&request=get"+objectnameCapsSingular+"List&id="+f, success: function(data){
@@ -1909,9 +2012,8 @@ function externalLoadThreeLevels(objectname,f,p,ph,app) { // from Desktop
 		});
 	}
 
-
-if(objectname == 'phases') {
-		//var app = getCurrentApp();
+	//if(objectname == 'phases') {
+	if(ph != 0) {
 		var appobject = window[app];
 		var appFirst = app.substr(0, 1);
 		var appnameCaps = appFirst.toUpperCase() + app.substr(1);
@@ -1958,101 +2060,35 @@ if(objectname == 'phases') {
 					}
 				break;
 			}
-			$('#'+app+'3 div.thirdLevel').each(function(i) { 
-				if(i == 0) {
-				var t = 0;
+			var moduleidx = $('#'+app+'3 h3').index($('#'+app+'3 h3[rel='+objectname+']'));
+			var z = appobject.$thirdDiv.height()-27;
+			$('#'+app+'3 div.thirdLevel:not(.deactivated)').each(function(i) { 
+				if(i <= moduleidx) {
+					var mx = i*module_title_height;
+					$(this).animate({top: mx})
 				} else {
-					var n = $(this).height();
-					var t = n+i*module_title_height-27;
+					var mx = z+i*module_title_height;
+					$(this).animate({top: mx})
 				}
-				$(this).animate({top: t})
 			})
 			$('#'+app+'3 ul[rel='+objectname+'] .module-click[rel='+ph+']').addClass('active-link');
 			var idx = $('#'+app+'3 ul[rel='+objectname+'] .module-click').index($('#'+app+'3 ul[rel='+objectname+'] .module-click[rel='+ph+']'));
-			var o = window[app+'_phases'];
-			o.getDetails(0,idx,data.html);
+			var o = window[app+'_'+objectname];
+			o.getDetails(moduleidx,idx,data.html);
 			$('#'+app+'3 .module-actions:eq(0)').show();
 			$('#'+app+'3 .sort:eq(0)').attr("rel", data.sort).addClass("sort"+data.sort);
 			$('#'+app+'-top .top-subheadline').html(', ' + $('#'+app+'2 .module-click:visible').find(".text").html());
-			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+app+"&request=getDates&id="+p, success: function(data){
-				$('#'+app+'-top .top-subheadlineTwo').html(data.startdate + ' - <span id="projectenddate">' + data.enddate + '</span>');
-				$('span.app_'+app).trigger('click');
-				}
-			});
+			if(app == 'projects' || app == 'productions') {
+				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+app+"&request=getDates&id="+p, success: function(data){
+					$('#'+app+'-top .top-subheadlineTwo').html(data.startdate + ' - <span id="projectenddate">' + data.enddate + '</span>');
+					$('span.app_'+app).trigger('click');
+					}
+				});
+			} else {
+				$('span.app_'+app).trigger('click');	
+			}
 			}
 		});
 	}
 
-
-
-
-	/*if(objectname == 'phases') {
-		$('#projects').data({ "first" : f});
-		var index = $('#projects1 .module-click').index($('#projects1 .module-click[rel='+f+']'));
-		$.ajax({ type: "GET", url: "/", dataType:  'json', async: false, data: "path=apps/projects&request=getProjectList&id="+f, success: function(data){
-			$("#projects2 ul").html(data.html);
-				setModuleDeactive($("#projects1"),index);
-				$('#projects1').find('li:eq('+index+')').show();
-				$("#projects-top .top-headline").html($("#projects1 .deactivated").find(".text").html());
-			}
-		})
-		$('#projects').data({ "second" : p});
-		projects.getNavModulesNumItems(p)
-		var index = $("#projects2 .module-click").index($("#projects2 .module-click[rel='"+p+"']"));
-		setModuleDeactive($("#projects2"),index);
-		$("#projects2-outer").css('top', 96);
-		$('#projects3 h3').removeClass("module-bg-active");
-		$('#projects3 .module-actions').hide();
-		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/"+objectname+"&request=getList&id="+p, success: function(data){
-			$("#projects-current").val(objectname);
-			$('#projects').data({ "current" : objectname});
-			$('#projects').data({ "third" : ph});
-			$('#projects1').data('status','closed');
-			$('#projects2').data('status','closed');
-			$('#projects3').data('status','open');
-			$('#projects3 ul[rel='+objectname+']').html(data.html);
-			$("#projectsActions .actionNew").attr("title",data.title);
-			switch (data.perm) {
-				case "sysadmin": case "admin" :
-					if(data.html == "<li></li>") {
-						projectsActions(3);
-					} else {
-						projectsActions(0);
-					}
-				break;
-				case "guest":
-					if(data.html == "<li></li>") {
-						projectsActions();
-					} else {
-						projectsActions(5);
-					}
-				break;
-			}
-			$("#projects3 div.thirdLevel").each(function(i) { 
-				if(i == 0) {
-				var t = 0;
-				} else {
-					var n = $(this).height();
-					var t = n+i*module_title_height-27;
-				}
-				$(this).animate({top: t})
-			})
-			$('#projects3 ul[rel='+objectname+'] .module-click[rel='+ph+']').addClass('active-link');
-			var idx = $('#projects3 ul[rel='+objectname+'] .module-click').index($('#projects3 ul[rel='+objectname+'] .module-click[rel='+ph+']'));
-			projects_phases.getDetails(0,idx,data.html);
-			$("#projects3 .module-actions:eq(0)").show();
-			$("#projects3 .sort:eq(0)").attr("rel", data.sort).addClass("sort"+data.sort);
-			$("#projects-top .top-subheadline").html(', ' + $("#projects2 .module-click:visible").find(".text").html());
-			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getDates&id="+p, success: function(data){
-				$("#projects-top .top-subheadlineTwo").html(data.startdate + ' - <span id="projectenddate">' + data.enddate + '</span>');
-				$('span.app_projects').trigger('click');
-				}
-			});
-			}
-		});
-	}*/
-	
-	
-	
-	
 }

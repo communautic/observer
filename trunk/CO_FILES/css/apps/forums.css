@@ -99,17 +99,13 @@ background-color: #C1D5F0; }
 #forums-right .menues-table { border-collapse: collapse; }
 
 #forums-right .tcell-left-posts {
-    padding: 0 0 0 15px;
-    width: 127px;
 	background-color: #6496DC;
-	color: #fff;
 }
 
 #forumsPosts { background-image:url(../../img/forums_thread_bg.png); }
 #forumsPosts .toggeled { border-bottom: 1px solid #436593; overflow: hidden; }
 
 #modalDialogForumsPost span.coButton  { background-color: #6496db; color: #fff; }
-
 #forums-right span.coButton:hover   { background-color: #fff; color: #000; cursor: pointer; }
 #forumsAnswer > div { padding-bottom: 8px;}
 
@@ -117,3 +113,6 @@ background-color: #C1D5F0; }
 #forums-right .icon-toggle-post-active { background-position: -440px -20px; }
 
 #forumsAnswerOuter td { padding-top: 4px;}
+
+
+#forums-right .icon-reply { background-position: -340px 0px; }

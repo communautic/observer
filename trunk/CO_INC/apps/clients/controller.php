@@ -601,6 +601,32 @@ class Clients extends Controller {
 		return json_encode($arr);
 	}
 
+ 	function newCheckpoint($id,$date){
+		$this->model->newCheckpoint($id,$date);
+		return true;
+   }
+
+ 	function updateCheckpoint($id,$date){
+		$this->model->updateCheckpoint($id,$date);
+		return true;
+   }
+
+ 	function deleteCheckpoint($id){
+		$this->model->deleteCheckpoint($id);
+		return true;
+   }
+   
+   function getCheckpointDetails($app,$module,$id) {
+	   global $clients;
+	   $retval = $this->model->getCheckpointDetails($app,$module,$id);
+	   if($retval){
+			 return $retval;
+		  } else{
+			 return "error";
+		  }
+   }
+
+
 }
 
 $clients = new Clients("clients");

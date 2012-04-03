@@ -174,3 +174,12 @@ span.coButton  { width: 100px; background-color: #666; display: block; padding: 
 span.coButton:hover   { background-color: #333; color: #fff; cursor: pointer; }
 
 #custom-text { height: 105px; margin-bottom: 5px;}
+
+.tcell-left-posts {
+    padding: 0 0 0 15px;
+    width: 127px;
+	background-color: #999;
+	color: #fff;
+}
+
+.grids-spacer { height: 4px; background-color: #ccc; border-left: 1px solid #fff; }

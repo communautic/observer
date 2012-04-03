@@ -442,6 +442,22 @@ function forumsApplication(name) {
 	}
 
 
+	this.togglePost = function(id,obj) {
+		var outer = $('#forumsPostouter_'+id);
+		var height = outer.height();
+		if(height == 22) {
+			obj.find('span').addClass("icon-toggle-post").removeClass("icon-toggle-post-active");
+			outer.removeClass('toggeled')
+				.animate({height: outer.data('h')}, function() { 
+					$(this).css('height','auto');
+				});
+		} else {
+			obj.find('span').addClass("icon-toggle-post-active").removeClass("icon-toggle-post");
+			outer.data('h', outer.height());
+			outer.animate({height: 22}).addClass('toggeled')
+		}
+	}
+
 }
 
 var forums = new forumsApplication('forums');
@@ -758,21 +774,21 @@ $(document).ready(function() {
 		e.preventDefault();
 		navThreeTitleFirst('forums',$(this),passed_id)
 		prevent_dblclick(e)
-	});
+	}).disableSelection();
 
 
 	$("#forums2-outer").on('click', 'h3', function(e, passed_id) {
 		e.preventDefault();
 		navThreeTitleSecond('forums',$(this),passed_id)
 		prevent_dblclick(e)
-	});
+	}).disableSelection();
 
 
 	$("#forums3").on('click', 'h3', function(e, passed_id) {
 		e.preventDefault();
 		navThreeTitleThird('forums',$(this),passed_id)
 		prevent_dblclick(e)
-	});
+	}).disableSelection();
 
 
 	$('#forums1').on('click', 'span.module-click',function(e) {
@@ -850,13 +866,25 @@ $(document).ready(function() {
 
 	$(document).on('click', 'a.postForumsReply', function(e) {
 		e.preventDefault();
-		var rel = $(this).attr("rel");
-		$("#modalDialogForumsPost").slideDown(function() {
-			$("#forumsReplyID").val(rel);
-			$("#forumsReplyText").focus();	
-			$('#forums-right .ui-layout-content').height($('#forums-right .ui-layout-content').height()-99)
-			initForumsContentScrollbar();								
-		});
+		var rel = $(this).attr('rel');
+		if($("#modalDialogForumsPost").is(':visible')) {
+			$("#modalDialogForumsPost").slideUp(function() {
+				initForumsContentScrollbar();
+				$("#modalDialogForumsPost").slideDown(function() {
+					$("#forumsReplyID").val(rel);
+					$("#forumsReplyText").focus();
+					$('#forums-right .ui-layout-content').height($('#forums-right .ui-layout-content').height()-99)
+					initForumsContentScrollbar();								
+				});
+			});
+		} else {
+			$("#modalDialogForumsPost").slideDown(function() {
+				$("#forumsReplyID").val(rel);
+				$("#forumsReplyText").focus();
+				$('#forums-right .ui-layout-content').height($('#forums-right .ui-layout-content').height()-99)
+				initForumsContentScrollbar();								
+			});
+		}
 	});
 
 
@@ -881,7 +909,7 @@ $(document).ready(function() {
 	});
 
 
-	$(document).on('click', 'div.forumsPostToggle', function(e) {
+	/*$(document).on('click', 'div.forumsPostToggle', function(e) {
 		e.preventDefault();
 		var id = $(this).attr("id").replace(/post-toggle-/, "");
 		var outer = $('#forumsPostouter_'+id);
@@ -897,7 +925,7 @@ $(document).ready(function() {
 			outer.data('h', outer.height());
 			outer.animate({height: 20}).addClass('toggeled')
 		}
-	});
+	});*/
 
 
 });

@@ -102,6 +102,15 @@ if (!empty($_GET['request'])) {
 		case 'getHelp':
 			echo($projectsPhases->getHelp());
 		break;
+		case 'newCheckpoint':
+			echo($projectsPhases->newCheckpoint($_GET['id'],$_GET['date']));
+		break;
+		case 'updateCheckpoint':
+			echo($projectsPhases->updateCheckpoint($_GET['id'],$_GET['date']));
+		break;
+		case 'deleteCheckpoint':
+			echo($projectsPhases->deleteCheckpoint($_GET['id']));
+		break;
 	}
 }
 

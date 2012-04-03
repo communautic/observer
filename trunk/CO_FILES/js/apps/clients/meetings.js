@@ -498,6 +498,22 @@ function clientsMeetings(name) {
 		});
 	}
 
+
+	this.manageCheckpoint = function(action,date) {
+		var pid = $('#clients').data('third');
+		switch(action) {
+			case 'new':
+				$.ajax({ type: "GET", url: "/", data: "path=apps/clients/modules/meetings&request=newCheckpoint&id=" + pid + "&date=" + date, cache: false });
+			break;
+			case 'update':
+				$.ajax({ type: "GET", url: "/", data: "path=apps/clients/modules/meetings&request=updateCheckpoint&id=" + pid + "&date=" + date, cache: false });			
+			break;
+			case 'delete':
+				$.ajax({ type: "GET", url: "/", data: "path=apps/clients/modules/meetings&request=deleteCheckpoint&id=" + pid, cache: false });
+			break;
+		}
+	}
+
 }
 
 var clients_meetings = new clientsMeetings('clients_meetings');

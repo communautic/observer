@@ -825,7 +825,17 @@ class ProjectsModel extends Model {
 			break;
 		}
 		
-		
+		// checkpoint
+		$array["checkpoint"] = 0;
+		$array["checkpoint_date"] = "";
+		$q = "SELECT date FROM " . CO_TBL_USERS_CHECKPOINTS . " where uid='$session->uid' and app = 'projects' and module = 'projects' and app_id = '$id' LIMIT 1";
+		$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result) > 0) {
+			while ($row = mysql_fetch_assoc($result)) {
+			$array["checkpoint"] = 1;
+			$array["checkpoint_date"] = $this->_date->formatDate($row['date'],CO_DATE_FORMAT);
+			}
+		}
 		
 		$project = new Lists($array);
 		
@@ -2393,8 +2403,73 @@ class ProjectsModel extends Model {
 		return $arr;
    }
 
-	
-	
+
+	function newCheckpoint($id,$date){
+		global $session;
+		$date = $this->_date->formatDate($date);
+		$q = "INSERT INTO " . CO_TBL_USERS_CHECKPOINTS . " SET uid = '$session->uid', date = '$date', app = 'projects', module = 'projects', app_id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+			return true;
+		}
+   }
+
+ 	function updateCheckpoint($id,$date){
+		global $session;
+		$date = $this->_date->formatDate($date);
+		$q = "UPDATE " . CO_TBL_USERS_CHECKPOINTS . " SET date = '$date' WHERE uid = '$session->uid' and app = 'projects' and module = 'projects' and app_id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+			return true;
+		}
+   }
+
+ 	function deleteCheckpoint($id){
+		$q = "DELETE FROM " . CO_TBL_USERS_CHECKPOINTS . " WHERE uid = '$session->uid' and app = 'projects' and module = 'projects' and app_id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+			return true;
+		}
+   }
+
+
+    function getCheckpointDetails($app,$module,$id){
+		global $lang, $session, $projects;
+		$row = "";
+		if($app =='projects' && $module == 'projects') {
+			$q = "SELECT title,folder FROM " . CO_TBL_PROJECTS . " WHERE id='$id' and bin='0'";
+			$result = mysql_query($q, $this->_db->connection);
+			$row = mysql_fetch_array($result);
+			if(mysql_num_rows($result) > 0) {
+				$row['checkpoint_app_name'] = $lang["PROJECT_TITLE"];
+				$row['app_id_app'] = '0';
+			}
+			return $row;
+		} else {
+			$active_modules = array();
+			foreach($projects->modules as $m => $v) {
+					$active_modules[] = $m;
+			}
+			/*if($module == 'phases' && in_array("phases",$active_modules)) {
+				include_once("modules/".$module."/config.php");
+				include_once("modules/".$module."/lang/" . $session->userlang . ".php");
+				include_once("modules/".$module."/model.php");
+				$projectsPhasesModel = new ProjectsPhasesModel();
+				$row = $projectsPhasesModel->getCheckpointDetails($id);
+				return $row;
+			}*/
+			if($module == 'meetings' && in_array("meetings",$active_modules)) {
+				include_once("modules/".$module."/config.php");
+				include_once("modules/".$module."/lang/" . $session->userlang . ".php");
+				include_once("modules/".$module."/model.php");
+				$projectsMeetingsModel = new ProjectsMeetingsModel();
+				$row = $projectsMeetingsModel->getCheckpointDetails($id);
+				return $row;
+			}
+		}
+   }
+
+
 }
 
 $projectsmodel = new ProjectsModel(); // needed for direct calls to functions eg echo $projectsmodel ->getProjectTitle(1);

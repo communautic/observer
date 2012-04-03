@@ -29,25 +29,7 @@ class Desktop extends Controller {
 	
 	
 	public function getColumnWidgets($id) {
-		global $lang, $system, $userapps;
-			
-			// get default desktop widgets
-			// get all widgets for user
-			// check if in settings a default is not included
-			// array merge 
-			/*$widgets_def_1 = explode(",", DEFAULT_WIDGETS_1);
-			$widgets_def_2 = explode(",", DEFAULT_WIDGETS_2);
-			$widgets_def_3 = explode(",", DEFAULT_WIDGETS_3);
-			$widgets_def_4 = explode(",", DEFAULT_WIDGETS_4);
-			
-			if(!$this->model->existUserSetting('desktop-widgets',$id)) {
-				$widgets = explode(",", DEFAULT_WIDGETS_1);
-			} else {
-				$widgets = $this->model->getColumnWidgets($id);
-			}
-			
-			foreach */
-			
+		global $lang, $system, $userapps;			
 			// all user
 			$widgets_user = array();
 			if(!$this->model->existUserSetting('desktop-widgets',1)) {
@@ -77,71 +59,18 @@ class Desktop extends Controller {
 					$widgets4 = $this->model->getColumnWidgets(4);
 			}
 			$widgets_user = array_merge($widgets_user, $widgets4);
-			
-			/*if($this->model->existUserSetting('desktop-widgets',1)) {
-				$widgets_user = array_merge($widgets_user,$this->model->getColumnWidgets(1));
-			}
-			if($this->model->existUserSetting('desktop-widgets',2)) {
-				$widgets_user = array_merge($widgets_user,$this->model->getColumnWidgets(2));
-			}
-			if($this->model->existUserSetting('desktop-widgets',3)) {
-				$widgets_user = array_merge($widgets_user,$this->model->getColumnWidgets(3));
-			}
-			if($this->model->existUserSetting('desktop-widgets',4)) {
-				$widgets_user = array_merge($widgets_user,$this->model->getColumnWidgets(4));
-			}*/
-			
-			//print_r($widgets_user);
-			
-			// all widgets
-			//$widgets_all = explode(",", DEFAULT_WIDGETS_1 . ',' . DEFAULT_WIDGETS_2 . ',' . DEFAULT_WIDGETS_3 . ',' . DEFAULT_WIDGETS_4);
-			//print_r($widgets_all);
-			
-			/*foreach ($widgets_all as $widgets) {
-				${$widget.'_status'}  = $this->model->getUserSetting('desktop-widget-' . $widget);
-			}*/
-			
-			
+
 			switch($id) {
 				case 1:
-					/*$default_widgets = explode(",", DEFAULT_WIDGETS_1);
-					$user_widgets = $this->model->getColumnWidgets($id);
-					foreach ($default_widgets as $d) {
-						if(in_array($d,$widgets_user)) {
-							$widgets = $user_widgets;
-						} else {
-							$widgets = array_push($user_widgets, $d);
-						}
-					}*/
-					/*if(!$this->model->existUserSetting('desktop-widgets',$id)) {
-						$widgets = explode(",", DEFAULT_WIDGETS_1);
-					} else {
-						$widgets = $this->model->getColumnWidgets($id);
-					}*/
 					$widgets = $widgets1;
 				break;
 				case 2:
-					/*if(!$this->model->existUserSetting('desktop-widgets',$id)) {
-						$widgets = explode(",", DEFAULT_WIDGETS_2);
-					} else {
-						$widgets = $this->model->getColumnWidgets($id);
-					}*/
 					$widgets = $widgets2;
 				break;
 				case 3:
-					/*if(!$this->model->existUserSetting('desktop-widgets',$id)) {
-						$widgets = explode(",", DEFAULT_WIDGETS_3);
-					} else {
-						$widgets = $this->model->getColumnWidgets($id);
-					}*/
 					$widgets = $widgets3;
 				break;
 				case 4:
-					/*if(!$this->model->existUserSetting('desktop-widgets',$id)) {
-						$widgets = explode(",", DEFAULT_WIDGETS_4);
-					} else {
-						$widgets = $this->model->getColumnWidgets($id);
-					}*/
 					$widgets = $widgets4;
 					$widgets_all = explode(",", DEFAULT_WIDGETS_1 . ',' . DEFAULT_WIDGETS_2 . ',' . DEFAULT_WIDGETS_3 . ',' . DEFAULT_WIDGETS_4);
 					foreach ($userapps as $app) {
@@ -149,7 +78,6 @@ class Desktop extends Controller {
 								$widgets[] = $app;
 						}
 					}
-			
 				break;
 			}
 			
@@ -187,6 +115,30 @@ class Desktop extends Controller {
 		  }
 	}
 	
+	
+	function getCheckpoints() {
+		global $lang, $system;
+		if($arr = $this->model->getCheckpoints()) {
+			$checkpoints = $arr["checkpoints"];
+			ob_start();
+				include 'view/checkpoints.php';
+				$data["html"] = ob_get_contents();
+			ob_end_clean();
+			$data["widgetaction"] = $arr["widgetaction"];
+			return json_encode($data);
+		}
+	}
+
+
+	function markCheckpointRead($app,$module,$id) {
+		$retval = $this->model->markCheckpointRead($app,$module,$id);
+		if($retval){
+			 return 'true';
+		  } else{
+			 return "error";
+		  }
+	}
+
 	
 	function getPostIts() {
 		global $lang, $system;

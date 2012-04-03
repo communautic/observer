@@ -507,6 +507,21 @@ function projectsPhases(name) {
 	}
 
 
+	this.manageCheckpoint = function(action,date) {
+		var pid = $('#projects').data('third');
+		switch(action) {
+			case 'new':
+				$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=newCheckpoint&id=" + pid + "&date=" + date, cache: false });
+			break;
+			case 'update':
+				$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=updateCheckpoint&id=" + pid + "&date=" + date, cache: false });			
+			break;
+			case 'delete':
+				$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=deleteCheckpoint&id=" + pid, cache: false });
+			break;
+		}
+	}
+
 }
 
 var projects_phases = new projectsPhases('projects_phases');

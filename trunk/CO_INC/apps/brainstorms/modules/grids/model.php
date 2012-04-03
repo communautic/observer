@@ -312,9 +312,9 @@ class BrainstormsGridsModel extends BrainstormsModel {
 		
 		$array["max_items"] = max($num_notes);
 		
-		$colheight=  max($num_notes)*27+78+80;
-		if($colheight < 266) {
-			$colheight = 266;
+		$colheight=  max($num_notes)*27+78+80+8;
+		if($colheight < 266+8) {
+			$colheight = 266+8;
 		}
 		$listheight = max($num_notes)*27+27;
 		if($listheight < 135) {

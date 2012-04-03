@@ -1649,6 +1649,34 @@ class ClientsModel extends Model {
 	}
  
  
+     function getCheckpointDetails($app,$module,$id){
+		global $lang, $session, $clients;
+		$row = "";
+		if($app =='clients' && $module == 'clients') {
+			$q = "SELECT title,folder FROM " . CO_TBL_CLIENTS . " WHERE id='$id' and bin='0'";
+			$result = mysql_query($q, $this->_db->connection);
+			$row = mysql_fetch_array($result);
+			if(mysql_num_rows($result) > 0) {
+				$row['checkpoint_app_name'] = $lang["CLIENT_TITLE"];
+				$row['app_id_app'] = '0';
+			}
+			return $row;
+		} else {
+			$active_modules = array();
+			foreach($clients->modules as $m => $v) {
+					$active_modules[] = $m;
+			}
+			if($module == 'meetings' && in_array("meetings",$active_modules)) {
+				include_once("modules/".$module."/config.php");
+				include_once("modules/".$module."/lang/" . $session->userlang . ".php");
+				include_once("modules/".$module."/model.php");
+				$clientsMeetingsModel = new ClientsMeetingsModel();
+				$row = $clientsMeetingsModel->getCheckpointDetails($id);
+				return $row;
+			}
+		}
+   }
+ 
 
 }
 
