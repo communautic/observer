@@ -32,7 +32,6 @@ class ComplaintsGrids extends Complaints {
 		if($arr = $this->model->getDetails($id)) {
 			$grid = $arr["grid"];
 			$cols = $arr["cols"];
-			//$console_items = $arr["console_items"];
 			$sendto = $arr["sendto"];
 			$colheight = $arr["colheight"];
 			$listheight = $arr["listheight"];
@@ -60,7 +59,6 @@ class ComplaintsGrids extends Complaints {
 		if($arr = $this->model->getDetails($id)) {
 			$grid = $arr["grid"];
 			$cols = $arr["cols"];
-			$console_items = $arr["console_items"];
 			$sendto = $arr["sendto"];
 			$colheight = $arr["colheight"];
 			$listheight = $arr["listheight"];
@@ -111,7 +109,6 @@ class ComplaintsGrids extends Complaints {
 		if($arr = $this->model->getDetails($id)) {
 			$grid = $arr["grid"];
 			$cols = $arr["cols"];
-			$console_items = $arr["console_items"];
 			$sendto = $arr["sendto"];
 			$colheight = $arr["colheight"];
 			$projects = $arr["projects"];
@@ -138,7 +135,6 @@ class ComplaintsGrids extends Complaints {
 		if($arr = $this->model->getDetails($id)) {
 			$grid = $arr["grid"];
 			$cols = $arr["cols"];
-			$console_items = $arr["console_items"];
 			$sendto = $arr["sendto"];
 			$colheight = $arr["colheight"];
 			$listheight = $arr["listheight"];
@@ -178,7 +174,6 @@ class ComplaintsGrids extends Complaints {
 	function setDetails($pid,$id,$title,$owner,$owner_ct,$management,$management_ct,$team,$team_ct,$grid_access,$grid_access_orig) {
 		if($arr = $this->model->setDetails($pid,$id,$title,$owner,$owner_ct,$management,$management_ct,$team,$team_ct,$grid_access,$grid_access_orig)){
 			if($arr["what"] == "edit") {
-				//return '{ "action": "edit" , "id": "' . $arr["id"] . '", "access": "' . $grid_access . '", "status": "' . $grid_status . '"}';
 				return '{ "action": "edit" , "id": "' . $arr["id"] . '", "access": "' . $grid_access . '"}';
 			} else {
 				return '{ "action": "reload" , "id": "' . $arr["id"] . '", "access": "' . $grid_access . '"}';
@@ -241,15 +236,10 @@ class ComplaintsGrids extends Complaints {
 	function getGridNote($id) {
 		global $lang;
 		if($note = $this->model->getGridNote($id)){
-			//ob_start();
-			//include('view/note.php');
-			//$data["html"] = ob_get_contents();
-		//ob_end_clean();
 			$data["title"] = $note->title;
 			$data["text"] = $note->text;
 			$data["info"] = $lang["EDITED_BY_ON"] . ' ' . $note->edited_user.', ' . $note->edited_date . '<br>'
 . $lang["CREATED_BY_ON"]  . ' ' . $note->created_user . ', ' . $note->created_date;
-            //$data["ms"] = $note->ms;
 			return json_encode($data);
 		} else{
 			return "error";
@@ -316,7 +306,7 @@ class ComplaintsGrids extends Complaints {
 			global $lang;
 			$retval = $this->model->saveGridNewManualTitle($pid,$col);
 			if($retval){
-				$html = '<div class="droppable colTitle planned" rel="' . $retval . '" id="item_' . $retval . '"><div class="statusItem"><span class="jNiceWrapper"><input type="checkbox" class="cbx jNiceHidden " value="' . $retval . '" name=""><span class="jNiceCheckbox"></span></span></div><div class="itemTitle">' . $lang["COMPLAINT_GRID_TITLE_NEW"] . '</div><div class="dragItem"></div></div>';
+				$html = '<div class="droppable colTitle" rel="' . $retval . '" id="item_' . $retval . '"><div class="statusItem"><span class="jNiceWrapper"><input type="checkbox" class="cbx jNiceHidden " value="' . $retval . '" name=""><span class="jNiceCheckbox"></span></span></div><div class="itemTitle">' . $lang["COMPLAINT_GRID_TITLE_NEW"] . '</div><div class="dragItem"></div></div>';
 			 return $html;
 		  } else{
 			 return "error";
@@ -351,15 +341,6 @@ class ComplaintsGrids extends Complaints {
 			 return "error";
 		  }
 	}
-	
-	/*function toggleMilestone($id,$ms) {
-		$retval = $this->model->toggleMilestone($id,$ms);
-		if($retval){
-			 return true;
-		  } else{
-			 return "error";
-		  }
-	}*/
 
 	function createNew($id) {
 		$retval = $this->model->createNew($id);

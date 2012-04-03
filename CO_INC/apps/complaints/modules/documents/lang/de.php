@@ -10,7 +10,7 @@ $lang["COMPLAINT_DOCUMENT_FILENAME"] = 'Dateiname/Format';
 $lang["COMPLAINT_DOCUMENT_FILESIZE"] = 'Dateigrösse';
 $lang["COMPLAINT_DOCUMENT_FILES"] = 'Dateien';
 
-$lang["COMPLAINT_DOCUMENT_HELP"] = 'manual_kunden_aktenmappen.pdf';
+$lang["COMPLAINT_DOCUMENT_HELP"] = 'manual_reklamationen_aktenmappen.pdf';
 
 $lang["COMPLAINT_PRINT_DOCUMENT"] = 'akt.png';
 

@@ -23,9 +23,9 @@ $lang["COMPLAINT_FORUM_STATUS_CANCELLED"] = 'cancelled';
 $lang["COMPLAINT_FORUM_STATUS_POSPONED"] = 'posponed to';
 $lang["COMPLAINT_FORUM_POSPONED"] = 'posponed';
 
-$lang["COMPLAINT_FORUM_HELP"] = 'manual_prozesse_besprechungen.pdf';
+$lang["COMPLAINT_FORUM_HELP"] = 'manual_reklamationen_diskussionen.pdf';
 
-$lang["COMPLAINT_PRINT_FORUM"] = 'forum.png';
+$lang["COMPLAINT_PRINT_FORUM"] = 'discussion.png';
 
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/complaints/forums/en.php";

@@ -27,7 +27,7 @@ $lang["COMPLAINT_GRID_COLUMNS_BIN"] = 'Grid/Columns';
 $lang["COMPLAINT_GRID_NOTES_BIN"] = 'Grid/Notes';
 $lang["COMPLAINT_PHASE_TITLE"] = 'Phase';
 
-$lang["COMPLAINT_GRID_HELP"] = 'manual_prozesse_prozessraster.pdf';
+$lang["COMPLAINT_GRID_HELP"] = 'manual_reklamationen_prozessraster.pdf';
 
 $lang["COMPLAINT_PRINT_GRID"] = 'grid.png';
 

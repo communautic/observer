@@ -55,8 +55,8 @@ class ComplaintsForums extends Complaints {
 		$html = "";
 		if($arr = $this->model->getDetails($id)) {
 			$forum = $arr["forum"];
-			$task = $arr["task"];
-			$sendto = $arr["sendto"];
+			$posts = $arr["posts"];
+			$answers = $arr["answers"];
 			ob_start();
 				include 'view/print.php';
 				$html = ob_get_contents();
@@ -77,11 +77,11 @@ class ComplaintsForums extends Complaints {
 		global $lang;
 		if($arr = $this->model->getDetails($id)) {
 			$forum = $arr["forum"];
-			$task = $arr["task"];
-			
+			$posts = $arr["posts"];
+			$answers = $arr["answers"];
 			$form_url = $this->form_url;
 			$request = "sendDetails";
-			$to = $forum->participants;
+			$to = "";
 			$cc = "";
 			$subject = $forum->title;
 			$variable = "";
@@ -100,8 +100,8 @@ class ComplaintsForums extends Complaints {
 		$html = "";
 		if($arr = $this->model->getDetails($id)) {
 			$forum = $arr["forum"];
-			$task = $arr["task"];
-			$sendto = $arr["sendto"];
+			$posts = $arr["posts"];
+			$answers = $arr["answers"];
 			ob_start();
 				include 'view/print.php';
 				$html = ob_get_contents();
@@ -235,6 +235,25 @@ class ComplaintsForums extends Complaints {
 	
 	function binItem($id) {
 		$retval = $this->model->binItem($id);
+		if($retval){
+			return "true";
+		} else{
+			return "error";
+		}
+	}
+	
+	
+	function restoreItem($id) {
+		$retval = $this->model->restoreItem($id);
+		if($retval){
+			return "true";
+		} else{
+			return "error";
+		}
+	}
+	
+	function deleteItem($id) {
+		$retval = $this->model->deleteItem($id);
 		if($retval){
 			return "true";
 		} else{
