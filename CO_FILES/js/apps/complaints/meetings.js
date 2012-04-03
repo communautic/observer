@@ -498,6 +498,22 @@ function complaintsMeetings(name) {
 		});
 	}
 
+
+	this.manageCheckpoint = function(action,date) {
+		var pid = $('#complaints').data('third');
+		switch(action) {
+			case 'new':
+				$.ajax({ type: "GET", url: "/", data: "path=apps/complaints/modules/meetings&request=newCheckpoint&id=" + pid + "&date=" + date, cache: false });
+			break;
+			case 'update':
+				$.ajax({ type: "GET", url: "/", data: "path=apps/complaints/modules/meetings&request=updateCheckpoint&id=" + pid + "&date=" + date, cache: false });			
+			break;
+			case 'delete':
+				$.ajax({ type: "GET", url: "/", data: "path=apps/complaints/modules/meetings&request=deleteCheckpoint&id=" + pid, cache: false });
+			break;
+		}
+	}
+	
 }
 
 var complaints_meetings = new complaintsMeetings('complaints_meetings');

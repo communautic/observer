@@ -47,7 +47,7 @@ function complaintsGrids(name) {
 		var id = $("#complaints3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
 		$('#complaints').data({ "third" : id});
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/complaints/modules/grids&request=getDetails&id="+id, success: function(data){
-			$("#complaints-right").html(data.html);
+			$("#complaints-right").empty().html(data.html);
 			
 			if($('#checkedOut').length > 0) {
 					$("#complaints3 ul[rel=grids] .active-link .icon-checked-out").addClass('icon-checked-out-active');
@@ -581,92 +581,93 @@ function complaintsGrids(name) {
 
 
 	this.actionConvert = function() {
-		$('#modalDialogGrid').slideDown();
+		$('#modalDialogComplaintsGrid').slideDown();
 	}
 
 }
 
 var complaints_grids = new complaintsGrids('complaints_grids');
 
+var currentComplaintGridClickedNote = 0;
+var currentComplaintGridEditedNote = 0;
 
-function initComplaintsConsole() {
-	$('#complaints-console-notes>div').livequery( function() {
+$(document).ready(function() {
+
+// console
+	/*$('#complaints-console-notes>div').livequery( function() {
 		$(this).draggable({
-			//cursor: 'move',
 			connectToSortable: ".complaints-phase",
 			helper: "clone",
 			appendTo: '#complaints-right',
 			zIndex: 102,
 			revert: 'invalid',
-			//revert: 'invalid',
 			start: function(e, ui) {
 				$(ui.helper).addClass("ui-draggable-helper-grid");
 			}
 		});
 	});
+
 	$('#complaints-console').livequery( function() {
 		$(this).draggable({handle: 'h3', containment: '#complaints-right .scroll-pane', cursor: 'move'})
 		.resizable({ minHeight: 25, minWidth: 230});
-	});
-}
+	});*/
 
-
-function initComplaintsOuter() {
+// grid outer
 	$('#complaints-grid').livequery( function() {
 		$(this).sortable({
 			items: '>div',
 			handle: 'h3',
-			//cursor: 'move',
 			handle: '.dragColActive',
 			axis: 'x',
 			tolerance: 'pointer',
 			containment: '#complaints-grid',
 			update: function(event,ui) {
 				var order = $(this).sortable("serialize");
-				//console.log('?id='+id+'&'+ order);
 				$.ajax({ type: "GET", url: "/", data: "path=apps/complaints/modules/grids&request=saveGridColumns&"+ order, cache: false, success: function(data){
 					}
 				});
 			}
 		})
 	});
-}
 
-
-function initComplaintsPhases() {
-	
-	// Title
+// Title
 	$('#complaints-grid .complaints-col-title').livequery( function() {
 		$(this).droppable({
 			accept: '.droppable',
-			tolerance: 'fit',
 			drop: function( event, ui ) {
 				var tocopy = false;
+				var orig = false;
+				var attr = ui.draggable.attr('id');
 				if($(this).find('>div').length > 0) {
 					tocopy = $(this).html();
+					orig = $(this).find('>div').attr('id');
+					if(attr != 'undefined') {
+						if(orig == attr) {
+							return false;	
+						}
+					}
 				}
-				// check if dropped from console
 				var idx = $('#complaints-grid .complaints-col-title').index(this);
 				if(tocopy) {
 					$('#complaints-grid .complaints-phase:eq('+idx+')').prepend(tocopy);
+					$('#complaints-grid .complaints-phase:eq('+idx+') > div:eq(0)').removeClass('colTitle').removeClass('ui-sortable-helper').removeClass('ui-draggable').removeClass('ui-draggable-dragging').attr('style','');
 				}
 				var insert = ui.draggable.clone();
-				$(this).html(insert.attr('style','').addClass('colTitle')).addClass('planned');
-				var attr = ui.draggable.attr('id');
+				$(this).html(insert.attr('style','').addClass('colTitle').removeClass('ui-sortable-helper')).addClass('planned');
 				var pid = $("#complaints").data("third");
 				var col = parseInt($(this).parent().attr("id").replace(/gridscol_/, ""));
 				
 				if(ui.draggable.hasClass('colStagegate')) {
-						var id = ui.draggable.attr('rel');
-						$('#complaints-grid div[id=item_'+id+']').remove();
-						insert.attr('id','item_' + id).removeClass('colStagegate');
-						$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/complaints/modules/grids&request=saveGridNoteTitle&id=" + id + "&col="+col, cache: false, success: function(id){
-								$('#complaints-grid .complaints-phase:eq('+idx+')').trigger('sortupdate');
-							}
-						});
+					var id = ui.draggable.attr('rel');
+					$('#complaints-grid div[id=item_'+id+']').remove();
+					insert.attr('id','item_' + id).removeClass('colStagegate');
+					$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/complaints/modules/grids&request=saveGridNoteTitle&id=" + id + "&col="+col, cache: false, success: function(id){
+							$('#complaints-grid .complaints-phase:eq('+idx+')').trigger('sortupdate');
+						}
+					});
 				} else if (typeof attr == 'undefined' || attr == false) {
 					var id = ui.draggable.attr('rel');
-					$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/complaints/modules/grids&request=saveGridNewNoteTitle&pid="+pid+"&id=" + id+"&col="+col, cache: false, success: function(id){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/complaints/modules/grids&request=saveGridNewNoteTitle&pid="+pid+"&id=" + id+"&col="+col, cache: false, success: function(id){
 						insert.attr('id','item_' + id).attr('rel',id);
 						var e = '<input name="" type="checkbox" value="'+id+'" class="cbx jNiceHidden" />';
 						var e = insert.find('div.statusItem').html(e);
@@ -675,29 +676,26 @@ function initComplaintsPhases() {
 						$('#complaints-grid .complaints-phase:eq('+idx+')').trigger('sortupdate');
 						}
 					});
-				
 				} else { // if dropped from list
-						
-						if(ui.draggable.hasClass('colTitle')) {
-							ui.draggable.parent().html('<span class="newNoteItem newNoteTitle"></span>');
+					if(ui.draggable.hasClass('colTitle')) {
+						ui.draggable.parent().html('<span class="newNoteItem newNoteTitle"></span>');
+					}
+					var dragidx = $('#complaints-grid .complaints-phase').index(ui.draggable.parent());
+					ui.draggable.remove();
+					var id = attr.replace(/item_/, "");
+					$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/complaints/modules/grids&request=saveGridNoteTitle&id=" + id + "&col="+col, cache: false, success: function(id){
+						if(dragidx != idx) {
+							$('#complaints-grid .complaints-phase:eq('+idx+')').trigger('sortupdate');
 						}
-						ui.draggable.remove();
-						var id = attr.replace(/item_/, "");
-						$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/complaints/modules/grids&request=saveGridNoteTitle&id=" + id + "&col="+col, cache: false, success: function(id){
-								$('#complaints-grid .complaints-phase:eq('+idx+')').trigger('sortupdate');
-							}
-						});
-					//}
+						}
+					});
 				}
-				
 			}
 		})	
 	})
 
-
 	$('#complaints-grid .complaints-col-title>div').livequery( function() {
 		$(this).draggable({
-			//cursor: 'move',
 			connectToSortable: ".complaints-phase",
 			helper: "clone",
 			handle: '.dragItem',
@@ -710,39 +708,42 @@ function initComplaintsPhases() {
 		});
 	})
 
-	
-		// Title
+
+// Stagegate
 	$('#complaints-grid .complaints-col-stagegate').livequery( function() {
 		$(this).droppable({
 			accept: '.droppable',
-			//tolerance: 'fit',
 			drop: function( event, ui ) {
 				var tocopy = false;
+				var orig = false;
+				var attr = ui.draggable.attr('id');
 				if($(this).find('>div').length > 0) {
 					tocopy = $(this).html();
+					orig = $(this).find('>div').attr('id');
+					if(attr != 'undefined') {
+						if(orig == attr) {
+							return false;	
+						}
+					}
 				}
-				
-				// check if dropped from console
 				var idx = $('#complaints-grid .complaints-col-stagegate').index(this);
 				if(tocopy) {
-					$('#complaints-grid .complaints-phase:eq('+idx+')').append(tocopy);
+					$('#complaints-grid .complaints-phase:eq('+idx+')').prepend(tocopy);
+					$('#complaints-grid .complaints-phase:eq('+idx+') > div:eq(0)').removeClass('colStagegate').removeClass('ui-sortable-helper').removeClass('ui-draggable').removeClass('ui-draggable-dragging').attr('style','');
 				}
 				var insert = ui.draggable.clone();
-				$(this).html(insert.attr('style','').addClass('colStagegate'));
-				var attr = ui.draggable.attr('id');
+				$(this).html(insert.attr('style','').addClass('colStagegate').removeClass('ui-sortable-helper'));
+				//var attr = ui.draggable.attr('id');
 				var pid = $("#complaints").data("third");
 				var col = parseInt($(this).parent().parent().parent().attr("id").replace(/gridscol_/, ""));
 				if(ui.draggable.hasClass('colTitle')) {
-
-							//alert('title moved');
-	
-						var id = ui.draggable.attr('rel');
-						$('#complaints-grid div[id=item_'+id+']').remove();
-						insert.attr('id','item_' + id).removeClass('colTitle');
-						$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/complaints/modules/grids&request=saveGridNoteStagegate&id=" + id + "&col="+col, cache: false, success: function(id){
-								$('#complaints-grid .complaints-phase:eq('+idx+')').trigger('sortupdate');
-							}
-						});
+					var id = ui.draggable.attr('rel');
+					$('#complaints-grid div[id=item_'+id+']').remove();
+					insert.attr('id','item_' + id).removeClass('colTitle');
+					$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/complaints/modules/grids&request=saveGridNoteStagegate&id=" + id + "&col="+col, cache: false, success: function(id){
+						$('#complaints-grid .complaints-phase:eq('+idx+')').trigger('sortupdate');
+						}
+					});
 				} else if (typeof attr == 'undefined' || attr == false) {
 					var id = ui.draggable.attr('rel');
 					$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/complaints/modules/grids&request=saveGridNewNoteStagegate&pid="+pid+"&id=" + id+"&col="+col, cache: false, success: function(id){
@@ -755,13 +756,16 @@ function initComplaintsPhases() {
 						}
 					});
 				} else { // if dropped from list
-						if(ui.draggable.hasClass('colStagegate')) {
-							ui.draggable.parent().html('<span class="newNoteItem newNoteStagegate"></span>');
-						}
+					if(ui.draggable.hasClass('colStagegate')) {
+						ui.draggable.parent().html('<span class="newNoteItem newNoteStagegate"></span>');
+					}
+					var dragidx = $('#complaints-grid .complaints-phase').index(ui.draggable.parent());
 					ui.draggable.remove();
 					var id = attr.replace(/item_/, "");
 					$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/complaints/modules/grids&request=saveGridNoteStagegate&id=" + id + "&col="+col, cache: false, success: function(id){
+						if(dragidx != idx) {
 							$('#complaints-grid .complaints-phase:eq('+idx+')').trigger('sortupdate');
+						}
 						}
 					});
 				}
@@ -769,10 +773,8 @@ function initComplaintsPhases() {
 		})	
 	})
 
-
 	$('#complaints-grid .complaints-col-stagegate>div').livequery( function() {
 		$(this).draggable({
-			//cursor: 'move',
 			connectToSortable: ".complaints-phase",
 			helper: "clone",
 			handle: '.dragItem',
@@ -784,16 +786,27 @@ function initComplaintsPhases() {
 			}
 		});
 	})
-	
-	
-	// Liste
+
+
+// SORTABLE LIST
 	$('#complaints-grid .complaints-phase').livequery( function() {
 		$(this).sortable({
 			items: '>div',
 			handle: '.dragItem',
-			connectWith: ['.complaints-phase','.complaints-col-title','.complaints-col-stagegate']
-		})
-		$(this).bind('sortupdate', function(event, ui) {
+			connectWith: '.complaints-phase,.complaints-col-title,.complaints-col-stagegate',
+			receive: function (event, ui) { // add this handler
+				setTimeout(function() {
+					if(ui.item.hasClass('colTitle')) {
+						ui.item.parent().html('<span class="newNoteItem newNoteTitle"></span>');
+						ui.item.remove();
+					}
+					if(ui.item.hasClass('colStagegate')) {
+						ui.item.parent().html('<span class="newNoteItem newNoteStagegate"></span>');
+						ui.item.remove();
+					}
+				}, 100);
+			}
+		}).disableSelection().bind('sortupdate', function(event, ui) {
 			var col = parseInt($(this).parent().attr("id").replace(/gridscol_/, ""));
 			var idx = $('#complaints-grid .complaints-phase').index(this);
 			$('#complaints-grid .complaints-phase:eq('+idx+')>div').each(function(index) {
@@ -801,13 +814,8 @@ function initComplaintsPhases() {
 				var attr = div.attr('id');
 				if (typeof attr == 'undefined' || attr == false) {
 					if(div.hasClass('colTitle') || div.hasClass('colStagegate')) {
-							//alert('title stagegate moved');
-						
-						div.removeClass('colTitle').removeClass('colStagegate').removeClass('ui-draggable').removeClass('ui-draggable-dragging').attr('style','');
 						var id = div.attr('rel');
-						$('div[id=item_'+id+']').parent().html('<span class="newNoteItem newNoteTitle"></span>');
-						$('div[id=item_'+id+']').remove();
-						$
+						div.removeClass('colTitle'). removeClass('colStagegate').removeClass('ui-draggable').removeClass('ui-draggable-dragging').attr('style','');
 						div.attr('id','item_' + id);
 						var e = '<input name="" type="checkbox" value="'+id+'" class="cbx jNiceHidden" />';
 						var e = div.find('div.statusItem').html(e);
@@ -815,21 +823,22 @@ function initComplaintsPhases() {
 						$.jNice.CheckAddPO(element);						
 					} else {
 						var id = div.attr('rel');
-						var pid = $("#complaints").data("third");
-						$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/complaints/modules/grids&request=saveGridNewNote&pid="+pid+"&id=" + id, cache: false, success: function(id){
-							div.attr('id','item_' + id);
-							var e = '<input name="" type="checkbox" value="'+id+'" class="cbx jNiceHidden" />';
-							var e = div.find('div.statusItem').html(e);
-							var element = div.find('input');
-							$.jNice.CheckAddPO(element);
-							}
-						});
+						if (typeof id != 'undefined') {
+							var pid = $("#complaints").data("third");
+							$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/complaints/modules/grids&request=saveGridNewNote&pid="+pid+"&id=" + id, cache: false, success: function(id){
+								div.attr('id','item_' + id);
+								var e = '<input name="" type="checkbox" value="'+id+'" class="cbx jNiceHidden" />';
+								var e = div.find('div.statusItem').html(e);
+								var element = div.find('input');
+								$.jNice.CheckAddPO(element);
+								}
+							});
+						}
 					}
 				}
 			});
 			var order = $('#complaints-grid .complaints-phase:eq('+idx+')').sortable("serialize");
-			$.ajax({ type: "GET", url: "/", data: "path=apps/complaints/modules/grids&request=saveGridItems&col="+col+"&"+ order, cache: false, success: function(data){
-				
+			$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/complaints/modules/grids&request=saveGridItems&col="+col+"&"+ order, cache: false, success: function(data){
 				var titleset = $('div.complaints-col-title:eq('+idx+')').html();
 				var title = 0;
 				if(titleset != "" && titleset != '<span class="newNoteItem newNoteTitle"></span>') {
@@ -837,37 +846,37 @@ function initComplaintsPhases() {
 				}
 				var ncbx = $('div.complaints-phase:eq('+idx+') input:checkbox').length;
 				var n = $('div.complaints-phase:eq('+idx+') input:checked').length;
-						if(ncbx > 0 || title == 1) {
-							$('div.complaints-col-title:eq('+idx+')').removeClass('progress').removeClass('finished').addClass('planned');
-							$('div.complaints-col-footer:eq('+idx+') .complaints-stagegate').removeClass('active');
-						}
-						if(ncbx == 0 && title == 0) {
-							$('div.complaints-col-title:eq('+idx+')').removeClass('progress').removeClass('finished').removeClass('planned');
-							$('div.complaints-col-footer:eq('+idx+') .complaints-stagegate').removeClass('active');
-						}
-						if(ncbx > n && n > 0) {
-							$('div.complaints-col-title:eq('+idx+')').removeClass('planned').removeClass('finished').addClass('progress');
-							$('div.complaints-col-footer:eq('+idx+') .complaints-stagegate').removeClass('active');
-						}
-						if(ncbx > 0 && n == ncbx) {
-							$('div.complaints-col-title:eq('+idx+')').removeClass('planned').removeClass('finished').addClass('finished');
-							$('div.complaints-col-footer:eq('+idx+') .complaints-stagegate').addClass('active');
-						}
+				if(ncbx > 0 || title == 1) {
+					$('div.complaints-col-title:eq('+idx+')').removeClass('progress').removeClass('finished').addClass('planned');
+					$('div.complaints-col-footer:eq('+idx+') .complaints-stagegate').removeClass('active');
+				}
+				if(ncbx == 0 && title == 0) {
+					$('div.complaints-col-title:eq('+idx+')').removeClass('progress').removeClass('finished').removeClass('planned');
+					$('div.complaints-col-footer:eq('+idx+') .complaints-stagegate').removeClass('active');
+				}
+				if(ncbx > n && n > 0) {
+					$('div.complaints-col-title:eq('+idx+')').removeClass('planned').removeClass('finished').addClass('progress');
+					$('div.complaints-col-footer:eq('+idx+') .complaints-stagegate').removeClass('active');
+				}
+				if(ncbx > 0 && n == ncbx) {
+					$('div.complaints-col-title:eq('+idx+')').removeClass('planned').removeClass('finished').addClass('finished');
+					$('div.complaints-col-footer:eq('+idx+') .complaints-stagegate').addClass('active');
+				}
 				// calc grid height
 				var numitems = 0;
 				$('#complaints-grid .complaints-phase').each(function() {
 					var items = $(this).find('>div').size();
 					// set new
-					var t = items*27+78;
+					var t = items*27+78+4;
 					$(this).find('>span').animate({top: t});
 					
 					if(items > numitems) {
 						numitems = items;
 					}
 				});
-				var colheight = numitems*27+78+80;
-				if (colheight < 266) {
-					colheight = 266;
+				var colheight = numitems*27+78+80+8;
+				if (colheight < 266+8) {
+					colheight = 266+8;
 				}
 				var listheight = numitems*27+27;
 				if (listheight < 135) {
@@ -879,26 +888,15 @@ function initComplaintsPhases() {
 			});
     	});
 	})
-}
-
-var currentComplaintGridClickedNote = 0;
-var currentComplaintGridEditedNote = 0;
-
-$(document).ready(function() {
-
-	initComplaintsConsole();
-	initComplaintsOuter();
-	initComplaintsPhases();
-	//complaints_grids.initItems();
 	
-	$(document).on('click', '#complaints-console a.collapse', function(e) {
+	/*$(document).on('click', '#complaints-console a.collapse', function(e) {
 		e.preventDefault();
 		var height = 25;
 		if($(this).hasClass('closed')) {
 			var height = 250;
 		}
 		$(this).toggleClass('closed').parent().parent().animate({'height': height});
-	});	
+	});	*/
 	
 	
 	$("#complaints-grid input.colDays").livequery(function () {
@@ -948,14 +946,34 @@ $(document).ready(function() {
 		var sor = $('#complaints-grid>div').size();
 		var styles = '';
 		if(sor != 0) {
-			var styles = ' style="height: ' + $('#complaints-grid>div:eq(0)').height() + 'px"';
-			//var height = ' style="height: ' + $('#complaints-grid>div:eq(0)').height() + 'px"';
+			//var styles = ' style="height: ' + $('#complaints-grid>div:eq(0)').height() + 'px"';
 		}
 		$("#complaints-grid").width($("#complaints-grid").width()+230);
 		$.ajax({ type: "GET", url: "/", data: "path=apps/complaints/modules/grids&request=newGridColumn&id="+pid+"&sort="+sor, cache: false, success: function(num){
-			//$("#complaints-grid").append('<div id="gridscol_' + num + '" class="drag" ' + styles +'><h3 class="ui-widget-header">&nbsp;<div class="complaints-column-delete" id="complaints-col-delete-' + num + '"><span class="icon-delete"></span></div></h3><div class="complaints-phase complaints-phase-design"></div></div>').sortable("refresh");
-			$("#complaints-grid").append('<div id="gridscol_' + num + '" ' + styles +'><div id="complaints-col-delete-' + num + '" class="complaints-column-delete"><span class="icon-delete"></span></div><div class="dragCol"></div><div class="complaints-col-title"><span class="newNoteItem newNoteTitle"></span></div><div class="complaints-phase complaints-phase-design ui-sortable"><span class="newNoteItem newNote"></span></div><div class="complaints-col-footer"><div class="complaints-col-footer-stagegate"><div class="complaints-stagegate"></div><div class="complaints-col-stagegate ui-droppable"><span class="newNoteItem newNoteStagegate"></span></div></div><div class="complaints-col-footer-days"><div style=""><input type="text" style="margin" maxlength="3" size="3" value="0" name="" class="colDays"></div></div></div></div>').sortable("refresh");
-			initComplaintsPhases();
+			$("#complaints-grid").append('<div id="gridscol_' + num + '"><div id="complaints-col-delete-' + num + '" class="complaints-column-delete"><span class="icon-delete"></span></div><div class="dragCol"></div><div class="complaints-col-title"><span class="newNoteItem newNoteTitle"></span></div><div class="grids-spacer"></div><div class="complaints-phase complaints-phase-design ui-sortable"><span class="newNoteItem newNote"></span></div><div class="grids-spacer"></div><div class="complaints-col-footer"><div class="complaints-col-footer-stagegate"><div class="complaints-stagegate"></div><div class="complaints-col-stagegate ui-droppable"><span class="newNoteItem newNoteStagegate"></span></div></div><div class="complaints-col-footer-days"><div style=""><input type="text" style="margin" maxlength="3" size="3" value="0" name="" class="colDays"></div></div></div></div>').sortable("refresh");
+			//initComplaintsPhases();
+			// calc grid height
+				var numitems = 0;
+				$('#complaints-grid .complaints-phase').each(function() {
+					var items = $(this).find('>div').size();
+					// set new
+					var t = items*27+78+4;
+					$(this).find('>span').animate({top: t});
+					
+					if(items > numitems) {
+						numitems = items;
+					}
+				});
+				var colheight = numitems*27+78+80+8;
+				if (colheight < 266+8) {
+					colheight = 266+8;
+				}
+				var listheight = numitems*27+27;
+				if (listheight < 135) {
+					listheight = 135;
+				}
+				$('#complaints-grid .complaints-phase').height(listheight).parent().animate({height: colheight});
+				$('#complaints-grid').animate({height: colheight+1});
 			}
 		});
 	})
@@ -967,13 +985,12 @@ $(document).ready(function() {
 	});
 
 
-	$(document).on('click', '#complaints-grid .newNote', function(e) {
+	$(document).on('click', '#complaints-grid span.newNote', function(e) {
 		e.preventDefault();
 			//var clicked = $(this);
 			var idx = $('#complaints-grid .newNote').index(this);
 			var pid = $("#complaints").data("third");
 			$.ajax({ type: "GET", url: "/", data: "path=apps/complaints/modules/grids&request=saveGridNewManualNote&pid="+pid, cache: false, success: function(html){
-					
 					var phase = $('#complaints-grid .complaints-phase:eq('+idx+')');
 					phase.append(html);
 					var element = phase.find('input:last');
@@ -986,32 +1003,33 @@ $(document).ready(function() {
 	
 	$(document).on('click', '#complaints-grid .newNoteTitle', function(e) {
 		e.preventDefault();
-			var col = parseInt($(this).parent().parent().attr("id").replace(/gridscol_/, ""));
-			var pid = $("#complaints").data("third");
-			$.ajax({ type: "GET", url: "/", data: "path=apps/complaints/modules/grids&request=saveGridNewManualTitle&pid="+pid+"&col="+col, cache: false, success: function(html){	
-					//var phase = $('#complaints-grid .complaints-col-title:eq('+idx+')');
-					var phase = $('#gridscol_'+col+' .complaints-col-title');
-					phase.html(html);
-					var element = phase.find('input');
-					$.jNice.CheckAddPO(element);
-					phase.next().trigger('sortupdate');
-				}
-			});
+		var col = parseInt($(this).parent().parent().attr("id").replace(/gridscol_/, ""));
+		var pid = $("#complaints").data("third");
+		$(this).parent().addClass('planned');
+		$.ajax({ type: "GET", url: "/", data: "path=apps/complaints/modules/grids&request=saveGridNewManualTitle&pid="+pid+"&col="+col, cache: false, success: function(html){	
+				//var phase = $('#complaints-grid .complaints-col-title:eq('+idx+')');
+				var phase = $('#gridscol_'+col+' .complaints-col-title');
+				phase.html(html);
+				var element = phase.find('input');
+				$.jNice.CheckAddPO(element);
+				phase.next().trigger('sortupdate');
+			}
+		});
 	});
 	
 	
 	$(document).on('click', '#complaints-grid .newNoteStagegate', function(e) {
 		e.preventDefault();
-			var col = parseInt($(this).parent().parent().parent().parent().attr("id").replace(/gridscol_/, ""));
-			var pid = $("#complaints").data("third");
-			$.ajax({ type: "GET", url: "/", data: "path=apps/complaints/modules/grids&request=saveGridNewManualStagegate&pid="+pid+"&col="+col, cache: false, success: function(html){	
-					var phase = $('#gridscol_'+col+' .complaints-col-stagegate');
-					phase.html(html);
-					var element = phase.find('input');
-					$.jNice.CheckAddPO(element);
-					phase.prev().trigger('sortupdate');
-				}
-			});
+		var col = parseInt($(this).parent().parent().parent().parent().attr("id").replace(/gridscol_/, ""));
+		var pid = $("#complaints").data("third");
+		$.ajax({ type: "GET", url: "/", data: "path=apps/complaints/modules/grids&request=saveGridNewManualStagegate&pid="+pid+"&col="+col, cache: false, success: function(html){	
+				var phase = $('#gridscol_'+col+' .complaints-col-stagegate');
+				phase.html(html);
+				var element = phase.find('input');
+				$.jNice.CheckAddPO(element);
+				phase.prev().trigger('sortupdate');
+			}
+		});
 	});
 
 
@@ -1034,13 +1052,13 @@ $(document).ready(function() {
 			return false;
 		} else {
 			var id = parseInt($(this).parent().attr("id").replace(/item_/, ""));
-			currentComplaintGridClickedNote = id;
 			var note = $(this).parent();
 			var left = note.parent().parent().position();
 			left = left.left+addleft;
 			var pos = note.position();
 			var top = pos.top+addtop;
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/complaints/modules/grids&request=getGridNote&id="+id, success: function(data){
+				currentBrainstormGridClickedNote = id;
 				$('#complaints-grid-note-title').html(data.title);
 				$('#complaints-grid-note-text').html(data.text);
 				$('#complaints-grid-note-save a').attr('rel',id);
@@ -1076,7 +1094,7 @@ $(document).ready(function() {
 		var id = $("#complaints").data("third");
 		var kickofffield = Date.parse($("#complaints input[name='kickoff']").val());
 		var kickoff = kickofffield.toString("yyyy-MM-dd");
-		var folder = $('#gridprojectsfolder>span').attr('uid');
+		var folder = $('#complaintsgridprojectsfolder>span').attr('uid');
 		if(typeof folder == 'undefined' || folder == false) {
 			$.prompt(ALERT_CHOOSE_FOLDER);
 			return false;
@@ -1085,7 +1103,7 @@ $(document).ready(function() {
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/complaints/modules/grids&request=convertToProject&id="+id+"&kickoff="+kickoff+"&folder="+folder+"&protocol="+protocol, success: function(data){
 			var html = '<div class="text11">Projektordner: <span class="listmember">' + data.fid + '</span>, ' + data.created_user + ', ' + data.created_date + '</div';
 			$('#project_created').append(html);
-			$("#modalDialogGrid").slideUp(function() {		
+			$("#modalDialogComplaintsGrid").slideUp(function() {		
 				initComplaintsContentScrollbar();							
 			});
 			}
@@ -1094,21 +1112,9 @@ $(document).ready(function() {
 
 	$(document).on('click', '#modalDialogComplaintsGridClose', function(e) {
 		e.preventDefault();
-		$("#modalDialogGrid").slideUp(function() {		
+		$("#modalDialogComplaintsGrid").slideUp(function() {		
 			initComplaintsContentScrollbar();									
 		});
-	});
-	
-	$(document).on('click', 'a.binDeleteColumn', function(e) {
-		e.preventDefault();
-		var id = $(this).attr("rel");
-		complaints_grids.binDeleteColumn(id);
-	});
-	
-	$(document).on('click', 'a.binRestoreColumn', function(e) {
-		e.preventDefault();
-		var id = $(this).attr("rel");
-		complaints_grids.binRestoreColumn(id);
 	});
 
 

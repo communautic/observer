@@ -377,24 +377,14 @@ function complaintsApplication(name) {
 		var pid = $('#complaints').data('second');
 		switch(action) {
 			case 'new':
-				$.ajax({ type: "GET", url: "/", data: "path=apps/complaints&request=newCheckpoint&id=" + pid + "&date=" + date, cache: false, success: function(data){
-
-					}
-				});
+				$.ajax({ type: "GET", url: "/", data: "path=apps/complaints&request=newCheckpoint&id=" + pid + "&date=" + date, cache: false });
 			break;
 			case 'update':
-				$.ajax({ type: "GET", url: "/", data: "path=apps/complaints&request=updateCheckpoint&id=" + pid + "&date=" + date, cache: false, success: function(data){
-
-					}
-				});			
+				$.ajax({ type: "GET", url: "/", data: "path=apps/complaints&request=updateCheckpoint&id=" + pid + "&date=" + date, cache: false });			
 			break;
 			case 'delete':
-				$.ajax({ type: "GET", url: "/", data: "path=apps/complaints&request=deleteCheckpoint&id=" + pid, cache: false, success: function(data){
-
-					}
-				});
+				$.ajax({ type: "GET", url: "/", data: "path=apps/complaints&request=deleteCheckpoint&id=" + pid, cache: false });
 			break;
-			
 		}
 	}
 
@@ -742,21 +732,21 @@ $(document).ready(function() {
 		e.preventDefault();
 		navThreeTitleFirst('complaints',$(this),passed_id)
 		prevent_dblclick(e)
-	});
+	}).disableSelection();
 
 
 	$("#complaints2-outer").on('click', 'h3', function(e, passed_id) {
 		e.preventDefault();
 		navThreeTitleSecond('complaints',$(this),passed_id)
 		prevent_dblclick(e)
-	});
+	}).disableSelection();
 
 
 	$("#complaints3").on('click', 'h3', function(e, passed_id) {
 		e.preventDefault();
 		navThreeTitleThird('complaints',$(this),passed_id)
 		prevent_dblclick(e)
-	});
+	}).disableSelection();
 
 
 	$('#complaints1').on('click', 'span.module-click',function(e) {
