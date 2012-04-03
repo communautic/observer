@@ -50,8 +50,8 @@ $lang["COMPLAINT_STATUS_INPROGRESS_TEXT"] = 'in Arbeit';
 $lang["COMPLAINT_STATUS_FINISHED_TEXT"] = 'abgeschlossen';
 $lang["COMPLAINT_STATUS_STOPPED_TEXT"] = 'abgebrochen';
 
-$lang["COMPLAINT_HELP"] = 'manual_kunden_kunden.pdf';
-$lang["COMPLAINT_FOLDER_HELP"] = 'manual_kunden_ordner.pdf';
+$lang["COMPLAINT_HELP"] = 'manual_reklamationen_reklamationen.pdf';
+$lang["COMPLAINT_FOLDER_HELP"] = 'manual_reklamationen_ordner.pdf';
 
 // Print images
 $lang["PRINT_COMPLAINT"] = 'reklamation.png';

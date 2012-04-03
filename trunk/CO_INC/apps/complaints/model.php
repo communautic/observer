@@ -562,9 +562,7 @@ class ComplaintsModel extends Model {
 			$today = $array["startdate"];
 		}
 		
-		
 		$array["startdate"] = $this->_date->formatDate($array["startdate"],CO_DATE_FORMAT);
-		//$array["enddate"] = $this->_date->formatDate($array["enddate"],CO_DATE_FORMAT);
 
 		$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
 		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
@@ -587,9 +585,6 @@ class ComplaintsModel extends Model {
 		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
 		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
 		$array["current_user"] = $session->uid;
-		
-		
-		
 		
 		switch($array["status"]) {
 			case "0":
@@ -617,7 +612,7 @@ class ComplaintsModel extends Model {
 		// checkpoint
 		$array["checkpoint"] = 0;
 		$array["checkpoint_date"] = "";
-		$q = "SELECT date FROM " . CO_TBL_USERS_CHECKPOINTS . " where uid='$session->uid' and app_id = '$id' LIMIT 1";
+		$q = "SELECT date FROM " . CO_TBL_USERS_CHECKPOINTS . " where uid='$session->uid' and app = 'complaints' and module = 'complaints' and app_id = '$id' LIMIT 1";
 		$result = mysql_query($q, $this->_db->connection);
 		if(mysql_num_rows($result) > 0) {
 			while ($row = mysql_fetch_assoc($result)) {
@@ -625,7 +620,6 @@ class ComplaintsModel extends Model {
 			$array["checkpoint_date"] = $this->_date->formatDate($row['date'],CO_DATE_FORMAT);
 			}
 		}
-		
 		
 		$complaint = new Lists($array);
 		
@@ -872,6 +866,10 @@ class ComplaintsModel extends Model {
 		$q = "DELETE FROM co_log_sendto WHERE what='complaints' and whatid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
+		///$q = "DELETE FROM co_log_sendto WHERE what='complaints' and whatid='$id'";
+		$q = "DELETE FROM " . CO_TBL_USERS_CHECKPOINTS . " WHERE app_id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
 		$q = "DELETE FROM co_complaints_access WHERE pid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
@@ -988,246 +986,6 @@ class ComplaintsModel extends Model {
    
    function getRest($value) {
 		return round(100-$value,2);
-   }
-
-
-	function getChartFolder($id, $what) { 
-		global $complaintsControllingModel, $lang;
-		switch($what) {
-			case 'stability':
-				$chart = $this->getChartFolder($id, 'timeing');
-				$timeing = $chart["real"];
-				
-				$chart = $this->getChartFolder($id, 'tasks');
-				$tasks = $chart["real"];
-				
-				$chart["real"] = round(($timeing+$tasks)/2,0);
-				$chart["title"] = $lang["COMPLAINT_FOLDER_CHART_STABILITY"];
-				$chart["img_name"] = $id . "_stability.png";
-				$chart["url"] = 'https://chart.googleapis.com/chart?chs=150x90&cht=gm&chd=t:' . $chart["real"];
-				
-				$chart["tendency"] = "tendency_negative.png";
-				if($chart["real"] >= 50) {
-					$chart["tendency"] = "tendency_positive.png";
-				}
-				
-				$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
-				
-			break;
-			case 'realisation':
-				$realisation = 0;
-				$id_array = "";
-				
-				$q = "SELECT id FROM " . CO_TBL_COMPLAINTS. " WHERE folder = '$id' and status != '0' and bin = '0'";
-				$result = mysql_query($q, $this->_db->connection);
-				$num = mysql_num_rows($result);
-				$i = 1;
-				while($row = mysql_fetch_assoc($result)) {
-					$pid = $row["id"];
-					$calc = $complaintsControllingModel->getChart($pid,'realisation',0);
-					$realisation += $calc["real"];
-
-					if($i == 1) {
-						$id_array .= " and (pid='".$pid."'";
-					} else {
-						$id_array .= " or pid='".$pid."'";
-					}
-					if($i == $num) {
-						$id_array .= ")";
-					}
-					//$id_array .= " and pid='".$pid."'";
-					$i++;
-				}
-				if($num == 0) {
-					$chart["real"] = 0;
-				} else {
-					$chart["real"] = round(($realisation)/$num,0);
-				}
-				$chart["tendency"] = "tendency_negative.png";
-				$qt = "SELECT MAX(donedate) as dt,enddate FROM " . CO_TBL_COMPLAINTS_PHASES_TASKS. " WHERE status='1' $id_array and bin='0'";
-				$resultt = mysql_query($qt, $this->_db->connection);
-				$ten = mysql_fetch_assoc($resultt);
-				if($ten["dt"] <= $ten["enddate"]) {
-					$chart["tendency"] = "tendency_positive.png";
-				}
-				
-				$chart["rest"] = $this->getRest($chart["real"]);
-				$chart["title"] = $lang["COMPLAINT_FOLDER_CHART_REALISATION"];
-				$chart["img_name"] = $id . "_realisation.png";
-				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
-				
-				$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
-			break;
-			
-
-			case 'timeing':
-				$realisation = 0;
-				$id_array = "";
-				
-				$q = "SELECT id FROM " . CO_TBL_COMPLAINTS. " WHERE folder = '$id' and status != '0' and bin = '0'";
-				$result = mysql_query($q, $this->_db->connection);
-				$num = mysql_num_rows($result);
-				$i = 1;
-				while($row = mysql_fetch_assoc($result)) {
-					$pid = $row["id"];
-					$calc = $complaintsControllingModel->getChart($pid,'timeing',0);
-					$realisation += $calc["real"];
-
-					if($i == 1) {
-						$id_array .= " and (pid='".$pid."'";
-					} else {
-						$id_array .= " or pid='".$pid."'";
-					}
-					if($i == $num) {
-						$id_array .= ")";
-					}
-					//$id_array .= " and pid='".$pid."'";
-					$i++;
-				}
-					
-				if($num == 0) {
-					$chart["real"] = 0;
-				} else {
-					$chart["real"] = round(($realisation)/$num,0);
-				}
-				
-				$today = date("Y-m-d");
-				
-				$chart["tendency"] = "tendency_positive.png";
-				$qt = "SELECT COUNT(id) FROM " . CO_TBL_COMPLAINTS_PHASES_TASKS. " WHERE status='0' and startdate <= '$today' and enddate >= '$today' $id_array and bin='0'";
-				$resultt = mysql_query($qt, $this->_db->connection);
-				$tasks_active = mysql_result($resultt,0);
-				
-				$qo = "SELECT COUNT(id) FROM " . CO_TBL_COMPLAINTS_PHASES_TASKS. " WHERE status='0' and enddate < '$today' $id_array and bin='0'";
-				$resulto = mysql_query($qo, $this->_db->connection);
-				$tasks_overdue = mysql_result($resulto,0);
-				if($tasks_active + $tasks_overdue == 0) {
-					$tendency = 0;
-				} else {
-					$tendency = round((100/($tasks_active + $tasks_overdue)) * $tasks_overdue,2);
-				}
-				
-				if($tendency > 10) {
-					$chart["tendency"] = "tendency_negative.png";
-				}
-				
-				$chart["rest"] = $this->getRest($chart["real"]);
-				$chart["title"] = $lang["COMPLAINT_FOLDER_CHART_ADHERANCE"];
-				$chart["img_name"] = $id . "_timeing.png";
-				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
-			
-				$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
-			break;
-			
-			case 'tasks':
-				$realisation = 0;
-				$id_array = "";
-				
-				$q = "SELECT id FROM " . CO_TBL_COMPLAINTS. " WHERE folder = '$id' and status != '0' and bin = '0'";
-				$result = mysql_query($q, $this->_db->connection);
-				$num = mysql_num_rows($result);
-				$i = 1;
-				while($row = mysql_fetch_assoc($result)) {
-					$pid = $row["id"];
-					$calc = $complaintsControllingModel->getChart($pid,'tasks',0);
-					$realisation += $calc["real"];
-
-					if($i == 1) {
-						$id_array .= " and (pid='".$pid."'";
-					} else {
-						$id_array .= " or pid='".$pid."'";
-					}
-					if($i == $num) {
-						$id_array .= ")";
-					}
-					$i++;
-				}
-				if($num == 0) {
-					$chart["real"] = 0;
-				} else {
-					$chart["real"] = round(($realisation)/$num,0);
-				}
-				
-				$today = date("Y-m-d");
-				
-				$chart["tendency"] = "tendency_positive.png";
-				$qt = "SELECT status,donedate,enddate FROM " . CO_TBL_COMPLAINTS_PHASES_TASKS. " WHERE enddate < '$today' $id_array and bin='0' ORDER BY enddate DESC LIMIT 0,1";
-				$resultt = mysql_query($qt, $this->_db->connection);
-				$rowt = mysql_fetch_assoc($resultt);
-				if(mysql_num_rows($resultt) != 0) {
-					$status = $rowt["status"];
-					$enddate = $rowt["enddate"];
-					$donedate = $rowt["donedate"];
-					if($status == "1" && $donedate > $enddate) {
-						$chart["tendency"] = "tendency_negative.png";
-					}
-					if($status == "0") {
-						$chart["tendency"] = "tendency_negative.png";
-					}
-				}
-				
-				$chart["rest"] = $this->getRest($chart["real"]);
-				$chart["title"] = $lang["COMPLAINT_FOLDER_CHART_TASKS"];
-				$chart["img_name"] = $id . "_tasks.png";
-				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
-			
-				$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
-				
-			break;
-			case 'status':
-
-				// all
-				$q = "SELECT id FROM " . CO_TBL_COMPLAINTS. " WHERE folder = '$id' and bin = '0'";
-				$result = mysql_query($q, $this->_db->connection);
-				$all = mysql_num_rows($result);
-				
-				// planned
-				$q = "SELECT id FROM " . CO_TBL_COMPLAINTS. " WHERE folder = '$id' and status = '0' and bin = '0'";
-				$result = mysql_query($q, $this->_db->connection);
-				$planned = mysql_num_rows($result);
-				$chart["planned"] = 0;
-				if($planned != 0) {
-					$chart["planned"] = round((100/$all)*$planned,0);
-				}
-				
-				// inprogress
-				$q = "SELECT id FROM " . CO_TBL_COMPLAINTS. " WHERE folder = '$id' and status = '1' and bin = '0'";
-				$result = mysql_query($q, $this->_db->connection);
-				$inprogress = mysql_num_rows($result);
-				$chart["inprogress"] = 0;
-				if($inprogress != 0) {
-					$chart["inprogress"] = round((100/$all)*$inprogress,0);
-				}
-				// finished
-				$q = "SELECT id FROM " . CO_TBL_COMPLAINTS. " WHERE folder = '$id' and status = '2' and bin = '0'";
-				$result = mysql_query($q, $this->_db->connection);
-				$finished = mysql_num_rows($result);
-				$chart["finished"] = 0;
-				if($finished != 0) {
-					$chart["finished"] = round((100/$all)*$finished,0);
-				}
-				
-				// stopped
-				$q = "SELECT id FROM " . CO_TBL_COMPLAINTS. " WHERE folder = '$id' and status = '3' and bin = '0'";
-				$result = mysql_query($q, $this->_db->connection);
-				$stopped = mysql_num_rows($result);
-				$chart["stopped"] = 0;
-				if($stopped != 0) {
-					$chart["stopped"] = round((100/$all)*$stopped,0);
-				}				
-
-				$chart["title"] = $lang["COMPLAINT_FOLDER_CHART_STATUS"];
-				$chart["img_name"] = 'complaints_' . $id . "_status.png";
-				if($all == 0) {
-					$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:0,100&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
-				} else {
-					$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["planned"]. ',' .$chart["inprogress"] . ',' .$chart["finished"] . ',' .$chart["stopped"] . '&chs=150x90&chco=4BA0C8|FFD20A|82AA0B|7F7F7F&chf=bg,s,FFFFFF';
-				}
-				$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
-			break;
-		}
-		
-		return $chart;
    }
 
 
@@ -1521,6 +1279,7 @@ class ComplaintsModel extends Model {
 				$arr[$module] = "";
 				$arr[$module . "_tasks"] = "";
 				$arr[$module . "_folders"] = "";
+				$arr[$module . "_cols"] = "";
 			}
 		}
 		
@@ -1541,7 +1300,7 @@ class ComplaintsModel extends Model {
 					} else {
 
 						// orders
-						if(in_array("orders",$active_modules)) {
+						/*if(in_array("orders",$active_modules)) {
 							$complaintsOrdersModel = new ComplaintsOrdersModel();
 							$qph ="select id from " . CO_TBL_COMPLAINTS_ORDERS . " where pid = '$pid' and bin='1'";
 							$resultph = mysql_query($qph, $this->_db->connection);
@@ -1549,6 +1308,72 @@ class ComplaintsModel extends Model {
 								$phid = $rowph["id"];
 								$complaintsOrdersModel->deleteOrder($phid);
 								$arr["orders"] = "";
+							}
+						}*/
+						
+						
+						// grids
+					if(in_array("grids",$active_modules)) {
+						$complaintsGridsModel = new ComplaintsGridsModel();
+						$qf ="select id, title, bin, bintime, binuser from " . CO_TBL_COMPLAINTS_GRIDS . " where pid = '$pid'";
+						$resultf = mysql_query($qf, $this->_db->connection);
+						while ($rowf = mysql_fetch_array($resultf)) {
+							$fid = $rowf["id"];
+							if($rowf["bin"] == "1") { // deleted phases
+								$complaintsGridsModel->deleteGrid($fid);
+								$arr["grids"] = "";
+							} else {
+								// columns
+								
+								$qc ="select id,bin from " . CO_TBL_COMPLAINTS_GRIDS_COLUMNS . " where pid = '$fid'";
+								$resultc = mysql_query($qc, $this->_db->connection);
+								while ($rowc = mysql_fetch_array($resultc)) {
+									$cid = $rowc["id"];
+									if($rowc["bin"] == "1") { // deleted phases
+										$complaintsGridsModel->deleteGridColumn($cid);
+										$arr["grids_cols"] = "";
+									} else {
+										// notes
+										$qt ="select id,bin from " . CO_TBL_COMPLAINTS_GRIDS_NOTES . " where cid = '$cid'";
+										$resultt = mysql_query($qt, $this->_db->connection);
+										while ($rowt = mysql_fetch_array($resultt)) {
+											if($rowt["bin"] == "1") { // deleted phases
+												$tid = $rowt["id"];
+												$complaintsGridsModel->deleteGridTask($tid);
+												$arr["grids_tasks"] = "";
+											} 
+										}
+									}
+								}
+							}
+						}
+					}
+						
+						
+						
+						
+						// forums
+						if(in_array("forums",$active_modules)) {
+							$complaintsForumsModel = new ComplaintsForumsModel();
+							$q ="select id, title, bin, bintime, binuser from " . CO_TBL_COMPLAINTS_FORUMS . " where pid = '$pid'";
+							$result = mysql_query($q, $this->_db->connection);
+							while ($row = mysql_fetch_array($result)) {
+								$id = $row["id"];
+								if($row["bin"] == "1") { // deleted forum
+									$complaintsForumsModel->deleteForum($id);
+									$arr["forums"] = "";
+								} else {
+									// forums_tasks
+									$qmt ="select id, text, bin, bintime, binuser from " . CO_TBL_COMPLAINTS_FORUMS_POSTS . " where pid = '$id'";
+									$resultmt = mysql_query($qmt, $this->_db->connection);
+									while ($rowmt = mysql_fetch_array($resultmt)) {
+										if($rowmt["bin"] == "1") { // deleted phases
+											$mtid = $rowmt["id"];
+											$complaintsForumsModel->deleteItem($mtid);
+											$arr["forums_tasks"] = "";
+										}
+									}
+								}
 							}
 						}
 
@@ -1693,27 +1518,6 @@ class ComplaintsModel extends Model {
    }
    
    
-   /*function isOwnerPerms($id,$uid) {
-	   	$q = "SELECT id FROM co_complaints where id = '$id' and created_user ='$uid'";
-      	$result = mysql_query($q, $this->_db->connection);
-		if(mysql_num_rows($result) > 0) {
-			return true;
-		} else {
-			return false;
-		}
-   }*/
-   
-   /*function isComplaintOwner($uid) {
-	   	$q = "SELECT id FROM co_complaints where created_user = '$uid'";
-      	$result = mysql_query($q, $this->_db->connection);
-		if(mysql_num_rows($result) > 0) {
-			return true;
-		} else {
-			return false;
-		}
-   }*/
-   
-   
    function setContactAccessDetails($id, $cid, $username, $password) {
 		global $session;
 		$now = gmdate("Y-m-d H:i:s");
@@ -1773,12 +1577,12 @@ class ComplaintsModel extends Model {
 		}
 		return $data;
 	}
-	
- 
+
+
 	function newCheckpoint($id,$date){
 		global $session;
 		$date = $this->_date->formatDate($date);
-		$q = "INSERT INTO " . CO_TBL_USERS_CHECKPOINTS . " SET uid = '$session->uid', date = '$date', app = 'complaints', app_id='$id'";
+		$q = "INSERT INTO " . CO_TBL_USERS_CHECKPOINTS . " SET uid = '$session->uid', date = '$date', app = 'complaints', module = 'complaints', app_id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			return true;
@@ -1788,7 +1592,7 @@ class ComplaintsModel extends Model {
  	function updateCheckpoint($id,$date){
 		global $session;
 		$date = $this->_date->formatDate($date);
-		$q = "UPDATE " . CO_TBL_USERS_CHECKPOINTS . " SET date = '$date' WHERE uid = '$session->uid' and app_id='$id'";
+		$q = "UPDATE " . CO_TBL_USERS_CHECKPOINTS . " SET date = '$date' WHERE uid = '$session->uid' and app = 'complaints' and module = 'complaints' and app_id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			return true;
@@ -1802,7 +1606,36 @@ class ComplaintsModel extends Model {
 			return true;
 		}
    }
- 
+
+
+    function getCheckpointDetails($app,$module,$id){
+		global $lang, $session, $complaints;
+		$row = "";
+		if($app =='complaints' && $module == 'complaints') {
+			$q = "SELECT title,folder FROM " . CO_TBL_COMPLAINTS . " WHERE id='$id' and bin='0'";
+			$result = mysql_query($q, $this->_db->connection);
+			$row = mysql_fetch_array($result);
+			if(mysql_num_rows($result) > 0) {
+				$row['checkpoint_app_name'] = $lang["COMPLAINT_TITLE"];
+				$row['app_id_app'] = '0';
+			}
+			return $row;
+		} else {
+			$active_modules = array();
+			foreach($complaints->modules as $m => $v) {
+					$active_modules[] = $m;
+			}
+			if($module == 'meetings' && in_array("meetings",$active_modules)) {
+				include_once("modules/".$module."/config.php");
+				include_once("modules/".$module."/lang/" . $session->userlang . ".php");
+				include_once("modules/".$module."/model.php");
+				$complaintsMeetingsModel = new ComplaintsMeetingsModel();
+				$row = $complaintsMeetingsModel->getCheckpointDetails($id);
+				return $row;
+			}
+		}
+   }
+
 
 }
 

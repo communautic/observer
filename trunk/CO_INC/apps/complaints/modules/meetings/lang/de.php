@@ -23,7 +23,7 @@ $lang["COMPLAINT_MEETING_STATUS_CANCELLED"] = 'abgesagt';
 $lang["COMPLAINT_MEETING_STATUS_POSPONED"] = 'verschoben auf';
 $lang["COMPLAINT_MEETING_POSPONED"] = 'verschoben';
 
-$lang["COMPLAINT_MEETING_HELP"] = 'manual_kunden_besprechungen.pdf';
+$lang["COMPLAINT_MEETING_HELP"] = 'manual_reklamationen_besprechungen.pdf';
 
 $lang["COMPLAINT_PRINT_MEETING"] = 'besprechung.png';
 

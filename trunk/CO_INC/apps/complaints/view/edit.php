@@ -77,29 +77,29 @@
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
-    <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['COMPLAINT_PRODUCT_NUMBER'];?></span></span></td>
-    <td class="tcell-right-nopadding"><input name="product" type="text" class="title2 bg" value="<?php echo($complaint->product);?>" /></td>
+    <td class="tcell-left-shorter text11"><span class="<?php if($complaint->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang['COMPLAINT_PRODUCT_NUMBER'];?></span></span></td>
+    <td class="tcell-right-nopadding"><?php if($complaint->canedit) { ?><input name="product" type="text" class="bg" value="<?php echo($complaint->product);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $complaint->product . '</span>'); } ?></td>
     <td width="110"></td>
   </tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
-    <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['COMPLAINT_PRODUCT'];?></span></span></td>
-    <td class="tcell-right-nopadding"><input name="product_desc" type="text" class="title2 bg" value="<?php echo($complaint->product_desc);?>" /></td>
+    <td class="tcell-left-shorter text11"><span class="<?php if($complaint->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang['COMPLAINT_PRODUCT'];?></span></span></td>
+    <td class="tcell-right-nopadding"><?php if($complaint->canedit) { ?><input name="product_desc" type="text" class="bg" value="<?php echo($complaint->product_desc);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $complaint->product_desc . '</span>'); } ?></td>
     <td width="110"></td>
   </tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
-    <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['COMPLAINT_CHARGE'];?></span></span></td>
-    <td class="tcell-right-nopadding"><input name="charge" type="text" class="title2 bg" value="<?php echo($complaint->charge);?>" /></td>
+    <td class="tcell-left-shorter text11"><span class="<?php if($complaint->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang['COMPLAINT_CHARGE'];?></span></span></td>
+    <td class="tcell-right-nopadding"><?php if($complaint->canedit) { ?><input name="charge" type="text" class="bg" value="<?php echo($complaint->charge);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $complaint->charge . '</span>'); } ?></td>
     <td width="110"></td>
   </tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
-    <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['COMPLAINT_NUMBER'];?></span></span></td>
-    <td class="tcell-right-nopadding"><input name="number" type="text" class="title2 bg" value="<?php echo($complaint->number);?>" /></td>
+    <td class="tcell-left-shorter text11"><span class="<?php if($complaint->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang['COMPLAINT_NUMBER'];?></span></span></td>
+    <td class="tcell-right-nopadding"><?php if($complaint->canedit) { ?><input name="number" type="text" class="bg" value="<?php echo($complaint->number);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $complaint->number . '</span>'); } ?></td>
     <td width="110"></td>
   </tr>
 </table>

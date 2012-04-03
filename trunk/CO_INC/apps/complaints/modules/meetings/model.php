@@ -272,8 +272,17 @@ class ComplaintsMeetingsModel extends ComplaintsModel {
 			break;
 		}
 		
-		// get user perms
-		//$array["edit"] = "1";
+		// checkpoint
+		$array["checkpoint"] = 0;
+		$array["checkpoint_date"] = "";
+		$q = "SELECT date FROM " . CO_TBL_USERS_CHECKPOINTS . " where uid='$session->uid' and app = 'complaints' and module = 'meetings' and app_id = '$id' LIMIT 1";
+		$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result) > 0) {
+			while ($row = mysql_fetch_assoc($result)) {
+			$array["checkpoint"] = 1;
+			$array["checkpoint_date"] = $this->_date->formatDate($row['date'],CO_DATE_FORMAT);
+			}
+		}
 		
 		// get the tasks
 		$task = array();
@@ -493,6 +502,51 @@ class ComplaintsMeetingsModel extends ComplaintsModel {
 			return true;
 		}
    }
+
+	function newCheckpoint($id,$date){
+		global $session;
+		$date = $this->_date->formatDate($date);
+		$q = "INSERT INTO " . CO_TBL_USERS_CHECKPOINTS . " SET uid = '$session->uid', date = '$date', app = 'complaints', module = 'meetings', app_id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+			return true;
+		}
+   }
+
+ 	function updateCheckpoint($id,$date){
+		global $session;
+		$date = $this->_date->formatDate($date);
+		$q = "UPDATE " . CO_TBL_USERS_CHECKPOINTS . " SET date = '$date' WHERE uid = '$session->uid' and app = 'complaints' and module = 'meetings' and app_id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+			return true;
+		}
+   }
+
+ 	function deleteCheckpoint($id){
+		global $session;
+		$q = "DELETE FROM " . CO_TBL_USERS_CHECKPOINTS . " WHERE uid = '$session->uid'and app = 'complaints' and module = 'meetings' and app_id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+			return true;
+		}
+   }
+
+
+    function getCheckpointDetails($id){
+		global $lang;
+		$row = "";
+		$q = "SELECT a.pid,a.title,b.folder FROM " . CO_TBL_COMPLAINTS_MEETINGS . " as a, " . CO_TBL_COMPLAINTS . " as b WHERE a.pid = b.id and a.id='$id' and a.bin='0'";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_array($result);
+		if(mysql_num_rows($result) > 0) {
+			$row['checkpoint_app_name'] = $lang["COMPLAINT_MEETING_TITLE"];
+			$row['app_id'] = $row['pid'];
+			$row['app_id_app'] = $id;
+		}
+		return $row;
+   }
+
 
 }
 ?>

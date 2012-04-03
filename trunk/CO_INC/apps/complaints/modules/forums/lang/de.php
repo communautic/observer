@@ -18,7 +18,7 @@ $lang["COMPLAINT_FORUM_TIME_END"] = 'Ende';
 
 $lang["COMPLAINT_FORUM_ATTENDEES"] = 'Teilnehmer';
 $lang["COMPLAINT_FORUM_MANAGEMENT"] = 'Protokollführer';
-$lang["COMPLAINT_FORUM_GOALS"] = 'Themen';
+$lang["COMPLAINT_FORUM_GOALS"] = 'Antworten';
 
 $lang["COMPLAINT_FORUM_STATUS_PLANNED"] = 'in Planung seit';
 $lang["COMPLAINT_FORUM_STATUS_INPROGRESS"] = 'in Diskussion seit';
@@ -27,9 +27,9 @@ $lang["COMPLAINT_FORUM_STATUS_STOPPED"] = 'abgebrochen am';
 
 $lang["COMPLAINT_FORUM_POSTS"] = 'Foren / Antworten';
 
-$lang["COMPLAINT_FORUM_HELP"] = 'manual_prozesse_besprechungen.pdf';
+$lang["COMPLAINT_FORUM_HELP"] = 'manual_reklamationen_diskussionen.pdf';
 
-$lang["COMPLAINT_PRINT_FORUM"] = 'forum.png';
+$lang["COMPLAINT_PRINT_FORUM"] = 'diskussion.png';
 
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/complaints/forums/de.php";

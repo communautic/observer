@@ -133,7 +133,7 @@ foreach($posts as $post) {
   </tr>
 </table>
 </div>
-<div id="modalDialogComplaintsForumsPost" style="border: 1px solid #6496DB; position: absolute; bottom: 0; width: 100%; height: 122px; background-color: #DCD2FF; display: none;">
+<div id="modalDialogComplaintsForumsPost" style="border: 1px solid #6496DB; position: absolute; bottom: 0; width: 100%; height: 122px; background-color: #ccc; display: none;">
 <input type="hidden" class="forumsReplyID" />
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
   <tr>
@@ -145,7 +145,7 @@ foreach($posts as $post) {
     </td>
     <td valign="top"><textarea class="forumsReplyText" name="forumsReplyText" style="width: 100%; height: 100px; "></textarea>
     </td>
-  	<td width="40" valign="top"><div class="closeReplyWindow" style="height: 17px; padding-top: 5px; background-color: #999; cursor: pointer;"><span class="icon-toggle-blue"></span></div></td>
+  	<td width="40" valign="top"><div class="closeReplyWindow" style="height: 17px; padding-top: 5px; background-color: #999; cursor: pointer;"><span class="icon-toggle-down"></span></div></td>
   </tr>
 </table>
 </div>

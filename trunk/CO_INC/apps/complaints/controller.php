@@ -555,10 +555,10 @@ class Complaints extends Controller {
 		return json_encode($arr);
 	}
 	
-	function getComplaintTitle($id){
+	/*function getComplaintTitle($id){
 		$title = $this->model->getComplaintTitle($id);
 		return $title;
-   }
+   }*/
    
  	function newCheckpoint($id,$date){
 		$this->model->newCheckpoint($id,$date);
@@ -575,6 +575,15 @@ class Complaints extends Controller {
 		return true;
    }
    
+   function getCheckpointDetails($app,$module,$id) {
+	   global $projects;
+	   $retval = $this->model->getCheckpointDetails($app,$module,$id);
+	   if($retval){
+			 return $retval;
+		  } else{
+			 return "error";
+		  }
+   }   
 
 }
 

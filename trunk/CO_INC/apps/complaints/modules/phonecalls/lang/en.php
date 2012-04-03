@@ -17,7 +17,7 @@ $lang["COMPLAINT_PHONECALL_GOALS"] = 'Agenda';
 $lang["COMPLAINT_PHONECALL_STATUS_OUTGOING"] = 'incoming';
 $lang["COMPLAINT_PHONECALL_STATUS_ON_INCOMING"] = 'outgoing';
 
-$lang["COMPLAINT_PHONECALL_HELP"] = 'manual_kunden_telefonate.pdf';
+$lang["COMPLAINT_PHONECALL_HELP"] = 'manual_reklamationen_telefonate.pdf';
 
 $lang["COMPLAINT_PRINT_PHONECALL"] = 'phonecall.png';
 

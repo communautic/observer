@@ -216,6 +216,7 @@ class ComplaintsForumsModel extends ComplaintsModel {
 		}
 		
 		// dates
+		$today = date("Y-m-d");
 		$array["today"] = $this->_date->formatDate("now",CO_DATE_FORMAT);
 		$array["planned_date"] = $this->_date->formatDate($array["planned_date"],CO_DATE_FORMAT);
 		$array["inprogress_date"] = $this->_date->formatDate($array["inprogress_date"],CO_DATE_FORMAT);
@@ -251,22 +252,32 @@ class ComplaintsForumsModel extends ComplaintsModel {
 				$array["status_text"] = $lang["FORUM_STATUS_PLANNED"];
 				$array["status_date"] = $array["planned_date"];
 				$array["startdate"] = $array["planned_date"];
+				//$array["enddate"] = $this->_date->formatDate($today,CO_DATE_FORMAT);
 			break;
 			case "1":
 				$array["status_text"] = $lang["FORUM_STATUS_INPROGRESS"];
 				$array["status_date"] = $array["inprogress_date"];
 				$array["startdate"] = $array["inprogress_date"];
+				//$array["enddate"] = $this->_date->formatDate($today,CO_DATE_FORMAT);
 			break;
 			case "2":
 				$array["status_text"] = $lang["FORUM_STATUS_FINISHED"];
 				$array["status_date"] = $array["finished_date"];
-				$array["startdate"] = $array["inprogress_date"];
+				if($array["inprogress_date"] == '') {
+					$array["startdate"] = $array["planned_date"];
+				} else {
+					$array["startdate"] = $array["inprogress_date"];
+				}
 				$array["enddate"] = $array["finished_date"];
 			break;
 			case "3":
 				$array["status_text"] = $lang["FORUM_STATUS_STOPPED"];
 				$array["status_date"] = $array["stopped_date"];
-				$array["startdate"] = $array["inprogress_date"];
+				if($array["inprogress_date"] == '') {
+					$array["startdate"] = $array["planned_date"];
+				} else {
+					$array["startdate"] = $array["inprogress_date"];
+				}
 				$array["enddate"] = $array["stopped_date"];
 			break;
 		}
@@ -380,7 +391,7 @@ class ComplaintsForumsModel extends ComplaintsModel {
    }
    
 
-   	function createDuplicate($id) {
+   	/*function createDuplicate($id) {
 		global $session, $lang;
 		
 		$now = gmdate("Y-m-d H:i:s");
@@ -390,12 +401,59 @@ class ComplaintsForumsModel extends ComplaintsModel {
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
 		// tasks
-		$qt = "INSERT INTO " . CO_TBL_COMPLAINTS_FORUMS_TASKS . " (mid,status,title,text,sort) SELECT $id_new,'0',title,text,sort FROM " . CO_TBL_COMPLAINTS_FORUMS_TASKS . " where mid='$id' and bin='0'";
+		$qt = "INSERT INTO " . CO_TBL_COMPLAINTS_FORUMS_POSTS . " (mid,status,title,text,sort) SELECT $id_new,'0',title,text,sort FROM " . CO_TBL_COMPLAINTS_FORUMS_POSTS . " where mid='$id' and bin='0'";
 		$resultt = mysql_query($qt, $this->_db->connection);
 		if ($result) {
 			return $id_new;
 		}
+	}*/
+	
+	
+		function createDuplicate($id) {
+		global $session, $lang;
+		
+		$now = gmdate("Y-m-d H:i:s");
+		
+		// forum
+		$q = "INSERT INTO " . CO_TBL_COMPLAINTS_FORUMS . " (pid,title,protocol,status,planned_date,created_date,created_user,edited_date,edited_user) SELECT pid,CONCAT(title,' ".$lang["GLOBAL_DUPLICAT"]."'),protocol,'0','$now','$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_COMPLAINTS_FORUMS . " where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$id_new = mysql_insert_id();
+		// tasks
+		$qt = "SELECT id,replyid,user,datetime,text,status FROM " . CO_TBL_COMPLAINTS_FORUMS_POSTS . " where pid='$id' and bin='0' ORDER BY id";		
+		$resultt = mysql_query($qt, $this->_db->connection);
+		while($rowt = mysql_fetch_array($resultt)) {
+			$id = $rowt["id"];
+			$replyid = $rowt["replyid"];
+			$user = $rowt["user"];
+			$datetime = $rowt["datetime"];
+			$text = mysql_real_escape_string($rowt["text"]);
+			$status = $rowt["status"];
+			$qtn = "INSERT INTO " . CO_TBL_COMPLAINTS_FORUMS_POSTS . " set pid = '$id_new', replyid = '$replyid', user = '$user', datetime = '$datetime', text = '$text', status = '$status'";
+			$rpn = mysql_query($qtn, $this->_db->connection);
+			$id_t_new = mysql_insert_id();
+			// BUILD OLD NEW TASK ID ARRAY
+			$t[$id] = $id_t_new;
+		}
+		// Updates Dependencies for new tasks
+		$qt = "SELECT id,replyid FROM " . CO_TBL_COMPLAINTS_FORUMS_POSTS . " where pid='$id_new' and bin='0'";		
+		$resultt = mysql_query($qt, $this->_db->connection);
+		while($rowt = mysql_fetch_array($resultt)) {
+			$id = $rowt["id"];
+			$dep = 0;
+			if($rowt["replyid"] != 0) {
+				$dependent = $rowt["replyid"];
+				$dep = $t[$dependent];
+			}
+			$qtn = "UPDATE " . CO_TBL_COMPLAINTS_FORUMS_POSTS . " set replyid = '$dep' WHERE id='$id'";
+			$rpn = mysql_query($qtn, $this->_db->connection);
+		}
+	
+		if ($result) {
+			return $id_new;
+		}
 	}
+	
+	
 
 
    function binForum($id) {
@@ -416,11 +474,11 @@ class ComplaintsForumsModel extends ComplaintsModel {
    }
    
    function deleteForum($id) {
-		$q = "SELECT id FROM " . CO_TBL_COMPLAINTS_FORUMS_TASKS . " WHERE mid = '$id'";
+		$q = "SELECT id FROM " . CO_TBL_COMPLAINTS_FORUMS_POSTS . " WHERE pid = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
 			$tid = $row["id"];
-			$this->deleteForumTask($tid);
+			$this->deleteItem($tid);
 		}
 		
 		$q = "DELETE FROM co_log_sendto WHERE what='complaints_forums' and whatid='$id'";
@@ -475,6 +533,26 @@ class ComplaintsForumsModel extends ComplaintsModel {
 			return true;
 		}
 	}
+   
+   function restoreItem($id) {
+		global $session;
+		$q = "UPDATE " . CO_TBL_COMPLAINTS_FORUMS_POSTS . " set bin = '0' WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if($result) {
+			return true;
+		}
+   }
+   
+   function deleteItem($id) {
+		global $session;
+		$q = "DELETE FROM " . CO_TBL_COMPLAINTS_FORUMS_POSTS . " WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if($result) {
+			return true;
+		}
+   }
+
+
 
 }
 ?>

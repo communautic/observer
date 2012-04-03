@@ -80,6 +80,12 @@ if (!empty($_GET['request'])) {
 		case 'binItem':
 			echo($complaintsForums->binItem($_GET['id']));
 		break;
+		case 'restoreItem':
+			echo($complaintsForums->restoreItem($_GET['id']));
+		break;
+		case 'deleteItem':
+			echo($complaintsForums->deleteItem($_GET['id']));
+		break;
 		case 'getForumStatusDialog':
 			echo($complaintsForums->getForumStatusDialog());
 		break;
