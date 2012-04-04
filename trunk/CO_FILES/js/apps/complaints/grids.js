@@ -1058,7 +1058,7 @@ $(document).ready(function() {
 			var pos = note.position();
 			var top = pos.top+addtop;
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/complaints/modules/grids&request=getGridNote&id="+id, success: function(data){
-				currentBrainstormGridClickedNote = id;
+				currentComplaintGridClickedNote = id;
 				$('#complaints-grid-note-title').html(data.title);
 				$('#complaints-grid-note-text').html(data.text);
 				$('#complaints-grid-note-save a').attr('rel',id);
