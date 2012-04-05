@@ -437,6 +437,9 @@ class ComplaintsMeetingsModel extends ComplaintsModel {
 		$q = "DELETE FROM co_log_sendto WHERE what='complaints_meetings' and whatid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
+		$q = "DELETE FROM " . CO_TBL_USERS_CHECKPOINTS . " WHERE app = 'complaints' and module = 'meetings' and app_id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
 		$q = "DELETE FROM " . CO_TBL_COMPLAINTS_MEETINGS . " WHERE id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {

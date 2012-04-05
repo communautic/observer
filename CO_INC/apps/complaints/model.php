@@ -813,35 +813,26 @@ class ComplaintsModel extends Model {
 			}
 		}
 		
-		if(in_array("vdocs",$active_modules)) {
-			$vdocsmodel = new VDocsModel();
-			$q = "SELECT id FROM co_complaints_vdocs where pid = '$id'";
+		if(in_array("grids",$active_modules)) {
+			$complaintsGridsModel = new ComplaintsGridsModel();
+			$q = "SELECT id FROM co_complaints_grids where pid = '$id'";
 			$result = mysql_query($q, $this->_db->connection);
 			while($row = mysql_fetch_array($result)) {
-				$vid = $row["id"];
-				$vdocsmodel->deleteVDoc($vid);
+				$mid = $row["id"];
+				$complaintsGridsModel->deleteGrid($mid);
+			}
+		}
+
+		if(in_array("forums",$active_modules)) {
+			$complaintsForumsModel = new ComplaintsForumsModel();
+			$q = "SELECT id FROM co_complaints_forums where pid = '$id'";
+			$result = mysql_query($q, $this->_db->connection);
+			while($row = mysql_fetch_array($result)) {
+				$pid = $row["id"];
+				$complaintsForumsModel->deleteForum($pid);
 			}
 		}
 		
-		if(in_array("phonecalls",$active_modules)) {
-			$complaintsPhonecallsModel = new ComplaintsPhonecallsModel();
-			$q = "SELECT id FROM co_complaints_phonecalls where pid = '$id'";
-			$result = mysql_query($q, $this->_db->connection);
-			while($row = mysql_fetch_array($result)) {
-				$pcid = $row["id"];
-				$complaintsPhonecallsModel->deletePhonecall($pcid);
-			}
-		}
-		
-		if(in_array("documents",$active_modules)) {
-			$complaintsDocumentsModel = new ComplaintsDocumentsModel();
-			$q = "SELECT id FROM co_complaints_documents_folders where pid = '$id'";
-			$result = mysql_query($q, $this->_db->connection);
-			while($row = mysql_fetch_array($result)) {
-				$did = $row["id"];
-				$complaintsDocumentsModel->deleteDocument($did);
-			}
-		}
 		
 		if(in_array("meetings",$active_modules)) {
 			$complaintsMeetingsModel = new ComplaintsMeetingsModel();
@@ -852,22 +843,42 @@ class ComplaintsModel extends Model {
 				$complaintsMeetingsModel->deleteMeeting($mid);
 			}
 		}
-		
-		if(in_array("phases",$active_modules)) {
-			$complaintsPhasesModel = new ComplaintsPhasesModel();
-			$q = "SELECT id FROM co_complaints_phases where pid = '$id'";
+
+		if(in_array("phonecalls",$active_modules)) {
+			$complaintsPhonecallsModel = new ComplaintsPhonecallsModel();
+			$q = "SELECT id FROM co_complaints_phonecalls where pid = '$id'";
 			$result = mysql_query($q, $this->_db->connection);
 			while($row = mysql_fetch_array($result)) {
-				$pid = $row["id"];
-				$complaintsPhasesModel->deletePhase($pid);
+				$pcid = $row["id"];
+				$complaintsPhonecallsModel->deletePhonecall($pcid);
 			}
 		}
-		
+
+		if(in_array("documents",$active_modules)) {
+			$complaintsDocumentsModel = new ComplaintsDocumentsModel();
+			$q = "SELECT id FROM co_complaints_documents_folders where pid = '$id'";
+			$result = mysql_query($q, $this->_db->connection);
+			while($row = mysql_fetch_array($result)) {
+				$did = $row["id"];
+				$complaintsDocumentsModel->deleteDocument($did);
+			}
+		}
+
+		if(in_array("vdocs",$active_modules)) {
+			$complaintsVDocsmodel = new ComplaintsVDocsModel();
+			$q = "SELECT id FROM co_complaints_vdocs where pid = '$id'";
+			$result = mysql_query($q, $this->_db->connection);
+			while($row = mysql_fetch_array($result)) {
+				$vid = $row["id"];
+				$complaintsVDocsmodel->deleteVDoc($vid);
+			}
+		}
+
+
 		$q = "DELETE FROM co_log_sendto WHERE what='complaints' and whatid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
-		///$q = "DELETE FROM co_log_sendto WHERE what='complaints' and whatid='$id'";
-		$q = "DELETE FROM " . CO_TBL_USERS_CHECKPOINTS . " WHERE app_id='$id'";
+		$q = "DELETE FROM " . CO_TBL_USERS_CHECKPOINTS . " WHERE app = 'complaints' and module = 'complaints' and app_id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		$q = "DELETE FROM co_complaints_access WHERE pid='$id'";
