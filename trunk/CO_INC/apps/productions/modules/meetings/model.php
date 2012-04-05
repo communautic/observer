@@ -440,6 +440,9 @@ class ProductionsMeetingsModel extends ProductionsModel {
 		$q = "DELETE FROM co_log_sendto WHERE what='productions_meetings' and whatid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
+		$q = "DELETE FROM " . CO_TBL_USERS_CHECKPOINTS . " WHERE app = 'productions' and module = 'meetings' and app_id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
 		$q = "DELETE FROM " . CO_TBL_PRODUCTIONS_MEETINGS . " WHERE id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
