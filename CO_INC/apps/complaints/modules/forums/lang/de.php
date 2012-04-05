@@ -1,5 +1,5 @@
 <?php
-$complaints_forums_name = "Diskussion";
+$complaints_forums_name = "Diskussionen";
 
 $lang["COMPLAINT_FORUM_TITLE"] = 'Diskussion';
 $lang["COMPLAINT_FORUMS"] = 'Diskussionen';
