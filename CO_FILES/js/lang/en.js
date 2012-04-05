@@ -14,6 +14,7 @@ var ALERT_DELETE_REALLY = "Do you really want to irreversible delete this data?"
 var ALERT_DELETE_BIN = "Do you really want to irreversible empty the recycle bin?";
 var ALERT_RESTORE = "Would you like to restore this data?";
 var ALERT_PROJECT_MOVE_ALL = "Would you like to change all start dates in relation to this new date?";
+var ALERT_PHASE_TASKS_MOVE_ALL = "Would you like to change all dates of dependend stages?";
 var ALERT_NO_FILE = "Please select a file to upload.";
 
 var ALERT_NO_VALID_EMAIL = "Please enter a valid email address.";
@@ -37,5 +38,6 @@ var UPLOAD_CANCEL = "Cancel";
 
 var ALERT_CLIENT_ACCESS = 'Möchten Sie die Bestellberechtigung jetzt vergeben?';
 var ALERT_CLIENT_ACCESS_REMOVE = 'Möchten Sie die Bestellberechtigung jetzt entziehen?';
+var ALERT_PUBLISHERS_ARCHIVE_OTHERS = 'Möchten Sie alle anderen publizierten Daten archivieren?';
 
 var DATEPICKER_CLEAR = 'Clear';
