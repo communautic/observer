@@ -27,7 +27,7 @@ $lang["COMPLAINT_FOLDER_CHART_STATUS"] = 'Status';
 
 // Complaint Right
 $lang["COMPLAINT_TITLE"] = 'Reklamation';
-$lang['COMPLAINT_KICKOFF'] = 'Kick Off';
+$lang['COMPLAINT_KICKOFF'] = 'Reklamationseingang';
 
 $lang["COMPLAINT_CLIENT"] = 'Reklamant';
 $lang["COMPLAINT_MANAGEMENT"] = 'Lösungsverantwortung';
