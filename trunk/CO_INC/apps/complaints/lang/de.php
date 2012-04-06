@@ -29,9 +29,9 @@ $lang["COMPLAINT_FOLDER_CHART_STATUS"] = 'Status';
 $lang["COMPLAINT_TITLE"] = 'Reklamation';
 $lang['COMPLAINT_KICKOFF'] = 'Kick Off';
 
-$lang["COMPLAINT_CLIENT"] = 'Projektauftraggeber';
-$lang["COMPLAINT_MANAGEMENT"] = 'Projektleitung';
-$lang["COMPLAINT_TEAM"] = 'Projektteam';
+$lang["COMPLAINT_CLIENT"] = 'Reklamant';
+$lang["COMPLAINT_MANAGEMENT"] = 'Lösungsverantwortung';
+$lang["COMPLAINT_TEAM"] = 'Lösungsteam';
 $lang["COMPLAINT_COMPLAINTCAT"] = 'Reklamationsart';
 $lang["COMPLAINT_CAT"] = 'Mangelkategorie';
 $lang["COMPLAINT_PRODUCT_NUMBER"] = 'Produktnummer';
