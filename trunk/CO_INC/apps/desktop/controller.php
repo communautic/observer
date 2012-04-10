@@ -30,6 +30,7 @@ class Desktop extends Controller {
 	
 	public function getColumnWidgets($id) {
 		global $lang, $system, $userapps;			
+			//$userapps[] = 'checkpoints';
 			// all user
 			$widgets_user = array();
 			if(!$this->model->existUserSetting('desktop-widgets',1)) {
@@ -77,6 +78,9 @@ class Desktop extends Controller {
 						if(in_array($app,$widgets_all) && !in_array($app,$widgets_user)) {
 								$widgets[] = $app;
 						}
+					}
+					if(in_array('checkpoints',$widgets_all) && !in_array('checkpoints',$widgets_user)) {
+						$widgets[] = 'checkpoints';
 					}
 				break;
 			}
