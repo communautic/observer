@@ -480,8 +480,8 @@ $('#brainstorms-outer div.note').each(function(){
 			cursor: 'move',
 			start: function(e,ui){ ui.helper.css('z-index',++brainstormszIndex); },
 			stop: function(e,ui){
-				var x = ui.position.left;
-				var y = ui.position.top;
+				var x = Math.round(ui.position.left);
+				var y = Math.round(ui.position.top);
 				var z = brainstormszIndex;
 				var id = $(this).attr("id").replace(/note-/, "");
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=updateNotePosition&id="+id+"&x="+x+"&y="+y+"&z="+z, success: function(data){

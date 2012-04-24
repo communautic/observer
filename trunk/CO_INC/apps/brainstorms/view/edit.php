@@ -37,8 +37,8 @@
 if(is_array($notes)) {
 	$i = 1;
 	foreach ($notes as $note) { 
-		list($left,$top,$zindex) = explode('x',$note->xyz);
-		list($width,$height) = explode('x',$note->wh);
+		@list($left,$top,$zindex) = explode('x',$note->xyz);
+		@list($width,$height) = explode('x',$note->wh);
 		/*if($note->toggle == 0) {
 			$realheight = $height;
 			$toggle_class = "";
