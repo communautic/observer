@@ -622,7 +622,7 @@ class ProjectsPhasesModel extends ProjectsModel {
 			$res = mysql_query($qt, $this->_db->connection);
 			$this->moveDependendTasks($tid,$days);
 		}
-		return $res;
+		return true;
 	}
 
 
