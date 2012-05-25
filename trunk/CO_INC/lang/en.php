@@ -7,7 +7,7 @@ setlocale(LC_TIME, "en_EN");
 $lang["LOGIN_USERNAME"] = "Username";
 $lang["LOGIN_PASSWORD"] = "Password";
 $lang["LOGIN_PASSWORD_REPEAT"] = "repeat Passwort";
-$lang["LOGIN_SET_LOGIN"] = 'Bitte geben Sie als erstes im dafür vorgesehen weißen Feld den von Ihnen gewünschten, neuen Benutzernamen ein (mindestens 6 Zeichen, Unterscheidung zwischen Groß- und Kleinschreibung). Anschließend geben Sie Ihr neues Passwort ein (ebenfalls mindestens 6 Zeichen, inkl. der Möglichkeit Sonderzeichen zu verwenden). Wiederholen Sie aus Sicherheitsgründen die Passworteingabe und schließen Sie den Vorgang ab, indem Sie auf "bestätigen" klicken.';
+$lang["LOGIN_SET_LOGIN"] = 'As a first step please enter your new username in the provided field below (6 chars min, case-sensitive). Next, enter your new password (6 chars min, including special chars). Confirm your new password and finish the sign-up procedure by clicking "confirm".';
 $lang["LOGIN_REMEMBER"] = "Remember me";
 $lang["LOGIN_REQUIREMENTS"] = "Browser requirements";
 $lang["LOGIN_REQUIREMENTS_DETAILS"] = "Chrome, Internet Explorer 8+, Firefox 2+, Safari3+";
@@ -46,7 +46,7 @@ $lang["GLOBAL_GUESTS"] = 'Guests';
 $lang["GLOBAL_OWNER"] = 'Owner';
 
 $lang["GLOBAL_SAVE"] = 'Save';
-$lang["GLOBAL_REMOVE"] = 'Remove';
+$lang["GLOBAL_DELETE"] = 'Delete';
 
 $lang["GLOBAL_STATUS"] 		= 	'Status';
 $lang["GLOBAL_DURATION"] 	= 	'Timeline';

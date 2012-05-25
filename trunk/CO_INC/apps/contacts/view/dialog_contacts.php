@@ -1,22 +1,20 @@
 <?php
 $hideTab3 = 0;
 switch($field) {
-	case "projectsadmins": case "projectsguests": case "brainstormsadmins": case "brainstormsguests": case "to": case "cc":
+	case "projectsadmins": case "projectsguests": case "brainstormsadmins": case "brainstormsguests": case "forumsadmins": case "forumsguests": case "complaintsadmins": case "complaintsguests": case "clientsadmins": case "clientsguests": case "publishersadmins": case "publishersguests": case "to": case "cc":
 		$hideTab3 = 1;
 	break;
 }
-/*if($title == 'nonote') {
-	$hideTab3 = 1;
-}*/
+if (preg_match("/postitto/i", $field)) {
+   $hideTab3 = 1;
+}
 ?>
-<div id="tabs">
+<div id="tabs" class="tabs-bottom">
 	<ul>
-		<li><a href="#tabs-1"><?php echo $lang['CONTACTS_CONTACT'];?></a></li>
-		<li><a href="#tabs-2"><?php echo $lang['CONTACTS_GROUP_TITLE'];?></a></li>
-		<?php if($hideTab3 == 0) { ?><li><a href="#tabs-3"><?php echo $lang['CONTACTS_CUSTOM'];?></a></li><?php } ?>
+		<li><a href="#tabs-1"><span><?php echo $lang['CONTACTS_CONTACT'];?></span></a></li><li><a href="#tabs-2"><span><?php echo $lang['CONTACTS_GROUP_TITLE'];?></span></a></li><?php if($hideTab3 == 0) { ?><li><a href="#tabs-3"><span><?php echo $lang['CONTACTS_CUSTOM'];?></span></a></li><?php } ?>
 	</ul>
 	<div id="tabs-1">
-		<div class="dialog-text-2"><input class="contacts-search" title="<?php echo($field);?>"/></div><div class="filter-search-outer" style="margin-top: 10px;"></div>
+		<div class="contact-dialog-header"><input class="contacts-search" field="<?php echo($field);?>" /><div class="filter-search-outer"></div></div>
 		<div class="dialog-text-2">
         <div>
         <?php
@@ -31,7 +29,7 @@ switch($field) {
         </div>
     </div>
 	<div id="tabs-2">
-    	<div class="dialog-text-2"><input class="groups-search" title="<?php echo($field);?>"/></div><div class="filter-search-outer" style="margin-top: 10px;"></div>
+    	<div class="contact-dialog-header"><input class="groups-search" field="<?php echo($field);?>" /><div class="filter-search-outer"></div></div>
         <div class="dialog-text-2">
         <div>
 		<?php
@@ -47,8 +45,7 @@ switch($field) {
 	</div>
 	<?php if($hideTab3 == 0) { ?>
     <div id="tabs-3">
-		<div class="dialog-text"><textarea id="custom-text" name="custom-text" cols="20" rows="2"></textarea><br />
-		<div class="coButton-outer"><span class="append-custom-text coButton" field="<?php echo($field);?>"><?php echo $lang["GLOBAL_SAVE"];?></span></div></div>
-	</div>
+    	<div class="contact-dialog-header"><a href="#" class="append-custom-text save" field="<?php echo($field);?>" ><?php echo $lang["GLOBAL_SAVE"];?></a></div>
+		<div class="dialog-text-2"><textarea id="custom-text" name="custom-text" cols="20" rows="2"></textarea></div>
     <?php } ?>
 </div>

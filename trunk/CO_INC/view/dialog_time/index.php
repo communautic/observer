@@ -4,7 +4,7 @@ include_once(CO_INC . "/apps/projects/lang/" . $session->userlang . ".php");
 $field = $_GET["field"];
 $time = $_GET["time"];
 ?>
-<div aria-live="off" id="coTime--field2" style="width: 164px; height: 250px;" class="coTime-pkr">
+<div aria-live="off" id="coTime--field2" class="coTime-pkr">
   <div style="width: 152px; height: 241px;" class="coTime-body">
     <div style="width: 141px; height: 241px;" class="coTime-time">
       <div class="coTime-hrs">

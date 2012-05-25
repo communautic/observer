@@ -965,7 +965,7 @@ $(document).ready(function() {
 			source: "?path=apps/contacts&request=getContactsSearch",
 			//minLength: 2,
 			select: function(event, ui) {
-				var field = $(this).attr("title");
+				var field = $(this).attr("field");
 				log(field, ui.item.id, ui.item.value);
 			},
 			close: function(event, ui) {
@@ -981,7 +981,7 @@ $(document).ready(function() {
 			source: "?path=apps/contacts&request=getGroupsSearch",
 			//minLength: 2,
 			select: function(event, ui) {
-				var field = $(this).attr("title");
+				var field = $(this).attr("field");
 				logGroup(field, ui.item.id, ui.item.value);
 			},
 			close: function(event, ui) {
@@ -997,7 +997,7 @@ $(document).ready(function() {
 			source: "?path=apps/contacts&request=getPlacesSearch",
 			//minLength: 2,
 			select: function(event, ui) {
-				var field = $(this).attr("title");
+				var field = $(this).attr("field");
 				var text = ui.item.value;
 					text = text.split(",");
 					text = text[1] + ', ' + text[2];
@@ -1320,8 +1320,8 @@ $(document).ready(function() {
 	$(document).on('click', 'a.delete-ct', function(e) {
 		e.preventDefault();
 	//$('a.delete-ct').live('click',function() {
-		$(this).parent().prev().html("");
-		$(this).parent().remove();
+		$(this).parent().parent().prev().html("");
+		$(this).parent().parent().remove();
 		var obj = getCurrentModule();
 		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 	});
