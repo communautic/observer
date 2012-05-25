@@ -1,3 +1,14 @@
+/*var globalError = 0;
+$(document).ajaxError(function(e, xhr, settings, exception) {
+	globalError = 1;
+	if(globalError == 1) {
+		globalError = 0;
+	alert('error in: ' + settings.url + ' \\n'+'error:\\n' + exception);
+	
+	}
+});*/
+
+
 jQuery.fn.nl2br = function(){
     return this.each(function(){
         var that = jQuery(this);
@@ -392,8 +403,10 @@ $(document).ready(function() {
 					$("#intro").fadeIn();
 					var src = '/?path=login';
 					var obj = getCurrentModule();
-					var cid = $('#'+getCurrentApp()+' input[name="id"]').val()
-					obj.checkIn(cid);
+					if(obj != false) {
+						var cid = $('#'+getCurrentApp()+' input[name="id"]').val()
+						obj.checkIn(cid);
+					}
 					setTimeout(function() { window.location.href = src; },500)
 				}
 			}
@@ -847,7 +860,7 @@ $(document).ready(function() {
 		autoOpen: false,
 		resizable: false,
 		draggable: false,
-		width: 180,  
+		width: 200,  
 		minHeight: 20,
 		show: 'slide',
 		hide: 'slide'
@@ -906,8 +919,8 @@ $(document).ready(function() {
 		autoOpen: false,
 		resizable: false,
 		draggable: false,
-		width: 180,  
-		height: 260,
+		width: 175,  
+		height: 258,
 		show: 'slide',
 		hide: 'slide'
 	});
@@ -985,10 +998,19 @@ $(document).ready(function() {
 
 	$("#tabs").livequery(function() { 
 		$(this).tabs({
-			//select: function(){closedialog = 1;}
+			select: function(event, ui) {
+			if(ui.index == 2) {
+				
+				setTimeout(function(){
+			$('#custom-text').focus();
+		  }, 200); 
+			}
+		}
 		});
+		$( ".tabs-bottom .ui-tabs-nav, .tabs-bottom .ui-tabs-nav > *" )
+			.removeClass( "ui-corner-all ui-corner-top" )
+			.addClass( "ui-corner-bottom" );
 	});
-	
 	
 	$(document).on('click', 'div.contentTabs ul.contentTabsList span',function(e) {
 		e.preventDefault();
@@ -1029,7 +1051,7 @@ $(document).ready(function() {
 
 	// init datepickers dialog_button.png
 	$('.datepicker').livequery(function() { 
-		$(this).datepicker({ dateFormat: 'dd.mm.yy', showOn: 'button', buttonText:"", buttonImage: co_files+'/img/pixel.gif',  buttonImageOnly: true, showButtonPanel: true, changeMonth: true, changeYear: true, showAnim: 'slide',
+		$(this).datepicker({ dateFormat: 'dd.mm.yy', showOn: 'button', buttonText:"", buttonImage: co_files+'/img/pixel.gif',  buttonImageOnly: true, showButtonPanel: true, changeMonth: true, changeYear: true, yearRange: 'c-5:c+5', showAnim: 'slide',
 			beforeShow: function(input,inst) {
 				if(input.name == 'enddate') {
 					$(this).datepicker('option', 'minDate', new Date(Date.parse($("input[name='startdate']").val())));
@@ -1045,23 +1067,21 @@ $(document).ready(function() {
 			onClose: function(dateText, inst) {
 				var app = getCurrentApp();
 				var object = window[app];
-				object.datepickerOnClose(this);				
+				object.datepickerOnClose(this);
 	   		}
  		});
 	});
 	
 	$('.checkpointdp').livequery(function() {
 		var chpexistsSpan = $(this).next();
-		
-		
-		$(this).datepicker({ dateFormat: 'dd.mm.yy', showOn: 'button', buttonText:"", buttonImage: co_files+'/img/pixel.gif',  buttonImageOnly: true, showButtonPanel: true, changeMonth: true, changeYear: true, showAnim: 'slide',
+		$(this).datepicker({ dateFormat: 'dd.mm.yy', showOn: 'button', buttonText:"", buttonImage: co_files+'/img/pixel.gif',  buttonImageOnly: true, showButtonPanel: true, changeMonth: true, changeYear: true, yearRange: 'c-5:c+5', showAnim: 'slide',
 			beforeShow: function(input,inst) {
 				setTimeout(function() {
 					var buttonPane = $( input ).datepicker( "widget" ).find( ".ui-datepicker-buttonpane" );
 					$( "<button>", {text: DATEPICKER_CLEAR, click: function() {
 							$.datepicker._clearDate( input );
 						}
-				  	}).appendTo( buttonPane ).addClass("ui-datepicker-clear ui-state-default ui-priority-secondary ui-corner-all");
+				  	}).appendTo( buttonPane ).addClass("ui-datepicker-clear ui-state-default ui-priority-secondary ui-corner-all ui-datepicker-delete");
 				}, 1 );
 				
 			},
@@ -1071,7 +1091,7 @@ $(document).ready(function() {
 					$( "<button>", {text: DATEPICKER_CLEAR, click: function() {
 							$.datepicker._clearDate( input );
 						}
-				  	}).appendTo( buttonPane ).addClass("ui-datepicker-clear ui-state-default ui-priority-secondary ui-corner-all");
+				  	}).appendTo( buttonPane ).addClass("ui-datepicker-clear ui-state-default ui-priority-secondary ui-corner-all ui-datepicker-delete");
 				}, 1 );
 			},
 			onClose: function(dateText, inst) {

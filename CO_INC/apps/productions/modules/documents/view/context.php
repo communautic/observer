@@ -1,8 +1,8 @@
 <div class="context">
-	<a href="productions_documents" class="removeItem" uid="<?php echo($document->id);?>" field="<?php echo($document->field);?>"><?php echo $lang["GLOBAL_REMOVE"];?></a><br />
-	------------------- <br />
+<div class="contact-dialog-header"><a href="productions_documents" class="removeItem" uid="<?php echo($document->id);?>" field="<?php echo($document->field);?>"><?php echo $lang["GLOBAL_DELETE"];?></a></div>
+	<div class="dialog-text-3">
     <?php  foreach($doc as $value) { ?>
-    <a mod="productions_documents" class="downloadDocument" rel="<?php echo $value->id;?>" title="Download"><?php echo($value->filename)?></a><br />
+    <a mod="productions_documents" class="downloadDocument" rel="<?php echo $value->id;?>" title="Download"><?php echo($value->filename)?></a>
     <?php } ?>
-    <br />
+    </div>
 </div>

@@ -47,7 +47,7 @@ $lang["GLOBAL_GUESTS"] = 'Beobachter';
 $lang["GLOBAL_OWNER"] = 'Ersteller';
 
 $lang["GLOBAL_SAVE"] = 'Speichern';
-$lang["GLOBAL_REMOVE"] = 'Entfernen';
+$lang["GLOBAL_DELETE"] = 'Löschen';
 
 $lang["GLOBAL_STATUS"] 		= 	'Status';
 $lang["GLOBAL_DURATION"] 	= 	'Dauer';
