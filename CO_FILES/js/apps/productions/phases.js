@@ -340,6 +340,15 @@ function productionsPhases(name) {
 	}
 
 
+	this.showItemContext = function(ele,uid,field) {
+		var id = $("#"+field).val();
+		$.ajax({ type: "GET", url: "/", data: "path=apps/productions/modules/phases&request=getTaskContext&id="+id+"&field="+field, success: function(html){
+			ele.parent().append(html);
+			ele.next().slideDown();
+			}
+		});
+	}
+
 
 	this.insertStatusDate = function(rel,text) {
 		var module = this;
@@ -375,12 +384,21 @@ function productionsPhases(name) {
 	
 	this.insertItem = function(field,append,id,text) {
 		$("#"+field).val(id);
-		$("#"+field+"-text").html(text);
+		var html = '<span rel="'+field+'" class="dependentTask"><a href="productions_phases" class="showItemContext" uid="'+id+'" field="'+field+'">'+text+'</a></span>';
+		$("#"+field+"-text").html(html);
 		$("#modalDialog").dialog('close');
 		var obj = getCurrentModule();
 		$('#productions .coform').ajaxSubmit(obj.poformOptions);
 	}
 
+
+	this.removeItem = function(clicked,field) {
+		clicked.parent().fadeOut();
+		$("#"+field).val('');
+		$("#"+field+"-text").html('');
+		var obj = getCurrentModule();
+		$('#productions .coform').ajaxSubmit(obj.poformOptions);
+	}
 
 
 	this.binItem = function(id) {
