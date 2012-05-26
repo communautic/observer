@@ -214,6 +214,13 @@ class ProjectsPhases extends Projects {
 		  }
 	}
 	
+	
+	function getTaskContext($id,$field) {
+		global $lang;
+		$context = $this->model->getTaskContext($id,$field);
+		include 'view/context.php';
+	}
+	
 	function getTaskDependencyExists($id) {
 		$retval = $this->model->getTaskDependencyExists($id);
 		//return $retval;

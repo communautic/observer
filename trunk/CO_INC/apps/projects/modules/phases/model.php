@@ -673,8 +673,8 @@ class ProjectsPhasesModel extends ProjectsModel {
 		$pid = $row["pid"];
 		$startdate = $row["startdate"];
 	 
-		$str = '<div class="contact-dialog-header"><a href="#" mod="projects_phases" class="insertItem" title="" field="' . $field . '" did="">' . $lang["GLOBAL_DELETE"] . '</a></div>';
-		$str .= '<div class="dialog-text-3" style="overflow: auto;">';
+		//$str = '<div class="contact-dialog-header"><a href="#" mod="projects_phases" class="insertItem" title="" field="' . $field . '" did="">' . $lang["GLOBAL_DELETE"] . '</a></div>';
+		$str = '<div class="dialog-text">';
 	 	//$str .= '<a href="#" mod="projects_phases" class="insertItem" title="" field="' . $field . '" did="">' . $lang["PROJECT_PHASE_TASK_DEPENDENT_NO"] . '</a>';
 
 		
@@ -685,6 +685,23 @@ class ProjectsPhasesModel extends ProjectsModel {
 		}
 		$str .= '</div>';	
 		return $str;
+	}
+	
+	
+	function getTaskContext($id,$field) {
+		
+		$q = "SELECT id, text, startdate, enddate FROM ".CO_TBL_PROJECTS_PHASES_TASKS." where id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_array($result);
+		foreach($row as $key => $val) {
+			$array[$key] = $val;
+		}
+		$array["startdate"] = $this->_date->formatDate($array["startdate"],CO_DATE_FORMAT);
+		$array["enddate"] = $this->_date->formatDate($array["enddate"],CO_DATE_FORMAT);
+		$array["field"] = $field;
+		
+		$context = new Lists($array); 
+	  	return $context;
 	}
    
 
