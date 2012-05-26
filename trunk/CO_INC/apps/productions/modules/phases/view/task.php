@@ -29,7 +29,7 @@
     <tr>
       <td>&nbsp;</td>
       <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav showDialog<?php } ?>" request="getTasksDialog" field="dependent<?php echo $value->id;?>" sql="<?php echo $value->id;?>" append="1"><span><?php echo $lang["PRODUCTION_PHASE_TASK_DEPENDENT"];?></span></span></td>
-      <td class="tcell-right"><input id="dependent<?php echo $value->id;?>" name="task_dependent[<?php echo $value->id;?>]" type="hidden" value="<?php echo $value->dependent;?>"><span id="dependent<?php echo $value->id;?>-text"><span class="dependentTask" rel="dependent<?php echo $value->id;?>"><?php echo $value->dependent_title;?></span></span></td>
+      <td class="tcell-right"><input id="dependent<?php echo $value->id;?>" name="task_dependent[<?php echo $value->id;?>]" type="hidden" value="<?php echo $value->dependent;?>"><span id="dependent<?php echo $value->id;?>-text"><span class="dependentTask" rel="dependent<?php echo $value->id;?>"><?php if($phase->canedit) { ?><a field="dependent<?php echo $value->id;?>" uid="<?php echo $value->id;?>" class="showItemContext" href="productions_phases"><?php } ?><?php echo $value->dependent_title;?><?php if($phase->canedit) { ?></a><?php } ?></span></span></td>
     </tr>
     </table>
      <table width="100%" border="0" cellpadding="0" cellspacing="0" id="donedate_<?php echo $value->id;?>" style="<?php echo $donedate_field;?>">

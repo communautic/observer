@@ -659,11 +659,8 @@ class ProductionsPhasesModel extends ProductionsModel {
 		$pid = $row["pid"];
 		$startdate = $row["startdate"];
 	 
-		$str = '<div class="contact-dialog-header"><a href="#" mod="productions_phases" class="insertItem" title="" field="' . $field . '" did="">' . $lang["GLOBAL_DELETE"] . '</a></div>';
-		$str .= '<div class="dialog-text-3" style="overflow: auto;">';
-	 	//$str .= '<a href="#" mod="productions_phases" class="insertItem" title="" field="' . $field . '" did="">' . $lang["PRODUCTION_PHASE_TASK_DEPENDENT_NO"] . '</a>';
+		$str = '<div class="dialog-text">';
 
-		
 		$q ="select id,text from " . CO_TBL_PRODUCTIONS_PHASES_TASKS . " where pid = '$pid' and startdate <= '$startdate' and id != '$id' and bin = '0' ORDER BY startdate";
 		$result = mysql_query($q, $this->_db->connection);
 		while ($row = mysql_fetch_array($result)) {
@@ -672,7 +669,24 @@ class ProductionsPhasesModel extends ProductionsModel {
 		$str .= '</div>';	
 		return $str;
 	}
-   
+
+
+	function getTaskContext($id,$field) {
+		
+		$q = "SELECT id, text, startdate, enddate FROM ".CO_TBL_PRODUCTIONS_PHASES_TASKS." where id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_array($result);
+		foreach($row as $key => $val) {
+			$array[$key] = $val;
+		}
+		$array["startdate"] = $this->_date->formatDate($array["startdate"],CO_DATE_FORMAT);
+		$array["enddate"] = $this->_date->formatDate($array["enddate"],CO_DATE_FORMAT);
+		$array["field"] = $field;
+		
+		$context = new Lists($array); 
+	  	return $context;
+	}
+
 
 	function deleteTask($id) {
 		global $session;
