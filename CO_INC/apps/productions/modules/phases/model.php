@@ -659,8 +659,9 @@ class ProductionsPhasesModel extends ProductionsModel {
 		$pid = $row["pid"];
 		$startdate = $row["startdate"];
 	 
-		$str = '<div class="dialog-text">';
-	 	$str .= '<a href="#" mod="productions_phases" class="insertItem" title="" field="' . $field . '" did="">' . $lang["PRODUCTION_PHASE_TASK_DEPENDENT_NO"] . '</a>';
+		$str = '<div class="contact-dialog-header"><a href="#" mod="productions_phases" class="insertItem" title="" field="' . $field . '" did="">' . $lang["GLOBAL_DELETE"] . '</a></div>';
+		$str .= '<div class="dialog-text-3" style="overflow: auto;">';
+	 	//$str .= '<a href="#" mod="productions_phases" class="insertItem" title="" field="' . $field . '" did="">' . $lang["PRODUCTION_PHASE_TASK_DEPENDENT_NO"] . '</a>';
 
 		
 		$q ="select id,text from " . CO_TBL_PRODUCTIONS_PHASES_TASKS . " where pid = '$pid' and startdate <= '$startdate' and id != '$id' and bin = '0' ORDER BY startdate";

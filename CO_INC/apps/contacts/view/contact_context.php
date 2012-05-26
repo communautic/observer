@@ -9,6 +9,6 @@
     <div class="text11"><?php echo(nl2br($context->position));?><br />
     <?php echo(nl2br($context->company));?><br />
     <?php echo($context->phone1);?><br />
-    <?php echo($context->email);?></div>
+    <div style="overflow: hidden; padding: 0;"><?php echo($context->email);?></div></div>
     </div>
 </div>
