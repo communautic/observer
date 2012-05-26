@@ -78,6 +78,9 @@ if (!empty($_GET['request'])) {
 		case 'getTasksDialog':
 			echo($projectsPhases->getTasksDialog($_GET['sql'],$_GET['field']));
 		break;
+		case 'getTaskContext':
+			echo($projectsPhases->getTaskContext($_GET['id'],$_GET['field']));
+		break;
 		case 'getTaskDependencyExists':
 			echo($projectsPhases->getTaskDependencyExists($_GET['id']));
 		break;
