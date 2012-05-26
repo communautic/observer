@@ -673,8 +673,9 @@ class ProjectsPhasesModel extends ProjectsModel {
 		$pid = $row["pid"];
 		$startdate = $row["startdate"];
 	 
-		$str = '<div class="dialog-text">';
-	 	$str .= '<a href="#" mod="projects_phases" class="insertItem" title="" field="' . $field . '" did="">' . $lang["PROJECT_PHASE_TASK_DEPENDENT_NO"] . '</a>';
+		$str = '<div class="contact-dialog-header"><a href="#" mod="projects_phases" class="insertItem" title="" field="' . $field . '" did="">' . $lang["GLOBAL_DELETE"] . '</a></div>';
+		$str .= '<div class="dialog-text-3" style="overflow: auto;">';
+	 	//$str .= '<a href="#" mod="projects_phases" class="insertItem" title="" field="' . $field . '" did="">' . $lang["PROJECT_PHASE_TASK_DEPENDENT_NO"] . '</a>';
 
 		
 		$q ="select id,text from " . CO_TBL_PROJECTS_PHASES_TASKS . " where pid = '$pid' and startdate <= '$startdate' and id != '$id' and bin = '0' ORDER BY startdate";
