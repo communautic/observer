@@ -1275,10 +1275,9 @@ $(document).ready(function() {
 
 	$(document).on('click', 'a.delete-listmember', function(e) {
 		e.preventDefault();
-	//$('a.delete-listmember').livequery('click',function() {
 		var field = $(this).attr('field');
-		$(this).parent().fadeOut();
-		$(this).parent().prev().toggleClass('deletefromlist');
+		$(this).parent().parent().fadeOut();
+		$(this).parent().parent().prev().toggleClass('deletefromlist');
 		$(this).parents(".listmember-outer").hide();
 		if($("#"+field+" .listmember-outer:visible").length > 0) {
 			var text = $("#"+field+" .listmember-outer:visible:last .listmember").html();
