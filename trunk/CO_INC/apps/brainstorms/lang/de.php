@@ -50,9 +50,9 @@ $lang["PRINT_BRAINSTORM_FOLDER"] = 'ordner.png';
 
 // Dektop Widget
 $lang["BRAINSTORM_WIDGET_NO_ACTIVITY"]		=	'Keine aktuellen Benachrichtigungen';
-$lang["BRAINSTORM_WIDGET_TITLE_BRAINSTORM"]		=	'Prozess';
-$lang["BRAINSTORM_WIDGET_INVITATION_ADMIN"]	=	'Sie wurden als <span class="yellow">Administrator</span> für den Prozess "%1$s" freigeschalten';
-$lang["BRAINSTORM_WIDGET_INVITATION_GUEST"]	=	'Sie wurden als <span class="yellow">Beobachter</span> für den Prozess "%1$s" freigeschalten';
+$lang["BRAINSTORM_WIDGET_TITLE_BRAINSTORM"]		=	'Freischaltung';
+$lang["BRAINSTORM_WIDGET_INVITATION_ADMIN"]	=	'als <span class="yellow">Administrator</span> für "%1$s"';
+$lang["BRAINSTORM_WIDGET_INVITATION_GUEST"]	=	'als <span class="yellow">Beobachter</span> für "%1$s"';
 
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/brainstorms/de.php";
