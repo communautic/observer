@@ -21,11 +21,11 @@ if(is_array($notices)) {
 		<div class="widgetItemOuter forumsLinkMarkRead" rel="forums,<?php echo $notice->folder . ',' . $notice->pid . ',0';?>"><div class="widgetItemTitle"><div class="widgetIconNotice"></div>
     <?php
 		if($notice->perm == 0) {
-			echo $lang["BRAINSTORM_WIDGET_TITLE_BRAINSTORM"] . '</div><div class="widgetItemContent">';
-			echo sprintf($lang["BRAINSTORM_WIDGET_INVITATION_ADMIN"], $notice->brainstormtitle);
+			echo $lang["FORUM_WIDGET_TITLE_BRAINSTORM"] . '</div><div class="widgetItemContent">';
+			echo sprintf($lang["FORUM_WIDGET_INVITATION_ADMIN"], $notice->brainstormtitle);
 		} else {
-			echo $lang["BRAINSTORM_WIDGET_TITLE_BRAINSTORM"] . '</div><div class="widgetItemContent">';
-			echo sprintf($lang["BRAINSTORM_WIDGET_INVITATION_GUEST"], $notice->brainstormtitle);
+			echo $lang["FORUM_WIDGET_TITLE_BRAINSTORM"] . '</div><div class="widgetItemContent">';
+			echo sprintf($lang["FORUM_WIDGET_INVITATION_GUEST"], $notice->brainstormtitle);
 		} ?>
     	</div></div>
     <?php

@@ -36,12 +36,12 @@ $lang["PRINT_FORUM_FOLDER"] = 'ordner.png';
 
 // Dektop Widget
 $lang["FORUM_WIDGET_NO_ACTIVITY"]		=	'Keine aktuellen Benachrichtigungen';
-$lang["FORUM_WIDGET_TITLE_BRAINSTORM"]		=	'Foren';
-$lang["FORUM_WIDGET_INVITATION_ADMIN"]	=	'Sie wurden als <span class="yellow">Administrator</span> für das Forum "%1$s" freigeschalten';
-$lang["FORUM_WIDGET_INVITATION_GUEST"]	=	'Sie wurden als <span class="yellow">Beobachter</span> für das Forum "%1$s" freigeschalten';
+$lang["FORUM_WIDGET_TITLE_BRAINSTORM"]		=	'Freischaltung';
+$lang["FORUM_WIDGET_INVITATION_ADMIN"]	=	'als <span class="yellow">Administrator</span> für "%1$s"';
+$lang["FORUM_WIDGET_INVITATION_GUEST"]	=	'als <span class="yellow">Beobachter</span> für "%1$s"';
 
-$lang["FORUM_WIDGET_NEW_POST"]				=	'Forumaktivität';
-$lang["FROUM_WIDGET_REMINDER_NEW_POST"]		=	'Neue Einträge zur Fragestellung "%1$s"';
+$lang["FORUM_WIDGET_NEW_POST"]				=	'Neue Einträge';
+$lang["FROUM_WIDGET_REMINDER_NEW_POST"]		=	'zur Fragestellung "%1$s"';
 
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/forums/de.php";
