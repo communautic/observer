@@ -71,10 +71,23 @@
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
+	  <td class="tcell-left text11"><span class="<?php if($complaint->canedit) { ?>content-nav showDialog<?php } ?>" request="getComplaintMoreDialog" field="complaintscomplaintmore" append="0"><span><?php echo $lang["COMPLAINT_COMPLAINTCATMORE"];?></span></span></td>
+        <td class="tcell-right"><div id="complaintscomplaintmore" class="itemlist-field"><?php echo($complaint->complaint_more);?></div></td>
+	</tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
 	  <td class="tcell-left text11"><span class="<?php if($complaint->canedit) { ?>content-nav showDialog<?php } ?>" request="getComplaintCatDialog" field="complaintscomplaintcat" append="0"><span><?php echo $lang["COMPLAINT_CAT"];?></span></span></td>
         <td class="tcell-right"><div id="complaintscomplaintcat" class="itemlist-field"><?php echo($complaint->complaint_cat);?></div></td>
 	</tr>
 </table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
+	  <td class="tcell-left text11"><span class="<?php if($complaint->canedit) { ?>content-nav showDialog<?php } ?>" request="getComplaintCatMoreDialog" field="complaintscomplaintcatmore" append="0"><span><?php echo $lang["COMPLAINT_CAT_MORE"];?></span></span></td>
+        <td class="tcell-right"><div id="complaintscomplaintcatmore" class="itemlist-field"><?php echo($complaint->complaint_cat_more);?></div></td>
+	</tr>
+</table>
+<div class="content-spacer"></div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
     <td class="tcell-left-shorter text11"><span class="<?php if($complaint->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang['COMPLAINT_PRODUCT_NUMBER'];?></span></span></td>
