@@ -49,7 +49,7 @@
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 	  <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav showDialog<?php } ?>" request="getPhaseStatusDialog" field="projectsstatus" append="1"><span><?php echo $lang["GLOBAL_STATUS"];?></span></span></td>
-        <td class="tcell-right"><div id="projectsphase_status" class="itemlist-field"><div class="listmember" field="projectsphase_status" uid="<?php echo($phase->status);?>" style="float: left"><?php echo($phase->status_text);?></div></div><?php if($phase->canedit) { ?><input name="phase_status_date" type="text" class="input-date datepicker phase_status_date" value="<?php echo($phase->status_date)?>" style="float: left; margin-left: 8px;" /><?php } else { ?><div style="float: left; margin-left: 8px;"><?php echo($phase->status_date)?></div><?php } ?></td>
+        <td class="tcell-right"><div id="projectsphase_status" class="itemlist-field"><div class="listmember" field="projectsphase_status" uid="<?php echo($phase->status);?>" style="float: left"><?php echo($phase->status_text);?></div></div><?php if($phase->canedit) { ?><input name="phase_status_date" type="text" class="input-date datepicker phase_status_date" value="<?php echo($phase->status_date)?>" style="float: left; margin-left: 8px;" readonly="readonly" /><?php } else { ?><div style="float: left; margin-left: 8px;"><?php echo($phase->status_date)?></div><?php } ?></td>
 	</tr>
 </table>
 <div class="content-spacer"></div>

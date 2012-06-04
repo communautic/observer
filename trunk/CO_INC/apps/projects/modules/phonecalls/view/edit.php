@@ -28,7 +28,7 @@
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 		<td class="tcell-left text11"><span class="<?php if($phonecall->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["PROJECT_PHONECALL_DATE"];?></span></span></td>
-		<td class="tcell-right"><input name="item_date" type="text" class="input-date datepicker item_date" value="<?php echo($phonecall->item_date)?>" /></td>
+		<td class="tcell-right"><input name="item_date" type="text" class="input-date datepicker item_date" value="<?php echo($phonecall->item_date)?>" readonly="readonly" /></td>
 	</tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
@@ -53,7 +53,7 @@
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 	  <td class="tcell-left text11"><span class="<?php if($phonecall->canedit) { ?>content-nav showDialog<?php } ?>" request="getPhonecallStatusDialog" field="projectsstatus" append="1"><span><?php echo $lang["GLOBAL_STATUS"];?></span></span></td>
-        <td class="tcell-right"><div id="projectsphonecall_status" class="itemlist-field"><div class="listmember" field="projectsphonecall_status" uid="<?php echo($phonecall->status);?>" style="float: left"><?php echo($phonecall->status_text);?></div></div><input name="phonecall_status_date" type="text" class="input-date datepicker phonecall_status_date" value="<?php echo($phonecall->status_date)?>" style="float: left; margin-left: 8px;" /></td>
+        <td class="tcell-right"><div id="projectsphonecall_status" class="itemlist-field"><div class="listmember" field="projectsphonecall_status" uid="<?php echo($phonecall->status);?>" style="float: left"><?php echo($phonecall->status_text);?></div></div><input name="phonecall_status_date" type="text" class="input-date datepicker phonecall_status_date" value="<?php echo($phonecall->status_date)?>" style="float: left; margin-left: 8px;" readonly="readonly" /></td>
 	</tr>
 </table>
 <div class="content-spacer"></div>

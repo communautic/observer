@@ -27,7 +27,7 @@
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 		<td class="tcell-left text11"><span class="<?php if($meeting->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["PROJECT_MEETING_DATE"];?></span></span></td>
-		<td class="tcell-right"><input name="item_date" type="text" class="input-date datepicker item_date" value="<?php echo($meeting->item_date)?>" /></td>
+		<td class="tcell-right"><input name="item_date" type="text" class="input-date datepicker item_date" value="<?php echo($meeting->item_date)?>" readonly="readonly" /></td>
 	</tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
@@ -64,7 +64,7 @@
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 	  <td class="tcell-left text11"><span class="<?php if($meeting->canedit) { ?>content-nav showDialog<?php } ?>" request="getMeetingStatusDialog" field="projectsstatus" append="1"><span><?php echo $lang["GLOBAL_STATUS"];?></span></span></td>
-        <td class="tcell-right"><div id="projectsmeeting_status" class="itemlist-field"><div class="listmember" field="projectsmeeting_status" uid="<?php echo($meeting->status);?>" style="float: left"><?php echo($meeting->status_text);?></div></div><input name="meeting_status_date" type="text" class="input-date datepicker meeting_status_date" value="<?php echo($meeting->status_date)?>" style="float: left; margin-left: 8px;" /></td>
+        <td class="tcell-right"><div id="projectsmeeting_status" class="itemlist-field"><div class="listmember" field="projectsmeeting_status" uid="<?php echo($meeting->status);?>" style="float: left"><?php echo($meeting->status_text);?></div></div><input name="meeting_status_date" type="text" class="input-date datepicker meeting_status_date" value="<?php echo($meeting->status_date)?>" style="float: left; margin-left: 8px;" readonly="readonly" /></td>
 	</tr>
 </table>
 <div class="content-spacer"></div>

@@ -15,7 +15,7 @@
     <tr>
       <td width="12"></td>
       <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["PROJECT_PHASE_MILESTONE_DATE"];?></span></span></td>
-      <td class="tcell-right"><?php if($phase->canedit) { ?><input name="task_startdate[<?php echo $value->id;?>]" type="text" class="input-date datepicker task_start" value="<?php echo $value->startdate;?>" />
+      <td class="tcell-right"><?php if($phase->canedit) { ?><input name="task_startdate[<?php echo $value->id;?>]" type="text" class="input-date datepicker task_start" value="<?php echo $value->startdate;?>" readonly="readonly" />
       <input name="task_enddate[<?php echo $value->id;?>]" type="hidden" value="" /><?php } else { ?><?php echo $value->startdate;?><?php } ?>
       </td>
     </tr>
@@ -29,7 +29,7 @@
     <tr>
       <td width="12">&nbsp;</td>
       <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["PROJECT_PHASE_TASK_STATUS_FINISHED"];?></span></span></td>
-      <td class="tcell-right"><?php if($phase->canedit) { ?><input name="task_donedate[<?php echo $value->id;?>]" type="text" class="input-date datepicker task_donedate" value="<?php echo $donedate;?>" /><?php } else { ?><?php echo $donedate;?><?php } ?></td>
+      <td class="tcell-right"><?php if($phase->canedit) { ?><input name="task_donedate[<?php echo $value->id;?>]" type="text" class="input-date datepicker task_donedate" value="<?php echo $donedate;?>" readonly="readonly" /><?php } else { ?><?php echo $donedate;?><?php } ?></td>
     </tr>
   </table>
   		</td>

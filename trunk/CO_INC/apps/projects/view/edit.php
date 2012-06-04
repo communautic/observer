@@ -34,7 +34,7 @@
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 	  <td class="tcell-left text11"><span class="<?php if($project->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang['PROJECT_KICKOFF'];?></span></span></td>
-		<td class="tcell-right"><?php if($project->canedit) { ?><input name="startdate" type="text" class="input-date datepicker" value="<?php echo($project->startdate)?>" /><input id="moveproject_start" name="moveproject_start" type="hidden" value="<?php echo($project->startdate)?>" /><?php } else { ?><?php echo($project->startdate)?><?php } ?></td>
+		<td class="tcell-right"><?php if($project->canedit) { ?><input name="startdate" type="text" class="input-date datepicker" value="<?php echo($project->startdate)?>" readonly="readonly" /><input id="moveproject_start" name="moveproject_start" type="hidden" value="<?php echo($project->startdate)?>" /><?php } else { ?><?php echo($project->startdate)?><?php } ?></td>
 	</tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
@@ -66,7 +66,7 @@
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 	  <td class="tcell-left text11"><span class="<?php if($project->canedit) { ?>content-nav showDialog<?php } ?>" request="getProjectStatusDialog" field="projectsstatus" append="1"><span><?php echo $lang["GLOBAL_STATUS"];?></span></span></td>
-        <td class="tcell-right"><div id="projectsstatus" class="itemlist-field"><div class="listmember" field="projectsstatus" uid="<?php echo($project->status);?>" style="float: left"><?php echo($project->status_text);?></div></div><?php if($project->canedit) { ?><input name="status_date" type="text" class="input-date datepicker status_date" value="<?php echo($project->status_date)?>" style="float: left; margin-left: 8px;" /><?php } else { ?><div style="float: left; margin-left: 8px;"><?php echo($project->status_date)?><?php } ?></div></td>
+        <td class="tcell-right"><div id="projectsstatus" class="itemlist-field"><div class="listmember" field="projectsstatus" uid="<?php echo($project->status);?>" style="float: left"><?php echo($project->status_text);?></div></div><?php if($project->canedit) { ?><input name="status_date" type="text" class="input-date datepicker status_date" value="<?php echo($project->status_date)?>" style="float: left; margin-left: 8px;" readonly="readonly" /><?php } else { ?><div style="float: left; margin-left: 8px;"><?php echo($project->status_date)?><?php } ?></div></td>
 	</tr>
 </table>
 <div class="content-spacer"></div>
