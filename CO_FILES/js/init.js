@@ -1,10 +1,26 @@
 /*var globalError = 0;
 $(document).ajaxError(function(e, xhr, settings, exception) {
-	globalError = 1;
-	if(globalError == 1) {
-		globalError = 0;
-	alert('error in: ' + settings.url + ' \\n'+'error:\\n' + exception);
+	//console.log(e);
+    //console.log(xhr);
+	console.log(settings);
+    console.log(settings.url);
+	console.log(settings.data);
+	console.log(settings.type);
+    //console.log(exception);
 	
+	if(globalError == 0) {
+		globalError = 1;
+		var txt = 'Check your internet connection and try again';
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		$.prompt(txt,{ 
+			callback: function(v,m,f){		
+				if(v){
+					globalError = 0;
+				}
+			}
+		});
+		
 	}
 });*/
 
@@ -92,9 +108,9 @@ function projectSendResponse(data) {
 	}*/
 }
 
-function initScrollbar ( elem ) {
+//function initScrollbar ( elem ) {
 	//alert(elem)
-	var pane = $(elem);
+	//var pane = $(elem);
 	//pane.jScrollPane({ horizontalGutter: 10,verticalGutter: 10})
 	
 		/*.jScrollPane({
@@ -107,11 +123,11 @@ function initScrollbar ( elem ) {
 			width:	'100%'
 		,	height:	'100%'
 	})*/
-	;
+	//;
 	
 	//var api = pane.data('jsp');
 
-};
+//};
 
 
 function getCurrentApp() {
@@ -430,14 +446,16 @@ $(document).ready(function() {
 			$('#'+app_active).css('top', targetheight + 'px');
 			var vdoctoolbar = $('#'+app_active+' div.mceExternalToolbar');
 			if($('#'+app_active).data("current") == 'vdocs') {
-				vdoctoolbar.css('top', targetheight + 130 + 'px !important');
+				var vtop = targetheight + 130;
+				vdoctoolbar.css('cssText', 'top: ' + vtop + 'px !important');
 			}
-			$('#'+app).animate({ 'top' : 0 })
+			$('#'+app).animate({ 'top' : 0 }, function() {
+				var vdoct = $('#'+app+' div.mceExternalToolbar');
+				if($('#'+app).data("current") == 'vdocs') {
+					vdoct.fadeIn('slow').css('cssText', 'top: 130px !important');
+				}					   
+			})
 			var appobject = window[app];
-			var vdoct = $('#'+app+' div.mceExternalToolbar');
-			if($('#'+app).data("current") == 'vdocs') {
-				vdoct.show().animate({ 'top' : '130px !important' })
-			}
 		}
 	}).disableSelection();
 
@@ -1063,6 +1081,27 @@ $(document).ready(function() {
 					var reg = /[0-9]+/.exec(input.name);
 					$(this).datepicker('option', 'minDate', new Date(Date.parse($("input[name='task_startdate["+reg+"]']").val())));
 				}
+				setTimeout(function() {
+					var d = new Date();
+					var m = d.getMonth()+1;
+					var y = d.getFullYear();
+					var is = new Date(Date.parse(input.value));
+					var month = is.getMonth()+1;
+					var year = is.getFullYear();
+					if(m == month && y == year ) {
+						$('button.ui-datepicker-current').addClass('disabled');
+					}
+				}, 1 );
+			},
+			onChangeMonthYear: function(year,month, inst ) {
+				setTimeout(function() {
+					var d = new Date();
+					var m = d.getMonth()+1;
+					var y = d.getFullYear();
+					if(m == month && y == year ) {
+						$('button.ui-datepicker-current').addClass('disabled');
+					}
+				}, 1 );
 			},
 			onClose: function(dateText, inst) {
 				var app = getCurrentApp();
@@ -1077,16 +1116,34 @@ $(document).ready(function() {
 		$(this).datepicker({ dateFormat: 'dd.mm.yy', showOn: 'button', buttonText:"", buttonImage: co_files+'/img/pixel.gif',  buttonImageOnly: true, showButtonPanel: true, changeMonth: true, changeYear: true, yearRange: 'c-5:c+5', showAnim: 'slide',
 			beforeShow: function(input,inst) {
 				setTimeout(function() {
+					if(input.value != '') {
+						var d = new Date();
+						var m = d.getMonth()+1;
+						var y = d.getFullYear();
+						var is = new Date(Date.parse(input.value));
+						var month = is.getMonth()+1;
+						var year = is.getFullYear();
+						if(m == month && y == year ) {
+							$('button.ui-datepicker-current').addClass('disabled');
+						} 
+					} else {
+						$('button.ui-datepicker-current').addClass('disabled');
+					}
 					var buttonPane = $( input ).datepicker( "widget" ).find( ".ui-datepicker-buttonpane" );
 					$( "<button>", {text: DATEPICKER_CLEAR, click: function() {
 							$.datepicker._clearDate( input );
 						}
 				  	}).appendTo( buttonPane ).addClass("ui-datepicker-clear ui-state-default ui-priority-secondary ui-corner-all ui-datepicker-delete");
 				}, 1 );
-				
 			},
-			onChangeMonthYear: function( input, inst ) {
+			onChangeMonthYear: function( year, month, input, inst ) {
 				setTimeout(function() {
+					var d = new Date();
+					var m = d.getMonth()+1;
+					var y = d.getFullYear();
+					if(m == month && y == year ) {
+						$('button.ui-datepicker-current').addClass('disabled');
+					}
 					var buttonPane = $( input ).datepicker( "widget" ).find( ".ui-datepicker-buttonpane" );
 					$( "<button>", {text: DATEPICKER_CLEAR, click: function() {
 							$.datepicker._clearDate( input );
