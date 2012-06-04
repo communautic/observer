@@ -382,8 +382,8 @@ class Complaints extends Controller {
 	}
 
 
-	function setComplaintDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$folder,$status,$status_date,$complaint,$complaint_cat,$product,$product_desc,$charge,$number) {
-		$retval = $this->model->setComplaintDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$folder,$status,$status_date,$complaint,$complaint_cat,$product,$product_desc,$charge,$number);
+	function setComplaintDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$folder,$status,$status_date,$complaint,$complaint_more,$complaint_cat,$complaint_cat_more,$product,$product_desc,$charge,$number) {
+		$retval = $this->model->setComplaintDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$folder,$status,$status_date,$complaint,$complaint_more,$complaint_cat,$complaint_cat_more,$product,$product_desc,$charge,$number);
 		if($retval){
 			 return '{ "action": "edit", "id": "' . $id . '", "status": "' . $status . '"}';
 		  } else{
@@ -455,9 +455,28 @@ class Complaints extends Controller {
 			 return "error";
 		  }
 	}
+	
+
+	function getComplaintMoreDialog($field,$title) {
+		$retval = $this->model->getComplaintMoreDialog($field,$title);
+		if($retval){
+			 return $retval;
+		  } else{
+			 return "error";
+		  }
+	}
 
 	function getComplaintCatDialog($field,$title) {
 		$retval = $this->model->getComplaintCatDialog($field,$title);
+		if($retval){
+			 return $retval;
+		  } else{
+			 return "error";
+		  }
+	}
+	
+	function getComplaintCatMoreDialog($field,$title) {
+		$retval = $this->model->getComplaintCatMoreDialog($field,$title);
 		if($retval){
 			 return $retval;
 		  } else{

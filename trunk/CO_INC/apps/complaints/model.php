@@ -580,7 +580,9 @@ class ComplaintsModel extends Model {
 		$array["team_ct"] = empty($array["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['team_ct'];
 		
 		$array["complaint"] = $this->getComplaintIdDetails($array["complaint"],"complaintscomplaint");
+		$array["complaint_more"] = $this->getComplaintMoreIdDetails($array["complaint_more"],"complaintscomplaintmore");
 		$array["complaint_cat"] = $this->getComplaintCatDetails($array["complaint_cat"],"complaintscomplaintcat");
+		$array["complaint_cat_more"] = $this->getComplaintCatMoreDetails($array["complaint_cat_more"],"complaintscomplaintcatmore");
 		
 		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
 		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
@@ -678,6 +680,27 @@ class ComplaintsModel extends Model {
    }
    
    
+   	function getComplaintMoreIdDetails($string,$field){
+		$users_string = explode(",", $string);
+		$users_total = sizeof($users_string);
+		$users = '';
+		if($users_total == 0) { return $users; }
+		$i = 1;
+		foreach ($users_string as &$value) {
+			$q = "SELECT id, name from " . CO_TBL_COMPLAINTS_DIALOG_COMPLAINTS_MORE . " where id = '$value'";
+			$result_user = mysql_query($q, $this->_db->connection);
+			while($row_user = mysql_fetch_assoc($result_user)) {
+				$users .= '<span class="listmember" uid="' . $row_user["id"] . '">' . $row_user["name"] . '</span>';
+				if($i < $users_total) {
+					$users .= ', ';
+				}
+			}
+			$i++;
+		}
+		return $users;
+   }
+   
+   
 	function getComplaintCatDetails($string,$field){
 		$users_string = explode(",", $string);
 		$users_total = sizeof($users_string);
@@ -697,12 +720,33 @@ class ComplaintsModel extends Model {
 		}
 		return $users;
    }
+   
+   
+	function getComplaintCatMoreDetails($string,$field){
+		$users_string = explode(",", $string);
+		$users_total = sizeof($users_string);
+		$users = '';
+		if($users_total == 0) { return $users; }
+		$i = 1;
+		foreach ($users_string as &$value) {
+			$q = "SELECT id, name from " . CO_TBL_COMPLAINTS_DIALOG_CATS_MORE . " where id = '$value'";
+			$result_user = mysql_query($q, $this->_db->connection);
+			while($row_user = mysql_fetch_assoc($result_user)) {
+				$users .= '<span class="listmember" uid="' . $row_user["id"] . '">' . $row_user["name"] . '</span>';
+				if($i < $users_total) {
+					$users .= ', ';
+				}
+			}
+			$i++;
+		}
+		return $users;
+   }
 
 
    /**
    * get details for the complaint folder
    */
-   function setComplaintDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$folder,$status,$status_date,$complaint,$complaint_cat,$product,$product_desc,$charge,$number) {
+   function setComplaintDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$folder,$status,$status_date,$complaint,$complaint_more,$complaint_cat,$complaint_cat_more,$product,$product_desc,$charge,$number) {
 		global $session, $contactsmodel;
 		
 		$startdate = $this->_date->formatDate($_POST['startdate']);
@@ -730,7 +774,7 @@ class ComplaintsModel extends Model {
 
 		$now = gmdate("Y-m-d H:i:s");
 		
-		$q = "UPDATE " . CO_TBL_COMPLAINTS . " set title = '$title', folder = '$folder', startdate='$startdate', ordered_by = '$ordered_by', ordered_by_ct = '$ordered_by_ct', management = '$management', management_ct = '$management_ct', team='$team', team_ct = '$team_ct', complaint = '$complaint', complaint_cat = '$complaint_cat', product = '$product', product_desc = '$product_desc', charge = '$charge', number = '$number', protocol = '$protocol', status = '$status', $sql = '$status_date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_COMPLAINTS . " set title = '$title', folder = '$folder', startdate='$startdate', ordered_by = '$ordered_by', ordered_by_ct = '$ordered_by_ct', management = '$management', management_ct = '$management_ct', team='$team', team_ct = '$team_ct', complaint = '$complaint', complaint_more = '$complaint_more', complaint_cat = '$complaint_cat', complaint_cat_more = '$complaint_cat_more', product = '$product', product_desc = '$product_desc', charge = '$charge', number = '$number', protocol = '$protocol', status = '$status', $sql = '$status_date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
@@ -746,7 +790,7 @@ class ComplaintsModel extends Model {
 		$title = $lang["COMPLAINT_NEW"];
 		
 		//$q = "INSERT INTO " . CO_TBL_COMPLAINTS . " set folder = '$id', title = '$title', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
-		$q = "INSERT INTO " . CO_TBL_COMPLAINTS . " set folder = '$id', title = '$title', startdate = '$now', enddate = '$now', status = '0', planned_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+		$q = "INSERT INTO " . CO_TBL_COMPLAINTS . " set folder = '$id', title = '$title', startdate = '$now', enddate = '$now', management = '$session->uid', status = '0', planned_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			$id = mysql_insert_id();
@@ -946,12 +990,36 @@ class ComplaintsModel extends Model {
 		$str .= '</div>';	
 		return $str;
 	 }
+
+	function getComplaintMoreDialog($field,$title) {
+		global $session;
+		$str = '<div class="dialog-text">';
+		$q ="select id, name from " . CO_TBL_COMPLAINTS_DIALOG_COMPLAINTS_MORE . " ORDER BY name ASC";
+		$result = mysql_query($q, $this->_db->connection);
+		while ($row = mysql_fetch_array($result)) {
+			$str .= '<a href="#" class="insertFromDialog" title="' . $row["name"] . '" field="'.$field.'" gid="'.$row["id"].'">' . $row["name"] . '</a>';
+		}
+		$str .= '</div>';	
+		return $str;
+	 }
 	 
 	 
 	function getComplaintCatDialog($field,$title) {
 		global $session;
 		$str = '<div class="dialog-text">';
 		$q ="select id, name from " . CO_TBL_COMPLAINTS_DIALOG_CATS . " ORDER BY name ASC";
+		$result = mysql_query($q, $this->_db->connection);
+		while ($row = mysql_fetch_array($result)) {
+			$str .= '<a href="#" class="insertFromDialog" title="' . $row["name"] . '" field="'.$field.'" gid="'.$row["id"].'">' . $row["name"] . '</a>';
+		}
+		$str .= '</div>';	
+		return $str;
+	 }
+	 
+	function getComplaintCatMoreDialog($field,$title) {
+		global $session;
+		$str = '<div class="dialog-text">';
+		$q ="select id, name from " . CO_TBL_COMPLAINTS_DIALOG_CATS_MORE . " ORDER BY name ASC";
 		$result = mysql_query($q, $this->_db->connection);
 		while ($row = mysql_fetch_array($result)) {
 			$str .= '<a href="#" class="insertFromDialog" title="' . $row["name"] . '" field="'.$field.'" gid="'.$row["id"].'">' . $row["name"] . '</a>';

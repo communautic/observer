@@ -35,7 +35,9 @@ function complaintsApplication(name) {
 		formData[formData.length] = processListApps('team');
 		formData[formData.length] = processCustomTextApps('team_ct');
 		formData[formData.length] = processListApps('complaint');
+		formData[formData.length] = processListApps('complaintmore');
 		formData[formData.length] = processListApps('complaintcat');
+		formData[formData.length] = processListApps('complaintcatmore');
 		formData[formData.length] = processListApps('status');
 	}
 
