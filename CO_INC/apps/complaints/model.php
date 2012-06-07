@@ -809,16 +809,64 @@ class ComplaintsModel extends Model {
 		
 		$now = gmdate("Y-m-d H:i:s");
 		// complaint
-		$q = "INSERT INTO " . CO_TBL_COMPLAINTS . " (folder,title,startdate,ordered_by,management,team,complaint,complaint_cat,product,product_desc,charge,number,protocol,created_date,created_user,edited_date,edited_user) SELECT folder,CONCAT(title,' ".$lang["GLOBAL_DUPLICAT"]."'),startdate,ordered_by,management,team,complaint,complaint_cat,product,product_desc,charge,number,protocol,'$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_COMPLAINTS . " where id='$id'";
-		//$q = "INSERT INTO " . CO_TBL_PROJECTS . " (folder,title,startdate,ordered_by,management,team,complaint,complaint_cat,product,product_desc,charge,number,protocol,status,planned_date,emailed_to,created_date,created_user,edited_date,edited_user) SELECT folder,CONCAT(title,' ".$lang["GLOBAL_DUPLICAT"]."'),startdate,ordered_by,management,team,protocol,'0','$now',emailed_to,'$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_PROJECTS . " where id='$id'";
+		$q = "INSERT INTO " . CO_TBL_COMPLAINTS . " (folder,title,startdate,ordered_by,management,team,complaint,complaint_more,complaint_cat,complaint_cat_more,product,product_desc,charge,number,protocol,planned_date,created_date,created_user,edited_date,edited_user) SELECT folder,CONCAT(title,' ".$lang["GLOBAL_DUPLICAT"]."'),'$now',ordered_by,management,team,complaint,complaint_more,complaint_cat,complaint_cat_more,product,product_desc,charge,number,protocol,'$now','$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_COMPLAINTS . " where id='$id'";
 
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
 		
 		if(!$session->isSysadmin()) {
-				$complaintsAccessModel = new ComplaintsAccessModel();
-				$complaintsAccessModel->setDetails($id_new,$session->uid,"");
+			$complaintsAccessModel = new ComplaintsAccessModel();
+			$complaintsAccessModel->setDetails($id_new,$session->uid,"");
+		}
+			
+		// processes
+		$q = "SELECT id FROM " . CO_TBL_COMPLAINTS_GRIDS . " WHERE pid = '$id' and bin='0'";
+		$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+			$gridid = $row["id"];
+		
+			$qg = "INSERT INTO " . CO_TBL_COMPLAINTS_GRIDS . " (pid,title,owner,owner_ct,management,management_ct,team,team_ct,created_date,created_user,edited_date,edited_user) SELECT '$id_new',title,owner,owner_ct,management,management_ct,team,team_ct,'$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_COMPLAINTS_GRIDS . " where id='$gridid'";
+			$resultg = mysql_query($qg, $this->_db->connection);
+			$gridid_new = mysql_insert_id();
+		
+			// cols
+			$qc = "SELECT * FROM " . CO_TBL_COMPLAINTS_GRIDS_COLUMNS . " WHERE pid = '$gridid' and bin='0'";
+			$resultc = mysql_query($qc, $this->_db->connection);
+			while($rowc = mysql_fetch_array($resultc)) {
+				$colID = $rowc["id"];
+				$sort = $rowc['sort'];
+				$days = $rowc['days'];
+				$qcn = "INSERT INTO " . CO_TBL_COMPLAINTS_GRIDS_COLUMNS . " set pid = '$gridid_new', sort='$sort', days='$days'";
+				$resultcn = mysql_query($qcn, $this->_db->connection);
+				$colID_new = mysql_insert_id();
+				
+				$qn = "SELECT * FROM " . CO_TBL_COMPLAINTS_GRIDS_NOTES . " where cid = '$colID' and bin='0'";
+				$resultn = mysql_query($qn, $this->_db->connection);
+				$num_notes[] = mysql_num_rows($resultn);
+				$items = array();
+				while($rown = mysql_fetch_array($resultn)) {
+					$note_id = $rown["id"];
+					$sort = $rown["sort"];
+					$istitle = $rown["istitle"];
+					$isstagegate = $rown["isstagegate"];
+					$title = mysql_real_escape_string($rown["title"]);
+					$text = mysql_real_escape_string($rown["text"]);
+					//$ms = $rown["ms"];
+					$qnn = "INSERT INTO " . CO_TBL_COMPLAINTS_GRIDS_NOTES . " set cid='$colID_new', sort = '$sort', istitle = '$istitle', isstagegate = '$isstagegate', title = '$title', text = '$text', created_date='$now',created_user='$session->uid',edited_date='$now',edited_user='$session->uid'";
+					$resultnn = mysql_query($qnn, $this->_db->connection);
+				}
 			}
+		}
+		
+		//vdocs
+		$q = "SELECT id FROM " . CO_TBL_COMPLAINTS_VDOCS . " WHERE pid = '$id' and bin='0'";
+		$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+			$vdocid = $row["id"];
+			$qv = "INSERT INTO " . CO_TBL_COMPLAINTS_VDOCS . " (pid,title,content) SELECT '$id_new',title,content FROM " . CO_TBL_COMPLAINTS_VDOCS . " where id='$vdocid'";
+			$resultv = mysql_query($qv, $this->_db->connection);
+		}
+		
 		if ($result) {
 			return $id_new;
 		}

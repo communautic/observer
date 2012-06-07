@@ -12413,12 +12413,12 @@ tinymce.create('tinymce.ui.Toolbar:tinymce.ui.Container', {
 
 				// Present alert message about clipboard access not being available
 				if (failed || !doc.queryCommandSupported(command)) {
-					if (tinymce.isGecko) {
+					/*if (tinymce.isGecko) {
 						editor.windowManager.confirm(editor.getLang('clipboard_msg'), function(state) {
 							if (state)
 								open('http://www.mozilla.org/editor/midasdemo/securityprefs.html', '_blank');
 						});
-					} else
+					} else*/
 						editor.windowManager.alert(editor.getLang('clipboard_no_support'));
 				}
 			},
