@@ -56,6 +56,14 @@
 	</tr>
 </table>
 <?php } ?>
+<?php if(!empty($complaint->complaint_more)) { ?>
+<table width="100%" class="standard">
+	<tr>
+		<td class="tcell-left"><?php echo $lang["COMPLAINT_COMPLAINTCATMORE"];?></td>
+		<td><?php echo($complaint->complaint_more);?></td>
+	</tr>
+</table>
+<?php } ?>
 <?php if(!empty($complaint->complaint_cat)) { ?>
 <table width="100%" class="standard">
 	<tr>
@@ -64,6 +72,15 @@
 	</tr>
 </table>
 <?php } ?>
+<?php if(!empty($complaint->complaint_cat_more)) { ?>
+<table width="100%" class="standard">
+	<tr>
+		<td class="tcell-left"><?php echo $lang["COMPLAINT_CAT_MORE"];?></td>
+		<td><?php echo($complaint->complaint_cat_more);?></td>
+	</tr>
+</table>
+<?php } ?>
+&nbsp;
 <?php if(!empty($complaint->product)) { ?>
 <table width="100%" class="standard">
 	<tr>

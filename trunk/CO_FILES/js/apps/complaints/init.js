@@ -123,6 +123,7 @@ function complaintsApplication(name) {
 						$("#complaints").data("second",id);							
 						$("#"+complaints.name+"-right").html(text.html);
 							initComplaintsContentScrollbar();
+							module.getNavModulesNumItems(id);
 						}
 					});
 				}
