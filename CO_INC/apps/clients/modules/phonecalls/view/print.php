@@ -32,7 +32,7 @@
 <?php } ?>
 <table width="100%" class="standard">
 	<tr>
-	  <td class="tcell-left"><?php echo $lang["GLOBAL_STATUS"];?></td>
+	  <td class="tcell-left"><?php echo $lang["CLIENT_PHONECALL_TYPE"];?></td>
         <td><?php echo($phonecall->status_text);?> <?php echo($phonecall->status_date)?></td>
 	</tr>
 </table>

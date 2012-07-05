@@ -7,6 +7,7 @@ $lang["BRAINSTORM_GRIDS"] = 'Prozessraster';
 $lang["BRAINSTORM_GRID_NEW"] = 'Neues Prozessraster';
 $lang["BRAINSTORM_GRID_ACTION_NEW"] = 'neues Prozessraster anlegen';
 
+$lang["BRAINSTORM_GRID_TIME"] = 'Durchlaufzeit';
 $lang["BRAINSTORM_GRID_OWNER"] = 'Prozesseigner';
 $lang["BRAINSTORM_GRID_MANAGEMENT"] = 'Prozessverantwortung';
 $lang["BRAINSTORM_GRID_TEAM"] = 'Prozessteam';

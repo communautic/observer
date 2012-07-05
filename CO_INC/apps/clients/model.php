@@ -497,7 +497,7 @@ class ClientsModel extends Model {
 	}
 	
 
-   function getClientDetails($id) {
+   function getClientDetails($id,$option = "") {
 		global $session, $contactsmodel, $lang;
 		$q = "SELECT * FROM " . CO_TBL_CLIENTS . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
@@ -604,6 +604,11 @@ class ClientsModel extends Model {
 			}
 		}
 		$array["team_print"] = $contactsmodel->getUserListPlain($array['team']);
+		if($option = 'prepareSendTo') {
+			$array["sendtoTeam"] = $contactsmodel->checkUserListEmail($array["team"],'clientsteam', "", $array["canedit"]);
+			$array["sendtoTeamNoEmail"] = $contactsmodel->checkUserListEmail($array["team"],'clientsteam', "", $array["canedit"], 0);
+			$array["sendtoError"] = false;
+		}
 		$array["team"] = $contactsmodel->getUserList($array['team'],'clientsteam', "", $array["canedit"]);
 		$array["team_ct"] = empty($array["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['team_ct'];
 		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);

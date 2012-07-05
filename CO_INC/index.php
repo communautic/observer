@@ -61,7 +61,8 @@ if($session->isSysadmin()) {
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0" />
+<!--<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0" />-->
+<meta http-equiv="X-UA-Compatible" content="IE=9" />
 <title><?php echo $lang["APPLICATION_NAME"];?></title>
 <link rel="icon" type="image/x-icon" href="<?php echo CO_FILES;?>/img/favicon.ico" sizes="64x64" />
 <link href="<?php echo CO_FILES;?>/css/reset.css" rel="stylesheet" type="text/css" media="screen,projection" />
@@ -79,13 +80,23 @@ foreach($controller->applications as $app => $display) {
 	echo '<link href="' . CO_FILES . '/css/apps/' . $app . '.css" rel="stylesheet" type="text/css" />';
 } 
 ?>
+<!--[if gte IE 9]>
+  <style type="text/css">
+    .ui-layout-west .gradient, #app-top, #appnav, #logout, #logout span:hover, #menu-opac, .postit-design, div.contentTabs li span, div.contentSubTabs li span, .contact-dialog-header a, .ui-datepicker .ui-datepicker-header, .ui-datepicker .ui-datepicker-buttonpane button, .ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-delete, .ui-datepicker .ui-datepicker-buttonpane button:hover, .ui-datepicker .ui-datepicker-buttonpane button.disabled, .sendtoWindow .ui-widget-header, .sendtoWindow span.coButton, #tabs > ul > li, #tabs ul li:hover, #tabs > ul > li.ui-tabs-selected, .ui-layout-west h3, #menu .app_bin:hover, #menu .app_bin.active-app, #menu .app_brainstorms:hover, #menu .app_brainstorms.active-app, #brainstorms div.note-design, #brainstorms-console .widget-head, #menu .app_clients:hover, #menu .app_clients.active-app, #menu .app_complaints:hover, #appnav li:last-child span, #appnav li:last-child span:hover {
+       filter: none;
+    }
+    #menu .app_bin:hover, #menu .app_bin.active-app, #menu .app_brainstorms:hover, #menu .app_brainstorms.active-app, #brainstorms div.note-design, #brainstorms-console .widget-head, #menu .app_clients:hover, #menu .app_clients.active-app, #menu .app_complaints:hover, #menu .app_complaints.active-app, #complaints div.note-design, #menu .app_contacts:hover, #menu .app_contacts.active-app, #desktop .topbar, #menu .app_desktop:hover, #menu .app_desktop.active-app, #desktopcolumns .widget .widget-head, #projects div.contentTabs li span:hover, #projects div.contentTabs li span.active {
+       filter: none;
+    }
+  </style>
+<![endif]-->
 <script type="text/javascript">
 var num_apps = <?php echo($num_apps);?>;
 var co_files = '<?php echo CO_FILES;?>';
 var co_lang = '<?php echo $session->userlang;?>';
 </script>
 <script src="<?php echo $protocol;?>ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="<?php echo $protocol;?>ajax.googleapis.com/ajax/libs/jqueryui/1.8.19/jquery-ui.min.js"></script>
+<script type="text/javascript" src="<?php echo $protocol;?>ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/datejs/date.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/datejs/de-AT.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/datejs/time.js"></script>
@@ -128,10 +139,15 @@ foreach($userapps as $key => $app) {
 		echo '<script type="text/javascript" src="' . CO_FILES . '/js/apps/' . $app . '/' . $module . '.js"></script>';
 	}
 }
+// watermark
+$watermark = CO_FILES .'/img/watermark.png';
+if(file_exists(CO_PATH_DATA . '/watermark.png')) {
+	$watermark =  CO_PATH_URL . '/data/watermark.png';
+}
 ?>
 </head>
 <body>
-<div id="background"><img src="<?php echo CO_FILES;?>/img/background.jpg" width="100%" height="100%" /></div>
+<div id="background"><img src="<?php echo CO_FILES;?>/img/background.jpg" width="100%" height="100%" /><img id="watermark" src="<?php echo $watermark;?>" /></div>
 <div id="intro"><div id="intro-content"><p><img src="<?php echo CO_FILES;?>/img/ajax-loader.gif" alt="Loading" width="32" height="32" /></p></div></div>
 <div id="container">
 <div id="container-inner">

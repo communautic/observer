@@ -212,8 +212,12 @@ function projectsApplication(name) {
 
 	this.actionSend = function() {
 		var id = $("#projects").data("second");
-		$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=getProjectSend&id="+id, success: function(html){
-			$("#modalDialogForward").html(html).dialog('open');
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectSend&id="+id, success: function(data){
+			$("#modalDialogForward").html(data.html).dialog('open');
+			if(data.error == 1) {
+				$.prompt('<div style="text-align: center">' + ALERT_REMOVE_RECIPIENT + data.error_message + '<br /></div>');
+				return false;
+			}
 			}
 		});
 	}
@@ -377,49 +381,94 @@ function projectsApplication(name) {
 		// tasks move enddate if startdate is later
 		} else if (dp.name.match(/task_startdate/)){
 			var reg = /[0-9]+/.exec(dp.name);
-			var end = $("#projects input[name='task_enddate["+reg+"]']").val();
-			if(Date.parse(end) < Date.parse(dp.value)) {
+			var moveDependend = 0;
+			if($("#projects input[name='task_startdate["+reg+"]']").hasClass('ms')) {
 				$("#projects input[name='task_enddate["+reg+"]']").val(dp.value)
+				var s = $("#projects input[name='task_enddate["+reg+"]']").val();
+				var e = $("#projects input[name='task_movedate["+reg+"]']").val();
+				if(s != e) {
+					moveDependend = 1;
+				}
+			} else {
+				var end = $("#projects input[name='task_enddate["+reg+"]']").val();
+				if(Date.parse(end) < Date.parse(dp.value)) {
+					$("#projects input[name='task_enddate["+reg+"]']").val(dp.value)
+					moveDependend = 1;
+				}
 			}
-			var obj = getCurrentModule();
-			$('#projects .coform').ajaxSubmit(obj.poformOptions);
+			
+			if(moveDependend == 1) {
+				var obj = getCurrentModule();
+				$('#projects .coform').ajaxSubmit(obj.poformOptions);
+				$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=getTaskDependencyExists&id="+reg, success: function(data){																																																																				
+					if(data == "true") {
+						var txt = ALERT_PHASE_TASKS_MOVE_ALL;
+						var langbuttons = {};
+						langbuttons[ALERT_YES] = true;
+						langbuttons[ALERT_NO] = false;
+						$.prompt(txt,{ 
+							buttons:langbuttons,
+							callback: function(v,m,f){		
+								if(v){
+									var date1 = Date.parse($("#projects input[name='task_enddate["+reg+"]']").val());
+									var date2 = Date.parse($("#projects input[name='task_movedate["+reg+"]']").val());
+									var span = new TimeSpan(date1 - date2);
+									var days = span.getDays();
+									if(days != 0) {
+										$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=moveDependendTasks&id="+reg+"&days="+days, success: function(data){
+										obj.actionRefresh();
+											}
+										});
+									}
+								}
+							}
+						});
+					 }
+					}
+				});
+			} else {
+				var obj = getCurrentModule();
+				$('#projects .coform').ajaxSubmit(obj.poformOptions);
+			}
 		// tasks dependencies
 		} else if (dp.name.match(/task_enddate/)){
 			var obj = getCurrentModule();
 			$('#projects .coform').ajaxSubmit(obj.poformOptions);
 			var reg = /[0-9]+/.exec(dp.name);
-			$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=getTaskDependencyExists&id="+reg, success: function(data){																																																																				
-				if(data == "true") {
-					var txt = ALERT_PHASE_TASKS_MOVE_ALL;
-					var langbuttons = {};
-					langbuttons[ALERT_YES] = true;
-					langbuttons[ALERT_NO] = false;
-					$.prompt(txt,{ 
-						buttons:langbuttons,
-						callback: function(v,m,f){		
-							if(v){
-								var date1 = Date.parse($("#projects input[name='task_enddate["+reg+"]']").val());
-								var date2 = Date.parse($("#projects input[name='task_movedate["+reg+"]']").val());
-								var span = new TimeSpan(date1 - date2);
-								var days = span.getDays();
-								if(days != 0) {
-									$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=moveDependendTasks&id="+reg+"&days="+days, success: function(data){
-									obj.actionRefresh();
-										}
-									});
+			var s = $("#projects input[name='task_enddate["+reg+"]']").val();
+			var e = $("#projects input[name='task_movedate["+reg+"]']").val();
+			if(s != e) {
+				$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=getTaskDependencyExists&id="+reg, success: function(data){																																																																				
+					if(data == "true") {
+						var txt = ALERT_PHASE_TASKS_MOVE_ALL;
+						var langbuttons = {};
+						langbuttons[ALERT_YES] = true;
+						langbuttons[ALERT_NO] = false;
+						$.prompt(txt,{ 
+							buttons:langbuttons,
+							callback: function(v,m,f){		
+								if(v){
+									var date1 = Date.parse(s);
+									var date2 = Date.parse(e);
+									var span = new TimeSpan(date1 - date2);
+									var days = span.getDays();
+									if(days != 0) {
+										$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=moveDependendTasks&id="+reg+"&days="+days, success: function(data){
+										obj.actionRefresh();
+											}
+										});
+									}
 								}
 							}
-						}
-					});
-				 }
-				}
-			});
+						});
+					 }
+					}
+				});
+			}
 		}
 		else {
 			var obj = getCurrentModule();
-			//if(obj.name != 'brainstorms_rosters') {
-				$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
-			//}
+			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 		}
 	}
 

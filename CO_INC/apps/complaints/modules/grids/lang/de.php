@@ -7,6 +7,7 @@ $lang["COMPLAINT_GRIDS"] = 'Prozessraster';
 $lang["COMPLAINT_GRID_NEW"] = 'Neues Prozessraster';
 $lang["COMPLAINT_GRID_ACTION_NEW"] = 'neues Prozessraster anlegen';
 
+$lang["COMPLAINT_GRID_TIME"] = 'Durchlaufzeit';
 $lang["COMPLAINT_GRID_OWNER"] = 'Prozesseigner';
 $lang["COMPLAINT_GRID_MANAGEMENT"] = 'Prozessverantwortung';
 $lang["COMPLAINT_GRID_TEAM"] = 'Prozessteam';

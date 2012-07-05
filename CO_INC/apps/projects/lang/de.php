@@ -61,10 +61,10 @@ $lang["PRINT_PROJECT_FOLDER"] = 'ordner.png';
 // Dektop Widget
 $lang["PROJECT_WIDGET_NO_ACTIVITY"]		=	'Keine aktuellen Benachrichtigungen';
 $lang["PROJECT_WIDGET_TITLE_MILESTONE"] 	=	'Meilenstein';
-$lang["PROJECT_WIDGET_REMINDER_MILESTONE"] 	= 	'"%1$s" ist für <span class="yellow">morgen</span> geplant';
+$lang["PROJECT_WIDGET_REMINDER_MILESTONE"] 	= 	'Abschluss "%1$s" ist für <span class="yellow">morgen</span> geplant';
 
 $lang["PROJECT_WIDGET_TITLE_TASK"] 			=	'Arbeitspaket';
-$lang["PROJECT_WIDGET_REMINDER_TASK"] 		= 	'"%1$s" ist für <span class="yellow">morgen</span> geplant';
+$lang["PROJECT_WIDGET_REMINDER_TASK"] 		= 	'Abschluss "%1$s" ist für <span class="yellow">morgen</span> geplant';
 
 $lang["PROJECT_WIDGET_TITLE_KICKOFF"] 		=	'Kick Off';
 $lang["PROJECT_WIDGET_REMINDER_KICKOFF"] 	= 	'für "%1$s" ist mit <span class="yellow">morgen</span> geplant';

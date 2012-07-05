@@ -12,6 +12,7 @@ $lang["COMPLAINT_PHONECALL_TIME_START"] = 'Start';
 $lang["COMPLAINT_PHONECALL_TIME_END"] = 'Ende';
 
 $lang["COMPLAINT_PHONECALL_MANAGEMENT"] = 'Gesprächspartner';
+$lang["COMPLAINT_PHONECALL_TYPE"] = 'Telefonieart';
 $lang["COMPLAINT_PHONECALL_GOALS"] = 'Themen';
 
 $lang["COMPLAINT_PHONECALL_STATUS_OUTGOING"] = 'Outgoing';

@@ -793,6 +793,65 @@ class ContactsModel extends Model {
 	}
 
 
+	function checkUserListEmail($string, $field, $sql="", $canedit = true, $withEmail = 1){
+		$users_string = explode(",", $string);
+		$users_total = sizeof($users_string);
+		$users = '';
+		if($users_total == 0) { 
+			return $users; 
+		}
+		// check for users without an email address
+		$users_arr = array();
+		foreach ($users_string as &$value) {
+			$q = "SELECT id, firstname, lastname, email FROM ".CO_TBL_USERS." where id = '$value' $sql and bin='0'";
+			$result_user = mysql_query($q, $this->_db->connection);
+			if(mysql_num_rows($result_user) > 0) {
+				while($row_user = mysql_fetch_assoc($result_user)) {
+					if($withEmail == 1) {
+					if($row_user["email"] != "") {
+						$users_arr[$row_user["id"]] = $row_user["lastname"] . ' ' . $row_user["firstname"];	
+					}
+					} else {
+					if($row_user["email"] == "") {
+						$users_arr[$row_user["id"]] = $row_user["lastname"] . ' ' . $row_user["firstname"];	
+					}
+					}
+				}
+			}
+		}
+		$users_arr_total = sizeof($users_arr);
+		
+		// build string
+		
+		if($withEmail == 1) {
+			if($canedit) {
+			$edit = ' edit="1"';
+		} else {
+			$edit = ' edit="0"';
+		}
+		$i = 1;
+		foreach ($users_arr as $key => &$value) {
+			$users .= '<span class="listmember-outer"><a class="listmember" uid="' . $key . '" field="' . $field . '" ' . $edit . '>' . $value;		
+			if($i < $users_arr_total) {
+				$users .= ', ';
+			}
+			$users .= '</a></span>';	
+			$i++;
+		}
+		} else {
+		
+		$i = 1;
+		foreach ($users_arr as $key => &$value) {
+			$users .= $value;		
+			if($i < $users_arr_total) {
+				$users .= ', ';
+			}
+			$i++;
+		}
+		}
+		return $users;
+	}
+
 	function getPlaceList($string,$field,$canedit = true){
 		$users_string = explode(",", $string);
 		$users_total = sizeof($users_string);

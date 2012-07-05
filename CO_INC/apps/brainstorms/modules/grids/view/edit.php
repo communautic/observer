@@ -29,7 +29,7 @@
 <?php } ?>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
-		<td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_DURATION"];?></td>
+		<td class="tcell-left-inactive text11"><?php echo $lang["BRAINSTORM_GRID_TIME"];?></td>
 		<td class="tcell-right-inactive"><span id="brainstormGridDays"><?php echo $grid->grid_days;?></span> <?php echo $lang["GLOBAL_DAYS"];?></td>
     </tr>
 </table>

@@ -324,20 +324,27 @@ class Clients extends Controller {
 
 	function getClientSend($id) {
 		global $lang;
-		if($arr = $this->model->getClientDetails($id)) {
+		if($arr = $this->model->getClientDetails($id, 'prepareSendTo')) {
 			$client = $arr["client"];
 			$order_access = $arr["orders_access"];
 			
 			$form_url = $this->form_url;
 			$request = "sendClientDetails";
-			$to = $client->team;
+			$to = $client->sendtoTeam;
 			$cc = "";
 			$subject = $client->title;
 			$variable = "";
-			include CO_INC .'/view/dialog_send.php';
-		}
-		else {
-			include CO_INC .'/view/default.php';
+			$data["error"] = 0;
+			$data["error_message"] = "";
+			if($client->sendtoTeamNoEmail != "") {
+				$data["error"] = 1;
+				$data["error_message"] = $client->sendtoTeamNoEmail;
+			}
+			ob_start();
+				include CO_INC .'/view/dialog_send.php';
+				$data["html"] = ob_get_contents();
+			ob_end_clean();
+			return json_encode($data);
 		}
 	}
 

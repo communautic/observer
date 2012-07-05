@@ -565,21 +565,28 @@ class Projects extends Controller {
 
 	function getProjectSend($id) {
 		global $lang;
-		if($arr = $this->model->getProjectDetails($id)) {
+		if($arr = $this->model->getProjectDetails($id, 'prepareSendTo')) {
 			$project = $arr["project"];
 			$phases = $arr["phases"];
 			$num = $arr["num"];
-			
+
 			$form_url = $this->form_url;
 			$request = "sendProjectDetails";
-			$to = $project->team;
+			$to = $project->sendtoTeam;
 			$cc = "";
 			$subject = $project->title;
 			$variable = "";
-			include CO_INC .'/view/dialog_send.php';
-		}
-		else {
-			include CO_INC .'/view/default.php';
+			$data["error"] = 0;
+			$data["error_message"] = "";
+			if($project->sendtoTeamNoEmail != "") {
+				$data["error"] = 1;
+				$data["error_message"] = $project->sendtoTeamNoEmail;
+			}
+			ob_start();
+				include CO_INC .'/view/dialog_send.php';
+				$data["html"] = ob_get_contents();
+			ob_end_clean();
+			return json_encode($data);
 		}
 	}
 

@@ -24,6 +24,7 @@ function brainstormsApplication(name) {
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
 		}
+		formData[formData.length] = processListApps('folder');
 	}
 
 	

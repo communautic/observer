@@ -102,7 +102,7 @@ foreach($posts as $post) {
 	if($post->status == 1) {
 		$checked = ' checked="checked"';
 	}
-	echo '<div id="forumsPostouter_' . $post->id . '" class="parent" style="overflow: hidden; border-top: 1px solid #436593">';
+	echo '<div id="forumsPostouter_' . $post->id . '" class="parent" style="overflow: hidden; border-top: 1px solid #fff">';
 	if(isset($post->children) && !empty($post->children)) {
 		$postdellink = ' deactivated';
 				$postdelclass = 'icon-delete-inactive';

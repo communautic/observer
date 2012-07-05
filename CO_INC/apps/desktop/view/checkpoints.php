@@ -8,7 +8,8 @@ if(is_array($checkpoints)) {
     <?php
 			echo $checkpoint->checkpoint_app_name . '</div><div class="widgetItemContent">';
 			//echo sprintf($lang["PROJECT_WIDGET_INVITATION_ADMIN"], 'Checkpoint Title');
-			echo $checkpoint->days . ' - ' . $lang["WIDGET_TEXT_CHECKPOINTS"] . '"' . $checkpoint->title . '"';
+			echo $checkpoint->days . ': "' . $checkpoint->title . '"';
+			echo "<br /><em>" . nl2br($checkpoint->note) . "</em>";
 		 ?>
     	</div></div>
     <?php

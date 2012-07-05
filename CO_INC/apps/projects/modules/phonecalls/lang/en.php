@@ -12,6 +12,7 @@ $lang["PROJECT_PHONECALL_TIME_START"] = 'Start';
 $lang["PROJECT_PHONECALL_TIME_END"] = 'End';
 
 $lang["PROJECT_PHONECALL_MANAGEMENT"] = 'With';
+$lang["PROJECT_PHONECALL_TYPE"] = 'Call type';
 $lang["PROJECT_PHONECALL_GOALS"] = 'Agenda';
 
 $lang["PROJECT_PHONECALL_STATUS_OUTGOING"] = 'incoming';

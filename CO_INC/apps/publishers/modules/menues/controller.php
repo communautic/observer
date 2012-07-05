@@ -118,7 +118,7 @@ class PublishersMenues extends Publishers {
 			$menue = $arr["menue"];			
 			$form_url = $this->form_url;
 			$request = "sendDetails";
-			$to = $menue->management;
+			$to = "";
 			$cc = "";
 			$subject = $menue->title;
 			$variable = "";

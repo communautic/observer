@@ -1,6 +1,6 @@
 <?php if(!isset($perm)) { $perm = true; } ?>
-<div id="forumsPost_<?php echo $child->id;?>" style="border-bottom: 1px solid #436593">
-<table border="0" cellpadding="0" cellspacing="0" class="table-content grey" style="margin-bottom: 0px;">
+<div id="forumsPost_<?php echo $child->id;?>" style="border-bottom: 1px solid #fff">
+<table border="0" cellpadding="0" cellspacing="0" class="table-content grey" style="margin-bottom: 0px; border-collapse:separate;">
   <tr>
       <td class="tcell-left-posts text11">
       	<?php echo $child->user;?>
@@ -24,8 +24,8 @@
           </table>
           
   		</td>
-       <td width="25"><div class="togglePost" rel="<?php echo($child->id);?>" style="width: 15px; height: 15px; cursor: pointer;"><span class="icon-toggle-post"></span></div></td>
-       <?php if($perm) { ?><td width="15"><a class="binItem<?php echo $postdellink;?>" rel="<?php echo $child->id;?>"><span class="<?php echo $postdelclass;?>"></span></a></td><?php } ?>
+       <td width="25" style="border-bottom: 1px solid #ccc;"><div class="togglePost" rel="<?php echo($child->id);?>" style="width: 15px; height: 15px; cursor: pointer;"><span class="icon-toggle-post"></span></div></td>
+       <?php if($perm) { ?><td width="15" style="border-bottom: 1px solid #ccc;"><a class="binItem<?php echo $postdellink;?>" rel="<?php echo $child->id;?>"><span class="<?php echo $postdelclass;?>"></span></a></td><?php } ?>
 	</tr>
 </table>
 </div>

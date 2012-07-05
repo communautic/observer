@@ -52,8 +52,12 @@ class Controller extends MySQLDB {
 	}
 	
 	
-	function printPDF($title,$text) {
+	function printPDF($title,$text,$stationary=1) {
 		global $lang;
+		$header = "";
+		$headerpdf = "";
+		$GLOBALS['STATIONARY'] = $stationary;
+		
 		ob_start();
 			include(CO_INC . "/view/printheader.php");
 			$header = ob_get_contents();
@@ -65,8 +69,6 @@ class Controller extends MySQLDB {
 				include_once($pdfheader);
 				$headerpdf = ob_get_contents();
 			ob_end_clean();
-		} else {
-			$headerpdf = "";
 		}
 		
 		$footer = "</body></html>";
@@ -94,8 +96,10 @@ class Controller extends MySQLDB {
     
 
 
-	function savePDF($title,$text,$path) {
+	function savePDF($title,$text,$path,$stationary=1) {
 		global $lang;
+		$GLOBALS['STATIONARY'] = $stationary;
+		
 		ob_start();
 			include(CO_INC . "/view/printheader.php");
 			$header = ob_get_contents();

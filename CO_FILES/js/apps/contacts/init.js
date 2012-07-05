@@ -1018,6 +1018,11 @@ $(document).ready(function() {
 						$("#"+field+" .listmember:visible:last").append(", ");
 					}
 					$("#"+field).append(html);
+					var tofield = $('#to').height();
+		if(tofield == 0) { tofield = 16; }
+		var bccfield = $('#cc').height();
+		if(bccfield == 0) { bccfield = 16; }
+		$('#sendToTextarea').height($("#modalDialogForward").height() - 122 - tofield - bccfield);
 					var obj = getCurrentModule();
 					$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 					$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=saveLastUsedContacts&id="+cid});		
@@ -1214,7 +1219,6 @@ $(document).ready(function() {
 
 	$(document).on('click', 'a.insertContactfromDialog', function(e) {
 		e.preventDefault();
-	//$('a.insertContactfromDialog').livequery('click',function() {
 		var field = $(this).attr("field");
 		var append = $(this).attr("append");
 		var cid = $(this).attr("cid");

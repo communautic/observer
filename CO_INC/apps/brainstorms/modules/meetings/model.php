@@ -173,7 +173,7 @@ class BrainstormsMeetingsModel extends BrainstormsModel {
 	}
 	
 
-	function getDetails($id) {
+	function getDetails($id, $option = "") {
 		global $session, $lang;
 		
 		$this->_documents = new BrainstormsDocumentsModel();
@@ -230,6 +230,11 @@ class BrainstormsMeetingsModel extends BrainstormsModel {
 		}
 		
 		$array["participants_print"] = $this->_contactsmodel->getUserListPlain($array["participants"]);
+		if($option = 'prepareSendTo') {
+			$array["sendtoTeam"] = $this->_contactsmodel->checkUserListEmail($array["participants"],'brainstormsparticipants', "", $array["canedit"]);
+			$array["sendtoTeamNoEmail"] = $this->_contactsmodel->checkUserListEmail($array["participants"],'brainstormsparticipants', "", $array["canedit"], 0);
+			$array["sendtoError"] = false;
+		}
 		$array["participants"] = $this->_contactsmodel->getUserList($array['participants'],'brainstormsparticipants', "", $array["canedit"]);
 		$array["participants_ct"] = empty($array["participants_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['participants_ct'];
 		$array["management_print"] = $this->_contactsmodel->getUserListPlain($array["management"]);

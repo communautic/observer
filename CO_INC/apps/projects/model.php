@@ -730,7 +730,7 @@ class ProjectsModel extends Model {
 	}
 	
 
-   function getProjectDetails($id) {
+   function getProjectDetails($id, $option = "") {
 		global $session, $contactsmodel, $lang;
 		$q = "SELECT a.*,(SELECT MAX(enddate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_PROJECTS . " as a where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
@@ -797,6 +797,11 @@ class ProjectsModel extends Model {
 		$array["management"] = $contactsmodel->getUserList($array['management'],'projectsmanagement', "", $array["canedit"]);
 		$array["management_ct"] = empty($array["management_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['management_ct'];
 		$array["team_print"] = $contactsmodel->getUserListPlain($array['team']);
+		if($option = 'prepareSendTo') {
+			$array["sendtoTeam"] = $contactsmodel->checkUserListEmail($array["team"],'projectsteam', "", $array["canedit"]);
+			$array["sendtoTeamNoEmail"] = $contactsmodel->checkUserListEmail($array["team"],'projectsteam', "", $array["canedit"], 0);
+			$array["sendtoError"] = false;
+		}
 		$array["team"] = $contactsmodel->getUserList($array['team'],'projectsteam', "", $array["canedit"]);
 		$array["team_ct"] = empty($array["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['team_ct'];
 		$array["ordered_by_print"] = $contactsmodel->getUserListPlain($array['ordered_by']);
@@ -840,7 +845,7 @@ class ProjectsModel extends Model {
 		$project = new Lists($array);
 		
 		$sql="";
-		if($array["access"] == "guest") {
+		if($array["access"] == "guest" || $array["access"] == "guestadmin") {
 			$sql = " and a.access = '1' ";
 		}
 		

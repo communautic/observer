@@ -501,7 +501,7 @@ class ComplaintsModel extends Model {
 	}
 	
 
-   function getComplaintDetails($id) {
+   function getComplaintDetails($id,$option = "") {
 		global $session, $contactsmodel, $lang;
 		$q = "SELECT * FROM " . CO_TBL_COMPLAINTS . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
@@ -576,6 +576,11 @@ class ComplaintsModel extends Model {
 		$array["management"] = $contactsmodel->getUserList($array['management'],'complaintsmanagement', "", $array["canedit"]);
 		$array["management_ct"] = empty($array["management_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['management_ct'];
 		$array["team_print"] = $contactsmodel->getUserListPlain($array['team']);
+		if($option = 'prepareSendTo') {
+			$array["sendtoTeam"] = $contactsmodel->checkUserListEmail($array["team"],'complaints', "", $array["canedit"]);
+			$array["sendtoTeamNoEmail"] = $contactsmodel->checkUserListEmail($array["team"],'complaints', "", $array["canedit"], 0);
+			$array["sendtoError"] = false;
+		}
 		$array["team"] = $contactsmodel->getUserList($array['team'],'complaintsteam', "", $array["canedit"]);
 		$array["team_ct"] = empty($array["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['team_ct'];
 		

@@ -78,7 +78,7 @@ class ClientsOrders extends Clients {
 			$order = $arr["order"];			
 			$form_url = $this->form_url;
 			$request = "sendDetails";
-			$to = $order->management;
+			$to = "";
 			$cc = "";
 			$subject = $order->title;
 			$variable = "";
