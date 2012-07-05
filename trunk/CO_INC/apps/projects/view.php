@@ -39,8 +39,14 @@
                         <div class="module-actions module-actions-modules"><?php if (${'projects_'.$module.'_filter'} != 0) { ?><div class="sort-outer"><span class="sort" rel="1"></span></div><?php } ?></div>
                         <h3 rel="<?php echo($module);?>"><?php echo(${'projects_'.$module.'_name'});?></h3>
                         <div class="numItems" id="<?php echo('projects_'.$module.'_items');?>"></div>
-                        <div class="projects3-content"><div class="scrolling-content">        
-                        <ul class="sortable" rel="<?php echo($module);?>"><li></li></ul>
+                        <div class="projects3-content"><div class="scrolling-content">
+                        <?php 
+						$sortable = "sortable";
+						if($module == "timelines" || $module == "access" || $module == "controlling") {
+							$sortable = "";
+						}
+						?>
+                        <ul class="<?php echo($sortable);?>" rel="<?php echo($module);?>"><li></li></ul>
                         </div>
                         </div>
                     </div>

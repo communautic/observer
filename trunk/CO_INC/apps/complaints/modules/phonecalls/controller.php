@@ -73,21 +73,29 @@ class ComplaintsPhonecalls extends Complaints {
 	
 	function getSend($id) {
 		global $lang;
-		if($arr = $this->model->getDetails($id)) {
+		if($arr = $this->model->getDetails($id,'prepareSendTo')) {
 			$phonecall = $arr["phonecall"];			
 			$form_url = $this->form_url;
 			$request = "sendDetails";
-			$to = $phonecall->management;
+			$to = $phonecall->sendtoTeam;
 			$cc = "";
 			$subject = $phonecall->title;
 			$variable = "";
 			
-			include CO_INC .'/view/dialog_send.php';
-		}
-		else {
-			include CO_INC .'/view/default.php';
+			$data["error"] = 0;
+			$data["error_message"] = "";
+			if($phonecall->sendtoTeamNoEmail != "") {
+				$data["error"] = 1;
+				$data["error_message"] = $phonecall->sendtoTeamNoEmail;
+			}
+			ob_start();
+				include CO_INC .'/view/dialog_send.php';
+				$data["html"] = ob_get_contents();
+			ob_end_clean();
+			return json_encode($data);
 		}
 	}
+
 	
 	
 	function sendDetails($id,$variable,$to,$cc,$subject,$body) {

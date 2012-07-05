@@ -10,7 +10,7 @@ $varheight = 100;
 <div style="position: absolute; left: 24px; top: 30px; width: <?php echo($page_width-24);?>px;">
 <table width="100%" class="standard">
 	<tr>
-		<td class="tcell-left"><?php echo $lang["GLOBAL_DURATION"];?></td>
+		<td class="tcell-left"><?php echo $lang["COMPLAINT_GRID_TIME"];?></td>
 		<td class="smalltext"><?php echo $grid->grid_days;?> <?php echo $lang["GLOBAL_DAYS"];?></td>
     </tr>
 </table>

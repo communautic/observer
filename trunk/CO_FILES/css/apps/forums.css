@@ -43,20 +43,21 @@
 #menu .app_forums:hover, #menu .app_forums.active-app {
 	border: 1px solid #283e56;
 	border-top-color: #6496dc;
-	background: #6496DC; 
-	background: -moz-linear-gradient(top,  rgba(190,211,239,1) 0%, rgba(67,101,147,1) 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(190,211,239,1)), color-stop(100%,rgba(67,101,147,1)));
-	background: -webkit-linear-gradient(top,  rgba(190,211,239,1) 0%,rgba(67,101,147,1) 100%);
-	background: -o-linear-gradient(top,  rgba(190,211,239,1) 0%,rgba(67,101,147,1) 100%);
-	background: -ms-linear-gradient(top,  rgba(190,211,239,1) 0%,rgba(67,101,147,1) 100%);
-	background: linear-gradient(top,  rgba(190,211,239,1) 0%,rgba(67,101,147,1) 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bed3ef', endColorstr='#436593',GradientType=0 );
+	background: #bed3ef; /* Old browsers */
+	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2JlZDNlZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM0MzY1OTMiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top,  #bed3ef 0%, #436593 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#bed3ef), color-stop(100%,#436593)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #bed3ef 0%,#436593 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #bed3ef 0%,#436593 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #bed3ef 0%,#436593 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #bed3ef 0%,#436593 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bed3ef', endColorstr='#436593',GradientType=0 ); /* IE6-8 */
 }
 
 
 .milestone { width: 18px; height: 18px; background: url(../../../img/milestone.png) no-repeat 0px 0px; text-align: center; line-height: 19px;}
 .milestone span { margin-left: 3px; }
-.phaseouter { margin-top: 1px;}
 
 #forums .table-title, #forums .textarea-title { 
 background-color: #C1D5F0; }
@@ -86,7 +87,7 @@ background-color: #C1D5F0; }
 
 .loadForum { cursor: pointer }
 
-#forums .tbl-protocol td, #forums .elastic {
+#forums .tbl-protocol td, #forums .elastic, #forums .elastic-two {
  background-color:#C1D5F0;
 }
 
@@ -100,10 +101,14 @@ background-color: #C1D5F0; }
 
 #forums-right .tcell-left-posts {
 	background-color: #6496DC;
+	border-right: 1px solid #436593;
+	border-bottom: 1px solid #436593;
 }
 
+#forums-right .tcell-right-nopadding { border-left: 1px solid #fff; border-bottom: 1px solid #ccc;}
+
 #forumsPosts { background-image:url(../../img/forums_thread_bg.png); }
-#forumsPosts .toggeled { border-bottom: 1px solid #436593; overflow: hidden; }
+#forumsPosts .toggeled { border-bottom: 1px solid #ccc; overflow: hidden; }
 
 #modalDialogForumsPost span.coButton  { background-color: #6496db; color: #fff; }
 #forums-right span.coButton:hover   { background-color: #fff; color: #000; cursor: pointer; }

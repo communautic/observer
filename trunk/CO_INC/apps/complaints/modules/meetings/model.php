@@ -170,7 +170,7 @@ class ComplaintsMeetingsModel extends ComplaintsModel {
 	}
 	
 
-	function getDetails($id) {
+	function getDetails($id, $option = "") {
 		global $session, $lang;
 		
 		$this->_documents = new ComplaintsDocumentsModel();
@@ -227,6 +227,11 @@ class ComplaintsMeetingsModel extends ComplaintsModel {
 		}*/
 		
 		$array["participants_print"] = $this->_contactsmodel->getUserListPlain($array["participants"]);
+		if($option = 'prepareSendTo') {
+			$array["sendtoTeam"] = $this->_contactsmodel->checkUserListEmail($array["participants"],'complaintsparticipants', "", $array["canedit"]);
+			$array["sendtoTeamNoEmail"] = $this->_contactsmodel->checkUserListEmail($array["participants"],'complaintsparticipants', "", $array["canedit"], 0);
+			$array["sendtoError"] = false;
+		}
 		$array["participants"] = $this->_contactsmodel->getUserList($array['participants'],'complaintsparticipants', "", $array["canedit"]);
 		$array["participants_ct"] = empty($array["participants_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['participants_ct'];
 		$array["management_print"] = $this->_contactsmodel->getUserListPlain($array["management"]);

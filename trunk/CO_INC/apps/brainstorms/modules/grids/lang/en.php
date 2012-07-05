@@ -7,6 +7,7 @@ $lang["BRAINSTORM_GRIDS"] = 'Grids';
 $lang["BRAINSTORM_GRID_NEW"] = 'New Grid';
 $lang["BRAINSTORM_GRID_ACTION_NEW"] = 'new Grid';
 
+$lang["BRAINSTORM_GRID_TIME"] = 'Duration';
 $lang["BRAINSTORM_GRID_OWNER"] = 'Owner';
 $lang["BRAINSTORM_GRID_MANAGEMENT"] = 'Manager';
 $lang["BRAINSTORM_GRID_TEAM"] = 'Team';

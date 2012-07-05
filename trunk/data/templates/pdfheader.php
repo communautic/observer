@@ -1,6 +1,7 @@
 if ( isset($pdf) ) {
 	$font = Font_Metrics::get_font("arial", "bold");
-
+	
+    if($GLOBALS['STATIONARY'] == 1) {
 	$header = $pdf->open_object();
 	$w = $pdf->get_width();
 	$h = $pdf->get_height();
@@ -34,5 +35,6 @@ if ( isset($pdf) ) {
 	
     $pdf->close_object();
 	$pdf->add_object($footer, "all");
+    }
     
 }

@@ -251,8 +251,12 @@ function projectsMeetings(name) {
 
 	this.actionSend = function() {
 		var id = $("#projects").data("third");
-		$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/meetings&request=getSend&id="+id, success: function(html){
-			$("#modalDialogForward").html(html).dialog('open');
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/meetings&request=getSend&id="+id, success: function(data){
+			$("#modalDialogForward").html(data.html).dialog('open');
+			if(data.error == 1) {
+				$.prompt('<div style="text-align: center">' + ALERT_REMOVE_RECIPIENT + data.error_message + '<br /></div>');
+				return false;
+			}
 			}
 		});
 	}
@@ -512,6 +516,13 @@ function projectsMeetings(name) {
 				$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/meetings&request=deleteCheckpoint&id=" + pid, cache: false });
 			break;
 		}
+	}
+	
+
+	this.saveCheckpointText = function() {
+		var pid = $('#projects').data('third');
+		var text = $('#projectsmeetingsCheckpoint textarea').val();
+		$.ajax({ type: "POST", url: "/", data: "path=apps/projects/modules/meetings&request=updateCheckpointText&id=" + pid + "&text=" + text, cache: false });
 	}
 
 }

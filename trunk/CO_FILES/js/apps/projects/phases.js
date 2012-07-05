@@ -235,8 +235,12 @@ function projectsPhases(name) {
 	this.actionSend = function() {
 		var id = $("#projects").data("third");
 		var num = $("#projects3 ul[rel=phases] .active-link").find(".phase_num").html();
-		$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=getSend&id="+id+"&num="+num, success: function(html){
-			$("#modalDialogForward").html(html).dialog('open');
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/phases&request=getSend&id="+id+"&num="+num, success: function(data){
+			$("#modalDialogForward").html(data.html).dialog('open');
+			if(data.error == 1) {
+				$.prompt('<div style="text-align: center">' + ALERT_REMOVE_RECIPIENT + data.error_message + '<br /></div>');
+				return false;
+			}
 			}
 		});
 	}

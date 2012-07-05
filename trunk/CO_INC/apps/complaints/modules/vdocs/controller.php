@@ -67,7 +67,7 @@ class ComplaintsVDocs extends Complaints {
 				$this->printHTML($title,$html);
 			break;
 			default:
-				$this->printPDF($title,$html);
+				$this->printPDF($title,$html,0);
 		}
 	}
 	

@@ -25,6 +25,12 @@
 </table>
 <div class="content-spacer"></div>
 <?php } ?>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+	<tr>
+	  <td class="tcell-left text11"><span class="<?php if($brainstorm->canedit) { ?>content-nav showDialog<?php } ?>" request="getBrainstormFolderDialog" field="brainstormsfolder" append="1"><span><?php echo $lang["BRAINSTORM_FOLDER"];?></span></span></td>
+        <td class="tcell-right"><div id="brainstormsfolder" class="itemlist-field"><?php echo($brainstorm->folder);?></div></td>
+	</tr>
+</table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 	  <td class="tcell-left text11"><span class="<?php if($brainstorm->canedit) { ?>content-nav brainstormsAddNote<?php } ?>"><span><?php echo $lang['BRAINSTORM_NOTE_ADD'];?></span></span></td>

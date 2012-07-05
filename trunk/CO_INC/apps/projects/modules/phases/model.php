@@ -79,8 +79,10 @@ class ProjectsPhasesModel extends ProjectsModel {
 			
 			// access
 			$accessstatus = "";
-			if($array["access"] == 1) {
-				$accessstatus = " module-access-active";
+			if($perm !=  "guest") {
+				if($array["access"] == 1) {
+					$accessstatus = " module-access-active";
+				}
 			}
 			$array["accessstatus"] = $accessstatus;
 			// status
@@ -195,7 +197,7 @@ class ProjectsPhasesModel extends ProjectsModel {
 	}
 
 
-	function getDetails($id,$num) {
+	function getDetails($id,$num, $option = "") {
 		global $session, $lang;
 		
 		$this->_documents = new ProjectsDocumentsModel();
@@ -255,6 +257,11 @@ class ProjectsPhasesModel extends ProjectsModel {
 		$array["projecttitle"] = $this->getProjectTitle($array['pid']);
 		$array["management"] = $this->_contactsmodel->getUserListPlain($this->getProjectField($array['pid'], 'management'));
 		$array["team_print"] = $this->_contactsmodel->getUserListPlain($array["team"]);
+		if($option = 'prepareSendTo') {
+			$array["sendtoTeam"] = $this->_contactsmodel->checkUserListEmail($array["team"],'projectsteam', "", $array["canedit"]);
+			$array["sendtoTeamNoEmail"] = $this->_contactsmodel->checkUserListEmail($array["team"],'projectsteam', "", $array["canedit"], 0);
+			$array["sendtoError"] = false;
+		}
 		$array["team"] = $this->_contactsmodel->getUserList($array['team'],'projectsteam', "", $array["canedit"]);
 		$array["team_ct"] = empty($array["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['team_ct'];
 		$array["documents"] = $this->_documents->getDocListFromIDs($array["documents"],'documents');
@@ -320,7 +327,7 @@ class ProjectsPhasesModel extends ProjectsModel {
 		
 		// get the tasks
 		$task = array();
-		$qt = "SELECT * FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where phaseid = '$id' and bin='0' ORDER BY startdate,status";
+		$qt = "SELECT * FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where phaseid = '$id' and bin='0' ORDER BY startdate";
 		$resultt = mysql_query($qt, $this->_db->connection);
 		while($rowt = mysql_fetch_array($resultt)) {
 			foreach($rowt as $key => $val) {
@@ -503,7 +510,7 @@ class ProjectsPhasesModel extends ProjectsModel {
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
 		// tasks
-		$qt = "SELECT id,pid,dependent,cat,text,protocol,startdate,enddate FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where phaseid='$id' and bin='0' ORDER BY startdate,status";		
+		$qt = "SELECT id,pid,dependent,cat,text,protocol,startdate,enddate FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where phaseid='$id' and bin='0' ORDER BY startdate";		
 		$resultt = mysql_query($qt, $this->_db->connection);
 		while($rowt = mysql_fetch_array($resultt)) {
 			$id = $rowt["id"];

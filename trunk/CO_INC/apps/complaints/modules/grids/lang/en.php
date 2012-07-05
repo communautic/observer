@@ -7,6 +7,7 @@ $lang["COMPLAINT_GRIDS"] = 'Grids';
 $lang["COMPLAINT_GRID_NEW"] = 'New Grid';
 $lang["COMPLAINT_GRID_ACTION_NEW"] = 'new Grid';
 
+$lang["COMPLAINT_GRID_TIME"] = 'Duration';
 $lang["COMPLAINT_GRID_OWNER"] = 'Owner';
 $lang["COMPLAINT_GRID_MANAGEMENT"] = 'Manager';
 $lang["COMPLAINT_GRID_TEAM"] = 'Team';

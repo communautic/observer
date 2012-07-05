@@ -77,21 +77,27 @@ class ProjectsPhases extends Projects {
 	
 	function getSend($id,$num) {
 		global $lang;
-		if($arr = $this->model->getDetails($id,$num)) {
+		if($arr = $this->model->getDetails($id,$num, 'prepareSendTo')) {
 			$phase = $arr["phase"];
 			$task = $arr["task"];
 			
 			$form_url = $this->form_url;
 			$request = "sendDetails";
-			$to = $phase->team;
+			$to = $phase->sendtoTeam;
 			$cc = "";
 			$subject = $phase->title;
 			$variable = $num;
-			
-			include CO_INC .'/view/dialog_send.php';
-		}
-		else {
-			include CO_INC .'/view/default.php';
+			$data["error"] = 0;
+			$data["error_message"] = "";
+			if($phase->sendtoTeamNoEmail != "") {
+				$data["error"] = 1;
+				$data["error_message"] = $phase->sendtoTeamNoEmail;
+			}
+			ob_start();
+				include CO_INC .'/view/dialog_send.php';
+				$data["html"] = ob_get_contents();
+			ob_end_clean();
+			return json_encode($data);
 		}
 	}
 

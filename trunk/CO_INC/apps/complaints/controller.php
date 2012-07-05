@@ -322,18 +322,25 @@ class Complaints extends Controller {
 
 	function getComplaintSend($id) {
 		global $lang;
-		if($arr = $this->model->getComplaintDetails($id)) {
+		if($arr = $this->model->getComplaintDetails($id, 'prepareSendTo')) {
 			$complaint = $arr["complaint"];
 			$form_url = $this->form_url;
 			$request = "sendComplaintDetails";
-			$to = $complaint->team;
+			$to = $complaint->sendtoTeam;
 			$cc = "";
 			$subject = $complaint->title;
 			$variable = "";
-			include CO_INC .'/view/dialog_send.php';
-		}
-		else {
-			include CO_INC .'/view/default.php';
+			$data["error"] = 0;
+			$data["error_message"] = "";
+			if($complaint->sendtoTeamNoEmail != "") {
+				$data["error"] = 1;
+				$data["error_message"] = $complaint->sendtoTeamNoEmail;
+			}
+			ob_start();
+				include CO_INC .'/view/dialog_send.php';
+				$data["html"] = ob_get_contents();
+			ob_end_clean();
+			return json_encode($data);
 		}
 	}
 

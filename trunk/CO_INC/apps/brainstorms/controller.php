@@ -444,8 +444,8 @@ class Brainstorms extends Controller {
 	}
 
 
-	function setBrainstormDetails($id,$title) {
-		$retval = $this->model->setBrainstormDetails($id,$title);
+	function setBrainstormDetails($id,$title,$folder) {
+		$retval = $this->model->setBrainstormDetails($id,$title,$folder);
 		if($retval){
 			 return '{ "action": "edit", "id": "' . $id . '", "status": "0"}';
 		  } else{

@@ -87,9 +87,12 @@ function projectSendProcess(formData, form, sendformOptions) {
 	if($("#to").html() == "") {
 		return false;
 	}
+	var to = processList('to');
+	if(to.value == "") {
+		return false;
+	}
 	formData[formData.length] = processList('to');
 	formData[formData.length] = processList('cc');
-	
 }
 
 function projectSendResponse(data) {
@@ -385,7 +388,7 @@ $(document).ready(function() {
 	$("#intro").show().delay(2000).fadeOut("slow");
 	initNavScroll();
 
-	$('.elastic').livequery(function() {
+	$('.elastic,.elastic-two').livequery(function() {
 		$(this).elastic();
 	});
 
@@ -489,6 +492,12 @@ $(document).ready(function() {
 			var obj = getCurrentModule();
 			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 		}
+	});
+	
+	// cp autosave text
+	$(document).on('blur', 'textarea.elastic-two',function() {
+		var obj = getCurrentModule();
+		obj.saveCheckpointText();
 	});
 	
 	$('span.actionPrint').on('click', function(e){
@@ -921,10 +930,18 @@ $(document).ready(function() {
 		autoOpen: false,
 		resizable: true,
 		resize: function(event, ui) {
-			$('#sendToTextarea').height($(this).height() - 154);
+			var tofield = $('#to').height();
+			if(tofield == 0) { tofield = 16; }
+			var bccfield = $('#cc').height();
+			if(bccfield == 0) { bccfield = 16; }
+			$('#sendToTextarea').height($(this).height() - 122 - tofield - bccfield);
 			},
 		open: function(event, ui) {
-			$('#sendToTextarea').height($(this).height() - 154);
+			var tofield = $('#to').height();
+			if(tofield == 0) { tofield = 16; }
+			var bccfield = $('#cc').height();
+			if(bccfield == 0) { bccfield = 16; }
+			$('#sendToTextarea').height($(this).height() - 122 - tofield - bccfield);
 			},
 		width: 400,  
 		height: 320,
@@ -1107,6 +1124,7 @@ $(document).ready(function() {
 				var app = getCurrentApp();
 				var object = window[app];
 				object.datepickerOnClose(this);
+				setTimeout(function() { inst.input.click(); }, 5000);
 	   		}
  		});
 	});
@@ -1160,9 +1178,11 @@ $(document).ready(function() {
 				if (chpexists == 0 && dateText != "") {
 					action  = 'new';
 					chpexistsSpan.html('1');
+					$('#projectsmeetingsCheckpoint').slideDown();
 				} else if (chpexists == 1 && dateText == "") {
 					action  = 'delete';
 					chpexistsSpan.html('0');
+					$('#projectsmeetingsCheckpoint').slideUp();
 				} else {
 					action  = 'update';
 				}

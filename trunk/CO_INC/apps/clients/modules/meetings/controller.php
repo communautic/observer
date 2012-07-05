@@ -75,21 +75,28 @@ class ClientsMeetings extends Clients {
 	
 	function getSend($id) {
 		global $lang;
-		if($arr = $this->model->getDetails($id)) {
+		if($arr = $this->model->getDetails($id,'prepareSendTo')) {
 			$meeting = $arr["meeting"];
 			$task = $arr["task"];
 			
 			$form_url = $this->form_url;
 			$request = "sendDetails";
-			$to = $meeting->participants;
+			$to = $meeting->sendtoTeam;
 			$cc = "";
 			$subject = $meeting->title;
 			$variable = "";
 			
-			include CO_INC .'/view/dialog_send.php';
-		}
-		else {
-			include CO_INC .'/view/default.php';
+			$data["error"] = 0;
+			$data["error_message"] = "";
+			if($meeting->sendtoTeamNoEmail != "") {
+				$data["error"] = 1;
+				$data["error_message"] = $meeting->sendtoTeamNoEmail;
+			}
+			ob_start();
+				include CO_INC .'/view/dialog_send.php';
+				$data["html"] = ob_get_contents();
+			ob_end_clean();
+			return json_encode($data);
 		}
 	}
 	

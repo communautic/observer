@@ -1,6 +1,6 @@
 <?php if(!isset($forum->canedit)) { $forum->canedit = true; } ?>
-<div id="complaintsForumsPost_<?php echo $post->id;?>" style="border-bottom: 1px solid #7f7f7f">
-<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-inactive" style="margin-bottom: 0px;">
+<div id="complaintsForumsPost_<?php echo $post->id;?>" style="border-bottom: 1px solid #fff">
+<table border="0" cellpadding="0" cellspacing="0" class="table-content grey" style="margin-bottom: 0px; border-collapse:separate;">
   <tr>
       <td class="tcell-left-posts text11">
       	<?php echo $post->user;?>
@@ -15,7 +15,7 @@
       		</tr>
       	</table>
       </td>
-      <td class="tcell-right-nopadding">
+      <td class="tcell-right-posts">
           
           <table width="100%" border="0" cellpadding="0" cellspacing="0">
             <tr>
@@ -23,8 +23,8 @@
             </tr>
           </table>
   		</td>
-        <td width="25"><div class="togglePost" rel="<?php echo($post->id);?>" style="width: 15px; height: 15px; cursor: pointer;"><span class="icon-toggle-post"></span></div></td>
-       <?php if($forum->canedit) { ?><td width="15"><a class="binItem<?php echo $postdellink;?>" rel="<?php echo $post->id;?>"><span class="<?php echo $postdelclass;?>"></span></a></td><?php } ?>
+        <td width="25" style="border-bottom: 1px solid #ccc;"><div class="togglePost" rel="<?php echo($post->id);?>" style="width: 15px; height: 15px; cursor: pointer;"><span class="icon-toggle-post"></span></div></td>
+       <?php if($forum->canedit) { ?><td width="15" style="border-bottom: 1px solid #ccc;"><a class="binItem<?php echo $postdellink;?>" rel="<?php echo $post->id;?>"><span class="<?php echo $postdelclass;?>"></span></a></td><?php } ?>
 	</tr>
 </table>
 </div>

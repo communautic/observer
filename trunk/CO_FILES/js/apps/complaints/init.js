@@ -207,8 +207,12 @@ function complaintsApplication(name) {
 
 	this.actionSend = function() {
 		var id = $("#complaints").data("second");
-		$.ajax({ type: "GET", url: "/", data: "path=apps/complaints&request=getComplaintSend&id="+id, success: function(html){
-			$("#modalDialogForward").html(html).dialog('open');
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/complaints&request=getComplaintSend&id="+id, success: function(data){
+			$("#modalDialogForward").html(data.html).dialog('open');
+			if(data.error == 1) {
+				$.prompt('<div style="text-align: center">' + ALERT_REMOVE_RECIPIENT + data.error_message + '<br /></div>');
+				return false;
+			}
 			}
 		});
 	}

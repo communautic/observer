@@ -19,6 +19,7 @@ var ALERT_NO_FILE = "Please select a file to upload.";
 
 var ALERT_NO_VALID_EMAIL = "Please enter a valid email address.";
 var ALERT_NO_EMAIL = "Please enter an Email address for this contact.";
+var ALERT_REMOVE_RECIPIENT = "Contacts without an email address were removed from the recipient list:<br /><br />";
 
 var ALERT_SENDTO_EMAIL = 'has no Email address';
 var ALERT_ACCESS_CONTACT_NOACCESSCODES = 'has no Access Codes. Would you like to send them now?';

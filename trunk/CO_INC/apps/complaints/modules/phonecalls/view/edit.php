@@ -52,7 +52,7 @@
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><span class="<?php if($phonecall->canedit) { ?>content-nav showDialog<?php } ?>" request="getPhonecallStatusDialog" field="complaintsstatus" append="1"><span><?php echo $lang["GLOBAL_STATUS"];?></span></span></td>
+	  <td class="tcell-left text11"><span class="<?php if($phonecall->canedit) { ?>content-nav showDialog<?php } ?>" request="getPhonecallStatusDialog" field="complaintsstatus" append="1"><span><?php echo $lang["COMPLAINT_PHONECALL_TYPE"];?></span></span></td>
         <td class="tcell-right"><div id="complaintsphonecall_status" class="itemlist-field"><div class="listmember" field="complaintsphonecall_status" uid="<?php echo($phonecall->status);?>" style="float: left"><?php echo($phonecall->status_text);?></div></div><input name="phonecall_status_date" type="text" class="input-date datepicker phonecall_status_date" value="<?php echo($phonecall->status_date)?>" style="float: left; margin-left: 8px;" /></td>
 	</tr>
 </table>

@@ -56,7 +56,6 @@
 </table>
 <div class="content-spacer"></div>
 <div class="content-spacer"></div>
-<div class="tbl-inactive">
 <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive">
   <tr>
     <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_TEL'];?></span></span></td>
@@ -104,7 +103,7 @@
     <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_COUNTRY'];?></span></span></td>
     <td class="tcell-right-nopadding"><input name="address_country" id="address_country" type="text" class="bg" value="<?php echo($contact->address_country);?>" /></td>
   </tr>
-</table></div>
+</table>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>

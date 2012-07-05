@@ -7,7 +7,7 @@ textarea {
 .bold { font-weight: bold}
 strong { font-weight: bold}
 .content-spacer { height: 15px; }
-.content-line-grey { height: 2px; background-color:#E5E5E5}
+.content-line-grey { height: 1px; background-color:#E5E5E5}
 .content-date { width: 60px; display: block; float: left;}
 
 .content-nav-title { padding: 0 0 0 15px; }
@@ -45,13 +45,12 @@ background-color: #e5e5e5 !important;
 	height: 18px;
 }
 
-.tbl-inactive { width: 100%;
-background-color: #e5e5e5;
-color: #333;
-}
-
 .tbl-inactive { 
-background-color: #e5e5e5;
+	width: 100%;
+	background-color: #e5e5e5;
+	color: #333;
+	border-bottom: 1px solid #CCCCCC;
+    border-top: 1px solid #FFFFFF;
 }
 
 div.table-footer-outer { 
@@ -79,7 +78,7 @@ color: #333;
 .table-footer td.right { padding: 0 15px 0 0; text-align: right;}
 
 
-.table-content { width: 100%; margin-bottom: 1px;}
+.table-content { width: 100%; }
 .table-content td { vertical-align: top; padding-top: 2px;}
 .table-content .tcell-left { width: 136px; padding: 0 15px 0 0;}
 .table-content .tcell-left-100 { width: 100px; padding: 4px 15px 4px 0;}
@@ -153,13 +152,11 @@ font-weight: normal;
 	width: 300px;
 }
 
-.tbl-protocol { margin: 0;}
+.tbl-protocol { margin: 0; border-bottom: 1px solid #CCCCCC; border-top: 1px solid #FFFFFF;}
 .tbl-protocol .tcell-right { padding: 6px 0 2px 0; }
 .tbl-protocol .tcell-left { padding: 4px 15px 4px 0; }
-.elastic { font-size: 13px; padding: 0; margin: 0 0 0 0; width: 100%; height: 17px; border: 0; overflow: hidden; }
+.elastic, .elastic-two  { font-size: 13px; padding: 0; margin: 0 0 0 0; width: 100%; height: 17px; border: 0; overflow: hidden; }
 
-
-.meetingouter { margin-bottom: 3px;}
 .task-drag { width: 15px; height: 15px; display: none; background:url(../img/sort_buttons_trans.png) no-repeat 0px -60px; }
 
 .content-outline { padding: 5px 0;}
@@ -310,6 +307,10 @@ span.coButton:hover   { background-color: #333; color: #fff; cursor: pointer; }
     width: 127px;
 	background-color: #999;
 	color: #fff;
+	border-right: 1px solid #7f7f7f;
+	border-bottom: 1px solid #7f7f7f;
 }
+
+.tcell-right-posts { padding: 0; border-left: 1px solid #fff; border-bottom: 1px solid #ccc;}
 
 .grids-spacer { height: 4px; background-color: #ccc; border-left: 1px solid #fff; }

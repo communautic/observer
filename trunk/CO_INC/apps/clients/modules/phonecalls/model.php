@@ -161,7 +161,7 @@ class ClientsPhonecallsModel extends ClientsModel {
 	}
 	
 
-	function getDetails($id) {
+	function getDetails($id, $option = "") {
 		global $session, $lang;
 		
 		$this->_documents = new ClientsDocumentsModel();
@@ -208,6 +208,11 @@ class ClientsPhonecallsModel extends ClientsModel {
 		$array["end"] = $this->_date->formatDate($array["end"],CO_TIME_FORMAT);
 
 		$array["management_print"] = $this->_contactsmodel->getUserListPlain($array["management"]);
+		if($option = 'prepareSendTo') {
+			$array["sendtoTeam"] = $this->_contactsmodel->checkUserListEmail($array["management"],'clientsmanagement', "", $array["canedit"]);
+			$array["sendtoTeamNoEmail"] = $this->_contactsmodel->checkUserListEmail($array["management"],'clientsmanagement', "", $array["canedit"], 0);
+			$array["sendtoError"] = false;
+		}
 		$array["management"] = $this->_contactsmodel->getUserList($array['management'],'clientsmanagement', "", $array["canedit"]);
 		$array["management_ct"] = empty($array["management_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['management_ct'];
 		$array["documents"] = $this->_documents->getDocListFromIDs($array['documents'],'documents');

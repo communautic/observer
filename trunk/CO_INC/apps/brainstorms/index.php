@@ -185,7 +185,7 @@ if (!empty($_POST['request'])) {
 			echo($brainstorms->sendFolderDetails($_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
 		break;
 		case 'setBrainstormDetails':
-			echo($brainstorms->setBrainstormDetails($_POST['id'], $system->checkMagicQuotes($_POST['title'])));
+			echo($brainstorms->setBrainstormDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['folder']));
 		break;
 		case 'saveBrainstormNote':
 			echo($brainstorms->saveBrainstormNote($_POST['id'],$system->checkMagicQuotes($_POST['title']),$system->checkMagicQuotes($_POST['text'])));

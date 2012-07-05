@@ -22,10 +22,12 @@
 <div class="content-spacer"></div>
 <?php 
 $numPhases = sizeof($project["phases"]);
+
 if($numPhases > 0) {
 	$countPhases = 1;
 	foreach($project["phases"] as $key => &$value){ 
 		$numTasks = sizeof($project["phases"][$key]["tasks"]);
+		$i = 1;
 	?>
 
 <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive loadProjectsPhase" rel="<?php echo($project["phases"][$key]["id"]);?>">
@@ -64,12 +66,11 @@ if($numPhases > 0) {
                 </tr>
             </table>
             <?php } 
-
+				if($i < $numTasks) {
 					echo('<div class="content-line-grey"></div>');
-			
-			?>
-		<?php } ?>
-    <?php 
+				}
+				$i++;
+			 } 
     $countPhases++;
     }
 }

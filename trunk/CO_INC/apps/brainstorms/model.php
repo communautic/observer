@@ -516,6 +516,7 @@ class BrainstormsModel extends Model {
 		$array["today"] = $this->_date->formatDate("now",CO_DATETIME_FORMAT);
 		
 		// other functions
+		$array["folder"] = $this->getBrainstormFolderDetails($array["folder"],"folder");
 		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
 		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
 		$array["current_user"] = $session->uid;
@@ -670,12 +671,12 @@ class BrainstormsModel extends Model {
    /**
    * get details for the brainstorm folder
    */
-   function setBrainstormDetails($id,$title) {
+   function setBrainstormDetails($id,$title,$folder) {
 		global $session, $contactsmodel;
 
 		$now = gmdate("Y-m-d H:i:s");
 		
-		$q = "UPDATE " . CO_TBL_BRAINSTORMS . " set title = '$title', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_BRAINSTORMS . " set title = '$title', folder = '$folder', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
@@ -710,7 +711,7 @@ class BrainstormsModel extends Model {
 		$now = gmdate("Y-m-d H:i:s");
 		$title = $lang["BRAINSTORM_NEW"];
 		
-		$q = "INSERT INTO " . CO_TBL_BRAINSTORMS_NOTES . " set pid = '$id', title = '" . $lang['BRAINSTORM_NOTE_NEW'] . "', xyz = '15x30x" . $z . "', wh = '200x200', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+		$q = "INSERT INTO " . CO_TBL_BRAINSTORMS_NOTES . " set pid = '$id', title = '" . $lang['BRAINSTORM_NOTE_NEW'] . "', xyz = '15x50x" . $z . "', wh = '200x200', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			$id = mysql_insert_id();

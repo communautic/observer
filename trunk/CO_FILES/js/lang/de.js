@@ -13,12 +13,13 @@ var ALERT_DELETE = "Möchten Sie alle Daten in den Papierkorb verschieben?";
 var ALERT_DELETE_REALLY = "Möchten Sie die Daten unwideruflich löschen?";
 var ALERT_DELETE_BIN = "Möchten Sie wirklich alle Papierkorbinhalte unwiderruflich löschen?";
 var ALERT_RESTORE = "Möchten Sie die Daten wiederherstellen?";
-var ALERT_PROJECT_MOVE_ALL = "Wollen Sie alle Starttermine an das neue Startdatum anpassen?";
+var ALERT_PROJECT_MOVE_ALL = "Wollen Sie alle Projekttermine an das neue Kick Off Datum anpassen?";
 var ALERT_PHASE_TASKS_MOVE_ALL = "Wollen Sie die Termine aller abhängigen Arbeitspakete anpassen?";
 var ALERT_NO_FILE = "Bitte wählen Sie eine Datei aus";
 
 var ALERT_NO_VALID_EMAIL = "Bitte geben Sie eine gültige Email Adresse an.";
 var ALERT_NO_EMAIL = "Dieser Kontakt verfügt über keine Email Adresse";
+var ALERT_REMOVE_RECIPIENT = "Kontakte ohne Emailadresse werden aus der Empfängergruppe entfernt:<br /><br />";
 
 var ALERT_SENDTO_EMAIL = 'besitzt noch keinen Email Eintrag';
 var ALERT_ACCESS_CONTACT_NOACCESSCODES = 'hat noch keine Zugangscodes. Möchten Sie die Zugangscodes jetzt versenden?';

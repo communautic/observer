@@ -251,8 +251,12 @@ function brainstormsMeetings(name) {
 
 	this.actionSend = function() {
 		var id = $("#brainstorms").data("third");
-		$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/meetings&request=getSend&id="+id, success: function(html){
-			$("#modalDialogForward").html(html).dialog('open');
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/meetings&request=getSend&id="+id, success: function(data){
+			$("#modalDialogForward").html(data.html).dialog('open');
+			if(data.error == 1) {
+				$.prompt('<div style="text-align: center">' + ALERT_REMOVE_RECIPIENT + data.error_message + '<br /></div>');
+				return false;
+			}
 			}
 		});
 	}

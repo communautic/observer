@@ -118,7 +118,7 @@ background-color: #e1f0af; }
 .loadProduction { cursor: pointer }
 .loadProductionsPhase { cursor: pointer }
 
-#productions .tbl-protocol td, #productions .elastic {
+#productions .tbl-protocol td, #productions .elastic, #productions .elastic-two {
  background-color:#E1F0AF;
 }
 

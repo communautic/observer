@@ -12,6 +12,7 @@ $lang["CLIENT_PHONECALL_TIME_START"] = 'Start';
 $lang["CLIENT_PHONECALL_TIME_END"] = 'End';
 
 $lang["CLIENT_PHONECALL_MANAGEMENT"] = 'With';
+$lang["CLIENT_PHONECALL_TYPE"] = 'Call type';
 $lang["CLIENT_PHONECALL_GOALS"] = 'Agenda';
 
 $lang["CLIENT_PHONECALL_STATUS_OUTGOING"] = 'incoming';
