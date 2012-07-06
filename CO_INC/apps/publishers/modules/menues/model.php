@@ -84,8 +84,10 @@ class PublishersMenuesModel extends PublishersModel {
 			
 			// access
 			$accessstatus = "";
-			if($array["access"] == 1) {
-				$accessstatus = " module-access-active";
+			if($perm !=  "guest") {
+				if($array["access"] == 1) {
+					$accessstatus = " module-access-active";
+				}
 			}
 			$array["accessstatus"] = $accessstatus;
 			// status

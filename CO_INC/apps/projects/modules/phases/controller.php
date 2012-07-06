@@ -236,7 +236,25 @@ class ProjectsPhases extends Projects {
 			 return "false";
 		  }
 	}
-	
+
+	function moveTaskEnd($id,$days) {
+		$retval = $this->model->moveTaskEnd($id,$days);
+		if($retval){
+			return "true";
+		} else{
+			return "error";
+		}
+	}
+
+	function checkDependency($id,$date) {
+		$retval = $this->model->checkDependency($id,$date);
+		if($retval){
+			return "true";
+		} else{
+			return "error";
+		}
+	}
+
 	function moveDependendTasks($id,$days) {
 		$retval = $this->model->moveDependendTasks($id,$days);
 		if($retval){

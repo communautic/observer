@@ -84,6 +84,12 @@ if (!empty($_GET['request'])) {
 		case 'getTaskDependencyExists':
 			echo($projectsPhases->getTaskDependencyExists($_GET['id']));
 		break;
+		case 'moveTaskEnd':
+			echo($projectsPhases->moveTaskEnd($_GET['id'],$_GET['days']));
+		break;
+		case 'checkDependency':
+			echo($projectsPhases->checkDependency($_GET['id'],$_GET['date']));
+		break;
 		case 'moveDependendTasks':
 			echo($projectsPhases->moveDependendTasks($_GET['id'],$_GET['days']));
 		break;
