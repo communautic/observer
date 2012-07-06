@@ -518,6 +518,12 @@ function complaintsMeetings(name) {
 		}
 	}
 	
+	this.saveCheckpointText = function() {
+		var pid = $('#complaints').data('third');
+		var text = $('#complaints_meetingsCheckpoint textarea').val();
+		$.ajax({ type: "POST", url: "/", data: "path=apps/complaints/modules/meetings&request=updateCheckpointText&id=" + pid + "&text=" + text, cache: false });
+	}
+	
 }
 
 var complaints_meetings = new complaintsMeetings('complaints_meetings');

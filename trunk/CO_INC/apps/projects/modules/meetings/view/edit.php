@@ -107,7 +107,7 @@ include("task.php");
 	</tr>
 </table>
 <?php if($meeting->checkpoint == 1) { $show = 'display: block'; } else { $show = 'display: none'; }?>
-<div id="projectsmeetingsCheckpoint" style="<?php echo $show;?>">
+<div id="projects_meetingsCheckpoint" style="<?php echo $show;?>">
 <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
 	<tr>
 		<td class="tcell-left text11"><span class="content-nav selectTextarea"><span>&nbsp;</span></span></td>

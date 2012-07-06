@@ -149,6 +149,9 @@ if (!empty($_POST['request'])) {
 		case 'sendDetails':
 			echo($clientsMeetings->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
 		break;
+		case 'updateCheckpointText':
+			echo($clientsMeetings->updateCheckpointText($_POST['id'],$system->checkMagicQuotes($_POST['text'])));
+		break;
 	}
 }
 

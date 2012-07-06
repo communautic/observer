@@ -517,6 +517,12 @@ function clientsMeetings(name) {
 			break;
 		}
 	}
+	
+	this.saveCheckpointText = function() {
+		var pid = $('#clients').data('third');
+		var text = $('#clients_meetingsCheckpoint textarea').val();
+		$.ajax({ type: "POST", url: "/", data: "path=apps/clients/modules/meetings&request=updateCheckpointText&id=" + pid + "&text=" + text, cache: false });
+	}
 
 }
 

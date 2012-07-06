@@ -106,6 +106,15 @@ include("task.php");
 		<td class="tcell-right"><input name="checkpoint" type="text" class="input-date checkpointdp" value="<?php echo($meeting->checkpoint_date);?>" readonly="readonly" /><span style="display: none;"><?php echo($meeting->checkpoint);?></span></td>
 	</tr>
 </table>
+<?php if($meeting->checkpoint == 1) { $show = 'display: block'; } else { $show = 'display: none'; }?>
+<div id="complaints_meetingsCheckpoint" style="<?php echo $show;?>">
+<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
+	<tr>
+		<td class="tcell-left text11"><span class="content-nav selectTextarea"><span>&nbsp;</span></span></td>
+        <td class="tcell-right"><textarea name="checkpoint_note" class="elastic-two"><?php echo(strip_tags($meeting->checkpoint_note));?></textarea></td>
+	</tr>
+</table>
+</div>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>

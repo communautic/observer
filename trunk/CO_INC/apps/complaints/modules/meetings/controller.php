@@ -273,6 +273,11 @@ class ComplaintsMeetings extends Complaints {
 		$this->model->deleteCheckpoint($id);
 		return true;
    }
+   
+	function updateCheckpointText($id,$text){
+		$this->model->updateCheckpointText($id,$text);
+		return true;
+   }
 
 }
 

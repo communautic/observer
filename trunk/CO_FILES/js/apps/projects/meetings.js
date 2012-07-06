@@ -521,7 +521,7 @@ function projectsMeetings(name) {
 
 	this.saveCheckpointText = function() {
 		var pid = $('#projects').data('third');
-		var text = $('#projectsmeetingsCheckpoint textarea').val();
+		var text = $('#projects_meetingsCheckpoint textarea').val();
 		$.ajax({ type: "POST", url: "/", data: "path=apps/projects/modules/meetings&request=updateCheckpointText&id=" + pid + "&text=" + text, cache: false });
 	}
 

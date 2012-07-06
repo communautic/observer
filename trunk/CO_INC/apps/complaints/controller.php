@@ -611,6 +611,11 @@ class Complaints extends Controller {
 		  }
    }   
 
+	function updateCheckpointText($id,$text){
+		$this->model->updateCheckpointText($id,$text);
+		return true;
+   }
+   
 }
 
 $complaints = new Complaints("complaints");
