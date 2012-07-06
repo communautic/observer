@@ -444,7 +444,7 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
  */
 .ui-dialog { position: absolute; padding: 0; width: 300px; overflow: hidden; }
 .ui-dialog .ui-dialog-titlebar { padding: .5em 1em .3em; position: relative; display: none; }
-.ui-dialog .ui-dialog-title { float: left; margin: .1em 16px .2em 0; } 
+.ui-dialog .ui-dialog-title { float: left; margin: .1em 16px .2em 10px; } 
 .ui-dialog .ui-dialog-titlebar-close { position: absolute; right: .3em; top: 50%; width: 19px; margin: -10px 0 0 0; padding: 0px; height: 18px; }
 .ui-dialog .ui-dialog-titlebar-close span { display: block; margin: 1px; }
 .ui-dialog .ui-dialog-titlebar-close:hover, .ui-dialog .ui-dialog-titlebar-close:focus { padding: 0; }
@@ -602,9 +602,10 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 
 #ui-datepicker-div {
     background-color: transparent !important;
-    border: 0 !important;
+    /*border: 0 !important;*/
 	border-radius: 8px;
 	box-shadow: 4px 4px 6px #666;
+	border-top: 1px solid #7F7F7F;
 }
 
 .ui-datepicker {
@@ -729,12 +730,10 @@ button::-moz-focus-inner {
 .ui-dialog {
         color: #000000;
 	    background-color: transparent !important;
-    border: 0 !important;
 	border-radius: 8px;
 	box-shadow: 4px 4px 6px #666;
+	border-top: 1px solid #7F7F7F;
 }
-
-
 
 .sendtoWindow .ui-corner-all {
 	border-radius: 0;
@@ -742,7 +741,7 @@ button::-moz-focus-inner {
 
 .sendtoWindow { 
 background-color: #b2cbee !important; 
-border: 0; 
+border-top: 1px solid #466793;
 border-radius: 8px;
 box-shadow: 4px 4px 6px #666;
 }

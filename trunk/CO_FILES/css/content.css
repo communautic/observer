@@ -264,9 +264,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ccdef6', end
 
 }
 
-
 .contact-dialog-header { font-size:11px; 
-	padding: 4px 0 0 0;
+	padding: 3px 0 0 0;
     height: 23px;
     position: relative;
 	border-radius: 8px 8px 0 0;
