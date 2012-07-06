@@ -16,7 +16,7 @@ function projectsApplication(name) {
 		this.$layoutWest = $('#projects div.ui-layout-west');
 	}
 
-
+ 
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#projects input.title").fieldValue();
 		if(title == "") {
