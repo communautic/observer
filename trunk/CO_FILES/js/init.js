@@ -1982,6 +1982,7 @@ function navItemSecond(objectname, clicked) {
 		$('.'+objectname+'3-content ul').html('');
 		if(text.access != "sysadmin") { 
 			window['modulesDisplay'](objectname,text.access);
+			object.getNavModulesNumItems(id)
 		} else {
 			var t = object.$second.height();
 			object.$second.animate({height: t+num_modules*27}, function() {

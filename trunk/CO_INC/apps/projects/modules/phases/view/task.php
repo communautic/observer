@@ -14,7 +14,7 @@
     <tr>
       <td width="12"></td>
       <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["PROJECT_PHASE_TASK_START"];?></span></span></td>
-      <td class="tcell-right"><?php if($phase->canedit) { ?><input name="task_startdate[<?php echo $value->id;?>]" type="text" class="input-date datepicker task_start" value="<?php echo $value->startdate;?>" readonly="readonly" /><?php } else { ?><?php echo $value->startdate;?><?php } ?></td>
+      <td class="tcell-right"><?php if($phase->canedit) { ?><input name="task_startdate[<?php echo $value->id;?>]" type="text" class="input-date datepicker task_start" value="<?php echo $value->startdate;?>" readonly="readonly" /><input name="task_movedate_start[<?php echo $value->id;?>]" type="hidden" value="<?php echo $value->startdate;?>" /><?php } else { ?><?php echo $value->startdate;?><?php } ?></td>
     </tr>
     <tr>
       <td>&nbsp;</td>

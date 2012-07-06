@@ -618,6 +618,49 @@ class ProjectsPhasesModel extends ProjectsModel {
 		}
 	}
 	
+
+	function moveTaskEnd($id,$days){
+		$q = "SELECT enddate FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		while ($row = mysql_fetch_array($result)) {
+			$enddate = $this->_date->addDays($row["enddate"],$days);
+			$qt = "UPDATE " . CO_TBL_PROJECTS_PHASES_TASKS . " set enddate = '$enddate' where id='$id'";
+			$res = mysql_query($qt, $this->_db->connection);
+		}
+		//return true;
+		$this->moveDependendTasks($id,$days);
+	}
+
+	function checkDependency($id,$date){
+		$date = $this->_date->formatDate($date,"Y-m-d");
+		// check if moved behind startdate of a dependent task
+		$q = "SELECT id, startdate FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where dependent='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		while ($row = mysql_fetch_array($result)) {
+			$tid = $row["id"];
+			if($row["startdate"] < $date) {
+				$qt = "UPDATE " . CO_TBL_PROJECTS_PHASES_TASKS . " set dependent = '0' where id='$tid'";
+				$res = mysql_query($qt, $this->_db->connection);
+			}
+		}
+		
+		// check if moved before startdate of a dependent task
+		$q = "SELECT dependent FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$depends_id = mysql_result($result,0);
+		
+		$q = "SELECT startdate FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where id='$depends_id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$depends_start = mysql_result($result,0);
+		
+		if($date < $depends_start) {
+			$qt = "UPDATE " . CO_TBL_PROJECTS_PHASES_TASKS . " set dependent = '0' where id='$id'";
+			$res = mysql_query($qt, $this->_db->connection);
+		}
+		
+		return true;
+	}
+
 	function moveDependendTasks($id,$days){
 		$q = "SELECT id, startdate, enddate FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where dependent='$id'";
 		$result = mysql_query($q, $this->_db->connection);
