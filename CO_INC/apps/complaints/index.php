@@ -181,6 +181,9 @@ if (!empty($_POST['request'])) {
 		case 'sendFolderDetails':
 			echo($complaints->sendFolderDetails($_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
 		break;
+		case 'updateCheckpointText':
+			echo($complaints->updateCheckpointText($_POST['id'],$system->checkMagicQuotes($_POST['text'])));
+		break;
 	}
 }
 ?>

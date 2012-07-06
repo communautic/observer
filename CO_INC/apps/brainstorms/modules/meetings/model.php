@@ -285,12 +285,14 @@ class BrainstormsMeetingsModel extends BrainstormsModel {
 		// checkpoint
 		$array["checkpoint"] = 0;
 		$array["checkpoint_date"] = "";
-		$q = "SELECT date FROM " . CO_TBL_USERS_CHECKPOINTS . " where uid='$session->uid' and app = 'brainstorms' and module = 'meetings' and app_id = '$id' LIMIT 1";
+		$array["checkpoint_note"] = "";
+		$q = "SELECT date,note FROM " . CO_TBL_USERS_CHECKPOINTS . " where uid='$session->uid' and app = 'brainstorms' and module = 'meetings' and app_id = '$id' LIMIT 1";
 		$result = mysql_query($q, $this->_db->connection);
 		if(mysql_num_rows($result) > 0) {
 			while ($row = mysql_fetch_assoc($result)) {
 			$array["checkpoint"] = 1;
 			$array["checkpoint_date"] = $this->_date->formatDate($row['date'],CO_DATE_FORMAT);
+			$array["checkpoint_note"] = $row['note'];
 			}
 		}
 		
@@ -545,6 +547,15 @@ class BrainstormsMeetingsModel extends BrainstormsModel {
 		}
    }
 
+
+	function updateCheckpointText($id,$text){
+		global $session;
+		$q = "UPDATE " . CO_TBL_USERS_CHECKPOINTS . " SET note = '$text' WHERE uid = '$session->uid' and app = 'brainstorms' and module = 'meetings' and app_id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+			return true;
+		}
+   }
 
     function getCheckpointDetails($id){
 		global $lang;

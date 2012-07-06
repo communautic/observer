@@ -1172,21 +1172,22 @@ $(document).ready(function() {
 			onClose: function(dateText, inst) {
 				var action;
 				var chpexists = chpexistsSpan.html();
+				var obj = getCurrentModule();
 				if(chpexists == 0 && dateText == "") {
 					return true;
 				}
 				if (chpexists == 0 && dateText != "") {
 					action  = 'new';
 					chpexistsSpan.html('1');
-					$('#projectsmeetingsCheckpoint').slideDown();
+					$('#'+obj.name+'Checkpoint').slideDown();
 				} else if (chpexists == 1 && dateText == "") {
 					action  = 'delete';
 					chpexistsSpan.html('0');
-					$('#projectsmeetingsCheckpoint').slideUp();
+					$('#'+obj.name+'Checkpoint').html('').slideUp();
 				} else {
 					action  = 'update';
 				}
-				var obj = getCurrentModule();
+				
 				obj.manageCheckpoint(action,dateText);
 	   		}
  		});

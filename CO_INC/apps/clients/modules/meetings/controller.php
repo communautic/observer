@@ -273,7 +273,12 @@ class ClientsMeetings extends Clients {
 		$this->model->deleteCheckpoint($id);
 		return true;
    }
-
+   
+	function updateCheckpointText($id,$text){
+		$this->model->updateCheckpointText($id,$text);
+		return true;
+   }
+   
 }
 
 $clientsMeetings = new ClientsMeetings("meetings");

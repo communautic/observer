@@ -274,6 +274,11 @@ class BrainstormsMeetings extends Brainstorms {
 		return true;
    }
    
+	function updateCheckpointText($id,$text){
+		$this->model->updateCheckpointText($id,$text);
+		return true;
+   }
+   
 }
 
 $brainstormsMeetings = new BrainstormsMeetings("meetings");

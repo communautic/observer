@@ -394,6 +394,13 @@ function complaintsApplication(name) {
 			break;
 		}
 	}
+	
+	
+	this.saveCheckpointText = function() {
+		var pid = $('#complaints').data('second');
+		var text = $('#complaintsCheckpoint textarea').val();
+		$.ajax({ type: "POST", url: "/", data: "path=apps/complaints&request=updateCheckpointText&id=" + pid + "&text=" + text, cache: false });
+	}
 
 }
 

@@ -518,6 +518,13 @@ function brainstormsMeetings(name) {
 		}
 	}
 
+	this.saveCheckpointText = function() {
+		var pid = $('#brainstorms').data('third');
+		var text = $('#brainstorms_meetingsCheckpoint textarea').val();
+		$.ajax({ type: "POST", url: "/", data: "path=apps/brainstorms/modules/meetings&request=updateCheckpointText&id=" + pid + "&text=" + text, cache: false });
+	}
+
+
 }
 
 var brainstorms_meetings = new brainstormsMeetings('brainstorms_meetings');
