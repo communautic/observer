@@ -86,6 +86,9 @@ if (!empty($_GET['request'])) {
 		case 'getMenuesDialog':
 			echo($publishersMenues->getMenuesDialog($_GET['field']));
 		break;
+		case 'updateStatus':
+			echo($publishersMenues->updateStatus($_GET['id'],$_GET['date'],$_GET['status']));
+		break;
 	}
 }
 
@@ -93,7 +96,7 @@ if (!empty($_POST['request'])) {
 	
 	switch ($_POST['request']) {
 		case 'setDetails':
-			echo($publishersMenues->setDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['item_date_from'], $_POST['item_date_to'], $system->checkMagicQuotes($_POST['protocol']), $_POST['management'], $system->checkMagicQuotes($_POST['management_ct']),$_POST['menue_access'],$_POST['menue_access_orig'],$_POST['menue_status'],$_POST['menue_status_date']));
+			echo($publishersMenues->setDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['item_date_from'], $_POST['item_date_to'], $system->checkMagicQuotes($_POST['protocol']), $_POST['management'], $system->checkMagicQuotes($_POST['management_ct']),$_POST['menue_access'],$_POST['menue_access_orig']));
 		break;
 		case 'sendDetails':
 			echo($publishersMenues->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));

@@ -13,10 +13,6 @@ $lang["PUBLISHER_MENUE_DATE_TO"] = 'gültig bis';
 $lang["PUBLISHER_MENUE_MANAGEMENT"] = 'Menüverantwortung';
 $lang["PUBLISHER_MENUE_GOALS"] = 'Beschreibung';
 
-$lang["PUBLISHER_MENUE_STATUS_PLANNED"] = 'in Planung seit';
-$lang["PUBLISHER_MENUE_STATUS_PUBLISHED"] = 'publiziert seit';
-$lang["PUBLISHER_MENUE_STATUS_ARCHIVED"] = 'archiviert seit';
-
 $lang["PUBLISHER_MENUE_HELP"] = 'manual_projekte_telefonate.pdf';
 
 $lang["PUBLISHER_PRINT_MENUE"] = 'telefonat.png';

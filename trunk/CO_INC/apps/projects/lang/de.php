@@ -38,16 +38,6 @@ $lang["PROJECT_MANAGEMENT"] = 'Projektleitung';
 $lang["PROJECT_TEAM"] = 'Projektteam';
 $lang["PROJECT_DESCRIPTION"] = 'Beschreibung';
 
-$lang["PROJECT_STATUS_PLANNED"] = 'in Planung seit';
-$lang["PROJECT_STATUS_INPROGRESS"] = 'in Arbeit seit';
-$lang["PROJECT_STATUS_FINISHED"] = 'abgeschlossen am';
-$lang["PROJECT_STATUS_STOPPED"] = 'abgebrochen am';
-
-$lang["PROJECT_STATUS_PLANNED_TEXT"] = 'in Planung';
-$lang["PROJECT_STATUS_INPROGRESS_TEXT"] = 'in Arbeit';
-$lang["PROJECT_STATUS_FINISHED_TEXT"] = 'abgeschlossen';
-$lang["PROJECT_STATUS_STOPPED_TEXT"] = 'abgebrochen';
-
 $lang["PROJECT_HANDBOOK"] = 'Projekthandbuch';
 
 $lang["PROJECT_HELP"] = 'manual_projekte_projekte.pdf';

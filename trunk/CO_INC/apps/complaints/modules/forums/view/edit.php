@@ -4,6 +4,17 @@
     <td class="tcell-left text11"><span class="<?php if($forum->canedit) { ?>content-nav focusTitle<?php } ?>"><span><?php echo $lang["COMPLAINT_FORUM_TITLE"];?></span></span></td>
     <td><input name="title" type="text" class="title textarea-title" value="<?php echo($forum->title);?>" maxlength="100" /></td>
   </tr>
+  <tr class="table-title-status">
+    <td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_STATUS"];?></td>
+    <td colspan="2"><div class="statusTabs">
+    	<ul>
+        	<li><span class="left<?php if($forum->canedit) { ?> statusButton<?php } ?> planned<?php echo $forum->status_planned_active;?>" rel="0" reltext="<?php echo $lang["GLOBAL_STATUS_PLANNED_TIME"];?>"><?php echo $lang["GLOBAL_STATUS_PLANNED"];?></span></li>
+            <li><span class="<?php if($forum->canedit) { ?>statusButton <?php } ?>inprogress<?php echo $forum->status_inprogress_active;?>" rel="1" reltext="<?php echo $lang["GLOBAL_STATUS_DISCUSSION_TIME"];?>"><?php echo $lang["GLOBAL_STATUS_DISCUSSION"];?></span></li>
+            <li><span class="<?php if($forum->canedit) { ?>statusButton <?php } ?>finished<?php echo $forum->status_finished_active;?>" rel="2" reltext="<?php echo $lang["GLOBAL_STATUS_FINISHED_TIME"];?>"><?php echo $lang["GLOBAL_STATUS_FINISHED"];?></span></li>
+            <li><span class="right<?php if($forum->canedit) { ?> statusButton<?php } ?> stopped<?php echo $forum->status_stopped_active;?>" rel="3" reltext="<?php echo $lang["GLOBAL_STATUS_STOPPED_TIME"];?>"><?php echo $lang["GLOBAL_STATUS_STOPPED"];?></span></li>
+            <li><div class="status-time"><?php echo($forum->status_text_time)?></div><div class="status-input"><input name="phase_status_date" type="text" class="input-date statusdp" value="<?php echo($forum->status_date)?>" readonly="readonly" /></div></li>
+		</ul></div></td>
+  </tr>
 </table>
 </div>
 <div class="ui-layout-content"><div class="scroll-pane">
@@ -18,12 +29,6 @@
 		<td class="tcell-right-inactive"><span id="complaints_forumstartdate"><?php echo($forum->startdate);?></span> - <span id="complaints_forumsenddate"><?php echo($forum->enddate);?></span>
         </td>
     </tr>
-</table>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content">
-	<tr>
-	  <td class="tcell-left text11"><span class="<?php if($forum->canedit) { ?>content-nav showDialog<?php } ?>" request="getForumStatusDialog" field="complaintsstatus" append="1"><span><?php echo $lang["GLOBAL_STATUS"];?></span></span></td>
-        <td class="tcell-right"><div id="complaintsforum_status" class="itemlist-field"><div class="listmember" field="complaintsforum_status" uid="<?php echo($forum->status);?>" style="float: left"><?php echo($forum->status_text);?></div></div><input name="forum_status_date" type="text" class="input-date datepicker forum_status_date" value="<?php echo($forum->status_date)?>" style="float: left; margin-left: 8px;" /></td>
-	</tr>
 </table>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">

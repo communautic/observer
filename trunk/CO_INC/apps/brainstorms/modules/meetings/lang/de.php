@@ -17,12 +17,6 @@ $lang["BRAINSTORM_MEETING_ATTENDEES"] = 'Teilnehmer';
 $lang["BRAINSTORM_MEETING_MANAGEMENT"] = 'Protokollführer';
 $lang["BRAINSTORM_MEETING_GOALS"] = 'Themen';
 
-$lang["BRAINSTORM_MEETING_STATUS_PLANNED"] = 'in Planung';
-$lang["BRAINSTORM_MEETING_STATUS_ON_SCHEDULE"] = 'termingerecht abgehalten';
-$lang["BRAINSTORM_MEETING_STATUS_CANCELLED"] = 'abgesagt';
-$lang["BRAINSTORM_MEETING_STATUS_POSPONED"] = 'verschoben auf';
-$lang["BRAINSTORM_MEETING_POSPONED"] = 'verschoben';
-
 $lang["BRAINSTORM_MEETING_HELP"] = 'manual_prozesse_besprechungen.pdf';
 
 $lang["BRAINSTORM_PRINT_MEETING"] = 'besprechung.png';

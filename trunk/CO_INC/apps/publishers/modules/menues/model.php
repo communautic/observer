@@ -204,17 +204,29 @@ class PublishersMenuesModel extends PublishersModel {
 			break;
 		}
 		
-		$array["status_date"] = $this->_date->formatDate($array["status_date"],CO_DATE_FORMAT);
 		
+		
+		$array["status_planned_active"] = "";
+		$array["status_inprogress_active"] = "";
+		$array["status_finished_active"] = "";
 		switch($array["status"]) {
 			case "0":
-				$array["status_text"] = $lang["PUBLISHER_MENUE_STATUS_PLANNED"];
+				$array["status_text"] = $lang["GLOBAL_STATUS_PLANNED"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_PLANNED_TIME"];
+				$array["status_planned_active"] = " active";
+				$array["status_date"] = $this->_date->formatDate($array["status_date"],CO_DATE_FORMAT);
 			break;
 			case "1":
-				$array["status_text"] = $lang["PUBLISHER_MENUE_STATUS_PUBLISHED"];
+				$array["status_text"] = $lang["GLOBAL_STATUS_PUBLISHED"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_PUBLISHED_TIME"];
+				$array["status_inprogress_active"] = " active";
+				$array["status_date"] = $this->_date->formatDate($array["status_date"],CO_DATE_FORMAT);
 			break;
 			case "2":
-				$array["status_text"] = $lang["PUBLISHER_MENUE_STATUS_ARCHIVED"];
+				$array["status_text"] = $lang["GLOBAL_STATUS_ARCHIVED"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_ARCHIVED_TIME"];
+				$array["status_finished_active"] = " active";
+				$array["status_date"] = $this->_date->formatDate($array["status_date"],CO_DATE_FORMAT);
 			break;
 		}
 		
@@ -232,7 +244,7 @@ class PublishersMenuesModel extends PublishersModel {
 		$date_from = $this->_date->formatDate($date_from);
 		$date_to = $this->_date->formatDate($date_to);
 		$management = $this->_contactsmodel->sortUserIDsByName($management);
-		$menue_status_date = $this->_date->formatDateGMT($menue_status_date);
+		//$menue_status_date = $this->_date->formatDateGMT($menue_status_date);
 
 		$now = gmdate("Y-m-d H:i:s");
 		
@@ -246,7 +258,7 @@ class PublishersMenuesModel extends PublishersModel {
 			$accesssql = "access='$menue_access', access_date='$menue_access_date', access_user = '$session->uid',";
 		}
 
-		$q = "UPDATE " . CO_TBL_PUBLISHERS_MENUES . " set title = '$title', item_date_from = '$date_from', item_date_to = '$date_to', protocol = '$protocol', management='$management', management_ct='$management_ct', access='$menue_access', $accesssql status = '$menue_status', status_date = '$menue_status_date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PUBLISHERS_MENUES . " set title = '$title', item_date_from = '$date_from', item_date_to = '$date_to', protocol = '$protocol', management='$management', management_ct='$management_ct', access='$menue_access', $accesssql edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
@@ -255,6 +267,23 @@ class PublishersMenuesModel extends PublishersModel {
 
 		return $arr;
    }
+   
+   
+   function updateStatus($id,$date,$status) {
+		global $session;
+		
+		$date = $this->_date->formatDate($date);
+
+		$now = gmdate("Y-m-d H:i:s");
+		
+		$q = "UPDATE " . CO_TBL_PUBLISHERS_MENUES . " set status = '$status', status_date = '$date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		if ($result) {
+			return true;
+		}
+	}
+
 
 
    function createNew() {

@@ -43,22 +43,33 @@ function complaintsMeetings(name) {
 		formData[formData.length] = processListApps('meeting_relates_to');
 		formData[formData.length] = processDocListApps('documents');
 		formData[formData.length] = processListApps('meeting_access');
-		formData[formData.length] = processListApps('meeting_status');
+		//formData[formData.length] = processListApps('meeting_status');
 	 }
 	 
 	 
 	 this.formResponse = function(data) {
-		 switch(data.action) {
-			case "edit":
-				$("#complaints3 ul[rel=meetings] span[rel="+data.id+"] .text").html($("#complaints .item_date").val() + ' - ' +$("#complaints .title").val());
-					switch(data.access) {
-						case "0":
-							$("#complaints3 ul[rel=meetings] span[rel="+data.id+"] .module-access-status").removeClass("module-access-active");
-						break;
-						case "1":
-							$("#complaints3 ul[rel=meetings] span[rel="+data.id+"] .module-access-status").addClass("module-access-active");
-						break;
-					}
+		$("#complaints3 ul[rel=meetings] span[rel="+data.id+"] .text").html($("#complaints .item_date").val() + ' - ' +$("#complaints .title").val());
+		switch(data.access) {
+			case "0":
+				$("#complaints3 ul[rel=meetings] span[rel="+data.id+"] .module-access-status").removeClass("module-access-active");
+			break;
+			case "1":
+				$("#complaints3 ul[rel=meetings] span[rel="+data.id+"] .module-access-status").addClass("module-access-active");
+			break;
+		}
+	}
+	
+	
+	this.poformOptions = { async: false, beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
+
+
+	this.statusOnClose = function(dp) {
+		var id = $("#complaints").data("third");
+		var status = $("#complaints .statusTabs li span.active").attr('rel');
+		var date = $("#complaints .statusTabs input").val();
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/complaints/modules/meetings&request=updateStatus&id=" + id + "&date=" + date + "&status=" + status, cache: false, success: function(data){
+			switch(data.action) {
+				case "edit":
 					switch(data.status) {
 						case "1":
 							$("#complaints3 ul[rel=meetings] span[rel="+data.id+"] .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
@@ -69,25 +80,23 @@ function complaintsMeetings(name) {
 						default:
 							$("#complaints3 ul[rel=meetings] span[rel="+data.id+"] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
 					}
-			break;
-			case "reload":
-				var module = getCurrentModule();
-				var id = $('#complaints').data('second');
-				$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/complaints/modules/meetings&request=getList&id="+id, success: function(list){
-					$('#complaints3 ul[rel=meetings]').html(list.html);
-					$('#complaints_meetings_items').html(list.items);
-					var moduleidx = $("#complaints3 ul").index($("#complaints3 ul[rel=meetings]"));
-					var liindex = $("#complaints3 ul[rel=meetings] .module-click").index($("#complaints3 ul[rel=meetings] .module-click[rel='"+data.id+"']"));
-					module.getDetails(moduleidx,liindex);
-					$("#complaints3 ul[rel=meetings] .module-click:eq("+liindex+")").addClass('active-link');
-					}
-				});
-			break;
-		}
+				break;
+				case "reload":
+					var module = getCurrentModule();
+					var id = $('#complaints').data('second');
+					$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/complaints/modules/meetings&request=getList&id="+id, success: function(list){
+						$('#complaints3 ul[rel=meetings]').html(list.html);
+						$('#complaints_meetings_items').html(list.items);
+						var moduleidx = $("#complaints3 ul").index($("#complaints3 ul[rel=meetings]"));
+						var liindex = $("#complaints3 ul[rel=meetings] .module-click").index($("#complaints3 ul[rel=meetings] .module-click[rel='"+data.id+"']"));
+						module.getDetails(moduleidx,liindex);
+						$("#complaints3 ul[rel=meetings] .module-click:eq("+liindex+")").addClass('active-link');
+						}
+					});
+				break;																																														  				}
+			}
+		});
 	}
-	
-	
-	this.poformOptions = { async: false, beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
 
 
 	this.getDetails = function(moduleidx,liindex,list) {

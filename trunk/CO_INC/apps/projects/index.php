@@ -204,6 +204,9 @@ if (!empty($_GET['request'])) {
 		case 'deleteCheckpoint':
 			echo($projects->deleteCheckpoint($_GET['id']));
 		break;
+		case 'updateStatus':
+			echo($projects->updateStatus($_GET['id'],$_GET['date'],$_GET['status']));
+		break;
 	}
 }
 
@@ -213,7 +216,7 @@ if (!empty($_POST['request'])) {
 			echo($projects->setFolderDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['projectstatus']));
 		break;
 		case 'setProjectDetails':
-			echo($projects->setProjectDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['startdate'], $_POST['ordered_by'], $system->checkMagicQuotes($_POST['ordered_by_ct']), $_POST['management'], $system->checkMagicQuotes($_POST['management_ct']), $_POST['team'], $system->checkMagicQuotes($_POST['team_ct']), $system->checkMagicQuotes($_POST['protocol']), $_POST['folder'], $_POST['status'], $_POST['status_date']));
+			echo($projects->setProjectDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['startdate'], $_POST['ordered_by'], $system->checkMagicQuotes($_POST['ordered_by_ct']), $_POST['management'], $system->checkMagicQuotes($_POST['management_ct']), $_POST['team'], $system->checkMagicQuotes($_POST['team_ct']), $system->checkMagicQuotes($_POST['protocol']), $_POST['folder']));
 		break;
 		case 'moveProject':
 			echo($projects->moveProject($_POST['id'], $_POST['startdate'], $_POST['movedays']));

@@ -38,16 +38,6 @@ $lang["PROJECT_MANAGEMENT"] = 'Project Manager';
 $lang["PROJECT_TEAM"] = 'Project Team';
 $lang["PROJECT_DESCRIPTION"] = 'Description';
 
-$lang["PROJECT_STATUS_PLANNED"] = 'planned';
-$lang["PROJECT_STATUS_INPROGRESS"] = 'started';
-$lang["PROJECT_STATUS_FINISHED"] = 'completed';
-$lang["PROJECT_STATUS_STOPPED"] = 'stopped';
-
-$lang["PROJECT_STATUS_PLANNED_TEXT"] = 'planned';
-$lang["PROJECT_STATUS_INPROGRESS_TEXT"] = 'started';
-$lang["PROJECT_STATUS_FINISHED_TEXT"] = 'completed';
-$lang["PROJECT_STATUS_STOPPED_TEXT"] = 'stopped';
-
 $lang["PROJECT_HANDBOOK"] = 'Project Manual';
 
 $lang["PROJECT_HELP"] = 'manual_projekte_projekte.pdf';

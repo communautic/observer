@@ -29,11 +29,6 @@ $lang["BRAINSTORM_MANAGEMENT"] = 'Projektleitung';
 $lang["BRAINSTORM_TEAM"] = 'Projektteam';
 $lang["BRAINSTORM_DESCRIPTION"] = 'Beschreibung';
 
-$lang["BRAINSTORM_STATUS_PLANNED"] = 'in Planung seit';
-$lang["BRAINSTORM_STATUS_INPROGRESS"] = 'in Arbeit seit';
-$lang["BRAINSTORM_STATUS_FINISHED"] = 'abgeschlossen am';
-$lang["BRAINSTORM_STATUS_STOPPED"] = 'abgebrochen am';
-
 // Bin
 $lang['BRAINSTORM_TITLE_NOTES_BIN'] = 'Prozesse/Tätigkeiten';
 $lang['BRAINSTORM_NOTE_BIN'] = 'Tätigkeiten';

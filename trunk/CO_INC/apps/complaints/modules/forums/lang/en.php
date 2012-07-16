@@ -17,12 +17,6 @@ $lang["COMPLAINT_FORUM_ATTENDEES"] = 'Attendees';
 $lang["COMPLAINT_FORUM_MANAGEMENT"] = 'Minuted by';
 $lang["COMPLAINT_FORUM_GOALS"] = 'Agenda';
 
-$lang["COMPLAINT_FORUM_STATUS_PLANNED"] = 'planned';
-$lang["COMPLAINT_FORUM_STATUS_ON_SCHEDULE"] = 'on schedule';
-$lang["COMPLAINT_FORUM_STATUS_CANCELLED"] = 'cancelled';
-$lang["COMPLAINT_FORUM_STATUS_POSPONED"] = 'posponed to';
-$lang["COMPLAINT_FORUM_POSPONED"] = 'posponed';
-
 $lang["COMPLAINT_FORUM_HELP"] = 'manual_reklamationen_diskussionen.pdf';
 
 $lang["COMPLAINT_PRINT_FORUM"] = 'discussion.png';

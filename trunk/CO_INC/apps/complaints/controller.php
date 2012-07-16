@@ -389,13 +389,21 @@ class Complaints extends Controller {
 	}
 
 
-	function setComplaintDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$folder,$status,$status_date,$complaint,$complaint_more,$complaint_cat,$complaint_cat_more,$product,$product_desc,$charge,$number) {
-		$retval = $this->model->setComplaintDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$folder,$status,$status_date,$complaint,$complaint_more,$complaint_cat,$complaint_cat_more,$product,$product_desc,$charge,$number);
+	function setComplaintDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$folder,$complaint,$complaint_more,$complaint_cat,$complaint_cat_more,$product,$product_desc,$charge,$number) {
+		$retval = $this->model->setComplaintDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$folder,$complaint,$complaint_more,$complaint_cat,$complaint_cat_more,$product,$product_desc,$charge,$number);
 		if($retval){
-			 return '{ "action": "edit", "id": "' . $id . '", "status": "' . $status . '"}';
+			 return '{ "action": "edit", "id": "' . $id . '"}';
 		  } else{
 			 return "error";
 		  }
+	}
+	
+	
+	function updateStatus($id,$date,$status) {
+		$retval = $this->model->updateStatus($id,$date,$status);
+		if($retval){
+			 return '{ "id": "' . $id . '", "status": "' . $status . '"}';
+		 }
 	}
 
 

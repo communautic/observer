@@ -17,12 +17,6 @@ $lang["CLIENT_MEETING_ATTENDEES"] = 'Teilnehmer';
 $lang["CLIENT_MEETING_MANAGEMENT"] = 'Protokollführer';
 $lang["CLIENT_MEETING_GOALS"] = 'Themen';
 
-$lang["CLIENT_MEETING_STATUS_PLANNED"] = 'in Planung';
-$lang["CLIENT_MEETING_STATUS_ON_SCHEDULE"] = 'termingerecht abgehalten';
-$lang["CLIENT_MEETING_STATUS_CANCELLED"] = 'abgesagt';
-$lang["CLIENT_MEETING_STATUS_POSPONED"] = 'verschoben auf';
-$lang["CLIENT_MEETING_POSPONED"] = 'verschoben';
-
 $lang["CLIENT_MEETING_HELP"] = 'manual_kunden_besprechungen.pdf';
 
 $lang["CLIENT_PRINT_MEETING"] = 'besprechung.png';

@@ -107,15 +107,15 @@ $ptop = $top+56+24;
     <tr>
         <td><span><img src="<?php echo(CO_FILES);?>/img/print/gantt_milestone.png" width="12" height="12" /> Meilenstein</span></td>
         <td width="15"></td>
-        <td class="psp_barchart_color_planned"><span><?php echo $lang["PROJECT_TIMELINE_STATUS_PLANED"];?></span></td>
+        <td class="psp_barchart_color_planned"><span><?php echo $lang["GLOBAL_STATUS_PLANNED"];?></span></td>
         <td width="15"></td>
-        <td class="barchart_color_inprogress"><span><?php echo $lang["PROJECT_TIMELINE_STATUS_INPROGRESS"];?></span></td>
+        <td class="barchart_color_inprogress"><span><?php echo $lang["GLOBAL_STATUS_INPROGRESS"];?></span></td>
          <td width="15"></td>
-        <td class="barchart_color_finished"><span><?php echo $lang["PROJECT_TIMELINE_STATUS_FINISHED"];?></span></td>
+        <td class="barchart_color_finished"><span><?php echo $lang["GLOBAL_STATUS_FINISHED"];?></span></td>
          <td width="15"></td>
-        <td class="barchart_color_not_finished"><span><?php echo $lang["PROJECT_TIMELINE_STATUS_NOT_FINISHED"];?></span></td>
+        <td class="barchart_color_not_finished"><span><?php echo $lang["GLOBAL_STATUS_NOT_FINISHED"];?></span></td>
          <td width="15"></td>
-        <td class="barchart_color_overdue"><span><?php echo $lang["PROJECT_TIMELINE_STATUS_OVERDUE"];?></span></td>
+        <td class="barchart_color_overdue"><span><?php echo $lang["GLOBAL_STATUS_OVERDUE"];?></span></td>
     </tr>
 </table></div>
 <div style="position: absolute; width: <?php echo($project["css_width"]+$left);?>px; top: <?php echo $project["css_height"]+180;?>px; left: 0px; height: 19px; vertical-align: top; padding: 3px 0 0 24px;"><img src="<?php echo(CO_FILES);?>/img/print/poweredbyco.png" width="135" height="9" /></div>

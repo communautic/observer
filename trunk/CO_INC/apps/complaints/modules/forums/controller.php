@@ -128,10 +128,10 @@ class ComplaintsForums extends Complaints {
 	}
 	
 
-	function setDetails($id,$title,$protocol,$forum_access,$forum_access_orig,$forum_status,$forum_status_date) {
-		if($arr = $this->model->setDetails($id,$title,$protocol,$forum_access,$forum_access_orig,$forum_status,$forum_status_date)){
+	function setDetails($id,$title,$protocol,$forum_access,$forum_access_orig) {
+		if($arr = $this->model->setDetails($id,$title,$protocol,$forum_access,$forum_access_orig)){
 			if($arr["what"] == "edit") {
-				return '{ "action": "edit" , "id": "' . $arr["id"] . '", "access": "' . $forum_access . '", "status": "' . $forum_status . '"}';
+				return '{ "action": "edit" , "id": "' . $arr["id"] . '", "access": "' . $forum_access . '"}';
 			} else {
 				return '{ "action": "reload" , "id": "' . $arr["id"] . '"}';
 			}
@@ -140,6 +140,14 @@ class ComplaintsForums extends Complaints {
 		}
 	}
 
+
+	function updateStatus($id,$date,$status) {
+		$retval = $this->model->updateStatus($id,$date,$status);
+		if($retval){
+			 return '{ "id": "' . $id . '", "status": "' . $status . '"}';
+		 }
+	}
+	
 
 	function createNew($id) {
 		$retval = $this->model->createNew($id);

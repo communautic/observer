@@ -12,7 +12,7 @@ $lang["CLIENT_ORDER_TIME_START"] = 'Start';
 $lang["CLIENT_ORDER_TIME_END"] = 'Ende';
 
 $lang["CLIENT_ORDER_MANAGEMENT"] = 'Auftraggeber';
-$lang["CLIENT_ORDER_GOALS"] = 'Notizen';
+$lang["CLIENT_ORDER_GOALS"] = 'Notiz';
 
 $lang["CLIENT_ORDER_STATUS_OPEN"] = 'offen';
 $lang["CLIENT_ORDER_STATUS_DONE"] = 'gestellt';

@@ -47,19 +47,9 @@ $lang["CLIENT_TEAM"] = 'Ansprechpartner';
 $lang["CLIENT_ADDRESS"] = 'Lieferadresse';
 $lang["CLIENT_BILLING_ADDRESS"] = 'Rechnungsadresse';
 
-$lang["CLIENT_DESCRIPTION"] = 'Notizen';
+$lang["CLIENT_DESCRIPTION"] = 'Notiz';
 
 $lang['CLIENTS_ACCESS_ACTIVE'] = 'Berechtigung erteilt am %s durch %s';
-
-$lang["CLIENT_STATUS_PLANNED"] = 'in Planung seit';
-$lang["CLIENT_STATUS_INPROGRESS"] = 'in Arbeit seit';
-$lang["CLIENT_STATUS_FINISHED"] = 'abgeschlossen am';
-$lang["CLIENT_STATUS_STOPPED"] = 'abgebrochen am';
-
-$lang["CLIENT_STATUS_PLANNED_TEXT"] = 'in Planung';
-$lang["CLIENT_STATUS_INPROGRESS_TEXT"] = 'in Arbeit';
-$lang["CLIENT_STATUS_FINISHED_TEXT"] = 'abgeschlossen';
-$lang["CLIENT_STATUS_STOPPED_TEXT"] = 'abgebrochen';
 
 $lang["CLIENT_HANDBOOK"] = 'Projekthandbuch';
 

@@ -29,7 +29,7 @@
 <table width="100%" class="standard">
 	<tr>
 	  <td class="tcell-left"><?php echo $lang["GLOBAL_STATUS"];?></td>
-        <td><?php echo($phase->status_text);?> <?php echo($phase->status_date)?></td>
+        <td><?php echo($phase->status_text);?> <?php echo($phase->status_text_time);?> <?php echo($phase->status_date)?></td>
 	</tr>
 </table>
 <?php if(!empty($phase->protocol)) { ?>
@@ -90,7 +90,7 @@ foreach($task as $value) {
             <td class="fourCols-one">&nbsp;</td>
             <td class="fourCols-two">&nbsp;</td>
             <td class="fourCols-three">&nbsp;</td>
-            <td class="grey smalltext"><?php echo $lang["PROJECT_STATUS_FINISHED"];?> <?php echo($donedate);?></td>
+            <td class="grey smalltext"><?php echo $lang["GLOBAL_STATUS_FINISHED"];?> <?php echo $lang["GLOBAL_STATUS_FINISHED_TIME"];?> <?php echo($donedate);?></td>
         </tr>
         <?php } ?>
         <?php if(!empty($value->protocol)) { ?>
@@ -136,7 +136,7 @@ foreach($task as $value) {
             <td class="fourCols-one">&nbsp;</td>
             <td class="fourCols-two">&nbsp;</td>
             <td class="fourCols-three">&nbsp;</td>
-            <td class="grey smalltext"><?php echo $lang["PROJECT_STATUS_FINISHED"];?> <?php echo($donedate);?></td>
+            <td class="grey smalltext"><?php echo $lang["PROJECT_PHASE_TASK_STATUS_FINISHED"];?> <?php echo($donedate);?></td>
         </tr>
         <?php } ?>
         <?php if(!empty($value->protocol)) { ?>

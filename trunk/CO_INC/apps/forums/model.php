@@ -169,19 +169,23 @@ class ForumsModel extends Model {
 			
 			switch($forum["status"]) {
 			case "0":
-				$forum["status_text"] = $lang["FORUM_STATUS_PLANNED"];
+				$forum["status_text"] = $lang["GLOBAL_STATUS_PLANNED"];
+				$forum["status_text_time"] = $lang["GLOBAL_STATUS_PLANNED_TIME"];
 				$forum["status_date"] = $this->_date->formatDate($forum["planned_date"],CO_DATE_FORMAT);
 			break;
 			case "1":
-				$forum["status_text"] = $lang["FORUM_STATUS_INPROGRESS"];
+				$forum["status_text"] = $lang["GLOBAL_STATUS_DISCUSSION"];
+				$forum["status_text_time"] = $lang["GLOBAL_STATUS_DISCUSSION_TIME"];
 				$forum["status_date"] = $this->_date->formatDate($forum["inprogress_date"],CO_DATE_FORMAT);
 			break;
 			case "2":
-				$forum["status_text"] = $lang["FORUM_STATUS_FINISHED"];
+				$forum["status_text"] = $lang["GLOBAL_STATUS_FINISHED"];
+				$forum["status_text_time"] = $lang["GLOBAL_STATUS_FINISHED_TIME"];
 				$forum["status_date"] = $this->_date->formatDate($forum["finished_date"],CO_DATE_FORMAT);
 			break;
 			case "3":
-				$forum["status_text"] = $lang["FORUM_STATUS_STOPPED"];
+				$forum["status_text"] = $lang["GLOBAL_STATUS_STOPPED"];
+				$forum["status_text_time"] = $lang["GLOBAL_STATUS_STOPPED_TIME"];
 				$forum["status_date"] = $this->_date->formatDate($forum["stopped_date"],CO_DATE_FORMAT);
 			break;
 		}
@@ -583,23 +587,33 @@ class ForumsModel extends Model {
 		$array["current_user"] = $session->uid;
 		
 		// status
+		$array["status_planned_active"] = "";
+		$array["status_inprogress_active"] = "";
+		$array["status_finished_active"] = "";
+		$array["status_stopped_active"] = "";
 		$array["startdate"] = "";
 		$array["enddate"] = "";
 		switch($array["status"]) {
 			case "0":
-				$array["status_text"] = $lang["FORUM_STATUS_PLANNED"];
+				$array["status_text"] = $lang["GLOBAL_STATUS_PLANNED"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_PLANNED_TIME"];
+				$array["status_planned_active"] = " active";
 				$array["status_date"] = $array["planned_date"];
 				$array["startdate"] = $array["planned_date"];
 				//$array["enddate"] = $this->_date->formatDate($today,CO_DATE_FORMAT);
 			break;
 			case "1":
-				$array["status_text"] = $lang["FORUM_STATUS_INPROGRESS"];
+				$array["status_text"] = $lang["GLOBAL_STATUS_DISCUSSION"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_DISCUSSION_TIME"];
+				$array["status_inprogress_active"] = " active";
 				$array["status_date"] = $array["inprogress_date"];
 				$array["startdate"] = $array["inprogress_date"];
 				//$array["enddate"] = $this->_date->formatDate($today,CO_DATE_FORMAT);
 			break;
 			case "2":
-				$array["status_text"] = $lang["FORUM_STATUS_FINISHED"];
+				$array["status_text"] = $lang["GLOBAL_STATUS_FINISHED"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_FINISHED_TIME"];
+				$array["status_finished_active"] = " active";
 				$array["status_date"] = $array["finished_date"];
 				if($array["inprogress_date"] == '') {
 					$array["startdate"] = $array["planned_date"];
@@ -609,7 +623,9 @@ class ForumsModel extends Model {
 				$array["enddate"] = $array["finished_date"];
 			break;
 			case "3":
-				$array["status_text"] = $lang["FORUM_STATUS_STOPPED"];
+				$array["status_text"] = $lang["GLOBAL_STATUS_STOPPED"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_STOPPED_TIME"];
+				$array["status_stopped_active"] = " active";
 				$array["status_date"] = $array["stopped_date"];
 				if($array["inprogress_date"] == '') {
 					$array["startdate"] = $array["planned_date"];
@@ -752,10 +768,46 @@ class ForumsModel extends Model {
    /**
    * get details for the forum folder
    */
-   function setForumDetails($id,$folder,$title,$protocol,$status,$status_date) {
+   function setForumDetails($id,$folder,$title,$protocol) {
 		global $session, $contactsmodel;
 		
-		$status_date = $this->_date->formatDate($status_date);
+		/*$status_date = $this->_date->formatDate($status_date);
+		
+		switch($status) {
+			case "0":
+				$sql = "planned_date";
+			break;
+			case "1":
+				$sql = "inprogress_date";
+			break;
+			case "2":
+				$sql = "finished_date";
+			break;
+			case "3":
+				$sql = "stopped_date";
+			break;
+		}*/
+		
+		$now = gmdate("Y-m-d H:i:s");
+		
+		//$q = "UPDATE " . CO_TBL_BRAINSTORMS_FORUMS . " set title = '$title', protocol = '$protocol', documents = '$documents', $accesssql status = '$forum_status', $sql = '$forum_status_date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+
+		
+		$q = "UPDATE " . CO_TBL_FORUMS . " set title = '$title', folder = '$folder', protocol = '$protocol', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		if ($result) {
+			$arr = array("id" => $id, "status" => "2");
+			return $arr;
+			//return true;
+		}
+	}
+	
+	
+   function updateStatus($id,$date,$status) {
+		global $session;
+		
+		$date = $this->_date->formatDate($date);
 		
 		switch($status) {
 			case "0":
@@ -771,21 +823,17 @@ class ForumsModel extends Model {
 				$sql = "stopped_date";
 			break;
 		}
-		
+
 		$now = gmdate("Y-m-d H:i:s");
 		
-		//$q = "UPDATE " . CO_TBL_BRAINSTORMS_FORUMS . " set title = '$title', protocol = '$protocol', documents = '$documents', $accesssql status = '$forum_status', $sql = '$forum_status_date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
-
-		
-		$q = "UPDATE " . CO_TBL_FORUMS . " set title = '$title', folder = '$folder', protocol = '$protocol', status = '$status', $sql = '$status_date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_FORUMS . " set status = '$status', $sql = '$date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
-			$arr = array("id" => $id, "status" => "2");
-			return $arr;
-			//return true;
+			return true;
 		}
 	}
+
 	
 	function setAllPhasesFinished($id,$status_date) {
 		global $session;

@@ -5,15 +5,15 @@
     <td>
     <table border="0" cellspacing="0" cellpadding="0" class="timeline-legend">
     <tr>
-        <td class="barchart_color_planned"><span><?php echo $lang["PROJECT_TIMELINE_STATUS_PLANED"];?></span></td>
+        <td class="barchart_color_planned"><span><?php echo $lang["GLOBAL_STATUS_PLANNED"];?></span></td>
         <td width="15"></td>
-        <td class="barchart_color_inprogress"><span><?php echo $lang["PROJECT_TIMELINE_STATUS_INPROGRESS"];?></span></td>
+        <td class="barchart_color_inprogress"><span><?php echo $lang["GLOBAL_STATUS_INPROGRESS"];?></span></td>
          <td width="15"></td>
-        <td class="barchart_color_finished"><span><?php echo $lang["PROJECT_TIMELINE_STATUS_FINISHED"];?></span></td>
+        <td class="barchart_color_finished"><span><?php echo $lang["GLOBAL_STATUS_FINISHED"];?></span></td>
          <td width="15"></td>
-        <td class="barchart_color_not_finished"><span><?php echo $lang["PROJECT_TIMELINE_STATUS_NOT_FINISHED"];?></span></td>
+        <td class="barchart_color_not_finished"><span><?php echo $lang["GLOBAL_STATUS_NOT_FINISHED"];?></span></td>
          <td width="15"></td>
-        <td class="barchart_color_overdue"><span><?php echo $lang["PROJECT_TIMELINE_STATUS_OVERDUE"];?></span></td>
+        <td class="barchart_color_overdue"><span><?php echo $lang["GLOBAL_STATUS_OVERDUE"];?></span></td>
     </tr>
 </table></td>
   </tr>
@@ -168,7 +168,7 @@ foreach($project["phases"] as $key => &$value){ ?>
                 <div class="coTooltipHtml" style="display: none">
 						<?php echo($project["phases"][$key]["tasks"][$tkey]["text"]);?><br />
                         <?php echo($project["phases"][$key]["tasks"][$tkey]["startdate"]);?> - <?php echo($project["phases"][$key]["tasks"][$tkey]["enddate"]);?><br />
-						<?php echo($project["phases"][$key]["tasks"][$tkey]["overdue"]["days"] . " " . $lang["PROJECT_TIMELINE_STATUS_OVERDUE_POPUP"]);?>
+						<?php echo($project["phases"][$key]["tasks"][$tkey]["overdue"]["days"] . " " . $lang["GLOBAL_STATUS_OVERDUE_POPUP"]);?>
                     </div>
                 </div>
                 <?php } ?>
@@ -218,7 +218,7 @@ foreach($project["phases"] as $key => &$value){ ?>
             <div class="coTooltipHtml" style="display: none">
 					<?php echo($i . ". " . $project["phases"][$key]["title"]);?><br />
                     <?php echo($project["phases"][$key]["startdate"]);?> - <?php echo($project["phases"][$key]["enddate"]);?><br />
-					<?php echo($project["phases"][$key]["overdue"]["days"] . " " . $lang["PROJECT_TIMELINE_STATUS_OVERDUE_POPUP"]);?>
+					<?php echo($project["phases"][$key]["overdue"]["days"] . " " . $lang["GLOBAL_STATUS_OVERDUE_POPUP"]);?>
                 
                 </div>
             

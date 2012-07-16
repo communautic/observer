@@ -136,14 +136,20 @@ class ProjectsPhases extends Projects {
 	}
 
 
-	function setDetails($id,$title,$team,$team_ct,$protocol,$documents,$phase_access,$phase_access_orig,$phase_status,$phase_status_date,$task_startdate,$task_enddate,$task_donedate,$task_id,$task_text,$task_protocol,$task,$task_cat,$task_dependent,$task_team,$task_team_ct) {
-		if($arr = $this->model->setDetails($id,$title,$team,$team_ct,$protocol,$documents,$phase_access,$phase_access_orig,$phase_status,$phase_status_date,$task_startdate,$task_enddate,$task_donedate,$task_id,$task_text,$task_protocol,$task,$task_cat,$task_dependent,$task_team,$task_team_ct)){
-			 return '{ "action": "edit" , "id": "' . $arr["id"] . '", "access": "' . $phase_access . '", "status": "' . $phase_status . '", "startdate": "' . $arr["startdate"] . '", "enddate": "' . $arr["enddate"] . '"}';
+	function setDetails($id,$title,$team,$team_ct,$protocol,$documents,$phase_access,$phase_access_orig,$task_startdate,$task_enddate,$task_donedate,$task_id,$task_text,$task_protocol,$task,$task_cat,$task_dependent,$task_team,$task_team_ct) {
+		if($arr = $this->model->setDetails($id,$title,$team,$team_ct,$protocol,$documents,$phase_access,$phase_access_orig,$task_startdate,$task_enddate,$task_donedate,$task_id,$task_text,$task_protocol,$task,$task_cat,$task_dependent,$task_team,$task_team_ct)){
+			 return '{ "action": "edit" , "id": "' . $arr["id"] . '", "access": "' . $phase_access . '", "startdate": "' . $arr["startdate"] . '", "enddate": "' . $arr["enddate"] . '"}';
 		  } else{
 			 return "error";
 		  }
 	}
 
+	function updateStatus($id,$date,$status) {
+		$retval = $this->model->updateStatus($id,$date,$status);
+		if($retval){
+			 return '{ "id": "' . $id . '", "status": "' . $status . '"}';
+		 }
+	}
 
 	function createNew($id,$num) {
 		$retval = $this->model->createNew($id,$num);

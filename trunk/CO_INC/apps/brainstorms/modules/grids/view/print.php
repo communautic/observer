@@ -93,11 +93,11 @@ switch($cols[$key]['status']) {
 <div style="position: absolute; width: <?php echo($page_width-24);?>px; top: <?php echo $page_height-50;?>px; left: 0px; height: 19px;  background-color: #e5e5e5; vertical-align: top; padding: 3px 0 0 24px;"><?php echo $lang["BRAINSTORM_GRID_TITLE"];?></div>
 <div style="position: absolute; width: <?php echo($page_width-235);?>px; top: <?php echo $page_height-52;?>px; left: 200px; height: 19px; text-align:center;"><table border="0" cellspacing="0" cellpadding="0" class="timeline-legend">
     <tr>
-        <td class="psp_barchart_color_planned"><span><?php echo $lang["BRAINSTORM_GRID_STATUS_PLANED"];?></span></td>
+        <td class="psp_barchart_color_planned"><span><?php echo $lang["GLOBAL_STATUS_PLANNED"];?></span></td>
         <td width="15"></td>
-        <td class="barchart_color_inprogress"><span><?php echo $lang["BRAINSTORM_GRID_STATUS_INPROGRESS"];?></span></td>
+        <td class="barchart_color_inprogress"><span><?php echo $lang["GLOBAL_STATUS_INPROGRESS"];?></span></td>
          <td width="15"></td>
-        <td class="barchart_color_finished"><span><?php echo $lang["BRAINSTORM_GRID_STATUS_FINISHED"];?></span></td>
+        <td class="barchart_color_finished"><span><?php echo $lang["GLOBAL_STATUS_FINISHED"];?></span></td>
     </tr>
 </table></div>
 <div style="position: absolute; width: <?php echo($page_width+$left);?>px; top: <?php echo $page_height-20;?>px; left: 0px; height: 19px; vertical-align: top; padding: 3px 0 0 24px;"><img src="<?php echo(CO_FILES);?>/img/print/poweredbyco.png" width="135" height="9" /></div>

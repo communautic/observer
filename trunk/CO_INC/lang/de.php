@@ -50,6 +50,39 @@ $lang["GLOBAL_SAVE"] = 'Speichern';
 $lang["GLOBAL_DELETE"] = 'Löschen';
 
 $lang["GLOBAL_STATUS"] 		= 	'Status';
+// Status definitions
+$lang["GLOBAL_STATUS_PLANNED"] = 'in Planung';
+$lang["GLOBAL_STATUS_PLANNED_TIME"] = 'seit';
+$lang["GLOBAL_STATUS_INPROGRESS"] = 'in Arbeit';
+$lang["GLOBAL_STATUS_INPROGRESS_TIME"] = 'seit';
+$lang["GLOBAL_STATUS_FINISHED"] = 'abgeschlossen';
+$lang["GLOBAL_STATUS_FINISHED_TIME"] = 'am';
+$lang["GLOBAL_STATUS_STOPPED"] = 'abgebrochen';
+$lang["GLOBAL_STATUS_STOPPED_TIME"] = 'am';
+// timelines
+$lang["GLOBAL_STATUS_NOT_FINISHED"] = "nicht abgeschlossen";
+$lang["GLOBAL_STATUS_OVERDUE"] = "außer Plan";
+$lang["GLOBAL_STATUS_OVERDUE_POPUP"] = "Tag/e außer Plan";
+// meetings
+$lang["GLOBAL_STATUS_COMPLETED"] = 'abgehalten';
+$lang["GLOBAL_STATUS_COMPLETED_TIME"] = 'am';
+$lang["GLOBAL_STATUS_CANCELLED"] = 'abgesagt';
+$lang["GLOBAL_STATUS_CANCELLED_TIME"] = 'am';
+$lang["GLOBAL_STATUS_POSPONED"] = 'verschoben';
+$lang["GLOBAL_STATUS_POSPONED_TIME"] = 'auf';
+// forums
+$lang["GLOBAL_STATUS_DISCUSSION"] = 'in Diskussion';
+$lang["GLOBAL_STATUS_DISCUSSION_TIME"] = 'seit';
+// complaints
+$lang["GLOBAL_STATUS_ENTERED"] = 'erfasst';
+$lang["GLOBAL_STATUS_ENTERED_TIME"] = 'am';
+// webnews
+$lang["GLOBAL_STATUS_PUBLISHED"] = 'publiziert';
+$lang["GLOBAL_STATUS_PUBLISHED_TIME"] = 'seit';
+$lang["GLOBAL_STATUS_ARCHIVED"] = 'archiviert';
+$lang["GLOBAL_STATUS_ARCHIVED_TIME"] = 'seit';
+
+
 $lang["GLOBAL_DURATION"] 	= 	'Dauer';
 $lang["GLOBAL_EMAILED_TO"] 	= 	'Weiterleitung';
 $lang["GLOBAL_DUPLICAT"] 	= 	'Duplikat';

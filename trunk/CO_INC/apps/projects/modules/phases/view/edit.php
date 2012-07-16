@@ -1,10 +1,19 @@
 <div class="table-title-outer">
-
 <table border="0" cellpadding="0" cellspacing="0" class="table-title">
   <tr>
     <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav focusTitle<?php } ?>"><span><?php echo $lang["PROJECT_PHASE_TITLE"];?></span></span></td>
 	<td width="20"><div class="bold"><?php echo($phase->num) ;?>.</div></td>
-    <td><input name="title" type="text" class="title textarea-title" value="<?php echo($phase->title);?>" maxlength="100" /></td>
+    <td><?php if($phase->canedit) { ?><input name="title" type="text" class="title textarea-title" value="<?php echo($phase->title);?>" maxlength="100" /><?php } else { ?><div class="textarea-title"><?php echo($phase->title);?></div><?php } ?></td>
+  </tr>
+  <tr class="table-title-status">
+    <td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_STATUS"];?></td>
+    <td colspan="2"><div class="statusTabs">
+    	<ul>
+        	<li><span class="left<?php if($phase->canedit) { ?> statusButton<?php } ?> planned<?php echo $phase->status_planned_active;?>" rel="0" reltext="<?php echo $lang["GLOBAL_STATUS_PLANNED_TIME"];?>"><?php echo $lang["GLOBAL_STATUS_PLANNED"];?></span></li>
+            <li><span class="<?php if($phase->canedit) { ?>statusButton<?php } ?> inprogress<?php echo $phase->status_inprogress_active;?>" rel="1" reltext="<?php echo $lang["GLOBAL_STATUS_INPROGRESS_TIME"];?>"><?php echo $lang["GLOBAL_STATUS_INPROGRESS"];?></span></li>
+            <li><span class="right<?php if($phase->canedit) { ?> statusButton<?php } ?> finished<?php echo $phase->status_finished_active;?>" rel="2" reltext="<?php echo $lang["GLOBAL_STATUS_FINISHED_TIME"];?>"><?php echo $lang["GLOBAL_STATUS_FINISHED"];?></span></li>
+            <li><div class="status-time"><?php echo($phase->status_text_time)?></div><div class="status-input"><input name="phase_status_date" type="text" class="input-date statusdp" value="<?php echo($phase->status_date)?>" readonly="readonly" /></div></li>
+		</ul></div></td>
   </tr>
 </table>
 </div>
@@ -44,13 +53,6 @@
     <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="projectsteam" append="1"><span><?php echo $lang["PROJECT_PHASE_TEAM"];?></span></span></td>
     <td class="tcell-right"><div id="projectsteam" class="itemlist-field"><?php echo($phase->team);?></div><div id="projectsteam_ct" class="itemlist-field"><a field="projectsteam_ct" class="ct-content"><?php echo($phase->team_ct);?></a></div></td>
   </tr>
-</table>
-<div class="content-spacer"></div>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content">
-	<tr>
-	  <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav showDialog<?php } ?>" request="getPhaseStatusDialog" field="projectsstatus" append="1"><span><?php echo $lang["GLOBAL_STATUS"];?></span></span></td>
-        <td class="tcell-right"><div id="projectsphase_status" class="itemlist-field"><div class="listmember" field="projectsphase_status" uid="<?php echo($phase->status);?>" style="float: left"><?php echo($phase->status_text);?></div></div><?php if($phase->canedit) { ?><input name="phase_status_date" type="text" class="input-date datepicker phase_status_date" value="<?php echo($phase->status_date)?>" style="float: left; margin-left: 8px;" readonly="readonly" /><?php } else { ?><div style="float: left; margin-left: 8px;"><?php echo($phase->status_date)?></div><?php } ?></td>
-	</tr>
 </table>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">

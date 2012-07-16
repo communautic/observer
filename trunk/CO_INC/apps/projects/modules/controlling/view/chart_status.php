@@ -9,17 +9,17 @@
     <tr>
         <td style="padding: 2px 0 0 0"><span class="barchart_color_planned" style="display: block; width: 30px; height: 18px; padding: 1px 4px; text-align: right; margin-right: 3px;"><?php echo($chart["planned"]);?>%</span></td>
         <td>&nbsp;</td>
-        <td><?php echo $lang["PROJECT_STATUS_PLANNED_TEXT"];?></td>
+        <td><?php echo $lang["GLOBAL_STATUS_PLANNED"];?></td>
     </tr>
     <tr>
         <td style="padding: 2px 0 0 0"><span class="barchart_color_inprogress" style="display: block; height: 18px; padding: 0 4px; text-align: right; margin-right: 3px;"><?php echo($chart["inprogress"]);?>%</span></td>
         <td>&nbsp;</td>
-        <td><?php echo $lang["PROJECT_STATUS_INPROGRESS_TEXT"];?></td>
+        <td><?php echo $lang["GLOBAL_STATUS_INPROGRESS"];?></td>
     </tr>
     <tr>
         <td style="padding: 2px 0 0 0"><span class="barchart_color_finished" style="display: block; height: 18px; padding: 0 4px; text-align: right; margin-right: 3px;"><?php echo($chart["finished"]);?>%</span></td>
         <td>&nbsp;</td>
-        <td><?php echo $lang["PROJECT_STATUS_FINISHED_TEXT"];?></td>
+        <td><?php echo $lang["GLOBAL_STATUS_FINISHED"];?></td>
     </tr>
 </table>
     </div>

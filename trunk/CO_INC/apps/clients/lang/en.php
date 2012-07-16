@@ -51,15 +51,6 @@ $lang["CLIENT_DESCRIPTION"] = 'Notizen';
 
 $lang['CLIENTS_ACCESS_ACTIVE'] = 'Berechtigung erteilt am %s durch %s';
 
-$lang["CLIENT_STATUS_PLANNED"] = 'planned';
-$lang["CLIENT_STATUS_INPROGRESS"] = 'started';
-$lang["CLIENT_STATUS_FINISHED"] = 'completed';
-$lang["CLIENT_STATUS_STOPPED"] = 'stopped';
-
-$lang["CLIENT_STATUS_PLANNED_TEXT"] = 'planned';
-$lang["CLIENT_STATUS_INPROGRESS_TEXT"] = 'started';
-$lang["CLIENT_STATUS_FINISHED_TEXT"] = 'completed';
-$lang["CLIENT_STATUS_STOPPED_TEXT"] = 'stopped';
 $lang["CLIENT_HANDBOOK"] = 'Projekthandbuch';
 
 

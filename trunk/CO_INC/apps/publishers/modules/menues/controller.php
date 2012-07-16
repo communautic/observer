@@ -166,11 +166,19 @@ class PublishersMenues extends Publishers {
 	
 
 	function setDetails($id,$title,$date_from,$date_to,$protocol,$management,$management_ct,$menue_access,$menue_access_orig,$menue_status,$menue_status_date) {
-		if($arr = $this->model->setDetails($id,$title,$date_from,$date_to,$protocol,$management,$management_ct,$menue_access,$menue_access_orig,$menue_status,$menue_status_date)){
+		if($arr = $this->model->setDetails($id,$title,$date_from,$date_to,$protocol,$management,$management_ct,$menue_access,$menue_access_orig)){
 			return '{ "action": "edit" , "id": "' . $arr["id"] . '", "access": "' . $menue_access . '", "status": "' . $menue_status . '"}';
 		} else{
 			return "error";
 		}
+	}
+	
+	
+	function updateStatus($id,$date,$status) {
+		$retval = $this->model->updateStatus($id,$date,$status);
+		if($retval){
+			 return '{ "id": "' . $id . '", "status": "' . $status . '"}';
+		 }
 	}
 
 

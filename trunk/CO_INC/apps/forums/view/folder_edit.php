@@ -34,7 +34,7 @@ if(is_array($forums)) {
     	</tr>
     <tr>
 		<td class="tcell-left text11">&nbsp;</td>
-		<td class="tcell-right" width="180"><span class="text11"><?php echo($forum->status_text . " " . $forum->status_date);?></span></td>
+		<td class="tcell-right" width="180"><span class="text11"><?php echo($forum->status_text . " " . $forum->status_text_time . " " . $forum->status_date);?></span></td>
     	<td class="tcell-right"><span class="text11"><?php echo $lang["FORUM_CREATED_USER"];?> <?php echo($forum->created_user);?></span></td>
     </tr>
 </table>

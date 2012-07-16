@@ -15,7 +15,7 @@
       		</tr>
       	</table>
       </td>
-      <td class="tcell-right-nopadding">
+      <td class="tcell-right-posts">
           
           <table width="100%" border="0" cellpadding="0" cellspacing="0">
             <tr>

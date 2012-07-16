@@ -33,7 +33,7 @@ if(is_array($complaints)) {
     	</tr>
     <tr>
 		<td class="tcell-left text11">&nbsp;</td>
-    	<td class="tcell-right" width="180"><span class="text11"><?php echo($complaint->status_text . " " . $complaint->status_date);?></span></td>
+    	<td class="tcell-right" width="180"><span class="text11"><?php echo($complaint->status_text . " " . $complaint->status_text_time . " " . $complaint->status_date);?></span></td>
     	<td class="tcell-right"><span class="text11"><?php echo $lang["COMPLAINT_MANAGEMENT"];?> <?php echo($complaint->management);?></span></td>
     
     </tr>

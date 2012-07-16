@@ -13,7 +13,7 @@ function complaintsForums(name) {
 		}
 
 		formData[formData.length] = processListApps('forum_access');
-		formData[formData.length] = processListApps('forum_status');
+		//formData[formData.length] = processListApps('forum_status');
 	 }
 	 
 	 
@@ -44,9 +44,29 @@ function complaintsForums(name) {
 			break;
 		}
 	}
-	
+
 	
 	this.poformOptions = { async: false, beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
+
+
+	this.statusOnClose = function(dp) {
+		var id = $("#complaints").data("third");
+		var status = $("#complaints .statusTabs li span.active").attr('rel');
+		var date = $("#complaints .statusTabs input").val();
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/complaints/modules/forums&request=updateStatus&id=" + id + "&date=" + date + "&status=" + status, cache: false, success: function(data){
+			switch(data.status) {
+					case "2":
+						$("#complaints3 ul[rel=forums] span[rel="+data.id+"] .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
+					break;
+					case "3":
+						$("#complaints3 ul[rel=forums] span[rel="+data.id+"] .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
+					break;
+					default:
+						$("#complaints3 ul[rel=forums] span[rel="+data.id+"] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
+				}		
+			}
+		});
+	}
 
 
 	this.getDetails = function(moduleidx,liindex,list) {

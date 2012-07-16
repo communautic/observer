@@ -10,22 +10,22 @@
     <tr>
         <td class="barchart_color_planned"><span style="padding: 1px 4px; text-align: right; margin-right: 3px;"><?php echo($chart["planned"]);?>%</span></td>
         <td>&nbsp;</td>
-        <td><?php echo $lang["PROJECT_STATUS_PLANNED_TEXT"];?></td>
+        <td><?php echo $lang["GLOBAL_STATUS_PLANNED"];?></td>
     </tr>
     <tr>
         <td class="barchart_color_inprogress"><span style="padding: 0 4px; text-align: right; margin-right: 3px;"><?php echo($chart["inprogress"]);?>%</span></td>
         <td>&nbsp;</td>
-        <td><?php echo $lang["PROJECT_STATUS_INPROGRESS_TEXT"];?></td>
+        <td><?php echo $lang["GLOBAL_STATUS_INPROGRESS"];?></td>
     </tr>
     <tr>
         <td class="barchart_color_finished"><span style="padding: 0 4px; text-align: right; margin-right: 3px;"><?php echo($chart["finished"]);?>%</span></td>
         <td>&nbsp;</td>
-        <td><?php echo $lang["PROJECT_STATUS_FINISHED_TEXT"];?></td>
+        <td><?php echo $lang["GLOBAL_STATUS_FINISHED"];?></td>
     </tr>
     <tr>
         <td class="barchart_color_not_finished"><span style="padding: 0 4px; text-align: right; margin-right: 3px;"><?php echo($chart["stopped"]);?>%</span></td>
         <td>&nbsp;</td>
-        <td><?php echo $lang["PROJECT_STATUS_STOPPED_TEXT"];?></td>
+        <td><?php echo $lang["GLOBAL_STATUS_STOPPED"];?></td>
     </tr>
 </table></td>
     </tr>

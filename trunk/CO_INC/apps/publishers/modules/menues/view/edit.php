@@ -5,6 +5,16 @@
     <td class="tcell-left text11"><span class="<?php if($menue->canedit) { ?>content-nav focusTitle<?php } ?>"><span><?php echo $lang["PUBLISHER_MENUE_TITLE"];?></span></span></td>
     <td><input name="title" type="text" class="title textarea-title" value="<?php echo($menue->title);?>" maxlength="100" /></td>
   </tr>
+  <tr class="table-title-status">
+    <td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_STATUS"];?></td>
+    <td colspan="2"><div class="statusTabs">
+    	<ul>
+        	<li><span class="left<?php if($menue->canedit) { ?> statusButton<?php } ?> planned<?php echo $menue->status_planned_active;?>" rel="0" reltext="<?php echo $lang["GLOBAL_STATUS_PLANNED_TIME"];?>"><?php echo $lang["GLOBAL_STATUS_PLANNED"];?></span></li>
+            <li><span class="<?php if($menue->canedit) { ?>statusButton<?php } ?> inprogress<?php echo $menue->status_inprogress_active;?>" rel="1" reltext="<?php echo $lang["GLOBAL_STATUS_PUBLISHED_TIME"];?>"><?php echo $lang["GLOBAL_STATUS_PUBLISHED"];?></span></li>
+            <li><span class="right<?php if($menue->canedit) { ?> statusButton<?php } ?> finished<?php echo $menue->status_finished_active;?>" rel="2" reltext="<?php echo $lang["GLOBAL_STATUS_ARCHIVED_TIME"];?>"><?php echo $lang["GLOBAL_STATUS_ARCHIVED"];?></span></li>
+            <li><div class="status-time"><?php echo($menue->status_text_time)?></div><div class="status-input"><input name="phase_status_date" type="text" class="input-date statusdp" value="<?php echo($menue->status_date)?>" readonly="readonly" /></div></li>
+		</ul></div></td>
+  </tr>
 </table>
 </div>
 <div class="ui-layout-content"><div class="scroll-pane">
@@ -36,17 +46,10 @@
 		<td class="tcell-right"><input name="item_date_to" type="text" class="input-date datepicker item_date_to" value="<?php echo($menue->item_date_to)?>" /></td>
 	</tr>
 </table>
-<div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 		<td class="tcell-left text11"><span class="<?php if($menue->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="publishersmanagement" append="1"><span><?php echo $lang["PUBLISHER_MENUE_MANAGEMENT"];?></span></span></td>
 		<td class="tcell-right"><div id="publishersmanagement" class="itemlist-field"><?php echo($menue->management);?></div><div id="publishersmanagement_ct" class="itemlist-field"><a field="publishersmanagement_ct" class="ct-content"><?php echo($menue->management_ct);?></a></div></td>
-	</tr>
-</table>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content">
-	<tr>
-	  <td class="tcell-left text11"><span class="<?php if($menue->canedit) { ?>content-nav showDialog<?php } ?>" request="getMenueStatusDialog" field="publishersstatus" append="1"><span><?php echo $lang["GLOBAL_STATUS"];?></span></span></td>
-        <td class="tcell-right"><div id="publishersmenue_status" class="itemlist-field"><div class="listmember" field="publishersmenue_status" uid="<?php echo($menue->status);?>" style="float: left"><?php echo($menue->status_text);?></div></div><?php if($menue->canedit) { ?><input name="menue_status_date" type="text" class="input-date datepicker menue_status_date" value="<?php echo($menue->status_date)?>" style="float: left; margin-left: 8px;" /><?php } else { ?><div style="float: left; margin-left: 8px;"><?php echo($menu->status_date)?><?php } ?></div></td>
 	</tr>
 </table>
 <div class="content-spacer"></div>
