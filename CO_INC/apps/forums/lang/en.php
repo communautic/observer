@@ -20,11 +20,6 @@ $lang["FORUM_QUESTION"] = 'Question';
 $lang["FORUM_ANSWERS"] = 'Answer';
 $lang["FORUM_DISCUSSION"] = 'Discussion';
 
-$lang["FORUM_STATUS_PLANNED"] = 'planned';
-$lang["FORUM_STATUS_INPROGRESS"] = 'in discussion since';
-$lang["FORUM_STATUS_FINISHED"] = 'completed';
-$lang["FORUM_STATUS_STOPPED"] = 'stopped';
-
 $lang["FORUM_POSTS"] = 'Forums / Answers';
 
 $lang["FORUM_HELP"] = 'manual_foren_foren.pdf';

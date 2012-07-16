@@ -337,3 +337,11 @@ background: url("../../img/brainstorms_grid_stagegate.png") no-repeat scroll 1px
 #complaintsForumsPosts .toggeled { border-bottom: 1px solid #ccc; overflow: hidden; }
 #modalDialogComplaintsForumsPost span.coButton  { background-color: #9B78DC; color: #fff; }
 #modalDialogComplaintsForumsPost span.coButton:hover   { background-color: #fff; color: #000; cursor: pointer; }
+
+.tbl-highlighted {
+    background-color: #DCD2FF;
+    border-bottom: 1px solid #CCCCCC;
+    border-top: 1px solid #FFFFFF;
+    color: #333333;
+    width: 100%;
+}

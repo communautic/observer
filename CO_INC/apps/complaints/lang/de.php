@@ -40,17 +40,7 @@ $lang["COMPLAINT_PRODUCT_NUMBER"] = 'Produktnummer';
 $lang["COMPLAINT_PRODUCT"] = 'Produktbezeichnung';
 $lang["COMPLAINT_CHARGE"] = 'Charge';
 $lang["COMPLAINT_NUMBER"] = 'Menge';
-$lang["COMPLAINT_DESCRIPTION"] = 'Beschreibung';
-
-$lang["COMPLAINT_STATUS_PLANNED"] = 'erfasst am';
-$lang["COMPLAINT_STATUS_INPROGRESS"] = 'in Arbeit seit';
-$lang["COMPLAINT_STATUS_FINISHED"] = 'abgeschlossen am';
-$lang["COMPLAINT_STATUS_STOPPED"] = 'abgebrochen am';
-
-$lang["COMPLAINT_STATUS_PLANNED_TEXT"] = 'erfasst';
-$lang["COMPLAINT_STATUS_INPROGRESS_TEXT"] = 'in Arbeit';
-$lang["COMPLAINT_STATUS_FINISHED_TEXT"] = 'abgeschlossen';
-$lang["COMPLAINT_STATUS_STOPPED_TEXT"] = 'abgebrochen';
+$lang["COMPLAINT_DESCRIPTION"] = 'Notiz';
 
 $lang["COMPLAINT_HELP"] = 'manual_reklamationen_reklamationen.pdf';
 $lang["COMPLAINT_FOLDER_HELP"] = 'manual_reklamationen_ordner.pdf';

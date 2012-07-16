@@ -5,6 +5,17 @@
     <td class="tcell-left text11"><span class="<?php if($complaint->canedit) { ?>content-nav focusTitle<?php } ?>"><span><?php echo $lang["COMPLAINT_TITLE"];?></span></span></td>
     <td class="tcell-right"><?php if($complaint->canedit) { ?><input name="title" type="text" class="title textarea-title" value="<?php echo($complaint->title);?>" maxlength="100" /><?php } else { ?><div class="textarea-title"><?php echo($complaint->title);?></div><?php } ?></td>
   </tr>
+  <tr class="table-title-status">
+    <td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_STATUS"];?></td>
+    <td colspan="2"><div class="statusTabs">
+    	<ul>
+        	<li><span class="left<?php if($complaint->canedit) { ?> statusButton<?php } ?> planned<?php echo $complaint->status_planned_active;?>" rel="0" reltext="<?php echo $lang["GLOBAL_STATUS_ENTERED_TIME"];?>"><?php echo $lang["GLOBAL_STATUS_ENTERED"];?></span></li>
+            <li><span class="<?php if($complaint->canedit) { ?>statusButton <?php } ?>inprogress<?php echo $complaint->status_inprogress_active;?>" rel="1" reltext="<?php echo $lang["GLOBAL_STATUS_INPROGRESS_TIME"];?>"><?php echo $lang["GLOBAL_STATUS_INPROGRESS"];?></span></li>
+            <li><span class="<?php if($complaint->canedit) { ?>statusButton <?php } ?>finished<?php echo $complaint->status_finished_active;?>" rel="2" reltext="<?php echo $lang["GLOBAL_STATUS_FINISHED_TIME"];?>"><?php echo $lang["GLOBAL_STATUS_FINISHED"];?></span></li>
+            <li><span class="right<?php if($complaint->canedit) { ?> statusButton<?php } ?> stopped<?php echo $complaint->status_stopped_active;?>" rel="3" reltext="<?php echo $lang["GLOBAL_STATUS_STOPPED_TIME"];?>"><?php echo $lang["GLOBAL_STATUS_STOPPED"];?></span></li>
+            <li><div class="status-time"><?php echo($complaint->status_text_time)?></div><div class="status-input"><input name="phase_status_date" type="text" class="input-date statusdp" value="<?php echo($complaint->status_date)?>" readonly="readonly" /></div></li>
+		</ul></div></td>
+  </tr>
 </table>
 </div>
 <div class="ui-layout-content"><div class="scroll-pane">
@@ -88,42 +99,34 @@
 	</tr>
 </table>
 <div class="content-spacer"></div>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+<table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-highlighted">
   <tr>
     <td class="tcell-left-shorter text11"><span class="<?php if($complaint->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang['COMPLAINT_PRODUCT_NUMBER'];?></span></span></td>
     <td class="tcell-right-nopadding"><?php if($complaint->canedit) { ?><input name="product" type="text" class="bg" value="<?php echo($complaint->product);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $complaint->product . '</span>'); } ?></td>
     <td width="110"></td>
   </tr>
 </table>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+<table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-highlighted">
   <tr>
     <td class="tcell-left-shorter text11"><span class="<?php if($complaint->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang['COMPLAINT_PRODUCT'];?></span></span></td>
     <td class="tcell-right-nopadding"><?php if($complaint->canedit) { ?><input name="product_desc" type="text" class="bg" value="<?php echo($complaint->product_desc);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $complaint->product_desc . '</span>'); } ?></td>
     <td width="110"></td>
   </tr>
 </table>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+<table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-highlighted">
   <tr>
     <td class="tcell-left-shorter text11"><span class="<?php if($complaint->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang['COMPLAINT_CHARGE'];?></span></span></td>
     <td class="tcell-right-nopadding"><?php if($complaint->canedit) { ?><input name="charge" type="text" class="bg" value="<?php echo($complaint->charge);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $complaint->charge . '</span>'); } ?></td>
     <td width="110"></td>
   </tr>
 </table>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+<table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-highlighted">
   <tr>
     <td class="tcell-left-shorter text11"><span class="<?php if($complaint->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang['COMPLAINT_NUMBER'];?></span></span></td>
     <td class="tcell-right-nopadding"><?php if($complaint->canedit) { ?><input name="number" type="text" class="bg" value="<?php echo($complaint->number);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $complaint->number . '</span>'); } ?></td>
     <td width="110"></td>
   </tr>
 </table>
-<div class="content-spacer"></div>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content">
-	<tr>
-	  <td class="tcell-left text11"><span class="<?php if($complaint->canedit) { ?>content-nav showDialog<?php } ?>" request="getComplaintStatusDialog" field="complaintsstatus" append="1"><span><?php echo $lang["GLOBAL_STATUS"];?></span></span></td>
-        <td class="tcell-right"><div id="complaintsstatus" class="itemlist-field"><div class="listmember" field="complaintsstatus" uid="<?php echo($complaint->status);?>" style="float: left"><?php echo($complaint->status_text);?></div></div><?php if($complaint->canedit) { ?><input name="status_date" type="text" class="input-date datepicker status_date" value="<?php echo($complaint->status_date)?>" style="float: left; margin-left: 8px;" /><?php } else { ?><div style="float: left; margin-left: 8px;"><?php echo($complaint->status_date)?><?php } ?></div></td>
-	</tr>
-</table>
-<div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
 	<tr>
 		<td class="tcell-left text11"><span class="<?php if($complaint->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["COMPLAINT_DESCRIPTION"];?></span></span></td>

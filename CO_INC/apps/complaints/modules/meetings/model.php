@@ -259,23 +259,31 @@ class ComplaintsMeetingsModel extends ComplaintsModel {
 				$array["access_footer"] = $lang["GLOBAL_ACCESS_FOOTER"] . " " . $array["access_user"] . ", " .$array["access_date"];
 			break;
 		}
-		
+		$array["status_planned_active"] = "";
+		$array["status_finished_active"] = "";
+		$array["status_stopped_active"] = "";
+		$array["status_posponed_active"] = "";
+		$array["status_date"] = $this->_date->formatDate($array["status_date"],CO_DATE_FORMAT);
 		switch($array["status"]) {
 			case "0":
-				$array["status_text"] = $lang["COMPLAINT_MEETING_STATUS_PLANNED"];
-				$array["status_date"] = '';
+				$array["status_text"] = $lang["GLOBAL_STATUS_PLANNED"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_PLANNED_TIME"];
+				$array["status_planned_active"] = " active";
 			break;
 			case "1":
-				$array["status_text"] = $lang["COMPLAINT_MEETING_STATUS_ON_SCHEDULE"];
-				$array["status_date"] = '';
+				$array["status_text"] = $lang["GLOBAL_STATUS_COMPLETED"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_COMPLETED_TIME"];
+				$array["status_finished_active"] = " active";
 			break;
 			case "2":
-				$array["status_text"] = $lang["COMPLAINT_MEETING_STATUS_CANCELLED"];
-				$array["status_date"] = '';
+				$array["status_text"] = $lang["GLOBAL_STATUS_CANCELLED"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_CANCELLED_TIME"];
+				$array["status_stopped_active"] = " active";
 				break;
 			case "3":
-				$array["status_text"] = $lang["COMPLAINT_MEETING_STATUS_POSPONED"];
-				$array["status_date"] = $this->_date->formatDate($array["status_date"],CO_DATE_FORMAT);
+				$array["status_text"] = $lang["GLOBAL_STATUS_POSPONED"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_POSPONED_TIME"];
+				$array["status_posponed_active"] = " active";
 			break;
 		}
 		
@@ -312,7 +320,7 @@ class ComplaintsMeetingsModel extends ComplaintsModel {
    }
 
 
-   function setDetails($pid,$id,$title,$meetingdate,$start,$end,$location,$location_ct,$participants,$participants_ct,$management,$management_ct,$task_id,$task_title,$task_text,$task,$task_sort,$documents,$meeting_access,$meeting_access_orig,$meeting_status,$meeting_status_date) {
+   function setDetails($pid,$id,$title,$meetingdate,$start,$end,$location,$location_ct,$participants,$participants_ct,$management,$management_ct,$task_id,$task_title,$task_text,$task,$task_sort,$documents,$meeting_access,$meeting_access_orig) {
 		global $session, $lang;
 		
 		$start = $this->_date->formatDateGMT($meetingdate . " " . $start);
@@ -320,7 +328,6 @@ class ComplaintsMeetingsModel extends ComplaintsModel {
 		$meetingdate = $this->_date->formatDate($meetingdate);
 		$participants = $this->_contactsmodel->sortUserIDsByName($participants);
 		$management = $this->_contactsmodel->sortUserIDsByName($management);
-		$meeting_status_date = $this->_date->formatDateGMT($meeting_status_date);
 
 		$now = gmdate("Y-m-d H:i:s");
 		
@@ -334,13 +341,7 @@ class ComplaintsMeetingsModel extends ComplaintsModel {
 			$accesssql = "access='$meeting_access', access_date='$meeting_access_date', access_user = '$session->uid',";
 		}
 		
-		// posponed
-		$title_add = "";
-		if($meeting_status == 3) {
-			$title_add = " " . $lang["COMPLAINT_MEETING_POSPONED"];
-		}
-		
-		$q = "UPDATE " . CO_TBL_COMPLAINTS_MEETINGS . " set title = '$title" . $title_add . "', item_date = '$meetingdate', start = '$start', end = '$end', location = '$location', location_ct = '$location_ct', participants='$participants', participants_ct='$participants_ct', management='$management', management_ct='$management_ct', documents = '$documents', access='$meeting_access', $accesssql status = '$meeting_status', status_date = '$meeting_status_date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_COMPLAINTS_MEETINGS . " set title = '$title" . $title_add . "', item_date = '$meetingdate', start = '$start', end = '$end', location = '$location', location_ct = '$location_ct', participants='$participants', participants_ct='$participants_ct', management='$management', management_ct='$management_ct', documents = '$documents', access='$meeting_access', $accesssql edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		// do existing tasks
@@ -359,27 +360,48 @@ class ComplaintsMeetingsModel extends ComplaintsModel {
 			$result = mysql_query($q, $this->_db->connection);
 		}
 		if ($result) {
-		$arr = array("id" => $id, "what" => "edit");
+			return $id;
 		}
+   }
+
+
+   function updateStatus($id,$date,$status) {
+		global $session, $lang;
+		
+		$date = $this->_date->formatDate($date);
+		$now = gmdate("Y-m-d H:i:s");
+		
+		$q = "SELECT title FROM " . CO_TBL_COMPLAINTS_MEETINGS . " where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$title = mysql_result($result,0);
+		
+		$title_change = $title;
+		if($status == 3) {
+			$title_change = $title . " " . $lang["COMPLAINT_MEETING_POSPONED"];
+		}
+		
+		$q = "UPDATE " . CO_TBL_COMPLAINTS_MEETINGS . " set title = '$title_change', status = '$status', status_date = '$date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		if ($result) {
+			$arr = array("id" => $id, "what" => "edit");
+		}
+		
 		// posponed
-		if($meeting_status == 3) {
-			
+		if($status == 3) {
 			$this->checkinMeeting($id);
-			
-			$q = "INSERT INTO " . CO_TBL_COMPLAINTS_MEETINGS . " set pid='$pid', title = '$title', item_date = '$meeting_status_date', start = '$start', end = '$end', location = '$location', location_ct = '$location_ct', participants='$participants', participants_ct='$participants_ct', management='$management', management_ct='$management_ct', documents = '$documents', access='$meeting_access', $accesssql status = '0', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+			$q = "INSERT INTO " . CO_TBL_COMPLAINTS_MEETINGS . " (pid,title,item_date,start,end,location,location_ct,length,management,management_ct,participants,participants_ct,status,status_date,created_date,created_user,edited_date,edited_user) SELECT pid,'$title','$date',start,end,location,location_ct,length,management,management_ct,participants,participants_ct,0,'$now','$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_COMPLAINTS_MEETINGS . " where id='$id'";
 			$result = mysql_query($q, $this->_db->connection);
 			if ($result) {
 				$nid = mysql_insert_id();
-				
 				// do tasks
 				$qt = "INSERT INTO " . CO_TBL_COMPLAINTS_MEETINGS_TASKS . " (mid,status,title,text,sort) SELECT '$nid',status,title,text,sort FROM " . CO_TBL_COMPLAINTS_MEETINGS_TASKS . " where mid='$id'";
 				$resultt = mysql_query($qt, $this->_db->connection);
-				
 				$arr = array("id" => $nid, "what" => "reload");
 			}
 		}
 		return $arr;
-   }
+	}
 
 
    function createNew($id) {
@@ -388,7 +410,7 @@ class ComplaintsMeetingsModel extends ComplaintsModel {
 		$now = gmdate("Y-m-d H:i:s");
 		$time = gmdate("Y-m-d H");
 		
-		$q = "INSERT INTO " . CO_TBL_COMPLAINTS_MEETINGS . " set title = '" . $lang["COMPLAINT_MEETING_NEW"] . "', item_date='$now', start='$time', end='$time', pid = '$id', participants = '$session->uid', management = '$session->uid', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+		$q = "INSERT INTO " . CO_TBL_COMPLAINTS_MEETINGS . " set title = '" . $lang["COMPLAINT_MEETING_NEW"] . "', item_date='$now', start='$time', end='$time', pid = '$id', participants = '$session->uid', management = '$session->uid', status = '0', status_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id = mysql_insert_id();
 		

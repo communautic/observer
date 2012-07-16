@@ -638,13 +638,20 @@ class Projects extends Controller {
 	}
 
 
-	function setProjectDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$folder,$status,$status_date) {
-		$retval = $this->model->setProjectDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$folder,$status,$status_date);
+	function setProjectDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$folder) {
+		$retval = $this->model->setProjectDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$folder);
 		if($retval){
-			 return '{ "action": "edit", "id": "' . $id . '", "status": "' . $status . '"}';
+			 return '{ "action": "edit", "id": "' . $id . '"}';
 		  } else{
 			 return "error";
 		  }
+	}
+	
+	function updateStatus($id,$date,$status) {
+		$retval = $this->model->updateStatus($id,$date,$status);
+		if($retval){
+			 return '{ "id": "' . $id . '", "status": "' . $status . '"}';
+		 }
 	}
 
 

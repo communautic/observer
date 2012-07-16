@@ -38,7 +38,7 @@ function complaintsApplication(name) {
 		formData[formData.length] = processListApps('complaintmore');
 		formData[formData.length] = processListApps('complaintcat');
 		formData[formData.length] = processListApps('complaintcatmore');
-		formData[formData.length] = processListApps('status');
+		//formData[formData.length] = processListApps('status');
 	}
 
 	
@@ -47,6 +47,31 @@ function complaintsApplication(name) {
 			case "edit":
 				$("#complaints2 span[rel='"+data.id+"'] .text").html($("#complaints .title").val());
 				$("#complaintDurationStart").html($("#complaints-right input[name='startdate']").val());
+				/*switch(data.status) {
+					case "2":
+						$("#complaints2 .active-link .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
+						$("#complaintDurationEnd").html($("#complaints-right input[name='status_date']").val());
+					break;
+					case "3":
+						$("#complaints2 .active-link .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
+						$("#complaintDurationEnd").html($("#complaints-right input[name='status_date']").val());
+					break;
+					default:
+						$("#complaints2 .active-link .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
+				}*/
+			break;
+		}
+	}
+
+
+	this.poformOptions = { async: false, beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
+
+
+	this.statusOnClose = function(dp) {
+		var id = $("#complaints").data("second");
+		var status = $("#complaints .statusTabs li span.active").attr('rel');
+		var date = $("#complaints .statusTabs input").val();
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/complaints&request=updateStatus&id=" + id + "&date=" + date + "&status=" + status, cache: false, success: function(data){
 				switch(data.status) {
 					case "2":
 						$("#complaints2 .active-link .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
@@ -58,13 +83,9 @@ function complaintsApplication(name) {
 					break;
 					default:
 						$("#complaints2 .active-link .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
-				}
-			break;
-		}
+				}																															 			}
+		});
 	}
-
-
-	this.poformOptions = { async: false, beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
 
 
 	this.actionClose = function() {

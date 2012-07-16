@@ -13,12 +13,7 @@ $lang["BRAINSTORM_GRID_MANAGEMENT"] = 'Prozessverantwortung';
 $lang["BRAINSTORM_GRID_TEAM"] = 'Prozessteam';
 
 $lang["BRAINSTORM_GRID_COLUMN_NEW"] = 'Ablaufdiagramm';
-$lang["BRAINSTORM_GRID_STATUS_PLANED"] = "in Planung";
-$lang["BRAINSTORM_GRID_STATUS_INPROGRESS"] = "in Arbeit";
-$lang["BRAINSTORM_GRID_STATUS_FINISHED"] = "abgeschlossen";
-
 $lang["BRAINSTORM_GRID_TITLE_MAIN"] = 'Hauptprozess';
-
 $lang["BRAINSTORM_GRID_TITLE_NEW"] = 'Neuer Hauptprozess';
 $lang["BRAINSTORM_GRID_ITEM_NEW"] = 'Neue Tätigkeit';
 $lang["BRAINSTORM_GRID_STAGEGATE_NEW"] = 'Neues Stagegate';

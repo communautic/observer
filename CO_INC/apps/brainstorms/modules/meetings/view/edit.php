@@ -4,6 +4,17 @@
     <td class="tcell-left text11"><span class="<?php if($meeting->canedit) { ?>content-nav focusTitle<?php } ?>"><span><?php echo $lang["BRAINSTORM_MEETING_TITLE"];?></span></span></td>
     <td><input name="title" type="text" class="title textarea-title" value="<?php echo($meeting->title);?>" maxlength="100" /></td>
   </tr>
+  <tr class="table-title-status">
+    <td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_STATUS"];?></td>
+    <td colspan="2"><div class="statusTabs">
+    	<ul>
+        	<li><span class="left<?php if($meeting->canedit) { ?> statusButton<?php } ?> planned<?php echo $meeting->status_planned_active;?>" rel="0" reltext="<?php echo $lang["GLOBAL_STATUS_PLANNED_TIME"];?>"><?php echo $lang["GLOBAL_STATUS_PLANNED"];?></span></li>
+            <li><span class="<?php if($meeting->canedit) { ?>statusButton<?php } ?> finished<?php echo $meeting->status_finished_active;?>" rel="1" reltext="<?php echo $lang["GLOBAL_STATUS_COMPLETED_TIME"];?>"><?php echo $lang["GLOBAL_STATUS_COMPLETED"];?></span></li>
+            <li><span class="<?php if($meeting->canedit) { ?>statusButton<?php } ?> stopped<?php echo $meeting->status_stopped_active;?>" rel="2" reltext="<?php echo $lang["GLOBAL_STATUS_CANCELLED_TIME"];?>"><?php echo $lang["GLOBAL_STATUS_CANCELLED"];?></span></li>
+			<li><span class="right<?php if($meeting->canedit) { ?> statusButton<?php } ?> stopped<?php echo $meeting->status_posponed_active;?>" rel="3" reltext="<?php echo $lang["GLOBAL_STATUS_POSPONED_TIME"];?>"><?php echo $lang["GLOBAL_STATUS_POSPONED"];?></span></li>
+            <li><div class="status-time"><?php echo($meeting->status_text_time)?></div><div class="status-input"><input name="meeting_status_date" type="text" class="input-date statusdp" value="<?php echo($meeting->status_date)?>" readonly="readonly" /></div></li>
+		</ul></div></td>
+  </tr>
 </table>
 </div>
 <div class="ui-layout-content"><div class="scroll-pane">
@@ -59,12 +70,6 @@
 	<tr>
 		<td class="tcell-left text11"><span class="<?php if($meeting->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="brainstormsmanagement" append="1"><span><?php echo $lang["BRAINSTORM_MEETING_MANAGEMENT"];?></span></span></td>
 		<td class="tcell-right"><div id="brainstormsmanagement" class="itemlist-field"><?php echo($meeting->management);?></div><div id="brainstormsmanagement_ct" class="itemlist-field"><a field="brainstormsmanagement_ct" class="ct-content"><?php echo($meeting->management_ct);?></a></div></td>
-	</tr>
-</table>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content">
-	<tr>
-	  <td class="tcell-left text11"><span class="<?php if($meeting->canedit) { ?>content-nav showDialog<?php } ?>" request="getMeetingStatusDialog" field="brainstormsstatus" append="1"><span><?php echo $lang["GLOBAL_STATUS"];?></span></span></td>
-        <td class="tcell-right"><div id="brainstormsmeeting_status" class="itemlist-field"><div class="listmember" field="brainstormsmeeting_status" uid="<?php echo($meeting->status);?>" style="float: left"><?php echo($meeting->status_text);?></div></div><input name="meeting_status_date" type="text" class="input-date datepicker meeting_status_date" value="<?php echo($meeting->status_date)?>" style="float: left; margin-left: 8px;" /></td>
 	</tr>
 </table>
 <div class="content-spacer"></div>

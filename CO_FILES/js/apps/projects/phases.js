@@ -28,7 +28,7 @@ function projectsPhases(name) {
 		formData[formData.length] = processCustomTextApps('team_ct');
 		formData[formData.length] = processDocListApps('documents');
 		formData[formData.length] = processListApps('phase_access');
-		formData[formData.length] = processListApps('phase_status');	 
+		//formData[formData.length] = processListApps('phase_status');	 
 	}
 	
 	
@@ -53,13 +53,13 @@ function projectsPhases(name) {
 						$("#projects3 ul[rel=phases] span[rel="+data.id+"] .module-access-status").addClass("module-access-active");
 					break;
 				}
-				switch(data.status) {
+				/*switch(data.status) {
 					case "2":
 						$("#projects3 ul[rel=phases] span[rel="+data.id+"] .module-item-status").addClass("module-item-active");
 					break;
 					default:
 						$("#projects3 ul[rel=phases] span[rel="+data.id+"] .module-item-status").removeClass("module-item-active");
-				}
+				}*/
 			break;
 		}	
 	}
@@ -67,7 +67,23 @@ function projectsPhases(name) {
 	
 	this.poformOptions = { async: false, beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
 	
-	
+
+	this.statusOnClose = function(dp) {
+		var id = $("#projects").data("third");
+		var status = $("#projects .statusTabs li span.active").attr('rel');
+		var date = $("#projects .statusTabs input").val();
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/phases&request=updateStatus&id=" + id + "&date=" + date + "&status=" + status, cache: false, success: function(data){
+				switch(data.status) {
+					case "2":
+						$("#projects3 ul[rel=phases] span[rel="+data.id+"] .module-item-status").addClass("module-item-active");
+					break;
+					default:
+						$("#projects3 ul[rel=phases] span[rel="+data.id+"] .module-item-status").removeClass("module-item-active");
+				}																																 			}
+		});
+	}
+
+
 	this.getDetails = function(moduleidx,liindex,list) {
 		var phaseid = $("#projects3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
 		$('#projects').data({ "third" : phaseid});

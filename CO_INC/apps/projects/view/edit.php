@@ -1,9 +1,19 @@
 <div class="table-title-outer">
-
 <table border="0" cellpadding="0" cellspacing="0" class="table-title">
   <tr>
     <td class="tcell-left text11"><span class="<?php if($project->canedit) { ?>content-nav focusTitle<?php } ?>"><span><?php echo $lang["PROJECT_TITLE"];?></span></span></td>
     <td class="tcell-right"><?php if($project->canedit) { ?><input name="title" type="text" class="title textarea-title" value="<?php echo($project->title);?>" maxlength="100" /><?php } else { ?><div class="textarea-title"><?php echo($project->title);?></div><?php } ?></td>
+  </tr>
+  <tr class="table-title-status">
+    <td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_STATUS"];?></td>
+    <td colspan="2"><div class="statusTabs">
+    	<ul>
+        	<li><span class="left<?php if($project->canedit) { ?> statusButton<?php } ?> planned<?php echo $project->status_planned_active;?>" rel="0" reltext="<?php echo $lang["GLOBAL_STATUS_PLANNED_TIME"];?>"><?php echo $lang["GLOBAL_STATUS_PLANNED"];?></span></li>
+            <li><span class="<?php if($project->canedit) { ?>statusButton <?php } ?>inprogress<?php echo $project->status_inprogress_active;?>" rel="1" reltext="<?php echo $lang["GLOBAL_STATUS_INPROGRESS_TIME"];?>"><?php echo $lang["GLOBAL_STATUS_INPROGRESS"];?></span></li>
+            <li><span class="<?php if($project->canedit) { ?>statusButton <?php } ?>finished<?php echo $project->status_finished_active;?>" rel="2" reltext="<?php echo $lang["GLOBAL_STATUS_FINISHED_TIME"];?>"><?php echo $lang["GLOBAL_STATUS_FINISHED"];?></span></li>
+            <li><span class="right<?php if($project->canedit) { ?> statusButton<?php } ?> stopped<?php echo $project->status_stopped_active;?>" rel="3" reltext="<?php echo $lang["GLOBAL_STATUS_STOPPED_TIME"];?>"><?php echo $lang["GLOBAL_STATUS_STOPPED"];?></span></li>
+            <li><div class="status-time"><?php echo($project->status_text_time)?></div><div class="status-input"><input name="phase_status_date" type="text" class="input-date statusdp" value="<?php echo($project->status_date)?>" readonly="readonly" /></div></li>
+		</ul></div></td>
   </tr>
 </table>
 </div>
@@ -61,13 +71,6 @@
     <td class="tcell-left text11"><span class="<?php if($project->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="projectsteam" append="1"><span><?php echo $lang["PROJECT_TEAM"];?></span></span></td>
     <td class="tcell-right"><div id="projectsteam" class="itemlist-field"><?php echo($project->team);?></div><div id="projectsteam_ct" class="itemlist-field"><a field="projectsteam_ct" class="ct-content"><?php echo($project->team_ct);?></a></div></td>
   </tr>
-</table>
-<div class="content-spacer"></div>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content">
-	<tr>
-	  <td class="tcell-left text11"><span class="<?php if($project->canedit) { ?>content-nav showDialog<?php } ?>" request="getProjectStatusDialog" field="projectsstatus" append="1"><span><?php echo $lang["GLOBAL_STATUS"];?></span></span></td>
-        <td class="tcell-right"><div id="projectsstatus" class="itemlist-field"><div class="listmember" field="projectsstatus" uid="<?php echo($project->status);?>" style="float: left"><?php echo($project->status_text);?></div></div><?php if($project->canedit) { ?><input name="status_date" type="text" class="input-date datepicker status_date" value="<?php echo($project->status_date)?>" style="float: left; margin-left: 8px;" readonly="readonly" /><?php } else { ?><div style="float: left; margin-left: 8px;"><?php echo($project->status_date)?><?php } ?></div></td>
-	</tr>
 </table>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">

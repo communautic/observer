@@ -17,12 +17,6 @@ $lang["COMPLAINT_MEETING_ATTENDEES"] = 'Teilnehmer';
 $lang["COMPLAINT_MEETING_MANAGEMENT"] = 'Protokollführer';
 $lang["COMPLAINT_MEETING_GOALS"] = 'Themen';
 
-$lang["COMPLAINT_MEETING_STATUS_PLANNED"] = 'in Planung';
-$lang["COMPLAINT_MEETING_STATUS_ON_SCHEDULE"] = 'termingerecht abgehalten';
-$lang["COMPLAINT_MEETING_STATUS_CANCELLED"] = 'abgesagt';
-$lang["COMPLAINT_MEETING_STATUS_POSPONED"] = 'verschoben auf';
-$lang["COMPLAINT_MEETING_POSPONED"] = 'verschoben';
-
 $lang["COMPLAINT_MEETING_HELP"] = 'manual_reklamationen_besprechungen.pdf';
 
 $lang["COMPLAINT_PRINT_MEETING"] = 'besprechung.png';

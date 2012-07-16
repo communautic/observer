@@ -328,14 +328,21 @@ class Forums extends Controller {
 	}
 
 
-	function setForumDetails($id,$folder,$title,$protocol,$status,$forumsstatus_date) {
-		if($arr = $this->model->setForumDetails($id,$folder,$title,$protocol,$status,$forumsstatus_date)) {
-			 return '{ "action": "edit" , "id": "' . $arr["id"] . '", "status": "' . $status . '"}';
+	function setForumDetails($id,$folder,$title,$protocol) {
+		if($arr = $this->model->setForumDetails($id,$folder,$title,$protocol)) {
+			 return '{ "action": "edit" , "id": "' . $arr["id"] . '"}';
 		  } else{
 			 return "error";
 		  }
 	}
 
+
+	function updateStatus($id,$date,$status) {
+		$retval = $this->model->updateStatus($id,$date,$status);
+		if($retval){
+			 return '{ "id": "' . $id . '", "status": "' . $status . '"}';
+		 }
+	}
 
 	function binForum($id) {
 		$retval = $this->model->binForum($id);

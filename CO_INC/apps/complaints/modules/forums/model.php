@@ -247,23 +247,33 @@ class ComplaintsForumsModel extends ComplaintsModel {
 		}
 		
 		// status
+		$array["status_planned_active"] = "";
+		$array["status_inprogress_active"] = "";
+		$array["status_finished_active"] = "";
+		$array["status_stopped_active"] = "";
 		$array["startdate"] = "";
 		$array["enddate"] = "";
 		switch($array["status"]) {
 			case "0":
-				$array["status_text"] = $lang["FORUM_STATUS_PLANNED"];
+				$array["status_text"] = $lang["GLOBAL_STATUS_PLANNED"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_PLANNED_TIME"];
+				$array["status_planned_active"] = " active";
 				$array["status_date"] = $array["planned_date"];
 				$array["startdate"] = $array["planned_date"];
 				//$array["enddate"] = $this->_date->formatDate($today,CO_DATE_FORMAT);
 			break;
 			case "1":
-				$array["status_text"] = $lang["FORUM_STATUS_INPROGRESS"];
+				$array["status_text"] = $lang["GLOBAL_STATUS_DISCUSSION"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_DISCUSSION_TIME"];
+				$array["status_inprogress_active"] = " active";
 				$array["status_date"] = $array["inprogress_date"];
 				$array["startdate"] = $array["inprogress_date"];
 				//$array["enddate"] = $this->_date->formatDate($today,CO_DATE_FORMAT);
 			break;
 			case "2":
-				$array["status_text"] = $lang["FORUM_STATUS_FINISHED"];
+				$array["status_text"] = $lang["GLOBAL_STATUS_FINISHED"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_FINISHED_TIME"];
+				$array["status_finished_active"] = " active";
 				$array["status_date"] = $array["finished_date"];
 				if($array["inprogress_date"] == '') {
 					$array["startdate"] = $array["planned_date"];
@@ -273,7 +283,9 @@ class ComplaintsForumsModel extends ComplaintsModel {
 				$array["enddate"] = $array["finished_date"];
 			break;
 			case "3":
-				$array["status_text"] = $lang["FORUM_STATUS_STOPPED"];
+				$array["status_text"] = $lang["GLOBAL_STATUS_STOPPED"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_STOPPED_TIME"];
+				$array["status_stopped_active"] = " active";
 				$array["status_date"] = $array["stopped_date"];
 				if($array["inprogress_date"] == '') {
 					$array["startdate"] = $array["planned_date"];
@@ -331,13 +343,55 @@ class ComplaintsForumsModel extends ComplaintsModel {
    }
 
 
-   function setDetails($id,$title,$protocol,$forum_access,$forum_access_orig,$forum_status,$forum_status_date) {
+   function setDetails($id,$title,$protocol,$forum_access,$forum_access_orig) {
 		global $session, $lang;
 		
 		//$forum_status_date = $this->_date->formatDateGMT($forum_status_date);
-		$status_date = $this->_date->formatDate($forum_status_date);
+		//$status_date = $this->_date->formatDate($forum_status_date);
 		
-		switch($forum_status) {
+		/*switch($forum_status) {
+			case "0":
+				$sql = "planned_date";
+			break;
+			case "1":
+				$sql = "inprogress_date";
+			break;
+			case "2":
+				$sql = "finished_date";
+			break;
+			case "3":
+				$sql = "stopped_date";
+			break;
+		}*/
+
+		$now = gmdate("Y-m-d H:i:s");
+		
+		if($forum_access == $forum_access_orig) {
+			$accesssql = "";
+		} else {
+			$forum_access_date = "";
+			if($forum_access == 1) {
+				$forum_access_date = $now;
+			}
+			$accesssql = "access='$forum_access', access_date='$forum_access_date', access_user = '$session->uid',";
+		}
+		
+		$q = "UPDATE " . CO_TBL_COMPLAINTS_FORUMS . " set title = '$title', protocol = '$protocol', access='$forum_access', $accesssql edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		if ($result) {
+		$arr = array("id" => $id, "what" => "edit");
+		}
+		return $arr;
+   }
+
+
+   function updateStatus($id,$date,$status) {
+		global $session;
+		
+		$date = $this->_date->formatDate($date);
+		
+		switch($status) {
 			case "0":
 				$sql = "planned_date";
 			break;
@@ -354,24 +408,13 @@ class ComplaintsForumsModel extends ComplaintsModel {
 
 		$now = gmdate("Y-m-d H:i:s");
 		
-		if($forum_access == $forum_access_orig) {
-			$accesssql = "";
-		} else {
-			$forum_access_date = "";
-			if($forum_access == 1) {
-				$forum_access_date = $now;
-			}
-			$accesssql = "access='$forum_access', access_date='$forum_access_date', access_user = '$session->uid',";
-		}
-		
-		$q = "UPDATE " . CO_TBL_COMPLAINTS_FORUMS . " set title = '$title', protocol = '$protocol', access='$forum_access', $accesssql status = '$forum_status', $sql = '$status_date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_COMPLAINTS_FORUMS . " set status = '$status', $sql = '$date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
-		$arr = array("id" => $id, "what" => "edit");
+			return true;
 		}
-		return $arr;
-   }
+	}
 
 
    function createNew($id) {

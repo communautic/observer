@@ -1124,7 +1124,57 @@ $(document).ready(function() {
 				var app = getCurrentApp();
 				var object = window[app];
 				object.datepickerOnClose(this);
-				setTimeout(function() { inst.input.click(); }, 5000);
+				//setTimeout(function() { inst.input.click(); }, 5000);
+	   		}
+ 		});
+	});
+	
+	$(document).on('click', 'span.statusButton',function(e) {
+		e.preventDefault();
+		// open datepicker
+		
+		$('#'+getCurrentApp()+' span.statusButton').removeClass('active');
+		$(this).addClass('active');
+		var p = $(this).parent().parent();
+		p.find('.status-time').html($(this).attr('reltext'));
+		p.find('img').trigger('click');
+	});
+	
+	$('.statusdp').livequery(function() { 
+		$(this).datepicker({ dateFormat: 'dd.mm.yy', showOn: 'button', buttonText:"", buttonImage: co_files+'/img/pixel.gif',  buttonImageOnly: true, showButtonPanel: true, changeMonth: true, changeYear: true, yearRange: 'c-5:c+5', showAnim: 'slide',
+			beforeShow: function(input,inst) {
+				var today = new Date();
+				var d = today.getDate()
+				var m = today.getMonth()+1;
+				var y = today.getFullYear();
+				input.value = d+'.'+m+'.'+y;
+				setTimeout(function() {
+					var d = new Date();
+					var m = d.getMonth()+1;
+					var y = d.getFullYear();
+					var is = new Date(Date.parse(input.value));
+					var month = is.getMonth()+1;
+					var year = is.getFullYear();
+					if(m == month && y == year ) {
+						$('button.ui-datepicker-current').addClass('disabled');
+					}
+				}, 1 );
+			},
+			onChangeMonthYear: function(year,month, inst ) {
+				setTimeout(function() {
+					var d = new Date();
+					var m = d.getMonth()+1;
+					var y = d.getFullYear();
+					if(m == month && y == year ) {
+						$('button.ui-datepicker-current').addClass('disabled');
+					}
+				}, 1 );
+			},
+			onClose: function(dateText, inst) {
+				var obj = getCurrentModule();
+				obj.statusOnClose();
+				//object.datepickerOnClose(this);
+				//setTimeout(function() { inst.input.click(); }, 5000);
 	   		}
  		});
 	});

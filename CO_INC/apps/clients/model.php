@@ -166,22 +166,6 @@ class ClientsModel extends Model {
 			}
 			$client["management"] = $contactsmodel->getUserListPlain($client['management']);
 			$client["perm"] = $this->getClientAccess($client["id"]);
-			
-			switch($client["status"]) {
-				case "0":
-					$client["status_text"] = $lang["CLIENT_STATUS_PLANNED_TEXT"];
-				break;
-				case "1":
-					$client["status_text"] = $lang["CLIENT_STATUS_INPROGRESS_TEXT"];
-				break;
-				case "2":
-					$client["status_text"] = $lang["CLIENT_STATUS_FINISHED_TEXT"];
-				break;
-				case "3":
-					$client["status_text"] = $lang["CLIENT_STATUS_STOPPED_TEXT"];
-				break;
-			}
-			
 			$clients[] = new Lists($client);
 	  	}
 		
@@ -645,28 +629,7 @@ class ClientsModel extends Model {
 				$array["contract_text"] = $lang["CLIENT_CONTRACT_EIGHT"];
 			break;
 		}
-		
-		/*switch($array["status"]) {
-			case "0":
-				$array["status_text"] = $lang["CLIENT_STATUS_PLANNED"];
-				$array["status_date"] = $this->_date->formatDate($array["planned_date"],CO_DATE_FORMAT);
-			break;
-			case "1":
-				$array["status_text"] = $lang["CLIENT_STATUS_INPROGRESS"];
-				$array["status_date"] = $this->_date->formatDate($array["inprogress_date"],CO_DATE_FORMAT);
-			break;
-			case "2":
-				$array["status_text"] = $lang["CLIENT_STATUS_FINISHED"];
-				$array["status_date"] = $this->_date->formatDate($array["finished_date"],CO_DATE_FORMAT);
-			break;
-			case "3":
-				$array["status_text"] = $lang["CLIENT_STATUS_STOPPED"];
-				$array["status_date"] = $this->_date->formatDate($array["stopped_date"],CO_DATE_FORMAT);
-			break;
-		}*/
-		
-		
-		
+
 		$client = new Lists($array);
 		
 		$sql="";

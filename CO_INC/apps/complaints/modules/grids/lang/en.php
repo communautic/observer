@@ -13,9 +13,6 @@ $lang["COMPLAINT_GRID_MANAGEMENT"] = 'Manager';
 $lang["COMPLAINT_GRID_TEAM"] = 'Team';
 
 $lang["COMPLAINT_GRID_COLUMN_NEW"] = 'Columns';
-$lang["COMPLAINT_GRID_STATUS_PLANED"] = "planned";
-$lang["COMPLAINT_GRID_STATUS_INPROGRESS"] = "in progress";
-$lang["COMPLAINT_GRID_STATUS_FINISHED"] = "completed";
 
 $lang["COMPLAINT_GRID_TITLE_MAIN"] = 'Main Stage';
 

@@ -13,7 +13,7 @@ $lang["PROJECT_PHONECALL_TIME_END"] = 'Ende';
 
 $lang["PROJECT_PHONECALL_MANAGEMENT"] = 'Gesprächspartner';
 $lang["PROJECT_PHONECALL_TYPE"] = 'Telefonieart';
-$lang["PROJECT_PHONECALL_GOALS"] = 'Themen';
+$lang["PROJECT_PHONECALL_GOALS"] = 'Notiz';
 
 $lang["PROJECT_PHONECALL_STATUS_OUTGOING"] = 'Outgoing';
 $lang["PROJECT_PHONECALL_STATUS_ON_INCOMING"] = 'Incoming';

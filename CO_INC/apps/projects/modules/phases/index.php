@@ -120,6 +120,9 @@ if (!empty($_GET['request'])) {
 		case 'deleteCheckpoint':
 			echo($projectsPhases->deleteCheckpoint($_GET['id']));
 		break;
+		case 'updateStatus':
+			echo($projectsPhases->updateStatus($_GET['id'],$_GET['date'],$_GET['status']));
+		break;
 	}
 }
 
@@ -164,7 +167,7 @@ if (!empty($_POST['request'])) {
 			if(isset($_POST['task'])) {
 				$task = $_POST['task'];
 			}
-			echo($projectsPhases->setDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['team'], $system->checkMagicQuotes($_POST['team_ct']), $system->checkMagicQuotes($_POST['protocol']), $_POST["documents"],$_POST['phase_access'], $_POST['phase_access_orig'], $_POST['phase_status'], $_POST['phase_status_date'],$task_startdate,$task_enddate,$task_donedate,$task_id,$task_text,$task_protocol,$task,$task_cat,$task_dependent,$task_team,$task_team_ct));
+			echo($projectsPhases->setDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['team'], $system->checkMagicQuotes($_POST['team_ct']), $system->checkMagicQuotes($_POST['protocol']), $_POST["documents"],$_POST['phase_access'], $_POST['phase_access_orig'],$task_startdate,$task_enddate,$task_donedate,$task_id,$task_text,$task_protocol,$task,$task_cat,$task_dependent,$task_team,$task_team_ct));
 		break;
 		case 'sendDetails':
 			echo($projectsPhases->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));

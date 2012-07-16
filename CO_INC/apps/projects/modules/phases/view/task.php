@@ -35,7 +35,7 @@
      <table width="100%" border="0" cellpadding="0" cellspacing="0" id="donedate_<?php echo $value->id;?>" style="<?php echo $donedate_field;?>">
     <tr>
       <td width="12">&nbsp;</td>
-      <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["PROJECT_STATUS_FINISHED"];?></span></span></td>
+      <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["GLOBAL_STATUS_FINISHED"];?></span></span></td>
       <td class="tcell-right"><?php if($phase->canedit) { ?><input name="task_donedate[<?php echo $value->id;?>]" type="text" class="input-date datepicker task_donedate" value="<?php echo $donedate;?>" readonly="readonly" /><?php } else { ?><?php echo $donedate;?><?php } ?></td>
     </tr>
   </table>

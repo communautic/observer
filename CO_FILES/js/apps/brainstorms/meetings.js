@@ -43,22 +43,33 @@ function brainstormsMeetings(name) {
 		formData[formData.length] = processListApps('meeting_relates_to');
 		formData[formData.length] = processDocListApps('documents');
 		formData[formData.length] = processListApps('meeting_access');
-		formData[formData.length] = processListApps('meeting_status');
+		//formData[formData.length] = processListApps('meeting_status');
 	 }
 	 
 	 
 	 this.formResponse = function(data) {
-		 switch(data.action) {
-			case "edit":
-				$("#brainstorms3 ul[rel=meetings] span[rel="+data.id+"] .text").html($("#brainstorms .item_date").val() + ' - ' +$("#brainstorms .title").val());
-					switch(data.access) {
-						case "0":
-							$("#brainstorms3 ul[rel=meetings] span[rel="+data.id+"] .module-access-status").removeClass("module-access-active");
-						break;
-						case "1":
-							$("#brainstorms3 ul[rel=meetings] span[rel="+data.id+"] .module-access-status").addClass("module-access-active");
-						break;
-					}
+		$("#brainstorms3 ul[rel=meetings] span[rel="+data.id+"] .text").html($("#brainstorms .item_date").val() + ' - ' +$("#brainstorms .title").val());
+		switch(data.access) {
+			case "0":
+				$("#brainstorms3 ul[rel=meetings] span[rel="+data.id+"] .module-access-status").removeClass("module-access-active");
+			break;
+			case "1":
+				$("#brainstorms3 ul[rel=meetings] span[rel="+data.id+"] .module-access-status").addClass("module-access-active");
+			break;
+		}
+	}
+
+
+	this.poformOptions = { async: false, beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
+
+
+	this.statusOnClose = function(dp) {
+		var id = $("#brainstorms").data("third");
+		var status = $("#brainstorms .statusTabs li span.active").attr('rel');
+		var date = $("#brainstorms .statusTabs input").val();
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/meetings&request=updateStatus&id=" + id + "&date=" + date + "&status=" + status, cache: false, success: function(data){
+			switch(data.action) {
+				case "edit":
 					switch(data.status) {
 						case "1":
 							$("#brainstorms3 ul[rel=meetings] span[rel="+data.id+"] .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
@@ -69,25 +80,23 @@ function brainstormsMeetings(name) {
 						default:
 							$("#brainstorms3 ul[rel=meetings] span[rel="+data.id+"] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
 					}
-			break;
-			case "reload":
-				var module = getCurrentModule();
-				var id = $('#brainstorms').data('second');
-				$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/brainstorms/modules/meetings&request=getList&id="+id, success: function(list){
-					$('#brainstorms3 ul[rel=meetings]').html(list.html);
-					$('#brainstorms_meetings_items').html(list.items);
-					var moduleidx = $("#brainstorms3 ul").index($("#brainstorms3 ul[rel=meetings]"));
-					var liindex = $("#brainstorms3 ul[rel=meetings] .module-click").index($("#brainstorms3 ul[rel=meetings] .module-click[rel='"+data.id+"']"));
-					module.getDetails(moduleidx,liindex);
-					$("#brainstorms3 ul[rel=meetings] .module-click:eq("+liindex+")").addClass('active-link');
-					}
-				});
-			break;
-		}
+				break;
+				case "reload":
+					var module = getCurrentModule();
+					var id = $('#brainstorms').data('second');
+					$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/brainstorms/modules/meetings&request=getList&id="+id, success: function(list){
+						$('#brainstorms3 ul[rel=meetings]').html(list.html);
+						$('#brainstorms_meetings_items').html(list.items);
+						var moduleidx = $("#brainstorms3 ul").index($("#brainstorms3 ul[rel=meetings]"));
+						var liindex = $("#brainstorms3 ul[rel=meetings] .module-click").index($("#brainstorms3 ul[rel=meetings] .module-click[rel='"+data.id+"']"));
+						module.getDetails(moduleidx,liindex);
+						$("#brainstorms3 ul[rel=meetings] .module-click:eq("+liindex+")").addClass('active-link');
+						}
+					});
+				break;																																														  				}
+			}
+		});
 	}
-	
-	
-	this.poformOptions = { async: false, beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
 
 
 	this.getDetails = function(moduleidx,liindex,list) {

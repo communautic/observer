@@ -47,7 +47,7 @@
 <table width="100%" class="standard-grey-paddingBottom">
 	<tr>
 	  <td class="tcell-left"><?php echo $lang["GLOBAL_STATUS"];?></td>
-        <td><?php echo($meeting->status_text);?> <?php echo($meeting->status_date)?></td>
+        <td><?php echo($meeting->status_text);?> <?php echo($meeting->status_text_time);?> <?php echo($meeting->status_date)?></td>
 	</tr>
 </table>
 &nbsp;

@@ -15,7 +15,7 @@ function publishersMenues(name) {
 		formData[formData.length] = processListApps('management');
 		formData[formData.length] = processCustomTextApps('management_ct');
 		formData[formData.length] = processListApps('menue_access');
-		formData[formData.length] = processListApps('menue_status');
+		//formData[formData.length] = processListApps('menue_status');
 	 }
 	 
 	 
@@ -44,6 +44,23 @@ function publishersMenues(name) {
 	
 	
 	this.poformOptions = { async: false, beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
+
+
+	this.statusOnClose = function(dp) {
+		var id = $('#publishers input[name="id"]').val()
+		var status = $("#publishers .statusTabs li span.active").attr('rel');
+		var date = $("#publishers .statusTabs input").val();
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/publishers/modules/menues&request=updateStatus&id=" + id + "&date=" + date + "&status=" + status, cache: false, success: function(data){
+				switch(data.status) {
+					case "2":
+						$("#publishers1 ul[rel=menues] span[rel="+data.id+"] .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
+					break;
+					default:
+						$("#publishers1 ul[rel=menues] span[rel="+data.id+"] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
+				}
+			}
+		});
+	}
 
 
 	this.getDetails = function(moduleidx,liindex,list) {

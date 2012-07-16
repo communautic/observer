@@ -51,15 +51,6 @@ $lang["COMPLAINT_DESCRIPTION"] = 'Notizen';
 
 $lang['COMPLAINTS_ACCESS_ACTIVE'] = 'Berechtigung erteilt am %s durch %s';
 
-$lang["COMPLAINT_STATUS_PLANNED"] = 'planned';
-$lang["COMPLAINT_STATUS_INPROGRESS"] = 'started';
-$lang["COMPLAINT_STATUS_FINISHED"] = 'completed';
-$lang["COMPLAINT_STATUS_STOPPED"] = 'stopped';
-
-$lang["COMPLAINT_STATUS_PLANNED_TEXT"] = 'planned';
-$lang["COMPLAINT_STATUS_INPROGRESS_TEXT"] = 'started';
-$lang["COMPLAINT_STATUS_FINISHED_TEXT"] = 'completed';
-$lang["COMPLAINT_STATUS_STOPPED_TEXT"] = 'stopped';
 $lang["COMPLAINT_HANDBOOK"] = 'Projekthandbuch';
 
 

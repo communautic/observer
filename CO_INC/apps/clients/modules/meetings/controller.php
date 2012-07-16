@@ -135,15 +135,21 @@ class ClientsMeetings extends Clients {
 	}
 	
 
-	function setDetails($pid,$id,$title,$meetingdate,$start,$end,$location,$location_ct,$participants,$participants_ct,$management,$management_ct,$task_id,$task_title,$task_text,$task,$task_sort,$documents,$meeting_access,$meeting_access_orig,$meeting_status,$meeting_status_date) {
-		if($arr = $this->model->setDetails($pid,$id,$title,$meetingdate,$start,$end,$location,$location_ct,$participants,$participants_ct,$management,$management_ct,$task_id,$task_title,$task_text,$task,$task_sort,$documents,$meeting_access,$meeting_access_orig,$meeting_status,$meeting_status_date)){
-			if($arr["what"] == "edit") {
-				return '{ "action": "edit" , "id": "' . $arr["id"] . '", "access": "' . $meeting_access . '", "status": "' . $meeting_status . '"}';
-			} else {
-				return '{ "action": "reload" , "id": "' . $arr["id"] . '"}';
-			}
+	function setDetails($pid,$id,$title,$meetingdate,$start,$end,$location,$location_ct,$participants,$participants_ct,$management,$management_ct,$task_id,$task_title,$task_text,$task,$task_sort,$documents,$meeting_access,$meeting_access_orig) {
+		if($retval = $this->model->setDetails($pid,$id,$title,$meetingdate,$start,$end,$location,$location_ct,$participants,$participants_ct,$management,$management_ct,$task_id,$task_title,$task_text,$task,$task_sort,$documents,$meeting_access,$meeting_access_orig)){
+			return '{ "id": "' . $id . '", "access": "' . $meeting_access . '"}';
 		} else{
 			return "error";
+		}
+	}
+
+
+	function updateStatus($id,$date,$status) {
+		$arr = $this->model->updateStatus($id,$date,$status);
+		if($arr["what"] == "edit") {
+			return '{ "action": "edit" , "id": "' . $arr["id"] . '", "status": "' . $status . '"}';
+		} else {
+			return '{ "action": "reload" , "id": "' . $arr["id"] . '"}';
 		}
 	}
 

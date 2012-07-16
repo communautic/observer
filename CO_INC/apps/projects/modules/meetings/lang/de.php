@@ -17,12 +17,6 @@ $lang["PROJECT_MEETING_ATTENDEES"] = 'Teilnehmer';
 $lang["PROJECT_MEETING_MANAGEMENT"] = 'Protokollführer';
 $lang["PROJECT_MEETING_GOALS"] = 'Themen';
 
-$lang["PROJECT_MEETING_STATUS_PLANNED"] = 'in Planung';
-$lang["PROJECT_MEETING_STATUS_ON_SCHEDULE"] = 'termingerecht abgehalten';
-$lang["PROJECT_MEETING_STATUS_CANCELLED"] = 'abgesagt';
-$lang["PROJECT_MEETING_STATUS_POSPONED"] = 'verschoben auf';
-$lang["PROJECT_MEETING_POSPONED"] = 'verschoben';
-
 $lang["PROJECT_MEETING_HELP"] = 'manual_projekte_besprechungen.pdf';
 
 $lang["PROJECT_PRINT_MEETING"] = 'besprechung.png';

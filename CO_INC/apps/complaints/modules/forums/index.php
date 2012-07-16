@@ -92,6 +92,9 @@ if (!empty($_GET['request'])) {
 		case 'getHelp':
 			echo($complaintsForums->getHelp());
 		break;
+		case 'updateStatus':
+			echo($complaintsForums->updateStatus($_GET['id'],$_GET['date'],$_GET['status']));
+		break;
 	}
 }
 
@@ -99,7 +102,7 @@ if (!empty($_POST['request'])) {
 	
 	switch ($_POST['request']) {
 		case 'setDetails':
-			echo($complaintsForums->setDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $system->checkMagicQuotes($_POST['protocol']),$_POST['forum_access'],$_POST['forum_access_orig'],$_POST['forum_status'],$_POST['forum_status_date']));
+			echo($complaintsForums->setDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $system->checkMagicQuotes($_POST['protocol']),$_POST['forum_access'],$_POST['forum_access_orig']));
 		break;
 		case 'sendDetails':
 			echo($complaintsForums->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));

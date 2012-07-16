@@ -13,9 +13,6 @@ $lang["COMPLAINT_GRID_MANAGEMENT"] = 'Prozessverantwortung';
 $lang["COMPLAINT_GRID_TEAM"] = 'Prozessteam';
 
 $lang["COMPLAINT_GRID_COLUMN_NEW"] = 'Ablaufdiagramm';
-$lang["COMPLAINT_GRID_STATUS_PLANED"] = "in Planung";
-$lang["COMPLAINT_GRID_STATUS_INPROGRESS"] = "in Arbeit";
-$lang["COMPLAINT_GRID_STATUS_FINISHED"] = "abgeschlossen";
 
 $lang["COMPLAINT_GRID_TITLE_MAIN"] = 'Hauptprozess';
 

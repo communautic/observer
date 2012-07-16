@@ -32,7 +32,7 @@ function projectsApplication(name) {
 		formData[formData.length] = processCustomTextApps('management_ct');
 		formData[formData.length] = processListApps('team');
 		formData[formData.length] = processCustomTextApps('team_ct');
-		formData[formData.length] = processListApps('status');
+		//formData[formData.length] = processListApps('status');
 	}
 
 	
@@ -41,16 +41,6 @@ function projectsApplication(name) {
 			case "edit":
 				$("#projects2 span[rel='"+data.id+"'] .text").html($("#projects .title").val());
 				$("#projectDurationStart").html($("input[name='startdate']").val());
-				switch(data.status) {
-					case "2":
-						$("#projects2 span[rel='"+data.id+"'] .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
-					break;
-					case "3":
-						$("#projects2 span[rel='"+data.id+"'] .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
-					break;
-					default:
-						$("#projects2 span[rel='"+data.id+"'] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
-				}
 			break;
 			case "reload":
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectDetails&id="+data.id, success: function(text){
@@ -64,6 +54,25 @@ function projectsApplication(name) {
 
 
 	this.poformOptions = { async: false, beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
+
+
+	this.statusOnClose = function(dp) {
+		var id = $("#projects").data("second");
+		var status = $("#projects .statusTabs li span.active").attr('rel');
+		var date = $("#projects .statusTabs input").val();
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=updateStatus&id=" + id + "&date=" + date + "&status=" + status, cache: false, success: function(data){
+				switch(data.status) {
+					case "2":
+						$("#projects2 span[rel='"+data.id+"'] .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
+					break;
+					case "3":
+						$("#projects2 span[rel='"+data.id+"'] .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
+					break;
+					default:
+						$("#projects2 span[rel='"+data.id+"'] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
+				}																																				 			}
+		});
+	}
 
 
 	this.actionClose = function() {

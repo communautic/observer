@@ -20,11 +20,6 @@ $lang["COMPLAINT_FORUM_ATTENDEES"] = 'Teilnehmer';
 $lang["COMPLAINT_FORUM_MANAGEMENT"] = 'Protokollführer';
 $lang["COMPLAINT_FORUM_GOALS"] = 'Antworten';
 
-$lang["COMPLAINT_FORUM_STATUS_PLANNED"] = 'in Planung seit';
-$lang["COMPLAINT_FORUM_STATUS_INPROGRESS"] = 'in Diskussion seit';
-$lang["COMPLAINT_FORUM_STATUS_FINISHED"] = 'abgeschlossen am';
-$lang["COMPLAINT_FORUM_STATUS_STOPPED"] = 'abgebrochen am';
-
 $lang["COMPLAINT_FORUM_POSTS"] = 'Foren / Antworten';
 
 $lang["COMPLAINT_FORUM_HELP"] = 'manual_reklamationen_diskussionen.pdf';

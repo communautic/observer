@@ -168,16 +168,16 @@ class ProjectsModel extends Model {
 			
 			switch($project["status"]) {
 				case "0":
-					$project["status_text"] = $lang["PROJECT_STATUS_PLANNED_TEXT"];
+					$project["status_text"] = $lang["GLOBAL_STATUS_PLANNED"];
 				break;
 				case "1":
-					$project["status_text"] = $lang["PROJECT_STATUS_INPROGRESS_TEXT"];
+					$project["status_text"] = $lang["GLOBAL_STATUS_INPROGRESS"];
 				break;
 				case "2":
-					$project["status_text"] = $lang["PROJECT_STATUS_FINISHED_TEXT"];
+					$project["status_text"] = $lang["GLOBAL_STATUS_FINISHED"];
 				break;
 				case "3":
-					$project["status_text"] = $lang["PROJECT_STATUS_STOPPED_TEXT"];
+					$project["status_text"] = $lang["GLOBAL_STATUS_STOPPED"];
 				break;
 			}
 			
@@ -811,21 +811,33 @@ class ProjectsModel extends Model {
 		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
 		$array["current_user"] = $session->uid;
 		
+		$array["status_planned_active"] = "";
+		$array["status_inprogress_active"] = "";
+		$array["status_finished_active"] = "";
+		$array["status_stopped_active"] = "";
 		switch($array["status"]) {
 			case "0":
-				$array["status_text"] = $lang["PROJECT_STATUS_PLANNED"];
+				$array["status_text"] = $lang["GLOBAL_STATUS_PLANNED"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_PLANNED_TIME"];
+				$array["status_planned_active"] = " active";
 				$array["status_date"] = $this->_date->formatDate($array["planned_date"],CO_DATE_FORMAT);
 			break;
 			case "1":
-				$array["status_text"] = $lang["PROJECT_STATUS_INPROGRESS"];
+				$array["status_text"] = $lang["GLOBAL_STATUS_INPROGRESS"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_INPROGRESS_TIME"];
+				$array["status_inprogress_active"] = " active";
 				$array["status_date"] = $this->_date->formatDate($array["inprogress_date"],CO_DATE_FORMAT);
 			break;
 			case "2":
-				$array["status_text"] = $lang["PROJECT_STATUS_FINISHED"];
+				$array["status_text"] = $lang["GLOBAL_STATUS_FINISHED"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_FINISHED_TIME"];
+				$array["status_finished_active"] = " active";
 				$array["status_date"] = $this->_date->formatDate($array["finished_date"],CO_DATE_FORMAT);
 			break;
 			case "3":
-				$array["status_text"] = $lang["PROJECT_STATUS_STOPPED"];
+				$array["status_text"] = $lang["GLOBAL_STATUS_STOPPED"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_STOPPED_TIME"];
+				$array["status_stopped_active"] = " active";
 				$array["status_date"] = $this->_date->formatDate($array["stopped_date"],CO_DATE_FORMAT);
 			break;
 		}
@@ -863,13 +875,13 @@ class ProjectsModel extends Model {
 			// status
 			switch($phase["status"]) {
 				case "0":
-					$phase["status_text"] = $lang["PROJECT_STATUS_PLANNED_TEXT"];
+					$phase["status_text"] = $lang["GLOBAL_STATUS_PLANNED"];
 				break;
 				case "1":
-					$phase["status_text"] = $lang["PROJECT_STATUS_INPROGRESS_TEXT"];
+					$phase["status_text"] = $lang["GLOBAL_STATUS_INPROGRESS"];
 				break;
 				case "2":
-					$phase["status_text"] = $lang["PROJECT_STATUS_FINISHED_TEXT"];
+					$phase["status_text"] = $lang["GLOBAL_STATUS_FINISHED"];
 				break;
 			}
 			
@@ -952,18 +964,18 @@ class ProjectsModel extends Model {
    /**
    * get details for the project folder
    */
-   function setProjectDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$folder,$status,$status_date) {
+   function setProjectDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$folder) {
 		global $session, $contactsmodel;
 		
 		$startdate = $this->_date->formatDate($_POST['startdate']);
-		$status_date = $this->_date->formatDate($status_date);
+		//$status_date = $this->_date->formatDate($status_date);
 		
 		// user lists
 		$ordered_by = $contactsmodel->sortUserIDsByName($ordered_by);
 		$management = $contactsmodel->sortUserIDsByName($management);
 		$team = $contactsmodel->sortUserIDsByName($team);
 		
-		switch($status) {
+		/*switch($status) {
 			case "0":
 				$sql = "planned_date";
 			break;
@@ -977,18 +989,51 @@ class ProjectsModel extends Model {
 			case "3":
 				$sql = "stopped_date";
 			break;
-		}
+		}*/
 
 		$now = gmdate("Y-m-d H:i:s");
 		
-		$q = "UPDATE " . CO_TBL_PROJECTS . " set title = '$title', folder = '$folder', startdate = '$startdate', ordered_by = '$ordered_by', ordered_by_ct = '$ordered_by_ct', management = '$management', management_ct = '$management_ct', team='$team', team_ct = '$team_ct', protocol = '$protocol', status = '$status', $sql = '$status_date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PROJECTS . " set title = '$title', folder = '$folder', startdate = '$startdate', ordered_by = '$ordered_by', ordered_by_ct = '$ordered_by_ct', management = '$management', management_ct = '$management_ct', team='$team', team_ct = '$team_ct', protocol = '$protocol', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
 			return true;
 		}
 	}
-	
+
+
+   function updateStatus($id,$date,$status) {
+		global $session;
+		
+		$date = $this->_date->formatDate($date);
+		
+		switch($status) {
+			case "0":
+				$sql = "planned_date";
+			break;
+			case "1":
+				$sql = "inprogress_date";
+			break;
+			case "2":
+				$sql = "finished_date";
+				$this->setAllPhasesFinished($id,$date);
+			break;
+			case "3":
+				$sql = "stopped_date";
+			break;
+		}
+
+		$now = gmdate("Y-m-d H:i:s");
+		
+		$q = "UPDATE " . CO_TBL_PROJECTS . " set status = '$status', $sql = '$date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		if ($result) {
+			return true;
+		}
+	}
+
+
 	function setAllPhasesFinished($id,$status_date) {
 		global $session;
 		$now = gmdate("Y-m-d H:i:s");

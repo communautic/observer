@@ -157,6 +157,9 @@ if (!empty($_GET['request'])) {
 		case 'getNavModulesNumItems':
 			echo($forums->getNavModulesNumItems($_GET['id']));
 		break;
+		case 'updateStatus':
+			echo($forums->updateStatus($_GET['id'],$_GET['date'],$_GET['status']));
+		break;
 	}
 }
 
@@ -166,7 +169,7 @@ if (!empty($_POST['request'])) {
 			echo($forums->setFolderDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['forumstatus']));
 		break;
 		case 'setForumDetails':
-			echo($forums->setForumDetails($_POST['id'], $_POST['folder'], $system->checkMagicQuotes($_POST['title']), $system->checkMagicQuotes($_POST['protocol']), $_POST['status'], $_POST['forumsstatus_date']));
+			echo($forums->setForumDetails($_POST['id'], $_POST['folder'], $system->checkMagicQuotes($_POST['title']), $system->checkMagicQuotes($_POST['protocol'])));
 		break;
 		case 'moveForum':
 			echo($forums->moveForum($_POST['id'], $_POST['startdate'], $_POST['movedays']));

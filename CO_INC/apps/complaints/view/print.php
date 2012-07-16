@@ -117,7 +117,7 @@
 <table width="100%" class="standard">
 	<tr>
 	  <td class="tcell-left"><?php echo $lang["GLOBAL_STATUS"];?></td>
-        <td><?php echo($complaint->status_text);?> <?php echo($complaint->status_date)?></td>
+        <td><?php echo($complaint->status_text);?> <?php echo($complaint->status_text_time);?> <?php echo($complaint->status_date)?></td>
 	</tr>
 </table>
 <?php if(!empty($complaint->protocol)) { ?>

@@ -169,19 +169,23 @@ class ComplaintsModel extends Model {
 			
 		switch($complaint["status"]) {
 			case "0":
-				$complaint["status_text"] = $lang["COMPLAINT_STATUS_PLANNED"];
+				$complaint["status_text"] = $lang["GLOBAL_STATUS_ENTERED"];
+				$complaint["status_text_time"] = $lang["GLOBAL_STATUS_ENTERED_TIME"];
 				$complaint["status_date"] = $this->_date->formatDate($complaint["planned_date"],CO_DATE_FORMAT);
 			break;
 			case "1":
-				$complaint["status_text"] = $lang["COMPLAINT_STATUS_INPROGRESS"];
+				$complaint["status_text"] = $lang["GLOBAL_STATUS_INPROGRESS"];
+				$complaint["status_text_time"] = $lang["GLOBAL_STATUS_INPROGRESS_TIME"];
 				$complaint["status_date"] = $this->_date->formatDate($complaint["inprogress_date"],CO_DATE_FORMAT);
 			break;
 			case "2":
-				$complaint["status_text"] = $lang["COMPLAINT_STATUS_FINISHED"];
+				$complaint["status_text"] = $lang["GLOBAL_STATUS_FINISHED"];
+				$complaint["status_text_time"] = $lang["GLOBAL_STATUS_FINISHED_TIME"];
 				$complaint["status_date"] = $this->_date->formatDate($complaint["finished_date"],CO_DATE_FORMAT);
 			break;
 			case "3":
-				$complaint["status_text"] = $lang["COMPLAINT_STATUS_STOPPED"];
+				$complaint["status_text"] = $lang["GLOBAL_STATUS_STOPPED"];
+				$complaint["status_text_time"] = $lang["GLOBAL_STATUS_STOPPED_TIME"];
 				$complaint["status_date"] = $this->_date->formatDate($complaint["stopped_date"],CO_DATE_FORMAT);
 			break;
 		}
@@ -593,24 +597,36 @@ class ComplaintsModel extends Model {
 		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
 		$array["current_user"] = $session->uid;
 		
+		$array["status_planned_active"] = "";
+		$array["status_inprogress_active"] = "";
+		$array["status_finished_active"] = "";
+		$array["status_stopped_active"] = "";
 		switch($array["status"]) {
 			case "0":
-				$array["status_text"] = $lang["COMPLAINT_STATUS_PLANNED"];
+				$array["status_text"] = $lang["GLOBAL_STATUS_ENTERED"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_ENTERED_TIME"];
+				$array["status_planned_active"] = " active";
 				$array["status_date"] = $this->_date->formatDate($array["planned_date"],CO_DATE_FORMAT);
 				$array["enddate"] = $this->_date->formatDate($today,CO_DATE_FORMAT);
 			break;
 			case "1":
-				$array["status_text"] = $lang["COMPLAINT_STATUS_INPROGRESS"];
+				$array["status_text"] = $lang["GLOBAL_STATUS_INPROGRESS"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_INPROGRESS_TIME"];
+				$array["status_inprogress_active"] = " active";
 				$array["status_date"] = $this->_date->formatDate($array["inprogress_date"],CO_DATE_FORMAT);
 				$array["enddate"] = $this->_date->formatDate($today,CO_DATE_FORMAT);
 			break;
 			case "2":
-				$array["status_text"] = $lang["COMPLAINT_STATUS_FINISHED"];
+				$array["status_text"] = $lang["GLOBAL_STATUS_FINISHED"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_FINISHED_TIME"];
+				$array["status_finished_active"] = " active";
 				$array["status_date"] = $this->_date->formatDate($array["finished_date"],CO_DATE_FORMAT);
 				$array["enddate"] = $array["status_date"];
 			break;
 			case "3":
-				$array["status_text"] = $lang["COMPLAINT_STATUS_STOPPED"];
+				$array["status_text"] = $lang["GLOBAL_STATUS_STOPPED"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_STOPPED_TIME"];
+				$array["status_stopped_active"] = " active";
 				$array["status_date"] = $this->_date->formatDate($array["stopped_date"],CO_DATE_FORMAT);
 				$array["enddate"] = $array["status_date"];
 			break;
@@ -753,16 +769,48 @@ class ComplaintsModel extends Model {
    /**
    * get details for the complaint folder
    */
-   function setComplaintDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$folder,$status,$status_date,$complaint,$complaint_more,$complaint_cat,$complaint_cat_more,$product,$product_desc,$charge,$number) {
+   function setComplaintDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$folder,$complaint,$complaint_more,$complaint_cat,$complaint_cat_more,$product,$product_desc,$charge,$number) {
 		global $session, $contactsmodel;
 		
 		$startdate = $this->_date->formatDate($_POST['startdate']);
-		$status_date = $this->_date->formatDate($status_date);
+		//$status_date = $this->_date->formatDate($status_date);
 		
 		// user lists
 		$ordered_by = $contactsmodel->sortUserIDsByName($ordered_by);
 		$management = $contactsmodel->sortUserIDsByName($management);
 		$team = $contactsmodel->sortUserIDsByName($team);
+		
+		/*switch($status) {
+			case "0":
+				$sql = "planned_date";
+			break;
+			case "1":
+				$sql = "inprogress_date";
+			break;
+			case "2":
+				$sql = "finished_date";
+			break;
+			case "3":
+				$sql = "stopped_date";
+			break;
+		}*/
+
+		$now = gmdate("Y-m-d H:i:s");
+		
+		$q = "UPDATE " . CO_TBL_COMPLAINTS . " set title = '$title', folder = '$folder', startdate='$startdate', ordered_by = '$ordered_by', ordered_by_ct = '$ordered_by_ct', management = '$management', management_ct = '$management_ct', team='$team', team_ct = '$team_ct', complaint = '$complaint', complaint_more = '$complaint_more', complaint_cat = '$complaint_cat', complaint_cat_more = '$complaint_cat_more', product = '$product', product_desc = '$product_desc', charge = '$charge', number = '$number', protocol = '$protocol', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		if ($result) {
+			return true;
+		}
+	}
+
+
+
+   function updateStatus($id,$date,$status) {
+		global $session;
+		
+		$date = $this->_date->formatDate($date);
 		
 		switch($status) {
 			case "0":
@@ -781,7 +829,7 @@ class ComplaintsModel extends Model {
 
 		$now = gmdate("Y-m-d H:i:s");
 		
-		$q = "UPDATE " . CO_TBL_COMPLAINTS . " set title = '$title', folder = '$folder', startdate='$startdate', ordered_by = '$ordered_by', ordered_by_ct = '$ordered_by_ct', management = '$management', management_ct = '$management_ct', team='$team', team_ct = '$team_ct', complaint = '$complaint', complaint_more = '$complaint_more', complaint_cat = '$complaint_cat', complaint_cat_more = '$complaint_cat_more', product = '$product', product_desc = '$product_desc', charge = '$charge', number = '$number', protocol = '$protocol', status = '$status', $sql = '$status_date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_COMPLAINTS . " set status = '$status', $sql = '$date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {

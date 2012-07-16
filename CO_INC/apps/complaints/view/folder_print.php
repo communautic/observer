@@ -21,7 +21,7 @@ if(is_array($complaints)) {
 		<td class="fourCols-one">&nbsp;</td>
         <td class="fourCols-two">&nbsp;</td>
         <td class="fourCols-three">&nbsp;</td>
-		<td class="grey smalltext fourCols-paddingTop"><?php echo($complaint->status_text . " " . $complaint->status_date);?><br />
+		<td class="grey smalltext fourCols-paddingTop"><?php echo($complaint->status_text . " " . $complaint->status_text_time . " " . $complaint->status_date);?><br />
 		<?php echo $lang["COMPLAINT_MANAGEMENT"];?> <?php echo($complaint->management);?></td>
 	</tr>
      <tr>

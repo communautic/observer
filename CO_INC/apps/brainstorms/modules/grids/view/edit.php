@@ -58,11 +58,11 @@
     <td class="tcell-right">
     <table border="0" cellspacing="0" cellpadding="0" class="timeline-legend">
     <tr>
-        <td class="barchart_color_planned"><span><?php echo $lang["BRAINSTORM_GRID_STATUS_PLANED"];?></span></td>
+        <td class="barchart_color_planned"><span><?php echo $lang["GLOBAL_STATUS_PLANNED"];?></span></td>
         <td width="15"></td>
-        <td class="barchart_color_inprogress"><span><?php echo $lang["BRAINSTORM_GRID_STATUS_INPROGRESS"];?></span></td>
+        <td class="barchart_color_inprogress"><span><?php echo $lang["GLOBAL_STATUS_INPROGRESS"];?></span></td>
          <td width="15"></td>
-        <td class="barchart_color_finished"><span><?php echo $lang["BRAINSTORM_GRID_STATUS_FINISHED"];?></span></td>
+        <td class="barchart_color_finished"><span><?php echo $lang["GLOBAL_STATUS_FINISHED"];?></span></td>
     </tr>
 </table>
     </td>

@@ -161,6 +161,9 @@ if (!empty($_GET['request'])) {
 		case 'deleteCheckpoint':
 			echo($complaints->deleteCheckpoint($_GET['id']));
 		break;
+		case 'updateStatus':
+			echo($complaints->updateStatus($_GET['id'],$_GET['date'],$_GET['status']));
+		break;
 	}
 }
 
@@ -170,7 +173,7 @@ if (!empty($_POST['request'])) {
 			echo($complaints->setFolderDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['complaintstatus']));
 		break;
 		case 'setComplaintDetails':
-			echo($complaints->setComplaintDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['startdate'], $_POST['ordered_by'], $system->checkMagicQuotes($_POST['ordered_by_ct']), $_POST['management'], $system->checkMagicQuotes($_POST['management_ct']), $_POST['team'], $system->checkMagicQuotes($_POST['team_ct']), $system->checkMagicQuotes($_POST['protocol']), $_POST['folder'], $_POST['status'], $_POST['status_date'], $_POST['complaint'], $_POST['complaintmore'], $_POST['complaintcat'], $_POST['complaintcatmore'], $_POST['product'], $_POST['product_desc'], $_POST['charge'], $_POST['number']));
+			echo($complaints->setComplaintDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['startdate'], $_POST['ordered_by'], $system->checkMagicQuotes($_POST['ordered_by_ct']), $_POST['management'], $system->checkMagicQuotes($_POST['management_ct']), $_POST['team'], $system->checkMagicQuotes($_POST['team_ct']), $system->checkMagicQuotes($_POST['protocol']), $_POST['folder'], $_POST['complaint'], $_POST['complaintmore'], $_POST['complaintcat'], $_POST['complaintcatmore'], $_POST['product'], $_POST['product_desc'], $_POST['charge'], $_POST['number']));
 		break;
 		case 'moveComplaint':
 			echo($complaints->moveComplaint($_POST['id'], $_POST['startdate'], $_POST['movedays']));

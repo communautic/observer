@@ -486,7 +486,7 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
  *
  * http://docs.jquery.com/UI/Tabs#theming
  */
-.ui-tabs { position: relative; padding: 0; zoom: 1; height: 200px;} /* position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") */
+.ui-tabs { position: relative; padding: 0; zoom: 1; height: 199px;} /* position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") */
 .ui-tabs .ui-tabs-nav { margin: 0; padding: 0; }
 /*.ui-tabs .ui-tabs-nav li { list-style: none; float: left; position: relative; top: 1px; margin: 0 1px 1px 0; border-bottom: 0 !important; padding: 0; white-space: nowrap; font-size: 10px;}*/
 .ui-tabs .ui-tabs-nav li { list-style: none; display: inline-block; position: relative; top: 6px; margin: 0; padding: 0; white-space: nowrap; font-size: 11px;}
@@ -605,7 +605,7 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
     /*border: 0 !important;*/
 	border-radius: 8px;
 	box-shadow: 4px 4px 6px #666;
-	border-top: 1px solid #7F7F7F;
+	border-top: 1px solid #b2b2b2;
 }
 
 .ui-datepicker {
@@ -732,7 +732,7 @@ button::-moz-focus-inner {
 	    background-color: transparent !important;
 	border-radius: 8px;
 	box-shadow: 4px 4px 6px #666;
-	border-top: 1px solid #7F7F7F;
+	border-top: 1px solid #b2b2b2;
 }
 
 .sendtoWindow .ui-corner-all {

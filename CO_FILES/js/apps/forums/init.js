@@ -26,7 +26,7 @@ function forumsApplication(name) {
 		}
 	
 		formData[formData.length] = processListApps('folder');
-		formData[formData.length] = processListApps('status');
+		//formData[formData.length] = processListApps('status');
 	}
 
 	
@@ -35,7 +35,7 @@ function forumsApplication(name) {
 			case "edit":
 				$("#forums2 span[rel='"+data.id+"'] .text").html($("#forums .title").val());
 				//$("#durationStart").html($("input[name='startdate']").val());
-				switch(data.status) {
+				/*switch(data.status) {
 					case "2":
 						$("#forums2 span[rel='"+data.id+"'] .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
 					break;
@@ -44,7 +44,7 @@ function forumsApplication(name) {
 					break;
 					default:
 						$("#forums2 span[rel='"+data.id+"'] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
-				}
+				}*/
 			break;
 			case "reload":
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/forums&request=getForumDetails&id="+data.id, success: function(text){
@@ -58,6 +58,25 @@ function forumsApplication(name) {
 
 
 	this.poformOptions = { async: false, beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
+
+
+	this.statusOnClose = function(dp) {
+		var id = $("#forums").data("second");
+		var status = $("#forums .statusTabs li span.active").attr('rel');
+		var date = $("#forums .statusTabs input").val();
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/forums&request=updateStatus&id=" + id + "&date=" + date + "&status=" + status, cache: false, success: function(data){
+				switch(data.status) {
+					case "2":
+						$("#forums2 span[rel='"+data.id+"'] .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
+					break;
+					case "3":
+						$("#forums2 span[rel='"+data.id+"'] .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
+					break;
+					default:
+						$("#forums2 span[rel='"+data.id+"'] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
+				}																																 			}
+		});
+	}
 
 
 	this.actionClose = function() {
