@@ -103,39 +103,11 @@ function projectSendResponse(data) {
 	} else {
 		$("#modalDialogForward").html("Failed");
 	}
-	
-	/*if(data == 1) {
-	$("#modalDialogForward").dialog('close');
-	} else {
-		$("#modalDialogForward").html("Failed");
-	}*/
 }
-
-//function initScrollbar ( elem ) {
-	//alert(elem)
-	//var pane = $(elem);
-	//pane.jScrollPane({ horizontalGutter: 10,verticalGutter: 10})
-	
-		/*.jScrollPane({
-			scrollbarMargin:	10	// spacing between text and scrollbar
-		,	scrollbarWidth:		8
-		,	arrowSize:			0
-		,	showArrows:			false
-		})*/
-		/*.parent().css({
-			width:	'100%'
-		,	height:	'100%'
-	})*/
-	//;
-	
-	//var api = pane.data('jsp');
-
-//};
 
 
 function getCurrentApp() {
 	var app = $("#appnav .active-app").attr("rel");
-	//console.log(app);
 	return app;
 }
 
@@ -338,7 +310,6 @@ function checkTime(field) {
 				((t1.substring(0,t1.indexOf(':'))-0) * 60 +
 				(t1.substring(t1.indexOf(':')+1,t1.length)-0));
 		var h = Math.floor(m / 60);
-		//document.write(h + ':' + (m - (h * 60)));
 		document.poform.length.value = h + ':' + (m - (h * 60));
 }
 
@@ -370,12 +341,6 @@ function resetNavScroll() {
 
 $(window).resize(function() {
 	resetNavScroll();
-	/*var top = $('#container-inner').height();
-	$('.app').each(function(index) { //set the initial z-index's
-		if($(this).css('top') != 0) {
-		$(this).css('top',top);
-		}
-	});*/
 });
 
 // Apps zindex settings
@@ -770,10 +735,7 @@ $(document).ready(function() {
 		var module = getCurrentModule();
 		module.togglePost(id,obj);
 	});
-	
-	
-	
-	
+
 	$(".sort").on('click', function(e) {
 		e.preventDefault();
 		var obj = $(this);
@@ -819,7 +781,6 @@ $(document).ready(function() {
 	});
 
 	// bind clicks to close diaolgs
-	//$(document).bind('click', function(e) {
 	$(document).mousedown(function(e) {
 		var clicked=$(e.target); // get the element clicked
 		if(clicked.is('.context') || clicked.parents().is('.context')) { 
@@ -875,13 +836,6 @@ $(document).ready(function() {
 		var module = getCurrentModule();
 		module.loadBarchartZoom(zoom);
 	});
-	
-	/*$(document).on('click', '.but-scroll-to',function(e) {
-		e.preventDefault();
-		var t = $(this).attr('t');
-		var l = $(this).attr('l');
-		$('.scroll-pane').scrollTo(l,t);
-	});*/
 
 	$("#modalDialog").dialog({  
 		autoOpen: false,
@@ -1131,8 +1085,6 @@ $(document).ready(function() {
 	
 	$(document).on('click', 'span.statusButton',function(e) {
 		e.preventDefault();
-		// open datepicker
-		
 		$('#'+getCurrentApp()+' span.statusButton').removeClass('active');
 		$(this).addClass('active');
 		var p = $(this).parent().parent();
@@ -1173,8 +1125,6 @@ $(document).ready(function() {
 			onClose: function(dateText, inst) {
 				var obj = getCurrentModule();
 				obj.statusOnClose();
-				//object.datepickerOnClose(this);
-				//setTimeout(function() { inst.input.click(); }, 5000);
 	   		}
  		});
 	});
@@ -1237,13 +1187,10 @@ $(document).ready(function() {
 				} else {
 					action  = 'update';
 				}
-				
 				obj.manageCheckpoint(action,dateText);
 	   		}
  		});
 	}); 
-
-
 
 });
 		
@@ -1277,7 +1224,6 @@ function confirmNavigation() {
 
 
 // Three Levels of Nav
-
 function loadModuleStartnavThree(objectname) {
 	var object = window[objectname];
 	var objectFirst = objectname.substr(0, 1);
