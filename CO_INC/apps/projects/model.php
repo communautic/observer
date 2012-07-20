@@ -292,6 +292,9 @@ class ProjectsModel extends Model {
 			case 'Management':
 				$order = "name ASC";
 			break;
+			case 'Status':
+				$order = "status ASC";
+			break;
 		}
 				
 		$q = "SELECT a.title,a.id,a.management,a.status,startdate as kickoff, (SELECT CONCAT(c.lastname,' ', SUBSTRING(c.firstname,1,1),'.') FROM co_users as c WHERE a.management = c.id)  as name, (SELECT MIN(startdate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as startdate ,(SELECT MAX(enddate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_PROJECTS . " as a where a.folder='$id' and a.bin='0'" . $access . " ORDER BY " . $order;
