@@ -5,7 +5,7 @@
 	<?php } ?>
     </div>
     <div class="dialog-text-3">
-	<p><?php echo($context->lastname);?> <?php echo($context->firstname);?></p>
+	<p><span rel="<?php echo($context->id);?>" class="loadContactExternal co-link"><?php echo($context->lastname);?> <?php echo($context->firstname);?></span></p>
     <div class="text11"><?php echo(nl2br($context->position));?><br />
     <?php echo(nl2br($context->company));?><br />
     <?php echo($context->phone1);?><br />

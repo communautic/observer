@@ -773,7 +773,6 @@ function contactsresetModuleHeights() {
 	var h = $("#contacts .ui-layout-west").height();
 	$("#contacts .ui-layout-west .radius-helper").height(h);
 	$(".contacts1-content").css("height", h-(contacts.modules_height*2+96));
-	//$("#contacts1 .module-inner").css("height", h-96);
 }
 
 
@@ -814,7 +813,6 @@ $(document).ready(function() {
 	/**
 	* show contacts list
 	*/
-	//$("#contacts1 h3").on('click', function(e, passed_id) {
 	$("#contacts1").on('click', 'h3', function(e, passed_id) {
 		e.preventDefault();
 		prevent_dblclick(e)
@@ -872,12 +870,9 @@ $(document).ready(function() {
 				});			 
 			})
 			.siblings('div:visible').slideUp()
-		
-			
 		}
 	});
 
-	//$('#contacts1').on('click', '.module-click', function(e) {
 	$('#contacts1').on('click', 'span.module-click',function(e) {
 		e.preventDefault();		
 		prevent_dblclick(e)
@@ -953,9 +948,6 @@ $(document).ready(function() {
 		$("#"+field).html(html);
 		var obj = getCurrentModule();
 		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
-		// Save last selected user to user prefs
-		//$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=setPreflast10Users&id="+id, success: function(data){
-		//});
 	}
 	
 	// autocomplete contacts search
@@ -1136,7 +1128,6 @@ $(document).ready(function() {
 	
 	$(document).on('click', '.addAccessFromGroup', function(e) {
 		e.preventDefault();
-	//$(".addAccessFromGroup").live('click',function(e) {
 		var field = $(this).attr("field");
 		var name = $(this).attr("name");
 		var cid = $(this).attr("cid");
@@ -1244,7 +1235,6 @@ $(document).ready(function() {
 
 	$(document).on('click', 'a.insertGroupfromDialog', function(e) {
 		e.preventDefault();
-	//$('a.insertGroupfromDialog').livequery('click',function() {
 		var field = $(this).attr("field");
 		var append = $(this).attr("append");
 		var gid = $(this).attr("gid");
@@ -1269,7 +1259,6 @@ $(document).ready(function() {
 
 	$(document).on('click', '.append-custom-text', function(e) {
 		e.preventDefault();
-	//$('.append-custom-text').livequery('click',function() {
 		var field = $(this).attr("field")+"_ct";
 		var html = '<a field="' + field + '" class="ct-content">' + CUSTOM_NOTE + ' ' + $("#custom-text").val() + '</a>';
 		$("#"+field).html(html);
@@ -1294,7 +1283,6 @@ $(document).ready(function() {
 	
 	$(document).on('click', 'a.listmember', function(e) {
 		e.preventDefault();
-	//$('a.listmember').live('click',function() {
 		var ele = $(this);
 		var uid = $(this).attr('uid');
 		var field = $(this).attr('field');
@@ -1309,7 +1297,6 @@ $(document).ready(function() {
 	
 	$(document).on('click', 'a.ct-content', function(e) {
 		e.preventDefault();
-	//$('a.ct-content').live('click',function() {
 		var ele = $(this);
 		var field = ele.attr('field');
 		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getCustomTextContext&field="+field, success: function(html){
@@ -1322,7 +1309,6 @@ $(document).ready(function() {
 
 	$(document).on('click', 'a.delete-ct', function(e) {
 		e.preventDefault();
-	//$('a.delete-ct').live('click',function() {
 		$(this).parent().parent().prev().html("");
 		$(this).parent().parent().remove();
 		var obj = getCurrentModule();
@@ -1333,7 +1319,6 @@ $(document).ready(function() {
 	// INTERLINKS FROM Content
 	$(document).on('click', 'span.loadContactFromGroups', function(e) {
 		e.preventDefault();
-	//$("span.loadContactFromGroups").live('click', function(e) {
 		var id = $(this).attr("rel");
 		$("#contacts1 h3:eq(0)").trigger('click', [id]);
 	});
@@ -1341,14 +1326,12 @@ $(document).ready(function() {
 	
 	$(document).on('click', '.loadGroup', function(e) {
 		e.preventDefault();
-	//$(".loadGroup").live('click', function(e) {
 		var id = $(this).attr("rel");
 		$("#contacts1-outer > h3").trigger('click', [id]);
 	});
 	
 	$(document).on('click', '#actionAccess', function(e) {
 		e.preventDefault();
-	//$('#actionAccess').live("click", function(){
 		var id = $("#contacts").data("first");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=generateAccess&id=" + id, cache: false, success: function(data){
 			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getContactDetails&id="+id, success: function(html){
@@ -1363,7 +1346,6 @@ $(document).ready(function() {
 
 	$(document).on('click', '#actionSysadmin', function(e) {
 		e.preventDefault();
-	//$('#actionSysadmin').live("click", function(){
 		var id = $("#contacts").data("first");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=setSysadmin&id=" + id, cache: false, success: function(data){	
 			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getContactDetails&id="+id, success: function(html){
@@ -1379,7 +1361,6 @@ $(document).ready(function() {
 
 	$(document).on('click', '#actionAccessRemove', function(e) {
 		e.preventDefault();
-	//$('#actionAccessRemove').live("click", function(){
 		var id = $("#contacts").data("first");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=removeAccess&id=" + id, cache: false, success: function(data){
 			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getContactDetails&id="+id, success: function(html){
@@ -1395,7 +1376,6 @@ $(document).ready(function() {
 
 	$(document).on('click', '#actionSysadminRemove', function(e) {
 		e.preventDefault();
-	//$('#actionSysadminRemove').live("click", function(){
 		var id = $("#contacts").data("first");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=removeSysadmin&id=" + id, cache: false, success: function(data){
 			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getContactDetails&id="+id, success: function(html){
@@ -1411,5 +1391,34 @@ $(document).ready(function() {
 	$(".user-image-uploader:visible").livequery(function() {
 		contacts.createUploader($(this));
 	})
+	
+	
+	$(document).on('click', 'span.loadContactExternal', function(e) {
+		e.preventDefault();
+		prevent_dblclick(e)
+		var id = $(this).attr('rel');
+		if($('#contacts').data("current") == 'groups') {
+			$('#contacts .contacts1-content').toggle();
+			$("#contacts1 h3").toggleClass("module-bg-active");
+			$("#contacts1 .module-actions").toggle();
+			$("#contacts-current").val('contacts');
+			$('#contacts').data({ "current" : 'contacts'});
+			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/contacts&request=getContactList", success: function(data){					
+					$("#contacts1 ul:eq(0)").html(data.html);
+					$("#contactsActions .actionNew").attr("title",data.title);
+					var idx = $("#contacts1 ul:eq(0) .module-click").index($("#contacts1 ul:eq(0) .module-click[rel='"+id+"']"));
+					$("#contacts1 ul:eq(0) .module-click:eq("+idx+")").addClass('active-link');
+					contacts.getDetails(0,idx);
+					$('span.app_contacts').trigger('click');
+					}
+				});
+		} else {
+			var idx = $("#contacts1 ul:eq(0) .module-click").index($("#contacts1 ul:eq(0) .module-click[rel='"+id+"']"));
+			$("#contacts1 ul:eq(0) .module-click").removeClass('active-link');
+			$("#contacts1 ul:eq(0) .module-click:eq("+idx+")").addClass('active-link');
+			contacts.getDetails(0,idx);
+			$('span.app_contacts').trigger('click');
+		}
+	});
 
 });
