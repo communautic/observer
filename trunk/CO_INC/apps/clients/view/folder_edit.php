@@ -26,16 +26,10 @@
 if(is_array($clients)) {
 	foreach ($clients as $client) { 
 	?>
-    <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive loadClient" rel="<?php echo($client->id);?>">
-	<tr>
-		<td class="tcell-left text11">&nbsp;</td>
-		<td class="tcell-right"><span class="bold co-link"><?php echo($client->title);?></span></td>
-    	</tr>
-    <tr>
-		<td class="tcell-left text11">&nbsp;</td>
-		<td class="tcell-right"><span class="text11"><span class="text11"><span style="display: inline; margin-right: 20px;"><?php echo $lang["CLIENT_MANAGEMENT"];?></span><?php echo($client->management);?></span></td>
-    </tr>
-</table>
+    <div class="loadClient listOuter"  rel="<?php echo($client->id);?>">
+    <div class="bold co-link listTitle"><?php echo($client->title);?></div>
+    <div class="text11 listText"><div><?php echo $lang["CLIENT_MANAGEMENT"];?> <?php echo($client->management);?> &nbsp; </div></div>
+    </div>
     <?php 
 	}
 }

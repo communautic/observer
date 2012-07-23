@@ -406,15 +406,19 @@ function projectsApplication(name) {
 							langbuttons[ALERT_NO] = false;
 							$.prompt(txt,{ 
 								buttons:langbuttons,
-								callback: function(v,m,f){		
+								callback: function(v,m,f){
 									if(v){
 										var date1 = Date.parse(s);
 										var date2 = Date.parse(sm);
 										var span = new TimeSpan(date1 - date2);
 										var days = span.getDays();
 										$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=moveDependendTasks&id="+reg+"&days="+days, success: function(data){
-											var obj = getCurrentModule();
-											obj.actionRefresh();
+											
+											$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=checkDependency&id="+reg+"&date="+dp.value, success: function(data){
+												var obj = getCurrentModule();
+												obj.actionRefresh();	
+												}
+											});
 											}
 										});
 									} else {
@@ -457,13 +461,12 @@ function projectsApplication(name) {
 								var date2 = Date.parse(sm);
 								var span = new TimeSpan(date1 - date2);
 								var days = span.getDays();
-								$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=moveTaskEnd&id="+reg+"&days="+days, success: function(data){ 																																									   											var obj = getCurrentModule();
+								$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=moveTaskEnd&id="+reg+"&days="+days, success: function(data){ 																																									
 									$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=checkDependency&id="+reg+"&date="+dp.value, success: function(data){
-
-									var obj = getCurrentModule();
-									obj.actionRefresh();	
-									}
-								});
+										var obj = getCurrentModule();
+										obj.actionRefresh();	
+										}
+									});
 									}
 								});
 							} else {
@@ -472,7 +475,6 @@ function projectsApplication(name) {
 								if(Date.parse(e) < Date.parse(dp.value)) {
 									$("#projects input[name='task_enddate["+reg+"]']").val(dp.value)
 									$("#projects input[name='task_movedate["+reg+"]']").val(dp.value)
-									
 									$('#projects .coform').ajaxSubmit(obj.poformOptions);
 								}
 								// check for depts that fall before start and delete dep
@@ -970,6 +972,19 @@ $(document).ready(function() {
 		
 		var id = $(this).attr("rel");
 		$("#projects3 h3[rel='phases']").trigger('click', [id]);
+	});
+	
+	// load psp
+	$(document).on('click', '.loadPSP', function(e) {
+		e.stopPropagation();
+		var obj = getCurrentModule();
+		if(confirmNavigation()) {
+			formChanged = false;
+			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+		}
+		var fid = $("#projects").data("first");
+		var id = $(this).attr("rel");
+		internalLoadLevelThree('timelines',fid,id,3,'projects');
 	});
 
 

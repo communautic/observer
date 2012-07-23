@@ -91,23 +91,16 @@
 if(is_array($phases)) {
 	$i = 1;
 	foreach ($phases as $phase) { ?>
-    <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive loadProjectsPhase" rel="<?php echo($phase->id);?>">
-	<tr>
-		<td class="tcell-left text11">&nbsp;</td>
-		<td class="tcell-right" colspan="3"><span class="bold co-link"><?php echo($num[$phase->id] . " " . $phase->title);?></span></td>
-	</tr>
-    <tr>
-		<td class="tcell-left text11">&nbsp;</td>
-		<td class="tcell-right" width="220"><span class="text11 content-date"><?php echo $lang["GLOBAL_DURATION"];?></span><span class="text11"><?php echo($phase->startdate . " - " . $phase->enddate);?></span></td>
-		<td class="tcell-right" width="110"><span class="text11"><span style="display: inline; margin-right: 20px;"></span><?php echo($phase->status_text);?></span></td>
-	    <td class="tcell-right"><?php if($project->access != "guest") { ?><span class="text11"><span style="display: inline; margin-right: 20px;"><?php echo $lang["PROJECT_FOLDER_CHART_REALISATION"];?></span><?php echo($phase->realisation);?>%</span><?php } ?></td>
-    </tr>
-</table>
+    <div class="loadProjectsPhase listOuter"  rel="<?php echo($phase->id);?>">
+    <div class="bold co-link listTitle"><?php echo($num[$phase->id] . " " . $phase->title);?></div>
+     <div class="text11 listText"><div><?php echo($phase->startdate . " - " . $phase->enddate);?> &nbsp; | &nbsp; </div><div><?php echo($phase->status_text);?> &nbsp; | &nbsp; </div><?php if($project->access != "guest") { ?><div><?php echo $lang["PROJECT_FOLDER_CHART_REALISATION"];?> <?php echo($phase->realisation);?>% &nbsp; </div><?php } ?></div>
+    </div>
     <?php 
 	$i++;
 	}
 }
 ?>
+
 <?php if($project->access != "guest") { ?>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
