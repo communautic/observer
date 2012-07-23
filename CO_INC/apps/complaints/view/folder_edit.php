@@ -26,18 +26,10 @@
 if(is_array($complaints)) {
 	foreach ($complaints as $complaint) { 
 	?>
-    <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive loadComplaint" rel="<?php echo($complaint->id);?>">
-	<tr>
-		<td class="tcell-left text11">&nbsp;</td>
-		<td colspan="2" class="tcell-right"><span class="bold co-link"><?php echo($complaint->title);?></span></td>
-    	</tr>
-    <tr>
-		<td class="tcell-left text11">&nbsp;</td>
-    	<td class="tcell-right" width="180"><span class="text11"><?php echo($complaint->status_text . " " . $complaint->status_text_time . " " . $complaint->status_date);?></span></td>
-    	<td class="tcell-right"><span class="text11"><?php echo $lang["COMPLAINT_MANAGEMENT"];?> <?php echo($complaint->management);?></span></td>
-    
-    </tr>
-</table>
+    <div class="loadComplaint listOuter"  rel="<?php echo($complaint->id);?>">
+    <div class="bold co-link listTitle"><?php echo($complaint->title);?></div>
+    <div class="text11 listText"><div><?php echo($complaint->status_text . " " . $complaint->status_text_time . " " . $complaint->status_date);?> &nbsp; | &nbsp; </div><div><?php echo $lang["COMPLAINT_MANAGEMENT"];?> <?php echo($complaint->management);?> &nbsp; </div></div>
+    </div>
     <?php 
 	}
 }

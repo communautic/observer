@@ -27,17 +27,10 @@
 if(is_array($forums)) {
 	foreach ($forums as $forum) { 
 	?>
-    <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive loadForum" rel="<?php echo($forum->id);?>">
-	<tr>
-		<td class="tcell-left text11">&nbsp;</td>
-		<td colspan="4" class="tcell-right"><span class="bold co-link"><?php echo($forum->title);?></span></td>
-    	</tr>
-    <tr>
-		<td class="tcell-left text11">&nbsp;</td>
-		<td class="tcell-right" width="180"><span class="text11"><?php echo($forum->status_text . " " . $forum->status_text_time . " " . $forum->status_date);?></span></td>
-    	<td class="tcell-right"><span class="text11"><?php echo $lang["FORUM_CREATED_USER"];?> <?php echo($forum->created_user);?></span></td>
-    </tr>
-</table>
+    <div class="loadForum listOuter"  rel="<?php echo($forum->id);?>">
+    <div class="bold co-link listTitle"><?php echo($forum->title);?></div>
+    <div class="text11 listText"><div><?php echo($forum->status_text . " " . $forum->status_text_time . " " . $forum->status_date);?> &nbsp; | &nbsp; </div><div><?php echo $lang["FORUM_CREATED_USER"];?> <?php echo($forum->created_user);?> &nbsp; </div></div>
+    </div>
     <?php 
 	}
 }

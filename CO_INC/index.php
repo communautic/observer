@@ -61,7 +61,7 @@ if($session->isSysadmin()) {
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<!--<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0" />-->
+<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0" />
 <meta http-equiv="X-UA-Compatible" content="IE=9" />
 <title><?php echo $lang["APPLICATION_NAME"];?></title>
 <link rel="icon" type="image/x-icon" href="<?php echo CO_FILES;?>/img/favicon.ico" sizes="64x64" />
@@ -81,14 +81,7 @@ foreach($controller->applications as $app => $display) {
 } 
 ?>
 <!--[if gte IE 9]>
-  <style type="text/css">
-    .ui-layout-west .gradient, #app-top, #appnav, #logout, #logout span:hover, #menu-opac, .postit-design, div.contentTabs li span, div.contentSubTabs li span, .contact-dialog-header a, .ui-datepicker .ui-datepicker-header, .ui-datepicker .ui-datepicker-buttonpane button, .ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-delete, .ui-datepicker .ui-datepicker-buttonpane button:hover, .ui-datepicker .ui-datepicker-buttonpane button.disabled, .sendtoWindow .ui-widget-header, .sendtoWindow span.coButton, #tabs > ul > li, #tabs ul li:hover, #tabs > ul > li.ui-tabs-selected, .ui-layout-west h3, #menu .app_bin:hover, #menu .app_bin.active-app, #menu .app_brainstorms:hover, #menu .app_brainstorms.active-app, #brainstorms div.note-design, #brainstorms-console .widget-head, #menu .app_clients:hover, #menu .app_clients.active-app, #menu .app_complaints:hover, #appnav li:last-child span, #appnav li:last-child span:hover {
-       filter: none;
-    }
-    #menu .app_bin:hover, #menu .app_bin.active-app, #menu .app_brainstorms:hover, #menu .app_brainstorms.active-app, #brainstorms div.note-design, #brainstorms-console .widget-head, #menu .app_clients:hover, #menu .app_clients.active-app, #menu .app_complaints:hover, #menu .app_complaints.active-app, #complaints div.note-design, #menu .app_contacts:hover, #menu .app_contacts.active-app, #desktop .topbar, #menu .app_desktop:hover, #menu .app_desktop.active-app, #desktopcolumns .widget .widget-head, #projects div.contentTabs li span:hover, #projects div.contentTabs li span.active {
-       filter: none;
-    }
-  </style>
+<link href="<?php echo CO_FILES;?>/css/ie.css" rel="stylesheet" type="text/css" media="screen,projection" />
 <![endif]-->
 <script type="text/javascript">
 var num_apps = <?php echo($num_apps);?>;
