@@ -17,6 +17,8 @@ $lang["BRAINSTORM_MEETING_ATTENDEES"] = 'Attendees';
 $lang["BRAINSTORM_MEETING_MANAGEMENT"] = 'Minuted by';
 $lang["BRAINSTORM_MEETING_GOALS"] = 'Agenda';
 
+$lang["BRAINSTORM_MEETING_POSPONED"] = 'posponed';
+
 $lang["BRAINSTORM_MEETING_HELP"] = 'manual_prozesse_besprechungen.pdf';
 
 $lang["BRAINSTORM_PRINT_MEETING"] = 'meeting.png';

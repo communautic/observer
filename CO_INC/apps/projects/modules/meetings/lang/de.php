@@ -17,6 +17,8 @@ $lang["PROJECT_MEETING_ATTENDEES"] = 'Teilnehmer';
 $lang["PROJECT_MEETING_MANAGEMENT"] = 'Protokollführer';
 $lang["PROJECT_MEETING_GOALS"] = 'Themen';
 
+$lang["PROJECT_MEETING_POSPONED"] = 'verschoben';
+
 $lang["PROJECT_MEETING_HELP"] = 'manual_projekte_besprechungen.pdf';
 
 $lang["PROJECT_PRINT_MEETING"] = 'besprechung.png';

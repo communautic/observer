@@ -17,6 +17,8 @@ $lang["COMPLAINT_MEETING_ATTENDEES"] = 'Teilnehmer';
 $lang["COMPLAINT_MEETING_MANAGEMENT"] = 'Protokollführer';
 $lang["COMPLAINT_MEETING_GOALS"] = 'Themen';
 
+$lang["COMPLAINT_MEETING_POSPONED"] = 'verschoben';
+
 $lang["COMPLAINT_MEETING_HELP"] = 'manual_reklamationen_besprechungen.pdf';
 
 $lang["COMPLAINT_PRINT_MEETING"] = 'besprechung.png';
