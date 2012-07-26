@@ -198,6 +198,12 @@ font-weight: normal;
 .dialog-text-3 a { display: block; line-height: 26px; background-color: #e5e5e5; border-bottom: 1px solid #fff; padding: 0 10px;}
 .dialog-text-3 a:hover { background-color: #bfbfbf; color: #000 !important; }
 
+.dialog-text-3 .regular { overflow: hidden; padding: 0; }
+
+.dialog-text-3 .regular a { display: block; line-height: 22px; background-color: none; border-bottom: 0; padding: 0;}
+.dialog-text-3 .regular a:hover { background-color: #E5E5E5; color: #82AA0B !important; }
+
+
 .contact-dialog-header a {
 	display: inline-block;
 	padding: 2px 0 0 0;
