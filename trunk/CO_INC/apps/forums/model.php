@@ -375,7 +375,7 @@ class ForumsModel extends Model {
 		foreach ($arr as $key => &$value) {
 			$data .= '<a class="loadModuleAccess" rel="' . $target. ','.$value["folder"].','.$value["id"].',1,forums">' . $value["title"] . '</a>';
 			if($i < $arr_total) {
-				$data .= ', ';
+				$data .= '<br />';
 			}
 			$data .= '';	
 			$i++;
