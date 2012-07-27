@@ -176,7 +176,7 @@ if(is_array($contact->applications)) {
 foreach($contact->applications as $key => $val) { ?>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-inactive <?php echo $val['app'];?>-colorTable">
 	<tr>
-	  <td class="tcell-left-inactive text11 showAccessPermissions" style="padding-top: 2px; padding-bottom: 1px;"><?php echo $val['name'];?></td>
+	  <td class="tcell-left-inactive text11 showAccessPermissions" style="padding-top: 2px; padding-bottom: 1px; color: #000"><?php echo $val['name'];?></td>
       <td class="text11" style="width: 30px; color: #666666;"><?php echo $val['num'];?></td>
 	  <td class="tcell-right-inactive text11"><div class="AccessPermissions" style="display: none;"><?php echo(str_replace(', ','<br/>',$val['list']));?></div></td>
 	</tr>
