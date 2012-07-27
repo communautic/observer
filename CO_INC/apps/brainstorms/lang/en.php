@@ -1,6 +1,7 @@
 <?php
 // App name
 $brainstorms_name = "Brainstorms";
+$lang["brainstorms_name"] = 'Brainstorms';
 
 // Left
 $lang["BRAINSTORM_FOLDER"] = 'Folder';

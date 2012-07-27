@@ -289,7 +289,7 @@ class ContactsModel extends Model {
    }
    
    
-	function getContactDetails($id) {
+	function getContactDetails($id,$applications="") {
 		global $session, $lang;
 		$q = "SELECT * FROM " . CO_TBL_USERS . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
@@ -327,12 +327,46 @@ class ContactsModel extends Model {
 		$array["guest"] = "";
 		$array["option_sysadmin"] = 0;
 		$array["sysadmin"] = $lang['CONTACTS_SYSADMIN_NORIGHTS'];
+		$array["applications"] = "";
 		
 		if(!empty($array["username"])) {
 			$array["access"] = sprintf($lang['CONTACTS_ACCESS_ACTIVE'], $array["access_date"], $array["access_user"]);
-			$projectsmodel = new ProjectsModel();
+			/*$class = "ProjectsModel";
+			$projectsmodel = new $class();
 			$array["admin"] = $projectsmodel->getProjectTitleFromIDs($projectsmodel->getEditPerms($id));
-			$array["guest"] = $projectsmodel->getProjectTitleFromIDs($projectsmodel->getViewPerms($id));
+			$array["guest"] = $projectsmodel->getProjectTitleFromIDs($projectsmodel->getViewPerms($id));*/
+			$i = 0;
+			if($applications != "" && $session->isSysadmin()) {
+				foreach($applications as $app => $display) {
+					//if($app == 'projects' || ) {
+					$cap = ucfirst($app);
+					$cont = new $cap($app);
+					if($cont->contactsDisplay) {
+						$cap_singular = substr($cap,0,-1);
+						$target = 'access';
+						$func = 'get'.$cap_singular.'TitleLinkFromIDs';
+						$ids = $cont->model->getEditPerms($id);
+						if(!empty($ids)) {
+						$array["applications"][$i]["app"] = $app;
+						$array["applications"][$i]["name"] = $lang[$app . "_name"] . " (" . $lang["GLOBAL_ADMIN_SHORT"] . ".)";
+						$array["applications"][$i]["list"] = $cont->model->$func($ids,$target);
+						$array["applications"][$i]["num"] = sizeof($ids);
+						$i++;
+						}
+						$ids = $cont->model->getViewPerms($id);
+						if(!empty($ids)) {
+						$array["applications"][$i]["app"] = $app;
+						$array["applications"][$i]["name"] = $lang[$app . "_name"] . " (" . $lang["GLOBAL_GUEST_SHORT"] . ".)";
+						$array["applications"][$i]["list"] = $cont->model->$func($ids,$target);
+						$array["applications"][$i]["num"] = sizeof($ids);
+						$i++;
+						}
+					//}
+					}
+				}
+			}
+			
+			
 			$array["access_status"] = 0;
 			$array["option_sysadmin"] = 1;
 		} else {
@@ -419,11 +453,11 @@ class ContactsModel extends Model {
    }*/
 
 
-	function setContactDetails($id, $lastname, $firstname, $title, $company, $position, $email, $phone1, $phone2, $fax, $address_line1, $address_line2, $address_town, $address_postcode, $address_country, $lang,$timezone) {
+	function setContactDetails($id, $lastname, $firstname, $title, $title2, $company, $position, $email, $email_alt, $phone1, $phone2, $fax, $address_line1, $address_line2, $address_town, $address_postcode, $address_country, $lang,$timezone) {
 		global $session;
 		$now = gmdate("Y-m-d H:i:s");
 		
-		$q = "UPDATE " . CO_TBL_USERS . " set lastname = '$lastname', firstname = '$firstname', title = '$title', company = '$company', position = '$position', email = '$email', phone1 = '$phone1', phone2 = '$phone2', fax = '$fax', address_line1 = '$address_line1', address_line2 = '$address_line2', address_town = '$address_town', address_postcode = '$address_postcode', address_country = '$address_country', lang = '$lang', timezone = '$timezone', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_USERS . " set lastname = '$lastname', firstname = '$firstname', title = '$title', title2 = '$title2', company = '$company', position = '$position', email = '$email', email_alt = '$email_alt', phone1 = '$phone1', phone2 = '$phone2', fax = '$fax', address_line1 = '$address_line1', address_line2 = '$address_line2', address_town = '$address_town', address_postcode = '$address_postcode', address_country = '$address_country', lang = '$lang', timezone = '$timezone', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
@@ -501,7 +535,7 @@ class ContactsModel extends Model {
 		
 		$now = gmdate("Y-m-d H:i:s");
 		
-		$q = "INSERT INTO " . CO_TBL_USERS . " (lastname, firstname, title, company, position, email, phone1, phone2, fax, address_line1, address_line2, address_town, address_postcode, address_country, lang, timezone, edited_user, edited_date, created_user, created_date) SELECT CONCAT('".$lang["GLOBAL_DUPLICAT"]." ',lastname),firstname, title, company, position, email, phone1, phone2, fax, address_line1, address_line2, address_town, address_postcode, address_country, lang, timezone, $session->uid as edited_user, '$now' as edited_date, $session->uid as created_user, '$now' as created_date FROM " . CO_TBL_USERS . " where id='$id'";
+		$q = "INSERT INTO " . CO_TBL_USERS . " (lastname, firstname, title, title2, company, position, email, email_alt, phone1, phone2, fax, address_line1, address_line2, address_town, address_postcode, address_country, lang, timezone, edited_user, edited_date, created_user, created_date) SELECT CONCAT('".$lang["GLOBAL_DUPLICAT"]." ',lastname),firstname, title, title2, company, position, email, email_alt, phone1, phone2, fax, address_line1, address_line2, address_town, address_postcode, address_country, lang, timezone, $session->uid as edited_user, '$now' as edited_date, $session->uid as created_user, '$now' as created_date FROM " . CO_TBL_USERS . " where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
 		

@@ -1,6 +1,7 @@
 <?php
 // App name
 $projects_name = "Projekte";
+$lang["projects_name"] = "Projekte";
 
 // Left
 $lang["PROJECT_FOLDER"] = 'Ordner';

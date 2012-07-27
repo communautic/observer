@@ -87,7 +87,7 @@ background-color: #fff6b5; }
 .loadBrainstormsPhase { cursor: pointer }
 .loadBrainstormsPhase2 { cursor: pointer }
 
-#brainstorms .tbl-protocol td, #brainstorms .elastic, #brainstorms .elastic-two  {
+#brainstorms .tbl-protocol td, #brainstorms .elastic, #brainstorms .elastic-two, .brainstorms-colorTable  {
   background-color: #FFF6B5;
 }
 

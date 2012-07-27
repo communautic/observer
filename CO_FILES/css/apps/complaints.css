@@ -88,7 +88,7 @@ background-color: #dcd2ff; }
 .loadComplaintsPhase { cursor: pointer }
 .loadComplaintsPhase2 { cursor: pointer }
 
-#complaints .tbl-protocol td, #complaints .elastic, #complaints .elastic-two {
+#complaints .tbl-protocol td, #complaints .elastic, #complaints .elastic-two, .complaints-colorTable {
     background-color: #dcd2ff;
 }
 

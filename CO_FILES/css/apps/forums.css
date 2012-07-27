@@ -87,7 +87,7 @@ background-color: #C1D5F0; }
 
 .loadForum { cursor: pointer }
 
-#forums .tbl-protocol td, #forums .elastic, #forums .elastic-two {
+#forums .tbl-protocol td, #forums .elastic, #forums .elastic-two, .forums-colorTable {
  background-color:#C1D5F0;
 }
 

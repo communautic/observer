@@ -687,13 +687,15 @@ class ProjectsPhasesModel extends ProjectsModel {
 		$result = mysql_query($q, $this->_db->connection);
 		$depends_id = mysql_result($result,0);
 		
-		$q = "SELECT startdate FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where id='$depends_id'";
-		$result = mysql_query($q, $this->_db->connection);
-		$depends_start = mysql_result($result,0);
-		
-		if($date < $depends_start) {
-			$qt = "UPDATE " . CO_TBL_PROJECTS_PHASES_TASKS . " set dependent = '0' where id='$id'";
-			$res = mysql_query($qt, $this->_db->connection);
+		if($depends_id > 0) {
+			$q = "SELECT startdate FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where id='$depends_id'";
+			$result = mysql_query($q, $this->_db->connection);
+			$depends_start = mysql_result($result,0);
+			
+			if($date < $depends_start) {
+				$qt = "UPDATE " . CO_TBL_PROJECTS_PHASES_TASKS . " set dependent = '0' where id='$id'";
+				$res = mysql_query($qt, $this->_db->connection);
+			}
 		}
 		
 		return true;

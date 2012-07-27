@@ -18,6 +18,12 @@
 </table>
 <table width="100%" class="standard">
   <tr>
+    <td class="tcell-left"><?php echo $lang['CONTACTS_CONTACT_TITLE2'];?></td>
+    <td><?php echo($contact->title2);?></td>
+  </tr>
+</table>
+<table width="100%" class="standard">
+  <tr>
     <td class="tcell-left"><?php echo $lang['CONTACTS_COMPANY'];?></td>
     <td><?php echo($contact->company);?></td>
   </tr>
@@ -32,6 +38,12 @@
   <tr>
     <td class="tcell-left"><?php echo $lang['CONTACTS_EMAIL'];?></td>
     <td><?php echo($contact->email);?></td>
+  </tr>
+</table>
+<table width="100%" class="standard">
+  <tr>
+    <td class="tcell-left"><?php echo $lang['CONTACTS_EMAIL_ALT'];?></td>
+    <td><?php echo($contact->email_alt);?></td>
   </tr>
 </table>
 &nbsp;
@@ -59,12 +71,14 @@
         <td><?php echo($contact->address_line1);?></td>
      </tr>
 </table>
+<!--
 <table width="100%" class="standard-grey">
   <tr>
     <td class="tcell-left"><?php echo $lang['CONTACTS_ADDRESS_LINE2'];?></td>
     <td><?php echo($contact->address_line2);?></td>
   </tr>
 </table>
+-->
 <table width="100%" class="standard-grey">
   <tr>
     <td class="tcell-left"><?php echo $lang['CONTACTS_TOWN'];?></td>

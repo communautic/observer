@@ -1,6 +1,7 @@
 <?php
 // App name
 $forums_name = "Foren";
+$lang["forums_name"] = 'Foren';
 
 // Left
 $lang["FORUM_FOLDER"] = 'Ordner';

@@ -40,8 +40,10 @@ $lang["INTERNAL_CHANGED"] 	= 	'released:';
 
 $lang["GLOBAL_USER"] = 'User:';
 $lang["GLOBAL_ADMIN"] = 'Administrator';
+$lang["GLOBAL_ADMIN_SHORT"] = 'Admin';
 $lang["GLOBAL_ADMINS"] = 'Administrators';
 $lang["GLOBAL_GUEST"] = 'Guest';
+$lang["GLOBAL_GUEST_SHORT"] = 'Guest';
 $lang["GLOBAL_GUESTS"] = 'Guests';
 $lang["GLOBAL_OWNER"] = 'Owner';
 

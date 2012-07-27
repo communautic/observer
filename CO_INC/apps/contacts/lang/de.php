@@ -22,22 +22,27 @@ $lang['CONTACTS_GROUP_MEMBERS_LIST'] = 'Gruppenliste';
 $lang['CONTACTS_LASTNAME'] = 'Nachname';
 $lang['CONTACTS_FIRSTNAME'] = 'Vorname';
 $lang['CONTACTS_CONTACT_TITLE'] = 'Anrede';
+$lang['CONTACTS_CONTACT_TITLE2'] = 'Titel';
 $lang['CONTACTS_COMPANY'] = 'Firma';
 $lang['CONTACTS_POSITION'] = 'Position';
-$lang['CONTACTS_EMAIL'] = 'E-mail';
+$lang['CONTACTS_EMAIL'] = 'E-mail (standard)';
+$lang['CONTACTS_EMAIL_ALT'] = 'E-mail (alternativ)';
 $lang['CONTACTS_TEL'] = 'Telefon 1';
 $lang['CONTACTS_TEL2'] = 'Telefon 2';
 $lang['CONTACTS_FAX'] = 'Fax';
 
+$lang["CONTACT_TAB_ADDRESS"] = "Adressen";
+$lang["CONTACT_TAB_ACCESS"] = "Berechtigungen";
+
 $lang['CONTACTS_ADDRESS'] = 'Anschrift';
-$lang['CONTACTS_ADDRESS_LINE1'] = 'Straße 1';
+$lang['CONTACTS_ADDRESS_LINE1'] = 'Straße';
 $lang['CONTACTS_ADDRESS_LINE2'] = 'Straße 2';
 $lang['CONTACTS_TOWN'] = 'Ort';
 $lang['CONTACTS_POSTCODE'] = 'Plz';
 $lang['CONTACTS_COUNTRY'] = 'Land';
 
-$lang['CONTACTS_LANGUAGE'] = 'Sprachplattform';
-$lang['CONTACTS_TIMEZONE'] = 'Zeitzone';
+$lang['CONTACTS_LANGUAGE'] = 'Systemsprache';
+$lang['CONTACTS_TIMEZONE'] = 'Systemzeitzone';
 
 $lang['CONTACTS_GROUPMEMBERSHIP'] = 'Gruppenmitglied';
 
