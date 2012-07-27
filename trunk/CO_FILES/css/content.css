@@ -335,3 +335,5 @@ div.listItem .text { float: right;
 div.listItem .arrow { float: right;
     margin-top: -1px;
     padding-right: 4px; }
+	
+	.showAccessPermissions:hover { cursor: pointer;}

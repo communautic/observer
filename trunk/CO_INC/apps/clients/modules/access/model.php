@@ -11,7 +11,7 @@ class ClientsAccessModel extends ClientsModel {
 	function getList($id,$sort) {
 		global $session, $lang;
 
-			$array["id"] = 0;
+			$array["id"] = 1;
 			//$array["controlling_date"] = $this->_date->formatDate("now",CO_DATE_FORMAT);
 			$array["title"] = $lang["CLIENT_ACCESSRIGHTS"];
 			$array["itemstatus"] = "";

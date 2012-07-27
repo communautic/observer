@@ -350,6 +350,40 @@ class ForumsModel extends Model {
    }
 
 
+	function getForumTitleLinkFromIDs($array,$target){
+		$total = sizeof($array);
+		$data = '';
+		if($total == 0) { 
+			return $data; 
+		}
+		$arr = array();
+		$i = 0;
+		foreach ($array as &$value) {
+			$q = "SELECT id,folder,title FROM " . CO_TBL_FORUMS . " where id = '$value' and bin='0'";
+			$result = mysql_query($q, $this->_db->connection);
+			if(mysql_num_rows($result) > 0) {
+				while($row = mysql_fetch_assoc($result)) {
+					$arr[$i]["id"] = $row["id"];
+					$arr[$i]["title"] = $row["title"];
+					$arr[$i]["folder"] = $row["folder"];
+					$i++;
+				}
+			}
+		}
+		$arr_total = sizeof($arr);
+		$i = 1;
+		foreach ($arr as $key => &$value) {
+			$data .= '<a class="loadModuleAccess" rel="' . $target. ','.$value["folder"].','.$value["id"].',1,forums">' . $value["title"] . '</a>';
+			if($i < $arr_total) {
+				$data .= ', ';
+			}
+			$data .= '';	
+			$i++;
+		}
+		return $data;
+   }
+
+
    	function getForumField($id,$field){
 		global $session;
 		$q = "SELECT $field FROM " . CO_TBL_FORUMS . " where id = '$id'";
@@ -1366,7 +1400,7 @@ class ForumsModel extends Model {
 	function getEditPerms($id) {
 		global $session;
 		$perms = array();
-		$q = "SELECT pid FROM co_forums_access where admins REGEXP '[[:<:]]" . $id . "[[:>:]]'";
+		$q = "SELECT a.pid FROM co_forums_access as a, co_forums as b WHERE a.pid=b.id and b.bin='0' and a.admins REGEXP '[[:<:]]" . $id . "[[:>:]]' ORDER by b.title ASC";
       	$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
 			$perms[] = $row["pid"];
@@ -1378,7 +1412,7 @@ class ForumsModel extends Model {
    function getViewPerms($id) {
 		global $session;
 		$perms = array();
-		$q = "SELECT pid FROM co_forums_access where guests REGEXP '[[:<:]]" . $id. "[[:>:]]'";
+		$q = "SELECT a.pid FROM co_forums_access as a, co_forums as b WHERE a.pid=b.id and b.bin='0' and a.guests REGEXP '[[:<:]]" . $id. "[[:>:]]' ORDER by b.title ASC";
       	$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
 			$perms[] = $row["pid"];

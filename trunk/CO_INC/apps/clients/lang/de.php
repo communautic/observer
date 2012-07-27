@@ -1,6 +1,7 @@
 <?php
 // App name
 $clients_name = "Kunden";
+$lang["clients_name"] = 'Kunden';
 
 // Left
 $lang["CLIENT_FOLDER"] = 'Ordner';

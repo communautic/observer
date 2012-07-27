@@ -1,6 +1,7 @@
 <?php
 // App name
 $complaints_name = "Complaints";
+$lang["complaints_name"] = 'Complaints';
 
 // Left
 $lang["COMPLAINT_FOLDER"] = 'Folder';

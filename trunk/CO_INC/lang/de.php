@@ -41,8 +41,10 @@ $lang["INTERNAL_CHANGED"] 	= 	'freigegeben:';
 
 $lang["GLOBAL_USER"] = 'Benutzer:';
 $lang["GLOBAL_ADMIN"] = 'Administrator';
+$lang["GLOBAL_ADMIN_SHORT"] = 'Admin';
 $lang["GLOBAL_ADMINS"] = 'Administratoren';
 $lang["GLOBAL_GUEST"] = 'Beobachter';
+$lang["GLOBAL_GUEST_SHORT"] = 'Beob';
 $lang["GLOBAL_GUESTS"] = 'Beobachter';
 $lang["GLOBAL_OWNER"] = 'Ersteller';
 

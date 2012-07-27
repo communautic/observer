@@ -77,7 +77,7 @@ background-color: #C1D5F0; }
 .loadPublishersPhase { cursor: pointer }
 .loadPublishersPhase2 { cursor: pointer }
 
-#publishers .tbl-protocol td, #publishers .elastic, #publishers .elastic-two {
+#publishers .tbl-protocol td, #publishers .elastic, #publishers .elastic-two, .publishers-colorTable {
  background-color:#C1D5F0;
 }
 

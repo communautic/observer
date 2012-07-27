@@ -14,6 +14,7 @@ class Clients extends Controller {
 			$this->modules = $this->getModules($this->application);
 			$this->num_modules = sizeof((array)$this->modules);
 			$this->binDisplay = true;
+			$this->contactsDisplay = true; // list access status on contact page
 			
 			if (!$session->isSysadmin()) {
 				$this->canView = $this->model->getViewPerms($session->uid);

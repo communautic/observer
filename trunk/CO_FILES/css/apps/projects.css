@@ -116,7 +116,7 @@ background-color: #e1f0af; }
 .loadProject { cursor: pointer }
 .loadProjectsPhase { cursor: pointer }
 
-#projects .tbl-protocol td, #projects .elastic, #projects .elastic-two {
+#projects .tbl-protocol td, #projects .elastic, #projects .elastic-two, .projects-colorTable {
  background-color:#E1F0AF;
 }
 

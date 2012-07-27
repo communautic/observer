@@ -83,7 +83,7 @@ background-color: #dcd2ff; }
 .loadClientsPhase { cursor: pointer }
 .loadClientsPhase2 { cursor: pointer }
 
-#clients .tbl-protocol td, #clients .elastic, #clients .elastic-two {
+#clients .tbl-protocol td, #clients .elastic, #clients .elastic-two, .clients-colorTable {
     background-color: #dcd2ff;
 }
 

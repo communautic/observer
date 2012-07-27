@@ -11,6 +11,7 @@ class Contacts extends Controller {
 			$this->modules = $this->getModules($this->application);
 			$this->num_modules = sizeof((array)$this->modules);
 			$this->binDisplay = true;
+			$this->contactsDisplay = false; // list access status on contact page
 	}
 	
 	function getGroupList($sort) {
@@ -253,9 +254,9 @@ class Contacts extends Controller {
 		return $system->json_encode($data);
 	}
 
-	function getContactDetails($id) {
+	function getContactDetails($id,$applications="") {
 		global $lang, $session;
-		if($contact = $this->model->getContactDetails($id)) {
+		if($contact = $this->model->getContactDetails($id,$applications)) {
 			include 'view/edit.php';
 		} else {
 			include CO_INC .'/view/default.php';
@@ -430,8 +431,8 @@ function getContactSend($id) {
 	}
 	
 	
-	function setContactDetails($id, $lastname, $firstname, $title, $company, $position, $email, $phone1, $phone2, $fax, $address_line1, $address_line2, $address_town, $address_postcode, $address_country, $lang,$timezone) {
-		$retval = $this->model->setContactDetails($id, $lastname, $firstname, $title, $company, $position, $email, $phone1, $phone2, $fax, $address_line1, $address_line2, $address_town, $address_postcode, $address_country, $lang,$timezone);
+	function setContactDetails($id, $lastname, $firstname, $title, $title2, $company, $position, $email, $email_alt, $phone1, $phone2, $fax, $address_line1, $address_line2, $address_town, $address_postcode, $address_country, $lang,$timezone) {
+		$retval = $this->model->setContactDetails($id, $lastname, $firstname, $title, $title2, $company, $position, $email, $email_alt, $phone1, $phone2, $fax, $address_line1, $address_line2, $address_town, $address_postcode, $address_country, $lang,$timezone);
 		if($retval){
 			 return '{ "action": "edit", "id": "' . $id . '" }';
 		  } else{

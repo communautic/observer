@@ -204,7 +204,15 @@ function contactsContact(name) {
 			}
 		});
 	}
-
+	
+	
+	this.actionLoadTab = function(what) {
+		//var what = $(this).attr('rel');
+		$('#ContactTabsContent > div:visible').hide();
+		$('#'+what).show();
+		initContactsContentScrollbar()
+	}
+	
 
 	this.checkIn = function(id) {
 		return true;
@@ -1334,12 +1342,11 @@ $(document).ready(function() {
 		e.preventDefault();
 		var id = $("#contacts").data("first");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=generateAccess&id=" + id, cache: false, success: function(data){
-			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getContactDetails&id="+id, success: function(html){
-				$("#contacts-right").html(html);
-				contactsInnerLayout.initContent('center');
-				}
-			});
+			$('#access').html(data);
+			$('#accesslink').attr('sql','0');
+			$('#accessSysadmin').slideDown();
 			$("#modalDialog").dialog('close');
+			contactsInnerLayout.initContent('center');
 			}																																			
 		});
 	});
@@ -1348,12 +1355,10 @@ $(document).ready(function() {
 		e.preventDefault();
 		var id = $("#contacts").data("first");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=setSysadmin&id=" + id, cache: false, success: function(data){	
-			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getContactDetails&id="+id, success: function(html){
-				$("#contacts-right").html(html);
-				contactsInnerLayout.initContent('center');
-				}
-			});
+			$('#sysadmin').html(data);
+			$('#sysadminlink').attr('sql','0');
 			$("#modalDialog").dialog('close');
+			contactsInnerLayout.initContent('center');
 			}																																			
 		});
 	});
@@ -1363,12 +1368,11 @@ $(document).ready(function() {
 		e.preventDefault();
 		var id = $("#contacts").data("first");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=removeAccess&id=" + id, cache: false, success: function(data){
-			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getContactDetails&id="+id, success: function(html){
-				$("#contacts-right").html(html);
-				contactsInnerLayout.initContent('center');
-				}
-			});
+			$('#access').html(data);
+			$('#accesslink').attr('sql','1');
+			$('#accessSysadmin').slideUp();
 			$("#modalDialog").dialog('close');
+			contactsInnerLayout.initContent('center');
 			}
 		});
 	});
@@ -1378,12 +1382,10 @@ $(document).ready(function() {
 		e.preventDefault();
 		var id = $("#contacts").data("first");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=removeSysadmin&id=" + id, cache: false, success: function(data){
-			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getContactDetails&id="+id, success: function(html){
-				$("#contacts-right").html(html);
-				contactsInnerLayout.initContent('center');
-				}
-			});
+			$('#sysadmin').html(data);
+			$('#sysadminlink').attr('sql','1');
 			$("#modalDialog").dialog('close');
+			contactsInnerLayout.initContent('center');
 			}
 		});
 	});
@@ -1391,6 +1393,17 @@ $(document).ready(function() {
 	$(".user-image-uploader:visible").livequery(function() {
 		contacts.createUploader($(this));
 	})
+	
+	$(document).on('click', '.showAccessPermissions', function(e) {
+		e.preventDefault();
+		$(this).parent().find('.AccessPermissions').slideToggle();
+	});
+	
+	$(document).on('click', '.loadModuleAccess', function(e) {
+		e.preventDefault();
+		var href = $(this).attr('rel').split(",");
+		externalLoadThreeLevels(href[0],href[1],href[2],href[3],href[4]);
+	});
 	
 	
 	$(document).on('click', 'span.loadContactExternal', function(e) {

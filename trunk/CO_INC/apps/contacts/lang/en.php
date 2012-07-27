@@ -21,12 +21,16 @@ $lang['CONTACTS_GROUP_MEMBERS_LIST'] = 'all Members';
 $lang['CONTACTS_LASTNAME'] = 'Surname';
 $lang['CONTACTS_FIRSTNAME'] = 'First Name';
 $lang['CONTACTS_CONTACT_TITLE'] = 'Title';
+$lang['CONTACTS_CONTACT_TITLE2'] = 'Titel';
 $lang['CONTACTS_COMPANY'] = 'Company';
 $lang['CONTACTS_POSITION'] = 'Position';
 $lang['CONTACTS_EMAIL'] = 'E-mail';
 $lang['CONTACTS_TEL'] = 'Phone 1';
 $lang['CONTACTS_TEL2'] = 'Phone 2';
 $lang['CONTACTS_FAX'] = 'Fax';
+
+$lang["CONTACT_TAB_ADDRESS"] = "Address";
+$lang["CONTACT_TAB_ACCESS"] = "Access";
 
 $lang['CONTACTS_ADDRESS'] = 'Address';
 $lang['CONTACTS_ADDRESS_LINE1'] = 'Street 1';
