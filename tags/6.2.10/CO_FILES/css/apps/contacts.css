@@ -1,0 +1,102 @@
+#contacts .module-bg-active { 
+	border-top: 1px solid #fff;
+	border-bottom: 1px solid #ffd296;
+	background: #c88700;
+}
+
+/*#contacts3 h3 { padding: 0 40px 0 6px; font-size: 12px; line-height: 24px; cursor:pointer; color: #000; text-align: right; }*/
+
+#contacts1, #contacts2, #contacts3 { padding:0; overflow: hidden !important; /* prevent scrollbars auto-added by Layout */}
+#contacts1 { display: block;}
+#contacts1 .scrolling-content { width: 100% !important;}
+.contacts1-content { width: 100%; background-color: #c88700; padding:0; overflow:hidden !important;}
+
+#contacts .ui-layout-west li>span:hover   { background-color: #E9D09A}
+#contacts .ui-layout-west li>span.active-link  { background-color: #E9D09A}
+
+/*.ui-layout-west li a.deactivated { color: #fff; }
+.ui-layout-west li a.deactivated:hover { color: #fff; background-color: transparent !important; }*/
+
+#contacts .jScrollPaneDrag { background: #865b00; }
+
+#contacts .co-link:hover { color: #865b00; }
+
+#contacts .center-center a         { color: #000; }
+#contacts .center-center a:link    { color: #000; }
+#contacts .center-center a:active  { color: #000; }
+#contacts .center-center a:visited { color: #000; }
+#contacts .center-center a:hover   { color: #865b00; cursor: pointer}
+
+
+#menu .app_contacts { }
+#menu .app_contacts:hover, #menu .app_contacts.active-app {
+	border: 1px solid #664100;
+	border-top-color: #c88700;
+	background: #fdd091; /* Old browsers */
+	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZkZDA5MSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM5MTU1MDAiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top,  #fdd091 0%, #915500 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fdd091), color-stop(100%,#915500)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #fdd091 0%,#915500 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #fdd091 0%,#915500 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #fdd091 0%,#915500 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #fdd091 0%,#915500 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fdd091', endColorstr='#915500',GradientType=0 ); /* IE6-8 */
+}
+
+
+#contacts div.contentTabs li span:hover, #contacts div.contentTabs li span.active {
+border: 1px solid #c8a766;
+background: #e1c799;
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2UxYzc5OSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2NiOWU1MCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUxJSIgc3RvcC1jb2xvcj0iI2I1NzUwMSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNiNTc1MDEiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+background: -moz-linear-gradient(top,  #e1c799 0%, #cb9e50 50%, #b57501 51%, #b57501 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e1c799), color-stop(50%,#cb9e50), color-stop(51%,#b57501), color-stop(100%,#b57501));
+background: -webkit-linear-gradient(top,  #e1c799 0%,#cb9e50 50%,#b57501 51%,#b57501 100%);
+background: -o-linear-gradient(top,  #e1c799 0%,#cb9e50 50%,#b57501 51%,#b57501 100%);
+background: -ms-linear-gradient(top,  #e1c799 0%,#cb9e50 50%,#b57501 51%,#b57501 100%);
+background: linear-gradient(to bottom,  #e1c799 0%,#cb9e50 50%,#b57501 51%,#b57501 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e1c799', endColorstr='#b57501',GradientType=0 );
+
+}
+ 
+#contacts .table-title, #contacts .textarea-title { 
+background-color: #e9d09a; }
+
+#contacts .ui-datepicker-trigger-action-status {
+	position: absolute;
+	left: 318px;
+display: block; height: 13px; width: 15px; margin-top: -15px; background:url(../../../img/icons.png) no-repeat -40px 0px
+}
+
+#contacts a.disabled{
+	background-position: 0px 0px
+}
+
+#contacts-right .tcell-left span span, #contacts-right .tcell-left-shorter span span { display: block; padding: 0 0 0 15px; }
+#contacts-right .tcell-left-short span { display: block; padding: 0 0 0 15px; }
+
+#contacts-right .content-nav         { display: block; color: #000; }
+#contacts-right .content-nav:hover   { display: block; background-color: #C88700; color: #000; cursor: pointer; }
+
+.content-outline {background-color: #e1f0af;}
+
+#contacts-right textarea{ font-size: 13px;
+	font-family: Arial, Helvetica, sans-serif;
+	border: 1px solid #fff;
+	width: 100%;
+}
+/*#contacts-right textarea:hover,
+#contacts-right textarea:focus,
+#contacts-right input.bg:hover, */
+#contacts-right input.bg:focus {
+    background-color: #e9d09a;
+}
+
+#contacts-right .ui-upload-button { position: absolute !important; width: 80px; height: 120px;}
+#contacts-right .qq-upload-button-hover {background-color: #E9D09A; background-image: url("../../img/avatar_hover.jpg");  background-repeat: no-repeat; }
+#contacts-right .ui-upload-drop-area { position: absolute; width: 74px; padding: 20px 3px 3px 3px; height: 97px; background: #E9D09A; opacity: 0.6; z-index: 1; font-size: 11px; text-align: center; }
+#contacts-right .ui-upload-drop-area-active { background: #E9D09A;}
+#contacts-right .ui-upload-list { display: none; position: absolute; width: 74px; padding: 3px; text-align: center; height: 114px; font-size: 11px; z-index: 2; background: #E9D09A; opacity: 0.8 }
+#contacts-right .ui-upload-file { display: none;}
+#contacts-right .ui-upload-spinner {display:inline-block; background: url("../../img/file_loading.gif"); width:15px; height:15px; vertical-align:text-bottom;}
+
