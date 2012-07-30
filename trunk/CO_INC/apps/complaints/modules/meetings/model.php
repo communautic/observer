@@ -271,6 +271,7 @@ class ComplaintsMeetingsModel extends ComplaintsModel {
 				$array["status_planned_active"] = " active";
 			break;
 			case "1":
+				$array["status_date"] = "";
 				$array["status_text"] = $lang["GLOBAL_STATUS_COMPLETED"];
 				$array["status_text_time"] = "";
 				$array["status_finished_active"] = " active";
