@@ -9,7 +9,7 @@
     <td colspan="2"><div class="statusTabs">
     	<ul>
         	<li><span class="left<?php if($meeting->canedit) { ?> statusButton<?php } ?> planned<?php echo $meeting->status_planned_active;?>" rel="0" reltext="<?php echo $lang["GLOBAL_STATUS_PLANNED_TIME"];?>"><?php echo $lang["GLOBAL_STATUS_PLANNED"];?></span></li>
-            <li><span class="<?php if($meeting->canedit) { ?>statusButton<?php } ?> finished<?php echo $meeting->status_finished_active;?>" rel="1" reltext="<?php echo $lang["GLOBAL_STATUS_COMPLETED_TIME"];?>"><?php echo $lang["GLOBAL_STATUS_COMPLETED"];?></span></li>
+            <li><span class="<?php if($meeting->canedit) { ?>statusButton noDate<?php } ?> finished<?php echo $meeting->status_finished_active;?>" rel="1" reltext=""><?php echo $lang["GLOBAL_STATUS_COMPLETED"];?></span></li>
             <li><span class="<?php if($meeting->canedit) { ?>statusButton<?php } ?> stopped<?php echo $meeting->status_stopped_active;?>" rel="2" reltext="<?php echo $lang["GLOBAL_STATUS_CANCELLED_TIME"];?>"><?php echo $lang["GLOBAL_STATUS_CANCELLED"];?></span></li>
 			<li><span class="right<?php if($meeting->canedit) { ?> statusButton<?php } ?> stopped<?php echo $meeting->status_posponed_active;?>" rel="3" reltext="<?php echo $lang["GLOBAL_STATUS_POSPONED_TIME"];?>"><?php echo $lang["GLOBAL_STATUS_POSPONED"];?></span></li>
             <li><div class="status-time"><?php echo($meeting->status_text_time)?></div><div class="status-input"><input name="meeting_status_date" type="text" class="input-date statusdp" value="<?php echo($meeting->status_date)?>" readonly="readonly" /></div></li>

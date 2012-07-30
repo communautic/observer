@@ -275,7 +275,7 @@ class ProjectsMeetingsModel extends ProjectsModel {
 			break;
 			case "1":
 				$array["status_text"] = $lang["GLOBAL_STATUS_COMPLETED"];
-				$array["status_text_time"] = $lang["GLOBAL_STATUS_COMPLETED_TIME"];
+				$array["status_text_time"] = "";
 				$array["status_finished_active"] = " active";
 			break;
 			case "2":

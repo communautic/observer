@@ -1088,8 +1088,15 @@ $(document).ready(function() {
 		$('#'+getCurrentApp()+' span.statusButton').removeClass('active');
 		$(this).addClass('active');
 		var p = $(this).parent().parent();
-		p.find('.status-time').html($(this).attr('reltext'));
-		p.find('img').trigger('click');
+		if($(this).hasClass('noDate')) {
+			p.find('.statusdp').val('');
+			p.find('.status-time').html($(this).attr('reltext'));
+			var obj = getCurrentModule();
+			obj.statusOnClose();
+		} else {
+			p.find('.status-time').html($(this).attr('reltext'));
+			p.find('img').trigger('click');
+		}
 	});
 	
 	$('.statusdp').livequery(function() { 
