@@ -272,7 +272,7 @@ class ClientsMeetingsModel extends ClientsModel {
 			break;
 			case "1":
 				$array["status_text"] = $lang["GLOBAL_STATUS_COMPLETED"];
-				$array["status_text_time"] = $lang["GLOBAL_STATUS_COMPLETED_TIME"];
+				$array["status_text_time"] = "";
 				$array["status_finished_active"] = " active";
 			break;
 			case "2":
@@ -341,7 +341,7 @@ class ClientsMeetingsModel extends ClientsModel {
 			$accesssql = "access='$meeting_access', access_date='$meeting_access_date', access_user = '$session->uid',";
 		}
 		
-		$q = "UPDATE " . CO_TBL_CLIENTS_MEETINGS . " set title = '$title" . $title_add . "', item_date = '$meetingdate', start = '$start', end = '$end', location = '$location', location_ct = '$location_ct', participants='$participants', participants_ct='$participants_ct', management='$management', management_ct='$management_ct', documents = '$documents', access='$meeting_access', $accesssql edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_CLIENTS_MEETINGS . " set title = '$title', item_date = '$meetingdate', start = '$start', end = '$end', location = '$location', location_ct = '$location_ct', participants='$participants', participants_ct='$participants_ct', management='$management', management_ct='$management_ct', documents = '$documents', access='$meeting_access', $accesssql edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		// do existing tasks
