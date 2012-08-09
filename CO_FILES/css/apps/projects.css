@@ -183,3 +183,8 @@ background-color: #e1f0af; }
 
 #projects .qq-upload-drop-area { background: #e1f0af; }
 #projects .qq-upload-drop-area-active { background:#577207;}
+
+/* Module Filter*/
+#projects > .ui-autocomplete { box-shadow: 4px 4px 6px #666666; width: 250px !important; height: 250px !important; max-height: 250px; background: #e1f0af; border: 1px solid #82aa0a;}
+#projects > .ui-autocomplete a { color: #000;}
+#projects > .ui-autocomplete a.ui-state-hover, #projects > .ui-autocomplete a.ui-state-active { color: #fff; margin: 0; background: #82aa0a; border-radius: 0;}

@@ -345,3 +345,8 @@ background: url("../../img/brainstorms_grid_stagegate.png") no-repeat scroll 1px
     color: #333333;
     width: 100%;
 }
+
+/* Module Filter*/
+#complaints > .ui-autocomplete { box-shadow: 4px 4px 6px #666666; width: 250px !important; height: 250px !important; max-height: 250px; background: #DCD2FF; border: 1px solid #9b78dc;}
+#complaints > .ui-autocomplete a { color: #000;}
+#complaints > .ui-autocomplete a.ui-state-hover, #complaints > .ui-autocomplete a.ui-state-active { color: #fff; margin: 0; background: #9b78dc; border-radius: 0;}

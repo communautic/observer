@@ -100,3 +100,7 @@ display: block; height: 13px; width: 15px; margin-top: -15px; background:url(../
 #contacts-right .ui-upload-file { display: none;}
 #contacts-right .ui-upload-spinner {display:inline-block; background: url("../../img/file_loading.gif"); width:15px; height:15px; vertical-align:text-bottom;}
 
+/* Module Filter*/
+#contacts > .ui-autocomplete { box-shadow: 4px 4px 6px #666666; width: 250px !important; height: 250px !important; max-height: 250px; background: #E9D09A; border: 1px solid #c88700;}
+#contacts > .ui-autocomplete a { color: #000;}
+#contacts > .ui-autocomplete a.ui-state-hover, #contacts > .ui-autocomplete a.ui-state-active { color: #fff; margin: 0; background: #c88700; border-radius: 0;}
