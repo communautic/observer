@@ -1031,6 +1031,12 @@ $(document).ready(function() {
 		obj.actionLoadSubTab(what);
 	});
 	
+	
+	$(document).on('click', '.externalLoadThreeLevels',function(e) {
+		e.preventDefault();
+		var href = $(this).attr('rel').split(",");
+		externalLoadThreeLevels(href[0],href[1],href[2],href[3],href[4]);
+	});	
 
 	// init datepicker
 	$(document).on('click', '.ui-datepicker-trigger-action',function(e) {
@@ -2037,13 +2043,17 @@ function externalLoadThreeLevels(objectname,f,p,ph,app) { // from Desktop
 	var objectnameCapsSingular = objectnameCaps.slice(0,-1);
 	var num_modules = window[objectname+'_num_modules'];
 	
-	if(objectname == 'projects' || objectname == 'productions' || objectname == 'brainstorms' || objectname == 'forums' || objectname == 'complaints') {
+	
+	if(objectname == app && (objectname == 'projects' || objectname == 'productions' || objectname == 'brainstorms' || objectname == 'forums' || objectname == 'complaints')) {
 		object.$first.data({ "first" : f});
+		$('#'+objectname+'1 .module-click').removeClass('deactivated');
 		var index = $('#'+objectname+'1 .module-click').index($('#'+objectname+'1 .module-click[rel='+f+']'));
 		$.ajax({ type: "GET", url: "/", dataType:  'json', async: false, data: "path=apps/" + objectname +"&request=get"+objectnameCapsSingular+"List&id="+f, success: function(data){
 			$('#'+objectname+'2 ul').html(data.html);
+			
 			setModuleDeactive(object.$first,index);
 			object.$first.find('li:eq('+index+')').show();
+			//alert($('#'+objectname+'1 .deactivated').find(".text").html());
 			$('#'+objectname+'-top .top-headline').html($('#'+objectname+'1 .deactivated').find(".text").html());
 			}
 		})
@@ -2082,6 +2092,7 @@ function externalLoadThreeLevels(objectname,f,p,ph,app) { // from Desktop
 				break;
 			}
 			window['init'+objectnameCaps+'ContentScrollbar']();
+			var curapp = getCurrentApp();
 			if(text.access == "guest" || text.access == "guestadmin") { 
 				var h = object.$layoutWest.height();
 				var modLen = object.GuestHiddenModules.length;
@@ -2102,7 +2113,10 @@ function externalLoadThreeLevels(objectname,f,p,ph,app) { // from Desktop
 						a = a+1;
 					}
 				})
-				$('span.app_'+objectname).trigger('click');
+				if(objectname != curapp) {
+						$('span.app_'+objectname).trigger('click');
+					}
+				
 			} else {
 				$('#'+objectname+'3 div.thirdLevel:not(.deactivated)').each(function(i) { 
 					//alert(h);
@@ -2110,7 +2124,9 @@ function externalLoadThreeLevels(objectname,f,p,ph,app) { // from Desktop
 					var t = object.$third.height()-num_modules*27+i*27;
 					$(this).animate({top: t})
 				})
-				$('span.app_'+objectname).trigger('click');
+				if(objectname != curapp) {
+						$('span.app_'+objectname).trigger('click');
+					}
 			}
 			}
 		});
@@ -2127,6 +2143,7 @@ function externalLoadThreeLevels(objectname,f,p,ph,app) { // from Desktop
 		var index = $('#'+app+'1 .module-click').index($('#'+app+'1 .module-click[rel='+f+']'));
 		$.ajax({ type: "GET", url: "/", dataType:  'json', async: false, data: "path=apps/"+app+"&request=get"+appnameCapsSingular+"List&id="+f, success: function(data){
 			$('#'+app+'2 ul').html(data.html);
+			$('#'+app+'1 .module-click').removeClass('deactivated');
 				setModuleDeactive($('#'+app+'1'),index);
 				$('#'+app+'1').find('li:eq('+index+')').show();
 				$('#'+app+'-top .top-headline').html($('#'+app+'1 .deactivated').find(".text").html());
@@ -2179,17 +2196,23 @@ function externalLoadThreeLevels(objectname,f,p,ph,app) { // from Desktop
 			var idx = $('#'+app+'3 ul[rel='+objectname+'] .module-click').index($('#'+app+'3 ul[rel='+objectname+'] .module-click[rel='+ph+']'));
 			var o = window[app+'_'+objectname];
 			o.getDetails(moduleidx,idx,data.html);
-			$('#'+app+'3 .module-actions:eq(0)').show();
-			$('#'+app+'3 .sort:eq(0)').attr("rel", data.sort).addClass("sort"+data.sort);
+			//$('#'+app+'3 .module-actions:eq(0)').show();
+			$('#'+app+'3 .module-actions:eq('+moduleidx+')').show();
+			$('#'+app+'3 .sort:eq('+moduleidx+')').attr("rel", data.sort).addClass("sort"+data.sort);
 			$('#'+app+'-top .top-subheadline').html(', ' + $('#'+app+'2 .module-click:visible').find(".text").html());
+			var curapp = getCurrentApp();
 			if(app == 'projects' || app == 'productions') {
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+app+"&request=getDates&id="+p, success: function(data){
 					$('#'+app+'-top .top-subheadlineTwo').html(data.startdate + ' - <span id="projectenddate">' + data.enddate + '</span>');
-					$('span.app_'+app).trigger('click');
+					if(app != curapp) {
+						$('span.app_'+app).trigger('click');
+					}
 					}
 				});
 			} else {
-				$('span.app_'+app).trigger('click');	
+				if(app != curapp) {
+						$('span.app_'+app).trigger('click');
+					}
 			}
 			}
 		});
@@ -2199,7 +2222,7 @@ function externalLoadThreeLevels(objectname,f,p,ph,app) { // from Desktop
 
 
 // folder to eg Timelines sample internalLoadLevelThree('timelines',127,121,3,'projects');
-function internalLoadLevelThree(objectname,f,p,ph,app) { 
+/*function internalLoadLevelThree(objectname,f,p,ph,app) { 
 	var object = window[objectname];
 	var objectFirst = objectname.substr(0, 1);
 	var objectnameCaps = objectFirst.toUpperCase() + objectname.substr(1);
@@ -2280,4 +2303,4 @@ function internalLoadLevelThree(objectname,f,p,ph,app) {
 			}
 		});
 	}
-}
+}*/

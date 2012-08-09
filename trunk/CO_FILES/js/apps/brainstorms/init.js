@@ -1003,5 +1003,22 @@ $(document).ready(function() {
 			}
 		}
 	});
+	
+	
+	$('#brainstorms .globalSearch').livequery(function() {
+		$(this).autocomplete({
+			appendTo: '#brainstorms',
+			position: {my: "left top", at: "left bottom", collision: "none",offset: "-104 0"},
+			source: "?path=apps/brainstorms&request=getGlobalSearch",
+			//minLength: 2,
+			select: function(event, ui) {
+				var href = ui.item.id.split(",");
+				externalLoadThreeLevels(href[0],href[1],href[2],href[3],href[4]);
+			},
+			close: function(event, ui) {
+				$(this).val("");
+			}
+		});
+	});
 
 });

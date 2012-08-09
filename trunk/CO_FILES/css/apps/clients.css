@@ -118,3 +118,8 @@ background-color: #dcd2ff; }
 .ClientsExportWindow span.coButton:hover   { background-color: #fff; color: #000; cursor: pointer; }
 .ClientsExportWindow input { border: 0;}
 .ClientsExportWindow textarea { border: 0; height: 140px;}
+
+/* Module Filter*/
+#clients > .ui-autocomplete { box-shadow: 4px 4px 6px #666666; width: 250px !important; height: 250px !important; max-height: 250px; background: #DCD2FF; border: 1px solid #9b78dc;}
+#clients > .ui-autocomplete a { color: #000;}
+#clients > .ui-autocomplete a.ui-state-hover, #clients > .ui-autocomplete a.ui-state-active { color: #fff; margin: 0; background: #9b78dc; border-radius: 0;}

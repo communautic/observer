@@ -440,3 +440,8 @@ background: url("../../img/brainstorms_grid_stagegate.png") no-repeat scroll 1px
 .ui-draggable-helper-grid div.statusItem {  display: none; }
 
 #modalDialogBrainstormsGrid span.coButton  { background-color: #B2A85B; color: #fff; }
+
+/* Module Filter*/
+#brainstorms > .ui-autocomplete { box-shadow: 4px 4px 6px #666666; width: 250px !important; height: 250px !important; max-height: 250px; background: #FFF6B5; border: 1px solid #B2A85B;}
+#brainstorms > .ui-autocomplete a { color: #000;}
+#brainstorms > .ui-autocomplete a.ui-state-hover, #brainstorms > .ui-autocomplete a.ui-state-active { color: #fff; margin: 0; background: #B2A85B; border-radius: 0;}

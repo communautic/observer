@@ -361,6 +361,9 @@ function projectsApplication(name) {
 		$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=markNoticeRead&pid=" + pid, cache: false});
 	}
 
+	this.markNoticeDelete = function(id) {
+		$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=markNoticeDelete&id=" + id, cache: false});
+	}
 
 	this.datepickerOnClose = function(dp) {
 		// move entire project with kickoff
@@ -984,7 +987,7 @@ $(document).ready(function() {
 		}
 		var fid = $("#projects").data("first");
 		var id = $(this).attr("rel");
-		internalLoadLevelThree('timelines',fid,id,3,'projects');
+		externalLoadThreeLevels('timelines',fid,id,3,'projects');
 	});
 
 
@@ -1008,5 +1011,49 @@ $(document).ready(function() {
 			showURL: false 
 		});
 	});
+
+	
+	// autocomplete projects search
+	$('.projects-search').livequery(function() {
+		var id = $("#projects").data("second");
+		$(this).autocomplete({
+			appendTo: '#tabs-1',
+			source: "?path=apps/projects&request=getProjectsSearch&exclude="+id,
+			//minLength: 2,
+			select: function(event, ui) {
+				//var field = $(this).attr("field");
+				var obj = getCurrentModule();
+				obj.addProjectLink(ui.item.id);
+				//console.log(ui.item.id, ui.item.value);
+			},
+			close: function(event, ui) {
+				$(this).val("");
+			}
+		});
+	});
+	
+	$(document).on('click', '.addProjectLink', function(e) {
+		e.preventDefault();
+		var id = $(this).attr("rel");
+		projects_phases.addProjectLink(id);
+	});
+	
+	
+	$('#projects .globalSearch').livequery(function() {
+		$(this).autocomplete({
+			appendTo: '#projects',
+			position: {my: "left top", at: "left bottom", collision: "none",offset: "-104 0"},
+			source: "?path=apps/projects&request=getGlobalSearch",
+			//minLength: 2,
+			select: function(event, ui) {
+				var href = ui.item.id.split(",");
+				externalLoadThreeLevels(href[0],href[1],href[2],href[3],href[4]);
+			},
+			close: function(event, ui) {
+				$(this).val("");
+			}
+		});
+	});
+	
 
 });
