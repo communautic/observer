@@ -349,7 +349,7 @@ class ContactsModel extends Model {
 						if(!empty($ids)) {
 						$array["applications"][$i]["app"] = $app;
 						$array["applications"][$i]["name"] = $lang[$app . "_name"] . " (" . $lang["GLOBAL_ADMIN_SHORT"] . ".)";
-						$array["applications"][$i]["list"] = $cont->model->$func($ids,$target);
+						$array["applications"][$i]["list"] = $cont->model->$func($ids,$target,1);
 						$array["applications"][$i]["num"] = sizeof($ids);
 						$i++;
 						}
@@ -357,7 +357,7 @@ class ContactsModel extends Model {
 						if(!empty($ids)) {
 						$array["applications"][$i]["app"] = $app;
 						$array["applications"][$i]["name"] = $lang[$app . "_name"] . " (" . $lang["GLOBAL_GUEST_SHORT"] . ".)";
-						$array["applications"][$i]["list"] = $cont->model->$func($ids,$target);
+						$array["applications"][$i]["list"] = $cont->model->$func($ids,$target,1);
 						$array["applications"][$i]["num"] = sizeof($ids);
 						$i++;
 						}
@@ -1128,7 +1128,31 @@ class ContactsModel extends Model {
 		$arr = array("bin" => $bin, "groups" => $groups, "contacts" => $contacts, "avatars" => $avatars);
 		return $arr;
 	}
-	
+
+
+	function getGlobalSearch($term){
+		global $system;
+		
+		$rows = array();
+		$r = array();
+		
+		$q = "SELECT id, CONCAT(lastname,' ',firstname) as label from " . CO_TBL_USERS . " where (lastname like '%$term%' or firstname like '%$term%' or company like '%$term%') and bin ='0' and invisible = '0' ORDER BY lastname, firstname ASC";
+		$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_assoc($result)) {
+			 $rows['value'] = $row['label'];
+			 $rows['id'] = 'contact,' .$row['id'];
+			 $r[] = $rows;
+		}
+		$q = "SELECT id, title as label from " . CO_CONTACTS_TBL_GROUPS . " where title like '%$term%' and members != '' and bin ='0'";
+		$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_assoc($result)) {
+			 $rows['value'] = $row['label'];
+			 $rows['id'] = 'group,' .$row['id'];
+			 $r[] = $rows;
+		}
+		return json_encode($r);
+	}
+
 	
 }
 

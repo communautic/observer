@@ -184,6 +184,9 @@ if (!empty($_GET['request'])) {
 		case 'restoreItem':
 			echo($contacts->restoreItem($_GET['id']));
 		break;
+		case 'getGlobalSearch':
+			echo($contacts->getGlobalSearch($system->checkMagicQuotesTinyMCE($_GET['term'])));
+		break;
 	}
 	
 }

@@ -1845,7 +1845,7 @@ class BrainstormsModel extends Model {
 		$tomorrow = $date->addDays($today, 1);
 		$string = "";
 		
-		// project notices for this user
+		// brainstorms notices for this user
 		$q ="select a.id as pid,a.folder,a.title as brainstormtitle,b.perm from " . CO_TBL_BRAINSTORMS . " as a,  " . CO_TBL_BRAINSTORMS_DESKTOP . " as b where a.id = b.pid and a.bin = '0' and b.uid = '$session->uid' and b.status = '0'";
 		$result = mysql_query($q, $this->_db->connection);
 		$notices = "";
@@ -1947,7 +1947,112 @@ class BrainstormsModel extends Model {
 			}
 		}
    }
+   
+   
+	function getGlobalSearch($term){
+		global $system, $session, $brainstorms;
+		$num=0;
+		//$term = utf8_decode($term);
+		$access=" ";
+		if(!$session->isSysadmin()) {
+			$access = " and id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
+	  	}
+		$rows = array();
+		$r = array();
+		
+		// get all active modules
+		$active_modules = array();
+		foreach($brainstorms->modules as $m => $v) {
+			$active_modules[] = $m;
+		}
+		
 
+		$q = "SELECT id, folder, CONVERT(title USING latin1) as title FROM " . CO_TBL_BRAINSTORMS . " WHERE title like '%$term%' and  bin='0'" . $access ."ORDER BY title";
+		$result = mysql_query($q, $this->_db->connection);
+		//$num=mysql_affected_rows();
+		while($row = mysql_fetch_array($result)) {
+			 $rows['value'] = $row['title'];
+			 $rows['id'] = 'brainstorms,' .$row['folder']. ',' . $row['id'] . ',0,brainstorms';
+			 $r[] = $rows;
+		}
+		
+		// loop through projects
+		$q = "SELECT id, folder FROM " . CO_TBL_BRAINSTORMS . " WHERE bin='0'" . $access ."ORDER BY title";
+		$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+			$pid = $row['id'];
+			$folder = $row['folder'];
+			$sql = "";
+			$perm = $this->getBrainstormAccess($pid);
+			if($perm == 'guest') {
+				$sql = "and access = '1'";
+			}
+			// Notes
+			$qp = "SELECT id,CONVERT(title USING latin1) as title FROM " . CO_TBL_BRAINSTORMS_NOTES . " WHERE pid = '$pid' and bin = '0' $sql and title like '%$term%' ORDER BY title";
+			$resultp = mysql_query($qp, $this->_db->connection);
+			while($rowp = mysql_fetch_array($resultp)) {
+				$rows['value'] = $rowp['title'];
+			 	$rows['id'] = 'brainstorms,' .$folder. ',' . $pid . ',0,brainstorms';
+			 	$r[] = $rows;
+			}
+			// Grids
+			$qp = "SELECT id,CONVERT(title USING latin1) as title FROM " . CO_TBL_BRAINSTORMS_GRIDS . " WHERE pid = '$pid' and bin = '0' $sql and title like '%$term%' ORDER BY title";
+			$resultp = mysql_query($qp, $this->_db->connection);
+			while($rowp = mysql_fetch_array($resultp)) {
+				$rows['value'] = $rowp['title'];
+			 	$rows['id'] = 'grids,' .$folder. ',' . $pid . ',' .$rowp['id'].',brainstorms';
+			 	$r[] = $rows;
+			}
+			// Meetings
+			if(in_array("meetings",$active_modules)) {
+				$qp = "SELECT id,CONVERT(title USING latin1) as title FROM " . CO_TBL_BRAINSTORMS_MEETINGS . " WHERE pid = '$pid' and bin = '0' $sql and title like '%$term%' ORDER BY title";
+				$resultp = mysql_query($qp, $this->_db->connection);
+				while($rowp = mysql_fetch_array($resultp)) {
+					$rows['value'] = $rowp['title'];
+					$rows['id'] = 'meetings,' .$folder. ',' . $pid . ',' .$rowp['id'].',brainstorms';
+					$r[] = $rows;
+				}
+				// Meeting Tasks
+				$qp = "SELECT b.id,CONVERT(a.title USING latin1) as title FROM " . CO_TBL_BRAINSTORMS_MEETINGS_TASKS . " as a, " . CO_TBL_BRAINSTORMS_MEETINGS . " as b WHERE b.pid = '$pid' and a.mid = b.id and a.bin = '0' and b.bin = '0' $sql and a.title like '%$term%' ORDER BY a.title";
+				$resultp = mysql_query($qp, $this->_db->connection);
+				while($rowp = mysql_fetch_array($resultp)) {
+					$rows['value'] = $rowp['title'];
+					$rows['id'] = 'meetings,' .$folder. ',' . $pid . ',' .$rowp['id'].',brainstorms';
+					$r[] = $rows;
+				}
+			}
+			// Doc Folders
+			if(in_array("documents",$active_modules)) {
+				$qp = "SELECT id,CONVERT(title USING latin1) as title FROM " . CO_TBL_BRAINSTORMS_DOCUMENTS_FOLDERS . " WHERE pid = '$pid' and bin = '0' $sql and title like '%$term%' ORDER BY title";
+				$resultp = mysql_query($qp, $this->_db->connection);
+				while($rowp = mysql_fetch_array($resultp)) {
+					$rows['value'] = $rowp['title'];
+					$rows['id'] = 'documents,' .$folder. ',' . $pid . ',' .$rowp['id'].',brainstorms';
+					$r[] = $rows;
+				}
+				// Documents
+				$qp = "SELECT b.id,CONVERT(a.filename USING latin1) as title FROM " . CO_TBL_BRAINSTORMS_DOCUMENTS . " as a, " . CO_TBL_BRAINSTORMS_DOCUMENTS_FOLDERS . " as b WHERE b.pid = '$pid' and a.did = b.id and a.bin = '0' and b.bin = '0' $sql and a.filename like '%$term%' ORDER BY a.filename";
+				$resultp = mysql_query($qp, $this->_db->connection);
+				while($rowp = mysql_fetch_array($resultp)) {
+					$rows['value'] = $rowp['title'];
+					$rows['id'] = 'documents,' .$folder. ',' . $pid . ',' .$rowp['id'].',brainstorms';
+					$r[] = $rows;
+				}
+			}
+			// vDocs
+			if(in_array("vdocs",$active_modules)) {
+				$qp = "SELECT id,CONVERT(title USING latin1) as title FROM " . CO_TBL_BRAINSTORMS_VDOCS . " WHERE pid = '$pid' and bin = '0' $sql and title like '%$term%' ORDER BY title";
+				$resultp = mysql_query($qp, $this->_db->connection);
+				while($rowp = mysql_fetch_array($resultp)) {
+					$rows['value'] = $rowp['title'];
+					$rows['id'] = 'vdocs,' .$folder. ',' . $pid . ',' .$rowp['id'].',brainstorms';
+					$r[] = $rows;
+				}
+			}
+		}
+		return $system->json_encode($r);
+	}
+	
 }
 
 $brainstormsmodel = new BrainstormsModel(); // needed for direct calls to functions eg echo $brainstormsmodel ->getBrainstormTitle(1);

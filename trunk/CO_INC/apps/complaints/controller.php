@@ -625,6 +625,11 @@ class Complaints extends Controller {
 		return true;
    }
    
+	function getGlobalSearch($term) {
+		$search = $this->model->getGlobalSearch($term);
+		return $search;
+	}
+   
 }
 
 $complaints = new Complaints("complaints");

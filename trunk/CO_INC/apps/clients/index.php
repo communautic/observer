@@ -155,6 +155,9 @@ if (!empty($_GET['request'])) {
 		case 'getNavModulesNumItems':
 			echo($clients->getNavModulesNumItems($_GET['id']));
 		break;
+		case 'getGlobalSearch':
+			echo($clients->getGlobalSearch($system->checkMagicQuotesTinyMCE($_GET['term'])));
+		break;
 	}
 }
 

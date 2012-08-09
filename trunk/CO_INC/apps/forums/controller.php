@@ -576,6 +576,11 @@ class Forums extends Controller {
 		return json_encode($arr);
 	}
 	
+	function getGlobalSearch($term) {
+		$search = $this->model->getGlobalSearch($term);
+		return $search;
+	}
+	
 }
 
 $forums = new Forums("forums");

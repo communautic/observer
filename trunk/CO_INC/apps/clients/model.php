@@ -1679,6 +1679,93 @@ class ClientsModel extends Model {
 		}
    }
  
+ 
+	function getGlobalSearch($term){
+		global $system, $session, $clients;
+		$num=0;
+		//$term = utf8_decode($term);
+		$access=" ";
+		if(!$session->isSysadmin()) {
+			$access = " and id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
+	  	}
+		$rows = array();
+		$r = array();
+		
+		// get all active modules
+		$active_modules = array();
+		foreach($clients->modules as $m => $v) {
+			$active_modules[] = $m;
+		}
+		
+		$q = "SELECT id, folder, CONVERT(title USING latin1) as title FROM " . CO_TBL_CLIENTS . " WHERE title like '%$term%' and  bin='0'" . $access ."ORDER BY title";
+		$result = mysql_query($q, $this->_db->connection);
+		//$num=mysql_affected_rows();
+		while($row = mysql_fetch_array($result)) {
+			 $rows['value'] = $row['title'];
+			 $rows['id'] = 'clients,' .$row['folder']. ',' . $row['id'] . ',0,clients';
+			 $r[] = $rows;
+		}
+		// loop through forums
+		$q = "SELECT id, folder FROM " . CO_TBL_CLIENTS . " WHERE bin='0'" . $access ."ORDER BY title";
+		$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+			$pid = $row['id'];
+			$folder = $row['folder'];
+			$sql = "";
+			$perm = $this->getClientAccess($pid);
+			if($perm == 'guest') {
+				$sql = "and access = '1'";
+			}
+			// Meetings
+			if(in_array("meetings",$active_modules)) {
+				$qp = "SELECT id,CONVERT(title USING latin1) as title FROM " . CO_TBL_CLIENTS_MEETINGS . " WHERE pid = '$pid' and bin = '0' $sql and title like '%$term%' ORDER BY title";
+				$resultp = mysql_query($qp, $this->_db->connection);
+				while($rowp = mysql_fetch_array($resultp)) {
+					$rows['value'] = $rowp['title'];
+					$rows['id'] = 'meetings,' .$folder. ',' . $pid . ',' .$rowp['id'].',clients';
+					$r[] = $rows;
+				}
+				// Meeting Tasks
+				$qp = "SELECT b.id,CONVERT(a.title USING latin1) as title FROM " . CO_TBL_CLIENTS_MEETINGS_TASKS . " as a, " . CO_TBL_CLIENTS_MEETINGS . " as b WHERE b.pid = '$pid' and a.mid = b.id and a.bin = '0' and b.bin = '0' $sql and a.title like '%$term%' ORDER BY a.title";
+				$resultp = mysql_query($qp, $this->_db->connection);
+				while($rowp = mysql_fetch_array($resultp)) {
+					$rows['value'] = $rowp['title'];
+					$rows['id'] = 'meetings,' .$folder. ',' . $pid . ',' .$rowp['id'].',clients';
+					$r[] = $rows;
+				}
+			}
+			// Phonecalls
+			if(in_array("phonecalls",$active_modules)) {
+				$qp = "SELECT id,CONVERT(title USING latin1) as title FROM " . CO_TBL_CLIENTS_PHONECALLS . " WHERE pid = '$pid' and bin = '0' $sql and title like '%$term%' ORDER BY title";
+				$resultp = mysql_query($qp, $this->_db->connection);
+				while($rowp = mysql_fetch_array($resultp)) {
+					$rows['value'] = $rowp['title'];
+					$rows['id'] = 'phonecalls,' .$folder. ',' . $pid . ',' .$rowp['id'].',clients';
+					$r[] = $rows;
+				}
+			}
+			// Doc Folders
+			if(in_array("documents",$active_modules)) {
+				$qp = "SELECT id,CONVERT(title USING latin1) as title FROM " . CO_TBL_CLIENTS_DOCUMENTS_FOLDERS . " WHERE pid = '$pid' and bin = '0' $sql and title like '%$term%' ORDER BY title";
+				$resultp = mysql_query($qp, $this->_db->connection);
+				while($rowp = mysql_fetch_array($resultp)) {
+					$rows['value'] = $rowp['title'];
+					$rows['id'] = 'documents,' .$folder. ',' . $pid . ',' .$rowp['id'].',clients';
+					$r[] = $rows;
+				}
+				// Documents
+				$qp = "SELECT b.id,CONVERT(a.filename USING latin1) as title FROM " . CO_TBL_CLIENTS_DOCUMENTS . " as a, " . CO_TBL_CLIENTS_DOCUMENTS_FOLDERS . " as b WHERE b.pid = '$pid' and a.did = b.id and a.bin = '0' and b.bin = '0' $sql and a.filename like '%$term%' ORDER BY a.filename";
+				$resultp = mysql_query($qp, $this->_db->connection);
+				while($rowp = mysql_fetch_array($resultp)) {
+					$rows['value'] = $rowp['title'];
+					$rows['id'] = 'documents,' .$folder. ',' . $pid . ',' .$rowp['id'].',clients';
+					$r[] = $rows;
+				}
+			}			
+		}
+		return $system->json_encode($r);
+	}
+
 
 }
 

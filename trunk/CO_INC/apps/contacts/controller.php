@@ -667,7 +667,13 @@ function getContactSend($id) {
 			 return "error";
 		  }
 	}
-	
+
+
+	function getGlobalSearch($term) {
+		$search = $this->model->getGlobalSearch($term);
+		return $search;
+	}
+
 }
 
 $contacts = new Contacts("contacts");

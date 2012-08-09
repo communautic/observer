@@ -160,6 +160,9 @@ if (!empty($_GET['request'])) {
 		case 'updateStatus':
 			echo($forums->updateStatus($_GET['id'],$_GET['date'],$_GET['status']));
 		break;
+		case 'getGlobalSearch':
+			echo($forums->getGlobalSearch($system->checkMagicQuotesTinyMCE($_GET['term'])));
+		break;
 	}
 }
 
