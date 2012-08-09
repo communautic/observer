@@ -647,6 +647,11 @@ class Brainstorms extends Controller {
 			 return "error";
 		  }
    }
+   
+   	function getGlobalSearch($term) {
+		$search = $this->model->getGlobalSearch($term);
+		return $search;
+	}
 
 
 }

@@ -140,7 +140,7 @@ if(file_exists(CO_PATH_DATA . '/watermark.png')) {
 ?>
 </head>
 <body>
-<div id="background"><img src="<?php echo CO_FILES;?>/img/background.jpg" width="100%" height="100%" /><img id="watermark" src="<?php echo $watermark;?>" /></div>
+<div id="background"><img src="<?php echo CO_FILES;?>/img/background.jpg" style="width: 100%; height: 100%; min-height: 768px; min-width: 1024px;" /><img id="watermark" src="<?php echo $watermark;?>" /></div>
 <div id="intro"><div id="intro-content"><p><img src="<?php echo CO_FILES;?>/img/ajax-loader.gif" alt="Loading" width="32" height="32" /></p></div></div>
 <div id="container">
 <div id="container-inner">

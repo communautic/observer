@@ -634,6 +634,10 @@ class Clients extends Controller {
 		  }
    }
 
+	function getGlobalSearch($term) {
+		$search = $this->model->getGlobalSearch($term);
+		return $search;
+	}
 
 }
 

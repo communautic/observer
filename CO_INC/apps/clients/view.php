@@ -62,6 +62,9 @@
         	<span class="top-headline"></span><span class="top-subheadline"></span><span class="top-subheadlineTwo"></span>
         </div>
         </div>
+        <div class="globalsearch">
+        	<input class="globalSearch ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"><div class="global-search-outer"></div>
+        </div>
     </div>
 	<div class="center-west">
 		<ul id="clientsActions" class="ui-layout-content actionconsole">
