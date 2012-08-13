@@ -1139,14 +1139,14 @@ class ContactsModel extends Model {
 		$q = "SELECT id, CONCAT(lastname,' ',firstname) as label from " . CO_TBL_USERS . " where (lastname like '%$term%' or firstname like '%$term%' or company like '%$term%') and bin ='0' and invisible = '0' ORDER BY lastname, firstname ASC";
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_assoc($result)) {
-			 $rows['value'] = $row['label'];
+			 $rows['value'] = htmlspecialchars_decode($row['label']);
 			 $rows['id'] = 'contact,' .$row['id'];
 			 $r[] = $rows;
 		}
 		$q = "SELECT id, title as label from " . CO_CONTACTS_TBL_GROUPS . " where title like '%$term%' and members != '' and bin ='0'";
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_assoc($result)) {
-			 $rows['value'] = $row['label'];
+			 $rows['value'] = htmlspecialchars_decode($row['label']);
 			 $rows['id'] = 'group,' .$row['id'];
 			 $r[] = $rows;
 		}

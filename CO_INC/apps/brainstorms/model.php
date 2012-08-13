@@ -1971,7 +1971,7 @@ class BrainstormsModel extends Model {
 		$result = mysql_query($q, $this->_db->connection);
 		//$num=mysql_affected_rows();
 		while($row = mysql_fetch_array($result)) {
-			 $rows['value'] = $row['title'];
+			 $rows['value'] = htmlspecialchars_decode($row['title']);
 			 $rows['id'] = 'brainstorms,' .$row['folder']. ',' . $row['id'] . ',0,brainstorms';
 			 $r[] = $rows;
 		}
@@ -1991,7 +1991,7 @@ class BrainstormsModel extends Model {
 			$qp = "SELECT id,CONVERT(title USING latin1) as title FROM " . CO_TBL_BRAINSTORMS_NOTES . " WHERE pid = '$pid' and bin = '0' $sql and title like '%$term%' ORDER BY title";
 			$resultp = mysql_query($qp, $this->_db->connection);
 			while($rowp = mysql_fetch_array($resultp)) {
-				$rows['value'] = $rowp['title'];
+				$rows['value'] = htmlspecialchars_decode($rowp['title']);
 			 	$rows['id'] = 'brainstorms,' .$folder. ',' . $pid . ',0,brainstorms';
 			 	$r[] = $rows;
 			}
@@ -1999,7 +1999,7 @@ class BrainstormsModel extends Model {
 			$qp = "SELECT id,CONVERT(title USING latin1) as title FROM " . CO_TBL_BRAINSTORMS_GRIDS . " WHERE pid = '$pid' and bin = '0' $sql and title like '%$term%' ORDER BY title";
 			$resultp = mysql_query($qp, $this->_db->connection);
 			while($rowp = mysql_fetch_array($resultp)) {
-				$rows['value'] = $rowp['title'];
+				$rows['value'] = htmlspecialchars_decode($rowp['title']);
 			 	$rows['id'] = 'grids,' .$folder. ',' . $pid . ',' .$rowp['id'].',brainstorms';
 			 	$r[] = $rows;
 			}
@@ -2008,7 +2008,7 @@ class BrainstormsModel extends Model {
 				$qp = "SELECT id,CONVERT(title USING latin1) as title FROM " . CO_TBL_BRAINSTORMS_MEETINGS . " WHERE pid = '$pid' and bin = '0' $sql and title like '%$term%' ORDER BY title";
 				$resultp = mysql_query($qp, $this->_db->connection);
 				while($rowp = mysql_fetch_array($resultp)) {
-					$rows['value'] = $rowp['title'];
+					$rows['value'] = htmlspecialchars_decode($rowp['title']);
 					$rows['id'] = 'meetings,' .$folder. ',' . $pid . ',' .$rowp['id'].',brainstorms';
 					$r[] = $rows;
 				}
@@ -2016,7 +2016,7 @@ class BrainstormsModel extends Model {
 				$qp = "SELECT b.id,CONVERT(a.title USING latin1) as title FROM " . CO_TBL_BRAINSTORMS_MEETINGS_TASKS . " as a, " . CO_TBL_BRAINSTORMS_MEETINGS . " as b WHERE b.pid = '$pid' and a.mid = b.id and a.bin = '0' and b.bin = '0' $sql and a.title like '%$term%' ORDER BY a.title";
 				$resultp = mysql_query($qp, $this->_db->connection);
 				while($rowp = mysql_fetch_array($resultp)) {
-					$rows['value'] = $rowp['title'];
+					$rows['value'] = htmlspecialchars_decode($rowp['title']);
 					$rows['id'] = 'meetings,' .$folder. ',' . $pid . ',' .$rowp['id'].',brainstorms';
 					$r[] = $rows;
 				}
@@ -2026,7 +2026,7 @@ class BrainstormsModel extends Model {
 				$qp = "SELECT id,CONVERT(title USING latin1) as title FROM " . CO_TBL_BRAINSTORMS_DOCUMENTS_FOLDERS . " WHERE pid = '$pid' and bin = '0' $sql and title like '%$term%' ORDER BY title";
 				$resultp = mysql_query($qp, $this->_db->connection);
 				while($rowp = mysql_fetch_array($resultp)) {
-					$rows['value'] = $rowp['title'];
+					$rows['value'] = htmlspecialchars_decode($rowp['title']);
 					$rows['id'] = 'documents,' .$folder. ',' . $pid . ',' .$rowp['id'].',brainstorms';
 					$r[] = $rows;
 				}
@@ -2034,7 +2034,7 @@ class BrainstormsModel extends Model {
 				$qp = "SELECT b.id,CONVERT(a.filename USING latin1) as title FROM " . CO_TBL_BRAINSTORMS_DOCUMENTS . " as a, " . CO_TBL_BRAINSTORMS_DOCUMENTS_FOLDERS . " as b WHERE b.pid = '$pid' and a.did = b.id and a.bin = '0' and b.bin = '0' $sql and a.filename like '%$term%' ORDER BY a.filename";
 				$resultp = mysql_query($qp, $this->_db->connection);
 				while($rowp = mysql_fetch_array($resultp)) {
-					$rows['value'] = $rowp['title'];
+					$rows['value'] = htmlspecialchars_decode($rowp['title']);
 					$rows['id'] = 'documents,' .$folder. ',' . $pid . ',' .$rowp['id'].',brainstorms';
 					$r[] = $rows;
 				}
@@ -2044,13 +2044,13 @@ class BrainstormsModel extends Model {
 				$qp = "SELECT id,CONVERT(title USING latin1) as title FROM " . CO_TBL_BRAINSTORMS_VDOCS . " WHERE pid = '$pid' and bin = '0' $sql and title like '%$term%' ORDER BY title";
 				$resultp = mysql_query($qp, $this->_db->connection);
 				while($rowp = mysql_fetch_array($resultp)) {
-					$rows['value'] = $rowp['title'];
+					$rows['value'] = htmlspecialchars_decode($rowp['title']);
 					$rows['id'] = 'vdocs,' .$folder. ',' . $pid . ',' .$rowp['id'].',brainstorms';
 					$r[] = $rows;
 				}
 			}
 		}
-		return $system->json_encode($r);
+		return json_encode($r);
 	}
 	
 }
