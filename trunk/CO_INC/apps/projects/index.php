@@ -189,11 +189,11 @@ if (!empty($_GET['request'])) {
 		case 'markNoticeRead':
 			echo($projects->markNoticeRead($_GET['pid']));
 		break;
+		case 'markNoticeDelete':
+			echo($projects->markNoticeDelete($_GET['id']));
+		break;
 		case 'getNavModulesNumItems':
 			echo($projects->getNavModulesNumItems($_GET['id']));
-		break;
-		case 'getSearch':
-			echo($projects->getSearch($system->checkMagicQuotesTinyMCE($_GET['string'])));
 		break;
 		case 'newCheckpoint':
 			echo($projects->newCheckpoint($_GET['id'],$_GET['date']));
@@ -206,6 +206,15 @@ if (!empty($_GET['request'])) {
 		break;
 		case 'updateStatus':
 			echo($projects->updateStatus($_GET['id'],$_GET['date'],$_GET['status']));
+		break;
+		case 'getProjectsSearch':
+			echo($projects->getProjectsSearch($_GET['term'],$_GET['exclude']));
+		break;
+		case 'saveLastUsedProjects':
+			echo($projects->saveLastUsedProjects($_GET['id']));
+		break;
+		case 'getGlobalSearch':
+			echo($projects->getGlobalSearch($system->checkMagicQuotesTinyMCE($_GET['term'])));
 		break;
 	}
 }

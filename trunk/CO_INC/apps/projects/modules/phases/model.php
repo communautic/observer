@@ -237,7 +237,6 @@ class ProjectsPhasesModel extends ProjectsModel {
 			}
 		}
 		
-		
 		// dates
 		$array["today"] = $this->_date->formatDate("now",CO_DATE_FORMAT);
 		$array["startdate"] = $this->_date->formatDate($array["startdate"],CO_DATE_FORMAT);
@@ -308,9 +307,8 @@ class ProjectsPhasesModel extends ProjectsModel {
 				$array["status_date"] = $array["finished_date"];
 			break;
 		}
-		
-		
-				// checkpoint
+
+		// checkpoint
 		$array["checkpoint"] = 0;
 		$array["checkpoint_date"] = "";
 		$q = "SELECT date FROM " . CO_TBL_USERS_CHECKPOINTS . " where uid='$session->uid' and app = 'projects' and module = 'phases' and app_id = '$id' LIMIT 1";
@@ -321,17 +319,7 @@ class ProjectsPhasesModel extends ProjectsModel {
 			$array["checkpoint_date"] = $this->_date->formatDate($row['date'],CO_DATE_FORMAT);
 			}
 		}
-		
-		
-		/*$perms = $this->getProjectAccess($array["pid"]);
-		$array["canedit"] = false;
-		if($perms == "sysadmin" || $perms == "admin") {
-			$array["canedit"] = true;
-		}*/
-		
-		
-		
-		
+
 		$phase = new Lists($array);
 		
 		// get the tasks
@@ -341,9 +329,7 @@ class ProjectsPhasesModel extends ProjectsModel {
 		while($rowt = mysql_fetch_array($resultt)) {
 			foreach($rowt as $key => $val) {
 				$tasks[$key] = $val;
-				
 			}
-				
 			$tasks["startdate"] = $this->_date->formatDate($tasks["startdate"],CO_DATE_FORMAT);
 			$tasks["enddate"] = $this->_date->formatDate($tasks["enddate"],CO_DATE_FORMAT);
 			$tasks["donedate"] = $this->_date->formatDate($tasks["donedate"],CO_DATE_FORMAT);
@@ -363,7 +349,43 @@ class ProjectsPhasesModel extends ProjectsModel {
 				}
 			}
 			
-			$task[] = new Lists($tasks);
+			if($tasks["cat"] == 2) {
+				$link_id = $tasks["project_link"];
+				// make sure project is available = not bin and not deleted
+				$q = "SELECT * FROM " . CO_TBL_PROJECTS . " WHERE id='$link_id' and bin='0'";
+				$result = mysql_query($q, $this->_db->connection);
+				if(mysql_num_rows($result) > 0) {
+					$p = mysql_fetch_object($result);
+					$tasks["text"] = $p->title;
+					$tasks["link"] = 'projects,'.$p->folder.','.$p->id.',0,projects';
+					$tasks["team"] = $this->_contactsmodel->getUserListPlain($p->management);
+					switch($p->status) {
+						case "0":
+							$tasks["status_text"] = $lang["GLOBAL_STATUS_PLANNED"];
+							$tasks["status_text_time"] = $lang["GLOBAL_STATUS_PLANNED_TIME"];
+							$tasks["status_date"] = $this->_date->formatDate($p->planned_date,CO_DATE_FORMAT);
+						break;
+						case "1":
+							$tasks["status_text"] = $lang["GLOBAL_STATUS_INPROGRESS"];
+							$tasks["status_text_time"] = $lang["GLOBAL_STATUS_INPROGRESS_TIME"];
+							$tasks["status_date"] = $this->_date->formatDate($p->inprogress_date,CO_DATE_FORMAT);
+						break;
+						case "2":
+							$tasks["status_text"] = $lang["GLOBAL_STATUS_FINISHED"];
+							$tasks["status_text_time"] = $lang["GLOBAL_STATUS_FINISHED_TIME"];
+							$tasks["status_date"] = $this->_date->formatDate($p->finished_date,CO_DATE_FORMAT);
+						break;
+						case "3":
+							$tasks["status_text"] = $lang["GLOBAL_STATUS_STOPPED"];
+							$tasks["status_text_time"] = $lang["GLOBAL_STATUS_STOPPED_TIME"];
+							$tasks["status_date"] = $this->_date->formatDate($p->finished_date,CO_DATE_FORMAT);
+						break;
+					}
+					$task[] = new Lists($tasks);
+				} 
+			} else {
+				$task[] = new Lists($tasks);
+			}
 		}
 		
 		$sendto = $this->getSendtoDetails("projects_phases",$id);
@@ -375,23 +397,9 @@ class ProjectsPhasesModel extends ProjectsModel {
 
 	function setDetails($id,$title,$team,$team_ct,$protocol,$documents,$phase_access,$phase_access_orig,$task_startdate,$task_enddate,$task_donedate,$task_id,$task_text,$task_protocol,$task,$task_cat,$task_dependent,$task_team,$task_team_ct) {
 		global $session, $system;
-
-		//$phase_status_date = $this->_date->formatDate($phase_status_date);
 		
 		// user lists
 		$team = $this->_contactsmodel->sortUserIDsByName($team);
-		
-		/*switch($phase_status) {
-			case "0":
-				$sql = "planned_date";
-			break;
-			case "1":
-				$sql = "inprogress_date";
-			break;
-			case "2":
-				$sql = "finished_date";
-			break;
-		}*/
 		
 		$now = gmdate("Y-m-d H:i:s");
 		
@@ -754,6 +762,89 @@ class ProjectsPhasesModel extends ProjectsModel {
 	}
 
 
+	function addProjectLink($id,$pid,$phid) {
+		global $session, $lang;
+		
+		$q = "SELECT a.*,(SELECT MAX(enddate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_PROJECTS . " as a where id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$p = mysql_fetch_object($result);
+
+		$title = $p->title;
+		$startdb = $p->startdate;
+		$startdate = $this->_date->formatDate($p->startdate,CO_DATE_FORMAT);
+		$enddb = $p->enddate;
+		$enddate = $this->_date->formatDate($p->enddate,CO_DATE_FORMAT);
+		
+		
+		$masterstartdate = $this->getProjectField($pid,'startdate');
+		if($masterstartdate > $startdb) {
+			$q = "UPDATE " . CO_TBL_PROJECTS . " set startdate = '$startdb' WHERE id='$pid'";
+			$result = mysql_query($q, $this->_db->connection);
+		}
+		
+		$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES_TASKS . " set pid='$pid', phaseid='$phid',project_link='$id', status = '0', text = '$title', startdate = '$startdb', enddate = '$enddb', cat = '2'";
+		$result = mysql_query($q, $this->_db->connection);
+		$nid = mysql_insert_id();
+			
+		$tasks["id"] = $nid;
+		$tasks["pid"] = $pid;
+		$tasks["phaseid"] = $phid;
+		$tasks["startdate"] = $startdate;
+		$tasks["enddate"] = $enddate;
+		$tasks["text"] = $title;
+		$tasks["team"] = $this->_contactsmodel->getUserListPlain($p->management);
+		switch($p->status) {
+			case "0":
+				$tasks["status_text"] = $lang["GLOBAL_STATUS_PLANNED"];
+				$tasks["status_text_time"] = $lang["GLOBAL_STATUS_PLANNED_TIME"];
+				$tasks["status_date"] = $this->_date->formatDate($p->planned_date,CO_DATE_FORMAT);
+			break;
+			case "1":
+				$tasks["status_text"] = $lang["GLOBAL_STATUS_INPROGRESS"];
+				$tasks["status_text_time"] = $lang["GLOBAL_STATUS_INPROGRESS_TIME"];
+				$tasks["status_date"] = $this->_date->formatDate($p->inprogress_date,CO_DATE_FORMAT);
+			break;
+			case "2":
+				$tasks["status_text"] = $lang["GLOBAL_STATUS_FINISHED"];
+				$tasks["status_text_time"] = $lang["GLOBAL_STATUS_FINISHED_TIME"];
+				$tasks["status_date"] = $this->_date->formatDate($p->finished_date,CO_DATE_FORMAT);
+			break;
+			case "3":
+				$tasks["status_text"] = $lang["GLOBAL_STATUS_STOPPED"];
+				$tasks["status_text_time"] = $lang["GLOBAL_STATUS_STOPPED_TIME"];
+				$tasks["status_date"] = $this->_date->formatDate($p->finished_date,CO_DATE_FORMAT);
+			break;
+		}
+		$task[] = new Lists($tasks);
+		
+		// write user notices
+		$management = $this->getProjectField($id,'management');
+		$q = "SELECT admins FROM co_projects_access where pid='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$admins = "";
+		if(mysql_num_rows($result) > 0) {
+			$admins = mysql_result($result,0);
+		}
+		$users = $management;
+		if($users != "" && $admins != "") {
+			$users .= ',';
+		}
+		$users .= $admins;
+		$users = array_unique(array_filter(explode(",", $users)));
+		$users = array_diff($users, array($session->uid));
+		foreach ($users as &$user) {
+				$qz = "SELECT * FROM " . CO_TBL_PROJECTS_DESKTOP_PROJECTLINKS . " where pid='$id' and relid = '$pid' and phid = '$phid' and uid='$user' and perm ='5'";
+				$resultz = mysql_query($qz, $this->_db->connection);
+				if(mysql_num_rows($resultz) < 1) {
+					$qz = "INSERT INTO " . CO_TBL_PROJECTS_DESKTOP_PROJECTLINKS . " set pid='$id', relid = '$pid', phid = '$phid', uid = '$user', perm ='5'";
+					$resultz = mysql_query($qz, $this->_db->connection);
+				}
+		}
+			
+		return $task;
+	}
+
+
     // dialog for selecting dependent tasks
 	function getTasksDialog($id,$field) {
 		global $lang;
@@ -776,7 +867,7 @@ class ProjectsPhasesModel extends ProjectsModel {
 		$str .= '</div>';	
 		return $str;
 	}
-	
+
 	
 	function getTaskContext($id,$field) {
 		
@@ -800,6 +891,17 @@ class ProjectsPhasesModel extends ProjectsModel {
 		$q = "UPDATE " . CO_TBL_PROJECTS_PHASES_TASKS . " set bin = '1', bintime = NOW(), binuser= '$session->uid' WHERE id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
+		// check if there is a projectlink
+		$q = "SELECT pid,phaseid,project_link FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result) > 0) {
+			$row = mysql_fetch_object($result);
+			$relid = $row->pid;
+			$phid = $row->phaseid;
+			$pid = $row->project_link;
+			$q = "DELETE FROM " . CO_TBL_PROJECTS_DESKTOP_PROJECTLINKS . " WHERE pid='$pid' and relid='$relid' and phid='$phid'";
+			$result = mysql_query($q, $this->_db->connection);
+		}
 		if($result) {
 			return true;
 		}

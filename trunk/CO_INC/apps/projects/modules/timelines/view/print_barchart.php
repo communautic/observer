@@ -89,10 +89,12 @@ $top = $top-7;
          
 <?php foreach($project["phases"][$key]["tasks"] as $tkey => &$tvalue){ 
 				// task
-				if($project["phases"][$key]["tasks"][$tkey]["cat"] == 0) {
+				if($project["phases"][$key]["tasks"][$tkey]["cat"] == 0  || $project["phases"][$key]["tasks"][$tkey]["cat"] == 2) {
 				?>
                 <!-- task -->
                 <div class="<?php echo($project["phases"][$key]["tasks"][$tkey]["status"]);?>" style="z-index: 2; position: absolute; top: <?php echo($ptop[$key]+$project["phases"][$key]["tasks"][$tkey]["css_top"]);?>px; left: <?php echo($pleft[$key]+$project["phases"][$key]["tasks"][$tkey]["css_left"]);?>px; height: 10px; width: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_width"]);?>px;"></div>
+                <?php if ($project["phases"][$key]["tasks"][$tkey]["cat"] == 2) {?>
+                <div style="z-index: 3; position: absolute; top: <?php echo($ptop[$key]+$project["phases"][$key]["tasks"][$tkey]["css_top"]-2);?>px; left: <?php echo($pleft[$key]+$project["phases"][$key]["tasks"][$tkey]["css_left"]+10);?>px; height: 8px; width: 19px;"><img src="<?php echo(CO_FILES);?>/img/print/projectlink_white.png" width="19" height="8" style="margin: 3px 0 0 2px" /></div><?php } ?>
                 <!-- task dependency -->
 				<?php 
 				if(is_int($project["phases"][$key]["tasks"][$tkey]["dep"])){ 

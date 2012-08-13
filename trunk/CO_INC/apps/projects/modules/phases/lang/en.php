@@ -16,6 +16,7 @@ $lang["PROJECT_PHASE_TASK_MILESTONE"] = 'Stage/Milestone';
 $lang["PROJECT_PHASE_TASK"] = 'Stage';
 $lang["PROJECT_PHASE_MILESTONE"] = 'Milestone';
 $lang["PROJECT_PHASE_MILESTONE_DATE"] = 'Date';
+$lang["PROJECT_PHASE_PROJECTLINK"] = 'Project link';
 
 $lang["PROJECT_PHASE_TASK_START"] = 'Start';
 $lang["PROJECT_PHASE_TASK_END"] = 'End';

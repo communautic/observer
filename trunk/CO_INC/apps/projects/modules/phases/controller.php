@@ -215,6 +215,13 @@ class ProjectsPhases extends Projects {
 		global $lang;
 		include 'view/dialog_task.php';
 	}
+	
+	
+	function getProjectLinkDialog() {
+		global $system, $lang;
+		$projects = $this->model->getLast10Projects();
+		include('view/dialog_projectlink.php');
+	}
 
 
 	function getTasksDialog($id,$field) {
@@ -286,6 +293,15 @@ class ProjectsPhases extends Projects {
 			} else {
 				include 'view/milestone.php';
 			}
+		}
+	}
+	
+	function addProjectLink($id,$pid,$phid) {
+		global $lang;
+		$task = $this->model->addProjectLink($id,$pid,$phid);
+		$phase->canedit = 1;
+		foreach($task as $value) {
+			include 'view/project_link.php';
 		}
 	}
 

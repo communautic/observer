@@ -127,13 +127,17 @@ foreach($project["phases"] as $key => &$value){ ?>
          
             	<?php foreach($project["phases"][$key]["tasks"] as $tkey => &$tvalue){ 
 				// task
-				if($project["phases"][$key]["tasks"][$tkey]["cat"] == 0) {
+				if($project["phases"][$key]["tasks"][$tkey]["cat"] == 0 || $project["phases"][$key]["tasks"][$tkey]["cat"] == 2) {
+					$projectlink = "";
 				?>
                 <!-- task -->
                 <div id="task_<?php echo($project["phases"][$key]["tasks"][$tkey]["id"]);?>" class="coTooltip loadProjectsPhase <?php echo($project["phases"][$key]["tasks"][$tkey]["status"]);?>" rel="<?php echo($project["phases"][$key]["id"]);?>" style="z-index: 2; position: absolute; top: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_top"]);?>px; left: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_left"]);?>px; height: 10px; width: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_width"]);?>px;">
+                <?php if ($project["phases"][$key]["tasks"][$tkey]["cat"] == 2) {
+					$projectlink = "Projektlink: ";
+					?><span class="icon-projectlink-barchart"></span><?php } ?>
                 	<!-- task tooltip -->
             		<div class="coTooltipHtml" style="display: none">
-						<?php echo($project["phases"][$key]["tasks"][$tkey]["text"]);?><br />
+						<?php echo($projectlink . $project["phases"][$key]["tasks"][$tkey]["text"]);?><br />
                         <?php echo($project["phases"][$key]["tasks"][$tkey]["startdate"]);?> - <?php echo($project["phases"][$key]["tasks"][$tkey]["enddate"]);?>
 					</div>
                 </div>

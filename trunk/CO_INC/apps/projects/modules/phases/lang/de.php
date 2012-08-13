@@ -12,10 +12,11 @@ $lang["PROJECT_PHASE_TASK_NEW"] = 'Neues Arbeitspaket';
 $lang["PROJECT_PHASE_MILESTONE_NEW"] = 'Neuer Meilenstein';
 
 $lang["PROJECT_PHASE_TEAM"] = 'Mitarbeiter';
-$lang["PROJECT_PHASE_TASK_MILESTONE"] = 'Arbeitspaket/Meilenstein';
+$lang["PROJECT_PHASE_TASK_MILESTONE"] = 'Tätigkeiten';
 $lang["PROJECT_PHASE_TASK"] = 'Arbeitspaket';
 $lang["PROJECT_PHASE_MILESTONE"] = 'Meilenstein';
 $lang["PROJECT_PHASE_MILESTONE_DATE"] = 'Zeitpunkt';
+$lang["PROJECT_PHASE_PROJECTLINK"] = 'Projektlink';
 
 $lang["PROJECT_PHASE_TASK_START"] = 'Start';
 $lang["PROJECT_PHASE_TASK_END"] = 'Ende';

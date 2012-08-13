@@ -37,19 +37,20 @@ if($numPhases > 0) {
     </table>
 	<?php
 		foreach($project["phases"][$key]["tasks"] as $tkey => &$tvalue){ 
-			if($project["phases"][$key]["tasks"][$tkey]["cat"] == 0) {
+			if($project["phases"][$key]["tasks"][$tkey]["cat"] == 0 || $project["phases"][$key]["tasks"][$tkey]["cat"] == 2) {
+				$projectlink = "";
 		?>
 		<table width="100%" class="fourCols">
             <tr>
                 <td class="fourCols-one">&nbsp;</td>
-                <td class="fourCols-two">&nbsp;</td>
-                <td class="fourCols-three">&nbsp;</td>
-                <td class="fourCols-four"><?php echo($project["phases"][$key]["tasks"][$tkey]["text"]);?></td>
+                <td class="fourCols-two-three-combined"><?php if ($project["phases"][$key]["tasks"][$tkey]["cat"] == 2) {
+					$projectlink = "Projektlink: ";
+					?><img src="<?php echo(CO_FILES);?>/img/print/projectlink.png" width="19" height="8" style="margin: 3px 0 0 2px" /><?php } ?>&nbsp;</td>
+                <td class="fourCols-four"><?php echo($projectlink . $project["phases"][$key]["tasks"][$tkey]["text"]);?></td>
             </tr>
             <tr>
                 <td class="fourCols-one">&nbsp;</td>
-                <td class="fourCols-two">&nbsp;</td>
-                <td class="fourCols-three">&nbsp;</td>
+                <td class="fourCols-two-three-combined">&nbsp;</td>
                 <td class="fourCols-four grey smalltext"><?php echo($project["phases"][$key]["tasks"][$tkey]["startdate"]);?> - <?php echo($project["phases"][$key]["tasks"][$tkey]["enddate"]);?></td>
             </tr>
         </table>

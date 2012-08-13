@@ -803,6 +803,7 @@ class Projects extends Controller {
 			$kickoffs = $arr["kickoffs"];
 			$alerts = $arr["alerts"];
 			$notices = $arr["notices"];
+			$projectlinks = $arr["projectlinks"];
 			ob_start();
 			include 'view/widget.php';
 			$data["html"] = ob_get_contents();
@@ -828,23 +829,20 @@ class Projects extends Controller {
 			 return "error";
 		  }
 	}
-	
+
+	function markNoticeDelete($id) {
+		global $lang, $system;
+		$retval = $this->model->markNoticeDelete($id);
+		if($retval){
+			 return $retval;
+		  } else{
+			 return "error";
+		  }
+	}
 	
 	function getNavModulesNumItems($id) {
 		$arr = $this->model->getNavModulesNumItems($id);
 		return json_encode($arr);
-	}
-	
-	
-	function getSearch($string) {
-		global $lang;
-		if($arr = $this->model->getSearch()) {
-			$search = $arr["search"];
-			include 'view/search.php';
-		}
-		else {
-			include CO_INC .'/view/default.php';
-		}
 	}
 	
 	
@@ -873,6 +871,26 @@ class Projects extends Controller {
 		  }
    }
 
+
+	function getProjectsSearch($term,$exclude) {
+		$search = $this->model->getProjectsSearch($term,$exclude);
+		return $search;
+	}
+	
+	function saveLastUsedProjects($id) {
+		$retval = $this->model->saveLastUsedProjects($id);
+		if($retval){
+		   return "true";
+		} else{
+		   return "error";
+		}
+	}
+	
+	
+	function getGlobalSearch($term) {
+		$search = $this->model->getGlobalSearch($term);
+		return $search;
+	}
 
 }
 
