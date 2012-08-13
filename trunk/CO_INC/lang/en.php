@@ -1,5 +1,5 @@
 <?php
-$lang["APPLICATION_NAME"] = "company observer 6.2.11";
+$lang["APPLICATION_NAME"] = "company observer 6.3.0";
 
 setlocale(LC_TIME, "en_EN");
 
@@ -21,6 +21,7 @@ $lang["LOGIN_HELP"] = 'manual_login.pdf';
 /* APPS ACTION LINKS */
 $lang["ACTION_CLOSE"] = "hide";
 $lang["ACTION_NEW"] = "new";
+$lang["ACTION_IMPORT"] = "import";
 $lang["ACTION_PRINT"] = "print";
 $lang["ACTION_SENDTO"] = "send to";
 $lang["ACTION_DUPLICATE"] = "duplicate";
@@ -85,6 +86,15 @@ $lang["GLOBAL_STATUS_ARCHIVED_TIME"] = 'since';
 $lang["GLOBAL_DURATION"] 	= 	'Timeline';
 $lang["GLOBAL_EMAILED_TO"] 	= 	'Send';
 $lang["GLOBAL_DUPLICAT"] 	= 	'Duplicate';
+// employees
+$lang["GLOBAL_STATUS_TRIAL"] = 'in Probe';
+$lang["GLOBAL_STATUS_TRIAL_TIME"] = 'seit';
+$lang["GLOBAL_STATUS_ACTIVE"] = 'aktiv';
+$lang["GLOBAL_STATUS_ACTIVE_TIME"] = 'seit';
+$lang["GLOBAL_STATUS_MATERNITYLEAVE"] = 'karenziert';
+$lang["GLOBAL_STATUS_MATERNITYLEAVE_TIME"] = 'seit';
+$lang["GLOBAL_STATUS_LEAVE"] = 'ausgeschieden';
+$lang["GLOBAL_STATUS_LEAVE_TIME"] = 'am';
 
 $lang["GLOBAL_ACCESS"] = 'Access';
 $lang["GLOBAL_ACCESS_INTERNAL"] = 'internal';
