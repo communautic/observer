@@ -31,7 +31,8 @@ table.fourCols-grey { margin: 6pt 0 6pt -15pt; padding: 0pt 0pt 0pt 0pt; border-
 table.fourCols td { vertical-align:top; }
 .fourCols-one { width: 97pt; font-size: 8pt; padding-top: 3pt; padding-left: 0; padding-right: 0; }
 .fourCols-two { width: 15pt; padding-left: 0; padding-right: 0; }
-.fourCols-three { width: 15pt; padding-left: 0; padding-right: 0; }
+.fourCols-three { width: 20pt; padding-left: 0; padding-right: 0; }
+.fourCols-three-15 { width: 15pt; padding-left: 0; padding-right: 0; }
 .fourCols-two-three-combined { width: 20pt; padding-left: 10pt; padding-right: 0; }
 .fourCols-four { padding-left: 0; padding-right: 15pt; }
 .fourCols-paddingTop { padding-top: 3pt; }
@@ -49,7 +50,7 @@ td.grey, div.grey { color:#666666; }
 
 p { margin: 0; }
 
-.tcell-left { width: 127pt; font-size: 8pt; padding-top: 3pt; }
+.tcell-left { width: 132pt; font-size: 8pt; padding-top: 3pt; }
 .tcell-left-short { width: 120pt; font-size: 8pt; padding-top: 3pt;}
 .short { width: 12pt; vertical-align: top; }
 

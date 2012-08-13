@@ -159,7 +159,7 @@ foreach($task as $value) {
         <tr>
             <td class="fourCols-one"><?php if($i == 1) { echo $lang["PROJECT_PHASE_TASK_MILESTONE"]; }?>&nbsp;</td>
             <td class="fourCols-two">&nbsp;</td>
-            <td class="fourCols-three greybg"><img src="<?php echo(CO_FILES);?>/img/print/projectlink.png" width="15" height="6" style="margin: 5px 0 0 3px" /></td>
+            <td class="fourCols-three greybg"><img src="<?php echo(CO_FILES);?>/img/print/projectlink.png" width="19" height="8" style="margin: 4px 0 0 2px" /></td>
             <td class="fourCols-four greybg">Projektlink: <?php echo $value->text;?></td>
         </tr>
         <tr>
