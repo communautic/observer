@@ -96,6 +96,7 @@ class EmployeesModel extends Model {
    function getFolderDetails($id) {
 		global $session, $contactsmodel, $employeesControllingModel, $lang;
 		$q = "SELECT * FROM " . CO_TBL_EMPLOYEES_FOLDERS . " where id = '$id'";
+		
 		$result = mysql_query($q, $this->_db->connection);
 		if(mysql_num_rows($result) < 1) {
 			return false;
@@ -156,8 +157,7 @@ class EmployeesModel extends Model {
 		  }
 		
 		
-		$q = "SELECT * FROM " . CO_TBL_EMPLOYEES . " where folder='$id' and bin='0'" . $access . " " . $order;
-
+		$q = "SELECT a.*,CONCAT(b.lastname,' ',b.firstname) as title FROM " . CO_TBL_EMPLOYEES . " as a, co_users as b WHERE a.folder='$id' and a.bin='0' and a.cid=b.id" . $access . " " . $order;
 		$result = mysql_query($q, $this->_db->connection);
 	  	$employees = "";
 	  	while ($row = mysql_fetch_array($result)) {
@@ -169,23 +169,23 @@ class EmployeesModel extends Model {
 			
 		switch($employee["status"]) {
 			case "0":
-				$employee["status_text"] = $lang["GLOBAL_STATUS_ENTERED"];
-				$employee["status_text_time"] = $lang["GLOBAL_STATUS_ENTERED_TIME"];
+				$employee["status_text"] = $lang["GLOBAL_STATUS_TRIAL"];
+				$employee["status_text_time"] = $lang["GLOBAL_STATUS_TRIAL_TIME"];
 				$employee["status_date"] = $this->_date->formatDate($employee["planned_date"],CO_DATE_FORMAT);
 			break;
 			case "1":
-				$employee["status_text"] = $lang["GLOBAL_STATUS_INPROGRESS"];
-				$employee["status_text_time"] = $lang["GLOBAL_STATUS_INPROGRESS_TIME"];
+				$employee["status_text"] = $lang["GLOBAL_STATUS_ACTIVE"];
+				$employee["status_text_time"] = $lang["GLOBAL_STATUS_ACTIVE_TIME"];
 				$employee["status_date"] = $this->_date->formatDate($employee["inprogress_date"],CO_DATE_FORMAT);
 			break;
 			case "2":
-				$employee["status_text"] = $lang["GLOBAL_STATUS_FINISHED"];
-				$employee["status_text_time"] = $lang["GLOBAL_STATUS_FINISHED_TIME"];
+				$employee["status_text"] = $lang["GLOBAL_STATUS_MATERNITYLEAVE"];
+				$employee["status_text_time"] = $lang["GLOBAL_STATUS_MATERNITYLEAVE_TIME"];
 				$employee["status_date"] = $this->_date->formatDate($employee["finished_date"],CO_DATE_FORMAT);
 			break;
 			case "3":
-				$employee["status_text"] = $lang["GLOBAL_STATUS_STOPPED"];
-				$employee["status_text_time"] = $lang["GLOBAL_STATUS_STOPPED_TIME"];
+				$employee["status_text"] = $lang["GLOBAL_STATUS_LEAVE"];
+				$employee["status_text_time"] = $lang["GLOBAL_STATUS_LEAVE_TIME"];
 				$employee["status_date"] = $this->_date->formatDate($employee["stopped_date"],CO_DATE_FORMAT);
 			break;
 		}
@@ -395,7 +395,7 @@ class EmployeesModel extends Model {
    * get the list of employees for a employee folder
    */ 
    function getEmployeeList($id,$sort) {
-      global $session;
+      global $session,$contactsmodel;
 	  
 	  if($sort == 0) {
 		  $sortstatus = $this->getSortStatus("employees-sort-status",$id);
@@ -451,7 +451,7 @@ class EmployeesModel extends Model {
 	  if(!$session->isSysadmin()) {
 		$access = " and id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
 	  }
-	  $q ="select id,title,status,checked_out,checked_out_user from " . CO_TBL_EMPLOYEES . " where folder='$id' and bin = '0' " . $access . $order;
+	  $q ="select a.id,CONCAT(b.lastname,' ',b.firstname) as title,a.status,a.checked_out,a.checked_out_user from " . CO_TBL_EMPLOYEES . " as a, co_users as b where a.cid=b.id and a.folder='$id' and a.bin = '0' " . $access . $order;
 
 	  $this->setSortStatus("employees-sort-status",$sortcur,$id);
       $result = mysql_query($q, $this->_db->connection);
@@ -541,7 +541,7 @@ class EmployeesModel extends Model {
 
    function getEmployeeDetails($id,$option = "") {
 		global $session, $contactsmodel, $lang;
-		$q = "SELECT * FROM " . CO_TBL_EMPLOYEES . " where id = '$id'";
+		$q = "SELECT a.*,CONCAT(b.lastname,' ',b.firstname) as title FROM " . CO_TBL_EMPLOYEES . " as a, co_users as b where a.cid=b.id and a.id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if(mysql_num_rows($result) < 1) {
 			return false;
@@ -637,29 +637,29 @@ class EmployeesModel extends Model {
 		$array["status_stopped_active"] = "";
 		switch($array["status"]) {
 			case "0":
-				$array["status_text"] = $lang["GLOBAL_STATUS_ENTERED"];
-				$array["status_text_time"] = $lang["GLOBAL_STATUS_ENTERED_TIME"];
+				$array["status_text"] = $lang["GLOBAL_STATUS_TRIAL"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_TRIAL_TIME"];
 				$array["status_planned_active"] = " active";
 				$array["status_date"] = $this->_date->formatDate($array["planned_date"],CO_DATE_FORMAT);
 				$array["enddate"] = $this->_date->formatDate($today,CO_DATE_FORMAT);
 			break;
 			case "1":
-				$array["status_text"] = $lang["GLOBAL_STATUS_INPROGRESS"];
-				$array["status_text_time"] = $lang["GLOBAL_STATUS_INPROGRESS_TIME"];
+				$array["status_text"] = $lang["GLOBAL_STATUS_ACTIVE"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_ACTIVE_TIME"];
 				$array["status_inprogress_active"] = " active";
 				$array["status_date"] = $this->_date->formatDate($array["inprogress_date"],CO_DATE_FORMAT);
 				$array["enddate"] = $this->_date->formatDate($today,CO_DATE_FORMAT);
 			break;
 			case "2":
-				$array["status_text"] = $lang["GLOBAL_STATUS_FINISHED"];
-				$array["status_text_time"] = $lang["GLOBAL_STATUS_FINISHED_TIME"];
+				$array["status_text"] = $lang["GLOBAL_STATUS_MATERNITYLEAVE"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_MATERNITYLEAVE_TIME"];
 				$array["status_finished_active"] = " active";
 				$array["status_date"] = $this->_date->formatDate($array["finished_date"],CO_DATE_FORMAT);
 				$array["enddate"] = $array["status_date"];
 			break;
 			case "3":
-				$array["status_text"] = $lang["GLOBAL_STATUS_STOPPED"];
-				$array["status_text_time"] = $lang["GLOBAL_STATUS_STOPPED_TIME"];
+				$array["status_text"] = $lang["GLOBAL_STATUS_LEAVE"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_LEAVE_TIME"];
 				$array["status_stopped_active"] = " active";
 				$array["status_date"] = $this->_date->formatDate($array["stopped_date"],CO_DATE_FORMAT);
 				$array["enddate"] = $array["status_date"];
@@ -872,14 +872,13 @@ class EmployeesModel extends Model {
 	}
 
 
-	function newEmployee($id) {
+	function newEmployee($id,$cid) {
 		global $session, $contactsmodel, $lang;
 		
 		$now = gmdate("Y-m-d H:i:s");
 		$title = $lang["EMPLOYEE_NEW"];
 		
-		//$q = "INSERT INTO " . CO_TBL_EMPLOYEES . " set folder = '$id', title = '$title', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
-		$q = "INSERT INTO " . CO_TBL_EMPLOYEES . " set folder = '$id', title = '$title', startdate = '$now', enddate = '$now', management = '$session->uid', status = '0', planned_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+		$q = "INSERT INTO " . CO_TBL_EMPLOYEES . " set folder = '$id', cid='$cid', title = '$title', startdate = '$now', enddate = '$now', management = '$session->uid', status = '0', planned_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			$id = mysql_insert_id();
@@ -1022,6 +1021,16 @@ class EmployeesModel extends Model {
 			while($row = mysql_fetch_array($result)) {
 				$mid = $row["id"];
 				$employeesMeetingsModel->deleteMeeting($mid);
+			}
+		}
+		
+		if(in_array("objectives",$active_modules)) {
+			$employeesObjectivesModel = new EmployeesObjectivesModel();
+			$q = "SELECT id FROM co_employees_objectives where pid = '$id'";
+			$result = mysql_query($q, $this->_db->connection);
+			while($row = mysql_fetch_array($result)) {
+				$mid = $row["id"];
+				$employeesObjectivesModel->deleteObjective($mid);
 			}
 		}
 
@@ -1774,6 +1783,10 @@ class EmployeesModel extends Model {
 		if(in_array("forums",$active_modules)) {
 			$employeesForumsModel = new EmployeesForumsModel();
 			$data["employees_forums_items"] = $employeesForumsModel->getNavNumItems($id);
+		}
+		if(in_array("objectives",$active_modules)) {
+			$employeesObjectivesModel = new EmployeesObjectivesModel();
+			$data["employees_objectives_items"] = $employeesObjectivesModel->getNavNumItems($id);
 		}
 		if(in_array("meetings",$active_modules)) {
 			$employeesMeetingsModel = new EmployeesMeetingsModel();

@@ -28,7 +28,7 @@ if(is_array($employees)) {
 	?>
     <div class="loadEmployee listOuter"  rel="<?php echo($employee->id);?>">
     <div class="bold co-link listTitle"><?php echo($employee->title);?></div>
-    <div class="text11 listText"><div><?php echo($employee->status_text . " " . $employee->status_text_time . " " . $employee->status_date);?> &nbsp; | &nbsp; </div><div><?php echo $lang["EMPLOYEE_MANAGEMENT"];?> <?php echo($employee->management);?> &nbsp; </div></div>
+    <div class="text11 listText"><div><?php echo($employee->status_text . " " . $employee->status_text_time . " " . $employee->status_date);?></div></div>
     </div>
     <?php 
 	}

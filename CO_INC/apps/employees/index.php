@@ -94,7 +94,7 @@ if (!empty($_GET['request'])) {
 			echo($employees->getSendtoDetails("employees",$_GET['id']));
 		break;
 		case 'newEmployee':
-			echo($employees->newEmployee($_GET['id']));
+			echo($employees->newEmployee($_GET['id'],$_GET['cid']));
 		break;
 		case 'createDuplicate':
 			echo($employees->createDuplicate($_GET['id']));
@@ -109,6 +109,9 @@ if (!empty($_GET['request'])) {
 			echo($employees->deleteEmployee($_GET['id']));
 		break;
 		// get Groups for Dialogs
+		case 'getContactsImportDialog':
+			echo($contacts->getContactsImportDialog($_GET['request'],$_GET['field'],$_GET['append'],$_GET['title'],$_GET['sql']));
+		break;
 		case 'getContactsDialog':
 			echo($contacts->getContactsDialog($_GET['request'],$_GET['field'],$_GET['append'],$_GET['title'],$_GET['sql']));
 		break;
