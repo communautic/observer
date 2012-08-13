@@ -55,7 +55,7 @@ function projectsControlling(name) {
 				}
 			});
 		}
-		$("#modalDialogForward").dialog('close');
+		//$("#modalDialogForward").dialog('close');
 	}
 	
 	

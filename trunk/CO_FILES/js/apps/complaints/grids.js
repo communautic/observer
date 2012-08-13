@@ -216,7 +216,7 @@ function complaintsGrids(name) {
 		var id = $("#complaints").data("third");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/complaints/modules/grids&request=getSendtoDetails&id="+id, success: function(html){
 			$("#complaintsgrid_sendto").html(html);
-			$("#modalDialogForward").dialog('close');
+			//$("#modalDialogForward").dialog('close');
 			}
 		});
 	}

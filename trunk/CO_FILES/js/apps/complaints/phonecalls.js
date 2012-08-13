@@ -218,7 +218,7 @@ function complaintsPhonecalls(name) {
 		var id = $("#complaints").data("third");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/complaints/modules/phonecalls&request=getSendtoDetails&id="+id, success: function(html){
 			$("#complaintsphonecall_sendto").html(html);
-			$("#modalDialogForward").dialog('close');
+			//$("#modalDialogForward").dialog('close');
 			}
 		});
 	}

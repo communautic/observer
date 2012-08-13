@@ -224,7 +224,7 @@ function publishersMenues(name) {
 		var id = $("#publishers").data("first");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/publishers/modules/menues&request=getSendtoDetails&id="+id, success: function(html){
 			$("#publishersmenue_sendto").html(html);
-			$("#modalDialogForward").dialog('close');
+			//$("#modalDialogForward").dialog('close');
 			}
 		});
 	}

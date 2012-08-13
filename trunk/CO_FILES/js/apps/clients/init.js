@@ -229,7 +229,7 @@ function clientsApplication(name) {
 		var id = $("#clients").data("second");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/clients&request=getSendtoDetails&id="+id, success: function(html){
 			$("#client_sendto").html(html);
-			$("#modalDialogForward").dialog('close');
+			//$("#modalDialogForward").dialog('close');
 			}
 		});
 	}
@@ -546,7 +546,7 @@ function clientsFolders(name) {
 
 
 	this.actionSendtoResponse = function() {
-			$("#modalDialogForward").dialog('close');
+			//$("#modalDialogForward").dialog('close');
 	}
 
 	

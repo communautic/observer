@@ -218,7 +218,7 @@ function clientsPhonecalls(name) {
 		var id = $("#clients").data("third");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/clients/modules/phonecalls&request=getSendtoDetails&id="+id, success: function(html){
 			$("#clientsphonecall_sendto").html(html);
-			$("#modalDialogForward").dialog('close');
+			//$("#modalDialogForward").dialog('close');
 			}
 		});
 	}

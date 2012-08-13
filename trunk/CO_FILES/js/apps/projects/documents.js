@@ -246,7 +246,7 @@ function projectsDocuments(name) {
 		var id = $("#projects").data("third");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/documents&request=getSendtoDetails&id="+id, success: function(html){
 			$("#projectsdocument_sendto").html(html);
-			$("#modalDialogForward").dialog('close');
+			//$("#modalDialogForward").dialog('close');
 			}
 		});
 	}

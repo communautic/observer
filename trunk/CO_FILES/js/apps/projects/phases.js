@@ -235,6 +235,10 @@ function projectsPhases(name) {
 			$("#projects3 ul[rel=phases]").html(data.html);
 			var liindex = $("#projects3 ul[rel=phases] .module-click").index($("#projects3 ul[rel=phases] .module-click[rel='"+id+"']"));
 			$("#projects3 ul[rel=phases] .module-click:eq("+liindex+")").addClass('active-link');
+			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getDates&id="+pid, success: function(project){
+						$("#projectenddate").html(project.enddate);
+					}
+				});
 			}
 		});
 	}
@@ -266,7 +270,7 @@ function projectsPhases(name) {
 		var id = $("#projects").data("third");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=getSendtoDetails&id="+id, success: function(html){
 			$("#projects_phase_sendto").html(html);
-			$("#modalDialogForward").dialog('close');
+			//$("#modalDialogForward").dialog('close');
 			}
 		});
 	}
@@ -307,6 +311,15 @@ function projectsPhases(name) {
 	this.actionDialog = function(offset,request,field,append,title,sql) {
 		switch(request) {
 			case "getPhaseTaskDialog":
+				$.ajax({ type: "GET", url: "/", data: 'path=apps/projects/modules/phases&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
+					$("#modalDialog").html(html);
+					$("#modalDialog").dialog('option', 'position', offset);
+					$("#modalDialog").dialog('option', 'title', title);
+					$("#modalDialog").dialog('open');
+					}
+				});
+			break;
+			case "getProjectLinkDialog":
 				$.ajax({ type: "GET", url: "/", data: 'path=apps/projects/modules/phases&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
 					$("#modalDialog").html(html);
 					$("#modalDialog").dialog('option', 'position', offset);
@@ -384,20 +397,48 @@ function projectsPhases(name) {
 		var phid = $("#projects").data("third");
 		var cat = rel;
 		$("#modalDialog").dialog("close");
-		$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=addTask&pid=" + pid + "&phid=" + phid + "&date=" + enddate + "&enddate=" + enddate + "&cat=" + cat, success: function(html){
-			$('#projectsphasetasks').append(html);
-			var idx = parseInt($('#projects-right .cbx').size() -1);
-			var element = $('#projects-right .cbx:eq('+idx+')');
-			$.jNice.CheckAddPO(element);
-			$('#projects-right div.phaseouter:eq('+idx+')').slideDown(function() {
-				$(this).find(":text:eq(0)").focus();
-				if(idx == 6) {
-				$('#projects-right .addTaskTable').clone().insertAfter('#projectsphasetasks');
+		if(cat == 2) {
+			this.actionDialog(0,'getProjectLinkDialog','status',1);
+		} else {
+			$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=addTask&pid=" + pid + "&phid=" + phid + "&date=" + enddate + "&enddate=" + enddate + "&cat=" + cat, success: function(html){
+				$('#projectsphasetasks').append(html);
+				var idx = parseInt($('#projects-right .cbx').size() -1);
+				var element = $('#projects-right .cbx:eq('+idx+')');
+				$.jNice.CheckAddPO(element);
+				$('#projects-right div.phaseouter:eq('+idx+')').slideDown(function() {
+					$(this).find(":text:eq(0)").focus();
+					if(idx == 6) {
+					$('#projects-right .addTaskTable').clone().insertAfter('#projectsphasetasks');
+					}
+					initProjectsContentScrollbar();		
+					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getDates&id="+pid, success: function(project){
+						$("#projectenddate").html(project.enddate);
+						}
+					});
+				});
 				}
-				initProjectsContentScrollbar();								   
 			});
-			}
-		});
+		}
+	}
+
+
+	this.addProjectLink = function(id) {
+		var pid = $("#projects").data("second");
+		var phid = $("#projects").data("third");
+		$("#modalDialog").dialog("close");
+		$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=addProjectLink&id=" + id + "&pid=" + pid + "&phid=" + phid, success: function(html){
+				$('#projectsphasetasks').append(html);
+				var idx = parseInt($('#projects-right .cbx').size() -1);
+				$('#projects-right div.phaseouter:eq('+idx+')').slideDown(function() {
+					$(this).find(":text:eq(0)").focus();
+					if(idx == 6) {
+					$('#projects-right .addTaskTable').clone().insertAfter('#projectsphasetasks');
+					}
+					initProjectsContentScrollbar();								   
+				});
+				}
+			});
+		$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=saveLastUsedProjects&id="+id});
 	}
 	
 	
@@ -437,6 +478,11 @@ function projectsPhases(name) {
 								var pen = $(".task_start:last").val();
 								$("#projectsphasestartdate").html(pst);
 								$("#projectsphaseenddate").html(pen);
+								var pid = $("#projects").data("second");
+								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getDates&id="+pid, success: function(project){
+									$("#projectenddate").html(project.enddate);
+									}
+								});
 							});
 						} 
 						}

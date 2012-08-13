@@ -275,7 +275,7 @@ function brainstormsMeetings(name) {
 		var id = $("#brainstorms").data("third");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/meetings&request=getSendtoDetails&id="+id, success: function(html){
 			$("#brainstormsmeeting_sendto").html(html);
-			$("#modalDialogForward").dialog('close');
+			//$("#modalDialogForward").dialog('close');
 			}
 		});
 	}

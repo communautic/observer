@@ -217,7 +217,7 @@ function clientsOrders(name) {
 		var id = $("#clients").data("third");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/clients/modules/orders&request=getSendtoDetails&id="+id, success: function(html){
 			$("#clientsorder_sendto").html(html);
-			$("#modalDialogForward").dialog('close');
+			//$("#modalDialogForward").dialog('close');
 			}
 		});
 	}

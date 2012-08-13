@@ -216,7 +216,7 @@ function brainstormsGrids(name) {
 		var id = $("#brainstorms").data("third");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/grids&request=getSendtoDetails&id="+id, success: function(html){
 			$("#brainstormsgrid_sendto").html(html);
-			$("#modalDialogForward").dialog('close');
+			//$("#modalDialogForward").dialog('close');
 			}
 		});
 	}

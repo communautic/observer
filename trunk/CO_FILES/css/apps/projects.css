@@ -159,7 +159,18 @@ background-color: #e1f0af; }
 
 .psp-item { position: relative; margin-bottom: 20px; border: 1px solid #000; width: 150px; height: 56px; font-size: 11px; font-weight: bold; text-align:center}
 .psp-item-startdate { position: absolute; left: 0; bottom: 0; width: 75px; height: 13px; border-top: 1px solid #000;}
+.psp-item-startdate-projectlink { position: absolute; left: 21px; bottom: 0; width: 65px; height: 13px; border-top: 1px solid #000;}
 .psp-item-enddate { position: absolute; right: 0; bottom: 0; width: 74px; height: 13px; border-top: 1px solid #000; border-left: 1px solid #000;}
+.psp-item-projectlink { position: absolute; left: 0px; bottom: 0; width: 22px; height: 13px; border-top: 1px solid #000;}
+.icon-projectlink-psp {
+    background: url("../../img/icons.png") no-repeat scroll -550px -61px transparent;
+    display: block;
+    height: 15px;
+    margin: 2px 0 0 2px;
+    opacity: 0.7;
+    width: 21px;
+}
+.psp-item-enddate-projectlink { position: absolute; right: 0; bottom: 0; width: 64px; height: 13px; border-top: 1px solid #000; border-left: 1px solid #000;}
 .psp-connector-project-vert { position: absolute; top: 56px; left: 75px; height: 24px; width: 1px; background-color: #000; }
 .psp-connector-phase-hori { position: absolute; top: -10px; left: -94px; height: 9px; width: 170px; border-top: 1px solid #000; border-right: 1px solid #000; }
 .psp-connector-phase-vert { position: absolute; top: 28px; left: -10px; height: 1px; width: 9px; background-color: #000; }

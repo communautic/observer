@@ -243,7 +243,7 @@ function complaintsApplication(name) {
 		var id = $("#complaints").data("second");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/complaints&request=getSendtoDetails&id="+id, success: function(html){
 			$("#complaint_sendto").html(html);
-			$("#modalDialogForward").dialog('close');
+			//$("#modalDialogForward").dialog('close');
 			}
 		});
 	}
@@ -561,7 +561,7 @@ function complaintsFolders(name) {
 
 
 	this.actionSendtoResponse = function() {
-			$("#modalDialogForward").dialog('close');
+			//$("#modalDialogForward").dialog('close');
 	}
 
 	

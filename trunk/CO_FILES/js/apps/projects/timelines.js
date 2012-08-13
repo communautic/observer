@@ -59,7 +59,7 @@ function projectsTimelines(name) {
 				}
 			});
 		}
-		$("#modalDialogForward").dialog('close');
+		//$("#modalDialogForward").dialog('close');
 	}
 
 

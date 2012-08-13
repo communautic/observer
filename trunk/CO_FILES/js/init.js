@@ -93,6 +93,7 @@ function projectSendProcess(formData, form, sendformOptions) {
 	}
 	formData[formData.length] = processList('to');
 	formData[formData.length] = processList('cc');
+	$("#modalDialogForward").dialog('close');
 }
 
 function projectSendResponse(data) {
@@ -450,6 +451,22 @@ $(document).ready(function() {
 		obj.actionNew();
 	})
 	
+	$('span.actionContact').on('click', function(e) {
+		e.preventDefault();
+		if($(this).hasClass("noactive")) {
+			return false;
+		}
+		e.preventDefault();
+		var offsetsubtract = 70;
+		if($(this).attr("offsetsubract") > 0) {
+			var offsetsubtract = 70 - $(this).attr("offsetsubract");
+		}
+		var offset = $(this).offset();
+		offset = [offset.left+offsetsubtract,offset.top];
+		var obj = getCurrentModule();
+		obj.actionContact(offset);
+	})
+	
 	// title autosave
 	$(document).on('blur', 'input.bg, input.title, textarea.elastic',function() {
 		if(confirmNavigation()) {
@@ -771,7 +788,6 @@ $(document).ready(function() {
 	$(document).on('click', 'span.actionSendForm',function(e) {
 		e.preventDefault();
 		$('.sendForm').ajaxSubmit(sendformOptions);
-		
 	});
 
 	$('.spinner').ajaxStart(function() {
@@ -1687,6 +1703,9 @@ function navThreeTitleSecond(objectname, clicked, passed_id) {
 					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+objectname+"&request=get"+objectnameCapsSingular+"Details&id="+objecctid, success: function(text){
 						object.getNavModulesNumItems(objecctid)
 						object.$appContent.html(text.html);
+						if(text.access === undefined) {
+							window[objectname+'Actions'](3);
+						} else {
 						switch (text.access) {
 							case "sysadmin":
 								if(data.html == "<li></li>") {
@@ -1716,6 +1735,7 @@ function navThreeTitleSecond(objectname, clicked, passed_id) {
 									window[objectname+'Actions'](5);
 								}
 							break;
+						}
 						}
 						window['init'+objectnameCaps+'ContentScrollbar']();
 						if(text.access != "sysadmin") { 

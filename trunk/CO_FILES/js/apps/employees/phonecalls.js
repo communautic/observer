@@ -218,7 +218,7 @@ function employeesPhonecalls(name) {
 		var id = $("#employees").data("third");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/employees/modules/phonecalls&request=getSendtoDetails&id="+id, success: function(html){
 			$("#employeesphonecall_sendto").html(html);
-			$("#modalDialogForward").dialog('close');
+			//$("#modalDialogForward").dialog('close');
 			}
 		});
 	}

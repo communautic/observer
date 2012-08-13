@@ -222,10 +222,10 @@ function complaintsVDocs(name) {
 		var id = $("#complaints").data("third");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/complaints/modules/vdocs&request=getSendtoDetails&id="+id, success: function(html){
 			$("#complaintsvdoc_sendto").html(html);
-			$("#modalDialogForward").dialog('close');
+			//$("#modalDialogForward").dialog('close');
 			}
 		});
-		//$("#modalDialogForward").dialog('close');
+		////$("#modalDialogForward").dialog('close');
 	}
 
 

@@ -246,7 +246,7 @@ function forumsDocuments(name) {
 		var id = $("#forums").data("third");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/forums/modules/documents&request=getSendtoDetails&id="+id, success: function(html){
 			$("#forumsdocument_sendto").html(html);
-			$("#modalDialogForward").dialog('close');
+			//$("#modalDialogForward").dialog('close');
 			}
 		});
 	}
