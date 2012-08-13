@@ -901,6 +901,9 @@ $(document).ready(function() {
 			source: "?path=apps/employees&request=getGlobalSearch",
 			//minLength: 2,
 			select: function(event, ui) {
+				var obj = getCurrentModule();
+				var cid = $('#'+getCurrentApp()+' input[name="id"]').val()
+				obj.checkIn(cid);
 				var href = ui.item.id.split(",");
 				externalLoadThreeLevels(href[0],href[1],href[2],href[3],href[4]);
 			},

@@ -61,6 +61,8 @@
 					/*if($(this).attr('name') == 'protocol' || $(this).attr('name') == 'document') {
 						$("#actionconsole > ul > li:eq(3)").addClass('activated');
 					}*/
+					var input = $a.siblings('input')[0];
+					alert(input.value);
 				});
 				return false;
 		});
