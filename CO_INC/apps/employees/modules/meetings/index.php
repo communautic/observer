@@ -23,12 +23,12 @@ include_once(CO_INC . "/apps/employees/modules/documents/model.php");
 include_once(CO_INC . "/apps/employees/modules/documents/controller.php");
 
 
-// Objectives
-include_once(CO_INC . "/apps/employees/modules/objectives/config.php");
-include_once(CO_INC . "/apps/employees/modules/objectives/lang/" . $session->userlang . ".php");
-include_once(CO_INC . "/apps/employees/modules/objectives/model.php");
-include_once(CO_INC . "/apps/employees/modules/objectives/controller.php");
-$employeesObjectives = new EmployeesObjectives("objectives");
+// Meetings
+include_once(CO_INC . "/apps/employees/modules/meetings/config.php");
+include_once(CO_INC . "/apps/employees/modules/meetings/lang/" . $session->userlang . ".php");
+include_once(CO_INC . "/apps/employees/modules/meetings/model.php");
+include_once(CO_INC . "/apps/employees/modules/meetings/controller.php");
+$employeesMeetings = new EmployeesMeetings("meetings");
 
 
 if (!empty($_GET['request'])) {
@@ -38,77 +38,77 @@ if (!empty($_GET['request'])) {
 			if(!empty($_GET['sort'])) {
 				$sort = $_GET['sort'];
 			}
-			echo($employeesObjectives->getList($_GET['id'],$sort));
+			echo($employeesMeetings->getList($_GET['id'],$sort));
 		break;
 		case 'getDetails':
-			echo($employeesObjectives->getDetails($_GET['id']));
+			echo($employeesMeetings->getDetails($_GET['id']));
 		break;
 		case 'createNew':
-			echo($employeesObjectives->createNew($_GET['id']));
+			echo($employeesMeetings->createNew($_GET['id']));
 		break;
 		case 'createDuplicate':
-			echo($employeesObjectives->createDuplicate($_GET['id']));
+			echo($employeesMeetings->createDuplicate($_GET['id']));
 		break;
-		case 'binObjective':
-			echo($employeesObjectives->binObjective($_GET['id']));
+		case 'binMeeting':
+			echo($employeesMeetings->binMeeting($_GET['id']));
 		break;
-		case 'restoreObjective':
-			echo($employeesObjectives->restoreObjective($_GET['id']));
+		case 'restoreMeeting':
+			echo($employeesMeetings->restoreMeeting($_GET['id']));
 		break;
-			case 'deleteObjective':
-			echo($employeesObjectives->deleteObjective($_GET['id']));
+			case 'deleteMeeting':
+			echo($employeesMeetings->deleteMeeting($_GET['id']));
 		break;
 		case 'setOrder':
-			echo($employees->setSortOrder("employees-objectives-sort",$_GET['objectiveItem'],$_GET['id']));
+			echo($employees->setSortOrder("employees-meetings-sort",$_GET['meetingItem'],$_GET['id']));
 		break;
 		case 'printDetails':
 			$t = "pdf"; // options: pdf, html
 			if(!empty($_GET['t'])) {
 				$t = $_GET['t'];
 			}
-			echo($employeesObjectives->printDetails($_GET['id'],$t));
+			echo($employeesMeetings->printDetails($_GET['id'],$t));
 		break;
 		case 'getSend':
-			echo($employeesObjectives->getSend($_GET['id']));
+			echo($employeesMeetings->getSend($_GET['id']));
 		break;
 		case 'getSendtoDetails':
-			echo($employeesObjectives->getSendtoDetails("employees_objectives",$_GET['id']));
+			echo($employeesMeetings->getSendtoDetails("employees_meetings",$_GET['id']));
 		break;
-		case 'checkinObjective':
-			echo($employeesObjectives->checkinObjective($_GET['id']));
+		case 'checkinMeeting':
+			echo($employeesMeetings->checkinMeeting($_GET['id']));
 		break;
 		case 'toggleIntern':
-			echo($employeesObjectives->toggleIntern($_GET['id'],$_GET['status']));
+			echo($employeesMeetings->toggleIntern($_GET['id'],$_GET['status']));
 		break;
 		case 'addTask':
-			echo($employeesObjectives->addTask($_GET['mid'],$_GET['num'],$_GET['sort']));
+			echo($employeesMeetings->addTask($_GET['mid'],$_GET['num'],$_GET['sort']));
 		break;
 		case 'deleteTask':
-			echo($employeesObjectives->deleteTask($_GET['id']));
+			echo($employeesMeetings->deleteTask($_GET['id']));
 		break;
-		case 'restoreObjectiveTask':
-			echo($employeesObjectives->restoreObjectiveTask($_GET['id']));
+		case 'restoreMeetingTask':
+			echo($employeesMeetings->restoreMeetingTask($_GET['id']));
 		break;
-			case 'deleteObjectiveTask':
-			echo($employeesObjectives->deleteObjectiveTask($_GET['id']));
+			case 'deleteMeetingTask':
+			echo($employeesMeetings->deleteMeetingTask($_GET['id']));
 		break;
-		case 'getObjectiveStatusDialog':
-			echo($employeesObjectives->getObjectiveStatusDialog());
+		case 'getMeetingStatusDialog':
+			echo($employeesMeetings->getMeetingStatusDialog());
 		break;
 		case 'getHelp':
-			echo($employeesObjectives->getHelp());
+			echo($employeesMeetings->getHelp());
 		break;
 		case 'newCheckpoint':
-			echo($employeesObjectives->newCheckpoint($_GET['id'],$_GET['date']));
+			echo($employeesMeetings->newCheckpoint($_GET['id'],$_GET['date']));
 		break;
 		case 'updateCheckpoint':
-			echo($employeesObjectives->updateCheckpoint($_GET['id'],$_GET['date']));
+			echo($employeesMeetings->updateCheckpoint($_GET['id'],$_GET['date']));
 		break;
 		case 'deleteCheckpoint':
-			echo($employeesObjectives->deleteCheckpoint($_GET['id']));
+			echo($employeesMeetings->deleteCheckpoint($_GET['id']));
 		break;
 		case 'updateStatus':
-			echo($employeesObjectives->updateStatus($_GET['id'],$_GET['date'],$_GET['status']));
+			echo($employeesMeetings->updateStatus($_GET['id'],$_GET['date'],$_GET['status']));
 		break;
 	}
 }
@@ -147,13 +147,13 @@ if (!empty($_POST['request'])) {
 			if(isset($_POST['task_sort'])) {
 				$task_sort = $_POST['task_sort'];
 			}
-			echo($employeesObjectives->setDetails($_POST['pid'], $_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['item_date'], $_POST['objectivestart'], $_POST['objectiveend'], $_POST['location'], $system->checkMagicQuotes($_POST['location_ct']), $_POST['participants'], $system->checkMagicQuotes($_POST['participants_ct']), $_POST['management'], $system->checkMagicQuotes($_POST['management_ct']),$task_id,$task_title,$task_text,$task,$task_sort,$_POST['documents'],$_POST['objective_access'],$_POST['objective_access_orig']));
+			echo($employeesMeetings->setDetails($_POST['pid'], $_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['item_date'], $_POST['meetingstart'], $_POST['meetingend'], $_POST['location'], $system->checkMagicQuotes($_POST['location_ct']), $_POST['participants'], $system->checkMagicQuotes($_POST['participants_ct']), $_POST['management'], $system->checkMagicQuotes($_POST['management_ct']),$task_id,$task_title,$task_text,$task,$task_sort,$_POST['documents'],$_POST['meeting_access'],$_POST['meeting_access_orig']));
 		break;
 		case 'sendDetails':
-			echo($employeesObjectives->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
+			echo($employeesMeetings->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
 		break;
 		case 'updateCheckpointText':
-			echo($employeesObjectives->updateCheckpointText($_POST['id'],$system->checkMagicQuotes($_POST['text'])));
+			echo($employeesMeetings->updateCheckpointText($_POST['id'],$system->checkMagicQuotes($_POST['text'])));
 		break;
 	}
 }

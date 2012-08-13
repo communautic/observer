@@ -1,59 +1,59 @@
 <table width="100%" class="title grey">
 	<tr>
-        <td class="tcell-left"><?php echo $lang["EMPLOYEE_OBJECTIVE_TITLE"];?></td>
-        <td><strong><?php echo($objective->title);?></strong></td>
+        <td class="tcell-left"><?php echo $lang["EMPLOYEE_MEETING_TITLE"];?></td>
+        <td><strong><?php echo($meeting->title);?></strong></td>
 	</tr>
 </table>
 <table width="100%" class="standard-grey">
 	<tr>
-		<td class="tcell-left"><?php echo $lang["EMPLOYEE_OBJECTIVE_DATE"];?></td>
-		<td><?php echo($objective->item_date)?></td>
+		<td class="tcell-left"><?php echo $lang["EMPLOYEE_MEETING_DATE"];?></td>
+		<td><?php echo($meeting->item_date)?></td>
     </tr>
 </table>
 <table width="100%" class="standard-grey">
 	<tr>
-	  <td class="tcell-left"><?php echo $lang["EMPLOYEE_OBJECTIVE_TIME_START"];?></td>
-        <td><?php echo($objective->start);?></td>
+	  <td class="tcell-left"><?php echo $lang["EMPLOYEE_MEETING_TIME_START"];?></td>
+        <td><?php echo($meeting->start);?></td>
 	</tr>
 </table>
 <table width="100%" class="standard-grey">
 	<tr>
-	  <td class="tcell-left"><?php echo $lang["EMPLOYEE_OBJECTIVE_TIME_END"];?></td>
-        <td><?php echo($objective->end);?></td>
+	  <td class="tcell-left"><?php echo $lang["EMPLOYEE_MEETING_TIME_END"];?></td>
+        <td><?php echo($meeting->end);?></td>
 	</tr>
 </table>
 <table width="100%" class="standard-grey">
     <tr>
-	  <td class="tcell-left"><?php echo $lang["EMPLOYEE_OBJECTIVE_PLACE"];?></td>
-        <td><?php echo($objective->location);?></td>
+	  <td class="tcell-left"><?php echo $lang["EMPLOYEE_MEETING_PLACE"];?></td>
+        <td><?php echo($meeting->location);?></td>
 	</tr>
 </table>
-<?php if(!empty($objective->participants_print) || !empty($objective->participants_ct)) { ?>
+<?php if(!empty($meeting->participants_print) || !empty($meeting->participants_ct)) { ?>
 <table width="100%" class="standard-grey">
 	<tr>
-		<td class="tcell-left"><?php echo $lang["EMPLOYEE_OBJECTIVE_ATTENDEES"];?></td>
-		<td><?php echo($objective->participants_print)?><br /><?php echo($objective->participants_ct);?></td>
+		<td class="tcell-left"><?php echo $lang["EMPLOYEE_MEETING_ATTENDEES"];?></td>
+		<td><?php echo($meeting->participants_print)?><br /><?php echo($meeting->participants_ct);?></td>
     </tr>
 </table>
 <?php } ?>
-<?php if(!empty($objective->management_print) || !empty($objective->management_ct)) { ?>
+<?php if(!empty($meeting->management_print) || !empty($meeting->management_ct)) { ?>
 <table width="100%" class="standard-grey">
 	<tr>
-	  <td class="tcell-left"><?php echo $lang["EMPLOYEE_OBJECTIVE_MANAGEMENT"];?></td>
-        <td><?php echo($objective->management_print);?><br /><?php echo($objective->management_ct);?></td>
+	  <td class="tcell-left"><?php echo $lang["EMPLOYEE_MEETING_MANAGEMENT"];?></td>
+        <td><?php echo($meeting->management_print);?><br /><?php echo($meeting->management_ct);?></td>
 	</tr>
 </table>
 <?php } ?>
 <table width="100%" class="standard-grey-paddingBottom">
 	<tr>
 	  <td class="tcell-left"><?php echo $lang["GLOBAL_STATUS"];?></td>
-        <td><?php echo($objective->status_text);?> <?php echo($objective->status_text_time);?> <?php echo($objective->status_date)?></td>
+        <td><?php echo($meeting->status_text);?> <?php echo($meeting->status_text_time);?> <?php echo($meeting->status_date)?></td>
 	</tr>
 </table>
 &nbsp;
 <table width="100%" class="standard">
 	<tr>
-		<td class="tcell-left"><?php echo $lang["EMPLOYEE_OBJECTIVE_GOALS"];?></td>
+		<td class="tcell-left"><?php echo $lang["EMPLOYEE_MEETING_GOALS"];?></td>
 		<td>&nbsp;</td>
     </tr>
 </table>

@@ -1,23 +1,23 @@
 
-<?php if(is_array($arr["objectives"])) { ?>
+<?php if(is_array($arr["meetings"])) { ?>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
-		<td class="tcell-left-inactive text11"><?php echo $lang["EMPLOYEE_OBJECTIVES"];?></td>
+		<td class="tcell-left-inactive text11"><?php echo $lang["EMPLOYEE_MEETINGS"];?></td>
     <td class="tcell-right">&nbsp;</td>
     </tr>
 </table>
-<?php foreach ($arr["objectives"] as $objective) { ?>
-    <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive" id="objective_<?php echo($objective->id);?>" rel="<?php echo($objective->id);?>">
+<?php foreach ($arr["meetings"] as $meeting) { ?>
+    <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive" id="meeting_<?php echo($meeting->id);?>" rel="<?php echo($meeting->id);?>">
 	<tr>
-		<td class="tcell-left text11"><span><?php echo $lang["EMPLOYEE_OBJECTIVE_TITLE"];?></span></td>
-		<td class="tcell-right"><?php echo($objective->title);?></td>
-        <td width="30"><a href="employees_objectives" class="binRestore" rel="<?php echo $objective->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="employees_objectives" class="binDelete" rel="<?php echo $objective->id;?>"><span class="icon-delete"></span></a></td>
+		<td class="tcell-left text11"><span><?php echo $lang["EMPLOYEE_MEETING_TITLE"];?></span></td>
+		<td class="tcell-right"><?php echo($meeting->title);?></td>
+        <td width="30"><a href="employees_meetings" class="binRestore" rel="<?php echo $meeting->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="30"><a href="employees_meetings" class="binDelete" rel="<?php echo $meeting->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>
-		<td class="tcell-right"><?php echo($objective->binuser . ", " .$objective->bintime)?></td>
+		<td class="tcell-right"><?php echo($meeting->binuser . ", " .$meeting->bintime)?></td>
         <td></td>
         <td></td>
 	</tr>
@@ -28,25 +28,25 @@
 ?>
 
 
-<?php if(is_array($arr["objectives_tasks"])) { ?>
+<?php if(is_array($arr["meetings_tasks"])) { ?>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
-		<td class="tcell-left-inactive text11"><?php echo $lang["EMPLOYEE_OBJECTIVE_GOALS"];?></td>
+		<td class="tcell-left-inactive text11"><?php echo $lang["EMPLOYEE_MEETING_GOALS"];?></td>
     <td class="tcell-right">&nbsp;</td>
     </tr>
 </table>
-<?php foreach ($arr["objectives_tasks"] as $objective_task) { ?>
-    <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive" id="objective_task_<?php echo($objective_task->id);?>" rel="<?php echo($objective_task->id);?>">
+<?php foreach ($arr["meetings_tasks"] as $meeting_task) { ?>
+    <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive" id="meeting_task_<?php echo($meeting_task->id);?>" rel="<?php echo($meeting_task->id);?>">
 	<tr>
-		<td class="tcell-left text11"><span><?php echo $lang["EMPLOYEE_OBJECTIVE_TITLE"];?></span></td>
-		<td class="tcell-right"><?php echo($objective_task->title);?></td>
-        <td width="30"><a href="employees_objectives" class="binRestoreItem" rel="<?php echo $objective_task->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="employees_objectives" class="binDeleteItem" rel="<?php echo $objective_task->id;?>"><span class="icon-delete"></span></a></td>
+		<td class="tcell-left text11"><span><?php echo $lang["EMPLOYEE_MEETING_TITLE"];?></span></td>
+		<td class="tcell-right"><?php echo($meeting_task->title);?></td>
+        <td width="30"><a href="employees_meetings" class="binRestoreItem" rel="<?php echo $meeting_task->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="30"><a href="employees_meetings" class="binDeleteItem" rel="<?php echo $meeting_task->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>
-		<td class="tcell-right"><?php echo($objective_task->binuser . ", " .$objective_task->bintime)?></td>
+		<td class="tcell-right"><?php echo($meeting_task->binuser . ", " .$meeting_task->bintime)?></td>
         <td></td>
         <td></td>
 	</tr>
