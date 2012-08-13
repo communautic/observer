@@ -67,7 +67,7 @@ foreach($task as $value) {
      ?>
     <table width="100%" class="fourCols-grey">
         <tr>
-            <td class="fourCols-three greybg"><?php echo $img;?></td>
+            <td class="fourCols-three-15 greybg"><?php echo $img;?></td>
             <td class="fourCols-four greybg"><strong><?php echo($value->title);?></strong></td>
         </tr>
      </table>
