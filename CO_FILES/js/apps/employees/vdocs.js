@@ -222,10 +222,10 @@ function employeesVDocs(name) {
 		var id = $("#employees").data("third");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/employees/modules/vdocs&request=getSendtoDetails&id="+id, success: function(html){
 			$("#employeesvdoc_sendto").html(html);
-			$("#modalDialogForward").dialog('close');
+			//$("#modalDialogForward").dialog('close');
 			}
 		});
-		//$("#modalDialogForward").dialog('close');
+		////$("#modalDialogForward").dialog('close');
 	}
 
 

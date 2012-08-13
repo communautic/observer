@@ -482,6 +482,10 @@ ul.actionconsole span.actionNew { display: block; height: 33px; background: url(
 ul.actionconsole span.actionNew:hover { background: url(../img/buttons.png) no-repeat -100px -40px; cursor: pointer;}
 ul.actionconsole span.actionNew.noactive { background: url(../img/buttons.png) no-repeat 0px -40px; cursor: default;}
 
+ul.actionconsole span.actionContact { display: block; height: 33px; background: url(../img/buttons.png) no-repeat -50px -480px;}
+ul.actionconsole span.actionContact:hover { background: url(../img/buttons.png) no-repeat -100px -480px; cursor: pointer;}
+ul.actionconsole span.actionContact.noactive { background: url(../img/buttons.png) no-repeat -0px -480px; cursor: default;}
+
 ul.actionconsole span.actionPrint { display: block; height: 33px; background: url(../img/buttons.png) no-repeat -50px -80px;}
 ul.actionconsole span.actionPrint:hover { background: url(../img/buttons.png) no-repeat -100px -80px; cursor: pointer;}
 ul.actionconsole span.actionPrint.noactive { background: url(../img/buttons.png) no-repeat -0px -80px; cursor: default;}
@@ -533,6 +537,8 @@ ul.actionconsole span.actionBin.noactive { background: url(../img/buttons.png) n
 .icon-restore { display: block; margin: 2px 0 0 5px; width: 15px; height: 15px;  background: url(../img/icons.png) no-repeat -260px 0px; }
 .icon-milestone { display: block; width: 15px; height: 15px;  background: url(../img/icons.png) no-repeat -180px 0px; }
 .icon-milestone-grey { display: block; width: 15px; height: 15px;  background: url(../img/icons.png) no-repeat -200px -20px; }
+.icon-projectlink { display: block; width: 19px; height: 15px;  background: url(../img/icons.png) no-repeat -550px -36px; }
+.icon-projectlink-barchart { display: block; width: 19px; height: 15px;  background: url(../img/icons.png) no-repeat -550px -61px; margin-left: 10px; opacity: 0.7;}
 .icon-reply { display: block; margin: 2px 0 0 0; width: 15px; height: 18px;  background: url(../img/icons.png) no-repeat -340px -20px; }
 .icon-info { display: block; margin: 1px 0 0 5px; width: 15px; height: 15px;  background: url(../img/icons.png) no-repeat -300px -40px; }
 .icon-toggle { display: block; margin: 2px 0 0 5px; width: 15px; height: 15px;  background: url(../img/icons.png) no-repeat -440px 0px; }

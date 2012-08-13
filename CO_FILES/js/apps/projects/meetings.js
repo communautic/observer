@@ -275,7 +275,7 @@ function projectsMeetings(name) {
 		var id = $("#projects").data("third");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/meetings&request=getSendtoDetails&id="+id, success: function(html){
 			$("#projectsmeeting_sendto").html(html);
-			$("#modalDialogForward").dialog('close');
+			//$("#modalDialogForward").dialog('close');
 			}
 		});
 	}

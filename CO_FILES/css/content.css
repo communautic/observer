@@ -52,6 +52,9 @@ background-color: #e5e5e5 !important;
 	border-bottom: 1px solid #CCCCCC;
     border-top: 1px solid #FFFFFF;
 }
+.tbl-inactive.projectlink { 
+	color: #333;
+}
 
 div.table-footer-outer { 
 	-webkit-border-radius: 0 0 8px 8px;
@@ -197,6 +200,20 @@ font-weight: normal;
 .dialog-text-3 div { line-height: 22px; padding: 0 10px; }
 .dialog-text-3 a { display: block; line-height: 26px; background-color: #e5e5e5; border-bottom: 1px solid #fff; padding: 0 10px;}
 .dialog-text-3 a:hover { background-color: #bfbfbf; color: #000 !important; }
+
+.dialog-text-4 {
+	border-right: 4px solid #333;
+	border-left: 4px solid #333;
+	border-bottom: 4px solid #333;
+	background-color: #e5e5e5;
+	height: 170px;
+	border-radius: 0 0 6px 6px;
+	overflow: hidden;
+}
+.dialog-text-4 p { line-height: 26px; border-bottom: 1px solid #e0e0e0; padding: 0 10px; }
+.dialog-text-4 div { line-height: 22px; padding: 0; }
+.dialog-text-4 a { display: block; line-height: 26px; background-color: #e5e5e5; border-bottom: 1px solid #fff; padding: 0 10px;}
+.dialog-text-4 a:hover { background-color: #bfbfbf; color: #000 !important; }
 
 .dialog-text-3 .regular { overflow: hidden; padding: 0; }
 

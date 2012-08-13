@@ -210,7 +210,7 @@ function brainstormsApplication(name) {
 		var id = $("#brainstorms").data("second");
 		//$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms&request=getSendtoDetails&id="+id, success: function(html){
 			//$("#brainstorm_sendto").html(html);
-			$("#modalDialogForward").dialog('close');
+			//$("#modalDialogForward").dialog('close');
 			//}
 		//});
 	}
@@ -652,7 +652,7 @@ function brainstormsFolders(name) {
 
 
 	this.actionSendtoResponse = function() {
-			$("#modalDialogForward").dialog('close');
+			//$("#modalDialogForward").dialog('close');
 	}
 
 

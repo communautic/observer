@@ -232,10 +232,10 @@ function projectsApplication(name) {
 
 
 	this.actionSendtoResponse = function() {
+		//$("#modalDialogForward").dialog('close');
 		var id = $("#projects").data("second");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=getSendtoDetails&id="+id, success: function(html){
 			$("#project_sendto").html(html);
-			$("#modalDialogForward").dialog('close');
 			}
 		});
 	}
@@ -729,7 +729,7 @@ function projectsFolders(name) {
 
 
 	this.actionSendtoResponse = function() {
-		$("#modalDialogForward").dialog('close');
+		//$("#modalDialogForward").dialog('close');
 	}
 
 	

@@ -253,7 +253,7 @@ function contactsContact(name) {
 
 
 	this.actionSendtoResponse = function() {
-		$("#modalDialogForward").dialog('close');
+		//$("#modalDialogForward").dialog('close');
 	}
 
 
@@ -599,7 +599,7 @@ function contactsGroups(name) {
 
 
 	this.actionSendtoResponse = function() {
-		$("#modalDialogForward").dialog('close');
+		//$("#modalDialogForward").dialog('close');
 	}
 
 
@@ -1504,6 +1504,55 @@ $(document).ready(function() {
 				$(this).val("");
 			}
 		});
+	});
+	
+	
+	// autocomplete contacts import search
+	$('.contacts-import').livequery(function() { 
+		$(this).autocomplete({
+			appendTo: '#tabs-1',
+			source: "?path=apps/contacts&request=getContactsSearch",
+			//minLength: 2,
+			select: function(event, ui) {
+				//var field = $(this).attr("field");
+				//log(field, ui.item.id, ui.item.value);
+				var obj = getCurrentModule();
+				obj.importContact(ui.item.id);
+			},
+			close: function(event, ui) {
+				$(this).val("");
+			}
+		});
+	});
+	
+	$(document).on('click', 'a.importContactfromDialog', function(e) {
+		e.preventDefault();
+		var cid = $(this).attr("cid");
+		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=saveLastUsedContacts&id="+cid});
+		var obj = getCurrentModule();
+		obj.importContact(cid);
+		
+		/*var field = $(this).attr("field");
+		var append = $(this).attr("append");
+		var cid = $(this).attr("cid");
+		var name = $(this).html();
+		var html = '<span class="listmember-outer"><a class="listmember" uid="' + cid + '" field="'+field+'">' + name + '</a>';
+		var app = getCurrentApp();
+		var obj = getCurrentModule();
+		if (obj.name == app+"_access") {
+			insertContactAccess(field,cid,name,html);																																
+		} else if (field == "to" || field == "cc"){
+			insertContactEmail(field,cid,name,html);	
+		} else {
+			if($("#"+field).html() != "") {
+				$("#"+field+" .listmember:visible:last").append(", ");
+			}
+			$("#"+field).append(html);
+			//var obj = getCurrentModule();
+			$('#'+app+' .coform').ajaxSubmit(obj.poformOptions);
+			// save to lastused
+			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=saveLastUsedContacts&id="+cid});
+		}*/
 	});
 
 });

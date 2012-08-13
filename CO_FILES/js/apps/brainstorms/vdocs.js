@@ -222,10 +222,10 @@ function brainstormsVDocs(name) {
 		var id = $("#brainstorms").data("third");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/vdocs&request=getSendtoDetails&id="+id, success: function(html){
 			$("#brainstormsvdoc_sendto").html(html);
-			$("#modalDialogForward").dialog('close');
+			//$("#modalDialogForward").dialog('close');
 			}
 		});
-		//$("#modalDialogForward").dialog('close');
+		////$("#modalDialogForward").dialog('close');
 	}
 
 

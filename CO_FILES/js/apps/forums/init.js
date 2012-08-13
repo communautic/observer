@@ -225,7 +225,7 @@ function forumsApplication(name) {
 		var id = $("#forums").data("second");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/forums&request=getSendtoDetails&id="+id, success: function(html){
 			$("#forum_sendto").html(html);
-			$("#modalDialogForward").dialog('close');
+			//$("#modalDialogForward").dialog('close');
 			}
 		});
 	}
@@ -618,7 +618,7 @@ function forumsFolders(name) {
 		//var id = $("#forums1 .active-link").attr("rel");
 		//$.ajax({ type: "GET", url: "/", data: "path=apps/forums&request=getSendtoDetails&id="+id, success: function(html){
 			//$("#forum_sendto").html(html);
-			$("#modalDialogForward").dialog('close');
+			//$("#modalDialogForward").dialog('close');
 			//}
 		//});
 	}

@@ -230,7 +230,7 @@ function complaintsForums(name) {
 		var id = $("#complaints").data("third");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/complaints/modules/forums&request=getSendtoDetails&id="+id, success: function(html){
 			$("#complaintsforum_sendto").html(html);
-			$("#modalDialogForward").dialog('close');
+			//$("#modalDialogForward").dialog('close');
 			}
 		});
 	}

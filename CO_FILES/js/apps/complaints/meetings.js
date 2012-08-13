@@ -275,7 +275,7 @@ function complaintsMeetings(name) {
 		var id = $("#complaints").data("third");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/complaints/modules/meetings&request=getSendtoDetails&id="+id, success: function(html){
 			$("#complaintsmeeting_sendto").html(html);
-			$("#modalDialogForward").dialog('close');
+			//$("#modalDialogForward").dialog('close');
 			}
 		});
 	}

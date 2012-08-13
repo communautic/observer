@@ -246,7 +246,7 @@ function clientsDocuments(name) {
 		var id = $("#clients").data("third");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/clients/modules/documents&request=getSendtoDetails&id="+id, success: function(html){
 			$("#clientsdocument_sendto").html(html);
-			$("#modalDialogForward").dialog('close');
+			//$("#modalDialogForward").dialog('close');
 			}
 		});
 	}

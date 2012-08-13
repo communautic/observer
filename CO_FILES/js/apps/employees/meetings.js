@@ -275,7 +275,7 @@ function employeesMeetings(name) {
 		var id = $("#employees").data("third");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/employees/modules/meetings&request=getSendtoDetails&id="+id, success: function(html){
 			$("#employeesmeeting_sendto").html(html);
-			$("#modalDialogForward").dialog('close');
+			//$("#modalDialogForward").dialog('close');
 			}
 		});
 	}

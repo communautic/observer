@@ -291,6 +291,14 @@ $(document).ready(function() {
 		projects.markNoticeRead(href[2]);
 	});
 	
+	$(document).on('click', '#desktop .projectsLinkDelete', function(e) {
+		e.preventDefault();
+		var href = $(this).attr('rel').split(",");
+		var id = $(this).attr('link');
+		externalLoadThreeLevels(href[0],href[1],href[2],href[3],'projects');
+		projects.markNoticeDelete(id);
+	});
+	
 	
 	$(document).on('click', '#desktop .productionsLink', function(e) {
 		e.preventDefault();

@@ -222,10 +222,10 @@ function forumsVDocs(name) {
 		var id = $("#forums").data("third");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/forums/modules/vdocs&request=getSendtoDetails&id="+id, success: function(html){
 			$("#forumsvdoc_sendto").html(html);
-			$("#modalDialogForward").dialog('close');
+			//$("#modalDialogForward").dialog('close');
 			}
 		});
-		//$("#modalDialogForward").dialog('close');
+		////$("#modalDialogForward").dialog('close');
 	}
 
 

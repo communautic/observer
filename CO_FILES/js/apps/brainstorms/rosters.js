@@ -209,7 +209,7 @@ function brainstormsRosters(name) {
 		var id = $("#brainstorms").data("third");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/rosters&request=getSendtoDetails&id="+id, success: function(html){
 			$("#brainstormsroster_sendto").html(html);
-			$("#modalDialogForward").dialog('close');
+			//$("#modalDialogForward").dialog('close');
 			}
 		});
 	}

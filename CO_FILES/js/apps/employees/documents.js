@@ -246,7 +246,7 @@ function employeesDocuments(name) {
 		var id = $("#employees").data("third");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/employees/modules/documents&request=getSendtoDetails&id="+id, success: function(html){
 			$("#employeesdocument_sendto").html(html);
-			$("#modalDialogForward").dialog('close');
+			//$("#modalDialogForward").dialog('close');
 			}
 		});
 	}
