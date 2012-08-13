@@ -370,8 +370,8 @@ class Employees extends Controller {
 	}
 
 
-	function newEmployee($id) {
-		$retval = $this->model->newEmployee($id);
+	function newEmployee($id,$cid) {
+		$retval = $this->model->newEmployee($id,$cid);
 		if($retval){
 			 return '{ "action": "new", "id": "' . $retval . '" }';
 		  } else{

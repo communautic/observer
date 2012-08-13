@@ -3,16 +3,16 @@
 <table border="0" cellpadding="0" cellspacing="0" class="table-title">
   <tr>
     <td class="tcell-left text11"><span class="<?php if($employee->canedit) { ?>content-nav focusTitle<?php } ?>"><span><?php echo $lang["EMPLOYEE_TITLE"];?></span></span></td>
-    <td class="tcell-right"><?php if($employee->canedit) { ?><input name="title" type="text" class="title textarea-title" value="<?php echo($employee->title);?>" maxlength="100" /><?php } else { ?><div class="textarea-title"><?php echo($employee->title);?></div><?php } ?></td>
+    <td class="tcell-right"><?php if($employee->canedit) { ?><input name="title" type="hidden" class="title textarea-title" value="<?php echo($employee->title);?>" maxlength="100" /><?php } ?><div class="textarea-title"><?php echo($employee->title);?></div></td>
   </tr>
   <tr class="table-title-status">
     <td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_STATUS"];?></td>
     <td colspan="2"><div class="statusTabs">
     	<ul>
-        	<li><span class="left<?php if($employee->canedit) { ?> statusButton<?php } ?> planned<?php echo $employee->status_planned_active;?>" rel="0" reltext="<?php echo $lang["GLOBAL_STATUS_ENTERED_TIME"];?>"><?php echo $lang["GLOBAL_STATUS_ENTERED"];?></span></li>
-            <li><span class="<?php if($employee->canedit) { ?>statusButton <?php } ?>inprogress<?php echo $employee->status_inprogress_active;?>" rel="1" reltext="<?php echo $lang["GLOBAL_STATUS_INPROGRESS_TIME"];?>"><?php echo $lang["GLOBAL_STATUS_INPROGRESS"];?></span></li>
-            <li><span class="<?php if($employee->canedit) { ?>statusButton <?php } ?>finished<?php echo $employee->status_finished_active;?>" rel="2" reltext="<?php echo $lang["GLOBAL_STATUS_FINISHED_TIME"];?>"><?php echo $lang["GLOBAL_STATUS_FINISHED"];?></span></li>
-            <li><span class="right<?php if($employee->canedit) { ?> statusButton<?php } ?> stopped<?php echo $employee->status_stopped_active;?>" rel="3" reltext="<?php echo $lang["GLOBAL_STATUS_STOPPED_TIME"];?>"><?php echo $lang["GLOBAL_STATUS_STOPPED"];?></span></li>
+        	<li><span class="left<?php if($employee->canedit) { ?> statusButton<?php } ?> planned<?php echo $employee->status_planned_active;?>" rel="0" reltext="<?php echo $lang["GLOBAL_STATUS_TRIAL_TIME"];?>"><?php echo $lang["GLOBAL_STATUS_TRIAL"];?></span></li>
+            <li><span class="<?php if($employee->canedit) { ?>statusButton <?php } ?>inprogress<?php echo $employee->status_inprogress_active;?>" rel="1" reltext="<?php echo $lang["GLOBAL_STATUS_ACTIVE_TIME"];?>"><?php echo $lang["GLOBAL_STATUS_ACTIVE"];?></span></li>
+            <li><span class="<?php if($employee->canedit) { ?>statusButton <?php } ?>finished<?php echo $employee->status_finished_active;?>" rel="2" reltext="<?php echo $lang["GLOBAL_STATUS_MATERNITYLEAVE_TIME"];?>"><?php echo $lang["GLOBAL_STATUS_MATERNITYLEAVE"];?></span></li>
+            <li><span class="right<?php if($employee->canedit) { ?> statusButton<?php } ?> stopped<?php echo $employee->status_stopped_active;?>" rel="3" reltext="<?php echo $lang["GLOBAL_STATUS_LEAVE_TIME"];?>"><?php echo $lang["GLOBAL_STATUS_LEAVE"];?></span></li>
             <li><div class="status-time"><?php echo($employee->status_text_time)?></div><div class="status-input"><input name="phase_status_date" type="text" class="input-date statusdp" value="<?php echo($employee->status_date)?>" readonly="readonly" /></div></li>
 		</ul></div></td>
   </tr>
@@ -133,6 +133,24 @@
         <td class="tcell-right"><?php if($employee->canedit) { ?><textarea name="protocol" class="elastic"><?php echo(strip_tags($employee->protocol));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($employee->protocol)));?><?php } ?></td>
 	</tr>
 </table>
+<div id="contactTabs" class="contentTabs">
+	<ul class="contentTabsList">
+		<li><span class="active" rel="EmployeesFirst">Privatadresse</span></li>
+		<li><span rel="EmployeesSecond">Kosten</span></li>
+        <li><span rel="EmployeesThird">Leistungsstatus</span></li>
+	</ul>
+    <div id="EmployeesTabsContent" class="contentTabsContent">
+        <div id="EmployeesFirst">
+			First
+        </div>
+        <div id="EmployeesSecond" style="display: none;">
+			Second
+		</div>
+        <div id="EmployeesThird" style="display: none;">
+			Third
+        </div>
+    </div>
+</div>
 </form>
 <?php if($employee->access != "guest") { ?>
 <div class="content-spacer"></div>
