@@ -495,6 +495,12 @@ function getContactSend($id) {
 		include_once dirname(__FILE__).'/view/dialog_contacts.php';
 	}
 	
+	function getContactsImportDialog($request,$field,$append,$title,$sql) {
+		global $lang;
+		$contacts = $this->model->getLast10Contacts();
+		include_once dirname(__FILE__).'/view/dialog_contacts_import.php';
+	}
+	
 	function saveLastUsedContacts($id) {
 		$retval = $this->model->saveLastUsedContacts($id);
 		if($retval){
