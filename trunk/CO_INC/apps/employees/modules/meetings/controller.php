@@ -1,12 +1,12 @@
 <?php
 
-class EmployeesObjectives extends Employees {
+class EmployeesMeetings extends Employees {
 	var $module;
 
 	function __construct($name) {
 			$this->module = $name;
 			$this->form_url = "apps/employees/modules/$name/";
-			$this->model = new EmployeesObjectivesModel();
+			$this->model = new EmployeesMeetingsModel();
 			$this->binDisplay = true;
 	}
 
@@ -14,7 +14,7 @@ class EmployeesObjectives extends Employees {
 	function getList($id,$sort) {
 		global $system, $lang;
 		$arr = $this->model->getList($id,$sort);
-		$objectives = $arr["objectives"];
+		$meetings = $arr["meetings"];
 		ob_start();
 			include('view/list.php');
 			$data["html"] = ob_get_contents();
@@ -22,7 +22,7 @@ class EmployeesObjectives extends Employees {
 		$data["items"] = $arr["items"];
 		$data["sort"] = $arr["sort"];
 		$data["perm"] = $arr["perm"];
-		$data["title"] = $lang["EMPLOYEE_OBJECTIVE_ACTION_NEW"];
+		$data["title"] = $lang["EMPLOYEE_MEETING_ACTION_NEW"];
 		return $system->json_encode($data);
 	}
 
@@ -30,7 +30,7 @@ class EmployeesObjectives extends Employees {
 	function getDetails($id) {
 		global $lang;
 		if($arr = $this->model->getDetails($id)) {
-			$objective = $arr["objective"];
+			$meeting = $arr["meeting"];
 			$task = $arr["task"];
 			$sendto = $arr["sendto"];
 			ob_start();
@@ -54,16 +54,16 @@ class EmployeesObjectives extends Employees {
 		$title = "";
 		$html = "";
 		if($arr = $this->model->getDetails($id)) {
-			$objective = $arr["objective"];
+			$meeting = $arr["meeting"];
 			$task = $arr["task"];
 			$sendto = $arr["sendto"];
 			ob_start();
 				include 'view/print.php';
 				$html = ob_get_contents();
 			ob_end_clean();
-			$title = $objective->title;
+			$title = $meeting->title;
 		}
-		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["EMPLOYEE_PRINT_OBJECTIVE"];
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["EMPLOYEE_PRINT_MEETING"];
 		switch($t) {
 			case "html":
 				$this->printHTML($title,$html);
@@ -76,21 +76,21 @@ class EmployeesObjectives extends Employees {
 	function getSend($id) {
 		global $lang;
 		if($arr = $this->model->getDetails($id,'prepareSendTo')) {
-			$objective = $arr["objective"];
+			$meeting = $arr["meeting"];
 			$task = $arr["task"];
 			
 			$form_url = $this->form_url;
 			$request = "sendDetails";
-			$to = $objective->sendtoTeam;
+			$to = $meeting->sendtoTeam;
 			$cc = "";
-			$subject = $objective->title;
+			$subject = $meeting->title;
 			$variable = "";
 			
 			$data["error"] = 0;
 			$data["error_message"] = "";
-			if($objective->sendtoTeamNoEmail != "") {
+			if($meeting->sendtoTeamNoEmail != "") {
 				$data["error"] = 1;
-				$data["error_message"] = $objective->sendtoTeamNoEmail;
+				$data["error_message"] = $meeting->sendtoTeamNoEmail;
 			}
 			ob_start();
 				include CO_INC .'/view/dialog_send.php';
@@ -106,38 +106,38 @@ class EmployeesObjectives extends Employees {
 		$title = "";
 		$html = "";
 		if($arr = $this->model->getDetails($id)) {
-			$objective = $arr["objective"];
+			$meeting = $arr["meeting"];
 			$task = $arr["task"];
 			$sendto = $arr["sendto"];
 			ob_start();
 				include 'view/print.php';
 				$html = ob_get_contents();
 			ob_end_clean();
-			$title = $objective->title;
+			$title = $meeting->title;
 		}
-		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["EMPLOYEE_PRINT_OBJECTIVE"];
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["EMPLOYEE_PRINT_MEETING"];
 		$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
 		$pdf = $this->savePDF($title,$html,$attachment);
 		
 		// write sento log
-		$this->writeSendtoLog("employees_objectives",$id,$to,$subject,$body);
+		$this->writeSendtoLog("employees_meetings",$id,$to,$subject,$body);
 		
 		//$to,$from,$fromName,$subject,$body,$attachment
 		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment);
 	}
 	
-	function checkinObjective($id) {
+	function checkinMeeting($id) {
 		if($id != "undefined") {
-			return $this->model->checkinObjective($id);
+			return $this->model->checkinMeeting($id);
 		} else {
 			return true;
 		}
 	}
 	
 
-	function setDetails($pid,$id,$title,$objectivedate,$start,$end,$location,$location_ct,$participants,$participants_ct,$management,$management_ct,$task_id,$task_title,$task_text,$task,$task_sort,$documents,$objective_access,$objective_access_orig) {
-		if($retval = $this->model->setDetails($pid,$id,$title,$objectivedate,$start,$end,$location,$location_ct,$participants,$participants_ct,$management,$management_ct,$task_id,$task_title,$task_text,$task,$task_sort,$documents,$objective_access,$objective_access_orig)){
-			return '{ "id": "' . $id . '", "access": "' . $objective_access . '"}';
+	function setDetails($pid,$id,$title,$meetingdate,$start,$end,$location,$location_ct,$participants,$participants_ct,$management,$management_ct,$task_id,$task_title,$task_text,$task,$task_sort,$documents,$meeting_access,$meeting_access_orig) {
+		if($retval = $this->model->setDetails($pid,$id,$title,$meetingdate,$start,$end,$location,$location_ct,$participants,$participants_ct,$management,$management_ct,$task_id,$task_title,$task_text,$task,$task_sort,$documents,$meeting_access,$meeting_access_orig)){
+			return '{ "id": "' . $id . '", "access": "' . $meeting_access . '"}';
 		} else{
 			return "error";
 		}
@@ -157,7 +157,7 @@ class EmployeesObjectives extends Employees {
 	function createNew($id) {
 		$retval = $this->model->createNew($id);
 		if($retval){
-			 return '{ "what": "objective" , "action": "new", "id": "' . $retval . '" }';
+			 return '{ "what": "meeting" , "action": "new", "id": "' . $retval . '" }';
 		  } else{
 			 return "error";
 		  }
@@ -174,8 +174,8 @@ class EmployeesObjectives extends Employees {
 	}
 
 
-	function binObjective($id) {
-		$retval = $this->model->binObjective($id);
+	function binMeeting($id) {
+		$retval = $this->model->binMeeting($id);
 		if($retval){
 			 return "true";
 		  } else{
@@ -183,8 +183,8 @@ class EmployeesObjectives extends Employees {
 		  }
 	}
 
-	function restoreObjective($id) {
-		$retval = $this->model->restoreObjective($id);
+	function restoreMeeting($id) {
+		$retval = $this->model->restoreMeeting($id);
 		if($retval){
 			 return "true";
 		  } else{
@@ -192,8 +192,8 @@ class EmployeesObjectives extends Employees {
 		  }
 	}
 	
-	function deleteObjective($id) {
-		$retval = $this->model->deleteObjective($id);
+	function deleteMeeting($id) {
+		$retval = $this->model->deleteMeeting($id);
 		if($retval){
 			 return "true";
 		  } else{
@@ -213,7 +213,7 @@ class EmployeesObjectives extends Employees {
 
 	function addTask($mid,$num,$sort) {
 		$task = $this->model->addTask($mid,$num,$sort);
-		$objective->canedit = 1;
+		$meeting->canedit = 1;
 		foreach($task as $value) {
 			$checked = '';
 			if($value->status == 1) {
@@ -233,8 +233,8 @@ class EmployeesObjectives extends Employees {
 		}
 	}
 	
-	function restoreObjectiveTask($id) {
-		$retval = $this->model->restoreObjectiveTask($id);
+	function restoreMeetingTask($id) {
+		$retval = $this->model->restoreMeetingTask($id);
 		if($retval){
 			return "true";
 		} else{
@@ -242,8 +242,8 @@ class EmployeesObjectives extends Employees {
 		}
 	}
 	
-	function deleteObjectiveTask($id) {
-		$retval = $this->model->deleteObjectiveTask($id);
+	function deleteMeetingTask($id) {
+		$retval = $this->model->deleteMeetingTask($id);
 		if($retval){
 			return "true";
 		} else{
@@ -251,7 +251,7 @@ class EmployeesObjectives extends Employees {
 		}
 	}
 	
-	function getObjectiveStatusDialog() {
+	function getMeetingStatusDialog() {
 		global $lang;
 		include 'view/dialog_status.php';
 	}
@@ -259,9 +259,9 @@ class EmployeesObjectives extends Employees {
 	
 	function getHelp() {
 		global $lang;
-		$data["file"] =  $lang["EMPLOYEE_OBJECTIVE_HELP"];
+		$data["file"] =  $lang["EMPLOYEE_MEETING_HELP"];
 		$data["app"] = "employees";
-		$data["module"] = "/modules/objectives";
+		$data["module"] = "/modules/meetings";
 		$this->openHelpPDF($data);
 	}
 
@@ -287,5 +287,5 @@ class EmployeesObjectives extends Employees {
 
 }
 
-$employeesObjectives = new EmployeesObjectives("objectives");
+$employeesMeetings = new EmployeesMeetings("meetings");
 ?>
