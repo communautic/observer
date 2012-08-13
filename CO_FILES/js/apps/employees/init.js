@@ -126,6 +126,37 @@ function employeesApplication(name) {
 			}
 		});
 	}
+	
+	
+	this.actionContact = function(offset) {
+		var module = this;
+		this.actionDialog(offset,'getContactsImportDialog','status',1);
+	}
+	
+	this.importContact = function(cid) {
+		var module = this;
+		$("#modalDialog").dialog('close');
+		var id = $('#employees').data('first');
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/employees&request=newEmployee&id=' + id + '&cid=' + cid, cache: false, success: function(data){
+			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/employees&request=getEmployeeList&id="+id, success: function(list){
+				$("#employees2 ul").html(list.html);
+				var index = $("#employees2 .module-click").index($("#employees2 .module-click[rel='"+data.id+"']"));
+				setModuleActive($("#employees2"),index);
+				$('#employees').data({ "second" : data.id });				
+				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/employees&request=getEmployeeDetails&id="+data.id, success: function(text){
+					$("#employees-right").html(text.html);
+					initEmployeesContentScrollbar();
+					//$('#employees-right .focusTitle').trigger('click');
+					$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=saveLastUsedContacts&id="+cid});
+					}
+				});
+				employeesActions(0);
+				}
+			});
+			}
+		});
+	}
+
 
 
 	this.actionDuplicate = function() {
@@ -196,7 +227,13 @@ function employeesApplication(name) {
 		});
 	}
 
-
+	this.actionLoadTab = function(what) {
+		//var what = $(this).attr('rel');
+		$('#EmployeesTabsContent > div:visible').hide();
+		$('#'+what).show();
+		initEmployeesContentScrollbar();
+	}
+	
 	this.checkIn = function(id) {
 		$.ajax({ type: "GET", url: "/", async: false, data: 'path=apps/employees&request=checkinEmployee&id='+id, success: function(data){
 				if(!data) {
@@ -243,7 +280,7 @@ function employeesApplication(name) {
 		var id = $("#employees").data("second");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/employees&request=getSendtoDetails&id="+id, success: function(html){
 			$("#employee_sendto").html(html);
-			$("#modalDialogForward").dialog('close');
+			//$("#modalDialogForward").dialog('close');
 			}
 		});
 	}
@@ -287,6 +324,15 @@ function employeesApplication(name) {
 	this.actionDialog = function(offset,request,field,append,title,sql) {
 		switch(request) {
 			case "getEmployeeDialog":
+				$.ajax({ type: "GET", url: "/", data: 'path=apps/employees&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
+					$("#modalDialog").html(html);
+					$("#modalDialog").dialog('option', 'position', offset);
+					$("#modalDialog").dialog('option', 'title', title);
+					$("#modalDialog").dialog('open');
+					}
+				});
+			break;
+			case "getContactsImportDialog":
 				$.ajax({ type: "GET", url: "/", data: 'path=apps/employees&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
 					$("#modalDialog").html(html);
 					$("#modalDialog").dialog('option', 'position', offset);
@@ -561,7 +607,7 @@ function employeesFolders(name) {
 
 
 	this.actionSendtoResponse = function() {
-			$("#modalDialogForward").dialog('close');
+			//$("#modalDialogForward").dialog('close');
 	}
 
 	
@@ -685,26 +731,35 @@ var employees_folder = new employeesFolders('employees_folder');
 
 function employeesActions(status) {
 	/*	0= new	1= print	2= send		3= duplicate	4= handbook		5=refresh 	6 = delete*/
+	//console.log(status);
+	var obj = getCurrentModule();
 	switch(status) {
 		//case 0: actions = ['0','1','2','3','5','6']; break;
-		case 0: actions = ['0','1','2','3','6','7','8']; break;
-		case 1: actions = ['0','6','7','8']; break;
-		case 3: 	actions = ['0','6','7']; break;   					// just new
-		//case 4: 	actions = ['0','1','2','4','5']; break;   		// new, print, send, handbook, refresh
+		case 0: 
+			if(obj.name == 'employees') {
+				actions = ['1','2','3','5','6','7']; 
+			} else {
+				actions = ['0','2','3','4','5','6','7']; 
+			}
+		break;
+		case 1: actions = ['0','5','6','7']; break;
+		case 3: 
+			if(obj.name == 'employees') {
+				actions = ['1','5','6']; 
+			} else {
+				actions = ['0','5','6']; 
+			}
+		break;
 		case 4: 	actions = ['0','1','2','5','6','7']; break;
-		//case 5: 	actions = ['1','2','5']; break;   			// print, send, refresh
-		case 5: 	actions = ['1','2','6','7']; break;
+		case 5: 	actions = ['2','3','5','6']; break;
 		case 6: 	actions = ['6','7']; break;   			// handbook refresh
-		//case 7: 	actions = ['0','1','2','5']; break;   			// new, print, send, refresh
 		case 7: 	actions = ['0','1','2','6','7']; break;
-		//case 8: 	actions = ['1','2','4','5']; break;   			// print, send, handbook, refresh
 		case 8: 	actions = ['1','2','5','6','7']; break;
-		//case 9: actions = ['0','1','2','3','4','5','6']; break;
-		case 9: actions = ['0','1','2','6','7','8']; break;
+		case 9: 	actions = ['0','2','3','5','6','7']; break; // default folder if not empty
 		
 		// vdocs
 		// 0 == 10
-		case 10: actions = ['0','1','2','3','5','6','7','8']; break;
+		//case 10: actions = ['0','1','2','3','5','6','7','8']; break;
 		// 5 == 11
 		case 11: 	actions = ['1','2','5','6','7']; break;   			// print, send, refresh
 		
@@ -712,7 +767,7 @@ function employeesActions(status) {
 		case 12: actions = ['0','1','2','3','4','6','7','8']; break;
 		
 		
-		default: 	actions = ['6','7'];  								// none
+		default: 	actions = ['5','6'];  								// none
 	}
 	$('#employeesActions > li span').each( function(index) {
 		if(index in oc(actions)) {
