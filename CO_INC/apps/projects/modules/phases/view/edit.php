@@ -80,10 +80,16 @@ foreach($task as $value) {
 		$donedate = $value->donedate;
 	}
 	
-	if($value->cat == 0) {
-		include("task.php");
-	} else {
-		include("milestone.php");
+	switch($value->cat) {
+		case 0:
+			include("task.php");
+		break;
+		case 1:
+			include("milestone.php");
+		break;
+		case 2:
+			include("project_link.php");
+		break;
 	}
  } ?>
 <div id="projectsphasetasks"></div>

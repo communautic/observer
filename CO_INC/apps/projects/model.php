@@ -107,10 +107,6 @@ class ProjectsModel extends Model {
 		$array["inactiveprojects"] = $this->getNumProjects($id, $status="2");
 		$array["stoppedprojects"] = $this->getNumProjects($id, $status="3");
 		
-		/*$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
-		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
-		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
-		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);*/
 		$array["today"] = $this->_date->formatDate("now",CO_DATETIME_FORMAT);
 		
 		
@@ -576,7 +572,7 @@ class ProjectsModel extends Model {
    }
    
    
-	function getProjectTitleLinkFromIDs($array,$target){
+	function getProjectTitleLinkFromIDs($array,$target,$item = 0){
 		$total = sizeof($array);
 		$data = '';
 		if($total == 0) { 
@@ -590,6 +586,7 @@ class ProjectsModel extends Model {
 			if(mysql_num_rows($result) > 0) {
 				while($row = mysql_fetch_assoc($result)) {
 					$arr[$i]["id"] = $row["id"];
+					$arr[$i]["access"] = $this->getProjectAccess($row["id"]);
 					$arr[$i]["title"] = $row["title"];
 					$arr[$i]["folder"] = $row["folder"];
 					$i++;
@@ -599,7 +596,11 @@ class ProjectsModel extends Model {
 		$arr_total = sizeof($arr);
 		$i = 1;
 		foreach ($arr as $key => &$value) {
-			$data .= '<a class="loadModuleAccess" rel="' . $target. ','.$value["folder"].','.$value["id"].',1,projects">' . $value["title"] . '</a>';
+			if($value["access"] == "") {
+				$data .= $value["title"];
+			} else {
+				$data .= '<a class="externalLoadThreeLevels" rel="' . $target. ','.$value["folder"].','.$value["id"].',' . $item . ',projects">' . $value["title"] . '</a>';
+			}
 			if($i < $arr_total) {
 				$data .= '<br />';
 			}
@@ -829,6 +830,7 @@ class ProjectsModel extends Model {
 		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
 		
 		// other functions
+		$array["folder_id"] = $array["folder"];
 		$array["folder"] = $this->getProjectFolderDetails($array["folder"],"folder");
 		$array["management_print"] = $contactsmodel->getUserListPlain($array['management']);
 		$array["management"] = $contactsmodel->getUserList($array['management'],'projectsmanagement', "", $array["canedit"]);
@@ -891,6 +893,21 @@ class ProjectsModel extends Model {
 			}
 		}
 		
+		// get projectlink infos
+		$array["projectlink"] = 0;
+		$array["projectlink_list"] = "";
+		$array["projectlink_access"] = false;
+		$q = "SELECT a.id,a.pid FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as a, " . CO_TBL_PROJECTS . " as b where a.project_link = '$id' and a.pid=b.id and a.bin='0' and b.bin='0'";
+		$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result) > 0) {
+			$array["projectlink"] = 1;
+			while ($row = mysql_fetch_assoc($result)) {
+			$projectlink[] = $row['pid'];
+			
+			}
+			$array["projectlink_list"] = $this->getProjectTitleLinkFromIDs($projectlink,'projects');
+		}
+		
 		$project = new Lists($array);
 		
 		$sql="";
@@ -899,7 +916,7 @@ class ProjectsModel extends Model {
 		}
 		
 		// get phase details
-		$q = "select a.title,a.id,a.access,a.status,(SELECT MIN(startdate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " WHERE phaseid=a.id) as enddate from " . CO_TBL_PROJECTS_PHASES . " as a where a.pid = '$id' and a.bin != '1' " . $sql . " order by startdate";
+		$q = "select a.title,a.id,a.access,a.status,(SELECT MIN(startdate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as c WHERE c.phaseid=a.id and c.bin='0') as enddate from " . CO_TBL_PROJECTS_PHASES . " as a where a.pid = '$id' and a.bin != '1' " . $sql . " order by startdate";
 		$result = mysql_query($q, $this->_db->connection);
 	  	$phases = "";
 	  	while ($row = mysql_fetch_array($result)) {
@@ -965,6 +982,55 @@ class ProjectsModel extends Model {
 		$row = mysql_fetch_array($result);
 		foreach($row as $key => $val) {
 			$array[$key] = $val;
+		}
+		$startdate_check = $array["startdate"];
+		$enddate_check = $array["enddate"];
+		// check if there is a project link
+		$ql = "SELECT a.id,a.pid,a.phaseid,a.startdate,a.enddate FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as a, " . CO_TBL_PROJECTS . " as b where a.project_link = '$id' and a.pid=b.id and b.bin='0' and a.bin='0'";
+		$resultl = mysql_query($ql, $this->_db->connection);
+		if(mysql_num_rows($resultl) > 0) {
+			while ($rowl = mysql_fetch_assoc($resultl)) {
+				$task_id = $rowl['id'];
+				$pid = $rowl['pid'];
+				$phid = $rowl['phaseid'];
+				if($startdate_check != $rowl['startdate'] && $enddate_check != $rowl['enddate']) {
+					$perm = 2;
+				} else if ($startdate_check != $rowl['startdate']) {
+					$perm = 3;
+				} else if ($enddate_check != $rowl['enddate']) {
+					$perm = 4;
+				} else {
+					$perm = 0;
+				}
+				if($perm != 0) {
+					// update task
+					$qu = "UPDATE " . CO_TBL_PROJECTS_PHASES_TASKS . " SET startdate = '$startdate_check', enddate = '$enddate_check' WHERE id='$task_id'";
+					$resultu = mysql_query($qu, $this->_db->connection);
+						// select all admins of this project as we
+						$management = $this->getProjectField($pid,'management');
+						$q = "SELECT admins FROM " . CO_TBL_PROJECTS_ACCESS . " where pid='$pid'";
+						$result = mysql_query($q, $this->_db->connection);
+						$admins = "";
+						if(mysql_num_rows($result) > 0) {
+							$admins = mysql_result($result,0);
+						}
+						$users = $management;
+						if($users != "" && $admins != "") {
+							$users .= ',';
+						}
+						$users .= $admins;
+						$users = array_unique(explode(",", $users));
+						foreach ($users as &$user) {
+							$qz = "SELECT * FROM " . CO_TBL_PROJECTS_DESKTOP_PROJECTLINKS . " where pid='$id' and relid = '$pid' and phid = '$phid' and uid='$user' and perm ='$perm'";
+							$resultz = mysql_query($qz, $this->_db->connection);
+							if(mysql_num_rows($resultz) < 1) {
+								$qz = "INSERT INTO " . CO_TBL_PROJECTS_DESKTOP_PROJECTLINKS . " set pid='$id', relid = '$pid', phid = '$phid', uid = '$user', perm ='$perm'";
+								$resultz = mysql_query($qz, $this->_db->connection);
+							}
+						}
+				}
+			
+			}
 		}
 		
 		// dates
@@ -1177,6 +1243,7 @@ class ProjectsModel extends Model {
 		
 		$q = "UPDATE " . CO_TBL_PROJECTS . " set bin = '1', bintime = '$now', binuser= '$session->uid' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
+		
 		if ($result) {
 		  	return true;
 		}
@@ -1253,6 +1320,12 @@ class ProjectsModel extends Model {
 			}
 		}
 		
+		// projectlinks
+		$q = "DELETE FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " WHERE project_link ='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$q = "DELETE FROM " . CO_TBL_PROJECTS_DESKTOP_PROJECTLINKS . " WHERE pid ='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
 		$q = "DELETE FROM co_log_sendto WHERE what='projects' and whatid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
@@ -1280,7 +1353,7 @@ class ProjectsModel extends Model {
 		$now = gmdate("Y-m-d H:i:s");
 		$q = "UPDATE " . CO_TBL_PROJECTS . " set startdate = '$startdate', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
-			$qt = "SELECT id, startdate, enddate FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where pid='$id'";
+			$qt = "SELECT id, startdate, enddate FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where pid='$id' and cat !='2'";
 			$resultt = mysql_query($qt, $this->_db->connection);
 			while ($rowt = mysql_fetch_array($resultt)) {
 				$tid = $rowt["id"];
@@ -1290,10 +1363,50 @@ class ProjectsModel extends Model {
 				$retvaltk = mysql_query($qtk, $this->_db->connection);
 			}
 		if ($result) {
+			$this->checkProjectlink($id);
 			return true;
 		}
 	}
-
+	
+	function checkProjectlink($id) {
+		$ql = "SELECT a.id,a.pid,a.phaseid,a.startdate,a.enddate,b.startdate as startdate_check, b.enddate as enddate_check FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as a, " . CO_TBL_PROJECTS . " as b where a.project_link = '$id' and a.pid=b.id and b.bin='0' and a.bin='0'";
+		$resultl = mysql_query($ql, $this->_db->connection);
+		if(mysql_num_rows($resultl) > 0) {
+			while ($rowl = mysql_fetch_assoc($resultl)) {
+				$startdate_check = $rowl['startdate_check'];
+				$enddate_check = $rowl['enddate_check'];
+				$task_id = $rowl['id'];
+				$pid = $rowl['pid'];
+				$phid = $rowl['phaseid'];
+				$perm = 2;
+				$qu = "UPDATE " . CO_TBL_PROJECTS_PHASES_TASKS . " SET startdate = '$startdate_check', enddate = '$enddate_check' WHERE id='$task_id'";
+				$resultu = mysql_query($qu, $this->_db->connection);
+				// select all admins of this project as we
+				$management = $this->getProjectField($pid,'management');
+				$q = "SELECT admins FROM " . CO_TBL_PROJECTS_ACCESS . " where pid='$pid'";
+				$result = mysql_query($q, $this->_db->connection);
+				$admins = "";
+				if(mysql_num_rows($result) > 0) {
+					$admins = mysql_result($result,0);
+				}
+				$users = $management;
+				if($users != "" && $admins != "") {
+					$users .= ',';
+				}
+				$users .= $admins;
+				$users = array_unique(explode(",", $users));
+				foreach ($users as &$user) {
+					$qz = "SELECT * FROM " . CO_TBL_PROJECTS_DESKTOP_PROJECTLINKS . " where pid='$id' and relid = '$pid' and phid = '$phid' and uid='$user' and perm ='$perm'";
+					$resultz = mysql_query($qz, $this->_db->connection);
+					if(mysql_num_rows($resultz) < 1) {
+						$qz = "INSERT INTO " . CO_TBL_PROJECTS_DESKTOP_PROJECTLINKS . " set pid='$id', relid = '$pid', phid = '$phid', uid = '$user', perm ='$perm'";
+						$resultz = mysql_query($qz, $this->_db->connection);
+					}
+				}
+			}
+		}
+	}
+	
 
 	function getProjectFolderDialog($field,$title) {
 		global $session;
@@ -2119,7 +2232,7 @@ class ProjectsModel extends Model {
 		$reminders = "";
 		if($skip == 0) {
 			// reminders = meilensteine, arbeitspakete deren Phase in Planung oder in Arbeit ist - für Admins / Sysadmins die auch Projektleiter sind oder die für einen MS oder AP verantwortlich sind
-			$q ="select c.folder,a.pid,a.phaseid,a.cat,a.text,c.title as projectitle from " . CO_TBL_PROJECTS_PHASES_TASKS . " as a,  " . CO_TBL_PROJECTS_PHASES . " as b,  " . CO_TBL_PROJECTS . " as c where a.phaseid = b.id and a.pid = c.id and (b.status='0' or b.status='1') and a.status='0' and a.bin = '0' and b.bin = '0' and c.bin = '0' and a.enddate = '$tomorrow'" . $access . " and (c.management REGEXP '[[:<:]]" . $session->uid . "[[:>:]]' or (a.cat = '0' and a.team REGEXP '[[:<:]]" . $session->uid . "[[:>:]]'))";
+			$q ="select c.folder,a.pid,a.phaseid,a.cat,a.text,c.title as projectitle from " . CO_TBL_PROJECTS_PHASES_TASKS . " as a,  " . CO_TBL_PROJECTS_PHASES . " as b,  " . CO_TBL_PROJECTS . " as c where a.phaseid = b.id and a.pid = c.id and (b.status='0' or b.status='1') and a.status='0' and a.cat != '2' and a.bin = '0' and b.bin = '0' and c.bin = '0' and a.enddate = '$tomorrow'" . $access . " and (c.management REGEXP '[[:<:]]" . $session->uid . "[[:>:]]' or (a.cat = '0' and a.team REGEXP '[[:<:]]" . $session->uid . "[[:>:]]'))";
 			$result = mysql_query($q, $this->_db->connection);
 			$reminders = "";
 			while ($row = mysql_fetch_array($result)) {
@@ -2151,7 +2264,7 @@ class ProjectsModel extends Model {
 		$array = "";
 		if($skip == 0) {
 			// alerts = meilensteine, arbeitspakete deren Phase in Arbeit ist - für Admins / Sysadmins die auch Projektleiter sind oder die für einen MS oder AP verantwortlich sind
-			$q ="select c.folder,a.pid,a.phaseid,a.cat,a.text,c.title as projectitle from " . CO_TBL_PROJECTS_PHASES_TASKS . " as a,  " . CO_TBL_PROJECTS_PHASES . " as b,  " . CO_TBL_PROJECTS . " as c where a.phaseid = b.id and a.pid = c.id and b.status='1' and a.status='0' and c.status!='3' and a.bin = '0' and b.bin = '0' and c.bin = '0' and a.enddate <= '$today'" . $access . " and (c.management REGEXP '[[:<:]]" . $session->uid . "[[:>:]]' or (a.cat = '0' and a.team REGEXP '[[:<:]]" . $session->uid . "[[:>:]]'))";
+			$q ="select c.folder,a.pid,a.phaseid,a.cat,a.text,c.title as projectitle from " . CO_TBL_PROJECTS_PHASES_TASKS . " as a,  " . CO_TBL_PROJECTS_PHASES . " as b,  " . CO_TBL_PROJECTS . " as c where a.phaseid = b.id and a.pid = c.id and b.status='1' and a.status='0' and c.status!='3' and a.cat != '2' and a.bin = '0' and b.bin = '0' and c.bin = '0' and a.enddate <= '$today'" . $access . " and (c.management REGEXP '[[:<:]]" . $session->uid . "[[:>:]]' or (a.cat = '0' and a.team REGEXP '[[:<:]]" . $session->uid . "[[:>:]]'))";
 			$result = mysql_query($q, $this->_db->connection);
 			while ($row = mysql_fetch_array($result)) {
 				foreach($row as $key => $val) {
@@ -2176,6 +2289,33 @@ class ProjectsModel extends Model {
 			$notices[] = new Lists($array);
 		}
 		
+		// projectlinks alerts
+		$q ="select a.id as pid,a.folder,a.title as projectitle,b.id as noticeid, b.perm,b.phid,b.relid from " . CO_TBL_PROJECTS . " as a,  " . CO_TBL_PROJECTS_DESKTOP_PROJECTLINKS . " as b, " . CO_TBL_PROJECTS_PHASES . " as c WHERE a.id = b.pid and a.bin = '0' and b.phid = c.id and c.bin = '0' and b.uid = '$session->uid' and b.status = '0'";
+		$result = mysql_query($q, $this->_db->connection);
+		$projectlinks = "";
+		$array = "";
+		while ($row = mysql_fetch_array($result)) {
+			foreach($row as $key => $val) {
+				$array[$key] = $val;
+			}
+			$relid = $array["relid"];
+			$phid = $array["phid"];
+			$qr = "SELECT a.folder, a.title FROM " . CO_TBL_PROJECTS . " as a, " . CO_TBL_PROJECTS_PHASES . " as b  WHERE a.id = '$relid' and b.id = '$phid'";
+			$resultr = mysql_query($qr, $this->_db->connection);
+			if(mysql_num_rows($resultr) > 0) {
+				$pl = mysql_fetch_object($resultr);
+				$array["relfolder"] = $pl->folder;
+				$array["reltitle"] = $pl->title;
+	
+				$string .= $array["folder"] . "," . $array["pid"] . ",";
+				$projectlinks[] = new Lists($array);
+			} else {
+				// delete notices as project was deleted
+				$nid = $array["noticeid"];
+				$qn = "DELETE FROM " . CO_TBL_PROJECTS_DESKTOP_PROJECTLINKS . " WHERE id='$nid'";
+				$resultn = mysql_query($qn, $this->_db->connection);
+			}
+		}
 
 		if(!$this->existUserProjectsWidgets()) {
 			$q = "insert into " . CO_TBL_PROJECTS_DESKTOP_SETTINGS . " set uid='$session->uid', value='$string'";
@@ -2193,7 +2333,7 @@ class ProjectsModel extends Model {
 			$result = mysql_query($q, $this->_db->connection);
 		}
 		
-		$arr = array("reminders" => $reminders, "kickoffs" => $kickoffs, "alerts" => $alerts, "notices" => $notices, "widgetaction" => $widgetaction);
+		$arr = array("reminders" => $reminders, "kickoffs" => $kickoffs, "alerts" => $alerts, "notices" => $notices, "projectlinks" => $projectlinks, "widgetaction" => $widgetaction);
 		return $arr;
    }
 
@@ -2203,7 +2343,13 @@ class ProjectsModel extends Model {
 		$q ="UPDATE " . CO_TBL_PROJECTS_DESKTOP . " SET status = '1' WHERE uid = '$session->uid' and pid = '$pid'";
 		$result = mysql_query($q, $this->_db->connection);
 		return true;
-
+	}
+	
+	function markNoticeDELETE($id) {
+		global $session, $date;
+		$q ="DELETE FROM " . CO_TBL_PROJECTS_DESKTOP_PROJECTLINKS . " WHERE  id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		return true;
 	}
 	
 	
@@ -2232,263 +2378,6 @@ class ProjectsModel extends Model {
 		}
 		return $data;
 	}
-	
-	
-	function getSearch() {
-		global $projects;
-		
-		$bin = array();
-		$bin["datetime"] = $this->_date->formatDate("now",CO_DATETIME_FORMAT);
-		$arr = array();
-		$arr["bin"] = $bin;
-		
-		$arr["folders"] = "";
-		$arr["pros"] = "";
-		$arr["files"] = "";
-		$arr["tasks"] = "";
-		
-		$active_modules = array();
-		foreach($projects->modules as $module => $value) {
-			if(CONSTANT('projects_'.$module.'_bin') == 1) {
-				$active_modules[] = $module;
-				$arr[$module] = "";
-				$arr[$module . "_tasks"] = "";
-				$arr[$module . "_folders"] = "";
-			}
-		}
-		
-		//foreach($active_modules as $module) {
-							//$name = strtoupper($module);
-							//$mod = new $name . "Model()";
-							//include("modules/meetings/controller.php");
-							//${$name} = new $name("$module");
-							
-						//}
-		
-		$q ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_FOLDERS;
-		$result = mysql_query($q, $this->_db->connection);
-	  	while ($row = mysql_fetch_array($result)) {
-			$id = $row["id"];
-			if($row["bin"] == "1") { // deleted folders
-				foreach($row as $key => $val) {
-					$folder[$key] = $val;
-				}
-				$folder["bintime"] = $this->_date->formatDate($folder["bintime"],CO_DATETIME_FORMAT);
-				$folder["binuser"] = $this->_users->getUserFullname($folder["binuser"]);
-				$folders[] = new Lists($folder);
-				$arr["folders"] = $folders;
-			} else { // folder not binned
-				
-				$qp ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS . " where folder = '$id'";
-				$resultp = mysql_query($qp, $this->_db->connection);
-				while ($rowp = mysql_fetch_array($resultp)) {
-					$pid = $rowp["id"];
-					if($rowp["bin"] == "1") { // deleted projects
-					foreach($rowp as $key => $val) {
-						$pro[$key] = $val;
-					}
-					$pro["bintime"] = $this->_date->formatDate($pro["bintime"],CO_DATETIME_FORMAT);
-					$pro["binuser"] = $this->_users->getUserFullname($pro["binuser"]);
-					$pros[] = new Lists($pro);
-					$arr["pros"] = $pros;
-					} else {
-						/*$module = "phases";
-						$name = ucfirst($module);
-							$function = "get" . $name . "Bin";
-							${$module} = new $name("$module");*/
-							//print_r(${$module}->$function($pid));
-							
-							//$arr["phases"] = ${$module}->$function($pid);
-							//print_r($mods);
-							//print_r($arr);//$arr[] = $res;
-							//$arr["phases"] = $res["phases"];
-							//print_r($res);
-						/*foreach($active_modules as $module) {
-							$name = ucfirst($module);
-							$function = "get" . $name . "Bin";
-							${$module} = new $name("$module");
-							echo ${$module}->$function($pid);
-							
-						}*/
-						
-						
-						// phases
-						$qph ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_PHASES . " where pid = '$pid'";
-						$resultph = mysql_query($qph, $this->_db->connection);
-						while ($rowph = mysql_fetch_array($resultph)) {
-							$phid = $rowph["id"];
-							if($rowph["bin"] == "1") { // deleted phases
-								foreach($rowph as $key => $val) {
-									$phase[$key] = $val;
-								}
-								$phase["bintime"] = $this->_date->formatDate($phase["bintime"],CO_DATETIME_FORMAT);
-								$phase["binuser"] = $this->_users->getUserFullname($phase["binuser"]);
-								$phases[] = new Lists($phase);
-								$arr["phases"] = $phases;
-							} else {
-								// tasks
-								$qt ="select id, text, bin, bintime, binuser from " . CO_TBL_PROJECTS_PHASES_TASKS . " where phaseid = '$phid'";
-								$resultt = mysql_query($qt, $this->_db->connection);
-								while ($rowt = mysql_fetch_array($resultt)) {
-									if($rowt["bin"] == "1") { // deleted phases
-										foreach($rowt as $key => $val) {
-											$task[$key] = $val;
-										}
-										$task["bintime"] = $this->_date->formatDate($task["bintime"],CO_DATETIME_FORMAT);
-										$task["binuser"] = $this->_users->getUserFullname($task["binuser"]);
-										$tasks[] = new Lists($task);
-										$arr["tasks"] = $tasks;
-									} 
-								}
-							}
-						}
-	
-	
-						// meetings
-						if(in_array("meetings",$active_modules)) {
-							$qm ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_MEETINGS . " where pid = '$pid'";
-							$resultm = mysql_query($qm, $this->_db->connection);
-							while ($rowm = mysql_fetch_array($resultm)) {
-								$mid = $rowm["id"];
-								if($rowm["bin"] == "1") { // deleted meeting
-									foreach($rowm as $key => $val) {
-										$meeting[$key] = $val;
-									}
-									$meeting["bintime"] = $this->_date->formatDate($meeting["bintime"],CO_DATETIME_FORMAT);
-									$meeting["binuser"] = $this->_users->getUserFullname($meeting["binuser"]);
-									$meetings[] = new Lists($meeting);
-									$arr["meetings"] = $meetings;
-								} else {
-									// meetings_tasks
-									$qmt ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_MEETINGS_TASKS . " where mid = '$mid'";
-									$resultmt = mysql_query($qmt, $this->_db->connection);
-									while ($rowmt = mysql_fetch_array($resultmt)) {
-										if($rowmt["bin"] == "1") { // deleted phases
-											foreach($rowmt as $key => $val) {
-												$meetings_task[$key] = $val;
-											}
-											$meetings_task["bintime"] = $this->_date->formatDate($meetings_task["bintime"],CO_DATETIME_FORMAT);
-											$meetings_task["binuser"] = $this->_users->getUserFullname($meetings_task["binuser"]);
-											$meetings_tasks[] = new Lists($meetings_task);
-											$arr["meetings_tasks"] = $meetings_tasks;
-										}
-									}
-								}
-							}
-						}
-						
-						
-						// analyses
-						if(in_array("analyses",$active_modules)) {
-							$qm ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_ANALYSES . " where pid = '$pid'";
-							$resultm = mysql_query($qm, $this->_db->connection);
-							while ($rowm = mysql_fetch_array($resultm)) {
-								$mid = $rowm["id"];
-								if($rowm["bin"] == "1") { // deleted analyse
-									foreach($rowm as $key => $val) {
-										$analyse[$key] = $val;
-									}
-									$analyse["bintime"] = $this->_date->formatDate($analyse["bintime"],CO_DATETIME_FORMAT);
-									$analyse["binuser"] = $this->_users->getUserFullname($analyse["binuser"]);
-									$analyses[] = new Lists($analyse);
-									$arr["analyses"] = $analyses;
-								} else {
-									// analyses_tasks
-									$qmt ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_ANALYSES_TASKS . " where mid = '$mid'";
-									$resultmt = mysql_query($qmt, $this->_db->connection);
-									while ($rowmt = mysql_fetch_array($resultmt)) {
-										if($rowmt["bin"] == "1") { // deleted phases
-											foreach($rowmt as $key => $val) {
-												$analyses_task[$key] = $val;
-											}
-											$analyses_task["bintime"] = $this->_date->formatDate($analyses_task["bintime"],CO_DATETIME_FORMAT);
-											$analyses_task["binuser"] = $this->_users->getUserFullname($analyses_task["binuser"]);
-											$analyses_tasks[] = new Lists($analyses_task);
-											$arr["analyses_tasks"] = $analyses_tasks;
-										}
-									}
-								}
-							}
-						}
-
-
-						// phonecalls
-						if(in_array("phonecalls",$active_modules)) {
-							$qpc ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_PHONECALLS . " where pid = '$pid'";
-							$resultpc = mysql_query($qpc, $this->_db->connection);
-							while ($rowpc = mysql_fetch_array($resultpc)) {
-								if($rowpc["bin"] == "1") {
-								$idp = $rowpc["id"];
-									foreach($rowpc as $key => $val) {
-										$phonecall[$key] = $val;
-									}
-									$phonecall["bintime"] = $this->_date->formatDate($phonecall["bintime"],CO_DATETIME_FORMAT);
-									$phonecall["binuser"] = $this->_users->getUserFullname($phonecall["binuser"]);
-									$phonecalls[] = new Lists($phonecall);
-									$arr["phonecalls"] = $phonecalls;
-								}
-							}
-						}
-						
-						// documents_folder
-						if(in_array("documents",$active_modules)) {
-							$qd ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_DOCUMENTS_FOLDERS . " where pid = '$pid'";
-							$resultd = mysql_query($qd, $this->_db->connection);
-							while ($rowd = mysql_fetch_array($resultd)) {
-								$did = $rowd["id"];
-								if($rowd["bin"] == "1") { // deleted meeting
-									foreach($rowd as $key => $val) {
-										$documents_folder[$key] = $val;
-									}
-									$documents_folder["bintime"] = $this->_date->formatDate($documents_folder["bintime"],CO_DATETIME_FORMAT);
-									$documents_folder["binuser"] = $this->_users->getUserFullname($documents_folder["binuser"]);
-									$documents_folders[] = new Lists($documents_folder);
-									$arr["documents_folders"] = $documents_folders;
-								} else {
-									// files
-									$qf ="select id, filename, bin, bintime, binuser from " . CO_TBL_PROJECTS_DOCUMENTS . " where did = '$did'";
-									$resultf = mysql_query($qf, $this->_db->connection);
-									while ($rowf = mysql_fetch_array($resultf)) {
-										if($rowf["bin"] == "1") { // deleted phases
-											foreach($rowf as $key => $val) {
-												$file[$key] = $val;
-											}
-											$file["bintime"] = $this->_date->formatDate($file["bintime"],CO_DATETIME_FORMAT);
-											$file["binuser"] = $this->_users->getUserFullname($file["binuser"]);
-											$files[] = new Lists($file);
-											$arr["files"] = $files;
-										}
-									}
-								}
-							}
-						}
-	
-	
-						// vdocs
-						if(in_array("vdocs",$active_modules)) {
-							$qv ="select id, title, bin, bintime, binuser from " . CO_TBL_PROJECTS_VDOCS . " where pid = '$pid' and bin='1'";
-							$resultv = mysql_query($qv, $this->_db->connection);
-							while ($rowv = mysql_fetch_array($resultv)) {
-								$vid = $rowv["id"];
-									foreach($rowv as $key => $val) {
-										$vdoc[$key] = $val;
-									}
-									$vdoc["bintime"] = $this->_date->formatDate($vdoc["bintime"],CO_DATETIME_FORMAT);
-									$vdoc["binuser"] = $this->_users->getUserFullname($vdoc["binuser"]);
-									$vdocs[] = new Lists($vdoc);
-									$arr["vdocs"] = $vdocs;
-							}
-						}
-					}
-				}
-			}
-	  	}
-		
-		//print_r($arr);
-		//$mod = new Lists($mods);
-
-		return $arr;
-   }
 
 
 	function newCheckpoint($id,$date){
@@ -2556,6 +2445,208 @@ class ProjectsModel extends Model {
 		}
    }
 
+
+	function getGlobalSearch($term){
+		global $system, $session, $projects;
+		$num=0;
+		//$term = utf8_decode($term);
+		$access=" ";
+		if(!$session->isSysadmin()) {
+			$access = " and id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
+	  	}
+		$rows = array();
+		$r = array();
+		
+		// get all active modules
+		$active_modules = array();
+		foreach($projects->modules as $m => $v) {
+			$active_modules[] = $m;
+		}
+		
+		// get folders
+		/*if(!$session->isSysadmin()) {
+			$q ="select a.id, a.title from " . CO_TBL_PROJECTS_FOLDERS . " as a where a.status='0' and a.bin = '0' and (SELECT count(*) FROM co_projects_access as b, co_projects as c WHERE (b.admins REGEXP '[[:<:]]" . $session->uid . "[[:>:]]' or b.guests REGEXP '[[:<:]]" . $session->uid . "[[:>:]]') and c.folder=a.id and b.pid=c.id) > 0 and title like '%$term%' ORDER BY title";
+		} else {
+			$q ="select a.id, a.title from " . CO_TBL_PROJECTS_FOLDERS . " as a where a.status='0' and a.bin = '0' and title like '%$term%' ORDER BY title";
+		}
+		$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+			 $rows['value'] = $row['title'];
+			 $rows['id'] = 'folders,' .$row['id']. ',0,0,projects';
+			 $r[] = $rows;
+		}*/
+		
+		// let's get all projects
+		
+		//$q = "SELECT id,folder,title FROM " . CO_TBL_PROJECTS . " WHERE bin='0'" . $access ."ORDER BY title";
+		//$q = "SELECT id,folder,CONVERT(title USING latin1) as title FROM " . CO_TBL_PROJECTS . " WHERE title COLLATE utf8_bin like '%$term%') and  bin='0'" . $access ."ORDER BY title";
+		$q = "SELECT id, folder, CONVERT(title USING latin1) as title FROM " . CO_TBL_PROJECTS . " WHERE title like '%$term%' and  bin='0'" . $access ."ORDER BY title";
+		$result = mysql_query($q, $this->_db->connection);
+		//$num=mysql_affected_rows();
+		while($row = mysql_fetch_array($result)) {
+			 $rows['value'] = $row['title'];
+			 $rows['id'] = 'projects,' .$row['folder']. ',' . $row['id'] . ',0,projects';
+			 $r[] = $rows;
+		}
+		// loop through projects
+		$q = "SELECT id, folder FROM " . CO_TBL_PROJECTS . " WHERE bin='0'" . $access ."ORDER BY title";
+		$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+			$pid = $row['id'];
+			$folder = $row['folder'];
+			$sql = "";
+			$perm = $this->getProjectAccess($pid);
+			if($perm == 'guest') {
+				$sql = "and access = '1'";
+			}
+			
+			// Phases
+			$qp = "SELECT id,CONVERT(title USING latin1) as title FROM " . CO_TBL_PROJECTS_PHASES . " WHERE pid = '$pid' and bin = '0' $sql and title like '%$term%' ORDER BY title";
+			$resultp = mysql_query($qp, $this->_db->connection);
+			while($rowp = mysql_fetch_array($resultp)) {
+				$rows['value'] = $rowp['title'];
+			 	$rows['id'] = 'phases,' .$folder. ',' . $pid . ',' .$rowp['id'].',projects';
+			 	$r[] = $rows;
+			}
+			// Arbeitspakete
+			// Phases
+			$qp = "SELECT b.id,CONVERT(a.text USING latin1) as title FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as a, " . CO_TBL_PROJECTS_PHASES . " as b WHERE b.pid = '$pid' and a.phaseid = b.id and a.bin = '0' and b.bin = '0' $sql and a.text like '%$term%' ORDER BY a.text";
+			$resultp = mysql_query($qp, $this->_db->connection);
+			while($rowp = mysql_fetch_array($resultp)) {
+				$rows['value'] = $rowp['title'];
+			 	$rows['id'] = 'phases,' .$folder. ',' . $pid . ',' .$rowp['id'].',projects';
+			 	$r[] = $rows;
+			}
+			// Meetings
+			if(in_array("meetings",$active_modules)) {
+				$qp = "SELECT id,CONVERT(title USING latin1) as title FROM " . CO_TBL_PROJECTS_MEETINGS . " WHERE pid = '$pid' and bin = '0' $sql and title like '%$term%' ORDER BY title";
+				$resultp = mysql_query($qp, $this->_db->connection);
+				while($rowp = mysql_fetch_array($resultp)) {
+					$rows['value'] = $rowp['title'];
+					$rows['id'] = 'meetings,' .$folder. ',' . $pid . ',' .$rowp['id'].',projects';
+					$r[] = $rows;
+				}
+				// Meeting Tasks
+				$qp = "SELECT b.id,CONVERT(a.title USING latin1) as title FROM " . CO_TBL_PROJECTS_MEETINGS_TASKS . " as a, " . CO_TBL_PROJECTS_MEETINGS . " as b WHERE b.pid = '$pid' and a.mid = b.id and a.bin = '0' and b.bin = '0' $sql and a.title like '%$term%' ORDER BY a.title";
+				$resultp = mysql_query($qp, $this->_db->connection);
+				while($rowp = mysql_fetch_array($resultp)) {
+					$rows['value'] = $rowp['title'];
+					$rows['id'] = 'meetings,' .$folder. ',' . $pid . ',' .$rowp['id'].',projects';
+					$r[] = $rows;
+				}
+			}
+			// Phonecalls
+			if(in_array("phonecalls",$active_modules)) {
+				$qp = "SELECT id,CONVERT(title USING latin1) as title FROM " . CO_TBL_PROJECTS_PHONECALLS . " WHERE pid = '$pid' and bin = '0' $sql and title like '%$term%' ORDER BY title";
+				$resultp = mysql_query($qp, $this->_db->connection);
+				while($rowp = mysql_fetch_array($resultp)) {
+					$rows['value'] = $rowp['title'];
+					$rows['id'] = 'phonecalls,' .$folder. ',' . $pid . ',' .$rowp['id'].',projects';
+					$r[] = $rows;
+				}
+			}
+			// Doc Folders
+			if(in_array("documents",$active_modules)) {
+				$qp = "SELECT id,CONVERT(title USING latin1) as title FROM " . CO_TBL_PROJECTS_DOCUMENTS_FOLDERS . " WHERE pid = '$pid' and bin = '0' $sql and title like '%$term%' ORDER BY title";
+				$resultp = mysql_query($qp, $this->_db->connection);
+				while($rowp = mysql_fetch_array($resultp)) {
+					$rows['value'] = $rowp['title'];
+					$rows['id'] = 'documents,' .$folder. ',' . $pid . ',' .$rowp['id'].',projects';
+					$r[] = $rows;
+				}
+				// Documents
+				$qp = "SELECT b.id,CONVERT(a.filename USING latin1) as title FROM " . CO_TBL_PROJECTS_DOCUMENTS . " as a, " . CO_TBL_PROJECTS_DOCUMENTS_FOLDERS . " as b WHERE b.pid = '$pid' and a.did = b.id and a.bin = '0' and b.bin = '0' $sql and a.filename like '%$term%' ORDER BY a.filename";
+				$resultp = mysql_query($qp, $this->_db->connection);
+				while($rowp = mysql_fetch_array($resultp)) {
+					$rows['value'] = $rowp['title'];
+					$rows['id'] = 'documents,' .$folder. ',' . $pid . ',' .$rowp['id'].',projects';
+					$r[] = $rows;
+				}
+			}
+			// vDocs
+			if(in_array("vdocs",$active_modules)) {
+				$qp = "SELECT id,CONVERT(title USING latin1) as title FROM " . CO_TBL_PROJECTS_VDOCS . " WHERE pid = '$pid' and bin = '0' $sql and title like '%$term%' ORDER BY title";
+				$resultp = mysql_query($qp, $this->_db->connection);
+				while($rowp = mysql_fetch_array($resultp)) {
+					$rows['value'] = $rowp['title'];
+					$rows['id'] = 'vdocs,' .$folder. ',' . $pid . ',' .$rowp['id'].',projects';
+					$r[] = $rows;
+				}
+			}
+			
+		}
+		
+		
+		return $system->json_encode($r);
+	}
+
+
+	function getProjectsSearch($term,$exclude){
+		global $system, $session;
+		$num=0;
+		$access=" ";
+		if(!$session->isSysadmin()) {
+			$access = " and a.id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
+	  	}
+		
+		$q = "SELECT a.id,a.title as label, (SELECT MIN(startdate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as startdate ,(SELECT MAX(enddate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_PROJECTS . " as a WHERE a.id != '$exclude' and a.title like '%$term%' and  a.bin='0'" . $access ."ORDER BY a.title";
+		
+		$result = mysql_query($q, $this->_db->connection);
+		$num=mysql_affected_rows();
+		$rows = array();
+		while($r = mysql_fetch_assoc($result)) {
+			 $rows[] = $r;
+		}
+		return $system->json_encode($rows);
+	}
+	
+	
+	function getProjectArray($string){
+		$string = explode(",", $string);
+		$total = sizeof($string);
+		$items = '';
+		
+		if($total == 0) { 
+			return $items; 
+		}
+		
+		// check if user is available and build array
+		$items_arr = "";
+		foreach ($string as &$value) {
+			$q = "SELECT id, title FROM ".CO_TBL_PROJECTS." where id = '$value' and bin='0'";
+			$result = mysql_query($q, $this->_db->connection);
+			if(mysql_num_rows($result) > 0) {
+				while($row = mysql_fetch_assoc($result)) {
+					$items_arr[] = array("id" => $row["id"], "title" => $row["title"]);		
+				}
+			}
+		}
+
+		return $items_arr;
+}
+	
+	function getLast10Projects() {
+		global $session;
+		$projects = $this->getProjectArray($this->getUserSetting("last-used-projects"));
+	  return $projects;
+	}
+	
+	
+	function saveLastUsedProjects($id) {
+		global $session;
+		$string = $id . "," .$this->getUserSetting("last-used-projects");
+		$string = rtrim($string, ",");
+		$ids_arr = explode(",", $string);
+		$res = array_unique($ids_arr);
+		foreach ($res as $key => $value) {
+			$ids_rtn[] = $value;
+		}
+		array_splice($ids_rtn, 7);
+		$str = implode(",", $ids_rtn);
+		
+		$this->setUserSetting("last-used-projects",$str);
+	  return true;
+	}
 
 }
 

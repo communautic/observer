@@ -109,7 +109,7 @@ foreach($task as $value) {
             <td class="grey smalltext">&nbsp;</td>
         </tr>
     </table>
-    <?php } else { // milestone ?>
+    <?php } else if($value->cat == 1) { // milestone ?>
 	    <table width="100%" class="fourCols">
         <tr>
             <td class="fourCols-one"><?php if($i == 1) { echo $lang["PROJECT_PHASE_TASK_MILESTONE"]; }?>&nbsp;</td>
@@ -147,6 +147,45 @@ foreach($task as $value) {
             <td><?php echo(nl2br($value->protocol));?></td>
         </tr>
         <?php } ?>
+        <tr>
+            <td class="fourCols-one">&nbsp;</td>
+            <td class="fourCols-two">&nbsp;</td>
+            <td class="fourCols-three">&nbsp;</td>
+            <td class="grey smalltext">&nbsp;</td>
+        </tr>
+    </table>
+    <?php } else  { // projectlink ?> 
+    <table width="100%" class="fourCols">
+        <tr>
+            <td class="fourCols-one"><?php if($i == 1) { echo $lang["PROJECT_PHASE_TASK_MILESTONE"]; }?>&nbsp;</td>
+            <td class="fourCols-two">&nbsp;</td>
+            <td class="fourCols-three greybg"><img src="<?php echo(CO_FILES);?>/img/print/projectlink.png" width="15" height="6" style="margin: 5px 0 0 3px" /></td>
+            <td class="fourCols-four greybg">Projektlink: <?php echo $value->text;?></td>
+        </tr>
+        <tr>
+            <td class="fourCols-one">&nbsp;</td>
+            <td class="fourCols-two">&nbsp;</td>
+            <td class="fourCols-three">&nbsp;</td>
+            <td class="grey smalltext fourCols-paddingTop"><?php echo $lang["PROJECT_PHASE_TASK_START"];?> <?php echo($value->startdate);?></td>
+        </tr>
+        <tr>
+            <td class="fourCols-one">&nbsp;</td>
+            <td class="fourCols-two">&nbsp;</td>
+            <td class="fourCols-three">&nbsp;</td>
+            <td class="grey smalltext fourCols-paddingTop"><?php echo $lang["PROJECT_PHASE_TASK_END"];?> <?php echo $value->enddate;?></td>
+        </tr>
+        <tr>
+            <td class="fourCols-one">&nbsp;</td>
+            <td class="fourCols-two">&nbsp;</td>
+            <td class="fourCols-three">&nbsp;</td>
+            <td class="grey smalltext fourCols-paddingTop"><?php echo $lang["PROJECT_MANAGEMENT"];?> <?php echo($value->team);?></td>
+        </tr>
+        <tr>
+            <td class="fourCols-one">&nbsp;</td>
+            <td class="fourCols-two">&nbsp;</td>
+            <td class="fourCols-three">&nbsp;</td>
+            <td class="grey smalltext fourCols-paddingTop"><?php echo $lang["GLOBAL_STATUS"];?> <?php echo $value->status_text;?> <?php echo $value->status_text_time;?> <?php echo $value->status_date;?></td>
+        </tr>
         <tr>
             <td class="fourCols-one">&nbsp;</td>
             <td class="fourCols-two">&nbsp;</td>

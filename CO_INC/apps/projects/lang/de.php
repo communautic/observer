@@ -67,6 +67,14 @@ $lang["PROJECT_WIDGET_TITLE_PROJECT"]		=	'Freischaltung';
 $lang["PROJECT_WIDGET_INVITATION_ADMIN"]	=	'als <span class="yellow">Administrator</span> für "%1$s"';
 $lang["PROJECT_WIDGET_INVITATION_GUEST"]	=	'als <span class="yellow">Beobachter</span> für "%1$s"';
 
+$lang["PROJECT_WIDGET_PROJECTLINK_TITLE"]	=	'Terminänderung';
+$lang["PROJECT_WIDGET_PROJECTLINK_STARTEND"]=	'<span class="yellow">Start/Endtermin</span> für das Projekt "%1$s" wurde verändert';
+$lang["PROJECT_WIDGET_PROJECTLINK_START"]	=	'<span class="yellow">Starttermin</span> für das Projekt "%1$s" wurde verändert';
+$lang["PROJECT_WIDGET_PROJECTLINK_END"]		=	'<span class="yellow">Endtermin</span> für das Projekt "%1$s" wurde verändert';
+
+$lang["PROJECT_WIDGET_PROJECTLINK_NOTICE_TITLE"]	=	'Projektlink';
+$lang["PROJECT_WIDGET_PROJECTLINK_NOTICE"]=	'"%1$s" wurde in den Ablauf von "%2$s" miteingebunden';
+
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/projects/de.php";
 if(file_exists($custom_lang)) {

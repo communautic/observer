@@ -41,15 +41,19 @@ if($numPhases > 0) {
             <?php
 			//$taskcount = 1;
 		foreach($project["phases"][$key]["tasks"] as $tkey => &$tvalue){ 
-			if($project["phases"][$key]["tasks"][$tkey]["cat"] == 0) {
+			if($project["phases"][$key]["tasks"][$tkey]["cat"] == 0 || $project["phases"][$key]["tasks"][$tkey]["cat"] == 2) {
+				$projectlink = "";
 		?>
             
             <table border="0" cellspacing="0" cellpadding="0" class="table-content loadProjectsPhase" rel="<?php echo($project["phases"][$key]["id"]);?>">
                 <tr>
                   <td class="tcell-left-inactive text11"></td>
-                   <td width="20"></td>
-                  <td width="20"></td>
-                    <td class="tcell-right"><?php echo($project["phases"][$key]["tasks"][$tkey]["text"]);?><br />
+                   <td width="10"></td>
+                  <td width="30"><?php if ($project["phases"][$key]["tasks"][$tkey]["cat"] == 2) {
+					$projectlink = "Projektlink: ";
+					?><span class="icon-projectlink"></span><?php } ?></td>
+                    <td class="tcell-right">
+					<?php echo($projectlink . $project["phases"][$key]["tasks"][$tkey]["text"]);?><br />
                     <span class="text11 content-date"><?php echo $lang["GLOBAL_DURATION"];?></span><span class="text11"><?php echo($project["phases"][$key]["tasks"][$tkey]["startdate"]);?> - <?php echo($project["phases"][$key]["tasks"][$tkey]["enddate"]);?></span>
                     </td>
                 </tr>
@@ -58,8 +62,8 @@ if($numPhases > 0) {
             <table border="0" cellspacing="0" cellpadding="0" class="table-content loadProjectsPhase" rel="<?php echo($project["phases"][$key]["id"]);?>">
                 <tr>
                   <td class="tcell-left-inactive text11"></td>
-                   <td width="20"></td>
-                  <td width="20"><span class="icon-milestone"></span></td>
+                   <td width="10"></td>
+                  <td width="30"><span class="icon-milestone"></span></td>
                     <td class="tcell-right"><?php echo($project["phases"][$key]["tasks"][$tkey]["text"]);?><br />
                     <span class="text11 content-date"><?php echo $lang["PROJECT_PHASE_MILESTONE_DATE"];?></span><span class="text11"><?php echo($project["phases"][$key]["tasks"][$tkey]["startdate"]);?></span>
                     </td>

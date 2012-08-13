@@ -91,10 +91,15 @@ $width = $numPhases * 170;
         	
 			<div class="psp-item <?php echo($bg);?> loadProjectsPhase" rel="<?php echo($project["phases"][$key]["id"]);?>">
 			<div class="psp-connector-vert"></div>
-			<div style="height: 28px; overflow: hidden"><?php echo($project["phases"][$key]["tasks"][$tkey]["text"]);?></div>
+			<div style="height: 28px; overflow: hidden"><span><?php echo($project["phases"][$key]["tasks"][$tkey]["text"]);?></span></div>
 			<div style="height: 14px; overflow: hidden"><?php echo($project["phases"][$key]["tasks"][$tkey]["team"]);?></div>
-            <?php if($project["phases"][$key]["tasks"][$tkey]["cat"] == 0) { ?>
-				<div class="psp-item-startdate <?php echo($datescolor);?>"><?php echo($project["phases"][$key]["tasks"][$tkey]["startdate"]);?></div><div class="psp-item-enddate <?php echo($datescolor);?>"><?php echo($project["phases"][$key]["tasks"][$tkey]["enddate"]);?></div>
+            <?php if($project["phases"][$key]["tasks"][$tkey]["cat"] == 0 || $project["phases"][$key]["tasks"][$tkey]["cat"] == 2) { ?>
+				<?php if ($project["phases"][$key]["tasks"][$tkey]["cat"] == 2) { ?>
+                <div class="psp-item-projectlink <?php echo($datescolor);?>"><span class="icon-projectlink-psp"></span></div>
+                <div class="psp-item-startdate-projectlink <?php echo($datescolor);?>"><?php echo($project["phases"][$key]["tasks"][$tkey]["startdate"]);?></div><div class="psp-item-enddate-projectlink <?php echo($datescolor);?>"><?php echo($project["phases"][$key]["tasks"][$tkey]["enddate"]);?></div>
+					<?php } else { ?>
+                <div class="psp-item-startdate <?php echo($datescolor);?>"><?php echo($project["phases"][$key]["tasks"][$tkey]["startdate"]);?></div><div class="psp-item-enddate <?php echo($datescolor);?>"><?php echo($project["phases"][$key]["tasks"][$tkey]["enddate"]);?></div>
+                <?php } ?>
 			<?php } else { ?>
 				<div class="psp-item-startdate <?php echo($datescolor);?>"><span class="icon-milestone"></span></div><div class="psp-item-enddate <?php echo($datescolor);?>"><?php echo($project["phases"][$key]["tasks"][$tkey]["enddate"]);?></div>
 			<?php }?>

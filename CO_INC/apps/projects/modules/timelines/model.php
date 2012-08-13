@@ -145,9 +145,42 @@ class ProjectsTimelinesModel extends ProjectsModel {
 					break;
 				}
 				
+				if($rowt->cat == 2) {
+					$pl = $rowt->project_link;
+					$title = $this->getProjectTitle($pl);
+					$project_status = $this->getProjectField($pl,'status');
+					switch($project_status) {
+						case "0":
+							$tstatus = "barchart_color_planned";
+						break;
+						case "1":
+							$tstatus = "barchart_color_inprogress";
+						break;
+						case "2":
+							$tstatus = "barchart_color_finished";
+						break;
+						case "3":
+							$tstatus = "barchart_color_not_finished";
+						break;
+					}
+					$qtp = "select * from " . CO_TBL_PROJECTS_PHASES_TASKS . " where pid = '$pl' and bin='0' order by startdate";
+						$resulttp = mysql_query($qtp, $this->_db->connection);
+						while ($rowtp = mysql_fetch_object($resulttp)) {
+							switch($rowtp->status) {
+								case "0":
+									if ($tstatus == "barchart_color_inprogress" && $today > $rowtp->enddate) {
+										$tstatus = "barchart_color_overdue";
+									}
+								break;
+							}
+						}
+				} else {
+					$title = $rowt->text;
+				}
+				
 				$tasks[] = array(
 					"id" => $rowt->id,
-					"text" => $rowt->text,
+					"text" => $title,
 					"team" => $this->_contactsmodel->getUserListPlain($rowt->team,'team'),
 					"startdate" => $this->_date->formatDate($rowt->startdate,CO_DATE_FORMAT),
 					"enddate" => $this->_date->formatDate($rowt->enddate,CO_DATE_FORMAT),
@@ -336,6 +369,7 @@ class ProjectsTimelinesModel extends ProjectsModel {
 				$task_left = $task_start * $width;
 				$overdue = array();
 				// task status
+				if($rowt->cat != 2) {
 				switch($rowt->status) {
 					case "0":
 						if($row->status == 0) {
@@ -390,6 +424,7 @@ class ProjectsTimelinesModel extends ProjectsModel {
 						}
 					break;
 				}
+				}
 				
 				
 			// dependend task
@@ -415,10 +450,43 @@ class ProjectsTimelinesModel extends ProjectsModel {
 			if($rowt->cat == 1) {
 				$days = $task_days;
 			}
+			
+			if($rowt->cat == 2) {
+				$pl = $rowt->project_link;
+					$title = $this->getProjectTitle($pl);
+					$project_status = $this->getProjectField($pl,'status');
+					switch($project_status) {
+						case "0":
+							$tstatus = "barchart_color_planned";
+						break;
+						case "1":
+							$tstatus = "barchart_color_inprogress";
+						break;
+						case "2":
+							$tstatus = "barchart_color_finished";
+						break;
+						case "3":
+							$tstatus = "barchart_color_not_finished";
+						break;
+					}
+					$qtp = "select * from " . CO_TBL_PROJECTS_PHASES_TASKS . " where pid = '$pl' and bin='0' order by startdate";
+						$resulttp = mysql_query($qtp, $this->_db->connection);
+						while ($rowtp = mysql_fetch_object($resulttp)) {
+							switch($rowtp->status) {
+								case "0":
+									if ($tstatus == "barchart_color_inprogress" && $today > $rowtp->enddate) {
+										$tstatus = "barchart_color_overdue";
+									}
+								break;
+							}
+						}
+				} else {
+					$title = $rowt->text;
+				}
 				
 				$tasks[] = array(
 					"id" => $rowt->id,
-					"text" => $rowt->text,
+					"text" => $title,
 					"startdate" => $this->_date->formatDate($rowt->startdate,CO_DATE_FORMAT),
 					"enddate" => $this->_date->formatDate($rowt->enddate,CO_DATE_FORMAT),
 					"days" => $days,

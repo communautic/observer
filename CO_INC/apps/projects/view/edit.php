@@ -53,6 +53,16 @@
         <td class="tcell-right"><div id="projectsfolder" class="itemlist-field"><?php echo($project->folder);?></div></td>
 	</tr>
 </table>
+<?php if($project->canedit && $project->projectlink == 1) { 
+echo $project->projectlink_access;
+?>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
+	  <td class="tcell-left text11"><span><span>Projektlink</span></span></td>
+        <td class="tcell-right"><?php echo(str_replace('<br />',', ',$project->projectlink_list));?></td>
+	</tr>
+</table>
+<?php } ?>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>

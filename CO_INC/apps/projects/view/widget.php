@@ -60,7 +60,41 @@ if(is_array($notices)) {
     	</div></div>
     <?php
 	}
-} 
+}
+
+
+if(is_array($projectlinks)) {
+	$message = 0;
+	foreach ($projectlinks as $projectlink) { ?>
+		
+    <?php
+	if($projectlink->perm < 5) { ?>
+		<div class="widgetItemOuter projectsLinkDelete" link="<?php echo $projectlink->noticeid;?>" rel="phases,<?php echo $projectlink->relfolder . ',' . $projectlink->relid . ',' . $projectlink->phid . ',projects';?>"><div class="widgetItemTitle">
+        <div class="widgetIconAlert"></div><?php echo $lang["PROJECT_WIDGET_PROJECTLINK_TITLE"];?></div><div class="widgetItemContent">
+	<?php } else { ?>
+		<div class="widgetItemOuter projectsLinkDelete" link="<?php echo $projectlink->noticeid;?>" rel="projects,<?php echo $projectlink->folder . ',' . $projectlink->pid . ',0,projects';?>"><div class="widgetItemTitle">
+        <div class="widgetIconAlert"></div><?php echo $lang["PROJECT_WIDGET_PROJECTLINK_NOTICE_TITLE"];?></div><div class="widgetItemContent">
+	<?php }
+	
+		switch($projectlink->perm) {
+			case 2:
+				echo sprintf($lang["PROJECT_WIDGET_PROJECTLINK_STARTEND"], $projectlink->projectitle);
+			break;
+			case 3:
+				echo sprintf($lang["PROJECT_WIDGET_PROJECTLINK_START"], $projectlink->projectitle);
+			break;
+			case 4:
+				echo sprintf($lang["PROJECT_WIDGET_PROJECTLINK_END"], $projectlink->projectitle);
+			break;
+			case 5:
+				echo sprintf($lang["PROJECT_WIDGET_PROJECTLINK_NOTICE"], $projectlink->projectitle, $projectlink->reltitle);
+			break;
+		}
+	?>
+    	</div></div>
+    <?php
+	}
+}
 
 
 if($message == 1) {

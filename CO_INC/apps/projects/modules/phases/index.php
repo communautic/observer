@@ -75,6 +75,9 @@ if (!empty($_GET['request'])) {
 		case 'getPhaseTaskDialog':
 			echo($projectsPhases->getPhaseTaskDialog());
 		break;
+		case 'getProjectLinkDialog':
+			echo($projectsPhases->getProjectLinkDialog());
+		break;
 		case 'getTasksDialog':
 			echo($projectsPhases->getTasksDialog($_GET['sql'],$_GET['field']));
 		break;
@@ -92,6 +95,9 @@ if (!empty($_GET['request'])) {
 		break;
 		case 'moveDependendTasks':
 			echo($projectsPhases->moveDependendTasks($_GET['id'],$_GET['days']));
+		break;
+		case 'addProjectLink':
+			echo($projectsPhases->addProjectLink($_GET['id'],$_GET['pid'],$_GET['phid']));
 		break;
 		case 'addTask':
 			echo($projectsPhases->addTask($_GET['pid'],$_GET['phid'],$_GET['date'],$_GET['cat']));
