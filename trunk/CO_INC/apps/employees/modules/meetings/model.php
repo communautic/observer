@@ -1,6 +1,6 @@
 <?php
 
-class EmployeesMeetingsModel extends EmployeesModel {
+class EmployeesObjectivesModel extends EmployeesModel {
 	
 	public function __construct() {  
      	parent::__construct();
@@ -12,7 +12,7 @@ class EmployeesMeetingsModel extends EmployeesModel {
 	function getList($id,$sort) {
 		global $session;
 	  if($sort == 0) {
-		  $sortstatus = $this->getSortStatus("employees-meetings-sort-status",$id);
+		  $sortstatus = $this->getSortStatus("employees-objectives-sort-status",$id);
 		  if(!$sortstatus) {
 				$order = "order by item_date DESC";
 				$sortcur = '1';
@@ -27,7 +27,7 @@ class EmployeesMeetingsModel extends EmployeesModel {
 							$sortcur = '2';
 				  break;
 				  case "3":
-				  		$sortorder = $this->getSortOrder("employees-meetings-sort-order",$id);
+				  		$sortorder = $this->getSortOrder("employees-objectives-sort-order",$id);
 				  		if(!$sortorder) {
 								$order = "order by item_date DESC";
 								$sortcur = '1';
@@ -49,7 +49,7 @@ class EmployeesMeetingsModel extends EmployeesModel {
 						$sortcur = '2';
 				  break;
 				  case "3":
-				  		$sortorder = $this->getSortOrder("employees-meetings-sort-order",$id);
+				  		$sortorder = $this->getSortOrder("employees-objectives-sort-order",$id);
 				  		if(!$sortorder) {
 						  	$order = "order by item_date DESC";
 								$sortcur = '1';
@@ -68,12 +68,12 @@ class EmployeesMeetingsModel extends EmployeesModel {
 			$sql = " and access = '1' ";
 		}
 		
-		$q = "select id,title,item_date,access,status,checked_out,checked_out_user from " . CO_TBL_EMPLOYEES_MEETINGS . " where pid = '$id' and bin != '1' " . $sql . $order;
-		$this->setSortStatus("employees-meetings-sort-status",$sortcur,$id);
+		$q = "select id,title,item_date,access,status,checked_out,checked_out_user from " . CO_TBL_EMPLOYEES_OBJECTIVES . " where pid = '$id' and bin != '1' " . $sql . $order;
+		$this->setSortStatus("employees-objectives-sort-status",$sortcur,$id);
 		$result = mysql_query($q, $this->_db->connection);
 		$items = mysql_num_rows($result);
 		
-		$meetings = "";
+		$objectives = "";
 		while ($row = mysql_fetch_array($result)) {
 
 		foreach($row as $key => $val) {
@@ -106,16 +106,16 @@ class EmployeesMeetingsModel extends EmployeesModel {
 				if($session->checkUserActive($array["checked_out_user"])) {
 					$checked_out_status = "icon-checked-out-active";
 				} else {
-					$this->checkinMeetingOverride($id);
+					$this->checkinObjectiveOverride($id);
 				}
 			}
 			$array["checked_out_status"] = $checked_out_status;
 			
 			
-			$meetings[] = new Lists($array);
+			$objectives[] = new Lists($array);
 	  }
 		
-	  $arr = array("meetings" => $meetings, "items" => $items, "sort" => $sortcur, "perm" => $perm);
+	  $arr = array("objectives" => $objectives, "items" => $items, "sort" => $sortcur, "perm" => $perm);
 	  return $arr;
 	}
 
@@ -126,7 +126,7 @@ class EmployeesMeetingsModel extends EmployeesModel {
 		if( $perm ==  "guest") {
 			$sql = " and access = '1' ";
 		}
-		$q = "select count(*) as items from " . CO_TBL_EMPLOYEES_MEETINGS . " where pid = '$id' and bin != '1' " . $sql;
+		$q = "select count(*) as items from " . CO_TBL_EMPLOYEES_OBJECTIVES . " where pid = '$id' and bin != '1' " . $sql;
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_fetch_array($result);
 		$items = $row['items'];
@@ -134,10 +134,10 @@ class EmployeesMeetingsModel extends EmployeesModel {
 	}
 	
 
-	function checkoutMeeting($id) {
+	function checkoutObjective($id) {
 		global $session;
 		
-		$q = "UPDATE " . CO_TBL_EMPLOYEES_MEETINGS . " set checked_out = '1', checked_out_user = '$session->uid' where id='$id'";
+		$q = "UPDATE " . CO_TBL_EMPLOYEES_OBJECTIVES . " set checked_out = '1', checked_out_user = '$session->uid' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
@@ -146,15 +146,15 @@ class EmployeesMeetingsModel extends EmployeesModel {
 	}
 	
 	
-	function checkinMeeting($id) {
+	function checkinObjective($id) {
 		global $session;
 		
-		$q = "SELECT checked_out_user FROM " . CO_TBL_EMPLOYEES_MEETINGS . " where id='$id'";
+		$q = "SELECT checked_out_user FROM " . CO_TBL_EMPLOYEES_OBJECTIVES . " where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$user = mysql_result($result,0);
 
 		if($user == $session->uid) {
-			$q = "UPDATE " . CO_TBL_EMPLOYEES_MEETINGS . " set checked_out = '0', checked_out_user = '0' where id='$id'";
+			$q = "UPDATE " . CO_TBL_EMPLOYEES_OBJECTIVES . " set checked_out = '0', checked_out_user = '0' where id='$id'";
 			$result = mysql_query($q, $this->_db->connection);
 		}
 		if ($result) {
@@ -162,9 +162,9 @@ class EmployeesMeetingsModel extends EmployeesModel {
 		}
 	}
 	
-	function checkinMeetingOverride($id) {
+	function checkinObjectiveOverride($id) {
 		global $session;
-		$q = "UPDATE " . CO_TBL_EMPLOYEES_MEETINGS . " set checked_out = '0', checked_out_user = '0' where id='$id'";
+		$q = "UPDATE " . CO_TBL_EMPLOYEES_OBJECTIVES . " set checked_out = '0', checked_out_user = '0' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			return true;
@@ -177,7 +177,7 @@ class EmployeesMeetingsModel extends EmployeesModel {
 		
 		$this->_documents = new EmployeesDocumentsModel();
 		
-		$q = "SELECT * FROM " . CO_TBL_EMPLOYEES_MEETINGS . " where id = '$id'";
+		$q = "SELECT * FROM " . CO_TBL_EMPLOYEES_OBJECTIVES . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if(mysql_num_rows($result) < 1) {
 			return false;
@@ -200,7 +200,7 @@ class EmployeesMeetingsModel extends EmployeesModel {
 				if($array["checked_out_user"] == $session->uid) {
 					$array["canedit"] = true;
 				} else if(!$session->checkUserActive($array["checked_out_user"])) {
-					$array["canedit"] = $this->checkoutMeeting($id);
+					$array["canedit"] = $this->checkoutObjective($id);
 					$array["canedit"] = true;
 				} else {
 					$array["canedit"] = false;
@@ -210,7 +210,7 @@ class EmployeesMeetingsModel extends EmployeesModel {
 
 				}
 			} else {
-				$array["canedit"] = $this->checkoutMeeting($id);
+				$array["canedit"] = $this->checkoutObjective($id);
 			}
 		}
 		
@@ -292,7 +292,7 @@ class EmployeesMeetingsModel extends EmployeesModel {
 		$array["checkpoint"] = 0;
 		$array["checkpoint_date"] = "";
 		$array["checkpoint_note"] = "";
-		$q = "SELECT date,note FROM " . CO_TBL_USERS_CHECKPOINTS . " where uid='$session->uid' and app = 'employees' and module = 'meetings' and app_id = '$id' LIMIT 1";
+		$q = "SELECT date,note FROM " . CO_TBL_USERS_CHECKPOINTS . " where uid='$session->uid' and app = 'employees' and module = 'objectives' and app_id = '$id' LIMIT 1";
 		$result = mysql_query($q, $this->_db->connection);
 		if(mysql_num_rows($result) > 0) {
 			while ($row = mysql_fetch_assoc($result)) {
@@ -304,7 +304,7 @@ class EmployeesMeetingsModel extends EmployeesModel {
 		
 		// get the tasks
 		$task = array();
-		$q = "SELECT * FROM " . CO_TBL_EMPLOYEES_MEETINGS_TASKS . " where mid = '$id' and bin='0' ORDER BY sort";
+		$q = "SELECT * FROM " . CO_TBL_EMPLOYEES_OBJECTIVES_TASKS . " where mid = '$id' and bin='0' ORDER BY sort";
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
 		foreach($row as $key => $val) {
@@ -313,36 +313,36 @@ class EmployeesMeetingsModel extends EmployeesModel {
 			$task[] = new Lists($tasks);
 		}
 		
-		$sendto = $this->getSendtoDetails("employees_meetings",$id);
+		$sendto = $this->getSendtoDetails("employees_objectives",$id);
 
-		$meeting = new Lists($array);
-		$arr = array("meeting" => $meeting, "task" => $task, "sendto" => $sendto, "access" => $array["perms"]);
+		$objective = new Lists($array);
+		$arr = array("objective" => $objective, "task" => $task, "sendto" => $sendto, "access" => $array["perms"]);
 		return $arr;
    }
 
 
-   function setDetails($pid,$id,$title,$meetingdate,$start,$end,$location,$location_ct,$participants,$participants_ct,$management,$management_ct,$task_id,$task_title,$task_text,$task,$task_sort,$documents,$meeting_access,$meeting_access_orig) {
+   function setDetails($pid,$id,$title,$objectivedate,$start,$end,$location,$location_ct,$participants,$participants_ct,$management,$management_ct,$task_id,$task_title,$task_text,$task,$task_sort,$documents,$objective_access,$objective_access_orig) {
 		global $session, $lang;
 		
-		$start = $this->_date->formatDateGMT($meetingdate . " " . $start);
-		$end = $this->_date->formatDateGMT( $meetingdate . " " . $end);
-		$meetingdate = $this->_date->formatDate($meetingdate);
+		$start = $this->_date->formatDateGMT($objectivedate . " " . $start);
+		$end = $this->_date->formatDateGMT( $objectivedate . " " . $end);
+		$objectivedate = $this->_date->formatDate($objectivedate);
 		$participants = $this->_contactsmodel->sortUserIDsByName($participants);
 		$management = $this->_contactsmodel->sortUserIDsByName($management);
 
 		$now = gmdate("Y-m-d H:i:s");
 		
-		if($meeting_access == $meeting_access_orig) {
+		if($objective_access == $objective_access_orig) {
 			$accesssql = "";
 		} else {
-			$meeting_access_date = "";
-			if($meeting_access == 1) {
-				$meeting_access_date = $now;
+			$objective_access_date = "";
+			if($objective_access == 1) {
+				$objective_access_date = $now;
 			}
-			$accesssql = "access='$meeting_access', access_date='$meeting_access_date', access_user = '$session->uid',";
+			$accesssql = "access='$objective_access', access_date='$objective_access_date', access_user = '$session->uid',";
 		}
 		
-		$q = "UPDATE " . CO_TBL_EMPLOYEES_MEETINGS . " set title = '$title', item_date = '$meetingdate', start = '$start', end = '$end', location = '$location', location_ct = '$location_ct', participants='$participants', participants_ct='$participants_ct', management='$management', management_ct='$management_ct', documents = '$documents', access='$meeting_access', $accesssql edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_EMPLOYEES_OBJECTIVES . " set title = '$title', item_date = '$objectivedate', start = '$start', end = '$end', location = '$location', location_ct = '$location_ct', participants='$participants', participants_ct='$participants_ct', management='$management', management_ct='$management_ct', documents = '$documents', access='$objective_access', $accesssql edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		// do existing tasks
@@ -357,7 +357,7 @@ class EmployeesMeetingsModel extends EmployeesModel {
 			} else {
 				$checked_items[$key] = '0';
 			}
-			$q = "UPDATE " . CO_TBL_EMPLOYEES_MEETINGS_TASKS . " set status = '$checked_items[$key]', title = '$task_title[$key]', text = '$task_text[$key]', sort = '$task_sort[$key]' WHERE id='$task_id[$key]'";
+			$q = "UPDATE " . CO_TBL_EMPLOYEES_OBJECTIVES_TASKS . " set status = '$checked_items[$key]', title = '$task_title[$key]', text = '$task_text[$key]', sort = '$task_sort[$key]' WHERE id='$task_id[$key]'";
 			$result = mysql_query($q, $this->_db->connection);
 		}
 		if ($result) {
@@ -372,16 +372,16 @@ class EmployeesMeetingsModel extends EmployeesModel {
 		$date = $this->_date->formatDate($date);
 		$now = gmdate("Y-m-d H:i:s");
 		
-		$q = "SELECT title FROM " . CO_TBL_EMPLOYEES_MEETINGS . " where id='$id'";
+		$q = "SELECT title FROM " . CO_TBL_EMPLOYEES_OBJECTIVES . " where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$title = mysql_result($result,0);
 		
 		$title_change = $title;
 		if($status == 3) {
-			$title_change = $title . " " . $lang["EMPLOYEE_MEETING_POSPONED"];
+			$title_change = $title . " " . $lang["EMPLOYEE_OBJECTIVE_POSPONED"];
 		}
 		
-		$q = "UPDATE " . CO_TBL_EMPLOYEES_MEETINGS . " set title = '$title_change', status = '$status', status_date = '$date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_EMPLOYEES_OBJECTIVES . " set title = '$title_change', status = '$status', status_date = '$date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
@@ -390,13 +390,13 @@ class EmployeesMeetingsModel extends EmployeesModel {
 		
 		// posponed
 		if($status == 3) {
-			$this->checkinMeeting($id);
-			$q = "INSERT INTO " . CO_TBL_EMPLOYEES_MEETINGS . " (pid,title,item_date,start,end,location,location_ct,length,management,management_ct,participants,participants_ct,status,status_date,created_date,created_user,edited_date,edited_user) SELECT pid,'$title','$date',start,end,location,location_ct,length,management,management_ct,participants,participants_ct,0,'$now','$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_EMPLOYEES_MEETINGS . " where id='$id'";
+			$this->checkinObjective($id);
+			$q = "INSERT INTO " . CO_TBL_EMPLOYEES_OBJECTIVES . " (pid,title,item_date,start,end,location,location_ct,length,management,management_ct,participants,participants_ct,status,status_date,created_date,created_user,edited_date,edited_user) SELECT pid,'$title','$date',start,end,location,location_ct,length,management,management_ct,participants,participants_ct,0,'$now','$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_EMPLOYEES_OBJECTIVES . " where id='$id'";
 			$result = mysql_query($q, $this->_db->connection);
 			if ($result) {
 				$nid = mysql_insert_id();
 				// do tasks
-				$qt = "INSERT INTO " . CO_TBL_EMPLOYEES_MEETINGS_TASKS . " (mid,status,title,text,sort) SELECT '$nid',status,title,text,sort FROM " . CO_TBL_EMPLOYEES_MEETINGS_TASKS . " where mid='$id'";
+				$qt = "INSERT INTO " . CO_TBL_EMPLOYEES_OBJECTIVES_TASKS . " (mid,status,title,text,sort) SELECT '$nid',status,title,text,sort FROM " . CO_TBL_EMPLOYEES_OBJECTIVES_TASKS . " where mid='$id'";
 				$resultt = mysql_query($qt, $this->_db->connection);
 				$arr = array("id" => $nid, "what" => "reload");
 			}
@@ -411,7 +411,7 @@ class EmployeesMeetingsModel extends EmployeesModel {
 		$now = gmdate("Y-m-d H:i:s");
 		$time = gmdate("Y-m-d H");
 		
-		$q = "INSERT INTO " . CO_TBL_EMPLOYEES_MEETINGS . " set title = '" . $lang["EMPLOYEE_MEETING_NEW"] . "', item_date='$now', start='$time', end='$time', pid = '$id', participants = '$session->uid', management = '$session->uid', status = '0', status_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+		$q = "INSERT INTO " . CO_TBL_EMPLOYEES_OBJECTIVES . " set title = '" . $lang["EMPLOYEE_OBJECTIVE_NEW"] . "', item_date='$now', start='$time', end='$time', pid = '$id', participants = '$session->uid', management = '$session->uid', status = '0', status_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id = mysql_insert_id();
 		
@@ -428,12 +428,12 @@ class EmployeesMeetingsModel extends EmployeesModel {
 		
 		$now = gmdate("Y-m-d H:i:s");
 		
-		// meeting
-		$q = "INSERT INTO " . CO_TBL_EMPLOYEES_MEETINGS . " (pid,title,item_date,start,end,location,location_ct,length,management,management_ct,participants,participants_ct,status_date,created_date,created_user,edited_date,edited_user) SELECT pid,CONCAT(title,' " . $lang["GLOBAL_DUPLICAT"] . "'),item_date,start,end,location,location_ct,length,management,management_ct,participants,participants_ct,'$now','$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_EMPLOYEES_MEETINGS . " where id='$id'";
+		// objective
+		$q = "INSERT INTO " . CO_TBL_EMPLOYEES_OBJECTIVES . " (pid,title,item_date,start,end,location,location_ct,length,management,management_ct,participants,participants_ct,status_date,created_date,created_user,edited_date,edited_user) SELECT pid,CONCAT(title,' " . $lang["GLOBAL_DUPLICAT"] . "'),item_date,start,end,location,location_ct,length,management,management_ct,participants,participants_ct,'$now','$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_EMPLOYEES_OBJECTIVES . " where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
 		// tasks
-		$qt = "INSERT INTO " . CO_TBL_EMPLOYEES_MEETINGS_TASKS . " (mid,status,title,text,sort) SELECT $id_new,'0',title,text,sort FROM " . CO_TBL_EMPLOYEES_MEETINGS_TASKS . " where mid='$id' and bin='0'";
+		$qt = "INSERT INTO " . CO_TBL_EMPLOYEES_OBJECTIVES_TASKS . " (mid,status,title,text,sort) SELECT $id_new,'0',title,text,sort FROM " . CO_TBL_EMPLOYEES_OBJECTIVES_TASKS . " where mid='$id' and bin='0'";
 		$resultt = mysql_query($qt, $this->_db->connection);
 		if ($result) {
 			return $id_new;
@@ -441,38 +441,38 @@ class EmployeesMeetingsModel extends EmployeesModel {
 	}
 
 
-   function binMeeting($id) {
+   function binObjective($id) {
 		global $session;
-		$q = "UPDATE " . CO_TBL_EMPLOYEES_MEETINGS . " set bin = '1', bintime = NOW(), binuser= '$session->uid' where id='$id'";
+		$q = "UPDATE " . CO_TBL_EMPLOYEES_OBJECTIVES . " set bin = '1', bintime = NOW(), binuser= '$session->uid' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 		  	return true;
 		}
    }
    
-   function restoreMeeting($id) {
-		$q = "UPDATE " . CO_TBL_EMPLOYEES_MEETINGS . " set bin = '0' where id='$id'";
+   function restoreObjective($id) {
+		$q = "UPDATE " . CO_TBL_EMPLOYEES_OBJECTIVES . " set bin = '0' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 		  	return true;
 		}
    }
    
-   function deleteMeeting($id) {
-		$q = "SELECT id FROM " . CO_TBL_EMPLOYEES_MEETINGS_TASKS . " WHERE mid = '$id'";
+   function deleteObjective($id) {
+		$q = "SELECT id FROM " . CO_TBL_EMPLOYEES_OBJECTIVES_TASKS . " WHERE mid = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
 			$tid = $row["id"];
-			$this->deleteMeetingTask($tid);
+			$this->deleteObjectiveTask($tid);
 		}
 		
-		$q = "DELETE FROM co_log_sendto WHERE what='employees_meetings' and whatid='$id'";
+		$q = "DELETE FROM co_log_sendto WHERE what='employees_objectives' and whatid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
-		$q = "DELETE FROM " . CO_TBL_USERS_CHECKPOINTS . " WHERE app = 'employees' and module = 'meetings' and app_id='$id'";
+		$q = "DELETE FROM " . CO_TBL_USERS_CHECKPOINTS . " WHERE app = 'employees' and module = 'objectives' and app_id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
-		$q = "DELETE FROM " . CO_TBL_EMPLOYEES_MEETINGS . " WHERE id='$id'";
+		$q = "DELETE FROM " . CO_TBL_EMPLOYEES_OBJECTIVES . " WHERE id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 		  	return true;
@@ -482,7 +482,7 @@ class EmployeesMeetingsModel extends EmployeesModel {
 
    function toggleIntern($id,$status) {
 		global $session;
-		$q = "UPDATE " . CO_TBL_EMPLOYEES_MEETINGS . " set intern = '$status' where id='$id'";
+		$q = "UPDATE " . CO_TBL_EMPLOYEES_OBJECTIVES . " set intern = '$status' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 		  	return true;
@@ -493,12 +493,12 @@ class EmployeesMeetingsModel extends EmployeesModel {
    function addTask($mid,$num,$sort) {
 		global $session, $lang;
 		
-		$q = "INSERT INTO " . CO_TBL_EMPLOYEES_MEETINGS_TASKS . " set mid='$mid', status = '0', title = '" . $lang["EMPLOYEE_MEETING_TASK_NEW"] . "', sort='$sort'";
+		$q = "INSERT INTO " . CO_TBL_EMPLOYEES_OBJECTIVES_TASKS . " set mid='$mid', status = '0', title = '" . $lang["EMPLOYEE_OBJECTIVE_TASK_NEW"] . "', sort='$sort'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id = mysql_insert_id();
 		
 		$task = array();
-		$q = "SELECT * FROM " . CO_TBL_EMPLOYEES_MEETINGS_TASKS . " where id = '$id'";
+		$q = "SELECT * FROM " . CO_TBL_EMPLOYEES_OBJECTIVES_TASKS . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
 			foreach($row as $key => $val) {
@@ -513,25 +513,25 @@ class EmployeesMeetingsModel extends EmployeesModel {
 
    function deleteTask($id) {
 		global $session;
-		$q = "UPDATE " . CO_TBL_EMPLOYEES_MEETINGS_TASKS . " set bin = '1', bintime = NOW(), binuser= '$session->uid' WHERE id='$id'";
+		$q = "UPDATE " . CO_TBL_EMPLOYEES_OBJECTIVES_TASKS . " set bin = '1', bintime = NOW(), binuser= '$session->uid' WHERE id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if($result) {
 			return true;
 		}
    }
    
-   function restoreMeetingTask($id) {
+   function restoreObjectiveTask($id) {
 		global $session;
-		$q = "UPDATE " . CO_TBL_EMPLOYEES_MEETINGS_TASKS . " set bin = '0' WHERE id='$id'";
+		$q = "UPDATE " . CO_TBL_EMPLOYEES_OBJECTIVES_TASKS . " set bin = '0' WHERE id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if($result) {
 			return true;
 		}
    }
    
-   function deleteMeetingTask($id) {
+   function deleteObjectiveTask($id) {
 		global $session;
-		$q = "DELETE FROM " . CO_TBL_EMPLOYEES_MEETINGS_TASKS . " WHERE id='$id'";
+		$q = "DELETE FROM " . CO_TBL_EMPLOYEES_OBJECTIVES_TASKS . " WHERE id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if($result) {
 			return true;
@@ -541,7 +541,7 @@ class EmployeesMeetingsModel extends EmployeesModel {
 	function newCheckpoint($id,$date){
 		global $session;
 		$date = $this->_date->formatDate($date);
-		$q = "INSERT INTO " . CO_TBL_USERS_CHECKPOINTS . " SET uid = '$session->uid', date = '$date', app = 'employees', module = 'meetings', app_id='$id'";
+		$q = "INSERT INTO " . CO_TBL_USERS_CHECKPOINTS . " SET uid = '$session->uid', date = '$date', app = 'employees', module = 'objectives', app_id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			return true;
@@ -551,7 +551,7 @@ class EmployeesMeetingsModel extends EmployeesModel {
  	function updateCheckpoint($id,$date){
 		global $session;
 		$date = $this->_date->formatDate($date);
-		$q = "UPDATE " . CO_TBL_USERS_CHECKPOINTS . " SET date = '$date' WHERE uid = '$session->uid' and app = 'employees' and module = 'meetings' and app_id='$id'";
+		$q = "UPDATE " . CO_TBL_USERS_CHECKPOINTS . " SET date = '$date' WHERE uid = '$session->uid' and app = 'employees' and module = 'objectives' and app_id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			return true;
@@ -560,7 +560,7 @@ class EmployeesMeetingsModel extends EmployeesModel {
 
  	function deleteCheckpoint($id){
 		global $session;
-		$q = "DELETE FROM " . CO_TBL_USERS_CHECKPOINTS . " WHERE uid = '$session->uid'and app = 'employees' and module = 'meetings' and app_id='$id'";
+		$q = "DELETE FROM " . CO_TBL_USERS_CHECKPOINTS . " WHERE uid = '$session->uid'and app = 'employees' and module = 'objectives' and app_id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			return true;
@@ -569,7 +569,7 @@ class EmployeesMeetingsModel extends EmployeesModel {
 
 	function updateCheckpointText($id,$text){
 		global $session;
-		$q = "UPDATE " . CO_TBL_USERS_CHECKPOINTS . " SET note = '$text' WHERE uid = '$session->uid' and app = 'employees' and module = 'meetings' and app_id='$id'";
+		$q = "UPDATE " . CO_TBL_USERS_CHECKPOINTS . " SET note = '$text' WHERE uid = '$session->uid' and app = 'employees' and module = 'objectives' and app_id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			return true;
@@ -579,11 +579,11 @@ class EmployeesMeetingsModel extends EmployeesModel {
     function getCheckpointDetails($id){
 		global $lang;
 		$row = "";
-		$q = "SELECT a.pid,a.title,b.folder FROM " . CO_TBL_EMPLOYEES_MEETINGS . " as a, " . CO_TBL_EMPLOYEES . " as b WHERE a.pid = b.id and a.id='$id' and a.bin='0'";
+		$q = "SELECT a.pid,a.title,b.folder FROM " . CO_TBL_EMPLOYEES_OBJECTIVES . " as a, " . CO_TBL_EMPLOYEES . " as b WHERE a.pid = b.id and a.id='$id' and a.bin='0'";
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_fetch_array($result);
 		if(mysql_num_rows($result) > 0) {
-			$row['checkpoint_app_name'] = $lang["EMPLOYEE_MEETING_TITLE"];
+			$row['checkpoint_app_name'] = $lang["EMPLOYEE_OBJECTIVE_TITLE"];
 			$row['app_id'] = $row['pid'];
 			$row['app_id_app'] = $id;
 		}
