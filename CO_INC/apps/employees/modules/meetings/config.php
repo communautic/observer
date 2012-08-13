@@ -1,6 +1,6 @@
 <?php
-$employees_meetings_filter = 1;
-define("employees_meetings_bin" , 1);
-define("CO_TBL_EMPLOYEES_MEETINGS"			,	TBL_PREFIX . "employees_meetings" 		);
-define("CO_TBL_EMPLOYEES_MEETINGS_TASKS"		,	TBL_PREFIX . "employees_meetings_tasks" 	);
+$employees_objectives_filter = 1;
+define("employees_objectives_bin" , 1);
+define("CO_TBL_EMPLOYEES_OBJECTIVES"			,	TBL_PREFIX . "employees_objectives" 		);
+define("CO_TBL_EMPLOYEES_OBJECTIVES_TASKS"		,	TBL_PREFIX . "employees_objectives_tasks" 	);
 ?>
