@@ -163,17 +163,14 @@ class ProjectsTimelinesModel extends ProjectsModel {
 							$tstatus = "barchart_color_not_finished";
 						break;
 					}
-					$qtp = "select * from " . CO_TBL_PROJECTS_PHASES_TASKS . " where pid = '$pl' and bin='0' order by startdate";
-						$resulttp = mysql_query($qtp, $this->_db->connection);
-						while ($rowtp = mysql_fetch_object($resulttp)) {
-							switch($rowtp->status) {
-								case "0":
-									if ($tstatus == "barchart_color_inprogress" && $today > $rowtp->enddate) {
-										$tstatus = "barchart_color_overdue";
-									}
-								break;
-							}
+					$enddate = $rowt->enddate;
+					$qtp = "select * from " . CO_TBL_PROJECTS_PHASES_TASKS . " where pid = '$pl' and bin='0' and cat != '2' and ((status = '1' and donedate > '$enddate') OR (status = '0' and $today > '$enddate'))";
+					$resulttp = mysql_query($qtp, $this->_db->connection);
+					if(mysql_fetch_row($resulttp) > 0) {
+						if ($tstatus == "barchart_color_inprogress") {
+							$tstatus = "barchart_color_overdue";
 						}
+					}
 				} else {
 					$title = $rowt->text;
 				}
@@ -469,17 +466,14 @@ class ProjectsTimelinesModel extends ProjectsModel {
 							$tstatus = "barchart_color_not_finished";
 						break;
 					}
-					$qtp = "select * from " . CO_TBL_PROJECTS_PHASES_TASKS . " where pid = '$pl' and bin='0' order by startdate";
-						$resulttp = mysql_query($qtp, $this->_db->connection);
-						while ($rowtp = mysql_fetch_object($resulttp)) {
-							switch($rowtp->status) {
-								case "0":
-									if ($tstatus == "barchart_color_inprogress" && $today > $rowtp->enddate) {
-										$tstatus = "barchart_color_overdue";
-									}
-								break;
-							}
+					$enddate = $rowt->enddate;
+					$qtp = "select * from " . CO_TBL_PROJECTS_PHASES_TASKS . " where pid = '$pl' and bin='0' and cat != '2' and ((status = '1' and donedate > '$enddate') OR (status = '0' and $today > '$enddate'))";
+					$resulttp = mysql_query($qtp, $this->_db->connection);
+					if(mysql_fetch_row($resulttp) > 0) {
+						if ($tstatus == "barchart_color_inprogress") {
+							$tstatus = "barchart_color_overdue";
 						}
+					}
 				} else {
 					$title = $rowt->text;
 				}
