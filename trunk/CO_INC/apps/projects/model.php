@@ -910,13 +910,34 @@ class ProjectsModel extends Model {
 		
 		$project = new Lists($array);
 		
-		$sql="";
+		$sql=" ";
 		if($array["access"] == "guest" || $array["access"] == "guestadmin") {
 			$sql = " and a.access = '1' ";
 		}
 		
 		// get phase details
-		$q = "select a.title,a.id,a.access,a.status,(SELECT MIN(startdate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as c WHERE c.phaseid=a.id and c.bin='0') as enddate from " . CO_TBL_PROJECTS_PHASES . " as a where a.pid = '$id' and a.bin != '1' " . $sql . " order by startdate";
+		$sortstatus = $this->getSortStatus("projects-phases-sort-status",$id);
+		if(!$sortstatus) {
+			$order = "order by startdate";
+		} else {
+			switch($sortstatus) {
+				case "1":
+					$order = "order by startdate";
+				break;
+				case "2":
+					$order = "order by startdate DESC";
+				break;
+				case "3":
+					$sortorder = $this->getSortOrder("projects-phases-sort-order",$id);
+					if(!$sortorder) {
+						$order = "order by startdate";
+					} else {
+						$order = "order by field(id,$sortorder)";
+					}
+				break;	
+			}
+		}
+		$q = "select a.title,a.id,a.access,a.status,(SELECT MIN(startdate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as c WHERE c.phaseid=a.id and c.bin='0') as enddate from " . CO_TBL_PROJECTS_PHASES . " as a where a.pid = '$id' and a.bin != '1' " . $sql . $order;
 		$result = mysql_query($q, $this->_db->connection);
 	  	$phases = "";
 	  	while ($row = mysql_fetch_array($result)) {
