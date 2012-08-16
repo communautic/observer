@@ -145,7 +145,7 @@ class ProjectsControllingModel extends ProjectsModel {
 				if($tasks == 0) {
 					$chart["real"] = 0;
 				} else {
-					$chart["real"] = round((100/$tasks)*$tasks_done,2);
+					$chart["real"] = round((100/$tasks)*$tasks_done,0);
 				}
 				
 				$chart["tendency"] = "tendency_negative.png";
