@@ -181,6 +181,9 @@ li.ui-state-highlight { height: 13px; margin: 0 0 5px 0;}
 .deactivated .module-item-status { border: 0 !important;}
 .module-item-active { display: block; }
 .module-item-active-stopped { display: block; background-position: -315px 7px;}
+.module-item-active-trial { display: block; background-position: -600px -37px;}
+.module-item-active-maternity { display: block; background-position: -600px -18px;}
+.module-item-active-leave { display: block; background-position: -600px 3px;}
 
 .text { /*padding-right: 30px;*/ }
 .num { position: absolute; right: 25px; font-size: 11px; top: 0;}

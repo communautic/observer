@@ -41,7 +41,7 @@ function employeesObjectives(name) {
 		formData[formData.length] = processStringApps('objectivestart');
 		formData[formData.length] = processStringApps('objectiveend');
 		formData[formData.length] = processListApps('objective_relates_to');
-		formData[formData.length] = processDocListApps('documents');
+		//formData[formData.length] = processDocListApps('documents');
 		formData[formData.length] = processListApps('objective_access');
 		//formData[formData.length] = processListApps('objective_status');
 	 }
@@ -544,3 +544,36 @@ function employeesObjectives(name) {
 }
 
 var employees_objectives = new employeesObjectives('employees_objectives');
+
+$(document).ready(function() {				   
+	$('#employees').on('click', '.answers-outer span',function(e) {
+		e.preventDefault();
+		var tab = $(this).parent().attr('rel');
+		var q = $(this).attr('rel');
+		var val = $(this).html();
+		$(this).siblings().removeClass('active');
+		$(this).addClass('active');
+		var total = 0;
+		if(tab == 'tab1') {
+			$('#EmployeesObjectivesFirst .answers-outer span').each( function() {
+			 if($(this).hasClass('active'))	{
+				 total = total + parseInt($(this).html());
+			 }
+		})
+			var res = Math.round(100/40*total);
+		} else {
+			$('#EmployeesObjectivesSecond .answers-outer span').each( function() {
+			 if($(this).hasClass('active'))	{
+				 total = total + parseInt($(this).html());
+			 }
+		})
+			var res = total;
+		}
+		$('#'+tab+'result').html(res);
+		// ajax call
+		var pid = $('#employees').data('third');
+		var field = tab+q;
+		$.ajax({ type: "GET", url: "/", data: "path=apps/employees/modules/objectives&request=updateQuestion&id=" + pid + "&field=" + field + "&val=" + val, cache: false });
+		
+	});
+});	

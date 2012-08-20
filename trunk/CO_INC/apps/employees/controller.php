@@ -390,8 +390,8 @@ class Employees extends Controller {
 	}
 
 
-	function setEmployeeDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$folder,$employee,$employee_more,$employee_cat,$employee_cat_more,$product,$product_desc,$charge,$number) {
-		$retval = $this->model->setEmployeeDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$folder,$employee,$employee_more,$employee_cat,$employee_cat_more,$product,$product_desc,$charge,$number);
+	function setEmployeeDetails($id,$title,$startdate,$enddate,$protocol,$protocol2,$folder,$number,$kind,$area,$department,$dob,$coo,$languages,$street_private,$city_private,$zip_private,$phone_private,$email_private) {
+		$retval = $this->model->setEmployeeDetails($id,$title,$startdate,$enddate,$protocol,$protocol2,$folder,$number,$kind,$area,$department,$dob,$coo,$languages,$street_private,$city_private,$zip_private,$phone_private,$email_private);
 		if($retval){
 			 return '{ "action": "edit", "id": "' . $id . '"}';
 		  } else{
@@ -463,8 +463,8 @@ class Employees extends Controller {
 		include 'view/dialog_status.php';
 	}
 	
-	function getEmployeeDialog($field,$title) {
-		$retval = $this->model->getEmployeeDialog($field,$title);
+	function getEmployeeDialog($field,$sql) {
+		$retval = $this->model->getEmployeeDialog($field,$sql);
 		if($retval){
 			 return $retval;
 		  } else{
