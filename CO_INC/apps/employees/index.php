@@ -126,7 +126,7 @@ if (!empty($_GET['request'])) {
 			echo($employees->getEmployeeStatusDialog());
 		break;
 		case 'getEmployeeDialog':
-			echo($employees->getEmployeeDialog($_GET['field'],$_GET['title']));
+			echo($employees->getEmployeeDialog($_GET['field'],$_GET['sql']));
 		break;
 		case 'getEmployeeMoreDialog':
 			echo($employees->getEmployeeMoreDialog($_GET['field'],$_GET['title']));
@@ -179,7 +179,7 @@ if (!empty($_POST['request'])) {
 			echo($employees->setFolderDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['employeestatus']));
 		break;
 		case 'setEmployeeDetails':
-			echo($employees->setEmployeeDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['startdate'], $_POST['ordered_by'], $system->checkMagicQuotes($_POST['ordered_by_ct']), $_POST['management'], $system->checkMagicQuotes($_POST['management_ct']), $_POST['team'], $system->checkMagicQuotes($_POST['team_ct']), $system->checkMagicQuotes($_POST['protocol']), $_POST['folder'], $_POST['employee'], $_POST['employeemore'], $_POST['employeecat'], $_POST['employeecatmore'], $_POST['product'], $_POST['product_desc'], $_POST['charge'], $_POST['number']));
+			echo($employees->setEmployeeDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['startdate'], $_POST['enddate'], $system->checkMagicQuotes($_POST['protocol']), $system->checkMagicQuotes($_POST['protocol2']), $_POST['folder'], $_POST['number'], $_POST['kind'], $_POST['area'], $_POST['department'], $_POST['dob'], $_POST['coo'], $_POST['languages'], $_POST['street_private'], $_POST['city_private'], $_POST['zip_private'], $_POST['phone_private'], $_POST['email_private']));
 		break;
 		case 'moveEmployee':
 			echo($employees->moveEmployee($_POST['id'], $_POST['startdate'], $_POST['movedays']));

@@ -218,6 +218,7 @@ class EmployeesObjectivesModel extends EmployeesModel {
 		$array["item_date"] = $this->_date->formatDate($array["item_date"],CO_DATE_FORMAT);
 		
 		// time
+		$array["today"] = $this->_date->formatDate("now",CO_DATE_FORMAT);
 		$array["start"] = $this->_date->formatDate($array["start"],CO_TIME_FORMAT);
 		$array["end"] = $this->_date->formatDate($array["end"],CO_TIME_FORMAT);
 		$array["location"] = $this->_contactsmodel->getPlaceList($array['location'],'location', $array["canedit"]);
@@ -239,7 +240,7 @@ class EmployeesObjectivesModel extends EmployeesModel {
 		$array["management_print"] = $this->_contactsmodel->getUserListPlain($array["management"]);
 		$array["management"] = $this->_contactsmodel->getUserList($array['management'],'employeesmanagement', "", $array["canedit"]);
 		$array["management_ct"] = empty($array["management_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['management_ct'];
-		$array["documents"] = $this->_documents->getDocListFromIDs($array['documents'],'documents');
+		//$array["documents"] = $this->_documents->getDocListFromIDs($array['documents'],'documents');
 		
 		$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
 		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
@@ -288,8 +289,44 @@ class EmployeesObjectivesModel extends EmployeesModel {
 			break;
 		}
 		
+		// Tab 1 questios
+		$array["tab1q1_selected"] = $array["tab1q1"];
+		$array["tab1q2_selected"] = $array["tab1q2"];
+		$array["tab1q3_selected"] = $array["tab1q3"];
+		$array["tab1q4_selected"] = $array["tab1q4"];
+		$tab1result = 0;
+		if(!empty($array["tab1q1"])) { $tab1result += $array["tab1q1"]; }
+		if(!empty($array["tab1q2"])) { $tab1result += $array["tab1q2"]; }
+		if(!empty($array["tab1q3"])) { $tab1result += $array["tab1q3"]; }
+		if(!empty($array["tab1q4"])) { $tab1result += $array["tab1q4"]; }
+		$array["tab1result"] = round(100/40* $tab1result,0);
+		
+		// Tab 2 questios
+		$array["tab2q1_selected"] = $array["tab2q1"];
+		$array["tab2q2_selected"] = $array["tab2q2"];
+		$array["tab2q3_selected"] = $array["tab2q3"];
+		$array["tab2q4_selected"] = $array["tab2q4"];
+		$array["tab2q5_selected"] = $array["tab2q5"];
+		$array["tab2q6_selected"] = $array["tab2q6"];
+		$array["tab2q7_selected"] = $array["tab2q7"];
+		$array["tab2q8_selected"] = $array["tab2q8"];
+		$array["tab2q9_selected"] = $array["tab2q9"];
+		$array["tab2q10_selected"] = $array["tab2q10"];
+		$tab2result = 0;
+		if(!empty($array["tab2q1"])) { $tab2result += $array["tab2q1"]; }
+		if(!empty($array["tab2q2"])) { $tab2result += $array["tab2q2"]; }
+		if(!empty($array["tab2q3"])) { $tab2result += $array["tab2q3"]; }
+		if(!empty($array["tab2q4"])) { $tab2result += $array["tab2q4"]; }
+		if(!empty($array["tab2q5"])) { $tab2result += $array["tab2q5"]; }
+		if(!empty($array["tab2q6"])) { $tab2result += $array["tab2q6"]; }
+		if(!empty($array["tab2q7"])) { $tab2result += $array["tab2q7"]; }
+		if(!empty($array["tab2q8"])) { $tab2result += $array["tab2q8"]; }
+		if(!empty($array["tab2q9"])) { $tab2result += $array["tab2q9"]; }
+		if(!empty($array["tab2q10"])) { $tab2result += $array["tab2q10"]; }
+		$array["tab2result"] = $tab2result;
+		
 		// checkpoint
-		$array["checkpoint"] = 0;
+		/*$array["checkpoint"] = 0;
 		$array["checkpoint_date"] = "";
 		$array["checkpoint_note"] = "";
 		$q = "SELECT date,note FROM " . CO_TBL_USERS_CHECKPOINTS . " where uid='$session->uid' and app = 'employees' and module = 'objectives' and app_id = '$id' LIMIT 1";
@@ -300,7 +337,7 @@ class EmployeesObjectivesModel extends EmployeesModel {
 			$array["checkpoint_date"] = $this->_date->formatDate($row['date'],CO_DATE_FORMAT);
 			$array["checkpoint_note"] = $row['note'];
 			}
-		}
+		}*/
 		
 		// get the tasks
 		$task = array();
@@ -310,6 +347,11 @@ class EmployeesObjectivesModel extends EmployeesModel {
 		foreach($row as $key => $val) {
 				$tasks[$key] = $val;
 			}
+			
+			$tasks["startdate"] = $this->_date->formatDate($tasks["startdate"],CO_DATE_FORMAT);
+			$tasks["enddate"] = $this->_date->formatDate($tasks["enddate"],CO_DATE_FORMAT);
+			$tasks["donedate"] = $this->_date->formatDate($tasks["donedate"],CO_DATE_FORMAT);
+			
 			$task[] = new Lists($tasks);
 		}
 		
@@ -321,7 +363,7 @@ class EmployeesObjectivesModel extends EmployeesModel {
    }
 
 
-   function setDetails($pid,$id,$title,$objectivedate,$start,$end,$location,$location_ct,$participants,$participants_ct,$management,$management_ct,$task_id,$task_title,$task_text,$task,$task_sort,$documents,$objective_access,$objective_access_orig) {
+   function setDetails($pid,$id,$title,$objectivedate,$start,$end,$location,$location_ct,$participants,$participants_ct,$management,$management_ct,$tab1q1_text,$tab1q2_text,$tab1q3_text,$tab1q4_text,$tab2q1_text,$tab2q2_text,$tab2q3_text,$tab2q4_text,$tab2q5_text,$tab2q6_text,$tab2q7_text,$tab2q8_text,$tab2q9_text,$tab2q10_text,$task_startdate,$task_enddate,$task_donedate,$task_id,$task_title,$task_text,$task,$task_sort,$objective_access,$objective_access_orig) {
 		global $session, $lang;
 		
 		$start = $this->_date->formatDateGMT($objectivedate . " " . $start);
@@ -342,7 +384,7 @@ class EmployeesObjectivesModel extends EmployeesModel {
 			$accesssql = "access='$objective_access', access_date='$objective_access_date', access_user = '$session->uid',";
 		}
 		
-		$q = "UPDATE " . CO_TBL_EMPLOYEES_OBJECTIVES . " set title = '$title', item_date = '$objectivedate', start = '$start', end = '$end', location = '$location', location_ct = '$location_ct', participants='$participants', participants_ct='$participants_ct', management='$management', management_ct='$management_ct', documents = '$documents', access='$objective_access', $accesssql edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_EMPLOYEES_OBJECTIVES . " set title = '$title', item_date = '$objectivedate', start = '$start', end = '$end', location = '$location', location_ct = '$location_ct', participants='$participants', participants_ct='$participants_ct', management='$management', management_ct='$management_ct', tab1q1_text = '$tab1q1_text', tab1q2_text = '$tab1q2_text', tab1q3_text = '$tab1q3_text', tab1q4_text = '$tab1q4_text', tab2q1_text = '$tab2q1_text', tab2q2_text = '$tab2q2_text', tab2q3_text = '$tab2q3_text', tab2q4_text = '$tab2q4_text', tab2q5_text = '$tab2q5_text', tab2q6_text = '$tab2q6_text', tab2q7_text = '$tab2q7_text', tab2q8_text = '$tab2q8_text', tab2q9_text = '$tab2q9_text', tab2q10_text = '$tab2q10_text', access='$objective_access', $accesssql edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		// do existing tasks
@@ -357,7 +399,17 @@ class EmployeesObjectivesModel extends EmployeesModel {
 			} else {
 				$checked_items[$key] = '0';
 			}
-			$q = "UPDATE " . CO_TBL_EMPLOYEES_OBJECTIVES_TASKS . " set status = '$checked_items[$key]', title = '$task_title[$key]', text = '$task_text[$key]', sort = '$task_sort[$key]' WHERE id='$task_id[$key]'";
+			$start = $this->_date->formatDate($task_startdate[$key]);
+			$end = $this->_date->formatDate($task_enddate[$key]);
+			$donedate = $this->_date->formatDate($task_donedate[$key]);
+			$datearray[]= $start;
+			if($task_enddate[$key] != "") {
+				$datearray[]= $end;
+			}
+			if($task_cat[$key] == 1) {
+				$end = $start;
+			}
+			$q = "UPDATE " . CO_TBL_EMPLOYEES_OBJECTIVES_TASKS . " set status = '$checked_items[$key]', donedate='$donedate', title = '$task_title[$key]', text = '$task_text[$key]', startdate = '$start', enddate = '$end', sort = '$task_sort[$key]' WHERE id='$task_id[$key]'";
 			$result = mysql_query($q, $this->_db->connection);
 		}
 		if ($result) {
@@ -493,7 +545,9 @@ class EmployeesObjectivesModel extends EmployeesModel {
    function addTask($mid,$num,$sort) {
 		global $session, $lang;
 		
-		$q = "INSERT INTO " . CO_TBL_EMPLOYEES_OBJECTIVES_TASKS . " set mid='$mid', status = '0', title = '" . $lang["EMPLOYEE_OBJECTIVE_TASK_NEW"] . "', sort='$sort'";
+		$now = gmdate("Y-m-d H:i:s");
+		
+		$q = "INSERT INTO " . CO_TBL_EMPLOYEES_OBJECTIVES_TASKS . " set mid='$mid', status = '0', title = '" . $lang["EMPLOYEE_OBJECTIVE_TASK_NEW"] . "', startdate = '$now', enddate = '$now', sort='$sort'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id = mysql_insert_id();
 		
@@ -504,6 +558,9 @@ class EmployeesObjectivesModel extends EmployeesModel {
 			foreach($row as $key => $val) {
 				$tasks[$key] = $val;
 			}
+			$tasks["startdate"] = $this->_date->formatDate($tasks["startdate"],CO_DATE_FORMAT);
+			$tasks["enddate"] = $this->_date->formatDate($tasks["enddate"],CO_DATE_FORMAT);
+			$tasks["today"] = $this->_date->formatDate("now",CO_DATE_FORMAT);
 			$task[] = new Lists($tasks);
 		}
 		
@@ -589,6 +646,14 @@ class EmployeesObjectivesModel extends EmployeesModel {
 		}
 		return $row;
    }
+   
+   
+    function updateQuestion($id,$field,$val){
+		$q = "UPDATE " . CO_TBL_EMPLOYEES_OBJECTIVES . " set $field = '$val' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		return true;
+   }
+
 
 
 }

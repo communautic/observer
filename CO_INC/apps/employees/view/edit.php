@@ -36,18 +36,6 @@
 </table>
 <div class="content-spacer"></div>
 <?php } ?>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content">
-	<tr>
-		<td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_DURATION"];?></td>
-		<td class="tcell-right-inactive"><span id="employeeDurationStart"><?php echo($employee->startdate)?></span> - <span id="employeeDurationEnd"><?php echo($employee->enddate)?></span></td>
-    </tr>
-</table>
-<table border="0" cellpadding="0" cellspacing="0" class="table-content">
-	<tr>
-	  <td class="tcell-left text11"><span class="<?php if($employee->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang['EMPLOYEE_KICKOFF'];?></span></span></td>
-		<td class="tcell-right"><?php if($employee->canedit) { ?><input name="startdate" type="text" class="input-date datepicker" value="<?php echo($employee->startdate)?>" /><?php } else { ?><?php echo($employee->startdate)?><?php } ?></td>
-	</tr>
-</table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 	  <td class="tcell-left text11"><span class="<?php if($employee->canedit) { ?>content-nav showDialog<?php } ?>" request="getEmployeeFolderDialog" field="employeesfolder" append="1"><span><?php echo $lang["EMPLOYEE_FOLDER"];?></span></span></td>
@@ -55,84 +43,112 @@
 	</tr>
 </table>
 <div class="content-spacer"></div>
-<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><span class="<?php if($employee->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="employeesordered_by" append="0"><span><?php echo $lang["EMPLOYEE_CLIENT"];?></span></span></td>
-	  <td class="tcell-right"><div id="employeesordered_by" class="itemlist-field"><?php echo($employee->ordered_by);?></div><div id="employeesordered_by_ct" class="itemlist-field"><a field="employeesordered_by_ct" class="ct-content"><?php echo($employee->ordered_by_ct);?></a></div></td>
-	</tr>
+		<td class="tcell-left-inactive text11"><?php echo $lang["EMPLOYEE_CONTACT_TITLE"];?></td>
+		<td class="tcell-right-inactive"><?php echo($employee->ctitle)?></td>
+    </tr>
 </table>
-<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><span class="<?php if($employee->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="employeesmanagement" append="1"><span><?php echo $lang["EMPLOYEE_MANAGEMENT"];?></span></span></td>
-	  <td class="tcell-right"><div id="employeesmanagement" class="itemlist-field"><?php echo($employee->management);?></div><div id="employeesmanagement_ct" class="itemlist-field"><a field="employeesmanagement_ct" class="ct-content"><?php echo($employee->management_ct);?></a></div></td>
-	</tr>
+		<td class="tcell-left-inactive text11"><?php echo $lang["EMPLOYEE_CONTACT_TITLE2"];?></td>
+		<td class="tcell-right-inactive"><?php echo($employee->title2)?></td>
+    </tr>
 </table>
-<table border="0" cellpadding="0" cellspacing="0" class="table-content">
-  <tr>
-    <td class="tcell-left text11"><span class="<?php if($employee->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="employeesteam" append="1"><span><?php echo $lang["EMPLOYEE_TEAM"];?></span></span></td>
-    <td class="tcell-right"><div id="employeesteam" class="itemlist-field"><?php echo($employee->team);?></div><div id="employeesteam_ct" class="itemlist-field"><a field="employeesteam_ct" class="ct-content"><?php echo($employee->team_ct);?></a></div></td>
-  </tr>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
+		<td class="tcell-left-inactive text11"><?php echo $lang["EMPLOYEE_CONTACT_POSITION"];?></td>
+		<td class="tcell-right-inactive"><?php echo($employee->position)?></td>
+    </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
+		<td class="tcell-left-inactive text11"><?php echo $lang["EMPLOYEE_CONTACT_PHONE"];?></td>
+		<td class="tcell-right-inactive"><?php echo($employee->phone1)?></td>
+    </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
+		<td class="tcell-left-inactive text11"><?php echo $lang["EMPLOYEE_CONTACT_EMAIL"];?></td>
+		<td class="tcell-right-inactive"><?php echo($employee->email)?></td>
+    </tr>
 </table>
 <div class="content-spacer"></div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
-	<tr>
-	  <td class="tcell-left text11"><span class="<?php if($employee->canedit) { ?>content-nav showDialog<?php } ?>" request="getEmployeeDialog" field="employeesemployee" append="0"><span><?php echo $lang["EMPLOYEE_EMPLOYEECAT"];?></span></span></td>
-        <td class="tcell-right"><div id="employeesemployee" class="itemlist-field"><?php echo($employee->employee);?></div></td>
-	</tr>
-</table>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content">
-	<tr>
-	  <td class="tcell-left text11"><span class="<?php if($employee->canedit) { ?>content-nav showDialog<?php } ?>" request="getEmployeeMoreDialog" field="employeesemployeemore" append="0"><span><?php echo $lang["EMPLOYEE_EMPLOYEECATMORE"];?></span></span></td>
-        <td class="tcell-right"><div id="employeesemployeemore" class="itemlist-field"><?php echo($employee->employee_more);?></div></td>
-	</tr>
-</table>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content">
-	<tr>
-	  <td class="tcell-left text11"><span class="<?php if($employee->canedit) { ?>content-nav showDialog<?php } ?>" request="getEmployeeCatDialog" field="employeesemployeecat" append="0"><span><?php echo $lang["EMPLOYEE_CAT"];?></span></span></td>
-        <td class="tcell-right"><div id="employeesemployeecat" class="itemlist-field"><?php echo($employee->employee_cat);?></div></td>
-	</tr>
-</table>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content">
-	<tr>
-	  <td class="tcell-left text11"><span class="<?php if($employee->canedit) { ?>content-nav showDialog<?php } ?>" request="getEmployeeCatMoreDialog" field="employeesemployeecatmore" append="0"><span><?php echo $lang["EMPLOYEE_CAT_MORE"];?></span></span></td>
-        <td class="tcell-right"><div id="employeesemployeecatmore" class="itemlist-field"><?php echo($employee->employee_cat_more);?></div></td>
-	</tr>
-</table>
-<div class="content-spacer"></div>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-highlighted">
   <tr>
-    <td class="tcell-left-shorter text11"><span class="<?php if($employee->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang['EMPLOYEE_PRODUCT_NUMBER'];?></span></span></td>
-    <td class="tcell-right-nopadding"><?php if($employee->canedit) { ?><input name="product" type="text" class="bg" value="<?php echo($employee->product);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $employee->product . '</span>'); } ?></td>
-    <td width="110"></td>
-  </tr>
-</table>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-highlighted">
-  <tr>
-    <td class="tcell-left-shorter text11"><span class="<?php if($employee->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang['EMPLOYEE_PRODUCT'];?></span></span></td>
-    <td class="tcell-right-nopadding"><?php if($employee->canedit) { ?><input name="product_desc" type="text" class="bg" value="<?php echo($employee->product_desc);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $employee->product_desc . '</span>'); } ?></td>
-    <td width="110"></td>
-  </tr>
-</table>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-highlighted">
-  <tr>
-    <td class="tcell-left-shorter text11"><span class="<?php if($employee->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang['EMPLOYEE_CHARGE'];?></span></span></td>
-    <td class="tcell-right-nopadding"><?php if($employee->canedit) { ?><input name="charge" type="text" class="bg" value="<?php echo($employee->charge);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $employee->charge . '</span>'); } ?></td>
-    <td width="110"></td>
-  </tr>
-</table>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-highlighted">
-  <tr>
-    <td class="tcell-left-shorter text11"><span class="<?php if($employee->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang['EMPLOYEE_NUMBER'];?></span></span></td>
+    <td class="tcell-left-shorter text11"><span class="<?php if($employee->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["EMPLOYEE_NUMBER"];?></span></span></td>
     <td class="tcell-right-nopadding"><?php if($employee->canedit) { ?><input name="number" type="text" class="bg" value="<?php echo($employee->number);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $employee->number . '</span>'); } ?></td>
-    <td width="110"></td>
+    
   </tr>
 </table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
+	  <td class="tcell-left text11"><span class="<?php if($employee->canedit) { ?>content-nav showDialog<?php } ?>" request="getEmployeeDialog" field="employeeskind" append="0" sql="kind"><span><?php echo $lang["EMPLOYEE_KIND"];?></span></span></td>
+        <td class="tcell-right"><div id="employeeskind" class="itemlist-field"><?php echo($employee->kind);?></div></td>
+	</tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
+	  <td class="tcell-left text11"><span class="<?php if($employee->canedit) { ?>content-nav showDialog<?php } ?>" request="getEmployeeDialog" field="employeesarea" append="0" sql="area"><span><?php echo $lang["EMPLOYEE_AREA"];?></span></span></td>
+        <td class="tcell-right"><div id="employeesarea" class="itemlist-field"><?php echo($employee->area);?></div></td>
+	</tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
+	  <td class="tcell-left text11"><span class="<?php if($employee->canedit) { ?>content-nav showDialog<?php } ?>" request="getEmployeeDialog" field="employeesdepartment" append="0" sql="department"><span><?php echo $lang["EMPLOYEE_DEPARTMENT"];?></span></span></td>
+        <td class="tcell-right"><div id="employeesdepartment" class="itemlist-field"><?php echo($employee->department);?></div></td>
+	</tr>
+</table>
+<div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
 	<tr>
 		<td class="tcell-left text11"><span class="<?php if($employee->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["EMPLOYEE_DESCRIPTION"];?></span></span></td>
         <td class="tcell-right"><?php if($employee->canedit) { ?><textarea name="protocol" class="elastic"><?php echo(strip_tags($employee->protocol));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($employee->protocol)));?><?php } ?></td>
 	</tr>
 </table>
+<div class="content-spacer"></div>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+  <tr>
+    <td class="tcell-left-shorter text11"><span class="<?php if($employee->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["EMPLOYEE_DOB"];?></span></span></td>
+    <td class="tcell-right-nopadding"><?php if($employee->canedit) { ?><input name="dob" type="text" class="bg" value="<?php echo($employee->dob);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $employee->dob . '</span>'); } ?></td>
+    
+  </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+  <tr>
+    <td class="tcell-left-shorter text11"><span class="<?php if($employee->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["EMPLOYEE_COO"];?></span></span></td>
+    <td class="tcell-right-nopadding"><?php if($employee->canedit) { ?><input name="coo" type="text" class="bg" value="<?php echo($employee->coo);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $employee->coo . '</span>'); } ?></td>
+    
+  </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+  <tr>
+    <td class="tcell-left-shorter text11"><span class="<?php if($employee->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["EMPLOYEE_LANGUAGES"];?></span></span></td>
+    <td class="tcell-right-nopadding"><?php if($employee->canedit) { ?><input name="languages" type="text" class="bg" value="<?php echo($employee->languages);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $employee->languages . '</span>'); } ?></td>
+    
+  </tr>
+</table>
+<div class="content-spacer"></div>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
+	<tr>
+		<td class="tcell-left text11"><span class="<?php if($employee->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["EMPLOYEE_SKILLS"];?></span></span></td>
+        <td class="tcell-right"><?php if($employee->canedit) { ?><textarea name="protocol2" class="elastic"><?php echo(strip_tags($employee->protocol2));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($employee->protocol2)));?><?php } ?></td>
+	</tr>
+</table>
+<div class="content-spacer"></div>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
+	  <td class="tcell-left text11"><span class="<?php if($employee->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["EMPLOYEE_STARTDATE"];?></span></span></td>
+		<td class="tcell-right"><?php if($employee->canedit) { ?><input name="startdate" type="text" class="input-date datepicker" value="<?php echo($employee->startdate)?>" readonly="readonly" /><?php } else { ?><?php echo($employee->startdate)?><?php } ?></td>
+	</tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
+	  <td class="tcell-left text11"><span class="<?php if($employee->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["EMPLOYEE_ENDDATE"];?></span></span></td>
+		<td class="tcell-right"><?php if($employee->canedit) { ?><input name="enddate" type="text" class="input-date datepicker" value="<?php echo($employee->enddate)?>" readonly="readonly" /><?php } else { ?><?php echo($employee->enddate)?><?php } ?></td>
+	</tr>
+</table>
+<div class="content-spacer"></div>
 <div id="contactTabs" class="contentTabs">
 	<ul class="contentTabsList">
 		<li><span class="active" rel="EmployeesFirst">Privatadresse</span></li>
@@ -141,7 +157,41 @@
 	</ul>
     <div id="EmployeesTabsContent" class="contentTabsContent">
         <div id="EmployeesFirst">
-			First
+			<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+              <tr>
+                <td class="tcell-left-shorter text11"><span class="<?php if($employee->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["EMPLOYEE_PRIVATE_STREET"];?></span></span></td>
+                <td class="tcell-right-nopadding"><?php if($employee->canedit) { ?><input name="street_private" type="text" class="bg" value="<?php echo($employee->street_private);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $employee->street_private . '</span>'); } ?></td>
+                
+              </tr>
+            </table>
+            <table border="0" cellspacing="0" cellpadding="0" class="table-content">
+              <tr>
+                <td class="tcell-left-shorter text11"><span class="<?php if($employee->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["EMPLOYEE_PRIVATE_CITY"];?></span></span></td>
+                <td class="tcell-right-nopadding"><?php if($employee->canedit) { ?><input name="city_private" type="text" class="bg" value="<?php echo($employee->city_private);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $employee->city_private . '</span>'); } ?></td>
+                
+              </tr>
+            </table>
+            <table border="0" cellspacing="0" cellpadding="0" class="table-content">
+              <tr>
+                <td class="tcell-left-shorter text11"><span class="<?php if($employee->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["EMPLOYEE_PRIVATE_ZIP"];?></span></span></td>
+                <td class="tcell-right-nopadding"><?php if($employee->canedit) { ?><input name="zip_private" type="text" class="bg" value="<?php echo($employee->zip_private);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $employee->zip_private . '</span>'); } ?></td>
+                
+              </tr>
+            </table>
+            <table border="0" cellspacing="0" cellpadding="0" class="table-content">
+              <tr>
+                <td class="tcell-left-shorter text11"><span class="<?php if($employee->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["EMPLOYEE_PRIVATE_PHONE"];?></span></span></td>
+                <td class="tcell-right-nopadding"><?php if($employee->canedit) { ?><input name="phone_private" type="text" class="bg" value="<?php echo($employee->phone_private);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $employee->phone_private . '</span>'); } ?></td>
+                
+              </tr>
+            </table>
+            <table border="0" cellspacing="0" cellpadding="0" class="table-content">
+              <tr>
+                <td class="tcell-left-shorter text11"><span class="<?php if($employee->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["EMPLOYEE_PRIVATE_EMAIL"];?></span></span></td>
+                <td class="tcell-right-nopadding"><?php if($employee->canedit) { ?><input name="email_private" type="text" class="bg" value="<?php echo($employee->email_private);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $employee->email_private . '</span>'); } ?></td>
+                
+              </tr>
+            </table>
         </div>
         <div id="EmployeesSecond" style="display: none;">
 			Second

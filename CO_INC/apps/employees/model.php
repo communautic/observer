@@ -164,7 +164,7 @@ class EmployeesModel extends Model {
 			foreach($row as $key => $val) {
 				$employee[$key] = $val;
 			}
-			$employee["management"] = $contactsmodel->getUserListPlain($employee['management']);
+			//$employee["management"] = $contactsmodel->getUserListPlain($employee['management']);
 			$employee["perm"] = $this->getEmployeeAccess($employee["id"]);
 			
 		switch($employee["status"]) {
@@ -474,12 +474,18 @@ class EmployeesModel extends Model {
 		
 		// status
 		$itemstatus = "";
-		if($array["status"] == 2) {
-			$itemstatus = " module-item-active";
-		}
-		if($array["status"] == 3) {
-			$itemstatus = " module-item-active-stopped";
-		}
+		switch($array["status"]) {
+			case 0:
+				$itemstatus = " module-item-active-trial";
+			break;
+			case 2:
+				$itemstatus = " module-item-active-maternity";
+			break;
+			case 3:
+				$itemstatus = " module-item-active-leave";
+			break;
+			
+	  	}
 		$array["itemstatus"] = $itemstatus;
 		
 		$checked_out_status = "";
@@ -541,7 +547,7 @@ class EmployeesModel extends Model {
 
    function getEmployeeDetails($id,$option = "") {
 		global $session, $contactsmodel, $lang;
-		$q = "SELECT a.*,CONCAT(b.lastname,' ',b.firstname) as title FROM " . CO_TBL_EMPLOYEES . " as a, co_users as b where a.cid=b.id and a.id = '$id'";
+		$q = "SELECT a.*,CONCAT(b.lastname,' ',b.firstname) as title,b.title as ctitle,b.title2,b.position,b.phone1,b.email FROM " . CO_TBL_EMPLOYEES . " as a, co_users as b where a.cid=b.id and a.id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if(mysql_num_rows($result) < 1) {
 			return false;
@@ -550,19 +556,8 @@ class EmployeesModel extends Model {
 		foreach($row as $key => $val) {
 			$array[$key] = $val;
 		}
-		
 		// perms
 		$array["access"] = $this->getEmployeeAccess($id);
-		//$canEdit = $this->getEditPerms($session->uid);
-	  	/*if(!empty($canEdit)) {
-				$array["access"] = "admin";
-		}*/
-		/*if($array["access"] == "admin") {
-			// check if owner
-			if($this->isOwnerPerms($id,$session->uid)) {
-				$array["access"] = "owner";
-			}
-		}*/
 		if($array["access"] == "guest") {
 			// check if this user is admin in some other employee
 			$canEdit = $this->getEditPerms($session->uid);
@@ -601,31 +596,17 @@ class EmployeesModel extends Model {
 		}
 		
 		$array["startdate"] = $this->_date->formatDate($array["startdate"],CO_DATE_FORMAT);
+		$array["enddate"] = $this->_date->formatDate($array["enddate"],CO_DATE_FORMAT);
+		$array["dob"] = $this->_date->formatDate($array["dob"],CO_DATE_FORMAT);
 
 		$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
 		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
 		
 		// other functions
-		$array["folder"] = $this->getEmployeeFolderDetails($array["folder"],"folder");
-		$array["ordered_by_print"] = $contactsmodel->getUserListPlain($array['ordered_by']);
-		$array["ordered_by"] = $contactsmodel->getUserList($array['ordered_by'],'projectsordered_by', "", $array["canedit"]);
-		$array["ordered_by_ct"] = empty($array["ordered_by_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['ordered_by_ct'];
-		$array["management_print"] = $contactsmodel->getUserListPlain($array['management']);
-		$array["management"] = $contactsmodel->getUserList($array['management'],'employeesmanagement', "", $array["canedit"]);
-		$array["management_ct"] = empty($array["management_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['management_ct'];
-		$array["team_print"] = $contactsmodel->getUserListPlain($array['team']);
-		if($option = 'prepareSendTo') {
-			$array["sendtoTeam"] = $contactsmodel->checkUserListEmail($array["team"],'employees', "", $array["canedit"]);
-			$array["sendtoTeamNoEmail"] = $contactsmodel->checkUserListEmail($array["team"],'employees', "", $array["canedit"], 0);
-			$array["sendtoError"] = false;
-		}
-		$array["team"] = $contactsmodel->getUserList($array['team'],'employeesteam', "", $array["canedit"]);
-		$array["team_ct"] = empty($array["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['team_ct'];
-		
-		$array["employee"] = $this->getEmployeeIdDetails($array["employee"],"employeesemployee");
-		$array["employee_more"] = $this->getEmployeeMoreIdDetails($array["employee_more"],"employeesemployeemore");
-		$array["employee_cat"] = $this->getEmployeeCatDetails($array["employee_cat"],"employeesemployeecat");
-		$array["employee_cat_more"] = $this->getEmployeeCatMoreDetails($array["employee_cat_more"],"employeesemployeecatmore");
+		$array["folder"] = $this->getEmployeeFolderDetails($array["folder"],"folder");		
+		$array["kind"] = $this->getEmployeeIdDetails($array["kind"],"employeeskind");
+		$array["area"] = $this->getEmployeeIdDetails($array["area"],"employeesarea");
+		$array["department"] = $this->getEmployeeIdDetails($array["department"],"employeesdepartment");
 		
 		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
 		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
@@ -641,28 +622,24 @@ class EmployeesModel extends Model {
 				$array["status_text_time"] = $lang["GLOBAL_STATUS_TRIAL_TIME"];
 				$array["status_planned_active"] = " active";
 				$array["status_date"] = $this->_date->formatDate($array["planned_date"],CO_DATE_FORMAT);
-				$array["enddate"] = $this->_date->formatDate($today,CO_DATE_FORMAT);
 			break;
 			case "1":
 				$array["status_text"] = $lang["GLOBAL_STATUS_ACTIVE"];
 				$array["status_text_time"] = $lang["GLOBAL_STATUS_ACTIVE_TIME"];
 				$array["status_inprogress_active"] = " active";
 				$array["status_date"] = $this->_date->formatDate($array["inprogress_date"],CO_DATE_FORMAT);
-				$array["enddate"] = $this->_date->formatDate($today,CO_DATE_FORMAT);
 			break;
 			case "2":
 				$array["status_text"] = $lang["GLOBAL_STATUS_MATERNITYLEAVE"];
 				$array["status_text_time"] = $lang["GLOBAL_STATUS_MATERNITYLEAVE_TIME"];
 				$array["status_finished_active"] = " active";
 				$array["status_date"] = $this->_date->formatDate($array["finished_date"],CO_DATE_FORMAT);
-				$array["enddate"] = $array["status_date"];
 			break;
 			case "3":
 				$array["status_text"] = $lang["GLOBAL_STATUS_LEAVE"];
 				$array["status_text_time"] = $lang["GLOBAL_STATUS_LEAVE_TIME"];
 				$array["status_stopped_active"] = " active";
 				$array["status_date"] = $this->_date->formatDate($array["stopped_date"],CO_DATE_FORMAT);
-				$array["enddate"] = $array["status_date"];
 			break;
 		}
 		
@@ -735,103 +712,21 @@ class EmployeesModel extends Model {
 		}
 		return $users;
    }
-   
-   
-   	function getEmployeeMoreIdDetails($string,$field){
-		$users_string = explode(",", $string);
-		$users_total = sizeof($users_string);
-		$users = '';
-		if($users_total == 0) { return $users; }
-		$i = 1;
-		foreach ($users_string as &$value) {
-			$q = "SELECT id, name from " . CO_TBL_EMPLOYEES_DIALOG_EMPLOYEES_MORE . " where id = '$value'";
-			$result_user = mysql_query($q, $this->_db->connection);
-			while($row_user = mysql_fetch_assoc($result_user)) {
-				$users .= '<span class="listmember" uid="' . $row_user["id"] . '">' . $row_user["name"] . '</span>';
-				if($i < $users_total) {
-					$users .= ', ';
-				}
-			}
-			$i++;
-		}
-		return $users;
-   }
-   
-   
-	function getEmployeeCatDetails($string,$field){
-		$users_string = explode(",", $string);
-		$users_total = sizeof($users_string);
-		$users = '';
-		if($users_total == 0) { return $users; }
-		$i = 1;
-		foreach ($users_string as &$value) {
-			$q = "SELECT id, name from " . CO_TBL_EMPLOYEES_DIALOG_CATS . " where id = '$value'";
-			$result_user = mysql_query($q, $this->_db->connection);
-			while($row_user = mysql_fetch_assoc($result_user)) {
-				$users .= '<span class="listmember" uid="' . $row_user["id"] . '">' . $row_user["name"] . '</span>';
-				if($i < $users_total) {
-					$users .= ', ';
-				}
-			}
-			$i++;
-		}
-		return $users;
-   }
-   
-   
-	function getEmployeeCatMoreDetails($string,$field){
-		$users_string = explode(",", $string);
-		$users_total = sizeof($users_string);
-		$users = '';
-		if($users_total == 0) { return $users; }
-		$i = 1;
-		foreach ($users_string as &$value) {
-			$q = "SELECT id, name from " . CO_TBL_EMPLOYEES_DIALOG_CATS_MORE . " where id = '$value'";
-			$result_user = mysql_query($q, $this->_db->connection);
-			while($row_user = mysql_fetch_assoc($result_user)) {
-				$users .= '<span class="listmember" uid="' . $row_user["id"] . '">' . $row_user["name"] . '</span>';
-				if($i < $users_total) {
-					$users .= ', ';
-				}
-			}
-			$i++;
-		}
-		return $users;
-   }
 
 
    /**
    * get details for the employee folder
    */
-   function setEmployeeDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$folder,$employee,$employee_more,$employee_cat,$employee_cat_more,$product,$product_desc,$charge,$number) {
+   function setEmployeeDetails($id,$title,$startdate,$enddate,$protocol,$protocol2,$folder,$number,$kind,$area,$department,$dob,$coo,$languages,$street_private,$city_private,$zip_private,$phone_private,$email_private) {
 		global $session, $contactsmodel;
 		
-		$startdate = $this->_date->formatDate($_POST['startdate']);
-		//$status_date = $this->_date->formatDate($status_date);
-		
-		// user lists
-		$ordered_by = $contactsmodel->sortUserIDsByName($ordered_by);
-		$management = $contactsmodel->sortUserIDsByName($management);
-		$team = $contactsmodel->sortUserIDsByName($team);
-		
-		/*switch($status) {
-			case "0":
-				$sql = "planned_date";
-			break;
-			case "1":
-				$sql = "inprogress_date";
-			break;
-			case "2":
-				$sql = "finished_date";
-			break;
-			case "3":
-				$sql = "stopped_date";
-			break;
-		}*/
+		$startdate = $this->_date->formatDate($startdate);
+		$enddate = $this->_date->formatDate($enddate);
+		$dob = $this->_date->formatDate($dob);
 
 		$now = gmdate("Y-m-d H:i:s");
 		
-		$q = "UPDATE " . CO_TBL_EMPLOYEES . " set title = '$title', folder = '$folder', startdate='$startdate', ordered_by = '$ordered_by', ordered_by_ct = '$ordered_by_ct', management = '$management', management_ct = '$management_ct', team='$team', team_ct = '$team_ct', employee = '$employee', employee_more = '$employee_more', employee_cat = '$employee_cat', employee_cat_more = '$employee_cat_more', product = '$product', product_desc = '$product_desc', charge = '$charge', number = '$number', protocol = '$protocol', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_EMPLOYEES . " set title = '$title', folder = '$folder', startdate='$startdate', enddate='$enddate',  protocol = '$protocol', protocol2 = '$protocol2', number = '$number', kind = '$kind', area = '$area', department = '$department', dob = '$dob', coo = '$coo', languages = '$languages', street_private = '$street_private', city_private = '$city_private', zip_private = '$zip_private', phone_private = '$phone_private', email_private = '$email_private', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
@@ -1125,47 +1020,10 @@ class EmployeesModel extends Model {
 	 }
 
 
-	function getEmployeeDialog($field,$title) {
+	function getEmployeeDialog($field,$sql) {
 		global $session;
 		$str = '<div class="dialog-text">';
-		$q ="select id, name from " . CO_TBL_EMPLOYEES_DIALOG_EMPLOYEES . " ORDER BY name ASC";
-		$result = mysql_query($q, $this->_db->connection);
-		while ($row = mysql_fetch_array($result)) {
-			$str .= '<a href="#" class="insertFromDialog" title="' . $row["name"] . '" field="'.$field.'" gid="'.$row["id"].'">' . $row["name"] . '</a>';
-		}
-		$str .= '</div>';	
-		return $str;
-	 }
-
-	function getEmployeeMoreDialog($field,$title) {
-		global $session;
-		$str = '<div class="dialog-text">';
-		$q ="select id, name from " . CO_TBL_EMPLOYEES_DIALOG_EMPLOYEES_MORE . " ORDER BY name ASC";
-		$result = mysql_query($q, $this->_db->connection);
-		while ($row = mysql_fetch_array($result)) {
-			$str .= '<a href="#" class="insertFromDialog" title="' . $row["name"] . '" field="'.$field.'" gid="'.$row["id"].'">' . $row["name"] . '</a>';
-		}
-		$str .= '</div>';	
-		return $str;
-	 }
-	 
-	 
-	function getEmployeeCatDialog($field,$title) {
-		global $session;
-		$str = '<div class="dialog-text">';
-		$q ="select id, name from " . CO_TBL_EMPLOYEES_DIALOG_CATS . " ORDER BY name ASC";
-		$result = mysql_query($q, $this->_db->connection);
-		while ($row = mysql_fetch_array($result)) {
-			$str .= '<a href="#" class="insertFromDialog" title="' . $row["name"] . '" field="'.$field.'" gid="'.$row["id"].'">' . $row["name"] . '</a>';
-		}
-		$str .= '</div>';	
-		return $str;
-	 }
-	 
-	function getEmployeeCatMoreDialog($field,$title) {
-		global $session;
-		$str = '<div class="dialog-text">';
-		$q ="select id, name from " . CO_TBL_EMPLOYEES_DIALOG_CATS_MORE . " ORDER BY name ASC";
+		$q ="select id, name from " . CO_TBL_EMPLOYEES_DIALOG_EMPLOYEES . " WHERE cat = '$sql' ORDER BY name ASC";
 		$result = mysql_query($q, $this->_db->connection);
 		while ($row = mysql_fetch_array($result)) {
 			$str .= '<a href="#" class="insertFromDialog" title="' . $row["name"] . '" field="'.$field.'" gid="'.$row["id"].'">' . $row["name"] . '</a>';

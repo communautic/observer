@@ -30,18 +30,31 @@ $lang["EMPLOYEE_FOLDER_CHART_STATUS"] = 'Status';
 $lang["EMPLOYEE_TITLE"] = 'Mitarbeiter';
 $lang['EMPLOYEE_KICKOFF'] = 'Mitarbeitereingang';
 
-$lang["EMPLOYEE_CLIENT"] = 'Reklamant';
-$lang["EMPLOYEE_MANAGEMENT"] = 'Lösungsverantwortung';
-$lang["EMPLOYEE_TEAM"] = 'Lösungsteam';
-$lang["EMPLOYEE_EMPLOYEECAT"] = 'Reklamationsart';
-$lang["EMPLOYEE_EMPLOYEECATMORE"] = 'Reklamationsquelle';
-$lang["EMPLOYEE_CAT"] = 'Mangelkategorie';
-$lang["EMPLOYEE_CAT_MORE"] = 'Reklamationsmuster';
-$lang["EMPLOYEE_PRODUCT_NUMBER"] = 'Produktnummer';
-$lang["EMPLOYEE_PRODUCT"] = 'Produktbezeichnung';
-$lang["EMPLOYEE_CHARGE"] = 'Charge';
-$lang["EMPLOYEE_NUMBER"] = 'Menge';
-$lang["EMPLOYEE_DESCRIPTION"] = 'Notiz';
+$lang["EMPLOYEE_CONTACT_TITLE"] = 'Anrede';
+$lang["EMPLOYEE_CONTACT_TITLE2"] = 'Titel';
+$lang["EMPLOYEE_CONTACT_POSITION"] = 'Position';
+$lang["EMPLOYEE_CONTACT_PHONE"] = 'Telefon';
+$lang["EMPLOYEE_CONTACT_EMAIL"] = 'E-mail';
+
+$lang["EMPLOYEE_NUMBER"] = 'Personalnummer';
+$lang["EMPLOYEE_KIND"] = 'Kondition';
+$lang["EMPLOYEE_AREA"] = 'Bereich';
+$lang["EMPLOYEE_DEPARTMENT"] = 'Abteilung';
+$lang["EMPLOYEE_DESCRIPTION"] = 'Historie';
+$lang["EMPLOYEE_DOB"] = 'Geburtsdatum';
+$lang["EMPLOYEE_COO"] = 'Nationalität';
+$lang["EMPLOYEE_LANGUAGES"] = 'Sprachkenntnisse';
+$lang["EMPLOYEE_SKILLS"] = 'Kompetenz';
+$lang["EMPLOYEE_STARTDATE"] = 'Eintrittsdatum';
+$lang["EMPLOYEE_ENDDATE"] = 'Austrittsdatum';
+
+$lang["EMPLOYEE_PRIVATE_STREET"] = 'Strasse';
+$lang["EMPLOYEE_PRIVATE_CITY"] = 'Ort';
+$lang["EMPLOYEE_PRIVATE_ZIP"] = 'Plz';
+$lang["EMPLOYEE_PRIVATE_PHONE"] = 'Telefon';
+$lang["EMPLOYEE_PRIVATE_EMAIL"] = 'E-mail';
+
+
 
 $lang["EMPLOYEE_HELP"] = 'manual_reklamationen_reklamationen.pdf';
 $lang["EMPLOYEE_FOLDER_HELP"] = 'manual_reklamationen_ordner.pdf';

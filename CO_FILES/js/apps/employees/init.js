@@ -28,16 +28,9 @@ function employeesApplication(name) {
 		}
 	
 		formData[formData.length] = processListApps('folder');
-		formData[formData.length] = processListApps('ordered_by');
-		formData[formData.length] = processCustomTextApps('ordered_by_ct');
-		formData[formData.length] = processListApps('management');
-		formData[formData.length] = processCustomTextApps('management_ct');
-		formData[formData.length] = processListApps('team');
-		formData[formData.length] = processCustomTextApps('team_ct');
-		formData[formData.length] = processListApps('employee');
-		formData[formData.length] = processListApps('employeemore');
-		formData[formData.length] = processListApps('employeecat');
-		formData[formData.length] = processListApps('employeecatmore');
+		formData[formData.length] = processListApps('kind');
+		formData[formData.length] = processListApps('area');
+		formData[formData.length] = processListApps('department');
 		//formData[formData.length] = processListApps('status');
 	}
 
@@ -47,18 +40,6 @@ function employeesApplication(name) {
 			case "edit":
 				$("#employees2 span[rel='"+data.id+"'] .text").html($("#employees .title").val());
 				$("#employeeDurationStart").html($("#employees-right input[name='startdate']").val());
-				/*switch(data.status) {
-					case "2":
-						$("#employees2 .active-link .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
-						$("#employeeDurationEnd").html($("#employees-right input[name='status_date']").val());
-					break;
-					case "3":
-						$("#employees2 .active-link .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
-						$("#employeeDurationEnd").html($("#employees-right input[name='status_date']").val());
-					break;
-					default:
-						$("#employees2 .active-link .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
-				}*/
 			break;
 		}
 	}
@@ -73,16 +54,20 @@ function employeesApplication(name) {
 		var date = $("#employees .statusTabs input").val();
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/employees&request=updateStatus&id=" + id + "&date=" + date + "&status=" + status, cache: false, success: function(data){
 				switch(data.status) {
+					case "0":
+						$("#employees2 .active-link .module-item-status").addClass("module-item-active-trial").removeClass("module-item-active-maternity").removeClass("module-item-active-leave");
+						$("#employeeDurationEnd").html($("#employees-right input[name='status_date']").val());
+					break;
 					case "2":
-						$("#employees2 .active-link .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
+						$("#employees2 .active-link .module-item-status").addClass("module-item-active-maternity").removeClass("module-item-active-trial").removeClass("module-item-active-leave");
 						$("#employeeDurationEnd").html($("#employees-right input[name='status_date']").val());
 					break;
 					case "3":
-						$("#employees2 .active-link .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
+						$("#employees2 .active-link .module-item-status").addClass("module-item-active-leave").removeClass("module-item-active-trial").addClass("module-item-active-maternity");
 						$("#employeeDurationEnd").html($("#employees-right input[name='status_date']").val());
 					break;
 					default:
-						$("#employees2 .active-link .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
+						$("#employees2 .active-link .module-item-status").removeClass("module-item-active-trial").removeClass("module-item-active-maternity").removeClass("module-item-active-leave");
 				}																															 			}
 		});
 	}

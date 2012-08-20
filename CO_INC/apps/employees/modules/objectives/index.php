@@ -110,6 +110,9 @@ if (!empty($_GET['request'])) {
 		case 'updateStatus':
 			echo($employeesObjectives->updateStatus($_GET['id'],$_GET['date'],$_GET['status']));
 		break;
+		case 'updateQuestion':
+			echo($employeesObjectives->updateQuestion($_GET['id'],$_GET['field'],$_GET['val']));
+		break;
 	}
 }
 
@@ -117,7 +120,8 @@ if (!empty($_POST['request'])) {
 	
 	switch ($_POST['request']) {
 		case 'setDetails':
-		
+			$task_startdate = array();
+			$task_enddate = array();
 			$task_id = array();
 			$task_title = array();
 			$task_text = array();
@@ -125,6 +129,9 @@ if (!empty($_POST['request'])) {
 			$task_sort = array();
 			
 			if(isset($_POST['task_id'])) {
+				$task_startdate = $_POST['task_startdate'];
+				$task_enddate = $_POST['task_enddate'];
+				$task_donedate = $_POST['task_donedate'];
 				$task_id = $_POST['task_id'];
 				//$task_title = $_POST['task_title'];
 				$task_title_orig = $_POST['task_title'];
@@ -147,7 +154,7 @@ if (!empty($_POST['request'])) {
 			if(isset($_POST['task_sort'])) {
 				$task_sort = $_POST['task_sort'];
 			}
-			echo($employeesObjectives->setDetails($_POST['pid'], $_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['item_date'], $_POST['objectivestart'], $_POST['objectiveend'], $_POST['location'], $system->checkMagicQuotes($_POST['location_ct']), $_POST['participants'], $system->checkMagicQuotes($_POST['participants_ct']), $_POST['management'], $system->checkMagicQuotes($_POST['management_ct']),$task_id,$task_title,$task_text,$task,$task_sort,$_POST['documents'],$_POST['objective_access'],$_POST['objective_access_orig']));
+			echo($employeesObjectives->setDetails($_POST['pid'], $_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['item_date'], $_POST['objectivestart'], $_POST['objectiveend'], $_POST['location'], $system->checkMagicQuotes($_POST['location_ct']), $_POST['participants'], $system->checkMagicQuotes($_POST['participants_ct']), $_POST['management'], $system->checkMagicQuotes($_POST['management_ct']), $system->checkMagicQuotes($_POST['tab1q1_text']), $system->checkMagicQuotes($_POST['tab1q2_text']), $system->checkMagicQuotes($_POST['tab1q3_text']), $system->checkMagicQuotes($_POST['tab1q4_text']), $system->checkMagicQuotes($_POST['tab2q1_text']), $system->checkMagicQuotes($_POST['tab2q2_text']), $system->checkMagicQuotes($_POST['tab2q3_text']), $system->checkMagicQuotes($_POST['tab2q4_text']), $system->checkMagicQuotes($_POST['tab2q5_text']), $system->checkMagicQuotes($_POST['tab2q6_text']), $system->checkMagicQuotes($_POST['tab2q7_text']), $system->checkMagicQuotes($_POST['tab2q8_text']), $system->checkMagicQuotes($_POST['tab2q9_text']), $system->checkMagicQuotes($_POST['tab2q10_text']),$task_startdate,$task_enddate,$task_donedate,$task_id,$task_title,$task_text,$task,$task_sort,$_POST['objective_access'],$_POST['objective_access_orig']));
 		break;
 		case 'sendDetails':
 			echo($employeesObjectives->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
