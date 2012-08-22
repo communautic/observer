@@ -36,10 +36,23 @@
 </table>
 <div class="content-spacer"></div>
 <?php } ?>
+<div style="position: absolute; top: 0; right: 15px; height: 120px; width: 80px; background-image:url(<?php echo($employee->avatar);?>); background-repeat: no-repeat"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 	  <td class="tcell-left text11"><span class="<?php if($employee->canedit) { ?>content-nav showDialog<?php } ?>" request="getEmployeeFolderDialog" field="employeesfolder" append="1"><span><?php echo $lang["EMPLOYEE_FOLDER"];?></span></span></td>
         <td class="tcell-right"><div id="employeesfolder" class="itemlist-field"><?php echo($employee->folder);?></div></td>
+	</tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
+	  <td class="tcell-left text11"><span class="<?php if($employee->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["EMPLOYEE_STARTDATE"];?></span></span></td>
+		<td class="tcell-right"><?php if($employee->canedit) { ?><input name="startdate" type="text" class="input-date datepickerDelete" value="<?php echo($employee->startdate)?>" readonly="readonly" /><?php } else { ?><?php echo($employee->startdate)?><?php } ?></td>
+	</tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
+	  <td class="tcell-left text11"><span class="<?php if($employee->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["EMPLOYEE_ENDDATE"];?></span></span></td>
+		<td class="tcell-right"><?php if($employee->canedit) { ?><input name="enddate" type="text" class="input-date datepickerDelete" value="<?php echo($employee->enddate)?>" readonly="readonly" /><?php } else { ?><?php echo($employee->enddate)?><?php } ?></td>
 	</tr>
 </table>
 <div class="content-spacer"></div>
@@ -110,7 +123,7 @@
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
     <td class="tcell-left-shorter text11"><span class="<?php if($employee->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["EMPLOYEE_DOB"];?></span></span></td>
-    <td class="tcell-right-nopadding"><?php if($employee->canedit) { ?><input name="dob" type="text" class="bg" value="<?php echo($employee->dob);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $employee->dob . '</span>'); } ?></td>
+    <td class="tcell-right-nopadding"><?php if($employee->canedit) { ?><input name="dob" type="text" class="bg" <?php if($employee->dob == "") {?> value="00.00.0000" onclick="this.value=''"<?php } else { ?> value="<?php echo($employee->dob);?>"<?php } ?> /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $employee->dob . '</span>'); } ?></td>
     
   </tr>
 </table>
@@ -133,19 +146,6 @@
 	<tr>
 		<td class="tcell-left text11"><span class="<?php if($employee->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["EMPLOYEE_SKILLS"];?></span></span></td>
         <td class="tcell-right"><?php if($employee->canedit) { ?><textarea name="protocol2" class="elastic"><?php echo(strip_tags($employee->protocol2));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($employee->protocol2)));?><?php } ?></td>
-	</tr>
-</table>
-<div class="content-spacer"></div>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content">
-	<tr>
-	  <td class="tcell-left text11"><span class="<?php if($employee->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["EMPLOYEE_STARTDATE"];?></span></span></td>
-		<td class="tcell-right"><?php if($employee->canedit) { ?><input name="startdate" type="text" class="input-date datepicker" value="<?php echo($employee->startdate)?>" readonly="readonly" /><?php } else { ?><?php echo($employee->startdate)?><?php } ?></td>
-	</tr>
-</table>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content">
-	<tr>
-	  <td class="tcell-left text11"><span class="<?php if($employee->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["EMPLOYEE_ENDDATE"];?></span></span></td>
-		<td class="tcell-right"><?php if($employee->canedit) { ?><input name="enddate" type="text" class="input-date datepicker" value="<?php echo($employee->enddate)?>" readonly="readonly" /><?php } else { ?><?php echo($employee->enddate)?><?php } ?></td>
 	</tr>
 </table>
 <div class="content-spacer"></div>
@@ -194,10 +194,69 @@
             </table>
         </div>
         <div id="EmployeesSecond" style="display: none;">
-			Second
+			<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+              <tr>
+                <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang["EMPLOYEE_COSTS_TOTAL"];?></span></span></td>
+                <td class="tcell-right-nopadding"><input name="costs_total" type="text" class="bg" value="" /></td>
+              </tr>
+            </table>
+            <table border="0" cellspacing="0" cellpadding="0" class="table-content">
+              <tr>
+                <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang["EMPLOYEE_COSTS_BRUTTO"];?></span></span></td>
+                <td class="tcell-right-nopadding"><input name="costs_total" type="text" class="bg" value="" /></td>
+              </tr>
+            </table>
+            <table border="0" cellspacing="0" cellpadding="0" class="table-content">
+              <tr>
+                <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang["EMPLOYEE_COSTS_NETTO"];?></span></span></td>
+                <td class="tcell-right-nopadding"><input name="costs_total" type="text" class="bg" value="" /></td>
+              </tr>
+            </table>
+            <div class="content-spacer"></div>
+             <table border="0" cellspacing="0" cellpadding="0" class="table-content">
+              <tr>
+                <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang["EMPLOYEE_COSTS_KV"];?></span></span></td>
+                <td class="tcell-right-nopadding"><input name="costs_total" type="text" class="bg" value="" /></td>
+              </tr>
+            </table>
+            <table border="0" cellspacing="0" cellpadding="0" class="table-content">
+              <tr>
+                <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang["EMPLOYEE_COSTS_ADDONS"];?></span></span></td>
+                <td class="tcell-right-nopadding"><input name="costs_total" type="text" class="bg" value="" /></td>
+              </tr>
+            </table>
+             <table border="0" cellspacing="0" cellpadding="0" class="table-content">
+              <tr>
+                <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang["EMPLOYEE_COSTS_OVERTIME"];?></span></span></td>
+                <td class="tcell-right-nopadding"><input name="costs_total" type="text" class="bg" value="" /></td>
+              </tr>
+            </table>
+             <table border="0" cellspacing="0" cellpadding="0" class="table-content">
+              <tr>
+                <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang["EMPLOYEE_COSTS_WORKHOURS"];?></span></span></td>
+                <td class="tcell-right-nopadding"><input name="costs_total" type="text" class="bg" value="" /></td>
+              </tr>
+            </table>
+            <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
+	<tr>
+		<td class="tcell-left text11"><span class="content-nav selectTextarea"><span>Notiz</span></span></td>
+        <td class="tcell-right"><textarea name="protocol3" class="elastic"></textarea></td>
+	</tr>
+</table>
 		</div>
         <div id="EmployeesThird" style="display: none;">
-			Third
+        	<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+                <tr>
+                    <td class="tcell-left-inactive text11">Ist-Stand</td>
+                    <td class="tcell-right-inactive tcell-right-nopadding text11">&nbsp;</td>
+                </tr>
+            </table>
+            <div class="content-spacer"></div>
+			<?php $this->getChartPerformance($employee->id,'happiness');
+			$this->getChartPerformance($employee->id,'performance');
+			$this->getChartPerformance($employee->id,'goals');
+			?>
+            <div style="clear: both;"></div>
         </div>
     </div>
 </div>

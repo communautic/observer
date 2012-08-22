@@ -16,11 +16,17 @@ $lang["EMPLOYEE_OBJECTIVE_TIME_END"] = 'Ende';
 $lang["EMPLOYEE_OBJECTIVE_ATTENDEES"] = 'Teilnehmer';
 $lang["EMPLOYEE_OBJECTIVE_MANAGEMENT"] = 'Protokollführer';
 
+$lang["EMPLOYEE_OBJECTIVE_TAB1_QUESTION_1"] = 'Sind Sie zufrieden mit Ihrem Aufgabengebiet?';
+$lang["EMPLOYEE_OBJECTIVE_TAB1_QUESTION_2"] = 'Fühlen Sie sich gemäß Ihren Kompetenzen und Vorstellungen richtig positioniert?';
+$lang["EMPLOYEE_OBJECTIVE_TAB1_QUESTION_3"] = 'Wie gut ist Ihr Arbeitsplatz für Ihre Tätigkeit ausgerüstet?';
+$lang["EMPLOYEE_OBJECTIVE_TAB1_QUESTION_4"] = 'Fühlen Sie sich von mir gut geführt?';
+$lang["EMPLOYEE_OBJECTIVE_TAB1_QUESTION_5"] = 'Wie wohl fühlen Sie sich im Kreise Ihrer Kollegen/Ihres Teams?';
+
 $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_1"] = '1. Sorgfalt, Genauigkeit, Umsicht, Übersicht, Prioritäten setzen';
 $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_2"] = '2. Eigeninitiative, selbstständiges Arbeiten, Mitdenken, Vorausdenken';
 $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_3"] = '3. Zuverlässigkeit, Pünktlichkeit, Häufigkeit des Krankenstandes';
 $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_4"] = '4. Kostenbewusstsein, Umgang mit Firmeneigentum';
-$lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_5"] = '5. Kooperationsbereitschaft, Teamfähigkeit, Freundlichkeit, Auftreten gegenüber Kunden, Kollegen und Vorgesetzten';
+$lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_5"] = '5. Kooperationsbereitschaft, Teamfähigkeit, Freundlichkeit (gegenüber Kunden, Kollegen, Vorgesetzten)';
 $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_6"] = '6. Termintreue';
 $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_7"] = '7. Problemlösungskompetenz';
 $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_8"] = '8. Bereitschaft, Arbeitszeit an die betrieblichen Erfordernisse anzupassen';

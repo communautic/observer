@@ -36,6 +36,8 @@ $lang["EMPLOYEE_CONTACT_POSITION"] = 'Position';
 $lang["EMPLOYEE_CONTACT_PHONE"] = 'Telefon';
 $lang["EMPLOYEE_CONTACT_EMAIL"] = 'E-mail';
 
+$lang["EMPLOYEE_STARTDATE"] = 'Eintrittsdatum';
+$lang["EMPLOYEE_ENDDATE"] = 'Austrittsdatum';
 $lang["EMPLOYEE_NUMBER"] = 'Personalnummer';
 $lang["EMPLOYEE_KIND"] = 'Kondition';
 $lang["EMPLOYEE_AREA"] = 'Bereich';
@@ -45,8 +47,7 @@ $lang["EMPLOYEE_DOB"] = 'Geburtsdatum';
 $lang["EMPLOYEE_COO"] = 'Nationalität';
 $lang["EMPLOYEE_LANGUAGES"] = 'Sprachkenntnisse';
 $lang["EMPLOYEE_SKILLS"] = 'Kompetenz';
-$lang["EMPLOYEE_STARTDATE"] = 'Eintrittsdatum';
-$lang["EMPLOYEE_ENDDATE"] = 'Austrittsdatum';
+
 
 $lang["EMPLOYEE_PRIVATE_STREET"] = 'Strasse';
 $lang["EMPLOYEE_PRIVATE_CITY"] = 'Ort';
@@ -54,7 +55,13 @@ $lang["EMPLOYEE_PRIVATE_ZIP"] = 'Plz';
 $lang["EMPLOYEE_PRIVATE_PHONE"] = 'Telefon';
 $lang["EMPLOYEE_PRIVATE_EMAIL"] = 'E-mail';
 
-
+$lang["EMPLOYEE_COSTS_TOTAL"] = 'Gesamtgehalt (€)';
+$lang["EMPLOYEE_COSTS_BRUTTO"] = 'Bruttogehalt (€)';
+$lang["EMPLOYEE_COSTS_NETTO"] = 'Nettogehalt (€)';
+$lang["EMPLOYEE_COSTS_KV"] = 'KV Stufe';
+$lang["EMPLOYEE_COSTS_ADDONS"] = 'Zulagen (€)';
+$lang["EMPLOYEE_COSTS_OVERTIME"] = 'Überstungen (€)';
+$lang["EMPLOYEE_COSTS_WORKHOURS"] = 'Arbeitszeit (Std.)';
 
 $lang["EMPLOYEE_HELP"] = 'manual_reklamationen_reklamationen.pdf';
 $lang["EMPLOYEE_FOLDER_HELP"] = 'manual_reklamationen_ordner.pdf';

@@ -294,12 +294,14 @@ class EmployeesObjectivesModel extends EmployeesModel {
 		$array["tab1q2_selected"] = $array["tab1q2"];
 		$array["tab1q3_selected"] = $array["tab1q3"];
 		$array["tab1q4_selected"] = $array["tab1q4"];
+		$array["tab1q5_selected"] = $array["tab1q5"];
 		$tab1result = 0;
 		if(!empty($array["tab1q1"])) { $tab1result += $array["tab1q1"]; }
 		if(!empty($array["tab1q2"])) { $tab1result += $array["tab1q2"]; }
 		if(!empty($array["tab1q3"])) { $tab1result += $array["tab1q3"]; }
 		if(!empty($array["tab1q4"])) { $tab1result += $array["tab1q4"]; }
-		$array["tab1result"] = round(100/40* $tab1result,0);
+		if(!empty($array["tab1q5"])) { $tab1result += $array["tab1q5"]; }
+		$array["tab1result"] = round(100/50* $tab1result,0);
 		
 		// Tab 2 questios
 		$array["tab2q1_selected"] = $array["tab2q1"];
@@ -405,9 +407,6 @@ class EmployeesObjectivesModel extends EmployeesModel {
 			$datearray[]= $start;
 			if($task_enddate[$key] != "") {
 				$datearray[]= $end;
-			}
-			if($task_cat[$key] == 1) {
-				$end = $start;
 			}
 			$q = "UPDATE " . CO_TBL_EMPLOYEES_OBJECTIVES_TASKS . " set status = '$checked_items[$key]', donedate='$donedate', title = '$task_title[$key]', text = '$task_text[$key]', startdate = '$start', enddate = '$end', sort = '$task_sort[$key]' WHERE id='$task_id[$key]'";
 			$result = mysql_query($q, $this->_db->connection);
@@ -653,8 +652,6 @@ class EmployeesObjectivesModel extends EmployeesModel {
 		$result = mysql_query($q, $this->_db->connection);
 		return true;
    }
-
-
 
 }
 ?>

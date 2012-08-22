@@ -594,7 +594,7 @@ class EmployeesModel extends Model {
 		if($today < $array["startdate"]) {
 			$today = $array["startdate"];
 		}
-		
+		$array["avatar"] = $contactsmodel->_users->getAvatar($array["cid"]);
 		$array["startdate"] = $this->_date->formatDate($array["startdate"],CO_DATE_FORMAT);
 		$array["enddate"] = $this->_date->formatDate($array["enddate"],CO_DATE_FORMAT);
 		$array["dob"] = $this->_date->formatDate($array["dob"],CO_DATE_FORMAT);
@@ -1844,6 +1844,192 @@ class EmployeesModel extends Model {
 		}
 		return json_encode($r);
 	}
+	
+	
+	function getChartPerformance($id, $what) { 
+		global $lang;
+		switch($what) {
+			case 'happiness':
+				$q = "SELECT * FROM " . CO_TBL_EMPLOYEES_OBJECTIVES . " WHERE pid = '$id' and status = '1' and bin = '0' ORDER BY item_date DESC LIMIT 0,1";
+				$result = mysql_query($q, $this->_db->connection);
+				$num = mysql_num_rows($result);
+				$i = 1;
+				while($row = mysql_fetch_assoc($result)) {
+					// Tab 1 questios
+					$tab1result = 0;
+					if(!empty($row["tab1q1"])) { $tab1result += $row["tab1q1"]; }
+					if(!empty($row["tab1q2"])) { $tab1result += $row["tab1q2"]; }
+					if(!empty($row["tab1q3"])) { $tab1result += $row["tab1q3"]; }
+					if(!empty($row["tab1q4"])) { $tab1result += $row["tab1q4"]; }
+					if(!empty($row["tab1q5"])) { $tab1result += $row["tab1q5"]; }
+					$tab1result = round(100/50* $tab1result,0);
+				}
+					
+				if($num == 0) {
+					$chart["real"] = 0;
+				} else {
+					$chart["real"] = $tab1result;
+				}
+				
+				$today = date("Y-m-d");
+				
+				$chart["tendency"] = "tendency_positive.png";
+				
+				$q2 = "SELECT * FROM " . CO_TBL_EMPLOYEES_OBJECTIVES . " WHERE pid = '$id' and status = '1' and bin = '0' ORDER BY item_date DESC LIMIT 1,1";
+				$result2 = mysql_query($q2, $this->_db->connection);
+				$num2 = mysql_num_rows($result2);
+				$i = 1;
+				while($row2 = mysql_fetch_array($result2)) {
+					// Tab 1 questios
+					$tab1result2 = 0;
+					if(!empty($row2["tab1q1"])) { $tab1result2 += $row2["tab1q1"]; }
+					if(!empty($row2["tab1q2"])) { $tab1result2 += $row2["tab1q2"]; }
+					if(!empty($row2["tab1q3"])) { $tab1result2 += $row2["tab1q3"]; }
+					if(!empty($row2["tab1q4"])) { $tab1result2 += $row2["tab1q4"]; }
+					if(!empty($row2["tab1q5"])) { $tab1result2 += $row2["tab1q5"]; }
+					$tab1result2 = round(100/50* $tab1result2,0);
+				}
+				if($num2 == 0) {
+					$chart["tendency"] = "tendency_positive.png";
+				} else {
+					if($tab1result >= $tab1result2) {
+						$chart["tendency"] = "tendency_positive.png";
+					} else {
+						$chart["tendency"] = "tendency_negative.png";
+					}
+				}
+				$chart["rest"] = $this->getRest($chart["real"]);
+				$chart["title"] = 'MA-Zufriedenheit';
+				$chart["img_name"] = "ma_" . $id . "_happiness.png";
+				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
+			
+				$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
+			break;
+			case 'performance':
+				$q = "SELECT * FROM " . CO_TBL_EMPLOYEES_OBJECTIVES . " WHERE pid = '$id' and status = '1' and bin = '0' ORDER BY item_date DESC LIMIT 0,1";
+				$result = mysql_query($q, $this->_db->connection);
+				$num = mysql_num_rows($result);
+				$i = 1;
+				while($row = mysql_fetch_assoc($result)) {
+					// Tab 2 questios
+					$tab2result = 0;
+					if(!empty($row["tab2q1"])) { $tab2result += $row["tab2q1"]; }
+					if(!empty($row["tab2q2"])) { $tab2result += $row["tab2q2"]; }
+					if(!empty($row["tab2q3"])) { $tab2result += $row["tab2q3"]; }
+					if(!empty($row["tab2q4"])) { $tab2result += $row["tab2q4"]; }
+					if(!empty($row["tab2q5"])) { $tab2result += $row["tab2q5"]; }
+					if(!empty($row["tab2q6"])) { $tab2result += $row["tab2q6"]; }
+					if(!empty($row["tab2q7"])) { $tab2result += $row["tab2q7"]; }
+					if(!empty($row["tab2q8"])) { $tab2result += $row["tab2q8"]; }
+					if(!empty($row["tab2q9"])) { $tab2result += $row["tab2q9"]; }
+					if(!empty($row["tab2q10"])) { $tab2result += $row["tab2q10"]; }
+					$tab2result = $tab2result;
+				}
+					
+				if($num == 0) {
+					$chart["real"] = 0;
+				} else {
+					$chart["real"] = $tab2result;
+				}
+				
+				$today = date("Y-m-d");
+				
+				$chart["tendency"] = "tendency_positive.png";
+				
+				$q2 = "SELECT * FROM " . CO_TBL_EMPLOYEES_OBJECTIVES . " WHERE pid = '$id' and status = '1' and bin = '0' ORDER BY item_date DESC LIMIT 1,1";
+				$result2 = mysql_query($q2, $this->_db->connection);
+				$num2 = mysql_num_rows($result2);
+				$i = 1;
+				while($row2 = mysql_fetch_array($result2)) {
+					// Tab 2 questios
+					$tab2result2 = 0;
+					if(!empty($row2["tab2q1"])) { $tab2result2 += $row2["tab2q1"]; }
+					if(!empty($row2["tab2q2"])) { $tab2result2 += $row2["tab2q2"]; }
+					if(!empty($row2["tab2q3"])) { $tab2result2 += $row2["tab2q3"]; }
+					if(!empty($row2["tab2q4"])) { $tab2result2 += $row2["tab2q4"]; }
+					if(!empty($row2["tab2q5"])) { $tab2result2 += $row2["tab2q5"]; }
+					if(!empty($row2["tab2q6"])) { $tab2result2 += $row2["tab2q6"]; }
+					if(!empty($row2["tab2q7"])) { $tab2result2 += $row2["tab2q7"]; }
+					if(!empty($row2["tab2q8"])) { $tab2result2 += $row2["tab2q8"]; }
+					if(!empty($row2["tab2q9"])) { $tab2result2 += $row2["tab2q9"]; }
+					if(!empty($row2["tab2q10"])) { $tab2result2 += $row2["tab2q10"]; }
+					$tab2result2 = $tab2result2;
+				}
+				if($num2 == 0) {
+					$chart["tendency"] = "tendency_positive.png";
+				} else {
+					if($tab2result >= $tab2result2) {
+						$chart["tendency"] = "tendency_positive.png";
+					} else {
+						$chart["tendency"] = "tendency_negative.png";
+					}
+				}
+				$chart["rest"] = $this->getRest($chart["real"]);
+				$chart["title"] = 'Leistungsbewertung';
+				$chart["img_name"] = "ma_" . $id . "_performance.png";
+				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
+			
+				$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
+			break;
+			case 'goals':
+				$chart["real"] = 0;
+				
+				$q = "SELECT id FROM " . CO_TBL_EMPLOYEES_OBJECTIVES . " WHERE pid = '$id' and status = '1' and bin = '0' ORDER BY item_date DESC LIMIT 0,1";
+				$result = mysql_query($q, $this->_db->connection);
+				if(mysql_num_rows($result) > 0) {
+					$mid = mysql_result($result,0);
+					
+					$q = "SELECT * FROM " . CO_TBL_EMPLOYEES_OBJECTIVES_TASKS . "  WHERE mid='$mid' and status = '1' and bin = '0'";
+					$result = mysql_query($q, $this->_db->connection);
+					$done = mysql_num_rows($result);
+					
+					$q = "SELECT * FROM " . CO_TBL_EMPLOYEES_OBJECTIVES_TASKS . "  WHERE mid='$mid' and status = '0' and bin = '0'";
+					$result = mysql_query($q, $this->_db->connection);
+					$notdone = mysql_num_rows($result);
+					$all = $done + $notdone;
+					if($all == 0) {
+						$chart["real"] = 0;
+					} else {
+						$chart["real"] =  round(100/$all* $done,0);
+					}
+				}
+				
+				$chart["tendency"] = "tendency_positive.png";
+				
+				$q = "SELECT id FROM " . CO_TBL_EMPLOYEES_OBJECTIVES . " WHERE pid = '$id' and status = '1' and bin = '0' ORDER BY item_date DESC LIMIT 1,1";
+				$result = mysql_query($q, $this->_db->connection);
+				if(mysql_num_rows($result) > 0) {
+				$mid = mysql_result($result,0);
+				
+					$q = "SELECT * FROM " . CO_TBL_EMPLOYEES_OBJECTIVES_TASKS . "  WHERE mid='$mid' and status = '1' and bin = '0'";
+					$result = mysql_query($q, $this->_db->connection);
+					$done = mysql_num_rows($result);
+					
+					$q = "SELECT * FROM " . CO_TBL_EMPLOYEES_OBJECTIVES_TASKS . "  WHERE mid='$mid' and status = '0' and bin = '0'";
+					$result = mysql_query($q, $this->_db->connection);
+					$notdone = mysql_num_rows($result);
+					$all = $done + $notdone;
+					if($all == 0) {
+						$chart["tendency"] = "tendency_positive.png";
+					} else {
+						if($chart["real"] < round(100/$all* $done,0)) {
+								$chart["tendency"] = "tendency_negative.png";
+						}
+					}
+				}
+				
+				$chart["rest"] = $this->getRest($chart["real"]);
+				$chart["title"] = 'Zielerreichung';
+				$chart["img_name"] = "ma_" . $id . "_goals.png";
+				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
+			
+				$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
+			break;
+			}
+		
+		return $chart;
+   }
+
 
 }
 
