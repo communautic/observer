@@ -237,12 +237,6 @@
                 <td class="tcell-right-nopadding"><input name="costs_total" type="text" class="bg" value="" /></td>
               </tr>
             </table>
-            <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
-	<tr>
-		<td class="tcell-left text11"><span class="content-nav selectTextarea"><span>Notiz</span></span></td>
-        <td class="tcell-right"><textarea name="protocol3" class="elastic"></textarea></td>
-	</tr>
-</table>
 		</div>
         <div id="EmployeesThird" style="display: none;">
         	<table border="0" cellpadding="0" cellspacing="0" class="table-content">
