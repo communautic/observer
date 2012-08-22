@@ -1219,7 +1219,64 @@ $(document).ready(function() {
 				obj.manageCheckpoint(action,dateText);
 	   		}
  		});
-	}); 
+	});
+	
+	
+	// init datepickers dialog_button.png
+	$('.datepickerDelete').livequery(function() { 
+		$(this).datepicker({ dateFormat: 'dd.mm.yy', showOn: 'button', buttonText:"", buttonImage: co_files+'/img/pixel.gif',  buttonImageOnly: true, showButtonPanel: true, changeMonth: true, changeYear: true, yearRange: 'c-5:c+5', showAnim: 'slide',
+			beforeShow: function(input,inst) {
+				if(input.name == 'enddate') {
+					$(this).datepicker('option', 'minDate', new Date(Date.parse($("input[name='startdate']").val())));
+				}
+				if(input.name.match(/task_startdate/)) {
+					$(this).datepicker('option', 'minDate', new Date(Date.parse($("input[name='kickoff']").val())));
+				}
+				if(input.name.match(/task_enddate/)) {
+					var reg = /[0-9]+/.exec(input.name);
+					$(this).datepicker('option', 'minDate', new Date(Date.parse($("input[name='task_startdate["+reg+"]']").val())));
+				}
+				setTimeout(function() {
+					var d = new Date();
+					var m = d.getMonth()+1;
+					var y = d.getFullYear();
+					var is = new Date(Date.parse(input.value));
+					var month = is.getMonth()+1;
+					var year = is.getFullYear();
+					if(m == month && y == year ) {
+						$('button.ui-datepicker-current').addClass('disabled');
+					}
+					var buttonPane = $( input ).datepicker( "widget" ).find( ".ui-datepicker-buttonpane" );
+					$( "<button>", {text: DATEPICKER_CLEAR, click: function() {
+							$.datepicker._clearDate( input );
+						}
+				  	}).appendTo( buttonPane ).addClass("ui-datepicker-clear ui-state-default ui-priority-secondary ui-corner-all ui-datepicker-delete");
+				}, 1 );
+			},
+			onChangeMonthYear: function(year,month, inst ) {
+				setTimeout(function() {
+					var d = new Date();
+					var m = d.getMonth()+1;
+					var y = d.getFullYear();
+					if(m == month && y == year ) {
+						$('button.ui-datepicker-current').addClass('disabled');
+					}
+					var buttonPane = $( input ).datepicker( "widget" ).find( ".ui-datepicker-buttonpane" );
+					$( "<button>", {text: DATEPICKER_CLEAR, click: function() {
+							$.datepicker._clearDate( input );
+						}
+				  	}).appendTo( buttonPane ).addClass("ui-datepicker-clear ui-state-default ui-priority-secondary ui-corner-all ui-datepicker-delete");
+				}, 1 );
+			},
+			onClose: function(dateText, inst) {
+				var app = getCurrentApp();
+				var object = window[app];
+				object.datepickerOnClose(this);
+				//setTimeout(function() { inst.input.click(); }, 5000);
+	   		}
+ 		});
+	});
+	
 
 });
 		

@@ -530,6 +530,21 @@ class Employees extends Controller {
 	}
 	
 	
+	function getChartPerformance($id,$what,$print=0,$type=0) {
+		global $lang;
+		if($chart = $this->model->getChartPerformance($id,$what)) {
+			if($print == 1) {
+				include 'view/chart_print.php';
+			} else {
+				include 'view/chart.php';
+			}
+		} else {
+			include CO_INC .'/view/default.php';
+		}
+	}
+
+	
+	
 	function getEmployeesHelp() {
 		global $lang;
 		$data["file"] = $lang["EMPLOYEE_HELP"];

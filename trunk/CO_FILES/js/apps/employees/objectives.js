@@ -560,7 +560,7 @@ $(document).ready(function() {
 				 total = total + parseInt($(this).html());
 			 }
 		})
-			var res = Math.round(100/40*total);
+			var res = Math.round(100/50*total);
 		} else {
 			$('#EmployeesObjectivesSecond .answers-outer span').each( function() {
 			 if($(this).hasClass('active'))	{
