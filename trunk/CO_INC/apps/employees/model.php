@@ -1662,6 +1662,10 @@ class EmployeesModel extends Model {
 			$employeesVDocsModel = new EmployeesVDocsModel();
 			$data["employees_vdocs_items"] = $employeesVDocsModel->getNavNumItems($id);
 		}
+		if(in_array("comments",$active_modules)) {
+			$employeesCommentsModel = new EmployeesCommentsModel();
+			$data["employees_comments_items"] = $employeesCommentsModel->getNavNumItems($id);
+		}
 		return $data;
 	}
 
