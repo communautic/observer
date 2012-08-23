@@ -63,6 +63,8 @@ $lang["EMPLOYEE_COSTS_ADDONS"] = 'Zulagen (€)';
 $lang["EMPLOYEE_COSTS_OVERTIME"] = 'Überstungen (€)';
 $lang["EMPLOYEE_COSTS_WORKHOURS"] = 'Arbeitszeit (Std.)';
 
+$lang["EMPLOYEE_HANDBOOK"] = 'Personalakt';
+
 $lang["EMPLOYEE_HELP"] = 'manual_reklamationen_reklamationen.pdf';
 $lang["EMPLOYEE_FOLDER_HELP"] = 'manual_reklamationen_ordner.pdf';
 

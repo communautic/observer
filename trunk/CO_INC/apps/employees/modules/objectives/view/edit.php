@@ -83,7 +83,7 @@
         <div id="EmployeesObjectivesFirst">
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
-		<td class="tcell-left-inactive text11">Feedback</td>
+		<td class="tcell-left-inactive text11">&nbsp;</td>
 		<td class="tcell-right-inactive tcell-right-nopadding text11"><div style="float: right; margin-right: 36px;">erreichte Zufriedenheit <span style="font-size: 13px; display: inline-block; text-align: right; width: 68px;" class="bold"><span id="tab1result"><?php echo $objective->tab1result;?></span>%</span></div></td>
     </tr>
 </table>
