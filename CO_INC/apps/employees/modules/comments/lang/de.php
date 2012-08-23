@@ -4,8 +4,8 @@ $employees_comments_name = "Leistungskommentare";
 $lang["EMPLOYEE_COMMENT_TITLE"] = 'Leistungskommentar';
 $lang["EMPLOYEE_COMMENTS"] = 'Leistungskommentare';
 
-$lang["EMPLOYEE_COMMENT_NEW"] = 'Neues Leistungskommentar';
-$lang["EMPLOYEE_COMMENT_ACTION_NEW"] = 'neues Leistungskommentar anlegen';
+$lang["EMPLOYEE_COMMENT_NEW"] = 'Neuer Leistungskommentar';
+$lang["EMPLOYEE_COMMENT_ACTION_NEW"] = 'neuen Leistungskommentar anlegen';
 
 $lang["EMPLOYEE_COMMENT_DATE"] = 'Datum';
 $lang["EMPLOYEE_COMMENT_TIME_START"] = 'Start';

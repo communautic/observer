@@ -1020,8 +1020,9 @@ $(document).ready(function() {
 	$(document).on('click', 'div.contentTabs ul.contentTabsList span',function(e) {
 		e.preventDefault();
 		var what = $(this).attr('rel');
-		var i = $('div.contentTabs ul.contentTabsList span').index(this);
-		$('div.contentTabs ul.contentTabsList span').each(function (index) {
+		var app = getCurrentApp();
+		var i = $('#' + app + ' div.contentTabs ul.contentTabsList span').index(this);
+		$('#' + app + ' div.contentTabs ul.contentTabsList span').each(function (index) {
 			if(i == index) {
 				$(this).addClass('active');
 			} else {

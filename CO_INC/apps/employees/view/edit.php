@@ -2,7 +2,7 @@
 
 <table border="0" cellpadding="0" cellspacing="0" class="table-title">
   <tr>
-    <td class="tcell-left text11"><span class="<?php if($employee->canedit) { ?>content-nav focusTitle<?php } ?>"><span><?php echo $lang["EMPLOYEE_TITLE"];?></span></span></td>
+    <td class="tcell-left text11"><span><span><?php echo $lang["EMPLOYEE_TITLE"];?></span></span></td>
     <td class="tcell-right"><?php if($employee->canedit) { ?><input name="title" type="hidden" class="title textarea-title" value="<?php echo($employee->title);?>" maxlength="100" /><?php } ?><div class="textarea-title"><?php echo($employee->title);?></div></td>
   </tr>
   <tr class="table-title-status">
@@ -142,13 +142,6 @@
   </tr>
 </table>
 <div class="content-spacer"></div>
-<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
-	<tr>
-		<td class="tcell-left text11"><span class="<?php if($employee->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["EMPLOYEE_SKILLS"];?></span></span></td>
-        <td class="tcell-right"><?php if($employee->canedit) { ?><textarea name="protocol2" class="elastic"><?php echo(strip_tags($employee->protocol2));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($employee->protocol2)));?><?php } ?></td>
-	</tr>
-</table>
-<div class="content-spacer"></div>
 <div id="contactTabs" class="contentTabs">
 	<ul class="contentTabsList">
 		<li><span class="active" rel="EmployeesFirst">Privatadresse</span></li>
@@ -239,13 +232,13 @@
             </table>
 		</div>
         <div id="EmployeesThird" style="display: none;">
-        	<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+        	<!--<table border="0" cellpadding="0" cellspacing="0" class="table-content">
                 <tr>
                     <td class="tcell-left-inactive text11">Ist-Stand</td>
                     <td class="tcell-right-inactive tcell-right-nopadding text11">&nbsp;</td>
                 </tr>
             </table>
-            <div class="content-spacer"></div>
+            <div class="content-spacer"></div>-->
 			<?php $this->getChartPerformance($employee->id,'happiness');
 			$this->getChartPerformance($employee->id,'performance');
 			$this->getChartPerformance($employee->id,'goals');
