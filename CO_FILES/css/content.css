@@ -4,7 +4,7 @@ textarea {
 
 .text11 { font-size: 11px; line-height: 20px; }
 .text13 { font-size: 13px; }
-.bold { font-weight: bold}
+.bold { font-weight: bold !important;}
 strong { font-weight: bold}
 .content-spacer { height: 15px; }
 .content-line-grey { height: 1px; background-color:#E5E5E5}
@@ -113,7 +113,7 @@ font-weight: normal;
 }
 
 
-#projects .table-content input.bg { 
+#projects .table-content input.bg, #brainstorms .table-content input.bg, #clients .table-content input.bg { 
 	font-weight: bold;
 }
 

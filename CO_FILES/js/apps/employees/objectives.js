@@ -390,19 +390,21 @@ function employeesObjectives(name) {
 
 
 	this.newItem = function() {
+		var module = this;
 		var mid = $("#employees").data("third");
 		var num = parseInt($("#employees-right .task_sort").size());
 		$.ajax({ type: "GET", url: "/", data: "path=apps/employees/modules/objectives&request=addTask&mid=" + mid + "&num=" + num + "&sort=" + num, success: function(html){
 			$('#employeesobjectivetasks').append(html);
 			var idx = parseInt($('.cbx').size() -1);
-			var element = $('.cbx:eq('+idx+')');
-			$.jNice.CheckAddPO(element);
+			//var element = $('.cbx:eq('+idx+')');
+			//$.jNice.CheckAddPO(element);
 			$('.objectiveouter:eq('+idx+')').slideDown(function() {
 				$(this).find(":text:eq(0)").focus();
-				if(idx == 6) {
+				/*if(idx == 6) {
 				$('#employees-right .addTaskTable').clone().insertAfter('#phasetasks');
-				}
+				}*/
 				initEmployeesContentScrollbar();
+				 module.calculateTasks();
 			});
 			}
 		});
@@ -410,6 +412,7 @@ function employeesObjectives(name) {
 
 
 	this.binItem = function(id) {
+		var module = this;
 		var txt = ALERT_DELETE;
 		var langbuttons = {};
 		langbuttons[ALERT_YES] = true;
@@ -420,7 +423,8 @@ function employeesObjectives(name) {
 				if(v){
 				$.ajax({ type: "GET", url: "/", data: "path=apps/employees/modules/objectives&request=deleteTask&id=" + id, success: function(data){
 					if(data){
-						$("#task_"+id).slideUp(function(){ $(this).remove(); });
+						$("#task_"+id).slideUp(function(){ $(this).remove(); module.calculateTasks(); });
+						
 					} 
 					}
 				});
@@ -541,6 +545,20 @@ function employeesObjectives(name) {
 		$.ajax({ type: "POST", url: "/", data: "path=apps/employees/modules/objectives&request=updateCheckpointText&id=" + pid + "&text=" + text, cache: false });
 	}
 	
+	this.calculateTasks = function() {
+		var total = 0;
+		var num = $('#EmployeesObjectivesThird .answers-outer-dynamic').size()*10;
+		$('#EmployeesObjectivesThird .answers-outer-dynamic span').each( function() {
+			 if($(this).hasClass('active'))	{
+				 total = total + parseInt($(this).html());
+			 }
+		})
+		if(num != 0) {
+			var res = Math.round(100/num*total);
+		}
+		$('#tab3result').html(res);
+	}
+	
 }
 
 var employees_objectives = new employeesObjectives('employees_objectives');
@@ -576,4 +594,18 @@ $(document).ready(function() {
 		$.ajax({ type: "GET", url: "/", data: "path=apps/employees/modules/objectives&request=updateQuestion&id=" + pid + "&field=" + field + "&val=" + val, cache: false });
 		
 	});
+	
+	
+	$('#employees').on('click', '.answers-outer-dynamic span',function(e) {
+		e.preventDefault();
+		var id = $(this).attr('rel');
+		var val = $(this).html();
+		$(this).siblings().removeClass('active');
+		$(this).addClass('active');
+		employees_objectives.calculateTasks();
+		// ajax call
+		$.ajax({ type: "GET", url: "/", data: "path=apps/employees/modules/objectives&request=updateTaskQuestion&id=" + id + "&val=" + val, cache: false });
+		
+	});
+	
 });	

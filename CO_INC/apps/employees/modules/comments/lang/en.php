@@ -18,7 +18,7 @@ $lang["EMPLOYEE_COMMENT_GOALS"] = 'Agenda';
 $lang["EMPLOYEE_COMMENT_STATUS_OUTGOING"] = 'incoming';
 $lang["EMPLOYEE_COMMENT_STATUS_ON_INCOMING"] = 'outgoing';
 
-$lang["EMPLOYEE_COMMENT_HELP"] = 'manual_reklamationen_telefonate.pdf';
+$lang["EMPLOYEE_COMMENT_HELP"] = 'manual_mitarbeiter_leistungskommentare.pdf';
 
 $lang["EMPLOYEE_PRINT_COMMENT"] = 'comment.png';
 

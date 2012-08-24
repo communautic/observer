@@ -20,7 +20,7 @@ $lang["EMPLOYEE_OBJECTIVE_GOALS"] = 'Agenda';
 $lang["EMPLOYEE_OBJECTIVE_POSPONED"] = 'posponed';
 
 
-$lang["EMPLOYEE_OBJECTIVE_HELP"] = 'manual_reklamationen_besprechungen.pdf';
+$lang["EMPLOYEE_OBJECTIVE_HELP"] = 'manual_mitarbeiter_zielvereinbarungen.pdf';
 
 $lang["EMPLOYEE_PRINT_OBJECTIVE"] = 'objective.png';
 

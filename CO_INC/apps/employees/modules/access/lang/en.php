@@ -3,7 +3,7 @@ $employees_access_name = "Access";
 
 $lang["EMPLOYEE_ACCESSRIGHTS"] = 'Access Rights';
 
-$lang["EMPLOYEE_ACCESS_HELP"] = 'manual_reklamationen_zugang.pdf';
+$lang["EMPLOYEE_ACCESS_HELP"] = 'manual_mitarbeiter_zugang.pdf';
 
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/employees/access/de.php";
