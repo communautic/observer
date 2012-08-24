@@ -145,7 +145,7 @@
 <div id="contactTabs" class="contentTabs">
 	<ul class="contentTabsList">
 		<li><span class="active" rel="EmployeesFirst">Privatadresse</span></li>
-		<li><span rel="EmployeesSecond">Kosten</span></li>
+		<!--<li><span rel="EmployeesSecond">Kosten</span></li>-->
         <li><span rel="EmployeesThird">Leistungsstatus</span></li>
 	</ul>
     <div id="EmployeesTabsContent" class="contentTabsContent">
@@ -186,7 +186,7 @@
               </tr>
             </table>
         </div>
-        <div id="EmployeesSecond" style="display: none;">
+        <!--<div id="EmployeesSecond" style="display: none;">
 			<table border="0" cellspacing="0" cellpadding="0" class="table-content">
               <tr>
                 <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang["EMPLOYEE_COSTS_TOTAL"];?></span></span></td>
@@ -230,7 +230,7 @@
                 <td class="tcell-right-nopadding"><input name="costs_total" type="text" class="bg" value="" /></td>
               </tr>
             </table>
-		</div>
+		</div>-->
         <div id="EmployeesThird" style="display: none;">
         	<!--<table border="0" cellpadding="0" cellspacing="0" class="table-content">
                 <tr>
@@ -242,6 +242,7 @@
 			<?php $this->getChartPerformance($employee->id,'happiness');
 			$this->getChartPerformance($employee->id,'performance');
 			$this->getChartPerformance($employee->id,'goals');
+			$this->getChartPerformance($employee->id,'totals');
 			?>
             <div style="clear: both;"></div>
         </div>

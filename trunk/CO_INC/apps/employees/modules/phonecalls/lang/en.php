@@ -18,7 +18,7 @@ $lang["EMPLOYEE_PHONECALL_GOALS"] = 'Agenda';
 $lang["EMPLOYEE_PHONECALL_STATUS_OUTGOING"] = 'incoming';
 $lang["EMPLOYEE_PHONECALL_STATUS_ON_INCOMING"] = 'outgoing';
 
-$lang["EMPLOYEE_PHONECALL_HELP"] = 'manual_reklamationen_telefonate.pdf';
+$lang["EMPLOYEE_PHONECALL_HELP"] = 'manual_mitarbeiter_telefonate.pdf';
 
 $lang["EMPLOYEE_PRINT_PHONECALL"] = 'phonecall.png';
 

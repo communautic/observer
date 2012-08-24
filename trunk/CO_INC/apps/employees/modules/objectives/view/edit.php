@@ -623,23 +623,12 @@
                     <td class="tcell-left text11">
                     <span class="<?php if($objective->canedit) { ?>content-nav newItem<?php } ?>"><span><?php echo $lang["EMPLOYEE_OBJECTIVE_GOALS"];?></span></span>
                     </td>
-                	<td class="tcell-right">&nbsp;</td>
+                	<td class="tcell-right-inactive tcell-right-nopadding text11"><div style="float: right; margin-right: 70px;">erreichte Zielsetzungen<span style="font-size: 13px; display: inline-block; text-align: right; width: 68px;" class="bold"><span id="tab3result"><?php echo $objective->tab3result;?></span>%</span></div></td>
                 </tr>
             </table><div id="employeesobjectivetasks">
             <?php 
             foreach($task as $value) { 
-			
-			$checked = '';
-		$donedate_field = 'display: none';
-		$donedate = $objective->today;
-	if($value->status == 1) {
-		$checked = ' checked="checked"';
-		$donedate_field = '';
-		$donedate = $value->donedate;
-	}
-				
-
-            include("task.php");
+            	include("task.php");
              } ?>
             </div>
         </div>

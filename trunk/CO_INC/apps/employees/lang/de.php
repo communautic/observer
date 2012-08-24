@@ -65,8 +65,8 @@ $lang["EMPLOYEE_COSTS_WORKHOURS"] = 'Arbeitszeit (Std.)';
 
 $lang["EMPLOYEE_HANDBOOK"] = 'Personalakt';
 
-$lang["EMPLOYEE_HELP"] = 'manual_reklamationen_reklamationen.pdf';
-$lang["EMPLOYEE_FOLDER_HELP"] = 'manual_reklamationen_ordner.pdf';
+$lang["EMPLOYEE_HELP"] = 'manual_mitarbeiter_mitarbeiter.pdf';
+$lang["EMPLOYEE_FOLDER_HELP"] = 'manual_mitarbeiter_ordner.pdf';
 
 // Print images
 $lang["PRINT_EMPLOYEE"] = 'reklamation.png';

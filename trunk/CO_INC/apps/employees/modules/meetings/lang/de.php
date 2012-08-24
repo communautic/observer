@@ -19,7 +19,7 @@ $lang["EMPLOYEE_MEETING_GOALS"] = 'Themen';
 
 $lang["EMPLOYEE_MEETING_POSPONED"] = 'verschoben';
 
-$lang["EMPLOYEE_MEETING_HELP"] = 'manual_reklamationen_besprechungen.pdf';
+$lang["EMPLOYEE_MEETING_HELP"] = 'manual_mitarbeiter_besprechungen.pdf';
 
 $lang["EMPLOYEE_PRINT_MEETING"] = 'besprechung.png';
 

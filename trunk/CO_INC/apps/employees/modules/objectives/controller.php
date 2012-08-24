@@ -135,8 +135,8 @@ class EmployeesObjectives extends Employees {
 	}
 	
 
-	function setDetails($pid,$id,$title,$objectivedate,$start,$end,$location,$location_ct,$participants,$participants_ct,$management,$management_ct, $tab1q1_text,$tab1q2_text,$tab1q3_text,$tab1q4_text,$tab2q1_text,$tab2q2_text,$tab2q3_text,$tab2q4_text,$tab2q5_text,$tab2q6_text,$tab2q7_text,$tab2q8_text,$tab2q9_text,$tab2q10_text,$task_startdate,$task_enddate,$task_donedate,$task_id,$task_title,$task_text,$task,$task_sort,$objective_access,$objective_access_orig) {
-		if($retval = $this->model->setDetails($pid,$id,$title,$objectivedate,$start,$end,$location,$location_ct,$participants,$participants_ct,$management,$management_ct,$tab1q1_text,$tab1q2_text,$tab1q3_text,$tab1q4_text,$tab2q1_text,$tab2q2_text,$tab2q3_text,$tab2q4_text,$tab2q5_text,$tab2q6_text,$tab2q7_text,$tab2q8_text,$tab2q9_text,$tab2q10_text,$task_startdate,$task_enddate,$task_donedate,$task_id,$task_title,$task_text,$task,$task_sort,$objective_access,$objective_access_orig)){
+	function setDetails($pid,$id,$title,$objectivedate,$start,$end,$location,$location_ct,$participants,$participants_ct,$management,$management_ct, $tab1q1_text,$tab1q2_text,$tab1q3_text,$tab1q4_text,$tab2q1_text,$tab2q2_text,$tab2q3_text,$tab2q4_text,$tab2q5_text,$tab2q6_text,$tab2q7_text,$tab2q8_text,$tab2q9_text,$tab2q10_text,$task_id,$task_title,$task_text,$task,$objective_access,$objective_access_orig) {
+		if($retval = $this->model->setDetails($pid,$id,$title,$objectivedate,$start,$end,$location,$location_ct,$participants,$participants_ct,$management,$management_ct,$tab1q1_text,$tab1q2_text,$tab1q3_text,$tab1q4_text,$tab2q1_text,$tab2q2_text,$tab2q3_text,$tab2q4_text,$tab2q5_text,$tab2q6_text,$tab2q7_text,$tab2q8_text,$tab2q9_text,$tab2q10_text,$task_id,$task_title,$task_text,$task,$objective_access,$objective_access_orig)){
 			return '{ "id": "' . $id . '", "access": "' . $objective_access . '"}';
 		} else{
 			return "error";
@@ -290,6 +290,10 @@ class EmployeesObjectives extends Employees {
    
 	function updateQuestion($id,$field,$val){
 		$this->model->updateQuestion($id,$field,$val);
+		return true;
+   }
+   function updateTaskQuestion($id,$val){
+		$this->model->updateTaskQuestion($id,$val);
 		return true;
    }
 

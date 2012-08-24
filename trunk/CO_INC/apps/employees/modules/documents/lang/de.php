@@ -10,7 +10,7 @@ $lang["EMPLOYEE_DOCUMENT_FILENAME"] = 'Dateiname/Format';
 $lang["EMPLOYEE_DOCUMENT_FILESIZE"] = 'Dateigrösse';
 $lang["EMPLOYEE_DOCUMENT_FILES"] = 'Dateien';
 
-$lang["EMPLOYEE_DOCUMENT_HELP"] = 'manual_reklamationen_aktenmappen.pdf';
+$lang["EMPLOYEE_DOCUMENT_HELP"] = 'manual_mitarbeiter_aktenmappen.pdf';
 
 $lang["EMPLOYEE_PRINT_DOCUMENT"] = 'akt.png';
 

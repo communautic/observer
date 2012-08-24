@@ -39,7 +39,7 @@ $lang["EMPLOYEE_OBJECTIVE_TASKS_END"] = 'Ende';
 
 $lang["EMPLOYEE_OBJECTIVE_POSPONED"] = 'verschoben';
 
-$lang["EMPLOYEE_OBJECTIVE_HELP"] = 'manual_reklamationen_besprechungen.pdf';
+$lang["EMPLOYEE_OBJECTIVE_HELP"] = 'manual_mitarbeiter_zielvereinbarungen.pdf';
 
 $lang["EMPLOYEE_PRINT_OBJECTIVE"] = 'besprechung.png';
 

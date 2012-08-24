@@ -238,17 +238,6 @@ class EmployeesCommentsModel extends EmployeesModel {
 			break;
 		}
 		
-		switch($array["status"]) {
-			case "0":
-				$array["status_text"] = $lang["EMPLOYEE_COMMENT_STATUS_OUTGOING"];
-				$array["status_date"] = '';
-			break;
-			case "1":
-				$array["status_text"] = $lang["EMPLOYEE_COMMENT_STATUS_ON_INCOMING"];
-				$array["status_date"] = '';
-			break;
-		}
-		
 		$sendto = $this->getSendtoDetails("employees_comments",$id);
 
 		$comment = new Lists($array);
