@@ -647,10 +647,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#979797', end
 	border-left: 4px solid #333;
 	background-color: #e5e5e5;
 }
+.ui-datepicker table tr {
+    height: 21px;
+}
 
 .ui-datepicker .ui-datepicker-buttonpane {
     margin: 0;
-    padding: 0 0.2em;
+    /*padding: 0 0.2em;*/
+	height: 27px;
 	background-color: #333;
     border-bottom: 4px solid #333333;
     border-radius: 0 0 2px 2px;
