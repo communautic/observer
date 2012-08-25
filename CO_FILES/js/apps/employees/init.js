@@ -31,6 +31,7 @@ function employeesApplication(name) {
 		formData[formData.length] = processListApps('kind');
 		formData[formData.length] = processListApps('area');
 		formData[formData.length] = processListApps('department');
+		formData[formData.length] = processListApps('education');
 		//formData[formData.length] = processListApps('status');
 	}
 

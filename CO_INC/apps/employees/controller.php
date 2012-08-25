@@ -390,8 +390,8 @@ class Employees extends Controller {
 	}
 
 
-	function setEmployeeDetails($id,$title,$startdate,$enddate,$protocol,$folder,$number,$kind,$area,$department,$dob,$coo,$languages,$street_private,$city_private,$zip_private,$phone_private,$email_private) {
-		$retval = $this->model->setEmployeeDetails($id,$title,$startdate,$enddate,$protocol,$folder,$number,$kind,$area,$department,$dob,$coo,$languages,$street_private,$city_private,$zip_private,$phone_private,$email_private);
+	function setEmployeeDetails($id,$title,$startdate,$enddate,$protocol,$protocol2,$protocol3,$folder,$number,$kind,$area,$department,$dob,$coo,$languages,$street_private,$city_private,$zip_private,$phone_private,$email_private,$education) {
+		$retval = $this->model->setEmployeeDetails($id,$title,$startdate,$enddate,$protocol,$protocol2,$protocol3,$folder,$number,$kind,$area,$department,$dob,$coo,$languages,$street_private,$city_private,$zip_private,$phone_private,$email_private,$education);
 		if($retval){
 			 return '{ "action": "edit", "id": "' . $id . '"}';
 		  } else{

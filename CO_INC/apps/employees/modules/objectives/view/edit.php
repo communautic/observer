@@ -73,7 +73,7 @@
 </table>
 <div class="content-spacer"></div>
 
-<div id="contactTabs" class="contentTabs">
+<div id="contactTabs" class="contentTabs grey">
 	<ul class="contentTabsList">
 		<li><span class="active" rel="EmployeesObjectivesFirst">MA-Zufriedenheit</span></li>
 		<li><span rel="EmployeesObjectivesSecond">Leistungsbewertung</span></li>
