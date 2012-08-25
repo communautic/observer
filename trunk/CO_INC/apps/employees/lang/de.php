@@ -55,13 +55,9 @@ $lang["EMPLOYEE_PRIVATE_ZIP"] = 'Plz';
 $lang["EMPLOYEE_PRIVATE_PHONE"] = 'Telefon';
 $lang["EMPLOYEE_PRIVATE_EMAIL"] = 'E-mail';
 
-$lang["EMPLOYEE_COSTS_TOTAL"] = 'Gesamtgehalt (€)';
-$lang["EMPLOYEE_COSTS_BRUTTO"] = 'Bruttogehalt (€)';
-$lang["EMPLOYEE_COSTS_NETTO"] = 'Nettogehalt (€)';
-$lang["EMPLOYEE_COSTS_KV"] = 'KV Stufe';
-$lang["EMPLOYEE_COSTS_ADDONS"] = 'Zulagen (€)';
-$lang["EMPLOYEE_COSTS_OVERTIME"] = 'Überstungen (€)';
-$lang["EMPLOYEE_COSTS_WORKHOURS"] = 'Arbeitszeit (Std.)';
+$lang["EMPLOYEE_EDUCATION"] = 'Schulbildung';
+$lang["EMPLOYEE_EDUCATION_ADDITIONAL"] = 'Zusatzausbildungen';
+$lang["EMPLOYEE_EXPERIENCE"] = 'Berufserfahrung';
 
 $lang["EMPLOYEE_HANDBOOK"] = 'Personalakt';
 
