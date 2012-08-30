@@ -179,7 +179,7 @@ if (!empty($_POST['request'])) {
 			echo($employees->setFolderDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['employeestatus']));
 		break;
 		case 'setEmployeeDetails':
-			echo($employees->setEmployeeDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['startdate'], $_POST['enddate'], $system->checkMagicQuotes($_POST['protocol']), $system->checkMagicQuotes($_POST['protocol2']), $system->checkMagicQuotes($_POST['protocol3']), $_POST['folder'], $_POST['number'], $_POST['kind'], $_POST['area'], $_POST['department'], $_POST['dob'], $_POST['coo'], $_POST['languages'], $_POST['street_private'], $_POST['city_private'], $_POST['zip_private'], $_POST['phone_private'], $_POST['email_private'], $_POST['education']));
+			echo($employees->setEmployeeDetails($_POST['id'], $_POST['startdate'], $_POST['enddate'], $system->checkMagicQuotes($_POST['protocol']), $system->checkMagicQuotes($_POST['protocol2']), $system->checkMagicQuotes($_POST['protocol3']), $_POST['folder'], $_POST['number'], $_POST['kind'], $_POST['area'], $_POST['department'], $_POST['dob'], $_POST['coo'], $_POST['languages'], $_POST['street_private'], $_POST['city_private'], $_POST['zip_private'], $_POST['phone_private'], $_POST['email_private'], $_POST['education']));
 		break;
 		case 'moveEmployee':
 			echo($employees->moveEmployee($_POST['id'], $_POST['startdate'], $_POST['movedays']));

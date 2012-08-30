@@ -41,7 +41,7 @@ $lang["EMPLOYEE_OBJECTIVE_POSPONED"] = 'verschoben';
 
 $lang["EMPLOYEE_OBJECTIVE_HELP"] = 'manual_mitarbeiter_zielvereinbarungen.pdf';
 
-$lang["EMPLOYEE_PRINT_OBJECTIVE"] = 'besprechung.png';
+$lang["EMPLOYEE_PRINT_OBJECTIVE"] = 'zielvereinbarung.png';
 
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/employees/objectives/de.php";

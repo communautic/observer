@@ -21,8 +21,7 @@ if(is_array($employees)) {
 		<td class="fourCols-one">&nbsp;</td>
         <td class="fourCols-two">&nbsp;</td>
         <td class="fourCols-three">&nbsp;</td>
-		<td class="grey smalltext fourCols-paddingTop"><?php echo($employee->status_text . " " . $employee->status_text_time . " " . $employee->status_date);?><br />
-		<?php echo $lang["EMPLOYEE_MANAGEMENT"];?> <?php echo($employee->management);?></td>
+		<td class="grey smalltext fourCols-paddingTop"><?php echo($employee->status_text . " " . $employee->status_text_time . " " . $employee->status_date);?></td>
 	</tr>
      <tr>
              <td class="fourCols-one">&nbsp;</td>

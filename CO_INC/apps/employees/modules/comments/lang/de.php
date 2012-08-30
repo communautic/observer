@@ -17,7 +17,7 @@ $lang["EMPLOYEE_COMMENT_GOALS"] = 'Notiz';
 
 $lang["EMPLOYEE_COMMENT_HELP"] = 'manual_mitarbeiter_leistungskommentare.pdf';
 
-$lang["EMPLOYEE_PRINT_COMMENT"] = 'telefonat.png';
+$lang["EMPLOYEE_PRINT_COMMENT"] = 'kommentar.png';
 
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/employees/comments/de.php";

@@ -65,7 +65,8 @@ $lang["EMPLOYEE_HELP"] = 'manual_mitarbeiter_mitarbeiter.pdf';
 $lang["EMPLOYEE_FOLDER_HELP"] = 'manual_mitarbeiter_ordner.pdf';
 
 // Print images
-$lang["PRINT_EMPLOYEE"] = 'reklamation.png';
+$lang["PRINT_EMPLOYEE_MANUAL"] = 'personalakt.png';
+$lang["PRINT_EMPLOYEE"] = 'mitarbeiter.png';
 $lang["PRINT_EMPLOYEE_FOLDER"] = 'ordner.png';
 
 
