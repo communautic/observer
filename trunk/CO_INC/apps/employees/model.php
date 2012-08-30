@@ -718,7 +718,7 @@ class EmployeesModel extends Model {
    /**
    * get details for the employee folder
    */
-   function setEmployeeDetails($id,$title,$startdate,$enddate,$protocol,$protocol2,$protocol3,$folder,$number,$kind,$area,$department,$dob,$coo,$languages,$street_private,$city_private,$zip_private,$phone_private,$email_private,$education) {
+   function setEmployeeDetails($id,$startdate,$enddate,$protocol,$protocol2,$protocol3,$folder,$number,$kind,$area,$department,$dob,$coo,$languages,$street_private,$city_private,$zip_private,$phone_private,$email_private,$education) {
 		global $session, $contactsmodel;
 		
 		$startdate = $this->_date->formatDate($startdate);
@@ -727,7 +727,7 @@ class EmployeesModel extends Model {
 
 		$now = gmdate("Y-m-d H:i:s");
 		
-		$q = "UPDATE " . CO_TBL_EMPLOYEES . " set title = '$title', folder = '$folder', startdate='$startdate', enddate='$enddate',  protocol = '$protocol',  protocol2 = '$protocol2',  protocol3 = '$protocol3', number = '$number', kind = '$kind', area = '$area', department = '$department', dob = '$dob', coo = '$coo', languages = '$languages', street_private = '$street_private', city_private = '$city_private', zip_private = '$zip_private', phone_private = '$phone_private', email_private = '$email_private', education = '$education', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_EMPLOYEES . " set folder = '$folder', startdate='$startdate', enddate='$enddate',  protocol = '$protocol',  protocol2 = '$protocol2',  protocol3 = '$protocol3', number = '$number', kind = '$kind', area = '$area', department = '$department', dob = '$dob', coo = '$coo', languages = '$languages', street_private = '$street_private', city_private = '$city_private', zip_private = '$zip_private', phone_private = '$phone_private', email_private = '$email_private', education = '$education', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
@@ -774,7 +774,7 @@ class EmployeesModel extends Model {
 		$now = gmdate("Y-m-d H:i:s");
 		$title = $lang["EMPLOYEE_NEW"];
 		
-		$q = "INSERT INTO " . CO_TBL_EMPLOYEES . " set folder = '$id', cid='$cid', title = '$title', startdate = '$now', enddate = '$now', management = '$session->uid', status = '0', planned_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+		$q = "INSERT INTO " . CO_TBL_EMPLOYEES . " set folder = '$id', cid='$cid', status = '0', planned_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			$id = mysql_insert_id();
@@ -1119,7 +1119,7 @@ class EmployeesModel extends Model {
 				$arr["folders"] = $folders;
 			} else { // folder not binned
 				
-				$qp ="select id, title, bin, bintime, binuser from " . CO_TBL_EMPLOYEES . " where folder = '$id'";
+				$qp ="select a.id, a.bin, a.bintime, a.binuser, CONCAT(b.lastname,' ',b.firstname) as title from " . CO_TBL_EMPLOYEES . " as a, co_users as b WHERE a.folder = '$id' and a.cid=b.id";
 				$resultp = mysql_query($qp, $this->_db->connection);
 				while ($rowp = mysql_fetch_array($resultp)) {
 					$pid = $rowp["id"];
@@ -1375,25 +1375,13 @@ class EmployeesModel extends Model {
 				$this->deleteFolder($id);
 			} else { // folder not binned
 				
-				$qp ="select id, title, bin, bintime, binuser from " . CO_TBL_EMPLOYEES . " where folder = '$id'";
+				$qp ="select a.id, a.bin, a.bintime, a.binuser, CONCAT(b.lastname,' ',b.firstname) as title from " . CO_TBL_EMPLOYEES . " as a, co_users as b WHERE a.folder = '$id' and a.cid=b.id";
 				$resultp = mysql_query($qp, $this->_db->connection);
 				while ($rowp = mysql_fetch_array($resultp)) {
 					$pid = $rowp["id"];
 					if($rowp["bin"] == "1") { // deleted employees
 						$this->deleteEmployee($pid);
 					} else {
-
-						// orders
-						/*if(in_array("orders",$active_modules)) {
-							$employeesOrdersModel = new EmployeesOrdersModel();
-							$qph ="select id from " . CO_TBL_EMPLOYEES_ORDERS . " where pid = '$pid' and bin='1'";
-							$resultph = mysql_query($qph, $this->_db->connection);
-							while ($rowph = mysql_fetch_array($resultph)) {
-								$phid = $rowph["id"];
-								$employeesOrdersModel->deleteOrder($phid);
-								$arr["orders"] = "";
-							}
-						}*/
 						
 						
 						// grids
@@ -1556,7 +1544,7 @@ class EmployeesModel extends Model {
 	function getEditPerms($id) {
 		global $session;
 		$perms = array();
-		$q = "SELECT a.pid FROM co_employees_access as a, co_employees as b WHERE a.pid=b.id and b.bin='0' and a.admins REGEXP '[[:<:]]" . $id . "[[:>:]]' ORDER by b.title ASC";
+		$q = "SELECT a.pid FROM co_employees_access as a, co_employees as b WHERE a.pid=b.id and b.bin='0' and a.admins REGEXP '[[:<:]]" . $id . "[[:>:]]' ORDER by b.cid ASC";
       	$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
 			$perms[] = $row["pid"];
@@ -1568,7 +1556,7 @@ class EmployeesModel extends Model {
    function getViewPerms($id) {
 		global $session;
 		$perms = array();
-		$q = "SELECT a.pid FROM co_employees_access as a, co_employees as b WHERE a.pid=b.id and b.bin='0' and a.guests REGEXP '[[:<:]]" . $id. "[[:>:]]' ORDER by b.title ASC";
+		$q = "SELECT a.pid FROM co_employees_access as a, co_employees as b WHERE a.pid=b.id and b.bin='0' and a.guests REGEXP '[[:<:]]" . $id. "[[:>:]]' ORDER by b.cid ASC";
       	$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
 			$perms[] = $row["pid"];
@@ -1754,7 +1742,7 @@ class EmployeesModel extends Model {
 			$active_modules[] = $m;
 		}
 		
-		$q = "SELECT id, folder, CONVERT(title USING latin1) as title FROM " . CO_TBL_EMPLOYEES . " WHERE title like '%$term%' and  bin='0'" . $access ."ORDER BY title";
+		$q = "SELECT a.id, a.folder, CONCAT(b.lastname,' ',b.firstname) as title FROM " . CO_TBL_EMPLOYEES . " as a, co_users as b WHERE (b.lastname like '%$term%' or b.firstname like '%$term%') and  a.bin='0' and a.cid=b.id" . $access ."ORDER BY title";
 		$result = mysql_query($q, $this->_db->connection);
 		//$num=mysql_affected_rows();
 		while($row = mysql_fetch_array($result)) {
@@ -1762,8 +1750,8 @@ class EmployeesModel extends Model {
 			 $rows['id'] = 'employees,' .$row['folder']. ',' . $row['id'] . ',0,employees';
 			 $r[] = $rows;
 		}
-		// loop through forums
-		$q = "SELECT id, folder FROM " . CO_TBL_EMPLOYEES . " WHERE bin='0'" . $access ."ORDER BY title";
+		// loop through
+		$q = "SELECT id, folder FROM " . CO_TBL_EMPLOYEES . " WHERE bin='0'" . $access ."ORDER BY id";
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
 			$pid = $row['id'];
@@ -1773,22 +1761,26 @@ class EmployeesModel extends Model {
 			if($perm == 'guest') {
 				$sql = "and access = '1'";
 			}
-			// Grids
-			$qp = "SELECT id,CONVERT(title USING latin1) as title FROM " . CO_TBL_EMPLOYEES_GRIDS . " WHERE pid = '$pid' and bin = '0' $sql and title like '%$term%' ORDER BY title";
-			$resultp = mysql_query($qp, $this->_db->connection);
-			while($rowp = mysql_fetch_array($resultp)) {
-				$rows['value'] = htmlspecialchars_decode($rowp['title']);
-			 	$rows['id'] = 'grids,' .$folder. ',' . $pid . ',' .$rowp['id'].',employees';
-			 	$r[] = $rows;
+			
+			// Meetings
+			if(in_array("objectives",$active_modules)) {
+				$qp = "SELECT id,CONVERT(title USING latin1) as title FROM " . CO_TBL_EMPLOYEES_OBJECTIVES . " WHERE pid = '$pid' and bin = '0' $sql and title like '%$term%' ORDER BY title";
+				$resultp = mysql_query($qp, $this->_db->connection);
+				while($rowp = mysql_fetch_array($resultp)) {
+					$rows['value'] = htmlspecialchars_decode($rowp['title']);
+					$rows['id'] = 'objectives,' .$folder. ',' . $pid . ',' .$rowp['id'].',employees';
+					$r[] = $rows;
+				}
+				// Meeting Tasks
+				$qp = "SELECT b.id,CONVERT(a.title USING latin1) as title FROM " . CO_TBL_EMPLOYEES_OBJECTIVES_TASKS . " as a, " . CO_TBL_EMPLOYEES_OBJECTIVES . " as b WHERE b.pid = '$pid' and a.mid = b.id and a.bin = '0' and b.bin = '0' $sql and a.title like '%$term%' ORDER BY a.title";
+				$resultp = mysql_query($qp, $this->_db->connection);
+				while($rowp = mysql_fetch_array($resultp)) {
+					$rows['value'] = htmlspecialchars_decode($rowp['title']);
+					$rows['id'] = 'objectives,' .$folder. ',' . $pid . ',' .$rowp['id'].',employees';
+					$r[] = $rows;
+				}
 			}
-			// Forums
-			$qp = "SELECT id,CONVERT(title USING latin1) as title, CONVERT(protocol USING latin1) as protocol FROM " . CO_TBL_EMPLOYEES_FORUMS . " WHERE pid = '$pid' and bin = '0' $sql and (title like '%$term%' || protocol like '%$term%') ORDER BY title";
-			$resultp = mysql_query($qp, $this->_db->connection);
-			while($rowp = mysql_fetch_array($resultp)) {
-				$rows['value'] = htmlspecialchars_decode($rowp['title']);
-			 	$rows['id'] = 'forums,' .$folder. ',' . $pid . ',' .$rowp['id'].',employees';
-			 	$r[] = $rows;
-			}
+			
 			// Meetings
 			if(in_array("meetings",$active_modules)) {
 				$qp = "SELECT id,CONVERT(title USING latin1) as title FROM " . CO_TBL_EMPLOYEES_MEETINGS . " WHERE pid = '$pid' and bin = '0' $sql and title like '%$term%' ORDER BY title";
@@ -1807,16 +1799,7 @@ class EmployeesModel extends Model {
 					$r[] = $rows;
 				}
 			}
-			// Phonecalls
-			if(in_array("phonecalls",$active_modules)) {
-				$qp = "SELECT id,CONVERT(title USING latin1) as title FROM " . CO_TBL_EMPLOYEES_PHONECALLS . " WHERE pid = '$pid' and bin = '0' $sql and title like '%$term%' ORDER BY title";
-				$resultp = mysql_query($qp, $this->_db->connection);
-				while($rowp = mysql_fetch_array($resultp)) {
-					$rows['value'] = htmlspecialchars_decode($rowp['title']);
-					$rows['id'] = 'phonecalls,' .$folder. ',' . $pid . ',' .$rowp['id'].',employees';
-					$r[] = $rows;
-				}
-			}
+			
 			// Doc Folders
 			if(in_array("documents",$active_modules)) {
 				$qp = "SELECT id,CONVERT(title USING latin1) as title FROM " . CO_TBL_EMPLOYEES_DOCUMENTS_FOLDERS . " WHERE pid = '$pid' and bin = '0' $sql and title like '%$term%' ORDER BY title";
@@ -1835,13 +1818,13 @@ class EmployeesModel extends Model {
 					$r[] = $rows;
 				}
 			}
-			// vDocs
-			if(in_array("vdocs",$active_modules)) {
-				$qp = "SELECT id,CONVERT(title USING latin1) as title FROM " . CO_TBL_EMPLOYEES_VDOCS . " WHERE pid = '$pid' and bin = '0' $sql and title like '%$term%' ORDER BY title";
+			// Comments
+			if(in_array("comments",$active_modules)) {
+				$qp = "SELECT id,CONVERT(title USING latin1) as title FROM " . CO_TBL_EMPLOYEES_COMMENTS . " WHERE pid = '$pid' and bin = '0' $sql and title like '%$term%' ORDER BY title";
 				$resultp = mysql_query($qp, $this->_db->connection);
 				while($rowp = mysql_fetch_array($resultp)) {
 					$rows['value'] = htmlspecialchars_decode($rowp['title']);
-					$rows['id'] = 'vdocs,' .$folder. ',' . $pid . ',' .$rowp['id'].',employees';
+					$rows['id'] = 'comments,' .$folder. ',' . $pid . ',' .$rowp['id'].',employees';
 					$r[] = $rows;
 				}
 			}

@@ -242,6 +242,14 @@ function employeesApplication(name) {
 		});
 	}
 
+
+	this.actionHandbook = function() {
+		var id = $("#employees").data("second");
+		var url ='/?path=apps/employees&request=printEmployeeHandbook&id='+id;
+		$("#documentloader").attr('src', url);	
+	}
+
+
 	this.actionPrint = function() {
 		var id = $("#employees").data("second");
 		var url ='/?path=apps/employees&request=printEmployeeDetails&id='+id;
@@ -723,7 +731,7 @@ function employeesActions(status) {
 		//case 0: actions = ['0','1','2','3','5','6']; break;
 		case 0: 
 			if(obj.name == 'employees') {
-				actions = ['1','2','3','4','5','6','7','8']; 
+				actions = ['1','2','3','5','6','7','8']; 
 			} else {
 				actions = ['0','2','3','4','6','7','8']; 
 			}

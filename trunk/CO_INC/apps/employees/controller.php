@@ -250,7 +250,6 @@ class Employees extends Controller {
 		
 		if($arr = $this->model->getEmployeeDetails($id)) {
 			$employee = $arr["employee"];
-			$phases = $arr["phases"];
 			$num = $arr["num"];
 			$sendto = $arr["sendto"];
 			ob_start();
@@ -262,7 +261,7 @@ class Employees extends Controller {
 				$html .= ob_get_contents();
 			ob_end_clean();
 			// phases
-			$phasescont = new EmployeesPhases("phases");
+			/*$phasescont = new EmployeesPhases("phases");
 			foreach ($phases as $phase) {
 				if($arr = $phasescont->model->getDetails($phase->id,$num[$phase->id])) {
 					$phase = $arr["phase"];
@@ -273,7 +272,7 @@ class Employees extends Controller {
 						$html .= ob_get_contents();
 					ob_end_clean();
 				}
-			}
+			}*/
 			// documents
 			$employeesDocuments = new EmployeesDocuments("documents");
 			if($arrdocs = $employeesDocuments->model->getList($id,"0")) {
@@ -292,14 +291,14 @@ class Employees extends Controller {
 				$html .= '<div style="page-break-after:always;">&nbsp;</div>';
 			}
 			// controlling
-			$employeesControlling = new EmployeesControlling("controlling");
+			/*$employeesControlling = new EmployeesControlling("controlling");
 			if($cont = $employeesControlling->model->getDetails($id)) {
 				$tit = $employee->title;
 				ob_start();
 					include 'modules/controlling/view/print.php';
 					$html .= ob_get_contents();
 				ob_end_clean();
-			}
+			}*/
 			$title = $employee->title . " - " . $lang["EMPLOYEE_HANDBOOK"];
 		}
 		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_EMPLOYEE_MANUAL"];
@@ -327,16 +326,12 @@ class Employees extends Controller {
 			$employee = $arr["employee"];
 			$form_url = $this->form_url;
 			$request = "sendEmployeeDetails";
-			$to = $employee->sendtoTeam;
+			$to = "";
 			$cc = "";
 			$subject = $employee->title;
 			$variable = "";
 			$data["error"] = 0;
 			$data["error_message"] = "";
-			if($employee->sendtoTeamNoEmail != "") {
-				$data["error"] = 1;
-				$data["error_message"] = $employee->sendtoTeamNoEmail;
-			}
 			ob_start();
 				include CO_INC .'/view/dialog_send.php';
 				$data["html"] = ob_get_contents();
@@ -390,8 +385,8 @@ class Employees extends Controller {
 	}
 
 
-	function setEmployeeDetails($id,$title,$startdate,$enddate,$protocol,$protocol2,$protocol3,$folder,$number,$kind,$area,$department,$dob,$coo,$languages,$street_private,$city_private,$zip_private,$phone_private,$email_private,$education) {
-		$retval = $this->model->setEmployeeDetails($id,$title,$startdate,$enddate,$protocol,$protocol2,$protocol3,$folder,$number,$kind,$area,$department,$dob,$coo,$languages,$street_private,$city_private,$zip_private,$phone_private,$email_private,$education);
+	function setEmployeeDetails($id,$startdate,$enddate,$protocol,$protocol2,$protocol3,$folder,$number,$kind,$area,$department,$dob,$coo,$languages,$street_private,$city_private,$zip_private,$phone_private,$email_private,$education) {
+		$retval = $this->model->setEmployeeDetails($id,$startdate,$enddate,$protocol,$protocol2,$protocol3,$folder,$number,$kind,$area,$department,$dob,$coo,$languages,$street_private,$city_private,$zip_private,$phone_private,$email_private,$education);
 		if($retval){
 			 return '{ "action": "edit", "id": "' . $id . '"}';
 		  } else{
