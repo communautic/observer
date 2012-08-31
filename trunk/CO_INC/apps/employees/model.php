@@ -889,26 +889,15 @@ class EmployeesModel extends Model {
 			}
 		}
 		
-		if(in_array("grids",$active_modules)) {
-			$employeesGridsModel = new EmployeesGridsModel();
-			$q = "SELECT id FROM co_employees_grids where pid = '$id'";
+		if(in_array("objectives",$active_modules)) {
+			$employeesObjectivesModel = new EmployeesObjectivesModel();
+			$q = "SELECT id FROM co_employees_objectives where pid = '$id'";
 			$result = mysql_query($q, $this->_db->connection);
 			while($row = mysql_fetch_array($result)) {
 				$mid = $row["id"];
-				$employeesGridsModel->deleteGrid($mid);
+				$employeesObjectivesModel->deleteObjective($mid);
 			}
 		}
-
-		if(in_array("forums",$active_modules)) {
-			$employeesForumsModel = new EmployeesForumsModel();
-			$q = "SELECT id FROM co_employees_forums where pid = '$id'";
-			$result = mysql_query($q, $this->_db->connection);
-			while($row = mysql_fetch_array($result)) {
-				$pid = $row["id"];
-				$employeesForumsModel->deleteForum($pid);
-			}
-		}
-		
 		
 		if(in_array("meetings",$active_modules)) {
 			$employeesMeetingsModel = new EmployeesMeetingsModel();
@@ -920,26 +909,6 @@ class EmployeesModel extends Model {
 			}
 		}
 		
-		if(in_array("objectives",$active_modules)) {
-			$employeesObjectivesModel = new EmployeesObjectivesModel();
-			$q = "SELECT id FROM co_employees_objectives where pid = '$id'";
-			$result = mysql_query($q, $this->_db->connection);
-			while($row = mysql_fetch_array($result)) {
-				$mid = $row["id"];
-				$employeesObjectivesModel->deleteObjective($mid);
-			}
-		}
-
-		if(in_array("phonecalls",$active_modules)) {
-			$employeesPhonecallsModel = new EmployeesPhonecallsModel();
-			$q = "SELECT id FROM co_employees_phonecalls where pid = '$id'";
-			$result = mysql_query($q, $this->_db->connection);
-			while($row = mysql_fetch_array($result)) {
-				$pcid = $row["id"];
-				$employeesPhonecallsModel->deletePhonecall($pcid);
-			}
-		}
-
 		if(in_array("documents",$active_modules)) {
 			$employeesDocumentsModel = new EmployeesDocumentsModel();
 			$q = "SELECT id FROM co_employees_documents_folders where pid = '$id'";
@@ -949,16 +918,17 @@ class EmployeesModel extends Model {
 				$employeesDocumentsModel->deleteDocument($did);
 			}
 		}
-
-		if(in_array("vdocs",$active_modules)) {
-			$employeesVDocsmodel = new EmployeesVDocsModel();
-			$q = "SELECT id FROM co_employees_vdocs where pid = '$id'";
+		
+		if(in_array("comments",$active_modules)) {
+			$employeesCommentsModel = new EmployeesCommentsModel();
+			$q = "SELECT id FROM co_employees_comments where pid = '$id'";
 			$result = mysql_query($q, $this->_db->connection);
 			while($row = mysql_fetch_array($result)) {
-				$vid = $row["id"];
-				$employeesVDocsmodel->deleteVDoc($vid);
+				$pcid = $row["id"];
+				$employeesCommentsModel->deleteComment($pcid);
 			}
 		}
+
 
 
 		$q = "DELETE FROM co_log_sendto WHERE what='employees' and whatid='$id'";
@@ -1135,100 +1105,41 @@ class EmployeesModel extends Model {
 
 						
 						
-						// grids
-						if(in_array("grids",$active_modules)) {
-							$qf ="select id, title, bin, bintime, binuser from " . CO_TBL_EMPLOYEES_GRIDS . " where pid = '$pid'";
-							$resultf = mysql_query($qf, $this->_db->connection);
-							while ($rowf = mysql_fetch_array($resultf)) {
-								$fid = $rowf["id"];
-								if($rowf["bin"] == "1") { // deleted phases
-									foreach($rowf as $key => $val) {
-										$forum[$key] = $val;
+						
+						// objectives
+						if(in_array("objectives",$active_modules)) {
+							$qm ="select id, title, bin, bintime, binuser from " . CO_TBL_EMPLOYEES_OBJECTIVES . " where pid = '$pid'";
+							$resultm = mysql_query($qm, $this->_db->connection);
+							while ($rowm = mysql_fetch_array($resultm)) {
+								$mid = $rowm["id"];
+								if($rowm["bin"] == "1") { // deleted meeting
+									foreach($rowm as $key => $val) {
+										$objective[$key] = $val;
 									}
-									$forum["bintime"] = $this->_date->formatDate($forum["bintime"],CO_DATETIME_FORMAT);
-									$forum["binuser"] = $this->_users->getUserFullname($forum["binuser"]);
-									$forums[] = new Lists($forum);
-									$arr["grids"] = $forums;
+									$objective["bintime"] = $this->_date->formatDate($objective["bintime"],CO_DATETIME_FORMAT);
+									$objective["binuser"] = $this->_users->getUserFullname($objective["binuser"]);
+									$objectives[] = new Lists($objective);
+									$arr["objectives"] = $objectives;
 								} else {
-									// columns
-									
-									$qc ="select id, bin, bintime, binuser from " . CO_TBL_EMPLOYEES_GRIDS_COLUMNS . " where pid = '$fid'";
-									$resultc = mysql_query($qc, $this->_db->connection);
-									while ($rowc = mysql_fetch_array($resultc)) {
-										$cid = $rowc["id"];
-										if($rowc["bin"] == "1") { // deleted phases
-											foreach($rowc as $key => $val) {
-												$grids_col[$key] = $val;
-											}
-											
-											$items = '';
-											$qn = "SELECT title FROM " . CO_TBL_EMPLOYEES_GRIDS_NOTES . " where cid = '$cid' and bin='0' ORDER BY sort";
-											$resultn = mysql_query($qn, $this->_db->connection);
-											while($rown = mysql_fetch_object($resultn)) {
-												$items .= $rown->title . ', ';
-													//$items_used[] = $rown->id;
-											}
-											$grids_col["items"] = rtrim($items,", ");
-											
-											
-											$grids_col["bintime"] = $this->_date->formatDate($grids_col["bintime"],CO_DATETIME_FORMAT);
-											$grids_col["binuser"] = $this->_users->getUserFullname($grids_col["binuser"]);
-											$grids_cols[] = new Lists($grids_col);
-											$arr["grids_cols"] = $grids_cols;
-										} else {
-											// notes
-											$qt ="select id, title, bin, bintime, binuser from " . CO_TBL_EMPLOYEES_GRIDS_NOTES . " WHERE cid = '$cid' ORDER BY sort";
-											$resultt = mysql_query($qt, $this->_db->connection);
-											while ($rowt = mysql_fetch_array($resultt)) {
-												if($rowt["bin"] == "1") { // deleted phases
-													foreach($rowt as $key => $val) {
-														$grids_task[$key] = $val;
-													}
-													$grids_task["bintime"] = $this->_date->formatDate($grids_task["bintime"],CO_DATETIME_FORMAT);
-													$grids_task["binuser"] = $this->_users->getUserFullname($grids_task["binuser"]);
-													$grids_tasks[] = new Lists($grids_task);
-													$arr["grids_tasks"] = $grids_tasks;
-												} 
-											}
-										}
-									}
-								}
-							}
-						}		
-
-	
-						// forums
-						if(in_array("forums",$active_modules)) {
-							$q ="select id, title, bin, bintime, binuser from " . CO_TBL_EMPLOYEES_FORUMS . " where pid = '$pid'";
-							$result = mysql_query($q, $this->_db->connection);
-							while ($row = mysql_fetch_array($result)) {
-								$id = $row["id"];
-								if($row["bin"] == "1") { // deleted forum
-									foreach($row as $key => $val) {
-										$forum[$key] = $val;
-									}
-									$forum["bintime"] = $this->_date->formatDate($forum["bintime"],CO_DATETIME_FORMAT);
-									$forum["binuser"] = $this->_users->getUserFullname($forum["binuser"]);
-									$forums[] = new Lists($forum);
-									$arr["forums"] = $forums;
-								} else {
-									// forums_tasks
-									$qmt ="select id, text, bin, bintime, binuser from " . CO_TBL_EMPLOYEES_FORUMS_POSTS . " where pid = '$id'";
+									// meetings_tasks
+									$qmt ="select id, title, bin, bintime, binuser from " . CO_TBL_EMPLOYEES_OBJECTIVES_TASKS . " where mid = '$mid'";
 									$resultmt = mysql_query($qmt, $this->_db->connection);
 									while ($rowmt = mysql_fetch_array($resultmt)) {
 										if($rowmt["bin"] == "1") { // deleted phases
 											foreach($rowmt as $key => $val) {
-												$forums_task[$key] = $val;
+												$objectives_task[$key] = $val;
 											}
-											$forums_task["bintime"] = $this->_date->formatDate($forums_task["bintime"],CO_DATETIME_FORMAT);
-											$forums_task["binuser"] = $this->_users->getUserFullname($forums_task["binuser"]);
-											$forums_tasks[] = new Lists($forums_task);
-											$arr["forums_tasks"] = $forums_tasks;
+											$objectives_task["bintime"] = $this->_date->formatDate($objectives_task["bintime"],CO_DATETIME_FORMAT);
+											$objectives_task["binuser"] = $this->_users->getUserFullname($objectives_task["binuser"]);
+											$objectives_tasks[] = new Lists($objectives_task);
+											$arr["objectives_tasks"] = $objectives_tasks;
 										}
 									}
 								}
 							}
 						}
+	
+						
 	
 						// meetings
 						if(in_array("meetings",$active_modules)) {
@@ -1264,23 +1175,7 @@ class EmployeesModel extends Model {
 						}
 						
 
-						// phonecalls
-						if(in_array("phonecalls",$active_modules)) {
-							$qpc ="select id, title, bin, bintime, binuser from " . CO_TBL_EMPLOYEES_PHONECALLS . " where pid = '$pid'";
-							$resultpc = mysql_query($qpc, $this->_db->connection);
-							while ($rowpc = mysql_fetch_array($resultpc)) {
-								if($rowpc["bin"] == "1") {
-								$idp = $rowpc["id"];
-									foreach($rowpc as $key => $val) {
-										$phonecall[$key] = $val;
-									}
-									$phonecall["bintime"] = $this->_date->formatDate($phonecall["bintime"],CO_DATETIME_FORMAT);
-									$phonecall["binuser"] = $this->_users->getUserFullname($phonecall["binuser"]);
-									$phonecalls[] = new Lists($phonecall);
-									$arr["phonecalls"] = $phonecalls;
-								}
-							}
-						}
+						
 						
 						// documents_folder
 						if(in_array("documents",$active_modules)) {
@@ -1314,23 +1209,26 @@ class EmployeesModel extends Model {
 								}
 							}
 						}
-	
-	
-						// vdocs
-						if(in_array("vdocs",$active_modules)) {
-							$qv ="select id, title, bin, bintime, binuser from " . CO_TBL_EMPLOYEES_VDOCS . " where pid = '$pid' and bin='1'";
-							$resultv = mysql_query($qv, $this->_db->connection);
-							while ($rowv = mysql_fetch_array($resultv)) {
-								$vid = $rowv["id"];
-									foreach($rowv as $key => $val) {
-										$vdoc[$key] = $val;
+						
+						// comments
+						if(in_array("comments",$active_modules)) {
+							$qpc ="select id, title, bin, bintime, binuser from " . CO_TBL_EMPLOYEES_COMMENTS . " where pid = '$pid'";
+							$resultpc = mysql_query($qpc, $this->_db->connection);
+							while ($rowpc = mysql_fetch_array($resultpc)) {
+								if($rowpc["bin"] == "1") {
+								$idp = $rowpc["id"];
+									foreach($rowpc as $key => $val) {
+										$comment[$key] = $val;
 									}
-									$vdoc["bintime"] = $this->_date->formatDate($vdoc["bintime"],CO_DATETIME_FORMAT);
-									$vdoc["binuser"] = $this->_users->getUserFullname($vdoc["binuser"]);
-									$vdocs[] = new Lists($vdoc);
-									$arr["vdocs"] = $vdocs;
+									$comment["bintime"] = $this->_date->formatDate($comment["bintime"],CO_DATETIME_FORMAT);
+									$comment["binuser"] = $this->_users->getUserFullname($comment["binuser"]);
+									$comments[] = new Lists($comment);
+									$arr["comments"] = $comments;
+								}
 							}
 						}
+	
+
 					}
 				}
 			}
@@ -1384,71 +1282,31 @@ class EmployeesModel extends Model {
 					} else {
 						
 						
-						// grids
-					if(in_array("grids",$active_modules)) {
-						$employeesGridsModel = new EmployeesGridsModel();
-						$qf ="select id, title, bin, bintime, binuser from " . CO_TBL_EMPLOYEES_GRIDS . " where pid = '$pid'";
-						$resultf = mysql_query($qf, $this->_db->connection);
-						while ($rowf = mysql_fetch_array($resultf)) {
-							$fid = $rowf["id"];
-							if($rowf["bin"] == "1") { // deleted phases
-								$employeesGridsModel->deleteGrid($fid);
-								$arr["grids"] = "";
-							} else {
-								// columns
-								
-								$qc ="select id,bin from " . CO_TBL_EMPLOYEES_GRIDS_COLUMNS . " where pid = '$fid'";
-								$resultc = mysql_query($qc, $this->_db->connection);
-								while ($rowc = mysql_fetch_array($resultc)) {
-									$cid = $rowc["id"];
-									if($rowc["bin"] == "1") { // deleted phases
-										$employeesGridsModel->deleteGridColumn($cid);
-										$arr["grids_cols"] = "";
-									} else {
-										// notes
-										$qt ="select id,bin from " . CO_TBL_EMPLOYEES_GRIDS_NOTES . " where cid = '$cid'";
-										$resultt = mysql_query($qt, $this->_db->connection);
-										while ($rowt = mysql_fetch_array($resultt)) {
-											if($rowt["bin"] == "1") { // deleted phases
-												$tid = $rowt["id"];
-												$employeesGridsModel->deleteGridTask($tid);
-												$arr["grids_tasks"] = "";
-											} 
-										}
-									}
-								}
-							}
-						}
-					}
 						
-						
-						
-						
-						// forums
-						if(in_array("forums",$active_modules)) {
-							$employeesForumsModel = new EmployeesForumsModel();
-							$q ="select id, title, bin, bintime, binuser from " . CO_TBL_EMPLOYEES_FORUMS . " where pid = '$pid'";
-							$result = mysql_query($q, $this->_db->connection);
-							while ($row = mysql_fetch_array($result)) {
-								$id = $row["id"];
-								if($row["bin"] == "1") { // deleted forum
-									$employeesForumsModel->deleteForum($id);
-									$arr["forums"] = "";
+						// objectives
+						if(in_array("objectives",$active_modules)) {
+							$employeesObjectivesModel = new EmployeesObjectivesModel();
+							$qm ="select id, title, bin, bintime, binuser from " . CO_TBL_EMPLOYEES_OBJECTIVES . " where pid = '$pid'";
+							$resultm = mysql_query($qm, $this->_db->connection);
+							while ($rowm = mysql_fetch_array($resultm)) {
+								$mid = $rowm["id"];
+								if($rowm["bin"] == "1") { // deleted meeting
+									$employeesObjectivesModel->deleteObjective($mid);
+									$arr["objectives"] = "";
 								} else {
-									// forums_tasks
-									$qmt ="select id, text, bin, bintime, binuser from " . CO_TBL_EMPLOYEES_FORUMS_POSTS . " where pid = '$id'";
+									// objectives_tasks
+									$qmt ="select id, title, bin, bintime, binuser from " . CO_TBL_EMPLOYEES_OBJECTIVES_TASKS . " where mid = '$mid'";
 									$resultmt = mysql_query($qmt, $this->_db->connection);
 									while ($rowmt = mysql_fetch_array($resultmt)) {
 										if($rowmt["bin"] == "1") { // deleted phases
 											$mtid = $rowmt["id"];
-											$employeesForumsModel->deleteItem($mtid);
-											$arr["forums_tasks"] = "";
+											$employeesObjectivesModel->deleteObjectiveTask($mtid);
+											$arr["objectives_tasks"] = "";
 										}
 									}
 								}
 							}
 						}
-
 
 						// meetings
 						if(in_array("meetings",$active_modules)) {
@@ -1471,21 +1329,6 @@ class EmployeesModel extends Model {
 											$arr["meetings_tasks"] = "";
 										}
 									}
-								}
-							}
-						}
-						
-						
-						// phonecalls
-						if(in_array("phonecalls",$active_modules)) {
-							$employeesPhoncallsModel = new EmployeesPhonecallsModel();
-							$qc ="select id, title, bin, bintime, binuser from " . CO_TBL_EMPLOYEES_PHONECALLS . " where pid = '$pid'";
-							$resultc = mysql_query($qc, $this->_db->connection);
-							while ($rowc = mysql_fetch_array($resultc)) {
-								$cid = $rowc["id"];
-								if($rowc["bin"] == "1") {
-									$employeesPhoncallsModel->deletePhonecall($cid);
-									$arr["phonecalls"] = "";
 								}
 							}
 						}
@@ -1517,19 +1360,20 @@ class EmployeesModel extends Model {
 						}
 	
 	
-						// vdocs
-						if(in_array("vdocs",$active_modules)) {
-							$qv ="select id, title, bin, bintime, binuser from " . CO_TBL_EMPLOYEES_VDOCS . " where pid = '$pid'";
-							$resultv = mysql_query($qv, $this->_db->connection);
-							while ($rowv = mysql_fetch_array($resultv)) {
-								$vid = $rowv["id"];
-								if($rowv["bin"] == "1") {
-								$vdocsmodel = new VDocsModel();
-								$vdocsmodel->deleteVDoc($vid);
-								$arr["vdocs"] = "";
+						// comments
+						if(in_array("comments",$active_modules)) {
+							$employeesCommentsModel = new EmployeesCommentsModel();
+							$qc ="select id, title, bin, bintime, binuser from " . CO_TBL_EMPLOYEES_COMMENTS . " where pid = '$pid'";
+							$resultc = mysql_query($qc, $this->_db->connection);
+							while ($rowc = mysql_fetch_array($resultc)) {
+								$cid = $rowc["id"];
+								if($rowc["bin"] == "1") {
+									$employeesCommentsModel->deleteComment($cid);
+									$arr["comments"] = "";
 								}
 							}
 						}
+
 
 
 					}
@@ -1762,7 +1606,7 @@ class EmployeesModel extends Model {
 				$sql = "and access = '1'";
 			}
 			
-			// Meetings
+			// Objectives
 			if(in_array("objectives",$active_modules)) {
 				$qp = "SELECT id,CONVERT(title USING latin1) as title FROM " . CO_TBL_EMPLOYEES_OBJECTIVES . " WHERE pid = '$pid' and bin = '0' $sql and title like '%$term%' ORDER BY title";
 				$resultp = mysql_query($qp, $this->_db->connection);

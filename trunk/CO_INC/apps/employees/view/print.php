@@ -33,37 +33,6 @@
 	</tr>
 </table>
 &nbsp;
-<table width="100%" class="standard"> 
-   <tr>
-		<td class="tcell-left"><?php echo $lang["EMPLOYEE_CONTACT_TITLE"];?></td>
-		<td><?php echo($employee->title);?></td>
-	</tr>
-</table>
-<table width="100%" class="standard"> 
-   <tr>
-		<td class="tcell-left"><?php echo $lang["EMPLOYEE_CONTACT_TITLE2"];?></td>
-		<td><?php echo($employee->title2);?></td>
-	</tr>
-</table>
-<table width="100%" class="standard"> 
-   <tr>
-		<td class="tcell-left"><?php echo $lang["EMPLOYEE_CONTACT_POSITION"];?></td>
-		<td><?php echo($employee->position);?></td>
-	</tr>
-</table>
-<table width="100%" class="standard"> 
-   <tr>
-		<td class="tcell-left"><?php echo $lang["EMPLOYEE_CONTACT_PHONE"];?></td>
-		<td><?php echo($employee->phone1);?></td>
-	</tr>
-</table>
-<table width="100%" class="standard"> 
-   <tr>
-		<td class="tcell-left"><?php echo $lang["EMPLOYEE_CONTACT_EMAIL"];?></td>
-		<td><?php echo($employee->email);?></td>
-	</tr>
-</table>
-&nbsp;
 <?php if(!empty($employee->number)) { ?>
 <table width="100%" class="standard"> 
    <tr>
@@ -96,15 +65,14 @@
 	</tr>
 </table>
 <?php } ?>
-<?php if(!empty($employee->protocol)) { ?>
 &nbsp;
 <table width="100%" class="protocol">
 	<tr>
-        <td class="tcell-left top"><?php echo $lang["EMPLOYEE_DESCRIPTION"];?></td>
-        <td><?php echo(nl2br($employee->protocol));?></td>
+        <td class="tcell-left top">Kontaktdaten</td>
+        <td><?php echo($employee->ctitle)?> <?php echo($employee->title2)?> <?php echo($employee->title);?><br />
+		<?php echo($employee->position . "<br />" . $lang["EMPLOYEE_CONTACT_EMAIL"] . " " . $employee->email . " &nbsp; | &nbsp; " . $lang["EMPLOYEE_CONTACT_PHONE"] . " " . $employee->phone1);?></td>
 	</tr>
 </table>
-<?php } ?>
 <?php if(!empty($employee->dob)) { ?>
 <table width="100%" class="standard"> 
    <tr>
@@ -129,8 +97,18 @@
 	</tr>
 </table>
 <?php } ?>
+<?php if(!empty($employee->protocol)) { ?>
 &nbsp;
-<table width="100%" class="standard grey"> 
+<table width="100%" class="protocol">
+	<tr>
+        <td class="tcell-left top"><?php echo $lang["EMPLOYEE_DESCRIPTION"];?></td>
+        <td><?php echo(nl2br($employee->protocol));?></td>
+	</tr>
+</table>
+<?php } ?>
+
+&nbsp;
+<table width="100%" class="standard"> 
    <tr>
 		<td class="tcell-left">Privatadresse</td>
 		<td>&nbsp;</td>
@@ -177,7 +155,7 @@
 </table>
 <?php } ?>
 &nbsp;
-<table width="100%" class="standard grey"> 
+<table width="100%" class="standard"> 
    <tr>
 		<td class="tcell-left">Einstiegskompetenz</td>
 		<td>&nbsp;</td>
@@ -208,7 +186,7 @@
 </table>
 <?php } ?>
 &nbsp;
-<table width="100%" class="standard grey"> 
+<table width="100%" class="standard"> 
    <tr>
 		<td class="tcell-left">Leistungsstatus</td>
 		<td>&nbsp;</td>

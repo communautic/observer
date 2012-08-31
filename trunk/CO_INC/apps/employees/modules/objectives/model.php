@@ -366,7 +366,7 @@ class EmployeesObjectivesModel extends EmployeesModel {
    }
 
 
-   function setDetails($pid,$id,$title,$objectivedate,$start,$end,$location,$location_ct,$participants,$participants_ct,$management,$management_ct,$tab1q1_text,$tab1q2_text,$tab1q3_text,$tab1q4_text,$tab2q1_text,$tab2q2_text,$tab2q3_text,$tab2q4_text,$tab2q5_text,$tab2q6_text,$tab2q7_text,$tab2q8_text,$tab2q9_text,$tab2q10_text,$task_id,$task_title,$task_text,$task,$objective_access,$objective_access_orig) {
+   function setDetails($pid,$id,$title,$objectivedate,$start,$end,$location,$location_ct,$participants,$participants_ct,$management,$management_ct,$tab1q1_text,$tab1q2_text,$tab1q3_text,$tab1q4_text,$tab1q5_text,$tab2q1_text,$tab2q2_text,$tab2q3_text,$tab2q4_text,$tab2q5_text,$tab2q6_text,$tab2q7_text,$tab2q8_text,$tab2q9_text,$tab2q10_text,$task_id,$task_title,$task_text,$task,$objective_access,$objective_access_orig) {
 		global $session, $lang;
 		
 		$start = $this->_date->formatDateGMT($objectivedate . " " . $start);
@@ -387,7 +387,7 @@ class EmployeesObjectivesModel extends EmployeesModel {
 			$accesssql = "access='$objective_access', access_date='$objective_access_date', access_user = '$session->uid',";
 		}
 		
-		$q = "UPDATE " . CO_TBL_EMPLOYEES_OBJECTIVES . " set title = '$title', item_date = '$objectivedate', start = '$start', end = '$end', location = '$location', location_ct = '$location_ct', participants='$participants', participants_ct='$participants_ct', management='$management', management_ct='$management_ct', tab1q1_text = '$tab1q1_text', tab1q2_text = '$tab1q2_text', tab1q3_text = '$tab1q3_text', tab1q4_text = '$tab1q4_text', tab2q1_text = '$tab2q1_text', tab2q2_text = '$tab2q2_text', tab2q3_text = '$tab2q3_text', tab2q4_text = '$tab2q4_text', tab2q5_text = '$tab2q5_text', tab2q6_text = '$tab2q6_text', tab2q7_text = '$tab2q7_text', tab2q8_text = '$tab2q8_text', tab2q9_text = '$tab2q9_text', tab2q10_text = '$tab2q10_text', access='$objective_access', $accesssql edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_EMPLOYEES_OBJECTIVES . " set title = '$title', item_date = '$objectivedate', start = '$start', end = '$end', location = '$location', location_ct = '$location_ct', participants='$participants', participants_ct='$participants_ct', management='$management', management_ct='$management_ct', tab1q1_text = '$tab1q1_text', tab1q2_text = '$tab1q2_text', tab1q3_text = '$tab1q3_text', tab1q4_text = '$tab1q4_text', tab1q5_text = '$tab1q5_text', tab2q1_text = '$tab2q1_text', tab2q2_text = '$tab2q2_text', tab2q3_text = '$tab2q3_text', tab2q4_text = '$tab2q4_text', tab2q5_text = '$tab2q5_text', tab2q6_text = '$tab2q6_text', tab2q7_text = '$tab2q7_text', tab2q8_text = '$tab2q8_text', tab2q9_text = '$tab2q9_text', tab2q10_text = '$tab2q10_text', access='$objective_access', $accesssql edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		// do existing tasks
@@ -472,13 +472,13 @@ class EmployeesObjectivesModel extends EmployeesModel {
 		global $session, $lang;
 		
 		$now = gmdate("Y-m-d H:i:s");
-		
+
 		// objective
-		$q = "INSERT INTO " . CO_TBL_EMPLOYEES_OBJECTIVES . " (pid,title,item_date,start,end,location,location_ct,length,management,management_ct,participants,participants_ct,status_date,created_date,created_user,edited_date,edited_user) SELECT pid,CONCAT(title,' " . $lang["GLOBAL_DUPLICAT"] . "'),item_date,start,end,location,location_ct,length,management,management_ct,participants,participants_ct,'$now','$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_EMPLOYEES_OBJECTIVES . " where id='$id'";
+		$q = "INSERT INTO " . CO_TBL_EMPLOYEES_OBJECTIVES . " (pid,title,item_date,start,end,location,location_ct,length,management,management_ct,participants,participants_ct,status_date,created_date,created_user,edited_date,edited_user,tab1q1,tab1q2,tab1q3,tab1q4,tab1q5,tab2q1,tab2q2,tab2q3,tab2q4,tab2q5,tab2q6,tab2q7,tab2q8,tab2q9,tab2q10,tab1q1_text,tab1q2_text,tab1q3_text,tab1q4_text,tab1q5_text,tab2q1_text,tab2q2_text,tab2q3_text,tab2q4_text,tab2q5_text,tab2q6_text,tab2q7_text,tab2q8_text,tab2q9_text,tab2q10_text) SELECT pid,CONCAT(title,' " . $lang["GLOBAL_DUPLICAT"] . "'),'$now',start,end,location,location_ct,length,management,management_ct,participants,participants_ct,'$now','$now','$session->uid','$now','$session->uid',tab1q1,tab1q2,tab1q3,tab1q4,tab1q5,tab2q1,tab2q2,tab2q3,tab2q4,tab2q5,tab2q6,tab2q7,tab2q8,tab2q9,tab2q10,tab1q1_text,tab1q2_text,tab1q3_text,tab1q4_text,tab1q5_text,tab2q1_text,tab2q2_text,tab2q3_text,tab2q4_text,tab2q5_text,tab2q6_text,tab2q7_text,tab2q8_text,tab2q9_text,tab2q10_text FROM " . CO_TBL_EMPLOYEES_OBJECTIVES . " where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
 		// tasks
-		$qt = "INSERT INTO " . CO_TBL_EMPLOYEES_OBJECTIVES_TASKS . " (mid,status,title,text,sort) SELECT $id_new,'0',title,text,sort FROM " . CO_TBL_EMPLOYEES_OBJECTIVES_TASKS . " where mid='$id' and bin='0'";
+		$qt = "INSERT INTO " . CO_TBL_EMPLOYEES_OBJECTIVES_TASKS . " (mid,title,text,answer,sort) SELECT $id_new,title,text,answer,sort FROM " . CO_TBL_EMPLOYEES_OBJECTIVES_TASKS . " where mid='$id' and bin='0'";
 		$resultt = mysql_query($qt, $this->_db->connection);
 		if ($result) {
 			return $id_new;
@@ -640,13 +640,22 @@ class EmployeesObjectivesModel extends EmployeesModel {
    
    
     function updateQuestion($id,$field,$val){
-		$q = "UPDATE " . CO_TBL_EMPLOYEES_OBJECTIVES . " set $field = '$val' where id='$id'";
+		global $session;
+		$now = gmdate("Y-m-d H:i:s");
+		$q = "UPDATE " . CO_TBL_EMPLOYEES_OBJECTIVES . " set $field = '$val', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		return true;
    }
    
    function updateTaskQuestion($id,$val){
+		global $session;
+		$now = gmdate("Y-m-d H:i:s");
 		$q = "UPDATE " . CO_TBL_EMPLOYEES_OBJECTIVES_TASKS . " set answer = '$val' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$q = "SELECT mid FROM " . CO_TBL_EMPLOYEES_OBJECTIVES_TASKS . " where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$id = mysql_result($result,0);
+		$q = "UPDATE " . CO_TBL_EMPLOYEES_OBJECTIVES . " set edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		return true;
    }

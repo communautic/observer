@@ -274,22 +274,56 @@ class Employees extends Controller {
 				}
 			}*/
 			// documents
-			$employeesDocuments = new EmployeesDocuments("documents");
-			if($arrdocs = $employeesDocuments->model->getList($id,"0")) {
-				$docs = $arrdocs["documents"];
-				foreach ($docs as $doc) {
-					if($arr = $employeesDocuments->model->getDetails($doc->id)) {
-						$document = $arr["document"];
-						$doc = $arr["doc"];
+			$employeesObjectives = new EmployeesObjectives("objectives");
+			if($arrojs = $employeesObjectives->model->getList($id,"0")) {
+				$ojs = $arrojs["objectives"];
+				foreach ($ojs as $oj) {
+					if($arr = $employeesObjectives->model->getDetails($oj->id)) {
+						$objective = $arr["objective"];
+						$oj = $arr["oj"];
+						$task = $arr["task"];
 						$sendto = $arr["sendto"];
 						ob_start();
-							include 'modules/documents/view/print.php';
+							include 'modules/objectives/view/print.php';
+							$html .= ob_get_contents();
+						ob_end_clean();
+					}
+				}
+				//$html .= '<div style="page-break-after:always;">&nbsp;</div>';
+			}
+			$employeesComments = new EmployeesComments("comments");
+			if($arrcoms = $employeesComments->model->getList($id,"0")) {
+				$coms = $arrcoms["comments"];
+				foreach ($coms as $com) {
+					if($arr = $employeesComments->model->getDetails($com->id)) {
+						$comment = $arr["comment"];
+						$com = $arr["com"];
+						$sendto = $arr["sendto"];
+						ob_start();
+							include 'modules/comments/view/print.php';
+							$html .= ob_get_contents();
+						ob_end_clean();
+					}
+				}
+				//$html .= '<div style="page-break-after:always;">&nbsp;</div>';
+			}
+			/*$employeesDocuments = new EmployeesDocuments("documents");
+			if($arrdocs = $employeesObjectives->model->getList($id,"0")) {
+				$ojs = $arrdocs["objectives"];
+				foreach ($ojs as $oj) {
+					if($arr = $employeesObjectives->model->getDetails($oj->id)) {
+						$objective = $arr["objective"];
+						$oj = $arr["oj"];
+						$task = $arr["task"];
+						$sendto = $arr["sendto"];
+						ob_start();
+							include 'modules/objectives/view/print.php';
 							$html .= ob_get_contents();
 						ob_end_clean();
 					}
 				}
 				$html .= '<div style="page-break-after:always;">&nbsp;</div>';
-			}
+			}*/
 			// controlling
 			/*$employeesControlling = new EmployeesControlling("controlling");
 			if($cont = $employeesControlling->model->getDetails($id)) {
