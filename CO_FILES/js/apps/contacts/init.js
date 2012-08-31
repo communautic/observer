@@ -1459,7 +1459,7 @@ $(document).ready(function() {
 	});*/
 	
 	
-	$(document).on('click', 'span.loadContactExternal', function(e) {
+	$(document).on('click', '.loadContactExternal', function(e) {
 		e.preventDefault();
 		prevent_dblclick(e)
 		var id = $(this).attr('rel');

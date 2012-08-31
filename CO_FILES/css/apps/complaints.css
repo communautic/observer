@@ -335,8 +335,23 @@ background: url("../../img/brainstorms_grid_stagegate.png") no-repeat scroll 1px
 /* forums */
 #complaintsForumsPosts { background-image:url(../../img/forums_thread_bg.png); }
 #complaintsForumsPosts .toggeled { border-bottom: 1px solid #ccc; overflow: hidden; }
-#modalDialogComplaintsForumsPost span.coButton  { background-color: #9B78DC; color: #fff; }
-#modalDialogComplaintsForumsPost span.coButton:hover   { background-color: #fff; color: #000; cursor: pointer; }
+#modalDialogComplaintsForumsPost span.coButton  {
+	font-size: 11px;
+	color: #fff; border-radius: 4px; font-weight: bold; 
+	border: 1px solid #66559a;
+	background: #cec2dd;
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2NlYzJkZCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2FiOTVjMiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUxJSIgc3RvcC1jb2xvcj0iIzhhNmFhNiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM4YTZhYTYiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top,  #cec2dd 0%, #ab95c2 50%, #8a6aa6 51%, #8a6aa6 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#cec2dd), color-stop(50%,#ab95c2), color-stop(51%,#8a6aa6), color-stop(100%,#8a6aa6));
+	background: -webkit-linear-gradient(top,  #cec2dd 0%,#ab95c2 50%,#8a6aa6 51%,#8a6aa6 100%);
+	background: -o-linear-gradient(top,  #cec2dd 0%,#ab95c2 50%,#8a6aa6 51%,#8a6aa6 100%);
+	background: -ms-linear-gradient(top,  #cec2dd 0%,#ab95c2 50%,#8a6aa6 51%,#8a6aa6 100%);
+	background: linear-gradient(to bottom,  #cec2dd 0%,#ab95c2 50%,#8a6aa6 51%,#8a6aa6 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cec2dd', endColorstr='#8a6aa6',GradientType=0 );
+	}
+#modalDialogComplaintsForumsPost span.coButton:hover   { 
+border: 1px solid #fff; color: #fff; cursor: pointer;
+}
 
 #complaints .tbl-highlighted {
     background-color: #DCD2FF;

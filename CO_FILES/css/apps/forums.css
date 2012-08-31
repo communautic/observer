@@ -110,8 +110,24 @@ background-color: #C1D5F0; }
 #forumsPosts { background-image:url(../../img/forums_thread_bg.png); }
 #forumsPosts .toggeled { border-bottom: 1px solid #ccc; overflow: hidden; }
 
-#modalDialogForumsPost span.coButton  { background-color: #6496db; color: #fff; }
-#forums-right span.coButton:hover   { background-color: #fff; color: #000; cursor: pointer; }
+#modalDialogForumsPost span.coButton  { 
+font-size: 11px;
+color: #fff; border-radius: 4px; font-weight: bold; 
+border: 1px solid #436593;
+background: #a0bee9;
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2EwYmVlOSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iIzZhOWFkZCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUxJSIgc3RvcC1jb2xvcj0iIzY0OTZkYyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM2NDk2ZGMiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+background: -moz-linear-gradient(top,  #a0bee9 0%, #6a9add 50%, #6496dc 51%, #6496dc 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#a0bee9), color-stop(50%,#6a9add), color-stop(51%,#6496dc), color-stop(100%,#6496dc));
+background: -webkit-linear-gradient(top,  #a0bee9 0%,#6a9add 50%,#6496dc 51%,#6496dc 100%);
+background: -o-linear-gradient(top,  #a0bee9 0%,#6a9add 50%,#6496dc 51%,#6496dc 100%);
+background: -ms-linear-gradient(top,  #a0bee9 0%,#6a9add 50%,#6496dc 51%,#6496dc 100%);
+background: linear-gradient(to bottom,  #a0bee9 0%,#6a9add 50%,#6496dc 51%,#6496dc 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a0bee9', endColorstr='#6496dc',GradientType=0 );
+
+}
+#forums-right span.coButton:hover   { 
+border: 1px solid #fff; color: #fff; cursor: pointer;
+}
 #forumsAnswer > div { padding-bottom: 8px;}
 
 #forums-right .icon-toggle-post { background-position: -460px -20px; }
