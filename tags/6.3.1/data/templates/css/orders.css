@@ -1,0 +1,64 @@
+@charset "utf-8";
+/* CSS Document */
+html, body {  background: #fff5e6; } 
+body { color: #000; font-family: Arial, Verdana, Geneva, sans-serif; font-size: 12px; padding: 20px; }
+
+.menue-grid  { width: 100%; border-collapse: collapse; }
+.menue-grid th { color: #fff; text-align: center; height: 30px; background-color: #463c32; border-right: 2px solid #f5dbb3; font-size: 15px; font-weight: bold; }
+.menue-grid td { padding: 5px 0; background-color: #eac17f; width: 20%; border: 1px solid #fff5e6; border-left: 2px solid #f5dbb3; border-right: 2px solid #f5dbb3; text-align: center; color: #463c32; }
+.menue-grid td { padding: 5px 0; background-color: #eac17f; width: 20%; border: 1px solid #fff5e6; border-left: 2px solid #f5dbb3; border-right: 2px solid #f5dbb3; text-align: center; color: #463c32; }
+.menue-grid td.last { padding: 5px 0 0 0; }
+
+input { color: #000; border: 1px solid #463c32;  padding: 0; margin: 5px 0 0 0; text-align: center; }
+textarea { width: 100%; color: #000; border: 0;  padding: 0; margin: 5px 0 0 0; resize: none;}
+
+p { 	line-height: 18px; }
+
+input[type="submit"] {
+    background-color: #FEF5E6;
+    background-image: url("http://www.mama-bringts.at/templates/mama-bringts/images/nl_button.jpg");
+    background-position: 0 2px;
+    background-repeat: no-repeat;
+    border: 0 none;
+    color: #463C32;
+    font-size: 11px;
+    font-weight: bold;
+    height: 30px;
+    margin: 0;
+    padding: 3px 5px;
+    text-transform: uppercase;
+    width: 96px;
+}
+
+
+input[type="submit"]:hover {
+    color: #fff;
+    cursor: pointer;
+}
+
+
+.button {
+    background-image: url("http://www.mama-bringts.at/templates/mama-bringts/images/nl_button.jpg");
+    background-position: 0 2px;
+    background-repeat: no-repeat;
+    color: #463C32;
+    display: inline-block;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 6px 0;
+    text-align: center;
+    text-transform: uppercase;
+    width: 96px;
+}
+
+.button a, .button a:visited, .button a:active {
+    color: #463C32 !important;
+    font-size: 11px;
+    font-weight: bold !important;
+	text-decoration: none;
+	line-height: 18px;
+}
+
+.button a:hover {
+    color: #fff !important;
+}
