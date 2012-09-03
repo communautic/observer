@@ -355,8 +355,11 @@ class EmployeesObjectivesModel extends EmployeesModel {
 			
 			$task[] = new Lists($tasks);
 		}
-		
-		$array["tab3result"] = round(100/$num* $res,0);
+		if($num == 0) {
+			$array["tab3result"] = 0;
+		} else {
+			$array["tab3result"] = round(100/$num* $res,0);
+		}
 		
 		$sendto = $this->getSendtoDetails("employees_objectives",$id);
 
