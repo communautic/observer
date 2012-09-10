@@ -104,6 +104,7 @@ function employeesApplication(name) {
 					$("#employees-right").html(text.html);
 					initEmployeesContentScrollbar();
 					$('#employees-right .focusTitle').trigger('click');
+					
 					}
 				});
 				employeesActions(0);
@@ -132,6 +133,7 @@ function employeesApplication(name) {
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/employees&request=getEmployeeDetails&id="+data.id, success: function(text){
 					$("#employees-right").html(text.html);
 					initEmployeesContentScrollbar();
+					module.getNavModulesNumItems(data.id);
 					//$('#employees-right .focusTitle').trigger('click');
 					$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=saveLastUsedContacts&id="+cid});
 					}
@@ -201,6 +203,7 @@ function employeesApplication(name) {
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/employees&request=getEmployeeDetails&fid="+fid+"&id="+id, success: function(text){
 									$("#employees-right").html(text.html);
 									initEmployeesContentScrollbar();
+									module.getNavModulesNumItems(id);
 									}
 								});
 							}

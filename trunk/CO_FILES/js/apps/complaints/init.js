@@ -118,6 +118,7 @@ function complaintsApplication(name) {
 					$("#complaints-right").html(text.html);
 					initComplaintsContentScrollbar();
 					$('#complaints-right .focusTitle').trigger('click');
+					module.getNavModulesNumItems(data.id);
 					}
 				});
 				complaintsActions(0);
@@ -184,6 +185,7 @@ function complaintsApplication(name) {
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/complaints&request=getComplaintDetails&fid="+fid+"&id="+id, success: function(text){
 									$("#complaints-right").html(text.html);
 									initComplaintsContentScrollbar();
+									module.getNavModulesNumItems(id);
 									}
 								});
 							}

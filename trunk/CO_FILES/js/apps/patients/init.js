@@ -132,6 +132,7 @@ function patientsApplication(name) {
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients&request=getPatientDetails&id="+data.id, success: function(text){
 					$("#patients-right").html(text.html);
 					initPatientsContentScrollbar();
+					module.getNavModulesNumItems(data.id);
 					//$('#patients-right .focusTitle').trigger('click');
 					$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=saveLastUsedContacts&id="+cid});
 					}
@@ -201,6 +202,7 @@ function patientsApplication(name) {
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients&request=getPatientDetails&fid="+fid+"&id="+id, success: function(text){
 									$("#patients-right").html(text.html);
 									initPatientsContentScrollbar();
+									module.getNavModulesNumItems(id);
 									}
 								});
 							}

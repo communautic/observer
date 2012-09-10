@@ -104,6 +104,7 @@ function projectsApplication(name) {
 					$("#projects-right").html(text.html);
 					initProjectsContentScrollbar();
 					$('#projects-right .focusTitle').trigger('click');
+					module.getNavModulesNumItems(data.id);
 					}
 				});
 				projectsActions(0);
@@ -130,6 +131,7 @@ function projectsApplication(name) {
 							$("#projects").data("second",id);
 							$("#"+projects.name+"-right").html(text.html);
 							initProjectsContentScrollbar();
+							module.getNavModulesNumItems(id);
 						}
 					});
 				}
@@ -169,6 +171,7 @@ function projectsApplication(name) {
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectDetails&fid="+fid+"&id="+id, success: function(text){
 									$("#projects-right").html(text.html);
 									initProjectsContentScrollbar();
+									module.getNavModulesNumItems(id);
 									}
 								});
 							}
