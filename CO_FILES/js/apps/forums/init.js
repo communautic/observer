@@ -109,6 +109,7 @@ function forumsApplication(name) {
 					$("#forums-right").html(text.html);
 					initForumsContentScrollbar();
 					$('#forums-right .focusTitle').trigger('click');
+					module.getNavModulesNumItems(data.id);
 					}
 				});
 				forumsActions(0);
@@ -135,6 +136,7 @@ function forumsApplication(name) {
 							$("#forums").data("second",id);							
 							$("#"+forums.name+"-right").html(text.html);
 							initForumsContentScrollbar();
+							module.getNavModulesNumItems(id);
 						}
 					});
 				}
@@ -174,6 +176,7 @@ function forumsApplication(name) {
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/forums&request=getForumDetails&fid="+fid+"&id="+id, success: function(text){
 									$("#forums-right").html(text.html);
 									initForumsContentScrollbar();
+									module.getNavModulesNumItems(id);
 									}
 								});
 							}

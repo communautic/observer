@@ -105,6 +105,7 @@ function clientsApplication(name) {
 					$("#clients-right").html(text.html);
 					initClientsContentScrollbar();
 					$('#clients-right .focusTitle').trigger('click');
+					module.getNavModulesNumItems(data.id);
 					}
 				});
 				clientsActions(0);
@@ -131,6 +132,7 @@ function clientsApplication(name) {
 						$("#clients").data("second",id);							
 						$("#"+clients.name+"-right").html(text.html);
 							initClientsContentScrollbar();
+							module.getNavModulesNumItems(id);
 						}
 					});
 				}
@@ -170,6 +172,7 @@ function clientsApplication(name) {
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients&request=getClientDetails&fid="+fid+"&id="+id, success: function(text){
 									$("#clients-right").html(text.html);
 									initClientsContentScrollbar();
+									module.getNavModulesNumItems(id);
 									}
 								});
 							}

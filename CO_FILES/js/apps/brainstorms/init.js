@@ -84,8 +84,8 @@ function brainstormsApplication(name) {
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getBrainstormDetails&id="+data.id, success: function(text){
 					$("#brainstorms-right").html(text.html);
 					initBrainstormsContentScrollbar();
-					
 					$('#brainstorms-right .focusTitle').trigger('click');
+					module.getNavModulesNumItems(data.id);
 					}
 				});
 				brainstormsActions(0);
@@ -112,8 +112,7 @@ function brainstormsApplication(name) {
 							$("#brainstorms").data("second",id);
 							$("#"+brainstorms.name+"-right").html(text.html);
 							initBrainstormsContentScrollbar();
-			
-				
+							module.getNavModulesNumItems(id);
 						}
 					});
 				}
@@ -153,7 +152,7 @@ function brainstormsApplication(name) {
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getBrainstormDetails&fid="+fid+"&id="+id, success: function(text){
 									$("#brainstorms-right").html(text.html);
 									initBrainstormsContentScrollbar();
-									
+									module.getNavModulesNumItems(id);
 									}
 								});
 							}
