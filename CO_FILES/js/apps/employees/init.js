@@ -220,6 +220,7 @@ function employeesApplication(name) {
 		//var what = $(this).attr('rel');
 		$('#EmployeesTabsContent > div:visible').hide();
 		$('#'+what).show();
+		$('.elastic').elastic(); // need to init again
 		initEmployeesContentScrollbar();
 	}
 	

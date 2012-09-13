@@ -219,6 +219,7 @@ function patientsApplication(name) {
 		//var what = $(this).attr('rel');
 		$('#PatientsTabsContent > div:visible').hide();
 		$('#'+what).show();
+		$('.elastic').elastic(); // need to init again
 		initPatientsContentScrollbar();
 	}
 	
