@@ -82,7 +82,7 @@
 	</tr>
 </table>
 <div class="content-spacer"></div>
-    <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-inactive no-margin loadContactExternal" rel="<?php echo($employee->cid)?>" style="cursor: pointer;">
+    <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-inactive no-margin<?php if($employee->canedit) { ?> loadContactExternal<?php } ?>" rel="<?php echo($employee->cid)?>" style="cursor: pointer;">
   <tr>
 		<td class="tcell-left-inactive text11" style="padding-top: 2px;">Kontaktdaten</td>
     	<td class="tcell-right-inactive"><?php echo($employee->ctitle)?> <?php echo($employee->title2)?> <?php echo($employee->title);?><br />
@@ -102,14 +102,36 @@
   <tr>
     <td class="tcell-left-shorter text11"><span class="<?php if($employee->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["EMPLOYEE_COO"];?></span></span></td>
     <td class="tcell-right-nopadding"><?php if($employee->canedit) { ?><input name="coo" type="text" class="bg" value="<?php echo($employee->coo);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $employee->coo . '</span>'); } ?></td>
-    
   </tr>
 </table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
+	  <td class="tcell-left text11"><span class="<?php if($employee->canedit) { ?>content-nav showDialog<?php } ?>" request="getEmployeeDialog" field="employeesfamily" append="0" sql="family"><span><?php echo $lang["EMPLOYEE_FAMILY_STATUS"];?></span></span></td>
+        <td class="tcell-right"><div id="employeesfamily" class="itemlist-field"><?php echo($employee->family);?></div></td>
+	</tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+  <tr>
+    <td class="tcell-left-shorter text11"><span class="<?php if($employee->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["EMPLOYEE_CHILDREN"];?></span></span></td>
+    <td class="tcell-right-nopadding"><?php if($employee->canedit) { ?><input name="protocol4" type="text" class="bg" value="<?php echo($employee->protocol4);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $employee->protocol4 . '</span>'); } ?></td>
+  </tr>
+</table>
+<!--<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
+	<tr>
+		<td class="tcell-left text11"><span class="<?php if($employee->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["EMPLOYEE_CHILDREN"];?></span></span></td>
+        <td class="tcell-right"><?php if($employee->canedit) { ?><textarea name="protocol4" class="elastic"><?php echo(strip_tags($employee->protocol4));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($employee->protocol4)));?><?php } ?></td>
+	</tr>
+</table>-->
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
     <td class="tcell-left-shorter text11"><span class="<?php if($employee->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["EMPLOYEE_LANGUAGES"];?></span></span></td>
     <td class="tcell-right-nopadding"><?php if($employee->canedit) { ?><input name="languages" type="text" class="bg" value="<?php echo($employee->languages);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $employee->languages . '</span>'); } ?></td>
-    
+  </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+  <tr>
+    <td class="tcell-left-shorter text11"><span class="<?php if($employee->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["EMPLOYEE_FOREIGN_LANGUAGES"];?></span></span></td>
+    <td class="tcell-right-nopadding"><?php if($employee->canedit) { ?><input name="languages_foreign" type="text" class="bg" value="<?php echo($employee->languages_foreign);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $employee->languages_foreign . '</span>'); } ?></td>
   </tr>
 </table>
 
@@ -126,7 +148,7 @@
 <div id="contactTabs" class="contentTabs grey">
 	<ul class="contentTabsList">
 		<li><span class="active" rel="EmployeesFirst">Privatadresse</span></li>
-		<li><span rel="EmployeesSecond">Einstiegskompetenz</span></li>
+		<li><span rel="EmployeesSecond">Kompetenz</span></li>
         <li><span rel="EmployeesThird">Leistungsstatus</span></li>
 	</ul>
     <div id="EmployeesTabsContent" class="contentTabsContent">
@@ -174,6 +196,12 @@
                     <td class="tcell-right"><div id="employeeseducation" class="itemlist-field"><?php echo($employee->education);?></div></td>
                 </tr>
             </table>
+            <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
+	<tr>
+		<td class="tcell-left text11"><span class="<?php if($employee->canedit) { ?>content-nav selectTextarea<?php } ?>"><span>&nbsp;</span></span></td>
+        <td class="tcell-right"><?php if($employee->canedit) { ?><textarea name="protocol5" class="elastic"><?php echo(strip_tags($employee->protocol5));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($employee->protocol5)));?><?php } ?></td>
+	</tr>
+</table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
 	<tr>
 		<td class="tcell-left text11"><span class="<?php if($employee->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["EMPLOYEE_EXPERIENCE"];?></span></span></td>
