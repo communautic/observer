@@ -97,7 +97,7 @@
 							<td width="20" style="padding-top: 4px;">&nbsp;</td>
                             <td style="padding: 2px 0 0 7px; font-weight: bold;"><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB1_QUESTION_1"];?></td>
                             <td width="300" style="text-align: right;">
-                                <div class="answers-outer" rel="tab1">
+                                <div class="answers-outer<?php if($objective->canedit) { ?> active<?php } ?>" rel="tab1">
                                 <?php for($i=0; $i<11; $i++) {
 									$selected = '';
 									if($i < 4) { $class = 'neg'; }
@@ -131,7 +131,7 @@
 							<td width="20" style="padding-top: 4px;">&nbsp;</td>
                             <td style="padding: 2px 0 0 7px; font-weight: bold;"><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB1_QUESTION_2"];?></td>
                             <td width="300" style="text-align: right;">
-                                <div class="answers-outer" rel="tab1">
+                                <div class="answers-outer<?php if($objective->canedit) { ?> active<?php } ?>" rel="tab1">
                                 <?php for($i=0; $i<11; $i++) {
 									$selected = '';
 									if($i < 4) { $class = 'neg'; }
@@ -165,7 +165,7 @@
 							<td width="20" style="padding-top: 4px;">&nbsp;</td>
                             <td style="padding: 2px 0 0 7px; font-weight: bold;"><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB1_QUESTION_3"];?></td>
                             <td width="300" style="text-align: right;">
-                                <div class="answers-outer" rel="tab1">
+                                <div class="answers-outer<?php if($objective->canedit) { ?> active<?php } ?>" rel="tab1">
                                 <?php for($i=0; $i<11; $i++) {
 									$selected = '';
 									if($i < 4) { $class = 'neg'; }
@@ -199,7 +199,7 @@
 							<td width="20" style="padding-top: 4px;">&nbsp;</td>
                             <td style="padding: 2px 0 0 7px; font-weight: bold;"><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB1_QUESTION_4"];?></td>
                             <td width="300" style="text-align: right;">
-                                <div class="answers-outer" rel="tab1">
+                                <div class="answers-outer<?php if($objective->canedit) { ?> active<?php } ?>" rel="tab1">
                                 <?php for($i=0; $i<11; $i++) {
 									$selected = '';
 									if($i < 4) { $class = 'neg'; }
@@ -234,7 +234,7 @@
 							<td width="20" style="padding-top: 4px;">&nbsp;</td>
                             <td style="padding: 2px 0 0 7px; font-weight: bold;"><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB1_QUESTION_5"];?></td>
                             <td width="300" style="text-align: right;">
-                                <div class="answers-outer" rel="tab1">
+                                <div class="answers-outer<?php if($objective->canedit) { ?> active<?php } ?>" rel="tab1">
                                 <?php for($i=0; $i<11; $i++) {
 									$selected = '';
 									if($i < 4) { $class = 'neg'; }
@@ -277,7 +277,7 @@
 							<td width="20" style="padding-top: 4px;">&nbsp;</td>
                             <td style="padding: 2px 0 0 7px; font-weight: bold;"><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_1"];?></td>
                             <td width="300" style="text-align: right;">
-                                <div class="answers-outer" rel="tab2">
+                                <div class="answers-outer<?php if($objective->canedit) { ?> active<?php } ?>" rel="tab2">
                                 <?php for($i=0; $i<11; $i++) {
 									$selected = '';
 									if($i < 4) { $class = 'neg'; }
@@ -312,7 +312,7 @@
 							<td width="20" style="padding-top: 4px;">&nbsp;</td>
                             <td style="padding: 2px 0 0 7px; font-weight: bold;"><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_2"];?></td>
                             <td width="300" style="text-align: right;">
-                                <div class="answers-outer" rel="tab2">
+                                <div class="answers-outer<?php if($objective->canedit) { ?> active<?php } ?>" rel="tab2">
                                 <?php for($i=0; $i<11; $i++) {
 									$selected = '';
 									if($i < 4) { $class = 'neg'; }
@@ -347,7 +347,7 @@
 							<td width="20" style="padding-top: 4px;">&nbsp;</td>
                             <td style="padding: 2px 0 0 7px; font-weight: bold;"><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_3"];?></td>
                             <td width="300" style="text-align: right;">
-                                <div class="answers-outer" rel="tab2">
+                                <div class="answers-outer<?php if($objective->canedit) { ?> active<?php } ?>" rel="tab2">
                                 <?php for($i=0; $i<11; $i++) {
 									$selected = '';
 									if($i < 4) { $class = 'neg'; }
@@ -382,7 +382,7 @@
 							<td width="20" style="padding-top: 4px;">&nbsp;</td>
                             <td style="padding: 2px 0 0 7px; font-weight: bold;"><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_4"];?></td>
                             <td width="300" style="text-align: right;">
-                                <div class="answers-outer" rel="tab2">
+                                <div class="answers-outer<?php if($objective->canedit) { ?> active<?php } ?>" rel="tab2">
                                 <?php for($i=0; $i<11; $i++) {
 									$selected = '';
 									if($i < 4) { $class = 'neg'; }
@@ -417,7 +417,7 @@
 							<td width="20" style="padding-top: 4px;">&nbsp;</td>
                             <td style="padding: 2px 0 0 7px; font-weight: bold;"><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_5"];?></td>
                             <td width="300" style="text-align: right;">
-                                <div class="answers-outer" rel="tab2">
+                                <div class="answers-outer<?php if($objective->canedit) { ?> active<?php } ?>" rel="tab2">
                                 <?php for($i=0; $i<11; $i++) {
 									$selected = '';
 									if($i < 4) { $class = 'neg'; }
@@ -452,7 +452,7 @@
 							<td width="20" style="padding-top: 4px;">&nbsp;</td>
                             <td style="padding: 2px 0 0 7px; font-weight: bold;"><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_6"];?></td>
                             <td width="300" style="text-align: right;">
-                                <div class="answers-outer" rel="tab2">
+                                <div class="answers-outer<?php if($objective->canedit) { ?> active<?php } ?>" rel="tab2">
                                 <?php for($i=0; $i<11; $i++) {
 									$selected = '';
 									if($i < 4) { $class = 'neg'; }
@@ -487,7 +487,7 @@
 							<td width="20" style="padding-top: 4px;">&nbsp;</td>
                             <td style="padding: 2px 0 0 7px; font-weight: bold;"><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_7"];?></td>
                             <td width="300" style="text-align: right;">
-                                <div class="answers-outer" rel="tab2">
+                                <div class="answers-outer<?php if($objective->canedit) { ?> active<?php } ?>" rel="tab2">
                                 <?php for($i=0; $i<11; $i++) {
 									$selected = '';
 									if($i < 4) { $class = 'neg'; }
@@ -522,7 +522,7 @@
 							<td width="20" style="padding-top: 4px;">&nbsp;</td>
                             <td style="padding: 2px 0 0 7px; font-weight: bold;"><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_8"];?></td>
                             <td width="300" style="text-align: right;">
-                                <div class="answers-outer" rel="tab2">
+                                <div class="answers-outer<?php if($objective->canedit) { ?> active<?php } ?>" rel="tab2">
                                 <?php for($i=0; $i<11; $i++) {
 									$selected = '';
 									if($i < 4) { $class = 'neg'; }
@@ -557,7 +557,7 @@
 							<td width="20" style="padding-top: 4px;">&nbsp;</td>
                             <td style="padding: 2px 0 0 7px; font-weight: bold;"><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_9"];?></td>
                             <td width="300" style="text-align: right;">
-                                <div class="answers-outer" rel="tab2">
+                                <div class="answers-outer<?php if($objective->canedit) { ?> active<?php } ?>" rel="tab2">
                                 <?php for($i=0; $i<11; $i++) {
 									$selected = '';
 									if($i < 4) { $class = 'neg'; }
@@ -592,7 +592,7 @@
 							<td width="20" style="padding-top: 4px;">&nbsp;</td>
                             <td style="padding: 2px 0 0 7px; font-weight: bold;"><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_10"];?></td>
                             <td width="300" style="text-align: right;">
-                                <div class="answers-outer" rel="tab2">
+                                <div class="answers-outer<?php if($objective->canedit) { ?> active<?php } ?>" rel="tab2">
                                 <?php for($i=0; $i<11; $i++) {
 									$selected = '';
 									if($i < 4) { $class = 'neg'; }

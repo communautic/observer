@@ -42,10 +42,13 @@ $lang["EMPLOYEE_NUMBER"] = 'Personalnummer';
 $lang["EMPLOYEE_KIND"] = 'Kondition';
 $lang["EMPLOYEE_AREA"] = 'Bereich';
 $lang["EMPLOYEE_DEPARTMENT"] = 'Abteilung';
-$lang["EMPLOYEE_DESCRIPTION"] = 'Historie';
+$lang["EMPLOYEE_DESCRIPTION"] = 'Notiz';
 $lang["EMPLOYEE_DOB"] = 'Geburtsdatum';
 $lang["EMPLOYEE_COO"] = 'Nationalität';
-$lang["EMPLOYEE_LANGUAGES"] = 'Sprachkenntnisse';
+$lang["EMPLOYEE_FAMILY_STATUS"] = 'Familienstand';
+$lang["EMPLOYEE_CHILDREN"] = 'Kinder';
+$lang["EMPLOYEE_LANGUAGES"] = 'Muttersprache';
+$lang["EMPLOYEE_FOREIGN_LANGUAGES"] = 'Fremdsprachen';
 $lang["EMPLOYEE_SKILLS"] = 'Kompetenz';
 
 

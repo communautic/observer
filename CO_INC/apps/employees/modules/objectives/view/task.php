@@ -10,7 +10,7 @@
           <span class="text11" style="padding-top: 0px;"><input name="task_title[<?php echo $value->id;?>]" type="text" class="bg cbx bold" value="<?php echo $value->title;?>" maxlength="100" /></span>
           <?php } else { ?><div class="text13 bold" style="margin-left: 7px;"><?php echo $value->title;?></div><?php } ?><input name="task_id[<?php echo $value->id;?>]" type="hidden" value="<?php echo $value->id;?>"><input class="task_sort" name="task_sort[<?php echo $value->id;?>]" type="hidden" value=""></td>
       
-      <td width="250"><div class="answers-outer-dynamic">
+      <td width="250"><div class="answers-outer-dynamic<?php if($objective->canedit) { ?> active<?php } ?>">
       <?php for($i=0; $i<11; $i++) {
 									$selected = '';
 									if($i < 4) { $class = 'neg'; }

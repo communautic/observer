@@ -565,7 +565,7 @@ function employeesObjectives(name) {
 var employees_objectives = new employeesObjectives('employees_objectives');
 
 $(document).ready(function() {				   
-	$('#employees').on('click', '.answers-outer span',function(e) {
+	$('#employees').on('click', '.answers-outer.active span',function(e) {
 		e.preventDefault();
 		var tab = $(this).parent().attr('rel');
 		var q = $(this).attr('rel');
@@ -597,7 +597,7 @@ $(document).ready(function() {
 	});
 	
 	
-	$('#employees').on('click', '.answers-outer-dynamic span',function(e) {
+	$('#employees').on('click', '.answers-outer-dynamic.active span',function(e) {
 		e.preventDefault();
 		var id = $(this).attr('rel');
 		var val = $(this).html();

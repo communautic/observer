@@ -547,7 +547,7 @@ class EmployeesModel extends Model {
 
    function getEmployeeDetails($id,$option = "") {
 		global $session, $contactsmodel, $lang;
-		$q = "SELECT a.*,CONCAT(b.lastname,' ',b.firstname) as title,b.title as ctitle,b.title2,b.position,b.phone1,b.email FROM " . CO_TBL_EMPLOYEES . " as a, co_users as b where a.cid=b.id and a.id = '$id'";
+		$q = "SELECT a.*,CONCAT(b.lastname,', ',b.firstname) as title,b.title as ctitle,b.title2,b.position,b.phone1,b.email FROM " . CO_TBL_EMPLOYEES . " as a, co_users as b where a.cid=b.id and a.id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if(mysql_num_rows($result) < 1) {
 			return false;
@@ -607,6 +607,7 @@ class EmployeesModel extends Model {
 		$array["kind"] = $this->getEmployeeIdDetails($array["kind"],"employeeskind");
 		$array["area"] = $this->getEmployeeIdDetails($array["area"],"employeesarea");
 		$array["department"] = $this->getEmployeeIdDetails($array["department"],"employeesdepartment");
+		$array["family"] = $this->getEmployeeIdDetails($array["family"],"employeesfamily");
 		$array["education"] = $this->getEmployeeIdDetails($array["education"],"employeeseducation");
 		
 		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
@@ -718,7 +719,7 @@ class EmployeesModel extends Model {
    /**
    * get details for the employee folder
    */
-   function setEmployeeDetails($id,$startdate,$enddate,$protocol,$protocol2,$protocol3,$folder,$number,$kind,$area,$department,$dob,$coo,$languages,$street_private,$city_private,$zip_private,$phone_private,$email_private,$education) {
+   function setEmployeeDetails($id,$startdate,$enddate,$protocol,$protocol2,$protocol3,$protocol4,$protocol5,$folder,$number,$kind,$area,$department,$dob,$coo,$family,$languages,$languages_foreign,$street_private,$city_private,$zip_private,$phone_private,$email_private,$education) {
 		global $session, $contactsmodel;
 		
 		$startdate = $this->_date->formatDate($startdate);
@@ -727,7 +728,7 @@ class EmployeesModel extends Model {
 
 		$now = gmdate("Y-m-d H:i:s");
 		
-		$q = "UPDATE " . CO_TBL_EMPLOYEES . " set folder = '$folder', startdate='$startdate', enddate='$enddate',  protocol = '$protocol',  protocol2 = '$protocol2',  protocol3 = '$protocol3', number = '$number', kind = '$kind', area = '$area', department = '$department', dob = '$dob', coo = '$coo', languages = '$languages', street_private = '$street_private', city_private = '$city_private', zip_private = '$zip_private', phone_private = '$phone_private', email_private = '$email_private', education = '$education', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_EMPLOYEES . " set folder = '$folder', startdate='$startdate', enddate='$enddate',  protocol = '$protocol',  protocol2 = '$protocol2', protocol3 = '$protocol3',  protocol4 = '$protocol4',  protocol5 = '$protocol5', number = '$number', kind = '$kind', area = '$area', department = '$department', dob = '$dob', coo = '$coo', family = '$family', languages = '$languages', languages_foreign = '$languages_foreign', street_private = '$street_private', city_private = '$city_private', zip_private = '$zip_private', phone_private = '$phone_private', email_private = '$email_private', education = '$education', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
