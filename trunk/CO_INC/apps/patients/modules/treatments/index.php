@@ -110,11 +110,15 @@ if (!empty($_GET['request'])) {
 		case 'updateStatus':
 			echo($patientsTreatments->updateStatus($_GET['id'],$_GET['date'],$_GET['status']));
 		break;
-		case 'updateQuestion':
-			echo($patientsTreatments->updateQuestion($_GET['id'],$_GET['field'],$_GET['val']));
+		//diagnose
+		case 'updatePosition':
+			echo($patientsTreatments->updatePosition($_GET['id'],$_GET['x'],$_GET['y']));
 		break;
-		case 'updateTaskQuestion':
-			echo($patientsTreatments->updateTaskQuestion($_GET['id'],$_GET['val']));
+		case 'addDiagnose':
+			echo($patientsTreatments->addDiagnose($_GET['mid'],$_GET['num']));
+		break;
+		case 'binDiagnose':
+			echo($patientsTreatments->binDiagnose($_GET['id']));
 		break;
 	}
 }
@@ -123,6 +127,20 @@ if (!empty($_POST['request'])) {
 	
 	switch ($_POST['request']) {
 		case 'setDetails':
+			$canvasList_id = array();
+			$canvasList_text = array();
+			$canvasList = array();
+			
+			if(isset($_POST['canvasList_id'])) {
+				$canvasList_id = $_POST['canvasList_id'];
+				$canvasList_text_orig = $_POST['canvasList_text'];
+				$canvasList_text = "";
+				foreach ($canvasList_text_orig as $key => $canvasList) {
+					$canvasList_new = $system->checkMagicQuotes($canvasList);
+					$canvasList_text[$key] = $canvasList_new;
+				}
+			}
+			
 			$task_id = array();
 			$task_title = array();
 			$task_text = array();
@@ -150,13 +168,16 @@ if (!empty($_POST['request'])) {
 			if(isset($_POST['task_sort'])) {
 				$task_sort = $_POST['task_sort'];
 			}
-			echo($patientsTreatments->setDetails($_POST['pid'], $_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['item_date'], $_POST['treatmentstart'], $_POST['treatmentend'], $_POST['location'], $system->checkMagicQuotes($_POST['location_ct']), $_POST['participants'], $system->checkMagicQuotes($_POST['participants_ct']), $_POST['management'], $system->checkMagicQuotes($_POST['management_ct']), $system->checkMagicQuotes($_POST['tab1q1_text']), $system->checkMagicQuotes($_POST['tab1q2_text']), $system->checkMagicQuotes($_POST['tab1q3_text']), $system->checkMagicQuotes($_POST['tab1q4_text']), $system->checkMagicQuotes($_POST['tab1q5_text']), $system->checkMagicQuotes($_POST['tab2q1_text']), $system->checkMagicQuotes($_POST['tab2q2_text']), $system->checkMagicQuotes($_POST['tab2q3_text']), $system->checkMagicQuotes($_POST['tab2q4_text']), $system->checkMagicQuotes($_POST['tab2q5_text']), $system->checkMagicQuotes($_POST['tab2q6_text']), $system->checkMagicQuotes($_POST['tab2q7_text']), $system->checkMagicQuotes($_POST['tab2q8_text']), $system->checkMagicQuotes($_POST['tab2q9_text']), $system->checkMagicQuotes($_POST['tab2q10_text']),$task_id,$task_title,$task_text,$task,$_POST['treatment_access'],$_POST['treatment_access_orig']));
+			echo($patientsTreatments->setDetails($_POST['pid'], $_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['item_date'],$task_id,$task_title,$task_text,$task,$canvasList_id,$canvasList_text,$_POST['treatment_access'],$_POST['treatment_access_orig']));
 		break;
 		case 'sendDetails':
 			echo($patientsTreatments->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
 		break;
 		case 'updateCheckpointText':
 			echo($patientsTreatments->updateCheckpointText($_POST['id'],$system->checkMagicQuotes($_POST['text'])));
+		break;
+		case 'saveDrawing':
+			echo($patientsTreatments->saveDrawing($_POST['id'],$_POST['img']));
 		break;
 	}
 }

@@ -219,28 +219,6 @@ class PatientsTreatmentsModel extends PatientsModel {
 		
 		// time
 		$array["today"] = $this->_date->formatDate("now",CO_DATE_FORMAT);
-		$array["start"] = $this->_date->formatDate($array["start"],CO_TIME_FORMAT);
-		$array["end"] = $this->_date->formatDate($array["end"],CO_TIME_FORMAT);
-		$array["location"] = $this->_contactsmodel->getPlaceList($array['location'],'location', $array["canedit"]);
-		$array["location_ct"] = empty($array["location_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['location_ct'];
-
-		/*$array["relates_to_text"] = "";
-		if($array['relates_to'] != "") {
-			$array["relates_to_text"] = $this->_phases->getPhaseTitle($array['relates_to']);
-		}*/
-		
-		$array["participants_print"] = $this->_contactsmodel->getUserListPlain($array["participants"]);
-		if($option = 'prepareSendTo') {
-			$array["sendtoTeam"] = $this->_contactsmodel->checkUserListEmail($array["participants"],'patientsparticipants', "", $array["canedit"]);
-			$array["sendtoTeamNoEmail"] = $this->_contactsmodel->checkUserListEmail($array["participants"],'patientsparticipants', "", $array["canedit"], 0);
-			$array["sendtoError"] = false;
-		}
-		$array["participants"] = $this->_contactsmodel->getUserList($array['participants'],'patientsparticipants', "", $array["canedit"]);
-		$array["participants_ct"] = empty($array["participants_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['participants_ct'];
-		$array["management_print"] = $this->_contactsmodel->getUserListPlain($array["management"]);
-		$array["management"] = $this->_contactsmodel->getUserList($array['management'],'patientsmanagement', "", $array["canedit"]);
-		$array["management_ct"] = empty($array["management_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['management_ct'];
-		//$array["documents"] = $this->_documents->getDocListFromIDs($array['documents'],'documents');
 		
 		$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
 		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
@@ -261,71 +239,32 @@ class PatientsTreatmentsModel extends PatientsModel {
 			break;
 		}
 		$array["status_planned_active"] = "";
+		$array["status_inprogress_active"] = "";
 		$array["status_finished_active"] = "";
 		$array["status_stopped_active"] = "";
-		$array["status_posponed_active"] = "";
-		$array["status_date"] = $this->_date->formatDate($array["status_date"],CO_DATE_FORMAT);
+		//$array["status_date"] = $this->_date->formatDate($array["status_date"],CO_DATE_FORMAT);
+		$array["status_date"] = "";
+		$array["status_text_time"] = "";
 		switch($array["status"]) {
 			case "0":
-				$array["status_text"] = $lang["GLOBAL_STATUS_PLANNED"];
-				$array["status_text_time"] = $lang["GLOBAL_STATUS_PLANNED_TIME"];
+				$array["status_text"] = $lang["PATIENT_STATUS_PLANNED"];
 				$array["status_planned_active"] = " active";
 			break;
 			case "1":
-				$array["status_date"] = "";
-				$array["status_text"] = $lang["GLOBAL_STATUS_COMPLETED"];
-				$array["status_text_time"] = "";
-				$array["status_finished_active"] = " active";
+				$array["status_text"] = $lang["PATIENT_STATUS_INPROGRESS"];
+				$array["status_inprogress_active"] = " active";
 			break;
 			case "2":
-				$array["status_text"] = $lang["GLOBAL_STATUS_CANCELLED"];
-				$array["status_text_time"] = $lang["GLOBAL_STATUS_CANCELLED_TIME"];
-				$array["status_stopped_active"] = " active";
+				$array["status_text"] = $lang["PATIENT_STATUS_FINISHED"];
+				$array["status_finished_active"] = " active";
 				break;
 			case "3":
-				$array["status_text"] = $lang["GLOBAL_STATUS_POSPONED"];
-				$array["status_text_time"] = $lang["GLOBAL_STATUS_POSPONED_TIME"];
-				$array["status_posponed_active"] = " active";
+				$array["status_text"] = $lang["PATIENT_STATUS_STOPPED"];
+				$array["status_stopped_active"] = " active";
 			break;
 		}
 		
-		// Tab 1 questios
-		$array["tab1q1_selected"] = $array["tab1q1"];
-		$array["tab1q2_selected"] = $array["tab1q2"];
-		$array["tab1q3_selected"] = $array["tab1q3"];
-		$array["tab1q4_selected"] = $array["tab1q4"];
-		$array["tab1q5_selected"] = $array["tab1q5"];
-		$tab1result = 0;
-		if(!empty($array["tab1q1"])) { $tab1result += $array["tab1q1"]; }
-		if(!empty($array["tab1q2"])) { $tab1result += $array["tab1q2"]; }
-		if(!empty($array["tab1q3"])) { $tab1result += $array["tab1q3"]; }
-		if(!empty($array["tab1q4"])) { $tab1result += $array["tab1q4"]; }
-		if(!empty($array["tab1q5"])) { $tab1result += $array["tab1q5"]; }
-		$array["tab1result"] = round(100/50* $tab1result,0);
 		
-		// Tab 2 questios
-		$array["tab2q1_selected"] = $array["tab2q1"];
-		$array["tab2q2_selected"] = $array["tab2q2"];
-		$array["tab2q3_selected"] = $array["tab2q3"];
-		$array["tab2q4_selected"] = $array["tab2q4"];
-		$array["tab2q5_selected"] = $array["tab2q5"];
-		$array["tab2q6_selected"] = $array["tab2q6"];
-		$array["tab2q7_selected"] = $array["tab2q7"];
-		$array["tab2q8_selected"] = $array["tab2q8"];
-		$array["tab2q9_selected"] = $array["tab2q9"];
-		$array["tab2q10_selected"] = $array["tab2q10"];
-		$tab2result = 0;
-		if(!empty($array["tab2q1"])) { $tab2result += $array["tab2q1"]; }
-		if(!empty($array["tab2q2"])) { $tab2result += $array["tab2q2"]; }
-		if(!empty($array["tab2q3"])) { $tab2result += $array["tab2q3"]; }
-		if(!empty($array["tab2q4"])) { $tab2result += $array["tab2q4"]; }
-		if(!empty($array["tab2q5"])) { $tab2result += $array["tab2q5"]; }
-		if(!empty($array["tab2q6"])) { $tab2result += $array["tab2q6"]; }
-		if(!empty($array["tab2q7"])) { $tab2result += $array["tab2q7"]; }
-		if(!empty($array["tab2q8"])) { $tab2result += $array["tab2q8"]; }
-		if(!empty($array["tab2q9"])) { $tab2result += $array["tab2q9"]; }
-		if(!empty($array["tab2q10"])) { $tab2result += $array["tab2q10"]; }
-		$array["tab2result"] = $tab2result;
 		
 		// checkpoint
 		/*$array["checkpoint"] = 0;
@@ -345,38 +284,44 @@ class PatientsTreatmentsModel extends PatientsModel {
 		$task = array();
 		$q = "SELECT * FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where mid = '$id' and bin='0' ORDER BY sort";
 		$result = mysql_query($q, $this->_db->connection);
-		$res = 0;
-		$num = mysql_num_rows($result)*10;
 		while($row = mysql_fetch_array($result)) {
 			foreach($row as $key => $val) {
 				$tasks[$key] = $val;
 			}
-			if(!empty($tasks['answer'])) { $res += $tasks['answer']; }
-			
 			$task[] = new Lists($tasks);
 		}
-		if($num == 0) {
-			$array["tab3result"] = 0;
-		} else {
-			$array["tab3result"] = round(100/$num* $res,0);
+		
+		// get the diagnoses
+		$diagnose = array();
+		$q = "SELECT * FROM " . CO_TBL_PATIENTS_TREATMENTS_DIAGNOSES . " where mid = '$id' and bin='0' ORDER BY sort";
+		$result = mysql_query($q, $this->_db->connection);
+		$array["diagnoses"] = mysql_num_rows($result);
+		while($row = mysql_fetch_array($result)) {
+			foreach($row as $key => $val) {
+				$diagnoses[$key] = $val;
+			}
+			
+			//$diagnoses['canvas'] = base64_encode($diagnoses['canvas']);
+			//$diagnoses['canvas'] = str_replace('+',' ',$diagnoses['canvas']);
+			$coord = explode('x',$diagnoses["xy"]);
+			$diagnoses['x'] = $coord[0];
+			$diagnoses['y'] = $coord[1];
+			
+			$diagnose[] = new Lists($diagnoses);
 		}
 		
 		$sendto = $this->getSendtoDetails("patients_treatments",$id);
 
 		$treatment = new Lists($array);
-		$arr = array("treatment" => $treatment, "task" => $task, "sendto" => $sendto, "access" => $array["perms"]);
+		$arr = array("treatment" => $treatment, "diagnose" => $diagnose, "task" => $task, "sendto" => $sendto, "access" => $array["perms"]);
 		return $arr;
    }
 
 
-   function setDetails($pid,$id,$title,$treatmentdate,$start,$end,$location,$location_ct,$participants,$participants_ct,$management,$management_ct,$tab1q1_text,$tab1q2_text,$tab1q3_text,$tab1q4_text,$tab1q5_text,$tab2q1_text,$tab2q2_text,$tab2q3_text,$tab2q4_text,$tab2q5_text,$tab2q6_text,$tab2q7_text,$tab2q8_text,$tab2q9_text,$tab2q10_text,$task_id,$task_title,$task_text,$task,$treatment_access,$treatment_access_orig) {
+   function setDetails($pid,$id,$title,$treatmentdate,$task_id,$task_title,$task_text,$task,$canvasList_id,$canvasList_text,$treatment_access,$treatment_access_orig) {
 		global $session, $lang;
 		
-		$start = $this->_date->formatDateGMT($treatmentdate . " " . $start);
-		$end = $this->_date->formatDateGMT( $treatmentdate . " " . $end);
 		$treatmentdate = $this->_date->formatDate($treatmentdate);
-		$participants = $this->_contactsmodel->sortUserIDsByName($participants);
-		$management = $this->_contactsmodel->sortUserIDsByName($management);
 
 		$now = gmdate("Y-m-d H:i:s");
 		
@@ -390,8 +335,16 @@ class PatientsTreatmentsModel extends PatientsModel {
 			$accesssql = "access='$treatment_access', access_date='$treatment_access_date', access_user = '$session->uid',";
 		}
 		
-		$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS . " set title = '$title', item_date = '$treatmentdate', start = '$start', end = '$end', location = '$location', location_ct = '$location_ct', participants='$participants', participants_ct='$participants_ct', management='$management', management_ct='$management_ct', tab1q1_text = '$tab1q1_text', tab1q2_text = '$tab1q2_text', tab1q3_text = '$tab1q3_text', tab1q4_text = '$tab1q4_text', tab1q5_text = '$tab1q5_text', tab2q1_text = '$tab2q1_text', tab2q2_text = '$tab2q2_text', tab2q3_text = '$tab2q3_text', tab2q4_text = '$tab2q4_text', tab2q5_text = '$tab2q5_text', tab2q6_text = '$tab2q6_text', tab2q7_text = '$tab2q7_text', tab2q8_text = '$tab2q8_text', tab2q9_text = '$tab2q9_text', tab2q10_text = '$tab2q10_text', access='$treatment_access', $accesssql edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS . " set title = '$title', item_date = '$treatmentdate', access='$treatment_access', $accesssql edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
+		
+		// do existing diagnoses
+		$canvasList_size = sizeof($canvasList_id);
+		foreach ($canvasList_id as $key => $value) {
+			$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS_DIAGNOSES . " set text = '$canvasList_text[$key]' WHERE id='$canvasList_id[$key]'";
+			$result = mysql_query($q, $this->_db->connection);
+		}
+		
 		
 		// do existing tasks
 		$task_size = sizeof($task_id);
@@ -464,6 +417,7 @@ class PatientsTreatmentsModel extends PatientsModel {
 		$id = mysql_insert_id();
 		
 		//$task = $this->addTask($id,0,0);
+		$this->addDiagnose($id,1);
 		
 		if ($result) {
 			return $id;
@@ -641,25 +595,46 @@ class PatientsTreatmentsModel extends PatientsModel {
 		return $row;
    }
    
-   
-    function updateQuestion($id,$field,$val){
+   function updatePosition($id,$x,$y){
 		global $session;
-		$now = gmdate("Y-m-d H:i:s");
-		$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS . " set $field = '$val', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS_DIAGNOSES . " SET xy = '".$x."x".$y."' WHERE id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
-		return true;
+		if ($result) {
+			return true;
+		}
+   }
+ 
+ 
+  function addDiagnose($mid,$num) {
+		global $session, $lang;
+		
+		$now = gmdate("Y-m-d H:i:s");
+		
+		$q = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS_DIAGNOSES . " set mid='$mid', xy='20x20', sort='$num'";
+		$result = mysql_query($q, $this->_db->connection);
+		$id = mysql_insert_id();		
+		return $id;
    }
    
-   function updateTaskQuestion($id,$val){
+  function binDiagnose($id) {
+		global $session, $lang;
+		
+		$now = gmdate("Y-m-d H:i:s");
+		
+		$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS_DIAGNOSES . " set bin='1' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);	
+		return true;
+   }
+
+   
+   function saveDrawing($id,$img) {
 		global $session;
 		$now = gmdate("Y-m-d H:i:s");
-		$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " set answer = '$val' where id='$id'";
-		$result = mysql_query($q, $this->_db->connection);
-		$q = "SELECT mid FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where id='$id'";
-		$result = mysql_query($q, $this->_db->connection);
-		$id = mysql_result($result,0);
-		$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS . " set edited_user = '$session->uid', edited_date = '$now' where id='$id'";
-		$result = mysql_query($q, $this->_db->connection);
+		
+		$img = str_replace(' ','+',$img);
+		//$img = base64_decode($img);
+		$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS_DIAGNOSES . " set canvas='$img' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);	
 		return true;
    }
 

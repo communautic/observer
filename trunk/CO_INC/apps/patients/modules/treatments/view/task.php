@@ -10,19 +10,7 @@
           <span class="text11" style="padding-top: 0px;"><input name="task_title[<?php echo $value->id;?>]" type="text" class="bg cbx bold" value="<?php echo $value->title;?>" maxlength="100" /></span>
           <?php } else { ?><div class="text13 bold" style="margin-left: 7px;"><?php echo $value->title;?></div><?php } ?><input name="task_id[<?php echo $value->id;?>]" type="hidden" value="<?php echo $value->id;?>"><input class="task_sort" name="task_sort[<?php echo $value->id;?>]" type="hidden" value=""></td>
       
-      <td width="250"><div class="answers-outer-dynamic">
-      <?php for($i=0; $i<11; $i++) {
-									$selected = '';
-									if($i < 4) { $class = 'neg'; }
-									if($i > 3 && $i < 7) { $class = 'med'; }
-									if($i > 6 ) { $class = 'pos'; }
-									if($value->answer != "" && $i == $value->answer) {
-										$class .= ' active';
-									}
-									 echo '<span rel="' . $value->id .'" class="' . $class . '">' . $i . '</span>';
-                                }
-                                ?>
-                              </div></td>
+      <td width="250"></td>
                                 <?php if($treatment->canedit) { ?><td width="30"><a class="binItem" rel="<?php echo $value->id;?>"><span class="icon-delete"></span></a></td><?php } ?>
     </tr>
   </table>

@@ -8,13 +8,13 @@ $lang["PATIENT_TREATMENT_NEW"] = 'Neue Behandlung';
 $lang["PATIENT_TREATMENT_ACTION_NEW"] = 'neue Behandlung anlegen';
 $lang["PATIENT_TREATMENT_TASK_NEW"] = 'Neues Einzelziel';
 //define('TREATMENT_RELATES_TO', 'bezogen auf');
-$lang["PATIENT_TREATMENT_DATE"] = 'Datum';
-$lang["PATIENT_TREATMENT_PLACE"] = 'Ort';
-$lang["PATIENT_TREATMENT_TIME_START"] = 'Start';
-$lang["PATIENT_TREATMENT_TIME_END"] = 'Ende';
 
-$lang["PATIENT_TREATMENT_ATTENDEES"] = 'Teilnehmer';
-$lang["PATIENT_TREATMENT_MANAGEMENT"] = 'Protokollführer';
+$lang["PATIENT_STATUS_PLANNED"] = 'Befundung';
+$lang["PATIENT_STATUS_INPROGRESS"] = 'in Behandlung';
+$lang["PATIENT_STATUS_FINISHED"] = 'therapiert';
+$lang["PATIENT_STATUS_STOPPED"] = 'nicht therapiert';
+
+$lang["PATIENT_TREATMENT_DATE"] = 'Diagnosedatum';
 
 $lang["PATIENT_TREATMENT_GOALS"] = 'Sitzungen';
 $lang["PATIENT_TREATMENT_TASKS_START"] = 'Start';
