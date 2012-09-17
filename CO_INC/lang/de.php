@@ -1,5 +1,5 @@
 <?php
-$lang["APPLICATION_NAME"] = "company observer 6.3.2";
+$lang["APPLICATION_NAME"] = "company observer 6.3.3";
 
 setlocale(LC_TIME, "de_DE");
 
