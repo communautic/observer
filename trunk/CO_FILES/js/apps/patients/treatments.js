@@ -465,17 +465,24 @@ function patientsTreatments(name) {
 		var module = this;
 		var mid = $("#patients").data("third");
 		zIndexes++;
-		var num = $('#patients .canvasDraw').size()+1;
+		var curnum = $('#patients .canvasDraw').size();
+		var curcol = curnum % 10;
+		var num = curnum+1;
 		$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/treatments&request=addDiagnose&mid=" + mid + "&num=" + num, success: function(id){
-			$('div.loadCanvas').removeClass('active');
-			$('div.loadCanvasList').removeClass('active');
-			var html = '<canvas class="canvasDraw" id="c'+num+'" width="400" height="400" style="z-index: '+num+'" rel="'+id+'"></canvas><div id="dia-'+id+'" style="position: absolute; width: 30px; height: 30px; z-index: '+zIndexes+'; top: 20px; left: 20px;" class="loadCanvas active" rel="'+num+'">'+num+'</div>';
-			var htmltext = '<div id="canvasList_'+id+'" class="treatmentouter loadCanvasList active" rel="'+num+'"><table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol"><tr><td class="text11" style="width: 40px;"><span class="selectTextarea"><span>'+num+'</span></span></td><td class="tcell-right"><textarea name="canvasList_text['+id+']" class="elastic"></textarea><input name="canvasList_id['+id+']" type="hidden" value="'+id+'" /></td><td width="30"><a class="binDiagnose" rel="'+id+'"><span class="icon-delete"></span></a></td></tr></table></div>';
+			//$('div.loadCanvas').removeClass('active');
+			$('div.loadCanvasList .tcell-right').removeClass('active');
+			var html = '<canvas class="canvasDraw" id="c'+num+'" width="400" height="400" style="z-index: '+num+'" rel="'+id+'"></canvas><div id="dia-'+id+'" style="position: absolute; width: 30px; height: 30px; z-index: '+zIndexes+'; top: 20px; left: 20px;" class="loadCanvas active" rel="'+num+'"><div class="circle circle'+curcol+'"><div>'+num+'</div></div></div>';
+			var htmltext = '<div id="canvasList_'+id+'" class="treatmentouter loadCanvasList" rel="'+num+'"><table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol"><tr><td style="width: 40px;"><span class="selectTextarea"><span><div class="circle  circle'+curcol+'"><div>'+num+'</div></div></span></span></td><td class="tcell-right active"><textarea name="canvasList_text['+id+']" class="elastic"></textarea><input name="canvasList_id['+id+']" type="hidden" value="'+id+'" /></td><td width="30"><a class="binDiagnose" rel="'+id+'"><span class="icon-delete"></span></a></td></tr></table></div>';
 			$('#patients .canvasDiv').append(html);
 			$('#canvasDivText').append(htmltext);
 			a = 'c'+num;
 			activeCanvas = $("#c"+num)[0];
 			restorePoints[a] = [];
+			$('span.undoTool').removeClass('active');
+			if(!$('span.penTool').hasClass('active')) {
+				!$('span.penTool').addClass('active');
+				$('span.erasorTool').removeClass('active');
+			}
 			initPatientsContentScrollbar();
 			}
 		});		
@@ -661,6 +668,7 @@ var activeCanvas;
 var c;
 var j;
 var a;
+var colors = ['#3C4664','#EB4600','#915500','#0A960A','#AA19AA','#3C4664','#EB4600','#915500','#0A960A','#AA19AA'];
 
 	function setImage(dataURL) {  
 		var img = new Image();  
@@ -707,16 +715,17 @@ var a;
 
 		$(document).on('click','div.loadCanvas',function(e) {
 			e.preventDefault();
-			var rel = $(this).attr('rel');
+			//var rel = $(this).attr('rel');
 			var id = $(this).attr("id").replace(/dia-/, "");
-			activeCanvas = $("#c"+rel)[0];
+			/*activeCanvas = $("#c"+rel)[0];
 			zIndexes = ++zIndexes;
 			$('div.loadCanvas').removeClass('active');
-			$('div.loadCanvasList').removeClass('active');
-			$('#canvasList_'+id).addClass('active').find('textarea').focus();
+			$('div.loadCanvasList .tcell-right').removeClass('active');
+			$('#canvasList_'+id).find('.tcell-right').addClass('active').find('textarea').focus();
 			$(this).css('z-index',zIndexes).addClass('active');
 			$('.canvasDraw').css('z-index',1);
-			$('#c'+rel).css('z-index',2);
+			$('#c'+rel).css('z-index',2);*/
+			$('#canvasList_'+id).trigger('click');
 		})
 
 		$(document).on('click','.loadCanvasList',function(e) {
@@ -724,21 +733,32 @@ var a;
 			var rel = $(this).attr('rel');
 			var id = $(this).attr("id").replace(/canvasList_/, "");
 			activeCanvas = $("#c"+rel)[0];
+			//activeCanvas.globalCompositeOperation = "source-over";
 			zIndexes = ++zIndexes;
 			$('div.loadCanvas').removeClass('active');
 			$('#dia-'+id).css('z-index',zIndexes).addClass('active');
-			$('div.loadCanvasList').removeClass('active');
-			$(this).addClass('active');
+			$('div.loadCanvasList .tcell-right').removeClass('active');
+			$(this).find('.tcell-right').addClass('active');
 			$('.canvasDraw').css('z-index',1);
 			$('#c'+rel).css('z-index',2);
+			if (restorePoints['c'+rel].length > 0) {
+				$('span.undoTool').addClass('active');
+			} else {
+				$('span.undoTool').removeClass('active');
+			}
+			/*if(!$('span.penTool').hasClass('active')) {
+				!$('span.penTool').addClass('active');
+				$('span.erasorTool').removeClass('active');
+			}*/
+			$('span.penTool').trigger('click');
 		})
 
-		$(document).on('click','a.addDiagnose',function(e) {
+		$(document).on('click','span.addTool',function(e) {
 			e.preventDefault();
 			patients_treatments.newDrawing();
 		})
 
-		$(document).on('click','a.clearActive',function(e) {
+		$(document).on('click','span.clearTool',function(e) {
 			e.preventDefault();
 			var context = activeCanvas.getContext("2d");
 			context.clearRect(0, 0, 400, 400);
@@ -755,26 +775,34 @@ var a;
 			patients_treatments.saveDrawing(rel,img);
 		})
 
-		$(document).on('click','a.undoDraw',function(e) {
+		$(document).on('click','span.undoTool',function(e) {
 			e.preventDefault();
 			var id = activeCanvas.id;
-			var context = activeCanvas.getContext("2d");
-			context.clearRect(0, 0, 400, 400);
-			//restorePoints[a].pop()
-			var img = restorePoints[id].pop();
-			//window.open(img);
-			setImage(img);
-			restorePoint[id] = img;
-			var rel = $('#'+id).attr('rel');
-			patients_treatments.saveDrawing(rel,img);
-			
+			if($(this).hasClass('active')) {
+				var context = activeCanvas.getContext("2d");
+				var currentComp = context.globalCompositeOperation;
+				if(currentComp != 'source-over') {
+					context.globalCompositeOperation = "source-over";
+				}
+				context.clearRect(0, 0, 400, 400);
+				var img = restorePoints[id].pop();
+				setImage(img);
+				restorePoint[id] = img;
+				var rel = $('#'+id).attr('rel');
+				patients_treatments.saveDrawing(rel,img);
+				if(currentComp != 'source-over') {
+					setTimeout( function() { context.globalCompositeOperation = currentComp; }, 300);					
+				}
+			}
 			if (restorePoints[id].length < 1) {
-				//alert('no more');
+				$(this).removeClass('active');
 			}
 		})
 		
-		$(document).on('click','a.erasor',function(e) {
+		$(document).on('click','span.erasorTool',function(e) {
 			e.preventDefault();
+			$(this).addClass('active');
+			$('span.penTool').removeClass('active');
 			$('.canvasDraw').each(function(i,el) {
 				var id = this.id;
 				contexts[id].globalCompositeOperation = "destination-out";
@@ -782,18 +810,17 @@ var a;
 				contexts[id].lineWidth   = 10;
 			});
 		})
-		
-		
-		
-		
-		var colors = ['#FF0000','#0000FF','#00FF00','#000000'];
-		
-		$(document).on('click','a.draw',function(e) {
+
+		$(document).on('click','span.penTool',function(e) {
 			e.preventDefault();
+			$(this).addClass('active');
+			$('span.erasorTool').removeClass('active');
 			$('.canvasDraw').each(function(i,el) {
 				var id = this.id;
+				var index = $(".canvasDraw").index(this);
+			  	var curcol = index % 10;
 				contexts[id].globalCompositeOperation = "source-over";
-				contexts[id].strokeStyle = colors[i];
+				contexts[id].strokeStyle = colors[curcol];
 				contexts[id].lineWidth   = 2;
 			});
 		})
@@ -802,10 +829,13 @@ var a;
 		$('.canvasDraw').livequery(function() {
 			//$(this).each(function(i,el) {
 			  var id = this.id;
+			  var rel = $(this).attr('rel');
 			  var index = $(".canvasDraw").index(this);
+			  var curcol = index % 10;
 			  contexts[id] = this.getContext('2d');
-			  contexts[id].strokeStyle = colors[index];
-			  contexts[id].lineWidth   = 3;
+			  contexts[id].strokeStyle = colors[curcol];
+			//  $('#dia-'+rel).css('background',colors[curcol])
+			  contexts[id].lineWidth   = 2;
 			//})
 		})			
 
@@ -815,8 +845,17 @@ var a;
             // create a drawer which tracks touch movements
 			var drawer = new Array();
 			$('.canvasDraw').livequery(function() {
-				$(this).each(function(el) {
+				//$(this).each(function(el) {
 					var id = this.id;
+					
+					this.addEventListener('touchstart', function(){draw(event,this)}, false);
+					this.addEventListener('touchmove', function(){draw(event,this)}, false);
+					//this.addEventListener('touchend', function(){draw(event,this)}, false);
+					// prevent elastic scrolling
+				   this.addEventListener('touchmove', function (event) {
+					   event.preventDefault();
+					}, false);
+					
 					drawer[id] = {
 					   isDrawing: false,
 					   touchstart: function (coors) {
@@ -829,32 +868,61 @@ var a;
 							 contexts[id].lineTo(coors.x, coors.y);
 							 contexts[id].stroke();
 						  }
-					   },
+					   }
+					   /*,
 					   touchend: function (coors) {
+						  alert('yoyo');
 						  if (this.isDrawing) {
 							 this.touchmove(coors);
 							 this.isDrawing = false;
+							 
+							 var can = document.getElementById(id); 
+		var img = can.toDataURL();
+		restorePoints[id].push(restorePoint[id]);
+		restorePoint[id] = img;
+		var rel = $('#'+id).attr('rel');
+		patients_treatments.saveDrawing(rel,img);
 						  }
-					   }
+					   }*/
 					};
-				})
+				//})
 			})
             // create a function to pass touch events and coordinates to drawer
             function draw(event,obj) {
-               var coors = {x: event.targetTouches[0].pageX,y: event.targetTouches[0].pageY};
 			   var id = obj.id
+			   var cparent = $('#patients-right .scroll-pane');
+			   var cparentTop = cparent.scrollTop();
+			   var coors = {x: event.targetTouches[0].pageX,y: event.targetTouches[0].pageY+cparentTop};
                if (obj.offsetParent) {
                   do {
                      coors.x -= obj.offsetLeft;
-                     coors.y -= obj.offsetTop;
+                     coors.y -= obj.offsetTop
                   }
                   while ((obj = obj.offsetParent) != null);
                }
                drawer[id][event.type](coors);
+			   
             }
+			
+			$(document).on('touchend','.canvasDraw',function(mouseEvent) {
+			   var id = $(this).attr('id');
+				
+				if (drawer[id].isDrawing) {
+					
+							 //drawer[id].touchmove(coors);
+							 drawer[id].isDrawing = false;
+							 
+							 var can = document.getElementById(id); 
+							var img = can.toDataURL();
+							restorePoints[id].push(restorePoint[id]);
+							restorePoint[id] = img;
+							var rel = $('#'+id).attr('rel');
+							patients_treatments.saveDrawing(rel,img);
+						  }
+			});
 
-			$('.canvasDraw').livequery(function() {
-				$(this).each(function(el) {
+			/*$('.canvasDraw').livequery(function() {
+				//$(this).each(function(el) {
 					this.addEventListener('touchstart', function(){draw(event,this)}, false);
 					this.addEventListener('touchmove', function(){draw(event,this)}, false);
 					this.addEventListener('touchend', function(){draw(event,this)}, false);
@@ -862,8 +930,8 @@ var a;
 				   this.addEventListener('touchmove', function (event) {
 					   event.preventDefault();
 					}, false);
-				})
-			})
+				//})
+			})*/
 		} else {
 			// Pencil
 			$(document).on('mousedown','.canvasDraw',function(mouseEvent) {
@@ -881,29 +949,6 @@ var a;
 				  finishDrawing(mouseEvent, id);
 			   });
 			});
-			
-			/*$(document).on('mousedown','.canvasDraw',function(mouseEvent) {
-			   var id = $(this).attr('id');
-			   var position = getPosition(mouseEvent, id);
-			   //contexts[id].moveTo(position.X, position.Y);
-			   //contexts[id].beginPath();
-			   var XX = position.X;
-			   var YY = position.Y;
-			   $(this).mousemove(function (mouseEvent) {
-				  //contexts[id].clearRect(0, 0, 400, 400);
-				  contexts[id].beginPath();
-				  contexts[id].moveTo(XX, YY);
-				   var position = getPosition(mouseEvent, id);
-				   contexts[id].lineTo(position.X, position.Y);
-				   
-			   }).mouseup(function (mouseEvent) {
-				   contexts[id].stroke();
-				  contexts[id].closePath();
-				  finishDrawing(mouseEvent, id);
-			   }).mouseout(function (mouseEvent) {
-				  finishDrawing(mouseEvent, id);
-			   });
-			});*/
 		}
 	});
 	  
@@ -923,8 +968,6 @@ var a;
 		  x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
 		  y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
 	   }
-	   //alert(y - canvas.offsetTop - parentOffset.top);
-	   //return { X: x - canvas.offsetLeft - cparentOffset.left, Y: y - canvas.offsetTop - cparentOffset.top + cparentTop};
 	   return { X: x - canvas.offsetLeft - cparentOffset.left, Y: y - canvasOffset.top};
 	}
  
@@ -942,6 +985,7 @@ var a;
 	// by the mouse down event
 	function finishDrawing(mouseEvent, id) {
 		//drawLine(mouseEvent, id);
+		$('#patients span.undoTool').addClass('active');
 		var can = document.getElementById(id); 
 		var img = can.toDataURL();
 		restorePoints[id].push(restorePoint[id]);
@@ -956,7 +1000,6 @@ var a;
 		if($(this).hasClass('deactivated')) {
 			return false;
 		} else {
-			var aC = activeCanvas;
 			var id = $(this).attr("rel");
 			var txt = ALERT_DELETE;
 			var langbuttons = {};
@@ -968,16 +1011,19 @@ var a;
 					if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/treatments&request=binDiagnose&id=" + id, success: function(data){
 						if(data){
+							var canvasid = $('canvas[rel='+id+']').attr('id');
+							restorePoints[canvasid] = [];
+							restorePoint[canvasid] = [];
 							$("#canvasList_"+id).prev().trigger('click');
 							$("#canvasList_"+id).slideUp(function(){ 
-																  
-																		$('#dia'+id).remove();
-																		var cid = aC.id;
-																		$('#'+cid).remove();
-																		//$(this).prev().trigger('click');
-																  	$(this).remove();
-																	});
-							
+									$(this).remove();
+							});
+							$('#dia-'+id).fadeOut(function(){ 
+									$(this).remove();
+							});
+							$('canvas[rel='+id+']').fadeOut(function(){ 
+									$(this).remove();
+							});
 						} 
 						}
 					});

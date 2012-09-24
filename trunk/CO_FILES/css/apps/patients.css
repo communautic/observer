@@ -102,11 +102,11 @@ background-color: #D2DCFF; }
 .loadEmployeesPhase2 { cursor: pointer }
 
 #patients .tbl-protocol td, #patients .elastic, #patients .elastic-two, .patients-colorTable {
-    background-color: #D2DCFF;
+    background-color: #E5E5E5;
 }
 
-#patients .active .tbl-protocol td, #patients .active .elastic {
-    background-color: red;
+#patients .tbl-protocol .active, #patients .active .elastic {
+    background-color: #d2dcff;
 }
 
 .td_border_top_right {
@@ -373,7 +373,41 @@ background: url("../../img/brainstorms_grid_stagegate.png") no-repeat scroll 1px
 #patients .tasks { width: 400px; height: 400px; border: 1px solid #000; float: left;}
 #patients .canvasDraw{ position: absolute; width: 400px; height: 400px; cursor: url("../../img/draw.gif") 2 2, crosshair;}
 #patients .canvasDraw:active { cursor: url("../../img/draw.gif") 2 2, crosshair;}
-#patients .loadCanvas { cursor: pointer; background: #ccc; }
-#patients .loadCanvas.active { cursor: pointer; background: red; }
+#patients .circle { position: absolute; cursor: pointer; background: #fff; border-radius: 50% 50% 50% 50%; 
+    display: block;
+    height: 18px;
+    width: 18px; }
+#patients .circle div { padding-top: 1px; text-align: center; font-weight: bold; font-size: 13px; }
+#patients .circle0 { border: 2px solid #3C4664; color: #3C4664; }
+#patients .circle1 { border: 2px solid #EB4600; color: #EB4600; }
+#patients .circle2 { border: 2px solid #915500; color: #915500; }
+#patients .circle3 { border: 2px solid #0A960A; color: #0A960A; }
+#patients .circle4 { border: 2px solid #AA19AA; color: #AA19AA; }
+#patients .circle5 { border: 2px solid #3C4664; color: #3C4664; }
+#patients .circle6 { border: 2px solid #EB4600; color: #EB4600; }
+#patients .circle7 { border: 2px solid #915500; color: #915500; }
+#patients .circle8 { border: 2px solid #0A960A; color: #0A960A; }
+#patients .circle9 { border: 2px solid #AA19AA; color: #AA19AA; }
+
+/*#patients .loadanvas.active { cursor: pointer; background: red; }*/
 #patients .loadCanvasList { cursor: pointer; background: #ccc; }
 #patients .loadCanvasList.active { cursor: pointer; background: red; }
+
+#patients .canvasToolsOuter { position: relative; height: 10px; z-index: 998}
+#patients .canvasTools { position: absolute; left: 30px; height: 26px; width: 370px; z-index: 999; }
+#patients .canvasTools span { display: inline-block; width: 22px; height: 24px; background: url(../../img/drawtools.png) no-repeat; margin-right: 30px; }
+#patients .canvasTools span:hover { cursor: pointer; }
+
+#patients .canvasTools span.addTool { background-position: 0px 0px; }
+#patients .canvasTools span.addTool:hover { background-position: 0px -30px; }
+#patients .canvasTools span.penTool { background-position: -30px 0px; }
+#patients .canvasTools span.penTool:hover { background-position: -30px -30px; }
+#patients .canvasTools span.penTool.active { background-position: -30px -30px; }
+#patients .canvasTools span.erasorTool { background-position: -60px 0px; }
+#patients .canvasTools span.erasorTool:hover { background-position: -60px -30px; }
+#patients .canvasTools span.erasorTool.active { background-position: -60px -30px; }
+#patients .canvasTools span.clearTool { background-position: -90px 0px; }
+#patients .canvasTools span.clearTool:hover { background-position: -90px -30px; }
+#patients .canvasTools span.undoTool { background-position: -120px 0px; }
+#patients .canvasTools span.undoTool:hover { background-position: -120px -30px; }
+#patients .canvasTools span.undoTool.active { background-position: -120px -30px; }
