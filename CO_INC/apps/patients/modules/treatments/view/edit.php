@@ -71,10 +71,18 @@
 	</ul>
     <div id="PatientsTreatmentsTabsContent" class="contentTabsContent">
         <div id="PatientsTreatmentsFirst">
-        <div><a href="#" class="addDiagnose">Add</a> <a href="#" class="clearActive">Clear</a> <a href="#" class="undoDraw">Undo</a> <a href="#" class="erasor">erase</a> <a href="#" class="draw">draw</a></div>
+        <div class="canvasToolsOuter">
+        <div class="canvasTools">
+        	<span class="addTool"></span>
+            <span class="penTool active"></span>
+            <span class="erasorTool"></span>
+            <span class="clearTool"></span>
+            <span class="undoTool"></span>
+        </div>
+        </div>
         <table border="0" cellpadding="0" cellspacing="0" class="table-content">
                 <tr>
-                    <td style="width:400px;"><div style="position: relative;"><div class="canvasDiv">
+                    <td style="width:401px;"><div style="position: relative; width: 400px; height: 400px; border-top: 1px solid #fff; border-right: 1px solid #ccc; background: #d3ddff;"><div class="canvasDiv">
                     <?php $i = 1; 
 							$j = $treatment->diagnoses;
                         foreach($diagnose as $value) { 
@@ -82,24 +90,26 @@
 							if($i == 1) {
 								$active = ' active';
 							}
+							$curcol = ($i-1) % 10;
 							?>
                             <canvas class="canvasDraw" id="c<?php echo $i;?>" width="400" height="400" style="z-index: <?php echo $j;?>" rel="<?php echo $value->id;?>"></canvas>
-                            <div id="dia-<?php echo $value->id;?>" style="position: absolute; width: 30px; height: 30px; z-index: 10<?php echo $i;?>; top: <?php echo $value->y;?>px; left: <?php echo $value->x;?>px;" class="loadCanvas<?php echo $active;?>" rel="<?php echo $i;?>"><?php echo $i;?></div>
+                            <div id="dia-<?php echo $value->id;?>" style="z-index: 10<?php echo $i;?>; top: <?php echo $value->y;?>px; left: <?php echo $value->x;?>px;" class="loadCanvas circle circle<?php echo $curcol;?> <?php echo $active;?>" rel="<?php echo $i;?>"><div><?php echo $i;?></div></div>
                         <?php 
 						$i++;
 						$j--;
 						} ?>
                     </div></div></td>
-                	<td valign="top"><div id="canvasDivText"><?php 
+                	<td valign="top" style=""><div id="canvasDivText" style="border-left: 1px solid #fff; background: #e5e5e5; height: 401px;"><?php 
 					$i = 1;
                         foreach($diagnose as $value) { 
 						$active = '';
 							if($i == 1) {
 								$active = ' active';
 							}
+							$curcol = ($i-1) % 10;
                             include("diagnose.php");
 							$i++;
-                         } ?></div></td>
+                         } ?><div style="height: 1px; background: #fff;"></div></div></td>
                 </tr>
             </table>
 			
