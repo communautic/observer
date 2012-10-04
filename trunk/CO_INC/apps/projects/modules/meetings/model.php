@@ -556,7 +556,7 @@ class ProjectsMeetingsModel extends ProjectsModel {
  	function updateCheckpoint($id,$date){
 		global $session;
 		$date = $this->_date->formatDate($date);
-		$q = "UPDATE " . CO_TBL_USERS_CHECKPOINTS . " SET date = '$date' WHERE uid = '$session->uid' and app = 'projects' and module = 'meetings' and app_id='$id'";
+		$q = "UPDATE " . CO_TBL_USERS_CHECKPOINTS . " SET date = '$date', status='0' WHERE uid = '$session->uid' and app = 'projects' and module = 'meetings' and app_id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			return true;

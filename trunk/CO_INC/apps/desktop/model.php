@@ -58,7 +58,7 @@ class DesktopModel extends Model {
 		$now = gmdate("Y-m-d");
 		$string = "";
 		
-		$q = "select * from " . CO_TBL_USERS_CHECKPOINTS . " where uid = '$session->uid' and date <= '$now' ORDER BY date DESC";
+		$q = "select * from " . CO_TBL_USERS_CHECKPOINTS . " where uid = '$session->uid' and date <= '$now' and status ='0' ORDER BY date DESC";
 		$result = mysql_query($q, $this->_db->connection);
 		$checkpoints = "";
 		while ($row = mysql_fetch_array($result)) {
@@ -114,7 +114,7 @@ class DesktopModel extends Model {
 
 	function markCheckpointRead($app,$module,$id) {
 		global $session;
-		$q = "DELETE FROM " . CO_TBL_USERS_CHECKPOINTS . " where uid = '$session->uid' and app = '$app' and module = '$module' and app_id = '$id'";
+		$q = "UPDATE " . CO_TBL_USERS_CHECKPOINTS . " set status='1' where uid = '$session->uid' and app = '$app' and module = '$module' and app_id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 		  	return true;
