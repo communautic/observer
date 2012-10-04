@@ -355,9 +355,8 @@ $(document).ready(function() {
 		$("#"+ele).data('initial_value', $("#"+ele).html());
 		var obj = getCurrentModule();
 		ed.onKeyUp.add(function(ed, l) {
-								var content = ed.getContent();
+			var content = ed.getContent();
 			if (content != $("#"+ele).data('initial_value')) {
-				 //alert('changed');
 				formChanged = true;
 				$("#"+ele).data('initial_value', content);
 			}
@@ -365,7 +364,6 @@ $(document).ready(function() {
 		ed.onChange.add(function(ed, l) {
 			var content = ed.getContent();
 			if (content != $("#"+ele).data('initial_value')) {
-				 //alert('changed');
 				formChanged = true;
 				$("#"+ele).data('initial_value', content);
 			}
@@ -373,12 +371,10 @@ $(document).ready(function() {
 		ed.onPaste.add(function(ed, l) {
 			var content = ed.getContent();
 			if (content != $("#"+ele).data('initial_value')) {
-				 //alert('changed');
 				formChanged = true;
 				$("#"+ele).data('initial_value', content);
 			}
 		});
-		
 		//FF
 		$(ed.getDoc()).bind('blur', function(){ 
 			if(confirmNavigation()) {
@@ -387,7 +383,6 @@ $(document).ready(function() {
 				$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 			}
 		});
-		
 		// Webkit
 		$(ed.getWin()).bind('blur', function(){ 
 			if(confirmNavigation()) {
@@ -396,7 +391,6 @@ $(document).ready(function() {
 				$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 			}
 		});
-		
 		// Tab functionality
 		ed.onKeyDown.add(function(inst, e) {
 			// Firefox uses the e.which event for keypress
@@ -414,6 +408,9 @@ $(document).ready(function() {
 				return false;
 			}
     	});
+		setTimeout(function() {
+			$("#forumsvdocContent").tinymce().execCommand('mceAutoResize');			
+		}, 300)
 	}
 
 	$("#forumsvdocContent").livequery(function() {	 
@@ -438,9 +435,10 @@ $(document).ready(function() {
         	theme_advanced_statusbar_location : "none",
 			content_css : "tiny_mce/editor.content.css",
 			autosave_ask_before_unload : false,
+			autoresize_on_init : false,
 			init_instance_callback: myCustomInitInstance
 		});
 		})
 	})
-	
+
 });
