@@ -108,7 +108,7 @@ function projectSendResponse(data) {
 
 
 function getCurrentApp() {
-	var app = $("#appnav .active-app").attr("rel");
+	var app = $("#appnav span.active-app").attr("rel");
 	return app;
 }
 
