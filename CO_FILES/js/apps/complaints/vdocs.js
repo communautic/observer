@@ -355,7 +355,7 @@ $(document).ready(function() {
 		$("#"+ele).data('initial_value', $("#"+ele).html());
 		var obj = getCurrentModule();
 		ed.onKeyUp.add(function(ed, l) {
-								var content = ed.getContent();
+			var content = ed.getContent();
 			if (content != $("#"+ele).data('initial_value')) {
 				formChanged = true;
 				$("#"+ele).data('initial_value', content);
@@ -411,6 +411,9 @@ $(document).ready(function() {
 				return false;
 			}
     	});
+		setTimeout(function() {
+			$("#complaintsvdocContent").tinymce().execCommand('mceAutoResize');			
+		}, 300)
 	}
 
 	$("#complaintsvdocContent").livequery(function() {	 
@@ -435,6 +438,7 @@ $(document).ready(function() {
         	theme_advanced_statusbar_location : "none",
 			content_css : "tiny_mce/editor.content.css",
 			autosave_ask_before_unload : false,
+			autoresize_on_init : false,
 			init_instance_callback: myCustomInitInstance
 		});
 		})

@@ -55,7 +55,6 @@ function patientsDocuments(name) {
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
 		}
-		
 		formData[formData.length] = processListApps('document_access');
 	 }
  
@@ -305,7 +304,14 @@ function patientsDocuments(name) {
 	
 	this.downloadDocument = function(id) {
 		var url = "/?path=apps/patients/modules/documents&request=downloadDocument&id=" + id;
-		$("#documentloader").attr('src', url);
+		if(iOS()) {
+			//url = 'http://www.google.com';
+			$("#iosLink").attr('href', url).attr('target','_blank').click();
+			//$("#iosLink").trigger('click');
+			//$(document).on('click','#iosLink',function(e) {
+		} else {
+			$("#documentloader").attr('src', url);
+		}
 	}
 
 
@@ -366,7 +372,11 @@ function patientsDocuments(name) {
 	
 	this.actionHelp = function() {
 		var url = "/?path=apps/patients/modules/documents&request=getHelp";
-		$("#documentloader").attr('src', url);
+		if(iOS()) {
+			window.open(url);
+		} else {
+			$("#documentloader").attr('src', url);
+		}
 	}
 
 
