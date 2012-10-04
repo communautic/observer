@@ -344,7 +344,7 @@ $(document).ready(function() {
 		} else {
 			var id = href[3];
 		}
-		//desktop.markCheckpointRead(app,module,id);
+		desktop.markCheckpointRead(app,module,id);
 		externalLoadThreeLevels(href[4],href[1],href[2],href[3],href[0]);
 	});
 

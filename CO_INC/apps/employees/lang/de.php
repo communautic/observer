@@ -59,9 +59,9 @@ $lang["EMPLOYEE_PRIVATE_PHONE"] = 'Telefon';
 $lang["EMPLOYEE_PRIVATE_EMAIL"] = 'E-mail';
 
 $lang["EMPLOYEE_EDUCATION"] = 'Schulbildung';
-$lang["EMPLOYEE_EDUCATION_ADDITIONAL"] = 'Zusatzausbildungen';
-$lang["EMPLOYEE_EXPERIENCE"] = 'Berufserfahrung/intern';
-$lang["EMPLOYEE_EXPERIENCE_EXTERNAL"] = 'Berufserfahrung/extern';
+$lang["EMPLOYEE_EDUCATION_ADDITIONAL"] = 'Kompetenzaufbau';
+$lang["EMPLOYEE_EXPERIENCE"] = 'Berufserfahrungen';
+$lang["EMPLOYEE_EXPERIENCE_EXTERNAL"] = 'Zusatzausbildungen';
 
 $lang["EMPLOYEE_HANDBOOK"] = 'Personalakt';
 
