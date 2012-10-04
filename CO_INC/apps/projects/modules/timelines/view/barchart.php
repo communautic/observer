@@ -183,7 +183,7 @@ foreach($project["phases"] as $key => &$value){ ?>
                 	<!-- task tooltip -->
             		<div class="coTooltipHtml" style="display: none">
 						<?php echo($project["phases"][$key]["tasks"][$tkey]["text"]);?><br />
-                        <?php echo($project["phases"][$key]["tasks"][$tkey]["startdate"]);?> - <?php echo($project["phases"][$key]["tasks"][$tkey]["enddate"]);?><br />
+                        <?php echo($project["phases"][$key]["tasks"][$tkey]["startdate"]);?><br />
 					</div>
                 </div>
                 <!-- milestone dependency -->
