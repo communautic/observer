@@ -471,7 +471,7 @@ function patientsTreatments(name) {
 		$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/treatments&request=addDiagnose&mid=" + mid + "&num=" + num, success: function(id){
 			//$('div.loadCanvas').removeClass('active');
 			$('div.loadCanvasList .tcell-right').removeClass('active');
-			var html = '<canvas class="canvasDraw" id="c'+num+'" width="400" height="400" style="z-index: '+num+'" rel="'+id+'"></canvas><div id="dia-'+id+'" style="position: absolute; width: 30px; height: 30px; z-index: '+zIndexes+'; top: 20px; left: 20px;" class="loadCanvas active" rel="'+num+'"><div class="circle circle'+curcol+'"><div>'+num+'</div></div></div>';
+			var html = '<canvas class="canvasDraw" id="c'+num+'" width="400" height="400" style="z-index: '+num+'" rel="'+id+'"></canvas><div id="dia-'+id+'" style="position: absolute; width: 30px; height: 30px; z-index: '+zIndexes+'; top: '+30*num+'px; left: 30px;" class="loadCanvas active" rel="'+num+'"><div class="circle circle'+curcol+'"><div>'+num+'</div></div></div>';
 			var htmltext = '<div id="canvasList_'+id+'" class="treatmentouter loadCanvasList" rel="'+num+'"><table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol"><tr><td style="width: 40px;"><span class="selectTextarea"><span><div class="circle  circle'+curcol+'"><div>'+num+'</div></div></span></span></td><td class="tcell-right active"><textarea name="canvasList_text['+id+']" class="elastic"></textarea><input name="canvasList_id['+id+']" type="hidden" value="'+id+'" /></td><td width="30"><a class="binDiagnose" rel="'+id+'"><span class="icon-delete"></span></a></td></tr></table></div>';
 			$('#patients .canvasDiv').append(html);
 			$('#canvasDivText').append(htmltext);
@@ -905,20 +905,17 @@ var colors = ['#3C4664','#EB4600','#915500','#0A960A','#AA19AA','#3C4664','#EB46
             }
 			
 			$(document).on('touchend','.canvasDraw',function(mouseEvent) {
-			   var id = $(this).attr('id');
-				
+				var id = $(this).attr('id');
 				if (drawer[id].isDrawing) {
-					
-							 //drawer[id].touchmove(coors);
-							 drawer[id].isDrawing = false;
-							 
-							 var can = document.getElementById(id); 
-							var img = can.toDataURL();
-							restorePoints[id].push(restorePoint[id]);
-							restorePoint[id] = img;
-							var rel = $('#'+id).attr('rel');
-							patients_treatments.saveDrawing(rel,img);
-						  }
+					drawer[id].isDrawing = false;
+					$('#patients span.undoTool').addClass('active');
+					var can = document.getElementById(id); 
+					var img = can.toDataURL();
+					restorePoints[id].push(restorePoint[id]);
+					restorePoint[id] = img;
+					var rel = $('#'+id).attr('rel');
+					patients_treatments.saveDrawing(rel,img);
+				}
 			});
 
 			/*$('.canvasDraw').livequery(function() {

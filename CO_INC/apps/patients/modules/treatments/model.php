@@ -556,7 +556,7 @@ class PatientsTreatmentsModel extends PatientsModel {
  	function updateCheckpoint($id,$date){
 		global $session;
 		$date = $this->_date->formatDate($date);
-		$q = "UPDATE " . CO_TBL_USERS_CHECKPOINTS . " SET date = '$date' WHERE uid = '$session->uid' and app = 'patients' and module = 'treatments' and app_id='$id'";
+		$q = "UPDATE " . CO_TBL_USERS_CHECKPOINTS . " SET date = '$date', status='0' WHERE uid = '$session->uid' and app = 'patients' and module = 'treatments' and app_id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			return true;
@@ -609,8 +609,8 @@ class PatientsTreatmentsModel extends PatientsModel {
 		global $session, $lang;
 		
 		$now = gmdate("Y-m-d H:i:s");
-		
-		$q = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS_DIAGNOSES . " set mid='$mid', xy='20x20', sort='$num'";
+		$y = $num*30;
+		$q = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS_DIAGNOSES . " set mid='$mid', xy='30x$y', sort='$num'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id = mysql_insert_id();		
 		return $id;
