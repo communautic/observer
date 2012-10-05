@@ -267,6 +267,14 @@ class Controller extends MySQLDB {
 		return $html;
 	}
 	
+	function isIOS() {
+		if(strpos($_SERVER['HTTP_USER_AGENT'], 'iPhone') || strpos($_SERVER['HTTP_USER_AGENT'], 'iPad')){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 }
 
 $controller = new Controller();
