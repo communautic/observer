@@ -88,8 +88,8 @@ var num_apps = <?php echo($num_apps);?>;
 var co_files = '<?php echo CO_FILES;?>';
 var co_lang = '<?php echo $session->userlang;?>';
 </script>
-<script src="<?php echo $protocol;?>ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="<?php echo $protocol;?>ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/jquery-ui.min.js"></script>
+<script src="<?php echo $protocol;?>ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="<?php echo $protocol;?>ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/datejs/date.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/datejs/de-AT.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/datejs/time.js"></script>
@@ -110,8 +110,7 @@ var co_lang = '<?php echo $session->userlang;?>';
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/lang/<?php echo($session->userlang); ?>.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/init.js"></script>
 <?php // include mobile js
-if(strpos($_SERVER['HTTP_USER_AGENT'], 'iPhone') || strpos($_SERVER['HTTP_USER_AGENT'], 'iPad')){ 
-?>
+if($controller->isIOS()){ ?>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/mobile/jquery.ui.touch-punch.min.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/mobile/jquery.doubletap.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/mobile/init.js"></script>
@@ -125,7 +124,6 @@ echo "var " . $app . "_num_modules = " . ${$app}->num_modules . ";\n";
 ?>
 </script>
 <?php // include app specific js
-//foreach($controller->applications as $app => $display) {
 foreach($userapps as $key => $app) {
 	echo '<script type="text/javascript" src="' . CO_FILES . '/js/apps/' . $app . '/init.js"></script>';
 	foreach(${$app}->modules as $module => $value) {
