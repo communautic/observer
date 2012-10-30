@@ -192,9 +192,9 @@ class Renderer extends Abstract_Renderer {
         $child_style->z_index = false;
       }
       
-      else {
+      //else {
         $this->render($child);
-      }
+      //}
     }
       
     // Ends the overflow: hidden box
