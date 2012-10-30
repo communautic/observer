@@ -50,6 +50,9 @@ function patientsTreatments(name) {
 				formData[formData.length] = { "name": name, "value": text };
 			}
 		});
+		
+		formData[formData.length] = processListApps('doctor');
+		formData[formData.length] = processCustomTextApps('doctor_ct');
 		formData[formData.length] = processListApps('treatment_access');
 	 }
 	 
