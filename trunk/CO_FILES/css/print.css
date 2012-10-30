@@ -78,3 +78,19 @@ hr { height: 1pt; color: #000; background-color: #000; border: 0; }
 }
 
 .timeline-legend td { height: 22px; }
+
+.circle { position: absolute; cursor: pointer; background: #fff; border-radius: 50% 50% 50% 50%; 
+    display: block;
+    height: 18px;
+    width: 18px; }
+.circle div { padding-top: 1px; text-align: center; font-weight: bold; font-size: 13px; }
+.circle0 { border: 2px solid #3C4664; color: #3C4664; }
+.circle1 { border: 2px solid #EB4600; color: #EB4600; }
+.circle2 { border: 2px solid #915500; color: #915500; }
+.circle3 { border: 2px solid #0A960A; color: #0A960A; }
+.circle4 { border: 2px solid #AA19AA; color: #AA19AA; }
+.circle5 { border: 2px solid #3C4664; color: #3C4664; }
+.circle6 { border: 2px solid #EB4600; color: #EB4600; }
+.circle7 { border: 2px solid #915500; color: #915500; }
+.circle8 { border: 2px solid #0A960A; color: #0A960A; }
+.circle9 { border: 2px solid #AA19AA; color: #AA19AA; }
