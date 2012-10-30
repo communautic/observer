@@ -1000,6 +1000,15 @@ $(document).ready(function() {
 		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 		$("#modalDialog").dialog("close");
 	});
+	
+	$(document).on('click', 'a.insertFromDialog', function(e) {
+		e.preventDefault();
+		var field = $(this).attr("field");
+		var gid = $(this).attr("gid");
+		var title = $(this).attr("title");
+		var obj = getCurrentModule();
+		obj.insertFromDialog(field,gid,title);
+	});
 
 	$("#tabs").livequery(function() { 
 		$(this).tabs({
@@ -2122,7 +2131,7 @@ function externalLoadThreeLevels(objectname,f,p,ph,app) { // from Desktop
 	var num_modules = window[objectname+'_num_modules'];
 	
 	
-	if(objectname == app && (objectname == 'projects' || objectname == 'productions' || objectname == 'brainstorms' || objectname == 'forums' || objectname == 'complaints' || objectname == 'employees')) {
+	if(objectname == app && (objectname == 'projects' || objectname == 'productions' || objectname == 'brainstorms' || objectname == 'forums' || objectname == 'complaints' || objectname == 'employees' || objectname == 'patients')) {
 		object.$first.data({ "first" : f});
 		$('#'+objectname+'1 .module-click').removeClass('deactivated');
 		var index = $('#'+objectname+'1 .module-click').index($('#'+objectname+'1 .module-click[rel='+f+']'));
