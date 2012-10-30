@@ -28,10 +28,9 @@ function patientsApplication(name) {
 		}
 	
 		formData[formData.length] = processListApps('folder');
-		formData[formData.length] = processListApps('kind');
-		formData[formData.length] = processListApps('area');
-		formData[formData.length] = processListApps('department');
-		formData[formData.length] = processListApps('education');
+		formData[formData.length] = processListApps('management');
+		formData[formData.length] = processCustomTextApps('management_ct');
+		formData[formData.length] = processListApps('insurance');
 		//formData[formData.length] = processListApps('status');
 	}
 
@@ -56,15 +55,15 @@ function patientsApplication(name) {
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients&request=updateStatus&id=" + id + "&date=" + date + "&status=" + status, cache: false, success: function(data){
 				switch(data.status) {
 					case "0":
-						$("#patients2 .active-link .module-item-status").addClass("module-item-active-trial").removeClass("module-item-active-maternity").removeClass("module-item-active-leave");
+						$("#patients2 .active-link .module-item-status").removeClass("module-item-active-maternity");
+						$("#patientDurationEnd").html($("#patients-right input[name='status_date']").val());
+					break;
+					case "1":
+						$("#patients2 .active-link .module-item-status").addClass("module-item-active-maternity");
 						$("#patientDurationEnd").html($("#patients-right input[name='status_date']").val());
 					break;
 					case "2":
-						$("#patients2 .active-link .module-item-status").addClass("module-item-active-maternity").removeClass("module-item-active-trial").removeClass("module-item-active-leave");
-						$("#patientDurationEnd").html($("#patients-right input[name='status_date']").val());
-					break;
-					case "3":
-						$("#patients2 .active-link .module-item-status").addClass("module-item-active-leave").removeClass("module-item-active-trial").addClass("module-item-active-maternity");
+						$("#patients2 .active-link .module-item-status").removeClass("module-item-active-maternity");
 						$("#patientDurationEnd").html($("#patients-right input[name='status_date']").val());
 					break;
 					default:
@@ -858,15 +857,6 @@ $(document).ready(function() {
 
 
 	$(document).on('click', 'a.insertPatientFolderfromDialog', function(e) {
-		e.preventDefault();
-		var field = $(this).attr("field");
-		var gid = $(this).attr("gid");
-		var title = $(this).attr("title");
-		var obj = getCurrentModule();
-		obj.insertFromDialog(field,gid,title);
-	});
-	
-	$(document).on('click', 'a.insertFromDialog', function(e) {
 		e.preventDefault();
 		var field = $(this).attr("field");
 		var gid = $(this).attr("gid");

@@ -868,15 +868,6 @@ $(document).ready(function() {
 		obj.insertFromDialog(field,gid,title);
 	});
 	
-	$(document).on('click', 'a.insertFromDialog', function(e) {
-		e.preventDefault();
-		var field = $(this).attr("field");
-		var gid = $(this).attr("gid");
-		var title = $(this).attr("title");
-		var obj = getCurrentModule();
-		obj.insertFromDialog(field,gid,title);
-	});
-	
 	
 // INTERLINKS FROM Content
 	
