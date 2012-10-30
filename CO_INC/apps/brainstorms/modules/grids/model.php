@@ -799,6 +799,7 @@ class BrainstormsGridsModel extends BrainstormsModel {
 		$arr = $this->getDetails($id);
 		$grid = $arr["grid"];
 		$cols = $arr["cols"];
+		$brainstorm_id = $grid->pid;
 		
 		$now = gmdate("Y-m-d H:i:s");
 		$title = mysql_real_escape_string($grid->title);
@@ -812,11 +813,11 @@ class BrainstormsGridsModel extends BrainstormsModel {
 			$projectsAccessModel->setDetails($pid,$session->uid,"");
 		}*/
 		// copy all access 
-		$qa = "SELECT * FROM co_brainstorms_access where pid='$id'";
+		$qa = "SELECT * FROM co_brainstorms_access where pid='$brainstorm_id'";
 		$resulta = mysql_query($qa, $this->_db->connection);
 		while($rowa = mysql_fetch_array($resulta)) {
 			$admins = $rowa["admins"];
-			$guests = $rowa["guests"];	
+			$guests = $rowa["guests"];
 			$qab = "INSERT INTO co_projects_access set pid = '$pid', admins = '$admins', guests = '$guests', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 			$resultab = mysql_query($qab, $this->_db->connection);
    		}
