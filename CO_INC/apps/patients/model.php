@@ -476,15 +476,14 @@ class PatientsModel extends Model {
 		$itemstatus = "";
 		switch($array["status"]) {
 			case 0:
-				$itemstatus = " module-item-active-trial";
+				$itemstatus = "";
 			break;
-			case 2:
+			case 1:
 				$itemstatus = " module-item-active-maternity";
 			break;
-			case 3:
-				$itemstatus = " module-item-active-leave";
+			case 2:
+				$itemstatus = "";
 			break;
-			
 	  	}
 		$array["itemstatus"] = $itemstatus;
 		
@@ -589,56 +588,42 @@ class PatientsModel extends Model {
 		} // EOF perms
 		
 		// dates
-		
-		$today = date("Y-m-d");
-		if($today < $array["startdate"]) {
-			$today = $array["startdate"];
-		}
 		$array["avatar"] = $contactsmodel->_users->getAvatar($array["cid"]);
-		$array["startdate"] = $this->_date->formatDate($array["startdate"],CO_DATE_FORMAT);
-		$array["enddate"] = $this->_date->formatDate($array["enddate"],CO_DATE_FORMAT);
 		$array["dob"] = $this->_date->formatDate($array["dob"],CO_DATE_FORMAT);
+		$array["management_print"] = $contactsmodel->getUserListPlain($array['management']);
+		$array["management"] = $contactsmodel->getUserList($array['management'],'complaintsmanagement', "", $array["canedit"]);
+		$array["management_ct"] = empty($array["management_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['management_ct'];
 
 		$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
 		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
 		
 		// other functions
 		$array["folder"] = $this->getPatientFolderDetails($array["folder"],"folder");		
-		$array["kind"] = $this->getPatientIdDetails($array["kind"],"patientskind");
-		$array["area"] = $this->getPatientIdDetails($array["area"],"patientsarea");
-		$array["department"] = $this->getPatientIdDetails($array["department"],"patientsdepartment");
-		$array["education"] = $this->getPatientIdDetails($array["education"],"patientseducation");
+		$array["insurance"] = $this->getPatientIdDetails($array["insurance"],"patientsinsurance");
 		
 		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
 		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
 		$array["current_user"] = $session->uid;
 		
 		$array["status_planned_active"] = "";
-		$array["status_inprogress_active"] = "";
 		$array["status_finished_active"] = "";
 		$array["status_stopped_active"] = "";
 		switch($array["status"]) {
 			case "0":
-				$array["status_text"] = $lang["GLOBAL_STATUS_TRIAL"];
-				$array["status_text_time"] = $lang["GLOBAL_STATUS_TRIAL_TIME"];
+				$array["status_text"] = $lang["PATIENT_STATUS_PLANNED"];
+				$array["status_text_time"] = $lang["PATIENT_STATUS_PLANNED_TIME"];
 				$array["status_planned_active"] = " active";
 				$array["status_date"] = $this->_date->formatDate($array["planned_date"],CO_DATE_FORMAT);
 			break;
 			case "1":
-				$array["status_text"] = $lang["GLOBAL_STATUS_ACTIVE"];
-				$array["status_text_time"] = $lang["GLOBAL_STATUS_ACTIVE_TIME"];
-				$array["status_inprogress_active"] = " active";
-				$array["status_date"] = $this->_date->formatDate($array["inprogress_date"],CO_DATE_FORMAT);
-			break;
-			case "2":
-				$array["status_text"] = $lang["GLOBAL_STATUS_MATERNITYLEAVE"];
-				$array["status_text_time"] = $lang["GLOBAL_STATUS_MATERNITYLEAVE_TIME"];
+				$array["status_text"] = $lang["PATIENT_STATUS_FINISHED"];
+				$array["status_text_time"] = $lang["PATIENT_STATUS_FINISHED_TIME"];
 				$array["status_finished_active"] = " active";
 				$array["status_date"] = $this->_date->formatDate($array["finished_date"],CO_DATE_FORMAT);
 			break;
-			case "3":
-				$array["status_text"] = $lang["GLOBAL_STATUS_LEAVE"];
-				$array["status_text_time"] = $lang["GLOBAL_STATUS_LEAVE_TIME"];
+			case "2":
+				$array["status_text"] = $lang["PATIENT_STATUS_STOPPED"];
+				$array["status_text_time"] = $lang["PATIENT_STATUS_STOPPED_TIME"];
 				$array["status_stopped_active"] = " active";
 				$array["status_date"] = $this->_date->formatDate($array["stopped_date"],CO_DATE_FORMAT);
 			break;
@@ -701,15 +686,27 @@ class PatientsModel extends Model {
 		if($users_total == 0) { return $users; }
 		$i = 1;
 		foreach ($users_string as &$value) {
-			$q = "SELECT id, name from " . CO_TBL_PATIENTS_DIALOG_PATIENTS . " where id = '$value'";
-			$result_user = mysql_query($q, $this->_db->connection);
-			while($row_user = mysql_fetch_assoc($result_user)) {
-				$users .= '<span class="listmember" uid="' . $row_user["id"] . '">' . $row_user["name"] . '</span>';
-				if($i < $users_total) {
-					$users .= ', ';
+			if($field == "patientsinsurance") {
+				$q = "SELECT id, name, text from " . CO_TBL_PATIENTS_DIALOG_PATIENTS . " where id = '$value'";
+				$result_user = mysql_query($q, $this->_db->connection);
+				while($row_user = mysql_fetch_assoc($result_user)) {
+					$users .= '<span class="listmember" uid="' . $row_user["id"] . '">' . $row_user["name"] . $row_user["text"] . '</span>';
+					if($i < $users_total) {
+						$users .= ', ';
+					}
+				}
+			} else {
+				$q = "SELECT id, name from " . CO_TBL_PATIENTS_DIALOG_PATIENTS . " where id = '$value'";
+				$result_user = mysql_query($q, $this->_db->connection);
+				while($row_user = mysql_fetch_assoc($result_user)) {
+					$users .= '<span class="listmember" uid="' . $row_user["id"] . '">' . $row_user["name"] . '</span>';
+					if($i < $users_total) {
+						$users .= ', ';
+					}
 				}
 			}
 			$i++;
+			
 		}
 		return $users;
    }
@@ -718,16 +715,12 @@ class PatientsModel extends Model {
    /**
    * get details for the patient folder
    */
-   function setPatientDetails($id,$startdate,$enddate,$protocol,$protocol2,$protocol3,$folder,$number,$kind,$area,$department,$dob,$coo,$languages,$street_private,$city_private,$zip_private,$phone_private,$email_private,$education) {
+   function setPatientDetails($id,$management,$management_ct,$protocol,$folder,$number,$insurance,$dob,$coo) {
 		global $session, $contactsmodel;
-		
-		$startdate = $this->_date->formatDate($startdate);
-		$enddate = $this->_date->formatDate($enddate);
 		$dob = $this->_date->formatDate($dob);
-
 		$now = gmdate("Y-m-d H:i:s");
 		
-		$q = "UPDATE " . CO_TBL_PATIENTS . " set folder = '$folder', startdate='$startdate', enddate='$enddate',  protocol = '$protocol',  protocol2 = '$protocol2',  protocol3 = '$protocol3', number = '$number', kind = '$kind', area = '$area', department = '$department', dob = '$dob', coo = '$coo', languages = '$languages', street_private = '$street_private', city_private = '$city_private', zip_private = '$zip_private', phone_private = '$phone_private', email_private = '$email_private', education = '$education', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PATIENTS . " set folder = '$folder', management='$management', management_ct='$management_ct', protocol = '$protocol', number = '$number', insurance = '$insurance', dob = '$dob', coo = '$coo', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
@@ -747,12 +740,9 @@ class PatientsModel extends Model {
 				$sql = "planned_date";
 			break;
 			case "1":
-				$sql = "inprogress_date";
-			break;
-			case "2":
 				$sql = "finished_date";
 			break;
-			case "3":
+			case "2":
 				$sql = "stopped_date";
 			break;
 		}
@@ -889,13 +879,23 @@ class PatientsModel extends Model {
 			}
 		}
 		
-		if(in_array("objectives",$active_modules)) {
-			$patientsObjectivesModel = new PatientsObjectivesModel();
-			$q = "SELECT id FROM co_patients_objectives where pid = '$id'";
+		if(in_array("treatments",$active_modules)) {
+			$patientsTreatmentsModel = new PatientsTreatmentsModel();
+			$q = "SELECT id FROM co_patients_treatments where pid = '$id'";
 			$result = mysql_query($q, $this->_db->connection);
 			while($row = mysql_fetch_array($result)) {
 				$mid = $row["id"];
-				$patientsObjectivesModel->deleteObjective($mid);
+				$patientsTreatmentsModel->deleteTreatment($mid);
+			}
+		}
+		
+		if(in_array("reports",$active_modules)) {
+			$patientsReportsModel = new PatientsReportsModel();
+			$q = "SELECT id FROM co_patients_reports where pid = '$id'";
+			$result = mysql_query($q, $this->_db->connection);
+			while($row = mysql_fetch_array($result)) {
+				$mid = $row["id"];
+				$patientsReportsModel->deleteReport($mid);
 			}
 		}
 		
@@ -1479,6 +1479,14 @@ class PatientsModel extends Model {
 			$patientsObjectivesModel = new PatientsObjectivesModel();
 			$data["patients_objectives_items"] = $patientsObjectivesModel->getNavNumItems($id);
 		}
+		if(in_array("treatments",$active_modules)) {
+			$patientsTreatmentsModel = new PatientsTreatmentsModel();
+			$data["patients_treatments_items"] = $patientsTreatmentsModel->getNavNumItems($id);
+		}
+		if(in_array("reports",$active_modules)) {
+			$patientsReportsModel = new PatientsReportsModel();
+			$data["patients_reports_items"] = $patientsReportsModel->getNavNumItems($id);
+		}
 		if(in_array("meetings",$active_modules)) {
 			$patientsMeetingsModel = new PatientsMeetingsModel();
 			$data["patients_meetings_items"] = $patientsMeetingsModel->getNavNumItems($id);
@@ -1544,7 +1552,8 @@ class PatientsModel extends Model {
 		global $lang, $session, $patients;
 		$row = "";
 		if($app =='patients' && $module == 'patients') {
-			$q = "SELECT title,folder FROM " . CO_TBL_PATIENTS . " WHERE id='$id' and bin='0'";
+			//$q = "SELECT folder FROM " . CO_TBL_PATIENTS . " WHERE id='$id' and bin='0'";
+			$q = "SELECT a.folder,CONCAT(b.lastname,' ',b.firstname) as title FROM " . CO_TBL_PATIENTS . " as a, co_users as b where a.cid=b.id and a.id = '$id'";
 			$result = mysql_query($q, $this->_db->connection);
 			$row = mysql_fetch_array($result);
 			if(mysql_num_rows($result) > 0) {

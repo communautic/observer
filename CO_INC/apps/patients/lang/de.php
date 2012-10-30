@@ -30,34 +30,31 @@ $lang["PATIENT_FOLDER_CHART_STATUS"] = 'Status';
 $lang["PATIENT_TITLE"] = 'Patient';
 $lang['PATIENT_KICKOFF'] = 'Patienteneingang';
 
-$lang["PATIENT_CONTACT_TITLE"] = 'Anrede';
-$lang["PATIENT_CONTACT_TITLE2"] = 'Titel';
+
+$lang["PATIENT_STATUS_PLANNED"] = 'erfasst';
+$lang["PATIENT_STATUS_PLANNED_TIME"] = 'am';
+$lang["PATIENT_STATUS_FINISHED"] = 'in Behandlung';
+$lang["PATIENT_STATUS_FINISHED_TIME"] = 'seit';
+$lang["PATIENT_STATUS_STOPPED"] = 'in Evidenz';
+$lang["PATIENT_STATUS_STOPPED_TIME"] = 'seit';
+
+$lang["PATIENT_MANAGEMENT"] = 'Betreuung';
+
 $lang["PATIENT_CONTACT_POSITION"] = 'Position';
 $lang["PATIENT_CONTACT_PHONE"] = 'Telefon';
 $lang["PATIENT_CONTACT_EMAIL"] = 'E-mail';
-
-$lang["PATIENT_STARTDATE"] = 'Eintrittsdatum';
-$lang["PATIENT_ENDDATE"] = 'Austrittsdatum';
-$lang["PATIENT_NUMBER"] = 'Personalnummer';
-$lang["PATIENT_KIND"] = 'Kondition';
-$lang["PATIENT_AREA"] = 'Bereich';
-$lang["PATIENT_DEPARTMENT"] = 'Abteilung';
+$lang["PATIENT_INSURANCE"] = 'Versicherung';
+$lang["PATIENT_INSURANCE_NUMBER"] = 'Versicherungsnummer';
 $lang["PATIENT_DESCRIPTION"] = 'Historie';
 $lang["PATIENT_DOB"] = 'Geburtsdatum';
 $lang["PATIENT_COO"] = 'Nationalität';
-$lang["PATIENT_LANGUAGES"] = 'Sprachkenntnisse';
-$lang["PATIENT_SKILLS"] = 'Kompetenz';
 
 
-$lang["PATIENT_PRIVATE_STREET"] = 'Strasse';
+/*$lang["PATIENT_PRIVATE_STREET"] = 'Strasse';
 $lang["PATIENT_PRIVATE_CITY"] = 'Ort';
 $lang["PATIENT_PRIVATE_ZIP"] = 'Plz';
 $lang["PATIENT_PRIVATE_PHONE"] = 'Telefon';
-$lang["PATIENT_PRIVATE_EMAIL"] = 'E-mail';
-
-$lang["PATIENT_EDUCATION"] = 'Schulbildung';
-$lang["PATIENT_EDUCATION_ADDITIONAL"] = 'Zusatzausbildungen';
-$lang["PATIENT_EXPERIENCE"] = 'Berufserfahrung';
+$lang["PATIENT_PRIVATE_EMAIL"] = 'E-mail';*/
 
 $lang["PATIENT_HANDBOOK"] = 'Personalakt';
 

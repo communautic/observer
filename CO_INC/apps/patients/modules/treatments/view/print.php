@@ -4,193 +4,97 @@
         <td><strong><?php echo($treatment->title);?></strong></td>
 	</tr>
 </table>
-<table width="100%" class="standard-grey">
+<table width="100%" class="standard">
+	<tr>
+		<td class="tcell-left">Behandlungsdauer</td>
+		<td>&nbsp;</td>
+    </tr>
+</table>
+<table width="100%" class="standard">
 	<tr>
 		<td class="tcell-left"><?php echo $lang["PATIENT_TREATMENT_DATE"];?></td>
 		<td><?php echo($treatment->item_date)?></td>
     </tr>
 </table>
-<table width="100%" class="standard-grey">
+<?php if(!empty($treatment->doctor_print) || !empty($treatment->doctor_ct)) { ?>
+<table width="100%" class="standard">
 	<tr>
-	  <td class="tcell-left"><?php echo $lang["PATIENT_TREATMENT_TIME_START"];?></td>
-        <td><?php echo($treatment->start);?></td>
-	</tr>
-</table>
-<table width="100%" class="standard-grey">
-	<tr>
-	  <td class="tcell-left"><?php echo $lang["PATIENT_TREATMENT_TIME_END"];?></td>
-        <td><?php echo($treatment->end);?></td>
-	</tr>
-</table>
-<table width="100%" class="standard-grey">
-    <tr>
-	  <td class="tcell-left"><?php echo $lang["PATIENT_TREATMENT_PLACE"];?></td>
-        <td><?php echo($treatment->location);?></td>
-	</tr>
-</table>
-<?php if(!empty($treatment->participants_print) || !empty($treatment->participants_ct)) { ?>
-<table width="100%" class="standard-grey">
-	<tr>
-		<td class="tcell-left"><?php echo $lang["PATIENT_TREATMENT_ATTENDEES"];?></td>
-		<td><?php echo($treatment->participants_print)?><br /><?php echo($treatment->participants_ct);?></td>
+		<td class="tcell-left"><?php echo $lang["PATIENT_TREATMENT_DOCTOR"];?></td>
+		<td><?php echo($treatment->doctor_print)?><br /><?php echo($treatment->doctor_ct);?></td>
     </tr>
 </table>
 <?php } ?>
-<?php if(!empty($treatment->management_print) || !empty($treatment->management_ct)) { ?>
-<table width="100%" class="standard-grey">
+<?php if(!empty($treatment->protocol)) { ?>
+&nbsp;
+<table width="100%" class="protocol">
 	<tr>
-	  <td class="tcell-left"><?php echo $lang["PATIENT_TREATMENT_MANAGEMENT"];?></td>
-        <td><?php echo($treatment->management_print);?><br /><?php echo($treatment->management_ct);?></td>
+        <td class="tcell-left top"><?php echo $lang["PATIENT_TREATMENT_DOCTOR_DIAGNOSE"];?></td>
+        <td><?php echo(nl2br($treatment->protocol));?></td>
 	</tr>
 </table>
 <?php } ?>
+&nbsp;
 <table width="100%" class="standard-grey-paddingBottom">
 	<tr>
 	  <td class="tcell-left"><?php echo $lang["GLOBAL_STATUS"];?></td>
         <td><?php echo($treatment->status_text);?> <?php echo($treatment->status_text_time);?> <?php echo($treatment->status_date)?></td>
 	</tr>
 </table>
-&nbsp;
+
 <table width="100%" class="standard">
 	<tr>
-	  <td class="tcell-left">MA-Zufriedenheit</td>
-        <td>erreichte Zufriedenheit <?php echo $treatment->tab1result;?>%</td>
+	  <td class="tcell-left">Befundung</td>
+        <td>&nbsp;</td>
 	</tr>
 </table>
-<!-- Q1 -->
-<table width="100%" class="standard-grey-paddingBottom">
+<div style="height: 400px; width: 400px; position: relative;">
+<img src="<?php echo(CO_FILES);?>/img/body.png" />
+                    <?php $i = 1; 
+						$j = $treatment->diagnoses;
+                        foreach($diagnose as $value) { 
+							$active = '';
+							if($i == 1) {
+								$active = ' active';
+							}
+							$curcol = ($i-1) % 10;
+							?>
+                            
+                           <div style="position: absolute;"><img src="data:image/png;base64,<?php echo $value->canvas;?>" /></div>
+                           <div style="position: absolute; z-index: 10<?php echo $i;?>; top: <?php echo $value->y;?>px; left: <?php echo $value->x;?>px;" class="loadCanvas circle circle<?php echo $curcol;?> <?php echo $active;?>"><div><?php echo $i;?></div></div>
+                        <?php 
+						$i++;
+						$j--;
+						} ?>
+
+</div>
+<p>&nbsp;</p>
+<?php 
+					$i = 1;
+                        foreach($diagnose as $value) { 
+						$active = '';
+							if($i == 1) {
+								$active = ' active';
+							}
+							$curcol = ($i-1) % 10; ?>
+                                <table width="100%" class="standard">
 	<tr>
-	  <td><?php echo $lang["PATIENT_TREATMENT_TAB1_QUESTION_1"];?></td>
-        <td width="30"><?php echo $treatment->tab1q1_selected;?></td>
+	  <td><?php echo $value->text;?>&nbsp;</td>
+        <td width="30">&nbsp;</td>
 	</tr>
 </table>
-<?php echo(nl2br(strip_tags($treatment->tab1q1_text)));?>
-<!-- Q2 -->
-<table width="100%" class="standard-grey-paddingBottom">
+<?php 
+							$i++;
+                         } ?>
+<?php if(!empty($treatment->protocol2)) { ?>
+<table width="100%" class="protocol">
 	<tr>
-	  <td><?php echo $lang["PATIENT_TREATMENT_TAB1_QUESTION_2"];?></td>
-        <td width="30"><?php echo $treatment->tab1q2_selected;?></td>
+        <td class="tcell-left top"><?php echo $lang["PATIENT_TREATMENT_PROTOCOL2"];?></td>
+        <td><?php echo(nl2br($treatment->protocol2));?></td>
 	</tr>
 </table>
-<?php echo(nl2br(strip_tags($treatment->tab1q2_text)));?>
-<!-- Q3 -->
-<table width="100%" class="standard-grey-paddingBottom">
-	<tr>
-	  <td><?php echo $lang["PATIENT_TREATMENT_TAB1_QUESTION_3"];?></td>
-        <td width="30"><?php echo $treatment->tab1q3_selected;?></td>
-	</tr>
-</table>
-<?php echo(nl2br(strip_tags($treatment->tab1q3_text)));?>
-<!-- Q4 -->
-<table width="100%" class="standard-grey-paddingBottom">
-	<tr>
-	  <td><?php echo $lang["PATIENT_TREATMENT_TAB1_QUESTION_4"];?></td>
-        <td width="30"><?php echo $treatment->tab1q4_selected;?></td>
-	</tr>
-</table>
-<?php echo(nl2br(strip_tags($treatment->tab1q4_text)));?>
-<!-- Q5 -->
-<table width="100%" class="standard-grey-paddingBottom">
-	<tr>
-	  <td><?php echo $lang["PATIENT_TREATMENT_TAB1_QUESTION_5"];?></td>
-        <td width="30"><?php echo $treatment->tab1q5_selected;?></td>
-	</tr>
-</table>
-<?php echo(nl2br(strip_tags($treatment->tab1q5_text)));?>
+<?php } ?>
 &nbsp;
-<table width="100%" class="standard">
-	<tr>
-	  <td class="tcell-left">Leistungsbewertung</td>
-        <td>erreichte Leistung <?php echo $treatment->tab2result;?>%</td>
-	</tr>
-</table>
-<!-- Q1 -->
-<table width="100%" class="standard-grey-paddingBottom">
-	<tr>
-	  <td><?php echo $lang["PATIENT_TREATMENT_TAB2_QUESTION_1"];?></td>
-        <td width="30"><?php echo $treatment->tab2q1_selected;?></td>
-	</tr>
-</table>
-<?php echo(nl2br(strip_tags($treatment->tab2q1_text)));?>
-<!-- Q2 -->
-<table width="100%" class="standard-grey-paddingBottom">
-	<tr>
-	  <td><?php echo $lang["PATIENT_TREATMENT_TAB2_QUESTION_2"];?></td>
-        <td width="30"><?php echo $treatment->tab2q2_selected;?></td>
-	</tr>
-</table>
-<?php echo(nl2br(strip_tags($treatment->tab2q2_text)));?>
-<!-- Q3 -->
-<table width="100%" class="standard-grey-paddingBottom">
-	<tr>
-	  <td><?php echo $lang["PATIENT_TREATMENT_TAB2_QUESTION_3"];?></td>
-        <td width="30"><?php echo $treatment->tab2q3_selected;?></td>
-	</tr>
-</table>
-<?php echo(nl2br(strip_tags($treatment->tab2q3_text)));?>
-<!-- Q4 -->
-<table width="100%" class="standard-grey-paddingBottom">
-	<tr>
-	  <td><?php echo $lang["PATIENT_TREATMENT_TAB2_QUESTION_4"];?></td>
-        <td width="30"><?php echo $treatment->tab2q4_selected;?></td>
-	</tr>
-</table>
-<?php echo(nl2br(strip_tags($treatment->tab2q4_text)));?>
-<!-- Q5 -->
-<table width="100%" class="standard-grey-paddingBottom">
-	<tr>
-	  <td><?php echo $lang["PATIENT_TREATMENT_TAB2_QUESTION_5"];?></td>
-        <td width="30"><?php echo $treatment->tab2q5_selected;?></td>
-	</tr>
-</table>
-<?php echo(nl2br(strip_tags($treatment->tab2q5_text)));?>
-<!-- Q6 -->
-<table width="100%" class="standard-grey-paddingBottom">
-	<tr>
-	  <td><?php echo $lang["PATIENT_TREATMENT_TAB2_QUESTION_6"];?></td>
-        <td width="30"><?php echo $treatment->tab2q6_selected;?></td>
-	</tr>
-</table>
-<?php echo(nl2br(strip_tags($treatment->tab2q6_text)));?>
-<!-- Q7 -->
-<table width="100%" class="standard-grey-paddingBottom">
-	<tr>
-	  <td><?php echo $lang["PATIENT_TREATMENT_TAB2_QUESTION_7"];?></td>
-        <td width="30"><?php echo $treatment->tab2q7_selected;?></td>
-	</tr>
-</table>
-<?php echo(nl2br(strip_tags($treatment->tab2q7_text)));?>
-<!-- Q8 -->
-<table width="100%" class="standard-grey-paddingBottom">
-	<tr>
-	  <td><?php echo $lang["PATIENT_TREATMENT_TAB2_QUESTION_8"];?></td>
-        <td width="30"><?php echo $treatment->tab2q8_selected;?></td>
-	</tr>
-</table>
-<?php echo(nl2br(strip_tags($treatment->tab2q8_text)));?>
-<!-- Q9 -->
-<table width="100%" class="standard-grey-paddingBottom">
-	<tr>
-	  <td><?php echo $lang["PATIENT_TREATMENT_TAB2_QUESTION_9"];?></td>
-        <td width="30"><?php echo $treatment->tab2q9_selected;?></td>
-	</tr>
-</table>
-<?php echo(nl2br(strip_tags($treatment->tab2q9_text)));?>
-<!-- Q10 -->
-<table width="100%" class="standard-grey-paddingBottom">
-	<tr>
-	  <td><?php echo $lang["PATIENT_TREATMENT_TAB2_QUESTION_10"];?></td>
-        <td width="30"><?php echo $treatment->tab2q10_selected;?></td>
-	</tr>
-</table>
-<?php echo(nl2br(strip_tags($treatment->tab2q10_text)));?>
-&nbsp;
-<table width="100%" class="standard">
-	<tr>
-	  <td class="tcell-left">Zielsetzungen</td>
-        <td>erreichte Zielsetzungen <?php echo $treatment->tab3result;?>%</td>
-	</tr>
-</table>
+
 <?php
 $i = 1;
 foreach($task as $value) { 

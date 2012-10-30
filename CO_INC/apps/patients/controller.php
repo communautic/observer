@@ -419,8 +419,8 @@ class Patients extends Controller {
 	}
 
 
-	function setPatientDetails($id,$startdate,$enddate,$protocol,$protocol2,$protocol3,$folder,$number,$kind,$area,$department,$dob,$coo,$languages,$street_private,$city_private,$zip_private,$phone_private,$email_private,$education) {
-		$retval = $this->model->setPatientDetails($id,$startdate,$enddate,$protocol,$protocol2,$protocol3,$folder,$number,$kind,$area,$department,$dob,$coo,$languages,$street_private,$city_private,$zip_private,$phone_private,$email_private,$education);
+	function setPatientDetails($id,$management,$management_ct,$protocol,$folder,$number,$insurance,$dob,$coo) {
+		$retval = $this->model->setPatientDetails($id,$management,$management_ct,$protocol,$folder,$number,$insurance,$dob,$coo);
 		if($retval){
 			 return '{ "action": "edit", "id": "' . $id . '"}';
 		  } else{
