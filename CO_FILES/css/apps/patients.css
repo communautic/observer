@@ -102,10 +102,14 @@ background-color: #D2DCFF; }
 .loadEmployeesPhase2 { cursor: pointer }
 
 #patients .tbl-protocol td, #patients .elastic, #patients .elastic-two, .patients-colorTable {
+    background-color: #d2dcff;
+}
+
+#canvasDivText .tbl-protocol td, #canvasDivText .elastic, #canvasDivText .elastic-two, .patients-colorTable {
     background-color: #E5E5E5;
 }
 
-#patients .tbl-protocol .active, #patients .active .elastic {
+#canvasDivText .tbl-protocol .active, #canvasDivText .active .elastic {
     background-color: #d2dcff;
 }
 
