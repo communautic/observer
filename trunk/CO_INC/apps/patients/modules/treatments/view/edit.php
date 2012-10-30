@@ -8,10 +8,10 @@
     <td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_STATUS"];?></td>
     <td colspan="2"><div class="statusTabs">
     	<ul>
-        	<li><span class="left<?php if($treatment->canedit) { ?> statusButton <?php } ?> planned<?php echo $treatment->status_planned_active;?>" rel="0" reltext="<?php echo $lang["GLOBAL_STATUS_PLANNED_TIME"];?>"><?php echo $lang["PATIENT_STATUS_PLANNED"];?></span></li>
-            <li><span class="<?php if($treatment->canedit) { ?>statusButton <?php } ?>inprogress<?php echo $treatment->status_inprogress_active;?>" rel="1" reltext="<?php echo $lang["GLOBAL_STATUS_INPROGRESS_TIME"];?>"><?php echo $lang["PATIENT_STATUS_INPROGRESS"];?></span></li>
-            <li><span class="<?php if($treatment->canedit) { ?>statusButton <?php } ?>finished<?php echo $treatment->status_finished_active;?>" rel="2" reltext="<?php echo $lang["GLOBAL_STATUS_FINISHED_TIME"];?>"><?php echo $lang["PATIENT_STATUS_FINISHED"];?></span></li>
-            <li><span class="right<?php if($treatment->canedit) { ?> statusButton<?php } ?> stopped<?php echo $treatment->status_stopped_active;?>" rel="3" reltext="<?php echo $lang["GLOBAL_STATUS_STOPPED_TIME"];?>"><?php echo $lang["PATIENT_STATUS_STOPPED"];?></span></li>
+        	<li><span class="left<?php if($treatment->canedit) { ?> statusButton <?php } ?> planned<?php echo $treatment->status_planned_active;?>" rel="0" reltext="<?php echo $lang["PATIENT_TREATMENT_STATUS_PLANNED_TIME"];?>"><?php echo $lang["PATIENT_TREATMENT_STATUS_PLANNED"];?></span></li>
+            <li><span class="<?php if($treatment->canedit) { ?>statusButton <?php } ?>inprogress<?php echo $treatment->status_inprogress_active;?>" rel="1" reltext="<?php echo $lang["PATIENT_TREATMENT_STATUS_INPROGRESS_TIME"];?>"><?php echo $lang["PATIENT_TREATMENT_STATUS_INPROGRESS"];?></span></li>
+            <li><span class="<?php if($treatment->canedit) { ?>statusButton <?php } ?>finished<?php echo $treatment->status_finished_active;?>" rel="2" reltext="<?php echo $lang["PATIENT_TREATMENT_STATUS_FINISHED_TIME"];?>"><?php echo $lang["PATIENT_TREATMENT_STATUS_FINISHED"];?></span></li>
+            <li><span class="right<?php if($treatment->canedit) { ?> statusButton<?php } ?> stopped<?php echo $treatment->status_stopped_active;?>" rel="3" reltext="<?php echo $lang["PATIENT_TREATMENT_STATUS_STOPPED_TIME"];?>"><?php echo $lang["PATIENT_TREATMENT_STATUS_STOPPED"];?></span></li>
             <li><div class="status-time"><?php echo($treatment->status_text_time)?></div><div class="status-input"><input name="phase_status_date" type="text" class="input-date statusdp" value="<?php echo($treatment->status_date)?>" readonly="readonly" /></div></li>
 		</ul></div></td>
   </tr>
@@ -44,24 +44,22 @@
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-		<td class="tcell-left-inactive text11">Behandlungszeit</td>
-		<td class="tcell-right-inactive"><span id="patients_treatmenttime"></span><span id="patients_treatmenttime"></span>
-        </td>
-    </tr>
-</table>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content">
-	<tr>
 		<td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["PATIENT_TREATMENT_DATE"];?></span></span></td>
 		<td class="tcell-right"><input name="item_date" type="text" class="input-date datepicker item_date" value="<?php echo($treatment->item_date)?>" /></td>
 	</tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
-		<td class="tcell-left-inactive text11">Therapieeinheiten</td>
-		<td class="tcell-right-inactive">Auswahlfenster ...</td>
-    </tr>
+		<td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="patientsdoctor" append="1"><span><?php echo $lang["PATIENT_TREATMENT_DOCTOR"];?></span></span></td>
+		<td class="tcell-right"><div id="patientsdoctor" class="itemlist-field"><?php echo($treatment->doctor);?></div><div id="patientsdoctor_ct" class="itemlist-field"><a field="patientsdoctor_ct" class="ct-content"><?php echo($treatment->doctor_ct);?></a></div></td>
+	</tr>
 </table>
-
+<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
+  <tr>
+    <td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["PATIENT_TREATMENT_DOCTOR_DIAGNOSE"];?></span></span></td>
+    <td class="tcell-right"><?php if($treatment->canedit) { ?><textarea name="protocol" class="elastic"><?php echo(strip_tags($treatment->protocol));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($treatment->protocol)));?><?php } ?></td>
+  </tr>
+</table>
 <div class="content-spacer"></div>
 
 <div id="contactTabs" class="contentTabs">
@@ -134,6 +132,12 @@
         </div>
     </div>
 </div>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
+  <tr>
+    <td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["PATIENT_TREATMENT_PROTOCOL2"];?></span></span></td>
+    <td class="tcell-right"><?php if($treatment->canedit) { ?><textarea name="protocol2" class="elastic"><?php echo(strip_tags($treatment->protocol2));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($treatment->protocol2)));?><?php } ?></td>
+  </tr>
+</table>
 <?php if($treatment->perms != "guest") { ?>
 <div class="content-spacer"></div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">

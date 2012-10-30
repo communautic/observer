@@ -58,6 +58,7 @@ class PatientsTreatments extends Patients {
 		if($arr = $this->model->getDetails($id)) {
 			$treatment = $arr["treatment"];
 			$task = $arr["task"];
+			$diagnose = $arr["diagnose"];
 			$sendto = $arr["sendto"];
 			ob_start();
 				include 'view/print.php';
@@ -137,8 +138,8 @@ class PatientsTreatments extends Patients {
 	}
 	
 
-	function setDetails($pid,$id,$title,$treatmentdate,$task_id,$task_title,$task_text,$task,$canvasList_id,$canvasList_text,$treatment_access,$treatment_access_orig) {
-		if($retval = $this->model->setDetails($pid,$id,$title,$treatmentdate,$task_id,$task_title,$task_text,$task,$canvasList_id,$canvasList_text,$treatment_access,$treatment_access_orig)){
+	function setDetails($pid,$id,$title,$treatmentdate,$protocol,$protocol2,$doctor,$doctor_ct,$task_id,$task_title,$task_text,$task,$canvasList_id,$canvasList_text,$treatment_access,$treatment_access_orig) {
+		if($retval = $this->model->setDetails($pid,$id,$title,$treatmentdate,$protocol,$protocol2,$doctor,$doctor_ct,$task_id,$task_title,$task_text,$task,$canvasList_id,$canvasList_text,$treatment_access,$treatment_access_orig)){
 			return '{ "id": "' . $id . '", "access": "' . $treatment_access . '"}';
 		} else{
 			return "error";

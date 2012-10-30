@@ -9,12 +9,19 @@ $lang["PATIENT_TREATMENT_ACTION_NEW"] = 'neue Behandlung anlegen';
 $lang["PATIENT_TREATMENT_TASK_NEW"] = 'Neues Einzelziel';
 //define('TREATMENT_RELATES_TO', 'bezogen auf');
 
-$lang["PATIENT_STATUS_PLANNED"] = 'Befundung';
-$lang["PATIENT_STATUS_INPROGRESS"] = 'in Behandlung';
-$lang["PATIENT_STATUS_FINISHED"] = 'therapiert';
-$lang["PATIENT_STATUS_STOPPED"] = 'nicht therapiert';
+$lang["PATIENT_TREATMENT_STATUS_PLANNED"] = 'in Befundung';
+$lang["PATIENT_TREATMENT_STATUS_PLANNED_TIME"] = 'seit';
+$lang["PATIENT_TREATMENT_STATUS_INPROGRESS"] = 'in Befundung';
+$lang["PATIENT_TREATMENT_STATUS_INPROGRESS_TIME"] = 'seit';
+$lang["PATIENT_TREATMENT_STATUS_FINISHED"] = 'abgeschlossen';
+$lang["PATIENT_TREATMENT_STATUS_FINISHED_TIME"] = 'am';
+$lang["PATIENT_TREATMENT_STATUS_STOPPED"] = 'abgebrochen';
+$lang["PATIENT_TREATMENT_STATUS_STOPPED_TIME"] = 'am';
 
-$lang["PATIENT_TREATMENT_DATE"] = 'Diagnosedatum';
+$lang["PATIENT_TREATMENT_DATE"] = 'Befundungsdatum';
+$lang["PATIENT_TREATMENT_DOCTOR"] = 'Arzt';
+$lang["PATIENT_TREATMENT_DOCTOR_DIAGNOSE"] = 'Arztdiagnose';
+$lang["PATIENT_TREATMENT_PROTOCOL2"] = 'Verordnung';
 
 $lang["PATIENT_TREATMENT_GOALS"] = 'Sitzungen';
 $lang["PATIENT_TREATMENT_TASKS_START"] = 'Start';

@@ -226,6 +226,11 @@ class PatientsTreatmentsModel extends PatientsModel {
 		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
 		$array["current_user"] = $session->uid;
 		
+		
+		$array["doctor_print"] = $this->_contactsmodel->getUserListPlain($array["doctor"]);
+		$array["doctor"] = $this->_contactsmodel->getUserList($array['doctor'],'patientsdoctor', "", $array["canedit"]);
+		$array["doctor_ct"] = empty($array["doctor_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['doctor_ct'];
+		
 		switch($array["access"]) {
 			case "0":
 				$array["access_text"] = $lang["GLOBAL_ACCESS_INTERNAL"];
@@ -318,7 +323,7 @@ class PatientsTreatmentsModel extends PatientsModel {
    }
 
 
-   function setDetails($pid,$id,$title,$treatmentdate,$task_id,$task_title,$task_text,$task,$canvasList_id,$canvasList_text,$treatment_access,$treatment_access_orig) {
+   function setDetails($pid,$id,$title,$treatmentdate,$protocol,$protocol2,$doctor,$doctor_ct,$task_id,$task_title,$task_text,$task,$canvasList_id,$canvasList_text,$treatment_access,$treatment_access_orig) {
 		global $session, $lang;
 		
 		$treatmentdate = $this->_date->formatDate($treatmentdate);
@@ -335,7 +340,7 @@ class PatientsTreatmentsModel extends PatientsModel {
 			$accesssql = "access='$treatment_access', access_date='$treatment_access_date', access_user = '$session->uid',";
 		}
 		
-		$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS . " set title = '$title', item_date = '$treatmentdate', access='$treatment_access', $accesssql edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS . " set title = '$title', item_date = '$treatmentdate', protocol='$protocol', protocol2='$protocol2', doctor='$doctor', doctor_ct='$doctor_ct', access='$treatment_access', $accesssql edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		// do existing diagnoses
