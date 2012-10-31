@@ -91,15 +91,26 @@
 	?>
             </div>
             <!-- drawing area outer -->
-            <div style="position: relative; background-image:url(<?php echo($folder->bg_image);?>); background-position: <?php echo($folder->bg_image_shift);?>px 0px; width: <?php echo($folder->css_width);?>px; height:<?php echo($folder->css_height+8);?>px; z-index: 4;">
+            <div style="position: relative; background-image:url(<?php echo($folder->bg_image);?>); background-position: <?php echo($folder->bg_image_shift);?>px 0px; width: <?php echo($folder->css_width);?>px; height:<?php echo($folder->css_height+8);?>px;">
 
                 <!-- project loop -->
                 <?php foreach($projects as $project){ 
 				if($project->kickoff_only) { ?>
-					<div class="loadProject" rel="<?php echo($project->id);?>" style="z-index: 3; position: absolute; top: <?php echo($project->css_top);?>px; left: <?php echo($project->css_left+$project->kickoff_space);?>px; height: 16px; width: 16px;"><img src="<?php echo CO_FILES;?>/img/kickoff.png" width="16" height="16" alt="" /></div>
+					<div class="coTooltip loadProject" rel="<?php echo($project->id);?>" style="z-index: 4; position: absolute; top: <?php echo($project->css_top);?>px; left: <?php echo($project->css_left+$project->kickoff_space);?>px; height: 16px; width: 16px;"><img src="<?php echo CO_FILES;?>/img/kickoff.png" width="16" height="16" alt="" />
+                    <div class="coTooltipHtml" style="display: none">
+					<?php echo $project->title;?><br />
+					<?php echo $project->startdate;?>
+				</div>
+                    </div>
 				<?php } else {
 				?>
-                <div class="loadProject <?php echo($project->status);?>" rel="<?php echo($project->id);?>" style="z-index: 2; position: absolute; top: <?php echo($project->css_top);?>px; left: <?php echo($project->css_left);?>px; height: 20px; width: <?php echo($project->css_width);?>px;"><span style="display: block; padding: 2px 0 0 5px;"><?php echo($project->realisation["real"]);?>%</span></div>
+                <div class="coTooltip loadProject <?php echo($project->status);?>" rel="<?php echo($project->id);?>" style="z-index: 4; position: absolute; top: <?php echo($project->css_top);?>px; left: <?php echo($project->css_left);?>px; height: 20px; width: <?php echo($project->css_width);?>px;"><span style="display: block; padding: 2px 0 0 5px;"><?php echo($project->realisation["real"]);?>%</span>
+                <div class="coTooltipHtml" style="display: none">
+					<?php echo $project->title;?><br />
+                    <?php echo $project->startdate;?> - <?php echo $project->enddate;?>
+					
+				</div>
+                </div>
                 <?php 
 				}
 				} ?>
