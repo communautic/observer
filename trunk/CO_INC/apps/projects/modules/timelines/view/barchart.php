@@ -62,7 +62,7 @@ foreach($project["phases"] as $key => &$value){ ?>
     
     <div id="barchart-container" style="position: relative; padding-top: 50px;">
         
-        <div id="barchartTimeline" style="height: 13px; padding-top: 37px; position: absolute; z-index: 4; top: 0; background-color:#FFF">
+        <div id="barchartTimeline" style="height: 13px; padding-top: 37px; position: absolute; z-index: 1; top: 0; background-color:#FFF">
 	<?php
 	$day = $project["startdate"];
 	$today = $date->formatDate("now","Y-m-d");
