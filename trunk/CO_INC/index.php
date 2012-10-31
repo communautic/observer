@@ -101,7 +101,7 @@ var co_lang = '<?php echo $session->userlang;?>';
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.form.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.layout-1.3.0.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.jNice.js"></script>
-<script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery-impromptu.3.1.min.js"></script>
+<script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery-impromptu.min.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.tooltip.min.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/fileuploader.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.scrollTo.min.js"></script>
