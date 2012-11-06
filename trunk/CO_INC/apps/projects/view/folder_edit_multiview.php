@@ -55,7 +55,7 @@
 
     <div id="barchart-container-right" style="margin-left: 225px; width: <?php echo($folder->css_width);?>px;">
         <div id="barchart-container" style="position: relative; padding-top: 50px;">
-            <div id="barchartTimeline" style="height: 13px; padding-top: 37px; position: absolute; z-index: 4; top: 0; background-color:#FFF">
+            <div id="barchartTimeline" style="height: 13px; padding-top: 37px; position: absolute; z-index: 5; top: 0; background-color:#FFF">
                 <?php
 	$day = $folder->startdate;
 	$today = $date->formatDate("now","Y-m-d");
