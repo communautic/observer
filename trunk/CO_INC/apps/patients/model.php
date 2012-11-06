@@ -150,7 +150,7 @@ class PatientsModel extends Model {
 				  		if(!$sortorder) {
 						  	$order = "order by title";
 						  } else {
-							$order = "order by field(id,$sortorder)";
+							$order = "order by field(a.id,$sortorder)";
 						  }
 				  break;	
 			  }
@@ -418,7 +418,7 @@ class PatientsModel extends Model {
 						  	$order = "order by title";
 							$sortcur = '1';
 						  } else {
-							$order = "order by field(id,$sortorder)";
+							$order = "order by field(a.id,$sortorder)";
 							$sortcur = '3';
 						  }
 				  break;	
@@ -440,7 +440,7 @@ class PatientsModel extends Model {
 						  	$order = "order by title";
 							$sortcur = '1';
 						  } else {
-							$order = "order by field(id,$sortorder)";
+							$order = "order by field(a.id,$sortorder)";
 							$sortcur = '3';
 						  }
 				  break;	

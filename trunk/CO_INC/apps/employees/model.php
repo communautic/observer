@@ -150,7 +150,7 @@ class EmployeesModel extends Model {
 				  		if(!$sortorder) {
 						  	$order = "order by title";
 						  } else {
-							$order = "order by field(id,$sortorder)";
+							$order = "order by field(a.id,$sortorder)";
 						  }
 				  break;	
 			  }
@@ -418,7 +418,7 @@ class EmployeesModel extends Model {
 						  	$order = "order by title";
 							$sortcur = '1';
 						  } else {
-							$order = "order by field(id,$sortorder)";
+							$order = "order by field(a.id,$sortorder)";
 							$sortcur = '3';
 						  }
 				  break;	
@@ -440,7 +440,7 @@ class EmployeesModel extends Model {
 						  	$order = "order by title";
 							$sortcur = '1';
 						  } else {
-							$order = "order by field(id,$sortorder)";
+							$order = "order by field(a.id,$sortorder)";
 							$sortcur = '3';
 						  }
 				  break;	
@@ -1546,7 +1546,7 @@ class EmployeesModel extends Model {
 		$row = "";
 		if($app =='employees' && $module == 'employees') {
 			//$q = "SELECT title,folder FROM " . CO_TBL_EMPLOYEES . " WHERE id='$id' and bin='0'";
-			$q = "SELECT a.folder,CONCAT(b.lastname,' ',b.firstname) as title FROM " . CO_TBL_PATIENTS . " as a, co_users as b where a.cid=b.id and a.id = '$id'";
+			$q = "SELECT a.folder,CONCAT(b.lastname,' ',b.firstname) as title FROM " . CO_TBL_EMPLOYEES . " as a, co_users as b where a.cid=b.id and a.id = '$id'";
 			$result = mysql_query($q, $this->_db->connection);
 			$row = mysql_fetch_array($result);
 			if(mysql_num_rows($result) > 0) {
