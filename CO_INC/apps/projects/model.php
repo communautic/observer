@@ -1161,7 +1161,7 @@ class ProjectsModel extends Model {
 	function setAllPhasesFinished($id,$status_date) {
 		global $session;
 		$now = gmdate("Y-m-d H:i:s");
-		$q = "UPDATE " . CO_TBL_PROJECTS_PHASES . " set status = '2', finished_date = '$status_date', edited_user = '$session->uid', edited_date = '$now' WHERE pid = '$id'";
+		$q = "UPDATE " . CO_TBL_PROJECTS_PHASES . " set status = '2', finished_date = '$status_date', edited_user = '$session->uid', edited_date = '$now' WHERE pid = '$id' and status != '2'";
 		$result = mysql_query($q, $this->_db->connection);
 	}
 
