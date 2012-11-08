@@ -49,42 +49,33 @@
 </table>
 <div style="height: 400px; width: 400px; position: relative;">
 <img src="<?php echo(CO_FILES);?>/img/body.png" />
-                    <?php $i = 1; 
-						$j = $treatment->diagnoses;
-                        foreach($diagnose as $value) { 
-							$active = '';
-							if($i == 1) {
-								$active = ' active';
-							}
-							$curcol = ($i-1) % 10;
-							?>
-                            
-                           <div style="position: absolute;"><img src="data:image/png;base64,<?php echo $value->canvas;?>" /></div>
-                           <div style="position: absolute; z-index: 10<?php echo $i;?>; top: <?php echo $value->y;?>px; left: <?php echo $value->x;?>px;" class="loadCanvas circle circle<?php echo $curcol;?> <?php echo $active;?>"><div><?php echo $i;?></div></div>
-                        <?php 
-						$i++;
-						$j--;
-						} ?>
-
+<?php $i = 1; 
+	$j = $treatment->diagnoses;
+	foreach($diagnose as $value) { 
+		$curcol = ($i-1) % 10;
+		?>
+	   <div style="position: absolute;"><img src="data:image/png;base64,<?php echo $value->canvas;?>" /></div>
+	   <div style="position: absolute; z-index: 10<?php echo $i;?>; top: <?php echo $value->y;?>px; left: <?php echo $value->x;?>px;" class="loadCanvas circle circle<?php echo $curcol;?>"><div><?php echo $i;?></div></div>
+	<?php 
+	$i++;
+	$j--;
+} ?>
 </div>
 <p>&nbsp;</p>
 <?php 
-					$i = 1;
-                        foreach($diagnose as $value) { 
-						$active = '';
-							if($i == 1) {
-								$active = ' active';
-							}
-							$curcol = ($i-1) % 10; ?>
-                                <table width="100%" class="standard">
-	<tr>
-	  <td><?php echo $value->text;?>&nbsp;</td>
-        <td width="30">&nbsp;</td>
-	</tr>
-</table>
+$i = 1;
+	foreach($diagnose as $value) { 
+	$curcol = ($i-1) % 10; ?>
+    <table width="100%" class="standard">
+        <tr>
+        <td class="top" style="width: 30px;"><div class="circle circle<?php echo $curcol;?>"><div><?php echo $i;?></div></div></td>
+          <td><?php echo $value->text;?>&nbsp;</td>
+        </tr>
+    </table>
 <?php 
-							$i++;
-                         } ?>
+	$i++;
+} ?>
+<p>&nbsp;</p>
 <?php if(!empty($treatment->protocol2)) { ?>
 <table width="100%" class="protocol">
 	<tr>

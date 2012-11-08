@@ -25,6 +25,17 @@
     </tr>
 </table>
 <?php } ?>
+
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+	<tr>
+	  <td class="tcell-left text11"><span class="<?php if($report->canedit) { ?>content-nav showDialog<?php } ?>" request="getReportsTreatmentsDialog" field="reportstreatment" append="1"><span><?php echo $lang["PATIENT_REPORT_TREATMENT"];?></span></span></td>
+        <td class="tcell-right"><div id="reportstreatment" class="itemlist-field"><?php //echo($report->treatment);?></div></td>
+	</tr>
+</table>
+
+
+
+<!--
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 		<td class="tcell-left text11"><span class="<?php if($report->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["PATIENT_REPORT_DATE"];?></span></span></td>
@@ -93,6 +104,7 @@
     </tr>
 </table>
 <?php } ?>
+-->
 </form>
 </div>
 </div>
