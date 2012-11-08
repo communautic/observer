@@ -148,7 +148,7 @@ foreach($project["phases"] as $key => &$value){ ?>
 					$dep_phase_key = $project["phases"][$key]["tasks"][$tkey]["dep_key"];
 					if($key != $dep_phase_key) {
 						$dep_top = -$project["phases"][$dep_phase_key]["css_height"]-2+$project["tasks"][$dep_key]["css_top"];
-						$dep_height = $project["phases"][$dep_phase_key]["tasks"][$tkey]["css_top"] - $dep_top -4;
+						$dep_height = $project["phases"][$dep_phase_key]["tasks"][$tkey]["css_top"] - $dep_top -6;
 						if($key-1 != $dep_phase_key) {
 							for($i=$dep_phase_key+1; $i < $key; $i++) {
 								$dep_height += $project["phases"][$i]["css_height"]+2;
@@ -183,7 +183,7 @@ foreach($project["phases"] as $key => &$value){ ?>
                 	<!-- task tooltip -->
             		<div class="coTooltipHtml" style="display: none">
 						<?php echo($project["phases"][$key]["tasks"][$tkey]["text"]);?><br />
-                        <?php echo($project["phases"][$key]["tasks"][$tkey]["startdate"]);?><br />
+                        <?php echo($project["phases"][$key]["tasks"][$tkey]["startdate"]);?> - <?php echo($project["phases"][$key]["tasks"][$tkey]["enddate"]);?><br />
 					</div>
                 </div>
                 <!-- milestone dependency -->
