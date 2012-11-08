@@ -1,11 +1,13 @@
 <?php
-$patients_reports_name = "Berichte";
+$patients_reports_name = "Therapieberichte";
 
-$lang["PATIENT_REPORT_TITLE"] = 'Bericht';
-$lang["PATIENT_REPORTS"] = 'Berichte';
+$lang["PATIENT_REPORT_TITLE"] = 'Therapiebericht';
+$lang["PATIENT_REPORTS"] = 'Therapieberichte';
 
-$lang["PATIENT_REPORT_NEW"] = 'Neuer Bericht';
-$lang["PATIENT_REPORT_ACTION_NEW"] = 'neuen Bericht anlegen';
+$lang["PATIENT_REPORT_NEW"] = 'Neuer Therapiebericht';
+$lang["PATIENT_REPORT_ACTION_NEW"] = 'neuen Therapiebericht anlegen';
+
+$lang["PATIENT_REPORT_TREATMENT"] = 'Behandlung';
 
 $lang["PATIENT_REPORT_DATE"] = 'Datum';
 $lang["PATIENT_REPORT_TIME_START"] = 'Start';

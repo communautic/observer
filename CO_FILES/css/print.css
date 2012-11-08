@@ -79,7 +79,7 @@ hr { height: 1pt; color: #000; background-color: #000; border: 0; }
 
 .timeline-legend td { height: 22px; }
 
-.circle { position: absolute; cursor: pointer; background: #fff; border-radius: 50% 50% 50% 50%; 
+.circle { cursor: pointer; background: #fff; border-radius: 50% 50% 50% 50%; 
     display: block;
     height: 18px;
     width: 18px; }
