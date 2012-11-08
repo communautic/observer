@@ -222,22 +222,22 @@ class ContactsModel extends Model {
 	  if($sort == 0) {
 		  $sortstatus = $this->getSortStatus("contacts-contact-sort-status");
 		  if(!$sortstatus) {
-		  	$order = "order by lastname ASC";
+		  	$order = "order by lastname ASC, firstname ASC";
 			$sortcur = '1';
 		  } else {
 			  switch($sortstatus) {
 				  case "1":
-				  		$order = "order by lastname ASC";
+				  		$order = "order by lastname ASC, firstname ASC";
 						$sortcur = '1';
 				  break;
 				  case "2":
-				  		$order = "order by lastname DESC";
+				  		$order = "order by lastname DESC, firstname DESC";
 						$sortcur = '2';
 				  break;
 				  case "3":
 				  		$sortorder = $this->getSortOrder("contacts-contact-sort-order");
 				  		if(!$sortorder) {
-						  	$order = "order by lastname ASC";
+						  	$order = "order by lastname ASC, firstname ASC";
 							$sortcur = '1';
 						  } else {
 							$order = "order by field(id,$sortorder)";
@@ -249,17 +249,17 @@ class ContactsModel extends Model {
 	  } else {
 		  switch($sort) {
 				  case "1":
-				  		$order = "order by lastname ASC";
+				  		$order = "order by lastname ASC, firstname ASC";
 						$sortcur = '1';
 				  break;
 				  case "2":
-				  		$order = "order by lastname DESC";
+				  		$order = "order by lastname DESC, firstname DESC";
 						$sortcur = '2';
 				  break;
 				  case "3":
 				  		$sortorder = $this->getSortOrder("contacts-contact-sort-order");
 				  		if(!$sortorder) {
-						  	$order = "order by lastname ASC";
+						  	$order = "order by lastname ASC, firstname ASC";
 							$sortcur = '1';
 						  } else {
 							$order = "order by field(id,$sortorder)";
