@@ -53,7 +53,7 @@
 }
 
 #patients div.contentTabs li span:hover, #patients div.contentTabs li span.active {
-border: 1px solid #3c4664;
+border: 1px solid #C1C99D;
 background: #c5cbe5;
 background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2M1Y2JlNSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjQ5JSIgc3RvcC1jb2xvcj0iIzlhYTRkMiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iIzZlN2RiZSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM2ZTdkYmUiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
 background: -moz-linear-gradient(top,  #c5cbe5 0%, #9aa4d2 49%, #6e7dbe 50%, #6e7dbe 100%);
@@ -379,10 +379,10 @@ background: url("../../img/brainstorms_grid_stagegate.png") no-repeat scroll 1px
 #patients .canvasDraw:active { cursor: url("../../img/draw.gif") 2 2, crosshair;}
 #patients .circle { position: absolute; cursor: pointer; background: #fff; border-radius: 50% 50% 50% 50%; 
     display: block;
-    height: 18px;
-    width: 18px; }
-#patients .circle div { padding-top: 1px; text-align: center; font-weight: bold; font-size: 13px; }
-#patients .circle0 { border: 2px solid #3C4664; color: #3C4664; }
+    height: 22px;
+    width: 22px; }
+#patients .circle div { padding-top: 3px; text-align: center; font-weight: bold; font-size: 12px; color: #fff; }
+/*#patients .circle0 { border: 2px solid #3C4664; color: #3C4664; }
 #patients .circle1 { border: 2px solid #EB4600; color: #EB4600; }
 #patients .circle2 { border: 2px solid #915500; color: #915500; }
 #patients .circle3 { border: 2px solid #0A960A; color: #0A960A; }
@@ -391,7 +391,18 @@ background: url("../../img/brainstorms_grid_stagegate.png") no-repeat scroll 1px
 #patients .circle6 { border: 2px solid #EB4600; color: #EB4600; }
 #patients .circle7 { border: 2px solid #915500; color: #915500; }
 #patients .circle8 { border: 2px solid #0A960A; color: #0A960A; }
-#patients .circle9 { border: 2px solid #AA19AA; color: #AA19AA; }
+#patients .circle9 { border: 2px solid #AA19AA; color: #AA19AA; }*/
+
+#patients .circle0 { background: #3C4664; }
+#patients .circle1 { background: #EB4600; }
+#patients .circle2 { background: #915500; }
+#patients .circle3 { background: #0A960A; }
+#patients .circle4 { background: #AA19AA; }
+#patients .circle5 { background: #3C4664; }
+#patients .circle6 { background: #EB4600; }
+#patients .circle7 { background: #915500; }
+#patients .circle8 { background: #0A960A; }
+#patients .circle9 { background: #AA19AA; }
 
 /*#patients .loadanvas.active { cursor: pointer; background: red; }*/
 #patients .loadCanvasList { cursor: pointer; background: #ccc; }
