@@ -184,6 +184,7 @@ li.ui-state-highlight { height: 13px; margin: 0 0 5px 0;}
 .module-item-active-trial { display: block; background-position: -600px -37px;}
 .module-item-active-maternity { display: block; background-position: -600px 3px;}
 .module-item-active-leave { display: block; background-position: -600px -18px;}
+.module-item-active-circle { display: block; background-position: -600px -61px;}
 
 .text { /*padding-right: 30px;*/ }
 .num { position: absolute; right: 25px; font-size: 11px; top: 0;}
