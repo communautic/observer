@@ -250,7 +250,7 @@ class Patients extends Controller {
 		
 		if($arr = $this->model->getPatientDetails($id)) {
 			$patient = $arr["patient"];
-			$num = $arr["num"];
+			//$num = $arr["num"];
 			$sendto = $arr["sendto"];
 			ob_start();
 				include 'view/handbook_cover.php';
@@ -260,79 +260,43 @@ class Patients extends Controller {
 				include 'view/print.php';
 				$html .= ob_get_contents();
 			ob_end_clean();
-			// phases
-			/*$phasescont = new PatientsPhases("phases");
-			foreach ($phases as $phase) {
-				if($arr = $phasescont->model->getDetails($phase->id,$num[$phase->id])) {
-					$phase = $arr["phase"];
-					$task = $arr["task"];
-					$sendto = $arr["sendto"];
-					ob_start();
-						include 'modules/phases/view/print.php';
-						$html .= ob_get_contents();
-					ob_end_clean();
-				}
-			}*/
-			// documents
-			$patientsObjectives = new PatientsObjectives("objectives");
-			if($arrojs = $patientsObjectives->model->getList($id,"0")) {
-				$ojs = $arrojs["objectives"];
-				foreach ($ojs as $oj) {
-					if($arr = $patientsObjectives->model->getDetails($oj->id)) {
-						$objective = $arr["objective"];
-						$oj = $arr["oj"];
+			// treatments
+			$patientsTreatments = new PatientsTreatments("treatments");
+			if($arrts = $patientsTreatments->model->getList($id,"0")) {
+				$ts = $arrts["treatments"];
+				foreach ($ts as $t) {
+					if($arr = $patientsTreatments->model->getDetails($t->id)) {
+						$treatment = $arr["treatment"];
+						$t = $arr["t"];
 						$task = $arr["task"];
+						$diagnose = $arr["diagnose"];
 						$sendto = $arr["sendto"];
 						ob_start();
-							include 'modules/objectives/view/print.php';
+							include 'modules/treatments/view/print.php';
 							$html .= ob_get_contents();
 						ob_end_clean();
 					}
 				}
 				//$html .= '<div style="page-break-after:always;">&nbsp;</div>';
 			}
-			$patientsComments = new PatientsComments("comments");
-			if($arrcoms = $patientsComments->model->getList($id,"0")) {
-				$coms = $arrcoms["comments"];
-				foreach ($coms as $com) {
-					if($arr = $patientsComments->model->getDetails($com->id)) {
-						$comment = $arr["comment"];
-						$com = $arr["com"];
+			// reports
+			/*$patientsReports = new PatientsReports("reports");
+			if($arrrs = $patientsReports->model->getList($id,"0")) {
+				$rs = $arrrs["reports"];
+				foreach ($rs as $r) {
+					if($arr = $patientsReports->model->getDetails($r->id)) {
+						$report = $arr["report"];
+						$r = $arr["r"];
 						$sendto = $arr["sendto"];
 						ob_start();
-							include 'modules/comments/view/print.php';
+							include 'modules/reports/view/print.php';
 							$html .= ob_get_contents();
 						ob_end_clean();
 					}
 				}
 				//$html .= '<div style="page-break-after:always;">&nbsp;</div>';
-			}
-			/*$patientsDocuments = new PatientsDocuments("documents");
-			if($arrdocs = $patientsObjectives->model->getList($id,"0")) {
-				$ojs = $arrdocs["objectives"];
-				foreach ($ojs as $oj) {
-					if($arr = $patientsObjectives->model->getDetails($oj->id)) {
-						$objective = $arr["objective"];
-						$oj = $arr["oj"];
-						$task = $arr["task"];
-						$sendto = $arr["sendto"];
-						ob_start();
-							include 'modules/objectives/view/print.php';
-							$html .= ob_get_contents();
-						ob_end_clean();
-					}
-				}
-				$html .= '<div style="page-break-after:always;">&nbsp;</div>';
 			}*/
-			// controlling
-			/*$patientsControlling = new PatientsControlling("controlling");
-			if($cont = $patientsControlling->model->getDetails($id)) {
-				$tit = $patient->title;
-				ob_start();
-					include 'modules/controlling/view/print.php';
-					$html .= ob_get_contents();
-				ob_end_clean();
-			}*/
+
 			$title = $patient->title . " - " . $lang["PATIENT_HANDBOOK"];
 		}
 		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_PATIENT_MANUAL"];
@@ -672,6 +636,12 @@ class Patients extends Controller {
 	function getGlobalSearch($term) {
 		$search = $this->model->getGlobalSearch($term);
 		return $search;
+	}
+	
+	function getInsuranceContext($id,$field,$edit) {
+		global $lang;
+		$context = $this->model->getInsuranceContext($id,$field);
+		include 'view/insurance_context.php';
 	}
    
 }

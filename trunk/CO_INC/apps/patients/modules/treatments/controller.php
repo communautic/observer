@@ -81,20 +81,21 @@ class PatientsTreatments extends Patients {
 		if($arr = $this->model->getDetails($id,'prepareSendTo')) {
 			$treatment = $arr["treatment"];
 			$task = $arr["task"];
+			$diagnose = $arr["diagnose"];
 			
 			$form_url = $this->form_url;
 			$request = "sendDetails";
-			$to = $treatment->sendtoTeam;
+			$to = "";
 			$cc = "";
 			$subject = $treatment->title;
 			$variable = "";
 			
 			$data["error"] = 0;
 			$data["error_message"] = "";
-			if($treatment->sendtoTeamNoEmail != "") {
+			/*if($treatment->sendtoTeamNoEmail != "") {
 				$data["error"] = 1;
 				$data["error_message"] = $treatment->sendtoTeamNoEmail;
-			}
+			}*/
 			ob_start();
 				include CO_INC .'/view/dialog_send.php';
 				$data["html"] = ob_get_contents();
@@ -111,6 +112,7 @@ class PatientsTreatments extends Patients {
 		if($arr = $this->model->getDetails($id)) {
 			$treatment = $arr["treatment"];
 			$task = $arr["task"];
+			$diagnose = $arr["diagnose"];
 			$sendto = $arr["sendto"];
 			ob_start();
 				include 'view/print.php';
@@ -138,8 +140,8 @@ class PatientsTreatments extends Patients {
 	}
 	
 
-	function setDetails($pid,$id,$title,$treatmentdate,$protocol,$protocol2,$doctor,$doctor_ct,$task_id,$task_title,$task_text,$task,$canvasList_id,$canvasList_text,$treatment_access,$treatment_access_orig) {
-		if($retval = $this->model->setDetails($pid,$id,$title,$treatmentdate,$protocol,$protocol2,$doctor,$doctor_ct,$task_id,$task_title,$task_text,$task,$canvasList_id,$canvasList_text,$treatment_access,$treatment_access_orig)){
+	function setDetails($pid,$id,$title,$treatmentdate,$protocol,$protocol2,$protocol3,$doctor,$doctor_ct,$task_id,$task_title,$task_date,$task_time,$task_text,$task,$task_team,$task_team_ct,$task_treatmenttype,$task_place,$canvasList_id,$canvasList_text,$treatment_access,$treatment_access_orig) {
+		if($retval = $this->model->setDetails($pid,$id,$title,$treatmentdate,$protocol,$protocol2,$protocol3,$doctor,$doctor_ct,$task_id,$task_title,$task_date,$task_time,$task_text,$task,$task_team,$task_team_ct,$task_treatmenttype,$task_place,$canvasList_id,$canvasList_text,$treatment_access,$treatment_access_orig)){
 			return '{ "id": "' . $id . '", "access": "' . $treatment_access . '"}';
 		} else{
 			return "error";
@@ -149,11 +151,11 @@ class PatientsTreatments extends Patients {
 
 	function updateStatus($id,$date,$status) {
 		$arr = $this->model->updateStatus($id,$date,$status);
-		if($arr["what"] == "edit") {
+		//if($arr["what"] == "edit") {
 			return '{ "action": "edit" , "id": "' . $arr["id"] . '", "status": "' . $status . '"}';
-		} else {
+		/*} else {
 			return '{ "action": "reload" , "id": "' . $arr["id"] . '"}';
-		}
+		}*/
 	}
 
 
@@ -220,8 +222,6 @@ class PatientsTreatments extends Patients {
 		$treatment->canedit = 1;
 		foreach($task as $value) {
 			$checked = '';
-			$donedate_field = 'display: none';
-			$donedate = $value->today;
 			if($value->status == 1) {
 				$checked = ' checked="checked"';
 			}
@@ -257,9 +257,37 @@ class PatientsTreatments extends Patients {
 		}
 	}
 	
+
+	function restoreTreatmentDiagnose($id) {
+		$retval = $this->model->restoreTreatmentDiagnose($id);
+		if($retval){
+			return "true";
+		} else{
+			return "error";
+		}
+	}
+	
+	function deleteTreatmentDiagnose($id) {
+		$retval = $this->model->deleteTreatmentDiagnose($id);
+		if($retval){
+			return "true";
+		} else{
+			return "error";
+		}
+	}
+	
 	function getTreatmentStatusDialog() {
 		global $lang;
 		include 'view/dialog_status.php';
+	}
+	
+	function getTreatmentsTypeDialog($field) {
+		$retval = $this->model->getTreatmentsTypeDialog($field);
+		if($retval){
+			 return $retval;
+		  } else{
+			 return "error";
+		  }
 	}
 	
 	
@@ -313,6 +341,14 @@ class PatientsTreatments extends Patients {
 		$this->model->saveDrawing($id,$img);
 		return true;
    }
+   
+   function getTreatmentTypeMin($id) {
+		if($retval = $this->model->getTreatmentTypeMin($id)){
+			return $retval;
+		} else{
+			return "error";
+		}
+	}
 
 }
 

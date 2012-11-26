@@ -110,7 +110,7 @@ class PatientsModel extends Model {
 		$array["plannedpatients"] = $this->getNumPatients($id, $status="0");
 		$array["activepatients"] = $this->getNumPatients($id, $status="1");
 		$array["inactivepatients"] = $this->getNumPatients($id, $status="2");
-		$array["stoppedpatients"] = $this->getNumPatients($id, $status="3");
+		//$array["stoppedpatients"] = $this->getNumPatients($id, $status="3");
 		
 		/*$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
 		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
@@ -167,7 +167,7 @@ class PatientsModel extends Model {
 			//$patient["management"] = $contactsmodel->getUserListPlain($patient['management']);
 			$patient["perm"] = $this->getPatientAccess($patient["id"]);
 			
-		switch($patient["status"]) {
+		/*switch($patient["status"]) {
 			case "0":
 				$patient["status_text"] = $lang["GLOBAL_STATUS_TRIAL"];
 				$patient["status_text_time"] = $lang["GLOBAL_STATUS_TRIAL_TIME"];
@@ -188,7 +188,27 @@ class PatientsModel extends Model {
 				$patient["status_text_time"] = $lang["GLOBAL_STATUS_LEAVE_TIME"];
 				$patient["status_date"] = $this->_date->formatDate($patient["stopped_date"],CO_DATE_FORMAT);
 			break;
+		}*/
+		
+		
+		switch($patient["status"]) {
+			case "0":
+				$patient["status_text"] = $lang["PATIENT_STATUS_PLANNED"];
+				$patient["status_text_time"] = $lang["PATIENT_STATUS_PLANNED_TIME"];
+				$patient["status_date"] = $this->_date->formatDate($patient["planned_date"],CO_DATE_FORMAT);
+			break;
+			case "1":
+				$patient["status_text"] = $lang["PATIENT_STATUS_FINISHED"];
+				$patient["status_text_time"] = $lang["PATIENT_STATUS_FINISHED_TIME"];
+				$patient["status_date"] = $this->_date->formatDate($patient["finished_date"],CO_DATE_FORMAT);
+			break;
+			case "2":
+				$patient["status_text"] = $lang["PATIENT_STATUS_STOPPED"];
+				$patient["status_text_time"] = $lang["PATIENT_STATUS_STOPPED_TIME"];
+				$patient["status_date"] = $this->_date->formatDate($patient["stopped_date"],CO_DATE_FORMAT);
+			break;
 		}
+		
 			
 			$patients[] = new Lists($patient);
 	  	}
@@ -476,10 +496,10 @@ class PatientsModel extends Model {
 		$itemstatus = "";
 		switch($array["status"]) {
 			case 0:
-				$itemstatus = "";
+				$itemstatus = " module-item-active-trial";
 			break;
 			case 1:
-				$itemstatus = " module-item-active-maternity";
+				$itemstatus = " module-item-active-circle";
 			break;
 			case 2:
 				$itemstatus = "";
@@ -690,7 +710,7 @@ class PatientsModel extends Model {
 				$q = "SELECT id, name, text from " . CO_TBL_PATIENTS_DIALOG_PATIENTS . " where id = '$value'";
 				$result_user = mysql_query($q, $this->_db->connection);
 				while($row_user = mysql_fetch_assoc($result_user)) {
-					$users .= '<span class="listmember" uid="' . $row_user["id"] . '">' . $row_user["name"] . $row_user["text"] . '</span>';
+					$users .= '<span class="listmember-outer"><a class="listmemberInsurance" uid="' . $row_user["id"] . '">' . $row_user["name"] . '</a></div>';
 					if($i < $users_total) {
 						$users .= ', ';
 					}
@@ -711,6 +731,21 @@ class PatientsModel extends Model {
 		return $users;
    }
 
+	
+	function getInsuranceContext($id,$field){
+		//$q = "SELECT id, firstname, lastname, company, position,phone1,phone2,fax,address_line1, address_town, address_postcode,email FROM ".CO_TBL_USERS." where id = '$id'";
+		$q = "SELECT id, name, text from " . CO_TBL_PATIENTS_DIALOG_PATIENTS . " where id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_array($result);
+		foreach($row as $key => $val) {
+			$array[$key] = $val;
+		}
+		
+		$array["field"] = $field;
+		
+		$context = new Lists($array); 
+	  	return $context;
+	}
 
    /**
    * get details for the patient folder
@@ -1064,6 +1099,7 @@ class PatientsModel extends Model {
 				$arr[$module . "_tasks"] = "";
 				$arr[$module . "_folders"] = "";
 				$arr[$module . "_cols"] = "";
+				$arr[$module . "_diags"] = "";
 			}
 		}
 		
@@ -1138,7 +1174,76 @@ class PatientsModel extends Model {
 								}
 							}
 						}
+						
+						
+						// treatments
+						if(in_array("treatments",$active_modules)) {
+							$qm ="select id, title, bin, bintime, binuser from " . CO_TBL_PATIENTS_TREATMENTS . " where pid = '$pid'";
+							$resultm = mysql_query($qm, $this->_db->connection);
+							while ($rowm = mysql_fetch_array($resultm)) {
+								$mid = $rowm["id"];
+								if($rowm["bin"] == "1") { // deleted meeting
+									foreach($rowm as $key => $val) {
+										$treatment[$key] = $val;
+									}
+									$treatment["bintime"] = $this->_date->formatDate($treatment["bintime"],CO_DATETIME_FORMAT);
+									$treatment["binuser"] = $this->_users->getUserFullname($treatment["binuser"]);
+									$treatments[] = new Lists($treatment);
+									$arr["treatments"] = $treatments;
+								} else {
+									// treatments_disgnoses
+									$qmt ="select id, text, bin, bintime, binuser from " . CO_TBL_PATIENTS_TREATMENTS_DIAGNOSES . " where mid = '$mid'";
+									$resultmt = mysql_query($qmt, $this->_db->connection);
+									while ($rowmt = mysql_fetch_array($resultmt)) {
+										if($rowmt["bin"] == "1") { // deleted phases
+											foreach($rowmt as $key => $val) {
+												$treatments_diag[$key] = $val;
+											}
+											$treatments_diag["bintime"] = $this->_date->formatDate($treatments_diag["bintime"],CO_DATETIME_FORMAT);
+											$treatments_diag["binuser"] = $this->_users->getUserFullname($treatments_diag["binuser"]);
+											$treatments_diags[] = new Lists($treatments_diag);
+											$arr["treatments_diags"] = $treatments_diags;
+										}
+									}
+									
+									
+									// treatments_tasks
+									$qmt ="select id, title, bin, bintime, binuser from " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where mid = '$mid'";
+									$resultmt = mysql_query($qmt, $this->_db->connection);
+									while ($rowmt = mysql_fetch_array($resultmt)) {
+										if($rowmt["bin"] == "1") { // deleted phases
+											foreach($rowmt as $key => $val) {
+												$treatments_task[$key] = $val;
+											}
+											$treatments_task["bintime"] = $this->_date->formatDate($treatments_task["bintime"],CO_DATETIME_FORMAT);
+											$treatments_task["binuser"] = $this->_users->getUserFullname($treatments_task["binuser"]);
+											$treatments_tasks[] = new Lists($treatments_task);
+											$arr["treatments_tasks"] = $treatments_tasks;
+										}
+									}
+								}
+							}
+						}
 	
+						
+						
+						// reports
+						if(in_array("reports",$active_modules)) {
+							$qpc ="select id, title, bin, bintime, binuser from " . CO_TBL_PATIENTS_REPORTS . " where pid = '$pid'";
+							$resultpc = mysql_query($qpc, $this->_db->connection);
+							while ($rowpc = mysql_fetch_array($resultpc)) {
+								if($rowpc["bin"] == "1") {
+								$idp = $rowpc["id"];
+									foreach($rowpc as $key => $val) {
+										$report[$key] = $val;
+									}
+									$report["bintime"] = $this->_date->formatDate($report["bintime"],CO_DATETIME_FORMAT);
+									$report["binuser"] = $this->_users->getUserFullname($report["binuser"]);
+									$reports[] = new Lists($report);
+									$arr["reports"] = $reports;
+								}
+							}
+						}
 						
 	
 						// meetings
@@ -1262,6 +1367,7 @@ class PatientsModel extends Model {
 				$arr[$module . "_tasks"] = "";
 				$arr[$module . "_folders"] = "";
 				$arr[$module . "_cols"] = "";
+				$arr[$module . "_diags"] = "";
 			}
 		}
 		
@@ -1304,6 +1410,56 @@ class PatientsModel extends Model {
 											$arr["objectives_tasks"] = "";
 										}
 									}
+								}
+							}
+						}
+						
+						
+						// treatments
+						if(in_array("treatments",$active_modules)) {
+							$patientsTreatmentsModel = new PatientsTreatmentsModel();
+							$qm ="select id, title, bin, bintime, binuser from " . CO_TBL_PATIENTS_TREATMENTS . " where pid = '$pid'";
+							$resultm = mysql_query($qm, $this->_db->connection);
+							while ($rowm = mysql_fetch_array($resultm)) {
+								$mid = $rowm["id"];
+								if($rowm["bin"] == "1") { // deleted meeting
+									$patientsTreatmentsModel->deleteTreatment($mid);
+									$arr["treatments"] = "";
+								} else {
+									// treatments_disgnoses
+									$qmt ="select id, text, bin, bintime, binuser from " . CO_TBL_PATIENTS_TREATMENTS_DIAGNOSES . " where mid = '$mid'";
+									$resultmt = mysql_query($qmt, $this->_db->connection);
+									while ($rowmt = mysql_fetch_array($resultmt)) {
+										if($rowmt["bin"] == "1") { // deleted phases
+											$mtid = $rowmt["id"];
+											$patientsTreatmentsModel->deleteTreatmentDiagnose($mtid);
+											$arr["objectives_diags"] = "";
+										}
+									}
+									// treatments_tasks
+									$qmt ="select id, title, bin, bintime, binuser from " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where mid = '$mid'";
+									$resultmt = mysql_query($qmt, $this->_db->connection);
+									while ($rowmt = mysql_fetch_array($resultmt)) {
+										if($rowmt["bin"] == "1") { // deleted phases
+											$mtid = $rowmt["id"];
+											$patientsTreatmentsModel->deleteTreatmentTask($mtid);
+											$arr["treatments_tasks"] = "";
+										}
+									}
+								}
+							}
+						}
+	
+						// reports
+						if(in_array("reports",$active_modules)) {
+							$patientsReportsModel = new PatientsReportsModel();
+							$qpc ="select id, title, bin, bintime, binuser from " . CO_TBL_PATIENTS_REPORTS . " where pid = '$pid'";
+							$resultpc = mysql_query($qpc, $this->_db->connection);
+							while ($rowpc = mysql_fetch_array($resultpc)) {
+								$mid = $rowpc["id"];
+								if($rowpc["bin"] == "1") {
+									$patientsReportsModel->deleteReport($mid);
+									$arr["reports"] = "";
 								}
 							}
 						}
@@ -1630,6 +1786,45 @@ class PatientsModel extends Model {
 				while($rowp = mysql_fetch_array($resultp)) {
 					$rows['value'] = htmlspecialchars_decode($rowp['title']);
 					$rows['id'] = 'objectives,' .$folder. ',' . $pid . ',' .$rowp['id'].',patients';
+					$r[] = $rows;
+				}
+			}
+			
+			// Treatments
+			if(in_array("treatments",$active_modules)) {
+				$qp = "SELECT id,CONVERT(title USING latin1) as title FROM " . CO_TBL_PATIENTS_TREATMENTS . " WHERE pid = '$pid' and bin = '0' $sql and title like '%$term%' ORDER BY title";
+				$resultp = mysql_query($qp, $this->_db->connection);
+				while($rowp = mysql_fetch_array($resultp)) {
+					$rows['value'] = htmlspecialchars_decode($rowp['title']);
+					$rows['id'] = 'treatments,' .$folder. ',' . $pid . ',' .$rowp['id'].',patients';
+					$r[] = $rows;
+				}
+				// Treatments Diags
+				$qp = "SELECT b.id,CONVERT(a.text USING latin1) as title FROM " . CO_TBL_PATIENTS_TREATMENTS_DIAGNOSES . " as a, " . CO_TBL_PATIENTS_TREATMENTS . " as b WHERE b.pid = '$pid' and a.mid = b.id and a.bin = '0' and b.bin = '0' $sql and a.text like '%$term%' ORDER BY a.text";
+				$resultp = mysql_query($qp, $this->_db->connection);
+				while($rowp = mysql_fetch_array($resultp)) {
+					$rows['value'] = htmlspecialchars_decode($rowp['title']);
+					$rows['id'] = 'treatments,' .$folder. ',' . $pid . ',' .$rowp['id'].',patients';
+					$r[] = $rows;
+				}
+				// Treatments Tasks
+				$qp = "SELECT b.id,CONVERT(a.title USING latin1) as title FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " as a, " . CO_TBL_PATIENTS_TREATMENTS . " as b WHERE b.pid = '$pid' and a.mid = b.id and a.bin = '0' and b.bin = '0' $sql and a.title like '%$term%' ORDER BY a.title";
+				$resultp = mysql_query($qp, $this->_db->connection);
+				while($rowp = mysql_fetch_array($resultp)) {
+					$rows['value'] = htmlspecialchars_decode($rowp['title']);
+					$rows['id'] = 'treatments,' .$folder. ',' . $pid . ',' .$rowp['id'].',patients';
+					$r[] = $rows;
+				}
+			}
+			
+			
+			// Reports
+			if(in_array("reports",$active_modules)) {
+				$qp = "SELECT id,CONVERT(title USING latin1) as title FROM " . CO_TBL_PATIENTS_REPORTS . " WHERE pid = '$pid' and bin = '0' $sql and title like '%$term%' ORDER BY title";
+				$resultp = mysql_query($qp, $this->_db->connection);
+				while($rowp = mysql_fetch_array($resultp)) {
+					$rows['value'] = htmlspecialchars_decode($rowp['title']);
+					$rows['id'] = 'reports,' .$folder. ',' . $pid . ',' .$rowp['id'].',patients';
 					$r[] = $rows;
 				}
 			}

@@ -67,7 +67,7 @@ class PatientsReportsModel extends PatientsModel {
 			$sql = " and access = '1' ";
 		}
 		
-		$q = "select id,title,item_date,access,status,checked_out,checked_out_user from " . CO_TBL_PATIENTS_REPORTS . " where pid = '$id' and bin != '1' " . $sql . $order;
+		$q = "select id,title,item_date,access,checked_out,checked_out_user from " . CO_TBL_PATIENTS_REPORTS . " where pid = '$id' and bin != '1' " . $sql . $order;
 		$this->setSortStatus("patients-reports-sort-status",$sortcur,$id);
 		$result = mysql_query($q, $this->_db->connection);
 		$items = mysql_num_rows($result);
@@ -205,18 +205,11 @@ class PatientsReportsModel extends PatientsModel {
 		// dates
 		$array["item_date"] = $this->_date->formatDate($array["item_date"],CO_DATE_FORMAT);
 		
-		// time
-		$array["start"] = $this->_date->formatDate($array["start"],CO_TIME_FORMAT);
-		$array["end"] = $this->_date->formatDate($array["end"],CO_TIME_FORMAT);
-
-		$array["management_print"] = $this->_contactsmodel->getUserListPlain($array["management"]);
-		if($option = 'prepareSendTo') {
+		/*if($option = 'prepareSendTo') {
 			$array["sendtoTeam"] = $this->_contactsmodel->checkUserListEmail($array["management"],'patientsmanagement', "", $array["canedit"]);
 			$array["sendtoTeamNoEmail"] = $this->_contactsmodel->checkUserListEmail($array["management"],'patientsmanagement', "", $array["canedit"], 0);
 			$array["sendtoError"] = false;
-		}
-		$array["management"] = $this->_contactsmodel->getUserList($array['management'],'patientsmanagement', "", $array["canedit"]);
-		$array["management_ct"] = empty($array["management_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['management_ct'];
+		}*/
 		$array["documents"] = $this->_documents->getDocListFromIDs($array['documents'],'documents');
 		
 		$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
@@ -238,33 +231,65 @@ class PatientsReportsModel extends PatientsModel {
 			break;
 		}
 		
-		switch($array["status"]) {
-			case "0":
-				$array["status_text"] = $lang["PATIENT_REPORT_STATUS_OUTGOING"];
-				$array["status_date"] = '';
-			break;
-			case "1":
-				$array["status_text"] = $lang["PATIENT_REPORT_STATUS_ON_INCOMING"];
-				$array["status_date"] = '';
-			break;
+		$sendto = $this->getSendtoDetails("patients_reports",$id);
+		
+		// get treatment info
+		$array["treatment_patient"] = '';
+		$array["treatment_diagnose"] = '';
+		$array["treatment_date"] = '';
+		$array["treatment_management"] = '';
+		$array["treatment_doctor"] = '';
+		$array["treatment_treats"] = '';
+		
+		
+		$tid = $array["tid"];
+		$qt = "SELECT * FROM co_patients_treatments where id = '$tid'";
+		$resultt = mysql_query($qt, $this->_db->connection);
+		if(mysql_num_rows($resultt) > 0) {
+			$rowt = mysql_fetch_object($resultt);
+			$array["treatment_diagnose"] = $rowt->protocol;
+			$array["treatment_date"] = $this->_date->formatDate($rowt->item_date,CO_DATE_FORMAT);
+			$array["treatment_doctor"] = $this->_users->getUserFullname($rowt->doctor);
+			$array["treatment_treats"] = $rowt->protocol2;
 		}
 		
-		$sendto = $this->getSendtoDetails("patients_reports",$id);
-
+		$pid = $array["pid"];
+		$qu = "SELECT a.management,CONCAT(b.lastname,' ',b.firstname) as patient FROM co_patients as a, co_users as b where a.cid=b.id and a.id = '$pid'";
+		$resultu = mysql_query($qu, $this->_db->connection);
+		if(mysql_num_rows($resultu) > 0) {
+			$rowu = mysql_fetch_object($resultu);
+			$array["treatment_patient"] = $rowu->patient;
+			$array["treatment_management"] = $this->_users->getUserFullname($rowu->management);
+		}
+	
 		$report = new Lists($array);
 		$arr = array("report" => $report, "sendto" => $sendto, "access" => $array["perms"]);
 		return $arr;
    }
 
 
-   function setDetails($pid,$id,$title,$reportdate,$start,$end,$protocol,$management,$management_ct,$documents,$report_access,$report_access_orig,$report_status,$report_status_date) {
+function setDetailsTitle($pid,$id,$title,$reportdate) {
 		global $session, $lang;
 		
-		$start = $this->_date->formatDateGMT($reportdate . " " . $start);
-		$end = $this->_date->formatDateGMT( $reportdate . " " . $end);
 		$reportdate = $this->_date->formatDate($reportdate);
-		$management = $this->_contactsmodel->sortUserIDsByName($management);
-		$report_status_date = $this->_date->formatDateGMT($report_status_date);
+		
+		$now = gmdate("Y-m-d H:i:s");
+
+		$q = "UPDATE " . CO_TBL_PATIENTS_REPORTS . " set title = '$title', item_date = '$reportdate' , edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		if ($result) {
+			$arr = array("id" => $id, "what" => "edit");
+		}
+
+		return $arr;
+   }
+
+
+   function setDetails($pid,$id,$title,$reportdate,$protocol,$protocol2,$feedback,$documents,$report_access,$report_access_orig) {
+		global $session, $lang;
+		
+		$reportdate = $this->_date->formatDate($reportdate);
 
 		$now = gmdate("Y-m-d H:i:s");
 		
@@ -278,7 +303,7 @@ class PatientsReportsModel extends PatientsModel {
 			$accesssql = "access='$report_access', access_date='$report_access_date', access_user = '$session->uid',";
 		}
 
-		$q = "UPDATE " . CO_TBL_PATIENTS_REPORTS . " set title = '$title', item_date = '$reportdate', start = '$start', end = '$end', protocol = '$protocol', management='$management', management_ct='$management_ct', documents = '$documents', access='$report_access', $accesssql status = '$report_status', status_date = '$report_status_date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PATIENTS_REPORTS . " set title = '$title', item_date = '$reportdate', protocol = '$protocol', protocol2 = '$protocol2', feedback='$feedback', documents = '$documents', access='$report_access', $accesssql edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
@@ -295,7 +320,7 @@ class PatientsReportsModel extends PatientsModel {
 		$now = gmdate("Y-m-d H:i:s");
 		$time = gmdate("Y-m-d H");
 		
-		$q = "INSERT INTO " . CO_TBL_PATIENTS_REPORTS . " set title = '" . $lang["PATIENT_REPORT_NEW"] . "', item_date='$now', start='$time', end='$time', pid = '$id', status = '1', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+		$q = "INSERT INTO " . CO_TBL_PATIENTS_REPORTS . " set title = '" . $lang["PATIENT_REPORT_NEW"] . "', item_date='$now', pid = '$id',  created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id = mysql_insert_id();
 				
@@ -311,7 +336,7 @@ class PatientsReportsModel extends PatientsModel {
 		$now = gmdate("Y-m-d H:i:s");
 		
 		// report
-		$q = "INSERT INTO " . CO_TBL_PATIENTS_REPORTS . " (pid,title,item_date,start,end,protocol,management,management_ct,status,created_date,created_user,edited_date,edited_user) SELECT pid,CONCAT(title,' " . $lang["GLOBAL_DUPLICAT"] . "'),item_date,start,end,protocol,management,management_ct,status,'$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_PATIENTS_REPORTS . " where id='$id'";
+		$q = "INSERT INTO " . CO_TBL_PATIENTS_REPORTS . " (pid,tid,title,item_date,protocol,protocol2,feedback,created_date,created_user,edited_date,edited_user) SELECT pid,tid,CONCAT(title,' " . $lang["GLOBAL_DUPLICAT"] . "'),'$now',protocol,protocol2,feedback,'$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_PATIENTS_REPORTS . " where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
 		if ($result) {
@@ -358,6 +383,35 @@ class PatientsReportsModel extends PatientsModel {
 		  	return true;
 		}
    }
+   
+   function getReportsTreatmentsDialog($field,$sql) {
+		global $session;
+		$str = '<div class="dialog-text">';
+		$q ="select id, title, item_date from co_patients_treatments WHERE pid='$sql' ORDER BY item_date DESC";
+		$result = mysql_query($q, $this->_db->connection);
+		while ($row = mysql_fetch_array($result)) {
+			$date = $this->_date->formatDate($row["item_date"],CO_DATE_FORMAT);
+			$str .= '<a href="#" class="insertFromDialog" title="' . $row["title"] . '" field="'.$field.'" gid="'.$row["id"].'">' . $date . ' - ' . $row["title"] . '</a>';
+		}
+		$str .= '</div>';	
+		return $str;
+	 }
+
+
+ 	function setTreatmentID($pid,$tid) {
+		global $session, $lang;
+
+		$now = gmdate("Y-m-d H:i:s");
+
+		$q = "UPDATE " . CO_TBL_PATIENTS_REPORTS . " set tid = '$tid', edited_user = '$session->uid', edited_date = '$now' where id='$pid'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		if ($result) {
+			return true;
+		}
+
+	 }
+
 
 }
 ?>

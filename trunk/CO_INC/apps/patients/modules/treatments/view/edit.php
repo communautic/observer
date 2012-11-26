@@ -37,8 +37,8 @@
 <?php } ?>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-		<td class="tcell-left-inactive text11">Behandlungsdauer</td>
-		<td class="tcell-right-inactive"><span id="patients_treatmentstartdate"></span> - <span id="patients_treatmentenddate"></span>
+		<td class="tcell-left-inactive text11"><?php echo $lang["PATIENT_TREATMENT_DURATION"];?></td>
+		<td class="tcell-right-inactive"><span id="patients_treatmentstartdate"><?php echo($treatment->treatment_start);?></span> - <span id="patients_treatmentenddate"><?php echo($treatment->treatment_end);?></span>
         </td>
     </tr>
 </table>
@@ -60,12 +60,18 @@
     <td class="tcell-right"><?php if($treatment->canedit) { ?><textarea name="protocol" class="elastic"><?php echo(strip_tags($treatment->protocol));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($treatment->protocol)));?><?php } ?></td>
   </tr>
 </table>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
+  <tr>
+    <td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["PATIENT_TREATMENT_DESCRIPTION"];?></span></span></td>
+    <td class="tcell-right"><?php if($treatment->canedit) { ?><textarea name="protocol3" class="elastic"><?php echo(strip_tags($treatment->protocol3));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($treatment->protocol3)));?><?php } ?></td>
+  </tr>
+</table>
 <div class="content-spacer"></div>
 
 <div id="contactTabs" class="contentTabs">
 	<ul class="contentTabsList">
-		<li><span class="active" rel="PatientsTreatmentsFirst">Befundung</span></li>
-		<li><span rel="PatientsTreatmentsSecond">Behandlungsplan</span></li>
+		<li><span class="active" rel="PatientsTreatmentsFirst"><?php echo $lang["PATIENT_TREATMENT_DIAGNOSE"];?></span></li>
+		<li><span rel="PatientsTreatmentsSecond"><?php echo $lang["PATIENT_TREATMENT_PLAN"];?></span></li>
 	</ul>
     <div id="PatientsTreatmentsTabsContent" class="contentTabsContent">
         <div id="PatientsTreatmentsFirst">
@@ -107,7 +113,7 @@
 							$curcol = ($i-1) % 10;
                             include("diagnose.php");
 							$i++;
-                         } ?><div style="height: 1px; background: #fff;"></div></div></td>
+                         } ?></div></td>
                 </tr>
             </table>
 			
@@ -119,15 +125,19 @@
                     <td class="tcell-left text11">
                     <span class="<?php if($treatment->canedit) { ?>content-nav newItem<?php } ?>"><span><?php echo $lang["PATIENT_TREATMENT_GOALS"];?></span></span>
                     </td>
-                	<td class="tcell-right-inactive tcell-right-nopadding text11">
+                    <td class="tcell-right">&nbsp;</td>
+    </tr>
+</table>
                     <div id="patientstreatmenttasks">
 						<?php 
                         foreach($task as $value) { 
+							$checked = '';
+							if($value->status == 1) {
+								$checked = ' checked="checked"';
+							}
                             include("task.php");
                          } ?>
                         </div>
-                    </td>
-                </tr>
             </table>
         </div>
     </div>

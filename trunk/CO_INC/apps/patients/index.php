@@ -170,6 +170,9 @@ if (!empty($_GET['request'])) {
 		case 'getGlobalSearch':
 			echo($patients->getGlobalSearch($system->checkMagicQuotesTinyMCE($_GET['term'])));
 		break;
+		case 'getInsuranceContext':
+			echo($patients->getInsuranceContext($_GET['id'],$_GET['field'],$_GET['edit']));
+		break;
 	}
 }
 

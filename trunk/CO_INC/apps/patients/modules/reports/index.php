@@ -77,6 +77,12 @@ if (!empty($_GET['request'])) {
 		case 'getReportStatusDialog':
 			echo($patientsReports->getReportStatusDialog());
 		break;
+		case 'getReportsTreatmentsDialog':
+			echo($patientsReports->getReportsTreatmentsDialog($_GET['field'],$_GET['sql']));
+		break;
+		case 'setTreatmentID':
+			echo($patientsReports->setTreatmentID($_GET['pid'],$_GET['tid']));
+		break;
 		case 'getHelp':
 			echo($patientsReports->getHelp());
 		break;
@@ -87,7 +93,12 @@ if (!empty($_POST['request'])) {
 	
 	switch ($_POST['request']) {
 		case 'setDetails':
-			echo($patientsReports->setDetails($_POST['pid'], $_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['item_date'], $_POST['reportstart'], $_POST['reportend'], $system->checkMagicQuotes($_POST['protocol']), $_POST['management'], $system->checkMagicQuotes($_POST['management_ct']),$_POST['documents'],$_POST['report_access'],$_POST['report_access_orig'],$_POST['report_status'],$_POST['report_status_date']));
+			$tid = $_POST['tid'];
+			if($tid == 0) {
+				echo($patientsReports->setDetailsTitle($_POST['pid'], $_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['item_date']));
+			} else {
+				echo($patientsReports->setDetails($_POST['pid'], $_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['item_date'],  $system->checkMagicQuotes($_POST['protocol']), $system->checkMagicQuotes($_POST['protocol2']), $system->checkMagicQuotes($_POST['feedback']),$_POST['documents'],$_POST['report_access'],$_POST['report_access_orig']));
+			}
 		break;
 		case 'sendDetails':
 			echo($patientsReports->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));

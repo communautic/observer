@@ -50,7 +50,7 @@
 <div class="content-spacer"></div>
     <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-inactive no-margin loadContactExternal" rel="<?php echo($patient->cid)?>" style="cursor: pointer;">
   <tr>
-		<td class="tcell-left-inactive text11" style="padding-top: 2px;">Kontaktdaten</td>
+		<td class="tcell-left-inactive text11" style="padding-top: 2px;"><?php echo $lang["PATIENT_CONTACT_DETAILS"];?></td>
     	<td class="tcell-right-inactive"><?php echo($patient->ctitle)?> <?php echo($patient->title2)?> <?php echo($patient->title);?><br />
         <span class="text11"><?php echo($patient->position . " &nbsp; | &nbsp; " . $lang["PATIENT_CONTACT_EMAIL"] . " " . $patient->email . " &nbsp; | &nbsp; " . $lang["PATIENT_CONTACT_PHONE"] . " " . $patient->phone1);?></span>
         </td>
