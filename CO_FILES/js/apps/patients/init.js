@@ -30,7 +30,7 @@ function patientsApplication(name) {
 		formData[formData.length] = processListApps('folder');
 		formData[formData.length] = processListApps('management');
 		formData[formData.length] = processCustomTextApps('management_ct');
-		formData[formData.length] = processListApps('insurance');
+		formData[formData.length] = processListAppsInsurance('insurance');
 		//formData[formData.length] = processListApps('status');
 	}
 
@@ -55,19 +55,15 @@ function patientsApplication(name) {
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients&request=updateStatus&id=" + id + "&date=" + date + "&status=" + status, cache: false, success: function(data){
 				switch(data.status) {
 					case "0":
-						$("#patients2 .active-link .module-item-status").removeClass("module-item-active-maternity");
+						$("#patients2 .active-link .module-item-status").addClass("module-item-active-trial").removeClass("module-item-active-circle");
 						$("#patientDurationEnd").html($("#patients-right input[name='status_date']").val());
 					break;
 					case "1":
-						$("#patients2 .active-link .module-item-status").addClass("module-item-active-maternity");
-						$("#patientDurationEnd").html($("#patients-right input[name='status_date']").val());
-					break;
-					case "2":
-						$("#patients2 .active-link .module-item-status").removeClass("module-item-active-maternity");
+						$("#patients2 .active-link .module-item-status").addClass("module-item-active-circle").removeClass("module-item-active-trial");
 						$("#patientDurationEnd").html($("#patients-right input[name='status_date']").val());
 					break;
 					default:
-						$("#patients2 .active-link .module-item-status").removeClass("module-item-active-trial").removeClass("module-item-active-maternity").removeClass("module-item-active-leave");
+						$("#patients2 .active-link .module-item-status").removeClass("module-item-active-trial").removeClass("module-item-active-circle");
 				}																															 			}
 		});
 	}
@@ -381,7 +377,7 @@ function patientsApplication(name) {
 	
 	
 	this.insertFromDialog = function(field,gid,title) {
-		var html = '<a class="listmember" uid="' + gid + '" field="'+field+'">' + title + '</a>';
+		var html = '<span class="listmember-outer"><a class="listmemberInsurance" uid="' + gid + '" field="'+field+'">' + title + '</a></div>';
 		$("#"+field).html(html);
 		$("#modalDialog").dialog('close');
 		var obj = getCurrentModule();
@@ -878,6 +874,19 @@ $(document).ready(function() {
 		}
 		var id = $(this).attr("rel");
 		$("#patients2-outer > h3").trigger('click', [id]);
+	});
+	
+	$(document).on('click', 'a.listmemberInsurance', function(e) {
+		e.preventDefault();
+		var ele = $(this);
+		var uid = $(this).attr('uid');
+		var field = $(this).attr('field');
+		var edit = $(this).attr('edit');
+		$.ajax({ type: "GET", url: "/", data: "path=apps/patients&request=getInsuranceContext&id="+uid+"&field="+field+"&edit="+edit, success: function(html){
+			ele.parent().append(html);
+			ele.next().slideDown();
+			}
+		});
 	});
 	
 	

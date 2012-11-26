@@ -11,20 +11,17 @@ function patientsReports(name) {
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
 		}
-		
-		formData[formData.length] = processListApps('management');
-		formData[formData.length] = processCustomTextApps('management_ct');
-		formData[formData.length] = processStringApps('reportstart');
-		formData[formData.length] = processStringApps('reportend');
-		formData[formData.length] = processDocListApps('documents');
-		formData[formData.length] = processListApps('report_access');
-		formData[formData.length] = processListApps('report_status');
+		var tid = $("#patients input.tid").fieldValue();
+		if(tid > 0) {
+			formData[formData.length] = processDocListApps('documents');
+			formData[formData.length] = processListApps('report_access');
+		}
 	 }
 	 
 	 
 	 this.formResponse = function(data) {
 		 switch(data.action) {
-			case "edit":
+			case "edit": case "editTitle":
 				$("#patients3 ul[rel=reports] span[rel="+data.id+"] .text").html($("#patients .item_date").val() + ' - ' +$("#patients .title").val());
 					switch(data.access) {
 						case "0":
@@ -279,6 +276,15 @@ function patientsReports(name) {
 					}
 				});
 			break;
+			case "getReportsTreatmentsDialog":
+				$.ajax({ type: "GET", url: "/", data: 'path=apps/patients/modules/reports&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
+					$("#modalDialog").html(html);
+					$("#modalDialog").dialog('option', 'position', offset);
+					$("#modalDialog").dialog('option', 'title', title);
+					$("#modalDialog").dialog('open');
+					}
+				});
+			break;
 			case "getDocumentsDialog":
 				var id = $("#patients").data("second");
 				$.ajax({ type: "GET", url: "/", data: 'path=apps/patients/modules/documents&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql+'&id=' + id, success: function(html){
@@ -313,6 +319,20 @@ function patientsReports(name) {
 		$("#modalDialog").dialog("close");
 		$("#patientsreport_status").next().val("");
 		$('#patients .coform').ajaxSubmit(module.poformOptions);
+	}
+	
+	
+	this.insertFromDialog = function(field,gid,title) {
+		var module = this;
+		$("#modalDialog").dialog('close');
+		var pid = $('#patients-right-report-id').val();
+		$.ajax({ type: "GET", url: "/", data: 'path=apps/patients/modules/reports&request=setTreatmentID&pid='+pid+'&tid='+gid, success: function(){
+				var moduleidx = $("#patients3 ul").index($("#patients3 ul[rel=reports]"));
+				var liindex = $("#patients3 ul[rel=reports] .module-click").index($("#patients3 ul[rel=reports] .module-click[rel='"+pid+"']"));
+				module.getDetails(moduleidx,liindex);
+				$("#patients3 ul[rel=reports] .module-click:eq("+liindex+")").addClass('active-link');
+			}
+		});
 	}
 	
 	

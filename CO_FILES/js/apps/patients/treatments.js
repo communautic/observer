@@ -32,6 +32,37 @@ function patientsTreatments(name) {
 			}
 		});
 		
+		$('#patients div.task_team_list').each(function() {
+			var id = $(this).attr("id");
+			var reg = /[0-9]+/.exec(id);
+			formData[formData.length] = processListArray('task_team',reg);
+		});
+		
+		$('#patients div.task_team_list_ct').each(function() {
+			var id = $(this).attr("id");
+			var reg = /[0-9]+/.exec(id);
+			formData[formData.length] = processCustomTextArray(reg);
+		});
+		
+		$('#patients div.task_treatmenttype').each(function() {
+			var id = $(this).attr("id");
+			var reg = /[0-9]+/.exec(id);
+			formData[formData.length] = processListArray('task_treatmenttype',reg);
+		});
+		
+		$('#patients div.task_time_list').each(function() {
+			var id = $(this).attr("id");
+			var reg = /[0-9]+/.exec(id);
+			var html = $(this).html();
+			formData[formData.length] = { "name": "task_time["+reg+"]", "value": html };
+		});
+		
+		$('#patients div.task_place_list').each(function() {
+			var id = $(this).attr("id");
+			var reg = /[0-9]+/.exec(id);
+			formData[formData.length] = processListArray('task_place',reg);
+		});
+		
 		$("#canvasDivText > div").each(function() {
 			var id = $(this).attr('id');
 			var reg = /[0-9]+/.exec(id);
@@ -81,17 +112,17 @@ function patientsTreatments(name) {
 			switch(data.action) {
 				case "edit":
 					switch(data.status) {
-						case "1":
+						case "2":
 							$("#patients3 ul[rel=treatments] span[rel="+data.id+"] .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
 						break;
-						case "2":
+						case "3":
 							$("#patients3 ul[rel=treatments] span[rel="+data.id+"] .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
 						break;
 						default:
 							$("#patients3 ul[rel=treatments] span[rel="+data.id+"] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
 					}
 				break;
-				case "reload":
+				/*case "reload":
 					var module = getCurrentModule();
 					var id = $('#patients').data('second');
 					$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/patients/modules/treatments&request=getList&id="+id, success: function(list){
@@ -103,7 +134,7 @@ function patientsTreatments(name) {
 						$("#patients3 ul[rel=treatments] .module-click:eq("+liindex+")").addClass('active-link');
 						}
 					});
-				break;																																														  				}
+				break;	*/																																													  				}
 			}
 		});
 	}
@@ -168,7 +199,10 @@ function patientsTreatments(name) {
 				  }
 				});
 				activeCanvas = $("#c1")[0];
-				initPatientsContentScrollbar();
+				setTimeout(function(){
+						initPatientsContentScrollbar();			
+				},300)
+				
 			}
 			}
 		});	
@@ -374,6 +408,15 @@ function patientsTreatments(name) {
 					}
 				});
 			break;
+			case "getTreatmentsTypeDialog":
+				$.ajax({ type: "GET", url: "/", data: 'path=apps/patients/modules/treatments&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
+					$("#modalDialog").html(html);
+					$("#modalDialog").dialog('option', 'position', offset);
+					$("#modalDialog").dialog('option', 'title', title);
+					$("#modalDialog").dialog('open');
+					}
+				});
+			break;
 			case "getDocumentsDialog":
 				var id = $("#patients").data("second");
 				$.ajax({ type: "GET", url: "/", data: 'path=apps/patients/modules/documents&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql+'&id=' + id, success: function(html){
@@ -417,6 +460,22 @@ function patientsTreatments(name) {
 		$("#modalDialog").dialog("close");
 		$("#patientstreatment_status").nextAll('img').trigger('click');
 	}
+	
+	
+	this.insertFromDialog = function(field,gid,title) {
+		var html = '<span class="listmember-outer"><span class="listmember listmemberTreatmentType" uid="' + gid + '" field="'+field+'">' + title + '</span></div>';
+		$("#"+field).html(html);
+		$("#modalDialog").dialog('close');
+		var obj = getCurrentModule();
+		$('#patients .coform').ajaxSubmit(obj.poformOptions);
+		// get minutes
+		var id = /[0-9]+/.exec(field);
+		$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/treatments&request=getTreatmentTypeMin&id=" + gid, success: function(html){
+			$('#minutes_'+id).html(html);
+			
+			}
+		});
+	}
 
 
 	this.newItem = function() {
@@ -425,10 +484,11 @@ function patientsTreatments(name) {
 		var num = parseInt($("#patients-right .task_sort").size());
 		$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/treatments&request=addTask&mid=" + mid + "&num=" + num + "&sort=" + num, success: function(html){
 			$('#patientstreatmenttasks').append(html);
-			var idx = parseInt($('.cbx').size() -1);
-			//var element = $('.cbx:eq('+idx+')');
-			//$.jNice.CheckAddPO(element);
-			$('.treatmentouter:eq('+idx+')').slideDown(function() {
+			var idx = parseInt($('#patientstreatmenttasks .cbx').size() -1);
+			//console.log(idx);
+			var element = $('.cbx:eq('+idx+')');
+			$.jNice.CheckAddPO(element);
+			$('.treatmenttaskouter:eq('+idx+')').slideDown(function() {
 				$(this).find(":text:eq(0)").focus();
 				/*if(idx == 6) {
 				$('#patients-right .addTaskTable').clone().insertAfter('#phasetasks');
@@ -475,7 +535,7 @@ function patientsTreatments(name) {
 			//$('div.loadCanvas').removeClass('active');
 			$('div.loadCanvasList .tcell-right').removeClass('active');
 			var html = '<canvas class="canvasDraw" id="c'+num+'" width="400" height="400" style="z-index: '+num+'" rel="'+id+'"></canvas><div id="dia-'+id+'" style="position: absolute; width: 30px; height: 30px; z-index: '+zIndexes+'; top: '+30*num+'px; left: 30px;" class="loadCanvas active" rel="'+num+'"><div class="circle circle'+curcol+'"><div>'+num+'</div></div></div>';
-			var htmltext = '<div id="canvasList_'+id+'" class="treatmentouter loadCanvasList" rel="'+num+'"><table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol"><tr><td style="width: 40px;"><span class="selectTextarea"><span><div class="circle  circle'+curcol+'"><div>'+num+'</div></div></span></span></td><td class="tcell-right active"><textarea name="canvasList_text['+id+']" class="elastic"></textarea><input name="canvasList_id['+id+']" type="hidden" value="'+id+'" /></td><td width="30"><a class="binDiagnose" rel="'+id+'"><span class="icon-delete"></span></a></td></tr></table></div>';
+			var htmltext = '<div id="canvasList_'+id+'" class="treatmentouter loadCanvasList" rel="'+num+'"><table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol"><tr><td style="width: 31px; padding-left: 9px;"><span class="selectTextarea"><span><div class="circle  circle'+curcol+'"><div>'+num+'</div></div></span></span></td><td class="tcell-right active"><textarea name="canvasList_text['+id+']" class="elastic"></textarea><input name="canvasList_id['+id+']" type="hidden" value="'+id+'" /></td><td width="30"><a class="binDiagnose" rel="'+id+'"><span class="icon-delete"></span></a></td></tr></table></div>';
 			$('#patients .canvasDiv').append(html);
 			$('#canvasDivText').append(htmltext);
 			a = 'c'+num;
@@ -530,7 +590,6 @@ function patientsTreatments(name) {
 		var url = "/?path=apps/patients/modules/treatments&request=getHelp";
 		$("#documentloader").attr('src', url);
 	}
-	
 	
 	// Recycle Bin
 	this.binDelete = function(id) {
@@ -608,6 +667,46 @@ function patientsTreatments(name) {
 					$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/treatments&request=restoreTreatmentTask&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
 							$('#treatment_task_'+id).slideUp();
+						}
+					}
+					});
+				} 
+			}
+		});
+	}
+	
+this.binDeleteColumn = function(id) {
+		var txt = ALERT_DELETE_REALLY;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/treatments&request=deleteTreatmentDiagnose&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$('#treatment_diag_'+id).slideUp();
+						}
+					}
+					});
+				} 
+			}
+		});
+	}
+
+	this.binRestoreColumn = function(id) {
+		var txt = ALERT_RESTORE;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/treatments&request=restoreTreatmentDiagnose&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$('#treatment_diag_'+id).slideUp();
 						}
 					}
 					});
@@ -824,7 +923,7 @@ var colors = ['#3C4664','#EB4600','#915500','#0A960A','#AA19AA','#3C4664','#EB46
 			  	var curcol = index % 10;
 				contexts[id].globalCompositeOperation = "source-over";
 				contexts[id].strokeStyle = colors[curcol];
-				contexts[id].lineWidth   = 2;
+				contexts[id].lineWidth   = 3;
 			});
 		})
 		
@@ -838,7 +937,7 @@ var colors = ['#3C4664','#EB4600','#915500','#0A960A','#AA19AA','#3C4664','#EB46
 			  contexts[id] = this.getContext('2d');
 			  contexts[id].strokeStyle = colors[curcol];
 			//  $('#dia-'+rel).css('background',colors[curcol])
-			  contexts[id].lineWidth   = 2;
+			  contexts[id].lineWidth   = 3;
 			//})
 		})			
 
