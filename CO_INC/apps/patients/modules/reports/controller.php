@@ -77,17 +77,17 @@ class PatientsReports extends Patients {
 			$report = $arr["report"];			
 			$form_url = $this->form_url;
 			$request = "sendDetails";
-			$to = $report->sendtoTeam;
+			$to = "";
 			$cc = "";
 			$subject = $report->title;
 			$variable = "";
 			
 			$data["error"] = 0;
 			$data["error_message"] = "";
-			if($report->sendtoTeamNoEmail != "") {
+			/*if($report->sendtoTeamNoEmail != "") {
 				$data["error"] = 1;
 				$data["error_message"] = $report->sendtoTeamNoEmail;
-			}
+			}*/
 			ob_start();
 				include CO_INC .'/view/dialog_send.php';
 				$data["html"] = ob_get_contents();
@@ -130,11 +130,18 @@ class PatientsReports extends Patients {
 			return true;
 		}
 	}
-	
 
-	function setDetails($pid,$id,$title,$reportdate,$start,$end,$protocol,$management,$management_ct,$documents,$report_access,$report_access_orig,$report_status,$report_status_date) {
-		if($arr = $this->model->setDetails($pid,$id,$title,$reportdate,$start,$end,$protocol,$management,$management_ct,$documents,$report_access,$report_access_orig,$report_status,$report_status_date)){
-			return '{ "action": "edit" , "id": "' . $arr["id"] . '", "access": "' . $report_access . '", "status": "' . $report_status . '"}';
+	function setDetailsTitle($pid,$id,$title,$reportdate) {
+		if($arr = $this->model->setDetailsTitle($pid,$id,$title,$reportdate)){
+			return '{ "action": "editTitle" , "id": "' . $arr["id"] . '"}';
+		} else{
+			return "error";
+		}
+	}
+
+	function setDetails($pid,$id,$title,$reportdate,$protocol,$protocol2,$feedback,$documents,$report_access,$report_access_orig) {
+		if($arr = $this->model->setDetails($pid,$id,$title,$reportdate,$protocol,$protocol2,$feedback,$documents,$report_access,$report_access_orig)){
+			return '{ "action": "edit" , "id": "' . $arr["id"] . '", "access": "' . $report_access . '"}';
 		} else{
 			return "error";
 		}
@@ -210,6 +217,25 @@ class PatientsReports extends Patients {
 		$data["app"] = "patients";
 		$data["module"] = "/modules/reports";
 		$this->openHelpPDF($data);
+	}
+	
+	
+	function getReportsTreatmentsDialog($field,$sql) {
+		$retval = $this->model->getReportsTreatmentsDialog($field,$sql);
+		if($retval){
+			 return $retval;
+		  } else{
+			 return "error";
+		  }
+	}
+	
+	function setTreatmentID($pid,$tid) {
+		$retval = $this->model->setTreatmentID($pid,$tid);
+		if($retval){
+			 return true;
+		  } else{
+			 return "error";
+		  }
 	}
 	
 }

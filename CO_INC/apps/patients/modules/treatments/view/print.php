@@ -6,8 +6,8 @@
 </table>
 <table width="100%" class="standard">
 	<tr>
-		<td class="tcell-left">Behandlungsdauer</td>
-		<td>&nbsp;</td>
+		<td class="tcell-left"><?php echo $lang["PATIENT_TREATMENT_DURATION"];?></td>
+		<td><?php echo($treatment->treatment_start);?> - <?php echo($treatment->treatment_end);?></td>
     </tr>
 </table>
 <table width="100%" class="standard">
@@ -33,6 +33,15 @@
 	</tr>
 </table>
 <?php } ?>
+<?php if(!empty($treatment->protocol3)) { ?>
+&nbsp;
+<table width="100%" class="protocol">
+	<tr>
+        <td class="tcell-left top"><?php echo $lang["PATIENT_TREATMENT_DESCRIPTION"];?></td>
+        <td><?php echo(nl2br($treatment->protocol3));?></td>
+	</tr>
+</table>
+<?php } ?>
 &nbsp;
 <table width="100%" class="standard-grey-paddingBottom">
 	<tr>
@@ -43,7 +52,7 @@
 
 <table width="100%" class="standard">
 	<tr>
-	  <td class="tcell-left">Befundung</td>
+	  <td class="tcell-left"><?php echo $lang["PATIENT_TREATMENT_DIAGNOSE"];?></td>
         <td>&nbsp;</td>
 	</tr>
 </table>
@@ -85,18 +94,77 @@ $i = 1;
 </table>
 <?php } ?>
 &nbsp;
-
 <?php
 $i = 1;
 foreach($task as $value) { 
+$img = '&nbsp;';
+if($value->status == 1) {
+		$img = '<img src="' . CO_FILES . '/img/print/done.png" width="12" height="12" vspace="2" /> ';
+	}
      ?>
-    <table width="100%" class="standard-grey-paddingBottom">
-	<tr>
-	  <td><?php echo $value->title;?></td>
-        <td width="30"><?php echo $value->answer;?></td>
-	</tr>
-</table>
-<?php echo(nl2br($value->text));?>
+<table width="100%" class="fourCols">
+        <tr>
+            <td class="fourCols-one"><?php if($i == 1) { echo $lang["PATIENT_TREATMENT_PLAN"]; }?>&nbsp;</td>
+            <td class="fourCols-two"><?php echo $img;?></td>
+            <td class="fourCols-three greybg">&nbsp;</td>
+            <td class="fourCols-four greybg"><?php echo($value->title);?></td>
+        </tr>
+        <?php if(!empty($value->type)) { ?>
+        <tr>
+            <td class="fourCols-one">&nbsp;</td>
+            <td class="fourCols-two">&nbsp;</td>
+            <td class="fourCols-three">&nbsp;</td>
+            <td class="grey smalltext fourCols-paddingTop"><?php echo $lang["PATIENT_TREATMENT_TASKS_TYPE"];?> <?php echo($value->type);?></td>
+        </tr>
+        <?php } ?>
+        <?php if(!empty($value->team) || !empty($value->team_ct)) { ?>
+        <tr>
+            <td class="fourCols-one">&nbsp;</td>
+            <td class="fourCols-two">&nbsp;</td>
+            <td class="fourCols-three">&nbsp;</td>
+            <td class="grey smalltext"><?php echo $lang["PATIENT_TREATMENT_TASKS_THERAPIST"];?> <?php echo($value->team . " " . $value->team_ct);?></td>
+        </tr>
+        <?php } ?>
+        <?php if(!empty($value->place) || !empty($value->place_ct)) { ?>
+        <tr>
+            <td class="fourCols-one">&nbsp;</td>
+            <td class="fourCols-two">&nbsp;</td>
+            <td class="fourCols-three">&nbsp;</td>
+            <td class="grey smalltext"><?php echo $lang["PATIENT_TREATMENT_TASKS_PLACE"];?> <?php echo($value->place . $value->place_ct);?></td>
+        </tr>
+         <?php } ?>
+        <?php if(!empty($value->item_date)) { ?>
+        <tr>
+            <td class="fourCols-one">&nbsp;</td>
+            <td class="fourCols-two">&nbsp;</td>
+            <td class="fourCols-three">&nbsp;</td>
+            <td class="grey smalltext"><?php echo $lang["PATIENT_TREATMENT_TASKS_DATE"];?> <?php echo($value->item_date);?></td>
+        </tr>
+        <?php } ?>
+        <?php if(!empty($value->time)) { ?>
+        <tr>
+            <td class="fourCols-one">&nbsp;</td>
+            <td class="fourCols-two">&nbsp;</td>
+            <td class="fourCols-three">&nbsp;</td>
+            <td class="grey smalltext"><?php echo $lang["PATIENT_TREATMENT_TASKS_TIME"];?> <?php echo($value->time);?></td>
+        </tr>
+        <?php } ?>
+        <?php if(!empty($value->min)) { ?>
+        <tr>
+            <td class="fourCols-one">&nbsp;</td>
+            <td class="fourCols-two">&nbsp;</td>
+            <td class="fourCols-three">&nbsp;</td>
+            <td class="grey smalltext"><?php echo $lang["PATIENT_TREATMENT_TASKS_DURATION"];?> <?php echo $value->min;?> Min</td>
+        </tr>
+        <?php } ?>
+        
+         <tr>
+             <td class="fourCols-one">&nbsp;</td>
+            <td class="fourCols-two">&nbsp;</td>
+            <td class="fourCols-three">&nbsp;</td>
+            <td class="grey smalltext">&nbsp;</td>
+        </tr>
+    </table>
 	<?php 
 	$i++;
 	}

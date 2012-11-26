@@ -19,7 +19,7 @@
 &nbsp;
 <table width="100%" class="protocol">
 	<tr>
-        <td class="tcell-left top">Kontaktdaten</td>
+        <td class="tcell-left top"><?php echo $lang["PATIENT_CONTACT_DETAILS"];?></td>
         <td><?php echo($patient->ctitle)?> <?php echo($patient->title2)?> <?php echo($patient->title);?><br />
 		<?php echo($patient->position . "<br />" . $lang["PATIENT_CONTACT_EMAIL"] . " " . $patient->email . " &nbsp; | &nbsp; " . $lang["PATIENT_CONTACT_PHONE"] . " " . $patient->phone1);?></td>
 	</tr>
