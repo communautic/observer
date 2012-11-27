@@ -115,7 +115,7 @@ include("task.php");
 <div id="clients_meetingsCheckpoint" style="<?php echo $show;?>">
 <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
 	<tr>
-		<td class="tcell-left text11"><span class="content-nav selectTextarea"><span>&nbsp;</span></span></td>
+		<td class="tcell-left text11"><span class="selectTextarea"><span>&nbsp;</span></span></td>
         <td class="tcell-right"><textarea name="checkpoint_note" class="elastic-two"><?php echo(strip_tags($meeting->checkpoint_note));?></textarea></td>
 	</tr>
 </table>
