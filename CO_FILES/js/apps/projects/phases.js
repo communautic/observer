@@ -15,7 +15,7 @@ function projectsPhases(name) {
 		$('#projects div.task_team_list').each(function() {
 			var id = $(this).attr("id");
 			var reg = /[0-9]+/.exec(id);
-			formData[formData.length] = processListArray(reg);
+			formData[formData.length] = processListArray('task_team',reg);
 		});
 	
 		$('#projects div.task_team_list_ct').each(function() {
