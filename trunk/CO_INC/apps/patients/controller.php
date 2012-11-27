@@ -271,6 +271,7 @@ class Patients extends Controller {
 						$task = $arr["task"];
 						$diagnose = $arr["diagnose"];
 						$sendto = $arr["sendto"];
+						$printcanvas = 0;
 						ob_start();
 							include 'modules/treatments/view/print.php';
 							$html .= ob_get_contents();
@@ -280,7 +281,7 @@ class Patients extends Controller {
 				//$html .= '<div style="page-break-after:always;">&nbsp;</div>';
 			}
 			// reports
-			/*$patientsReports = new PatientsReports("reports");
+			$patientsReports = new PatientsReports("reports");
 			if($arrrs = $patientsReports->model->getList($id,"0")) {
 				$rs = $arrrs["reports"];
 				foreach ($rs as $r) {
@@ -295,7 +296,7 @@ class Patients extends Controller {
 					}
 				}
 				//$html .= '<div style="page-break-after:always;">&nbsp;</div>';
-			}*/
+			}
 
 			$title = $patient->title . " - " . $lang["PATIENT_HANDBOOK"];
 		}
