@@ -171,10 +171,30 @@ function processListApps(list) {
 	return { "name": list, "value": itemlist };
 }
 
-function processListArray(num) {
-	var items = $("#task_team_"+num+" .listmember").size();
+function processListAppsInsurance(list) {
+	var app = getCurrentApp();
+	var field = $("#"+app+list+" .listmemberInsurance");
+	var items = field.size();
 	var itemlist = "";
-	$("#task_team_"+num+" .listmember").each( function(i) {
+	field.each( function(i) {
+		if ( $(this).hasClass("deletefromlist") ) {
+			itemlist += "";
+		} else if ( $(this).hasClass("addtolist") ) {
+			itemlist += $(this).attr("uid") + ",";
+		} else {
+			itemlist += $(this).attr("uid") + ",";
+		}
+		if(items-1 == i) {
+		itemlist = itemlist.slice(0, -1)
+		}
+	})									
+	return { "name": list, "value": itemlist };
+}
+
+function processListArray(field,num) {
+	var items = $("#"+field+"_"+num+" .listmember").size();
+	var itemlist = "";
+	$("#"+field+"_"+num+" .listmember").each( function(i) {
 		if ( $(this).hasClass("deletefromlist") ) {
 			itemlist += "";
 		} else if ( $(this).hasClass("addtolist") ) {
@@ -187,7 +207,7 @@ function processListArray(num) {
 		}
 	})
 	
-	return { "name": "task_team["+num+"]", "value": itemlist };
+	return { "name": field+"["+num+"]", "value": itemlist };
 }
 
 
