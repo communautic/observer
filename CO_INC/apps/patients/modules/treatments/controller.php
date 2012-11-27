@@ -60,6 +60,7 @@ class PatientsTreatments extends Patients {
 			$task = $arr["task"];
 			$diagnose = $arr["diagnose"];
 			$sendto = $arr["sendto"];
+			$printcanvas = 1;
 			ob_start();
 				include 'view/print.php';
 				$html = ob_get_contents();

@@ -56,6 +56,7 @@
         <td>&nbsp;</td>
 	</tr>
 </table>
+<?php if ($printcanvas == 1) { ?>
 <div style="height: 400px; width: 400px; position: relative;">
 <img src="<?php echo(CO_FILES);?>/img/body.png" />
 <?php $i = 1; 
@@ -72,12 +73,13 @@
 </div>
 <p>&nbsp;</p>
 <?php 
+}
 $i = 1;
 	foreach($diagnose as $value) { 
 	$curcol = ($i-1) % 10; ?>
     <table width="100%" class="standard">
         <tr>
-        <td class="top" style="width: 30px;"><div class="circle circle<?php echo $curcol;?>"><div><?php echo $i;?></div></div></td>
+        <?php if ($printcanvas == 1) { ?><td class="top" style="width: 30px;"><div class="circle circle<?php echo $curcol;?>"><div><?php echo $i;?></div></div></td><?php } ?>
           <td><?php echo $value->text;?>&nbsp;</td>
         </tr>
     </table>
