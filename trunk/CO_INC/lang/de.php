@@ -1,5 +1,20 @@
 <?php
-$lang["APPLICATION_NAME"] = "company observer 6.3.3";
+switch(CO_PRODUCT_VARIANT) {
+	case 0:
+		$lang["APPLICATION_NAME"] = "company observer 6.3.4";
+		$lang["APPLICATION_NAME_ALT"] = "company.observer";
+		$lang["APPLICATION_LOGO"] = "company_observer.png";
+		$lang["APPLICATION_LOGO_LOGIN"] = "company_observer_login.png";
+		$GLOBALS["APPLICATION_LOGO_PRINT"] = "poweredby_company_observer.png";
+	break;
+	case 1:
+		$lang["APPLICATION_NAME"] = "physio observer 6.3.4";
+		$lang["APPLICATION_NAME_ALT"] = "physio.observer";
+		$lang["APPLICATION_LOGO"] = "physio_observer.png";
+		$lang["APPLICATION_LOGO_LOGIN"] = "physio_observer_login.png";
+		$GLOBALS["APPLICATION_LOGO_PRINT"] = "poweredby_physio_observer.png";
+	break;
+}
 
 setlocale(LC_TIME, "de_DE");
 
@@ -121,7 +136,7 @@ $lang["GLOBAL_YESTERDAY"] = 'Gestern';
 $lang["GLOBAL_DAYS_AGO"] = 'vor %1$s Tagen';
 
 // email footer
-$lang["GLOBAL_EMAIL_FOOTER"] = 	'<p style="font-face: Arial, Verdana; font-size:small; color: #999999;">_____powered by company.observer</p>' .
+$lang["GLOBAL_EMAIL_FOOTER"] = 	'<p style="font-face: Arial, Verdana; font-size:small; color: #999999;">_____powered by '.$lang["APPLICATION_NAME_ALT"].'</p>' .
 								'<p style="font-face: Arial, Verdana; font-size:x-small; color: #999999;">Dieses E-Mail und der Inhalt sind vertraulich und ausschließlich für den (die) bezeichneten Adressaten bestimmt. Wenn Sie nicht der genannte Adressat sind, darf dieses E-Mail von Ihnen weder anderen Personen zugänglich gemacht, noch kopiert, weitergegeben oder zurückbehalten werden. Diese Information kann durch gesetzliche Vorschriften besonders geschützt oder privilegiert sein. Wenn Sie nicht der beabsichtigte Empfänger sind, bitten wir Sie, uns umgehend zu informieren, dieses E-Mail und sämtliche darin enthaltenen Informationen zu löschen und von jeder anderen Handlung im Hinblick auf dieses E-Mail abzusehen.</p>';
 
 // PDF print Globals

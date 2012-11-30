@@ -27,7 +27,7 @@ if ( isset($pdf) ) {
 	$pdf->page_text($w-104, $h-38, "$lang_page {PAGE_NUM} $lang_of {PAGE_COUNT}", $font, 8, array(0.4,0.4,0.4));
 	
     // powered by
-    $pdf->image(CO_FILES . "/img/print/poweredbyco.png", "png", 57, $h-38, 135, 9);
+    $pdf->image(CO_FILES . "/img/print/".$GLOBALS["APPLICATION_LOGO_PRINT"]."", "png", 57, $h-38, 135, 9);
     
     // section image
     $section = $GLOBALS['SECTION'];

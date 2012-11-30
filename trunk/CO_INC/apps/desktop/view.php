@@ -1,6 +1,6 @@
 <div id="desktop" class="app">
 <input name="desktop-current" id="desktop-current" type="hidden" value="desktop" />
-<div class="topbar"><div class="topbar-logo"><a href="/" class="browseAway"><img src="<?php echo(CO_FILES);?>/img/co_logo.png" border="0" /></a>
+<div class="topbar"><div class="topbar-logo"><a href="/" class="browseAway"><img src="<?php echo(CO_FILES);?>/img/<?php echo $lang["APPLICATION_LOGO"];?>" border="0" /></a>
     <div id="desktopSpinner" class="spinner"><img src="<?php echo CO_FILES;?>/img/waiting_dark.gif" alt="Loading" width="16" height="16" /></div>
     <div id="desktopLicense"><span class="small"><?php echo $lang["DESKTOP_LIZENSE"];?></span> <span class="large"><?php echo CO_LICENSE;?></span></div>
 </div>
