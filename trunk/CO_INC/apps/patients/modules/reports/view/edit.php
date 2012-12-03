@@ -49,7 +49,12 @@ if($report->tid == 0) {
 		<td class="tcell-right"><input name="item_date" type="text" class="input-date datepicker item_date" value="<?php echo($report->item_date)?>" /></td>
 	</tr>
 </table>
-<div class="content-spacer"></div>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+	<tr>
+	  <td class="tcell-left-inactive text11"><?php echo $lang["PATIENT_REPORT_TREATMENT"];?></td>
+        <td class="tcell-right-inactive"><div id="reportstreatment" class="itemlist-field"><?php echo($report->treatment_title);?></div></td>
+	</tr>
+</table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 		<td class="tcell-left-inactive text11">Patient</td>
