@@ -234,6 +234,7 @@ class PatientsReportsModel extends PatientsModel {
 		$sendto = $this->getSendtoDetails("patients_reports",$id);
 		
 		// get treatment info
+		$array["treatment_title"] = '';
 		$array["treatment_patient"] = '';
 		$array["treatment_diagnose"] = '';
 		$array["treatment_date"] = '';
@@ -247,6 +248,7 @@ class PatientsReportsModel extends PatientsModel {
 		$resultt = mysql_query($qt, $this->_db->connection);
 		if(mysql_num_rows($resultt) > 0) {
 			$rowt = mysql_fetch_object($resultt);
+			$array["treatment_title"] = $rowt->title;
 			$array["treatment_diagnose"] = $rowt->protocol;
 			$array["treatment_date"] = $this->_date->formatDate($rowt->item_date,CO_DATE_FORMAT);
 			$array["treatment_doctor"] = $this->_users->getUserFullname($rowt->doctor);
