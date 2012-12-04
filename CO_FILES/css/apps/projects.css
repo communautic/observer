@@ -193,7 +193,7 @@ background-color: #e1f0af; }
 #projects .SendToContent { display: none; background-color: #E5E5E5; font-style: italic; padding: 10px; }
 
 #projects .qq-upload-drop-area { background: #e1f0af; }
-#projects .qq-upload-drop-area-active { background:#577207;}
+#projects .qq-upload-drop-area-active { background:#82AA0A;}
 
 /* Module Filter*/
 #projects > .ui-autocomplete { box-shadow: 4px 4px 6px #666666; width: 250px !important; height: 250px !important; max-height: 250px; background: #e1f0af; border: 1px solid #82aa0a;}

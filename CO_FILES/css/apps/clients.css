@@ -104,7 +104,7 @@ background-color: #dcd2ff; }
 #clients .SendToContent { display: none; background-color: #E5E5E5; font-style: italic; padding: 10px; }
 
 #clients .qq-upload-drop-area { background: #dcd2ff; }
-#clients .qq-upload-drop-area-active { background:#695394;}
+#clients .qq-upload-drop-area-active { background:#9b78dc;}
 #clients .qq-upload-button-hover {background-color:#9b78dc;}
 
 .menutbl  { border-collapse: collapse; margin: 5px 0;}

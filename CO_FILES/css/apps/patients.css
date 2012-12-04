@@ -131,7 +131,7 @@ background-color: #D2DCFF; }
 #patients .SendToContent { display: none; background-color: #E5E5E5; font-style: italic; padding: 10px; }
 
 #patients .qq-upload-drop-area { background: #D2DCFF; }
-#patients .qq-upload-drop-area-active { background:#695394;}
+#patients .qq-upload-drop-area-active { background:#6E7DBE;}
 #patients .qq-upload-button-hover {background-color:#6E7DBE;}
 
 /*.menutbl  { border-collapse: collapse; margin: 5px 0;}

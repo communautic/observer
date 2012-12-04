@@ -123,7 +123,7 @@ background-color: #E1C8B4; }
 #employees .SendToContent { display: none; background-color: #E5E5E5; font-style: italic; padding: 10px; }
 
 #employees .qq-upload-drop-area { background: #E1C8B4; }
-#employees .qq-upload-drop-area-active { background:#695394;}
+#employees .qq-upload-drop-area-active { background:#E1782D;}
 #employees .qq-upload-button-hover {background-color:#E1782D;}
 
 /*.menutbl  { border-collapse: collapse; margin: 5px 0;}
