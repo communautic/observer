@@ -177,7 +177,10 @@ class ComplaintsDocumentsModel extends ComplaintsModel {
 			foreach($rowt as $key => $val) {
 				$docs[$key] = $val;
 			}
-
+			if(empty($docs["tempname"])) {
+				$docs["tempname"] = $docs["filename"];
+			}
+			
 			$docs["filesize"] = $this->formatBytes($docs["filesize"]);
 			$doc[] = new Lists($docs);
 		}
@@ -222,22 +225,53 @@ class ComplaintsDocumentsModel extends ComplaintsModel {
    }
 	 
 	 function createDuplicate($id) {
-			global $session, $lang;
-			
-			$now = gmdate("Y-m-d H:i:s");
-			
-			$q = "INSERT INTO " . CO_TBL_COMPLAINTS_DOCUMENTS_FOLDERS . " (pid,title,created_date,created_user,edited_date,edited_user) SELECT pid,CONCAT(title,' " . $lang["GLOBAL_DUPLICAT"]. "'),'$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_COMPLAINTS_DOCUMENTS_FOLDERS . " where id='$id'";
-			$result = mysql_query($q, $this->_db->connection);
-			$id_new = mysql_insert_id();
-			
-			// documents ???
-			$qt = "INSERT INTO " . CO_TBL_COMPLAINTS_DOCUMENTS . " (did,filename,tempname,filesize) SELECT $id_new,filename,tempname,filesize FROM " . CO_TBL_COMPLAINTS_DOCUMENTS . " where did='$id' and bin='0'";
-			$resultt = mysql_query($qt, $this->_db->connection);
-			
-			if ($result) {
-					return $id_new;
+		global $session, $lang;
+		
+		$now = gmdate("Y-m-d H:i:s");
+		
+		$q = "INSERT INTO " . CO_TBL_COMPLAINTS_DOCUMENTS_FOLDERS . " (pid,title,created_date,created_user,edited_date,edited_user) SELECT pid,CONCAT(title,' " . $lang["GLOBAL_DUPLICAT"]. "'),'$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_COMPLAINTS_DOCUMENTS_FOLDERS . " where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$id_new = mysql_insert_id();
+		
+		// documents
+		$q = "SELECT filename,tempname,filesize FROM " . CO_TBL_COMPLAINTS_DOCUMENTS . " where did='$id' and bin='0'";
+		$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+			$filename_old = $row['filename'];
+			$pathinfo = pathinfo($row['filename']);
+			$filename = $pathinfo['filename'];
+			$ext = $pathinfo['extension'];
+			$tempname = $row['tempname'];
+			$filesize = $row['filesize'];
+
+			// copy file
+			$pattern = '/(.+)\(([0-9]+)\)$/';
+			while (file_exists(CO_PATH_DOCUMENTS . $filename . '.' . $ext)) {
+				if(preg_match( $pattern, $filename, $matches)) {
+					$num = $matches[2]+1;
+					$filename = $matches[1] . '(' . $num . ')';
+				} else {
+					$filename .= ' (1)';
+				}
 			}
+			
+			$fsave = $filename . '.' . $ext;
+			
+			if(empty($tempname)) {
+				copy(CO_PATH_DOCUMENTS . $filename_old, CO_PATH_DOCUMENTS . $fsave);
+			} else {
+				copy(CO_PATH_DOCUMENTS . $tempname, CO_PATH_DOCUMENTS . $fsave);
+			}
+			
+			$qt = "INSERT INTO " . CO_TBL_COMPLAINTS_DOCUMENTS . " set did='$id_new', filename='$fsave', filesize='$filesize'";
+			$resultt = mysql_query($qt, $this->_db->connection);
+		}
+		
+		if ($result) {
+				return $id_new;
+		}
 	 }
+
 
 
    function binDocument($id) {
@@ -333,9 +367,15 @@ class ComplaintsDocumentsModel extends ComplaintsModel {
 	
 	
 	function deleteFile($id) {
-		$q = "SELECT tempname FROM " . CO_TBL_COMPLAINTS_DOCUMENTS . " where id = '$id'";
+		$q = "SELECT filename,tempname FROM " . CO_TBL_COMPLAINTS_DOCUMENTS . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
-		$filename = mysql_result($result,0);
+		$row = mysql_fetch_row($result);
+		$filename = $row[0];
+		$tempname = $row[1];
+		
+		if(empty($tempname)) {
+			$tempname = $filename;
+		}
 		
 		$file = CO_PATH_DOCUMENTS . "/" . $filename; 
 		
@@ -446,6 +486,9 @@ class ComplaintsDocumentsModel extends ComplaintsModel {
 		$row = mysql_fetch_assoc($result);
 		$filename = $row["filename"];
 		$tempname = $row["tempname"];
+		if(empty($tempname)) {
+			$tempname = $filename;
+		}
 		$fullPath = CO_PATH_DOCUMENTS.$tempname;
 		$filePath = CO_PATH_DOCUMENTS.$filename;
 		

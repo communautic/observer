@@ -137,30 +137,39 @@ class qqFileUploader {
 
 		$filename = $pathinfo['filename'];
         //$filename = md5(uniqid());
-		$tempname = strtotime("now");
+		//$tempname = strtotime("now");
+		
         $ext = $pathinfo['extension'];
+		//$tempname = $filename . '.' . $ext;
 
         if($this->allowedExtensions && !in_array(strtolower($ext), $this->allowedExtensions)){
             $these = implode(', ', $this->allowedExtensions);
             return array('error' => 'File has an invalid extension, it should be one of '. $these . '.');
         }
         
-        /*if(!$replaceOldFile){
+        if(!$replaceOldFile){
             /// don't overwrite previous files that were uploaded
+			$pattern = '/(.+)\(([0-9]+)\)$/';
             while (file_exists($uploadDirectory . $filename . '.' . $ext)) {
-                $filename .= rand(10, 99);
+                if(preg_match( $pattern, $filename, $matches)) {
+					$num = $matches[2]+1;
+					$filename = $matches[1] . '(' . $num . ')';
+					//echo $filename;
+				} else {
+					$filename .= ' (1)';
+				}
             }
-        }*/
+        }
         
-        //if ($this->file->save($uploadDirectory . $filename . '.' . $ext)){
-		if ($this->file->save($uploadDirectory . $tempname)){
+        if ($this->file->save($uploadDirectory . $filename . '.' . $ext)){
+		//if ($this->file->save($uploadDirectory . $tempname)){
 				
 			$fsave = '' . $filename . '.' . $ext . '';
 			$did = $_GET['did'];
 			$module = $_GET['module'];
 			//$did = $_GET['did'];
 			$now = gmdate("Y-m-d H:i:s");
-			$q = "INSERT INTO co_" . $module . " set filename='$fsave', tempname='$tempname', filesize='$size', did='$did', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+			$q = "INSERT INTO co_" . $module . " set filename='$fsave', filesize='$size', did='$did', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 			//$q = "UPDATE co_projects_documents set title = '$filename', filename='$filename', tempname='$tempname', filesize='$size', pid='$pid', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now' where id='$did'";
 			$result = mysql_query($q, $this->_db->connection);
 			$id = mysql_insert_id();
