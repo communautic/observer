@@ -37,7 +37,7 @@ $lang["PATIENT_TREATMENT_TASKS_DATE"] = 'Datum';
 $lang["PATIENT_TREATMENT_TASKS_TIME"] = 'Uhrzeit';
 $lang["PATIENT_TREATMENT_TASKS_DURATION"] = 'Behandlungsdauer';
 
-$lang["PATIENT_TREATMENT_HELP"] = 'manual_mitarbeiter_zielvereinbarungen.pdf';
+$lang["PATIENT_TREATMENT_HELP"] = 'manual_patienten_behandlungen.pdf';
 
 $lang["PATIENT_PRINT_TREATMENT"] = 'behandlung.png';
 

@@ -22,7 +22,7 @@ $lang["PATIENT_REPORT_TEXTFIELD1"] = 'Clinical course';
 $lang["PATIENT_REPORT_TEXTFIELD2"] = 'Recommendations';
 $lang["PATIENT_REPORT_FEEDBACK"] = 'Feedback';
 
-$lang["PATIENT_REPORT_HELP"] = 'manual_mitarbeiter_telefonate.pdf';
+$lang["PATIENT_REPORT_HELP"] = 'manual_patienten_therapieberichte.pdf';
 
 $lang["PATIENT_PRINT_REPORT"] = 'report.png';
 

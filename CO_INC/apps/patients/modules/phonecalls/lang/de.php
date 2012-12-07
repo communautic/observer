@@ -18,7 +18,7 @@ $lang["PATIENT_PHONECALL_GOALS"] = 'Notiz';
 $lang["PATIENT_PHONECALL_STATUS_OUTGOING"] = 'Outgoing';
 $lang["PATIENT_PHONECALL_STATUS_ON_INCOMING"] = 'Incoming';
 
-$lang["PATIENT_PHONECALL_HELP"] = 'manual_mitarbeiter_telefonate.pdf';
+$lang["PATIENT_PHONECALL_HELP"] = 'manual_patienten_telefonate.pdf';
 
 $lang["PATIENT_PRINT_PHONECALL"] = 'telefonat.png';
 
