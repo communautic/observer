@@ -35,8 +35,8 @@ $lang["PATIENT_COO"] = 'Nationality';
 
 $lang["PATIENT_HANDBOOK"] = 'Patient File';
 
-$lang["PATIENT_HELP"] = 'manual_mitarbeiter_mitarbeiter.pdf';
-$lang["PATIENT_FOLDER_HELP"] = 'manual_mitarbeiter_ordner.pdf';
+$lang["PATIENT_HELP"] = 'manual_patienten_patienten.pdf';
+$lang["PATIENT_FOLDER_HELP"] = 'manual_patienten_ordner.pdf';
 
 // Print images
 $lang["PRINT_PATIENT_MANUAL"] = 'patientfile.png';

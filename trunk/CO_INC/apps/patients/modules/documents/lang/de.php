@@ -10,7 +10,7 @@ $lang["PATIENT_DOCUMENT_FILENAME"] = 'Dateiname/Format';
 $lang["PATIENT_DOCUMENT_FILESIZE"] = 'Dateigrösse';
 $lang["PATIENT_DOCUMENT_FILES"] = 'Dateien';
 
-$lang["PATIENT_DOCUMENT_HELP"] = 'manual_mitarbeiter_aktenmappen.pdf';
+$lang["PATIENT_DOCUMENT_HELP"] = 'manual_patienten_aktenmappen.pdf';
 
 $lang["PATIENT_PRINT_DOCUMENT"] = 'akt.png';
 

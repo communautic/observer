@@ -19,7 +19,7 @@ $lang["PATIENT_MEETING_GOALS"] = 'Themen';
 
 $lang["PATIENT_MEETING_POSPONED"] = 'verschoben';
 
-$lang["PATIENT_MEETING_HELP"] = 'manual_mitarbeiter_besprechungen.pdf';
+$lang["PATIENT_MEETING_HELP"] = 'manual_patienten_besprechungen.pdf';
 
 $lang["PATIENT_PRINT_MEETING"] = 'besprechung.png';
 
