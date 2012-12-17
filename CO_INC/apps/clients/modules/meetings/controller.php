@@ -224,6 +224,16 @@ class ClientsMeetings extends Clients {
 	}
 
 
+	function sortItems($task) {
+		$retval = $this->model->sortItems($task);
+			if($retval){
+			 return 'true';
+		  } else{
+			 return "error";
+		  }
+	}
+
+
 	function deleteTask($id) {
 		$retval = $this->model->deleteTask($id);
 		if($retval){

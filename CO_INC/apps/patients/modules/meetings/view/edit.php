@@ -80,7 +80,7 @@
         </td>
     <td class="tcell-right">&nbsp;</td>
     </tr>
-</table><div id="patientsmeetingtasks">
+</table><div id="patientsmeetingtasks" class="outerSortable">
 <?php 
 foreach($task as $value) { 
 	$checked = '';

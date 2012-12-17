@@ -1307,6 +1307,23 @@ $(document).ready(function() {
  		});
 	});
 	
+	
+	// meetings sortable topics
+	$('div.outerSortable').livequery( function() {
+		$(this).sortable({
+			items: '>div',
+			handle: '.tcell-left-phases-tasks',
+			axis: 'y',
+			tolerance: 'pointer',
+			containment: $(this),
+			update: function(event,ui) {
+				var order = $(this).sortable("serialize");
+				var obj = getCurrentModule();
+				obj.actionSortItems(order);
+			}
+		})
+	});
+	
 
 });
 		
