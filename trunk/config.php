@@ -15,10 +15,10 @@ set_include_path(get_include_path() . PATH_SEPARATOR . CO_INC_PATH);
 define("CO_INC"	, 		"CO_INC" 			);
 
 // FILES PATH
-define("CO_FILES"	, 		$protocol . "dev.companyobserver.com/CO_FILES" );
+define("CO_FILES"	, 		$protocol . "dev3.companyobserver.com/CO_FILES" );
 
 // product variant: 0 = CO, 1 = Physio
-define("CO_PRODUCT_VARIANT", 1 );
+define("CO_PRODUCT_VARIANT", 0 );
 
 /* -------------------------------------------------------------------------
 * Database Configuration
@@ -32,13 +32,14 @@ define("CO_DB_DATABASE"	,		"dev" 		);
 * Global Site Settings
 * -------------------------------------------------------------------------*/
 define("CO_PATH_BASE"	, 		"/home/dev/public_html"	);
-define("CO_PATH_URL"	, 		$protocol . "dev.companyobserver.com" 			);
+define("CO_PATH_URL"	, 		$protocol . "dev3.companyobserver.com" 			);
 
 define("CO_LICENSE"				, 			"communautic KG" 			);
 
 /* Default Language */
 define("CO_DEFAULT_LANGUAGE"	, 			"de" 								);
 define("CO_DEFAULT_TIMEZONE"	, 			"Europe/Vienna" 					);
+date_default_timezone_set(CO_DEFAULT_TIMEZONE);
 
 // Data folder
 define("CO_PATH_DATA"	, CO_PATH_BASE . "/data/");

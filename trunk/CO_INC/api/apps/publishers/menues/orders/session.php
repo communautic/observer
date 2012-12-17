@@ -170,7 +170,7 @@ class Session
       }
       else{
          /* Check if username is not alphanumeric */
-         if(!eregi("^([0-9a-z])*$", $subuser)){
+         if(!preg_match("/^([0-9a-z])*$/i", $subuser)) {
             $form->setError($field, "* Username not alphanumeric");
          }
       }

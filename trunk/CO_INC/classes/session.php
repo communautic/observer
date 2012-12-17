@@ -154,7 +154,7 @@ class Session
       }
       else{
          /* Check if username is not alphanumeric */
-         if(!eregi("^([0-9a-z])*$", $subuser)){
+         if(!preg_match("/^([0-9a-z])*$/i", $subuser)) {
             $form->setError($field, "* Username not alphanumeric");
          }
       }
@@ -268,84 +268,6 @@ class Session
 	   return $database->usernameTaken($username);
    }
 
-   /**
-    * register - Gets called when the user has just submitted the
-    * registration form. Determines if there were any errors with
-    * the entry fields, if so, it records the errors and returns
-    * 1. If no errors were found, it registers the new user and
-    * returns 0. Returns 2 if registration failed.
-    */
-  /* function register($subuser, $subpass, $subemail){
-      global $database, $form, $mailer;  //The database, form and mailer object
-
-      $field = "user";  //Use field name for username
-      if(!$subuser || strlen($subuser = trim($subuser)) == 0){
-         $form->setError($field, "* Username not entered");
-      }
-      else{
-         $subuser = stripslashes($subuser);
-         if(strlen($subuser) < 5){
-            $form->setError($field, "* Username below 5 characters");
-         }
-         else if(strlen($subuser) > 30){
-            $form->setError($field, "* Username above 30 characters");
-         }
-         else if(!eregi("^([0-9a-z])+$", $subuser)){
-            $form->setError($field, "* Username not alphanumeric");
-         }
-         else if(strcasecmp($subuser, GUEST_NAME) == 0){
-            $form->setError($field, "* Username reserved word");
-         }
-         else if($database->usernameTaken($subuser)){
-            $form->setError($field, "* Username already in use");
-         }
-         else if($database->usernameBanned($subuser)){
-            $form->setError($field, "* Username banned");
-         }
-      }
-
-      $field = "pass";  //Use field name for password
-      if(!$subpass){
-         $form->setError($field, "* Password not entered");
-      }
-      else{
-         $subpass = stripslashes($subpass);
-         if(strlen($subpass) < 4){
-            $form->setError($field, "* Password too short");
-         }
-         else if(!eregi("^([0-9a-z])+$", ($subpass = trim($subpass)))){
-            $form->setError($field, "* Password not alphanumeric");
-         }
-      }
-      
-      $field = "email";  //Use field name for email
-      if(!$subemail || strlen($subemail = trim($subemail)) == 0){
-         $form->setError($field, "* Email not entered");
-      }
-      else{
-         $regex = "^[_+a-z0-9-]+(\.[_+a-z0-9-]+)*"
-                 ."@[a-z0-9-]+(\.[a-z0-9-]{1,})*"
-                 ."\.([a-z]{2,}){1}$";
-         if(!eregi($regex,$subemail)){
-            $form->setError($field, "* Email invalid");
-         }
-         $subemail = stripslashes($subemail);
-      }
-
-      if($form->num_errors > 0){
-         return 1;  //Errors with form
-      }
-      else{
-         if($database->addNewUser($subuser, md5($subpass), $subemail)){
-            if(EMAIL_WELCOME){
-               $mailer->sendWelcome($subuser,$subemail,$subpass);
-            }
-            return 0;  //New user added succesfully
-         }else{
-            return 2;  //Registration attempt failed
-         }
-      }
-   }*/
    
    /**
     * editAccount - Attempts to edit the user's account information
@@ -367,7 +289,7 @@ class Session
             /* Check if password too short or is not alphanumeric */
             $subcurpass = stripslashes($subcurpass);
             if(strlen($subcurpass) < 4 ||
-               !eregi("^([0-9a-z])+$", ($subcurpass = trim($subcurpass)))){
+			   !preg_match("/^([0-9a-z])+$/i", ($subcurpass = trim($subcurpass)))){
                $form->setError($field, "* Current Password incorrect");
             }
             /* Password entered is incorrect */
@@ -384,7 +306,7 @@ class Session
             $form->setError($field, "* New Password too short");
          }
          /* Check if password is not alphanumeric */
-         else if(!eregi("^([0-9a-z])+$", ($subnewpass = trim($subnewpass)))){
+	     else if(!preg_match("/^([0-9a-z])+$/i", ($subnewpass = trim($subnewpass)))){
             $form->setError($field, "* New Password not alphanumeric");
          }
       }
@@ -399,10 +321,10 @@ class Session
       $field = "email";  //Use field name for email
       if($subemail && strlen($subemail = trim($subemail)) > 0){
          /* Check if valid email address */
-         $regex = "^[_+a-z0-9-]+(\.[_+a-z0-9-]+)*"
+         $regex = "/^[_+a-z0-9-]+(\.[_+a-z0-9-]+)*"
                  ."@[a-z0-9-]+(\.[a-z0-9-]{1,})*"
-                 ."\.([a-z]{2,}){1}$";
-         if(!eregi($regex,$subemail)){
+                 ."\.([a-z]{2,}){1}$/i";
+         if(!preg_match($regex,$subemail)){
             $form->setError($field, "* Email invalid");
          }
          $subemail = stripslashes($subemail);
