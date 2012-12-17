@@ -192,7 +192,11 @@ function patientsApplication(name) {
 									setModuleActive($("#patients2"),0);
 								}
 								var id = $("#patients2 .module-click:eq(0)").attr("rel");
-								$("#patients").data("second", id);								
+								if(typeof id == 'undefined') {
+									$("#patients").data("second", 0);
+								} else {
+									$("#patients").data("second", id);
+								}
 								$("#patients2 .module-click:eq(0)").addClass('active-link');
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients&request=getPatientDetails&fid="+fid+"&id="+id, success: function(text){
 									$("#patients-right").html(text.html);
@@ -538,13 +542,18 @@ function patientsFolders(name) {
 									patientsActions(9);
 								}
 								var id = $("#patients1 .module-click:eq(0)").attr("rel");
-								$("#patients").data("first",id);								
+								if(typeof id == 'undefined') {
+									$("#patients").data("first",0);
+								} else {
+									$("#patients").data("first",id);
+								}
 								$("#patients1 .module-click:eq(0)").addClass('active-link');
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients&request=getFolderDetails&id="+id, success: function(text){
 									$("#"+patients.name+"-right").html(text.html);
 									initPatientsContentScrollbar();
 								}
 								});
+								
 							}
 							});
 						}

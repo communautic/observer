@@ -171,7 +171,11 @@ function forumsApplication(name) {
 									setModuleActive($("#forums2"),0);
 								}
 								var id = $("#forums2 .module-click:eq(0)").attr("rel");
-								$("#forums").data("second", id);								
+								if(typeof id == 'undefined') {
+									$("#forums").data("second", 0);
+								} else {
+									$("#forums").data("second", id);
+								}
 								$("#forums2 .module-click:eq(0)").addClass('active-link');
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/forums&request=getForumDetails&fid="+fid+"&id="+id, success: function(text){
 									$("#forums-right").html(text.html);
@@ -557,7 +561,11 @@ function forumsFolders(name) {
 									forumsActions(9);
 								}
 								var id = $("#forums1 .module-click:eq(0)").attr("rel");
-								$("#forums").data("first",id);								
+								if(typeof id == 'undefined') {
+									$("#forums").data("first",0);
+								} else {
+									$("#forums").data("first",id);
+								}
 								$("#forums1 .module-click:eq(0)").addClass('active-link');
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/forums&request=getFolderDetails&id="+id, success: function(text){
 									$("#"+forums.name+"-right").html(text.html);

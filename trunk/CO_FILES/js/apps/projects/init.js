@@ -166,7 +166,11 @@ function projectsApplication(name) {
 									setModuleActive($("#projects2"),0);
 								}
 								var id = $("#projects2 .module-click:eq(0)").attr("rel");
-								$("#projects").data("second", id);
+								if(typeof id == 'undefined') {
+									$("#projects").data("second", 0);
+								} else {
+									$("#projects").data("second", id);
+								}
 								$("#projects2 .module-click:eq(0)").addClass('active-link');
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectDetails&fid="+fid+"&id="+id, success: function(text){
 									$("#projects-right").html(text.html);
@@ -630,7 +634,11 @@ function projectsFolders(name) {
 									projectsActions(9);
 								}
 								var id = $("#projects1 .module-click:eq(0)").attr("rel");
-								$("#projects").data("first",id);
+								if(typeof id == 'undefined') {
+									$("#projects").data("first",0);
+								} else {
+									$("#projects").data("first",id);
+								}
 								$("#projects1 .module-click:eq(0)").addClass('active-link');
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getFolderDetails&id="+id, success: function(text){
 									$("#"+projects.name+"-right").html(text.html);

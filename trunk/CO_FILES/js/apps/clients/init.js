@@ -167,7 +167,11 @@ function clientsApplication(name) {
 									setModuleActive($("#clients2"),0);
 								}
 								var id = $("#clients2 .module-click:eq(0)").attr("rel");
-								$("#clients").data("second", id);								
+								if(typeof id == 'undefined') {
+									$("#clients").data("second", 0);
+								} else {
+									$("#clients").data("second", id);
+								}
 								$("#clients2 .module-click:eq(0)").addClass('active-link');
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients&request=getClientDetails&fid="+fid+"&id="+id, success: function(text){
 									$("#clients-right").html(text.html);
@@ -465,7 +469,11 @@ function clientsFolders(name) {
 									clientsActions(9);
 								}
 								var id = $("#clients1 .module-click:eq(0)").attr("rel");
-								$("#clients").data("first",id);								
+								if(typeof id == 'undefined') {
+									$("#clients").data("first",0);
+								} else {
+									$("#clients").data("first",id);
+								}
 								$("#clients1 .module-click:eq(0)").addClass('active-link');
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients&request=getFolderDetails&id="+id, success: function(text){
 									$("#"+clients.name+"-right").html(text.html);
