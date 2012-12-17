@@ -27,7 +27,7 @@ $lang["PROJECT_FOLDER_STATUS_ARCHIVE"] = 'archive';
 $lang["PROJECT_FOLDER_CHART_STABILITY"] = 'Performance';
 $lang["PROJECT_FOLDER_CHART_REALISATION"] = 'Progress';
 $lang["PROJECT_FOLDER_CHART_ADHERANCE"] = 'Timeliness';
-$lang["PROJECT_FOLDER_CHART_TASKS"] = 'Stage Timeliness';
+$lang["PROJECT_FOLDER_CHART_TASKS"] = 'Tasks Timeliness';
 $lang["PROJECT_FOLDER_CHART_STATUS"] = 'Status';
 
 // Project Right
@@ -54,13 +54,13 @@ $lang["PROJECT_WIDGET_NO_ACTIVITY"]			=	'Currently there are no notices';
 $lang["PROJECT_WIDGET_TITLE_MILESTONE"] 	=	'Milestone';
 $lang["PROJECT_WIDGET_REMINDER_MILESTONE"] 	= 	'<span class="yellow">Tomorrow</span> you planned to reach the Milestone "%1$s" of the Project "%2$s"';
 
-$lang["PROJECT_WIDGET_TITLE_TASK"] 			=	'Stage';
-$lang["PROJECT_WIDGET_REMINDER_TASK"] 		= 	'<span class="yellow">Tomorrow</span> you planned to reach the Stage "%1$s" of the Project "%2$s"';
+$lang["PROJECT_WIDGET_TITLE_TASK"] 			=	'Task';
+$lang["PROJECT_WIDGET_REMINDER_TASK"] 		= 	'<span class="yellow">Tomorrow</span> you planned to reach the Task "%1$s" of the Project "%2$s"';
 
 $lang["PROJECT_WIDGET_TITLE_KICKOFF"] 		=	'Kick Off';
 $lang["PROJECT_WIDGET_REMINDER_KICKOFF"] 	= 	'<span class="yellow">Tomorrow</span> you planned the Kick Off for the Project "%1$s"';
 
-$lang["PROJECT_WIDGET_ALERT_TASK"] 			= 	'The Stage "%1$s" in the Project "%2$s" is <span class="yellow">out of plan</span>';
+$lang["PROJECT_WIDGET_ALERT_TASK"] 			= 	'The Task "%1$s" in the Project "%2$s" is <span class="yellow">out of plan</span>';
 $lang["PROJECT_WIDGET_ALERT_MILESTONE"] 	= 	'The Milestone "%1$s" in the Project "%2$s" is <span class="yellow">out of plan</span>';
 
 $lang["PROJECT_WIDGET_TITLE_PROJECT"]		=	'Projekt';

@@ -8,12 +8,12 @@ $lang["PROJECT_PHASES"] = 'Phases';
 
 $lang["PROJECT_PHASE_NEW"] = 'New Phase';
 $lang["PROJECT_PHASE_ACTION_NEW"] = 'new Phase';
-$lang["PROJECT_PHASE_TASK_NEW"] = 'New Stage';
+$lang["PROJECT_PHASE_TASK_NEW"] = 'New Task';
 $lang["PROJECT_PHASE_MILESTONE_NEW"] = 'New Milestone';
 
 $lang["PROJECT_PHASE_TEAM"] = 'Team';
-$lang["PROJECT_PHASE_TASK_MILESTONE"] = 'Stage/Milestone';
-$lang["PROJECT_PHASE_TASK"] = 'Stage';
+$lang["PROJECT_PHASE_TASK_MILESTONE"] = 'Task/Milestone';
+$lang["PROJECT_PHASE_TASK"] = 'Task';
 $lang["PROJECT_PHASE_MILESTONE"] = 'Milestone';
 $lang["PROJECT_PHASE_MILESTONE_DATE"] = 'Date';
 $lang["PROJECT_PHASE_PROJECTLINK"] = 'Project link';
