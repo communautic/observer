@@ -180,7 +180,11 @@ function complaintsApplication(name) {
 									setModuleActive($("#complaints2"),0);
 								}
 								var id = $("#complaints2 .module-click:eq(0)").attr("rel");
-								$("#complaints").data("second", id);								
+								if(typeof id == 'undefined') {
+									$("#complaints").data("second", 0);
+								} else {
+									$("#complaints").data("second", id);
+								}
 								$("#complaints2 .module-click:eq(0)").addClass('active-link');
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/complaints&request=getComplaintDetails&fid="+fid+"&id="+id, success: function(text){
 									$("#complaints-right").html(text.html);
@@ -502,7 +506,11 @@ function complaintsFolders(name) {
 									complaintsActions(9);
 								}
 								var id = $("#complaints1 .module-click:eq(0)").attr("rel");
-								$("#complaints").data("first",id);								
+								if(typeof id == 'undefined') {
+									$("#complaints").data("first",0);
+								} else {
+									$("#complaints").data("first",id);
+								}
 								$("#complaints1 .module-click:eq(0)").addClass('active-link');
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/complaints&request=getFolderDetails&id="+id, success: function(text){
 									$("#"+complaints.name+"-right").html(text.html);

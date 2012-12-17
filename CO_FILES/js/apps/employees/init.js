@@ -199,7 +199,12 @@ function employeesApplication(name) {
 									setModuleActive($("#employees2"),0);
 								}
 								var id = $("#employees2 .module-click:eq(0)").attr("rel");
-								$("#employees").data("second", id);								
+								
+								if(typeof id == 'undefined') {
+									$("#employees").data("second", 0);
+								} else {
+									$("#employees").data("second", id);
+								}
 								$("#employees2 .module-click:eq(0)").addClass('active-link');
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/employees&request=getEmployeeDetails&fid="+fid+"&id="+id, success: function(text){
 									$("#employees-right").html(text.html);
@@ -545,7 +550,11 @@ function employeesFolders(name) {
 									employeesActions(9);
 								}
 								var id = $("#employees1 .module-click:eq(0)").attr("rel");
-								$("#employees").data("first",id);								
+								if(typeof id == 'undefined') {
+									$("#employees").data("first",0);
+								} else {
+									$("#employees").data("first",id);
+								}
 								$("#employees1 .module-click:eq(0)").addClass('active-link');
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/employees&request=getFolderDetails&id="+id, success: function(text){
 									$("#"+employees.name+"-right").html(text.html);

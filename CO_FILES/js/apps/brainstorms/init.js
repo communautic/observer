@@ -147,7 +147,11 @@ function brainstormsApplication(name) {
 									setModuleActive($("#brainstorms2"),0);
 								}
 								var id = $("#brainstorms2 .module-click:eq(0)").attr("rel");
-								$("#brainstorms").data("second", id);
+								if(typeof id == 'undefined') {
+									$("#brainstorms").data("second", 0);
+								} else {
+									$("#brainstorms").data("second", id);
+								}
 								$("#brainstorms2 .module-click:eq(0)").addClass('active-link');
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getBrainstormDetails&fid="+fid+"&id="+id, success: function(text){
 									$("#brainstorms-right").html(text.html);
@@ -594,7 +598,11 @@ function brainstormsFolders(name) {
 									brainstormsActions(9);
 								}
 								var id = $("#brainstorms1 .module-click:eq(0)").attr("rel");
-								$("#brainstorms").data("first",id);
+								if(typeof id == 'undefined') {
+									$("#brainstorms").data("first",0);
+								} else {
+									$("#brainstorms").data("first",id);
+								}
 								$("#brainstorms1 .module-click:eq(0)").addClass('active-link');
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getFolderDetails&id="+id, success: function(text){
 									$("#"+brainstorms.name+"-right").html(text.html);
