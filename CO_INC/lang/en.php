@@ -32,6 +32,8 @@ $lang["LOGIN_COPYRIGHT"] = '<a href="http://www.communautic.com" target="_blank"
 $lang["LOGIN_LOGIN_FAILED"] = "Incorrect login details. Please try again.";
 $lang["LOGIN_LOGOUT"] = "Logout";
 $lang["LOGIN_HELP"] = 'manual_login.pdf';
+$lang["LOGIN_TERMS"] = 'Software License Agreement';
+$lang["LOGIN_TERMS_FILE"] = 'CO_PO_EULA_2013.pdf';
 
 /* APPS ACTION LINKS */
 $lang["ACTION_CLOSE"] = "hide";

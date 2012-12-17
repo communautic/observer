@@ -93,7 +93,8 @@ $(document).ready(function() {
     </table></div>
     <table width="493" border="0" align="center" cellpadding="0" cellspacing="0">
       <tr>
-    <td colspan="3" valign="top" class="login-copyright"><?php echo($lang["LOGIN_COPYRIGHT"]);?></td>
+    <td colspan="3" valign="top" class="login-copyright"><?php echo($lang["LOGIN_COPYRIGHT"]);?><br />
+        <a href="<?php echo CO_FILES;?>/terms/<?php echo CO_DEFAULT_LANGUAGE . '/' . $lang["LOGIN_TERMS_FILE"];?>" target="_blank"><?php echo $lang["LOGIN_TERMS"];?></a></td>
     </tr>
 </table></form>
 </div>

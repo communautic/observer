@@ -32,6 +32,8 @@ $lang["LOGIN_COPYRIGHT"] = '<a href="http://www.communautic.com" target="_blank"
 $lang["LOGIN_LOGIN_FAILED"] = "Benutzername oder Passwort sind nicht korrekt. Bitte versuchen Sie es erneut.";
 $lang["LOGIN_LOGOUT"] = "Abmelden";
 $lang["LOGIN_HELP"] = 'manual_login.pdf';
+$lang["LOGIN_TERMS"] = 'Produktnutzungsbestimmungen (AGB)';
+$lang["LOGIN_TERMS_FILE"] = 'CO_PO_AGB_2013.pdf';
 
 /* APPS ACTION LINKS */
 $lang["ACTION_CLOSE"] = "zuklappen";
