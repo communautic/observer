@@ -401,6 +401,13 @@ function brainstormsMeetings(name) {
 	}
 
 
+	this.actionSortItems = function(order) {
+		$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/meetings&request=sortItems&"+ order, cache: false, success: function(data){
+			}
+		});
+	}
+
+
 	this.binItem = function(id) {
 		var txt = ALERT_DELETE;
 		var langbuttons = {};

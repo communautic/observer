@@ -511,6 +511,15 @@ class PatientsMeetingsModel extends PatientsModel {
    }
 
 
+	function sortItems($task) {
+		foreach($task as $key => $val) {
+			$q = "UPDATE " . CO_TBL_PATIENTS_MEETINGS_TASKS . " set sort = '$key' WHERE id='$val'";
+			$result = mysql_query($q, $this->_db->connection);
+		}
+		return "true";
+   }
+
+
    function deleteTask($id) {
 		global $session;
 		$q = "UPDATE " . CO_TBL_PATIENTS_MEETINGS_TASKS . " set bin = '1', bintime = NOW(), binuser= '$session->uid' WHERE id='$id'";

@@ -221,6 +221,16 @@ class ProjectsMeetings extends Projects {
 			include 'view/task.php';
 		}
 	}
+	
+
+	function sortItems($task) {
+		$retval = $this->model->sortItems($task);
+			if($retval){
+			 return 'true';
+		  } else{
+			 return "error";
+		  }
+	}
 
 
 	function deleteTask($id) {

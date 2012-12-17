@@ -86,6 +86,9 @@ if (!empty($_GET['request'])) {
 		case 'deleteTask':
 			echo($patientsMeetings->deleteTask($_GET['id']));
 		break;
+		case 'sortItems':
+			echo($patientsMeetings->sortItems($_GET['task']));
+		break;
 		case 'restoreMeetingTask':
 			echo($patientsMeetings->restoreMeetingTask($_GET['id']));
 		break;
