@@ -38,8 +38,8 @@ define("CO_LICENSE"				, 			"communautic KG" 			);
 
 /* Default Language */
 define("CO_DEFAULT_LANGUAGE"	, 			"de" 								);
-define("CO_DEFAULT_TIMEZONE"	, 			"Europe/Vienna" 					);
-date_default_timezone_set(CO_DEFAULT_TIMEZONE);
+define("CO_DEFAULT_TIMEZONE"	, 			"Europe/London" 					);
+date_default_timezone_set("UTC");
 
 // Data folder
 define("CO_PATH_DATA"	, CO_PATH_BASE . "/data/");
