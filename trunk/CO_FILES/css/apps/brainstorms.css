@@ -357,7 +357,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d8d3ab', end
 
 #brainstorms-grid span.newNoteItem { position: absolute; right: 4px; width: 20px; height: 20px; cursor: pointer; background: url('../../img/icons.png') no-repeat -315px -14px; }
 
-#brainstorms-grid div.dragItem { position: absolute; top: 3px; right: 0px; width: 20px; height: 20px; cursor: pointer; background: url('../../img/icons.png') no-repeat -291px -16px; }
+#brainstorms-grid div.dragItem { position: absolute; top: 3px; right: 0px; width: 20px; height: 20px; cursor: move; background: url('../../img/icons.png') no-repeat -291px -16px; }
 #brainstorms-grid div.dragCol { height: 25px; background-color: #d8d8d8; border-bottom: 1px solid #a6a6a6; cursor: move; }
 #brainstorms-grid div.statusItem {
 border-right: 1px solid #A6A6A6;
