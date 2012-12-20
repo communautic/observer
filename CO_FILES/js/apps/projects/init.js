@@ -1046,7 +1046,8 @@ $(document).ready(function() {
 	$(document).on('click', '.addProjectLink', function(e) {
 		e.preventDefault();
 		var id = $(this).attr("rel");
-		projects_phases.addProjectLink(id);
+		var obj = getCurrentModule();
+		obj.addProjectLink(id);
 	});
 	
 	
