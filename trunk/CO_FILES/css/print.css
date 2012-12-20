@@ -94,3 +94,8 @@ hr { height: 1pt; color: #000; background-color: #000; border: 0; }
 .circle7 { border: 2px solid #915500; color: #915500; }
 .circle8 { border: 2px solid #0A960A; color: #0A960A; }
 .circle9 { border: 2px solid #AA19AA; color: #AA19AA; }
+
+/* employees */
+.neg { background-color:#e32c00; width: 20px; height: 18px; padding-top: 2px;text-align:center; color: #fff; border: 1px solid #666; }
+.med { background-color:#d9a707; width: 20px; height: 18px; padding-top: 2px;text-align:center; color: #fff; border: 1px solid #666; }
+.pos { background-color:#619307; width: 20px; height: 18px; padding-top: 2px;text-align:center; color: #fff; border: 1px solid #666; }

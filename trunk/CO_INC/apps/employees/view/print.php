@@ -108,14 +108,14 @@
 <?php } ?>
 
 &nbsp;
-<table width="100%" class="standard"> 
+<table width="100%" class="standard-grey-paddingBottom"> 
    <tr>
 		<td class="tcell-left">Privatadresse</td>
 		<td>&nbsp;</td>
 	</tr>
 </table>
 <?php if(!empty($employee->street_private)) { ?>
-<table width="100%" class="standard grey"> 
+<table width="100%" class="standard"> 
    <tr>
 		<td class="tcell-left"><?php echo $lang["EMPLOYEE_PRIVATE_STREET"];?></td>
 		<td><?php echo($employee->street_private);?></td>
@@ -123,7 +123,7 @@
 </table>
 <?php } ?>
 <?php if(!empty($employee->city_private)) { ?>
-<table width="100%" class="standard grey"> 
+<table width="100%" class="standard"> 
    <tr>
 		<td class="tcell-left"><?php echo $lang["EMPLOYEE_PRIVATE_CITY"];?></td>
 		<td><?php echo($employee->city_private);?></td>
@@ -131,7 +131,7 @@
 </table>
 <?php } ?>
 <?php if(!empty($employee->zip_private)) { ?>
-<table width="100%" class="standard grey"> 
+<table width="100%" class="standard"> 
    <tr>
 		<td class="tcell-left"><?php echo $lang["EMPLOYEE_PRIVATE_ZIP"];?></td>
 		<td><?php echo($employee->zip_private);?></td>
@@ -139,7 +139,7 @@
 </table>
 <?php } ?>
 <?php if(!empty($employee->phone_private)) { ?>
-<table width="100%" class="standard grey"> 
+<table width="100%" class="standard"> 
    <tr>
 		<td class="tcell-left"><?php echo $lang["EMPLOYEE_PRIVATE_PHONE"];?></td>
 		<td><?php echo($employee->phone_private);?></td>
@@ -147,7 +147,7 @@
 </table>
 <?php } ?>
 <?php if(!empty($employee->email_private)) { ?>
-<table width="100%" class="standard grey"> 
+<table width="100%" class="standard"> 
    <tr>
 		<td class="tcell-left"><?php echo $lang["EMPLOYEE_PRIVATE_EMAIL"];?></td>
 		<td><?php echo($employee->email_private);?></td>
@@ -155,33 +155,49 @@
 </table>
 <?php } ?>
 &nbsp;
-<table width="100%" class="standard"> 
+<table width="100%" class="standard-grey-paddingBottom"> 
    <tr>
 		<td class="tcell-left">Einstiegskompetenz</td>
 		<td>&nbsp;</td>
 	</tr>
 </table>
-<?php if(!empty($employee->email_private)) { ?>
-<table width="100%" class="standard grey"> 
+<?php if(!empty($employee->education)) { ?>
+<table width="100%" class="standard"> 
    <tr>
 		<td class="tcell-left"><?php echo $lang["EMPLOYEE_EDUCATION"];?></td>
 		<td><?php echo($employee->education);?></td>
 	</tr>
 </table>
 <?php } ?>
-<?php if(!empty($employee->protocol2)) { ?>
-<table width="100%" class="standard grey"> 
+<?php if(!empty($employee->protocol5)) { ?>
+<table width="100%" class="standard"> 
    <tr>
-		<td class="tcell-left"><?php echo $lang["EMPLOYEE_EDUCATION_ADDITIONAL"];?></td>
-		<td><?php echo($employee->protocol2);?></td>
+		<td class="tcell-left">&nbsp;</td>
+		<td><?php echo($employee->protocol5);?></td>
+	</tr>
+</table>
+<?php } ?>
+<?php if(!empty($employee->protocol6)) { ?>
+<table width="100%" class="standard"> 
+   <tr>
+		<td class="tcell-left"><?php echo $lang["EMPLOYEE_EXPERIENCE_EXTERNAL"];?></td>
+		<td><?php echo($employee->protocol6);?></td>
 	</tr>
 </table>
 <?php } ?>
 <?php if(!empty($employee->protocol3)) { ?>
-<table width="100%" class="standard grey"> 
+<table width="100%" class="standard"> 
    <tr>
 		<td class="tcell-left"><?php echo $lang["EMPLOYEE_EXPERIENCE"];?></td>
 		<td><?php echo($employee->protocol3);?></td>
+	</tr>
+</table>
+<?php } ?>
+<?php if(!empty($employee->protocol2)) { ?>
+<table width="100%" class="standard"> 
+   <tr>
+		<td class="tcell-left"><?php echo $lang["EMPLOYEE_EDUCATION_ADDITIONAL"];?></td>
+		<td><?php echo($employee->protocol2);?></td>
 	</tr>
 </table>
 <?php } ?>
