@@ -204,16 +204,17 @@
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
 	<tr>
-		<td class="tcell-left text11"><span class="<?php if($employee->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["EMPLOYEE_EXPERIENCE"];?></span></span></td>
-        <td class="tcell-right"><?php if($employee->canedit) { ?><textarea name="protocol3" class="elastic"><?php echo(strip_tags($employee->protocol3));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($employee->protocol3)));?><?php } ?></td>
-	</tr>
-</table>
-<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
-	<tr>
 		<td class="tcell-left text11"><span class="<?php if($employee->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["EMPLOYEE_EXPERIENCE_EXTERNAL"];?></span></span></td>
         <td class="tcell-right"><?php if($employee->canedit) { ?><textarea name="protocol6" class="elastic"><?php echo(strip_tags($employee->protocol6));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($employee->protocol6)));?><?php } ?></td>
 	</tr>
 </table>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
+	<tr>
+		<td class="tcell-left text11"><span class="<?php if($employee->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["EMPLOYEE_EXPERIENCE"];?></span></span></td>
+        <td class="tcell-right"><?php if($employee->canedit) { ?><textarea name="protocol3" class="elastic"><?php echo(strip_tags($employee->protocol3));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($employee->protocol3)));?><?php } ?></td>
+	</tr>
+</table>
+
 <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
 	<tr>
 		<td class="tcell-left text11"><span class="<?php if($employee->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["EMPLOYEE_EDUCATION_ADDITIONAL"];?></span></span></td>
