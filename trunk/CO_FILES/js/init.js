@@ -1242,7 +1242,9 @@ $(document).ready(function() {
 				} else if (chpexists == 1 && dateText == "") {
 					action  = 'delete';
 					chpexistsSpan.html('0');
-					$('#'+obj.name+'Checkpoint').html('').slideUp();
+					$('#'+obj.name+'Checkpoint').slideUp(function() {
+						$(this).find('textarea').val('');
+						});
 				} else {
 					action  = 'update';
 				}
