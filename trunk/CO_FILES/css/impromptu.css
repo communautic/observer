@@ -33,6 +33,7 @@ div.jqi .jqimessage{
       padding: 10px;
       line-height: 20px;
       color: #fff;
+	  text-align: center;
 }
 div.jqi .jqibuttons{
       text-align: center;
