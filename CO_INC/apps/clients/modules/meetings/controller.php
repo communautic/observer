@@ -295,6 +295,19 @@ class ClientsMeetings extends Clients {
 		return true;
    }
    
+	function getClientsDialog() {
+		global $system, $lang;
+		$clients = $this->model->getLast10Clients();
+		include('view/dialog_copy.php');
+	}
+	
+	
+	function copyMeeting($pid,$phid) {
+		global $lang;
+		$client = $this->model->copyMeeting($pid,$phid);
+		return json_encode($client);
+	}
+   
 }
 
 $clientsMeetings = new ClientsMeetings("meetings");

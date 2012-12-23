@@ -16,6 +16,7 @@ $lang["CLIENT_MEETING_TIME_END"] = 'Ende';
 $lang["CLIENT_MEETING_ATTENDEES"] = 'Teilnehmer';
 $lang["CLIENT_MEETING_MANAGEMENT"] = 'Protokollführer';
 $lang["CLIENT_MEETING_GOALS"] = 'Themen';
+$lang["CLIENT_MEETING_COPY"] = 'Protokollkopie';
 
 $lang["CLIENT_MEETING_POSPONED"] = 'verschoben';
 

@@ -346,6 +346,16 @@ function clientsMeetings(name) {
 					}
 				});
 			break;
+			case "getClientsDialog":
+			var id = $("#clients").data("second");
+				$.ajax({ type: "GET", url: "/", data: 'path=apps/clients/modules/meetings&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
+					$("#modalDialog").html(html);
+					$("#modalDialog").dialog('option', 'position', offset);
+					$("#modalDialog").dialog('option', 'title', title);
+					$("#modalDialog").dialog('open');
+					}
+				});
+			break;
 			default:
 			$.ajax({ type: "GET", url: "/", data: 'path=apps/clients&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
 				$("#modalDialog").html(html);
@@ -360,6 +370,22 @@ function clientsMeetings(name) {
 				}
 			});
 		}
+	}
+
+
+this.addClientLink = function(id) {
+		var pid = $("#clients").data("second");
+		var phid = $("#clients").data("third");
+		$("#modalDialog").dialog("close");
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/clients/modules/meetings&request=copyMeeting&id=" + id + "&pid=" + id + "&phid=" + phid, success: function(data){
+			if($("#clientsmeetingscopies").html() != "") {
+				$("#clientsmeetingscopies").append(", ");
+			}
+			$("#clientsmeetingscopies").append(data.titlelink);
+			$.prompt(ALERT_SUCCESS_COPY_MEETING + '"'+data.title+'"');
+			}
+		});
+		$.ajax({ type: "GET", url: "/", data: "path=apps/clients&request=saveLastUsedClients&id="+id});
 	}
 
 

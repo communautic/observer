@@ -295,6 +295,20 @@ class PatientsMeetings extends Patients {
 		return true;
    }
 
+
+	function getPatientsDialog() {
+		global $system, $lang;
+		$patients = $this->model->getLast10Patients();
+		include('view/dialog_copy.php');
+	}
+	
+	
+	function copyMeeting($pid,$phid) {
+		global $lang;
+		$patient = $this->model->copyMeeting($pid,$phid);
+		return json_encode($patient);
+	}
+	
 }
 
 $patientsMeetings = new PatientsMeetings("meetings");

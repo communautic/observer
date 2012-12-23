@@ -16,6 +16,7 @@ $lang["BRAINSTORM_MEETING_TIME_END"] = 'Ende';
 $lang["BRAINSTORM_MEETING_ATTENDEES"] = 'Teilnehmer';
 $lang["BRAINSTORM_MEETING_MANAGEMENT"] = 'Protokollführer';
 $lang["BRAINSTORM_MEETING_GOALS"] = 'Themen';
+$lang["BRAINSTORM_MEETING_COPY"] = 'Protokollkopie';
 
 $lang["BRAINSTORM_MEETING_POSPONED"] = 'verschoben';
 

@@ -295,6 +295,20 @@ class ComplaintsMeetings extends Complaints {
 		return true;
    }
 
+
+	function getComplaintsDialog() {
+		global $system, $lang;
+		$complaints = $this->model->getLast10Complaints();
+		include('view/dialog_copy.php');
+	}
+	
+	
+	function copyMeeting($pid,$phid) {
+		global $lang;
+		$complaint = $this->model->copyMeeting($pid,$phid);
+		return json_encode($complaint);
+	}
+	
 }
 
 $complaintsMeetings = new ComplaintsMeetings("meetings");

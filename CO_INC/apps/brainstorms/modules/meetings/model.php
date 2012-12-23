@@ -243,6 +243,7 @@ class BrainstormsMeetingsModel extends BrainstormsModel {
 		$array["management"] = $this->_contactsmodel->getUserList($array['management'],'brainstormsmanagement', "", $array["canedit"]);
 		$array["management_ct"] = empty($array["management_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['management_ct'];
 		$array["documents"] = $this->_documents->getDocListFromIDs($array['documents'],'documents');
+		$array["copies"] = $this->getBrainstormTitleFromMeetingIDs(explode(",",$array['copies']),'meetings');
 		
 		$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
 		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
@@ -603,6 +604,34 @@ class BrainstormsMeetingsModel extends BrainstormsModel {
 		return $row;
    }
 
+
+	function copyMeeting($pid,$mid) {
+		global $session, $lang;
+		// meeting
+		$q = "INSERT INTO " . CO_TBL_BRAINSTORMS_MEETINGS . " (pid,title,item_date,start,end,location,location_ct,length,management,management_ct,participants,participants_ct,status,status_date,documents,access,access_date,access_user,created_date,created_user,edited_date,edited_user) SELECT '$pid',title,item_date,start,end,location,location_ct,length,management,management_ct,participants,participants_ct,status,status_date,documents,access,access_date,access_user,created_date,created_user,edited_date,edited_user FROM " . CO_TBL_BRAINSTORMS_MEETINGS . " where id='$mid'";
+		$result = mysql_query($q, $this->_db->connection);
+		$id_new = mysql_insert_id();
+		// tasks
+		$qt = "INSERT INTO " . CO_TBL_BRAINSTORMS_MEETINGS_TASKS . " (mid,status,title,text,sort) SELECT $id_new,status,title,text,sort FROM " . CO_TBL_BRAINSTORMS_MEETINGS_TASKS . " where mid='$mid' and bin='0'";
+		$resultt = mysql_query($qt, $this->_db->connection);
+		// update copies of meeting
+		$qc = "SELECT copies FROM " . CO_TBL_BRAINSTORMS_MEETINGS . " where id='$mid'";
+		$resultc = mysql_query($qc, $this->_db->connection);
+		$copies = mysql_result($resultc,0);
+		if($copies != "") {
+			$copies .= ",";
+		}
+		$copies .= $id_new;
+		$qc = "UPDATE " . CO_TBL_BRAINSTORMS_MEETINGS . " SET copies = '$copies' where id='$mid'";
+		$resultc = mysql_query($qc, $this->_db->connection);
+		
+		if ($result) {
+			$pro = array();
+			$pro['title'] = $this->getBrainstormTitle($pid);
+			$pro['titlelink'] = $this->getBrainstormTitleFromMeetingIDs(explode(",",$id_new),'meetings');
+			return $pro;
+		}
+	}
 
 }
 ?>

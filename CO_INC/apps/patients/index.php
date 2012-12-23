@@ -167,6 +167,12 @@ if (!empty($_GET['request'])) {
 		case 'updateStatus':
 			echo($patients->updateStatus($_GET['id'],$_GET['date'],$_GET['status']));
 		break;
+		case 'getPatientsSearch':
+			echo($patients->getPatientsSearch($_GET['term'],$_GET['exclude']));
+		break;
+		case 'saveLastUsedPatients':
+			echo($patients->saveLastUsedPatients($_GET['id']));
+		break;
 		case 'getGlobalSearch':
 			echo($patients->getGlobalSearch($system->checkMagicQuotesTinyMCE($_GET['term'])));
 		break;

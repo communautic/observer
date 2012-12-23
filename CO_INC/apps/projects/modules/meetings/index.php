@@ -113,6 +113,12 @@ if (!empty($_GET['request'])) {
 		case 'updateStatus':
 			echo($projectsMeetings->updateStatus($_GET['id'],$_GET['date'],$_GET['status']));
 		break;
+		case 'getProjectsDialog':
+			echo($projectsMeetings->getProjectsDialog());
+		break;
+		case 'copyMeeting':
+			echo($projectsMeetings->copyMeeting($_GET['pid'],$_GET['phid']));
+		break;
 	}
 }
 

@@ -16,6 +16,7 @@ $lang["EMPLOYEE_MEETING_TIME_END"] = 'End';
 $lang["EMPLOYEE_MEETING_ATTENDEES"] = 'Attendees';
 $lang["EMPLOYEE_MEETING_MANAGEMENT"] = 'Minuted by';
 $lang["EMPLOYEE_MEETING_GOALS"] = 'Agenda';
+$lang["EMPLOYEE_MEETING_COPY"] = 'Copy';
 
 $lang["EMPLOYEE_MEETING_POSPONED"] = 'posponed';
 

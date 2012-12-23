@@ -173,6 +173,12 @@ if (!empty($_GET['request'])) {
 		case 'getNavModulesNumItems':
 			echo($brainstorms->getNavModulesNumItems($_GET['id']));
 		break;
+		case 'getBrainstormsSearch':
+			echo($brainstorms->getBrainstormsSearch($_GET['term'],$_GET['exclude']));
+		break;
+		case 'saveLastUsedBrainstorms':
+			echo($brainstorms->saveLastUsedBrainstorms($_GET['id']));
+		break;
 		case 'getGlobalSearch':
 			echo($brainstorms->getGlobalSearch($system->checkMagicQuotesTinyMCE($_GET['term'])));
 		break;

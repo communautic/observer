@@ -633,7 +633,23 @@ class Patients extends Controller {
 		$this->model->updateCheckpointText($id,$text);
 		return true;
    }
-   
+
+
+	function getPatientsSearch($term,$exclude) {
+		$search = $this->model->getPatientsSearch($term,$exclude);
+		return $search;
+	}
+	
+	function saveLastUsedPatients($id) {
+		$retval = $this->model->saveLastUsedPatients($id);
+		if($retval){
+		   return "true";
+		} else{
+		   return "error";
+		}
+	}
+
+
 	function getGlobalSearch($term) {
 		$search = $this->model->getGlobalSearch($term);
 		return $search;

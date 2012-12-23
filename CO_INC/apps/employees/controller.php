@@ -668,7 +668,23 @@ class Employees extends Controller {
 		$this->model->updateCheckpointText($id,$text);
 		return true;
    }
-   
+
+
+	function getEmployeesSearch($term,$exclude) {
+		$search = $this->model->getEmployeesSearch($term,$exclude);
+		return $search;
+	}
+	
+	function saveLastUsedEmployees($id) {
+		$retval = $this->model->saveLastUsedEmployees($id);
+		if($retval){
+		   return "true";
+		} else{
+		   return "error";
+		}
+	}
+
+
 	function getGlobalSearch($term) {
 		$search = $this->model->getGlobalSearch($term);
 		return $search;

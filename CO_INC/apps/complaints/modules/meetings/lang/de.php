@@ -16,6 +16,7 @@ $lang["COMPLAINT_MEETING_TIME_END"] = 'Ende';
 $lang["COMPLAINT_MEETING_ATTENDEES"] = 'Teilnehmer';
 $lang["COMPLAINT_MEETING_MANAGEMENT"] = 'Protokollführer';
 $lang["COMPLAINT_MEETING_GOALS"] = 'Themen';
+$lang["COMPLAINT_MEETING_COPY"] = 'Protokollkopie';
 
 $lang["COMPLAINT_MEETING_POSPONED"] = 'verschoben';
 

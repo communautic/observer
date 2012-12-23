@@ -16,6 +16,7 @@ $lang["PATIENT_MEETING_TIME_END"] = 'End';
 $lang["PATIENT_MEETING_ATTENDEES"] = 'Attendees';
 $lang["PATIENT_MEETING_MANAGEMENT"] = 'Minuted by';
 $lang["PATIENT_MEETING_GOALS"] = 'Agenda';
+$lang["PATIENT_MEETING_COPY"] = 'Copy';
 
 $lang["PATIENT_MEETING_POSPONED"] = 'posponed';
 

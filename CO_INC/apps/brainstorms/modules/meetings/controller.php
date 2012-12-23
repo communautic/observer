@@ -294,6 +294,20 @@ class BrainstormsMeetings extends Brainstorms {
 		return true;
    }
    
+   
+	function getBrainstormsDialog() {
+		global $system, $lang;
+		$brainstorms = $this->model->getLast10Brainstorms();
+		include('view/dialog_copy.php');
+	}
+	
+	
+	function copyMeeting($pid,$phid) {
+		global $lang;
+		$brainstorm = $this->model->copyMeeting($pid,$phid);
+		return json_encode($brainstorm);
+	}
+   
 }
 
 $brainstormsMeetings = new BrainstormsMeetings("meetings");

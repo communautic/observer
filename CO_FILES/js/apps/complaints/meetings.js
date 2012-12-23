@@ -346,6 +346,16 @@ function complaintsMeetings(name) {
 					}
 				});
 			break;
+			case "getComplaintsDialog":
+			var id = $("#complaints").data("second");
+				$.ajax({ type: "GET", url: "/", data: 'path=apps/complaints/modules/meetings&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
+					$("#modalDialog").html(html);
+					$("#modalDialog").dialog('option', 'position', offset);
+					$("#modalDialog").dialog('option', 'title', title);
+					$("#modalDialog").dialog('open');
+					}
+				});
+			break;
 			default:
 			$.ajax({ type: "GET", url: "/", data: 'path=apps/complaints&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
 				$("#modalDialog").html(html);
@@ -360,6 +370,21 @@ function complaintsMeetings(name) {
 				}
 			});
 		}
+	}
+
+this.addComplaintLink = function(id) {
+		var pid = $("#complaints").data("second");
+		var phid = $("#complaints").data("third");
+		$("#modalDialog").dialog("close");
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/complaints/modules/meetings&request=copyMeeting&id=" + id + "&pid=" + id + "&phid=" + phid, success: function(data){
+			if($("#complaintsmeetingscopies").html() != "") {
+				$("#complaintsmeetingscopies").append(", ");
+			}
+			$("#complaintsmeetingscopies").append(data.titlelink);
+			$.prompt(ALERT_SUCCESS_COPY_MEETING + '"'+data.title+'"');
+			}
+		});
+		$.ajax({ type: "GET", url: "/", data: "path=apps/complaints&request=saveLastUsedComplaints&id="+id});
 	}
 
 

@@ -16,6 +16,7 @@ $lang["PROJECT_MEETING_TIME_END"] = 'Ende';
 $lang["PROJECT_MEETING_ATTENDEES"] = 'Teilnehmer';
 $lang["PROJECT_MEETING_MANAGEMENT"] = 'Protokollführer';
 $lang["PROJECT_MEETING_GOALS"] = 'Themen';
+$lang["PROJECT_MEETING_COPY"] = 'Protokollkopie';
 
 $lang["PROJECT_MEETING_POSPONED"] = 'verschoben';
 
