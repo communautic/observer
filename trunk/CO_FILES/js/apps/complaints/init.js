@@ -839,7 +839,33 @@ $(document).ready(function() {
 		$("#complaints2-outer > h3").trigger('click', [id]);
 	});
 	
+
+	// autocomplete complaints search
+	$('.complaints-search').livequery(function() {
+		var id = $("#complaints").data("second");
+		$(this).autocomplete({
+			appendTo: '#tabs-1',
+			source: "?path=apps/complaints&request=getComplaintsSearch&exclude="+id,
+			//minLength: 2,
+			select: function(event, ui) {
+				//var field = $(this).attr("field");
+				var obj = getCurrentModule();
+				obj.addComplaintLink(ui.item.id);
+				//console.log(ui.item.id, ui.item.value);
+			},
+			close: function(event, ui) {
+				$(this).val("");
+			}
+		});
+	});
 	
+	$(document).on('click', '.addComplaintLink', function(e) {
+		e.preventDefault();
+		var id = $(this).attr("rel");
+		var obj = getCurrentModule();
+		obj.addComplaintLink(id);
+	});
+
 	$('#complaints .globalSearch').livequery(function() {
 		$(this).autocomplete({
 			appendTo: '#complaints',

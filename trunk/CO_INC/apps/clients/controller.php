@@ -634,6 +634,22 @@ class Clients extends Controller {
 		  }
    }
 
+
+	function getClientsSearch($term,$exclude) {
+		$search = $this->model->getClientsSearch($term,$exclude);
+		return $search;
+	}
+	
+	function saveLastUsedClients($id) {
+		$retval = $this->model->saveLastUsedClients($id);
+		if($retval){
+		   return "true";
+		} else{
+		   return "error";
+		}
+	}
+
+
 	function getGlobalSearch($term) {
 		$search = $this->model->getGlobalSearch($term);
 		return $search;

@@ -295,6 +295,19 @@ class ProjectsMeetings extends Projects {
 		return true;
    }
 
+	function getProjectsDialog() {
+		global $system, $lang;
+		$projects = $this->model->getLast10Projects();
+		include('view/dialog_copy.php');
+	}
+	
+	
+	function copyMeeting($pid,$phid) {
+		global $lang;
+		$project = $this->model->copyMeeting($pid,$phid);
+		//return $project;
+		return json_encode($project);
+	}
 
 }
 

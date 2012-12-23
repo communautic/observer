@@ -897,7 +897,33 @@ $(document).ready(function() {
 			}
 		});
 	});
+
+
+// autocomplete patients search
+	$('.patients-search').livequery(function() {
+		var id = $("#patients").data("second");
+		$(this).autocomplete({
+			appendTo: '#tabs-1',
+			source: "?path=apps/patients&request=getPatientsSearch&exclude="+id,
+			//minLength: 2,
+			select: function(event, ui) {
+				//var field = $(this).attr("field");
+				var obj = getCurrentModule();
+				obj.addPatientLink(ui.item.id);
+				//console.log(ui.item.id, ui.item.value);
+			},
+			close: function(event, ui) {
+				$(this).val("");
+			}
+		});
+	});
 	
+	$(document).on('click', '.addPatientLink', function(e) {
+		e.preventDefault();
+		var id = $(this).attr("rel");
+		var obj = getCurrentModule();
+		obj.addPatientLink(id);
+	});
 	
 	$('#patients .globalSearch').livequery(function() {
 		$(this).autocomplete({

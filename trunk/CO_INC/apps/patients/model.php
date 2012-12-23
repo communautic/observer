@@ -324,7 +324,8 @@ class PatientsModel extends Model {
 
 	function getPatientTitle($id){
 		global $session;
-		$q = "SELECT title FROM " . CO_TBL_PATIENTS . " where id = '$id'";
+		//$q = "SELECT title FROM " . CO_TBL_PATIENTS . " where id = '$id'";
+		$q = "SELECT CONCAT(b.lastname,' ',b.firstname) as title FROM " . CO_TBL_PATIENTS . " as a, co_users as b  where a.id = '$id' and a.cid=b.id";
 		$result = mysql_query($q, $this->_db->connection);
 		$title = mysql_result($result,0);
 		return $title;
@@ -401,6 +402,50 @@ class PatientsModel extends Model {
 		return $data;
    }
 
+
+function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
+		$total = sizeof($array);
+		$data = '';
+		if($total == 0) { 
+			return $data; 
+		}
+		$arr = array();
+		$i = 0;
+		foreach ($array as &$value) {
+			$qm = "SELECT pid FROM " . CO_TBL_PATIENTS_MEETINGS . " where id = '$value' and bin='0'";
+			$resultm = mysql_query($qm, $this->_db->connection);
+			if(mysql_num_rows($resultm) > 0) {
+				$pid = mysql_result($resultm,0);
+				$q = "SELECT a.id,a.folder,CONCAT(b.lastname,' ',b.firstname) as title FROM " . CO_TBL_PATIENTS . " as a, co_users as b  where a.id = '$pid' and a.cid=b.id and a.bin='0' and b.bin='0'";
+				$result = mysql_query($q, $this->_db->connection);
+				if(mysql_num_rows($result) > 0) {
+					while($row = mysql_fetch_assoc($result)) {
+						$arr[$i]["id"] = $row["id"];
+						$arr[$i]["item"] = $value;
+						$arr[$i]["access"] = $this->getPatientAccess($row["id"]);
+						$arr[$i]["title"] = $row["title"];
+						$arr[$i]["folder"] = $row["folder"];
+						$i++;
+					}
+				}
+			}
+		}
+		$arr_total = sizeof($arr);
+		$i = 1;
+		foreach ($arr as $key => &$value) {
+			if($value["access"] == "" || $link == 0) {
+				$data .= $value["title"];
+			} else {
+				$data .= '<a class="externalLoadThreeLevels" rel="' . $target. ','.$value["folder"].','.$value["id"].',' . $value["item"] . ',patients">' . $value["title"] . '</a>';
+			}
+			if($i < $arr_total) {
+				$data .= '<br />';
+			}
+			$data .= '';	
+			$i++;
+		}
+		return $data;
+   }
 
    	function getPatientField($id,$field){
 		global $session;
@@ -2103,6 +2148,83 @@ class PatientsModel extends Model {
 		
 		return $chart;
    }
+
+
+	function getPatientsSearch($term,$exclude){
+		global $system, $session;
+		$num=0;
+		$access=" ";
+		if(!$session->isSysadmin()) {
+			$access = " and a.id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
+	  	}
+		
+		$q = "SELECT a.id,CONCAT(b.lastname,' ',b.firstname) as label FROM " . CO_TBL_PATIENTS . " as a, co_users as b WHERE a.id != '$exclude' and a.cid=b.id and (lastname like '%$term%' or firstname like '%$term%') and  a.bin='0'" . $access ."ORDER BY lastname, firstname ASC";
+		
+		$result = mysql_query($q, $this->_db->connection);
+		$num=mysql_affected_rows();
+		$rows = array();
+		$r = array();
+		/*while($r = mysql_fetch_assoc($result)) {
+			 $rows[] = $r;
+		}*/
+		while($row = mysql_fetch_array($result)) {
+			$rows['value'] = htmlspecialchars_decode($row['label']);
+			$rows['id'] = $row['id'];
+			$r[] = $rows;
+		}
+		return json_encode($r);
+	}
+
+	
+	function getPatientArray($string){
+		$string = explode(",", $string);
+		$total = sizeof($string);
+		$items = '';
+		
+		if($total == 0) { 
+			return $items; 
+		}
+		
+		// check if user is available and build array
+		$items_arr = "";
+		foreach ($string as &$value) {
+			//$q = "SELECT id, title FROM ".CO_TBL_PATIENTS." where id = '$value' and bin='0'";
+			$q = "SELECT a.id,CONCAT(b.lastname,' ',b.firstname) as title FROM ".CO_TBL_PATIENTS." as a, co_users as b where a.cid=b.id and a.id = '$value' and a.bin='0'";
+			$result = mysql_query($q, $this->_db->connection);
+			if(mysql_num_rows($result) > 0) {
+				while($row = mysql_fetch_assoc($result)) {
+					$items_arr[] = array("id" => $row["id"], "title" => $row["title"]);		
+				}
+			}
+		}
+
+		return $items_arr;
+}
+	
+	function getLast10Patients() {
+		global $session;
+		$patients = $this->getPatientArray($this->getUserSetting("last-used-patients"));
+	  return $patients;
+	}
+	
+	
+	function saveLastUsedPatients($id) {
+		global $session;
+		$string = $id . "," .$this->getUserSetting("last-used-patients");
+		$string = rtrim($string, ",");
+		$ids_arr = explode(",", $string);
+		$res = array_unique($ids_arr);
+		foreach ($res as $key => $value) {
+			$ids_rtn[] = $value;
+		}
+		array_splice($ids_rtn, 7);
+		$str = implode(",", $ids_rtn);
+		
+		$this->setUserSetting("last-used-patients",$str);
+	  return true;
+	}
+
+
 
 
 }

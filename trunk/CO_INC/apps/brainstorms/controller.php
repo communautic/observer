@@ -647,7 +647,23 @@ class Brainstorms extends Controller {
 			 return "error";
 		  }
    }
-   
+
+
+	function getBrainstormsSearch($term,$exclude) {
+		$search = $this->model->getBrainstormsSearch($term,$exclude);
+		return $search;
+	}
+	
+	function saveLastUsedBrainstorms($id) {
+		$retval = $this->model->saveLastUsedBrainstorms($id);
+		if($retval){
+		   return "true";
+		} else{
+		   return "error";
+		}
+	}
+
+
    	function getGlobalSearch($term) {
 		$search = $this->model->getGlobalSearch($term);
 		return $search;

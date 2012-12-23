@@ -113,6 +113,12 @@ if (!empty($_GET['request'])) {
 		case 'updateStatus':
 			echo($brainstormsMeetings->updateStatus($_GET['id'],$_GET['date'],$_GET['status']));
 		break;
+		case 'getBrainstormsDialog':
+			echo($brainstormsMeetings->getBrainstormsDialog());
+		break;
+		case 'copyMeeting':
+			echo($brainstormsMeetings->copyMeeting($_GET['pid'],$_GET['phid']));
+		break;
 	}
 }
 

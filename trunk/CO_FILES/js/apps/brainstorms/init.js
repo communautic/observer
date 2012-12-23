@@ -1011,7 +1011,34 @@ $(document).ready(function() {
 		}
 	});
 	
+
+	// autocomplete brainstorms search
+	$('.brainstorms-search').livequery(function() {
+		var id = $("#brainstorms").data("second");
+		$(this).autocomplete({
+			appendTo: '#tabs-1',
+			source: "?path=apps/brainstorms&request=getBrainstormsSearch&exclude="+id,
+			//minLength: 2,
+			select: function(event, ui) {
+				//var field = $(this).attr("field");
+				var obj = getCurrentModule();
+				obj.addBrainstormLink(ui.item.id);
+				//console.log(ui.item.id, ui.item.value);
+			},
+			close: function(event, ui) {
+				$(this).val("");
+			}
+		});
+	});
 	
+	$(document).on('click', '.addBrainstormLink', function(e) {
+		e.preventDefault();
+		var id = $(this).attr("rel");
+		var obj = getCurrentModule();
+		obj.addBrainstormLink(id);
+	});
+
+
 	$('#brainstorms .globalSearch').livequery(function() {
 		$(this).autocomplete({
 			appendTo: '#brainstorms',

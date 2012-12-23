@@ -358,6 +358,51 @@ class ClientsModel extends Model {
    }
 
 
+function getClientTitleFromMeetingIDs($array,$target, $link = 0){
+		$total = sizeof($array);
+		$data = '';
+		if($total == 0) { 
+			return $data; 
+		}
+		$arr = array();
+		$i = 0;
+		foreach ($array as &$value) {
+			$qm = "SELECT pid FROM " . CO_TBL_CLIENTS_MEETINGS . " where id = '$value' and bin='0'";
+			$resultm = mysql_query($qm, $this->_db->connection);
+			if(mysql_num_rows($resultm) > 0) {
+				$pid = mysql_result($resultm,0);
+				$q = "SELECT id,folder,title FROM " . CO_TBL_CLIENTS . " where id = '$pid' and bin='0'";
+				$result = mysql_query($q, $this->_db->connection);
+				if(mysql_num_rows($result) > 0) {
+					while($row = mysql_fetch_assoc($result)) {
+						$arr[$i]["id"] = $row["id"];
+						$arr[$i]["item"] = $value;
+						$arr[$i]["access"] = $this->getClientAccess($row["id"]);
+						$arr[$i]["title"] = $row["title"];
+						$arr[$i]["folder"] = $row["folder"];
+						$i++;
+					}
+				}
+			}
+		}
+		$arr_total = sizeof($arr);
+		$i = 1;
+		foreach ($arr as $key => &$value) {
+			if($value["access"] == "" || $link == 0) {
+				$data .= $value["title"];
+			} else {
+				$data .= '<a class="externalLoadThreeLevels" rel="' . $target. ','.$value["folder"].','.$value["id"].',' . $value["item"] . ',clients">' . $value["title"] . '</a>';
+			}
+			if($i < $arr_total) {
+				$data .= '<br />';
+			}
+			$data .= '';	
+			$i++;
+		}
+		return $data;
+   }
+
+
    	function getClientField($id,$field){
 		global $session;
 		$q = "SELECT $field FROM " . CO_TBL_CLIENTS . " where id = '$id'";
@@ -1766,6 +1811,79 @@ class ClientsModel extends Model {
 		return json_encode($r);
 	}
 
+
+	function getClientsSearch($term,$exclude){
+		global $system, $session;
+		$num=0;
+		$access=" ";
+		if(!$session->isSysadmin()) {
+			$access = " and a.id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
+	  	}
+		
+		$q = "SELECT a.id,a.title as label FROM " . CO_TBL_CLIENTS . " as a WHERE a.id != '$exclude' and a.title like '%$term%' and  a.bin='0'" . $access ."ORDER BY a.title";
+		
+		$result = mysql_query($q, $this->_db->connection);
+		$num=mysql_affected_rows();
+		$rows = array();
+		$r = array();
+		/*while($r = mysql_fetch_assoc($result)) {
+			 $rows[] = $r;
+		}*/
+		while($row = mysql_fetch_array($result)) {
+			$rows['value'] = htmlspecialchars_decode($row['label']);
+			$rows['id'] = $row['id'];
+			$r[] = $rows;
+		}
+		return json_encode($r);
+	}
+
+	
+	function getClientArray($string){
+		$string = explode(",", $string);
+		$total = sizeof($string);
+		$items = '';
+		
+		if($total == 0) { 
+			return $items; 
+		}
+		
+		// check if user is available and build array
+		$items_arr = "";
+		foreach ($string as &$value) {
+			$q = "SELECT id, title FROM ".CO_TBL_CLIENTS." where id = '$value' and bin='0'";
+			$result = mysql_query($q, $this->_db->connection);
+			if(mysql_num_rows($result) > 0) {
+				while($row = mysql_fetch_assoc($result)) {
+					$items_arr[] = array("id" => $row["id"], "title" => $row["title"]);		
+				}
+			}
+		}
+
+		return $items_arr;
+}
+	
+	function getLast10Clients() {
+		global $session;
+		$clients = $this->getClientArray($this->getUserSetting("last-used-clients"));
+	  return $clients;
+	}
+	
+	
+	function saveLastUsedClients($id) {
+		global $session;
+		$string = $id . "," .$this->getUserSetting("last-used-clients");
+		$string = rtrim($string, ",");
+		$ids_arr = explode(",", $string);
+		$res = array_unique($ids_arr);
+		foreach ($res as $key => $value) {
+			$ids_rtn[] = $value;
+		}
+		array_splice($ids_rtn, 7);
+		$str = implode(",", $ids_rtn);
+		
+		$this->setUserSetting("last-used-clients",$str);
+	  return true;
+	}
 
 }
 

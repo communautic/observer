@@ -295,6 +295,20 @@ class EmployeesMeetings extends Employees {
 		return true;
    }
 
+
+	function getEmployeesDialog() {
+		global $system, $lang;
+		$employees = $this->model->getLast10Employees();
+		include('view/dialog_copy.php');
+	}
+	
+	
+	function copyMeeting($pid,$phid) {
+		global $lang;
+		$employee = $this->model->copyMeeting($pid,$phid);
+		return json_encode($employee);
+	}
+
 }
 
 $employeesMeetings = new EmployeesMeetings("meetings");

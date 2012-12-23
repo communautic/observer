@@ -120,16 +120,11 @@ font-weight: normal;
 
 .no-margin { margin: 0;}
 
-/*.table-footer { width: 100%; }
-.table-footer td { vertical-align: top;}
-.table-footer .tcell-left { width: 136px; padding: 0 0 0 15px;}
-.table-footer .tcell-right { }*/
 
-
-    input, textarea {
+input, textarea {
     -webkit-appearance:none;
     -webkit-border-radius:0px;
-    }
+}
 
 .textarea-underline-bold {
 	font-size: 13px;
@@ -163,8 +158,7 @@ font-weight: normal;
 .tbl-protocol .tcell-left { padding: 4px 15px 4px 0; }
 .elastic, .elastic-two  { font-size: 13px; padding: 0; margin: 0 0 0 0; width: 100%; height: 17px; border: 0; overflow: hidden; }
 
-/*.task-drag { width: 15px; height: 15px; background:url(../img/sort_buttons_trans.png) no-repeat 0px -60px; margin: 4px 0 0 25px; }*/
-.task-drag { width: 15px; height: 15px; background:url(../img/icons.png) no-repeat -299px -19px; margin: 4px 0 0 25px; }
+.task-drag { width: 15px; height: 15px; background:url(../img/icons.png) no-repeat -299px -19px; margin: 4px 0 0 95px; }
 
 .content-outline { padding: 5px 0;}
 .dialog-text { font-size:12px;

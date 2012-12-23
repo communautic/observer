@@ -43,3 +43,5 @@ var ALERT_CLIENT_ACCESS_REMOVE = 'Möchten Sie die Bestellberechtigung jetzt ent
 var ALERT_PUBLISHERS_ARCHIVE_OTHERS = 'Möchten Sie alle anderen publizierten Daten archivieren?';
 
 var DATEPICKER_CLEAR = 'Löschen';
+
+var ALERT_SUCCESS_COPY_MEETING = 'Eine Protokollkopie wurde erfolgreich angelegt für: <br />';

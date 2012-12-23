@@ -119,7 +119,14 @@ include("task.php");
         <td class="tcell-right"><textarea name="checkpoint_note" class="elastic-two"><?php echo(strip_tags($meeting->checkpoint_note));?></textarea></td>
 	</tr>
 </table>
+<div style="height: 2px;"></div>
 </div>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+  <tr>
+    <td class="tcell-left text11"><span class="<?php if($meeting->canedit) { ?>content-nav showDialog<?php } ?>" request="getProjectsDialog" field="projectsmeetingscopies" append="1"><span><?php echo $lang["PROJECT_MEETING_COPY"];?></span></span></td>
+    <td class="tcell-right-inactive"><div id="projectsmeetingscopies"><?php echo(str_replace('<br />',', ',$meeting->copies));?></div></td>
+  </tr>
+</table>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>

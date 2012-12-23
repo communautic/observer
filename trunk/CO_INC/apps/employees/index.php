@@ -167,6 +167,12 @@ if (!empty($_GET['request'])) {
 		case 'updateStatus':
 			echo($employees->updateStatus($_GET['id'],$_GET['date'],$_GET['status']));
 		break;
+		case 'getEmployeesSearch':
+			echo($employees->getEmployeesSearch($_GET['term'],$_GET['exclude']));
+		break;
+		case 'saveLastUsedEmployees':
+			echo($employees->saveLastUsedEmployees($_GET['id']));
+		break;
 		case 'getGlobalSearch':
 			echo($employees->getGlobalSearch($system->checkMagicQuotesTinyMCE($_GET['term'])));
 		break;

@@ -346,6 +346,16 @@ function employeesMeetings(name) {
 					}
 				});
 			break;
+			case "getEmployeesDialog":
+			var id = $("#employees").data("second");
+				$.ajax({ type: "GET", url: "/", data: 'path=apps/employees/modules/meetings&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
+					$("#modalDialog").html(html);
+					$("#modalDialog").dialog('option', 'position', offset);
+					$("#modalDialog").dialog('option', 'title', title);
+					$("#modalDialog").dialog('open');
+					}
+				});
+			break;
 			default:
 			$.ajax({ type: "GET", url: "/", data: 'path=apps/employees&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
 				$("#modalDialog").html(html);
@@ -360,6 +370,22 @@ function employeesMeetings(name) {
 				}
 			});
 		}
+	}
+
+
+this.addEmployeeLink = function(id) {
+		var pid = $("#employees").data("second");
+		var phid = $("#employees").data("third");
+		$("#modalDialog").dialog("close");
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/employees/modules/meetings&request=copyMeeting&id=" + id + "&pid=" + id + "&phid=" + phid, success: function(data){
+			if($("#employeesmeetingscopies").html() != "") {
+				$("#employeesmeetingscopies").append(", ");
+			}
+			$("#employeesmeetingscopies").append(data.titlelink);
+			$.prompt(ALERT_SUCCESS_COPY_MEETING + '"'+data.title+'"');
+			}
+		});
+		$.ajax({ type: "GET", url: "/", data: "path=apps/employees&request=saveLastUsedEmployees&id="+id});
 	}
 
 

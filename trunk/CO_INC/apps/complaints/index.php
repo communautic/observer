@@ -164,6 +164,12 @@ if (!empty($_GET['request'])) {
 		case 'updateStatus':
 			echo($complaints->updateStatus($_GET['id'],$_GET['date'],$_GET['status']));
 		break;
+		case 'getComplaintsSearch':
+			echo($complaints->getComplaintsSearch($_GET['term'],$_GET['exclude']));
+		break;
+		case 'saveLastUsedComplaints':
+			echo($complaints->saveLastUsedComplaints($_GET['id']));
+		break;
 		case 'getGlobalSearch':
 			echo($complaints->getGlobalSearch($system->checkMagicQuotesTinyMCE($_GET['term'])));
 		break;

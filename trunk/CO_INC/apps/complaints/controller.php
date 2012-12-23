@@ -624,7 +624,23 @@ class Complaints extends Controller {
 		$this->model->updateCheckpointText($id,$text);
 		return true;
    }
-   
+
+
+	function getComplaintsSearch($term,$exclude) {
+		$search = $this->model->getComplaintsSearch($term,$exclude);
+		return $search;
+	}
+	
+	function saveLastUsedComplaints($id) {
+		$retval = $this->model->saveLastUsedComplaints($id);
+		if($retval){
+		   return "true";
+		} else{
+		   return "error";
+		}
+	}
+
+
 	function getGlobalSearch($term) {
 		$search = $this->model->getGlobalSearch($term);
 		return $search;

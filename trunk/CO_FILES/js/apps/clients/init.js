@@ -849,6 +849,32 @@ $(document).ready(function() {
 		show: 'slide',
 		hide: 'slide'
 	})
+	
+	// autocomplete clients search
+	$('.clients-search').livequery(function() {
+		var id = $("#clients").data("second");
+		$(this).autocomplete({
+			appendTo: '#tabs-1',
+			source: "?path=apps/clients&request=getClientsSearch&exclude="+id,
+			//minLength: 2,
+			select: function(event, ui) {
+				//var field = $(this).attr("field");
+				var obj = getCurrentModule();
+				obj.addClientLink(ui.item.id);
+				//console.log(ui.item.id, ui.item.value);
+			},
+			close: function(event, ui) {
+				$(this).val("");
+			}
+		});
+	});
+	
+	$(document).on('click', '.addClientLink', function(e) {
+		e.preventDefault();
+		var id = $(this).attr("rel");
+		var obj = getCurrentModule();
+		obj.addClientLink(id);
+	});
 
 	$('#clients .globalSearch').livequery(function() {
 		$(this).autocomplete({
