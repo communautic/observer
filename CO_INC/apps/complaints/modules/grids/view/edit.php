@@ -240,7 +240,7 @@ foreach($cols as $key => &$value){
         <td class="tcell-right" style="padding: 6px 0 2px 0;"><textarea id="gridProtocol" name="protocol" class="elastic" style="background-color: #fff; max-height: 54px;"></textarea></td>
 	</tr>
 </table>
-    <div class="coButton-outer" style="margin: 0 0 0 150px;"><span class="content-nav actionComplaintsGridsConvert coButton">erstellen</span></div>
+    <div class="coButton-outer" style="margin: 0 0 0 150px;"><span class="content-nav actionComplaintsGridsConvert coButton">Erstellen</span></div>
     
     </td>
   	<td width="40" valign="top"><div id="modalDialogComplaintsGridClose" style="height: 17px; padding-top: 5px; background-color: #999; cursor: pointer;"><span class="icon-toggle-down"></span></div></td>
