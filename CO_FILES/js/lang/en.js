@@ -43,3 +43,6 @@ var ALERT_CLIENT_ACCESS_REMOVE = 'Möchten Sie die Bestellberechtigung jetzt entz
 var ALERT_PUBLISHERS_ARCHIVE_OTHERS = 'Möchten Sie alle anderen publizierten Daten archivieren?';
 
 var DATEPICKER_CLEAR = 'Clear';
+
+var ALERT_SUCCESS_COPY_MEETING = 'The meeting was successfully copied to: <br />';
+var ALERT_SUCCESS_PROJECT_EXPORT = 'The project was successfully exported to: <br />';

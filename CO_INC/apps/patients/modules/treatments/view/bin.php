@@ -12,8 +12,8 @@
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang["PATIENT_TREATMENT_TITLE"];?></span></td>
 		<td class="tcell-right"><?php echo($treatment->title);?></td>
-        <td width="30"><a href="patients_treatments" class="binRestore" rel="<?php echo $treatment->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="patients_treatments" class="binDelete" rel="<?php echo $treatment->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="25"><a href="patients_treatments" class="binRestore" rel="<?php echo $treatment->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="25"><a href="patients_treatments" class="binDelete" rel="<?php echo $treatment->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>
@@ -40,8 +40,8 @@
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang["PATIENT_TREATMENT_DIAGNOSE"];?></span></td>
 		<td class="tcell-right"><?php echo($treatment_diag->text);?></td>
-        <td width="30"><a href="patients_treatments" class="binRestoreColumn" rel="<?php echo $treatment_diag->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="patients_treatments" class="binDeleteColumn" rel="<?php echo $treatment_diag->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="25"><a href="patients_treatments" class="binRestoreColumn" rel="<?php echo $treatment_diag->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="25"><a href="patients_treatments" class="binDeleteColumn" rel="<?php echo $treatment_diag->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>
@@ -68,8 +68,8 @@
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang["PATIENT_TREATMENT_TITLE"];?></span></td>
 		<td class="tcell-right"><?php echo($treatment_task->title);?></td>
-        <td width="30"><a href="patients_treatments" class="binRestoreItem" rel="<?php echo $treatment_task->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="patients_treatments" class="binDeleteItem" rel="<?php echo $treatment_task->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="25"><a href="patients_treatments" class="binRestoreItem" rel="<?php echo $treatment_task->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="25"><a href="patients_treatments" class="binDeleteItem" rel="<?php echo $treatment_task->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>

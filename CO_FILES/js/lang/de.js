@@ -45,3 +45,4 @@ var ALERT_PUBLISHERS_ARCHIVE_OTHERS = 'Möchten Sie alle anderen publizierten Da
 var DATEPICKER_CLEAR = 'Löschen';
 
 var ALERT_SUCCESS_COPY_MEETING = 'Eine Protokollkopie wurde erfolgreich angelegt für: <br />';
+var ALERT_SUCCESS_PROJECT_EXPORT = 'Der Prozess wurde erfolgreich als Projekt exportiert nach: <br />';

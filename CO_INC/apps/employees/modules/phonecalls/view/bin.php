@@ -12,8 +12,8 @@
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang["EMPLOYEE_PHONECALL_TITLE"];?></span></td>
 		<td class="tcell-right"><?php echo($phonecall->title);?></td>
-        <td width="30"><a href="employees_phonecalls" class="binRestore" rel="<?php echo $phonecall->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="employees_phonecalls" class="binDelete" rel="<?php echo $phonecall->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="25"><a href="employees_phonecalls" class="binRestore" rel="<?php echo $phonecall->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="25"><a href="employees_phonecalls" class="binDelete" rel="<?php echo $phonecall->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>
@@ -41,8 +41,8 @@
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang["EMPLOYEE_PHONECALL_TITLE"];?></span></td>
 		<td class="tcell-right"><?php echo($phonecall_task->title);?></td>
-        <td width="30"><a href="employees_phonecalls" class="binRestoreItem" rel="<?php echo $phonecall_task->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="employees_phonecalls" class="binDeleteItem" rel="<?php echo $phonecall_task->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="25"><a href="employees_phonecalls" class="binRestoreItem" rel="<?php echo $phonecall_task->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="25"><a href="employees_phonecalls" class="binDeleteItem" rel="<?php echo $phonecall_task->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>

@@ -367,10 +367,12 @@ function getClientTitleFromMeetingIDs($array,$target, $link = 0){
 		$arr = array();
 		$i = 0;
 		foreach ($array as &$value) {
-			$qm = "SELECT pid FROM " . CO_TBL_CLIENTS_MEETINGS . " where id = '$value' and bin='0'";
+			$qm = "SELECT pid,created_date FROM " . CO_TBL_CLIENTS_MEETINGS . " where id = '$value' and bin='0'";
 			$resultm = mysql_query($qm, $this->_db->connection);
 			if(mysql_num_rows($resultm) > 0) {
-				$pid = mysql_result($resultm,0);
+				$rowm = mysql_fetch_row($resultm);
+				$pid = $rowm[0];
+				$date = $this->_date->formatDate($rowm[1],CO_DATETIME_FORMAT);
 				$q = "SELECT id,folder,title FROM " . CO_TBL_CLIENTS . " where id = '$pid' and bin='0'";
 				$result = mysql_query($q, $this->_db->connection);
 				if(mysql_num_rows($result) > 0) {
@@ -380,6 +382,7 @@ function getClientTitleFromMeetingIDs($array,$target, $link = 0){
 						$arr[$i]["access"] = $this->getClientAccess($row["id"]);
 						$arr[$i]["title"] = $row["title"];
 						$arr[$i]["folder"] = $row["folder"];
+						$arr[$i]["date"] = $date;
 						$i++;
 					}
 				}
@@ -389,7 +392,7 @@ function getClientTitleFromMeetingIDs($array,$target, $link = 0){
 		$i = 1;
 		foreach ($arr as $key => &$value) {
 			if($value["access"] == "" || $link == 0) {
-				$data .= $value["title"];
+				$data .= $value["title"] . ', ' . $value["date"];
 			} else {
 				$data .= '<a class="externalLoadThreeLevels" rel="' . $target. ','.$value["folder"].','.$value["id"].',' . $value["item"] . ',clients">' . $value["title"] . '</a>';
 			}

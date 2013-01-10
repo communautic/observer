@@ -11,8 +11,8 @@
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang["PROJECT_PHASE_TITLE"];?></span></td>
 		<td class="tcell-right"><?php echo($phase->title);?></td>
-        <td width="30"><a href="projects_phases" class="binRestore" rel="<?php echo $phase->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="projects_phases" class="binDelete" rel="<?php echo $phase->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="25"><a href="projects_phases" class="binRestore" rel="<?php echo $phase->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="25"><a href="projects_phases" class="binDelete" rel="<?php echo $phase->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>
@@ -40,8 +40,8 @@
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang["PROJECT_PHASE_TASK_MILESTONE"];?></span></td>
 		<td class="tcell-right"><?php echo($task->text);?></td>
-        <td width="30"><a href="projects_phases" class="binRestoreItem" rel="<?php echo $task->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="projects_phases" class="binDeleteItem" rel="<?php echo $task->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="25"><a href="projects_phases" class="binRestoreItem" rel="<?php echo $task->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="25"><a href="projects_phases" class="binDeleteItem" rel="<?php echo $task->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>

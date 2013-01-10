@@ -391,10 +391,12 @@ function getEmployeeTitleFromMeetingIDs($array,$target, $link = 0){
 		$arr = array();
 		$i = 0;
 		foreach ($array as &$value) {
-			$qm = "SELECT pid FROM " . CO_TBL_EMPLOYEES_MEETINGS . " where id = '$value' and bin='0'";
+			$qm = "SELECT pid,created_date FROM " . CO_TBL_EMPLOYEES_MEETINGS . " where id = '$value' and bin='0'";
 			$resultm = mysql_query($qm, $this->_db->connection);
 			if(mysql_num_rows($resultm) > 0) {
-				$pid = mysql_result($resultm,0);
+				$rowm = mysql_fetch_row($resultm);
+				$pid = $rowm[0];
+				$date = $this->_date->formatDate($rowm[1],CO_DATETIME_FORMAT);
 				$q = "SELECT a.id,a.folder,CONCAT(b.lastname,' ',b.firstname) as title FROM " . CO_TBL_EMPLOYEES . " as a, co_users as b  where a.id = '$pid' and a.cid=b.id and a.bin='0' and b.bin='0'";
 				$result = mysql_query($q, $this->_db->connection);
 				if(mysql_num_rows($result) > 0) {
@@ -404,6 +406,7 @@ function getEmployeeTitleFromMeetingIDs($array,$target, $link = 0){
 						$arr[$i]["access"] = $this->getEmployeeAccess($row["id"]);
 						$arr[$i]["title"] = $row["title"];
 						$arr[$i]["folder"] = $row["folder"];
+						$arr[$i]["date"] = $date;
 						$i++;
 					}
 				}
@@ -413,7 +416,7 @@ function getEmployeeTitleFromMeetingIDs($array,$target, $link = 0){
 		$i = 1;
 		foreach ($arr as $key => &$value) {
 			if($value["access"] == "" || $link == 0) {
-				$data .= $value["title"];
+				$data .= $value["title"] . ', ' . $value["date"];
 			} else {
 				$data .= '<a class="externalLoadThreeLevels" rel="' . $target. ','.$value["folder"].','.$value["id"].',' . $value["item"] . ',employees">' . $value["title"] . '</a>';
 			}

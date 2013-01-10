@@ -373,13 +373,13 @@ function brainstormsMeetings(name) {
 	}
 
 
-this.addBrainstormLink = function(id) {
+	this.addBrainstormLink = function(id) {
 		var pid = $("#brainstorms").data("second");
 		var phid = $("#brainstorms").data("third");
 		$("#modalDialog").dialog("close");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/meetings&request=copyMeeting&id=" + id + "&pid=" + id + "&phid=" + phid, success: function(data){
 			if($("#brainstormsmeetingscopies").html() != "") {
-				$("#brainstormsmeetingscopies").append(", ");
+				$("#brainstormsmeetingscopies").append("<br />");
 			}
 			$("#brainstormsmeetingscopies").append(data.titlelink);
 			$.prompt(ALERT_SUCCESS_COPY_MEETING + '"'+data.title+'"');
@@ -411,10 +411,10 @@ this.addBrainstormLink = function(id) {
 		var num = parseInt($("#brainstorms-right .task_sort").size());
 		$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms/modules/meetings&request=addTask&mid=" + mid + "&num=" + num + "&sort=" + num, success: function(html){
 			$('#brainstormsmeetingtasks').append(html);
-			var idx = parseInt($('.cbx').size() -1);
-			var element = $('.cbx:eq('+idx+')');
+			var idx = parseInt($('#brainstormsmeetingtasks .cbx').size() -1);
+			var element = $('#brainstormsmeetingtasks .cbx:eq('+idx+')');
 			$.jNice.CheckAddPO(element);
-			$('.meetingouter:eq('+idx+')').slideDown(function() {
+			$('#brainstormsmeetingtasks .meetingouter:eq('+idx+')').slideDown(function() {
 				$(this).find(":text:eq(0)").focus();
 				if(idx == 6) {
 				$('#brainstorms-right .addTaskTable').clone().insertAfter('#phasetasks');
@@ -565,6 +565,11 @@ this.addBrainstormLink = function(id) {
 		$.ajax({ type: "POST", url: "/", data: "path=apps/brainstorms/modules/meetings&request=updateCheckpointText&id=" + pid + "&text=" + text, cache: false });
 	}
 
+	this.togglePost = function(id,obj) {
+		var outer = $('#brainstormsmeetingtask_'+id);
+		outer.slideToggle();
+		obj.find('span').toggleClass('active');
+	}
 
 }
 

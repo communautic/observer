@@ -379,7 +379,7 @@ this.addEmployeeLink = function(id) {
 		$("#modalDialog").dialog("close");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/employees/modules/meetings&request=copyMeeting&id=" + id + "&pid=" + id + "&phid=" + phid, success: function(data){
 			if($("#employeesmeetingscopies").html() != "") {
-				$("#employeesmeetingscopies").append(", ");
+				$("#employeesmeetingscopies").append("<br />");
 			}
 			$("#employeesmeetingscopies").append(data.titlelink);
 			$.prompt(ALERT_SUCCESS_COPY_MEETING + '"'+data.title+'"');
@@ -412,10 +412,10 @@ this.addEmployeeLink = function(id) {
 		var num = parseInt($("#employees-right .task_sort").size());
 		$.ajax({ type: "GET", url: "/", data: "path=apps/employees/modules/meetings&request=addTask&mid=" + mid + "&num=" + num + "&sort=" + num, success: function(html){
 			$('#employeesmeetingtasks').append(html);
-			var idx = parseInt($('.cbx').size() -1);
-			var element = $('.cbx:eq('+idx+')');
+			var idx = parseInt($('#employeesmeetingtasks .cbx').size() -1);
+			var element = $('#employeesmeetingtasks .cbx:eq('+idx+')');
 			$.jNice.CheckAddPO(element);
-			$('.meetingouter:eq('+idx+')').slideDown(function() {
+			$('#employeesmeetingtasks .meetingouter:eq('+idx+')').slideDown(function() {
 				$(this).find(":text:eq(0)").focus();
 				if(idx == 6) {
 				$('#employees-right .addTaskTable').clone().insertAfter('#phasetasks');
@@ -564,6 +564,12 @@ this.addEmployeeLink = function(id) {
 		var pid = $('#employees').data('third');
 		var text = $('#employees_meetingsCheckpoint textarea').val();
 		$.ajax({ type: "POST", url: "/", data: "path=apps/employees/modules/meetings&request=updateCheckpointText&id=" + pid + "&text=" + text, cache: false });
+	}
+
+	this.togglePost = function(id,obj) {
+		var outer = $('#employeesmeetingtask_'+id);
+		outer.slideToggle();
+		obj.find('span').toggleClass('active');
 	}
 	
 }

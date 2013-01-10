@@ -20,8 +20,8 @@
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang["FORUM_FOLDER"];?></span></td>
 		<td class="tcell-right"><?php echo($folder->title);?></td>
-        <td width="30"><a href="forums_folder" class="binRestore" rel="<?php echo $folder->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="forums_folder" class="binDelete" rel="<?php echo $folder->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="25"><a href="forums_folder" class="binRestore" rel="<?php echo $folder->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="25"><a href="forums_folder" class="binDelete" rel="<?php echo $folder->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>
@@ -49,8 +49,8 @@
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang["FORUM_TITLE"];?></span></td>
 		<td class="tcell-right"><?php echo($forum->title);?></td>
-        <td width="30"><a href="forums" class="binRestore" rel="<?php echo $forum->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="forums" class="binDelete" rel="<?php echo $forum->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="25"><a href="forums" class="binRestore" rel="<?php echo $forum->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="25"><a href="forums" class="binDelete" rel="<?php echo $forum->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>
@@ -77,8 +77,8 @@
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang["FORUM_POSTS"];?></span></td>
 		<td class="tcell-right"><?php echo($task->text);?></td>
-        <td width="30"><a href="forums" class="binRestoreItem" rel="<?php echo $task->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="forums" class="binDeleteItem" rel="<?php echo $task->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="25"><a href="forums" class="binRestoreItem" rel="<?php echo $task->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="25"><a href="forums" class="binDeleteItem" rel="<?php echo $task->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>

@@ -379,7 +379,7 @@ function projectsMeetings(name) {
 		$("#modalDialog").dialog("close");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects/modules/meetings&request=copyMeeting&id=" + id + "&pid=" + id + "&phid=" + phid, success: function(data){
 			if($("#projectsmeetingscopies").html() != "") {
-				$("#projectsmeetingscopies").append(", ");
+				$("#projectsmeetingscopies").append("<br />");
 			}
 			$("#projectsmeetingscopies").append(data.titlelink);
 			$.prompt(ALERT_SUCCESS_COPY_MEETING + '"'+data.title+'"');
@@ -412,10 +412,10 @@ function projectsMeetings(name) {
 		var num = parseInt($("#projects-right .task_sort").size());
 		$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/meetings&request=addTask&mid=" + mid + "&num=" + num + "&sort=" + num, success: function(html){
 			$('#projectsmeetingtasks').append(html);
-			var idx = parseInt($('.cbx').size() -1);
-			var element = $('.cbx:eq('+idx+')');
+			var idx = parseInt($('#projectsmeetingtasks .cbx').size() -1);
+			var element = $('#projectsmeetingtasks .cbx:eq('+idx+')');
 			$.jNice.CheckAddPO(element);
-			$('.meetingouter:eq('+idx+')').slideDown(function() {
+			$('#projectsmeetingtasks .meetingouter:eq('+idx+')').slideDown(function() {
 				$(this).find(":text:eq(0)").focus();
 				if(idx == 6) {
 				$('#projects-right .addTaskTable').clone().insertAfter('#phasetasks');
@@ -566,6 +566,14 @@ function projectsMeetings(name) {
 		var text = $('#projects_meetingsCheckpoint textarea').val();
 		$.ajax({ type: "POST", url: "/", data: "path=apps/projects/modules/meetings&request=updateCheckpointText&id=" + pid + "&text=" + text, cache: false });
 	}
+	
+	
+	this.togglePost = function(id,obj) {
+		var outer = $('#projectsmeetingtask_'+id);
+		outer.slideToggle();
+		obj.find('span').toggleClass('active');
+	}
+	
 
 }
 

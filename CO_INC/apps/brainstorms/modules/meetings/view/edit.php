@@ -124,7 +124,7 @@ include("task.php");
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
   <tr>
     <td class="tcell-left text11"><span class="<?php if($meeting->canedit) { ?>content-nav showDialog<?php } ?>" request="getBrainstormsDialog" field="brainstormsmeetingscopies" append="1"><span><?php echo $lang["BRAINSTORM_MEETING_COPY"];?></span></span></td>
-    <td class="tcell-right-inactive"><div id="brainstormsmeetingscopies"><?php echo(str_replace('<br />',', ',$meeting->copies));?></div></td>
+    <td class="tcell-right-inactive tcell-right-nopadding text11"><div id="brainstormsmeetingscopies"><?php echo $meeting->copies;?></div></td>
   </tr>
 </table>
 <div class="content-spacer"></div>
@@ -135,7 +135,7 @@ include("task.php");
         <?php 
 			foreach($sendto as $value) { 
 				if(!empty($value->who)) {
-					echo '<div class="text11 toggleSendTo">' . $value->who . ', ' . $value->date . '</div>' .
+					echo '<div class="text11 toggleSendTo co-link">' . $value->who . ', ' . $value->date . '</div>' .
 						 '<div class="SendToContent">' . $lang["GLOBAL_SUBJECT"] . ': ' . $value->subject . '<br /><br />' . nl2br($value->body) . '<br></div>';
 				}
 		 } ?></div>

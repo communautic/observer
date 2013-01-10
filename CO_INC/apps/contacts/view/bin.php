@@ -20,8 +20,8 @@
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang['CONTACTS_GROUP_TITLE'];?></span></td>
 		<td class="tcell-right"><?php echo($group->title);?></td>
-        <td width="30"><a href="contacts_groups" class="binRestore" rel="<?php echo $group->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="contacts_groups" class="binDelete" rel="<?php echo $group->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="25"><a href="contacts_groups" class="binRestore" rel="<?php echo $group->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="25"><a href="contacts_groups" class="binDelete" rel="<?php echo $group->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>
@@ -49,8 +49,8 @@
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang['CONTACTS_CONTACT'];?></span></td>
 		<td class="tcell-right"><?php echo($contact->lastname . " " . $contact->firstname);?></td>
-        <td width="30"><a href="contacts" class="binRestore" rel="<?php echo $contact->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="contacts" class="binDelete" rel="<?php echo $contact->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="25"><a href="contacts" class="binRestore" rel="<?php echo $contact->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="25"><a href="contacts" class="binDelete" rel="<?php echo $contact->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>
@@ -79,8 +79,8 @@
 		<td class="tcell-left text11"><span><?php echo $lang['CONTACTS_CONTACT'];?></span></td>
 		<td rowspan="2" width="40"><img width="30" height="45" src="<?php echo CO_PATH_URL;?>/data/avatars/<?php echo($avatar->avatar);?>"></td>
         <td class="tcell-right"><?php echo($avatar->lastname . " " . $avatar->firstname);?></td>
-        <td width="30"><a href="contacts" class="binRestoreItem" rel="<?php echo $avatar->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="contacts" class="binDeleteItem" rel="<?php echo $avatar->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="25"><a href="contacts" class="binRestoreItem" rel="<?php echo $avatar->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="25"><a href="contacts" class="binDeleteItem" rel="<?php echo $avatar->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>

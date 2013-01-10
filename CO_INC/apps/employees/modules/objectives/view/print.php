@@ -60,9 +60,10 @@
 </table>
 <?php
 	  function getClass($num) { // number classes function
-	  	if($num < 4) { $class = 'neg'; }
+		if($num < 4) { $class = 'neg'; }
 		if($num > 3 && $num < 7) { $class = 'med'; }
 		if($num > 6 ) { $class = 'pos'; }
+		if($num == "") { $class = 'none'; }
 		return $class;
 	  }
 	  ?>

@@ -137,19 +137,20 @@ foreach($posts as $post) {
   </tr>
 </table>
 </div>
-<div id="modalDialogForumsPost" style="border: 1px solid #6496DB; position: absolute; bottom: 0; width: 100%; height: 122px; background-color: #b3cbef; display: none;">
+<div id="modalDialogForumsPost">
+<div id="modalDialogForumsPostInner"><div id="modalDialogForumsPostInnerContent"></div><div id="modalDialogForumsPostInnerContentEnd"></div></div>
 <input type="hidden" id="forumsReplyID" />
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
   <tr>
     <td width="136" valign="top">
-    <div style="height: 22px; background-color: #6496DB;"></div>
+    <div class="modalDialogForumsPostHeader" style="height: 26px; border-radius: 4px 0 0 0;"></div>
     <div style="height: 70px;"></div>
     <div class="coButton-outer"><span class="content-nav actionForumsReply coButton">Antworten</span></div>
     
     </td>
     <td valign="top"><textarea id="forumsReplyText" name="forumsReplyText" style="width: 100%; height: 100px; "></textarea>
     </td>
-  	<td width="40" valign="top"><div id="modalDialogForumsPostClose" style="height: 17px; padding-top: 5px; background-color: #6496DB; cursor: pointer;"><span class="icon-toggle-blue"></span></div></td>
+  	<td width="25" valign="top"><div id="modalDialogForumsPostClose" class="modalDialogForumsPostHeader" style="border-radius: 0 4px 0 0;"><span class="icon-delete-white"></span></div></td>
   </tr>
 </table>
 </div>

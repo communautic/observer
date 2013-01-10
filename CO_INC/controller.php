@@ -261,7 +261,7 @@ class Controller extends MySQLDB {
 		$html = "";
 		$sendto = $this->model->getSendtoDetails($what,$id);
 		foreach($sendto as $value) { 
-			$html .= '<div class="text11 toggleSendTo">' . $value->who . ', ' . $value->date . '</div>' .
+			$html .= '<div class="text11 toggleSendTo co-link">' . $value->who . ', ' . $value->date . '</div>' .
 				'<div class="SendToContent">' . $lang["GLOBAL_SUBJECT"] . ': ' . $value->subject . '<br /><br />' . nl2br($value->body) . '<br></div>';
 		 }
 		return $html;

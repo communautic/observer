@@ -23,7 +23,7 @@
                                 }
                                 ?>
                               </div></td>
-                                <?php if($objective->canedit) { ?><td width="30"><a class="binItem" rel="<?php echo $value->id;?>"><span class="icon-delete"></span></a></td><?php } ?>
+                                <?php if($objective->canedit) { ?><td width="25"><a class="binItem" rel="<?php echo $value->id;?>"><span class="icon-delete"></span></a></td><?php } ?>
     </tr>
   </table>
 

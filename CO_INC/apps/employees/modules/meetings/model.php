@@ -358,7 +358,7 @@ class EmployeesMeetingsModel extends EmployeesModel {
 			} else {
 				$checked_items[$key] = '0';
 			}
-			$q = "UPDATE " . CO_TBL_EMPLOYEES_MEETINGS_TASKS . " set status = '$checked_items[$key]', title = '$task_title[$key]', text = '$task_text[$key]', sort = '$task_sort[$key]' WHERE id='$task_id[$key]'";
+			$q = "UPDATE " . CO_TBL_EMPLOYEES_MEETINGS_TASKS . " set status = '$checked_items[$key]', title = '$task_title[$key]', text = '$task_text[$key]' WHERE id='$task_id[$key]'";
 			$result = mysql_query($q, $this->_db->connection);
 		}
 		if ($result) {
@@ -603,8 +603,9 @@ class EmployeesMeetingsModel extends EmployeesModel {
 
 	function copyMeeting($pid,$mid) {
 		global $session, $lang;
+		$now = gmdate("Y-m-d H:i:s");
 		// meeting
-		$q = "INSERT INTO " . CO_TBL_EMPLOYEES_MEETINGS . " (pid,title,item_date,start,end,location,location_ct,length,management,management_ct,participants,participants_ct,status,status_date,documents,access,access_date,access_user,created_date,created_user,edited_date,edited_user) SELECT '$pid',title,item_date,start,end,location,location_ct,length,management,management_ct,participants,participants_ct,status,status_date,documents,access,access_date,access_user,created_date,created_user,edited_date,edited_user FROM " . CO_TBL_EMPLOYEES_MEETINGS . " where id='$mid'";
+		$q = "INSERT INTO " . CO_TBL_EMPLOYEES_MEETINGS . " (pid,title,item_date,start,end,location,location_ct,length,management,management_ct,participants,participants_ct,status,status_date,documents,access,access_date,access_user,created_date,created_user,edited_date,edited_user) SELECT '$pid',title,item_date,start,end,location,location_ct,length,management,management_ct,participants,participants_ct,status,status_date,documents,access,access_date,access_user,'$now','$session->uid',edited_date,edited_user FROM " . CO_TBL_EMPLOYEES_MEETINGS . " where id='$mid'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
 		// tasks
