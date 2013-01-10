@@ -23,8 +23,8 @@
             </tr>
           </table>
   		</td>
-        <td width="25" style="border-bottom: 1px solid #ccc;"><div class="togglePost" rel="<?php echo($post->id);?>" style="width: 15px; height: 15px; cursor: pointer;"><span class="icon-toggle-post"></span></div></td>
-       <?php if($forum->canedit) { ?><td width="15" style="border-bottom: 1px solid #ccc;"><a class="binItem<?php echo $postdellink;?>" rel="<?php echo $post->id;?>"><span class="<?php echo $postdelclass;?>"></span></a></td><?php } ?>
+        <td width="25" style="border-bottom: 1px solid #ccc;"><div class="togglePost" rel="<?php echo($post->id);?>"><span class="icon-toggle-post"></span></div></td>
+       <?php if($forum->canedit) { ?><td width="25" style="border-bottom: 1px solid #ccc;"><a class="binItem<?php echo $postdellink;?>" rel="<?php echo $post->id;?>"><span class="<?php echo $postdelclass;?>"></span></a></td><?php } ?>
 	</tr>
 </table>
 </div>

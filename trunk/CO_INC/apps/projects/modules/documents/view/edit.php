@@ -31,7 +31,7 @@
     <tr>
       <td class="tcell-left text11"><?php echo $lang["PROJECT_DOCUMENT_FILENAME"];?></td>
       <td class="tcell-right"><a mod="projects_documents" class="downloadDocument" rel="<?php echo $value->id;?>"><?php echo($value->filename)?></a></td>
- 	  <td width="30"><?php if($document->canedit) { ?><a class="binItem" rel="<?php echo $value->id;?>"><span class="icon-delete"></span></a><?php } ?></td>
+ 	  <td width="25"><?php if($document->canedit) { ?><a class="binItem" rel="<?php echo $value->id;?>"><span class="icon-delete"></span></a><?php } ?></td>
     </tr>
     <tr>
       <td class="tcell-left text11"><?php echo $lang["PROJECT_DOCUMENT_FILESIZE"];?></td>
@@ -61,7 +61,7 @@
         <?php 
 			foreach($sendto as $value) { 
 				if(!empty($value->who)) {
-					echo '<div class="text11 toggleSendTo">' . $value->who . ', ' . $value->date . '</div>' .
+					echo '<div class="text11 toggleSendTo co-link">' . $value->who . ', ' . $value->date . '</div>' .
 						 '<div class="SendToContent">' . $lang["GLOBAL_SUBJECT"] . ': ' . $value->subject . '<br /><br />' . nl2br($value->body) . '<br></div>';
 }
 		 } ?></div>

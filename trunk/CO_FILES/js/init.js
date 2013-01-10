@@ -1314,7 +1314,7 @@ $(document).ready(function() {
 	$('div.outerSortable').livequery( function() {
 		$(this).sortable({
 			items: '>div',
-			handle: '.tcell-left-phases-tasks',
+			handle: '.task-drag',
 			axis: 'y',
 			tolerance: 'pointer',
 			containment: $(this),
@@ -1325,6 +1325,15 @@ $(document).ready(function() {
 			}
 		})
 	});
+	$(document).on('mousedown', 'td.dragHandle',function(e) {
+		e.preventDefault();
+		if(formChanged) {
+			var obj = getCurrentModule();
+			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+		}
+	});
+	
+	
 	
 
 });

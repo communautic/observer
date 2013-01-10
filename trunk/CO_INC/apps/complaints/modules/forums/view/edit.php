@@ -138,19 +138,20 @@ foreach($posts as $post) {
   </tr>
 </table>
 </div>
-<div id="modalDialogComplaintsForumsPost" style="border: 1px solid #6496DB; position: absolute; bottom: 0; width: 100%; height: 122px; background-color: #ccc; display: none;">
+<div id="modalDialogComplaintsForumsPost">
+<div id="modalDialogComplaintsForumsPostInner"><div id="modalDialogComplaintsForumsPostInnerContent"></div><div id="modalDialogComplaintsForumsPostInnerContentEnd"></div></div>
 <input type="hidden" class="forumsReplyID" />
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
   <tr>
     <td width="136" valign="top">
-    <div style="height: 22px; background-color: #999;"></div>
+    <div class="modalDialogComplaintsForumsPostHeader" style="height: 26px; border-radius: 4px 0 0 0;"></div>
     <div style="height: 70px;"></div>
     <div class="coButton-outer"><span class="content-nav postReply coButton">Antworten</span></div>
     
     </td>
     <td valign="top"><textarea class="forumsReplyText" name="forumsReplyText" style="width: 100%; height: 100px; "></textarea>
     </td>
-  	<td width="40" valign="top"><div class="closeReplyWindow" style="height: 17px; padding-top: 5px; background-color: #999; cursor: pointer;"><span class="icon-toggle-down"></span></div></td>
+  	<td width="25" valign="top"><div id="modalDialogComplaintsForumsPostClose" class="closeReplyWindow modalDialogComplaintsForumsPostHeader" style="border-radius: 0 4px 0 0;"><span class="icon-delete-white"></span></div></td>
   </tr>
 </table>
 </div>

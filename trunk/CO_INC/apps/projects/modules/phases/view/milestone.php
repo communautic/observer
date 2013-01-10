@@ -8,7 +8,7 @@
       <td width="25" style="padding-top: 4px;"><input name="task[<?php echo $value->id;?>]" type="checkbox" value="<?php echo $value->id;?>" class="cbx jNiceHidden" <?php echo $checked ;?> /><input name="task_cat[<?php echo $value->id;?>]" type="hidden" value="<?php echo $value->cat;?>"></td>
       <td width="20"><span class="icon-milestone"></span></td>
       <td class="text11" style="padding-top: 0px;"><?php if($phase->canedit) { ?><input name="task_text[<?php echo $value->id;?>]" type="text" class="bg" value="<?php echo $value->text;?>" maxlength="100" /><?php } else { ?><div class="text13 bold" style="margin-left: 7px;"><?php echo $value->text;?></div><?php } ?><input name="task_id[<?php echo $value->id;?>]" type="hidden" value="<?php echo $value->id;?>"></td>
-      <?php if($phase->canedit) { ?><td width="30"><a class="binItem" rel="<?php echo $value->id;?>"><span class="icon-delete"></span></a></td><?php } ?>
+      <?php if($phase->canedit) { ?><td width="25"><a class="binItem" rel="<?php echo $value->id;?>"><span class="icon-delete"></span></a></td><?php } ?>
     </tr>
   </table>
   <table width="100%" border="0" cellpadding="0" cellspacing="0">

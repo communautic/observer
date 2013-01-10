@@ -95,6 +95,7 @@ width: 25%;
 	border-radius: 4px 4px 4px 4px;
 	margin: 0 25px 25px 0;
 	padding-bottom: 1px;
+	box-shadow: 4px 4px 6px #000;
 }
 
 .widget-placeholder { border: 2px dashed #999; margin:25px 25px 0 0;}
@@ -230,34 +231,19 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b0c9ed', end
 span.yellow { color: #FFD20A }
 
 #desktop .widget-head a.collapse {
-background:url("../../img/icons.png") no-repeat scroll -440px 0px transparent;
+background:url("../../img/icons.png") no-repeat scroll -440px 6px transparent;
 display:inline;
 float:right;
-height:9px;
-margin:9px 20px 0 0px;
+height:18px;
+margin:3px 14px 0 0px;
 outline:medium none;
 text-indent:-9999em;
-width:14px;
+width: 20px;
 }
 
 #desktop .widget-head a.collapse.closed {
-background:url("../../img/icons.png") no-repeat scroll -460px 0px transparent;
+background:url("../../img/icons.png") no-repeat scroll -460px 6px transparent;
 }
-
-/*#desktop .postit-text {
-	font-family: 'Comic Sans MS', 'Marker Felt';
-	font-size: 16px;
-	overflow: hidden;
-}*/
-
-/*#desktop .postit textarea {
-    background-color: transparent;
-    border: 0 none;
-	padding: 0;
-	margin: 0;
-	font-family: 'Comic Sans MS', 'Marker Felt';
-	font-size: 16px; 
-}*/
 
 .desktop-icon-delete {
     background: url("../../img/icons.png") no-repeat scroll -120px -40px transparent;
@@ -280,7 +266,7 @@ background:url("../../img/icons.png") no-repeat scroll -460px 0px transparent;
     width: 23px;
 }
 
-#desktopActions { position: absolute; bottom: 0; width: 195px; height: 48px; z-index: 49000; border: 1px solid #939598; border-radius: 4px; overflow: hidden; }
+#desktopActions { position: absolute; bottom: 5px; width: 195px; height: 48px; z-index: 49000; border: 1px solid #939598; border-radius: 4px; overflow: hidden; box-shadow: 4px 4px 6px #000; }
 #desktopActionsTrans { position: absolute; width: 195px; height: 48px; background: #000; border-radius: 4px; background: url("../../img/desktop_actions.png") no-repeat scroll -1px 0px transparent;}
 #desktopActions .desktopActionOuter { height: 48px; width: 48px; float: left; position: relative;}
 #desktopActions .Left { border-radius: 4px 0 0 4px; }
@@ -292,3 +278,7 @@ background:url("../../img/icons.png") no-repeat scroll -460px 0px transparent;
 #desktopWidgetsRefresh div { position: absolute; top: 13px; left: 12px; width: 24px; height: 22px; background: url("../../img/icons.png") no-repeat scroll -550px 0px transparent; }
 #desktopHelp div { position: absolute; top: 14px; left: 15px; width: 24px; height: 22px; background: url("../../img/icons.png") no-repeat scroll -580px 0px transparent; }
 #desktopActionsDrag div { position: absolute; top: 13px; left: 13px; width: 21px; height: 22px; background: url("../../img/icons.png") no-repeat scroll -500px -40px transparent; }
+
+#desktop .postit-design {
+    box-shadow: 4px 4px 6px #000;
+}

@@ -379,7 +379,7 @@ this.addPatientLink = function(id) {
 		$("#modalDialog").dialog("close");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients/modules/meetings&request=copyMeeting&id=" + id + "&pid=" + id + "&phid=" + phid, success: function(data){
 			if($("#patientsmeetingscopies").html() != "") {
-				$("#patientsmeetingscopies").append(", ");
+				$("#patientsmeetingscopies").append("<br />");
 			}
 			$("#patientsmeetingscopies").append(data.titlelink);
 			$.prompt(ALERT_SUCCESS_COPY_MEETING + '"'+data.title+'"');
@@ -411,10 +411,10 @@ this.addPatientLink = function(id) {
 		var num = parseInt($("#patients-right .task_sort").size());
 		$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/meetings&request=addTask&mid=" + mid + "&num=" + num + "&sort=" + num, success: function(html){
 			$('#patientsmeetingtasks').append(html);
-			var idx = parseInt($('.cbx').size() -1);
-			var element = $('.cbx:eq('+idx+')');
+			var idx = parseInt($('#patientsmeetingtasks .cbx').size() -1);
+			var element = $('#patientsmeetingtasks .cbx:eq('+idx+')');
 			$.jNice.CheckAddPO(element);
-			$('.meetingouter:eq('+idx+')').slideDown(function() {
+			$('#patientsmeetingtasks .meetingouter:eq('+idx+')').slideDown(function() {
 				$(this).find(":text:eq(0)").focus();
 				if(idx == 6) {
 				$('#patients-right .addTaskTable').clone().insertAfter('#phasetasks');
@@ -563,6 +563,12 @@ this.addPatientLink = function(id) {
 		var pid = $('#patients').data('third');
 		var text = $('#patients_meetingsCheckpoint textarea').val();
 		$.ajax({ type: "POST", url: "/", data: "path=apps/patients/modules/meetings&request=updateCheckpointText&id=" + pid + "&text=" + text, cache: false });
+	}
+
+	this.togglePost = function(id,obj) {
+		var outer = $('#patientsmeetingtask_'+id);
+		outer.slideToggle();
+		obj.find('span').toggleClass('active');
 	}
 	
 }

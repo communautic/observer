@@ -12,8 +12,8 @@
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang["COMPLAINT_GRID_TITLE"];?></span></td>
 		<td class="tcell-right"><?php echo($grid->title);?></td>
-        <td width="30"><a href="complaints_grids" class="binRestore" rel="<?php echo $grid->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="complaints_grids" class="binDelete" rel="<?php echo $grid->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="25"><a href="complaints_grids" class="binRestore" rel="<?php echo $grid->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="25"><a href="complaints_grids" class="binDelete" rel="<?php echo $grid->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>
@@ -41,8 +41,8 @@
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang["COMPLAINT_GRID_NOTES"];?></span></td>
 		<td class="tcell-right"><?php echo($grid_col->items);?></td>
-        <td width="30"><a href="complaints_grids" class="binRestoreColumn" rel="<?php echo $grid_col->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="complaints_grids" class="binDeleteColumn" rel="<?php echo $grid_col->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="25"><a href="complaints_grids" class="binRestoreColumn" rel="<?php echo $grid_col->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="25"><a href="complaints_grids" class="binDeleteColumn" rel="<?php echo $grid_col->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>
@@ -69,8 +69,8 @@
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang["COMPLAINT_GRID_TITLE"];?></span></td>
 		<td class="tcell-right"><?php echo($grid_task->title);?></td>
-        <td width="30"><a href="complaints_grids" class="binRestoreItem" rel="<?php echo $grid_task->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="complaints_grids" class="binDeleteItem" rel="<?php echo $grid_task->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="25"><a href="complaints_grids" class="binRestoreItem" rel="<?php echo $grid_task->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="25"><a href="complaints_grids" class="binDeleteItem" rel="<?php echo $grid_task->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>

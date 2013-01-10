@@ -12,8 +12,8 @@
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang["EMPLOYEE_VDOC_TITLE"];?></span></td>
 		<td class="tcell-right"><?php echo($vdoc->title);?></td>
-        <td width="30"><a href="employees_vdocs" class="binRestore" rel="<?php echo $vdoc->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="employees_vdocs" class="binDelete" rel="<?php echo $vdoc->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="25"><a href="employees_vdocs" class="binRestore" rel="<?php echo $vdoc->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="25"><a href="employees_vdocs" class="binDelete" rel="<?php echo $vdoc->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>
@@ -41,8 +41,8 @@
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang["EMPLOYEE_VDOC_TITLE"];?></span></td>
 		<td class="tcell-right"><?php echo($vdoc_task->title);?></td>
-        <td width="30"><a href="#" class="bin-restoreVDocTask" rel="<?php echo $vdoc_task->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="#" class="bin-deleteVDocTask" rel="<?php echo $vdoc_task->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="25"><a href="#" class="bin-restoreVDocTask" rel="<?php echo $vdoc_task->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="25"><a href="#" class="bin-deleteVDocTask" rel="<?php echo $vdoc_task->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>

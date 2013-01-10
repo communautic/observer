@@ -12,8 +12,8 @@
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang["CLIENT_ORDER_TITLE"];?></span></td>
 		<td class="tcell-right"><?php echo($order->title);?></td>
-        <td width="30"><a href="clients_orders" class="binRestore" rel="<?php echo $order->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="clients_orders" class="binDelete" rel="<?php echo $order->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="25"><a href="clients_orders" class="binRestore" rel="<?php echo $order->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="25"><a href="clients_orders" class="binDelete" rel="<?php echo $order->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>
@@ -41,8 +41,8 @@
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang["CLIENT_ORDER_TITLE"];?></span></td>
 		<td class="tcell-right"><?php echo($order_task->title);?></td>
-        <td width="30"><a href="clients_orders" class="binRestoreItem" rel="<?php echo $order_task->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="clients_orders" class="binDeleteItem" rel="<?php echo $order_task->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="25"><a href="clients_orders" class="binRestoreItem" rel="<?php echo $order_task->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="25"><a href="clients_orders" class="binDeleteItem" rel="<?php echo $order_task->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>

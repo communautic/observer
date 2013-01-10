@@ -184,7 +184,7 @@ foreach($cols as $key => &$value){
         <div id="brainstorms-grid-note-info" class="brainstormsNoteInfo coTooltip" style="position: absolute; top: 8px; right: 28px; width: 15px; height: 15px; cursor: pointer;"><span class="icon-info"></span>
         	<div style="display: none" class="coTooltipHtml" id="brainstorms-grid-note-info-content"></div>
         </div>
-        <div id="brainstorms-grid-note-save" style="position: absolute; top: 9px; right: 10px; width: 15px; height: 15px; cursor: pointer;"><a rel="" class="binItem"><span class="icon-delete"></span></a></div>
+        <div id="brainstorms-grid-note-save" style="position: absolute; top: 7px; right: 5px; width: 20px; height: 19px; cursor: pointer;"><a rel="" class="binItem"><span class="icon-delete"></span></a></div>
         </h3>
         <div id="brainstorms-grid-note-text" class="note-text note-text-design" style="height: 110px;"></div>
 	</div>
@@ -211,7 +211,7 @@ foreach($cols as $key => &$value){
 		 
 			/*foreach($sendto as $value) { 
 			if(!empty($value->who)) {
-				echo '<div class="text11 toggleSendTo">' . $value->who . ', ' . $value->date . '</div>' .
+				echo '<div class="text11 toggleSendTo co-link">' . $value->who . ', ' . $value->date . '</div>' .
 				'<div class="SendToContent">' . $lang["GLOBAL_SUBJECT"] . ': ' . $value->subject . '<br /><br />' . nl2br($value->body) . '<br></div>';
 			}
 		 } */?></div></td>
@@ -230,36 +230,36 @@ foreach($cols as $key => &$value){
   </tr>
 </table>
 </div>
-<div id="modalDialogBrainstormsGrid" style="z-index: 200; position: absolute; bottom: 0; width: 100%; height: 170px; background-color: #e5e5e5; display: none;">
+<div id="modalDialogBrainstormsGrid">
+<div class="modalDialogBrainstormsGridHeader"><div id="modalDialogBrainstormsGridClose"><span class="icon-delete-white"></span></div></div>
+<div id="modalDialogBrainstormsGridInner">
+    <div id="modalDialogBrainstormsGridInnerContent">
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
   <tr>
     <td valign="top">
-    <div style="height: 22px; background-color: #999;"></div>
-    <div class="content-spacer"></div>
+    <div class="content-spacer" style="height: 10px;"></div>
     <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><span class="content-nav ui-datepicker-trigger-action"><span><?php echo $lang['PROJECT_KICKOFF'];?></span></span></td>
+	  <td class="text11" style="width: 136px; padding: 0 15px 2px 0px;"><span class="content-nav ui-datepicker-trigger-action"><span style="padding: 0px 0px 0px 11px;"><?php echo $lang['PROJECT_KICKOFF'];?></span></span></td>
 		<td class="tcell-right"><input name="kickoff" type="text" class="input-date datepicker" value="<?php echo(date("d.m.Y"));?>" /></td>
 	</tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><span class="content-nav showDialog" request="getProjectFolderDialog" field="brainstormsgridprojectsfolder" append="1"><span><?php echo $lang["PROJECT_FOLDER"];?></span></span></td>
+	  <td class="text11" style="width: 136px; padding: 0 15px 2px 0px;"><span class="content-nav showDialog" request="getProjectFolderDialog" field="brainstormsgridprojectsfolder" append="1"><span style="padding: 0px 0px 0px 11px;"><?php echo $lang["PROJECT_FOLDER"];?></span></span></td>
         <td class="tcell-right"><div id="brainstormsgridprojectsfolder" class="itemlist-field"></div></td>
 	</tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
-		<td class="tcell-left text11" style="padding: 4px 15px 4px 0;"><span class="content-nav selectTextarea"><span><?php echo $lang["PROJECT_DESCRIPTION"];?></span></span></td>
-        <td class="tcell-right" style="padding: 6px 0 2px 0;"><textarea id="gridProtocol" name="protocol" class="elastic" style="background-color: #fff; max-height: 54px;"></textarea></td>
+		<td class="text11" style="width: 136px; padding: 0 15px 2px 0px;"><span class="content-nav selectTextarea"><span style="padding: 0px 0px 0px 11px;"><?php echo $lang["PROJECT_DESCRIPTION"];?></span></span></td>
+        <td class="tcell-right" style="padding: 2px 0 2px 0;"><textarea id="gridProtocol" name="protocol" class="elastic" style="background-color: #fff; max-height: 48px;"></textarea></td>
 	</tr>
 </table>
-    <div class="coButton-outer" style="margin: 0 0 0 150px;"><span class="content-nav actionBrainstormsGridsConvert coButton">Erstellen</span></div>
+    <div class="coButton-outer" style="margin: 5px 0 0 11px;"><span class="content-nav actionBrainstormsGridsConvert coButton">Erstellen</span></div>
     
     </td>
-  	<td width="40" valign="top"><div id="modalDialogBrainstormsGridClose" style="height: 17px; padding-top: 5px; background-color: #999; cursor: pointer;"><span class="icon-toggle-down"></span></div></td>
   </tr>
 </table>
-
-
+</div></div>
 </div>

@@ -20,8 +20,8 @@
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang["CLIENT_FOLDER"];?></span></td>
 		<td class="tcell-right"><?php echo($folder->title);?></td>
-        <td width="30"><a href="clients_folder" class="binRestore" rel="<?php echo $folder->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="clients_folder" class="binDelete" rel="<?php echo $folder->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="25"><a href="clients_folder" class="binRestore" rel="<?php echo $folder->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="25"><a href="clients_folder" class="binDelete" rel="<?php echo $folder->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>
@@ -49,8 +49,8 @@
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang["CLIENT_TITLE"];?></span></td>
 		<td class="tcell-right"><?php echo($client->title);?></td>
-        <td width="30"><a href="clients" class="binRestore" rel="<?php echo $client->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="clients" class="binDelete" rel="<?php echo $client->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="25"><a href="clients" class="binRestore" rel="<?php echo $client->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="25"><a href="clients" class="binDelete" rel="<?php echo $client->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>

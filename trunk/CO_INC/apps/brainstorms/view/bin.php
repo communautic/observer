@@ -20,8 +20,8 @@
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang["BRAINSTORM_FOLDER"];?></span></td>
 		<td class="tcell-right"><?php echo($folder->title);?></td>
-        <td width="30"><a href="brainstorms_folder" class="binRestore" rel="<?php echo $folder->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="brainstorms_folder" class="binDelete" rel="<?php echo $folder->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="25"><a href="brainstorms_folder" class="binRestore" rel="<?php echo $folder->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="25"><a href="brainstorms_folder" class="binDelete" rel="<?php echo $folder->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>
@@ -49,8 +49,8 @@
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang["BRAINSTORM_TITLE"];?></span></td>
 		<td class="tcell-right"><?php echo($brainstorm->title);?></td>
-        <td width="30"><a href="brainstorms" class="binRestore" rel="<?php echo $brainstorm->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="brainstorms" class="binDelete" rel="<?php echo $brainstorm->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="25"><a href="brainstorms" class="binRestore" rel="<?php echo $brainstorm->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="25"><a href="brainstorms" class="binDelete" rel="<?php echo $brainstorm->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>
@@ -77,8 +77,8 @@
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang['BRAINSTORM_NOTE_BIN'];?></span></td>
 		<td class="tcell-right"><?php echo($brainstorm_task->title);?></td>
-        <td width="30"><a href="brainstorms" class="binRestoreItem" rel="<?php echo $brainstorm_task->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="brainstorms" class="binDeleteItem" rel="<?php echo $brainstorm_task->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="25"><a href="brainstorms" class="binRestoreItem" rel="<?php echo $brainstorm_task->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="25"><a href="brainstorms" class="binDeleteItem" rel="<?php echo $brainstorm_task->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>

@@ -12,8 +12,8 @@
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang["PATIENT_COMMENT_TITLE"];?></span></td>
 		<td class="tcell-right"><?php echo($comment->title);?></td>
-        <td width="30"><a href="patients_comments" class="binRestore" rel="<?php echo $comment->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="patients_comments" class="binDelete" rel="<?php echo $comment->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="25"><a href="patients_comments" class="binRestore" rel="<?php echo $comment->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="25"><a href="patients_comments" class="binDelete" rel="<?php echo $comment->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>
@@ -41,8 +41,8 @@
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang["PATIENT_COMMENT_TITLE"];?></span></td>
 		<td class="tcell-right"><?php echo($comment_task->title);?></td>
-        <td width="30"><a href="patients_comments" class="binRestoreItem" rel="<?php echo $comment_task->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="patients_comments" class="binDeleteItem" rel="<?php echo $comment_task->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="25"><a href="patients_comments" class="binRestoreItem" rel="<?php echo $comment_task->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="25"><a href="patients_comments" class="binDeleteItem" rel="<?php echo $comment_task->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>

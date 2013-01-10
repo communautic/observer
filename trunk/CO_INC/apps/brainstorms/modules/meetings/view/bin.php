@@ -12,8 +12,8 @@
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang["BRAINSTORM_MEETING_TITLE"];?></span></td>
 		<td class="tcell-right"><?php echo($meeting->title);?></td>
-        <td width="30"><a href="brainstorms_meetings" class="binRestore" rel="<?php echo $meeting->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="brainstorms_meetings" class="binDelete" rel="<?php echo $meeting->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="25"><a href="brainstorms_meetings" class="binRestore" rel="<?php echo $meeting->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="25"><a href="brainstorms_meetings" class="binDelete" rel="<?php echo $meeting->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>
@@ -41,8 +41,8 @@
 	<tr>
 		<td class="tcell-left text11"><span><?php echo $lang["BRAINSTORM_MEETING_TITLE"];?></span></td>
 		<td class="tcell-right"><?php echo($meeting_task->title);?></td>
-        <td width="30"><a href="brainstorms_meetings" class="binRestoreItem" rel="<?php echo $meeting_task->id;?>"><span class="icon-restore"></span></a></td>
-        <td width="30"><a href="brainstorms_meetings" class="binDeleteItem" rel="<?php echo $meeting_task->id;?>"><span class="icon-delete"></span></a></td>
+        <td width="25"><a href="brainstorms_meetings" class="binRestoreItem" rel="<?php echo $meeting_task->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="25"><a href="brainstorms_meetings" class="binDeleteItem" rel="<?php echo $meeting_task->id;?>"><span class="icon-delete"></span></a></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>
