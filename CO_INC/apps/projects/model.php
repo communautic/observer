@@ -2301,8 +2301,9 @@ class ProjectsModel extends Model {
 		
 		$reminders = "";
 		if($skip == 0) {
-			// reminders = meilensteine, arbeitspakete deren Phase in Planung oder in Arbeit ist - für Admins / Sysadmins die auch Projektleiter sind oder die für einen MS oder AP verantwortlich sind
-			$q ="select c.folder,a.pid,a.phaseid,a.cat,a.text,c.title as projectitle from " . CO_TBL_PROJECTS_PHASES_TASKS . " as a,  " . CO_TBL_PROJECTS_PHASES . " as b,  " . CO_TBL_PROJECTS . " as c where a.phaseid = b.id and a.pid = c.id and (b.status='0' or b.status='1') and a.status='0' and a.cat != '2' and a.bin = '0' and b.bin = '0' and c.bin = '0' and a.enddate = '$tomorrow'" . $access . " and (c.management REGEXP '[[:<:]]" . $session->uid . "[[:>:]]' or (a.cat = '0' and a.team REGEXP '[[:<:]]" . $session->uid . "[[:>:]]'))";
+			// reminders = MS, AP deren Phase "in Planung" oder "in Arbeit" ist UND das Projekt "in Arbeit" ist
+			//für Admins / Sysadmins die Projektleiter sind oder die für einen MS oder AP verantwortlich sind
+			$q ="select c.folder,a.pid,a.phaseid,a.cat,a.text,c.title as projectitle from " . CO_TBL_PROJECTS_PHASES_TASKS . " as a,  " . CO_TBL_PROJECTS_PHASES . " as b,  " . CO_TBL_PROJECTS . " as c where a.phaseid = b.id and a.pid = c.id and (b.status='0' or b.status='1') and a.status='0' and c.status='1' and a.cat != '2' and a.bin = '0' and b.bin = '0' and c.bin = '0' and a.enddate = '$tomorrow'" . $access . " and (c.management REGEXP '[[:<:]]" . $session->uid . "[[:>:]]' or (a.cat = '0' and a.team REGEXP '[[:<:]]" . $session->uid . "[[:>:]]'))";
 			$result = mysql_query($q, $this->_db->connection);
 			$reminders = "";
 			while ($row = mysql_fetch_array($result)) {
@@ -2333,8 +2334,9 @@ class ProjectsModel extends Model {
 		$alerts = "";
 		$array = "";
 		if($skip == 0) {
-			// alerts = meilensteine, arbeitspakete deren Phase in Arbeit ist - für Admins / Sysadmins die auch Projektleiter sind oder die für einen MS oder AP verantwortlich sind
-			$q ="select c.folder,a.pid,a.phaseid,a.cat,a.text,c.title as projectitle from " . CO_TBL_PROJECTS_PHASES_TASKS . " as a,  " . CO_TBL_PROJECTS_PHASES . " as b,  " . CO_TBL_PROJECTS . " as c where a.phaseid = b.id and a.pid = c.id and b.status='1' and a.status='0' and c.status!='3' and a.cat != '2' and a.bin = '0' and b.bin = '0' and c.bin = '0' and a.enddate < '$today'" . $access . " and (c.management REGEXP '[[:<:]]" . $session->uid . "[[:>:]]' or (a.cat = '0' and a.team REGEXP '[[:<:]]" . $session->uid . "[[:>:]]'))";
+			// alerts = MS, AP deren Phase "in Arbeit" ist UND das Projekt "in Arbeit" ist
+			//für Admins / Sysadmins die Projektleiter sind oder die für einen MS oder AP verantwortlich sind
+			$q ="select c.folder,a.pid,a.phaseid,a.cat,a.text,c.title as projectitle from " . CO_TBL_PROJECTS_PHASES_TASKS . " as a,  " . CO_TBL_PROJECTS_PHASES . " as b,  " . CO_TBL_PROJECTS . " as c where a.phaseid = b.id and a.pid = c.id and b.status='1' and a.status='0' and c.status='1' and a.cat != '2' and a.bin = '0' and b.bin = '0' and c.bin = '0' and a.enddate < '$today'" . $access . " and (c.management REGEXP '[[:<:]]" . $session->uid . "[[:>:]]' or (a.cat = '0' and a.team REGEXP '[[:<:]]" . $session->uid . "[[:>:]]'))";
 			$result = mysql_query($q, $this->_db->connection);
 			while ($row = mysql_fetch_array($result)) {
 				foreach($row as $key => $val) {
