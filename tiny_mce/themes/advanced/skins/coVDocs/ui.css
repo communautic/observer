@@ -11,7 +11,7 @@
 .coVDocsSkin .mceRight {text-align:right}
 
 /* External */
-.coVDocsSkin .mceExternalToolbar { position: fixed !important ; top: 130px !important; background: #F0F0EE; border:1px solid #CCC; display:block; width: 633px; }
+.coVDocsSkin .mceExternalToolbar { position: fixed !important ; top: 125px !important; background: #F0F0EE; border:1px solid #CCC; display:block; width: 633px; }
 .coVDocsSkin .mceExternalToolbar td.mceToolbar {padding-right:13px;}
 /*.coVDocsSkin .mceExternalClose { position:absolute; top:3px; right:3px; width:7px; height:7px; background:url(../../img/icons.gif) -820px 0}*/
 .coVDocsSkin .mceExternalClose { display: none; }
