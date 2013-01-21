@@ -732,15 +732,13 @@ var patients_folder = new patientsFolders('patients_folder');
 
 function patientsActions(status) {
 	/*	0= new	1= print	2= send		3= duplicate	4= handbook		5=refresh 	6 = delete*/
-	//console.log(status);
 	var obj = getCurrentModule();
 	switch(status) {
-		//case 0: actions = ['0','1','2','3','5','6']; break;
 		case 0: 
 			if(obj.name == 'patients') {
 				actions = ['1','2','3','5','6','7','8']; 
 			} else {
-				actions = ['0','2','3','4','6','7','8']; 
+				actions = ['0','2','3','4','5','6','7','8']; 
 			}
 		break;
 		case 1: actions = ['0','5','6','7']; break;
@@ -748,26 +746,22 @@ function patientsActions(status) {
 			if(obj.name == 'patients') {
 				actions = ['1','6','7']; 
 			} else {
-				actions = ['0','6','7']; 
+				actions = ['0','5','6','7']; 
 			}
 		break;
 		case 4: 	actions = ['0','1','2','6','7','8']; break;
 		case 5: 	actions = ['2','3','6','7']; break;
-		case 6: 	actions = ['7','8']; break;   			// handbook refresh
+		case 6: 	actions = ['5','7','8']; break;   			// handbook refresh
 		case 7: 	actions = ['0','1','2','7','8']; break;
 		case 8: 	actions = ['1','2','6','7','8']; break;
 		case 9: 	actions = ['0','2','3','6','7','8']; break; // default folder if not empty
-		
 		// vdocs
 		// 0 == 10
 		//case 10: actions = ['0','1','2','3','5','6','7','8']; break;
 		// 5 == 11
 		case 11: 	actions = ['1','2','6','7','8']; break;   			// print, send, refresh
-		
 		// rosters
 		case 12: actions = ['0','1','2','3','4','6','7','8']; break;
-		
-		
 		default: 	actions = ['6','7'];  								// none
 	}
 	$('#patientsActions > li span').each( function(index) {
@@ -907,10 +901,8 @@ $(document).ready(function() {
 			source: "?path=apps/patients&request=getPatientsSearch&exclude="+id,
 			//minLength: 2,
 			select: function(event, ui) {
-				//var field = $(this).attr("field");
 				var obj = getCurrentModule();
-				obj.addPatientLink(ui.item.id);
-				//console.log(ui.item.id, ui.item.value);
+				obj.addParentLink(ui.item.id);
 			},
 			close: function(event, ui) {
 				$(this).val("");
@@ -922,7 +914,7 @@ $(document).ready(function() {
 		e.preventDefault();
 		var id = $(this).attr("rel");
 		var obj = getCurrentModule();
-		obj.addPatientLink(id);
+		obj.addParentLink(id);
 	});
 	
 	$('#patients .globalSearch').livequery(function() {

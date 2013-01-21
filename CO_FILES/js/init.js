@@ -33,15 +33,12 @@ jQuery.fn.nl2br = function(){
 };
 //jQuery("textarea").nl2br();
 
-
 function iOS(){
     return (
         (navigator.platform.indexOf("iPhone") != -1) ||
         (navigator.platform.indexOf("iPad") != -1)
     );
 }
-
-
 
 function dblclick_do_nothing() {
   return false;
@@ -359,6 +356,10 @@ function resetNavScroll() {
 		initNavScroll();
 	}
 }
+
+/* global Action functions to go here 
+like actionPrint, actionHelp, etc ...
+*/
 
 $(window).resize(function() {
 	resetNavScroll();
@@ -1334,32 +1335,143 @@ $(document).ready(function() {
 	});
 	
 	
-	
+	// vDocs Init function
+	function myCustomInitInstance(ed) {
+		var ele = ed.id;
+		$("#"+ele).data('initial_value', $("#"+ele).html());
+		var obj = getCurrentModule();
+		ed.onKeyUp.add(function(ed, l) {
+			var content = ed.getContent();
+			if (content != $("#"+ele).data('initial_value')) {
+				formChanged = true;
+				$("#"+ele).data('initial_value', content);
+			}
+		});
+		ed.onChange.add(function(ed, l) {
+			var content = ed.getContent();
+			if (content != $("#"+ele).data('initial_value')) {
+				formChanged = true;
+				$("#"+ele).data('initial_value', content);
+			}
+		});
+		ed.onPaste.add(function(ed, l) {
+			var content = ed.getContent();
+			if (content != $("#"+ele).data('initial_value')) {
+				formChanged = true;
+				$("#"+ele).data('initial_value', content);
+			}
+		});
+		//FF
+		$(ed.getDoc()).bind('blur', function(){ 
+			if(confirmNavigation()) {
+				formChanged = false;
+				var obj = getCurrentModule();
+				$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+			}
+		});
+		// Webkit
+		$(ed.getWin()).bind('blur', function(){ 
+			if(confirmNavigation()) {
+				formChanged = false;
+				var obj = getCurrentModule();
+				$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+			}
+		});
+		// Tab functionality
+		ed.onKeyDown.add(function(inst, e) {
+			// Firefox uses the e.which event for keypress
+			// While IE and others use e.keyCode, so we look for both
+        	if (e.keyCode) code = e.keyCode;
+			else if (e.which) code = e.which;
+			if(code == 9 && !e.altKey && !e.ctrlKey) {
+				// toggle between Indent and Outdent command, depending on if SHIFT is pressed
+				if (e.shiftKey) ed.execCommand('Outdent');
+				else ed.execCommand('Indent');
+				// prevent tab key from leaving editor in some browsers
+				if(e.preventDefault) {
+					e.preventDefault();
+				}
+				return false;
+			}
+    	});
+		setTimeout(function() {
+			$('#'+getCurrentApp()+'vdocContent').tinymce().execCommand('mceAutoResize');			
+		}, 300)
+	}
+
+	// listener for vDocs
+	$("textarea.initVdocs").livequery(function() {	 
+		var vdoc = $(this);
+		$.getScript("tiny_mce/jquery.tinymce.js", function(){
+			vdoc.tinymce({
+			script_url : 'tiny_mce/tiny_mce_gzip.php',
+			doctype: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">',
+			theme : "advanced",
+			skin : "coVDocs",
+			language: co_lang,
+        	plugins : "autosave,autoresize,pagebreak,emotions,inlinepopups,paste,visualchars,nonbreaking,xhtmlxtras",
+			force_br_newlines: false,
+			force_p_newlines: true,
+			theme_advanced_buttons1 : "undo,redo,|,bold,italic,underline,strikethrough,|,sub,sup,|,justifyleft,justifycenter,justifyright,justifyfull,|,fontsizeselect,|,forecolor,backcolor",
+        	theme_advanced_buttons2 : "cut,copy,paste,|,bullist,numlist,|,outdent,indent,|,hr,|,charmap,emotions,visualchars,nonbreaking,pagebreak,|,removeformat,cleanup,code",
+        	theme_advanced_buttons3 : "",
+			theme_advanced_buttons4 : "",
+       		theme_advanced_toolbar_location : "external",
+        	theme_advanced_toolbar_align : "left",
+        	theme_advanced_statusbar_location : "none",
+			content_css : "tiny_mce/editor.content.css",
+			autosave_ask_before_unload : false,
+			autoresize_on_init : false,
+			init_instance_callback: myCustomInitInstance
+		});
+		})
+	})
 
 });
 		
 		
 var formChanged = false;
+var checkpointChanged = false;
 
 $(document).ready(function() {
     
 	$('.textarea-title, .bg, .elastic').livequery(function () {
-          var e = $(this);
-		  e.data('initial_value', e.val());
-		  e.bind('keyup paste cut', function() {
-          setTimeout(function() {
+		var e = $(this);
+		e.data('initial_value', e.val());
+		e.bind('keyup paste cut', function() {
+		  setTimeout(function() {
 			  if (e.val() != e.data('initial_value')) {
 				  formChanged = true;
 				  e.data('initial_value', e.val());
 			  }
 		  }, 100);
 		});
-     });
+   });
+	
+	$('textarea.elastic-two').livequery(function () {
+		var e = $(this);
+		e.data('initial_value', e.val());
+		e.bind('keyup paste cut', function() {
+			setTimeout(function() {
+				if (e.val() != e.data('initial_value')) {
+					checkpointChanged = true;
+					e.data('initial_value', e.val());
+				}
+			}, 100);
+		});
+	});
 });
-
 
 function confirmNavigation() {
      if (formChanged) {
+		  return true;
+     } else {
+          return false;
+     }
+}
+
+function confirmCheckpoint() {
+     if (checkpointChanged) {
 		  return true;
      } else {
           return false;
@@ -1412,7 +1524,6 @@ function loadModuleStartnavThree(objectname) {
 		}
 		$('#'+objectname+'1 li').show();
 		$('#'+objectname+'1 .sort').attr("rel", data.sort).addClass("sort"+data.sort);
-		//projectsInnerLayout.initContent('center');
 		var id = $('#'+objectname+'1 .module-click:eq(0)').attr("rel");
 		if(id === undefined) {
 			id = 0;
@@ -1607,7 +1718,11 @@ function navThreeTitleFirst(objectname, clicked, passed_id) {
 	if(confirmNavigation()) {
 		formChanged = false;
 		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
-	}	
+	}
+	if(confirmCheckpoint()) {
+		checkpointChanged = false;
+		obj.saveCheckpointText();
+	}
 	var cid = $('#'+objectname+' input[name="id"]').val()
 	if(cid != undefined) {
 		obj.checkIn(cid);
@@ -1710,19 +1825,23 @@ function navThreeTitleSecond(objectname, clicked, passed_id) {
 	var objectnameCapsSingular = objectnameCaps.slice(0,-1);
 	var num_modules = window[objectname+'_num_modules'];
 	
-	object.$third.data('status','closed');
-	object.$app.data({ 'third' : 0 });
-	
 	var obj = getCurrentModule();
 	if(confirmNavigation()) {
 		formChanged = false;
 		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+	}
+	if(confirmCheckpoint()) {
+		checkpointChanged = false;
+		obj.saveCheckpointText();
 	}
 	var cid = $('#'+objectname+' input[name="id"]').val()
 	if(cid != undefined) {
 		obj.checkIn(cid);
 	}
 	
+	object.$third.data('status','closed');
+	object.$app.data({ 'third' : 0 });
+
 	if(clicked.hasClass("module-bg-active")) {
 		$('#'+objectname+'1-outer > h3').trigger("click");
 	} else {
@@ -1894,6 +2013,10 @@ function navThreeTitleThird(objectname, clicked, passed_id) {
 			formChanged = false;
 			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 		}
+		if(confirmCheckpoint()) {
+			checkpointChanged = false;
+			obj.saveCheckpointText();
+		}
 		var cid = $('#'+objectname+' input[name="id"]').val()
 		if(cid != undefined) {
 			obj.checkIn(cid);
@@ -2013,7 +2136,7 @@ function navThreeTitleThird(objectname, clicked, passed_id) {
 								$('#'+objectname+'-top .top-subheadline').html(', ' + $('#'+objectname+'2 .deactivated').find(".text").html());
 								if(objectname == 'projects' || objectname == 'productions') {
 									$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+objectname+"&request=getDates&id="+id, success: function(data){
-									$('#'+objectname+'-top .top-subheadlineTwo').html(data.startdate + ' - <span id="projectenddate">' + data.enddate + '</span>');
+									$('#'+objectname+'-top .top-subheadlineTwo').html(data.startdate + ' - <span id="'+objectname+'enddate">' + data.enddate + '</span>');
 									}
 								}); }
 								var obj = getCurrentModule();
@@ -2045,6 +2168,10 @@ function navItemFirst(objectname, clicked) {
 	if(confirmNavigation()) {
 		formChanged = false;
 		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+	}
+	if(confirmCheckpoint()) {
+		checkpointChanged = false;
+		obj.saveCheckpointText();
 	}
 	var cid = $('#'+objectname+' input[name="id"]').val()
 	obj.checkIn(cid);
@@ -2090,6 +2217,10 @@ function navItemSecond(objectname, clicked) {
 	if(confirmNavigation()) {
 		formChanged = false;
 		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+	}
+	if(confirmCheckpoint()) {
+		checkpointChanged = false;
+		obj.saveCheckpointText();
 	}
 	var cid = $('#'+objectname+' input[name="id"]').val()
 	obj.checkIn(cid);
@@ -2155,6 +2286,11 @@ function navItemThird(objectname, clicked) {
 	if(confirmNavigation()) {
 		formChanged = false;
 		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+	}
+	if(confirmCheckpoint()) {
+		checkpointChanged = false;
+		var obj = getCurrentModule();
+		obj.saveCheckpointText();
 	}
 	var cid = $('#'+objectname+' input[name="id"]').val()
 	obj.checkIn(cid);
@@ -2338,7 +2474,7 @@ function externalLoadThreeLevels(objectname,f,p,ph,app) { // from Desktop
 			var curapp = getCurrentApp();
 			if(app == 'projects' || app == 'productions') {
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+app+"&request=getDates&id="+p, success: function(data){
-					$('#'+app+'-top .top-subheadlineTwo').html(data.startdate + ' - <span id="projectenddate">' + data.enddate + '</span>');
+					$('#'+app+'-top .top-subheadlineTwo').html(data.startdate + ' - <span id="'+ app +'enddate">' + data.enddate + '</span>');
 					if(app != curapp) {
 						$('span.app_'+app).trigger('click');
 					}
@@ -2354,88 +2490,3 @@ function externalLoadThreeLevels(objectname,f,p,ph,app) { // from Desktop
 	}
 
 }
-
-
-// folder to eg Timelines sample internalLoadLevelThree('timelines',127,121,3,'projects');
-/*function internalLoadLevelThree(objectname,f,p,ph,app) { 
-	var object = window[objectname];
-	var objectFirst = objectname.substr(0, 1);
-	var objectnameCaps = objectFirst.toUpperCase() + objectname.substr(1);
-	var objectnameCapsSingular = objectnameCaps.slice(0,-1);
-	var num_modules = window[objectname+'_num_modules'];
-	
-	if(ph != 0) {
-		var appobject = window[app];
-		var appFirst = app.substr(0, 1);
-		var appnameCaps = appFirst.toUpperCase() + app.substr(1);
-		var appnameCapsSingular = appnameCaps.slice(0,-1);
-		
-		var index = $('#'+app+'1 .module-click').index($('#'+app+'1 .module-click[rel='+f+']'));
-		$.ajax({ type: "GET", url: "/", dataType:  'json', async: false, data: "path=apps/"+app+"&request=get"+appnameCapsSingular+"List&id="+f, success: function(data){
-			$('#'+app+'2 ul').html(data.html);
-				setModuleDeactive($('#'+app+'1'),index);
-				$('#'+app+'1').find('li:eq('+index+')').show();
-				$('#'+app+'-top .top-headline').html($('#'+app+'1 .deactivated').find(".text").html());
-			}
-		})
-		$('#'+app).data({ "second" : p});
-		appobject.getNavModulesNumItems(p)
-		var index = $('#'+app+'2 .module-click').index($('#'+app+'2 .module-click[rel='+p+']'));
-		setModuleDeactive($('#'+app+'2'),index);
-		$('#'+app+'2-outer').css('top', 96);
-		$('#'+app+'3 h3').removeClass("module-bg-active");
-		$('#'+app+'3 .module-actions').hide();
-		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+app+"/modules/"+objectname+"&request=getList&id="+p, success: function(data){
-			$('#'+app+'-current').val(objectname);
-			$('#'+app).data({ "current" : objectname});
-			$('#'+app).data({ "third" : ph});
-			$('#'+app+'1').data('status','closed');
-			$('#'+app+'2').data('status','closed');
-			$('#'+app+'3').data('status','open');
-			$('#'+app+'3 ul[rel='+objectname+']').html(data.html);
-			$('#'+app+'Actions .actionNew').attr("title",data.title);
-			switch (data.perm) {
-				case "sysadmin": case "admin" :
-					if(data.html == "<li></li>") {
-						window[app+'Actions'](3);
-					} else {
-						window[app+'Actions'](0);
-					}
-				break;
-				case "guest":
-					if(data.html == "<li></li>") {
-						window[app+'Actions']();
-					} else {
-						window[app+'Actions'](5);
-					}
-				break;
-			}
-			var moduleidx = $('#'+app+'3 h3').index($('#'+app+'3 h3[rel='+objectname+']'));
-			var z = appobject.$thirdDiv.height()-27;
-			$('#'+app+'3 div.thirdLevel:not(.deactivated)').each(function(i) { 
-				if(i <= moduleidx) {
-					var mx = i*module_title_height;
-					$(this).animate({top: mx})
-				} else {
-					var mx = z+i*module_title_height;
-					$(this).animate({top: mx})
-				}
-			})
-			$('#'+app+'3 ul[rel='+objectname+'] .module-click[rel='+ph+']').addClass('active-link');
-			var idx = $('#'+app+'3 ul[rel='+objectname+'] .module-click').index($('#'+app+'3 ul[rel='+objectname+'] .module-click[rel='+ph+']'));
-			var o = window[app+'_'+objectname];
-			o.getDetails(moduleidx,idx,data.html);
-			$('#'+app+'3 h3:eq('+moduleidx+')').addClass("module-bg-active");
-			$('#'+app+'3 .module-actions:eq('+moduleidx+')').show();
-			$('#'+app+'3 .sort:eq('+moduleidx+')').attr("rel", data.sort).addClass("sort"+data.sort);
-			$('#'+app+'-top .top-subheadline').html(', ' + $('#'+app+'2 .module-click:visible').find(".text").html());
-			if(app == 'projects' || app == 'productions') {
-				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+app+"&request=getDates&id="+p, success: function(data){
-					$('#'+app+'-top .top-subheadlineTwo').html(data.startdate + ' - <span id="projectenddate">' + data.enddate + '</span>');
-					}
-				});
-			}
-			}
-		});
-	}
-}*/

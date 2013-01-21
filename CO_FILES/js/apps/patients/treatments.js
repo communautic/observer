@@ -755,14 +755,6 @@ this.binDeleteColumn = function(id) {
 
 var patients_treatments = new patientsTreatments('patients_treatments');
 
-/*var loaded = 0;
-function loadDemand() {
-	if(loaded == 0) {
-	$.getScript(co_files+'/js/apps/patients/treatments_ondemand.js',function(){});
-		loaded = 1;
-	}
-}*/
-
 var zIndexes = 0;
 var restorePoints = [];
 var restorePoint = [];
