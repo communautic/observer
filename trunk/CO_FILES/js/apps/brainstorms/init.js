@@ -1020,10 +1020,8 @@ $(document).ready(function() {
 			source: "?path=apps/brainstorms&request=getBrainstormsSearch&exclude="+id,
 			//minLength: 2,
 			select: function(event, ui) {
-				//var field = $(this).attr("field");
 				var obj = getCurrentModule();
-				obj.addBrainstormLink(ui.item.id);
-				//console.log(ui.item.id, ui.item.value);
+				obj.addParentLink(ui.item.id);
 			},
 			close: function(event, ui) {
 				$(this).val("");
@@ -1035,7 +1033,7 @@ $(document).ready(function() {
 		e.preventDefault();
 		var id = $(this).attr("rel");
 		var obj = getCurrentModule();
-		obj.addBrainstormLink(id);
+		obj.addParentLink(id);
 	});
 
 

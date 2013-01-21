@@ -1022,6 +1022,27 @@ $(document).ready(function() {
 			showURL: false 
 		});
 	});
+	
+	// timeline gant chart and multiview
+	$("#barchartScroll").livequery( function() {
+		var scroller = $(this);
+		scroller.scroll(function() {
+			var $scrollingDiv = $("#barchart-container-left");
+			$scrollingDiv.stop().animate({"marginLeft": (scroller.scrollLeft()) + "px"}, "fast" );
+			$("#barchartTimeline").stop().animate({"marginTop": (scroller.scrollTop()) + "px"}, "fast" );
+			if(scroller.scrollTop() != 0) {
+				$("#todayBar").stop().height(scroller.innerHeight()-67);
+			}
+		});
+	});
+
+
+	$(document).on('click', '.but-scroll-to',function(e) {
+		e.preventDefault();
+		var t = $(this).attr('t');
+		var l = $(this).attr('l');
+		$('.scroll-pane').scrollTo(l,t);
+	});
 
 	
 	// autocomplete projects search
@@ -1032,10 +1053,8 @@ $(document).ready(function() {
 			source: "?path=apps/projects&request=getProjectsSearch&exclude="+id,
 			//minLength: 2,
 			select: function(event, ui) {
-				//var field = $(this).attr("field");
 				var obj = getCurrentModule();
-				obj.addProjectLink(ui.item.id);
-				//console.log(ui.item.id, ui.item.value);
+				obj.addParentLink(ui.item.id);
 			},
 			close: function(event, ui) {
 				$(this).val("");
@@ -1047,7 +1066,7 @@ $(document).ready(function() {
 		e.preventDefault();
 		var id = $(this).attr("rel");
 		var obj = getCurrentModule();
-		obj.addProjectLink(id);
+		obj.addParentLink(id);
 	});
 	
 	
