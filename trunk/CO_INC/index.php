@@ -10,15 +10,12 @@ if($session->pwd_pick != 1) {
 }
 include_once(CO_INC . "/model.php");
 include_once(CO_INC . "/controller.php");
-//$num_apps = 0;
 foreach($controller->applications as $app => $display) {
 	include_once(CO_INC . "/apps/".$app."/config.php");
 	include_once(CO_INC . "/apps/".$app."/lang/" . $session->userlang . ".php");
 	include_once(CO_INC . "/apps/".$app."/model.php");
 	include_once(CO_INC . "/apps/".$app."/controller.php");
-	//$num_apps++;
 }
-
 // build user apps array
 $num_apps = 0;
 $userapps = array();
@@ -123,11 +120,28 @@ echo "var " . $app . "_num_modules = " . ${$app}->num_modules . ";\n";
 }
 ?>
 </script>
-<?php // include app specific js
+<?php // build used modules array
+$modules_toload = array();
+foreach($userapps as $key => $app) {
+	foreach(${$app}->modules as $module => $value) {
+		$modules_toload[] = $module;
+	}
+}
+// include app specific js
+foreach(array_unique($modules_toload) as $key => $value) {
+	if($value == 'meetings' || $value == 'documents' || $value == 'phonecalls' || $value == 'vdocs' || $value == 'access' || $value == 'controlling' || $value == 'phases' || $value == 'timelines') {
+	echo '<script type="text/javascript" src="' . CO_FILES . '/js/modules/' . $value . '.js"></script>'."\n";
+	}
+}
 foreach($userapps as $key => $app) {
 	echo '<script type="text/javascript" src="' . CO_FILES . '/js/apps/' . $app . '/init.js"></script>';
 	foreach(${$app}->modules as $module => $value) {
-		echo '<script type="text/javascript" src="' . CO_FILES . '/js/apps/' . $app . '/' . $module . '.js"></script>';
+		if($module != 'meetings' && $module != 'documents' && $module != 'phonecalls' && $module != 'vdocs' && $module != 'access' && $module != 'controlling' && $module != 'phases' && $module != 'timelines') {
+			echo '<script type="text/javascript" src="' . CO_FILES . '/js/apps/' . $app . '/' . $module . '.js"></script>';
+		} else { ?>
+        <script>
+			var <?php echo $app;?>_<?php echo $module;?> = new <?php echo ucfirst($module);?>('<?php echo $app;?>');</script>
+		<?php }
 	}
 }
 // watermark
