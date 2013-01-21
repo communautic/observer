@@ -27,7 +27,7 @@
 <?php } ?>
 <?php if($vdoc->canedit) { ?>
 <div style=" margin-top: 55px;  margin-left: 15px;">
-<textarea id="brainstormsvdocContent" name="content" class="vdoc" style="width: 635px; height: 400px; visibility:hidden" ><?php echo($vdoc->content);?></textarea>
+<textarea id="brainstormsvdocContent" name="content" class="vdoc initVdocs" style="width: 635px; height: 400px; visibility:hidden" ><?php echo($vdoc->content);?></textarea>
 <?php } else { ?>
 <div style=" margin-top: 20px;  margin-left: 15px; border: 1px solid #ccc; width: 635px;">
 <?php echo($vdoc->content);?>
