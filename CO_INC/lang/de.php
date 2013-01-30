@@ -1,14 +1,14 @@
 <?php
 switch(CO_PRODUCT_VARIANT) {
 	case 0:
-		$lang["APPLICATION_NAME"] = "company observer 6.3.6";
+		$lang["APPLICATION_NAME"] = "company observer 6.3.7";
 		$lang["APPLICATION_NAME_ALT"] = "company.observer";
 		$lang["APPLICATION_LOGO"] = "company_observer.png";
 		$lang["APPLICATION_LOGO_LOGIN"] = "company_observer_login.png";
 		$GLOBALS["APPLICATION_LOGO_PRINT"] = "poweredby_company_observer.png";
 	break;
 	case 1:
-		$lang["APPLICATION_NAME"] = "physio observer 6.3.6";
+		$lang["APPLICATION_NAME"] = "physio observer 6.3.7";
 		$lang["APPLICATION_NAME_ALT"] = "physio.observer";
 		$lang["APPLICATION_LOGO"] = "physio_observer.png";
 		$lang["APPLICATION_LOGO_LOGIN"] = "physio_observer_login.png";
@@ -110,7 +110,11 @@ $lang["GLOBAL_STATUS_MATERNITYLEAVE"] = 'karenziert';
 $lang["GLOBAL_STATUS_MATERNITYLEAVE_TIME"] = 'seit';
 $lang["GLOBAL_STATUS_LEAVE"] = 'ausgeschieden';
 $lang["GLOBAL_STATUS_LEAVE_TIME"] = 'am';
-
+// trainings
+$lang["GLOBAL_STATUS_INACTION"] = 'in Ausführung';
+$lang["GLOBAL_STATUS_INACTION_TIME"] = 'seit';
+$lang["GLOBAL_STATUS_FINISHED2"] = 'abgehalten';
+$lang["GLOBAL_STATUS_FINISHED2_TIME"] = 'seit';
 
 $lang["GLOBAL_DURATION"] 	= 	'Dauer';
 $lang["GLOBAL_EMAILED_TO"] 	= 	'Weiterleitung';
