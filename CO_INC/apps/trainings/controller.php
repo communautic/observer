@@ -201,6 +201,7 @@ class Trainings extends Controller {
 		global $lang, $system;
 		if($arr = $this->model->getTrainingDetails($id)) {
 			$training = $arr["training"];
+			$member = $arr["members"];
 			$sendto = $arr["sendto"];
 			ob_start();
 				include 'view/edit.php';
@@ -390,10 +391,14 @@ class Trainings extends Controller {
 	}
 
 
-	function setTrainingDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$folder,$training,$training_more,$training_cat,$training_cat_more,$product,$product_desc,$charge,$number) {
-		$retval = $this->model->setTrainingDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$folder,$training,$training_more,$training_cat,$training_cat_more,$product,$product_desc,$charge,$number);
+	function setTrainingDetails($id,$title,$folder,$management,$management_ct,$company,$team,$team_ct,$training,$training_id_orig,$registration_end,$protocol,$date1,$date2,$date3,$time1,$time2,$time3,$time4,$place1,$place1_ct,$place2,$place2_ct,$text1,$text2,$text3) {
+		$retval = $this->model->setTrainingDetails($id,$title,$folder,$management,$management_ct,$company,$team,$team_ct,$training,$registration_end,$protocol,$date1,$date2,$date3,$time1,$time2,$time3,$time4,$place1,$place1_ct,$place2,$place2_ct,$text1,$text2,$text3);
 		if($retval){
-			 return '{ "action": "edit", "id": "' . $id . '"}';
+			 if($training != $training_id_orig) {
+			 	return '{ "action": "refresh", "id": "' . $id . '"}';
+			 } else {
+				 return '{ "action": "edit", "id": "' . $id . '"}';
+			 }
 		  } else{
 			 return "error";
 		  }
@@ -645,6 +650,75 @@ class Trainings extends Controller {
 		$search = $this->model->getGlobalSearch($term);
 		return $search;
 	}
+	
+	function addMember($pid,$id) {
+		$arr = $this->model->addMember($pid,$id);
+		$value = $arr["members"];
+		$training->canedit = true;
+		$data["status"] = $arr["status"];
+		$data["error"] = $arr["error"];
+		$data["error_data"] = $arr["error_data"];
+		if($data["status"]) {
+		ob_start();
+			include('view/member.php');
+			$data["html"] = ob_get_contents();
+		ob_end_clean();
+		} else {
+			$data["html"] = '';
+		}
+		
+		return json_encode($data);
+	}
+   
+   function sendInvitation($id) {
+		global $lang, $session, $contactsmodel;
+		
+		//$accesscode = $session->generateAccesscode(4);
+		$key = uniqid(md5(rand()));
+		$this->model->storeKey($id,$key,'invitation');
+		$member = $this->model->getMemberDetails($id);
+		$arr = $this->model->getTrainingDetails($member->pid);
+		$training = $arr["training"];
+		$to = $member->cid;
+		$from = $contactsmodel->getContactFieldFromID($session->uid, 'email');
+		$fromName = $contactsmodel->getContactFieldFromID($session->uid, 'firstname') . " " . $contactsmodel->getContactFieldFromID($session->uid, 'lastname');
+		
+		$subject = 'Einladung zur Trainingsveranstaltung "' . $training->title . '"';
+		$trainingdetails = sprintf($lang["TRAINING_INVITATION_EMAIL_CAT_" . $training->training_id], $training->date1, $training->date2, $training->date3, $training->time1, $training->time2, $training->time3, $training->time4, $training->place1, $training->place1_ct, $training->place2, $training->place2_ct, $training->text1, $training->text2, $training->text3, $training->registration_end);
+		$body = sprintf($lang["TRAINING_INVITATION_EMAIL"], CO_PATH_URL . '/?path=api/apps/trainings&request=invitation&key=' . $key, $training->title, $training->company, $training->team, $training->team_ct, $training->training, $trainingdetails);
+		
+		$email = $this->sendEmail($to,$cc="",$from,$fromName,$subject,$body);
+		
+		// now save to db
+		//$save = $this->model->setContactAccessDetails($id,$cid,$username,$password);
+		
+		//$now = $this->model->_date->formatDate(gmdate("Y-m-d"),CO_DATE_FORMAT);
+		//$now = "now";
+		//$user = $contactsmodel->getUserFullname($session->uid);
+		
+		//echo sprintf($lang['CONTACTS_ACCESS_ACTIVE'], $now, $user);
+		echo true;
+	}
+	
+	function acceptInvitation($id) {
+		$retval = $this->model->acceptInvitation($id);
+		if($retval){
+			 echo 1;
+		  } else{
+			 echo 0;
+		  }
+	}
+   
+   
+   function binMember($id) {
+		$retval = $this->model->binMember($id);
+		if($retval){
+			 return "true";
+		  } else{
+			 return "error";
+		  }
+	}
+   
    
 }
 
