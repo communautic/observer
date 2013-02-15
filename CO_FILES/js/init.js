@@ -655,7 +655,17 @@ $(document).ready(function() {
 		var field = $(this).attr('field');
 		var module = window[$(this).attr("href")];
 		module.showItemContext(ele,uid,field);
-	});	
+	});
+	
+	$(document).on('click','.showItemPopup',function(e) {
+		e.preventDefault();
+		$(this).next().show();
+		/*var ele = $(this);
+		var uid = $(this).attr('uid');
+		var field = $(this).attr('field');
+		var module = window[$(this).attr("href")];
+		module.showItemContext(ele,uid,field);*/
+	});
 
 	$(document).on('click','a.downloadDocument',function(e) {
 		e.preventDefault();
@@ -2315,7 +2325,7 @@ function externalLoadThreeLevels(objectname,f,p,ph,app) { // from Desktop
 	var num_modules = window[objectname+'_num_modules'];
 	
 	
-	if(objectname == app && (objectname == 'projects' || objectname == 'productions' || objectname == 'brainstorms' || objectname == 'forums' || objectname == 'complaints' || objectname == 'employees' || objectname == 'patients')) {
+	if(objectname == app && (objectname == 'projects' || objectname == 'productions' || objectname == 'brainstorms' || objectname == 'forums' || objectname == 'complaints' || objectname == 'employees' || objectname == 'patients' || objectname == 'trainings')) {
 		object.$first.data({ "first" : f});
 		$('#'+objectname+'1 .module-click').removeClass('deactivated');
 		var index = $('#'+objectname+'1 .module-click').index($('#'+objectname+'1 .module-click[rel='+f+']'));
