@@ -28,37 +28,32 @@ function trainingsApplication(name) {
 		}
 	
 		formData[formData.length] = processListApps('folder');
-		formData[formData.length] = processListApps('ordered_by');
-		formData[formData.length] = processCustomTextApps('ordered_by_ct');
 		formData[formData.length] = processListApps('management');
 		formData[formData.length] = processCustomTextApps('management_ct');
 		formData[formData.length] = processListApps('team');
 		formData[formData.length] = processCustomTextApps('team_ct');
 		formData[formData.length] = processListApps('training');
-		formData[formData.length] = processListApps('trainingmore');
-		formData[formData.length] = processListApps('trainingcat');
-		formData[formData.length] = processListApps('trainingcatmore');
-		//formData[formData.length] = processListApps('status');
+		if($('#trainingstime1').length >0) { formData[formData.length] = processStringApps('time1'); }
+		if($('#trainingstime2').length >0) { formData[formData.length] = processStringApps('time2'); }
+		if($('#trainingstime3').length >0) { formData[formData.length] = processStringApps('time3'); }
+		if($('#trainingstime4').length >0) { formData[formData.length] = processStringApps('time4'); }
+		if($('#trainingsplace1').length >0) { formData[formData.length] = processListApps('place1'); }
+		if($('#trainingsplace1_ct').length >0) { formData[formData.length] = processCustomTextApps('place1_ct'); }
+		if($('#trainingsplace2').length >0) { formData[formData.length] = processListApps('place2'); }
+		if($('#trainingsplace2_ct').length >0) { formData[formData.length] = processCustomTextApps('place2_ct'); }
+
 	}
 
 	
 	this.formResponse = function(data) {
+		//var app = getCurrentApp();
 		switch(data.action) {
 			case "edit":
 				$("#trainings2 span[rel='"+data.id+"'] .text").html($("#trainings .title").val());
 				$("#trainingDurationStart").html($("#trainings-right input[name='startdate']").val());
-				/*switch(data.status) {
-					case "2":
-						$("#trainings2 .active-link .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
-						$("#trainingDurationEnd").html($("#trainings-right input[name='status_date']").val());
-					break;
-					case "3":
-						$("#trainings2 .active-link .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
-						$("#trainingDurationEnd").html($("#trainings-right input[name='status_date']").val());
-					break;
-					default:
-						$("#trainings2 .active-link .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
-				}*/
+			break;
+			case "refresh":
+				trainings.actionRefresh();
 			break;
 		}
 	}
@@ -335,15 +330,6 @@ function trainingsApplication(name) {
 	}
 	
 	
-	/*this.insertTrainingFromDialog = function(field,gid,title) {
-		var html = '<a class="listmember" uid="' + gid + '" field="'+field+'">' + title + '</a>';
-		$("#"+field).html(html);
-		$("#modalDialog").dialog('close');
-		var obj = getCurrentModule();
-		$('#trainings .coform').ajaxSubmit(obj.poformOptions);
-	}*/
-	
-	
 	this.insertFromDialog = function(field,gid,title) {
 		var html = '<a class="listmember" uid="' + gid + '" field="'+field+'">' + title + '</a>';
 		$("#"+field).html(html);
@@ -351,7 +337,59 @@ function trainingsApplication(name) {
 		var obj = getCurrentModule();
 		$('#trainings .coform').ajaxSubmit(obj.poformOptions);
 	}
-	
+
+
+	this.customContactInsert = function(cid) {
+		var id = $("#trainings").data("second");
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/trainings&request=addMember&pid=" + id + "&cid=" + cid, cache: false, success: function(data){
+			if(data.error) {
+				$.prompt(data.error_data + ' ' + ALERT_SENDTO_EMAIL);
+			} else {
+				if(data.status)	{																																	
+					$('#trainingsmembers').append(data.html);
+				} else {
+					$.prompt("Dieser Kontakt befindet sich schon in der Liste");
+				}
+			}
+			}
+		});
+	}
+
+
+	this.sendInvitation = function(id) {
+		$.ajax({ type: "GET", url: "/", data: 'path=apps/trainings&request=sendInvitation&id=' + id, success: function(data){
+			if(data){
+				//$.prompt('erfolgreich = einladung aendert farbe');
+				$('#member_'+id + ' .sendInvitation').addClass('bold');
+			} 
+			}
+		});
+	}
+
+
+	this.binItem = function(id) {
+		var txt = ALERT_DELETE;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: 'path=apps/trainings&request=binMember&id=' + id, success: function(data){
+						if(data){
+							$("#member_"+id).slideUp(function(){ 
+								$(this).remove();
+							});
+						} 
+						}
+					});
+				} 
+			}
+		});	
+	}
+
+
 	this.actionHelp = function() {
 		var url = "/?path=apps/trainings&request=getTrainingsHelp";
 		$("#documentloader").attr('src', url);
@@ -638,7 +676,6 @@ function trainingsFolders(name) {
 		
 	}
 
-
 	this.actionHelp = function() {
 		var url = "/?path=apps/trainings&request=getTrainingsFoldersHelp";
 		$("#documentloader").attr('src', url);
@@ -882,6 +919,13 @@ $(document).ready(function() {
 				$(this).val("");
 			}
 		});
+	});
+	
+	$(document).on('click', '.sendInvitation', function(e) {
+		e.preventDefault();
+		var id = $(this).attr("rel");
+		var obj = getCurrentModule();
+		obj.sendInvitation(id);
 	});
 
 
