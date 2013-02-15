@@ -1,7 +1,7 @@
 <?php
 $hideTab3 = 0;
 switch($field) {
-	case "projectsadmins": case "projectsguests": case "brainstormsadmins": case "brainstormsguests": case "forumsadmins": case "forumsguests": case "complaintsadmins": case "complaintsguests": case "clientsadmins": case "clientsguests": case "publishersadmins": case "publishersguests": case "to": case "cc":
+	case "projectsadmins": case "projectsguests": case "brainstormsadmins": case "brainstormsguests": case "forumsadmins": case "forumsguests": case "complaintsadmins": case "complaintsguests": case "clientsadmins": case "clientsguests": case "publishersadmins": case "publishersguests": case "to": case "cc": case "custom":
 		$hideTab3 = 1;
 	break;
 }
