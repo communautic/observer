@@ -974,6 +974,9 @@ $(document).ready(function() {
 		var obj = getCurrentModule();
 		if (obj.name == app+"_access") {
 			insertContactAccess(field,id,value,html);
+		} else if (obj.name == "trainings") {
+			obj.customContactInsert(id);
+			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=saveLastUsedContacts&id="+id});
 		} else {
 			if($("#"+field).html() != "") {
 				$("#"+field+" .listmember:visible:last").append(", ");
@@ -1281,7 +1284,9 @@ $(document).ready(function() {
 		if (obj.name == app+"_access") {
 			insertContactAccess(field,cid,name,html);																																
 		} else if (field == "to" || field == "cc"){
-			insertContactEmail(field,cid,name,html);	
+			insertContactEmail(field,cid,name,html);
+		} else if(field == "custom") {
+			obj.customContactInsert(cid);
 		} else {
 			if($("#"+field).html() != "") {
 				$("#"+field+" .listmember:visible:last").append(", ");
