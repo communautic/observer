@@ -58,6 +58,15 @@
         <td><strong>erreichte Zufriedenheit <?php echo $objective->tab1result;?>%</strong></td>
 	</tr>
 </table>
+<table width="100%" class="standard">
+	<tr>
+	  <td class="tcell-left"><?php echo $lang["EMPLOYEE_OBJECTIVE_DESCRIPTION"];?></td>
+        <td><?php echo(nl2br(strip_tags($objective->protocol)));?></td>
+	</tr>
+</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <?php
 	  function getClass($num) { // number classes function
 		if($num < 4) { $class = 'neg'; }
@@ -75,6 +84,9 @@
 	</tr>
 </table>
 <?php echo(nl2br(strip_tags($objective->tab1q1_text)));?>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <!-- Q2 -->
 <table width="100%" class="standard">
 	<tr>
@@ -83,6 +95,9 @@
 	</tr>
 </table>
 <?php echo(nl2br(strip_tags($objective->tab1q2_text)));?>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <!-- Q3 -->
 <table width="100%" class="standard">
 	<tr>
@@ -91,6 +106,9 @@
 	</tr>
 </table>
 <?php echo(nl2br(strip_tags($objective->tab1q3_text)));?>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <!-- Q4 -->
 <table width="100%" class="standard">
 	<tr>
@@ -99,6 +117,9 @@
 	</tr>
 </table>
 <?php echo(nl2br(strip_tags($objective->tab1q4_text)));?>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <!-- Q5 -->
 <table width="100%" class="standard">
 	<tr>
@@ -107,97 +128,75 @@
 	</tr>
 </table>
 <?php echo(nl2br(strip_tags($objective->tab1q5_text)));?>
-&nbsp;<br />
-&nbsp;
+<div style="page-break-after:always;">&nbsp;</div>
 <table width="100%" class="standard-grey-paddingBottom">
 	<tr>
 	  <td class="tcell-left">Leistungsbewertung</td>
         <td><strong>erreichte Leistung <?php echo $objective->tab2result;?>%</strong></td>
 	</tr>
 </table>
+<table width="100%" class="standard">
+	<tr>
+	  <td class="tcell-left">Bewertungskategorie</td>
+        <td><?php echo($objective->cat_name);?></td>
+	</tr>
+</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <!-- Q1 -->
 <table width="100%" class="standard">
 	<tr>
-	  <td><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_1"];?></td>
+	  <td><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_CAT".$objective->cat."_QUESTION_1"];?></td>
         <td width="30"><?php echo '<div class="' . getClass($objective->tab2q1_selected) . '">' . $objective->tab2q1_selected . '</div>';?></td>
 	</tr>
 </table>
 <?php echo(nl2br(strip_tags($objective->tab2q1_text)));?>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <!-- Q2 -->
 <table width="100%" class="standard">
 	<tr>
-	  <td><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_2"];?></td>
+	  <td><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_CAT".$objective->cat."_QUESTION_2"];?></td>
         <td width="30"><?php echo '<div class="' . getClass($objective->tab2q2_selected) . '">' . $objective->tab2q2_selected . '</div>';?></td>
 	</tr>
 </table>
 <?php echo(nl2br(strip_tags($objective->tab2q2_text)));?>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <!-- Q3 -->
 <table width="100%" class="standard">
 	<tr>
-	  <td><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_3"];?></td>
+	  <td><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_CAT".$objective->cat."_QUESTION_3"];?></td>
         <td width="30"><?php echo '<div class="' . getClass($objective->tab2q3_selected) . '">' . $objective->tab2q3_selected . '</div>';?></td>
 	</tr>
 </table>
 <?php echo(nl2br(strip_tags($objective->tab2q3_text)));?>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <!-- Q4 -->
 <table width="100%" class="standard">
 	<tr>
-	  <td><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_4"];?></td>
+	  <td><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_CAT".$objective->cat."_QUESTION_4"];?></td>
         <td width="30"><?php echo '<div class="' . getClass($objective->tab2q4_selected) . '">' . $objective->tab2q4_selected . '</div>';?></td>
 	</tr>
 </table>
 <?php echo(nl2br(strip_tags($objective->tab2q4_text)));?>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <!-- Q5 -->
 <table width="100%" class="standard">
 	<tr>
-	  <td><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_5"];?></td>
+	  <td><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_CAT".$objective->cat."_QUESTION_5"];?></td>
         <td width="30"><?php echo '<div class="' . getClass($objective->tab2q5_selected) . '">' . $objective->tab2q5_selected . '</div>';?></td>
 	</tr>
 </table>
 <?php echo(nl2br(strip_tags($objective->tab2q5_text)));?>
-<!-- Q6 -->
-<table width="100%" class="standard">
-	<tr>
-	  <td><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_6"];?></td>
-        <td width="30"><?php echo '<div class="' . getClass($objective->tab2q6_selected) . '">' . $objective->tab2q6_selected . '</div>';?></td>
-	</tr>
-</table>
-<?php echo(nl2br(strip_tags($objective->tab2q6_text)));?>
-<!-- Q7 -->
-<table width="100%" class="standard">
-	<tr>
-	  <td><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_7"];?></td>
-        <td width="30"><?php echo '<div class="' . getClass($objective->tab2q7_selected) . '">' . $objective->tab2q7_selected . '</div>';?></td>
-	</tr>
-</table>
-<?php echo(nl2br(strip_tags($objective->tab2q7_text)));?>
-<!-- Q8 -->
-<table width="100%" class="standard">
-	<tr>
-	  <td><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_8"];?></td>
-        <td width="30"><?php echo '<div class="' . getClass($objective->tab2q8_selected) . '">' . $objective->tab2q8_selected . '</div>';?></td>
-	</tr>
-</table>
-<?php echo(nl2br(strip_tags($objective->tab2q8_text)));?>
-<!-- Q9 -->
-<table width="100%" class="standard">
-	<tr>
-	  <td><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_9"];?></td>
-        <td width="30"><?php echo '<div class="' . getClass($objective->tab2q9_selected) . '">' . $objective->tab2q9_selected . '</div>';?></td>
-	</tr>
-</table>
-<?php echo(nl2br(strip_tags($objective->tab2q9_text)));?>
-<!-- Q10 -->
-<table width="100%" class="standard">
-	<tr>
-	  <td><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_10"];?></td>
-        <td width="30"><?php echo '<div class="' . getClass($objective->tab2q10_selected) . '">' . $objective->tab2q10_selected . '</div>';?></td>
-	</tr>
-</table>
-<?php echo(nl2br(strip_tags($objective->tab2q10_text)));?>
-&nbsp;<br />
-&nbsp;<br />
-&nbsp;
+<div style="page-break-after:always;">&nbsp;</div>
 <table width="100%"  class="standard-grey-paddingBottom">
 	<tr>
 	  <td class="tcell-left">Zielsetzungen</td>
@@ -214,9 +213,47 @@ foreach($task as $value) { ?>
 	</tr>
 </table>
 <?php echo(nl2br($value->text));?>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 &nbsp;
 	<?php 
 	$i++;
 	}
 ?>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<table width="100%"  class="standard-grey-paddingBottom">
+	<tr>
+	  <td class="tcell-left">Personalentwicklung</td>
+        <td>&nbsp;</td>
+	</tr>
+</table>
+<table width="100%" class="standard">
+	<tr>
+	  <td class="tcell-left">Notiz</td>
+        <td><?php echo(nl2br(strip_tags($objective->protocol2)));?></td>
+	</tr>
+</table>
+<p>&nbsp;</p>
+<table width="100%" class="standard">
+	<tr>
+	  <td colspan="3">
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      <p>Gespr&auml;ch gef&uuml;hrt am: ...............................................</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p></td>
+	</tr>
+	<tr>
+	  <td>...............................................</td>
+      <td width="50%">&nbsp;</td>
+      <td>...............................................</td>
+	</tr>
+    <tr>
+	  <td align="center">Unterschrift Vorgesetzte/r</td>
+      <td>&nbsp;</td>
+      <td align="center">Unterschrift Mitarbeiter/in </td>
+	</tr>
+</table>
 <div style="page-break-after:always;">&nbsp;</div>

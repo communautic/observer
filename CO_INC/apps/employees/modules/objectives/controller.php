@@ -135,8 +135,8 @@ class EmployeesObjectives extends Employees {
 	}
 	
 
-	function setDetails($pid,$id,$title,$objectivedate,$start,$end,$location,$location_ct,$participants,$participants_ct,$management,$management_ct, $tab1q1_text,$tab1q2_text,$tab1q3_text,$tab1q4_text,$tab1q5_text,$tab2q1_text,$tab2q2_text,$tab2q3_text,$tab2q4_text,$tab2q5_text,$tab2q6_text,$tab2q7_text,$tab2q8_text,$tab2q9_text,$tab2q10_text,$task_id,$task_title,$task_text,$task,$objective_access,$objective_access_orig) {
-		if($retval = $this->model->setDetails($pid,$id,$title,$objectivedate,$start,$end,$location,$location_ct,$participants,$participants_ct,$management,$management_ct,$tab1q1_text,$tab1q2_text,$tab1q3_text,$tab1q4_text,$tab1q5_text,$tab2q1_text,$tab2q2_text,$tab2q3_text,$tab2q4_text,$tab2q5_text,$tab2q6_text,$tab2q7_text,$tab2q8_text,$tab2q9_text,$tab2q10_text,$task_id,$task_title,$task_text,$task,$objective_access,$objective_access_orig)){
+	function setDetails($pid,$id,$title,$objectivedate,$start,$end,$location,$location_ct,$participants,$participants_ct,$management,$management_ct,$protocol,$protocol2, $tab1q1_text,$tab1q2_text,$tab1q3_text,$tab1q4_text,$tab1q5_text,$tab2q1_text,$tab2q2_text,$tab2q3_text,$tab2q4_text,$tab2q5_text,$tab2q6_text,$tab2q7_text,$tab2q8_text,$tab2q9_text,$tab2q10_text,$task_id,$task_title,$task_text,$task,$objective_access,$objective_access_orig) {
+		if($retval = $this->model->setDetails($pid,$id,$title,$objectivedate,$start,$end,$location,$location_ct,$participants,$participants_ct,$management,$management_ct,$protocol,$protocol2,$tab1q1_text,$tab1q2_text,$tab1q3_text,$tab1q4_text,$tab1q5_text,$tab2q1_text,$tab2q2_text,$tab2q3_text,$tab2q4_text,$tab2q5_text,$tab2q6_text,$tab2q7_text,$tab2q8_text,$tab2q9_text,$tab2q10_text,$task_id,$task_title,$task_text,$task,$objective_access,$objective_access_orig)){
 			return '{ "id": "' . $id . '", "access": "' . $objective_access . '"}';
 		} else{
 			return "error";
@@ -257,6 +257,31 @@ class EmployeesObjectives extends Employees {
 	function getObjectiveStatusDialog() {
 		global $lang;
 		include 'view/dialog_status.php';
+	}
+	
+	
+	function getObjectiveCatDialog($field) {
+		$retval = $this->model->getObjectiveCatDialog($field);
+		if($retval){
+			 return $retval;
+		  } else{
+			 return "error";
+		  }
+	}
+	
+	function changeCat($id,$cat) {
+		global $lang;
+		$retval = $this->model->changeCat($id,$cat);
+		if($retval){
+			$data['q1'] = $lang["EMPLOYEE_OBJECTIVE_TAB2_CAT" . $cat . "_QUESTION_1"];
+			$data['q2'] = $lang["EMPLOYEE_OBJECTIVE_TAB2_CAT" . $cat . "_QUESTION_2"];
+			$data['q3'] = $lang["EMPLOYEE_OBJECTIVE_TAB2_CAT" . $cat . "_QUESTION_3"];
+			$data['q4'] = $lang["EMPLOYEE_OBJECTIVE_TAB2_CAT" . $cat . "_QUESTION_4"];
+			$data['q5'] = $lang["EMPLOYEE_OBJECTIVE_TAB2_CAT" . $cat . "_QUESTION_5"];
+			 return json_encode($data);
+		  } else{
+			 return "error";
+		  }
 	}
 	
 	
