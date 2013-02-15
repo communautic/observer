@@ -6,7 +6,7 @@ textarea {
 .text13 { font-size: 13px; }
 .bold { font-weight: bold !important;}
 strong { font-weight: bold}
-.content-spacer { height: 15px; }
+.content-spacer { height: 13px; }
 .content-line-grey { height: 1px; background-color:#E5E5E5}
 .content-date { width: 60px; display: block; float: left;}
 
@@ -52,6 +52,11 @@ background-color: #e5e5e5 !important;
 	border-bottom: 1px solid #CCCCCC;
     border-top: 1px solid #FFFFFF;
 }
+.tbl-inactive.dark { 
+	background-color: #bfbfbf;
+	border-bottom: 1px solid #999;
+}
+
 .tbl-inactive.projectlink { 
 	color: #333;
 }
