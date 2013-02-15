@@ -642,22 +642,32 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 		
 		// dates
 		
-		$today = date("Y-m-d");
+		/*$today = date("Y-m-d");
 		if($today < $array["startdate"]) {
 			$today = $array["startdate"];
-		}
+		}*/
 		
-		$array["startdate"] = $this->_date->formatDate($array["startdate"],CO_DATE_FORMAT);
+		
+		$array["registration_end"] = $this->_date->formatDate($array["registration_end"],CO_DATE_FORMAT);
+		$array["date1"] = $this->_date->formatDate($array["date1"],CO_DATE_FORMAT);
+		$array["date2"] = $this->_date->formatDate($array["date2"],CO_DATE_FORMAT);
+		$array["date3"] = $this->_date->formatDate($array["date3"],CO_DATE_FORMAT);
+		
+		$array["time1"] = $this->_date->formatDate($array["time1"],CO_TIME_FORMAT);
+		$array["time2"] = $this->_date->formatDate($array["time2"],CO_TIME_FORMAT);
+		$array["time3"] = $this->_date->formatDate($array["time3"],CO_TIME_FORMAT);
+		$array["time4"] = $this->_date->formatDate($array["time4"],CO_TIME_FORMAT);
+		
+		$array["place1"] = $contactsmodel->getPlaceList($array['place1'],'place1', $array["canedit"]);
+		$array["place1_ct"] = empty($array["place1_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['place1_ct'];
+		$array["place2"] = $contactsmodel->getPlaceList($array['place2'],'place2', $array["canedit"]);
+		$array["place2_ct"] = empty($array["place2_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['place2_ct'];
 
 		$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
 		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
 		
 		// other functions
 		$array["folder"] = $this->getTrainingFolderDetails($array["folder"],"folder");
-		$array["ordered_by_print"] = $contactsmodel->getUserListPlain($array['ordered_by']);
-		$array["ordered_by"] = $contactsmodel->getUserList($array['ordered_by'],'projectsordered_by', "", $array["canedit"]);
-		$array["ordered_by_ct"] = empty($array["ordered_by_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['ordered_by_ct'];
-		$array["management_print"] = $contactsmodel->getUserListPlain($array['management']);
 		$array["management"] = $contactsmodel->getUserList($array['management'],'trainingsmanagement', "", $array["canedit"]);
 		$array["management_ct"] = empty($array["management_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['management_ct'];
 		$array["team_print"] = $contactsmodel->getUserListPlain($array['team']);
@@ -668,11 +678,8 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 		}
 		$array["team"] = $contactsmodel->getUserList($array['team'],'trainingsteam', "", $array["canedit"]);
 		$array["team_ct"] = empty($array["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['team_ct'];
-		
+		$array["training_id"] = $array["training"];
 		$array["training"] = $this->getTrainingIdDetails($array["training"],"trainingstraining");
-		//$array["training_more"] = $this->getTrainingMoreIdDetails($array["training_more"],"trainingstrainingmore");
-		//$array["training_cat"] = $this->getTrainingCatDetails($array["training_cat"],"trainingstrainingcat");
-		//$array["training_cat_more"] = $this->getTrainingCatMoreDetails($array["training_cat_more"],"trainingstrainingcatmore");
 		
 		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
 		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
@@ -688,28 +695,28 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 				$array["status_text_time"] = $lang["GLOBAL_STATUS_ENTERED_TIME"];
 				$array["status_planned_active"] = " active";
 				$array["status_date"] = $this->_date->formatDate($array["planned_date"],CO_DATE_FORMAT);
-				$array["enddate"] = $this->_date->formatDate($today,CO_DATE_FORMAT);
+				//$array["enddate"] = $this->_date->formatDate($today,CO_DATE_FORMAT);
 			break;
 			case "1":
 				$array["status_text"] = $lang["GLOBAL_STATUS_INPROGRESS"];
 				$array["status_text_time"] = $lang["GLOBAL_STATUS_INPROGRESS_TIME"];
 				$array["status_inprogress_active"] = " active";
 				$array["status_date"] = $this->_date->formatDate($array["inprogress_date"],CO_DATE_FORMAT);
-				$array["enddate"] = $this->_date->formatDate($today,CO_DATE_FORMAT);
+				//$array["enddate"] = $this->_date->formatDate($today,CO_DATE_FORMAT);
 			break;
 			case "2":
 				$array["status_text"] = $lang["GLOBAL_STATUS_FINISHED"];
 				$array["status_text_time"] = $lang["GLOBAL_STATUS_FINISHED_TIME"];
 				$array["status_finished_active"] = " active";
 				$array["status_date"] = $this->_date->formatDate($array["finished_date"],CO_DATE_FORMAT);
-				$array["enddate"] = $array["status_date"];
+				//$array["enddate"] = $array["status_date"];
 			break;
 			case "3":
 				$array["status_text"] = $lang["GLOBAL_STATUS_STOPPED"];
 				$array["status_text_time"] = $lang["GLOBAL_STATUS_STOPPED_TIME"];
 				$array["status_stopped_active"] = " active";
 				$array["status_date"] = $this->_date->formatDate($array["stopped_date"],CO_DATE_FORMAT);
-				$array["enddate"] = $array["status_date"];
+				//$array["enddate"] = $array["status_date"];
 			break;
 		}
 		
@@ -733,10 +740,30 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 		if($array["access"] == "guest") {
 			$sql = " and a.access = '1' ";
 		}
+		
+		// get the members
+		$member = array();
+		$qt = "SELECT a.*,CONCAT(b.lastname,', ',b.firstname) as name FROM " . CO_TBL_TRAININGS_MEMBERS . " as a, co_users as b where a.cid=b.id and a.pid = '$id' and a.bin='0' and b.bin='0'";
+		$resultt = mysql_query($qt, $this->_db->connection);
+		while($rowt = mysql_fetch_array($resultt)) {
+			foreach($rowt as $key => $val) {
+				$members[$key] = $val;
+			}
+			$members['invitation_class'] = '';
+			if($members['invitation'] == 1) {
+				$members['invitation_class'] = 'bold';
+			}
+			$members['registration_class'] = '';
+			if($members['registration'] == 1) {
+				$members['registration_class'] = 'bold';
+			}
+			
+			$member[] = new Lists($members);
+		}
 				
 		$sendto = $this->getSendtoDetails("trainings",$id);
 		
-		$arr = array("training" => $training, "sendto" => $sendto, "access" => $array["access"]);
+		$arr = array("training" => $training, "members" => $member, "sendto" => $sendto, "access" => $array["access"]);
 		return $arr;
    }
 
@@ -850,35 +877,49 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
    /**
    * get details for the training folder
    */
-   function setTrainingDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$folder,$training,$training_more,$training_cat,$training_cat_more,$product,$product_desc,$charge,$number) {
+   function setTrainingDetails($id,$title,$folder,$management,$management_ct,$company,$team,$team_ct,$training,$registration_end,$protocol,$date1,$date2,$date3,$time1,$time2,$time3,$time4,$place1,$place1_ct,$place2,$place2_ct,$text1,$text2,$text3) {
 		global $session, $contactsmodel;
-		
-		$startdate = $this->_date->formatDate($_POST['startdate']);
-		//$status_date = $this->_date->formatDate($status_date);
+		$sql = "";
+		if($time1 != '') { 
+			$time1 = $this->_date->formatDateGMT($date1 . " " . $time1);
+			$sql .= " time1 = '" . $time1 . "',";
+		}
+		if($time2 != '') { 
+			$time2 = $this->_date->formatDateGMT($date1 . " " . $time2);
+			$sql .= " time2 = '" . $time2 . "',";
+		}
+		if($time3 != '') { 
+			$time3 = $this->_date->formatDateGMT($date2 . " " . $time3);
+			$sql .= " time3 = '" . $time3 . "',";
+		}
+		if($time4 != '') { 
+			$time4 = $this->_date->formatDateGMT($date2 . " " . $time4);
+			$sql .= " time4 = '" . $time4 . "',";
+		}
+		if($date1 != '') { 
+			$date1 = $this->_date->formatDate($_POST['date1']);
+			$sql .= " date1 = '" . $date1 . "',";
+		}
+		if($date2 != '') { 
+			$date2 = $this->_date->formatDate($_POST['date2']);
+			$sql .= " date2 = '" . $date2 . "',";
+		}
+		if($date3 != '') { 
+			$date3 = $this->_date->formatDate($_POST['date3']);
+			$sql .= " date3 = '" . $date3 . "',";
+		}
+		if($registration_end != '') { 
+			$registration_end = $this->_date->formatDate($_POST['registration_end']);
+			$sql .= " registration_end = '" . $registration_end . "',";
+		}
 		
 		// user lists
-		$ordered_by = $contactsmodel->sortUserIDsByName($ordered_by);
 		$management = $contactsmodel->sortUserIDsByName($management);
 		$team = $contactsmodel->sortUserIDsByName($team);
-		
-		/*switch($status) {
-			case "0":
-				$sql = "planned_date";
-			break;
-			case "1":
-				$sql = "inprogress_date";
-			break;
-			case "2":
-				$sql = "finished_date";
-			break;
-			case "3":
-				$sql = "stopped_date";
-			break;
-		}*/
 
 		$now = gmdate("Y-m-d H:i:s");
 		
-		$q = "UPDATE " . CO_TBL_TRAININGS . " set title = '$title', folder = '$folder', startdate='$startdate', ordered_by = '$ordered_by', ordered_by_ct = '$ordered_by_ct', management = '$management', management_ct = '$management_ct', team='$team', team_ct = '$team_ct', training = '$training', training_more = '$training_more', training_cat = '$training_cat', training_cat_more = '$training_cat_more', product = '$product', product_desc = '$product_desc', charge = '$charge', number = '$number', protocol = '$protocol', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_TRAININGS . " set title = '$title', folder = '$folder', management = '$management', management_ct = '$management_ct', company='$company', team='$team', team_ct = '$team_ct', training = '$training',protocol='$protocol',$sql place1 = '$place1', place1_ct = '$place1_ct', place2 = '$place2', place2_ct = '$place2_ct', text1 = '$text1', text2 = '$text2', text3 = '$text3', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
@@ -923,10 +964,11 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 		global $session, $contactsmodel, $lang;
 		
 		$now = gmdate("Y-m-d H:i:s");
+		$time_s = date("Y-m-d") . ' 08:00:00';
+		$time_e = date("Y-m-d") . ' 17:00:00';
 		$title = $lang["TRAINING_NEW"];
 		
-		//$q = "INSERT INTO " . CO_TBL_TRAININGS . " set folder = '$id', title = '$title', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
-		$q = "INSERT INTO " . CO_TBL_TRAININGS . " set folder = '$id', title = '$title', startdate = '$now', enddate = '$now', management = '$session->uid', status = '0', planned_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+		$q = "INSERT INTO " . CO_TBL_TRAININGS . " set folder = '$id', title = '$title', date1 = '$now', date2 = '$now', date3 = '$now', time1 = '$time_s', time2 = '$time_e', time3 = '$time_s', time4 = '$time_e', management = '$session->uid', status = '0', planned_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			$id = mysql_insert_id();
@@ -945,7 +987,7 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 		
 		$now = gmdate("Y-m-d H:i:s");
 		// training
-		$q = "INSERT INTO " . CO_TBL_TRAININGS . " (folder,title,startdate,ordered_by,management,team,training,training_more,training_cat,training_cat_more,product,product_desc,charge,number,protocol,planned_date,created_date,created_user,edited_date,edited_user) SELECT folder,CONCAT(title,' ".$lang["GLOBAL_DUPLICAT"]."'),'$now',ordered_by,management,team,training,training_more,training_cat,training_cat_more,product,product_desc,charge,number,protocol,'$now','$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_TRAININGS . " where id='$id'";
+		$q = "INSERT INTO " . CO_TBL_TRAININGS . " (folder,title,startdate,ordered_by,management,company,team,training,training_more,training_cat,training_cat_more,product,product_desc,charge,number,protocol,planned_date,created_date,created_user,edited_date,edited_user) SELECT folder,CONCAT(title,' ".$lang["GLOBAL_DUPLICAT"]."'),'$now',ordered_by,management,company,team,training,training_more,training_cat,training_cat_more,product,product_desc,charge,number,protocol,'$now','$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_TRAININGS . " where id='$id'";
 
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
@@ -2094,6 +2136,84 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 		$this->setUserSetting("last-used-trainings",$str);
 	  return true;
 	}
+
+
+	function addMember($pid,$cid) {
+		$members = '';
+		$error = false;
+		$error_data = '';
+		$newid = '';
+		$status = '';
+		// check if member exists
+		$q = "SELECT * FROM " . CO_TBL_TRAININGS_MEMBERS . " WHERE pid='$pid' and cid='$cid' and bin='0'";
+		$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result) > 0) {
+			$status = false;
+		} else {
+			$qu = "SELECT CONCAT(lastname,', ',firstname) as name,email FROM co_users where id='$cid'";
+			$resultu = mysql_query($qu, $this->_db->connection);
+			$row = mysql_fetch_array($resultu);
+				foreach($row as $key => $val) {
+					$array[$key] = $val;
+				}
+				if($array['email'] == "") {
+					$error = true;
+					$error_data = $array['name'];
+					$status = false;
+				} else {
+					$status = true;
+					$q = "INSERT INTO " . CO_TBL_TRAININGS_MEMBERS . " set pid='$pid', cid='$cid'";
+					$result = mysql_query($q, $this->_db->connection);
+					$newid = mysql_insert_id();
+				}
+				$array['id'] = $newid;
+				$array['invitation_class'] = '';
+				$array['registration_class'] = '';
+				$members = new Lists($array);
+			}
+		$arr = array("error" => $error, "error_data" => $error_data, "status" => $status, "members" => $members);
+		return $arr;
+	}
+	
+	function storeKey($id,$key,$what) {
+		$q = "UPDATE " . CO_TBL_TRAININGS_MEMBERS . " set accesskey = '$key', $what='1' WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		return true;
+	}
+	
+	
+	function getMemberDetails($id) {
+		$members = '';
+
+		$qu = "SELECT a.cid,a.pid,c.email,c.lastname,c.firstname,b.title FROM " . CO_TBL_TRAININGS_MEMBERS . " as a, " . CO_TBL_TRAININGS . " as b,co_users as c WHERE a.id='1' and a.cid = c.id and a.pid=b.id";
+		$resultu = mysql_query($qu, $this->_db->connection);
+		$row = mysql_fetch_array($resultu);
+		foreach($row as $key => $val) {
+			$array[$key] = $val;
+		}
+		$member = new Lists($array);
+		return $member;
+	}
+	
+	function acceptInvitation($id) {
+		$now = gmdate("Y-m-d H:i:s");
+		$q = "UPDATE " . CO_TBL_TRAININGS_MEMBERS . " set accesskey='', registration='1' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+		  	return true;
+		}
+   }
+	
+	function binMember($id) {
+		global $session;
+		$now = gmdate("Y-m-d H:i:s");
+		$q = "UPDATE " . CO_TBL_TRAININGS_MEMBERS . " set bin = '1', bintime = '$now', binuser= '$session->uid' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+		  	return true;
+		}
+   }
+
 
 
 }

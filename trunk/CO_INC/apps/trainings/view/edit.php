@@ -50,71 +50,50 @@
 </table>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
-	<tr>
-	  <td class="tcell-left text11"><span class="<?php if($training->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="trainingsordered_by" append="0"><span><?php echo $lang["TRAINING_CLIENT"];?></span></span></td>
-	  <td class="tcell-right"><div id="trainingsordered_by" class="itemlist-field"><?php echo($training->ordered_by);?></div><div id="trainingsordered_by_ct" class="itemlist-field"><a field="trainingsordered_by_ct" class="ct-content"><?php echo($training->ordered_by_ct);?></a></div></td>
-	</tr>
+  <tr>
+    <td class="tcell-left text11"><span class="<?php if($training->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["TRAINING_COMPANY"];?></span></span></td>
+    <td class="tcell-right-nopadding"><?php if($training->canedit) { ?><input name="company" type="text" class="bg" value="<?php echo($training->company);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $training->company . '</span>'); } ?></td>
+  </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
-  <tr>
-    <td class="tcell-left text11"><span class="<?php if($training->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="trainingsteam" append="1"><span><?php echo $lang["TRAINING_TEAM"];?></span></span></td>
-    <td class="tcell-right"><div id="trainingsteam" class="itemlist-field"><?php echo($training->team);?></div><div id="trainingsteam_ct" class="itemlist-field"><a field="trainingsteam_ct" class="ct-content"><?php echo($training->team_ct);?></a></div></td>
-  </tr>
+	<tr>
+	  <td class="tcell-left text11"><span class="<?php if($training->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="trainingsteam" append="0"><span><?php echo $lang["TRAINING_TEAM"];?></span></span></td>
+	  <td class="tcell-right"><div id="trainingsteam" class="itemlist-field"><?php echo($training->team);?></div><div id="trainingsteam_ct" class="itemlist-field"><a field="trainingsteam_ct" class="ct-content"><?php echo($training->team_ct);?></a></div></td>
+	</tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 	  <td class="tcell-left text11"><span class="<?php if($training->canedit) { ?>content-nav showDialog<?php } ?>" request="getTrainingDialog" field="trainingstraining" append="0"><span><?php echo $lang["TRAINING_TRAININGCAT"];?></span></span></td>
-        <td class="tcell-right"><div id="trainingstraining" class="itemlist-field"><?php echo($training->training);?></div></td>
+        <td class="tcell-right"><div id="trainingstraining" class="itemlist-field"><?php echo($training->training);?></div><input type="hidden" name="training_id_orig" value="<?php echo($training->training_id);?>"></td>
 	</tr>
 </table>
+<?php if(!empty($training->training_id)) { 
+/* Training cats 
+1 	Vortrag
+2 	Vortrag & Gruppencoaching
+3 	e-training
+4 	e-training & Präsenzcoaching
+5 	Einzelcoaching
+6 	Workshop
+7 	Veranstaltungsreihe
+*/
+include('training_cat'.$training->training_id.'.php');
+?>
+
 <div class="content-spacer"></div>
-<!--
-<table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-highlighted">
-  <tr>
-    <td class="tcell-left-shorter text11"><span class="<?php if($training->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang['TRAINING_PRODUCT_NUMBER'];?></span></span></td>
-    <td class="tcell-right-nopadding"><?php if($training->canedit) { ?><input name="product" type="text" class="bg" value="<?php echo($training->product);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $training->product . '</span>'); } ?></td>
-    <td width="110"></td>
-  </tr>
-</table>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-highlighted">
-  <tr>
-    <td class="tcell-left-shorter text11"><span class="<?php if($training->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang['TRAINING_PRODUCT'];?></span></span></td>
-    <td class="tcell-right-nopadding"><?php if($training->canedit) { ?><input name="product_desc" type="text" class="bg" value="<?php echo($training->product_desc);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $training->product_desc . '</span>'); } ?></td>
-    <td width="110"></td>
-  </tr>
-</table>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-highlighted">
-  <tr>
-    <td class="tcell-left-shorter text11"><span class="<?php if($training->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang['TRAINING_CHARGE'];?></span></span></td>
-    <td class="tcell-right-nopadding"><?php if($training->canedit) { ?><input name="charge" type="text" class="bg" value="<?php echo($training->charge);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $training->charge . '</span>'); } ?></td>
-    <td width="110"></td>
-  </tr>
-</table>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-highlighted">
-  <tr>
-    <td class="tcell-left-shorter text11"><span class="<?php if($training->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang['TRAINING_NUMBER'];?></span></span></td>
-    <td class="tcell-right-nopadding"><?php if($training->canedit) { ?><input name="number" type="text" class="bg" value="<?php echo($training->number);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $training->number . '</span>'); } ?></td>
-    <td width="110"></td>
-  </tr>
-</table>
-<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
-	<tr>
-		<td class="tcell-left text11"><span class="<?php if($training->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["TRAINING_DESCRIPTION"];?></span></span></td>
-        <td class="tcell-right"><?php if($training->canedit) { ?><textarea name="protocol" class="elastic"><?php echo(strip_tags($training->protocol));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($training->protocol)));?><?php } ?></td>
-	</tr>
-</table>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content">
-	<tr>
-		<td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_DURATION"];?></td>
-		<td class="tcell-right-inactive"><span id="trainingDurationStart"><?php echo($training->startdate)?></span> - <span id="trainingDurationEnd"><?php echo($training->enddate)?></span></td>
-    </tr>
-</table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><span class="<?php if($training->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang['TRAINING_KICKOFF'];?></span></span></td>
-		<td class="tcell-right"><?php if($training->canedit) { ?><input name="startdate" type="text" class="input-date datepicker" value="<?php echo($training->startdate)?>" /><?php } else { ?><?php echo($training->startdate)?><?php } ?></td>
-	</tr>-->
+	  <td class="tcell-left text11"><span class="<?php if($training->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="custom" append="1"><span><?php echo $lang["TRAINING_MEMBER"];?></span></span></td>
+	  <td class="tcell-right"></td>
+	</tr>
 </table>
+<div id="trainingsmembers">
+<?php 
+foreach($member as $value) { 
+			include("member.php");
+} ?>
+</div>
+
 </form>
 <?php if($training->access != "guest") { ?>
 <div class="content-spacer"></div>
@@ -147,6 +126,7 @@
 		 } ?></div></td>
     </tr>
 </table>
+<?php } ?>
 <?php } ?>
 </div>
 </div>

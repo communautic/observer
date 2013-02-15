@@ -108,6 +108,15 @@ if (!empty($_GET['request'])) {
 		case 'deleteTraining':
 			echo($trainings->deleteTraining($_GET['id']));
 		break;
+		case 'addMember':
+			echo($trainings->addMember($_GET['pid'],$_GET['cid']));
+		break;
+		case 'sendInvitation':
+			echo($trainings->sendInvitation($_GET['id']));
+		break;
+		case 'binMember':
+			echo($trainings->binMember($_GET['id']));
+		break;
 		// get Groups for Dialogs
 		case 'getContactsDialog':
 			echo($contacts->getContactsDialog($_GET['request'],$_GET['field'],$_GET['append'],$_GET['title'],$_GET['sql']));
@@ -124,15 +133,6 @@ if (!empty($_GET['request'])) {
 		break;
 		case 'getTrainingDialog':
 			echo($trainings->getTrainingDialog($_GET['field'],$_GET['title']));
-		break;
-		case 'getTrainingMoreDialog':
-			echo($trainings->getTrainingMoreDialog($_GET['field'],$_GET['title']));
-		break;
-		case 'getTrainingCatDialog':
-			echo($trainings->getTrainingCatDialog($_GET['field'],$_GET['title']));
-		break;
-		case 'getTrainingCatMoreDialog':
-			echo($trainings->getTrainingCatMoreDialog($_GET['field'],$_GET['title']));
 		break;
 		case 'getAccessDialog':
 			echo($trainings->getAccessDialog());
@@ -182,7 +182,26 @@ if (!empty($_POST['request'])) {
 			echo($trainings->setFolderDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['trainingstatus']));
 		break;
 		case 'setTrainingDetails':
-			echo($trainings->setTrainingDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['startdate'], $_POST['ordered_by'], $system->checkMagicQuotes($_POST['ordered_by_ct']), $_POST['management'], $system->checkMagicQuotes($_POST['management_ct']), $_POST['team'], $system->checkMagicQuotes($_POST['team_ct']), $system->checkMagicQuotes($_POST['protocol']), $_POST['folder'], $_POST['training'], $_POST['trainingmore'], $_POST['trainingcat'], $_POST['trainingcatmore'], $_POST['product'], $_POST['product_desc'], $_POST['charge'], $_POST['number']));
+			if(!isset($_POST['registration_end'])) { $_POST['registration_end'] = ''; }
+			if(!isset($_POST['date1'])) { $_POST['date1'] = ''; }
+			if(!isset($_POST['date2'])) { $_POST['date2'] = ''; }
+			if(!isset($_POST['date3'])) { $_POST['date3'] = ''; }
+			if(!isset($_POST['time1'])) { $_POST['time1'] = ''; }
+			if(!isset($_POST['time2'])) { $_POST['time2'] = ''; }
+			if(!isset($_POST['time3'])) { $_POST['time3'] = ''; }
+			if(!isset($_POST['time4'])) { $_POST['time4'] = ''; }
+			
+			if(!isset($_POST['place1'])) { $_POST['place1'] = ''; }
+			if(!isset($_POST['place1_ct'])) { $_POST['place1_ct'] = ''; }
+			if(!isset($_POST['place2'])) { $_POST['place2'] = ''; }
+			if(!isset($_POST['place2_ct'])) { $_POST['place2_ct'] = ''; }
+			
+			if(!isset($_POST['text1'])) { $_POST['text1'] = ''; }
+			if(!isset($_POST['text2'])) { $_POST['text2'] = ''; }
+			if(!isset($_POST['text3'])) { $_POST['text3'] = ''; }
+			if(!isset($_POST['protocol'])) { $_POST['protocol'] = ''; }
+			
+			echo($trainings->setTrainingDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['folder'], $_POST['management'], $system->checkMagicQuotes($_POST['management_ct']), $system->checkMagicQuotes($_POST['company']), $_POST['team'], $system->checkMagicQuotes($_POST['team_ct']), $_POST['training'], $_POST['training_id_orig'], $_POST['registration_end'], $system->checkMagicQuotes($_POST['protocol']), $_POST['date1'], $_POST['date2'], $_POST['date3'], $_POST['time1'], $_POST['time2'], $_POST['time3'], $_POST['time4'], $_POST['place1'], $system->checkMagicQuotes($_POST['place1_ct']), $_POST['place2'], $system->checkMagicQuotes($_POST['place2_ct']), $system->checkMagicQuotes($_POST['text1']), $system->checkMagicQuotes($_POST['text2']), $system->checkMagicQuotes($_POST['text3'])));
 		break;
 		case 'moveTraining':
 			echo($trainings->moveTraining($_POST['id'], $_POST['startdate'], $_POST['movedays']));
