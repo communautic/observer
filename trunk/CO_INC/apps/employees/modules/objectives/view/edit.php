@@ -78,9 +78,18 @@
 		<li><span class="active" rel="EmployeesObjectivesFirst">MA-Zufriedenheit</span></li>
 		<li><span rel="EmployeesObjectivesSecond">Leistungsbewertung</span></li>
         <li><span rel="EmployeesObjectivesThird">Zielsetzungen</span></li>
+        <li><span rel="EmployeesObjectivesForth">Personalentwicklung</span></li>
 	</ul>
     <div id="EmployeesObjectivesTabsContent" class="contentTabsContent">
         <div id="EmployeesObjectivesFirst">
+        
+<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
+	<tr>
+		<td class="tcell-left text11"><span class="<?php if($objective->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["EMPLOYEE_OBJECTIVE_DESCRIPTION"];?></span></span></td>
+        <td class="tcell-right"><?php if($objective->canedit) { ?><textarea name="protocol" class="elastic"><?php echo(strip_tags($objective->protocol));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($objective->protocol)));?><?php } ?></td>
+	</tr>
+</table>
+<div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 		<td class="tcell-left-inactive text11">&nbsp;</td>
@@ -261,12 +270,22 @@
             
         </div>
         <div id="EmployeesObjectivesSecond" style="display: none;">
-            <table border="0" cellpadding="0" cellspacing="0" class="table-content">
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
-		<td class="tcell-left-inactive text11">&nbsp;</td>
+		<td class="tcell-left text11">&nbsp;</td>
+        <td class="tcell-right tcell-right-nopadding">&nbsp;</td>
 		<td class="tcell-right-inactive tcell-right-nopadding text11"><div style="float: right; margin-right: 36px;">erreichte Leistung <span style="font-size: 13px; display: inline-block; text-align: right; width: 68px;" class="bold"><span id="tab2result"><?php echo $objective->tab2result;?></span>%</span></div></td>
     </tr>
 </table>
+<div  style="background: #fff; padding: 7px 0 7px 0;">
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+	<tr>
+		<td class="tcell-left text11"><span class="<?php if($objective->canedit) { ?>content-nav showDialog<?php } ?>" request="getObjectiveCatDialog" field="objectivesdepartment" append="0"><span>Bewertungskategorie</span></span></td>
+        <td class="tcell-right"><div id="objectivesdepartment" class="itemlist-field"><?php echo($objective->cat_name);?></div></td>
+		<td class="tcell-right-inactive tcell-right-nopadding text11">&nbsp;</td>
+    </tr>
+</table>
+</div>
             <!-- Q1 -->
         	<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-inactive no-margin">
 				<tr>
@@ -275,7 +294,7 @@
                       <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table-task">
                         <tr>
 							<td width="20" style="padding-top: 4px;">&nbsp;</td>
-                            <td style="padding: 2px 0 0 7px; font-weight: bold;"><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_1"];?></td>
+                            <td style="padding: 2px 0 0 7px; font-weight: bold;" id="tab2q1Text"><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_CAT".$objective->cat."_QUESTION_1"];?></td>
                             <td width="300" style="text-align: right;">
                                 <div class="answers-outer<?php if($objective->canedit) { ?> active<?php } ?>" rel="tab2">
                                 <?php for($i=0; $i<11; $i++) {
@@ -310,7 +329,7 @@
                       <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table-task">
                         <tr>
 							<td width="20" style="padding-top: 4px;">&nbsp;</td>
-                            <td style="padding: 2px 0 0 7px; font-weight: bold;"><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_2"];?></td>
+                            <td style="padding: 2px 0 0 7px; font-weight: bold;" id="tab2q2Text"><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_CAT".$objective->cat."_QUESTION_2"];?></td>
                             <td width="300" style="text-align: right;">
                                 <div class="answers-outer<?php if($objective->canedit) { ?> active<?php } ?>" rel="tab2">
                                 <?php for($i=0; $i<11; $i++) {
@@ -345,7 +364,7 @@
                       <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table-task">
                         <tr>
 							<td width="20" style="padding-top: 4px;">&nbsp;</td>
-                            <td style="padding: 2px 0 0 7px; font-weight: bold;"><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_3"];?></td>
+                            <td style="padding: 2px 0 0 7px; font-weight: bold;" id="tab2q3Text"><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_CAT".$objective->cat."_QUESTION_3"];?></td>
                             <td width="300" style="text-align: right;">
                                 <div class="answers-outer<?php if($objective->canedit) { ?> active<?php } ?>" rel="tab2">
                                 <?php for($i=0; $i<11; $i++) {
@@ -380,7 +399,7 @@
                       <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table-task">
                         <tr>
 							<td width="20" style="padding-top: 4px;">&nbsp;</td>
-                            <td style="padding: 2px 0 0 7px; font-weight: bold;"><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_4"];?></td>
+                            <td style="padding: 2px 0 0 7px; font-weight: bold;" id="tab2q4Text"><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_CAT".$objective->cat."_QUESTION_4"];?></td>
                             <td width="300" style="text-align: right;">
                                 <div class="answers-outer<?php if($objective->canedit) { ?> active<?php } ?>" rel="tab2">
                                 <?php for($i=0; $i<11; $i++) {
@@ -415,7 +434,7 @@
                       <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table-task">
                         <tr>
 							<td width="20" style="padding-top: 4px;">&nbsp;</td>
-                            <td style="padding: 2px 0 0 7px; font-weight: bold;"><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_5"];?></td>
+                            <td style="padding: 2px 0 0 7px; font-weight: bold;" id="tab2q5Text"><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_CAT".$objective->cat."_QUESTION_5"];?></td>
                             <td width="300" style="text-align: right;">
                                 <div class="answers-outer<?php if($objective->canedit) { ?> active<?php } ?>" rel="tab2">
                                 <?php for($i=0; $i<11; $i++) {
@@ -442,180 +461,6 @@
                 </tr>
             </table>
             
-            <!-- Q6 -->
-        	<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-inactive no-margin">
-				<tr>
-					<td class="tcell-left-phases-tasks text11">&nbsp;</td>
-					<td class="tcell-right-nopadding">
-                      <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table-task">
-                        <tr>
-							<td width="20" style="padding-top: 4px;">&nbsp;</td>
-                            <td style="padding: 2px 0 0 7px; font-weight: bold;"><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_6"];?></td>
-                            <td width="300" style="text-align: right;">
-                                <div class="answers-outer<?php if($objective->canedit) { ?> active<?php } ?>" rel="tab2">
-                                <?php for($i=0; $i<11; $i++) {
-									$selected = '';
-									if($i < 4) { $class = 'neg'; }
-									if($i > 3 && $i < 7) { $class = 'med'; }
-									if($i > 6 ) { $class = 'pos'; }
-									if($objective->tab2q6_selected != "" && $i == $objective->tab2q6_selected) {
-										$class .= ' active';
-									}
-									 echo '<span rel="q6" class="' . $class . '">' . $i . '</span>';
-                                }
-                                ?></div>
-                        	</td>
-                       </tr>
-                      </table>
-					</td>
-				</tr>
-			</table>
-            <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
-                <tr>
-                    <td class="tcell-left text11"><span class="<?php if($objective->canedit) { ?>selectTextarea<?php } ?>"><span>&nbsp;</span></span></td>
-                    <td class="tcell-right"><?php if($objective->canedit) { ?><textarea name="tab2q6_text" class="elastic"><?php echo strip_tags($objective->tab2q6_text);?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($objective->tab2q6_text)));?><?php } ?></td>
-                </tr>
-            </table>
-            
-            <!-- Q7 -->
-        	<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-inactive no-margin">
-				<tr>
-					<td class="tcell-left-phases-tasks text11">&nbsp;</td>
-					<td class="tcell-right-nopadding">
-                      <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table-task">
-                        <tr>
-							<td width="20" style="padding-top: 4px;">&nbsp;</td>
-                            <td style="padding: 2px 0 0 7px; font-weight: bold;"><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_7"];?></td>
-                            <td width="300" style="text-align: right;">
-                                <div class="answers-outer<?php if($objective->canedit) { ?> active<?php } ?>" rel="tab2">
-                                <?php for($i=0; $i<11; $i++) {
-									$selected = '';
-									if($i < 4) { $class = 'neg'; }
-									if($i > 3 && $i < 7) { $class = 'med'; }
-									if($i > 6 ) { $class = 'pos'; }
-									if($objective->tab2q7_selected != "" && $i == $objective->tab2q7_selected) {
-										$class .= ' active';
-									}
-									 echo '<span rel="q7" class="' . $class . '">' . $i . '</span>';
-                                }
-                                ?></div>
-                        	</td>
-                       </tr>
-                      </table>
-					</td>
-				</tr>
-			</table>
-            <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
-                <tr>
-                    <td class="tcell-left text11"><span class="<?php if($objective->canedit) { ?>selectTextarea<?php } ?>"><span>&nbsp;</span></span></td>
-                    <td class="tcell-right"><?php if($objective->canedit) { ?><textarea name="tab2q7_text" class="elastic"><?php echo strip_tags($objective->tab2q7_text);?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($objective->tab2q7_text)));?><?php } ?></td>
-                </tr>
-            </table>
-            
-            <!-- Q8 -->
-        	<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-inactive no-margin">
-				<tr>
-					<td class="tcell-left-phases-tasks text11">&nbsp;</td>
-					<td class="tcell-right-nopadding">
-                      <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table-task">
-                        <tr>
-							<td width="20" style="padding-top: 4px;">&nbsp;</td>
-                            <td style="padding: 2px 0 0 7px; font-weight: bold;"><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_8"];?></td>
-                            <td width="300" style="text-align: right;">
-                                <div class="answers-outer<?php if($objective->canedit) { ?> active<?php } ?>" rel="tab2">
-                                <?php for($i=0; $i<11; $i++) {
-									$selected = '';
-									if($i < 4) { $class = 'neg'; }
-									if($i > 3 && $i < 7) { $class = 'med'; }
-									if($i > 6 ) { $class = 'pos'; }
-									if($objective->tab2q8_selected != "" && $i == $objective->tab2q8_selected) {
-										$class .= ' active';
-									}
-									 echo '<span rel="q8" class="' . $class . '">' . $i . '</span>';
-                                }
-                                ?></div>
-                        	</td>
-                       </tr>
-                      </table>
-					</td>
-				</tr>
-			</table>
-            <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
-                <tr>
-                    <td class="tcell-left text11"><span class="<?php if($objective->canedit) { ?>selectTextarea<?php } ?>"><span>&nbsp;</span></span></td>
-                    <td class="tcell-right"><?php if($objective->canedit) { ?><textarea name="tab2q8_text" class="elastic"><?php echo strip_tags($objective->tab2q8_text);?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($objective->tab2q8_text)));?><?php } ?></td>
-                </tr>
-            </table>
-            
-            <!-- Q9 -->
-        	<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-inactive no-margin">
-				<tr>
-					<td class="tcell-left-phases-tasks text11">&nbsp;</td>
-					<td class="tcell-right-nopadding">
-                      <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table-task">
-                        <tr>
-							<td width="20" style="padding-top: 4px;">&nbsp;</td>
-                            <td style="padding: 2px 0 0 7px; font-weight: bold;"><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_9"];?></td>
-                            <td width="300" style="text-align: right;">
-                                <div class="answers-outer<?php if($objective->canedit) { ?> active<?php } ?>" rel="tab2">
-                                <?php for($i=0; $i<11; $i++) {
-									$selected = '';
-									if($i < 4) { $class = 'neg'; }
-									if($i > 3 && $i < 7) { $class = 'med'; }
-									if($i > 6 ) { $class = 'pos'; }
-									if($objective->tab2q9_selected != "" && $i == $objective->tab2q9_selected) {
-										$class .= ' active';
-									}
-									 echo '<span rel="q9" class="' . $class . '">' . $i . '</span>';
-                                }
-                                ?></div>
-                        	</td>
-                       </tr>
-                      </table>
-					</td>
-				</tr>
-			</table>
-            <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
-                <tr>
-                    <td class="tcell-left text11"><span class="<?php if($objective->canedit) { ?>selectTextarea<?php } ?>"><span>&nbsp;</span></span></td>
-                    <td class="tcell-right"><?php if($objective->canedit) { ?><textarea name="tab2q9_text" class="elastic"><?php echo strip_tags($objective->tab2q9_text);?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($objective->tab2q9_text)));?><?php } ?></td>
-                </tr>
-            </table>
-            
-            <!-- Q10 -->
-        	<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-inactive no-margin">
-				<tr>
-					<td class="tcell-left-phases-tasks text11">&nbsp;</td>
-					<td class="tcell-right-nopadding">
-                      <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table-task">
-                        <tr>
-							<td width="20" style="padding-top: 4px;">&nbsp;</td>
-                            <td style="padding: 2px 0 0 7px; font-weight: bold;"><?php echo $lang["EMPLOYEE_OBJECTIVE_TAB2_QUESTION_10"];?></td>
-                            <td width="300" style="text-align: right;">
-                                <div class="answers-outer<?php if($objective->canedit) { ?> active<?php } ?>" rel="tab2">
-                                <?php for($i=0; $i<11; $i++) {
-									$selected = '';
-									if($i < 4) { $class = 'neg'; }
-									if($i > 3 && $i < 7) { $class = 'med'; }
-									if($i > 6 ) { $class = 'pos'; }
-									if($objective->tab2q10_selected != "" && $i == $objective->tab2q10_selected) {
-										$class .= ' active';
-									}
-									 echo '<span rel="q10" class="' . $class . '">' . $i . '</span>';
-                                }
-                                ?></div>
-                        	</td>
-                       </tr>
-                      </table>
-					</td>
-				</tr>
-			</table>
-            <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
-                <tr>
-                    <td class="tcell-left text11"><span class="<?php if($objective->canedit) { ?>selectTextarea<?php } ?>"><span>&nbsp;</span></span></td>
-                    <td class="tcell-right"><?php if($objective->canedit) { ?><textarea name="tab2q10_text" class="elastic"><?php echo strip_tags($objective->tab2q10_text);?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($objective->tab2q10_text)));?><?php } ?></td>
-                </tr>
-            </table>
 		</div>
         <div id="EmployeesObjectivesThird" style="display: none;">
 			<table border="0" cellpadding="0" cellspacing="0" class="table-content addTaskTable">
@@ -632,6 +477,15 @@
              } ?>
             </div>
         </div>
+        
+        <div id="EmployeesObjectivesForth" style="display: none;">
+			  <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
+	<tr>
+		<td class="tcell-left text11"><span class="<?php if($objective->canedit) { ?>content-nav selectTextarea<?php } ?>"><span>Notiz</span></span></td>
+        <td class="tcell-right"><?php if($objective->canedit) { ?><textarea name="protocol2" class="elastic"><?php echo(strip_tags($objective->protocol2));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($objective->protocol2)));?><?php } ?></td>
+	</tr>
+</table></div>
+        
     </div>
 </div>
 <?php if($objective->perms != "guest") { ?>

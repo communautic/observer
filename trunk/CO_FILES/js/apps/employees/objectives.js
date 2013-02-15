@@ -345,6 +345,15 @@ function employeesObjectives(name) {
 					}
 				});
 			break;
+			case "getObjectiveCatDialog":
+				$.ajax({ type: "GET", url: "/", data: 'path=apps/employees/modules/objectives&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
+					$("#modalDialog").html(html);
+					$("#modalDialog").dialog('option', 'position', offset);
+					$("#modalDialog").dialog('option', 'title', title);
+					$("#modalDialog").dialog('open');
+					}
+				});
+			break;
 			case "getDocumentsDialog":
 				var id = $("#employees").data("second");
 				$.ajax({ type: "GET", url: "/", data: 'path=apps/employees/modules/documents&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql+'&id=' + id, success: function(html){
@@ -433,7 +442,26 @@ function employeesObjectives(name) {
 			}
 		});
 	}
-	
+
+
+	this.insertFromDialog = function(field,gid,title) {
+		$("#"+field).html(title);
+		$("#modalDialog").dialog('close');
+		// update cat, get title and replace question
+		var id = $("#employees").data("third");
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/employees/modules/objectives&request=changeCat&id=" + id + "&cat=" + gid, success: function(data){
+			if(data){
+				$('#tab2q1Text').html(data.q1);
+				$('#tab2q2Text').html(data.q2);	
+				$('#tab2q3Text').html(data.q3);	
+				$('#tab2q4Text').html(data.q4);	
+				$('#tab2q5Text').html(data.q5);	
+			} 
+			}
+		});
+	}
+
+
 	this.actionHelp = function() {
 		var url = "/?path=apps/employees/modules/objectives&request=getHelp";
 		$("#documentloader").attr('src', url);
@@ -575,10 +603,10 @@ $(document).ready(function() {
 		var total = 0;
 		if(tab == 'tab1') {
 			$('#EmployeesObjectivesFirst .answers-outer span').each( function() {
-			 if($(this).hasClass('active'))	{
-				 total = total + parseInt($(this).html());
-			 }
-		})
+				 if($(this).hasClass('active'))	{
+					 total = total + parseInt($(this).html());
+				 }
+			})
 			var res = Math.round(100/50*total);
 		} else {
 			$('#EmployeesObjectivesSecond .answers-outer span').each( function() {
@@ -586,7 +614,8 @@ $(document).ready(function() {
 				 total = total + parseInt($(this).html());
 			 }
 		})
-			var res = total;
+			//var res = total;
+			var res = Math.round(100/50*total);
 		}
 		$('#'+tab+'result').html(res);
 		// ajax call
