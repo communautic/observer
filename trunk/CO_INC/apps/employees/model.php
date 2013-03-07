@@ -1801,12 +1801,13 @@ function getEmployeeTitleFromMeetingIDs($array,$target, $link = 0){
 					if(!empty($row["tab2q3"])) { $tab2result += $row["tab2q3"]; }
 					if(!empty($row["tab2q4"])) { $tab2result += $row["tab2q4"]; }
 					if(!empty($row["tab2q5"])) { $tab2result += $row["tab2q5"]; }
-					if(!empty($row["tab2q6"])) { $tab2result += $row["tab2q6"]; }
+					/*if(!empty($row["tab2q6"])) { $tab2result += $row["tab2q6"]; }
 					if(!empty($row["tab2q7"])) { $tab2result += $row["tab2q7"]; }
 					if(!empty($row["tab2q8"])) { $tab2result += $row["tab2q8"]; }
 					if(!empty($row["tab2q9"])) { $tab2result += $row["tab2q9"]; }
-					if(!empty($row["tab2q10"])) { $tab2result += $row["tab2q10"]; }
-					$tab2result = $tab2result;
+					if(!empty($row["tab2q10"])) { $tab2result += $row["tab2q10"]; }*/
+					//$tab2result = $tab2result;
+					$tab2result = round(100/50* $tab2result,0);
 				}
 					
 				if($num == 0) {
@@ -1824,7 +1825,7 @@ function getEmployeeTitleFromMeetingIDs($array,$target, $link = 0){
 				$num2 = mysql_num_rows($result2);
 				$i = 1;
 				// Tab 2 questios
-					$tab2result2 = 0;
+				$tab2result2 = 0;
 				while($row2 = mysql_fetch_array($result2)) {
 					
 					if(!empty($row2["tab2q1"])) { $tab2result2 += $row2["tab2q1"]; }
@@ -1832,12 +1833,13 @@ function getEmployeeTitleFromMeetingIDs($array,$target, $link = 0){
 					if(!empty($row2["tab2q3"])) { $tab2result2 += $row2["tab2q3"]; }
 					if(!empty($row2["tab2q4"])) { $tab2result2 += $row2["tab2q4"]; }
 					if(!empty($row2["tab2q5"])) { $tab2result2 += $row2["tab2q5"]; }
-					if(!empty($row2["tab2q6"])) { $tab2result2 += $row2["tab2q6"]; }
+					/*if(!empty($row2["tab2q6"])) { $tab2result2 += $row2["tab2q6"]; }
 					if(!empty($row2["tab2q7"])) { $tab2result2 += $row2["tab2q7"]; }
 					if(!empty($row2["tab2q8"])) { $tab2result2 += $row2["tab2q8"]; }
 					if(!empty($row2["tab2q9"])) { $tab2result2 += $row2["tab2q9"]; }
-					if(!empty($row2["tab2q10"])) { $tab2result2 += $row2["tab2q10"]; }
-					$tab2result2 = $tab2result2;
+					if(!empty($row2["tab2q10"])) { $tab2result2 += $row2["tab2q10"]; }*/
+					//$tab2result2 = $tab2result2;
+					$tab2result2 = round(100/50* $tab2result2,0);
 				}
 				$chart["real_old"] =  $tab2result2;
 				if($num2 == 0) {
