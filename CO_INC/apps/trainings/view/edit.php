@@ -51,7 +51,7 @@
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
   <tr>
-    <td class="tcell-left text11"><span class="<?php if($training->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["TRAINING_COMPANY"];?></span></span></td>
+    <td class="tcell-left-shorter text11"><span class="<?php if($training->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["TRAINING_COMPANY"];?></span></span></td>
     <td class="tcell-right-nopadding"><?php if($training->canedit) { ?><input name="company" type="text" class="bg" value="<?php echo($training->company);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $training->company . '</span>'); } ?></td>
   </tr>
 </table>
@@ -81,6 +81,12 @@ include('training_cat'.$training->training_id.'.php');
 ?>
 
 <div class="content-spacer"></div>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+	<tr>
+		<td class="tcell-left-inactive text11">Teilnehmeranzahl</td>
+		<td class="tcell-right-inactive tcell-right-nopadding"><div id="training_num_members"><?php echo $training->num_members;?></div></td>
+    </tr>
+</table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 	  <td class="tcell-left text11"><span class="<?php if($training->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="custom" append="1"><span><?php echo $lang["TRAINING_MEMBER"];?></span></span></td>

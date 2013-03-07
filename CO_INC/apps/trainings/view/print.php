@@ -6,36 +6,30 @@
 </table>
 <table width="100%" class="standard">
 	<tr>
-		<td class="tcell-left"><?php echo $lang["GLOBAL_DURATION"];?></td>
-		<td><?php echo($training->startdate)?> - <?php echo($training->enddate)?></td>
-    </tr>
-</table>
-<table width="100%" class="standard">
-	<tr>
-	  <td class="tcell-left"><?php echo $lang['TRAINING_KICKOFF'];?></td>
-		<td><?php echo($training->startdate)?></td>
-	</tr>
-</table>
-<table width="100%" class="standard">
-	<tr>
 	  <td class="tcell-left"><?php echo $lang["TRAINING_FOLDER"];?></td>
         <td><?php echo($training->folder);?></td>
 	</tr>
 </table>
-&nbsp;
-<?php if(!empty($training->ordered_by_print) || !empty($training->ordered_by_ct)) { ?>
-<table width="100%" class="standard"> 
-   <tr>
-		<td class="tcell-left"><?php echo $lang["TRAINING_CLIENT"];?></td>
-		<td><?php echo($training->ordered_by_print);?><br /><?php echo($training->ordered_by_ct);?></td>
-	</tr>
-</table>
-<?php } ?>
 <?php if(!empty($training->management_print) || !empty($training->management_ct)) { ?>
 <table width="100%" class="standard">
 	<tr>
 		<td class="tcell-left"><?php echo $lang["TRAINING_MANAGEMENT"];?></td>
 		<td><?php echo($training->management_print);?><br /><?php echo($training->management_ct);?></td>
+	</tr>
+</table>
+<?php } ?>
+<table width="100%" class="standard">
+	<tr>
+	  <td class="tcell-left"><?php echo $lang["GLOBAL_STATUS"];?></td>
+        <td><?php echo($training->status_text);?> <?php echo($training->status_text_time);?> <?php echo($training->status_date)?></td>
+	</tr>
+</table>
+&nbsp;
+<?php if(!empty($training->company)) { ?>
+<table width="100%" class="standard">
+	<tr>
+		<td class="tcell-left"><?php echo $lang["TRAINING_COMPANY"];?></td>
+		<td><?php echo($training->company);?></td>
 	</tr>
 </table>
 <?php } ?>
@@ -47,7 +41,6 @@
 	</tr>
 </table>
 <?php } ?>
-&nbsp;
 <?php if(!empty($training->training)) { ?>
 <table width="100%" class="standard">
 	<tr>
@@ -56,72 +49,285 @@
 	</tr>
 </table>
 <?php } ?>
-<?php if(!empty($training->training_more)) { ?>
-<table width="100%" class="standard">
-	<tr>
-		<td class="tcell-left"><?php echo $lang["TRAINING_TRAININGCATMORE"];?></td>
-		<td><?php echo($training->training_more);?></td>
-	</tr>
-</table>
-<?php } ?>
-<?php if(!empty($training->training_cat)) { ?>
-<table width="100%" class="standard">
-	<tr>
-		<td class="tcell-left"><?php echo $lang["TRAINING_CAT"];?></td>
-		<td><?php echo($training->training_cat);?></td>
-	</tr>
-</table>
-<?php } ?>
-<?php if(!empty($training->training_cat_more)) { ?>
-<table width="100%" class="standard">
-	<tr>
-		<td class="tcell-left"><?php echo $lang["TRAINING_CAT_MORE"];?></td>
-		<td><?php echo($training->training_cat_more);?></td>
-	</tr>
-</table>
-<?php } ?>
 &nbsp;
-<?php if(!empty($training->product)) { ?>
-<table width="100%" class="standard">
-	<tr>
-		<td class="tcell-left"><?php echo $lang["TRAINING_PRODUCT_NUMBER"];?></td>
-		<td><?php echo($training->product);?></td>
-	</tr>
-</table>
-<?php } ?>
-<?php if(!empty($training->product_desc)) { ?>
-<table width="100%" class="standard">
-	<tr>
-		<td class="tcell-left"><?php echo $lang["TRAINING_PRODUCT"];?></td>
-		<td><?php echo($training->product_desc);?></td>
-	</tr>
-</table>
-<?php } ?>
-<?php if(!empty($training->charge)) { ?>
-<table width="100%" class="standard">
-	<tr>
-		<td class="tcell-left"><?php echo $lang["TRAINING_CHARGE"];?></td>
-		<td><?php echo($training->charge);?></td>
-	</tr>
-</table>
-<?php } ?>
-<?php if(!empty($training->number)) { ?>
-<table width="100%" class="standard">
-	<tr>
-		<td class="tcell-left"><?php echo $lang["TRAINING_NUMBER"];?></td>
-		<td><?php echo($training->number);?></td>
-	</tr>
-</table>
-<?php } ?>
+<?php 
+switch($training->training_id) {
+	case '1'; ?> <!-- 1 	Vortrag -->
+        <table width="100%" class="standard-grey">
+            <tr>
+              <td class="tcell-left">Vortrag</td>
+                <td><?php echo $training->date1;?></td>
+            </tr>
+        </table>
+        <table width="100%" class="standard-grey">
+            <tr>
+              <td class="tcell-left"><?php echo $lang["TRAINING_TIME_START"];?></td>
+                <td><?php echo $training->time1;?></td>
+            </tr>
+        </table>
+        <table width="100%" class="standard-grey">
+            <tr>
+              <td class="tcell-left"><?php echo $lang["TRAINING_TIME_END"];?></td>
+                <td><?php echo $training->time2;?></td>
+            </tr>
+        </table>
+        <table width="100%" class="standard-grey">
+            <tr>
+              <td class="tcell-left"><?php echo $lang["TRAINING_PLACE"];?></td>
+                <td><?php echo $training->place1;?><?php echo $training->place1_ct;?></td>
+            </tr>
+        </table>
+        <table width="100%" class="standard-grey-paddingBottom">
+            <tr>
+              <td class="tcell-left"><?php echo $lang["TRAINING_REGISTRATION_END"];?></td>
+                <td><?php echo $training->registration_end;?></td>
+            </tr>
+        </table>
+<?php
+    break;
+	case '2'; ?> <!-- 2 	Vortrag & Gruppencoaching -->
+        <table width="100%" class="standard-grey">
+            <tr>
+              <td class="tcell-left">Vortrag</td>
+                <td><?php echo $training->date1;?></td>
+            </tr>
+        </table>
+        <table width="100%" class="standard-grey">
+            <tr>
+              <td class="tcell-left"><?php echo $lang["TRAINING_TIME_START"];?></td>
+                <td><?php echo $training->time1;?></td>
+            </tr>
+        </table>
+        <table width="100%" class="standard-grey">
+            <tr>
+              <td class="tcell-left"><?php echo $lang["TRAINING_TIME_END"];?></td>
+                <td><?php echo $training->time2;?></td>
+            </tr>
+        </table>
+        <table width="100%" class="standard-grey">
+            <tr>
+              <td class="tcell-left"><?php echo $lang["TRAINING_PLACE"];?></td>
+                <td><?php echo $training->place1;?><?php echo $training->place1_ct;?></td>
+            </tr>
+        </table>
+        <table width="100%" class="standard-grey">
+            <tr>
+              <td class="tcell-left">Coaching</td>
+                <td><?php echo $training->date2;?></td>
+            </tr>
+        </table>
+        <table width="100%" class="standard-grey">
+            <tr>
+              <td class="tcell-left"><?php echo $lang["TRAINING_TIME_START"];?></td>
+                <td><?php echo $training->time3;?></td>
+            </tr>
+        </table>
+        <table width="100%" class="standard-grey">
+            <tr>
+              <td class="tcell-left"><?php echo $lang["TRAINING_TIME_END"];?></td>
+                <td><?php echo $training->time4;?></td>
+            </tr>
+        </table>
+        <table width="100%" class="standard-grey">
+            <tr>
+              <td class="tcell-left"><?php echo $lang["TRAINING_PLACE"];?></td>
+                <td><?php echo $training->place2;?><?php echo $training->place2_ct;?></td>
+            </tr>
+        </table>
+        <table width="100%" class="standard-grey-paddingBottom"">
+            <tr>
+              <td class="tcell-left"><?php echo $lang["TRAINING_REGISTRATION_END"];?></td>
+                <td><?php echo $training->registration_end;?></td>
+            </tr>
+        </table>
+<?php
+    break;
+	case '3'; ?> <!-- 3 	e-training -->
+        <table width="100%" class="standard-grey">
+            <tr>
+              <td class="tcell-left">e-training</td>
+                <td>https://webbased-academy.communautic.com</td>
+            </tr>
+        </table>
+        <table width="100%" class="standard-grey">
+            <tr>
+              <td class="tcell-left"><?php echo $lang["TRAINING_TIME_START"];?></td>
+                <td><?php echo $training->date1;?></td>
+            </tr>
+        </table>
+        <table width="100%" class="standard-grey">
+            <tr>
+              <td class="tcell-left"><?php echo $lang["TRAINING_TIME_END"];?></td>
+                <td><?php echo $training->date3;?></td>
+            </tr>
+        </table>
+        <table width="100%" class="standard-grey-paddingBottom"">
+            <tr>
+              <td class="tcell-left"><?php echo $lang["TRAINING_REGISTRATION_END"];?></td>
+                <td><?php echo $training->registration_end;?></td>
+            </tr>
+        </table>
+<?php
+    break;
+	case '4'; ?> <!-- 4 	e-training & Praesenzcoaching -->
+        <table width="100%" class="standard-grey">
+            <tr>
+              <td class="tcell-left">e-training</td>
+                <td>https://webbased-academy.communautic.com</td>
+            </tr>
+        </table>
+        <table width="100%" class="standard-grey">
+            <tr>
+              <td class="tcell-left"><?php echo $lang["TRAINING_TIME_START"];?></td>
+                <td><?php echo $training->date1;?></td>
+            </tr>
+        </table>
+        <table width="100%" class="standard-grey">
+            <tr>
+              <td class="tcell-left"><?php echo $lang["TRAINING_TIME_END"];?></td>
+                <td><?php echo $training->date3;?></td>
+            </tr>
+        </table>
+        <table width="100%" class="standard-grey">
+            <tr>
+              <td class="tcell-left">Coaching</td>
+                <td><?php echo $training->date2;?></td>
+            </tr>
+        </table>
+        <table width="100%" class="standard-grey">
+            <tr>
+              <td class="tcell-left"><?php echo $lang["TRAINING_TIME_START"];?></td>
+                <td><?php echo $training->time3;?></td>
+            </tr>
+        </table>
+        <table width="100%" class="standard-grey">
+            <tr>
+              <td class="tcell-left"><?php echo $lang["TRAINING_TIME_END"];?></td>
+                <td><?php echo $training->time4;?></td>
+            </tr>
+        </table>
+        <table width="100%" class="standard-grey">
+            <tr>
+              <td class="tcell-left"><?php echo $lang["TRAINING_PLACE"];?></td>
+                <td><?php echo $training->place2;?><?php echo $training->place2_ct;?></td>
+            </tr>
+        </table>
+        <table width="100%" class="standard-grey-paddingBottom"">
+            <tr>
+              <td class="tcell-left"><?php echo $lang["TRAINING_REGISTRATION_END"];?></td>
+                <td><?php echo $training->registration_end;?></td>
+            </tr>
+        </table>
+<?php
+    break;
+	case '5'; ?> <!-- 5 Einzelcoaching -->
+        <table width="100%" class="standard-grey">
+            <tr>
+              <td class="tcell-left">Coaching</td>
+                <td><?php echo $training->date1;?></td>
+            </tr>
+        </table>
+        <table width="100%" class="standard-grey">
+            <tr>
+              <td class="tcell-left"><?php echo $lang["TRAINING_TIME_START"];?></td>
+                <td><?php echo $training->time1;?></td>
+            </tr>
+        </table>
+        <table width="100%" class="standard-grey">
+            <tr>
+              <td class="tcell-left"><?php echo $lang["TRAINING_TIME_END"];?></td>
+                <td><?php echo $training->time2;?></td>
+            </tr>
+        </table>
+        <table width="100%" class="standard-grey">
+            <tr>
+              <td class="tcell-left"><?php echo $lang["TRAINING_PLACE"];?></td>
+                <td><?php echo $training->place1;?><?php echo $training->place1_ct;?></td>
+            </tr>
+        </table>
+        <table width="100%" class="standard-grey-paddingBottom">
+            <tr>
+              <td class="tcell-left"><?php echo $lang["TRAINING_REGISTRATION_END"];?></td>
+                <td><?php echo $training->registration_end;?></td>
+            </tr>
+        </table>
+<?php
+    break;
+	case '6'; ?> <!-- 5 Einzelcoaching -->
+        <table width="100%" class="standard-grey">
+            <tr>
+              <td class="tcell-left">Workshop</td>
+                <td><?php echo $training->date1;?></td>
+            </tr>
+        </table>
+        <table width="100%" class="standard-grey">
+            <tr>
+              <td class="tcell-left"><?php echo $lang["TRAINING_TIME_START"];?></td>
+                <td><?php echo $training->time1;?></td>
+            </tr>
+        </table>
+        <table width="100%" class="standard-grey">
+            <tr>
+              <td class="tcell-left"><?php echo $lang["TRAINING_TIME_END"];?></td>
+                <td><?php echo $training->time2;?></td>
+            </tr>
+        </table>
+        <table width="100%" class="standard-grey">
+            <tr>
+              <td class="tcell-left"><?php echo $lang["TRAINING_PLACE"];?></td>
+                <td><?php echo $training->place1;?><?php echo $training->place1_ct;?></td>
+            </tr>
+        </table>
+        <table width="100%" class="standard-grey-paddingBottom">
+            <tr>
+              <td class="tcell-left"><?php echo $lang["TRAINING_REGISTRATION_END"];?></td>
+                <td><?php echo $training->registration_end;?></td>
+            </tr>
+        </table>
+<?php
+    break;
+	case '7'; ?> <!-- 7 Veranstaltungsreihe -->
+        <table width="100%" class="standard-grey">
+            <tr>
+              <td class="tcell-left">Veranstaltungsbeginn</td>
+                <td><?php echo $training->date1;?></td>
+            </tr>
+        </table>
+        <table width="100%" class="standard-grey">
+            <tr>
+              <td class="tcell-left">Folgetermine</td>
+                <td><?php echo $training->text1;?></td>
+            </tr>
+        </table>
+        <table width="100%" class="standard-grey">
+            <tr>
+              <td class="tcell-left">Veranstaltungsende</td>
+                <td><?php echo $training->date2;?></td>
+            </tr>
+        </table>
+        <table width="100%" class="standard-grey">
+            <tr>
+              <td class="tcell-left">Dauer</td>
+                <td><?php echo $training->text2;?></td>
+            </tr>
+        </table>
+        <table width="100%" class="standard-grey">
+            <tr>
+              <td class="tcell-left"><?php echo $lang["TRAINING_PLACE"];?></td>
+                <td><?php echo $training->text3;?></td>
+            </tr>
+        </table>
+        <table width="100%" class="standard-grey-paddingBottom">
+            <tr>
+              <td class="tcell-left"><?php echo $lang["TRAINING_REGISTRATION_END"];?></td>
+                <td><?php echo $training->registration_end;?></td>
+            </tr>
+        </table>
+<?php
+    break;
+} ?>
 &nbsp;
-<table width="100%" class="standard">
-	<tr>
-	  <td class="tcell-left"><?php echo $lang["GLOBAL_STATUS"];?></td>
-        <td><?php echo($training->status_text);?> <?php echo($training->status_text_time);?> <?php echo($training->status_date)?></td>
-	</tr>
-</table>
 <?php if(!empty($training->protocol)) { ?>
-&nbsp;
 <table width="100%" class="protocol">
 	<tr>
         <td class="tcell-left top"><?php echo $lang["TRAINING_DESCRIPTION"];?></td>
@@ -129,4 +335,32 @@
 	</tr>
 </table>
 <?php } ?>
+&nbsp;
+<table width="100%" class="standard">
+	<tr>
+	  <td class="tcell-left">Teilnehmeranzahl</td>
+        <td><?php echo $training->num_members;?></td>
+	</tr>
+</table>
+<table width="100%" class="standard">
+	<tr>
+	  <td class="tcell-left"><?php echo $lang["TRAINING_MEMBER"];?></td>
+        <td><?php 
+foreach($member as $value) { 
+	echo '<div style="padding-bottom: 5px;">' . $value->name . '</div><br />';
+	echo '<span class="smalltext invitationLink ' . $value->invitation_class . '">Einladung</span>';
+	echo '<span class="smalltext registrationLink ' . $value->registration_class . '">Anmeldung</span>';
+	echo '<span class="smalltext tookpartLink ' . $value->tookpart_class . '">Teilnahmebest&auml;tigung</span>';
+	echo '<span class="smalltext feedbackLink ' . $value->feedback_class . '">Feedback</span>';
+  	if(!empty($value->logs)) {
+		foreach($value->logs as $log) { 
+			echo '<div class="grey smalltext" style="padding-top: 5px;">' . $lang['TRAINING_MEMBER_LOG_' . $log->action] . ': ' . $log->who . ', ' . $log->date . '</div>';
+		} 
+	}
+	echo '<br /><br />';
+
+} ?></td>
+	</tr>
+</table>
+
 <div style="page-break-after:always;">&nbsp;</div>

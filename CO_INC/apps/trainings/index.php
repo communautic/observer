@@ -29,6 +29,23 @@ if (!empty($_GET['request'])) {
 		case 'getFolderDetails':
 			echo($trainings->getFolderDetails($_GET['id']));
 		break;
+		case 'getFolderDetailsList':
+			echo($trainings->getFolderDetailsList($_GET['id']));
+		break;
+		case 'getFolderDetailsMultiView':
+			$zoom = 0;
+			if(!empty($_GET['zoom'])) {
+				$zoom = $_GET['zoom'];
+			}
+			$view = "Timeline";
+			if(!empty($_GET['view'])) {
+				$view = $_GET['view'];
+			}
+			echo($trainings->getFolderDetailsMultiView($_GET['id'],$view,$zoom));
+		break;
+		case 'getFolderDetailsStatus':
+			echo($trainings->getFolderDetailsStatus($_GET['id']));
+		break;
 		case 'setFolderOrder':
 			echo($trainings->setSortOrder("trainings-folder-sort",$_GET['folderItem']));
 		break;
@@ -44,6 +61,19 @@ if (!empty($_GET['request'])) {
 				$t = $_GET['t'];
 			}
 			echo($trainings->printFolderDetails($_GET['id'],$t));
+		break;
+		case 'printFolderDetailsList':
+			echo($trainings->printFolderDetailsList($_GET['id']));
+		break;
+		case 'printFolderDetailsMultiView':
+			$view = "Timeline";
+			if(!empty($_GET['view'])) {
+				$view = $_GET['view'];
+			}
+			echo($trainings->printFolderDetailsMultiView($_GET['id'],$view));
+		break;
+		case 'printFolderDetailsStatus':
+			echo($trainings->printFolderDetailsList($_GET['id']));
 		break;
 		case 'binFolder':
 			echo($trainings->binFolder($_GET['id']));
@@ -74,6 +104,9 @@ if (!empty($_GET['request'])) {
 			}
 			echo($trainings->printTrainingDetails($_GET['id'],$t));
 		break;
+		case 'printMemberList':
+			echo($trainings->printMemberList($_GET['id']));
+		break;
 		case 'printTrainingHandbook':
 			$t = "pdf"; // options: pdf, html
 			if(!empty($_GET['t'])) {
@@ -89,6 +122,19 @@ if (!empty($_GET['request'])) {
 		break;
 		case 'getFolderSend':
 			echo($trainings->getFolderSend($_GET['id']));
+		break;
+		case 'getSendFolderDetailsList':
+			echo($trainings->getSendFolderDetailsList($_GET['id']));
+		break;
+		case 'getSendFolderDetailsMultiView':
+			$view = "Timeline";
+			if(!empty($_GET['view'])) {
+				$view = $_GET['view'];
+			}
+			echo($trainings->getSendFolderDetailsMultiView($_GET['id'],$view));
+		break;
+		case 'getSendFolderDetailsStatus':
+			echo($trainings->getSendFolderDetailsList($_GET['id']));
 		break;
 		case 'getSendtoDetails':
 			echo($trainings->getSendtoDetails("trainings",$_GET['id']));
@@ -108,11 +154,50 @@ if (!empty($_GET['request'])) {
 		case 'deleteTraining':
 			echo($trainings->deleteTraining($_GET['id']));
 		break;
+		case 'restoreMember':
+			echo($trainings->restoreMember($_GET['id']));
+		break;
+		case 'deleteMember':
+			echo($trainings->deleteMember($_GET['id']));
+		break;
 		case 'addMember':
 			echo($trainings->addMember($_GET['pid'],$_GET['cid']));
 		break;
+		case 'getGroupIDs':
+			echo($trainings->getGroupIDs($_GET['cid']));
+		break;
 		case 'sendInvitation':
 			echo($trainings->sendInvitation($_GET['id']));
+		break;
+		case 'manualInvitation':
+			echo($trainings->manualInvitation($_GET['id']));
+		break;
+		case 'resetInvitation':
+			echo($trainings->resetInvitation($_GET['id']));
+		break;
+		case 'manualRegistration':
+			echo($trainings->manualRegistration($_GET['id']));
+		break;
+		case 'removeRegistration':
+			echo($trainings->removeRegistration($_GET['id']));
+		break;
+		case 'resetRegistration':
+			echo($trainings->resetRegistration($_GET['id']));
+		break;
+		case 'manualTookpart':
+			echo($trainings->manualTookpart($_GET['id']));
+		break;
+		case 'resetTookpart':
+			echo($trainings->resetTookpart($_GET['id']));
+		break;
+		case 'editFeedback':
+			echo($trainings->editFeedback($_GET['id']));
+		break;
+		case 'sendFeedback':
+			echo($trainings->sendFeedback($_GET['id']));
+		break;
+		case 'resetFeedback':
+			echo($trainings->resetFeedback($_GET['id']));
 		break;
 		case 'binMember':
 			echo($trainings->binMember($_GET['id']));
@@ -145,6 +230,9 @@ if (!empty($_GET['request'])) {
 		break;
 		case 'getBin':
 			echo($trainings->getBin());
+		break;
+		case 'getWidgetAlerts':
+			echo($trainings->getWidgetAlerts());
 		break;
 		case 'emptyBin':
 			echo($trainings->emptyBin());
@@ -211,6 +299,12 @@ if (!empty($_POST['request'])) {
 		break;
 		case 'sendFolderDetails':
 			echo($trainings->sendFolderDetails($_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
+		break;
+		case 'sendFolderDetailsList':
+			echo($trainings->sendFolderDetailsList($_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
+		break;
+		case 'sendFolderDetailsMultiView':
+			echo($trainings->sendFolderDetailsMultiView($_POST['variable'], $_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
 		break;
 		case 'updateCheckpointText':
 			echo($trainings->updateCheckpointText($_POST['id'],$system->checkMagicQuotes($_POST['text'])));

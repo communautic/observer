@@ -59,6 +59,67 @@ class Trainings extends Controller {
 		}
 	}
 
+	function getFolderDetailsList($id) {
+		global $lang, $system;
+		if($arr = $this->model->getFolderDetails($id)) {
+			$folder = $arr["folder"];
+			$trainings = $arr["trainings"];
+			ob_start();
+			include 'view/folder_edit_list.php';
+			$data["html"] = ob_get_contents();
+			ob_end_clean();
+			$data["access"] = $arr["access"];
+			return json_encode($data);
+		} else {
+			ob_start();
+			include CO_INC .'/view/default.php';
+			$data["html"] = ob_get_contents();
+			ob_end_clean();
+			return json_encode($data);
+		}
+	}
+	
+	
+	function getFolderDetailsMultiView($id,$view,$zoom) {
+		global $date, $lang, $system;
+		if($arr = $this->model->getFolderDetailsMultiView($id,$view,$zoom)) {
+		$folder = $arr["folder"];
+		$trainings = $arr["trainings"];
+		ob_start();
+			include('view/folder_edit_multiview.php');
+			$data["html"] = ob_get_contents();
+		ob_end_clean();
+		$data["access"] = $arr["access"];
+		return json_encode($data);
+		} else {
+			ob_start();
+			include CO_INC .'/view/default.php';
+			$data["html"] = ob_get_contents();
+			ob_end_clean();
+			return json_encode($data);
+		}
+	}
+
+	function getFolderDetailsStatus($id) {
+		global $lang, $system;
+		if($arr = $this->model->getFolderDetails($id)) {
+			$folder = $arr["folder"];
+			$trainings = $arr["trainings"];
+			ob_start();
+			include 'view/folder_edit_status.php';
+			$data["html"] = ob_get_contents();
+			ob_end_clean();
+			$data["access"] = $arr["access"];
+			return json_encode($data);
+		} else {
+			ob_start();
+			include CO_INC .'/view/default.php';
+			$data["html"] = ob_get_contents();
+			ob_end_clean();
+			return json_encode($data);
+		}
+	}
+
 
 	function printFolderDetails($id, $t) {
 		global $session,$lang;
@@ -76,12 +137,94 @@ class Trainings extends Controller {
 		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_TRAINING_FOLDER"];
 		switch($t) {
 			case "html":
-				$this->printHTML($title,$html);
+				$this->printHTML($title,$html,1,'logo_print_training.png');
 			break;
 			default:
-				$this->printPDF($title,$html);
+				$this->printPDF($title,$html,1,'logo_print_training.png');
 		}
 		
+	}
+
+	function printFolderDetailsList($id) {
+		global $session,$lang;
+		$title = "";
+		$html = "";
+		if($arr = $this->model->getFolderDetails($id)) {
+			$folder = $arr["folder"];
+			$trainings = $arr["trainings"];
+			ob_start();
+				include 'view/folder_print_list.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			$title = $folder->title;
+		}
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_PROJECT_FOLDER"];
+		$this->printPDF($title,$html,1,'logo_print_training.png');
+	}
+
+
+	function printFolderDetailsMultiView($id,$view) {
+		global $date, $lang, $system;
+		if($arr = $this->model->getFolderDetailsMultiView($id,$view)) {
+			  $folder = $arr["folder"];
+			  $trainings = $arr["trainings"];
+			  
+			  $folder->page_width = $folder->css_width+245+20;
+			  $folder->page_height = $folder->css_height+200;
+			  if($folder->page_width < 896) {
+				  $folder->page_width = 896;
+			  }
+			  if($folder->page_height < 595) {
+				  $folder->page_height = 595;
+			  }
+			  
+			  ob_start();
+			  include('view/folder_print_multiview.php');
+				  $html = ob_get_contents();
+			  ob_end_clean();
+			  $title = $folder->title . " - " . $lang["PROJECT_TIMELINE_PROJECT_PLAN"];
+			  
+			  $this->printGantt($title,$html,$folder->page_width,$folder->page_height);
+		}
+	}
+	
+	
+	function printGantt($title,$text,$width,$height) {
+		global $lang;
+		ob_start();
+			include(CO_INC . "/view/printheader.php");
+			$header = ob_get_contents();
+		ob_end_clean();		
+		$footer = "</body></html>";
+        $html = $header . $text . $footer;
+		require_once(CO_INC . "/classes/dompdf_60_beta2/dompdf_config.inc.php");
+		$dompdf = new DOMPDF();
+		$dompdf->load_html($html);
+		/*$dompdf->set_paper('a4', 'portrait');  change 'a4' to whatever you want 
+         breite, höhe pixel dividiert durch 96 * 72*/
+        $dompdf->set_paper( array(0,0, $width / 96 * 72, $height / 96 * 72), "portrait" );
+		$dompdf->render();
+		$options['Attachment'] = 1;
+		$options['Accept-Ranges'] = 0;
+		$options['compress'] = 1;
+		$dompdf->stream($title.".pdf", $options);
+	}
+
+	function printFolderDetailsStatus($id) {
+		global $session,$lang;
+		$title = "";
+		$html = "";
+		if($arr = $this->model->getFolderDetails($id)) {
+			$folder = $arr["folder"];
+			$trainings = $arr["trainings"];
+			ob_start();
+				include 'view/folder_print_list.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			$title = $folder->title;
+		}
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_PROJECT_FOLDER"];
+		$this->printPDF($title,$html,1,'logo_print_training.png');
 	}
 
 
@@ -96,6 +239,44 @@ class Trainings extends Controller {
 			$cc = "";
 			$subject = $folder->title;
 			$variable = "";
+			include CO_INC .'/view/dialog_send.php';
+		}
+		else {
+			include CO_INC .'/view/default.php';
+		}
+	}
+	
+	
+	function getSendFolderDetailsList($id) {
+		global $lang;
+		if($arr = $this->model->getFolderDetails($id)) {
+			$folder = $arr["folder"];
+			$trainings = $arr["trainings"];	
+			$form_url = $this->form_url;
+			$request = "sendFolderDetailsList";
+			$to = "";
+			$cc = "";
+			$subject = $folder->title;
+			$variable = "";
+			include CO_INC .'/view/dialog_send.php';
+		}
+		else {
+			include CO_INC .'/view/default.php';
+		}
+	}
+
+
+	function getSendFolderDetailsMultiView($id,$view) {
+		global $lang;
+		if($arr = $this->model->getFolderDetailsMultiview($id,$view)) {
+			$folder = $arr["folder"];
+			$trainings = $arr["trainings"];	
+			$form_url = $this->form_url;
+			$request = "sendFolderDetailsMultiView";
+			$to = "";
+			$cc = "";
+			$subject = $folder->title;
+			$variable = $view;
 			include CO_INC .'/view/dialog_send.php';
 		}
 		else {
@@ -120,12 +301,61 @@ class Trainings extends Controller {
 		}
 		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_TRAINING_FOLDER"];
 		$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
-		$pdf = $this->savePDF($title,$html,$attachment);
+		$pdf = $this->savePDF($title,$html,$attachment,1,'logo_print_training.png');
 		
 		// write sento log
 		//$this->writeSendtoLog("trainings",$id,$to,$subject,$body);
 		
 		//$to,$from,$fromName,$subject,$body,$attachment
+		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment);
+	}
+
+
+function sendFolderDetailsList($id,$to,$cc,$subject,$body) {
+		global $session,$users, $lang;
+		$title = "";
+		$html = "";
+		if($arr = $this->model->getFolderDetails($id)) {
+			$folder = $arr["folder"];
+			$trainings = $arr["trainings"];
+			ob_start();
+				include 'view/folder_print_list.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			$title = $folder->title;
+		}
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_TRAINING_FOLDER"];
+		$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
+		$pdf = $this->savePDF($title,$html,$attachment,1,'logo_print_training.png');
+		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment);
+	}
+
+
+	function sendFolderDetailsMultiView($variable,$id,$to,$cc,$subject,$body) {
+		global $session,$users,$date,$lang;
+		$title = "";
+		$html = "";
+		if($arr = $this->model->getFolderDetailsMultiView($id,$variable)) {
+			 $folder = $arr["folder"];
+			  $trainings = $arr["trainings"];
+			  
+			  $folder->page_width = $folder->css_width+245+20;
+			  $folder->page_height = $folder->css_height+200;
+			  if($folder->page_width < 896) {
+				  $folder->page_width = 896;
+			  }
+			  if($folder->page_height < 595) {
+				  $folder->page_height = 595;
+			  }
+			ob_start();
+				include 'view/folder_print_multiview.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			$title = $folder->title;
+		}
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_TRAINING_FOLDER"];
+		$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
+		$pdf = $this->saveTimeline($title,$html,$attachment,$folder->page_width,$folder->page_height);
 		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment);
 	}
 
@@ -226,6 +456,7 @@ class Trainings extends Controller {
 		$html = "";
 		if($arr = $this->model->getTrainingDetails($id)) {
 			$training = $arr["training"];
+			$member = $arr["members"];
 			ob_start();
 				include 'view/print.php';
 				$html = ob_get_contents();
@@ -235,83 +466,54 @@ class Trainings extends Controller {
 		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_TRAINING"];
 		switch($t) {
 			case "html":
-				$this->printHTML($title,$html);
+				$this->printHTML($title,$html,1,'logo_print_training.png');
 			break;
 			default:
-				$this->printPDF($title,$html);
+				$this->printPDF($title,$html,1,'logo_print_training.png');
 		}
 		
 	}
 
+
+	function printMemberList($id) {
+		global $session,$lang;
+		$title = "";
+		$html = "";
+		if($arr = $this->model->getTrainingDetails($id)) {
+			$training = $arr["training"];
+			$member = $arr["members"];
+			ob_start();
+				include 'view/print_memberlist.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			$title = $training->title;
+		}
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_TRAINING_MEMBERS"];
+		$this->printPDF($title,$html,1,'logo_print_training.png');
+		
+	}
 
 	function printTrainingHandbook($id, $t) {
 		global $session,$lang;
 		$title = "";
 		$html = "";
 		
-		if($arr = $this->model->getTrainingDetails($id)) {
-			$training = $arr["training"];
-			$phases = $arr["phases"];
-			$num = $arr["num"];
-			$sendto = $arr["sendto"];
+		if($arr = $this->model->getFolderDetails($id)) {
+			$folder = $arr["folder"];
+			$trainings = $arr["trainings"];
 			ob_start();
 				include 'view/handbook_cover.php';
 				$html .= ob_get_contents();
 			ob_end_clean();
 			ob_start();
-				include 'view/print.php';
+				include 'view/handbook.php';
 				$html .= ob_get_contents();
 			ob_end_clean();
-			// phases
-			$phasescont = new TrainingsPhases("phases");
-			foreach ($phases as $phase) {
-				if($arr = $phasescont->model->getDetails($phase->id,$num[$phase->id])) {
-					$phase = $arr["phase"];
-					$task = $arr["task"];
-					$sendto = $arr["sendto"];
-					ob_start();
-						include 'modules/phases/view/print.php';
-						$html .= ob_get_contents();
-					ob_end_clean();
-				}
-			}
-			// documents
-			$trainingsDocuments = new TrainingsDocuments("documents");
-			if($arrdocs = $trainingsDocuments->model->getList($id,"0")) {
-				$docs = $arrdocs["documents"];
-				foreach ($docs as $doc) {
-					if($arr = $trainingsDocuments->model->getDetails($doc->id)) {
-						$document = $arr["document"];
-						$doc = $arr["doc"];
-						$sendto = $arr["sendto"];
-						ob_start();
-							include 'modules/documents/view/print.php';
-							$html .= ob_get_contents();
-						ob_end_clean();
-					}
-				}
-				$html .= '<div style="page-break-after:always;">&nbsp;</div>';
-			}
-			// controlling
-			$trainingsControlling = new TrainingsControlling("controlling");
-			if($cont = $trainingsControlling->model->getDetails($id)) {
-				$tit = $training->title;
-				ob_start();
-					include 'modules/controlling/view/print.php';
-					$html .= ob_get_contents();
-				ob_end_clean();
-			}
-			$title = $training->title . " - " . $lang["TRAINING_HANDBOOK"];
+
+			$title = $title = $folder->title . " - " . $lang["TRAINING_HANDBOOK"];
 		}
 		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_TRAINING_MANUAL"];
-		switch($t) {
-			case "html":
-				$this->printHTML($title,$html);
-			break;
-			default:
-				$this->printPDF($title,$html);
-		}
-		
+		$this->printPDF($title,$html,1,'logo_print_training.png');
 	}
 	
 	function checkinTraining($id) {
@@ -435,6 +637,26 @@ class Trainings extends Controller {
 
 	function deleteTraining($id) {
 		$retval = $this->model->deleteTraining($id);
+		if($retval){
+			 return "true";
+		  } else{
+			 return "error";
+		  }
+	}
+	
+	
+	function restoreMember($id) {
+		$retval = $this->model->restoreMember($id);
+		if($retval){
+			 return "true";
+		  } else{
+			 return "error";
+		  }
+	}	
+
+
+	function deleteMember($id) {
+		$retval = $this->model->deleteMember($id);
 		if($retval){
 			 return "true";
 		  } else{
@@ -590,6 +812,27 @@ class Trainings extends Controller {
 	  return !empty($canView);
    }
 
+
+	function getWidgetAlerts() {
+		global $lang, $system;
+		if($arr = $this->model->getWidgetAlerts()) {
+			$kickoffs = $arr["kickoffs"];
+			$starts = $arr["starts"];
+			ob_start();
+			include 'view/widget.php';
+			$data["html"] = ob_get_contents();
+			ob_end_clean();
+			$data["widgetaction"] = $arr["widgetaction"];
+			return json_encode($data);
+		} else {
+			ob_start();
+			include CO_INC .'/view/default.php';
+			$data["html"] = ob_get_contents();
+			ob_end_clean();
+			return json_encode($data);
+		}
+	}
+
 	function getNavModulesNumItems($id) {
 		$arr = $this->model->getNavModulesNumItems($id);
 		return json_encode($arr);
@@ -669,46 +912,252 @@ class Trainings extends Controller {
 		
 		return json_encode($data);
 	}
+	
+function getGroupIDs($id) {
+		$arr = $this->model->getGroupIDs($id);
+		return $arr;
+	}
    
    function sendInvitation($id) {
-		global $lang, $session, $contactsmodel;
-		
-		//$accesscode = $session->generateAccesscode(4);
+		global $lang, $session, $contactsmodel,$date;
 		$key = uniqid(md5(rand()));
 		$this->model->storeKey($id,$key,'invitation');
 		$member = $this->model->getMemberDetails($id);
 		$arr = $this->model->getTrainingDetails($member->pid);
 		$training = $arr["training"];
 		$to = $member->cid;
-		$from = $contactsmodel->getContactFieldFromID($session->uid, 'email');
-		$fromName = $contactsmodel->getContactFieldFromID($session->uid, 'firstname') . " " . $contactsmodel->getContactFieldFromID($session->uid, 'lastname');
-		
+		$from = CO_TRAININGS_COMPANY_EMAIL;
+		$fromName = CO_TRAININGS_COMPANY_NAME;
 		$subject = 'Einladung zur Trainingsveranstaltung "' . $training->title . '"';
-		$trainingdetails = sprintf($lang["TRAINING_INVITATION_EMAIL_CAT_" . $training->training_id], $training->date1, $training->date2, $training->date3, $training->time1, $training->time2, $training->time3, $training->time4, $training->place1, $training->place1_ct, $training->place2, $training->place2_ct, $training->text1, $training->text2, $training->text3, $training->registration_end);
-		$body = sprintf($lang["TRAINING_INVITATION_EMAIL"], CO_PATH_URL . '/?path=api/apps/trainings&request=invitation&key=' . $key, $training->title, $training->company, $training->team, $training->team_ct, $training->training, $trainingdetails);
+		$email_header = str_replace('https','http',CO_PATH_URL . "/data/templates/trainings/recheis_akademie.jpg");
+		$email_button_accept = str_replace('https','http',CO_FILES . "/img/" . $lang["TRAINING_BUTTON_ACCEPT"]);
+		$email_button_decline = str_replace('https','http',CO_FILES . "/img/" . $lang["TRAINING_BUTTON_DECLINE"]);
+		$email_accept_url = CO_PATH_URL . '/?path=api/apps/trainings&request=accept&key=' . $key;
+		$email_decline_url = CO_PATH_URL . '/?path=api/apps/trainings&request=decline&key=' . $key;
+		ob_start();
+			include('view/email_training_cat'.$training->training_id.'.php');
+			$cat = ob_get_contents();
+		ob_end_clean();
+
+		ob_start();
+			include('view/email_invitation.php');
+			$body = ob_get_contents();
+		ob_end_clean();
 		
-		$email = $this->sendEmail($to,$cc="",$from,$fromName,$subject,$body);
+		/*ob_start();
+			include(CO_PATH_TEMPLATES . 'trainings/email_footer.html');
+			$body .= ob_get_contents();
+		ob_end_clean();*/
 		
-		// now save to db
-		//$save = $this->model->setContactAccessDetails($id,$cid,$username,$password);
+		$email = $this->sendEmail($to,$cc="",$from,$fromName,$subject,$body,"","","",0,0);
+		$this->model->writeMemberLog($id,'1',$session->uid);
 		
-		//$now = $this->model->_date->formatDate(gmdate("Y-m-d"),CO_DATE_FORMAT);
-		//$now = "now";
-		//$user = $contactsmodel->getUserFullname($session->uid);
-		
-		//echo sprintf($lang['CONTACTS_ACCESS_ACTIVE'], $now, $user);
-		echo true;
+		$data['action'] = $lang['TRAINING_MEMBER_LOG_1'];
+		$data['who'] = $contactsmodel->getUserListPlain($session->uid);
+		$data['date'] = $date->formatDate(gmdate("Y-m-d H:i:s"),CO_DATETIME_FORMAT);
+		return json_encode($data);
 	}
 	
-	function acceptInvitation($id) {
+	function manualInvitation($id) {
+		global $lang, $session, $contactsmodel,$date;
+		$this->model->manualInvitation($id);
+		$this->model->writeMemberLog($id,'0',$session->uid);
+		$data['action'] = $lang['TRAINING_MEMBER_LOG_0'];
+		$data['who'] = $contactsmodel->getUserListPlain($session->uid);
+		$data['date'] = $date->formatDate(gmdate("Y-m-d H:i:s"),CO_DATETIME_FORMAT);
+		return json_encode($data);
+	}
+	
+	function resetInvitation($id) {
+		global $lang, $session, $contactsmodel,$date;
+		$this->model->resetInvitation($id);
+		$this->model->writeMemberLog($id,'8',$session->uid);
+		$data['action'] = $lang['TRAINING_MEMBER_LOG_8'];
+		$data['who'] = $contactsmodel->getUserListPlain($session->uid);
+		$data['date'] = $date->formatDate(gmdate("Y-m-d H:i:s"),CO_DATETIME_FORMAT);
+		return json_encode($data);
+	}
+	
+	function acceptInvitation($id,$who) {
+		global $lang, $session, $contactsmodel,$date;
 		$retval = $this->model->acceptInvitation($id);
 		if($retval){
-			 echo 1;
+			$member = $this->model->getMemberDetails($id);
+			$arr = $this->model->getTrainingDetails($member->pid);
+			$training = $arr["training"];
+			$to = $member->cid;
+			$from = CO_TRAININGS_COMPANY_EMAIL;
+			$fromName = CO_TRAININGS_COMPANY_NAME;
+			$subject = 'Anmeldung zur Trainingsveranstaltung "' . $training->title . '"';
+			$response = $lang['TRAINING_INVITATION_RESPONSE_ACCEPT2'];
+			$email_header = str_replace('https','http',CO_PATH_URL . "/data/templates/trainings/recheis_akademie.jpg");
+			ob_start();
+				include('view/email_training_cat'.$training->training_id.'.php');
+				$cat = ob_get_contents();
+			ob_end_clean();
+			ob_start();
+				include('view/email_invitation_response.php');
+				$body = ob_get_contents();
+			ob_end_clean();
+			$email = $this->sendEmail($to,$cc="",$from,$fromName,$subject,$body,"","","",0,0);
+			$this->model->writeMemberLog($id,'2',$who);
+			 echo true;
 		  } else{
-			 echo 0;
+			 echo false;
 		  }
 	}
-   
+	
+	function declineInvitation($id,$who) {
+		global $lang, $session, $contactsmodel,$date;
+		$retval = $this->model->declineInvitation($id);
+		if($retval){
+			$member = $this->model->getMemberDetails($id);
+			$arr = $this->model->getTrainingDetails($member->pid);
+			$training = $arr["training"];
+			$to = $member->cid;
+			$from = CO_TRAININGS_COMPANY_EMAIL;
+			$fromName = CO_TRAININGS_COMPANY_NAME;
+			$subject = 'Abmeldung zur Trainingsveranstaltung "' . $training->title . '"';
+			$response = $lang['TRAINING_INVITATION_RESPONSE_DECLINE2'];
+			$email_header = str_replace('https','http',CO_PATH_URL . "/data/templates/trainings/recheis_akademie.jpg");
+			ob_start();
+				include('view/email_training_cat'.$training->training_id.'.php');
+				$cat = ob_get_contents();
+			ob_end_clean();
+			ob_start();
+				include('view/email_invitation_response.php');
+				$body = ob_get_contents();
+			ob_end_clean();
+			$email = $this->sendEmail($to,$cc="",$from,$fromName,$subject,$body,"","","",0,0);
+			$this->model->writeMemberLog($id,'4',$who);
+			 echo true;
+		  } else{
+			 echo false;
+		  }
+	}
+	
+	function manualRegistration($id) {
+		global $lang, $session, $contactsmodel,$date;
+		$this->model->manualRegistration($id);
+		$this->model->writeMemberLog($id,'3',$session->uid);
+		$data['action'] = $lang['TRAINING_MEMBER_LOG_3'];
+		$data['who'] = $contactsmodel->getUserListPlain($session->uid);
+		$data['date'] = $date->formatDate(gmdate("Y-m-d H:i:s"),CO_DATETIME_FORMAT);
+		return json_encode($data);
+	}
+	
+	function removeRegistration($id) {
+		global $lang, $session, $contactsmodel,$date;
+		$this->model->removeRegistration($id);
+		$this->model->writeMemberLog($id,'4',$session->uid);
+		$data['action'] = $lang['TRAINING_MEMBER_LOG_4'];
+		$data['who'] = $contactsmodel->getUserListPlain($session->uid);
+		$data['date'] = $date->formatDate(gmdate("Y-m-d H:i:s"),CO_DATETIME_FORMAT);
+		return json_encode($data);
+	}
+	
+	function resetRegistration($id) {
+		global $lang, $session, $contactsmodel,$date;
+		$this->model->resetRegistration($id);
+		$this->model->writeMemberLog($id,'9',$session->uid);
+		$data['action'] = $lang['TRAINING_MEMBER_LOG_9'];
+		$data['who'] = $contactsmodel->getUserListPlain($session->uid);
+		$data['date'] = $date->formatDate(gmdate("Y-m-d H:i:s"),CO_DATETIME_FORMAT);
+		return json_encode($data);
+	}
+
+	function manualTookpart($id) {
+		global $lang, $session, $contactsmodel,$date;
+		$this->model->manualTookpart($id);
+		$this->model->writeMemberLog($id,'5',$session->uid);
+		$data['action'] = $lang['TRAINING_MEMBER_LOG_5'];
+		$data['who'] = $contactsmodel->getUserListPlain($session->uid);
+		$data['date'] = $date->formatDate(gmdate("Y-m-d H:i:s"),CO_DATETIME_FORMAT);
+		return json_encode($data);
+	}
+	
+	function resetTookpart($id) {
+		global $lang, $session, $contactsmodel,$date;
+		$this->model->resetTookpart($id);
+		$this->model->writeMemberLog($id,'6',$session->uid);
+		$data['action'] = $lang['TRAINING_MEMBER_LOG_6'];
+		$data['who'] = $contactsmodel->getUserListPlain($session->uid);
+		$data['date'] = $date->formatDate(gmdate("Y-m-d H:i:s"),CO_DATETIME_FORMAT);
+		return json_encode($data);
+	}
+	
+	function editFeedback($id) {
+		global $lang, $session, $contactsmodel,$date;
+		$this->model->editFeedback($id);
+		$this->model->writeMemberLog($id,'7',$session->uid);
+		$data['action'] = $lang['TRAINING_MEMBER_LOG_7'];
+		$data['who'] = $contactsmodel->getUserListPlain($session->uid);
+		$data['date'] = $date->formatDate(gmdate("Y-m-d H:i:s"),CO_DATETIME_FORMAT);
+		return json_encode($data);
+	}
+	
+	function resetFeedback($id) {
+		global $lang, $session, $contactsmodel,$date;
+		$this->model->resetFeedback($id);
+		$this->model->writeMemberLog($id,'10',$session->uid);
+		$data['action'] = $lang['TRAINING_MEMBER_LOG_10'];
+		$data['who'] = $contactsmodel->getUserListPlain($session->uid);
+		$data['date'] = $date->formatDate(gmdate("Y-m-d H:i:s"),CO_DATETIME_FORMAT);
+		return json_encode($data);
+	}
+
+	function prepareTrainingdata($id) {
+		global $lang;
+		$member = $this->model->getMemberDetails($id);
+		$arr = $this->model->getTrainingDetails($member->pid);
+		$training = $arr["training"];
+		return $training;
+	}
+	
+	
+
+
+   function sendFeedback($id) {
+		global $lang, $session, $contactsmodel,$date;
+		$key = uniqid(md5(rand()));
+		$this->model->storeKey($id,$key,'feedback');
+		$member = $this->model->getMemberDetails($id);
+		$arr = $this->model->getTrainingDetails($member->pid);
+		$training = $arr["training"];
+		$to = $member->cid;
+		$from = CO_TRAININGS_COMPANY_EMAIL;
+		$fromName = CO_TRAININGS_COMPANY_NAME;
+		$subject = 'Feedback zur Trainingsveranstaltung "' . $training->title . '"';
+		$email_header = str_replace('https','http',CO_PATH_URL . "/data/templates/trainings/recheis_akademie.jpg");
+		$email_button_feedback = str_replace('https','http',CO_FILES . "/img/" . $lang["TRAINING_BUTTON_FEEDBACK"]);
+		$email_feedback_url = CO_PATH_URL . '/?path=api/apps/trainings&request=feedback&key=' . $key;
+		ob_start();
+			include('view/email_training_cat'.$training->training_id.'.php');
+			$cat = ob_get_contents();
+		ob_end_clean();
+		
+		ob_start();
+			include('view/email_feedback.php');
+			$body = ob_get_contents();
+		ob_end_clean();
+		
+		$email = $this->sendEmail($to,$cc="",$from,$fromName,$subject,$body,"","","",0,0);
+		$this->model->writeMemberLog($id,'7',$session->uid);
+		$data['action'] = $lang['TRAINING_MEMBER_LOG_7'];
+		$data['who'] = $contactsmodel->getUserListPlain($session->uid);
+		$data['date'] = $date->formatDate(gmdate("Y-m-d H:i:s"),CO_DATETIME_FORMAT);
+		return json_encode($data);
+	}
+	
+	function saveFeedback($id,$uid,$q1,$q2,$q3,$q4,$q5,$feedback_text) {
+		global $lang, $session, $contactsmodel,$date;
+		$this->model->saveFeedback($id,$uid,$q1,$q2,$q3,$q4,$q5,$feedback_text);
+		$this->model->writeMemberLog($id,'11',$uid);
+		$data['action'] = $lang['TRAINING_MEMBER_LOG_11'];
+		$data['who'] = $contactsmodel->getUserListPlain($uid);
+		$data['date'] = $date->formatDate(gmdate("Y-m-d H:i:s"),CO_DATETIME_FORMAT);
+		return json_encode($data);
+	}
    
    function binMember($id) {
 		$retval = $this->model->binMember($id);

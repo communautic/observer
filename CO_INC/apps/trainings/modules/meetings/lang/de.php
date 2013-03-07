@@ -20,7 +20,7 @@ $lang["TRAINING_MEETING_COPY"] = 'Protokollkopie';
 
 $lang["TRAINING_MEETING_POSPONED"] = 'verschoben';
 
-$lang["TRAINING_MEETING_HELP"] = 'manual_reklamationen_besprechungen.pdf';
+$lang["TRAINING_MEETING_HELP"] = 'manual_trainings_besprechungen.pdf';
 
 $lang["TRAINING_PRINT_MEETING"] = 'besprechung.png';
 
