@@ -1137,32 +1137,27 @@ class ProjectsModel extends Model {
    /**
    * get details for the project folder
    */
-   function setProjectDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$folder) {
+   function setProjectDetails($id,$title,$startdate,$startdate_orig,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$folder) {
 		global $session, $contactsmodel;
 		
-		$startdate = $this->_date->formatDate($_POST['startdate']);
-		//$status_date = $this->_date->formatDate($status_date);
-		
+		$startdate = $this->_date->formatDate($startdate);
+		$startdate_orig = $this->_date->formatDate($startdate_orig);
+		if($startdate != $startdate_orig) {
+			$ql = "SELECT id FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where project_link = '$id' and bin='0'";
+			$resultl = mysql_query($ql, $this->_db->connection);
+			if(mysql_num_rows($resultl) > 0) {
+				while ($rowl = mysql_fetch_assoc($resultl)) {
+					$task_id = $rowl['id'];
+					$qu = "UPDATE " . CO_TBL_PROJECTS_PHASES_TASKS . " SET startdate = '$startdate' WHERE id='$task_id'";
+					$resultu = mysql_query($qu, $this->_db->connection);
+				}
+			}
+		}
+
 		// user lists
 		$ordered_by = $contactsmodel->sortUserIDsByName($ordered_by);
 		$management = $contactsmodel->sortUserIDsByName($management);
 		$team = $contactsmodel->sortUserIDsByName($team);
-		
-		/*switch($status) {
-			case "0":
-				$sql = "planned_date";
-			break;
-			case "1":
-				$sql = "inprogress_date";
-			break;
-			case "2":
-				$sql = "finished_date";
-				$this->setAllPhasesFinished($id,$status_date);
-			break;
-			case "3":
-				$sql = "stopped_date";
-			break;
-		}*/
 
 		$now = gmdate("Y-m-d H:i:s");
 		
@@ -1419,7 +1414,8 @@ class ProjectsModel extends Model {
 		global $session, $contactsmodel;
 		
 		$startdate = $this->_date->formatDate($_POST['startdate']);
-		
+		$start = $startdate;
+		$end = array();
 		$now = gmdate("Y-m-d H:i:s");
 		$q = "UPDATE " . CO_TBL_PROJECTS . " set startdate = '$startdate', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
@@ -1429,27 +1425,29 @@ class ProjectsModel extends Model {
 				$tid = $rowt["id"];
 				$startdate = $this->_date->addDays($rowt["startdate"],$movedays);
 				$enddate = $this->_date->addDays($rowt["enddate"],$movedays);
+				$end[] = $enddate;
 				$qtk = "UPDATE " . CO_TBL_PROJECTS_PHASES_TASKS . " set startdate = '$startdate', enddate = '$enddate' where id='$tid'";
 				$retvaltk = mysql_query($qtk, $this->_db->connection);
 			}
 		if ($result) {
-			$this->checkProjectlink($id);
+			$this->checkProjectlink($id,$start,max($end));
 			return true;
 		}
 	}
 	
-	function checkProjectlink($id) {
-		$ql = "SELECT a.id,a.pid,a.phaseid,a.startdate,a.enddate,b.startdate as startdate_check, b.enddate as enddate_check FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as a, " . CO_TBL_PROJECTS . " as b where a.project_link = '$id' and a.pid=b.id and b.bin='0' and a.bin='0'";
+	function checkProjectlink($id,$startdate,$enddate) {
+		//$ql = "SELECT a.id,a.pid,a.phaseid,a.startdate,a.enddate,b.startdate as startdate_check, b.enddate as enddate_check FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as a, " . CO_TBL_PROJECTS . " as b where a.project_link = '$id' and a.pid=b.id and b.bin='0' and a.bin='0'";
+		$ql = "SELECT id,pid,phaseid,startdate,enddate FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where project_link = '$id' and bin='0'";
 		$resultl = mysql_query($ql, $this->_db->connection);
 		if(mysql_num_rows($resultl) > 0) {
 			while ($rowl = mysql_fetch_assoc($resultl)) {
-				$startdate_check = $rowl['startdate_check'];
-				$enddate_check = $rowl['enddate_check'];
+				/*$startdate_check = $rowl['startdate_check'];
+				$enddate_check = $rowl['enddate_check'];*/
 				$task_id = $rowl['id'];
 				$pid = $rowl['pid'];
 				$phid = $rowl['phaseid'];
 				$perm = 2;
-				$qu = "UPDATE " . CO_TBL_PROJECTS_PHASES_TASKS . " SET startdate = '$startdate_check', enddate = '$enddate_check' WHERE id='$task_id'";
+				$qu = "UPDATE " . CO_TBL_PROJECTS_PHASES_TASKS . " SET startdate = '$startdate', enddate = '$enddate' WHERE id='$task_id'";
 				$resultu = mysql_query($qu, $this->_db->connection);
 				// select all admins of this project as we
 				$management = $this->getProjectField($pid,'management');

@@ -639,8 +639,8 @@ class Projects extends Controller {
 	}
 
 
-	function setProjectDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$folder) {
-		$retval = $this->model->setProjectDetails($id,$title,$startdate,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$folder);
+	function setProjectDetails($id,$title,$startdate,$startdate_orig,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$folder) {
+		$retval = $this->model->setProjectDetails($id,$title,$startdate,$startdate_orig,$ordered_by,$ordered_by_ct,$management,$management_ct,$team,$team_ct,$protocol,$folder);
 		if($retval){
 			 return '{ "action": "edit", "id": "' . $id . '"}';
 		  } else{
