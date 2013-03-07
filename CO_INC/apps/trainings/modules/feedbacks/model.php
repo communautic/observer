@@ -659,57 +659,5 @@ function getDetailsTotals($id) {
    }
 
 
-   function getChart($id, $what, $value, $image = 1) { 
-		global $lang;
-		switch($what) {
-			case 'feedbacks':
-				$chart["real"] = $value;
-				$chart["rest"] = $this->getRest($chart["real"]);
-				$chart["title"] = $lang["TRAINING_FOLDER_CHART_FEEDBACKS"];
-				$chart["img_name"] = "t_feedbacks_" . $id . "_feedbacks.png";
-				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
-				
-				$chart["tendency"] = "pixel.gif";
-				
-				if($image == 1) {
-					$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
-				}
-				
-			break;
-			case 'registrations':
-				$chart["real"] = $value;
-				$chart["rest"] = $this->getRest($chart["real"]);
-				$chart["title"] = $lang["TRAINING_FEEDBACK_CHART_REGISTRATIONS"];
-				$chart["img_name"] = "t_feedbacks_" . $id . "_registrations.png";
-				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
-				
-				$chart["tendency"] = "pixel.gif";
-				
-				if($image == 1) {
-					$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
-				}
-				
-			break;
-			case 'attendees':
-				$chart["real"] = $value;
-				$chart["rest"] = $this->getRest($chart["real"]);
-				$chart["title"] = $lang["TRAINING_FEEDBACK_CHART_ATTENDEES"];
-				$chart["img_name"] = "t_feedbacks_" . $id . "_registrations.png";
-				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
-				
-				$chart["tendency"] = "pixel.gif";
-				
-				if($image == 1) {
-					$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
-				}
-				
-			break;
-		}
-		
-		return $chart;
-   }
-
-   
-
 }
 ?>

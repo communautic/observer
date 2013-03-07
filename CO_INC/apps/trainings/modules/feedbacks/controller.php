@@ -29,41 +29,10 @@ class TrainingsFeedbacks extends Trainings {
 
 	function getDetails($id) {
 		global $lang;
-		if($id == 0) {
-			if($arr = $this->model->getDetailsTotals($id)) {
-				$feedback = $arr["feedback"];
-			ob_start();
-				include 'view/stats.php';
-				$data["html"] = ob_get_contents();
-			ob_end_clean();
-			return json_encode($data);
-			}
-		} else {
-			if($arr = $this->model->getDetails($id)) {
-				$feedback = $arr["feedback"];
-				ob_start();
-					include 'view/edit.php';
-					$data["html"] = ob_get_contents();
-				ob_end_clean();
-				$data["access"] = $arr["access"];
-				return json_encode($data);
-			} else {
-				ob_start();
-					include CO_INC .'/view/default.php';
-					$data["html"] = ob_get_contents();
-				ob_end_clean();
-				return json_encode($data);
-			}
-		}
-	}
-
-
-	function getDetailsTotals($id) {
-		global $lang;
-		if($arr = $this->model->getDetailsTotals($id)) {
+		if($arr = $this->model->getDetails($id)) {
 			$feedback = $arr["feedback"];
 			ob_start();
-				include 'view/stats.php';
+				include 'view/edit.php';
 				$data["html"] = ob_get_contents();
 			ob_end_clean();
 			$data["access"] = $arr["access"];
@@ -76,6 +45,7 @@ class TrainingsFeedbacks extends Trainings {
 			return json_encode($data);
 		}
 	}
+
 
 	function printDetails($id,$t) {
 		global $session, $lang;
@@ -104,32 +74,6 @@ class TrainingsFeedbacks extends Trainings {
 		}
 	}
 
-
-	function printDetailsTotals($id,$t) {
-		global $session, $lang;
-		$title = "";
-		$html = "";
-		
-		if($arr = $this->model->getDetailsTotals($id)) {
-			$feedback = $arr["feedback"];
-			if($arr = $this->model->getTrainingDetails($id)) {
-				$training = $arr["training"];
-			}
-			ob_start();
-				include 'view/print_stats.php';
-				$html = ob_get_contents();
-			ob_end_clean();
-			$title = $training->title;
-		}
-		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["TRAINING_PRINT_FEEDBACK"];
-		switch($t) {
-			case "html":
-				$this->printHTML($title,$html,1,'logo_print_training.png');
-			break;
-			default:
-				$this->printPDF($title,$html,1,'logo_print_training.png');
-		}
-	}
 	
 	function getSend($id) {
 		global $lang;
@@ -208,32 +152,7 @@ function getSendTotals($id) {
 		//$to,$from,$fromName,$subject,$body,$attachment
 		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment);
 	}
-	
-function sendDetailsTotals($id,$variable,$to,$cc,$subject,$body) {
-		global $session, $users, $lang;
-		$title = "";
-		$html = "";
-		if($arr = $this->model->getDetailsTotals($id)) {
-			$feedback = $arr["feedback"];
-			if($arr = $this->model->getTrainingDetails($id)) {
-				$training = $arr["training"];
-			}
-			ob_start();
-				include 'view/print_stats.php';
-				$html = ob_get_contents();
-			ob_end_clean();
-			$title = $training->title;
-		}
-		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["TRAINING_PRINT_FEEDBACK"];
-		$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
-		$pdf = $this->savePDF($title,$html,$attachment,1,'logo_print_training.png');
-		
-		// write sento log
-		//$this->writeSendtoLog("trainings_feedbacks",$id,$to,$subject,$body);
-		
-		//$to,$from,$fromName,$subject,$body,$attachment
-		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment);
-	}
+
 	
 	function checkinFeedback($id) {
 		if($id != "undefined") {
@@ -393,19 +312,6 @@ function sendDetailsTotals($id,$variable,$to,$cc,$subject,$body) {
 		  }
 	}
 
-
-	function getChart($id,$what,$value,$print=0) {
-		global $lang;
-		if($chart = $this->model->getChart($id,$what,$value)) {
-				if($print == 1) {
-					include CO_INC .'/apps/trainings/view/chart_print.php';
-				} else {
-					include CO_INC .'/apps/trainings/view/chart.php';
-				}
-		} else {
-			include CO_INC .'/view/default.php';
-		}
-	}
 	
 	function getHelp() {
 		global $lang;
