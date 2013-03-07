@@ -101,7 +101,17 @@ function desktoploadModuleStart() {
 				}
 			});
 		}
-		
+
+		if(typeof trainings == "object") {
+			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/trainings&request=getWidgetAlerts", success: function(data){
+				$("#trainingsWidgetContent").html(data.html);
+				if(data.widgetaction == 'open' && $('#trainingsWidgetContent').is(':hidden')) {
+					$('#item_trainingsWidget a.collapse').trigger('click');
+				}
+				}
+			});
+		}
+
 		if(typeof brainstorms == "object") {
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getWidgetAlerts", success: function(data){
 				$("#brainstormsWidgetContent").html(data.html);
@@ -299,6 +309,11 @@ $(document).ready(function() {
 		projects.markNoticeDelete(id);
 	});
 	
+	$(document).on('click', '#desktop .trainingsLink', function(e) {
+		e.preventDefault();
+		var href = $(this).attr('rel').split(",");
+		externalLoadThreeLevels(href[0],href[1],href[2],href[3],'trainings');
+	});
 	
 	$(document).on('click', '#desktop .productionsLink', function(e) {
 		e.preventDefault();

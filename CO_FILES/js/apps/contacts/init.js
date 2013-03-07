@@ -992,18 +992,23 @@ $(document).ready(function() {
 	
 	function logGroup(field,id,value) {
 		closedialog = 0;
-		if($("#"+field).html() != "") {
-			$("#"+field+" .listmember:visible:last").append(", ");
-		}
-		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getUsersInGroupDialog&id="+id+"&field="+field, success: function(data){
-			$("#"+field).append(data);
-			var obj = getCurrentModule();
-			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
-		
-			// save to lastused
-			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=saveLastUsedGroups&id="+id});																												
+		var obj = getCurrentModule();
+		if (obj.name == "trainings") {
+			console.log('group');
+			obj.customGroupInsert(id);
+			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=saveLastUsedGroups&id="+id});	
+		} else {
+			if($("#"+field).html() != "") {
+				$("#"+field+" .listmember:visible:last").append(", ");
 			}
-		});		
+			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getUsersInGroupDialog&id="+id+"&field="+field, success: function(data){
+				$("#"+field).append(data);
+				$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+				// save to lastused
+				$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=saveLastUsedGroups&id="+id});																												
+				}
+			});	
+		}
 	}
 	
 	function logLocation(field,id,value) {
@@ -1309,7 +1314,9 @@ $(document).ready(function() {
 		if (obj.name == app+"_access") {
 			insertGroupAccess(field,gid);																																
 		} else if (field == "to" || field == "cc"){
-			insertGroupEmail(field,gid);	
+			insertGroupEmail(field,gid);
+		} else if(field == "custom") {
+			obj.customGroupInsert(gid);
 		} else {
 		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getUsersInGroupDialog&id="+gid+"&field="+field, success: function(data){
 			if($("#"+field).html() != "") {
