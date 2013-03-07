@@ -470,6 +470,10 @@ ul.actionconsole span.actionPrint { display: block; height: 33px; background: ur
 ul.actionconsole span.actionPrint:hover { background: url(../img/buttons.png) no-repeat -100px -80px; cursor: pointer;}
 ul.actionconsole span.actionPrint.noactive { background: url(../img/buttons.png) no-repeat -0px -80px; cursor: default;}
 
+ul.actionconsole span.actionPrintTwo { display: block; height: 33px; background: url(../img/buttons.png) no-repeat -50px -520px;}
+ul.actionconsole span.actionPrintTwo:hover { background: url(../img/buttons.png) no-repeat -100px -520px; cursor: pointer;}
+ul.actionconsole span.actionPrintTwo.noactive { background: url(../img/buttons.png) no-repeat -0px -520px; cursor: default;}
+
 ul.actionconsole span.actionSend { display: block; height: 33px; background: url(../img/buttons.png) no-repeat -50px -120px;}
 ul.actionconsole span.actionSend:hover { background: url(../img/buttons.png) no-repeat -100px -120px; cursor: pointer;}
 ul.actionconsole span.actionSend.noactive { background: url(../img/buttons.png) no-repeat -0px -120px; cursor: default;}
