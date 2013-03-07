@@ -64,6 +64,34 @@
 }
 ?>
 
+<?php if(is_array($arr["members"])) { ?>
+<div class="content-spacer"></div>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+	<tr>
+		<td class="tcell-left-inactive text11">Teilnehmer</td>
+    <td class="tcell-right">&nbsp;</td>
+    </tr>
+</table>
+<?php foreach ($arr["members"] as $member) { ?>
+    <table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive" id="training_<?php echo($member->id);?>" rel="<?php echo($member->id);?>">
+	<tr>
+		<td class="tcell-left text11"><span>Teilnehmer</span></td>
+		<td class="tcell-right"><?php echo($member->name);?></td>
+        <td width="25"><a href="trainings" class="binRestoreItem" rel="<?php echo $member->id;?>"><span class="icon-restore"></span></a></td>
+        <td width="25"><a href="trainings" class="binDeleteItem" rel="<?php echo $member->id;?>"><span class="icon-delete"></span></a></td>
+	</tr>
+    <tr>
+		<td class="tcell-left text11"><span><?php echo $lang["DELETED_BY_ON"];?></span></td>
+		<td class="tcell-right"><?php echo($member->binuser . ", " .$member->bintime)?></td>
+        <td></td>
+        <td></td>
+	</tr>
+</table>
+    <?php 
+	}
+}
+?>
+
 <?php
 	foreach($trainings->modules as $module => $value) {
 		if(CONSTANT('trainings_'.$module.'_bin') == 1) {

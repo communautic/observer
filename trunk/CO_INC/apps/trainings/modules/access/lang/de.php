@@ -3,7 +3,7 @@ $trainings_access_name = "Zugang";
 
 $lang["TRAINING_ACCESSRIGHTS"] = 'Berechtigungen';
 
-$lang["TRAINING_ACCESS_HELP"] = 'manual_reklamationen_zugang.pdf';
+$lang["TRAINING_ACCESS_HELP"] = 'manual_trainings_zugang.pdf';
 
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/trainings/access/de.php";

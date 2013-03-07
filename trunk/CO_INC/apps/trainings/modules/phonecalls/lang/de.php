@@ -18,7 +18,7 @@ $lang["TRAINING_PHONECALL_GOALS"] = 'Notiz';
 $lang["TRAINING_PHONECALL_STATUS_OUTGOING"] = 'Outgoing';
 $lang["TRAINING_PHONECALL_STATUS_ON_INCOMING"] = 'Incoming';
 
-$lang["TRAINING_PHONECALL_HELP"] = 'manual_reklamationen_telefonate.pdf';
+$lang["TRAINING_PHONECALL_HELP"] = 'manual_trainings_telefonate.pdf';
 
 $lang["TRAINING_PRINT_PHONECALL"] = 'telefonat.png';
 

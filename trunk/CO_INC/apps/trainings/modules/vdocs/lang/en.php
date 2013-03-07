@@ -6,7 +6,7 @@ $lang["TRAINING_VDOC_NEW"] = 'New VDoc';
 $lang["TRAINING_VDOC_TASK_NEW"] = 'New Topic';
 $lang["TRAINING_VDOC_ACTION_NEW"] = 'new virtual document';
 
-$lang["TRAINING_VDOC_HELP"] = 'manual_reklamationen_textbeitraege.pdf';
+$lang["TRAINING_VDOC_HELP"] = 'manual_trainings_textbeitraege.pdf';
 
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/trainings/vdocs/en.php";

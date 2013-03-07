@@ -66,8 +66,8 @@ $lang['TRAINING_ACCESS_CODES_EMAIL'] =	'<p style="font-face: Arial, Verdana; fon
 								'<p style="font-face: Arial, Verdana; font-size: small;">mama-bringt\'s Team</p>';
 
 
-$lang["TRAINING_HELP"] = 'manual_kunden_kunden.pdf';
-$lang["TRAINING_FOLDER_HELP"] = 'manual_kunden_ordner.pdf';
+$lang["TRAINING_HELP"] = 'manual_trainings_trainings.pdf';
+$lang["TRAINING_FOLDER_HELP"] = 'manual_trainings_ordner.pdf';
 
 // Print images
 $lang["PRINT_TRAINING_MANUAL"] = 'training_manual.png';

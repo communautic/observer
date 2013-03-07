@@ -1,10 +1,6 @@
 <?php
-//include_once(CO_PATH_BASE . "/model.php");
-//include_once(dirname(__FILE__)."/model/folders.php");
-//include_once(dirname(__FILE__)."/model/trainings.php");
 
 class TrainingsModel extends Model {
-	
 	// Get all Training Folders
    function getFolderList($sort) {
       global $session;
@@ -68,24 +64,19 @@ class TrainingsModel extends Model {
       $result = mysql_query($q, $this->_db->connection);
 	  $folders = "";
 	  while ($row = mysql_fetch_array($result)) {
-
 		foreach($row as $key => $val) {
-				$array[$key] = $val;
-				if($key == "id") {
-				$array["numTrainings"] = $this->getNumTrainings($val);
-				}
+			$array[$key] = $val;
+			if($key == "id") {
+			$array["numTrainings"] = $this->getNumTrainings($val);
 			}
-			$folders[] = new Lists($array);
-		  
+		}
+		$folders[] = new Lists($array);
 	  }
-	  
 	  $perm = "guest";
 	  if($session->isSysadmin()) {
 		  $perm = "sysadmin";
 	  }
-	  
 	  $arr = array("folders" => $folders, "sort" => $sortcur, "access" => $perm);
-	  
 	  return $arr;
    }
 
@@ -135,19 +126,19 @@ class TrainingsModel extends Model {
 		
 		 $sortstatus = $this->getSortStatus("trainings-sort-status",$id);
 		if(!$sortstatus) {
-		  	$order = "order by title";
+		  	$order = "order by date1";
 		  } else {
 			  switch($sortstatus) {
 				  case "1":
-				  		$order = "order by title";
+				  		$order = "order by date1";
 				  break;
 				  case "2":
-				  		$order = "order by title DESC";
+				  		$order = "order by date1 DESC";
 				  break;
 				  case "3":
 				  		$sortorder = $this->getSortOrder("trainings-sort-order",$id);
 				  		if(!$sortorder) {
-						  	$order = "order by title";
+						  	$order = "order by date1";
 						  } else {
 							$order = "order by field(id,$sortorder)";
 						  }
@@ -164,23 +155,59 @@ class TrainingsModel extends Model {
 			foreach($row as $key => $val) {
 				$training[$key] = $val;
 			}
-			$training["management"] = $contactsmodel->getUserListPlain($training['management']);
+			$training["team"] = $contactsmodel->getUserListPlain($training['team']);
 			$training["perm"] = $this->getTrainingAccess($training["id"]);
+			
+			$training["dates_display"] = "";
+			switch($training["training"]) {
+				case '1': // Vortrag
+					$training["date1"] = $this->_date->formatDate($training["date1"],CO_DATE_FORMAT);
+					$training["dates_display"] = $training["date1"];
+				break;
+				case '2': // Vortrag & Coaching
+					$training["date1"] = $this->_date->formatDate($training["date1"],CO_DATE_FORMAT);
+					$training["date2"] = $this->_date->formatDate($training["date2"],CO_DATE_FORMAT);
+					$training["dates_display"] = $training["date1"] . ' - ' . $training["date2"];
+				break;
+				case '3': // e-training
+					$training["date1"] = $this->_date->formatDate($training["date1"],CO_DATE_FORMAT);
+					$training["date3"] = $this->_date->formatDate($training["date3"],CO_DATE_FORMAT);
+					$training["dates_display"] = $training["date1"] . ' - ' . $training["date3"];
+				break;
+				case '4': // e-training & Coaching
+					$training["date1"] = $this->_date->formatDate($training["date1"],CO_DATE_FORMAT);
+					$training["date2"] = $this->_date->formatDate($training["date2"],CO_DATE_FORMAT);
+					$training["dates_display"] = $training["date1"] . ' - ' . $training["date2"];
+				break;
+				case '5': // einzelcoaching
+					$training["date1"] = $this->_date->formatDate($training["date1"],CO_DATE_FORMAT);
+					$training["dates_display"] = $training["date1"];
+				break;
+				case '6': // workshop
+					$training["date1"] = $this->_date->formatDate($training["date1"],CO_DATE_FORMAT);
+					$training["dates_display"] = $training["date1"];
+				break;
+				case '7': // veranstaltungsreihe
+					$training["date1"] = $this->_date->formatDate($training["date1"],CO_DATE_FORMAT);
+					$training["date2"] = $this->_date->formatDate($training["date2"],CO_DATE_FORMAT);
+					$training["dates_display"] = $training["date1"] . ' - ' . $training["date2"];
+				break;
+			}
 			
 		switch($training["status"]) {
 			case "0":
-				$training["status_text"] = $lang["GLOBAL_STATUS_ENTERED"];
-				$training["status_text_time"] = $lang["GLOBAL_STATUS_ENTERED_TIME"];
+				$training["status_text"] = $lang["GLOBAL_STATUS_PLANNED"];
+				$training["status_text_time"] = $lang["GLOBAL_STATUS_PLANNED_TIME"];
 				$training["status_date"] = $this->_date->formatDate($training["planned_date"],CO_DATE_FORMAT);
 			break;
 			case "1":
-				$training["status_text"] = $lang["GLOBAL_STATUS_INPROGRESS"];
-				$training["status_text_time"] = $lang["GLOBAL_STATUS_INPROGRESS_TIME"];
+				$training["status_text"] = $lang["GLOBAL_STATUS_INACTION"];
+				$training["status_text_time"] = $lang["GLOBAL_STATUS_INACTION_TIME"];
 				$training["status_date"] = $this->_date->formatDate($training["inprogress_date"],CO_DATE_FORMAT);
 			break;
 			case "2":
-				$training["status_text"] = $lang["GLOBAL_STATUS_FINISHED"];
-				$training["status_text_time"] = $lang["GLOBAL_STATUS_FINISHED_TIME"];
+				$training["status_text"] = $lang["GLOBAL_STATUS_FINISHED2"];
+				$training["status_text_time"] = $lang["GLOBAL_STATUS_FINISHED2_TIME"];
 				$training["status_date"] = $this->_date->formatDate($training["finished_date"],CO_DATE_FORMAT);
 			break;
 			case "3":
@@ -202,6 +229,241 @@ class TrainingsModel extends Model {
 		return $arr;
    }
 
+
+function getFolderDetailsMultiView($id, $view, $width=17) {
+		global $session, $contactsmodel, $trainingsControllingModel;
+		$now = new DateTime("now");
+		$today = $now->format('Y-m-d');
+		
+		if($width == 0) {
+		  $zoom = $this->getUserSetting("trainings-multiview-chart-zoom");
+		  if(!$zoom) {
+			$width = 17;
+		  } else {
+			$width = $zoom;
+		  }
+		} else {
+			$width = $width;
+		}
+		$this->setUserSetting("trainings-multiview-chart-zoom",$width);
+		
+		// settings apart from width
+		$space_between_phases = 2;
+		$height_of_tasks = 10;
+		
+		$array["bg_image"] = CO_FILES . "/img/barchart_bg_".$width.".png";
+		$array["bg_image_shift"] = 0;
+		$array["td_width"] = $width;
+		
+		// zoom
+		$array["zoom_xsmall"] = "zoom-xsmall";
+		$array["zoom_small"] = "zoom-small";
+		$array["zoom_medium"] = "zoom-medium";
+		$array["zoom_large"] = "zoom-large";
+		$array["zoom_xlarge"] = "zoom-xlarge";
+		
+		switch($width) {
+			case 5:
+				$array["zoom_xsmall"] = "zoom-xsmall-active";
+			break;
+			case 11:
+				$array["zoom_small"] = "zoom-small-active";
+			break;
+			case 17:
+				$array["zoom_medium"] = "zoom-medium-active";
+			break;
+			case 23:
+				$array["zoom_large"] = "zoom-large-active";
+			break;
+			case 29:
+				$array["zoom_xlarge"] = "zoom-xlarge-active";
+			break;
+		}
+		
+		$q = "SELECT * FROM " . CO_TBL_TRAININGS_FOLDERS . " where id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result) < 1) {
+			return false;
+		}
+		$row = mysql_fetch_assoc($result);
+		foreach($row as $key => $val) {
+			$array[$key] = $val;
+		}	
+		
+		$array["canedit"] = true;
+		$array["access"] = "sysadmin";
+ 		if(!$session->isSysadmin()) {
+			$array["canedit"] = false;
+			$array["access"] = "guest";
+		}
+
+		// get training details
+		$access="";
+		if(!$session->isSysadmin()) {
+			$access = " and a.id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
+	  	}
+		
+		$start = array();
+		$q = "SELECT MIN(date1) as startdate,GREATEST(date1,date2,date3) as enddate FROM " . CO_TBL_TRAININGS . " as a where a.folder='$id' and a.bin='0'" . $access . " ORDER BY startdate ASC";
+		$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result) > 0) {
+			while ($row = mysql_fetch_array($result)) {
+				/*if($row['startdate'] == '') {
+					$start[] = $row['kickoff'];
+				} else {*/
+					$start[] = $row['startdate'];
+				//}
+			}
+		
+			$array["startdate"] = min($start);
+		} else {
+			return false;
+		}
+		
+		switch($view) {
+			case 'Timeline':
+				$order = "date1 ASC";
+			break;
+			case 'Management':
+				$order = "name ASC";
+			break;
+			case 'Status':
+				$order = "status ASC";
+			break;
+		}
+				
+		$q = "SELECT a.title,a.id,a.team,a.status,a.date1,a.date2,a.date3,a.training, (SELECT CONCAT(c.lastname,' ', SUBSTRING(c.firstname,1,1),'.') FROM co_users as c WHERE a.team = c.id) as name FROM " . CO_TBL_TRAININGS . " as a where a.folder='$id' and a.bin='0'" . $access . " ORDER BY " . $order;
+		$result = mysql_query($q, $this->_db->connection);
+	  	$trainings = "";
+		
+		$end = array();
+		$css_top = 11;
+		$numTrainings = mysql_num_rows($result);
+
+	  	while ($row = mysql_fetch_array($result)) {
+			foreach($row as $key => $val) {
+				$training[$key] = $val;
+			}
+			/*$training["kickoff_only"] = false;
+			if($training["enddate"] == '') {
+				$training["enddate"] = $training["kickoff"];
+			}
+			$end[] = $training["enddate"];
+			if($training["startdate"] == '') {
+				$training["startdate"] = $training["kickoff"];
+				$training["kickoff_only"] = true;
+				$training["kickoff_space"] = round($width/2)-8;
+			}*/
+			
+			switch($training["training"]) {
+				case '1': // Vortrag
+					$training["startdate"] = $training["date1"];
+					$training["enddate"] = $training["date1"];
+					$end[] = $training["enddate"];
+					$training["date1"] = $this->_date->formatDate($training["date1"],CO_DATE_FORMAT);
+					$training["dates_display"] = $training["date1"];
+				break;
+				case '2': // Vortrag & Coaching
+					$training["startdate"] = $training["date1"];
+					$training["enddate"] = $training["date2"];
+					$end[] = $training["enddate"];
+					$training["date1"] = $this->_date->formatDate($training["date1"],CO_DATE_FORMAT);
+					$training["date2"] = $this->_date->formatDate($training["date2"],CO_DATE_FORMAT);
+					$training["dates_display"] = $training["date1"] . ' - ' . $training["date2"];
+				break;
+				case '3': // e-training
+					$training["startdate"] = $training["date1"];
+					$training["enddate"] = $training["date3"];
+					$end[] = $training["enddate"];
+					$training["date1"] = $this->_date->formatDate($training["date1"],CO_DATE_FORMAT);
+					$training["date3"] = $this->_date->formatDate($training["date3"],CO_DATE_FORMAT);
+					$training["dates_display"] = $training["date1"] . ' - ' . $training["date3"];
+				break;
+				case '4': // e-training & Coaching
+					$training["startdate"] = $training["date1"];
+					$training["enddate"] = $training["date2"];
+					$end[] = $training["enddate"];
+					$training["date1"] = $this->_date->formatDate($training["date1"],CO_DATE_FORMAT);
+					$training["date2"] = $this->_date->formatDate($training["date2"],CO_DATE_FORMAT);
+					$training["dates_display"] = $training["date1"] . ' - ' . $training["date2"];
+				break;
+				case '5': // einzelcoaching
+					$training["startdate"] = $training["date1"];
+					$training["enddate"] = $training["date1"];
+					$end[] = $training["enddate"];
+					$training["date1"] = $this->_date->formatDate($training["date1"],CO_DATE_FORMAT);
+					$training["dates_display"] = $training["date1"];
+				break;
+				case '6': // workshop
+					$training["startdate"] = $training["date1"];
+					$training["enddate"] = $training["date1"];
+					$end[] = $training["enddate"];
+					$training["date1"] = $this->_date->formatDate($training["date1"],CO_DATE_FORMAT);
+					$training["dates_display"] = $training["date1"];
+				break;
+				case '7': // workshop
+					$training["startdate"] = $training["date1"];
+					$training["enddate"] = $training["date2"];
+					$end[] = $training["enddate"];
+					$training["date1"] = $this->_date->formatDate($training["date1"],CO_DATE_FORMAT);
+					$training["date2"] = $this->_date->formatDate($training["date2"],CO_DATE_FORMAT);
+					$training["dates_display"] = $training["date1"] . ' - ' . $training["date2"];
+				break;
+				//case '7': // veranstaltungsreihe
+					//$training["dates_display"] = $training["text1"];
+				//break;
+			}
+			
+			$pid = $training["id"];
+			$training["days"] = $this->_date->dateDiff($training["startdate"],$training["enddate"])+1;
+			$training_start = $this->_date->dateDiff($array["startdate"],$training["startdate"]);
+			$training["css_left"] = $training_start * $width;
+			
+			$training["startdate"] = $this->_date->formatDate($training["startdate"],CO_DATE_FORMAT);
+			$training["enddate"] = $this->_date->formatDate($training["enddate"],CO_DATE_FORMAT);
+			$training["management"] = $contactsmodel->getUserListPlain($training['team']);
+			//$training["realisation"] = $trainingsControllingModel->getChart($training["id"], "realisation", 0);
+			$training["perm"] = $this->getTrainingAccess($training["id"]);
+			$training["css_top"] = $css_top;
+			$training["css_width"] = ($training["days"]) * $width;
+			
+			switch($training["status"]) {
+				case "0":
+					$training["status"] = "barchart_color_planned";
+				break;
+				case "1":
+					$training["status"] = "barchart_color_inprogress";
+				break;
+				case "2":
+					$training["status"] = "barchart_color_finished";
+				break;
+				case "3":
+					$training["status"] = "barchart_color_not_finished";
+				break;
+			}
+			
+			// tasks loop			
+			
+			
+			$trainings[] = new Lists($training);
+			$css_top =  $css_top+38;
+	  	}
+
+		$array["days"] = $this->_date->dateDiff($array["startdate"],max($end));
+		$array["css_width"] = ($array["days"]+1) * $width;
+		$array["css_height"] = $numTrainings*38; // pixel add at bottom
+		//$training["css_height"] += $space_between_phases;
+		
+		$folder = new Lists($array);
+		
+		$access = "guest";
+		  if($session->isSysadmin()) {
+			  $access = "sysadmin";
+		  }
+		
+		$arr = array("folder" => $folder, "trainings" => $trainings, "access" => $access);
+		return $arr;
+   }
 
    /**
    * get details for the training folder
@@ -447,22 +709,22 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 	  if($sort == 0) {
 		  $sortstatus = $this->getSortStatus("trainings-sort-status",$id);
 		  if(!$sortstatus) {
-		  	$order = "order by title";
+		  	$order = "order by date1";
 			$sortcur = '1';
 		  } else {
 			  switch($sortstatus) {
 				  case "1":
-				  		$order = "order by title";
+				  		$order = "order by date1";
 						$sortcur = '1';
 				  break;
 				  case "2":
-				  		$order = "order by title DESC";
+				  		$order = "order by date1 DESC";
 						$sortcur = '2';
 				  break;
 				  case "3":
 				  		$sortorder = $this->getSortOrder("trainings-sort-order",$id);
 				  		if(!$sortorder) {
-						  	$order = "order by title";
+						  	$order = "order by date1";
 							$sortcur = '1';
 						  } else {
 							$order = "order by field(id,$sortorder)";
@@ -474,17 +736,17 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 	  } else {
 		  switch($sort) {
 				  case "1":
-				  		$order = "order by title";
+				  		$order = "order by date1";
 						$sortcur = '1';
 				  break;
 				  case "2":
-				  		$order = "order by title DESC";
+				  		$order = "order by date1 DESC";
 						$sortcur = '2';
 				  break;
 				  case "3":
 				  		$sortorder = $this->getSortOrder("trainings-sort-order",$id);
 				  		if(!$sortorder) {
-						  	$order = "order by title";
+						  	$order = "order by date1";
 							$sortcur = '1';
 						  } else {
 							$order = "order by field(id,$sortorder)";
@@ -498,7 +760,7 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 	  if(!$session->isSysadmin()) {
 		$access = " and id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
 	  }
-	  $q ="select id,title,status,checked_out,checked_out_user from " . CO_TBL_TRAININGS . " where folder='$id' and bin = '0' " . $access . $order;
+	  $q ="select id,title,date1,status,checked_out,checked_out_user from " . CO_TBL_TRAININGS . " where folder='$id' and bin = '0' " . $access . $order;
 
 	  $this->setSortStatus("trainings-sort-status",$sortcur,$id);
       $result = mysql_query($q, $this->_db->connection);
@@ -519,6 +781,7 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 			
 		}
 		
+		$array["date1"] = $this->_date->formatDate($array["date1"],CO_DATE_FORMAT);
 		// status
 		$itemstatus = "";
 		if($array["status"] == 2) {
@@ -667,7 +930,9 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
 		
 		// other functions
+		$array["folder_id"] = $array["folder"];
 		$array["folder"] = $this->getTrainingFolderDetails($array["folder"],"folder");
+		$array["management_print"] = $contactsmodel->getUserListPlain($array['management']);
 		$array["management"] = $contactsmodel->getUserList($array['management'],'trainingsmanagement', "", $array["canedit"]);
 		$array["management_ct"] = empty($array["management_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['management_ct'];
 		$array["team_print"] = $contactsmodel->getUserListPlain($array['team']);
@@ -691,22 +956,22 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 		$array["status_stopped_active"] = "";
 		switch($array["status"]) {
 			case "0":
-				$array["status_text"] = $lang["GLOBAL_STATUS_ENTERED"];
-				$array["status_text_time"] = $lang["GLOBAL_STATUS_ENTERED_TIME"];
+				$array["status_text"] = $lang["GLOBAL_STATUS_PLANNED"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_PLANNED_TIME"];
 				$array["status_planned_active"] = " active";
 				$array["status_date"] = $this->_date->formatDate($array["planned_date"],CO_DATE_FORMAT);
 				//$array["enddate"] = $this->_date->formatDate($today,CO_DATE_FORMAT);
 			break;
 			case "1":
-				$array["status_text"] = $lang["GLOBAL_STATUS_INPROGRESS"];
-				$array["status_text_time"] = $lang["GLOBAL_STATUS_INPROGRESS_TIME"];
+				$array["status_text"] = $lang["GLOBAL_STATUS_INACTION"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_INACTION_TIME"];
 				$array["status_inprogress_active"] = " active";
 				$array["status_date"] = $this->_date->formatDate($array["inprogress_date"],CO_DATE_FORMAT);
 				//$array["enddate"] = $this->_date->formatDate($today,CO_DATE_FORMAT);
 			break;
 			case "2":
-				$array["status_text"] = $lang["GLOBAL_STATUS_FINISHED"];
-				$array["status_text_time"] = $lang["GLOBAL_STATUS_FINISHED_TIME"];
+				$array["status_text"] = $lang["GLOBAL_STATUS_FINISHED2"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_FINISHED2_TIME"];
 				$array["status_finished_active"] = " active";
 				$array["status_date"] = $this->_date->formatDate($array["finished_date"],CO_DATE_FORMAT);
 				//$array["enddate"] = $array["status_date"];
@@ -734,33 +999,71 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 			}
 		}
 		
-		$training = new Lists($array);
 		
-		$sql="";
+		
+		/*$sql="";
 		if($array["access"] == "guest") {
 			$sql = " and a.access = '1' ";
-		}
+		}*/
 		
 		// get the members
 		$member = array();
-		$qt = "SELECT a.*,CONCAT(b.lastname,', ',b.firstname) as name FROM " . CO_TBL_TRAININGS_MEMBERS . " as a, co_users as b where a.cid=b.id and a.pid = '$id' and a.bin='0' and b.bin='0'";
+		$qt = "SELECT a.*,CONCAT(b.lastname,', ',b.firstname) as name FROM " . CO_TBL_TRAININGS_MEMBERS . " as a, co_users as b where a.cid=b.id and a.pid = '$id' and a.bin='0' and b.bin='0' ORDER BY name";
 		$resultt = mysql_query($qt, $this->_db->connection);
+		$array["num_members"] = mysql_num_rows($resultt);
+		$training = new Lists($array);
 		while($rowt = mysql_fetch_array($resultt)) {
 			foreach($rowt as $key => $val) {
 				$members[$key] = $val;
 			}
 			$members['invitation_class'] = '';
 			if($members['invitation'] == 1) {
-				$members['invitation_class'] = 'bold';
+				$members['invitation_class'] = 'active';
 			}
 			$members['registration_class'] = '';
 			if($members['registration'] == 1) {
-				$members['registration_class'] = 'bold';
+				$members['registration_class'] = 'active';
 			}
+			if($members['registration'] == 2) {
+				$members['registration_class'] = 'deactive';
+			}
+			$members['tookpart_class'] = '';
+			if($members['tookpart'] == 1) {
+				$members['tookpart_class'] = 'active';
+			}
+			if($members['tookpart'] == 2) {
+				$members['tookpart_class'] = 'deactive';
+			}
+			$members['feedback_class'] = '';
+			if($members['feedback'] == 1) {
+				$members['feedback_class'] = 'active';
+				if(empty($members['feedback_q1']) || empty($members['feedback_q2']) || empty($members['feedback_q3']) || empty($members['feedback_q4']) || empty($members['feedback_q5'])) {
+					$members['feedback_class'] = 'deactive';
+				}
+			}
+			
+			
+			// get member logs
+			$mid = $members['id'];
+			$member_log = array();
+			$members['logs'] = array();
+			$ql = "SELECT * FROM " . CO_TBL_TRAININGS_MEMBERS_LOG . " WHERE mid='$mid' ORDER by date DESC";
+			$resultl = mysql_query($ql, $this->_db->connection);
+			while($rowl = mysql_fetch_array($resultl)) {
+				foreach($rowl as $k => $v) {
+					$member_log[$k] = $v;
+				}
+				$member_log['date'] = $this->_date->formatDate($member_log['date'],CO_DATETIME_FORMAT);
+				$member_log['who'] = $contactsmodel->getUserListPlain($member_log['who']);
+				
+				
+				$members['logs'][] = new Lists($member_log);
+			}
+			
 			
 			$member[] = new Lists($members);
 		}
-				
+		
 		$sendto = $this->getSendtoDetails("trainings",$id);
 		
 		$arr = array("training" => $training, "members" => $member, "sendto" => $sendto, "access" => $array["access"]);
@@ -987,7 +1290,7 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 		
 		$now = gmdate("Y-m-d H:i:s");
 		// training
-		$q = "INSERT INTO " . CO_TBL_TRAININGS . " (folder,title,startdate,ordered_by,management,company,team,training,training_more,training_cat,training_cat_more,product,product_desc,charge,number,protocol,planned_date,created_date,created_user,edited_date,edited_user) SELECT folder,CONCAT(title,' ".$lang["GLOBAL_DUPLICAT"]."'),'$now',ordered_by,management,company,team,training,training_more,training_cat,training_cat_more,product,product_desc,charge,number,protocol,'$now','$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_TRAININGS . " where id='$id'";
+		$q = "INSERT INTO " . CO_TBL_TRAININGS . " (folder,title,management,company,team,training,registration_end,protocol,date1,date2,date3,time1,time2,time3,time4,place1,place1_ct,place2,place2_ct,text1,text2,text3,planned_date,created_date,created_user,edited_date,edited_user) SELECT folder,CONCAT(title,' ".$lang["GLOBAL_DUPLICAT"]."'),management,company,team,training,registration_end,protocol,date1,date2,date3,time1,time2,time3,time4,place1,place1_ct,place2,place2_ct,text1,text2,text3,'$now','$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_TRAININGS . " where id='$id'";
 
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
@@ -997,52 +1300,15 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 			$trainingsAccessModel->setDetails($id_new,$session->uid,"");
 		}
 			
-		// processes
-		$q = "SELECT id FROM " . CO_TBL_TRAININGS_GRIDS . " WHERE pid = '$id' and bin='0'";
+		// members
+		$q = "SELECT id FROM " . CO_TBL_TRAININGS_MEMBERS . " WHERE pid = '$id' and bin='0'";
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
-			$gridid = $row["id"];
+			$mid = $row["id"];
 		
-			$qg = "INSERT INTO " . CO_TBL_TRAININGS_GRIDS . " (pid,title,owner,owner_ct,management,management_ct,team,team_ct,created_date,created_user,edited_date,edited_user) SELECT '$id_new',title,owner,owner_ct,management,management_ct,team,team_ct,'$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_TRAININGS_GRIDS . " where id='$gridid'";
+			$qg = "INSERT INTO " . CO_TBL_TRAININGS_MEMBERS . " (pid,cid) SELECT '$id_new',cid FROM " . CO_TBL_TRAININGS_MEMBERS . " where id='$mid'";
 			$resultg = mysql_query($qg, $this->_db->connection);
 			$gridid_new = mysql_insert_id();
-		
-			// cols
-			$qc = "SELECT * FROM " . CO_TBL_TRAININGS_GRIDS_COLUMNS . " WHERE pid = '$gridid' and bin='0'";
-			$resultc = mysql_query($qc, $this->_db->connection);
-			while($rowc = mysql_fetch_array($resultc)) {
-				$colID = $rowc["id"];
-				$sort = $rowc['sort'];
-				$days = $rowc['days'];
-				$qcn = "INSERT INTO " . CO_TBL_TRAININGS_GRIDS_COLUMNS . " set pid = '$gridid_new', sort='$sort', days='$days'";
-				$resultcn = mysql_query($qcn, $this->_db->connection);
-				$colID_new = mysql_insert_id();
-				
-				$qn = "SELECT * FROM " . CO_TBL_TRAININGS_GRIDS_NOTES . " where cid = '$colID' and bin='0'";
-				$resultn = mysql_query($qn, $this->_db->connection);
-				$num_notes[] = mysql_num_rows($resultn);
-				$items = array();
-				while($rown = mysql_fetch_array($resultn)) {
-					$note_id = $rown["id"];
-					$sort = $rown["sort"];
-					$istitle = $rown["istitle"];
-					$isstagegate = $rown["isstagegate"];
-					$title = mysql_real_escape_string($rown["title"]);
-					$text = mysql_real_escape_string($rown["text"]);
-					//$ms = $rown["ms"];
-					$qnn = "INSERT INTO " . CO_TBL_TRAININGS_GRIDS_NOTES . " set cid='$colID_new', sort = '$sort', istitle = '$istitle', isstagegate = '$isstagegate', title = '$title', text = '$text', created_date='$now',created_user='$session->uid',edited_date='$now',edited_user='$session->uid'";
-					$resultnn = mysql_query($qnn, $this->_db->connection);
-				}
-			}
-		}
-		
-		//vdocs
-		$q = "SELECT id FROM " . CO_TBL_TRAININGS_VDOCS . " WHERE pid = '$id' and bin='0'";
-		$result = mysql_query($q, $this->_db->connection);
-		while($row = mysql_fetch_array($result)) {
-			$vdocid = $row["id"];
-			$qv = "INSERT INTO " . CO_TBL_TRAININGS_VDOCS . " (pid,title,content) SELECT '$id_new',title,content FROM " . CO_TBL_TRAININGS_VDOCS . " where id='$vdocid'";
-			$resultv = mysql_query($qv, $this->_db->connection);
 		}
 		
 		if ($result) {
@@ -1070,6 +1336,27 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 		}
 	}
 	
+	function restoreMember($id) {
+		$q = "UPDATE " . CO_TBL_TRAININGS_MEMBERS . " set bin = '0' WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+		  	return true;
+		}
+	}
+	
+	function deleteMember($id) {
+		// delete member log
+		$qm = "DELETE FROM co_trainings_members_log WHERE mid='$id'";
+		$resultm = mysql_query($qm, $this->_db->connection);
+		// delete members
+		$q = "DELETE FROM co_trainings_members WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		if ($result) {
+		  	return true;
+		}
+	}
+	
 	function deleteTraining($id) {
 		global $trainings;
 		
@@ -1082,6 +1369,17 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 				$arr[$module . "_folders"] = "";
 			}
 		}
+		// delete member log
+		$q = "SELECT id FROM co_trainings_members where pid = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+			$mid = $row["id"];
+			$qm = "DELETE FROM co_trainings_members_log WHERE mid='$mid'";
+			$resultm = mysql_query($qm, $this->_db->connection);
+		}
+		// delete members
+		$q = "DELETE FROM co_trainings_members WHERE pid='$id'";
+		$result = mysql_query($q, $this->_db->connection);
 		
 		if(in_array("grids",$active_modules)) {
 			$trainingsGridsModel = new TrainingsGridsModel();
@@ -1294,6 +1592,282 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
    }
 
 
+	function getChartFolder($id, $what) { 
+		global $trainingsControllingModel, $lang;
+		switch($what) {
+			case 'stability':
+				$chart = $this->getChartFolder($id, 'timeing');
+				$timeing = $chart["real"];
+				
+				/*$chart = $this->getChartFolder($id, 'tasks');
+				$tasks = $chart["real"];*/
+				// all
+				$q = "SELECT id FROM " . CO_TBL_TRAININGS. " WHERE folder = '$id' and bin = '0'";
+				$result = mysql_query($q, $this->_db->connection);
+				$all = mysql_num_rows($result);
+				
+				// stopped
+				$cancelled = 0;
+				$q = "SELECT id FROM " . CO_TBL_TRAININGS. " WHERE folder = '$id' and status != '3' and bin = '0'";
+				$result = mysql_query($q, $this->_db->connection);
+				$stopped = mysql_num_rows($result);
+				if($all != 0) {
+					$cancelled = round((100/$all)*$stopped,0);
+				}				
+				
+				$chart["real"] = round(($timeing+$cancelled)/2,0);
+				$chart["title"] = $lang["TRAINING_FOLDER_CHART_STABILITY"];
+				$chart["img_name"] = "project_" . $id . "_stability.png";
+				$chart["url"] = 'https://chart.googleapis.com/chart?chs=150x90&cht=gm&chd=t:' . $chart["real"];
+				
+				$chart["tendency"] = "pixel.gif";
+				//$chart["tendency"] = "tendency_negative.png";
+				/*if($chart["real"] >= 50) {
+					$chart["tendency"] = "tendency_positive.png";
+				}*/
+				
+				$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
+				
+			break;
+			case 'realisation':
+				//$num = 0;
+				
+				$q = "SELECT id FROM " . CO_TBL_TRAININGS. " WHERE folder = '$id' and status = '2' and bin = '0'";
+				$result = mysql_query($q, $this->_db->connection);
+				$done = mysql_num_rows($result);
+				
+				$q = "SELECT id FROM " . CO_TBL_TRAININGS. " WHERE folder = '$id' and status != '2' and bin = '0'";
+				$result = mysql_query($q, $this->_db->connection);
+				$notdone = mysql_num_rows($result);
+				
+				$num = $done + $notdone;
+				//$num = $total/100*$done;
+				
+				if($num == 0) {
+					$chart["real"] = 0;
+				} else {
+					$chart["real"] = round((100/$num)*$done,0);
+				}
+				$chart["tendency"] = "pixel.gif";
+				//$qt = "SELECT MAX(donedate) as dt,enddate FROM " . CO_TBL_PROJECTS_PHASES_TASKS. " WHERE status='1' $id_array and bin='0'";
+				//$resultt = mysql_query($qt, $this->_db->connection);
+				/*$ten = mysql_fetch_assoc($resultt);
+				if($ten["dt"] <= $ten["enddate"]) {
+					$chart["tendency"] = "tendency_positive.png";
+				}*/
+				
+				$chart["rest"] = $this->getRest($chart["real"]);
+				$chart["title"] = $lang["TRAINING_FOLDER_CHART_REALISATION"];
+				$chart["img_name"] = "training_" . $id . "_realisation.png";
+				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
+				
+				$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
+			break;
+			
+
+			case 'timeing':
+				$q = "SELECT training,date1,date2,date3,finished_date FROM " . CO_TBL_TRAININGS. " WHERE folder = '$id' and status = '2' and bin = '0'";
+				$result = mysql_query($q, $this->_db->connection);
+				$num = mysql_num_rows($result);
+				$intime = 0;
+				$delay = 0;
+				while($row = mysql_fetch_assoc($result)) {
+					switch($row["training"]) {
+						case '1': // Vortrag
+							if($row["date1"] >= $row["finished_date"]) {
+								$intime++;
+							} else {
+								$delay++;
+							}
+						break;
+						case '2': // Vortrag & Coaching
+							if($row["date2"] >= $row["finished_date"]) {
+								$intime++;
+							} else {
+								$delay++;
+							}
+						break;
+						case '3': // e-training
+							if($row["date3"] >= $row["finished_date"]) {
+								$intime++;
+							} else {
+								$delay++;
+							}
+						break;
+						case '4': // e-training & Coaching
+							if($row["date2"] >= $row["finished_date"]) {
+								$intime++;
+							} else {
+								$delay++;
+							}
+						break;
+						case '5': // einzelcoaching
+							if($row["date1"] >= $row["finished_date"]) {
+								$intime++;
+							} else {
+								$delay++;
+							}
+						break;
+						case '6': // workshop
+							if($row["date1"] >= $row["finished_date"]) {
+								$intime++;
+							} else {
+								$delay++;
+							}
+						break;
+						case '7': // veranstaltungsreihe
+							if($row["date2"] >= $row["finished_date"]) {
+								$intime++;
+							} else {
+								$delay++;
+							}
+						break;
+					}
+				}
+					
+				if($num == 0) {
+					$chart["real"] = 0;
+				} else {
+					$chart["real"] = round((100/$num)*$intime,0);
+				}
+				
+				$today = date("Y-m-d");
+				
+				$chart["tendency"] = "pixel.gif";
+				/*$qt = "SELECT COUNT(id) FROM " . CO_TBL_PROJECTS_PHASES_TASKS. " WHERE status='0' and startdate <= '$today' and enddate >= '$today' $id_array and bin='0'";
+				$resultt = mysql_query($qt, $this->_db->connection);
+				$tasks_active = mysql_result($resultt,0);
+				
+				$qo = "SELECT COUNT(id) FROM " . CO_TBL_PROJECTS_PHASES_TASKS. " WHERE status='0' and enddate < '$today' $id_array and bin='0'";
+				$resulto = mysql_query($qo, $this->_db->connection);
+				$tasks_overdue = mysql_result($resulto,0);
+				if($tasks_active + $tasks_overdue == 0) {
+					$tendency = 0;
+				} else {
+					$tendency = round((100/($tasks_active + $tasks_overdue)) * $tasks_overdue,2);
+				}
+				
+				if($tendency > 10) {
+					$chart["tendency"] = "tendency_negative.png";
+				}*/
+				
+				$chart["rest"] = $this->getRest($chart["real"]);
+				$chart["title"] = $lang["TRAINING_FOLDER_CHART_ADHERANCE"];
+				$chart["img_name"] = "training_" . $id . "_timeing.png";
+				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
+			
+				$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
+			break;
+			
+			case 'feedbacks':
+				
+				$q = "SELECT a.* FROM " . CO_TBL_TRAININGS_MEMBERS . " as a, " . CO_TBL_TRAININGS . " as b where b.folder = '$id' and a.pid=b.id and a.tookpart='1' and b.bin='0' and a.bin='0'";
+				$result = mysql_query($q, $this->_db->connection);
+				if(mysql_num_rows($result) < 1) {
+					$members = 1;
+				} else {
+					$members = mysql_num_rows($result);
+				}
+				$total_result = 0;
+				while ($row = mysql_fetch_array($result)) {
+					if(!empty($row["feedback_q1"])) { $total_result += $row["feedback_q1"]; }
+					if(!empty($row["feedback_q2"])) { $total_result += $row["feedback_q2"]; }
+					if(!empty($row["feedback_q3"])) { $total_result += $row["feedback_q3"]; }
+					if(!empty($row["feedback_q4"])) { $total_result += $row["feedback_q4"]; }
+					if(!empty($row["feedback_q5"])) { $total_result += $row["feedback_q5"]; }
+				}
+				$chart["real"] = round((100/25*$total_result)/$members,0);
+				
+				/*if($num == 0) {
+					$chart["real"] = 0;
+				} else {
+					$chart["real"] = round(($realisation)/$num,0);
+				}*/
+				
+				$today = date("Y-m-d");
+				
+				//$chart["tendency"] = "tendency_positive.png";
+				$chart["tendency"] = "pixel.gif";
+				/*$qt = "SELECT status,donedate,enddate FROM " . CO_TBL_PROJECTS_PHASES_TASKS. " WHERE enddate < '$today' $id_array and bin='0' ORDER BY enddate DESC LIMIT 0,1";
+				$resultt = mysql_query($qt, $this->_db->connection);
+				$rowt = mysql_fetch_assoc($resultt);
+				if(mysql_num_rows($resultt) != 0) {
+					$status = $rowt["status"];
+					$enddate = $rowt["enddate"];
+					$donedate = $rowt["donedate"];
+					if($status == "1" && $donedate > $enddate) {
+						$chart["tendency"] = "tendency_negative.png";
+					}
+					if($status == "0") {
+						$chart["tendency"] = "tendency_negative.png";
+					}
+				}*/
+				
+				$chart["rest"] = $this->getRest($chart["real"]);
+				$chart["title"] = $lang["TRAINING_FOLDER_CHART_FEEDBACKS"];
+				$chart["img_name"] = "training_" . $id . "_feedbacks.png";
+				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
+			
+				$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
+				
+			break;
+			case 'status':
+
+				// all
+				$q = "SELECT id FROM " . CO_TBL_TRAININGS. " WHERE folder = '$id' and bin = '0'";
+				$result = mysql_query($q, $this->_db->connection);
+				$all = mysql_num_rows($result);
+				
+				// planned
+				$q = "SELECT id FROM " . CO_TBL_TRAININGS. " WHERE folder = '$id' and status = '0' and bin = '0'";
+				$result = mysql_query($q, $this->_db->connection);
+				$planned = mysql_num_rows($result);
+				$chart["planned"] = 0;
+				if($planned != 0) {
+					$chart["planned"] = round((100/$all)*$planned,0);
+				}
+				
+				// inprogress
+				$q = "SELECT id FROM " . CO_TBL_TRAININGS. " WHERE folder = '$id' and status = '1' and bin = '0'";
+				$result = mysql_query($q, $this->_db->connection);
+				$inprogress = mysql_num_rows($result);
+				$chart["inprogress"] = 0;
+				if($inprogress != 0) {
+					$chart["inprogress"] = round((100/$all)*$inprogress,0);
+				}
+				// finished
+				$q = "SELECT id FROM " . CO_TBL_TRAININGS. " WHERE folder = '$id' and status = '2' and bin = '0'";
+				$result = mysql_query($q, $this->_db->connection);
+				$finished = mysql_num_rows($result);
+				$chart["finished"] = 0;
+				if($finished != 0) {
+					$chart["finished"] = round((100/$all)*$finished,0);
+				}
+				
+				// stopped
+				$q = "SELECT id FROM " . CO_TBL_TRAININGS. " WHERE folder = '$id' and status = '3' and bin = '0'";
+				$result = mysql_query($q, $this->_db->connection);
+				$stopped = mysql_num_rows($result);
+				$chart["stopped"] = 0;
+				if($stopped != 0) {
+					$chart["stopped"] = round((100/$all)*$stopped,0);
+				}				
+
+				$chart["title"] = $lang["PROJECT_FOLDER_CHART_STATUS"];
+				$chart["img_name"] = 'trainings_' . $id . "_status.png";
+				if($all == 0) {
+					$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:0,100&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
+				} else {
+					$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["planned"]. ',' .$chart["inprogress"] . ',' .$chart["finished"] . ',' .$chart["stopped"] . '&chs=150x90&chco=4BA0C8|FFD20A|82AA0B|7F7F7F&chf=bg,s,FFFFFF';
+				}
+				$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
+			break;
+		}
+		
+		return $chart;
+   }
+
+
    function getBin() {
 		global $trainings;
 		
@@ -1306,6 +1880,7 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 		$arr["pros"] = "";
 		$arr["files"] = "";
 		$arr["tasks"] = "";
+		$arr["members"] = "";
 		
 		$active_modules = array();
 		foreach($trainings->modules as $module => $value) {
@@ -1354,6 +1929,21 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 					$arr["pros"] = $pros;
 					} else {
 
+						// members
+						$qpc = "SELECT a.*,CONCAT(b.lastname,', ',b.firstname) as name FROM " . CO_TBL_TRAININGS_MEMBERS . " as a, co_users as b where a.cid=b.id and a.pid = '$pid'";
+							$resultpc = mysql_query($qpc, $this->_db->connection);
+							while ($rowpc = mysql_fetch_array($resultpc)) {
+								if($rowpc["bin"] == "1") {
+								$idp = $rowpc["id"];
+									foreach($rowpc as $key => $val) {
+										$member[$key] = $val;
+									}
+									$member["bintime"] = $this->_date->formatDate($member["bintime"],CO_DATETIME_FORMAT);
+									$member["binuser"] = $this->_users->getUserFullname($member["binuser"]);
+									$members[] = new Lists($member);
+									$arr["members"] = $members;
+								}
+							}
 						
 						
 						// grids
@@ -1576,6 +2166,7 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 		$arr["pros"] = "";
 		$arr["files"] = "";
 		$arr["tasks"] = "";
+		$arr["members"] = "";
 		
 		$active_modules = array();
 		foreach($trainings->modules as $module => $value) {
@@ -1603,20 +2194,20 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 					if($rowp["bin"] == "1") { // deleted trainings
 						$this->deleteTraining($pid);
 					} else {
-
-						// orders
-						/*if(in_array("orders",$active_modules)) {
-							$trainingsOrdersModel = new TrainingsOrdersModel();
-							$qph ="select id from " . CO_TBL_TRAININGS_ORDERS . " where pid = '$pid' and bin='1'";
-							$resultph = mysql_query($qph, $this->_db->connection);
-							while ($rowph = mysql_fetch_array($resultph)) {
-								$phid = $rowph["id"];
-								$trainingsOrdersModel->deleteOrder($phid);
-								$arr["orders"] = "";
+						
+						
+						// members
+						$qpc = "SELECT id, bin, bintime, binuser FROM " . CO_TBL_TRAININGS_MEMBERS . " where pid = '$pid'";
+							$resultpc = mysql_query($qpc, $this->_db->connection);
+							while ($rowpc = mysql_fetch_array($resultpc)) {
+								if($rowpc["bin"] == "1") {
+									$idp = $rowpc["id"];
+									$this->deleteMember($idp);
+									$arr["members"] = "";
+								}
 							}
-						}*/
-						
-						
+							
+
 						// grids
 					if(in_array("grids",$active_modules)) {
 						$trainingsGridsModel = new TrainingsGridsModel();
@@ -1821,7 +2412,102 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 		}
 		return $access;
    }
-   
+  
+  
+  
+ function existUserTrainingsWidgets() {
+		global $session;
+		$q = "select count(*) as num from " . CO_TBL_TRAININGS_DESKTOP_SETTINGS . " where uid='$session->uid'";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_assoc($result);
+		if($row["num"] < 1) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	
+	function getUserTrainingsWidgets() {
+		global $session;
+		$q = "select * from " . CO_TBL_TRAININGS_DESKTOP_SETTINGS . " where uid='$session->uid'";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_assoc($result);
+		return $row;
+	}
+
+
+   function getWidgetAlerts() {
+		global $session, $date;
+	  	
+		$now = new DateTime("now");
+		$today = $date->formatDate("now","Y-m-d");
+		$tomorrow = $date->addDays($today, 1);
+		$string = "";
+		
+		$access = "";
+		$skip = 0;
+		if(!$session->isSysadmin()) {
+			// check if admin
+			$editperms = $this->getEditPerms($session->uid);
+			if(empty($editperms)) {
+				$skip = 1;
+			}
+			$access = " and c.id IN (" . implode(',', $editperms) . ") ";
+
+		}
+
+		// Kick off = Admins / Sysadmins die auch Projektleiter sind
+		$kickoffs = "";
+		$array = "";
+		if($skip == 0) {
+			$q ="select c.folder,c.id as pid,c.title from " . CO_TBL_TRAININGS . " as c where bin = '0' and registration_end = '$tomorrow'" . $access . " and c.management REGEXP '[[:<:]]" . $session->uid . "[[:>:]]'";
+			$result = mysql_query($q, $this->_db->connection);
+			while ($row = mysql_fetch_array($result)) {
+				foreach($row as $key => $val) {
+					$array[$key] = $val;
+				}
+				$string .= $array["folder"] . "," . $array["pid"] . ",";
+				$kickoffs[] = new Lists($array);
+			}
+		}
+		
+		
+		// Kick off = Admins / Sysadmins die auch Projektleiter sind
+		$starts = "";
+		$array = "";
+		if($skip == 0) {
+			$q ="select c.folder,c.id as pid,c.title from " . CO_TBL_TRAININGS . " as c where bin = '0' and date1 = '$tomorrow'" . $access . " and c.management REGEXP '[[:<:]]" . $session->uid . "[[:>:]]'";
+			$result = mysql_query($q, $this->_db->connection);
+			while ($row = mysql_fetch_array($result)) {
+				foreach($row as $key => $val) {
+					$array[$key] = $val;
+				}
+				$string .= $array["folder"] . "," . $array["pid"] . ",";
+				$starts[] = new Lists($array);
+			}
+		}
+
+
+		if(!$this->existUserTrainingsWidgets()) {
+			$q = "insert into " . CO_TBL_TRAININGS_DESKTOP_SETTINGS . " set uid='$session->uid', value='$string'";
+			$result = mysql_query($q, $this->_db->connection);
+			$widgetaction = "open";
+		} else {
+			$row = $this->getUserTrainingsWidgets();
+			$id = $row["id"];
+			if($string == $row["value"]) {
+				$widgetaction = "";
+			} else {
+				$widgetaction = "open";
+			}
+			$q = "UPDATE " . CO_TBL_TRAININGS_DESKTOP_SETTINGS . " set value='$string' WHERE id = '$id'";
+			$result = mysql_query($q, $this->_db->connection);
+		}
+		
+		$arr = array("kickoffs" => $kickoffs, "starts" => $starts, "widgetaction" => $widgetaction);
+		return $arr;
+   }
    
    function setContactAccessDetails($id, $cid, $username, $password) {
 		global $session;
@@ -1863,6 +2549,10 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 		if(in_array("forums",$active_modules)) {
 			$trainingsForumsModel = new TrainingsForumsModel();
 			$data["trainings_forums_items"] = $trainingsForumsModel->getNavNumItems($id);
+		}
+		if(in_array("feedbacks",$active_modules)) {
+			$trainingsFeedbacksModel = new TrainingsFeedbacksModel();
+			$data["trainings_feedbacks_items"] = $trainingsFeedbacksModel->getNavNumItems($id);
 		}
 		if(in_array("meetings",$active_modules)) {
 			$trainingsMeetingsModel = new TrainingsMeetingsModel();
@@ -2169,12 +2859,21 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 				$array['id'] = $newid;
 				$array['invitation_class'] = '';
 				$array['registration_class'] = '';
+				$array['takepart_class'] = '';
+				$array['feedback_class'] = '';
 				$members = new Lists($array);
 			}
 		$arr = array("error" => $error, "error_data" => $error_data, "status" => $status, "members" => $members);
 		return $arr;
 	}
-	
+
+function getGroupIDs($cid) {
+		$q = "SELECT members FROM co_contacts_groups WHERE id='$cid'";
+		$result = mysql_query($q, $this->_db->connection);
+		$members = mysql_result($result,0);
+		return $members;
+	}
+
 	function storeKey($id,$key,$what) {
 		$q = "UPDATE " . CO_TBL_TRAININGS_MEMBERS . " set accesskey = '$key', $what='1' WHERE id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
@@ -2182,10 +2881,65 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 	}
 	
 	
+	function manualInvitation($id) {
+		$q = "UPDATE " . CO_TBL_TRAININGS_MEMBERS . " set invitation='1' WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		return true;
+	}
+	
+
+	function resetInvitation($id) {
+		$q = "UPDATE " . CO_TBL_TRAININGS_MEMBERS . " set invitation='0' WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		return true;
+	}
+	
+	function manualRegistration($id) {
+		$q = "UPDATE " . CO_TBL_TRAININGS_MEMBERS . " set registration='1' WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		return true;
+	}
+	
+	function removeRegistration($id) {
+		$q = "UPDATE " . CO_TBL_TRAININGS_MEMBERS . " set registration='2' WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		return true;
+	}
+	
+	function resetRegistration($id) {
+		$q = "UPDATE " . CO_TBL_TRAININGS_MEMBERS . " set registration='0' WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		return true;
+	}
+
+	function manualTookpart($id) {
+		$q = "UPDATE " . CO_TBL_TRAININGS_MEMBERS . " set tookpart='1' WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		return true;
+	}
+	
+	function resetTookpart($id) {
+		$q = "UPDATE " . CO_TBL_TRAININGS_MEMBERS . " set tookpart='0' WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		return true;
+	}
+	
+	function editFeedback($id) {
+		$q = "UPDATE " . CO_TBL_TRAININGS_MEMBERS . " set feedback='1' WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		return true;
+	}
+	
+	function resetFeedback($id) {
+		$q = "UPDATE " . CO_TBL_TRAININGS_MEMBERS . " set feedback='0' WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		return true;
+	}
+	
 	function getMemberDetails($id) {
 		$members = '';
 
-		$qu = "SELECT a.cid,a.pid,c.email,c.lastname,c.firstname,b.title FROM " . CO_TBL_TRAININGS_MEMBERS . " as a, " . CO_TBL_TRAININGS . " as b,co_users as c WHERE a.id='1' and a.cid = c.id and a.pid=b.id";
+		$qu = "SELECT a.cid,a.pid,c.email,c.lastname,c.firstname,b.title FROM " . CO_TBL_TRAININGS_MEMBERS . " as a, " . CO_TBL_TRAININGS . " as b,co_users as c WHERE a.id='$id' and a.cid = c.id and a.pid=b.id";
 		$resultu = mysql_query($qu, $this->_db->connection);
 		$row = mysql_fetch_array($resultu);
 		foreach($row as $key => $val) {
@@ -2198,6 +2952,32 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 	function acceptInvitation($id) {
 		$now = gmdate("Y-m-d H:i:s");
 		$q = "UPDATE " . CO_TBL_TRAININGS_MEMBERS . " set accesskey='', registration='1' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+		  	return true;
+		}
+   }
+   
+   function declineInvitation($id) {
+		$now = gmdate("Y-m-d H:i:s");
+		$q = "UPDATE " . CO_TBL_TRAININGS_MEMBERS . " set accesskey='', registration='2' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+		  	return true;
+		}
+   }
+   
+   function saveFeedback($id,$uid,$q1,$q2,$q3,$q4,$q5,$feedback_text) {
+   		$q = "UPDATE " . CO_TBL_TRAININGS_MEMBERS . " set accesskey='', feedback_q1='$q1', feedback_q2='$q2', feedback_q3='$q3', feedback_q4='$q4', feedback_q5='$q5', feedback_text='$feedback_text' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+		  	return true;
+		}
+   }
+
+	function writeMemberLog($id,$action,$who) {
+		$now = gmdate("Y-m-d H:i:s");
+		$q = "INSERT INTO " . CO_TBL_TRAININGS_MEMBERS_LOG . " set mid='$id', date='$now', action='$action', who='$who'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 		  	return true;

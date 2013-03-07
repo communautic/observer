@@ -10,7 +10,7 @@ $lang["TRAINING_DOCUMENT_FILENAME"] = 'Dateiname/Format';
 $lang["TRAINING_DOCUMENT_FILESIZE"] = 'Dateigrösse';
 $lang["TRAINING_DOCUMENT_FILES"] = 'Dateien';
 
-$lang["TRAINING_DOCUMENT_HELP"] = 'manual_reklamationen_aktenmappen.pdf';
+$lang["TRAINING_DOCUMENT_HELP"] = 'manual_trainings_aktenmappen.pdf';
 
 $lang["TRAINING_PRINT_DOCUMENT"] = 'akt.png';
 

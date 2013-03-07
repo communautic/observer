@@ -64,10 +64,10 @@ class TrainingsVDocs extends Trainings {
 		$GLOBALS['SECTION'] = "blank.png";
 		switch($t) {
 			case "html":
-				$this->printHTML($title,$html);
+				$this->printHTML($title,$html,1,'logo_print_training.png');
 			break;
 			default:
-				$this->printPDF($title,$html,0);
+				$this->printPDF($title,$html,1,'logo_print_training.png');
 		}
 	}
 	
