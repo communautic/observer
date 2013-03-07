@@ -5,75 +5,91 @@ $lang["trainings_name"] = 'Trainings';
 
 // Left
 $lang["TRAINING_FOLDER"] = 'Folder';
-$lang["TRAINING_FOLDER_NEW"] = 'New Folder';
-$lang["TRAINING_FOLDER_ACTION_NEW"] = 'new Folder';
+$lang["TRAINING_FOLDER_NEW"] = 'Neuer Ordner';
+$lang["TRAINING_FOLDER_ACTION_NEW"] = 'neuen Ordner anlegen';
 $lang["TRAINING_TRAININGS"] = 'Trainings';
-$lang["TRAINING_NEW"] = 'New Training';
-$lang["TRAINING_ACTION_NEW"] = 'new Training';
+$lang["TRAINING_NEW"] = 'Neues Training';
+$lang["TRAINING_ACTION_NEW"] = 'neues Training anlegen';
+
+$lang["TRAINING_FOLDER_TAB_TRAININGS"] = "Trainingsliste";
+$lang["TRAINING_FOLDER_TAB_MULTIVIEW"] = "Calendar";
+$lang["TRAINING_FOLDER_TAB_STATUS"] = "Ordnerstatus";
+$lang['TRAINING_TIMELINE_TIME'] = "Tage";
+$lang['TRAINING_TIMELINE_ACTION'] = "Vorgang";
 
 // Folder Right
-$lang["TRAINING_FOLDER_TRAININGS_CREATED"] = 'Total Trainings';
-$lang["TRAINING_FOLDER_TRAININGS_PLANNED"] = 'planned';
-$lang["TRAINING_FOLDER_TRAININGS_RUNNING"] = 'in progress';
-$lang["TRAINING_FOLDER_TRAININGS_FINISHED"] = 'completed';
-$lang["TRAINING_FOLDER_TRAININGS_STOPPED"] = 'stopped';
-$lang["TRAINING_FOLDER_STATUS_ACTIVE"] = 'activ';
-$lang["TRAINING_FOLDER_STATUS_ARCHIVE"] = 'archive';
+$lang["TRAINING_FOLDER_TRAININGS_CREATED"] = 'Trainings insgesamt';
+$lang["TRAINING_FOLDER_TRAININGS_PLANNED"] = 'Trainings in Planung';
+$lang["TRAINING_FOLDER_TRAININGS_RUNNING"] = 'Trainings in Progress';
+$lang["TRAINING_FOLDER_TRAININGS_FINISHED"] = 'Trainings abgehalten';
+$lang["TRAINING_FOLDER_TRAININGS_STOPPED"] = 'Trainings abgesagt';
+$lang["TRAINING_FOLDER_STATUS_ACTIVE"] = 'aktiv';
+$lang["TRAINING_FOLDER_STATUS_ARCHIVE"] = 'archiv';
 
-$lang["TRAINING_FOLDER_CHART_STABILITY"] = 'Performance';
-$lang["TRAINING_FOLDER_CHART_REALISATION"] = 'Progress';
-$lang["TRAINING_FOLDER_CHART_ADHERANCE"] = 'Timeliness';
-$lang["TRAINING_FOLDER_CHART_TASKS"] = 'Stage Timeliness';
+$lang["TRAINING_FOLDER_CHART_STABILITY"] = 'Umsetzungsstabilitaet aktuell';
+$lang["TRAINING_FOLDER_CHART_REALISATION"] = 'Realisierungsgrad';
+$lang["TRAINING_FOLDER_CHART_ADHERANCE"] = 'Termintreue';
+$lang["TRAINING_FOLDER_CHART_FEEDBACKS"] = 'Feedbacks';
 $lang["TRAINING_FOLDER_CHART_STATUS"] = 'Status';
 
 // Training Right
 $lang["TRAINING_TITLE"] = 'Training';
-$lang['TRAINING_KICKOFF'] = 'Kick Off';
 
-$lang["TRAINING_TRAINING"] = 'Authorised by';
-$lang["TRAINING_MANAGEMENT"] = 'Training Manager';
-$lang["TRAINING_CONTRACT"] = 'Contract';
+$lang["TRAINING_MANAGEMENT"] = 'Organisation';
+$lang["TRAINING_COMPANY"] = 'Trainingsanbieter';
+$lang["TRAINING_TEAM"] = 'TrainerIn';
+$lang["TRAINING_TRAININGCAT"] = 'Trainingsart';
 
-$lang["TRAINING_CONTRACT_ONE"] = 'Kindermenü ohne Suppe';
-$lang["TRAINING_CONTRACT_TWO"] = 'Kindermenü mit Suppe';
-$lang["TRAINING_CONTRACT_THREE"] = 'Erw. I ohne Suppe';
-$lang["TRAINING_CONTRACT_FOUR"] = 'Erw. I mit Suppe';
-$lang["TRAINING_CONTRACT_FIVE"] = 'Erw. II ohne Suppe';
-$lang["TRAINING_CONTRACT_SIX"] = 'Erw. II mit Suppe';
-$lang["TRAINING_CONTRACT_SEVEN"] = 'Erw. III ohne Suppe';
-$lang["TRAINING_CONTRACT_EIGHT"] = 'Erw. IIII mit Suppe';
+$lang["TRAINING_TIME_START"] = 'Start';
+$lang["TRAINING_TIME_END"] = 'Ende';
+$lang["TRAINING_PLACE"] = 'Ort';
+$lang["TRAINING_REGISTRATION_END"] = 'Anmeldeschluss';
+$lang["TRAINING_DESCRIPTION"] = 'Beschreibung';
 
+$lang["TRAINING_MEMBER"] = 'TeilnehmerInnen';
 
-$lang["TRAINING_TEAM"] = 'Ansprechpartner';
-$lang["TRAINING_ADDRESS"] = 'Lieferadresse';
-$lang["TRAINING_BILLING_ADDRESS"] = 'Rechnungsadresse';
+$lang['TRAINING_MEMBER_LOG_0'] = 'Einladung confirmed';
+$lang['TRAINING_MEMBER_LOG_1'] = 'Einladung versendet';
+$lang['TRAINING_MEMBER_LOG_2'] = 'Anmeldung confirmed';
+$lang['TRAINING_MEMBER_LOG_3'] = 'Anmeldung erfolgt';
+$lang['TRAINING_MEMBER_LOG_4'] = 'Abmeldung erfolgt';
+$lang['TRAINING_MEMBER_LOG_5'] = 'Teilnahme confirmed';
+$lang['TRAINING_MEMBER_LOG_6'] = 'Teilnahme deleted';
+$lang['TRAINING_MEMBER_LOG_7'] = 'Feedback versendet';
+$lang['TRAINING_MEMBER_LOG_8'] = 'Einladung deleted';
+$lang['TRAINING_MEMBER_LOG_9'] = 'Anmeldung deleted';
+$lang['TRAINING_MEMBER_LOG_10'] = 'Feedback deleted';
+$lang['TRAINING_MEMBER_LOG_11'] = 'Feedback given';
 
-$lang["TRAINING_DESCRIPTION"] = 'Notizen';
+$lang['TRAINING_INVITATION_RESPONSE_ACCEPT'] = 'Sie haben sich zur Veranstaltung angemeldet!';
+$lang['TRAINING_INVITATION_RESPONSE_ACCEPT2'] = 'Sie wurden zur Veranstaltung angemeldet!';
+$lang['TRAINING_INVITATION_RESPONSE_DECLINE'] = 'Sie haben sich zur Veranstaltung nicht angemeldet!';
+$lang['TRAINING_INVITATION_RESPONSE_DECLINE2'] = 'Sie wurden zur Veranstaltung nicht angemeldet!';
 
-$lang['TRAININGS_ACCESS_ACTIVE'] = 'Berechtigung erteilt am %s durch %s';
+$lang["TRAINING_TIMELINE_TRAINING_PLAN"] = "Balkenplan";
 
-$lang["TRAINING_HANDBOOK"] = 'Projekthandbuch';
+$lang["TRAINING_BUTTON_ACCEPT"] = 'button_accept.jpg';
+$lang["TRAINING_BUTTON_DECLINE"] = 'button_decline.jpg';
+$lang["TRAINING_BUTTON_FEEDBACK"] = 'button_feedback.jpg';
+$lang["TRAINING_BUTTON_FEEDBACK_SUBMIT"] = 'button_feedback_submit.jpg';
 
-
-// Access codes Email
-$lang['TRAINING_ACCESS_CODES_EMAIL_SUBJECT'] = 'mama-bringt\'s Bestellberechtigung';
-$lang['TRAINING_ACCESS_CODES_EMAIL'] =	'<p style="font-face: Arial, Verdana; font-size: small">Hiermit erhalten Sie Ihre Zugangscodes zur erstmaligen Anmeldung für das Online-Bestellsystem von mama-bringt\'s ©:</p>' .
-								'<p style="font-face: Arial, Verdana; font-size: small">Internetadresse: <a href="%1$s">%1$s</a></p>' .
-    							'<p style="font-face: Arial, Verdana; font-size: small">Benutzername: %2$s<br />' .
-    							'Passwort: %3$s</p>' .
-								'<p style="font-face: Arial, Verdana; font-size: small;">Bitte melden Sie sich an, indem Sie 1. die eingangs angegebene Internetadresse aufrufen und 2. die hier angegebenen Zugangsdaten (Benutzername und Passwort) eingeben und bestätigen. 3. Im Anschluss werden Sie aufgefordert, Ihre individuellen Zugangscodes zu kreieren. Mit diesen, neuen Zugangscodes erhalten Sie zukünftig Zugang zum Bestellservice auf www.mama-bringts.at</p>' .
-								'<p style="font-face: Arial, Verdana; font-size: small;">Herzlichen Dank für die Zusammenarbeit, Ihr</p>' .
-								'<p style="font-face: Arial, Verdana; font-size: small;">mama-bringt\'s Team</p>';
+$lang["TRAINING_HANDBOOK"] = 'Trainingskatalog';
 
 
 $lang["TRAINING_HELP"] = 'manual_trainings_trainings.pdf';
 $lang["TRAINING_FOLDER_HELP"] = 'manual_trainings_ordner.pdf';
 
 // Print images
-$lang["PRINT_TRAINING_MANUAL"] = 'training_manual.png';
+$lang["PRINT_TRAINING_MANUAL"] = 'katalog.png';
 $lang["PRINT_TRAINING"] = 'training.png';
-$lang["PRINT_TRAINING_FOLDER"] = 'folder.png';
+$lang["PRINT_TRAINING_MEMBERS"] = 'teilnehmerliste.png';
+$lang["PRINT_TRAINING_FOLDER"] = 'ordner.png';
 
+$lang["TRAINING_WIDGET_NO_ACTIVITY"]		=	'Keine aktuellen Benachrichtigungen';
+$lang["TRAINING_WIDGET_TITLE_KICKOFF"] 		=	'Anmeldeschluss';
+$lang["TRAINING_WIDGET_REMINDER_KICKOFF"] 	= 	'for "%1$s" ist mit <span class="yellow">morgen</span> geplant';
+$lang["TRAINING_WIDGET_TITLE_START"] 		=	'Trainingsstart';
+$lang["TRAINING_WIDGET_REMINDER_START"] 	= 	'for "%1$s" ist mit <span class="yellow">morgen</span> geplant';
 
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/trainings/en.php";

@@ -51,6 +51,7 @@ $lang["TEXT_NOTE"] = "Note:";
 	
 $lang["CREATED_BY_ON"]		= 	'created:';
 $lang["EDITED_BY_ON"] 		= 	'edited:';
+$lang["CREATED_BY_ON"]		= 	'created:';
 $lang["SENDTO_BY_ON"] 		= 	'forwarded to:';
 $lang["SENDFROM_BY_ON"] 	= 	'forwarded by:';
 $lang["DELETED_BY_ON"] 		= 	'deleted';
@@ -67,6 +68,8 @@ $lang["GLOBAL_OWNER"] = 'Owner';
 
 $lang["GLOBAL_SAVE"] = 'Save';
 $lang["GLOBAL_DELETE"] = 'Delete';
+$lang["GLOBAL_CONFIRM"] = 'Confirm';
+$lang["GLOBAL_SENDEMAIL"] = 'Send';
 
 $lang["GLOBAL_STATUS"] 		= 	'Status';
 // Status definitions
@@ -100,9 +103,6 @@ $lang["GLOBAL_STATUS_PUBISHED"] = 'published';
 $lang["GLOBAL_STATUS_PUBLISHED_TIME"] = 'on';
 $lang["GLOBAL_STATUS_ARCHIVED"] = 'archived';
 $lang["GLOBAL_STATUS_ARCHIVED_TIME"] = 'since';
-$lang["GLOBAL_DURATION"] 	= 	'Timeline';
-$lang["GLOBAL_EMAILED_TO"] 	= 	'Send';
-$lang["GLOBAL_DUPLICAT"] 	= 	'Duplicate';
 // employees
 $lang["GLOBAL_STATUS_TRIAL"] = 'in Probe';
 $lang["GLOBAL_STATUS_TRIAL_TIME"] = 'seit';
@@ -112,6 +112,15 @@ $lang["GLOBAL_STATUS_MATERNITYLEAVE"] = 'karenziert';
 $lang["GLOBAL_STATUS_MATERNITYLEAVE_TIME"] = 'seit';
 $lang["GLOBAL_STATUS_LEAVE"] = 'ausgeschieden';
 $lang["GLOBAL_STATUS_LEAVE_TIME"] = 'am';
+// trainings
+$lang["GLOBAL_STATUS_INACTION"] = 'in Ausführung';
+$lang["GLOBAL_STATUS_INACTION_TIME"] = 'seit';
+$lang["GLOBAL_STATUS_FINISHED2"] = 'abgehalten';
+$lang["GLOBAL_STATUS_FINISHED2_TIME"] = 'seit';
+
+$lang["GLOBAL_DURATION"] 	= 	'Timeline';
+$lang["GLOBAL_EMAILED_TO"] 	= 	'Send';
+$lang["GLOBAL_DUPLICAT"] 	= 	'Duplicate';
 
 $lang["GLOBAL_ACCESS"] = 'Access';
 $lang["GLOBAL_ACCESS_INTERNAL"] = 'internal';
