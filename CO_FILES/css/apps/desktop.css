@@ -222,6 +222,23 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b0c9ed', end
 #item_forumsWidget .widgetItemOuter:hover { border: 2px solid #6496dc; }
 
 
+#item_trainingsWidget { background-color: #b4b401; border: 1px solid #b4b401; }
+#item_trainingsWidget  .widget-head {
+	background: #d9d980;
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjZDlkOTgwIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjYzRjNDNhIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iNTElIiBzdG9wLWNvbG9yPSIjYjRiNDAxIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2I0YjQwMSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgPC9saW5lYXJHcmFkaWVudD4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);
+background: -moz-linear-gradient(top,  #d9d980 0, #c4c43a 50%, #b4b401 51%, #b4b401 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0,#d9d980), color-stop(50%,#c4c43a), color-stop(51%,#b4b401), color-stop(100%,#b4b401));
+background: -webkit-linear-gradient(top,  #d9d980 0,#c4c43a 50%,#b4b401 51%,#b4b401 100%);
+background: -o-linear-gradient(top,  #d9d980 0,#c4c43a 50%,#b4b401 51%,#b4b401 100%);
+background: -ms-linear-gradient(top,  #d9d980 0,#c4c43a 50%,#b4b401 51%,#b4b401 100%);
+background: linear-gradient(to bottom,  #d9d980 0,#c4c43a 50%,#b4b401 51%,#b4b401 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d9d980', endColorstr='#b4b401',GradientType=0 );
+
+}
+#trainingsWidgetContent { background-color:#414101; }
+#item_trainingsWidget .widgetItemOuter {  border: 2px solid #414101; }
+#item_trainingsWidget .widgetItemOuter:hover { border: 2px solid #b4b401; }
+
 .widgetItemTitle { position: relative; margin: 0; padding-left: 32px; font-size: 16px; font-weight: bold; }
 .widgetItemContent { margin: 5px 0 0 3px; line-height: 20px; }
 .widgetIconReminder { position: absolute; top: -1px; margin-left: -30px; width: 24px; height: 26px; background: url(../..//img/icons.png) no-repeat 0px -40px; }

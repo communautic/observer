@@ -100,3 +100,8 @@ hr { height: 1pt; color: #000; background-color: #000; border: 0; }
 .neg { background-color:#e32c00; width: 20px; height: 18px; padding-top: 2px;text-align:center; color: #fff; border: 1px solid #666; }
 .med { background-color:#d9a707; width: 20px; height: 18px; padding-top: 2px;text-align:center; color: #fff; border: 1px solid #666; }
 .pos { background-color:#619307; width: 20px; height: 18px; padding-top: 2px;text-align:center; color: #fff; border: 1px solid #666; }
+
+/* members */
+.invitationLink, .registrationLink, .tookpartLink, .feedbackLink { width: 109px; text-align: center; color: #fff; display: inline-block; height: 15px; padding-top: 3px; background: #4ba0c8; margin-right: 4px;}
+.invitationLink.active, .registrationLink.active, .tookpartLink.active, .feedbackLink.active { background-color: #82aa0a; }
+.invitationLink.deactive, .registrationLink.deactive, .tookpartLink.deactive, .feedbackLink.deactive { background-color: #eb4600; }
