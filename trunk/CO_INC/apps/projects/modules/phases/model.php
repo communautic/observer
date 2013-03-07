@@ -770,6 +770,7 @@ class ProjectsPhasesModel extends ProjectsModel {
 		$p = mysql_fetch_object($result);
 
 		$title = $p->title;
+		$folder = $p->folder;
 		$startdb = $p->startdate;
 		$startdate = $this->_date->formatDate($p->startdate,CO_DATE_FORMAT);
 		$enddb = $p->enddate;
@@ -793,6 +794,7 @@ class ProjectsPhasesModel extends ProjectsModel {
 		$tasks["enddate"] = $enddate;
 		$tasks["text"] = $title;
 		$tasks["team"] = $this->_contactsmodel->getUserListPlain($p->management);
+		$tasks["link"] = 'projects,'.$folder.','.$id.',0,projects';
 		switch($p->status) {
 			case "0":
 				$tasks["status_text"] = $lang["GLOBAL_STATUS_PLANNED"];
