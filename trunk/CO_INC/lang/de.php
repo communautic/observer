@@ -47,7 +47,7 @@ $lang["ACTION_EXPORT"] = "exportieren";
 $lang["ACTION_HELP"] = "Hilfe aufrufen";
 $lang["ACTION_DELETE"] = "löschen";
 
-$lang["TEXT_NOTE"] = "Notiz:";
+$lang["TEXT_NOTE"] = "Text:";
 	
 $lang["CREATED_BY_ON"]		= 	'angelegt:';
 $lang["EDITED_BY_ON"] 		= 	'aktualisiert:';

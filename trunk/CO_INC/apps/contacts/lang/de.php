@@ -58,7 +58,7 @@ $lang['CONTACTS_SYSADMIN_REMOVE'] = 'Berechtigung entfernt am %s durch %s';
 $lang['CONTACTS_SYSADMIN_GIVE_RIGHT'] = 'Berechtigung erteilen';
 $lang['CONTACTS_SYSADMIN_REMOVE_RIGHT'] = 'Berechtigung entfernen';
 
-$lang['CONTACTS_CUSTOM'] = 'Notiz';
+$lang['CONTACTS_CUSTOM'] = 'Text';
 
 $lang['CONTACTS_AVATARS'] = 'Kontakte / Bilder';
 
