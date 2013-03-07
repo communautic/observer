@@ -52,11 +52,12 @@ class Controller extends MySQLDB {
 	}
 	
 	
-	function printPDF($title,$text,$stationary=1) {
+	function printPDF($title,$text,$stationary=1,$headerimg='logo_print.png') {
 		global $lang;
 		$header = "";
 		$headerpdf = "";
 		$GLOBALS['STATIONARY'] = $stationary;
+		$GLOBALS['HEADERIMG'] = $headerimg;
 		
 		ob_start();
 			include(CO_INC . "/view/printheader.php");
@@ -92,13 +93,10 @@ class Controller extends MySQLDB {
 		return trim($string);
 	}
 
-
-    
-
-
-	function savePDF($title,$text,$path,$stationary=1) {
+	function savePDF($title,$text,$path,$stationary=1,$headerimg='logo_print.png') {
 		global $lang;
 		$GLOBALS['STATIONARY'] = $stationary;
+		$GLOBALS['HEADERIMG'] = $headerimg;
 		
 		ob_start();
 			include(CO_INC . "/view/printheader.php");
@@ -185,7 +183,7 @@ class Controller extends MySQLDB {
 	}
 
 
-	function sendEmail($to,$cc,$from,$fromName,$subject,$body,$attachment = "",$attachment_array = "",$vcards_array = "") {
+	function sendEmail($to,$cc,$from,$fromName,$subject,$body,$attachment = "",$attachment_array = "",$vcards_array = "",$bodynl2br = 1, $footer_display = 1) {
 		global $lang, $contactsmodel;
 		
 		try {
@@ -194,8 +192,14 @@ class Controller extends MySQLDB {
 			$mail->Encoding = 'quoted-printable';
 			//$body = file_get_contents('contents.html');
 			//$body = preg_replace('/\\\\/','', $body); //Strip backslashes
-			$body = nl2br($body);
-			$footer = $lang["GLOBAL_EMAIL_FOOTER"];
+			if($bodynl2br == 1) {
+				$body = nl2br($body);
+			}
+			if($footer_display == 1) {
+				$footer = $lang["GLOBAL_EMAIL_FOOTER"];
+			} else {
+				$footer = "";
+			}
   
 			$mail->AddReplyTo($from,$fromName);
 			$mail->SetFrom($from,$fromName);
