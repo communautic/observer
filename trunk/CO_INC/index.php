@@ -70,6 +70,7 @@ if($session->isSysadmin()) {
 <link href="<?php echo CO_FILES;?>/css/impromptu.css" rel="stylesheet" type="text/css" media="screen,projection" />
 <link href="<?php echo CO_FILES;?>/css/fileuploader.css" rel="stylesheet" type="text/css" media="screen,projection" />
 <link href="<?php echo CO_FILES;?>/css/jquery.hoverscroll.css" rel="stylesheet" type="text/css" media="screen,projection" />
+<link href="<?php echo CO_FILES;?>/css/popup.css" rel="stylesheet" type="text/css" media="screen,projection" />
 <link href="<?php echo CO_FILES;?>/css/mobile.css" type="text/css" rel="stylesheet" media="only screen and (min-device-width: 768px) and (max-device-width: 1024px)" />
 <!-- include app specific css -->
 <?php
@@ -86,6 +87,7 @@ var co_files = '<?php echo CO_FILES;?>';
 var co_lang = '<?php echo $session->userlang;?>';
 </script>
 <script src="<?php echo $protocol;?>ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js" type="text/javascript"></script>
+<!--<script src="http://code.jquery.com/jquery-migrate-1.1.0.js"></script>-->
 <script type="text/javascript" src="<?php echo $protocol;?>ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/datejs/date.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/datejs/de-AT.js"></script>
@@ -169,6 +171,7 @@ include(CO_INC . "/view/footer.php");
 <div id="modalDialog"></div>
 <div id="modalDialogTime"></div>
 <div id="modalDialogForward" title="Weiterleitung"></div>
+<div id="co-popup" class="switch-left"></div>
 <iframe id="documentloader" name="documentloader" src="about:blank" style="position: absolute; top: -1000px; left: -1000px;" /></iframe>
 </body>
 </html>
