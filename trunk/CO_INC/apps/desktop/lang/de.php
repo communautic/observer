@@ -10,6 +10,7 @@ $lang["WIDGET_TITLE_PROJECTS"] 	= 	'Projekte';
 $lang["WIDGET_TITLE_BRAINSTORMS"] 	= 	'Prozesse';
 $lang["WIDGET_TITLE_FORUMS"] 	= 	'Foren';
 $lang["WIDGET_TITLE_PRODUCTIONS"] 	= 	'Produktionen';
+$lang["WIDGET_TITLE_TRAININGS"] 	= 	'Trainings';
 
 
 $lang["CHECKPOINTS_WIDGET_NO_ACTIVITY"]		=	'Keine aktuellen Benachrichtigungen';
