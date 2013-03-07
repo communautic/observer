@@ -41,6 +41,13 @@ define("CO_DEFAULT_LANGUAGE"	, 			"de" 								);
 define("CO_DEFAULT_TIMEZONE"	, 			"Europe/London" 					);
 date_default_timezone_set("UTC");
 
+/* -------------------------------------------------------------------------
+* Settings for Module Trainings if installed
+* -------------------------------------------------------------------------*/
+
+define("CO_TRAININGS_COMPANY_NAME"	, "Recheis Akademie");
+define("CO_TRAININGS_COMPANY_EMAIL"	, "lisa.wenk@recheis.com");
+
 // Data folder
 define("CO_PATH_DATA"	, CO_PATH_BASE . "/data/");
 define("CO_PATH_DOCUMENTS"	, CO_PATH_BASE . "/data/documents/");
@@ -58,8 +65,6 @@ $img_extensions = array(".jpg", ".gif", ".png");
 define("PO_IMAGES_EXTENSIONS"	, serialize($img_extensions));
 
 define("PO_PATH_IMAGES"	, CO_PATH_BASE . "/data/images/");
-
-
 
 /* -------------------------------------------------------------------------
 * Advanced Database/Table Settings 
