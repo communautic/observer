@@ -49,8 +49,9 @@ function trainingsApplication(name) {
 		//var app = getCurrentApp();
 		switch(data.action) {
 			case "edit":
-				$("#trainings2 span[rel='"+data.id+"'] .text").html($("#trainings .title").val());
-				$("#trainingDurationStart").html($("#trainings-right input[name='startdate']").val());
+				$("#trainings2 span[rel='"+data.id+"'] .text").html($("#trainings .date1").val() + ' - ' + $("#trainings .title").val());
+				//$("#"+ app +"3 ul[rel=meetings] span[rel="+data.id+"] .text").html($("#"+ app +" .item_date").val() +' - '+$("#"+ app +" .title").val());
+				//$("#trainingDurationStart").html($("#trainings-right input[name='startdate']").val());
 			break;
 			case "refresh":
 				trainings.actionRefresh();
@@ -207,7 +208,6 @@ function trainingsApplication(name) {
 		});
 	}
 
-
 	this.actionRefresh = function() {
 		var oid = $('#trainings').data('first');
 		var pid = $('#trainings').data('second');
@@ -220,9 +220,21 @@ function trainingsApplication(name) {
 		});
 	}
 
+	this.actionHandbook = function() {
+		var id = $("#trainings").data("first");
+		var url ='/?path=apps/trainings&request=printTrainingHandbook&id='+id;
+		$("#documentloader").attr('src', url);	
+	}
+
 	this.actionPrint = function() {
 		var id = $("#trainings").data("second");
 		var url ='/?path=apps/trainings&request=printTrainingDetails&id='+id;
+		$("#documentloader").attr('src', url);
+	}
+	
+	this.actionPrintTwo = function() {
+		var id = $("#trainings").data("second");
+		var url ='/?path=apps/trainings&request=printMemberList&id='+id;
 		$("#documentloader").attr('src', url);
 	}
 
@@ -347,6 +359,7 @@ function trainingsApplication(name) {
 			} else {
 				if(data.status)	{																																	
 					$('#trainingsmembers').append(data.html);
+					$('#training_num_members').html(parseInt($('#training_num_members').html())+1)
 				} else {
 					$.prompt("Dieser Kontakt befindet sich schon in der Liste");
 				}
@@ -356,11 +369,117 @@ function trainingsApplication(name) {
 	}
 
 
-	this.sendInvitation = function(id) {
-		$.ajax({ type: "GET", url: "/", data: 'path=apps/trainings&request=sendInvitation&id=' + id, success: function(data){
+	this.customGroupInsert = function(cid) {
+		var id = $("#trainings").data("second");
+		$.ajax({ type: "GET", url: "/", data: "path=apps/trainings&request=getGroupIDs&cid=" + cid, cache: false, success: function(ids){
+			
+			var ar = ids.split(',');
+			var error = '';
+			var already = '';
+			for (var i=0; i<ar.length; i++) {
+				$.ajax({ type: "GET", url: "/", async: false, dataType:  'json', data: "path=apps/trainings&request=addMember&pid=" + id + "&cid=" + ar[i], cache: false, success: function(data){
+					if(data.error) {
+						//$.prompt(data.error_data + ' ' + ALERT_SENDTO_EMAIL);
+						//error = error+data.error_data;
+					} else {
+						if(data.status)	{																																	
+							$('#trainingsmembers').append(data.html);
+							$('#training_num_members').html(parseInt($('#training_num_members').html())+1)
+						} else {
+							//$.prompt("Dieser Kontakt befindet sich schon in der Teilnehmeriste");
+							//already = already+data.members.name;
+						}
+					}
+					}
+				});
+			}
+			if(error != '') {
+				$.prompt(error + ' ' + ALERT_SENDTO_EMAIL);
+			}
+			if(already != '') {
+				$.prompt(already + ' befinden sich schon in der Teilnehmeriste"');
+			}
+			
+		}
+		});
+	}
+
+
+	this.togglePost = function(id,obj) {
+		var module = this;
+		var outer = $('#memberlog_'+id);
+		outer.slideToggle();
+		obj.find('span').toggleClass('active');
+	}
+
+	this.trainingsMemberAction = function(action,id,other) {
+		var actionlink;
+		var actionclass;
+		var actionremoveclass = 'deactive';
+		switch(action) {
+			case 'sendInvitation':
+				actionlink = 'invitation';
+				actionclass = 'active';
+			break;
+			case 'manualInvitation':
+				actionlink = 'invitation';
+				actionclass = 'active';
+			break;
+			case 'resetInvitation':
+				actionlink = 'invitation';
+				actionclass = '';
+				actionremoveclass = 'active deactive';
+			break;
+			case 'manualRegistration':
+				actionlink = 'registration';
+				actionclass = 'active';
+			break;
+			case 'removeRegistration':
+				actionlink = 'registration';
+				actionclass = 'deactive';
+				actionremoveclass = 'active';
+			break;
+			case 'resetRegistration':
+				actionlink = 'registration';
+				actionclass = '';
+				actionremoveclass = 'active deactive';
+			break;
+			case 'manualTookpart':
+				actionlink = 'tookpart';
+				actionclass = 'active';
+			break;
+			case 'resetTookpart':
+				actionlink = 'tookpart';
+				actionclass = '';
+				actionremoveclass = 'active deactive';
+			break;
+			case 'editFeedback':
+				actionlink = 'feedback';
+				actionclass = 'active';
+			break;
+			case 'sendFeedback':
+				actionlink = 'feedback';
+				actionclass = 'deactive';
+				actionremoveclass = 'active';
+			break;
+			case 'resetFeedback':
+				actionlink = 'feedback';
+				actionclass = '';
+				actionremoveclass = 'active deactive';
+			break;
+		}
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/trainings&request='+action+'&id=' + id, success: function(data){
 			if(data){
-				//$.prompt('erfolgreich = einladung aendert farbe');
-				$('#member_'+id + ' .sendInvitation').addClass('bold');
+				$('#member_'+id + ' .'+actionlink+'Link').addClass(actionclass).removeClass(actionremoveclass);
+				$('#co-popup').css('left',-1000);
+				$('#member_log_'+id+'_content').prepend('<div class="text11">'+data.action+': ' + data.who + ', '+data.date+'</div>');
+				if($('#toggler_'+id).is(':hidden')) {
+					$('#toggler_'+id).show();
+				}
+				if(action == 'editFeedback') {
+					var href = other.split(",");
+					externalLoadThreeLevels('feedbacks',href[0],href[1],href[2],'trainings');
+				}
 			} 
 			}
 		});
@@ -380,6 +499,7 @@ function trainingsApplication(name) {
 						if(data){
 							$("#member_"+id).slideUp(function(){ 
 								$(this).remove();
+								$('#training_num_members').html(parseInt($('#training_num_members').html())-1)
 							});
 						} 
 						}
@@ -428,6 +548,48 @@ function trainingsApplication(name) {
 			callback: function(v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/trainings&request=restoreTraining&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$('#training_'+id).slideUp();
+						}
+					}
+					});
+				} 
+			}
+		});
+	}
+	
+// Recycle Bin
+	this.binDeleteItem = function(id) {
+		var txt = ALERT_DELETE_REALLY;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/trainings&request=deleteMember&id=" + id, cache: false, success: function(data){
+						if(data == "true") {
+							$('#training_'+id).slideUp();
+						}
+					}
+					});
+				} 
+			}
+		});
+	}
+
+
+	this.binRestoreItem = function(id) {
+		var txt = ALERT_RESTORE;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			callback: function(v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/trainings&request=restoreMember&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
 							$('#training_'+id).slideUp();
 						}
@@ -571,6 +733,34 @@ function trainingsFolders(name) {
 	}
 
 
+	this.actionLoadTab = function(what) {
+		var id = $("#trainings").data("first");
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/trainings&request=get'+what+'&id='+id, success: function(data){
+			$('#trainingsFoldersTabsContent').empty().html(data.html);
+			initTrainingsContentScrollbar()
+			}
+		});
+	}
+	
+	this.actionLoadSubTab = function(view) {
+		var id = $("#trainings").data("first");
+		var what = $('#trainingsFoldersTabs ul.contentTabsList span[class=active]').attr('rel');
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/trainings&request=get'+what+'&view='+view+'&id='+id, success: function(data){
+			$('#trainingsFoldersTabsContent').empty().html(data.html);
+			initTrainingsContentScrollbar()
+			}
+		});
+	}
+
+	this.loadBarchartZoom = function(zoom) {
+		var id = $("#trainings").data("first");
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/trainings&request=getFolderDetailsMultiView&id='+id+'&zoom='+zoom, success: function(data){
+			$('#trainingsFoldersTabsContent').html(data.html);
+			initTrainingsContentScrollbar()
+			}
+		});
+	}
+
 	this.actionRefresh = function() {
 		var id = $("#trainings").data("first");
 		$("#trainings1 .active-link").trigger("click");
@@ -594,14 +784,23 @@ function trainingsFolders(name) {
 
 	this.actionPrint = function() {
 		var id = $("#trainings").data("first");
-		var url ='/?path=apps/trainings&request=printFolderDetails&id='+id;
+		var what = $('#trainingsFoldersTabs ul.contentTabsList span[class=active]').attr('rel');
+		if(what == 'FolderDetailsMultiView') {
+			var view= $('#trainingsFoldersSubTabs ul span[class~=active]').attr('rel');
+			what = what + '&view=' + view;
+		}
+		var url ='/?path=apps/trainings&request=print'+what+'&id='+id;
 		$("#documentloader").attr('src', url);
 	}
 
-
 	this.actionSend = function() {
 		var id = $("#trainings").data("first");
-		$.ajax({ type: "GET", url: "/", data: "path=apps/trainings&request=getFolderSend&id="+id, success: function(html){
+		var what = $('#trainingsFoldersTabs ul.contentTabsList span[class=active]').attr('rel');
+		if(what == 'FolderDetailsMultiView') {
+			var view= $('#trainingsFoldersSubTabs ul span[class~=active]').attr('rel');
+			what = what + '&view=' + view;
+		}
+		$.ajax({ type: "GET", url: "/", data: 'path=apps/trainings&request=getSend'+what+'&id='+id, success: function(html){
 			$("#modalDialogForward").html(html).dialog('open');
 			}
 		});
@@ -732,7 +931,7 @@ var trainings_folder = new trainingsFolders('trainings_folder');
 
 function trainingsActions(status) {
 	/*	0= new	1= print	2= send		3= duplicate	4= handbook		5=refresh 	6 = delete*/
-	switch(status) {
+	/*switch(status) {
 		//case 0: actions = ['0','1','2','3','5','6']; break;
 		case 0: actions = ['0','1','2','3','6','7','8']; break;
 		case 1: actions = ['0','6','7','8']; break;
@@ -760,7 +959,32 @@ function trainingsActions(status) {
 		
 		
 		default: 	actions = ['6','7'];  								// none
+	}*/
+	var obj = getCurrentModule();
+	switch(status) {
+		case 0: 
+			if(obj.name == 'trainings_feedbacks') {
+				actions = ['1','2','4','5','6','7'];
+			} else {
+				actions = ['0','1','2','3','4','5','6','7','8'];
+			}
+		break;
+		case 1: actions = ['0','6','7','8']; break;
+		case 3: 	actions = ['0','6','7']; break;   					// just new
+		case 4: 	actions = ['0','1','2','4','6','7']; break;   		// new, print, send, handbook, refresh
+		case 5: 	actions = ['1','2','6','7']; break;   			// print, send, refresh
+		case 6: 	actions = ['5','6','7']; break;   			// handbook refresh
+		case 7: 	actions = ['0','1','2','6','7']; break;   			// new, print, send, refresh
+		case 8: 	actions = ['1','2','4','5','6','7']; break;   			// print, send, handbook, refresh
+		case 9:		actions = ['0','1','2','4','6','7','8']; break;
+		// vdocs
+		// 0 == 10
+		case 10: actions = ['0','1','2','3','4','5','6','7','8']; break;
+		// 5 == 11
+		case 11: 	actions = ['1','2','4','6','7']; break;   			// print, send, refresh
+		default: 	actions = ['6','7'];  								// none
 	}
+	
 	$('#trainingsActions > li span').each( function(index) {
 		if(index in oc(actions)) {
 			$(this).removeClass('noactive');
@@ -921,11 +1145,13 @@ $(document).ready(function() {
 		});
 	});
 	
-	$(document).on('click', '.sendInvitation', function(e) {
+	$(document).on('click', '.trainingsMemberAction', function(e) {
 		e.preventDefault();
-		var id = $(this).attr("rel");
+		var userid = $(this).attr("uid");
+		var action = $(this).attr("rel");
+		var other = $(this).attr("act");
 		var obj = getCurrentModule();
-		obj.sendInvitation(id);
+		obj.trainingsMemberAction(action,userid,other);
 	});
 
 

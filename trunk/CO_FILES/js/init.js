@@ -512,6 +512,7 @@ $(document).ready(function() {
 		obj.actionPrint();
 	});
 	
+	
 	$('span.actionSend').on('click', function(e){
 		e.preventDefault();
 		if($(this).hasClass("noactive")) {
@@ -547,6 +548,16 @@ $(document).ready(function() {
 		var app = getCurrentApp();
 		var obj = window[app];
 		obj.actionHandbook();
+	});
+	
+	$('span.actionPrintTwo').on('click', function(e){
+		e.preventDefault();
+		if($(this).hasClass("noactive")) {
+			return false;
+		}
+		var app = getCurrentApp();
+		var obj = window[app];
+		obj.actionPrintTwo();
 	});
 	
 	$('span.actionExport').on('click', function(e){
@@ -657,9 +668,28 @@ $(document).ready(function() {
 		module.showItemContext(ele,uid,field);
 	});
 	
-	$(document).on('click','.showItemPopup',function(e) {
+	$(document).on('click','.showCoPopup',function(e) {
 		e.preventDefault();
-		$(this).next().show();
+		var ele = $(this).parent();
+		var html = $(this).next().html();
+		$('#co-popup').html(html).position({
+		  my: "center center",
+		  at: "right+72 center",
+		  of: ele,
+		  using: function(coords, feedback) {
+			  var $modal = $(this),
+                top = coords.top,
+                className = 'switch-' + feedback.horizontal;
+
+            $modal.css({
+                left: coords.left + 'px',
+                top: top + 'px'
+            }).removeClass(function (index, css) {
+                   return (css.match (/\bswitch-\w+/g) || []).join(' ');
+               }).addClass(className);
+		  }
+		});
+
 		/*var ele = $(this);
 		var uid = $(this).attr('uid');
 		var field = $(this).attr('field');
@@ -835,6 +865,10 @@ $(document).ready(function() {
 			$('.context').slideUp(function() {
 				$(this).remove()
 			});
+		}
+		if(clicked.is('#co-popup') || clicked.parents().is('#co-popup')) { 
+		} else {
+			$('#co-popup').css('left',-1000);
 		}
 		if($('#modalDialog').dialog("isOpen")) {
 			if(clicked.is('#modalDialog') || clicked.parents().is('#modalDialog')) { 
