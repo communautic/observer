@@ -272,8 +272,8 @@ if (!empty($_POST['request'])) {
 		case 'setTrainingDetails':
 			if(!isset($_POST['registration_end'])) { $_POST['registration_end'] = ''; }
 			if(!isset($_POST['date1'])) { $_POST['date1'] = ''; }
-			if(!isset($_POST['date2'])) { $_POST['date2'] = ''; }
-			if(!isset($_POST['date3'])) { $_POST['date3'] = ''; }
+			if(!isset($_POST['date2'])) { $_POST['date2'] = $_POST['date1']; }
+			if(!isset($_POST['date3'])) { $_POST['date3'] = $_POST['date1']; }
 			if(!isset($_POST['time1'])) { $_POST['time1'] = ''; }
 			if(!isset($_POST['time2'])) { $_POST['time2'] = ''; }
 			if(!isset($_POST['time3'])) { $_POST['time3'] = ''; }

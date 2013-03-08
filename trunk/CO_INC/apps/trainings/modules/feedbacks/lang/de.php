@@ -21,8 +21,8 @@ $lang["TRAINING_FEEDBACK_DESCRIPTION"] = 'Beschreibung';
 $lang["TRAINING_FEEDBACK_QUESTIONS_INTRO"] = 'Beurteilen Sie zum Abschluss bitte die Qualität der Trainingsveranstaltung durch das Anwählen einer jeweiligen Kategorie pro Fragestellung (von 0 - Unzureichend bis 5 - Ausgezeichnet). Unter Punkt 6 finden Sie weiters die Möglichkeit, persönlich gehaltene Bemerkungen abzugeben. Danke für Ihre Meinung, sie ist uns wichtig!';
 $lang["TRAINING_FEEDBACK_QUESTION_1"] = 'Wie sehr hat Ihnen die Veranstaltung insgesamt zugesagt?';
 $lang["TRAINING_FEEDBACK_QUESTION_2"] = 'Wie bewerten Sie die Relation Zeitaufwand-Informationsgewinn?';
-$lang["TRAINING_FEEDBACK_QUESTION_3"] = 'Wie qualifiziert wirkt der Trainer?';
-$lang["TRAINING_FEEDBACK_QUESTION_4"] = 'Wie hoch ist der Praxiswert der angebotenen Inhalte einzuschätzen?';
+$lang["TRAINING_FEEDBACK_QUESTION_3"] = 'Wie qualifiziert war der/die TrainerIn?';
+$lang["TRAINING_FEEDBACK_QUESTION_4"] = 'Wie hoch ist der Praxiswert der Inhalte einzuschätzen?';
 $lang["TRAINING_FEEDBACK_QUESTION_5"] = 'Wurde das persönliche Weiterbildungsziel erreicht?';
 $lang["TRAINING_FEEDBACK_QUESTION_6"] = 'Weitere Kommentare';
 $lang["TRAINING_FEEDBACK_SUBMIT"] = 'Abschicken';
@@ -33,7 +33,7 @@ $lang["TRAINING_FEEDBACK_TASKS_END"] = 'Ende';
 
 $lang["TRAINING_FEEDBACK_POSPONED"] = 'verschoben';
 
-$lang["TRAINING_FEEDBACK_HELP"] = 'manual_feedbacks_zielvereinbarungen.pdf';
+$lang["TRAINING_FEEDBACK_HELP"] = 'manual_trainings_feedbacks.pdf';
 
 $lang["TRAINING_PRINT_FEEDBACK"] = 'feedback.png';
 

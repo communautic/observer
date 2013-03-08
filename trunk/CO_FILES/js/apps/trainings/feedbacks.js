@@ -130,7 +130,7 @@ function trainingsFeedbacks(name) {
 	this.actionSendtoResponse = function() {
 		var id = $("#trainings").data("third");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/trainings/modules/feedbacks&request=getSendtoDetails&id="+id, success: function(html){
-			//$("#trainingsfeedback_sendto").html(html);
+			$("#trainingsfeedback_sendto").html(html);
 			//$("#modalDialogForward").dialog('close');
 			}
 		});

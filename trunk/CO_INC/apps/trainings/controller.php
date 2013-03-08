@@ -530,7 +530,7 @@ function sendFolderDetailsList($id,$to,$cc,$subject,$body) {
 			$training = $arr["training"];
 			$form_url = $this->form_url;
 			$request = "sendTrainingDetails";
-			$to = $training->sendtoTeam;
+			$to = "";
 			$cc = "";
 			$subject = $training->title;
 			$variable = "";
@@ -555,6 +555,7 @@ function sendFolderDetailsList($id,$to,$cc,$subject,$body) {
 		$html = "";
 		if($arr = $this->model->getTrainingDetails($id)) {
 			$training = $arr["training"];
+			$member = $arr["members"];
 			ob_start();
 				include 'view/print.php';
 				$html = ob_get_contents();
@@ -895,6 +896,7 @@ function sendFolderDetailsList($id,$to,$cc,$subject,$body) {
 	}
 	
 	function addMember($pid,$id) {
+		global $lang;
 		$arr = $this->model->addMember($pid,$id);
 		$value = $arr["members"];
 		$training->canedit = true;

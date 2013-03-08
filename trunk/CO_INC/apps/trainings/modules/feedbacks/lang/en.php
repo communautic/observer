@@ -33,7 +33,7 @@ $lang["TRAINING_FEEDBACK_TASKS_END"] = 'Ende';
 
 $lang["TRAINING_FEEDBACK_POSPONED"] = 'verschoben';
 
-$lang["TRAINING_FEEDBACK_HELP"] = 'manual_feedbacks_zielvereinbarungen.pdf';
+$lang["TRAINING_FEEDBACK_HELP"] = 'manual_trainings_feedbacks.pdf';
 
 $lang["TRAINING_PRINT_FEEDBACK"] = 'feedback.png';
 
