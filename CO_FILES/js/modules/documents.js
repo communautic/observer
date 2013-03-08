@@ -382,7 +382,7 @@ function Documents(app) {
 	
 	this.actionHelp = function() {
 		var module = this;
-		var url = '/?path=apps/'+ module.app +'/modules/meetings&request=getHelp';
+		var url = '/?path=apps/'+ module.app +'/modules/documents&request=getHelp';
 		$("#documentloader").attr('src', url);
 	}
 
