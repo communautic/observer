@@ -342,11 +342,13 @@ switch($training->training_id) {
         <td><?php echo $training->num_members;?></td>
 	</tr>
 </table>
+<?php 
+$i = 0;
+foreach($member as $value) { ?>
 <table width="100%" class="standard">
 	<tr>
-	  <td class="tcell-left"><?php echo $lang["TRAINING_MEMBER"];?></td>
-        <td><?php 
-foreach($member as $value) { 
+	  <td class="tcell-left"><?php if($i == 0) { echo $lang["TRAINING_MEMBER"]; } ?>&nbsp;</td>
+        <td><?php
 	echo '<div style="padding-bottom: 5px;">' . $value->name . '</div><br />';
 	echo '<span class="smalltext invitationLink ' . $value->invitation_class . '">Einladung</span>';
 	echo '<span class="smalltext registrationLink ' . $value->registration_class . '">Anmeldung</span>';
@@ -358,9 +360,11 @@ foreach($member as $value) {
 		} 
 	}
 	echo '<br /><br />';
-
-} ?></td>
+?>
+</td>
 	</tr>
 </table>
-
+<?php 
+$i++;
+} ?>
 <div style="page-break-after:always;">&nbsp;</div>
