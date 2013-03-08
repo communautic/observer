@@ -46,3 +46,5 @@ var DATEPICKER_CLEAR = 'Clear';
 
 var ALERT_SUCCESS_COPY_MEETING = 'The meeting was successfully copied to: <br />';
 var ALERT_SUCCESS_PROJECT_EXPORT = 'The project was successfully exported to: <br />';
+
+var ALERT_TRAINING_MOVE_ALL = "Wollen Sie alle Trainingstermine an das neue Startdatum anpassen?";

@@ -103,5 +103,6 @@ hr { height: 1pt; color: #000; background-color: #000; border: 0; }
 
 /* members */
 .invitationLink, .registrationLink, .tookpartLink, .feedbackLink { width: 109px; text-align: center; color: #fff; display: inline-block; height: 15px; padding-top: 3px; background: #4ba0c8; margin-right: 3px;}
+.invitationLink.incomplete, .registrationLink.incomplete, .tookpartLink.incomplete, .feedbackLink.incomplete { background-color: #7f7f7f; }
 .invitationLink.active, .registrationLink.active, .tookpartLink.active, .feedbackLink.active { background-color: #82aa0a; }
 .invitationLink.deactive, .registrationLink.deactive, .tookpartLink.deactive, .feedbackLink.deactive { background-color: #eb4600; }

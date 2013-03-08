@@ -72,14 +72,18 @@ function trainingsApplication(name) {
 					case "2":
 						$("#trainings2 .active-link .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
 						$("#trainingDurationEnd").html($("#trainings-right input[name='status_date']").val());
+						$("#trainings .invitationLink, #trainings .registrationLink, #trainings .tookpartLink, #trainings .feedbackLink").addClass('incomplete');
 					break;
 					case "3":
 						$("#trainings2 .active-link .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
 						$("#trainingDurationEnd").html($("#trainings-right input[name='status_date']").val());
+						$("#trainings .invitationLink, #trainings .registrationLink, #trainings .tookpartLink, #trainings .feedbackLink").addClass('incomplete');
 					break;
 					default:
 						$("#trainings2 .active-link .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
-				}																															 			}
+						$("#trainings .invitationLink, #trainings .registrationLink, #trainings .tookpartLink, #trainings .feedbackLink").removeClass('incomplete');
+				}
+			}
 		});
 	}
 
@@ -448,6 +452,11 @@ function trainingsApplication(name) {
 				actionlink = 'tookpart';
 				actionclass = 'active';
 			break;
+			case 'manualTookNotpart':
+				actionlink = 'tookpart';
+				actionclass = 'deactive';
+				actionremoveclass = 'active';
+			break;
 			case 'resetTookpart':
 				actionlink = 'tookpart';
 				actionclass = '';
@@ -602,8 +611,84 @@ function trainingsApplication(name) {
 
 
 	this.datepickerOnClose = function(dp) {
-		var obj = getCurrentModule();
-		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+		if(dp.name == 'date1' && dp.value != $("input[id='movetraining_start']").val()) {
+			var txt = ALERT_TRAINING_MOVE_ALL;
+			var langbuttons = {};
+			langbuttons[ALERT_YES] = true;
+			langbuttons[ALERT_NO] = false;
+			$.prompt(txt,{ 
+				buttons:langbuttons,
+				callback: function(v,m,f){		
+					if(v){
+						var d1 = $("#trainings input[name='date1']");
+						var d2 = $("#trainings input[name='date2']");
+						var d3 = $("#trainings input[name='date3']");
+						var move = $("input[id='movetraining_start']");
+						var date1 = Date.parse(d1.val());
+						var movedate = Date.parse(move.val());
+						var span = new TimeSpan(date1 - movedate);
+						var days = span.getDays();
+						move.val(d1.val());
+						if(d2.length > 0) {
+							var date2 = Date.parse(d2.val()).addDays(days);
+							d2.val(date2.toString('dd.MM.yyyy'));
+						}
+						if(d3.length > 0) {
+							var date3 = Date.parse(d3.val()).addDays(days);
+							d3.val(date3.toString('dd.MM.yyyy'));
+						}
+						var reg = $("#trainings input[name='registration_end']");
+						var datereg = Date.parse(reg.val()).addDays(days);
+						reg.val(datereg.toString('dd.MM.yyyy'));
+						
+						var obj = getCurrentModule();
+						$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+					} else {
+						var d1 = $("#trainings input[name='date1']");
+						var d2 = $("#trainings input[name='date2']");
+						var d3 = $("#trainings input[name='date3']");
+						var move = $("input[id='movetraining_start']");
+						var date1 = Date.parse(d1.val());
+						move.val(d1.val());
+						if(d2.length > 0) {
+							var date2 = Date.parse(d2.val());
+							if(date1 > date2) {
+								d2.val(d1.val())
+							}
+						}
+						if(d3.length > 0) {
+							var date3 = Date.parse(d3.val());
+							if(date1 > date3) {
+								d3.val(d1.val())
+							}
+						}
+						var reg = $("#trainings input[name='registration_end']");
+						var datereg = Date.parse(reg.val());
+						if(date1 < datereg) {
+							reg.val(d1.val())
+						}
+						
+						var obj = getCurrentModule();
+						$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+					}	
+				}
+			});
+		} else if(dp.name == 'date3') {
+			var d2 = $("#trainings input[name='date2']");
+			var d3 = $("#trainings input[name='date3']");
+			var date2 = Date.parse(d2.val());
+			if(d2.length > 0) {
+				var date3 = Date.parse(d3.val());
+				if(date3 > date2) {
+					d2.val(d3.val())
+				}
+			}
+			var obj = getCurrentModule();
+			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+		} else {
+			var obj = getCurrentModule();
+			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+		}
 	}
 
 

@@ -46,3 +46,5 @@ var DATEPICKER_CLEAR = 'Löschen';
 
 var ALERT_SUCCESS_COPY_MEETING = 'Eine Protokollkopie wurde erfolgreich angelegt für: <br />';
 var ALERT_SUCCESS_PROJECT_EXPORT = 'Der Prozess wurde erfolgreich als Projekt exportiert nach: <br />';
+
+var ALERT_TRAINING_MOVE_ALL = "Wollen Sie alle Trainingstermine an das neue Startdatum anpassen?";

@@ -547,9 +547,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e5e5e5', end
 
 /* members */
 #trainings .invitationLink, #trainings .registrationLink, #trainings .tookpartLink, #trainings .feedbackLink { width: 195px; text-align: center; color: #fff; display: inline-block; height: 19px; padding-top: 3px; background: #4ba0c8 url(../../img/arrow_trans.png) no-repeat 96% 1px; }
+#trainings .invitationLink.incomplete, #trainings .registrationLink.incomplete, #trainings .tookpartLink.incomplete, #trainings .feedbackLink.incomplete { background-color: #7f7f7f; }
 #trainings .invitationLink.active, #trainings .registrationLink.active, #trainings .tookpartLink.active, #trainings .feedbackLink.active { background-color: #82aa0a; }
 #trainings .invitationLink.deactive, #trainings .registrationLink.deactive, #trainings .tookpartLink.deactive, #trainings .feedbackLink.deactive { background-color: #eb4600; }
 #trainings .invitationLink.co-link, #trainings .registrationLink.co-link, #trainings .tookpartLink.co-link, #trainings .feedbackLink.co-link { color: #fff; }
+
 
 #trainings .feedback-outer span {
     border: 1px solid #666666;
