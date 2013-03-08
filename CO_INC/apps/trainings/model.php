@@ -954,6 +954,7 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 		$array["status_inprogress_active"] = "";
 		$array["status_finished_active"] = "";
 		$array["status_stopped_active"] = "";
+		$array["member_status_default_css"] = "";
 		switch($array["status"]) {
 			case "0":
 				$array["status_text"] = $lang["GLOBAL_STATUS_PLANNED"];
@@ -975,6 +976,7 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 				$array["status_finished_active"] = " active";
 				$array["status_date"] = $this->_date->formatDate($array["finished_date"],CO_DATE_FORMAT);
 				//$array["enddate"] = $array["status_date"];
+				$array["member_status_default_css"] = "incomplete";
 			break;
 			case "3":
 				$array["status_text"] = $lang["GLOBAL_STATUS_STOPPED"];
@@ -982,6 +984,7 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 				$array["status_stopped_active"] = " active";
 				$array["status_date"] = $this->_date->formatDate($array["stopped_date"],CO_DATE_FORMAT);
 				//$array["enddate"] = $array["status_date"];
+				$array["member_status_default_css"] = "incomplete";
 			break;
 		}
 		
@@ -2914,6 +2917,12 @@ function getGroupIDs($cid) {
 
 	function manualTookpart($id) {
 		$q = "UPDATE " . CO_TBL_TRAININGS_MEMBERS . " set tookpart='1' WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		return true;
+	}
+	
+	function manualTookNotpart($id) {
+		$q = "UPDATE " . CO_TBL_TRAININGS_MEMBERS . " set tookpart='2' WHERE id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		return true;
 	}

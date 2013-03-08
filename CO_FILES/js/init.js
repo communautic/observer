@@ -1149,6 +1149,20 @@ $(document).ready(function() {
 					var reg = /[0-9]+/.exec(input.name);
 					$(this).datepicker('option', 'minDate', new Date(Date.parse($("input[name='task_startdate["+reg+"]']").val())));
 				}
+				// trainings
+				if(input.name == 'date2') {
+					if($("input[name='date3']").length > 0) {
+						$(this).datepicker('option', 'minDate', new Date(Date.parse($("input[name='date3']").val())));
+					} else {
+						$(this).datepicker('option', 'minDate', new Date(Date.parse($("input[name='date1']").val())));
+					}
+				}
+				if(input.name == 'date3') {
+						$(this).datepicker('option', 'minDate', new Date(Date.parse($("input[name='date1']").val())));
+				}
+				if(input.name == 'registration_end') {
+					$(this).datepicker('option', 'maxDate', new Date(Date.parse($("input[name='date1']").val())));
+				}
 				setTimeout(function() {
 					var d = new Date();
 					var m = d.getMonth()+1;

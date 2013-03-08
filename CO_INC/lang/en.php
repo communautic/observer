@@ -68,6 +68,7 @@ $lang["GLOBAL_OWNER"] = 'Owner';
 
 $lang["GLOBAL_SAVE"] = 'Save';
 $lang["GLOBAL_DELETE"] = 'Delete';
+$lang["GLOBAL_RESET"] = 'Reset';
 $lang["GLOBAL_CONFIRM"] = 'Confirm';
 $lang["GLOBAL_SENDEMAIL"] = 'Send';
 

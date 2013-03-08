@@ -23,6 +23,7 @@
 <input type="hidden" id="path" name="path" value="<?php echo $this->form_url;?>">
 <input type="hidden" id="poformaction" name="request" value="setTrainingDetails">
 <input type="hidden" name="id" value="<?php echo($training->id);?>">
+<input id="movetraining_start" name="movetraining_start" type="hidden" value="<?php echo($training->date1);?>" />
 <?php if($training->showCheckout) { ?>
 <table id="checkedOut" border="0" cellpadding="0" cellspacing="0" class="table-content" style="background-color: #eb4600">
 	<tr>

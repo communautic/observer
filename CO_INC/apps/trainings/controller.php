@@ -1078,6 +1078,16 @@ function getGroupIDs($id) {
 		return json_encode($data);
 	}
 	
+	function manualTookNotpart($id) {
+		global $lang, $session, $contactsmodel,$date;
+		$this->model->manualTookNotpart($id);
+		$this->model->writeMemberLog($id,'12',$session->uid);
+		$data['action'] = $lang['TRAINING_MEMBER_LOG_12'];
+		$data['who'] = $contactsmodel->getUserListPlain($session->uid);
+		$data['date'] = $date->formatDate(gmdate("Y-m-d H:i:s"),CO_DATETIME_FORMAT);
+		return json_encode($data);
+	}
+	
 	function resetTookpart($id) {
 		global $lang, $session, $contactsmodel,$date;
 		$this->model->resetTookpart($id);

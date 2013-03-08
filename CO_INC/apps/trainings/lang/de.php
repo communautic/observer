@@ -54,12 +54,13 @@ $lang['TRAINING_MEMBER_LOG_2'] = 'Anmeldung bestätigt';
 $lang['TRAINING_MEMBER_LOG_3'] = 'Anmeldung erfolgt';
 $lang['TRAINING_MEMBER_LOG_4'] = 'Abmeldung erfolgt';
 $lang['TRAINING_MEMBER_LOG_5'] = 'Teilnahme bestätigt';
-$lang['TRAINING_MEMBER_LOG_6'] = 'Teilnahme gelöscht';
+$lang['TRAINING_MEMBER_LOG_6'] = 'Teilnahme zurückgesetzt';
 $lang['TRAINING_MEMBER_LOG_7'] = 'Feedback versendet';
-$lang['TRAINING_MEMBER_LOG_8'] = 'Einladung gelöscht';
-$lang['TRAINING_MEMBER_LOG_9'] = 'Anmeldung gelöscht';
-$lang['TRAINING_MEMBER_LOG_10'] = 'Feedback gelöscht';
+$lang['TRAINING_MEMBER_LOG_8'] = 'Einladung zurückgesetzt';
+$lang['TRAINING_MEMBER_LOG_9'] = 'Anmeldung zurückgesetzt';
+$lang['TRAINING_MEMBER_LOG_10'] = 'Feedback zurückgesetzt';
 $lang['TRAINING_MEMBER_LOG_11'] = 'Feedback durchgeführt';
+$lang['TRAINING_MEMBER_LOG_12'] = 'Nichtteilnahme bestätigt';
 
 $lang['TRAINING_INVITATION_RESPONSE_ACCEPT'] = 'Sie haben sich zur Veranstaltung angemeldet!';
 $lang['TRAINING_INVITATION_RESPONSE_ACCEPT2'] = 'Sie wurden zur Veranstaltung angemeldet!';

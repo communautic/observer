@@ -350,10 +350,10 @@ foreach($member as $value) { ?>
 	  <td class="tcell-left"><?php if($i == 0) { echo $lang["TRAINING_MEMBER"]; } ?>&nbsp;</td>
         <td><?php
 	echo '<div style="padding-bottom: 5px;">' . $value->name . '</div><br />';
-	echo '<span class="smalltext invitationLink ' . $value->invitation_class . '">Einladung</span>';
-	echo '<span class="smalltext registrationLink ' . $value->registration_class . '">Anmeldung</span>';
-	echo '<span class="smalltext tookpartLink ' . $value->tookpart_class . '">Teilnahmebest&auml;tigung</span>';
-	echo '<span class="smalltext feedbackLink ' . $value->feedback_class . '">Feedback</span>';
+	echo '<span class="smalltext invitationLink ' . $training->member_status_default_css . ' ' . $value->invitation_class . '">Einladung</span>';
+	echo '<span class="smalltext registrationLink ' . $training->member_status_default_css . ' ' . $value->registration_class . '">Anmeldung</span>';
+	echo '<span class="smalltext tookpartLink ' . $training->member_status_default_css . ' ' . $value->tookpart_class . '">Teilnahme</span>';
+	echo '<span class="smalltext feedbackLink ' . $training->member_status_default_css . ' ' . $value->feedback_class . '">Feedback</span>';
   	if(!empty($value->logs)) {
 		foreach($value->logs as $log) { 
 			echo '<div class="grey smalltext" style="padding-top: 5px;">' . $lang['TRAINING_MEMBER_LOG_' . $log->action] . ': ' . $log->who . ', ' . $log->date . '</div>';

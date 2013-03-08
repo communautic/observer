@@ -187,6 +187,9 @@ if (!empty($_GET['request'])) {
 		case 'manualTookpart':
 			echo($trainings->manualTookpart($_GET['id']));
 		break;
+		case 'manualTookNotpart':
+			echo($trainings->manualTookNotpart($_GET['id']));
+		break;
 		case 'resetTookpart':
 			echo($trainings->resetTookpart($_GET['id']));
 		break;
@@ -275,9 +278,9 @@ if (!empty($_POST['request'])) {
 			if(!isset($_POST['date2'])) { $_POST['date2'] = $_POST['date1']; }
 			if(!isset($_POST['date3'])) { $_POST['date3'] = $_POST['date1']; }
 			if(!isset($_POST['time1'])) { $_POST['time1'] = ''; }
-			if(!isset($_POST['time2'])) { $_POST['time2'] = ''; }
-			if(!isset($_POST['time3'])) { $_POST['time3'] = ''; }
-			if(!isset($_POST['time4'])) { $_POST['time4'] = ''; }
+			if(!isset($_POST['time2'])) { $_POST['time2'] = $_POST['time1']; }
+			if(!isset($_POST['time3'])) { $_POST['time3'] = $_POST['time1']; }
+			if(!isset($_POST['time4'])) { $_POST['time4'] = $_POST['time1']; }
 			
 			if(!isset($_POST['place1'])) { $_POST['place1'] = ''; }
 			if(!isset($_POST['place1_ct'])) { $_POST['place1_ct'] = ''; }

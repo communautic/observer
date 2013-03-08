@@ -68,6 +68,7 @@ $lang["GLOBAL_OWNER"] = 'Ersteller';
 
 $lang["GLOBAL_SAVE"] = 'Speichern';
 $lang["GLOBAL_DELETE"] = 'Löschen';
+$lang["GLOBAL_RESET"] = 'Zurücksetzen';
 $lang["GLOBAL_CONFIRM"] = 'Bestätigen';
 $lang["GLOBAL_SENDEMAIL"] = 'Versenden';
 
