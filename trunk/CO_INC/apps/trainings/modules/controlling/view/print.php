@@ -45,38 +45,38 @@
 	</tr>
 </table>
 &nbsp;<br />
-<table border="0" cellpadding="0" cellspacing="0">
+<table width="100%" class="standard">
     <tr>
-		<td width="400">1 &nbsp; <?php echo $lang["TRAINING_FEEDBACK_QUESTION_1"];?></td>
-        <td><?php echo $cont->q1_result;?>%</td>
+		<td>1 &nbsp; <?php echo $lang["TRAINING_FEEDBACK_QUESTION_1"];?></td>
+        <td width="40" style="text-align: right;"><?php echo $cont->q1_result;?>%</td>
 	</tr>
 </table>
 &nbsp;<br />
-<table border="0" cellpadding="0" cellspacing="0">
+<table width="100%" class="standard">
     <tr>
-		<td width="400">2&nbsp; <?php echo $lang["TRAINING_FEEDBACK_QUESTION_2"];?></td>
-        <td><?php echo $cont->q2_result;?>%</td>
+		<td>2&nbsp; <?php echo $lang["TRAINING_FEEDBACK_QUESTION_2"];?></td>
+        <td width="40" style="text-align: right;"><?php echo $cont->q2_result;?>%</td>
 	</tr>
 </table>
 &nbsp;<br />
-<table border="0" cellpadding="0" cellspacing="0">
+<table width="100%" class="standard">
     <tr>
-		<td width="400">3&nbsp; <?php echo $lang["TRAINING_FEEDBACK_QUESTION_3"];?></td>
-        <td><?php echo $cont->q3_result;?>%</td>
+		<td>3&nbsp; <?php echo $lang["TRAINING_FEEDBACK_QUESTION_3"];?></td>
+        <td width="40" style="text-align: right;"><?php echo $cont->q3_result;?>%</td>
 	</tr>
 </table>
 &nbsp;<br />
-<table border="0" cellpadding="0" cellspacing="0">
+<table width="100%" class="standard">
     <tr>
-		<td width="400">4&nbsp; <?php echo $lang["TRAINING_FEEDBACK_QUESTION_4"];?></td>
-        <td><?php echo $cont->q4_result;?>%</td>
+		<td>4&nbsp; <?php echo $lang["TRAINING_FEEDBACK_QUESTION_4"];?></td>
+        <td width="40" style="text-align: right;"><?php echo $cont->q4_result;?>%</td>
 	</tr>
 </table>
 &nbsp;<br />
-<table border="0" cellpadding="0" cellspacing="0">
+<table width="100%" class="standard">
     <tr>
-		<td width="400">5&nbsp; <?php echo $lang["TRAINING_FEEDBACK_QUESTION_5"];?></td>
-        <td><?php echo $cont->q5_result;?>%</td>
+		<td>5&nbsp; <?php echo $lang["TRAINING_FEEDBACK_QUESTION_5"];?></td>
+        <td width="40" style="text-align: right;"><?php echo $cont->q5_result;?>%</td>
 	</tr>
 </table>
 <div style="page-break-after:always;">&nbsp;</div>

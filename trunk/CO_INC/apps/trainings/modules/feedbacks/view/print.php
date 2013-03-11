@@ -5,6 +5,12 @@
 	</tr>
 </table>
 &nbsp;
+<table width="100%" class="standard">
+	<tr>
+		<td class="tcell-left">Training</td>
+		<td><?php echo($training->title);?></td>
+	</tr>
+</table>
 <?php if(!empty($training->company)) { ?>
 <table width="100%" class="standard">
 	<tr>
@@ -265,46 +271,46 @@ switch($training->training_id) {
     break;
 } ?>
 &nbsp;<br />
-<table border="0" cellpadding="0" cellspacing="0" class="standard">
+&nbsp;<br />
+<table width="100%" class="standard-grey-paddingBottom">
 	<tr>
-		<td class="tcell-left text11" style="padding: 8px 15px 8px 0;"><span><span>&nbsp;</span></span></td>
-		<td class="tcell-right" style="padding-top: 10px;">&nbsp;</td>
-            <td width="340" style="padding: 10px 0 0 0;"><strong><span id="total_result"><?php echo $feedback->total_result;?></span>%</strong> &nbsp; &nbsp; <span class="text11">Zufriedenheit</span></td>
-	</tr>
-	<tr>
-</table>
-<table border="0" cellpadding="0" cellspacing="0">
-    <tr>
-		<td width="400">1 &nbsp; <?php echo $lang["TRAINING_FEEDBACK_QUESTION_1"];?></td>
-        <td><?php echo $feedback->q1_result;?>%</td>
+	  <td class="tcell-left">erreichte Zufriedenheit</td>
+        <td><strong><?php echo $feedback->total_result;?>%</strong></td>
 	</tr>
 </table>
 &nbsp;<br />
-<table border="0" cellpadding="0" cellspacing="0">
+<table width="100%" class="standard">
     <tr>
-		<td width="400">2&nbsp; <?php echo $lang["TRAINING_FEEDBACK_QUESTION_2"];?></td>
-        <td><?php echo $feedback->q2_result;?>%</td>
+		<td>1 &nbsp; <?php echo $lang["TRAINING_FEEDBACK_QUESTION_1"];?></td>
+        <td width="40" style="text-align: right;"><?php echo $feedback->q1_result;?>%</td>
 	</tr>
 </table>
 &nbsp;<br />
-<table border="0" cellpadding="0" cellspacing="0">
+<table width="100%" class="standard">
     <tr>
-		<td width="400">3&nbsp; <?php echo $lang["TRAINING_FEEDBACK_QUESTION_3"];?></td>
-        <td><?php echo $feedback->q3_result;?>%</td>
+		<td>2&nbsp; <?php echo $lang["TRAINING_FEEDBACK_QUESTION_2"];?></td>
+        <td width="40" style="text-align: right;"><?php echo $feedback->q2_result;?>%</td>
 	</tr>
 </table>
 &nbsp;<br />
-<table border="0" cellpadding="0" cellspacing="0">
+<table width="100%" class="standard">
     <tr>
-		<td width="400">4&nbsp; <?php echo $lang["TRAINING_FEEDBACK_QUESTION_4"];?></td>
-        <td><?php echo $feedback->q4_result;?>%</td>
+		<td>3&nbsp; <?php echo $lang["TRAINING_FEEDBACK_QUESTION_3"];?></td>
+        <td width="40" style="text-align: right;"><?php echo $feedback->q3_result;?>%</td>
 	</tr>
 </table>
 &nbsp;<br />
-<table border="0" cellpadding="0" cellspacing="0">
+<table width="100%" class="standard">
     <tr>
-		<td width="400">5&nbsp; <?php echo $lang["TRAINING_FEEDBACK_QUESTION_5"];?></td>
-        <td><?php echo $feedback->q5_result;?>%</td>
+		<td>4&nbsp; <?php echo $lang["TRAINING_FEEDBACK_QUESTION_4"];?></td>
+        <td width="40" style="text-align: right;"><?php echo $feedback->q4_result;?>%</td>
+	</tr>
+</table>
+&nbsp;<br />
+<table width="100%" class="standard">
+    <tr>
+		<td>5&nbsp; <?php echo $lang["TRAINING_FEEDBACK_QUESTION_5"];?></td>
+        <td width="40" style="text-align: right;"><?php echo $feedback->q5_result;?>%</td>
 	</tr>
 </table>
 &nbsp;<br />
