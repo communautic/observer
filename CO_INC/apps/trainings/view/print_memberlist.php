@@ -97,7 +97,7 @@ foreach($member as $value) { ?>
      <table width="100%" style="margin: 0 0 0 -15pt; padding: 0pt 0pt 0pt 15pt; border-collapse: collapse;">
             <tr>
               <td style="width: 50%; padding: 6px 0 6px 0; border-bottom: 1px solid #666666;"><?php echo $value->name;?></td>
-                <td>&nbsp;</td>
+                <td style="padding: 6px 0 6px 0; border-bottom: 1px solid #666666;">&nbsp;</td>
             </tr>
         </table>
     &nbsp;<br />

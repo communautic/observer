@@ -1,10 +1,7 @@
-<table border="0" cellpadding="0" cellspacing="0" width="100%" class="standard" style="margin-top: 55%">
+<table border="0" cellpadding="0" cellspacing="0" width="100%" height="600" class="standard" style="margin-top: 17%; height: 600px; background-image: url(<?php echo CO_PATH_URL;?>/data/trainings_handbook_logo.jpg); background-position: center center; background-repeat: no-repeat;">
 	<tr>
 		<td>
-			<h2><?php echo($folder->title);?></h2>
-            &nbsp;
-             &nbsp;
-            <h3>&nbsp;</h3> 
+            <h2 style="font-weight: normal; font-size: 40px; margin-top: 395px; text-align: center;"><?php echo($folder->title);?></h2>
 			</td>
 	</tr>
 </table>
