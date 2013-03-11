@@ -35,7 +35,7 @@ $lang["TRAINING_FOLDER_CHART_STATUS"] = 'Status';
 // Training Right
 $lang["TRAINING_TITLE"] = 'Training';
 
-$lang["TRAINING_MANAGEMENT"] = 'Organisation';
+$lang["TRAINING_MANAGEMENT"] = 'OrganisatorIn';
 $lang["TRAINING_COMPANY"] = 'Trainingsanbieter';
 $lang["TRAINING_TEAM"] = 'TrainerIn';
 $lang["TRAINING_TRAININGCAT"] = 'Trainingsart';
