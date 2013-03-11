@@ -44,7 +44,6 @@ date_default_timezone_set("UTC");
 /* -------------------------------------------------------------------------
 * Settings for Module Trainings if installed
 * -------------------------------------------------------------------------*/
-
 define("CO_TRAININGS_COMPANY_NAME"	, "Recheis Akademie");
 define("CO_TRAININGS_COMPANY_EMAIL"	, "lisa.wenk@recheis.com");
 
