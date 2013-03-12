@@ -638,8 +638,11 @@ function trainingsApplication(name) {
 							d3.val(date3.toString('dd.MM.yyyy'));
 						}
 						var reg = $("#trainings input[name='registration_end']");
-						var datereg = Date.parse(reg.val()).addDays(days);
-						reg.val(datereg.toString('dd.MM.yyyy'));
+						var dateregval = reg.val();
+						if(dateregval != '') {
+							var datereg = Date.parse(reg.val()).addDays(days);
+							reg.val(datereg.toString('dd.MM.yyyy'));
+						}
 						
 						var obj = getCurrentModule();
 						$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
@@ -663,9 +666,12 @@ function trainingsApplication(name) {
 							}
 						}
 						var reg = $("#trainings input[name='registration_end']");
-						var datereg = Date.parse(reg.val());
-						if(date1 < datereg) {
-							reg.val(d1.val())
+						var dateregval = reg.val();
+						if(dateregval != '') {
+							var datereg = Date.parse(reg.val());
+							if(date1 < datereg) {
+								reg.val(d1.val())
+							}
 						}
 						
 						var obj = getCurrentModule();
