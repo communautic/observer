@@ -709,22 +709,22 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 	  if($sort == 0) {
 		  $sortstatus = $this->getSortStatus("trainings-sort-status",$id);
 		  if(!$sortstatus) {
-		  	$order = "order by date1";
+		  	$order = "order by title";
 			$sortcur = '1';
 		  } else {
 			  switch($sortstatus) {
 				  case "1":
-				  		$order = "order by date1";
+				  		$order = "order by title";
 						$sortcur = '1';
 				  break;
 				  case "2":
-				  		$order = "order by date1 DESC";
+				  		$order = "order by title DESC";
 						$sortcur = '2';
 				  break;
 				  case "3":
 				  		$sortorder = $this->getSortOrder("trainings-sort-order",$id);
 				  		if(!$sortorder) {
-						  	$order = "order by date1";
+						  	$order = "order by title";
 							$sortcur = '1';
 						  } else {
 							$order = "order by field(id,$sortorder)";
@@ -736,17 +736,17 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 	  } else {
 		  switch($sort) {
 				  case "1":
-				  		$order = "order by date1";
+				  		$order = "order by title";
 						$sortcur = '1';
 				  break;
 				  case "2":
-				  		$order = "order by date1 DESC";
+				  		$order = "order by title DESC";
 						$sortcur = '2';
 				  break;
 				  case "3":
 				  		$sortorder = $this->getSortOrder("trainings-sort-order",$id);
 				  		if(!$sortorder) {
-						  	$order = "order by date1";
+						  	$order = "order by title";
 							$sortcur = '1';
 						  } else {
 							$order = "order by field(id,$sortorder)";
@@ -760,7 +760,7 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 	  if(!$session->isSysadmin()) {
 		$access = " and id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
 	  }
-	  $q ="select id,title,date1,status,checked_out,checked_out_user from " . CO_TBL_TRAININGS . " where folder='$id' and bin = '0' " . $access . $order;
+	  $q ="select id,title,status,checked_out,checked_out_user from " . CO_TBL_TRAININGS . " where folder='$id' and bin = '0' " . $access . $order;
 
 	  $this->setSortStatus("trainings-sort-status",$sortcur,$id);
       $result = mysql_query($q, $this->_db->connection);
@@ -781,7 +781,7 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 			
 		}
 		
-		$array["date1"] = $this->_date->formatDate($array["date1"],CO_DATE_FORMAT);
+		//$array["date1"] = $this->_date->formatDate($array["date1"],CO_DATE_FORMAT);
 		// status
 		$itemstatus = "";
 		if($array["status"] == 2) {

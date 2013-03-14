@@ -35,7 +35,7 @@
     <tr>
 		<td class="tcell-left text11" style="padding: 8px 15px 8px 0;"><span><span>&nbsp;</span></span></td>
 		<td class="tcell-right" style="padding: 10px 0 0 0;"><span style="display: inline-block; width: 30px;" class="bold">1</span><?php echo $lang["TRAINING_FEEDBACK_QUESTION_1"];?></td>
-        <td width="200" style="padding: 10px 0 0 0;"><div class="feedback-outer">
+        <td width="200" style="padding: 10px 0 0 0;"><div class="feedback-outer<?php if($feedback->canedit) { ?> active<?php } ?>">
         <?php for($i=0; $i<6; $i++) {
 			$class = '';
 			if($feedback->q1_selected != "" && $i == $feedback->q1_selected) {
@@ -52,7 +52,7 @@
     <tr>
 		<td class="tcell-left text11" style="padding: 8px 15px 8px 0;"><span><span>&nbsp;</span></span></td>
 		<td class="tcell-right" style="padding: 10px 0 0 0;"><span style="display: inline-block; width: 30px;" class="bold">2</span><?php echo $lang["TRAINING_FEEDBACK_QUESTION_2"];?></td>
-        <td width="200" style="padding: 10px 0 0 0;"><div class="feedback-outer">
+        <td width="200" style="padding: 10px 0 0 0;"><div class="feedback-outer<?php if($feedback->canedit) { ?> active<?php } ?>">
         <?php for($i=0; $i<6; $i++) {
 			$class = '';
 			if($feedback->q2_selected != "" && $i == $feedback->q2_selected) {
@@ -69,7 +69,7 @@
     <tr>
 		<td class="tcell-left text11" style="padding: 8px 15px 8px 0;"><span><span>&nbsp;</span></span></td>
 		<td class="tcell-right" style="padding: 10px 0 0 0;"><span style="display: inline-block; width: 30px;" class="bold">3</span><?php echo $lang["TRAINING_FEEDBACK_QUESTION_3"];?></td>
-        <td width="200" style="padding: 10px 0 0 0;"><div class="feedback-outer">
+        <td width="200" style="padding: 10px 0 0 0;"><div class="feedback-outer<?php if($feedback->canedit) { ?> active<?php } ?>">
         <?php for($i=0; $i<6; $i++) {
 			$class = '';
 			if($feedback->q3_selected != "" && $i == $feedback->q3_selected) {
@@ -86,7 +86,7 @@
     <tr>
 		<td class="tcell-left text11" style="padding: 8px 15px 8px 0;"><span><span>&nbsp;</span></span></td>
 		<td class="tcell-right" style="padding: 10px 0 0 0;"><span style="display: inline-block; width: 30px;" class="bold">4</span><?php echo $lang["TRAINING_FEEDBACK_QUESTION_4"];?></td>
-        <td width="200" style="padding: 10px 0 0 0;"><div class="feedback-outer">
+        <td width="200" style="padding: 10px 0 0 0;"><div class="feedback-outer<?php if($feedback->canedit) { ?> active<?php } ?>">
         <?php for($i=0; $i<6; $i++) {
 			$class = '';
 			if($feedback->q4_selected != "" && $i == $feedback->q4_selected) {
@@ -103,7 +103,7 @@
     <tr>
 		<td class="tcell-left text11" style="padding: 8px 15px 8px 0;"><span><span>&nbsp;</span></span></td>
 		<td class="tcell-right" style="padding: 10px 0 0 0;"><span style="display: inline-block; width: 30px;" class="bold">5</span><?php echo $lang["TRAINING_FEEDBACK_QUESTION_5"];?></td>
-        <td width="200" style="padding: 10px 0 0 0;"><div class="feedback-outer">
+        <td width="200" style="padding: 10px 0 0 0;"><div class="feedback-outer<?php if($feedback->canedit) { ?> active<?php } ?>">
         <?php for($i=0; $i<6; $i++) {
 			$class = '';
 			if($feedback->q5_selected != "" && $i == $feedback->q5_selected) {
@@ -125,7 +125,8 @@
 <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
 	<tr>
 		<td class="tcell-left text11" style="width: 165px;"><span class="content-nav selectTextarea"><span>&nbsp;</span></span></td>
-        <td class="tcell-right"><textarea name="protocol" class="elastic"><?php echo(strip_tags($feedback->feedback_text));?></textarea></td>
+        <td class="tcell-right"><?php if($feedback->canedit) { ?><textarea name="protocol" class="elastic"><?php echo(strip_tags($feedback->feedback_text));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($feedback->feedback_text)));?><?php } ?>
+        </td>
 	</tr>
 </table>
 <?php if($feedback->perms != "guest") { ?>
