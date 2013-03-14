@@ -16,6 +16,7 @@ define("CO_INC"	, 		"CO_INC" 			);
 
 // FILES PATH
 define("CO_FILES"	, 		$protocol . "dev.companyobserver.com/CO_FILES" );
+define("CO_FILES_NOHTTPS", "http://dev.companyobserver.com/CO_FILES" );
 
 // product variant: 0 = CO, 1 = Physio
 define("CO_PRODUCT_VARIANT", 0 );
@@ -44,6 +45,7 @@ date_default_timezone_set("UTC");
 /* -------------------------------------------------------------------------
 * Settings for Module Trainings if installed
 * -------------------------------------------------------------------------*/
+
 define("CO_TRAININGS_COMPANY_NAME"	, "Recheis Akademie");
 define("CO_TRAININGS_COMPANY_EMAIL"	, "lisa.wenk@recheis.com");
 

@@ -932,8 +932,8 @@ function getGroupIDs($id) {
 		$fromName = CO_TRAININGS_COMPANY_NAME;
 		$subject = 'Einladung zur Trainingsveranstaltung "' . $training->title . '"';
 		$email_header = str_replace('https','http',CO_PATH_URL . "/data/templates/trainings/recheis_akademie.jpg");
-		$email_button_accept = str_replace('https','http',CO_FILES . "/img/" . $lang["TRAINING_BUTTON_ACCEPT"]);
-		$email_button_decline = str_replace('https','http',CO_FILES . "/img/" . $lang["TRAINING_BUTTON_DECLINE"]);
+		$email_button_accept = CO_FILES_NOHTTPS . "/img/" . $lang["TRAINING_BUTTON_ACCEPT"];
+		$email_button_decline = CO_FILES_NOHTTPS . "/img/" . $lang["TRAINING_BUTTON_DECLINE"];
 		$email_accept_url = CO_PATH_URL . '/?path=api/apps/trainings&request=accept&key=' . $key;
 		$email_decline_url = CO_PATH_URL . '/?path=api/apps/trainings&request=decline&key=' . $key;
 		ob_start();
@@ -1141,7 +1141,7 @@ function getGroupIDs($id) {
 		$fromName = CO_TRAININGS_COMPANY_NAME;
 		$subject = 'Feedback zur Trainingsveranstaltung "' . $training->title . '"';
 		$email_header = str_replace('https','http',CO_PATH_URL . "/data/templates/trainings/recheis_akademie.jpg");
-		$email_button_feedback = str_replace('https','http',CO_FILES . "/img/" . $lang["TRAINING_BUTTON_FEEDBACK"]);
+		$email_button_feedback = CO_FILES_NOHTTPS . "/img/" . $lang["TRAINING_BUTTON_FEEDBACK"];
 		$email_feedback_url = CO_PATH_URL . '/?path=api/apps/trainings&request=feedback&key=' . $key;
 		ob_start();
 			include('view/email_training_cat'.$training->training_id.'.php');
