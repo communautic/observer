@@ -21,7 +21,7 @@ function binApplication(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/"+ id +"&request=emptyBin", success: function(html){
 						$("#bin-right").html(html);

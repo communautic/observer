@@ -56,7 +56,7 @@ function Documents(app) {
 		var app = getCurrentApp();
 		var title = $('#'+ app +' input.title').fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {callback: setTitleFocus});
+			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -89,7 +89,7 @@ function Documents(app) {
 		var app = getCurrentApp();
 		var title = $('#'+ app +' .title').val();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {callback: setTitleFocus});
+			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -188,7 +188,7 @@ function Documents(app) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					var id = $('#'+ module.app).data("third");
 					var pid = $('#'+ module.app).data("second");
@@ -364,7 +364,7 @@ function Documents(app) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: 'path=apps/'+ module.app +'/modules/documents&request=binDocItem&id=' + id, success: function(data){
 						if(data){
@@ -396,7 +396,7 @@ function Documents(app) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: 'path=apps/'+ module.app +'/modules/documents&request=deleteDocument&id=' + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -418,7 +418,7 @@ function Documents(app) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: 'path=apps/'+ module.app +'/modules/documents&request=restoreDocument&id=' + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -440,7 +440,7 @@ function Documents(app) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: 'path=apps/'+ module.app +'/modules/documents&request=deleteFile&id=' + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -462,7 +462,7 @@ function Documents(app) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: 'path=apps/'+ module.app +'/modules/documents&request=restoreFile&id=' + id, cache: false, success: function(data){
 						if(data == "true") {

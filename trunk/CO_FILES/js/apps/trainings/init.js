@@ -21,7 +21,7 @@ function trainingsApplication(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#trainings input.title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {callback: setTitleFocus});
+			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -162,7 +162,7 @@ function trainingsApplication(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					var id = $("#trainings").data("second");
 					var fid = $("#trainings").data("first");
@@ -499,7 +499,7 @@ function trainingsApplication(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: 'path=apps/trainings&request=binMember&id=' + id, success: function(data){
 						if(data){
@@ -530,7 +530,7 @@ function trainingsApplication(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/trainings&request=deleteTraining&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -551,7 +551,7 @@ function trainingsApplication(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/trainings&request=restoreTraining&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -572,7 +572,7 @@ function trainingsApplication(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/trainings&request=deleteMember&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -593,7 +593,7 @@ function trainingsApplication(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/trainings&request=restoreMember&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -615,7 +615,7 @@ function trainingsApplication(name) {
 			langbuttons[ALERT_NO] = false;
 			$.prompt(txt,{ 
 				buttons:langbuttons,
-				callback: function(v,m,f){		
+				submit: function(e,v,m,f){		
 					if(v){
 						var d1 = $("#trainings input[name='date1']");
 						var d2 = $("#trainings input[name='date2']");
@@ -732,7 +732,7 @@ function trainingsFolders(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#trainings input.title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {callback: setTitleFocus});
+			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -781,7 +781,7 @@ function trainingsFolders(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					var id = $("#trainings").data("first");
 					$.ajax({ type: "GET", url: "/", data: "path=apps/trainings&request=binFolder&id=" + id, cache: false, success: function(data){
@@ -977,7 +977,7 @@ function trainingsFolders(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/trainings&request=deleteFolder&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -998,7 +998,7 @@ function trainingsFolders(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/trainings&request=restoreFolder&id=" + id, cache: false, success: function(data){
 						if(data == "true") {

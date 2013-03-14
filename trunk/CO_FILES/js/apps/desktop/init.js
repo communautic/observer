@@ -52,7 +52,7 @@ function desktopApplication(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/desktop&request=deletePostit&id="+id, success: function(data){
 						if(data){

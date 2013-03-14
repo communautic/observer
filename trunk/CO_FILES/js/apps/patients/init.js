@@ -21,7 +21,7 @@ function patientsApplication(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#patients input.title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {callback: setTitleFocus});
+			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -177,7 +177,7 @@ function patientsApplication(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					var id = $("#patients").data("second");
 					var fid = $("#patients").data("first");
@@ -402,7 +402,7 @@ function patientsApplication(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/patients&request=deletePatient&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -423,7 +423,7 @@ function patientsApplication(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/patients&request=restorePatient&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -480,7 +480,7 @@ function patientsFolders(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#patients input.title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {callback: setTitleFocus});
+			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -529,7 +529,7 @@ function patientsFolders(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					var id = $("#patients").data("first");
 					$.ajax({ type: "GET", url: "/", data: "path=apps/patients&request=binFolder&id=" + id, cache: false, success: function(data){
@@ -690,7 +690,7 @@ function patientsFolders(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/patients&request=deleteFolder&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -711,7 +711,7 @@ function patientsFolders(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/patients&request=restoreFolder&id=" + id, cache: false, success: function(data){
 						if(data == "true") {

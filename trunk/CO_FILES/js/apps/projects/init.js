@@ -20,7 +20,7 @@ function projectsApplication(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#projects input.title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {callback: setTitleFocus});
+			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -151,7 +151,7 @@ function projectsApplication(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					var id = $("#projects").data("second");
 					var fid = $("#projects").data("first");
@@ -329,7 +329,7 @@ function projectsApplication(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=deleteProject&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -350,7 +350,7 @@ function projectsApplication(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=restoreProject&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -381,7 +381,7 @@ function projectsApplication(name) {
 			langbuttons[ALERT_NO] = false;
 			$.prompt(txt,{ 
 				buttons:langbuttons,
-				callback: function(v,m,f){		
+				submit: function(e,v,m,f){		
 					if(v){
 						var date1 = Date.parse($("#projects input[name='startdate']").val());
 						var date2 = Date.parse($("#projects input[id='moveproject_start']").val());
@@ -416,7 +416,7 @@ function projectsApplication(name) {
 							langbuttons[ALERT_NO] = false;
 							$.prompt(txt,{ 
 								buttons:langbuttons,
-								callback: function(v,m,f){
+								submit: function(e,v,m,f){
 									if(v){
 										var date1 = Date.parse(s);
 										var date2 = Date.parse(sm);
@@ -465,7 +465,7 @@ function projectsApplication(name) {
 					langbuttons[ALERT_NO] = false;
 					$.prompt(txt,{ 
 						buttons:langbuttons,
-						callback: function(v,m,f){		
+						submit: function(e,v,m,f){		
 							if(v){
 								var date1 = Date.parse(s);
 								var date2 = Date.parse(sm);
@@ -513,7 +513,7 @@ function projectsApplication(name) {
 						langbuttons[ALERT_NO] = false;
 						$.prompt(txt,{ 
 							buttons:langbuttons,
-							callback: function(v,m,f){		
+							submit: function(e,v,m,f){		
 								if(v){
 									var date1 = Date.parse(s);
 									var date2 = Date.parse(e);
@@ -572,7 +572,7 @@ function projectsFolders(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#projects input.title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {callback: setTitleFocus});
+			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -621,7 +621,7 @@ function projectsFolders(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					var id = $("#projects").data("first");
 					$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=binFolder&id=" + id, cache: false, success: function(data){
@@ -801,7 +801,7 @@ function projectsFolders(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=deleteFolder&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -822,7 +822,7 @@ function projectsFolders(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=restoreFolder&id=" + id, cache: false, success: function(data){
 						if(data == "true") {

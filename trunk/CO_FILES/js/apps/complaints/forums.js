@@ -6,7 +6,7 @@ function complaintsForums(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#complaints input.title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {callback: setTitleFocus});
+			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -162,7 +162,7 @@ function complaintsForums(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					var id = $("#complaints").data("third");
 					var pid = $("#complaints").data("second");
@@ -363,7 +363,7 @@ function complaintsForums(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 				$.ajax({ type: "GET", url: "/", data: "path=apps/complaints/modules/forums&request=binItem&id=" + id, success: function(data){
 						if(data){
@@ -400,7 +400,7 @@ function complaintsForums(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/complaints/modules/forums&request=deleteForum&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -421,7 +421,7 @@ function complaintsForums(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/complaints/modules/forums&request=restoreForum&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -442,7 +442,7 @@ function complaintsForums(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/complaints/modules/forums&request=deleteItem&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -463,7 +463,7 @@ function complaintsForums(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/complaints/modules/forums&request=restoreItem&id=" + id, cache: false, success: function(data){
 						if(data == "true") {

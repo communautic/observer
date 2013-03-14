@@ -81,7 +81,7 @@ function contactsContact(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#contacts .title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {callback: setTitleFocus});
+			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
 			return false;
 		} else {
 			formData[formData.length] = { "name": "lastname", "value": title };
@@ -90,7 +90,7 @@ function contactsContact(name) {
 		var email = $("#email").fieldValue();
 		var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
 		if(email != "" && reg.test(email) == false) {
-			$.prompt(ALERT_NO_VALID_EMAIL, {callback: setTitleFocus});
+			$.prompt(ALERT_NO_VALID_EMAIL, {submit: setTitleFocus});
 			return false;
 		}
 		
@@ -174,7 +174,7 @@ function contactsContact(name) {
 		var txt = ALERT_DELETE;
 		$.prompt(txt,{ 
 			buttons:{Ja:true, Nein:false},
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					var id = $("#contacts").data("first");
 					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/contacts&request=binContact&id=" + id, cache: false, success: function(data){
@@ -335,7 +335,7 @@ function contactsContact(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=binItem&id=" + id, success: function(data){
 						if(data){
@@ -357,7 +357,7 @@ function contactsContact(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=deleteContact&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -378,7 +378,7 @@ function contactsContact(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=restoreContact&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -399,7 +399,7 @@ function contactsContact(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=deleteItem&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -420,7 +420,7 @@ function contactsContact(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=restoreItem&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -450,7 +450,7 @@ function contactsGroups(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#contacts .title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {callback: setTitleFocus});
+			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -528,7 +528,7 @@ function contactsGroups(name) {
 		var txt = ALERT_DELETE;
 		$.prompt(txt,{ 
 			buttons:{Ja:true, Nein:false},
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					var id = $("#contacts").data("first");
 					$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=binGroup&id=" + id, cache: false, success: function(data){
@@ -681,7 +681,7 @@ function contactsGroups(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=deleteGroup&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -702,7 +702,7 @@ function contactsGroups(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=restoreGroup&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -1136,7 +1136,7 @@ $(document).ready(function() {
 				} else {
 				$.prompt(name + ' ' + ALERT_ACCESS_CONTACT_NOACCESSCODES,{ 
 				buttons:{Ja:true, Nein:false},
-				callback: function(v,m,f){		
+				submit: function(e,v,m,f){		
 					if(v){
 						$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=generateAccess&id=" + cid, cache: false, success: function(data){
 							if($("#"+field).html() != "") {

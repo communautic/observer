@@ -6,7 +6,7 @@ function employeesObjectives(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#employees input.title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {callback: setTitleFocus});
+			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -198,7 +198,7 @@ function employeesObjectives(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					var id = $("#employees").data("third");
 					var pid = $("#employees").data("second");
@@ -429,7 +429,7 @@ function employeesObjectives(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 				$.ajax({ type: "GET", url: "/", data: "path=apps/employees/modules/objectives&request=deleteTask&id=" + id, success: function(data){
 					if(data){
@@ -476,7 +476,7 @@ function employeesObjectives(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/employees/modules/objectives&request=deleteObjective&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -497,7 +497,7 @@ function employeesObjectives(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/employees/modules/objectives&request=restoreObjective&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -518,7 +518,7 @@ function employeesObjectives(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/employees/modules/objectives&request=deleteObjectiveTask&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -539,7 +539,7 @@ function employeesObjectives(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/employees/modules/objectives&request=restoreObjectiveTask&id=" + id, cache: false, success: function(data){
 						if(data == "true") {

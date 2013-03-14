@@ -6,7 +6,7 @@ function patientsReports(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#patients input.title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {callback: setTitleFocus});
+			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -138,7 +138,7 @@ function patientsReports(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					var id = $("#patients").data("third");
 					var pid = $("#patients").data("second");
@@ -350,7 +350,7 @@ function patientsReports(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/reports&request=deleteReport&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -371,7 +371,7 @@ function patientsReports(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/reports&request=restoreReport&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
