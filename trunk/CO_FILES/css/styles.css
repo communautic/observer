@@ -550,7 +550,7 @@ ul.actionconsole span.actionBin.noactive { background: url(../img/buttons.png) n
 	background-color: #fff;
 	padding: 5px;
 }*/
-#tooltip {
+/*#tooltip {
 	position: absolute;
 	z-index: 3000;
 	border: 1px solid #111;
@@ -558,7 +558,18 @@ ul.actionconsole span.actionBin.noactive { background: url(../img/buttons.png) n
 	padding: 5px;
 }
 #tooltip h3, #tooltip div { margin: 0; color: #000;}
-#tooltip h3 { font-size: 11px; font-weight: normal }
+#tooltip h3 { font-size: 11px; font-weight: normal }*/
+
+.ui-tooltip {
+	padding: 8px;
+	position: absolute;
+	z-index: 9999;
+	max-width: 300px;
+	box-shadow: 2px 2px 4px #666666;
+	border: 1px solid #111;
+	background-color: #E5E5E5 !important;
+	font-size: 12px !important;
+}
 
 .listmember-outer, .docitems-outer { display: inline-block; padding-right: 5px;}
 .context {

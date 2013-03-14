@@ -87,7 +87,7 @@ var co_files = '<?php echo CO_FILES;?>';
 var co_lang = '<?php echo $session->userlang;?>';
 </script>
 <script src="<?php echo $protocol;?>ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js" type="text/javascript"></script>
-<!--<script src="http://code.jquery.com/jquery-migrate-1.1.0.js"></script>-->
+<!--<script src="<?php echo CO_FILES;?>/js/libraries/jquery-migrate-1.1.1.js"></script>-->
 <script type="text/javascript" src="<?php echo $protocol;?>ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.onerror.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/datejs/date.js"></script>
@@ -102,7 +102,6 @@ var co_lang = '<?php echo $session->userlang;?>';
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.layout-1.3.0.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.jNice.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery-impromptu.min.js"></script>
-<script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.tooltip.min.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/fileuploader.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.scrollTo.min.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.elastic.js"></script>
