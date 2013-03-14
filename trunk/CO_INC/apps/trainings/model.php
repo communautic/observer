@@ -1601,7 +1601,6 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 			case 'stability':
 				$chart = $this->getChartFolder($id, 'timeing');
 				$timeing = $chart["real"];
-				
 				/*$chart = $this->getChartFolder($id, 'tasks');
 				$tasks = $chart["real"];*/
 				// all
@@ -1611,7 +1610,7 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 				
 				// stopped
 				$cancelled = 0;
-				$q = "SELECT id FROM " . CO_TBL_TRAININGS. " WHERE folder = '$id' and status != '3' and bin = '0'";
+				$q = "SELECT id FROM " . CO_TBL_TRAININGS. " WHERE folder = '$id' and status = '3' and bin = '0'";
 				$result = mysql_query($q, $this->_db->connection);
 				$stopped = mysql_num_rows($result);
 				if($all != 0) {
@@ -1620,7 +1619,7 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 				
 				$chart["real"] = round(($timeing+$cancelled)/2,0);
 				$chart["title"] = $lang["TRAINING_FOLDER_CHART_STABILITY"];
-				$chart["img_name"] = "project_" . $id . "_stability.png";
+				$chart["img_name"] = "training_" . $id . "_stability.png";
 				$chart["url"] = 'https://chart.googleapis.com/chart?chs=150x90&cht=gm&chd=t:' . $chart["real"];
 				
 				$chart["tendency"] = "pixel.gif";
