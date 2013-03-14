@@ -19,7 +19,7 @@
 (function($){
 	$.fn.jNice = function(options){
 		var self = this;
-		var safari = $.browser.safari; /* We need to check for safari to fix the input:text problem */
+		/*var safari = $.browser.safari;  We need to check for safari to fix the input:text problem */
 		/* Apply document listener */
 		$(document).mousedown(checkExternalClick);
 		/* each form */
@@ -28,7 +28,7 @@
 			//$('button').focus(function(){ $(this).addClass('jNiceFocus')}).blur(function(){ $(this).removeClass('jNiceFocus')});
 			//$('input:text:visible, input:password', this).each(TextAdd);
 			/* If this is safari we need to add an extra class */
-			if (safari){$('.jNiceInputWrapper').each(function(){$(this).addClass('jNiceSafari').find('input').css('width', $(this).width()+11);});}
+			//if (safari){$('.jNiceInputWrapper').each(function(){$(this).addClass('jNiceSafari').find('input').css('width', $(this).width()+11);});}
 			$('input:checkbox', this).each(CheckAdd);
 			$('input:radio', this).each(RadioAdd);
 			$('select', this).each(function(index){ SelectAdd(this, index); });
@@ -246,7 +246,7 @@
 						langbuttons[ALERT_NO] = false;
 						$.prompt(txt,{ 
 							buttons:langbuttons,
-							callback: function(v,m,f){		
+							submit: function(e,v,m,f){		
 								if(v){
 									input.checked = false;
 									$a.removeClass('jNiceChecked');
@@ -265,7 +265,7 @@
 						langbuttons[ALERT_NO] = false;
 						$.prompt(txt,{ 
 							buttons:langbuttons,
-							callback: function(v,m,f){		
+							submit: function(e,v,m,f){		
 								if(v){
 									input.checked = true;
 									$a.addClass('jNiceChecked');
@@ -483,7 +483,7 @@
 						langbuttons[ALERT_NO] = false;
 						$.prompt(txt,{ 
 							buttons:langbuttons,
-							callback: function(v,m,f){		
+							submit: function(e,v,m,f){		
 								if(v){
 									input.checked = false;
 									$a.removeClass('jNiceChecked');
@@ -502,7 +502,7 @@
 						langbuttons[ALERT_NO] = false;
 						$.prompt(txt,{ 
 							buttons:langbuttons,
-							callback: function(v,m,f){		
+							submit: function(e,v,m,f){		
 								if(v){
 									input.checked = true;
 									$a.addClass('jNiceChecked');
