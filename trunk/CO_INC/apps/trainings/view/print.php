@@ -41,6 +41,14 @@
 	</tr>
 </table>
 <?php } ?>
+<?php if(!empty($training->trainer_details)) { ?>
+<table width="100%" class="standard">
+	<tr>
+		<td class="tcell-left">&nbsp;</td>
+		<td><?php echo($training->trainer_details);?></td>
+	</tr>
+</table>
+<?php } ?>
 <?php if(!empty($training->training)) { ?>
 <table width="100%" class="standard">
 	<tr>
@@ -327,6 +335,50 @@ switch($training->training_id) {
     break;
 } ?>
 &nbsp;
+<?php if(!empty($training->protocol1)) { ?>
+<table width="100%" class="standard">
+	<tr>
+        <td class="tcell-left top"><?php echo $lang["TRAINING_DESCRIPTION_FOR"];?></td>
+        <td>&nbsp;</td>
+	</tr>
+</table>
+<?php echo(nl2br($training->protocol1));?>
+<?php } ?>
+&nbsp; <br />
+
+<?php if(!empty($training->protocol2)) { ?>
+<table width="100%" class="standard">
+	<tr>
+        <td class="tcell-left top"><?php echo $lang["TRAINING_DESCRIPTION_GOAL"];?></td>
+        <td>&nbsp;</td>
+	</tr>
+</table>
+<?php echo(nl2br($training->protocol2));?>
+<?php } ?>
+&nbsp; <br />
+
+<?php if(!empty($training->protocol3)) { ?>
+<table width="100%" class="standard">
+	<tr>
+        <td class="tcell-left top"><?php echo $lang["TRAINING_DESCRIPTION_DURATION"];?></td>
+        <td>&nbsp;</td>
+	</tr>
+</table>
+<?php echo(nl2br($training->protocol3));?>
+<?php } ?>
+&nbsp; <br />
+
+<?php if(!empty($training->protocol4)) { ?>
+<table width="100%" class="standard">
+	<tr>
+        <td class="tcell-left top"><?php echo $lang["TRAINING_DESCRIPTION_NUM_MEMBERS"];?></td>
+        <td>&nbsp;</td>
+	</tr>
+</table>
+<?php echo(nl2br($training->protocol4));?>
+<?php } ?>
+&nbsp; <br />
+
 <?php if(!empty($training->protocol)) { ?>
 <table width="100%" class="standard">
 	<tr>
@@ -334,7 +386,6 @@ switch($training->training_id) {
         <td>&nbsp;</td>
 	</tr>
 </table>
-&nbsp; <br />
 <?php echo(nl2br($training->protocol));?>
 <?php } ?>
 &nbsp; <br />

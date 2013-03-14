@@ -44,7 +44,12 @@ $lang["TRAINING_TIME_START"] = 'Start';
 $lang["TRAINING_TIME_END"] = 'Ende';
 $lang["TRAINING_PLACE"] = 'Ort';
 $lang["TRAINING_REGISTRATION_END"] = 'Anmeldeschluss';
-$lang["TRAINING_DESCRIPTION"] = 'Beschreibung';
+
+$lang["TRAINING_DESCRIPTION_FOR"] = 'Zielgruppe';
+$lang["TRAINING_DESCRIPTION_GOAL"] = 'Kursziel';
+$lang["TRAINING_DESCRIPTION_DURATION"] = 'Dauer';
+$lang["TRAINING_DESCRIPTION_NUM_MEMBERS"] = 'Teilnehmeranzahl';
+$lang["TRAINING_DESCRIPTION"] = 'Inhalt';
 
 $lang["TRAINING_MEMBER"] = 'TeilnehmerInnen';
 

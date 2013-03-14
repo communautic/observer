@@ -62,6 +62,13 @@
 	  <td class="tcell-right"><div id="trainingsteam" class="itemlist-field"><?php echo($training->team);?></div><div id="trainingsteam_ct" class="itemlist-field"><a field="trainingsteam_ct" class="ct-content"><?php echo($training->team_ct);?></a></div></td>
 	</tr>
 </table>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
+	<tr>
+		<td class="tcell-left text11"><span class="<?php if($training->canedit) { ?>content-nav selectTextarea<?php } ?>"><span>&nbsp;</span></span></td>
+        <td class="tcell-right"><?php if($training->canedit) { ?><textarea name="trainer_details" class="elastic"><?php echo(strip_tags($training->trainer_details));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($training->trainer_details)));?><?php } ?></td>
+	</tr>
+</table>
+<div class="content-spacer"></div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 	  <td class="tcell-left text11"><span class="<?php if($training->canedit) { ?>content-nav showDialog<?php } ?>" request="getTrainingDialog" field="trainingstraining" append="0"><span><?php echo $lang["TRAINING_TRAININGCAT"];?></span></span></td>
@@ -80,7 +87,37 @@
 */
 include('training_cat'.$training->training_id.'.php');
 ?>
-
+<div class="content-spacer"></div>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
+	<tr>
+		<td class="tcell-left text11"><span class="<?php if($training->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["TRAINING_DESCRIPTION_FOR"];?></span></span></td>
+        <td class="tcell-right"><?php if($training->canedit) { ?><textarea name="protocol1" class="elastic"><?php echo(strip_tags($training->protocol1));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($training->protocol1)));?><?php } ?></td>
+	</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
+	<tr>
+		<td class="tcell-left text11"><span class="<?php if($training->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["TRAINING_DESCRIPTION_GOAL"];?></span></span></td>
+        <td class="tcell-right"><?php if($training->canedit) { ?><textarea name="protocol2" class="elastic"><?php echo(strip_tags($training->protocol2));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($training->protocol2)));?><?php } ?></td>
+	</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
+	<tr>
+		<td class="tcell-left text11"><span class="<?php if($training->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["TRAINING_DESCRIPTION_DURATION"];?></span></span></td>
+        <td class="tcell-right"><?php if($training->canedit) { ?><textarea name="protocol3" class="elastic"><?php echo(strip_tags($training->protocol3));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($training->protocol3)));?><?php } ?></td>
+	</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
+	<tr>
+		<td class="tcell-left text11"><span class="<?php if($training->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["TRAINING_DESCRIPTION_NUM_MEMBERS"];?></span></span></td>
+        <td class="tcell-right"><?php if($training->canedit) { ?><textarea name="protocol4" class="elastic"><?php echo(strip_tags($training->protocol4));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($training->protocol4)));?><?php } ?></td>
+	</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
+	<tr>
+		<td class="tcell-left text11"><span class="<?php if($training->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["TRAINING_DESCRIPTION"];?></span></span></td>
+        <td class="tcell-right"><?php if($training->canedit) { ?><textarea name="protocol" class="elastic"><?php echo(strip_tags($training->protocol));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($training->protocol)));?><?php } ?></td>
+	</tr>
+</table>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
