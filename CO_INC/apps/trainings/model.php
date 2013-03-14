@@ -1183,7 +1183,7 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
    /**
    * get details for the training folder
    */
-   function setTrainingDetails($id,$title,$folder,$management,$management_ct,$company,$team,$team_ct,$training,$registration_end,$protocol,$date1,$date2,$date3,$time1,$time2,$time3,$time4,$place1,$place1_ct,$place2,$place2_ct,$text1,$text2,$text3) {
+   function setTrainingDetails($id,$title,$folder,$management,$management_ct,$company,$team,$team_ct,$trainer_details,$training,$registration_end,$protocol,$protocol1,$protocol2,$protocol3,$protocol4,$date1,$date2,$date3,$time1,$time2,$time3,$time4,$place1,$place1_ct,$place2,$place2_ct,$text1,$text2,$text3) {
 		global $session, $contactsmodel;
 		$sql = "";
 		if($time1 != '') { 
@@ -1225,7 +1225,7 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 
 		$now = gmdate("Y-m-d H:i:s");
 		
-		$q = "UPDATE " . CO_TBL_TRAININGS . " set title = '$title', folder = '$folder', management = '$management', management_ct = '$management_ct', company='$company', team='$team', team_ct = '$team_ct', training = '$training',protocol='$protocol',$sql place1 = '$place1', place1_ct = '$place1_ct', place2 = '$place2', place2_ct = '$place2_ct', text1 = '$text1', text2 = '$text2', text3 = '$text3', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_TRAININGS . " set title = '$title', folder = '$folder', management = '$management', management_ct = '$management_ct', company='$company', team='$team', team_ct = '$team_ct' , trainer_details ='$trainer_details', training = '$training', protocol='$protocol', protocol1='$protocol1', protocol2='$protocol2', protocol3='$protocol3', protocol4='$protocol4',$sql place1 = '$place1', place1_ct = '$place1_ct', place2 = '$place2', place2_ct = '$place2_ct', text1 = '$text1', text2 = '$text2', text3 = '$text3', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
