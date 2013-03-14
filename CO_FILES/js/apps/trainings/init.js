@@ -41,7 +41,6 @@ function trainingsApplication(name) {
 		if($('#trainingsplace1_ct').length >0) { formData[formData.length] = processCustomTextApps('place1_ct'); }
 		if($('#trainingsplace2').length >0) { formData[formData.length] = processListApps('place2'); }
 		if($('#trainingsplace2_ct').length >0) { formData[formData.length] = processCustomTextApps('place2_ct'); }
-
 	}
 
 	
@@ -49,9 +48,7 @@ function trainingsApplication(name) {
 		//var app = getCurrentApp();
 		switch(data.action) {
 			case "edit":
-				$("#trainings2 span[rel='"+data.id+"'] .text").html($("#trainings .date1").val() + ' - ' + $("#trainings .title").val());
-				//$("#"+ app +"3 ul[rel=meetings] span[rel="+data.id+"] .text").html($("#"+ app +" .item_date").val() +' - '+$("#"+ app +" .title").val());
-				//$("#trainingDurationStart").html($("#trainings-right input[name='startdate']").val());
+				$("#trainings2 span[rel='"+data.id+"'] .text").html($("#trainings .title").val());
 			break;
 			case "refresh":
 				trainings.actionRefresh();

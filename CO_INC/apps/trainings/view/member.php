@@ -11,7 +11,7 @@
     </tr>
   </table>
   <div class="co-popupOuter">
-  	<span class="showCoPopup co-link invitationLink <?php echo $training->member_status_default_css;?> <?php echo $value->invitation_class;?>" rel="<?php echo $value->id;?>">Einladung</span> 
+  	<span class="<?php if($training->canedit) { ?>showCoPopup co-link <?php } ?>invitationLink <?php echo $training->member_status_default_css;?> <?php echo $value->invitation_class;?>" rel="<?php echo $value->id;?>">Einladung</span> 
   	<div class="co-popup-content">
         <ul>
         	<li><a href="#" class="trainingsMemberAction" rel="manualInvitation" uid="<?php echo $value->id;?>" act="">Eingeladen</a></li>
@@ -22,7 +22,7 @@
     </div>
   </div>
   <div class="co-popupOuter">
-  	<span class="showCoPopup co-link registrationLink <?php echo $training->member_status_default_css;?> <?php echo $value->registration_class;?>" rel="<?php echo $value->id;?>">Anmeldung</span> 
+  	<span class="<?php if($training->canedit) { ?>showCoPopup co-link <?php } ?>registrationLink <?php echo $training->member_status_default_css;?> <?php echo $value->registration_class;?>" rel="<?php echo $value->id;?>">Anmeldung</span> 
   	<div class="co-popup-content">
         <ul>
         	<li><a href="#" class="trainingsMemberAction" rel="manualRegistration" uid="<?php echo $value->id;?>" act="">Angemeldet</a></li>
@@ -33,7 +33,7 @@
     </div>
   </div>
    <div class="co-popupOuter">
-  	<span class="showCoPopup co-link tookpartLink <?php echo $training->member_status_default_css;?> <?php echo $value->tookpart_class;?>" rel="<?php echo $value->id;?>">Teilnahme</span> 
+  	<span class="<?php if($training->canedit) { ?>showCoPopup co-link <?php } ?>tookpartLink <?php echo $training->member_status_default_css;?> <?php echo $value->tookpart_class;?>" rel="<?php echo $value->id;?>">Teilnahme</span> 
   	<div class="co-popup-content">
         <ul>
         	<li><a href="#" class="trainingsMemberAction" rel="manualTookpart" uid="<?php echo $value->id;?>" act="">Teilgenommen</a></li>
@@ -44,7 +44,7 @@
     </div>
   </div>
   <div class="co-popupOuter">
-  	<span class="showCoPopup co-link feedbackLink <?php echo $training->member_status_default_css;?> <?php echo $value->feedback_class;?>" rel="<?php echo $value->id;?>">Feedback</span> 
+  	<span class="<?php if($training->canedit) { ?>showCoPopup co-link <?php } ?>feedbackLink <?php echo $training->member_status_default_css;?> <?php echo $value->feedback_class;?>" rel="<?php echo $value->id;?>">Feedback</span> 
   	<div class="co-popup-content">
         <ul>
         	<li><a href="#" class="trainingsMemberAction" rel="editFeedback" uid="<?php echo $value->id;?>" act="<?php echo $training->folder_id;?>,<?php echo $training->id;?>,<?php echo $value->id;?>">Bearbeiten</a></li>

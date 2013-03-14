@@ -328,14 +328,17 @@ switch($training->training_id) {
 } ?>
 &nbsp;
 <?php if(!empty($training->protocol)) { ?>
-<table width="100%" class="protocol">
+<table width="100%" class="standard">
 	<tr>
         <td class="tcell-left top"><?php echo $lang["TRAINING_DESCRIPTION"];?></td>
-        <td><?php echo(nl2br($training->protocol));?></td>
+        <td>&nbsp;</td>
 	</tr>
 </table>
+&nbsp; <br />
+<?php echo(nl2br($training->protocol));?>
 <?php } ?>
-&nbsp;
+&nbsp; <br />
+&nbsp; <br />
 <table width="100%" class="standard">
 	<tr>
 	  <td class="tcell-left">Teilnehmeranzahl</td>

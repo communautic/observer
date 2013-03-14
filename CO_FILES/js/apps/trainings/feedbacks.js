@@ -204,7 +204,7 @@ function trainingsFeedbacks(name) {
 var trainings_feedbacks = new trainingsFeedbacks('trainings_feedbacks');
 
 $(document).ready(function() {				   
-	$(document).on('click', '.feedback-outer span',function(e) {
+	$(document).on('click', '.feedback-outer.active span',function(e) {
 		e.preventDefault();
 		var q = $(this).attr('rel');
 		var val = $(this).attr('v');

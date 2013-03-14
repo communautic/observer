@@ -88,12 +88,12 @@ class TrainingsFeedbacksModel extends TrainingsModel {
 
 
 	function getNavNumItems($id) {
-		$perm = $this->getTrainingAccess($id);
+		/*$perm = $this->getTrainingAccess($id);
 		$sql ="";
 		if( $perm ==  "guest") {
 			$sql = " and access = '1' ";
-		}
-		$q = "select count(*) as items from " . CO_TBL_TRAININGS_MEMBERS . " where pid = '$id' and tookpart='1' and bin != '1' " . $sql;
+		}*/
+		$q = "select count(*) as items from " . CO_TBL_TRAININGS_MEMBERS . " where pid = '$id' and tookpart='1' and bin != '1'";
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_fetch_array($result);
 		$items = $row['items'];
@@ -112,6 +112,12 @@ class TrainingsFeedbacksModel extends TrainingsModel {
 		$row = mysql_fetch_array($result);
 		foreach($row as $key => $val) {
 			$array[$key] = $val;
+		}
+		
+		$array["perms"] = $this->getTrainingAccess($array["pid"]);
+		$array["canedit"] = false;
+		if($array["perms"] == "sysadmin" || $array["perms"] == "admin") {
+			$array["canedit"] = true;
 		}
 		
 		$array["q1_selected"] = $array["feedback_q1"];
@@ -133,7 +139,7 @@ class TrainingsFeedbacksModel extends TrainingsModel {
 		
 		$array["total_result"] = round(100/25* $total_result,0);
 
-		$array["perms"] = $this->getTrainingAccess($array["pid"]);
+		//$array["perms"] = $this->getTrainingAccess($array["pid"]);
 		$array["current_user"] = $session->uid;
 		$array["today"] = $this->_date->formatDate("now",CO_DATETIME_FORMAT);
 		
