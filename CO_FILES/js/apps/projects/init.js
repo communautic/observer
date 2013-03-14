@@ -1010,18 +1010,7 @@ $(document).ready(function() {
 	$("#todayBar").livequery( function() {
 		$(this).css("opacity","0.4");
 	});
-	// becomes global Tooltip?
-	$(".coTooltip").livequery( function() {
-		$(this).tooltip({
-			track: true,
-			delay: 0,
-			fade: 200,
-			bodyHandler: function() { 
-				return $(this).find(".coTooltipHtml").html(); 
-			}, 
-			showURL: false 
-		});
-	});
+  
 	
 	// timeline gant chart and multiview
 	$("#barchartScroll").livequery( function() {

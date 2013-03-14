@@ -667,7 +667,17 @@ $(document).ready(function() {
 		var module = window[$(this).attr("href")];
 		module.showItemContext(ele,uid,field);
 	});
-	
+
+	$('.coTooltip').livequery(function() {
+		$(this).tooltip({
+			items: $(this),
+			content: $(this).find(".coTooltipHtml").html(),
+			track: true,
+			show: false,
+			hide: false
+		});
+	})
+
 	$(document).on('click','.showCoPopup',function(e) {
 		e.preventDefault();
 		var ele = $(this).parent();
@@ -851,10 +861,10 @@ $(document).ready(function() {
 		$('.sendForm').ajaxSubmit(sendformOptions);
 	});
 
-	$('.spinner').ajaxStart(function() {
-		$(this).show();
+	$(document).ajaxStart(function() {
+		$('.spinner').show();
 			}).ajaxStop(function() {
-		$(this).hide();
+		$('.spinner').hide();
 	});
 
 	// bind clicks to close diaolgs
