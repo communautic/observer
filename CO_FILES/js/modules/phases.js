@@ -10,7 +10,7 @@ function Phases(app) {
 		var app = getCurrentApp();
 		var title = $('#'+ app +' input.title').fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {callback: setTitleFocus});
+			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -178,7 +178,7 @@ function Phases(app) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					var id = $('#'+ module.app).data("third");
 					var pid = $('#'+ module.app).data("second");
@@ -473,7 +473,7 @@ function Phases(app) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: 'path=apps/'+ module.app +'/modules/phases&request=deleteTask&id=' + id, success: function(data){
 						if(data){
@@ -520,7 +520,7 @@ function Phases(app) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: 'path=apps/'+ module.app +'/modules/phases&request=deletePhase&id=' + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -542,7 +542,7 @@ function Phases(app) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: 'path=apps/'+ module.app +'/modules/phases&request=restorePhase&id=' + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -564,7 +564,7 @@ function Phases(app) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: 'path=apps/'+ module.app +'/modules/phases&request=deletePhaseTask&id=' + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -586,7 +586,7 @@ function Phases(app) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: 'path=apps/'+ module.app +'/modules/phases&request=restorePhaseTask&id=' + id, cache: false, success: function(data){
 						if(data == "true") {

@@ -21,7 +21,7 @@ function clientsApplication(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#clients input.title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {callback: setTitleFocus});
+			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -152,7 +152,7 @@ function clientsApplication(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					var id = $("#clients").data("second");
 					var fid = $("#clients").data("first");
@@ -352,7 +352,7 @@ function clientsApplication(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/clients&request=deleteClient&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -373,7 +373,7 @@ function clientsApplication(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/clients&request=restoreClient&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -407,7 +407,7 @@ function clientsFolders(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#clients input.title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {callback: setTitleFocus});
+			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -456,7 +456,7 @@ function clientsFolders(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					var id = $("#clients").data("first");
 					$.ajax({ type: "GET", url: "/", data: "path=apps/clients&request=binFolder&id=" + id, cache: false, success: function(data){
@@ -639,7 +639,7 @@ function clientsFolders(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/clients&request=deleteFolder&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -660,7 +660,7 @@ function clientsFolders(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/clients&request=restoreFolder&id=" + id, cache: false, success: function(data){
 						if(data == "true") {

@@ -19,7 +19,7 @@ function brainstormsApplication(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#brainstorms input.title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {callback: setTitleFocus});
+			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -132,7 +132,7 @@ function brainstormsApplication(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					var id = $("#brainstorms").data("second");
 					var fid = $("#brainstorms").data("first");
@@ -341,7 +341,7 @@ function brainstormsApplication(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=deleteBrainstormNote&id="+id, success: function(data){
 						if(data){
@@ -371,7 +371,7 @@ function brainstormsApplication(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms&request=deleteBrainstorm&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -392,7 +392,7 @@ function brainstormsApplication(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms&request=restoreBrainstorm&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -413,7 +413,7 @@ function brainstormsApplication(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms&request=deleteItem&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -434,7 +434,7 @@ function brainstormsApplication(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms&request=restoreItem&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -536,7 +536,7 @@ function brainstormsFolders(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#brainstorms input.title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {callback: setTitleFocus});
+			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -585,7 +585,7 @@ function brainstormsFolders(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					var id = $("#brainstorms").data("first");
 					$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms&request=binFolder&id=" + id, cache: false, success: function(data){
@@ -721,7 +721,7 @@ function brainstormsFolders(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms&request=deleteFolder&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -742,7 +742,7 @@ function brainstormsFolders(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/brainstorms&request=restoreFolder&id=" + id, cache: false, success: function(data){
 						if(data == "true") {

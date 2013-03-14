@@ -6,7 +6,7 @@ function publishersMenues(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#publishers input.title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {callback: setTitleFocus});
+			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -159,7 +159,7 @@ function publishersMenues(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					var id = $("#publishers").data("first");
 					//var pid = $("#publishers2 .module-click:visible").attr("rel");
@@ -330,7 +330,7 @@ function publishersMenues(name) {
 			langbuttons[ALERT_NO] = false;
 			$.prompt(txt,{ 
 				buttons:langbuttons,
-				callback: function(v,m,f){		
+				submit: function(e,v,m,f){		
 					if(v){
 						var id = $('#publishers input[name="id"]').val();
 						var html = '<div class="listmember" field="publishersmenue_status" uid="'+rel+'" style="float: left">' + text + '</div>';
@@ -385,7 +385,7 @@ function publishersMenues(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/publishers/modules/menues&request=deleteMenue&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -406,7 +406,7 @@ function publishersMenues(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/publishers/modules/menues&request=restoreMenue&id=" + id, cache: false, success: function(data){
 						if(data == "true") {

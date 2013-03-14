@@ -19,7 +19,7 @@ function forumsApplication(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#forums input.title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {callback: setTitleFocus});
+			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -156,7 +156,7 @@ function forumsApplication(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					var id = $("#forums").data("second");
 					var fid = $("#forums").data("first");
@@ -330,7 +330,7 @@ function forumsApplication(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/forums&request=binForumItem&id=" + id, success: function(data){
 						if(data){
@@ -377,7 +377,7 @@ function forumsApplication(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/forums&request=deleteForum&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -398,7 +398,7 @@ function forumsApplication(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/forums&request=restoreForum&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -419,7 +419,7 @@ function forumsApplication(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/forums&request=deleteItem&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -440,7 +440,7 @@ function forumsApplication(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/forums&request=restoreItem&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -499,7 +499,7 @@ function forumsFolders(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#forums input.title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {callback: setTitleFocus});
+			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -548,7 +548,7 @@ function forumsFolders(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					var id = $("#forums").data("first");
 					$.ajax({ type: "GET", url: "/", data: "path=apps/forums&request=binFolder&id=" + id, cache: false, success: function(data){
@@ -692,7 +692,7 @@ function forumsFolders(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/forums&request=deleteFolder&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -713,7 +713,7 @@ function forumsFolders(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/forums&request=restoreFolder&id=" + id, cache: false, success: function(data){
 						if(data == "true") {

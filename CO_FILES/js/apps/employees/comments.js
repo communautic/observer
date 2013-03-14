@@ -6,7 +6,7 @@ function employeesComments(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#employees input.title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {callback: setTitleFocus});
+			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -141,7 +141,7 @@ function employeesComments(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					var id = $("#employees").data("third");
 					var pid = $("#employees").data("second");
@@ -330,7 +330,7 @@ function employeesComments(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/employees/modules/comments&request=deleteComment&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -351,7 +351,7 @@ function employeesComments(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/employees/modules/comments&request=restoreComment&id=" + id, cache: false, success: function(data){
 						if(data == "true") {

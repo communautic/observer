@@ -21,7 +21,7 @@ function complaintsApplication(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#complaints input.title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {callback: setTitleFocus});
+			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -165,7 +165,7 @@ function complaintsApplication(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					var id = $("#complaints").data("second");
 					var fid = $("#complaints").data("first");
@@ -366,7 +366,7 @@ function complaintsApplication(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/complaints&request=deleteComplaint&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -387,7 +387,7 @@ function complaintsApplication(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/complaints&request=restoreComplaint&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -444,7 +444,7 @@ function complaintsFolders(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#complaints input.title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {callback: setTitleFocus});
+			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -493,7 +493,7 @@ function complaintsFolders(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					var id = $("#complaints").data("first");
 					$.ajax({ type: "GET", url: "/", data: "path=apps/complaints&request=binFolder&id=" + id, cache: false, success: function(data){
@@ -653,7 +653,7 @@ function complaintsFolders(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/complaints&request=deleteFolder&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -674,7 +674,7 @@ function complaintsFolders(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/complaints&request=restoreFolder&id=" + id, cache: false, success: function(data){
 						if(data == "true") {

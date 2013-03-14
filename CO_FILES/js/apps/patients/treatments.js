@@ -6,7 +6,7 @@ function patientsTreatments(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#patients input.title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {callback: setTitleFocus});
+			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -262,7 +262,7 @@ function patientsTreatments(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					var id = $("#patients").data("third");
 					var pid = $("#patients").data("second");
@@ -509,7 +509,7 @@ function patientsTreatments(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 				$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/treatments&request=deleteTask&id=" + id, success: function(data){
 					if(data){
@@ -572,7 +572,7 @@ function patientsTreatments(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 				$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/treatments&request=deleteTask&id=" + id, success: function(data){
 					if(data){
@@ -599,7 +599,7 @@ function patientsTreatments(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/treatments&request=deleteTreatment&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -620,7 +620,7 @@ function patientsTreatments(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/treatments&request=restoreTreatment&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -641,7 +641,7 @@ function patientsTreatments(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/treatments&request=deleteTreatmentTask&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -662,7 +662,7 @@ function patientsTreatments(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/treatments&request=restoreTreatmentTask&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -682,7 +682,7 @@ this.binDeleteColumn = function(id) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/treatments&request=deleteTreatmentDiagnose&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -702,7 +702,7 @@ this.binDeleteColumn = function(id) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/treatments&request=restoreTreatmentDiagnose&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -1098,7 +1098,7 @@ var colors = ['#3C4664','#EB4600','#915500','#0A960A','#AA19AA','#3C4664','#EB46
 			langbuttons[ALERT_NO] = false;
 			$.prompt(txt,{ 
 				buttons:langbuttons,
-				callback: function(v,m,f){		
+				submit: function(e,v,m,f){		
 					if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/treatments&request=binDiagnose&id=" + id, success: function(data){
 						if(data){

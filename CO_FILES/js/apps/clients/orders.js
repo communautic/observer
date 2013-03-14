@@ -6,7 +6,7 @@ function clientsOrders(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#clients input.title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {callback: setTitleFocus});
+			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -144,7 +144,7 @@ function clientsOrders(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					var id = $("#clients").data("third");
 					var pid = $("#clients").data("second");
@@ -329,7 +329,7 @@ function clientsOrders(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/clients/modules/orders&request=deleteOrder&id=" + id, cache: false, success: function(data){
 						if(data == "true") {
@@ -350,7 +350,7 @@ function clientsOrders(name) {
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
 			buttons:langbuttons,
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					$.ajax({ type: "GET", url: "/", data: "path=apps/clients/modules/orders&request=restoreOrder&id=" + id, cache: false, success: function(data){
 						if(data == "true") {

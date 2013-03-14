@@ -14,7 +14,7 @@ $(document).ajaxError(function(e, xhr, settings, exception) {
 		var langbuttons = {};
 		langbuttons[ALERT_YES] = true;
 		$.prompt(txt,{ 
-			callback: function(v,m,f){		
+			submit: function(e,v,m,f){		
 				if(v){
 					globalError = 0;
 				}
@@ -357,6 +357,40 @@ function resetNavScroll() {
 	}
 }
 
+// ajax check to see if user is still logged in
+function activateSessionCheck() {
+	var sessionactive = setInterval(function() {
+		$.ajax({ type: "GET", url: "/", data: 'path=classes/sessionactive', success: function(data){
+				if(!data){
+					clearInterval(sessionactive);
+					//var txt = ALERT_LOGOUT;
+					var langbuttons = {};
+					langbuttons[ALERT_YES] = true;
+					langbuttons[ALERT_NO] = false;
+					$.prompt('Ihre Zugangsdaten sind nicht mehr aktuell!\n<input />',{ 
+						buttons:langbuttons,
+						submit: function(e,v,m,f){		
+							if(v){
+								//needs to reactivate sesssion
+								//needs to reactivate setInterval
+								// then call action refresh
+								/*var obj = getCurrentModule();
+								obj.actionRefresh();*/
+								activateSessionCheck()
+								alert('possibly reactivate session');
+							} else {
+								document.location.href = '/';
+							}
+						}
+					});
+				}
+			}
+		});
+	}, 10000);
+}
+activateSessionCheck()
+
+
 /* global Action functions to go here 
 like actionPrint, actionHelp, etc ...
 */
@@ -403,8 +437,8 @@ $(document).ready(function() {
 		langbuttons[ALERT_YES] = true;
 		langbuttons[ALERT_NO] = false;
 		$.prompt(txt,{ 
-			buttons:langbuttons,
-			callback: function(v,m,f){		
+			buttons: langbuttons,
+			submit: function(e,v,m,f){		
 				if(v){
 					$("#intro").fadeIn();
 					var src = '/?path=login';
