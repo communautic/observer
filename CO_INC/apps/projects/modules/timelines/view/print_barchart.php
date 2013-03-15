@@ -83,7 +83,7 @@ $top = $top-7;
 			?>
             <!-- outer phase container for opacyti bg -->
             <div class="<?php echo($project["phases"][$key]["status"]);?>" style="opacity: 0.3; z-index: 1; position: absolute; top: <?php echo($ptop[$key]);?>px; left: <?php echo($pleft[$key]);?>px; height: <?php echo($project["phases"][$key]["css_height"]);?>px; width: <?php echo($project["phases"][$key]["css_width"]);?>px;"></div>
-            <div style="position: absolute; z-index: 2;top: <?php echo($ptop[$key]+2);?>px; overflow: hidden; left: <?php echo($pleft[$key]+2);?>px; height: 13px;  vertical-align: top; font-size: 10px; "><?php echo($i . ". " . $project["phases"][$key]["title"] . " " . $project["phases"][$key]["startdate"]);?></div>
+            <div style="position: absolute; z-index: 2; top: <?php echo($ptop[$key]+2);?>px; overflow: hidden; left: <?php echo($pleft[$key]+2);?>px; height: 13px;  vertical-align: top; font-size: 10px; "><?php echo($i . ". " . $project["phases"][$key]["title"] . " " . $project["phases"][$key]["startdate"]);?></div>
 <!-- phase -->
 			
          
@@ -106,7 +106,12 @@ $top = $top-7;
 						$dep_left = $pleft[$key]+$project["phases"][$dep_phase_key]["css_left"]+$project["tasks"][$dep_key]["css_left"]+$project["tasks"][$dep_key]["css_width"]-$project["phases"][$key]["css_left"];
 						$dep_width = ($project["phases"][$key]["css_left"] + $project["phases"][$key]["tasks"][$tkey]["css_left"]) - ($project["phases"][$dep_phase_key]["css_left"]+$project["tasks"][$dep_key]["css_left"]+$project["tasks"][$dep_key]["css_width"]);
 						$dep_arrow_top = $dep_top + $dep_height;
-						$dep_arrow_left = $dep_left + $dep_width - 6;
+						if($dep_width < 1) {
+							$dep_arrow_left = $dep_left - 6;
+						} else {
+							$dep_arrow_left = $dep_left + $dep_width - 6;
+						}
+						
 					} else {
 						$dep_top = $ptop[$key]+$project["tasks"][$dep_key]["css_top"];
 						$dep_height = $project["phases"][$dep_phase_key]["tasks"][$tkey]["css_top"] - $project["tasks"][$dep_key]["css_top"] -6;
@@ -114,6 +119,11 @@ $top = $top-7;
 						$dep_width = $project["phases"][$key]["tasks"][$tkey]["css_left"]-$project["tasks"][$dep_key]["css_width"]-$project["tasks"][$dep_key]["css_left"];
 						$dep_arrow_top = $dep_top + $dep_height;
 						$dep_arrow_left = $dep_left + $dep_width - 6;
+						if($dep_width < 1) {
+							$dep_arrow_left = $dep_left - 6;
+						} else {
+							$dep_arrow_left = $dep_left + $dep_width - 6;
+						}
 					}
 					//$ttop[$tkey] = $dep_top;
 				?>
@@ -128,7 +138,7 @@ $top = $top-7;
                 <?php } else { ?>
                 <!-- milestone -->
                 <div id="task_<?php echo($project["phases"][$key]["tasks"][$tkey]["id"]);?>" style="z-index: 3; position: absolute; top: <?php echo($ptop[$key]+$project["phases"][$key]["tasks"][$tkey]["css_top"]);?>px; left: <?php echo($pleft[$key]+$project["phases"][$key]["tasks"][$tkey]["css_left"]+ $project["td_width"] - 5);?>px; height: 10px; width: <?php echo($project["phases"][$key]["tasks"][$tkey]["css_width"]);?>px;"><img src="<?php echo(CO_FILES);?>/img/print/gantt_milestone.png" width="12" height="12" /></div>
-                <div style="position: absolute; top: <?php echo($ptop[$key]+$project["phases"][$key]["tasks"][$tkey]["css_top"]-2);?>px; left: <?php echo($pleft[$key]+$project["phases"][$key]["tasks"][$tkey]["css_left"]+ $project["td_width"]+9);?>px; height: 15px;  vertical-align: top; font-size: 10px; "><?php echo($project["phases"][$key]["tasks"][$tkey]["text"] . " " . $project["phases"][$key]["tasks"][$tkey]["startdate"]);?></div>
+                <div style="position: absolute; top: <?php echo($ptop[$key]+$project["phases"][$key]["tasks"][$tkey]["css_top"]-2);?>px; left: <?php echo($pleft[$key]+$project["phases"][$key]["tasks"][$tkey]["css_left"]+ $project["td_width"]+9);?>px; height: 15px;  vertical-align: top; font-size: 10px; width: 400px; z-index: 2;"><?php echo($project["phases"][$key]["tasks"][$tkey]["text"] . " " . $project["phases"][$key]["tasks"][$tkey]["startdate"]);?></div>
                 <!-- milestone dependency -->
 				<?php 
 				if(is_int($project["phases"][$key]["tasks"][$tkey]["dep"])){ 
