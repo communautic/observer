@@ -674,7 +674,7 @@ class ProjectsPhasesModel extends ProjectsModel {
 			$res = mysql_query($qt, $this->_db->connection);
 		}
 		//return true;
-		$this->moveDependendTasks($id,$days);
+		return $this->moveDependendTasks($id,$days);
 	}
 
 	function checkDependency($id,$date){
