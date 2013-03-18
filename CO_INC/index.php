@@ -106,6 +106,7 @@ var co_lang = '<?php echo $session->userlang;?>';
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.scrollTo.min.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.elastic.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.hoverscroll.js"></script>
+<!--<script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.ba-throttle-debounce.min.js"></script>-->
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/lang/<?php echo($session->userlang); ?>.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/init.js"></script>
 <?php // include mobile js
@@ -167,7 +168,6 @@ foreach($userapps as $key => $app) {
 include(CO_INC . "/view/footer.php");
 ?>
 </div>
-<div id="tooltip-simple"></div>
 <div id="modalDialog"></div>
 <div id="modalDialogTime"></div>
 <div id="modalDialogForward" title="Weiterleitung"></div>

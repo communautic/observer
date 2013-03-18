@@ -331,7 +331,6 @@ function checkTime(field) {
 		document.poform.length.value = h + ':' + (m - (h * 60));
 }
 
-
 function initNavScroll() {
 	var div = $('#navSlider');
 	var divWidth = div.width();
@@ -358,37 +357,58 @@ function resetNavScroll() {
 }
 
 // ajax check to see if user is still logged in
-function activateSessionCheck() {
+/*function activateSessionCheck() {
 	var sessionactive = setInterval(function() {
-		$.ajax({ type: "GET", url: "/", data: 'path=classes/sessionactive', success: function(data){
-				if(!data){
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=login/sessionCheck&request=sessionCheck', success: function(data){
+				if(!data.active){
 					clearInterval(sessionactive);
-					//var txt = ALERT_LOGOUT;
+					if(data.user != undefined) {
 					var langbuttons = {};
-					langbuttons[ALERT_YES] = true;
-					langbuttons[ALERT_NO] = false;
-					$.prompt('Ihre Zugangsdaten sind nicht mehr aktuell!\n<input />',{ 
+					langbuttons[ALERT_BUTTON_LOGOUT] = true;
+					langbuttons[ALERT_BUTTON_LOGIN] = false;
+					$.prompt(ALERT_MESSAGE_SESSION_RENEW + ' &nbsp; <input type="password" name="pass" /><input type="hidden" name="user" value="'+data.user+'" /><br /><br />',{ 
 						buttons:langbuttons,
 						submit: function(e,v,m,f){		
 							if(v){
-								//needs to reactivate sesssion
-								//needs to reactivate setInterval
-								// then call action refresh
-								/*var obj = getCurrentModule();
-								obj.actionRefresh();*/
-								activateSessionCheck()
-								alert('possibly reactivate session');
+								e.preventDefault();
+								$.ajax({ type: "POST", url: "/", data: 'path=login/sessionCheck&request=logout', success: function(data){
+									document.location.href = '/';
+									}
+								});
 							} else {
-								document.location.href = '/';
+								e.preventDefault();
+								//reactivate sesssion
+								$.ajax({ type: "POST", url: "/", data: 'path=login/sessionCheck&request=reactivateLogin&user='+f.user+'&pass='+f.pass, success: function(data){
+										if(!data){
+											alert('double check password');
+										} else {
+											$.prompt.close();
+											// call action refresh
+											var obj = getCurrentModule();
+											obj.actionRefresh();
+											// re-activate sessioncheck
+											activateSessionCheck();
+										}
+									}
+								});
 							}
 						}
 					});
-				}
+					
+					} else {
+						$.prompt('Session expired! It seems that your browser cookies got deleted, which prevents you from authentication to the system. If you see this message often please contact your computer administrator to double check your browsers cookie settings. Follow the link below to login in again',{
+							submit: function(e,v,m,f){
+								e.preventDefault();
+								document.location.href = '/';
+							}
+						});
+					}
+				} 
 			}
 		});
 	}, 10000);
 }
-activateSessionCheck()
+activateSessionCheck()*/
 
 
 /* global Action functions to go here 
@@ -1535,8 +1555,14 @@ $(document).ready(function() {
 var formChanged = false;
 var checkpointChanged = false;
 
+
+function keyupSave() {
+	formChanged = false;
+	var obj = getCurrentModule();
+	$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);					   
+} 
+			
 $(document).ready(function() {
-    
 	$('.textarea-title, .bg, .elastic').livequery(function () {
 		var e = $(this);
 		e.data('initial_value', e.val());
@@ -1548,6 +1574,7 @@ $(document).ready(function() {
 			  }
 		  }, 100);
 		});
+		//e.bind('keyup paste cut', $.debounce( 500, keyupSave));
    });
 	
 	$('textarea.elastic-two').livequery(function () {
