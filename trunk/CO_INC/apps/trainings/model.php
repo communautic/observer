@@ -1293,7 +1293,7 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 		
 		$now = gmdate("Y-m-d H:i:s");
 		// training
-		$q = "INSERT INTO " . CO_TBL_TRAININGS . " (folder,title,management,company,team,training,registration_end,protocol,date1,date2,date3,time1,time2,time3,time4,place1,place1_ct,place2,place2_ct,text1,text2,text3,planned_date,created_date,created_user,edited_date,edited_user) SELECT folder,CONCAT(title,' ".$lang["GLOBAL_DUPLICAT"]."'),management,company,team,training,registration_end,protocol,date1,date2,date3,time1,time2,time3,time4,place1,place1_ct,place2,place2_ct,text1,text2,text3,'$now','$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_TRAININGS . " where id='$id'";
+		$q = "INSERT INTO " . CO_TBL_TRAININGS . " (folder,title,management,company,team,training,registration_end,protocol,protocol1,protocol2,protocol3,protocol4,date1,date2,date3,time1,time2,time3,time4,place1,place1_ct,place2,place2_ct,text1,text2,text3,planned_date,created_date,created_user,edited_date,edited_user) SELECT folder,CONCAT(title,' ".$lang["GLOBAL_DUPLICAT"]."'),management,company,team,training,registration_end,protocol,protocol1,protocol2,protocol3,protocol4,date1,date2,date3,time1,time2,time3,time4,place1,place1_ct,place2,place2_ct,text1,text2,text3,'$now','$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_TRAININGS . " where id='$id'";
 
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();

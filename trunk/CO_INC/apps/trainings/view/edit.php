@@ -62,13 +62,7 @@
 	  <td class="tcell-right"><div id="trainingsteam" class="itemlist-field"><?php echo($training->team);?></div><div id="trainingsteam_ct" class="itemlist-field"><a field="trainingsteam_ct" class="ct-content"><?php echo($training->team_ct);?></a></div></td>
 	</tr>
 </table>
-<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
-	<tr>
-		<td class="tcell-left text11"><span class="<?php if($training->canedit) { ?>content-nav selectTextarea<?php } ?>"><span>&nbsp;</span></span></td>
-        <td class="tcell-right"><?php if($training->canedit) { ?><textarea name="trainer_details" class="elastic"><?php echo(strip_tags($training->trainer_details));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($training->trainer_details)));?><?php } ?></td>
-	</tr>
-</table>
-<div class="content-spacer"></div>
+<input type="hidden" name="trainer_details" value="<?php echo(strip_tags($training->trainer_details));?>" /></td>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 	  <td class="tcell-left text11"><span class="<?php if($training->canedit) { ?>content-nav showDialog<?php } ?>" request="getTrainingDialog" field="trainingstraining" append="0"><span><?php echo $lang["TRAINING_TRAININGCAT"];?></span></span></td>
@@ -87,6 +81,25 @@
 */
 include('training_cat'.$training->training_id.'.php');
 ?>
+<div class="content-spacer"></div>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+	<tr>
+		<td class="tcell-left-inactive text11">Teilnehmeranzahl</td>
+		<td class="tcell-right-inactive tcell-right-nopadding"><div id="training_num_members"><?php echo $training->num_members;?></div></td>
+    </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+	<tr>
+	  <td class="tcell-left text11"><span class="<?php if($training->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="custom" append="1"><span><?php echo $lang["TRAINING_MEMBER"];?></span></span></td>
+	  <td class="tcell-right"></td>
+	</tr>
+</table>
+<div id="trainingsmembers">
+<?php 
+foreach($member as $value) { 
+			include("member.php");
+} ?>
+</div>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
 	<tr>
@@ -118,26 +131,6 @@ include('training_cat'.$training->training_id.'.php');
         <td class="tcell-right"><?php if($training->canedit) { ?><textarea name="protocol" class="elastic"><?php echo(strip_tags($training->protocol));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($training->protocol)));?><?php } ?></td>
 	</tr>
 </table>
-<div class="content-spacer"></div>
-<table border="0" cellpadding="0" cellspacing="0" class="table-content">
-	<tr>
-		<td class="tcell-left-inactive text11">Teilnehmeranzahl</td>
-		<td class="tcell-right-inactive tcell-right-nopadding"><div id="training_num_members"><?php echo $training->num_members;?></div></td>
-    </tr>
-</table>
-<table border="0" cellpadding="0" cellspacing="0" class="table-content">
-	<tr>
-	  <td class="tcell-left text11"><span class="<?php if($training->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="custom" append="1"><span><?php echo $lang["TRAINING_MEMBER"];?></span></span></td>
-	  <td class="tcell-right"></td>
-	</tr>
-</table>
-<div id="trainingsmembers">
-<?php 
-foreach($member as $value) { 
-			include("member.php");
-} ?>
-</div>
-
 </form>
 <?php if($training->access != "guest") { ?>
 <div class="content-spacer"></div>
