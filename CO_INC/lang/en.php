@@ -100,7 +100,7 @@ $lang["GLOBAL_STATUS_DISCUSSION_TIME"] = 'on';
 $lang["GLOBAL_STATUS_ENTERED"] = 'documented';
 $lang["GLOBAL_STATUS_ENTERED_TIME"] = 'on';
 // webnews
-$lang["GLOBAL_STATUS_PUBISHED"] = 'published';
+$lang["GLOBAL_STATUS_PUBLISHED"] = 'published';
 $lang["GLOBAL_STATUS_PUBLISHED_TIME"] = 'on';
 $lang["GLOBAL_STATUS_ARCHIVED"] = 'archived';
 $lang["GLOBAL_STATUS_ARCHIVED_TIME"] = 'since';

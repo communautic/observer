@@ -74,7 +74,7 @@
 1 	Vortrag
 2 	Vortrag & Gruppencoaching
 3 	e-training
-4 	e-training & Präsenzcoaching
+4 	e-training & Praesenzcoaching
 5 	Einzelcoaching
 6 	Workshop
 7 	Veranstaltungsreihe

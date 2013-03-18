@@ -5,25 +5,25 @@ $lang["trainings_name"] = 'Trainings';
 
 // Left
 $lang["TRAINING_FOLDER"] = 'Folder';
-$lang["TRAINING_FOLDER_NEW"] = 'Neuer Ordner';
-$lang["TRAINING_FOLDER_ACTION_NEW"] = 'neuen Ordner anlegen';
+$lang["TRAINING_FOLDER_NEW"] = 'New Folder';
+$lang["TRAINING_FOLDER_ACTION_NEW"] = 'create new Folder';
 $lang["TRAINING_TRAININGS"] = 'Trainings';
-$lang["TRAINING_NEW"] = 'Neues Training';
-$lang["TRAINING_ACTION_NEW"] = 'neues Training anlegen';
+$lang["TRAINING_NEW"] = 'New Training';
+$lang["TRAINING_ACTION_NEW"] = 'create new Training';
 
-$lang["TRAINING_FOLDER_TAB_TRAININGS"] = "Trainingsliste";
+$lang["TRAINING_FOLDER_TAB_TRAININGS"] = "List of trainings";
 $lang["TRAINING_FOLDER_TAB_MULTIVIEW"] = "Calendar";
-$lang["TRAINING_FOLDER_TAB_STATUS"] = "Ordnerstatus";
-$lang['TRAINING_TIMELINE_TIME'] = "Tage";
-$lang['TRAINING_TIMELINE_ACTION'] = "Vorgang";
+$lang["TRAINING_FOLDER_TAB_STATUS"] = "Folder Status";
+$lang['TRAINING_TIMELINE_TIME'] = "Days";
+$lang['TRAINING_TIMELINE_ACTION'] = "Training";
 
 // Folder Right
-$lang["TRAINING_FOLDER_TRAININGS_CREATED"] = 'Trainings insgesamt';
-$lang["TRAINING_FOLDER_TRAININGS_PLANNED"] = 'Trainings in Planung';
+$lang["TRAINING_FOLDER_TRAININGS_CREATED"] = 'Total Trainings';
+$lang["TRAINING_FOLDER_TRAININGS_PLANNED"] = 'Planned Trainings';
 $lang["TRAINING_FOLDER_TRAININGS_RUNNING"] = 'Trainings in Progress';
-$lang["TRAINING_FOLDER_TRAININGS_FINISHED"] = 'Trainings abgehalten';
-$lang["TRAINING_FOLDER_TRAININGS_STOPPED"] = 'Trainings abgesagt';
-$lang["TRAINING_FOLDER_STATUS_ACTIVE"] = 'aktiv';
+$lang["TRAINING_FOLDER_TRAININGS_FINISHED"] = 'Trainings completed';
+$lang["TRAINING_FOLDER_TRAININGS_STOPPED"] = 'Trainings cancelled';
+$lang["TRAINING_FOLDER_STATUS_ACTIVE"] = 'activ';
 $lang["TRAINING_FOLDER_STATUS_ARCHIVE"] = 'archiv';
 
 $lang["TRAINING_FOLDER_CHART_STABILITY"] = 'Umsetzungsstabilitaet aktuell';

@@ -7,11 +7,11 @@ $lang["PUBLISHER_MENUES"] = 'Menues';
 $lang["PUBLISHER_MENUE_NEW"] = 'New Menue';
 $lang["PUBLISHER_MENUE_ACTION_NEW"] = 'new Menue';
 
-$lang["PUBLISHER_MENUE_DATE_FROM"] = 'gültig von';
-$lang["PUBLISHER_MENUE_DATE_TO"] = 'gültig bis';
+$lang["PUBLISHER_MENUE_DATE_FROM"] = 'valid from';
+$lang["PUBLISHER_MENUE_DATE_TO"] = 'valid to';
 
-$lang["PUBLISHER_MENUE_MANAGEMENT"] = 'Menüverantwortung';
-$lang["PUBLISHER_MENUE_GOALS"] = 'Beschreibung';
+$lang["PUBLISHER_MENUE_MANAGEMENT"] = 'Responsibility';
+$lang["PUBLISHER_MENUE_GOALS"] = 'Description';
 
 $lang["PUBLISHER_MENUE_HELP"] = 'manual_projekte_telefonate.pdf';
 
