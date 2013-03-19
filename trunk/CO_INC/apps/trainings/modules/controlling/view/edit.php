@@ -21,6 +21,12 @@
     <div>
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
   <tr>
+    <td class="text11" style="padding: 3px 0 0 8px" width="120">Teilnehmer</td>
+    <td class="text11" style="text-align: right; padding: 3px 7px 0 0"><?php echo($controlling->allmembers);?></td>
+  </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
+  <tr>
     <td class="text11" style="padding: 3px 0 0 8px" width="120"><?php echo $lang["TRAINING_CONTROLLING_MEMBERS_INVITATIONS"];?></td>
     <td class="text11" style="text-align: right; padding: 3px 7px 0 0"><?php echo($controlling->invitations);?></td>
   </tr>

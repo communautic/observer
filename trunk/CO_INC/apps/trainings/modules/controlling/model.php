@@ -28,78 +28,79 @@ class TrainingsControllingModel extends TrainingsModel {
 		$array["id"] = $pid;
 		$array["datetime"] = $this->_date->formatDate("now",CO_DATETIME_FORMAT);
 		
+		$array["allmembers"] = $this->getNumMembers($pid);
 		$array["invitations"] = $this->getNumMembers($pid, "invitations");
 		$array["registrations"] = $this->getNumMembers($pid, "registrations");
 		$array["tookparts"] = $this->getNumMembers($pid, "tookparts");
 		
-		
-		$q = "SELECT id FROM " . CO_TBL_TRAININGS_MEMBERS . " where invitation='1' and pid = '$pid' and bin='0'";
-		$result = mysql_query($q, $this->_db->connection);
-		$invitations = mysql_num_rows($result);
-		
-		$q = "SELECT id FROM " . CO_TBL_TRAININGS_MEMBERS . " where registration='1' and pid = '$pid' and bin='0'";
-		$result = mysql_query($q, $this->_db->connection);
-		$registrations = mysql_num_rows($result);
-		
-		if($invitations == 0) {
+		$division = 3;
+		if($array["allmembers"] == 0) {
+			$division = 1;
+			$invitations = 0;
+			$registrations = 0;
 			$array['total_regs'] = 0;
-		} else {
-			$array['total_regs'] = round(100/$invitations*$registrations,0);
-		}
-		
-		$q = "SELECT id FROM " . CO_TBL_TRAININGS_MEMBERS . " where tookpart='1' and pid = '$pid' and bin='0'";
-		$result = mysql_query($q, $this->_db->connection);
-		$attendees = mysql_num_rows($result);
-		
-		if($invitations == 0) {
 			$array['total_attendees'] = 0;
-		} else {
-			$array['total_attendees'] = round(100/$invitations*$attendees,0);
-		}
-		
-		
-		$q = "SELECT * FROM " . CO_TBL_TRAININGS_MEMBERS . " where tookpart='1' and pid = '$pid' and bin='0'";
-		$result = mysql_query($q, $this->_db->connection);
-		if(mysql_num_rows($result) < 1) {
-			$members = 1;
-		} else {
-			$members = mysql_num_rows($result);
-		}
-		$total_result = 0;
-		$feedback_q1 = 0;
-		$feedback_q2 = 0;
-		$feedback_q3 = 0;
-		$feedback_q4 = 0;
-		$feedback_q5 = 0;
-		while ($row = mysql_fetch_array($result)) {
-			//$row = mysql_fetch_array($result);
-			foreach($row as $key => $val) {
-				$array[$key] = $val;
-			}
-		
-			
+			$array["total_result"] = 0;
 			$array["q1_result"] = 0;
 			$array["q2_result"] = 0;
 			$array["q3_result"] = 0;
 			$array["q4_result"] = 0;
 			$array["q5_result"] = 0;
-			if(!empty($array["feedback_q1"])) { $feedback_q1 += $array["feedback_q1"]; $total_result += $array["feedback_q1"]; }
-			if(!empty($array["feedback_q2"])) { $feedback_q2 += $array["feedback_q2"]; $total_result += $array["feedback_q2"]; }
-			if(!empty($array["feedback_q3"])) { $feedback_q3 += $array["feedback_q3"]; $total_result += $array["feedback_q3"]; }
-			if(!empty($array["feedback_q4"])) { $feedback_q4 += $array["feedback_q4"]; $total_result += $array["feedback_q4"]; }
-			if(!empty($array["feedback_q5"])) { $feedback_q5 += $array["feedback_q5"]; $total_result += $array["feedback_q5"]; }
-
+		} else {
+			$q = "SELECT id FROM " . CO_TBL_TRAININGS_MEMBERS . " where invitation='1' and pid = '$pid' and bin='0'";
+			$result = mysql_query($q, $this->_db->connection);
+			$invitations = mysql_num_rows($result);
+			
+			$q = "SELECT id FROM " . CO_TBL_TRAININGS_MEMBERS . " where registration='1' and pid = '$pid' and bin='0'";
+			$result = mysql_query($q, $this->_db->connection);
+			$registrations = mysql_num_rows($result);
+			$array['total_regs'] = round(100/$array["allmembers"]*$registrations,0);
+			
+			$q = "SELECT id FROM " . CO_TBL_TRAININGS_MEMBERS . " where tookpart='1' and pid = '$pid' and bin='0'";
+			$result = mysql_query($q, $this->_db->connection);
+			$attendees = mysql_num_rows($result);
+			$array['total_attendees'] = round(100/$array["allmembers"]*$attendees,0);
+			
+			$q = "SELECT * FROM " . CO_TBL_TRAININGS_MEMBERS . " where tookpart='1' and feedback != '0' and pid = '$pid' and bin='0'";
+			$result = mysql_query($q, $this->_db->connection);
+			if(mysql_num_rows($result) < 1) {
+				$members = 1;
+			} else {
+				$members = mysql_num_rows($result);
+			}
+			$total_result = 0;
+			$feedback_q1 = 0;
+			$feedback_q2 = 0;
+			$feedback_q3 = 0;
+			$feedback_q4 = 0;
+			$feedback_q5 = 0;
+			while ($row = mysql_fetch_array($result)) {
+				//$row = mysql_fetch_array($result);
+				foreach($row as $key => $val) {
+					$array[$key] = $val;
+				}
+				$array["q1_result"] = 0;
+				$array["q2_result"] = 0;
+				$array["q3_result"] = 0;
+				$array["q4_result"] = 0;
+				$array["q5_result"] = 0;
+				
+				if(!empty($array["feedback_q1"])) { $feedback_q1 += $array["feedback_q1"]; $total_result += $array["feedback_q1"]; }
+				if(!empty($array["feedback_q2"])) { $feedback_q2 += $array["feedback_q2"]; $total_result += $array["feedback_q2"]; }
+				if(!empty($array["feedback_q3"])) { $feedback_q3 += $array["feedback_q3"]; $total_result += $array["feedback_q3"]; }
+				if(!empty($array["feedback_q4"])) { $feedback_q4 += $array["feedback_q4"]; $total_result += $array["feedback_q4"]; }
+				if(!empty($array["feedback_q5"])) { $feedback_q5 += $array["feedback_q5"]; $total_result += $array["feedback_q5"]; }
+			}
+			
+			$array["q1_result"] = round($feedback_q1*20/$members,0);
+			$array["q2_result"] = round($feedback_q2*20/$members,0);
+			$array["q3_result"] = round($feedback_q3*20/$members,0);
+			$array["q4_result"] = round($feedback_q4*20/$members,0);
+			$array["q5_result"] = round($feedback_q5*20/$members,0);
+			$array["total_result"] = round((100/25*$total_result)/$members,0);
+			$array["today"] = $this->_date->formatDate("now",CO_DATETIME_FORMAT);
 		}
 		$array["pid"] = $pid;
-		$array["q1_result"] = round($feedback_q1*20/$members,0);
-		$array["q2_result"] = round($feedback_q2*20/$members,0);
-		$array["q3_result"] = round($feedback_q3*20/$members,0);
-		$array["q4_result"] = round($feedback_q4*20/$members,0);
-		$array["q5_result"] = round($feedback_q5*20/$members,0);
-		$array["total_result"] = round((100/25*$total_result)/$members,0);
-		$array["today"] = $this->_date->formatDate("now",CO_DATETIME_FORMAT);
-		
-		
 		$q = "SELECT status FROM " . CO_TBL_TRAININGS . " where id = '$pid'";
 		$result = mysql_query($q, $this->_db->connection);
 		$status = mysql_result($result,0);
@@ -118,13 +119,13 @@ class TrainingsControllingModel extends TrainingsModel {
 			break;
 		}
 		
-		$array["stability"] = round(($array["total_result"]+$array['total_attendees']+$status_percent)/3,0);
+		$array["stability"] = round(($array["total_result"]+$array['total_attendees']+$status_percent)/$division,0);
 		
 		$controlling = new Lists($array);
 		return $controlling;
    }
    
-   	function getNumMembers($id,$status, $sql="") {
+   	function getNumMembers($id,$status = '', $sql="") {
 		switch($status) {
 			case "invitations":
 				$sql .= " and invitation = '1'";
@@ -135,6 +136,8 @@ class TrainingsControllingModel extends TrainingsModel {
 			case "tookparts":
 				$sql .= " and tookpart = '1'";
 			break;
+			default:
+				$sql .= "";
 			
 		}
 		
@@ -246,7 +249,7 @@ class TrainingsControllingModel extends TrainingsModel {
 				$chart["real"] = $value;
 				$chart["rest"] = $this->getRest($chart["real"]);
 				$chart["title"] = $lang["TRAINING_CONTROLLING_CHART_ATTENDEES"];
-				$chart["img_name"] = "t_controlling_" . $id . "_registrations.png";
+				$chart["img_name"] = "t_controlling_" . $id . "_attendees.png";
 				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
 				
 				$chart["tendency"] = "pixel.gif";
