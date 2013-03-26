@@ -57,7 +57,7 @@ function trainingsApplication(name) {
 	}
 
 
-	this.poformOptions = { async: false, beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
+	this.poformOptions = { beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
 
 
 	this.statusOnClose = function(dp) {
@@ -334,6 +334,38 @@ function trainingsApplication(name) {
 		}
 	}
 
+
+	this.coPopup = function(el,request) {
+		switch(request) {
+			default:
+			var ele = el.parent();
+			var html = el.next().html();
+			$('#co-popup')
+					.removeClass(function (index, css) {
+					  return (css.match (/\bpopup-\w+/g) || []).join(' ');
+					})
+					.html(html)
+					.position({
+						  my: "center center",
+						  at: "right+72 center",
+						  of: ele,
+						  using: function(coords, feedback) {
+							  var $modal = $(this),
+								top = coords.top,
+								className = 'switch-' + feedback.horizontal;
+				
+							$modal.css({
+								left: coords.left + 'px',
+								top: top + 'px'
+					})
+					.removeClass(function (index, css) {
+					   return (css.match (/\bswitch-\w+/g) || []).join(' ');
+					})
+					.addClass(className);
+			  }
+			});
+		}
+	}
 
 	this.insertStatusDate = function(rel,text) {
 		var html = '<div class="listmember" field="trainingsstatus" uid="'+rel+'" style="float: left">' + text + '</div>';
@@ -749,7 +781,7 @@ function trainingsFolders(name) {
 	}
 
 
-	this.poformOptions = { async: false, beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
+	this.poformOptions = { beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
 
 	
 	this.actionNew = function() {
