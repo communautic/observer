@@ -197,7 +197,6 @@ $(document).ready(function() {
 		var idx = $('#desktopcolumns .column').index(this);
 		var col = parseInt($(this).attr("id").replace(/column/, ""));
 		var order = $('#desktopcolumns .column:eq('+idx+')').sortable("serialize");
-		console.log('col '+col+' ' +order);
 		$.ajax({ type: "GET", url: "/", data: "path=apps/desktop&request=updateColum&col="+col+"&"+ order, cache: false, success: function(data){
 
 			}
