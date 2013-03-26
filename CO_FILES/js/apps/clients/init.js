@@ -72,7 +72,7 @@ function clientsApplication(name) {
 	}
 
 
-	this.poformOptions = { async: false, beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
+	this.poformOptions = { beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
 
 
 	this.actionClose = function() {
@@ -424,7 +424,7 @@ function clientsFolders(name) {
 	}
 
 
-	this.poformOptions = { async: false, beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
+	this.poformOptions = { beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
 
 	
 	this.actionNew = function() {

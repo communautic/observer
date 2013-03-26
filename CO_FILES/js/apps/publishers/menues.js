@@ -43,7 +43,7 @@ function publishersMenues(name) {
 	}
 	
 	
-	this.poformOptions = { async: false, beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
+	this.poformOptions = { beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
 
 
 	this.statusOnClose = function(dp) {

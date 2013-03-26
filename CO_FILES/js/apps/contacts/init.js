@@ -109,7 +109,7 @@ function contactsContact(name) {
 	}
 	
 	
-	this.poformOptions = { async: false, beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
+	this.poformOptions = { beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
 
 
 	this.actionClose = function() {
@@ -468,7 +468,7 @@ function contactsGroups(name) {
 	}
 	
 	
-	this.poformOptions = { async: false, beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
+	this.poformOptions = { beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
 	
 	
 	this.getDetails = function(moduleidx,liindex,list) {

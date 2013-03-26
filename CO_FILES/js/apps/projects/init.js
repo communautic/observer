@@ -52,7 +52,7 @@ function projectsApplication(name) {
 	}
 
 
-	this.poformOptions = { async: false, beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
+	this.poformOptions = { beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
 
 
 	this.statusOnClose = function(dp) {
@@ -454,7 +454,7 @@ function projectsApplication(name) {
 			} else {
 				var s = $("#projects input[name='task_startdate["+reg+"]']").val();
 				var sm = $("#projects input[name='task_movedate_start["+reg+"]']").val();
-				var e = $("#projects input[name='task_enddate["+reg+"]']").val();
+				var en = $("#projects input[name='task_enddate["+reg+"]']").val();
 				var em = $("#projects input[name='task_movedate["+reg+"]']").val();
 				if(s != sm) {
 					var obj = getCurrentModule();
@@ -503,8 +503,8 @@ function projectsApplication(name) {
 			$('#projects .coform').ajaxSubmit(obj.poformOptions);
 			var reg = /[0-9]+/.exec(dp.name);
 			var s = $("#projects input[name='task_enddate["+reg+"]']").val();
-			var e = $("#projects input[name='task_movedate["+reg+"]']").val();
-			if(s != e) {
+			var en = $("#projects input[name='task_movedate["+reg+"]']").val();
+			if(s != en) {
 				$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=getTaskDependencyExists&id="+reg, success: function(data){																																																																				
 					if(data == "true") {
 						var txt = ALERT_PHASE_TASKS_MOVE_ALL;
@@ -516,7 +516,7 @@ function projectsApplication(name) {
 							submit: function(e,v,m,f){		
 								if(v){
 									var date1 = Date.parse(s);
-									var date2 = Date.parse(e);
+									var date2 = Date.parse(en);
 									var span = new TimeSpan(date1 - date2);
 									var days = span.getDays();
 									if(days != 0) {
@@ -589,7 +589,7 @@ function projectsFolders(name) {
 	}
 
 
-	this.poformOptions = { async: false, beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
+	this.poformOptions = { beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
 
 	
 	this.actionNew = function() {

@@ -75,7 +75,11 @@ function desktopApplication(name) {
 	this.markCheckpointRead = function(app,module,id) {
 		$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/desktop&request=markCheckpointRead&app=" + app + "&module=" + module + "&id=" + id, cache: false });
 	}
-	
+
+	this.actionRefresh = function() {
+		desktoploadModuleStart();
+	}
+
 }
 
 var desktop = new desktopApplication('desktop');
