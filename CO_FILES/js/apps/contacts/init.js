@@ -994,7 +994,6 @@ $(document).ready(function() {
 		closedialog = 0;
 		var obj = getCurrentModule();
 		if (obj.name == "trainings") {
-			console.log('group');
 			obj.customGroupInsert(id);
 			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=saveLastUsedGroups&id="+id});	
 		} else {
@@ -1506,9 +1505,6 @@ $(document).ready(function() {
 			source: "?path=apps/contacts&request=getGlobalSearch",
 			//minLength: 2,
 			select: function(event, ui) {
-				//var href = ui.item.id.split(",");
-				//externalLoadThreeLevels(href[0],href[1],href[2],href[3],href[4]);
-				console.log(ui.item.id, ui.item.value);
 				globalSearchAction(ui.item.id);
 				
 			},
