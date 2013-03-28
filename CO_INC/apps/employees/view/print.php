@@ -201,6 +201,22 @@
 	</tr>
 </table>
 <?php } ?>
+<?php if($trainig_display) { ?>
+<div class="content-spacer"></div>
+<table width="100%" class="standard"> 
+   <tr>
+		<td class="tcell-left">Trainingsteilnahmen</td>
+        <td><?php 
+		if(!empty($trainings)) {
+			foreach($trainings as $training) {
+				echo($training->title . ' (' . $training->total_result . '%)<br />');
+			}
+		}
+		?></td>
+	</tr>
+</table>
+<div class="content-spacer"></div>
+<?php } ?>
 &nbsp;
 <table width="100%" class="standard"> 
    <tr>
@@ -212,7 +228,7 @@
 	<tr>
 		<td width="33%"><?php $this->getChartPerformance($employee->id,'happiness',1);?></td>
 		<td width="33%"><?php $this->getChartPerformance($employee->id,'performance',1);?></td>
-		<td width="33%"><?php $this->getChartPerformance($employee->id,'goals',1);?></td>
+		<td><?php $this->getChartPerformance($employee->id,'goals',1);?></td>
 	</tr>
 </table>
 <table width="100%" class="standard-margin grey">
@@ -222,6 +238,21 @@
 		<td width="33%">&nbsp;</td>
 	</tr>
 </table>
-
-
+&nbsp;
+<table width="100%" class="standard"> 
+   <tr>
+		<td class="tcell-left">Leistungsarchiv</td>
+		<td><?php 
+		if(!empty($leistungen)) {
+			$i = 0;
+			foreach($leistungen as $leistung) {
+				if($i != 0) {
+				echo ($leistung->item_date . ', ' . $leistung->title . ' (' . $leistung->total . '%)<br />');
+				}
+			$i++;
+			}
+		}
+		?></td>
+	</tr>
+</table>
 <div style="page-break-after:always;">&nbsp;</div>

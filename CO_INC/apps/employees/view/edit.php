@@ -221,6 +221,22 @@
         <td class="tcell-right"><?php if($employee->canedit) { ?><textarea name="protocol2" class="elastic"><?php echo(strip_tags($employee->protocol2));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($employee->protocol2)));?><?php } ?></td>
 	</tr>
 </table>
+<?php if($trainig_display) { ?>
+<div class="content-spacer"></div>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+	<tr>
+		<td class="tcell-left-inactive text11">Trainingsteilnahmen</td>
+        <td class="tcell-right-inactive tcell-right-nopadding text11"><?php 
+		if(!empty($trainings)) {
+			foreach($trainings as $training) {
+				echo '<div><span class="externalLoadThreeLevels co-link" rel="feedbacks,' . $training->folder . ',' . $training->trainingid . ',' . $training->id . ',trainings">' . $training->title . ' (' . $training->total_result . '%)</span></div>';
+			}
+		}
+		?></td>
+	</tr>
+</table>
+<div class="content-spacer"></div>
+<?php } ?>
 		</div>
         <div id="EmployeesThird" style="display: none;">
 			<?php $this->getChartPerformance($employee->id,'happiness');
@@ -230,6 +246,23 @@
 			?>
             <div style="clear: both;"></div>
             <div class="content-spacer"></div>
+            <table border="0" cellpadding="0" cellspacing="0" class="table-content">
+	<tr>
+		<td class="tcell-left-inactive text11">Leistungsarchiv</td>
+        <td class="tcell-right-inactive tcell-right-nopadding text11"><?php 
+		if(!empty($leistungen)) {
+			$i = 0;
+			foreach($leistungen as $leistung) {
+				if($i != 0) {
+				echo '<div><span class="externalLoadThreeLevels co-link" rel="objectives,' . $employee->folder_id . ',' . $employee->id . ',' . $leistung->id . ',employees">' . $leistung->item_date . ', ' . $leistung->title . ' (' . $leistung->total . '%)</span></div>';
+				}
+			$i++;
+			}
+		}
+		?></td>
+	</tr>
+</table>
+<div class="content-spacer"></div>
         </div>
     </div>
 </div>

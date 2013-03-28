@@ -650,6 +650,7 @@ function getEmployeeTitleFromMeetingIDs($array,$target, $link = 0){
 		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
 		
 		// other functions
+		$array["folder_id"] = $array["folder"];
 		$array["folder"] = $this->getEmployeeFolderDetails($array["folder"],"folder");		
 		$array["kind"] = $this->getEmployeeIdDetails($array["kind"],"employeeskind");
 		$array["area"] = $this->getEmployeeIdDetails($array["area"],"employeesarea");
@@ -706,6 +707,46 @@ function getEmployeeTitleFromMeetingIDs($array,$target, $link = 0){
 			}
 		}
 		
+		$leistungen = array();
+		$ql = "SELECT * FROM " . CO_TBL_EMPLOYEES_OBJECTIVES . " where pid = '$id' and bin='0' ORDER BY item_date DESC";
+		$result = mysql_query($ql, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+			foreach($row as $key => $val) {
+				$leistung[$key] = $val;
+			}
+			$lid = $leistung['id'];
+			$leistung["item_date"] = $this->_date->formatDate($leistung["item_date"],CO_DATE_FORMAT);
+			$tab2result = 0;
+			if(!empty($leistung["tab2q1"])) { $tab2result += $leistung["tab2q1"]; }
+			if(!empty($leistung["tab2q2"])) { $tab2result += $leistung["tab2q2"]; }
+			if(!empty($leistung["tab2q3"])) { $tab2result += $leistung["tab2q3"]; }
+			if(!empty($leistung["tab2q4"])) { $tab2result += $leistung["tab2q4"]; }
+			if(!empty($leistung["tab2q5"])) { $tab2result += $leistung["tab2q5"]; }
+			$tab2result = round(100/50* $tab2result,0);
+			$performance = $tab2result;
+			
+			$qt = "SELECT answer FROM " . CO_TBL_EMPLOYEES_OBJECTIVES_TASKS . "  WHERE mid='$lid' and bin = '0'";
+			$resultt = mysql_query($qt, $this->_db->connection);
+			$num = mysql_num_rows($resultt)*10;
+			$tab3result = 0;
+			while($rowt = mysql_fetch_assoc($resultt)) {
+				if(!empty($rowt["answer"])) { $tab3result += $rowt["answer"]; }
+			}
+			if($tab3result == 0) {
+				$goals = 0;
+			} else {
+				$goals =  round(100/$num* $tab3result,0)*3;
+			}
+			/*$chart = $this->getChartPerformance($id,'performance',0);
+			$performance = $chart["real"];
+			$chart = $this->getChartPerformance($id,'goals',0);
+			$goals = $chart["real"]*3;*/
+			$total = $performance+$goals;
+			$leistung["total"] = round(100/400*$total,0);
+			
+			$leistungen[] = new Lists($leistung);
+		}
+		
 		$employee = new Lists($array);
 		
 		$sql="";
@@ -715,11 +756,37 @@ function getEmployeeTitleFromMeetingIDs($array,$target, $link = 0){
 				
 		$sendto = $this->getSendtoDetails("employees",$id);
 		
-		$arr = array("employee" => $employee, "sendto" => $sendto, "access" => $array["access"]);
+		$arr = array("employee" => $employee, "leistungen" => $leistungen, "sendto" => $sendto, "access" => $array["access"]);
 		return $arr;
    }
 
-
+	function getEmployeeTrainingsDetails($id){
+		$trainings = array();
+		$q = "SELECT b.*,c.title,c.folder,c.id as trainingid FROM co_employees as a, co_trainings_members as b, co_trainings as c, co_trainings_folders as d WHERE a.cid=b.cid and b.pid=c.id and b.tookpart='1' and c.folder=d.id and b.bin='0' and c.bin='0' and d.bin='0' and c.status='2' and a.id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+			while($row = mysql_fetch_assoc($result)) {
+				foreach($row as $key => $val) {
+				$array[$key] = $val;
+			}
+			$total_result = 0;
+			$array["q1_result"] = 0;
+			$array["q2_result"] = 0;
+			$array["q3_result"] = 0;
+			$array["q4_result"] = 0;
+			$array["q5_result"] = 0;
+			if(!empty($array["feedback_q1"])) { $array["q1_result"] = $array["feedback_q1"]*20; $total_result += $array["feedback_q1"]; }
+			if(!empty($array["feedback_q2"])) { $array["q2_result"] = $array["feedback_q2"]*20; $total_result += $array["feedback_q2"]; }
+			if(!empty($array["feedback_q3"])) { $array["q3_result"] = $array["feedback_q3"]*20; $total_result += $array["feedback_q3"]; }
+			if(!empty($array["feedback_q4"])) { $array["q4_result"] = $array["feedback_q4"]*20; $total_result += $array["feedback_q4"]; }
+			if(!empty($array["feedback_q5"])) { $array["q5_result"] = $array["feedback_q5"]*20; $total_result += $array["feedback_q5"]; }
+			
+			$array["total_result"] = round(100/25* $total_result,0);
+			
+			$trainings[] = new Lists($array);
+			}
+			
+			return $trainings;
+	}
    // Create employee folder title
 	function getEmployeeFolderDetails($string,$field){
 		$users_string = explode(",", $string);
