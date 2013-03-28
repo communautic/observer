@@ -65,21 +65,21 @@ if (!empty($_GET['request'])) {
 			echo($employees->setSortOrder("employees-sort",$_GET['employeeItem'],$_GET['id']));
 		break;
 		case 'getEmployeeDetails':
-			echo($employees->getEmployeeDetails($_GET['id']));
+			echo($employees->getEmployeeDetails($_GET['id'],$controller->applications));
 		break;
 		case 'printEmployeeDetails':
 			$t = "pdf"; // options: pdf, html
 			if(!empty($_GET['t'])) {
 				$t = $_GET['t'];
 			}
-			echo($employees->printEmployeeDetails($_GET['id'],$t));
+			echo($employees->printEmployeeDetails($_GET['id'],$t,$controller->applications));
 		break;
 		case 'printEmployeeHandbook':
 			$t = "pdf"; // options: pdf, html
 			if(!empty($_GET['t'])) {
 				$t = $_GET['t'];
 			}
-			echo($employees->printEmployeeHandbook($_GET['id'],$t));
+			echo($employees->printEmployeeHandbook($_GET['id'],$t,$controller->applications));
 		break;
 		case 'checkinEmployee':
 			echo($employees->checkinEmployee($_GET['id']));
@@ -191,7 +191,7 @@ if (!empty($_POST['request'])) {
 			echo($employees->moveEmployee($_POST['id'], $_POST['startdate'], $_POST['movedays']));
 		break;
 		case 'sendEmployeeDetails':
-			echo($employees->sendEmployeeDetails($_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
+			echo($employees->sendEmployeeDetails($_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body']),$controller->applications));
 		break;
 		case 'sendFolderDetails':
 			echo($employees->sendFolderDetails($_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));

@@ -197,10 +197,20 @@ class Employees extends Controller {
 	}
 
 
-	function getEmployeeDetails($id) {
+	function getEmployeeDetails($id,$applications) {
 		global $lang, $system;
+		$trainig_display = false;
+		$trainings = array();
+		foreach($applications as $app => $display) {
+			if($app == 'trainings') {
+				$trainig_display = true;
+				$trainings = $this->model->getEmployeeTrainingsDetails($id);
+			}
+		}
 		if($arr = $this->model->getEmployeeDetails($id)) {
 			$employee = $arr["employee"];
+			$leistungen = $arr["leistungen"];
+			$trainings = $trainings;
 			$sendto = $arr["sendto"];
 			ob_start();
 				include 'view/edit.php';
@@ -219,12 +229,23 @@ class Employees extends Controller {
 	}
 
 
-	function printEmployeeDetails($id, $t) {
+	function printEmployeeDetails($id, $t,$applications) {
 		global $session,$lang;
 		$title = "";
 		$html = "";
+		
+		$trainig_display = false;
+		$trainings = array();
+		foreach($applications as $app => $display) {
+			if($app == 'trainings') {
+				$trainig_display = true;
+				$trainings = $this->model->getEmployeeTrainingsDetails($id);
+			}
+		}
 		if($arr = $this->model->getEmployeeDetails($id)) {
 			$employee = $arr["employee"];
+			$leistungen = $arr["leistungen"];
+			$trainings = $trainings;
 			ob_start();
 				include 'view/print.php';
 				$html = ob_get_contents();
@@ -243,14 +264,24 @@ class Employees extends Controller {
 	}
 
 
-	function printEmployeeHandbook($id, $t) {
+	function printEmployeeHandbook($id, $t,$applications) {
 		global $session,$lang;
 		$title = "";
 		$html = "";
 		
+		$trainig_display = false;
+		$trainings = array();
+		foreach($applications as $app => $display) {
+			if($app == 'trainings') {
+				$trainig_display = true;
+				$trainings = $this->model->getEmployeeTrainingsDetails($id);
+			}
+		}
+		
 		if($arr = $this->model->getEmployeeDetails($id)) {
 			$employee = $arr["employee"];
-			$num = $arr["num"];
+			$leistungen = $arr["leistungen"];
+			$trainings = $trainings;
 			$sendto = $arr["sendto"];
 			ob_start();
 				include 'view/handbook_cover.php';
@@ -260,27 +291,14 @@ class Employees extends Controller {
 				include 'view/print.php';
 				$html .= ob_get_contents();
 			ob_end_clean();
-			// phases
-			/*$phasescont = new EmployeesPhases("phases");
-			foreach ($phases as $phase) {
-				if($arr = $phasescont->model->getDetails($phase->id,$num[$phase->id])) {
-					$phase = $arr["phase"];
-					$task = $arr["task"];
-					$sendto = $arr["sendto"];
-					ob_start();
-						include 'modules/phases/view/print.php';
-						$html .= ob_get_contents();
-					ob_end_clean();
-				}
-			}*/
-			// documents
+			// objectives
 			$employeesObjectives = new EmployeesObjectives("objectives");
 			if($arrojs = $employeesObjectives->model->getList($id,"0")) {
 				$ojs = $arrojs["objectives"];
 				foreach ($ojs as $oj) {
 					if($arr = $employeesObjectives->model->getDetails($oj->id)) {
 						$objective = $arr["objective"];
-						$oj = $arr["oj"];
+						//$oj = $arr["oj"];
 						$task = $arr["task"];
 						$sendto = $arr["sendto"];
 						ob_start();
@@ -289,7 +307,6 @@ class Employees extends Controller {
 						ob_end_clean();
 					}
 				}
-				//$html .= '<div style="page-break-after:always;">&nbsp;</div>';
 			}
 			$employeesComments = new EmployeesComments("comments");
 			if($arrcoms = $employeesComments->model->getList($id,"0")) {
@@ -305,34 +322,7 @@ class Employees extends Controller {
 						ob_end_clean();
 					}
 				}
-				//$html .= '<div style="page-break-after:always;">&nbsp;</div>';
 			}
-			/*$employeesDocuments = new EmployeesDocuments("documents");
-			if($arrdocs = $employeesObjectives->model->getList($id,"0")) {
-				$ojs = $arrdocs["objectives"];
-				foreach ($ojs as $oj) {
-					if($arr = $employeesObjectives->model->getDetails($oj->id)) {
-						$objective = $arr["objective"];
-						$oj = $arr["oj"];
-						$task = $arr["task"];
-						$sendto = $arr["sendto"];
-						ob_start();
-							include 'modules/objectives/view/print.php';
-							$html .= ob_get_contents();
-						ob_end_clean();
-					}
-				}
-				$html .= '<div style="page-break-after:always;">&nbsp;</div>';
-			}*/
-			// controlling
-			/*$employeesControlling = new EmployeesControlling("controlling");
-			if($cont = $employeesControlling->model->getDetails($id)) {
-				$tit = $employee->title;
-				ob_start();
-					include 'modules/controlling/view/print.php';
-					$html .= ob_get_contents();
-				ob_end_clean();
-			}*/
 			$title = $employee->title . " - " . $lang["EMPLOYEE_HANDBOOK"];
 		}
 		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_EMPLOYEE_MANUAL"];
@@ -358,6 +348,7 @@ class Employees extends Controller {
 		global $lang;
 		if($arr = $this->model->getEmployeeDetails($id, 'prepareSendTo')) {
 			$employee = $arr["employee"];
+			$leistungen = $arr["leistungen"];
 			$form_url = $this->form_url;
 			$request = "sendEmployeeDetails";
 			$to = "";
@@ -375,12 +366,22 @@ class Employees extends Controller {
 	}
 
 
-	function sendEmployeeDetails($id,$to,$cc,$subject,$body) {
+	function sendEmployeeDetails($id,$to,$cc,$subject,$body,$applications) {
 		global $session,$users, $lang;
 		$title = "";
 		$html = "";
+		$trainig_display = false;
+		$trainings = array();
+		foreach($applications as $app => $display) {
+			if($app == 'trainings') {
+				$trainig_display = true;
+				$trainings = $this->model->getEmployeeTrainingsDetails($id);
+			}
+		}
 		if($arr = $this->model->getEmployeeDetails($id)) {
 			$employee = $arr["employee"];
+			$leistungen = $arr["leistungen"];
+			$trainings = $trainings;
 			ob_start();
 				include 'view/print.php';
 				$html = ob_get_contents();

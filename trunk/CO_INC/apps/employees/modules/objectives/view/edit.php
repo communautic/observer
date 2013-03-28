@@ -460,7 +460,11 @@
                     <td class="tcell-right"><?php if($objective->canedit) { ?><textarea name="tab2q5_text" class="elastic"><?php echo strip_tags($objective->tab2q5_text);?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($objective->tab2q5_text)));?><?php } ?></td>
                 </tr>
             </table>
-            
+            <input type="hidden" name="tab2q6_text" value="" />
+            <input type="hidden" name="tab2q7_text" value="" />
+            <input type="hidden" name="tab2q8_text" value="" />
+            <input type="hidden" name="tab2q9_text" value="" />
+            <input type="hidden" name="tab2q10_text" value="" />
 		</div>
         <div id="EmployeesObjectivesThird" style="display: none;">
 			<table border="0" cellpadding="0" cellspacing="0" class="table-content addTaskTable">
