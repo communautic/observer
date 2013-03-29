@@ -300,7 +300,7 @@ class ProcsGrids extends Procs {
 			global $lang;
 			$retval = $this->model->saveGridNewManualNote($pid);
 			if($retval){
-				$html = '<div id="item_' . $retval . '" class="droppable"><div class="statusItem"><input name="" type="checkbox" value="' . $retval . '" class="cbx jNiceHidden" /></div><div class="itemTitle">' . $lang["PROC_GRID_ITEM_NEW"] . '</div></div>';
+				$html = '<div id="procsgriditem_' . $retval . '" class="droppable showCoPopup"><div class="statusItem"><input name="" type="checkbox" value="' . $retval . '" class="cbx jNiceHidden" /></div><div id="procsgriditem-title-' . $retval . '">' . $lang["PROC_GRID_ITEM_NEW"] . '</div><div style="display: none;" id="procsgriditem-text-' . $retval . '"></div></div>';
 			 return $html;
 		  } else{
 			 return "error";
@@ -311,7 +311,7 @@ class ProcsGrids extends Procs {
 			global $lang;
 			$retval = $this->model->saveGridNewManualTitle($pid,$col);
 			if($retval){
-				$html = '<div class="droppable colTitle planned" rel="' . $retval . '" id="item_' . $retval . '"><div class="statusItem"><span class="jNiceWrapper"><input type="checkbox" class="cbx jNiceHidden " value="' . $retval . '" name=""><span class="jNiceCheckbox"></span></span></div><div class="itemTitle">' . $lang["PROC_GRID_TITLE_NEW"] . '</div></div>';
+				$html = '<div id="procsgriditem_' . $retval . '" class="droppable colTitle planned showCoPopup" rel="' . $retval . '"><div class="statusItem"><span class="jNiceWrapper"><input type="checkbox" class="cbx jNiceHidden " value="' . $retval . '" name=""><span class="jNiceCheckbox"></span></span></div><div id="procsgriditem-title-' . $retval . '" class="itemTitle">' . $lang["PROC_GRID_TITLE_NEW"] . '</div><div style="display: none;" id="procsgriditem-text-' . $retval . '"></div></div>';
 			 return $html;
 		  } else{
 			 return "error";
@@ -322,7 +322,7 @@ class ProcsGrids extends Procs {
 			global $lang;
 			$retval = $this->model->saveGridNewManualStagegate($pid,$col);
 			if($retval){
-				$html = '<div class="droppable colStagegate" rel="' . $retval . '" id="item_' . $retval . '"><div class="statusItem"><span class="jNiceWrapper"><input type="checkbox" class="cbx jNiceHidden " value="' . $retval . '" name=""><span class="jNiceCheckbox"></span></span></div><div class="itemTitle">' . $lang["PROC_GRID_STAGEGATE_NEW"] . '</div></div>';
+				$html = '<div id="procsgriditem_' . $retval . '" class="droppable colStagegate showCoPopup" rel="' . $retval . '" id="item_' . $retval . '"><div class="statusItem"><span class="jNiceWrapper"><input type="checkbox" class="cbx jNiceHidden " value="' . $retval . '" name=""><span class="jNiceCheckbox"></span></span></div><div id="procsgriditem-title-' . $retval . '" class="itemTitle">' . $lang["PROC_GRID_STAGEGATE_NEW"] . '</div><div style="display: none;" id="procsgriditem-text-' . $retval . '"></div></div>';
 			 return $html;
 		  } else{
 			 return "error";

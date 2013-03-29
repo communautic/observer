@@ -115,8 +115,8 @@ if (!empty($_GET['request'])) {
 		break;
 		case 'saveGridItems':
 			$item = ""; // options: pdf, html
-			if(!empty($_GET['item'])) {
-				$item = $_GET['item'];
+			if(!empty($_GET['procsgriditem'])) {
+				$item = $_GET['procsgriditem'];
 			}
 			echo($procsGrids->saveGridItems($_GET["col"],$item));
 		break;

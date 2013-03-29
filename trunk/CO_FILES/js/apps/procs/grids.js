@@ -1,6 +1,8 @@
 /* grids Object */
 function procsGrids(name) {
 	this.name = name;
+	this.coPopupEditClass = 'popup-full';
+	this.coPopupEdit = '<div class="head">Bearbeiten</div><div class="content"><div class="fieldset"><label>Titel</label><input type="text" class="title" maxlength="60" value="" /></div><div class="fieldset"><label>Beschreibung</label><textarea class="text"></textarea></div><ul><li><a href="#" class="binItem alert" rel="">'+DATEPICKER_CLEAR+'</a></li></ul></div><span class="arrow"></span>';
 
 
 	this.formProcess = function(formData, form, poformOptions) {
@@ -314,6 +316,53 @@ function procsGrids(name) {
 	}
 
 
+	this.coPopup = function(el,request) {
+				var elepos = el.position();
+				var id = parseInt(el.attr('id').replace(/procsgriditem_/, ""));
+				currentProcGridEditedNote = id;
+				var title = el.find('div:eq(1)').text();
+				var text = el.find('div:eq(2)').text();
+				var html = this.coPopupEdit;
+				var pclass = this.coPopupEditClass;
+				var copopup = $('#co-popup');
+				copopup.html(html);
+				copopup.find('.title').val(title);
+				copopup.find('.text').val(text);
+				$('#co-popup a.binItem').attr('rel',id);
+				copopup
+					.removeClass(function (index, css) {
+						   return (css.match (/\bpopup-\w+/g) || []).join(' ');
+					   })
+					.addClass(pclass)
+					.position({
+						  my: "center center",
+						  at: "right+170 center",
+						  of: el,
+						  using: function(coords, feedback) {
+								var $modal = $(this),
+								top = coords.top,
+								left = coords.left,
+								className = 'switch-' + feedback.horizontal;
+								if(top < 0) {
+									top = elepos.top+100;
+									left = elepos.left-60;
+									className = 'switch-north';
+								}
+								if(left < 0) {
+									left = 0;
+								}
+								$modal.css({
+									left: left + 'px',
+									top: top + 'px'
+								})
+								.removeClass(function (index, css) {
+						   			return (css.match (/\bswitch-\w+/g) || []).join(' ');
+					   			})
+								.addClass(className);
+				  		}
+					});
+	}
+
 	this.insertStatus = function(rel,text) {
 		var module = this;
 		var html = '<div class="listmember" field="procsgrid_status" uid="'+rel+'" style="float: left">' + text + '</div>';
@@ -341,37 +390,59 @@ function procsGrids(name) {
 	
 	// notes
 	this.saveItem = function(id) {
-		if($("#input-note").length > 0) {
-			var title = $("#input-note").val();
-		} else {
-			var title = $("#procs-grid-note-title").html();
-		}
-		if($("#input-text").length > 0) {
-			var text = $("#input-text").val();
-		} else {
-			var text = $("#procs-grid-note-text").html().replace(/(<br\s*\/?>)|(<p><\/p>)/gi, "");
-		}
+		var id = currentProcGridEditedNote;
+		var title = $('#co-popup input.title').val();
+		$('#procsgriditem-title-'+id).text(title);
+		var text = $('#co-popup textarea.text').val();
+		$('#procsgriditem-text-'+id).text(text);
 		$.ajax({ type: "POST", url: "/", data: { path: 'apps/procs/modules/grids', request: 'saveGridNote', id: id, title: title, text: text }, success: function(data){
-		//$.ajax({ type: "POST", url: "/", data: "path=apps/procs/modules/grids&request=saveGridNote&id="+id+"&title="+title+"&text="+text, success: function(data){
-				
-				
-				
-				$('#item_'+id+' div.itemTitle').html(title);
-				if($("#input-note").length > 0) {
-					var note_title = $(document.createElement('div')).attr("id", "procs-grid-note-title").attr("class", "note-title note-title-design").html(title);
-					$("#procs-grid-note").find('input').replaceWith(note_title); 
-				}
-				if($("#input-text").length > 0) {
-					var height = $("#input-text").height();
-					var note_text = $(document.createElement('div')).attr("id", "procs-grid-note-text").attr("class", "note-text note-text-design").css("height",height).html(text);
-					$("#procs-grid-note").find('textarea').replaceWith(note_text); 
-				}
-				$('#procs-grid-note').slideUp();
-				currentProcGridClickedNote = 0;
+			currentProcGridEditedNote = 0;
 			}
 		});
 	}
 
+
+	this.newItemOption = function(ele,what) {
+		switch(what) {
+			case 'notetitle':
+				var col = parseInt(ele.parent().parent().attr("id").replace(/gridscol_/, ""));
+				var pid = $("#procs").data("third");
+				ele.parent().addClass('planned');
+				$.ajax({ type: "GET", url: "/", data: "path=apps/procs/modules/grids&request=saveGridNewManualTitle&pid="+pid+"&col="+col, cache: false, success: function(html){	
+						var phase = $('#gridscol_'+col+' .procs-col-title');
+						phase.html(html);
+						var element = phase.find('input');
+						$.jNice.CheckAddPO(element);
+						phase.next().trigger('sortupdate');
+					}
+				});
+			break;
+			case 'note':
+				var idx = $('#procs-grid .newNote').index(ele);
+				var pid = $("#procs").data("third");
+				$.ajax({ type: "GET", url: "/", data: "path=apps/procs/modules/grids&request=saveGridNewManualNote&pid="+pid, cache: false, success: function(html){
+						var phase = $('#procs-grid .procs-phase:eq('+idx+')');
+						phase.append(html);
+						var element = phase.find('input:last');
+						$.jNice.CheckAddPO(element);
+						phase.trigger('sortupdate');
+					}
+				});
+			break;
+			case 'stagegate':
+				var col = parseInt(ele.parent().parent().parent().parent().attr("id").replace(/gridscol_/, ""));
+				var pid = $("#procs").data("third");
+				$.ajax({ type: "GET", url: "/", data: "path=apps/procs/modules/grids&request=saveGridNewManualStagegate&pid="+pid+"&col="+col, cache: false, success: function(html){	
+						var phase = $('#gridscol_'+col+' .procs-col-stagegate');
+						phase.html(html);
+						var element = phase.find('input');
+						$.jNice.CheckAddPO(element);
+						phase.prev().trigger('sortupdate');
+					}
+				});
+			break;
+		}
+}
 
 	this.newItem = function() {
 		var mid = $("#procs").data("third");
@@ -404,18 +475,17 @@ function procsGrids(name) {
 				if(v){
 					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs/modules/grids&request=binItem&id="+id, success: function(data){
 						if(data){
-							$("#item_"+id).slideUp(function() { 
+							$("#procsgriditem_"+id).fadeOut(function() { 
 									phase = $(this).parent();
 									if($(this).hasClass('colTitle')) {
 										phase = $(this).parent().next();
-										$(this).parent().html('<span class="newNoteItem newNoteTitle"></span>');
+										$(this).parent().html('<span class="newNoteItem newItemOption newNoteTitle" rel="notetitle"></span>');
 										
 									}
 									if($(this).hasClass('colStagegate')) {
 										phase = $(this).parent().parent().parent().prev();
-										$(this).parent().html('<span class="newNoteItem newNoteStagegate"></span>');
+										$(this).parent().html('<span class="newNoteItem newItemOption newNoteStagegate" rel="stagegate"></span>');
 									}
-									//phase = $(this).parent();
 									$(this).remove();
 									phase.trigger('sortupdate');
 								});
@@ -585,14 +655,10 @@ function procsGrids(name) {
 	}
 
 }
-
 var procs_grids = new procsGrids('procs_grids');
-
-var currentProcGridClickedNote = 0;
 var currentProcGridEditedNote = 0;
 
 $(document).ready(function() {
-
 // console
 	$('#procs-console-notes>div').livequery( function() {
 		$(this).draggable({
@@ -659,8 +725,8 @@ $(document).ready(function() {
 				
 				if(ui.draggable.hasClass('colStagegate')) {
 					var id = ui.draggable.attr('rel');
-					$('#procs-grid div[id=item_'+id+']').remove();
-					insert.attr('id','item_' + id).removeClass('colStagegate');
+					$('#procs-grid div[id=procsgriditem_'+id+']').remove();
+					insert.attr('id','procsgriditem_' + id).removeClass('colStagegate');
 					$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/procs/modules/grids&request=saveGridNoteTitle&id=" + id + "&col="+col, cache: false, success: function(id){
 							$('#procs-grid .procs-phase:eq('+idx+')').trigger('sortupdate');
 						}
@@ -668,9 +734,12 @@ $(document).ready(function() {
 				} else if (typeof attr == 'undefined' || attr == false) {
 					var id = ui.draggable.attr('rel');
 					$.ajax({ type: "GET", url: "/", data: "path=apps/procs/modules/grids&request=saveGridNewNoteTitle&pid="+pid+"&id=" + id+"&col="+col, cache: false, success: function(id){
-						insert.attr('id','item_' + id).attr('rel',id);
+						insert.attr('id','procsgriditem_' + id).attr('rel',id);
+						insert.find('div.itemTitle').attr('id','procsgriditem-title-' + id);
+						insert.find('div.itemText').attr('id','procsgriditem-text-' + id);
 						var e = '<input name="" type="checkbox" value="'+id+'" class="cbx jNiceHidden" />';
 						var e = insert.find('div.statusItem').html(e);
+						
 						var element = insert.find('input');
 						$.jNice.CheckAddPO(element);
 						$('#procs-grid .procs-phase:eq('+idx+')').trigger('sortupdate');
@@ -682,7 +751,7 @@ $(document).ready(function() {
 					}
 					var dragidx = $('#procs-grid .procs-phase').index(ui.draggable.parent());
 					ui.draggable.remove();
-					var id = attr.replace(/item_/, "");
+					var id = attr.replace(/procsgriditem_/, "");
 					$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/procs/modules/grids&request=saveGridNoteTitle&id=" + id + "&col="+col, cache: false, success: function(id){
 						if(dragidx != idx) {
 							$('#procs-grid .procs-phase:eq('+idx+')').trigger('sortupdate');
@@ -738,8 +807,8 @@ $(document).ready(function() {
 				var col = parseInt($(this).parent().parent().parent().attr("id").replace(/gridscol_/, ""));
 				if(ui.draggable.hasClass('colTitle')) {
 					var id = ui.draggable.attr('rel');
-					$('#procs-grid div[id=item_'+id+']').remove();
-					insert.attr('id','item_' + id).removeClass('colTitle');
+					$('#procs-grid div[id=procsgriditem_'+id+']').remove();
+					insert.attr('id','procsgriditem_' + id).removeClass('colTitle');
 					$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/procs/modules/grids&request=saveGridNoteStagegate&id=" + id + "&col="+col, cache: false, success: function(id){
 						$('#procs-grid .procs-phase:eq('+idx+')').trigger('sortupdate');
 						}
@@ -747,7 +816,7 @@ $(document).ready(function() {
 				} else if (typeof attr == 'undefined' || attr == false) {
 					var id = ui.draggable.attr('rel');
 					$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/procs/modules/grids&request=saveGridNewNoteStagegate&pid="+pid+"&id=" + id+"&col="+col, cache: false, success: function(id){
-						insert.attr('id','item_' + id).attr('rel',id);
+						insert.attr('id','procsgriditem_' + id).attr('rel',id);
 						var e = '<input name="" type="checkbox" value="'+id+'" class="cbx jNiceHidden" />';
 						var e = insert.find('div.statusItem').html(e);
 						var element = insert.find('input');
@@ -761,7 +830,7 @@ $(document).ready(function() {
 					}
 					var dragidx = $('#procs-grid .procs-phase').index(ui.draggable.parent());
 					ui.draggable.remove();
-					var id = attr.replace(/item_/, "");
+					var id = attr.replace(/procsgriditem_/, "");
 					$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/procs/modules/grids&request=saveGridNoteStagegate&id=" + id + "&col="+col, cache: false, success: function(id){
 						if(dragidx != idx) {
 							$('#procs-grid .procs-phase:eq('+idx+')').trigger('sortupdate');
@@ -777,7 +846,6 @@ $(document).ready(function() {
 		$(this).draggable({
 			connectToSortable: ".procs-phase",
 			helper: "clone",
-			//handle: '.dragItem',
 			revert: 'invalid',
 			appendTo: '#procs-right',
 			zIndex: 101,
@@ -816,7 +884,7 @@ $(document).ready(function() {
 					if(div.hasClass('colTitle') || div.hasClass('colStagegate')) {
 						var id = div.attr('rel');
 						div.removeClass('colTitle'). removeClass('colStagegate').removeClass('ui-draggable').removeClass('ui-draggable-dragging').attr('style','');
-						div.attr('id','item_' + id);
+						div.attr('id','procsgriditem_' + id);
 						var e = '<input name="" type="checkbox" value="'+id+'" class="cbx jNiceHidden" />';
 						var e = div.find('div.statusItem').html(e);
 						var element = div.find('input');
@@ -826,7 +894,9 @@ $(document).ready(function() {
 						if (typeof id != 'undefined') {
 							var pid = $("#procs").data("third");
 							$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/procs/modules/grids&request=saveGridNewNote&pid="+pid+"&id=" + id, cache: false, success: function(id){
-								div.attr('id','item_' + id);
+								div.attr('id','procsgriditem_' + id);
+								div.find('div.itemTitle').attr('id','procsgriditem-title-' + id);
+								div.find('div.itemText').attr('id','procsgriditem-text-' + id);
 								var e = '<input name="" type="checkbox" value="'+id+'" class="cbx jNiceHidden" />';
 								var e = div.find('div.statusItem').html(e);
 								var element = div.find('input');
@@ -862,33 +932,23 @@ $(document).ready(function() {
 					$('div.procs-col-title:eq('+idx+')').removeClass('planned').removeClass('finished').addClass('finished');
 					$('div.procs-col-footer:eq('+idx+') .procs-stagegate').addClass('active');
 				}
-				// calc grid height
-				var numitems = 0;
-				$('#procs-grid .procs-phase').each(function() {
-					var items = $(this).find('>div').size();
-					// set new
-					var t = items*27+78+4;
-					$(this).find('>span').animate({top: t});
-					
-					if(items > numitems) {
-						numitems = items;
-					}
-				});
-				var colheight = numitems*27+78+80+8;
-				if (colheight < 266+8) {
-					colheight = 266+8;
+				var c = $('#procs-grid .procs-phase:eq('+idx+')');
+				var items = c.find('>div').size();
+				var listheight = items*27+27;
+				if (listheight < 27) {
+					listheight = 27;
 				}
-				var listheight = numitems*27+27;
-				if (listheight < 135) {
-					listheight = 135;
+				var colheight = items*27+78+80+8+4;
+				if (colheight < 158+8+4) {
+					colheight = 158+8+4;
 				}
-				$('#procs-grid .procs-phase').height(listheight).parent().animate({height: colheight});
-				$('#procs-grid').animate({height: colheight+1});
+				c.height(listheight).parent().animate({height: colheight});
 				}
 			});
     	});
 	})
-	
+
+
 	$(document).on('click', '#procs-console a.collapse', function(e) {
 		e.preventDefault();
 		var height = 25;
@@ -897,47 +957,6 @@ $(document).ready(function() {
 		}
 		$(this).toggleClass('closed').parent().parent().animate({'height': height});
 	});	
-	
-	
-	$("#procs-grid input.colDays").livequery(function () {
-          if($(this).hasClass('noperm')) {
-			  return false;
-		  }
-		  $(this).data('initial_value', $(this).val());
-		  $(this).keydown(function(event) {
-			// Allow only backspace and delete
-			if ( event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 32 ) {
-				// let it happen, don't do anything
-			}
-			else {
-				// Ensure that it is a number and stop the keypress
-				if ((event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105 )) {
-					event.preventDefault(); 
-				}   
-			}
-		})
-		//$(this).blur(function() {
-		$(this).blur(function() {
-			var days = $(this).val();
-			if (days != $(this).data('initial_value')) {
-				var col = parseInt($(this).parent().parent().parent().parent().attr("id").replace(/gridscol_/, ""));
-				if(days == '') {
-				  $(this).val('0');
-				  days = 0;
-				}
-				
-				$.ajax({ type: "GET", url: "/", data: "path=apps/procs/modules/grids&request=saveGridColDays&id="+col+"&days="+days, cache: false, success: function(num){
-			}
-		});
-				var total = 0;
-				$("#procs-grid input.colDays").each(function() {
-					total += parseInt($(this).val());					 
-				})
-				$('#procGridDays').html(total);
-				$(this).data('initial_value', $(this).val());
-		  	}
-		});
-	});
 
 
 	$(document).on('click', '#procs-add-column', function(e) {
@@ -947,142 +966,16 @@ $(document).ready(function() {
 		var styles = '';
 		$("#procs-grid").width($("#procs-grid").width()+230);
 		$.ajax({ type: "GET", url: "/", data: "path=apps/procs/modules/grids&request=newGridColumn&id="+pid+"&sort="+sor, cache: false, success: function(num){
-			$("#procs-grid").append('<div id="gridscol_' + num + '"><div id="procs-col-delete-' + num + '" class="procs-column-delete"><span class="icon-delete"></span></div><div class="dragCol"></div><div class="procs-col-title"><span class="newNoteItem newNoteTitle"></span></div><div class="grids-spacer"></div><div class="procs-phase procs-phase-design ui-sortable"><span class="newNoteItem newNote"></span></div><div class="grids-spacer"></div><div class="procs-col-footer"><div class="procs-col-footer-stagegate"><div class="procs-stagegate"></div><div class="procs-col-stagegate ui-droppable"><span class="newNoteItem newNoteStagegate"></span></div></div><div class="procs-col-footer-days"><div style=""><input type="text" style="margin" maxlength="3" size="3" value="0" name="" class="colDays"></div></div></div></div>').sortable("refresh");
-			// calc grid height
-				var numitems = 0;
-				$('#procs-grid .procs-phase').each(function() {
-					var items = $(this).find('>div').size();
-					// set new
-					var t = items*27+78+4;
-					$(this).find('>span').animate({top: t});
-					
-					if(items > numitems) {
-						numitems = items;
-					}
-				});
-				var colheight = numitems*27+78+80+8;
-				if (colheight < 266+8) {
-					colheight = 266+8;
-				}
-				var listheight = numitems*27+27;
-				if (listheight < 135) {
-					listheight = 135;
-				}
-				$('#procs-grid .procs-phase').height(listheight).parent().animate({height: colheight});
-				$('#procs-grid').animate({height: colheight+1});
+			$("#procs-grid").append('<div id="gridscol_' + num + '"><div id="procs-col-delete-' + num + '" class="procs-column-delete"><span class="icon-delete"></span></div><div class="dragCol"></div><div class="procs-col-title"><span class="newNoteItem newNoteTitle"></span></div><div class="grids-spacer"></div><div class="procs-phase procs-phase-design ui-sortable"><span class="newNoteItem newNote"></span></div><div class="grids-spacer"></div><div class="procs-col-footer"><div class="procs-col-footer-stagegate"><div class="procs-stagegate"></div><div class="procs-col-stagegate ui-droppable"><span class="newNoteItem newNoteStagegate"></span></div></div><div class="procs-col-footer-days"><div style=""></div></div></div></div>').sortable("refresh");
 			}
 		});
 	})
+
 
 	$(document).on('click', 'div.procs-column-delete', function(e) {
 		e.preventDefault();
 		var id = $(this).attr("id").replace(/procs-col-delete-/, "");
 		procs_grids.binColumn(id);
-	});
-
-
-	$(document).on('click', '#procs-grid span.newNote', function(e) {
-		e.preventDefault();
-			//var clicked = $(this);
-			var idx = $('#procs-grid .newNote').index(this);
-			var pid = $("#procs").data("third");
-			$.ajax({ type: "GET", url: "/", data: "path=apps/procs/modules/grids&request=saveGridNewManualNote&pid="+pid, cache: false, success: function(html){
-					var phase = $('#procs-grid .procs-phase:eq('+idx+')');
-					phase.append(html);
-					var element = phase.find('input:last');
-					$.jNice.CheckAddPO(element);
-					phase.trigger('sortupdate');
-				}
-			});
-	});
-	
-	
-	$(document).on('click', '#procs-grid .newNoteTitle', function(e) {
-		e.preventDefault();
-		var col = parseInt($(this).parent().parent().attr("id").replace(/gridscol_/, ""));
-		var pid = $("#procs").data("third");
-		$(this).parent().addClass('planned');
-		$.ajax({ type: "GET", url: "/", data: "path=apps/procs/modules/grids&request=saveGridNewManualTitle&pid="+pid+"&col="+col, cache: false, success: function(html){	
-				//var phase = $('#procs-grid .procs-col-title:eq('+idx+')');
-				var phase = $('#gridscol_'+col+' .procs-col-title');
-				phase.html(html);
-				var element = phase.find('input');
-				$.jNice.CheckAddPO(element);
-				phase.next().trigger('sortupdate');
-			}
-		});
-	});
-	
-	
-	$(document).on('click', '#procs-grid .newNoteStagegate', function(e) {
-		e.preventDefault();
-		var col = parseInt($(this).parent().parent().parent().parent().attr("id").replace(/gridscol_/, ""));
-		var pid = $("#procs").data("third");
-		$.ajax({ type: "GET", url: "/", data: "path=apps/procs/modules/grids&request=saveGridNewManualStagegate&pid="+pid+"&col="+col, cache: false, success: function(html){	
-				var phase = $('#gridscol_'+col+' .procs-col-stagegate');
-				phase.html(html);
-				var element = phase.find('input');
-				$.jNice.CheckAddPO(element);
-				phase.prev().trigger('sortupdate');
-			}
-		});
-	});
-
-
-	$(document).on('click', '#procs-grid div.itemTitle', function(e) {
-		e.preventDefault()
-		if($(this).hasClass('noperm')) {
-			return false;
-		}
-		var addtop = 162;
-		var addleft = 15;
-		if($(this).parent().hasClass('colStagegate')) {
-			var idx = $('#procs-grid .newNote').index(this);
-			var f = $('#procs-grid .procs-col-footer:eq(0)').position();
-			var l = $(this).parent().parent().parent().parent().parent().position();
-			addtop = f.top+addtop;
-			addleft = l.left+addleft;
-		}
-		if($('#input-note').is(':visible') || $('#input-text').is(':visible')) {
-			procs_grids.saveItem(currentProcGridClickedNote);
-			return false;
-		} else {
-			var id = parseInt($(this).parent().attr("id").replace(/item_/, ""));
-			
-			var note = $(this).parent();
-			var left = note.parent().parent().position();
-			left = left.left+addleft;
-			var pos = note.position();
-			var top = pos.top+addtop;
-			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs/modules/grids&request=getGridNote&id="+id, success: function(data){
-				currentProcGridClickedNote = id;
-				$('#procs-grid-note-title').html(data.title);
-				$('#procs-grid-note-text').html(data.text);
-				$('#procs-grid-note-save a').attr('rel',id);
-				$('#procs-grid-note-info-content').html(data.info);
-				$('#procs-grid-note-info').css('right','28px');
-				$('#procs-grid-note').css('top', top+'px').css('left', left+'px').slideDown();
-				}
-			});
-		}
-	})
-
-	$(document).on('click', '#procs-notes-outer div.note-title', function(e) {
-		e.preventDefault();
-		var html = $(this).html().replace(/(")/gi, "&quot;");
-		var input = '<input type="text" id="input-note" name="input-note" value="' + html+ '" />';
-		$(this).replaceWith(input);
-		$("#input-note").focus();
-	});
-
-	$(document).on('click', '#procs-grid-outer div.note-text', function(e) {
-		e.preventDefault();
-		var html = $(this).html().replace(/(<br\s*\/?>)|(<p><\/p>)/gi, "");
-		var width = $(this).width();
-		var height = $(this).height();
-		var input = '<textarea id="input-text" name="input-text" style="width: '+ width +'px; height: '+ height +'px; border: 0;">' + html+ '</textarea>';
-		$("#procs-grid-note-text").replaceWith(input);
-		$("#input-text").focus();
 	});
 
 
@@ -1107,27 +1000,12 @@ $(document).ready(function() {
 		});
 	})
 
+
 	$(document).on('click', '#modalDialogProcsGridClose', function(e) {
 		e.preventDefault();
 		$("#modalDialogProcsGrid").slideUp(function() {		
 			initProcsContentScrollbar();									
 		});
-	});
-
-
-	$(document).mousedown(function(e) {
-		var obj = getCurrentModule();
-		if(obj.name == 'procs_grids') {
-			var clicked=$(e.target); // get the element clicked
-			if(currentProcGridClickedNote != 0) {
-				if(clicked.is('.note') || clicked.parents().is('.note')) { 
-					//return false;
-				} else {
-					procs_grids.saveItem(currentProcGridClickedNote);
-					
-				}
-			}
-		}
 	});
 
 });

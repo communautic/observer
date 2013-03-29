@@ -1853,6 +1853,10 @@ class ProcsModel extends Model {
 			$procsGridsModel = new ProcsGridsModel();
 			$data["procs_grids_items"] = $procsGridsModel->getNavNumItems($id);
 		}
+		if(in_array("drawings",$active_modules)) {
+			$procsDrawingsModel = new ProcsDrawingsModel();
+			$data["procs_drawings_items"] = $procsDrawingsModel->getNavNumItems($id);
+		}
 		if(in_array("meetings",$active_modules)) {
 			$procsMeetingsModel = new ProcsMeetingsModel();
 			$data["procs_meetings_items"] = $procsMeetingsModel->getNavNumItems($id);
