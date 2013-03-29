@@ -68,6 +68,7 @@
     </td>
     </tr>
 </table>
+<div class="content-spacer"></div>
 <?php if($grid->canedit) { ?>
 	<div id="procs-console">
 		<div class="widget-head">
@@ -77,15 +78,14 @@
         <div id="procs-console-notes">
     	<?php 
 		foreach($console_items as $item){ 
-			echo '<div rel="' . $item["id"] . '" class="droppable"><div class="statusItem"></div><div class="itemTitle">' . $item["title"] . '</div></div>';
+			echo '<div rel="' . $item["id"] . '" class="droppable showCoPopup"><div class="statusItem"></div><div class="itemTitle">' . $item["title"] . '</div><div class="itemText" style="display: none;">' . $item["text"] . '</div></div>';
 		 } ?>
         </div>
 	</div>
 <?php } ?>
 <div class="content-spacer"></div>
-<div id="procs-grid-outer">
-<div id="procs-grid" style="height: <?php echo($colheight);?>px; width: <?php echo($grid->grid_width);?>px;">
-
+<div id="procs-grid-outer" style="position: relative"><div style="position: absolute; top: 28px; height: 50px; width: 100%; background: #b2b2b2;"></div>
+<div id="procs-grid" style="width: <?php echo($grid->grid_width);?>px;">
 <?php 
 $drag = '';
 $procsphase = '';
@@ -96,10 +96,8 @@ if($grid->canedit) {
 } else {
 	$checkbox = 'noperm';
 }
-//print_r($cols);
 foreach($cols as $key => &$value){ 
-	echo '<div id="gridscol_'.$cols[$key]['id'].'" style="height: ' . $colheight . 'px;">';
-	//echo '<h3 class="ui-widget-header">
+	echo '<div id="gridscol_'.$cols[$key]['id'].'" style="height: ' . $cols[$key]['colheight'] . 'px;">';
 			if($grid->canedit) {
 		echo '<div class="dragCol dragColActive"><div class="procs-column-delete" id="procs-col-delete-'.$cols[$key]['id'].'"><span class="icon-delete"></span></div></div>';
 	} else {
@@ -107,30 +105,31 @@ foreach($cols as $key => &$value){
 	}
 		echo '<div class="procs-col-title ' . $cols[$key]['status'] . '">';
 		if($cols[$key]['titletext'] != "") {
-			echo '<div id="item_'.$cols[$key]['titleid'].'" rel="'.$cols[$key]['titleid'].'" class="droppable colTitle">';
+			echo '<div id="procsgriditem_'.$cols[$key]['titleid'].'" rel="'.$cols[$key]['titleid'].'" class="droppable showCoPopup colTitle">';
 			echo '<div class="statusItem"><input name="" type="checkbox" value="'.$cols[$key]['titleid'].'" class="cbx jNiceHidden" /></div>';
-			echo '<div class="itemTitle ' . $checkbox . '">'.$cols[$key]['titletext'].'</div>';
-			echo '</div>';
+			echo '<div id="procsgriditem-title-'.$cols[$key]['titleid'].'" class="itemTitle ' . $checkbox . '">'.$cols[$key]['titletext'].'</div>';
+		echo '<div id="procsgriditem-text-' . $cols[$key]['titleid'] . '" style="display: none;">' . $cols[$key]['titletextcontent'] . '</div></div>';
+			//echo '</div>';
 		} else {
 			if($grid->canedit) {
-			echo '<span class="newNoteItem newNoteTitle"></span>';
+			echo '<span class="newNoteItem newItemOption newNoteTitle" rel="notetitle"></span>';
 			}
 		}
 		echo '</div><div class="grids-spacer"></div>';
-
-	echo '<div class="' . $procsphase . ' procs-phase-design" style="height: ' . $listheight . 'px;">';
+	// listitems
+	echo '<div class="' . $procsphase . ' procs-phase-design" style="height: ' . $cols[$key]['listheight'] . 'px;">';
 	foreach($cols[$key]["notes"] as $tkey => &$tvalue){ 
 		$checked = "";
 		if ($cols[$key]["notes"][$tkey]['status'] == 1) {
 			$checked = ' checked="checked"';
 		}
-		echo '<div id="item_'.$cols[$key]["notes"][$tkey]['note_id'].'" rel="'.$cols[$key]["notes"][$tkey]['note_id'].'" class="droppable">';
+		echo '<div id="procsgriditem_'.$cols[$key]["notes"][$tkey]['note_id'].'" rel="'.$cols[$key]["notes"][$tkey]['note_id'].'" class="droppable showCoPopup">';
 		echo '<div class="statusItem"><input name="" type="checkbox" value="'.$cols[$key]["notes"][$tkey]['note_id'].'" class="cbx jNiceHidden ' . $checkbox . '" ' . $checked . '/></div>';
-		echo '<div class="itemTitle  ' . $checkbox . '">'.$cols[$key]["notes"][$tkey]['title'].'</div>';
-		echo '</div>';
+		echo '<div id="procsgriditem-title-' . $cols[$key]["notes"][$tkey]['note_id'] . '" class="itemTitle ' . $checkbox . '">'.$cols[$key]["notes"][$tkey]['title'].'</div>';
+		echo '<div id="procsgriditem-text-' . $cols[$key]["notes"][$tkey]['note_id'] . '" style="display: none;">' . $cols[$key]["notes"][$tkey]['text'] . '</div></div>';
 	}
 	if($grid->canedit) {
-	echo '<span class="newNoteItem newNote"></span>';
+	echo '<span class="newNoteItem newItemOption newNote" rel="note"></span>';
 	}
 	echo '</div><div class="grids-spacer"></div>';
 	echo '<div class="procs-col-footer">';
@@ -142,46 +141,28 @@ foreach($cols as $key => &$value){
 		$stagegatestatus = "active";
 	}
 	echo '<div class="procs-stagegate   ' . $stagegatestatus . '"></div>';
-
 	echo '<div class="procs-col-stagegate">';
 		if($cols[$key]['stagegatetext'] != "") {
-			echo '<div id="item_'.$cols[$key]['stagegateid'].'" rel="'.$cols[$key]['stagegateid'].'" class="droppable colStagegate">';
+			echo '<div id="procsgriditem_'.$cols[$key]['stagegateid'].'" rel="'.$cols[$key]['stagegateid'].'" class="droppable colStagegate showCoPopup">';
 			echo '<div class="statusItem"><input name="" type="checkbox" value="'.$cols[$key]['stagegateid'].'" class="cbx jNiceHidden" /></div>';
-			echo '<div class="itemTitle ' . $checkbox . '">'.$cols[$key]['stagegatetext'].'</div>';
-			echo '</div>';
+			echo '<div  id="procsgriditem-title-' . $cols[$key]['stagegateid'] . '" class="itemTitle ' . $checkbox . '">'.$cols[$key]['stagegatetext'].'</div>';
+			echo '<div id="procsgriditem-text-' . $cols[$key]['stagegateid'] . '" style="display: none;">' . $cols[$key]['stagegatecontent'] . '</div></div>';
 		}  else {
 			if($grid->canedit) {
-			echo '<span class="newNoteItem newNoteStagegate"></span>';
+			echo '<span class="newNoteItem newItemOption newNoteStagegate" rel="stagegate"></span>';
 			}
 		}
-
 		echo '</div>';
 		echo '</div>';
-		echo '<div class="procs-col-footer-days">';
-		echo '<div><input class="colDays ' . $checkbox . '" name="" type="text" value="'.$cols[$key]['coldays'].'" size="3" maxlength="3" style="margin" /></div>';
+		echo '<div class="grids-spacer"></div>';
+		echo '<div class="procs-col-footer-days" style=" height: 25px; background: #666; border-top: 1px solid #fff; border-left: 1px solid #fff;">';
+		echo '<div></div>';
 		echo '</div>';
-		
 	echo '</div>';
 	echo '</div>';
-	
-	
  } ?>
-
  </div>
-  <div id="procs-notes-outer" class="procs-notes-outer">
-      <div id="procs-grid-note" class="note note-design" style="width: 203px; height: 150px; display: none;">
-        <h3 id="note-header">
-        <div id="procs-grid-note-title" class="note-title note-title-design"></div>
-        <div id="procs-grid-note-info" class="procsNoteInfo coTooltip" style="position: absolute; top: 8px; right: 28px; width: 15px; height: 15px; cursor: pointer;"><span class="icon-info"></span>
-        	<div style="display: none" class="coTooltipHtml" id="procs-grid-note-info-content"></div>
-        </div>
-        <div id="procs-grid-note-save" style="position: absolute; top: 7px; right: 5px; width: 20px; height: 19px; cursor: pointer;"><a rel="" class="binItem"><span class="icon-delete"></span></a></div>
-        </h3>
-        <div id="procs-grid-note-text" class="note-text note-text-design" style="height: 110px;"></div>
-	</div>
-    </div>
 </div>
-
 <div class="content-spacer" style="clear: both;"></div>
 <?php if($grid->perms != "guest") { ?>
 <div class="content-spacer"></div>

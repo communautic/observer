@@ -283,24 +283,33 @@ class ProcsGridsModel extends ProcsModel {
 				}
 			}
 			$num_notes[] = $n;
+			
+			$colheight=  $n*27+78+80+8+4;
+			if($colheight < 158+8+4) {
+				$colheight = 158+8+4;
+			}
+			$listheight = $n*27+27;
+			if($listheight < 27) {
+				$listheight = 27;
+			}
+			
 			if($n == 0 && $titleid == 0) {
 				$colstatus = '';
 			}
 			if(($n > 0 || $titleid > 0) && $nchecked == 0) {
 				$colstatus = 'planned';
 			}
-			
 			if($nchecked > 0 && $nchecked < $n ) {
 				$colstatus = 'progress';
 			}
-			
 			if($n != 0 && $n == $nchecked) {
 				$colstatus = 'finished';
 			}
-			
 			$cols[]= array(
 				"id" => $colID,
 				"status" => $colstatus,
+				"colheight" => $colheight,
+				"listheight" => $listheight,
 				"coldays" => $coldays,
 				"titleid" => $titleid,
 				"titletext" => $titletext,
@@ -315,12 +324,12 @@ class ProcsGridsModel extends ProcsModel {
 		$array["max_items"] = max($num_notes);
 		
 		$colheight=  max($num_notes)*27+78+80+8;
-		if($colheight < 266+8) {
-			$colheight = 266+8;
+		if($colheight < 158+8) {
+			$colheight = 158+8;
 		}
 		$listheight = max($num_notes)*27+27;
-		if($listheight < 135) {
-			$listheight = 135;
+		if($listheight < 27) {
+			$listheight = 27;
 		}
 		
 		// build the console
@@ -331,7 +340,8 @@ class ProcsGridsModel extends ProcsModel {
 		while($rowc = mysql_fetch_object($resultc)) {
 				$console_items[] = array(
 				"id" => $rowc->id,
-				"title" => $rowc->title
+				"title" => $rowc->title,
+				"text" => $rowc->text
 			);
 		}
 		
