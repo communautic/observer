@@ -2,51 +2,9 @@
 function trainingsFeedbacks(name) {
 	this.name = name;
 
-
 	this.formProcess = function(formData, form, poformOptions) {}
-	 
-	 
 	this.formResponse = function(data) {}
-	
-	
 	this.poformOptions = { beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
-
-
-	/*this.statusOnClose = function(dp) {
-		var id = $("#trainings").data("third");
-		var status = $("#trainings .statusTabs li span.active").attr('rel');
-		var date = $("#trainings .statusTabs input").val();
-		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/trainings/modules/feedbacks&request=updateStatus&id=" + id + "&date=" + date + "&status=" + status, cache: false, success: function(data){
-			switch(data.action) {
-				case "edit":
-					switch(data.status) {
-						case "1":
-							$("#trainings3 ul[rel=feedbacks] span[rel="+data.id+"] .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
-						break;
-						case "2":
-							$("#trainings3 ul[rel=feedbacks] span[rel="+data.id+"] .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
-						break;
-						default:
-							$("#trainings3 ul[rel=feedbacks] span[rel="+data.id+"] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
-					}
-				break;
-				case "reload":
-					var module = getCurrentModule();
-					var id = $('#trainings').data('second');
-					$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/trainings/modules/feedbacks&request=getList&id="+id, success: function(list){
-						$('#trainings3 ul[rel=feedbacks]').html(list.html);
-						$('#trainings_feedbacks_items').html(list.items);
-						var moduleidx = $("#trainings3 ul").index($("#trainings3 ul[rel=feedbacks]"));
-						var liindex = $("#trainings3 ul[rel=feedbacks] .module-click").index($("#trainings3 ul[rel=feedbacks] .module-click[rel='"+data.id+"']"));
-						module.getDetails(moduleidx,liindex);
-						$("#trainings3 ul[rel=feedbacks] .module-click:eq("+liindex+")").addClass('active-link');
-						}
-					});
-				break;																																														  				}
-			}
-		});
-	}*/
-
 
 	this.getDetails = function(moduleidx,liindex,list) {
 		var id = $("#trainings3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
@@ -126,7 +84,6 @@ function trainingsFeedbacks(name) {
 		});
 	}
 
-
 	this.actionSendtoResponse = function() {
 		var id = $("#trainings").data("third");
 		$.ajax({ type: "GET", url: "/", data: "path=apps/trainings/modules/feedbacks&request=getSendtoDetails&id="+id, success: function(html){
@@ -135,7 +92,6 @@ function trainingsFeedbacks(name) {
 			}
 		});
 	}
-
 
 	this.actionDialog = function(offset,request,field,append,title,sql) {
 		switch(request) {
@@ -192,7 +148,6 @@ function trainingsFeedbacks(name) {
 			});
 		}
 	}
-
 
 	this.actionHelp = function() {
 		var url = "/?path=apps/trainings/modules/feedbacks&request=getHelp";

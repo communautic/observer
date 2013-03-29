@@ -45,7 +45,6 @@ function trainingsApplication(name) {
 
 	
 	this.formResponse = function(data) {
-		//var app = getCurrentApp();
 		switch(data.action) {
 			case "edit":
 				$("#trainings2 span[rel='"+data.id+"'] .text").html($("#trainings .title").val());
@@ -1090,7 +1089,13 @@ function trainingsActions(status) {
 			}
 		break;
 		case 1: actions = ['0','6','7','8']; break;
-		case 3: 	actions = ['0','6','7']; break;   					// just new
+		case 3: 	
+		if(obj.name == 'trainings_feedbacks') {
+				actions = ['6','7'];
+			} else {
+				actions = ['0','6','7']; 
+			}
+		break;
 		case 4: 	actions = ['0','1','2','4','6','7']; break;   		// new, print, send, handbook, refresh
 		case 5: 	actions = ['1','2','6','7']; break;   			// print, send, refresh
 		case 6: 	actions = ['5','6','7']; break;   			// handbook refresh
