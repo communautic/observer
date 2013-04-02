@@ -6,6 +6,12 @@ var CUSTOM_NOTE = "Text:";
 // Alerts
 var ALERT_YES = "Ja";
 var ALERT_NO = "Nein";
+var ALERT_BUTTON_LOGIN = "Anmelden";
+var ALERT_BUTTON_LOGOUT = "Abmelden";
+var ALERT_MESSAGE_SESSION_RENEW = 'Mit Ihren Zugangsdaten wurde an anderer Stelle<br />auf die Plattform zugegriffen.<br /><br />'+
+							      'Sie können sich abmelden oder durch eine erneute Passworteingabe wieder anmelden.<br /><br />Ihr Passwort: ';
+var ALERT_MESSAGE_SESSION_COOKIE = 'Ihr Plattformzugang wurde unterbrochen, da Ihre "browser cookies" offensichtlich gelöscht wurden.<br /><br />'+
+							      'Bitte melden Sie sich erneut im System durch die Eingabe Ihrer Zugangsdaten an. Tritt das Problem erneut auf, kontaktieren Sie Ihren EDV Administrator.';
 var ALERT_LOGOUT = "Möchten Sie sich abmelden?";
 var ALERT_NO_TITLE = "Bitte geben Sie einen Titel ein";
 var ALERT_CHANGES_NOT_SAVED = "Ihre aktuellen Änderungen wurden noch nicht gespeichert!\nDaten jetzt speichern?";

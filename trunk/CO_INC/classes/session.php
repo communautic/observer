@@ -56,7 +56,7 @@ class Session
        * active guests table accordingly.
        */
       if(!$this->logged_in){
-         $this->username = $_SESSION['username'] = GUEST_NAME;
+         //$this->username = $_SESSION['username'] = GUEST_NAME;
          $this->userlevel = GUEST_LEVEL;
 		 $this->userlang = CO_DEFAULT_LANGUAGE;
 		 $this->timezone = "Europe/Vienna";
@@ -101,7 +101,7 @@ class Session
       if(isset($_SESSION['username']) && isset($_SESSION['userid']) && $_SESSION['username'] != GUEST_NAME){
          /* Confirm that username and userid are valid */
          if($database->confirmUserID($_SESSION['username'], $_SESSION['userid']) != 0){
-            unset($_SESSION['username']);
+            //unset($_SESSION['username']);
             unset($_SESSION['userid']);
 			if(isset($_COOKIE['cookname']) && isset($_COOKIE['cookid'])){
 				setcookie("cookname", "", time()-COOKIE_EXPIRE, COOKIE_PATH);
