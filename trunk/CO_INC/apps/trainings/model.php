@@ -155,7 +155,8 @@ class TrainingsModel extends Model {
 			foreach($row as $key => $val) {
 				$training[$key] = $val;
 			}
-			$training["team"] = $contactsmodel->getUserListPlain($training['team']);
+			//$training["team"] = $contactsmodel->getUserListPlain($training['team']);
+			
 			$training["perm"] = $this->getTrainingAccess($training["id"]);
 			
 			$training["dates_display"] = "";
@@ -193,6 +194,8 @@ class TrainingsModel extends Model {
 					$training["dates_display"] = $training["date1"] . ' - ' . $training["date2"];
 				break;
 			}
+			
+			$training["training"] = $this->getTrainingIdDetails($training["training"],"trainingstraining");
 			
 		switch($training["status"]) {
 			case "0":
