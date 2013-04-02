@@ -924,7 +924,7 @@ border:1px dashed black;
 .table-window input { width: 100%; font-size: 13px !important;}
 .table-window textarea { width: 100%; font-size: 13px !important;}
 
-#modalDialog { max-height: 200px; }
+#modalDialog { max-height: 200px !important; }
 
 .postit-header { font-size: 11px; cursor: move; height: 20px; margin-bottom: 8px; border-bottom: 1px solid #A9563C; color: #A9563C; font-weight: bold; }
 .postit-header-left { display: inline-block; width: 50%; }
