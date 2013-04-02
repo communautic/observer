@@ -15,9 +15,9 @@ function procsApplication(name) {
 		this.$thirdDiv = $('#procs3 div.thirdLevel');
 		this.$layoutWest = $('#procs div.ui-layout-west');
 		this.coPopupEditClass = 'popup-full';
-		this.coPopupEdit = '<div class="head">Bearbeiten</div><div class="content"><input type="text" class="title"  value="" /><div class="saveItemShape"><span>1</span> <span>2</span> <span>3</span> <span>4</span> <span>5</span></div><div class="saveItemColor"><span>1</span> <span>2</span> <span>3</span> <span>4</span> <span>5</span></div><textarea class="text"></textarea><ul><li><a href="#" class="binItem alert" rel="">'+DATEPICKER_CLEAR+'</a></li></ul></div><span class="arrow"></span>';
+		this.coPopupEdit = '<div class="head">Bearbeiten</div><div class="content"><div class="fieldset"><label>Titel</label><input type="text" class="title" maxlength="60" value="" /></div><div class="saveItemShape"><span rel="1"><span class="shape1"></span></span><span rel="2"><span class="shape2"></span></span><span rel="3"><span class="shape3"></span></span><span rel="4"><span class="shape4"></span></span><span rel="5"><span class="shape5"></span></span></div><div class="saveItemColor"><span rel="1"><span class="color1"></span></span><span rel="2"><span class="color2"></span></span><span rel="3"><span class="color3"></span></span><span rel="4"><span class="color4"></span></span><span rel="5"><span class="color5"></span></span></div><div class="fieldset"><label>Beschreibung</label><textarea class="text"></textarea></div><ul><li><a href="#" class="binItem alert" rel="">'+DATEPICKER_CLEAR+'</a></li></ul></div><span class="arrow"></span>';
 		this.coPopupEditClassArrow = 'popup-arrows';
-		this.coPopupEditArrow = '<div class="head">Bearbeiten</div><div class="content"><div class="saveItemArrow"><span>1</span> <span>2</span> <span>3</span> <span>4</span> <span>5</span> <span>6</span> <span>7</span> <span>8</span></div><ul><li><a href="#" class="binItem alert" rel="">'+DATEPICKER_CLEAR+'</a></li></ul></div><span class="arrow"></span>';
+		this.coPopupEditArrow = '<div class="head">Bearbeiten</div><div class="content"><div class="saveItemArrow"><span rel="1"><span class="arrow1"></span></span><span rel="2"><span class="arrow2"></span></span><span rel="3"><span class="arrow3"></span></span><span rel="4"><span class="arrow4"></span></span><span rel="5"><span class="arrow5"></span></span><span rel="6"><span  class="arrow6"></span></span><span rel="7"><span class="arrow7"></span></span><span rel="8"><span class="arrow8"></span></div><ul><li><a href="#" class="binItem alert" rel="">'+DATEPICKER_CLEAR+'</a></li></ul></div><span class="arrow"></span>';
 	}
 	
 	this.formProcess = function(formData, form, poformOptions) {
@@ -284,8 +284,8 @@ function procsApplication(name) {
 				copopup.html(html);
 				copopup.find('.title').val(title);
 				copopup.find('.text').val(text);
-				copopup.find('.saveItemShape span:eq('+shape+')').addClass('procs-shape-active');
-				copopup.find('.saveItemColor span:eq('+color+')').addClass('procs-shape-active');
+				copopup.find('.saveItemShape>span:eq('+shape+')').addClass('procs-shape-active');
+				copopup.find('.saveItemColor>span:eq('+color+')').addClass('procs-shape-active');
 				//copopup.find('.saveItem')
 				$('#co-popup a.binItem').attr('rel',id);
 				copopup
@@ -332,7 +332,7 @@ function procsApplication(name) {
 				var copopup = $('#co-popup');
 				copopup.html(html);
 				$('#co-popup a.binItem').attr('rel',id);
-				copopup.find('.saveItemArrow span:eq('+shape+')').addClass('procs-shape-active');
+				copopup.find('.saveItemArrow>span:eq('+shape+')').addClass('procs-shape-active');
 				copopup
 					.removeClass(function (index, css) {
 						return (css.match (/\bpopup-\w+/g) || []).join(' ');
@@ -340,7 +340,7 @@ function procsApplication(name) {
 					.addClass(pclass)
 					.position({
 						  my: "center center",
-						  at: "right+170 center",
+						  at: "right+150 center+1",
 						  of: el,
 						  using: function(coords, feedback) {
 								var $modal = $(this),
@@ -379,7 +379,7 @@ function procsApplication(name) {
 	
 	
 	// notes
-	this.newItemOption = function(what) {
+	this.newItemOption = function(ele,what) {
 		var oid = $('#procs').data('first');
 		var id = $('#procs').data('second');
 		var outer = $("#notesOuter");
@@ -391,8 +391,6 @@ function procsApplication(name) {
 		var z = zMax + 1;
 		procszIndex = z;
 		$.ajax({ type: "GET", url: "/", data: "path=apps/procs&request=newProcNote&id="+id+"&x="+x+"&y="+y+"&z="+z+"&what="+what, success: function(data){
-			//$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs&request=getProcDetails&fid="+oid+"&id="+id, success: function(text){
-				//$("#procs-right").html(text.html);
 				var line1 = '<div id="note-'+data+'" class="note shape1 color1 showCoPopup" request="note" style="left: '+x+'px; top: '+y+'px; z-index: '+z+';"><div id="note-title-'+data+'">Neu</div>';
 				if(what == 'arrow') {
 					var line1 = '<div id="note-'+data+'" class="note shape10 arrow1 showCoPopup" request="arrow" style="left: '+x+'px; top: '+y+'px; z-index: '+z+';"><div id="note-title-'+data+'"></div>';
@@ -401,8 +399,6 @@ function procsApplication(name) {
         '<div id="note-text-'+data+'" style="display: none;"></div></div>';
 				$("#notesOuter").append(html);
 				initProcsContentScrollbar();
-				//}
-			//});
 			}
 		});
 	}
@@ -425,10 +421,10 @@ function procsApplication(name) {
 	
 	this.saveItemShape = function(ele) {
 		var id = currentProcEditedNote;
-		$('#co-popup .saveItemShape span').removeClass('procs-shape-active');
+		$('#co-popup .saveItemShape>span').removeClass('procs-shape-active');
 		ele.addClass('procs-shape-active');
-		var shape = ele.html();
-		var color = $('#co-popup .saveItemColor span.procs-shape-active').html();
+		var shape = ele.attr('rel');
+		var color = $('#co-popup .saveItemColor span.procs-shape-active').attr('rel');
 		$('#note-'+id).removeClass(function (index, css) {
 			return (css.match (/\bshape\w+/g) || []).join(' ');
 		})
@@ -456,10 +452,10 @@ function procsApplication(name) {
 
 	this.saveItemColor = function(ele) {
 		var id = currentProcEditedNote;
-		$('#co-popup .saveItemColor span').removeClass('procs-shape-active');
+		$('#co-popup .saveItemColor>span').removeClass('procs-shape-active');
 		ele.addClass('procs-shape-active');
-		var color = ele.html();
-		var shape= $('#co-popup .saveItemShape span.procs-shape-active').html();
+		var color = ele.attr('rel');
+		var shape= $('#co-popup .saveItemShape span.procs-shape-active').attr('rel');
 		$('#note-'+id).removeClass(function (index, css) {
 			return (css.match (/\bshape\w+/g) || []).join(' ');
 		})
@@ -487,9 +483,9 @@ function procsApplication(name) {
 	
 	this.saveItemArrow = function(ele) {
 		var id = currentProcEditedNote;
-		$('#co-popup .saveItemArrow span').removeClass('procs-shape-active');
+		$('#co-popup .saveItemArrow>span').removeClass('procs-shape-active');
 		ele.addClass('procs-shape-active');
-		var shape = ele.html();
+		var shape = ele.attr('rel');
 		$('#note-'+id).removeClass(function (index, css) {
 			return (css.match (/\barrow\w+/g) || []).join(' ');
 		})
@@ -1314,21 +1310,21 @@ $(document).ready(function() {
 	})
 	
 	
-	$(document).on('click','#co-popup .saveItemShape span',function(e) {
+	$(document).on('click','#co-popup .saveItemShape>span',function(e) {
 		e.preventDefault();
 		var ele = $(this);
 		var obj = getCurrentModule();
 		obj.saveItemShape(ele);
    });
 	
-	$(document).on('click','#co-popup .saveItemColor span',function(e) {
+	$(document).on('click','#co-popup .saveItemColor>span',function(e) {
 		e.preventDefault();
 		var ele = $(this);
 		var obj = getCurrentModule();
 		obj.saveItemColor(ele);
    });
 	
-	$(document).on('click','#co-popup .saveItemArrow span',function(e) {
+	$(document).on('click','#co-popup .saveItemArrow>span',function(e) {
 		e.preventDefault();
 		var ele = $(this);
 		var obj = getCurrentModule();

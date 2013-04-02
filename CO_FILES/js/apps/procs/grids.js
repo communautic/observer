@@ -2,7 +2,7 @@
 function procsGrids(name) {
 	this.name = name;
 	this.coPopupEditClass = 'popup-full';
-	this.coPopupEdit = '<div class="head">Bearbeiten</div><div class="content"><div class="fieldset"><label>Titel</label><input type="text" class="title" maxlength="60" value="" /></div><div class="fieldset"><label>Beschreibung</label><textarea class="text"></textarea></div><ul><li><a href="#" class="binItem alert" rel="">'+DATEPICKER_CLEAR+'</a></li></ul></div><span class="arrow"></span>';
+	this.coPopupEdit = '<div class="head">Bearbeiten</div><div class="content"><div class="fieldset"><label>Titel</label><input type="text" class="title" maxlength="60" value="" /></div><table border="0" cellpadding="0" cellspacing="0" class="table-content"><tr><td class="tcell-left text11"><span class="content-nav showDialog" request="getContactsDialog" field="responsibility" append="1"><span>Verantwortung</span></span></td><td class="tcell-right"><div id="responsibility" class="itemlist-field"></div><div id="responsibility_ct" class="itemlist-field"><a field="procsteam_ct" class="ct-content"></a></div></td></tr></table><div class="fieldset"><label>Beschreibung</label><textarea class="text"></textarea></div><ul><li><a href="#" class="binItem alert" rel="">'+DATEPICKER_CLEAR+'</a></li></ul></div><span class="arrow"></span>';
 
 
 	this.formProcess = function(formData, form, poformOptions) {
