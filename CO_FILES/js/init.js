@@ -383,7 +383,7 @@ function activateSessionCheck() {
 				if (statusCode.status == 0) {
 					if(connectionError == 0) {
 						connectionError = 1;
-						var txt = 'Your internet connection appears to be down or the server you are trying to connect to is not responding. Once the connection can be reestablished this warning message will disappear automatically. If this problem persists please contact your IT administrator.';
+						var txt = ALERT_MESSAGE_INTERNET;
 						//var langbuttons = {};
 						//langbuttons[ALERT_YES] = true;
 						$.prompt(txt,{buttons: {}});
