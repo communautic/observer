@@ -88,6 +88,7 @@ var co_lang = '<?php echo $session->userlang;?>';
 </script>
 <script src="<?php echo $protocol;?>ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js" type="text/javascript"></script>
 <!--<script src="<?php echo CO_FILES;?>/js/libraries/jquery-migrate-1.1.1.js"></script>-->
+<!--<script>$.uiBackCompat = false;</script>-->
 <script type="text/javascript" src="<?php echo $protocol;?>ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.onerror.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/datejs/date.js"></script>
@@ -106,7 +107,7 @@ var co_lang = '<?php echo $session->userlang;?>';
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.scrollTo.min.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.elastic.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.hoverscroll.js"></script>
-<!--<script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.ba-throttle-debounce.min.js"></script>-->
+<script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.ba-throttle-debounce.min.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/lang/<?php echo($session->userlang); ?>.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/init.js"></script>
 <?php // include mobile js
