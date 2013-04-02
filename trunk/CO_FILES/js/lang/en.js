@@ -12,6 +12,7 @@ var ALERT_MESSAGE_SESSION_RENEW = 'The platform was accessed with your login det
 							      'You can loggout or re-enter your password below.<br /><br />Ihr Passwort: ';
 var ALERT_MESSAGE_SESSION_COOKIE = 'Access to the system expired due to the deletion of your "browser cookies".<br /><br />'+
 							      'Please log in again with your access codes. If this problem persists contact your computer administrator.';
+var ALERT_MESSAGE_INTERNET = 'Your internet connection appears to be down or the server you are trying to connect to is not responding.<br /><br />Once the connection can be reestablished this warning message will disappear automatically. If this problem persists please contact your IT administrator.';
 var ALERT_LOGOUT = "Do you really want to logout?";
 var ALERT_NO_TITLE = "Please enter a title";
 var ALERT_CHANGES_NOT_SAVED = "Your changes have not yet been saved!\nWould you like to save them now?";
