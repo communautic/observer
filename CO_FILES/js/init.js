@@ -1,30 +1,3 @@
-/*var globalError = 0;
-$(document).ajaxError(function(e, xhr, settings, exception) {
-	//console.log(e);
-    //console.log(xhr);
-	console.log(settings);
-    console.log(settings.url);
-	console.log(settings.data);
-	console.log(settings.type);
-    //console.log(exception);
-	
-	if(globalError == 0) {
-		globalError = 1;
-		var txt = 'Check your internet connection and try again';
-		var langbuttons = {};
-		langbuttons[ALERT_YES] = true;
-		$.prompt(txt,{ 
-			submit: function(e,v,m,f){		
-				if(v){
-					globalError = 0;
-				}
-			}
-		});
-		
-	}
-});*/
-
-
 jQuery.fn.nl2br = function(){
     return this.each(function(){
         var that = jQuery(this);
@@ -62,7 +35,7 @@ $(window).bind('beforeunload', function() {
 	}
 });
 
-function Application (name) {
+/*function Application (name) {
     this.name = name;
 	this.displayname;
 	this.usesLayout;
@@ -75,7 +48,7 @@ function Application (name) {
 function Module(name) {
     this.name = name;
 	this.save;
-}
+}*/
 
 
 var sendformOptions = { beforeSubmit: projectSendProcess, dataType:  'json', success: projectSendResponse };
@@ -94,7 +67,6 @@ function projectSendProcess(formData, form, sendformOptions) {
 }
 
 function projectSendResponse(data) {
-	
 	if(data == 1) {
 		var obj = getCurrentModule();
 		obj.actionSendtoResponse();
@@ -102,7 +74,6 @@ function projectSendResponse(data) {
 		$("#modalDialogForward").html("Failed");
 	}
 }
-
 
 function getCurrentApp() {
 	var app = $("#appnav span.active-app").attr("rel");
@@ -203,10 +174,8 @@ function processListArray(field,num) {
 		itemlist = itemlist.slice(0, -1)
 		}
 	})
-	
 	return { "name": field+"["+num+"]", "value": itemlist };
 }
-
 
 function processDocList(list) {
 	var items = $("#"+list+" .showItemContext").size();
@@ -245,8 +214,6 @@ function processDocListApps(list) {
 	})									
 	return { "name": list, "value": itemlist };
 }
-
-
 
 function processCustomText(list) {
 	var text = $("#"+list+" .ct-content").html();
@@ -356,10 +323,15 @@ function resetNavScroll() {
 	}
 }
 
-// ajax check to see if user is still logged in
-/*function activateSessionCheck() {
+// ajax check to see if user is still logged in + experimental Internet connection check
+var connectionError = 0;
+function activateSessionCheck() {
 	var sessionactive = setInterval(function() {
-		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=login/sessionCheck&request=sessionCheck', success: function(data){
+		$.ajax({ global: false, type: "GET", url: "/", dataType:  'json', data: 'path=login/sessionCheck&request=sessionCheck', success: function(data){
+				if(connectionError == 1) {
+					connectionError = 0;
+					$.prompt.close();
+				}
 				if(!data.active){
 					clearInterval(sessionactive);
 					if(data.user != undefined) {
@@ -394,21 +366,34 @@ function resetNavScroll() {
 							}
 						}
 					});
-					
 					} else {
-						$.prompt('Session expired! It seems that your browser cookies got deleted, which prevents you from authentication to the system. If you see this message often please contact your computer administrator to double check your browsers cookie settings. Follow the link below to login in again',{
+						var langbuttons = {};
+						langbuttons[ALERT_BUTTON_LOGIN] = true;
+						$.prompt(ALERT_MESSAGE_SESSION_COOKIE,{
+							buttons:langbuttons,
 							submit: function(e,v,m,f){
 								e.preventDefault();
 								document.location.href = '/';
 							}
 						});
 					}
-				} 
+				}
+			},
+			error: function(statusCode, errorThrown) {
+				if (statusCode.status == 0) {
+					if(connectionError == 0) {
+						connectionError = 1;
+						var txt = 'Your internet connection appears to be down or the server you are trying to connect to is not responding. Once the connection can be reestablished this warning message will disappear automatically. If this problem persists please contact your IT administrator.';
+						//var langbuttons = {};
+						//langbuttons[ALERT_YES] = true;
+						$.prompt(txt,{buttons: {}});
+					}
+				}
 			}
 		});
-	}, 10000);
+	}, 15000);
 }
-activateSessionCheck()*/
+activateSessionCheck();
 
 
 /* global Action functions to go here 
@@ -543,19 +528,22 @@ $(document).ready(function() {
 	})
 	
 	// title autosave
-	$(document).on('blur', 'input.bg, input.title, textarea.elastic',function() {
+	// obsolete due to debounce
+	/*$(document).on('blur', 'input.bg, input.title, textarea.elastic',function() {
+		console.log('blur fired');
 		if(confirmNavigation()) {
 			formChanged = false;
 			var obj = getCurrentModule();
 			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 		}
-	});
+	});*/
 	
 	// cp autosave text
-	$(document).on('blur', 'textarea.elastic-two',function() {
+	// obsolete due to debounce
+	/*$(document).on('blur', 'textarea.elastic-two',function() {
 		var obj = getCurrentModule();
 		obj.saveCheckpointText();
-	});
+	});*/
 	
 	$('span.actionPrint').on('click', function(e){
 		e.preventDefault();
@@ -705,6 +693,14 @@ $(document).ready(function() {
 		var module = getCurrentModule();
 		module.newItem();
 	});
+	
+	$(document).on('click','span.newItemOption',function(e) {
+		e.preventDefault();
+		var ele = $(this);
+		var rel = $(this).attr("rel");
+		var module = getCurrentModule();
+		module.newItemOption(ele,rel);
+	});
 
 	$(document).on('click','a.newItemSelection',function(e) {
 		e.preventDefault();
@@ -734,9 +730,15 @@ $(document).ready(function() {
 
 	$(document).on('click','.showCoPopup',function(e) {
 		e.preventDefault();
-		var ele = $(this).parent();
+		var el = $(this);
+		var request = el.attr('request');
+		var obj = getCurrentModule();
+		obj.coPopup(el,request);
+		/*var ele = $(this).parent();
 		var html = $(this).next().html();
-		$('#co-popup').html(html).position({
+		$('#co-popup').removeClass(function (index, css) {
+                   return (css.match (/\bpopup-\w+/g) || []).join(' ');
+               }).html(html).position({
 		  my: "center center",
 		  at: "right+72 center",
 		  of: ele,
@@ -752,13 +754,7 @@ $(document).ready(function() {
                    return (css.match (/\bswitch-\w+/g) || []).join(' ');
                }).addClass(className);
 		  }
-		});
-
-		/*var ele = $(this);
-		var uid = $(this).attr('uid');
-		var field = $(this).attr('field');
-		var module = window[$(this).attr("href")];
-		module.showItemContext(ele,uid,field);*/
+		});*/
 	});
 
 	$(document).on('click','a.downloadDocument',function(e) {
@@ -909,12 +905,13 @@ $(document).ready(function() {
 	$('.sendForm').livequery(function() {
 		$(this).ajaxForm(sendformOptions);
 	});
-	
+
 	$(document).on('click', 'span.actionSendForm',function(e) {
 		e.preventDefault();
 		$('.sendForm').ajaxSubmit(sendformOptions);
 	});
 
+	// possibly bind to app?
 	$(document).ajaxStart(function() {
 		$('.spinner').show();
 			}).ajaxStop(function() {
@@ -1001,6 +998,9 @@ $(document).ready(function() {
 		}
 		var offset = $(this).offset();
 		offset = [offset.left+offsetsubtract,offset.top+18];
+		//new 10.2 ui offset
+		//$("#modalDialog").dialog('option', 'appendTo', $(this));
+		//var offset = { my: "left top", at: "right+15 bottom", of: $(this) }
 		var sql;
 		var request = $(this).attr("request"); // function name
 		var field = $(this).attr("field"); // field to fill selection into
@@ -1063,6 +1063,7 @@ $(document).ready(function() {
 	$(document).on('click', '.showDialogTime',function(e) {
 		e.preventDefault();
 		var offset = $(this).offset();
+		//var offset = { my: "left top", at: "right+15 bottom", of: $(this) };
 		var field = $(this).attr("rel");
 		var title = $(this).attr("title"); //header of dialog
 		var time = $("#"+field).html();
@@ -1073,6 +1074,7 @@ $(document).ready(function() {
 					}
 				});
 				$("#modalDialogTime").dialog('option', 'position', [offset.left+150,offset.top+18]);
+				//$("#modalDialogTime").dialog('option', 'position', offset);
 				$("#modalDialogTime").dialog('option', 'title', title);
 				$("#modalDialogTime").dialog('open');			
 			}, 500);
@@ -1082,6 +1084,7 @@ $(document).ready(function() {
 				}
 			});
 			$("#modalDialogTime").dialog('option', 'position', [offset.left+150,offset.top+18]);
+			//$("#modalDialogTime").dialog('option', 'position', offset);
 			$("#modalDialogTime").dialog('option', 'title', title);
 			$("#modalDialogTime").dialog('open');
 		}
@@ -1448,16 +1451,18 @@ $(document).ready(function() {
 			}
 		})
 	});
-	$(document).on('mousedown', 'td.dragHandle',function(e) {
+	// make sure data is saved when clicking on handle - didn't fire blur
+	// obsolete due to debounce
+	/*$(document).on('mousedown', 'td.dragHandle',function(e) {
 		e.preventDefault();
 		if(formChanged) {
 			var obj = getCurrentModule();
 			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 		}
-	});
+	});*/
 	
 	
-	// vDocs Init function
+	/* vDocs Init function
 	function myCustomInitInstance(ed) {
 		var ele = ed.id;
 		$("#"+ele).data('initial_value', $("#"+ele).html());
@@ -1519,6 +1524,46 @@ $(document).ready(function() {
 		setTimeout(function() {
 			$('#'+getCurrentApp()+'vdocContent').tinymce().execCommand('mceAutoResize');			
 		}, 300)
+	}*/
+	
+	
+// vDocs Init function
+	function vdocsCallback(ed) {
+		setTimeout(function() {
+			$('#'+getCurrentApp()+'vdocContent').tinymce().execCommand('mceAutoResize');			
+		}, 300)
+	}
+	
+	function vdocsSetup(ed) {
+		var timer;
+		var d = 500;
+		ed.onKeyUp.add(function(ed, e) {
+			if(timer) { clearTimeout(timer); }
+			timer = setTimeout(keyupSave, d);
+		})
+		ed.onChange.add(function(ed, l) {
+			if(timer) { clearTimeout(timer); }
+			timer = setTimeout(keyupSave, d);
+		});
+		ed.onPaste.add(function(ed, l) {
+			if(timer) { clearTimeout(timer); }
+			timer = setTimeout(keyupSave, d);
+		});
+		// Tab functionality
+		ed.onKeyDown.add(function(inst, e) {
+			// Firefox uses the e.which event for keypress
+			// While IE and others use e.keyCode, so we look for both
+			if (e.keyCode) code = e.keyCode;
+			else if (e.which) code = e.which;
+			if(code == 9 && !e.altKey && !e.ctrlKey) {
+				// toggle between Indent and Outdent command, depending on if SHIFT is pressed
+				if (e.shiftKey) ed.execCommand('Outdent');
+				else ed.execCommand('Indent');
+				// prevent tab key from leaving editor in some browsers
+				if(e.preventDefault) { e.preventDefault(); }
+				return false;
+			}
+		});
 	}
 
 	// listener for vDocs
@@ -1544,8 +1589,9 @@ $(document).ready(function() {
 			content_css : "tiny_mce/editor.content.css",
 			autosave_ask_before_unload : false,
 			autoresize_on_init : false,
-			init_instance_callback: myCustomInitInstance
-		});
+			init_instance_callback: vdocsCallback,
+			setup :  vdocsSetup
+			});
 		})
 	})
 
@@ -1560,12 +1606,17 @@ function keyupSave() {
 	formChanged = false;
 	var obj = getCurrentModule();
 	$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);					   
+}
+
+function keyupSaveCheckpoint() {
+	var obj = getCurrentModule();
+	obj.saveCheckpointText();
 } 
 			
 $(document).ready(function() {
 	$('.textarea-title, .bg, .elastic').livequery(function () {
-		var e = $(this);
-		e.data('initial_value', e.val());
+		//var e = $(this);
+		/*e.data('initial_value', e.val());
 		e.bind('keyup paste cut', function() {
 		  setTimeout(function() {
 			  if (e.val() != e.data('initial_value')) {
@@ -1573,12 +1624,12 @@ $(document).ready(function() {
 				  e.data('initial_value', e.val());
 			  }
 		  }, 100);
-		});
-		//e.bind('keyup paste cut', $.debounce( 500, keyupSave));
+		});*/
+		$(this).bind('keyup paste cut', $.debounce( 500, keyupSave));
    });
 	
 	$('textarea.elastic-two').livequery(function () {
-		var e = $(this);
+		/*var e = $(this);
 		e.data('initial_value', e.val());
 		e.bind('keyup paste cut', function() {
 			setTimeout(function() {
@@ -1587,8 +1638,18 @@ $(document).ready(function() {
 					e.data('initial_value', e.val());
 				}
 			}, 100);
-		});
+		});*/
+		$(this).bind('keyup paste cut', $.debounce( 500, keyupSaveCheckpoint));
 	});
+	
+	$('#co-popup input, #co-popup textarea').livequery(function () {
+		$(this).bind('keyup paste cut', $.debounce( 500, function() {
+			var obj = getCurrentModule();
+			obj.saveItem();
+		}
+		));
+   });
+	
 });
 
 function confirmNavigation() {
@@ -2444,7 +2505,7 @@ function externalLoadThreeLevels(objectname,f,p,ph,app) { // from Desktop
 	var num_modules = window[objectname+'_num_modules'];
 	
 	
-	if(objectname == app && (objectname == 'projects' || objectname == 'productions' || objectname == 'brainstorms' || objectname == 'forums' || objectname == 'complaints' || objectname == 'employees' || objectname == 'patients' || objectname == 'trainings')) {
+	if(objectname == app && (objectname == 'projects' || objectname == 'procs' || objectname == 'productions' || objectname == 'brainstorms' || objectname == 'forums' || objectname == 'complaints' || objectname == 'employees' || objectname == 'patients' || objectname == 'trainings')) {
 		object.$first.data({ "first" : f});
 		$('#'+objectname+'1 .module-click').removeClass('deactivated');
 		var index = $('#'+objectname+'1 .module-click').index($('#'+objectname+'1 .module-click[rel='+f+']'));

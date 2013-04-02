@@ -6,6 +6,12 @@ var CUSTOM_NOTE = "manual entry:";
 // Alerts
 var ALERT_YES = "Yes";
 var ALERT_NO = "No";
+var ALERT_BUTTON_LOGIN = "Login";
+var ALERT_BUTTON_LOGOUT = "Logout";
+var ALERT_MESSAGE_SESSION_RENEW = 'The platform was accessed with your login details<br />from somewhere else.<br /><br />'+
+							      'You can loggout or re-enter your password below.<br /><br />Ihr Passwort: ';
+var ALERT_MESSAGE_SESSION_COOKIE = 'Access to the system expired due to the deletion of your "browser cookies".<br /><br />'+
+							      'Please log in again with your access codes. If this problem persists contact your computer administrator.';
 var ALERT_LOGOUT = "Do you really want to logout?";
 var ALERT_NO_TITLE = "Please enter a title";
 var ALERT_CHANGES_NOT_SAVED = "Your changes have not yet been saved!\nWould you like to save them now?";
