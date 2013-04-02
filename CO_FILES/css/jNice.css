@@ -1,14 +1,14 @@
 /* -------------
  * Buttons
  * ------------- */
-button {margin:0;padding:0;border:none;background-color:transparent;cursor:pointer;overflow:visible;outline:none;moz-outline:none;}
-*:first-child+html button[type]{width:1;} /* IE7 */
+/*button {margin:0;padding:0;border:none;background-color:transparent;cursor:pointer;overflow:visible;outline:none;moz-outline:none;}
+*:first-child+html button[type]{width:1;}
 
 button span {
 	background: transparent url(../img/jNice/btn_right.gif) no-repeat scroll right top;
 	display: block;
 	float: left;
-	padding: 0px 4px 0px 0px; /* sliding doors padding */
+	padding: 0px 4px 0px 0px;
 	margin: 0px;
 }
 
@@ -22,7 +22,7 @@ button span span {
 	text-transform: lowercase;
 	display: block;
 	text-decoration: none;
-}
+}*/
 
 /* -------------
  * Inputs
