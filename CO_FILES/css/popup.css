@@ -22,7 +22,6 @@
 	-moz-border-radius: 6px;
 	border-radius: 6px;
 	padding: 0;
-	text-align: center;
 	text-indent: 0px;
 	color: #FFFFFF;
 	/*text-shadow: #5B5B5B 0px -1px 0px;
@@ -72,9 +71,11 @@
 
 #co-popup a {
 	
-	margin: 2px 0;
+	margin: 2px auto;
+	width: 134px;
 	display: block;
 	text-decoration: none;
+	text-align: center;
 
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
@@ -152,7 +153,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7b599', end
 	-o-transform:			rotate(45deg);
 }
 
-#co-popup .north .arrow,#co-popup .south .arrow {
+#co-popup.switch-north .arrow, #co-popup.switch-south .arrow {
 	display: block;
 	width: 28px;
 	height: 18px;
@@ -160,21 +161,21 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7b599', end
 	margin-left: -18px;
 }
 
-#co-popup .north .arrow {
+#co-popup.switch-north .arrow {
 	top: -18px;
 	left: 50%;
-	margin-left: -13px;*/
+	margin-left: -18px;
 }
 
-#co-popup .north .arrow:after {
+#co-popup.switch-north .arrow:after {
 	top: 10px;
 }
 
-#co-popup .south .arrow {
+#co-popup.switch-south .arrow {
 	bottom: -18px;
 }
 
-#co-popup .south .arrow:after {
+#co-popup.switch-south .arrow:after {
 	bottom: 10px;
 }
 
@@ -215,3 +216,64 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7b599', end
 #co-popup .compact ul { padding-top: 7px; }
 .co-popupOuter { float: left; width: 200px; height: 22px; position: relative; }
 .co-popup-content { display: none; }
+
+
+/* full popup */
+#co-popup.popup-full {
+	background: #2d2d2d;
+	height: auto;
+	width: 298px;
+	border: 1px solid #2d2d2d;
+	z-index: 10;
+}
+#co-popup.popup-arrows {
+	background: #2d2d2d;
+	height: 221px;
+	width: 240px;
+	border: 1px solid #2d2d2d;
+	z-index: 10;
+}
+#co-popup .head {
+    border-radius: 4px 4px 4px 4px;
+    color: #d3d3d3;
+    height: 25px;
+    line-height: 24px;
+    overflow: hidden;
+    text-align: center;
+	padding: 1px 4px;
+	background: #949494;
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjOTQ5NDk0IiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjNGU0ZTRlIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iNTElIiBzdG9wLWNvbG9yPSIjMWYxZjFmIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzFmMWYxZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgPC9saW5lYXJHcmFkaWVudD4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);
+background: -moz-linear-gradient(top,  #949494 0, #4e4e4e 50%, #1f1f1f 51%, #1f1f1f 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0,#949494), color-stop(50%,#4e4e4e), color-stop(51%,#1f1f1f), color-stop(100%,#1f1f1f));
+background: -webkit-linear-gradient(top,  #949494 0,#4e4e4e 50%,#1f1f1f 51%,#1f1f1f 100%);
+background: -o-linear-gradient(top,  #949494 0,#4e4e4e 50%,#1f1f1f 51%,#1f1f1f 100%);
+background: -ms-linear-gradient(top,  #949494 0,#4e4e4e 50%,#1f1f1f 51%,#1f1f1f 100%);
+background: linear-gradient(to bottom,  #949494 0,#4e4e4e 50%,#1f1f1f 51%,#1f1f1f 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#949494', endColorstr='#1f1f1f',GradientType=0 );
+}
+#co-popup .content {
+    border-radius: 3px 3px 3px 3px;
+    margin: 0 3px 2px;
+    height: auto;
+    padding: 10px 12px;
+	background-color: #d8d8d8;
+}
+
+#co-popup.popup-arrows .content {
+    border-radius: 3px 3px 3px 3px;
+    margin: 0 3px 2px;
+    height: 170px;
+    padding: 10px 12px;
+	background-color: #d8d8d8;
+}
+
+#co-popup.switch-right .arrow, #co-popup.switch-left .arrow {
+    top: 50%;
+	margin-top: -15px;
+}
+
+#co-popup .fieldset { color: #666; }
+#co-popup .fieldset label { display: inline-block; padding-right: 10px;  line-height: 23px; }
+
+#co-popup .fieldset input { display: inline-block; width: 223px; padding-left: 10px; height: 25px; background: #fff; border: 1px solid #b2b2b2; border-radius: 4px; margin-bottom: 8px;}
+#co-popup .fieldset textarea { width: 245px; padding: 10px; height: 94px; background: #fff; border: 1px solid #b2b2b2; border-radius: 4px; margin-bottom: 4px;}
