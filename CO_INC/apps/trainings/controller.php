@@ -927,9 +927,14 @@ function getGroupIDs($id) {
    
    function sendInvitation($id) {
 		global $lang, $session, $contactsmodel,$date;
+		$data['error'] = false;
 		$key = uniqid(md5(rand()));
 		$this->model->storeKey($id,$key,'invitation');
 		$member = $this->model->getMemberDetails($id);
+		if(empty($member->email)) {
+			$data['error'] = true;
+			return json_encode($data);
+		}
 		$arr = $this->model->getTrainingDetails($member->pid);
 		$training = $arr["training"];
 		$to = $member->cid;
@@ -950,11 +955,6 @@ function getGroupIDs($id) {
 			include('view/email_invitation.php');
 			$body = ob_get_contents();
 		ob_end_clean();
-		
-		/*ob_start();
-			include(CO_PATH_TEMPLATES . 'trainings/email_footer.html');
-			$body .= ob_get_contents();
-		ob_end_clean();*/
 		
 		$email = $this->sendEmail($to,$cc="",$from,$fromName,$subject,$body,"","","",0,0);
 		$this->model->writeMemberLog($id,'1',$session->uid);
@@ -1130,15 +1130,17 @@ function getGroupIDs($id) {
 		$training = $arr["training"];
 		return $training;
 	}
-	
-	
-
 
    function sendFeedback($id) {
 		global $lang, $session, $contactsmodel,$date;
+		$data['error'] = false;
 		$key = uniqid(md5(rand()));
 		$this->model->storeKey($id,$key,'feedback');
 		$member = $this->model->getMemberDetails($id);
+		if(empty($member->email)) {
+			$data['error'] = true;
+			return json_encode($data);
+		}
 		$arr = $this->model->getTrainingDetails($member->pid);
 		$training = $arr["training"];
 		$to = $member->cid;

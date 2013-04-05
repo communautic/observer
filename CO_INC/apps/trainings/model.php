@@ -2848,16 +2848,16 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 				foreach($row as $key => $val) {
 					$array[$key] = $val;
 				}
-				if($array['email'] == "") {
+				/*if($array['email'] == "") {
 					$error = true;
 					$error_data = $array['name'];
 					$status = false;
-				} else {
+				} else {*/
 					$status = true;
 					$q = "INSERT INTO " . CO_TBL_TRAININGS_MEMBERS . " set pid='$pid', cid='$cid'";
 					$result = mysql_query($q, $this->_db->connection);
 					$newid = mysql_insert_id();
-				}
+				//}
 				$array['id'] = $newid;
 				$array['invitation_class'] = '';
 				$array['registration_class'] = '';
