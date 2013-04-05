@@ -500,15 +500,20 @@ function sendFolderDetailsList($id,$to,$cc,$subject,$body) {
 		
 		if($arr = $this->model->getFolderDetails($id)) {
 			$folder = $arr["folder"];
+			$today = date("d.m.Y");
 			$trainings = $arr["trainings"];
 			ob_start();
 				include 'view/handbook_cover.php';
 				$html .= ob_get_contents();
 			ob_end_clean();
+			foreach ($trainings as $t) { 
+				$arrt = $this->model->getTrainingDetails($t->id);
+				$training = $arrt["training"];
 			ob_start();
 				include 'view/handbook.php';
 				$html .= ob_get_contents();
 			ob_end_clean();
+			}
 
 			$title = $title = $folder->title . " - " . $lang["TRAINING_HANDBOOK"];
 		}

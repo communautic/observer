@@ -101,13 +101,7 @@ class TrainingsModel extends Model {
 		$array["activetrainings"] = $this->getNumTrainings($id, $status="1");
 		$array["inactivetrainings"] = $this->getNumTrainings($id, $status="2");
 		$array["stoppedtrainings"] = $this->getNumTrainings($id, $status="3");
-		
-		/*$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
-		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
-		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
-		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);*/
 		$array["today"] = $this->_date->formatDate("now",CO_DATETIME_FORMAT);
-		
 		
 		$array["canedit"] = true;
 		$array["access"] = "sysadmin";
