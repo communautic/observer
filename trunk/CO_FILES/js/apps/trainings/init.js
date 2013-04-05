@@ -386,16 +386,16 @@ function trainingsApplication(name) {
 	this.customContactInsert = function(cid) {
 		var id = $("#trainings").data("second");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/trainings&request=addMember&pid=" + id + "&cid=" + cid, cache: false, success: function(data){
-			if(data.error) {
+			/*if(data.error) {
 				$.prompt(data.error_data + ' ' + ALERT_SENDTO_EMAIL);
-			} else {
+			} else {*/
 				if(data.status)	{																																	
 					$('#trainingsmembers').append(data.html);
 					$('#training_num_members').html(parseInt($('#training_num_members').html())+1)
 				} else {
 					$.prompt("Dieser Kontakt befindet sich schon in der Liste");
 				}
-			}
+			//}
 			}
 		});
 	}
@@ -410,10 +410,10 @@ function trainingsApplication(name) {
 			var already = '';
 			for (var i=0; i<ar.length; i++) {
 				$.ajax({ type: "GET", url: "/", async: false, dataType:  'json', data: "path=apps/trainings&request=addMember&pid=" + id + "&cid=" + ar[i], cache: false, success: function(data){
-					if(data.error) {
+					//if(data.error) {
 						//$.prompt(data.error_data + ' ' + ALERT_SENDTO_EMAIL);
 						//error = error+data.error_data;
-					} else {
+					//} else {
 						if(data.status)	{																																	
 							$('#trainingsmembers').append(data.html);
 							$('#training_num_members').html(parseInt($('#training_num_members').html())+1)
@@ -421,7 +421,7 @@ function trainingsApplication(name) {
 							//$.prompt("Dieser Kontakt befindet sich schon in der Teilnehmeriste");
 							//already = already+data.members.name;
 						}
-					}
+					//}
 					}
 				});
 			}
@@ -507,15 +507,19 @@ function trainingsApplication(name) {
 		}
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/trainings&request='+action+'&id=' + id, success: function(data){
 			if(data){
-				$('#member_'+id + ' .'+actionlink+'Link').addClass(actionclass).removeClass(actionremoveclass);
-				$('#co-popup').css('left',-1000);
-				$('#member_log_'+id+'_content').prepend('<div class="text11">'+data.action+': ' + data.who + ', '+data.date+'</div>');
-				if($('#toggler_'+id).is(':hidden')) {
-					$('#toggler_'+id).show();
-				}
-				if(action == 'editFeedback') {
-					var href = other.split(",");
-					externalLoadThreeLevels('feedbacks',href[0],href[1],href[2],'trainings');
+				if(data.error) {
+					$.prompt(ALERT_NO_EMAIL);
+				} else {
+					$('#member_'+id + ' .'+actionlink+'Link').addClass(actionclass).removeClass(actionremoveclass);
+					$('#co-popup').css('left',-1000);
+					$('#member_log_'+id+'_content').prepend('<div class="text11">'+data.action+': ' + data.who + ', '+data.date+'</div>');
+					if($('#toggler_'+id).is(':hidden')) {
+						$('#toggler_'+id).show();
+					}
+					if(action == 'editFeedback') {
+						var href = other.split(",");
+						externalLoadThreeLevels('feedbacks',href[0],href[1],href[2],'trainings');
+					}
 				}
 			} 
 			}
