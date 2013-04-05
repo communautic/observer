@@ -388,7 +388,10 @@ class ProjectsModel extends Model {
 			$projects[] = new Lists($project);
 			$css_top =  $css_top+38;
 	  	}
-		
+		$wday = $this->_date->formatDate($array["startdate"],"w");
+		if($wday != 1) {
+			$array["bg_image_shift"] = -($wday-1)*$width;
+		}
 		$array["days"] = $this->_date->dateDiff($array["startdate"],max($end));
 		$array["css_width"] = ($array["days"]+1) * $width;
 		$array["css_height"] = $numProjects*38; // pixel add at bottom
