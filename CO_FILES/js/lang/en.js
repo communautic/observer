@@ -1,7 +1,7 @@
 var FILE_BROWSE = "File / Upload";
 var FILE_DROP_AREA = "Drop files here to upload";
 var FILE_DROP_AREA_IMAGE = "Drop image here to upload";
-var CUSTOM_NOTE = "manual entry:";
+var CUSTOM_NOTE = "";
 
 // Alerts
 var ALERT_YES = "Yes";
