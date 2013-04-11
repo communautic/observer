@@ -351,9 +351,12 @@ class Procs extends Controller {
 	}
 	
 	function newProcNote($id,$x,$y,$z,$what) {
+		global $lang;
 		$retval = $this->model->newProcNote($id,$x,$y,$z,$what);
 		if($retval){
-			 return $retval;
+			 //return $retval;
+			 //return json_encode($proc);
+			 return '{ "id": "' . $retval . '", "title": "' . $lang['PROC_NOTE_NEW'] . '" }';
 		  } else{
 			 return "error";
 		  }

@@ -19,6 +19,13 @@ $lang["PROC_GRID_ITEM_NEW"] = 'Neue Tätigkeit';
 $lang["PROC_GRID_STAGEGATE_NEW"] = 'Neues Stagegate';
 $lang['PROC_GRID_NOTES'] = 'Tätigkeiten';
 
+$lang['PROC_GRID_DURATION'] = 'Dauer';
+$lang['PROC_GRID_HOURS'] = 'Stunde/n';
+$lang['PROC_GRID_COSTS_EMPLOYEES'] = 'Personalkosten';
+$lang['PROC_GRID_COSTS_MATERIAL'] = 'Materialkosten';
+$lang['PROC_GRID_COSTS_EXTERNAL'] = 'Fremdleistungen';
+$lang['PROC_GRID_COSTS_OTHER'] = 'Sonstige Kosten';
+
 $lang["PROC_GRID_COLUMNS_BIN"] = 'Prozessraster/Spalten';
 $lang["PROC_GRID_NOTES_BIN"] = 'Prozessraster/Tätigkeiten';
 $lang["PROC_PHASE_TITLE"] = 'Phase';

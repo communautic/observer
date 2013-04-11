@@ -27,12 +27,12 @@
 </table>
 
 <?php } ?>
-<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+<!--<table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 		<td class="tcell-left-inactive text11"><?php echo $lang["PROC_GRID_TIME"];?></td>
 		<td class="tcell-right-inactive"><span id="procGridDays"><?php echo $grid->grid_days;?></span> <?php echo $lang["GLOBAL_DAYS"];?></td>
     </tr>
-</table>
+</table>-->
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 	  <td class="tcell-left text11"><span class="<?php if($grid->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="procsowner" append="0"><span><?php echo $lang["PROC_GRID_OWNER"];?></span></span></td>

@@ -792,7 +792,7 @@ class ProcsModel extends Model {
 		global $session, $contactsmodel, $lang;
 		
 		$now = gmdate("Y-m-d H:i:s");
-		$title = $lang["PROC_NEW"];
+		$title = $lang['PROC_NOTE_NEW'];
 		
 		$shape = 1;
 		if($what == 'arrow') {
