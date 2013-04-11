@@ -5,6 +5,7 @@ function initProcsContentScrollbar() {
 /* procs Object */
 function procsApplication(name) {
 	this.name = name;
+	var module = this;
 	
 	this.init = function() {
 		this.$app = $('#procs');
@@ -15,9 +16,9 @@ function procsApplication(name) {
 		this.$thirdDiv = $('#procs3 div.thirdLevel');
 		this.$layoutWest = $('#procs div.ui-layout-west');
 		this.coPopupEditClass = 'popup-full';
-		this.coPopupEdit = '<div class="head">Bearbeiten</div><div class="content"><div class="fieldset"><label>Titel</label><input type="text" class="title" maxlength="60" value="" /></div><div class="saveItemShape"><span rel="1"><span class="shape1"></span></span><span rel="2"><span class="shape2"></span></span><span rel="3"><span class="shape3"></span></span><span rel="4"><span class="shape4"></span></span><span rel="5"><span class="shape5"></span></span></div><div class="saveItemColor"><span rel="1"><span class="color1"></span></span><span rel="2"><span class="color2"></span></span><span rel="3"><span class="color3"></span></span><span rel="4"><span class="color4"></span></span><span rel="5"><span class="color5"></span></span></div><div class="fieldset"><label>Beschreibung</label><textarea class="text"></textarea></div><ul><li><a href="#" class="binItem alert" rel="">'+DATEPICKER_CLEAR+'</a></li></ul></div><span class="arrow"></span>';
+		this.coPopupEdit = '<div class="head">Bearbeiten</div><div class="content"><div class="fieldset"><label>Titel</label><input type="text" class="title" maxlength="60" value="" /></div><div class="saveItemShape"><span rel="1"><span class="shape1"></span></span><span rel="2"><span class="shape2"></span></span><span rel="3"><span class="shape3"></span></span><span rel="4"><span class="shape4"></span></span><span rel="5"><span class="shape5"></span></span></div><div class="saveItemColor"><span rel="1"><span class="color1"></span></span><span rel="2"><span class="color2"></span></span><span rel="3"><span class="color3"></span></span><span rel="4"><span class="color4"></span></span><span rel="5"><span class="color5"></span></span></div><div class="fieldset"><label>Beschreibung</label><textarea class="text"></textarea></div><ul class="popupButtons"><li><a href="#" class="binItem alert" rel="">'+DATEPICKER_CLEAR+'</a></li></ul></div><span class="arrow"></span>';
 		this.coPopupEditClassArrow = 'popup-arrows';
-		this.coPopupEditArrow = '<div class="head">Bearbeiten</div><div class="content"><div class="saveItemArrow"><span rel="1"><span class="arrow1"></span></span><span rel="2"><span class="arrow2"></span></span><span rel="3"><span class="arrow3"></span></span><span rel="4"><span class="arrow4"></span></span><span rel="5"><span class="arrow5"></span></span><span rel="6"><span  class="arrow6"></span></span><span rel="7"><span class="arrow7"></span></span><span rel="8"><span class="arrow8"></span></div><ul><li><a href="#" class="binItem alert" rel="">'+DATEPICKER_CLEAR+'</a></li></ul></div><span class="arrow"></span>';
+		this.coPopupEditArrow = '<div class="head">Bearbeiten</div><div class="content"><div class="saveItemArrow"><span rel="1"><span class="arrow1"></span></span><span rel="2"><span class="arrow2"></span></span><span rel="3"><span class="arrow3"></span></span><span rel="4"><span class="arrow4"></span></span><span rel="5"><span class="arrow5"></span></span><span rel="6"><span  class="arrow6"></span></span><span rel="7"><span class="arrow7"></span></span><span rel="8"><span class="arrow8"></span></div><ul class="popupButtons"><li><a href="#" class="binItem alert" rel="">'+DATEPICKER_CLEAR+'</a></li></ul></div><span class="arrow"></span>';
 	}
 	
 	this.formProcess = function(formData, form, poformOptions) {
@@ -297,7 +298,23 @@ function procsApplication(name) {
 						  my: "center center",
 						  at: "right+170 center",
 						  of: el,
-						  using: function(coords, feedback) {
+						  collision: 'flip fit',
+						  within: '#notesOuter',
+						  using: function(coords, ui) {
+								var $modal = $(this),
+								t = coords.top,
+								l = coords.left,
+								className = 'switch-' + ui.horizontal;
+								$modal.css({
+									left: l + 'px',
+									top: t + 'px'
+								}).removeClass(function (index, css) {
+						   			return (css.match (/\bswitch-\w+/g) || []).join(' ');
+					   			})
+								.addClass(className);
+								copopup.find('.arrow').offset({ top: ui.target.top+25 });
+				  		}
+						  /*using: function(coords, feedback) {
 								var $modal = $(this),
 								top = coords.top,
 								left = coords.left,
@@ -318,7 +335,7 @@ function procsApplication(name) {
 						   			return (css.match (/\bswitch-\w+/g) || []).join(' ');
 					   			})
 								.addClass(className);
-				  		}
+				  		}*/
 					});
 			break;
 			case 'arrow':
@@ -342,7 +359,23 @@ function procsApplication(name) {
 						  my: "center center",
 						  at: "right+150 center+1",
 						  of: el,
-						  using: function(coords, feedback) {
+						  collision: 'flip fit',
+						  within: '#notesOuter',
+						  using: function(coords, ui) {
+								var $modal = $(this),
+								t = coords.top,
+								l = coords.left,
+								className = 'switch-' + ui.horizontal;
+								$modal.css({
+									left: l + 'px',
+									top: t + 'px'
+								}).removeClass(function (index, css) {
+						   			return (css.match (/\bswitch-\w+/g) || []).join(' ');
+					   			})
+								.addClass(className);
+								copopup.find('.arrow').offset({ top: ui.target.top-6 });
+				  		}
+						 /* using: function(coords, feedback) {
 								var $modal = $(this),
 								top = coords.top,
 								left = coords.left,
@@ -363,7 +396,7 @@ function procsApplication(name) {
 									return (css.match (/\bswitch-\w+/g) || []).join(' ');
 								})
 								.addClass(className);
-						}
+						}*/
 					});
 			break;
 		}
@@ -533,6 +566,27 @@ function procsApplication(name) {
 								$(this).remove();
 								currentProcEditedNote = 0;
 							});
+						} 
+						}
+					});
+				} 
+			}
+		});	
+	}
+	
+	this.binItems = function() {
+		var pid = $('#procs').data('second');
+		var txt = ALERT_DELETE_REALLY;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			submit: function(e,v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs&request=binItems&id="+pid, success: function(data){
+						if(data){
+							module.actionRefresh();
 						} 
 						}
 					});

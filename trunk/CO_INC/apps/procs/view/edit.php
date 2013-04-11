@@ -32,7 +32,7 @@
 	</tr>
 </table>
 </form>
-<div class="controlBar"><span class="newItemOption newnote" rel="note"></span> <span class="newItemOption newarrow" rel="arrow"></span></div>
+<div class="controlBar"><span class="newItemOption newnote" rel="note"></span> <span class="newItemOption newarrow" rel="arrow"></span> <span class="binItems" rel="arrow"></span></div>
 <div id="notesOuter">
 <?php
 if(is_array($notes)) {

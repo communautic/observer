@@ -43,7 +43,7 @@
 							}
 							$curcol = ($i-1) % 10;
 							?>
-                            <canvas class="canvasDraw" id="c<?php echo $i;?>" width="800" height="800" style="z-index: <?php echo $j;?>" rel="<?php echo $value->id;?>"></canvas>
+                            <canvas class="canvasDraw" id="c<?php echo $i;?>" width="1200" height="1200" style="z-index: <?php echo $j;?>" rel="<?php echo $value->id;?>"></canvas>
                             <!--<div id="dia-<?php echo $value->id;?>" style="z-index: 10<?php echo $i;?>; top: <?php echo $value->y;?>px; left: <?php echo $value->x;?>px;" class="loadCanvas circle circle<?php echo $curcol;?> <?php echo $active;?>" rel="<?php echo $i;?>"><div><?php echo $i;?></div></div>->
                         <?php 
 						$i++;

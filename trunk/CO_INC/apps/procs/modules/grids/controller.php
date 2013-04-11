@@ -300,7 +300,7 @@ class ProcsGrids extends Procs {
 			global $lang;
 			$retval = $this->model->saveGridNewManualNote($pid);
 			if($retval){
-				$html = '<div id="procsgriditem_' . $retval . '" class="droppable showCoPopup"><div class="statusItem"><input name="" type="checkbox" value="' . $retval . '" class="cbx jNiceHidden" /></div><div id="procsgriditem-title-' . $retval . '">' . $lang["PROC_GRID_ITEM_NEW"] . '</div><div style="display: none;" id="procsgriditem-text-' . $retval . '"></div></div>';
+				$html = '<div id="procsgriditem_' . $retval . '" class="droppable showCoPopup" request="note"><div class="statusItem"><input name="" type="checkbox" value="' . $retval . '" class="cbx jNiceHidden" /></div><div id="procsgriditem-title-' . $retval . '" class="itemTitle">' . $lang["PROC_GRID_ITEM_NEW"] . '</div><div style="display: none;" id="procsgriditem-text-' . $retval . '"></div><div id="procsgriditem-team-' . $retval . '" style="display: none;"></div><div id="procsgriditem-costs_employees-' . $retval . '" style="display: none;" class="costs">0</div><div id="procsgriditem-costs_materials-' . $retval . '" style="display: none;" class="costs">0</div><div id="procsgriditem-costs_external-' . $retval . '" style="display: none;" class="costs">0</div><div id="procsgriditem-costs_other-' . $retval . '" style="display: none;" class="costs">0</div><div id="procsgriditem-hours-' . $retval . '" style="display: none;" class="hours">0</div><div id="procsgriditem-team_ct-' . $retval . '" style="display: none;"><a class="ct-content" field="coPopup-team_ct"></a></div></div>';
 			 return $html;
 		  } else{
 			 return "error";
@@ -311,7 +311,7 @@ class ProcsGrids extends Procs {
 			global $lang;
 			$retval = $this->model->saveGridNewManualTitle($pid,$col);
 			if($retval){
-				$html = '<div id="procsgriditem_' . $retval . '" class="droppable colTitle planned showCoPopup" rel="' . $retval . '"><div class="statusItem"><span class="jNiceWrapper"><input type="checkbox" class="cbx jNiceHidden " value="' . $retval . '" name=""><span class="jNiceCheckbox"></span></span></div><div id="procsgriditem-title-' . $retval . '" class="itemTitle">' . $lang["PROC_GRID_TITLE_NEW"] . '</div><div style="display: none;" id="procsgriditem-text-' . $retval . '"></div></div>';
+				$html = '<div id="procsgriditem_' . $retval . '" class="droppable colTitle planned showCoPopup" request="title" rel="' . $retval . '"><div class="statusItem"><span class="jNiceWrapper"><input type="checkbox" class="cbx jNiceHidden " value="' . $retval . '" name=""><span class="jNiceCheckbox"></span></span></div><div id="procsgriditem-title-' . $retval . '" class="itemTitle">' . $lang["PROC_GRID_TITLE_NEW"] . '</div><div style="display: none;" id="procsgriditem-text-' . $retval . '"></div><div id="procsgriditem-team-' . $retval . '" style="display: none;"></div><div id="procsgriditem-costs_employees-' . $retval . '" style="display: none;" class="costs">0</div><div id="procsgriditem-costs_materials-' . $retval . '" style="display: none;" class="costs">0</div><div id="procsgriditem-costs_external-' . $retval . '" style="display: none;" class="costs">0</div><div id="procsgriditem-costs_other-' . $retval . '" style="display: none;" class="costs">0</div><div id="procsgriditem-hours-' . $retval . '" style="display: none;" class="hours">0</div><div id="procsgriditem-team_ct-' . $retval . '" style="display: none;"><a class="ct-content" field="coPopup-team_ct"></a></div></div>';
 			 return $html;
 		  } else{
 			 return "error";
@@ -322,7 +322,7 @@ class ProcsGrids extends Procs {
 			global $lang;
 			$retval = $this->model->saveGridNewManualStagegate($pid,$col);
 			if($retval){
-				$html = '<div id="procsgriditem_' . $retval . '" class="droppable colStagegate showCoPopup" rel="' . $retval . '" id="item_' . $retval . '"><div class="statusItem"><span class="jNiceWrapper"><input type="checkbox" class="cbx jNiceHidden " value="' . $retval . '" name=""><span class="jNiceCheckbox"></span></span></div><div id="procsgriditem-title-' . $retval . '" class="itemTitle">' . $lang["PROC_GRID_STAGEGATE_NEW"] . '</div><div style="display: none;" id="procsgriditem-text-' . $retval . '"></div></div>';
+				$html = '<div id="procsgriditem_' . $retval . '" class="droppable colStagegate showCoPopup" request="stagegate" rel="' . $retval . '" id="item_' . $retval . '"><div class="statusItem"><span class="jNiceWrapper"><input type="checkbox" class="cbx jNiceHidden " value="' . $retval . '" name=""><span class="jNiceCheckbox"></span></span></div><div id="procsgriditem-title-' . $retval . '" class="itemTitle">' . $lang["PROC_GRID_STAGEGATE_NEW"] . '</div><div style="display: none;" id="procsgriditem-text-' . $retval . '"></div><div id="procsgriditem-team-' . $retval . '" style="display: none;"></div><div id="procsgriditem-costs_employees-' . $retval . '" style="display: none;" class="costs">0</div><div id="procsgriditem-costs_materials-' . $retval . '" style="display: none;" class="costs">0</div><div id="procsgriditem-costs_external-' . $retval . '" style="display: none;" class="costs">0</div><div id="procsgriditem-costs_other-' . $retval . '" style="display: none;" class="costs">0</div><div id="procsgriditem-hours-' . $retval . '" style="display: none;" class="hours">0</div><div id="procsgriditem-team_ct-' . $retval . '" style="display: none;"><a class="ct-content" field="coPopup-team_ct"></a></div></div>';
 			 return $html;
 		  } else{
 			 return "error";
@@ -338,8 +338,8 @@ class ProcsGrids extends Procs {
 		}
 	}
 
-	function saveGridNote($id,$title,$text) {
-		$retval = $this->model->saveGridNote($id,$title,$text);
+	function saveGridNote($id,$title,$team,$team_ct,$text,$hours,$costs_employees,$costs_materials,$costs_external,$costs_other) {
+		$retval = $this->model->saveGridNote($id,$title,$team,$team_ct,$text,$hours,$costs_employees,$costs_materials,$costs_external,$costs_other);
 		if($retval){
 			 return $title;
 		  } else{
@@ -495,6 +495,14 @@ class ProcsGrids extends Procs {
 		}
 	}
 
+	function getCoPopup() {
+		global $system, $lang;
+		ob_start();
+			include('view/copopup.php');
+			$html = ob_get_contents();
+		ob_end_clean();
+		return $html;
+	}
 
 	function getHelp() {
 		global $lang;

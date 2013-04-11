@@ -137,9 +137,9 @@ if (!empty($_GET['request'])) {
 		case 'newProcNote':
 			echo($procs->newProcNote($_GET['id'],$_GET['x'],$_GET['y'],$_GET['z'],$_GET['what']));
 		break;
-		/*case 'binProcNote':
-			echo($procs->binProcNote($_GET['id']));
-		break;*/
+		case 'binItems':
+			echo($procs->binItems($_GET['id']));
+		break;
 		case 'deleteProcNote':
 			echo($procs->deleteProcNote($_GET['id']));
 		break;

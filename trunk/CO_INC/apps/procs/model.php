@@ -819,15 +819,15 @@ class ProcsModel extends Model {
 		}
 	}
 	
-	/*function binProcNote($id) {
+	function binItems($id) {
 		global $session;
 		$now = gmdate("Y-m-d H:i:s");
-		$q = "UPDATE " . CO_TBL_PROCS_NOTES . " set bin = '1', bintime = '$now', binuser= '$session->uid' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PROCS_NOTES . " set bin = '1', bintime = '$now', binuser= '$session->uid' where pid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 		  	return true;
 		}
-   }*/
+   }
   
   
 	function deleteProcNote($id) {
