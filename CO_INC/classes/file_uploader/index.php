@@ -133,9 +133,10 @@ class qqFileUploader {
         }
         
         $pathinfo = pathinfo($this->file->getName());
-        $filename = str_replace(" ", "_", $pathinfo['basename']);
+        //$filename = str_replace(" ", "_", $pathinfo['basename']);
 
 		$filename = $pathinfo['filename'];
+		$filename = str_replace("'", "", $filename);
         //$filename = md5(uniqid());
 		//$tempname = strtotime("now");
 		
@@ -187,7 +188,7 @@ return array("success"=>true,"id"=>"$id");
 // list of valid extensions, ex. array("jpeg", "xml", "bmp")
 $allowedExtensions = array();
 // max file size in bytes
-$sizeLimit = 50 * 1024 * 1024;
+$sizeLimit = 100 * 1024 * 1024;
 
 $uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
 $result = $uploader->handleUpload(CO_PATH_BASE.'/data/documents/');
