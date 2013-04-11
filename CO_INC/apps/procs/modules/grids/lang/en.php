@@ -19,6 +19,13 @@ $lang["PROC_GRID_ITEM_NEW"] = 'New Item';
 $lang["PROC_GRID_STAGEGATE_NEW"] = 'New Stagegate';
 $lang['PROC_GRID_NOTES'] = 'Ideas';
 
+$lang['PROC_GRID_DURATION'] = 'Guration';
+$lang['PROC_GRID_HOURS'] = 'hour/s';
+$lang['PROC_GRID_COSTS_EMPLOYEES'] = 'Costs Employees';
+$lang['PROC_GRID_COSTS_MATERIAL'] = 'Costs Materials';
+$lang['PROC_GRID_COSTS_EXTERNAL'] = 'External Costs';
+$lang['PROC_GRID_COSTS_OTHER'] = 'Other Costs';
+
 $lang["PROC_GRID_COLUMNS_BIN"] = 'Grid/Columns';
 $lang["PROC_GRID_NOTES_BIN"] = 'Grid/Notes';
 $lang["PROC_PHASE_TITLE"] = 'Phase';
