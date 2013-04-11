@@ -459,7 +459,7 @@ function procsDrawings(name) {
 		$.ajax({ type: "GET", url: "/", data: "path=apps/procs/modules/drawings&request=addDiagnose&mid=" + mid + "&num=" + num, success: function(id){
 			//$('div.loadCanvas').removeClass('active');
 			$('div.loadCanvasList .tcell-right').removeClass('active');
-			var html = '<canvas class="canvasDraw" id="c'+num+'" width="800" height="800" style="z-index: '+num+'" rel="'+id+'"></canvas><div id="dia-'+id+'" style="position: absolute; width: 30px; height: 30px; z-index: '+zIndexes+'; top: '+30*num+'px; left: 30px;" class="loadCanvas active" rel="'+num+'"><div class="circle circle'+curcol+'"><div>'+num+'</div></div></div>';
+			var html = '<canvas class="canvasDraw" id="c'+num+'" width="1200" height="1200" style="z-index: '+num+'" rel="'+id+'"></canvas><div id="dia-'+id+'" style="position: absolute; width: 30px; height: 30px; z-index: '+zIndexes+'; top: '+30*num+'px; left: 30px;" class="loadCanvas active" rel="'+num+'"><div class="circle circle'+curcol+'"><div>'+num+'</div></div></div>';
 			var htmltext = '<div id="canvasList_'+id+'" class="drawingouter loadCanvasList" rel="'+num+'"><table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol"><tr><td style="width: 31px; padding-left: 9px;"><span class="selectTextarea"><span><div class="circle  circle'+curcol+'"><div>'+num+'</div></div></span></span></td><td class="tcell-right active"><textarea name="canvasList_text['+id+']" class="elastic"></textarea><input name="canvasList_id['+id+']" type="hidden" value="'+id+'" /></td><td width="30"><a class="binDiagnose" rel="'+id+'"><span class="icon-delete"></span></a></td></tr></table></div>';
 			$('#procs .canvasDiv').append(html);
 			$('#canvasDivText').append(htmltext);
@@ -784,7 +784,7 @@ var imgw = [];
 		$(document).on('click','span.clearTool',function(e) {
 			e.preventDefault();
 			var context = activeCanvas.getContext("2d");
-			context.clearRect(0, 0, 800, 800);
+			context.clearRect(0, 0, 1200, 1200);
 			var id = activeCanvas.id;
 			//var rel = $('#'+id).attr('rel');
 			//procs_drawings.saveDrawing(rel,'');
@@ -807,7 +807,7 @@ var imgw = [];
 				if(currentComp != 'source-over') {
 					context.globalCompositeOperation = "source-over";
 				}
-				context.clearRect(0, 0, 800, 800);
+				context.clearRect(0, 0, 1200, 1200);
 				var img = restorePoints[id].pop();
 				setImage(img);
 				restorePoint[id] = img;

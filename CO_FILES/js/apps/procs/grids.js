@@ -2,7 +2,12 @@
 function procsGrids(name) {
 	this.name = name;
 	this.coPopupEditClass = 'popup-full';
-	this.coPopupEdit = '<div class="head">Bearbeiten</div><div class="content"><div class="fieldset"><label>Titel</label><input type="text" class="title" maxlength="60" value="" /></div><table border="0" cellpadding="0" cellspacing="0" class="table-content"><tr><td class="tcell-left text11"><span class="content-nav showDialog" request="getContactsDialog" field="responsibility" append="1"><span>Verantwortung</span></span></td><td class="tcell-right"><div id="responsibility" class="itemlist-field"></div><div id="responsibility_ct" class="itemlist-field"><a field="procsteam_ct" class="ct-content"></a></div></td></tr></table><div class="fieldset"><label>Beschreibung</label><textarea class="text"></textarea></div><ul><li><a href="#" class="binItem alert" rel="">'+DATEPICKER_CLEAR+'</a></li></ul></div><span class="arrow"></span>';
+	var self = this;
+	this.coPopupEdit = '';
+	//this.coPopupEdit = '<div class="head">Bearbeiten</div><div class="content"><div class="fieldset2"><label>Titel</label><input type="text" class="title" maxlength="60" value="" /></div><div class="fieldset2"><label><span class="content-nav showDialog" request="getContactsDialog" field="coPopup-team" append="1"><span>Verantwortung</span></span></label><div class="contacts"><div id="coPopup-team" class="itemlist-field"></div><div id="coPopup-team_ct" class="itemlist-field"><a field="coPopup-team_ct" class="ct-content"></a></div></div><div style="clear: both;"></div></div><div class="fieldset2 tohide"><label>Dauer</label><input type="text" class="hours short" maxlength="100" value="" /> Stunde/n</div><div class="fieldset2 tohide"><label>Personalkosten</label><input id="personal" type="text" class="costs_employees currency" maxlength="60" value="" /></div><div class="fieldset2 tohide"><label>Materialkosten</label><input type="text" class="costs_materials currency" maxlength="60" value="" /></div><div class="fieldset2 tohide"><label>Fremdleistung</label><input type="text" class="costs_external currency" maxlength="60" value="" /></div><div class="fieldset2 tohide"><label>Sonstige Kosten</label><input type="text" class="costs_other currency" maxlength="60" value="" /></div><div class="fieldset"><label>Beschreibung</label><textarea class="text"></textarea></div><ul class="popupButtons"><li><a href="#" class="binItem alert" rel="">'+DATEPICKER_CLEAR+'</a></li></ul></div><span class="arrow"></span>';
+	$.ajax({ type: "GET", url: "/", data: "path=apps/procs/modules/grids&request=getCoPopup", success: function(html){
+	self.coPopupEdit = html;
+																																		  }});
 
 
 	this.formProcess = function(formData, form, poformOptions) {
@@ -320,15 +325,34 @@ function procsGrids(name) {
 				var elepos = el.position();
 				var id = parseInt(el.attr('id').replace(/procsgriditem_/, ""));
 				currentProcGridEditedNote = id;
-				var title = el.find('div:eq(1)').text();
-				var text = el.find('div:eq(2)').text();
+				var title = el.find('>div:eq(1)').text();
+				var text = el.find('>div:eq(2)').text();
+				var team = el.find('>div:eq(3)').html();
+				var costs_employees = el.find('>div:eq(4)').html();
+				var costs_materials = el.find('>div:eq(5)').html();
+				var costs_external = el.find('>div:eq(6)').html();
+				var costs_other = el.find('>div:eq(7)').html();
+				var hours = el.find('>div:eq(8)').html();
+				var team_ct = el.find('>div:eq(9)').html();
 				var html = this.coPopupEdit;
 				var pclass = this.coPopupEditClass;
 				var copopup = $('#co-popup');
 				copopup.html(html);
 				copopup.find('.title').val(title);
 				copopup.find('.text').val(text);
+				copopup.find('.costs_employees').val(costs_employees);
+				copopup.find('.costs_materials').val(costs_materials);
+				copopup.find('.costs_external').val(costs_external);
+				copopup.find('.costs_other').val(costs_other);
+				copopup.find('.hours').val(hours);
+				$('#coPopup-team').html(team);
+				$('#coPopup-team_ct').html(team_ct);
 				$('#co-popup a.binItem').attr('rel',id);
+				if(request == 'title' || request == 'stagegate') {
+					copopup.find('.tohide').hide();
+				} else {
+					copopup.find('.tohide').show();
+				}
 				copopup
 					.removeClass(function (index, css) {
 						   return (css.match (/\bpopup-\w+/g) || []).join(' ');
@@ -338,30 +362,26 @@ function procsGrids(name) {
 						  my: "center center",
 						  at: "right+170 center",
 						  of: el,
-						  using: function(coords, feedback) {
+						  collision: 'flip fit',
+						  within: '#procs-right .scroll-pane',
+						  using: function(coords, ui) {
 								var $modal = $(this),
-								top = coords.top,
-								left = coords.left,
-								className = 'switch-' + feedback.horizontal;
-								if(top < 0) {
-									top = elepos.top+100;
-									left = elepos.left-60;
-									className = 'switch-north';
-								}
-								if(left < 0) {
-									left = 0;
-								}
+								t = coords.top,
+								l = coords.left,
+								className = 'switch-' + ui.horizontal;
 								$modal.css({
-									left: left + 'px',
-									top: top + 'px'
-								})
-								.removeClass(function (index, css) {
+									left: l + 'px',
+									top: t + 'px'
+								}).removeClass(function (index, css) {
 						   			return (css.match (/\bswitch-\w+/g) || []).join(' ');
 					   			})
 								.addClass(className);
+								copopup.find('.arrow').offset({ top: ui.target.top });
 				  		}
 					});
 	}
+	
+	
 
 	this.insertStatus = function(rel,text) {
 		var module = this;
@@ -388,15 +408,85 @@ function procsGrids(name) {
 	}
 	
 	
+	this.coPopupContactInsert = function() {
+		var id = currentProcGridEditedNote;
+		var team = $('#coPopup-team').html();
+		$('#procsgriditem-team-'+id).html(team);
+		this.saveItem();
+	}
+	
+	this.coPopupContactGroupInsert = function() {
+		var id = currentProcGridEditedNote;
+		var team = $('#coPopup-team').html();
+		$('#procsgriditem-team-'+id).html(team);
+		this.saveItem();
+	}
+	
+	this.coPopupContactTextInsert = function() {
+		var id = currentProcGridEditedNote;
+		var team_ct = $('#coPopup-team_ct').html();
+		$('#procsgriditem-team_ct-'+id).html(team_ct);
+		this.saveItem();
+	}
+	
+	this.coPopupContactDelete = function() {
+		var id = currentProcGridEditedNote;
+		var team = $('#coPopup-team').html();
+		$('#procsgriditem-team-'+id).html(team);
+		this.saveItem();
+	}
+	
+	this.coPopupContactTextDelete = function() {
+		var id = currentProcGridEditedNote;
+		var team_ct = $('#coPopup-team_ct').html();
+		$('#procsgriditem-team_ct-'+id).html(team_ct);
+		this.saveItem();
+	}
+	
 	// notes
 	this.saveItem = function(id) {
 		var id = currentProcGridEditedNote;
 		var title = $('#co-popup input.title').val();
 		$('#procsgriditem-title-'+id).text(title);
+		
+		var team = processCoPopupList('coPopup-team');
+		var team_html = $('#coPopup-team').html();
+		$('#procsgriditem-team-'+id).html(team_html);
+		
+		var team_ct = processCoPopupListCustomTextApps('coPopup-team_ct');
+		
 		var text = $('#co-popup textarea.text').val();
 		$('#procsgriditem-text-'+id).text(text);
-		$.ajax({ type: "POST", url: "/", data: { path: 'apps/procs/modules/grids', request: 'saveGridNote', id: id, title: title, text: text }, success: function(data){
-			currentProcGridEditedNote = 0;
+		
+		var hours = $('#co-popup input.hours').val();
+		if(hours == '') { hours = 0; }
+		$('#procsgriditem-hours-'+id).text(hours);
+		var costs_employees = $('#co-popup input.costs_employees').val();
+		if(costs_employees == '') { costs_employees = 0; }
+		$('#procsgriditem-costs_employees-'+id).text(costs_employees);
+		var costs_materials = $('#co-popup input.costs_materials').val();
+		if(costs_materials == '') { costs_materials = 0; }
+		$('#procsgriditem-costs_materials-'+id).text(costs_materials);
+		var costs_external = $('#co-popup input.costs_external').val();
+		if(costs_external == '') { costs_external = 0; }
+		$('#procsgriditem-costs_external-'+id).text(costs_external);
+		var costs_other = $('#co-popup input.costs_other').val();
+		if(costs_other == '') { costs_other = 0; }
+		$('#procsgriditem-costs_other-'+id).text(costs_other);
+		
+		$.ajax({ type: "POST", url: "/", data: { path: 'apps/procs/modules/grids', request: 'saveGridNote', id: id, title: title, text: text, team: team, team_ct: team_ct, hours: hours, costs_employees: costs_employees, costs_materials: costs_materials, costs_external: costs_external, costs_other: costs_other }, success: function(data){
+			
+			var costs = 0;
+			var col = $('#procsgriditem_'+id).parent();
+			col.find('div.costs').each(function() { 
+				costs += parseInt($(this).html());
+			})
+			col.next().next().find('span.totalcosts').html(costs).number( true, 0, '', '.' );
+			var hours = 0;
+			col.find('div.hours').each(function() { 
+				hours += parseInt($(this).html());
+			})
+			col.next().next().find('span.totalhours').html(hours);
 			}
 		});
 	}
@@ -719,7 +809,7 @@ $(document).ready(function() {
 					$('#procs-grid .procs-phase:eq('+idx+') > div:eq(0)').removeClass('colTitle').removeClass('ui-sortable-helper').removeClass('ui-draggable').removeClass('ui-draggable-dragging').attr('style','');
 				}
 				var insert = ui.draggable.clone();
-				$(this).html(insert.attr('style','').addClass('colTitle').removeClass('ui-sortable-helper')).addClass('planned');
+				$(this).html(insert.attr('style','').addClass('colTitle').removeClass('ui-sortable-helper').attr('request','title')).addClass('planned');
 				var pid = $("#procs").data("third");
 				var col = parseInt($(this).parent().attr("id").replace(/gridscol_/, ""));
 				
@@ -801,7 +891,7 @@ $(document).ready(function() {
 					$('#procs-grid .procs-phase:eq('+idx+') > div:eq(0)').removeClass('colStagegate').removeClass('ui-sortable-helper').removeClass('ui-draggable').removeClass('ui-draggable-dragging').attr('style','');
 				}
 				var insert = ui.draggable.clone();
-				$(this).html(insert.attr('style','').addClass('colStagegate').removeClass('ui-sortable-helper'));
+				$(this).html(insert.attr('style','').addClass('colStagegate').removeClass('ui-sortable-helper').attr('request','stagegate'));
 				//var attr = ui.draggable.attr('id');
 				var pid = $("#procs").data("third");
 				var col = parseInt($(this).parent().parent().parent().attr("id").replace(/gridscol_/, ""));
@@ -883,7 +973,7 @@ $(document).ready(function() {
 				if (typeof attr == 'undefined' || attr == false) {
 					if(div.hasClass('colTitle') || div.hasClass('colStagegate')) {
 						var id = div.attr('rel');
-						div.removeClass('colTitle'). removeClass('colStagegate').removeClass('ui-draggable').removeClass('ui-draggable-dragging').attr('style','');
+						div.removeClass('colTitle'). removeClass('colStagegate').removeClass('ui-draggable').removeClass('ui-draggable-dragging').attr('style','').attr('request','note');
 						div.attr('id','procsgriditem_' + id);
 						var e = '<input name="" type="checkbox" value="'+id+'" class="cbx jNiceHidden" />';
 						var e = div.find('div.statusItem').html(e);
@@ -897,6 +987,7 @@ $(document).ready(function() {
 								div.attr('id','procsgriditem_' + id);
 								div.find('div.itemTitle').attr('id','procsgriditem-title-' + id);
 								div.find('div.itemText').attr('id','procsgriditem-text-' + id);
+								div.append('<div id="procsgriditem-team-'+ id +'" style="display: none;"></div><div id="procsgriditem-costs_employees-'+ id +'" style="display: none;" class="costs">0</div><div id="procsgriditem-costs_materials-'+ id +'" style="display: none;" class="costs">0</div><div id="procsgriditem-costs_external-'+ id +'" style="display: none;" class="costs">0</div><div id="procsgriditem-costs_other-'+ id +'" style="display: none;" class="costs">0</div><div id="procsgriditem-hours-'+ id +'" style="display: none;" class="hours">0</div><div id="procsgriditem-team_ct-'+ id +'" style="display: none;"><a class="ct-content" field="coPopup-team_ct"></a></div>');
 								var e = '<input name="" type="checkbox" value="'+id+'" class="cbx jNiceHidden" />';
 								var e = div.find('div.statusItem').html(e);
 								var element = div.find('input');
@@ -908,7 +999,7 @@ $(document).ready(function() {
 				}
 			});
 			var order = $('#procs-grid .procs-phase:eq('+idx+')').sortable("serialize");
-			$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/procs/modules/grids&request=saveGridItems&col="+col+"&"+ order, cache: false, success: function(data){
+			$.ajax({ type: "GET", url: "/", data: "path=apps/procs/modules/grids&request=saveGridItems&col="+col+"&"+ order, cache: false, success: function(data){
 				var titleset = $('div.procs-col-title:eq('+idx+')').html();
 				var title = 0;
 				if(titleset != "" && titleset != '<span class="newNoteItem newNoteTitle"></span>') {
@@ -942,7 +1033,21 @@ $(document).ready(function() {
 				if (colheight < 158+8+4) {
 					colheight = 158+8+4;
 				}
-				c.height(listheight).parent().animate({height: colheight});
+				c.animate({height: listheight}).parent().animate({height: colheight});
+				
+				var costs = 0;
+				c.find('div.costs').each(function() { 
+					costs += parseInt($(this).html());
+				})
+				c.next().next().find('span.totalcosts').html(costs).number( true, 0, '', '.' );
+				var hours = 0;
+				c.find('div.hours').each(function() { 
+					hours += parseInt($(this).html());
+				})
+				c.next().next().find('span.totalhours').html(hours);
+				
+				
+				
 				}
 			});
     	});
@@ -966,7 +1071,7 @@ $(document).ready(function() {
 		var styles = '';
 		$("#procs-grid").width($("#procs-grid").width()+230);
 		$.ajax({ type: "GET", url: "/", data: "path=apps/procs/modules/grids&request=newGridColumn&id="+pid+"&sort="+sor, cache: false, success: function(num){
-			$("#procs-grid").append('<div id="gridscol_' + num + '"><div id="procs-col-delete-' + num + '" class="procs-column-delete"><span class="icon-delete"></span></div><div class="dragCol"></div><div class="procs-col-title"><span class="newNoteItem newNoteTitle"></span></div><div class="grids-spacer"></div><div class="procs-phase procs-phase-design ui-sortable"><span class="newNoteItem newNote"></span></div><div class="grids-spacer"></div><div class="procs-col-footer"><div class="procs-col-footer-stagegate"><div class="procs-stagegate"></div><div class="procs-col-stagegate ui-droppable"><span class="newNoteItem newNoteStagegate"></span></div></div><div class="procs-col-footer-days"><div style=""></div></div></div></div>').sortable("refresh");
+			$("#procs-grid").append('<div id="gridscol_' + num + '"><div class="dragCol"><div id="procs-col-delete-' + num + '" class="procs-column-delete"><span class="icon-delete"></span></div></div><div class="procs-col-title  ui-droppable"><span rel="notetitle" class="newNoteItem newItemOption newNoteTitle"></span></div><div class="grids-spacer"></div><div style="height: 27px;" class="procs-phase procs-phase-design ui-sortable"><span rel="note" class="newNoteItem newItemOption newNote"></span></div><div class="grids-spacer"></div><div class="procs-col-footer"><div class="procs-col-footer-stagegate"><div class="procs-stagegate   "></div><div class="procs-col-stagegate ui-droppable"><span rel="stagegate" class="newNoteItem newItemOption newNoteStagegate"></span></div></div><div class="grids-spacer"></div><div class="procs-col-footer-days"><div class="left"><span class="totalhours"> 0</span> <span>h</span></div><div class="right"><span>&euro;</span> <span class="totalcosts">0</span></div><div></div></div></div></div>').sortable("refresh");
 			}
 		});
 	})
@@ -1003,9 +1108,40 @@ $(document).ready(function() {
 
 	$(document).on('click', '#modalDialogProcsGridClose', function(e) {
 		e.preventDefault();
-		$("#modalDialogProcsGrid").slideUp(function() {		
-			initProcsContentScrollbar();									
+		$("#modalDialogProcsGrid").slideUp(function() {
+			initProcsContentScrollbar();
 		});
 	});
+
+	/*$('input.currency').livequery( function() {
+		//$(this).inputmask('integer', { 'autoGroup': true, 'groupSeparator': ".", 'groupSize': 3, 'autoUnmask' : true });
+		$(this).formatCurrency({ symbol: '', roundToDecimalPlace: -1, eventOnDecimalsEntered: true })
+		.keyup(function(e) {
+				var e = window.event || e;
+				var keyUnicode = e.charCode || e.keyCode;
+				if (e !== undefined) {
+					switch (keyUnicode) {
+						case 16: break; // Shift
+						case 27: this.value = ''; break; // Esc: clear entry
+						case 35: break; // End
+						case 36: break; // Home
+						case 37: break; // cursor left
+						case 38: break; // cursor up
+						case 39: break; // cursor right
+						case 40: break; // cursor down
+						case 78: break; // N (Opera 9.63+ maps the "." from the number key section to the "N" key too!) (See: http://unixpapa.com/js/key.html search for ". Del")
+						case 110: break; // . number block (Opera 9.63+ maps the "." from the number block to the "N" key (78) !!!)
+						case 190: break; // .
+						default: $(this).formatCurrency({ symbol: '', roundToDecimalPlace: -1, eventOnDecimalsEntered: true });
+					}
+				}
+			})
+	})*/
+	$('input.currency').livequery( function() {
+		$(this).number( true, 0, '', '.' );
+	})
+	$('span.totalcosts').livequery( function() {
+		$(this).number( true, 0, '', '.' );
+	})
 
 });

@@ -369,14 +369,14 @@ class Procs extends Controller {
 		  }
 	}
 	
-	/*function binProcNote($id) {
-		$retval = $this->model->binProcNote($id);
+	function binItems($id) {
+		$retval = $this->model->binItems($id);
 		if($retval){
 			 return "true";
 		  } else{
 			 return "error";
 		  }
-	}*/
+	}
 
 	function deleteProcNote($id) {
 		$retval = $this->model->deleteProcNote($id);

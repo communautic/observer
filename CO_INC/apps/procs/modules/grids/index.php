@@ -33,6 +33,9 @@ $procsGrids = new ProcsGrids("grids");
 
 if (!empty($_GET['request'])) {
 	switch ($_GET['request']) {
+		case 'getCoPopup':
+			echo($procsGrids->getCoPopup());
+		break;
 		case 'getList':
 			$sort = "0";
 			if(!empty($_GET['sort'])) {
@@ -176,7 +179,7 @@ if (!empty($_POST['request'])) {
 			echo($procsGrids->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
 		break;
 		case 'saveGridNote':
-			echo($procsGrids->saveGridNote($_POST["id"],$system->checkMagicQuotes($_POST['title']),$system->checkMagicQuotes($_POST['text'])));
+			echo($procsGrids->saveGridNote($_POST["id"],$system->checkMagicQuotes($_POST['title']), $_POST['team'],$system->checkMagicQuotes($_POST['team_ct']),$system->checkMagicQuotes($_POST['text']),$_POST['hours'],$_POST['costs_employees'],$_POST['costs_materials'],$_POST['costs_external'],$_POST['costs_other']));
 		break;
 	}
 }

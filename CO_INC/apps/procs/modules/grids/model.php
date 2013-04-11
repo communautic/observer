@@ -172,10 +172,8 @@ class ProcsGridsModel extends ProcsModel {
 		}
 		$row = mysql_fetch_array($result);
 		foreach($row as $key => $val) {
-				$array[$key] = $val;
-			}
-			
-		
+			$array[$key] = $val;
+		}
 			
 		$array["perms"] = $this->getProcAccess($array["pid"]);
 		$array["canedit"] = false;
@@ -250,32 +248,69 @@ class ProcsGridsModel extends ProcsModel {
 			$titleid = 0;
 			$titletext = '';
 			$titletextcontent = '';
+			$titleteam = '';
+			$titleteam_ct = '';
+			$titlehours = 0;
+			$titlecosts_employees = 0;
+			$titlecosts_materials = 0;
+			$titlecosts_external = 0;
+			$titlecosts_other = 0;
 			$stagegateid = 0;
 			$stagegatetext = '';
 			$stagegatetextcontent = '';
-			//$qn = "SELECT * FROM " . CO_TBL_PROCS_GRIDS_NOTES . " where cid = '$colID' and bin='0' ORDER BY istitle DESC,isstagegate ASC,sort ASC";
+			$stagegateteam = '';
+			$stagegateteam_ct = '';
+			$stagegatehours = 0;
+			$stagegatecosts_employees = 0;
+			$stagegatecosts_materials = 0;
+			$stagegatecosts_external = 0;
+			$stagegatecosts_other = 0;
 			$qn = "SELECT * FROM " . CO_TBL_PROCS_GRIDS_NOTES . " where cid = '$colID' and bin='0' ORDER BY sort";
 			$resultn = mysql_query($qn, $this->_db->connection);
-			//$num_notes[] = mysql_num_rows($resultn);
 			$items = array();
 			$n = 0;
 			$nchecked = 0;
+			$costs = 0;
+			$hours = 0;
 			while($rown = mysql_fetch_object($resultn)) {
 				if($rown->istitle == 1) {
 					$titleid = $rown->id;
 					$titletext = $rown->title;
 					$titletextcontent = $rown->text;
+					$titleteam = $contactsmodel->getUserList($rown->team,'coPopup-team', "", '1');
+					$titleteam_ct = $rown->team_ct;
+					$titlehours = $rown->hours;
+					$titlecosts_employees = $rown->costs_employees;
+					$titlecosts_materials = $rown->costs_materials;
+					$titlecosts_external = $rown->costs_external;
+					$titlecosts_other = $rown->costs_other;
 				} else if ($rown->isstagegate == 1) {
 					$stagegateid = $rown->id;
 					$stagegatetext = $rown->title;
 					$stagegatetextcontent = $rown->text;
+					$stagegateteam = $contactsmodel->getUserList($rown->team,'coPopup-team', "", '1');
+					$stagegateteam_ct = $rown->team_ct;
+					$stagegatehours = $rown->hours;
+					$stagegatecosts_employees = $rown->costs_employees;
+					$stagegatecosts_materials = $rown->costs_materials;
+					$stagegatecosts_external = $rown->costs_external;
+					$stagegatecosts_other = $rown->costs_other;
 				} else {
 					$items[] = array(
 						"note_id" => $rown->id,
 						"title" => $rown->title,
 						"text" => $rown->text,
-						"status" => $rown->status
+						"status" => $rown->status,
+						"team" => $contactsmodel->getUserList($rown->team,'coPopup-team', "", '1'),
+						"team_ct" => $rown->team_ct,
+						"hours" => $rown->hours,
+						"costs_employees" => $rown->costs_employees,
+						"costs_materials" => $rown->costs_materials,
+						"costs_external" => $rown->costs_external,
+						"costs_other" => $rown->costs_other
 					);
+					$costs += $rown->costs_employees + $rown->costs_materials + $rown->costs_external + $rown->costs_other;
+					$hours += $rown->hours;
 					if($rown->status == 1) {
 						$nchecked++;
 					}
@@ -314,10 +349,26 @@ class ProcsGridsModel extends ProcsModel {
 				"titleid" => $titleid,
 				"titletext" => $titletext,
 				"titletextcontent" => $titletextcontent,
+				"titleteam" => $titleteam,
+				"titleteam_ct" => $titleteam_ct,
+				"titlehours" => $titlehours,
+				"titlecosts_employees" => $titlecosts_employees,
+				"titlecosts_materials" => $titlecosts_materials,
+				"titlecosts_external" => $titlecosts_external,
+				"titlecosts_other" => $titlecosts_other,
 				"stagegateid" => $stagegateid,
 				"stagegatetext" => $stagegatetext,
 				"stagegatetextcontent" => $stagegatetextcontent,
-				"notes" => $items
+				"stagegateteam" => $stagegateteam,
+				"stagegateteam_ct" => $stagegateteam_ct,
+				"stagegatehours" => $stagegatehours,
+				"stagegatecosts_employees" => $stagegatecosts_employees,
+				"stagegatecosts_materials" => $stagegatecosts_materials,
+				"stagegatecosts_external" => $stagegatecosts_external,
+				"stagegatecosts_other" => $stagegatecosts_other,
+				"notes" => $items,
+				"hours" => $hours,
+				"costs" => $costs
 			);
 		}
 		
@@ -587,10 +638,10 @@ class ProcsGridsModel extends ProcsModel {
 		}
 	}
 
-   function saveGridNote($id,$title,$text) {
+   function saveGridNote($id,$title,$team,$team_ct,$text,$hours,$costs_employees,$costs_materials,$costs_external,$costs_other) {
 		global $session;
 		$now = gmdate("Y-m-d H:i:s");
-		$q = "UPDATE " . CO_TBL_PROCS_GRIDS_NOTES . " set title = '$title', text = '$text', edited_user = '$session->uid', edited_date = '$now' WHERE id='$id'";
+		$q = "UPDATE " . CO_TBL_PROCS_GRIDS_NOTES . " set title = '$title', team = '$team', team_ct = '$team_ct', text = '$text', hours='$hours',  costs_employees='$costs_employees', costs_materials='$costs_materials', costs_external='$costs_external', costs_other='$costs_other', edited_user = '$session->uid', edited_date = '$now' WHERE id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			return true;
