@@ -71,6 +71,11 @@ $lang["GLOBAL_DELETE"] = 'Löschen';
 $lang["GLOBAL_RESET"] = 'Zurücksetzen';
 $lang["GLOBAL_CONFIRM"] = 'Bestätigen';
 $lang["GLOBAL_SENDEMAIL"] = 'Versenden';
+$lang["GLOBAL_EDIT"] = 'Bearbeiten';
+
+$lang["GLOBAL_TITLE"] = 'Titel';
+$lang["GLOBAL_RESPONSIBILITY"] = 'Verantwortung';
+$lang["GLOBAL_DESCRIPTION"] = 'Beschreibung';
 
 $lang["GLOBAL_STATUS"] 		= 	'Status';
 // Status definitions
