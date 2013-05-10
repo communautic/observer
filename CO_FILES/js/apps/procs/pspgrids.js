@@ -619,7 +619,10 @@ this.coPopupType = function() {
 				$.ajax({ type: "GET", url: "/", data: "path=apps/procs/modules/pspgrids&request=savePspgridNewManualTitle&pid="+pid+"&col="+col, cache: false, success: function(html){	
 						var phase = $('#pspgridscol_'+col+' .procs-col-title');
 						phase.html(html);
-						phase.next().next().trigger('sortupdate');
+						phase.find('>div').fadeIn(function() {
+							$(this).trigger('click'); 
+							phase.next().next().trigger('sortupdate');
+						})
 					}
 				});
 			break;
@@ -899,7 +902,7 @@ $(document).ready(function() {
 		$(this).draggable({
 			connectToSortable: ".procs-phase",
 			helper: "clone",
-			cursor: "move",
+			//cursor: "move",
 			appendTo: '#procs-right',
 			zIndex: 102,
 			revert: 'invalid',
@@ -996,7 +999,7 @@ $(document).ready(function() {
 		$(this).draggable({
 			connectToSortable: ".procs-phase",
 			helper: "clone",
-			cursor: "move",
+			//cursor: "move",
 			revert: 'invalid',
 			appendTo: '#procs-right',
 			zIndex: 101,

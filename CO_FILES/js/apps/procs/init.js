@@ -423,13 +423,13 @@ function procsApplication(name) {
 					}));
 		var z = zMax + 1;
 		procszIndex = z;
-		$.ajax({ type: "GET", url: "/", data: "path=apps/procs&request=newProcNote&id="+id+"&x="+x+"&y="+y+"&z="+z+"&what="+what, success: function(data){
-				var line1 = '<div id="note-'+data+'" class="note shape1 color1 showCoPopup" request="note" style="left: '+x+'px; top: '+y+'px; z-index: '+z+';"><div id="note-title-'+data+'">Neu</div>';
+		$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/procs&request=newProcNote&id="+id+"&x="+x+"&y="+y+"&z="+z+"&what="+what, success: function(data){
+				var line1 = '<div id="note-'+data.id+'" class="note shape1 color1 showCoPopup" request="note" style="left: '+x+'px; top: '+y+'px; z-index: '+z+';"><div id="note-title-'+data.id+'">'+data.title+'</div>';
 				if(what == 'arrow') {
-					var line1 = '<div id="note-'+data+'" class="note shape10 arrow1 showCoPopup" request="arrow" style="left: '+x+'px; top: '+y+'px; z-index: '+z+';"><div id="note-title-'+data+'"></div>';
+					var line1 = '<div id="note-'+data.id+'" class="note shape10 arrow1 showCoPopup" request="arrow" style="left: '+x+'px; top: '+y+'px; z-index: '+z+';"><div id="note-title-'+data.id+'"></div>';
 				}
 				var html = line1 +
-        '<div id="note-text-'+data+'" style="display: none;"></div></div>';
+        '<div id="note-text-'+data.id+'" style="display: none;"></div></div>';
 				$("#notesOuter").append(html);
 				initProcsContentScrollbar();
 			}

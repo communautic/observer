@@ -988,6 +988,16 @@ class ProcsModel extends Model {
 			}
 		}
 		
+		if(in_array("pspgrids",$active_modules)) {
+			$procsPspgridsModel = new ProcsPspgridsModel();
+			$q = "SELECT id FROM co_procs_pspgrids where pid = '$id'";
+			$result = mysql_query($q, $this->_db->connection);
+			while($row = mysql_fetch_array($result)) {
+				$mid = $row["id"];
+				$procsPspgridsModel->deletePspgrid($mid);
+			}
+		}
+		
 		if(in_array("grids",$active_modules)) {
 			$procsGridsModel = new ProcsGridsModel();
 			$q = "SELECT id FROM co_procs_grids where pid = '$id'";
@@ -1372,6 +1382,67 @@ class ProcsModel extends Model {
 						}
 						
 						
+						// pspgrids
+						if(in_array("pspgrids",$active_modules)) {
+							$qf ="select id, title, bin, bintime, binuser from " . CO_TBL_PROCS_PSPGRIDS . " where pid = '$pid'";
+							$resultf = mysql_query($qf, $this->_db->connection);
+							while ($rowf = mysql_fetch_array($resultf)) {
+								$fid = $rowf["id"];
+								if($rowf["bin"] == "1") { // deleted phases
+									foreach($rowf as $key => $val) {
+										$forum[$key] = $val;
+									}
+									$forum["bintime"] = $this->_date->formatDate($forum["bintime"],CO_DATETIME_FORMAT);
+									$forum["binuser"] = $this->_users->getUserFullname($forum["binuser"]);
+									$forums[] = new Lists($forum);
+									$arr["pspgrids"] = $forums;
+								} else {
+									// columns
+									
+									$qc ="select id, bin, bintime, binuser from " . CO_TBL_PROCS_PSPGRIDS_COLUMNS . " where pid = '$fid'";
+									$resultc = mysql_query($qc, $this->_db->connection);
+									while ($rowc = mysql_fetch_array($resultc)) {
+										$cid = $rowc["id"];
+										if($rowc["bin"] == "1") { // deleted phases
+											foreach($rowc as $key => $val) {
+												$pspgrids_col[$key] = $val;
+											}
+											
+											$items = '';
+											$qn = "SELECT title FROM " . CO_TBL_PROCS_PSPGRIDS_NOTES . " where cid = '$cid' and bin='0' ORDER BY sort";
+											$resultn = mysql_query($qn, $this->_db->connection);
+											while($rown = mysql_fetch_object($resultn)) {
+												$items .= $rown->title . ', ';
+													//$items_used[] = $rown->id;
+											}
+											$pspgrids_col["items"] = rtrim($items,", ");
+											
+											
+											$pspgrids_col["bintime"] = $this->_date->formatDate($pspgrids_col["bintime"],CO_DATETIME_FORMAT);
+											$pspgrids_col["binuser"] = $this->_users->getUserFullname($pspgrids_col["binuser"]);
+											$pspgrids_cols[] = new Lists($pspgrids_col);
+											$arr["pspgrids_cols"] = $pspgrids_cols;
+										} else {
+											// notes
+											$qt ="select id, title, bin, bintime, binuser from " . CO_TBL_PROCS_PSPGRIDS_NOTES . " WHERE cid = '$cid' ORDER BY sort";
+											$resultt = mysql_query($qt, $this->_db->connection);
+											while ($rowt = mysql_fetch_array($resultt)) {
+												if($rowt["bin"] == "1") { // deleted phases
+													foreach($rowt as $key => $val) {
+														$pspgrids_task[$key] = $val;
+													}
+													$pspgrids_task["bintime"] = $this->_date->formatDate($pspgrids_task["bintime"],CO_DATETIME_FORMAT);
+													$pspgrids_task["binuser"] = $this->_users->getUserFullname($pspgrids_task["binuser"]);
+													$pspgrids_tasks[] = new Lists($pspgrids_task);
+													$arr["pspgrids_tasks"] = $pspgrids_tasks;
+												} 
+											}
+										}
+									}
+								}
+							}
+						}
+						
 						// grids
 						if(in_array("grids",$active_modules)) {
 							$qf ="select id, title, bin, bintime, binuser from " . CO_TBL_PROCS_GRIDS . " where pid = '$pid'";
@@ -1431,8 +1502,7 @@ class ProcsModel extends Model {
 									}
 								}
 							}
-						}		
-	
+						}
 	
 						// meetings
 						if(in_array("meetings",$active_modules)) {
@@ -1583,6 +1653,43 @@ class ProcsModel extends Model {
 							$this->deleteItem($tid);
 							$arr["procs_tasks"] = "";
 						} 
+					}
+					
+					// pspgrids
+					if(in_array("pspgrids",$active_modules)) {
+						$procsPspgridsModel = new ProcsPspgridsModel();
+						$qf ="select id, title, bin, bintime, binuser from " . CO_TBL_PROCS_PSPGRIDS . " where pid = '$pid'";
+						$resultf = mysql_query($qf, $this->_db->connection);
+						while ($rowf = mysql_fetch_array($resultf)) {
+							$fid = $rowf["id"];
+							if($rowf["bin"] == "1") { // deleted phases
+								$procsPspgridsModel->deletePspGrid($fid);
+								$arr["pspgrids"] = "";
+							} else {
+								// columns
+								
+								$qc ="select id,bin from " . CO_TBL_PROCS_PSPGRIDS_COLUMNS . " where pid = '$fid'";
+								$resultc = mysql_query($qc, $this->_db->connection);
+								while ($rowc = mysql_fetch_array($resultc)) {
+									$cid = $rowc["id"];
+									if($rowc["bin"] == "1") { // deleted phases
+										$procsPspgridsModel->deletePspgridColumn($cid);
+										$arr["pspgrids_cols"] = "";
+									} else {
+										// notes
+										$qt ="select id,bin from " . CO_TBL_PROCS_PSPGRIDS_NOTES . " where cid = '$cid'";
+										$resultt = mysql_query($qt, $this->_db->connection);
+										while ($rowt = mysql_fetch_array($resultt)) {
+											if($rowt["bin"] == "1") { // deleted phases
+												$tid = $rowt["id"];
+												$procsPspgridsModel->deletePspgridTask($tid);
+												$arr["pspgrids_tasks"] = "";
+											} 
+										}
+									}
+								}
+							}
+						}
 					}
 					
 					// grids
@@ -1848,6 +1955,10 @@ class ProcsModel extends Model {
 		$active_modules = array();
 		foreach($procs->modules as $module => $value) {
 			$active_modules[] = $module;
+		}
+		if(in_array("pspgrids",$active_modules)) {
+			$procsPspgridsModel = new ProcsPspgridsModel();
+			$data["procs_pspgrids_items"] = $procsPspgridsModel->getNavNumItems($id);
 		}
 		if(in_array("grids",$active_modules)) {
 			$procsGridsModel = new ProcsGridsModel();

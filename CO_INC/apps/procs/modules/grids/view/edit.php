@@ -85,7 +85,7 @@
 <?php } ?>
 <div class="content-spacer"></div>
 <div id="procs-grid-outer" style="position: relative; min-height: 65px;"><div style="position: absolute; top: 28px; height: 50px; width: 100%; background: #b2b2b2;"></div>
-<div id="procs-grid" style="width: <?php echo($grid->grid_width);?>px;">
+<div id="procs-grid" style="width: <?php echo($grid->grid_width);?>px; height: <?php echo $colheight;?>px;"">
 <?php 
 $drag = '';
 $procsphase = '';
