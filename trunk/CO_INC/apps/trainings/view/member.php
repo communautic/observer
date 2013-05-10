@@ -13,7 +13,7 @@
   <div class="co-popupOuter">
   	<span class="<?php if($training->canedit) { ?>showCoPopup co-link <?php } ?>invitationLink <?php echo $training->member_status_default_css;?> <?php echo $value->invitation_class;?>" rel="<?php echo $value->id;?>">Einladung</span> 
   	<div class="co-popup-content">
-        <ul>
+        <ul class="popupButtons">
         	<li><a href="#" class="trainingsMemberAction" rel="manualInvitation" uid="<?php echo $value->id;?>" act="">Eingeladen</a></li>
             <li><a href="#" class="trainingsMemberAction" rel="sendInvitation" uid="<?php echo $value->id;?>" act="">Versenden</a></li>
             <li><a href="#" class="trainingsMemberAction" rel="resetInvitation" uid="<?php echo $value->id;?>" act=""><?php echo $lang["GLOBAL_RESET"];?></a></li>
@@ -24,7 +24,7 @@
   <div class="co-popupOuter">
   	<span class="<?php if($training->canedit) { ?>showCoPopup co-link <?php } ?>registrationLink <?php echo $training->member_status_default_css;?> <?php echo $value->registration_class;?>" rel="<?php echo $value->id;?>">Anmeldung</span> 
   	<div class="co-popup-content">
-        <ul>
+        <ul class="popupButtons">
         	<li><a href="#" class="trainingsMemberAction" rel="manualRegistration" uid="<?php echo $value->id;?>" act="">Angemeldet</a></li>
             <li><a href="#" class="trainingsMemberAction" rel="removeRegistration" uid="<?php echo $value->id;?>" act="">Abgemeldet</a></li>
             <li><a href="#" class="trainingsMemberAction" rel="resetRegistration" uid="<?php echo $value->id;?>" act=""><?php echo $lang["GLOBAL_RESET"];?></a></li>
@@ -35,7 +35,7 @@
    <div class="co-popupOuter">
   	<span class="<?php if($training->canedit) { ?>showCoPopup co-link <?php } ?>tookpartLink <?php echo $training->member_status_default_css;?> <?php echo $value->tookpart_class;?>" rel="<?php echo $value->id;?>">Teilnahme</span> 
   	<div class="co-popup-content">
-        <ul>
+        <ul class="popupButtons">
         	<li><a href="#" class="trainingsMemberAction" rel="manualTookpart" uid="<?php echo $value->id;?>" act="">Teilgenommen</a></li>
             <li><a href="#" class="trainingsMemberAction" rel="manualTookNotpart" uid="<?php echo $value->id;?>" act="">Nicht teilgenommen</a></li>
             <li><a href="#" class="trainingsMemberAction" rel="resetTookpart" uid="<?php echo $value->id;?>" act=""><?php echo $lang["GLOBAL_RESET"];?></a></li>
@@ -46,7 +46,7 @@
   <div class="co-popupOuter">
   	<span class="<?php if($training->canedit) { ?>showCoPopup co-link <?php } ?>feedbackLink <?php echo $training->member_status_default_css;?> <?php echo $value->feedback_class;?>" rel="<?php echo $value->id;?>">Feedback</span> 
   	<div class="co-popup-content">
-        <ul>
+        <ul class="popupButtons">
         	<li><a href="#" class="trainingsMemberAction" rel="editFeedback" uid="<?php echo $value->id;?>" act="<?php echo $training->folder_id;?>,<?php echo $training->id;?>,<?php echo $value->id;?>">Bearbeiten</a></li>
             <li><a href="#" class="trainingsMemberAction" rel="sendFeedback" uid="<?php echo $value->id;?>" act=""><?php echo $lang["GLOBAL_SENDEMAIL"];?></a></li>
             <li><a href="#" class="trainingsMemberAction" rel="resetFeedback" uid="<?php echo $value->id;?>" act=""><?php echo $lang["GLOBAL_RESET"];?></a></li>
