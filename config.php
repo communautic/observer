@@ -42,6 +42,8 @@ define("CO_DEFAULT_LANGUAGE"	, 			"de" 								);
 define("CO_DEFAULT_TIMEZONE"	, 			"Europe/London" 					);
 date_default_timezone_set("UTC");
 
+define("CO_DEFAULT_CURRENCY"	, 			"&euro;" 					);
+
 /* -------------------------------------------------------------------------
 * Settings for Module Trainings if installed
 * -------------------------------------------------------------------------*/
