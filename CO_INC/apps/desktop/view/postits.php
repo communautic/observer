@@ -24,7 +24,7 @@ if(is_array($posts)) {
         <div id="modalDialogPostitForward" style="height: 100px;" class="ui-dialog-content ui-widget-content" scrolltop="0" scrollleft="0"><div class="content-spacer"></div>
 <table cellspacing="0" cellpadding="0" border="0" class="table-window">
 	<tbody><tr>
-		<td class="tcell-left text11"><a offsetsubract="70" append="1" field="postitto<?php echo($postit->id);?>" request="getContactsDialog" class="content-nav showDialog" href="#"><span>An</span></a></td>
+		<td class="tcell-left text11"><a append="1" field="postitto<?php echo($postit->id);?>" request="getContactsDialog" class="content-nav showDialog" href="#"><span>An</span></a></td>
 		<td class="tcell-right text13"><div class="itemlist-field" id="postitto<?php echo($postit->id);?>"></div></td>
 	</tr>
 </tbody></table>

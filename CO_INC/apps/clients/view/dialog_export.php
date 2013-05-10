@@ -5,7 +5,7 @@
 		<td class="tcell-right text13"><?php echo $folder->title;?></td>
 	</tr>
 	<tr>
-		<td class="tcell-left text11"><a href="#" id="autoopenExportMenue" class="content-nav showDialog" request="getMenuesDialog" field="clientsExportMenue" append="0" offsetsubract="70"><span>Men&uuml;</span></a></td>
+		<td class="tcell-left text11"><a href="#" id="autoopenExportMenue" class="content-nav showDialog" request="getMenuesDialog" field="clientsExportMenue" append="0"><span>Men&uuml;</span></a></td>
 		<td class="tcell-right text13"><div id="clientsExportMenue" class="itemlist-field"></div></td>
 	</tr>
       </table>
