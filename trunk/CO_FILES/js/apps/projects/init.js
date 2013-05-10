@@ -482,7 +482,7 @@ function projectsApplication(name) {
 							} else {
 								$("#projects input[name='task_movedate_start["+reg+"]']").val(s);
 								var obj = getCurrentModule();
-								if(Date.parse(e) < Date.parse(dp.value)) {
+								if(Date.parse(en) < Date.parse(dp.value)) {
 									$("#projects input[name='task_enddate["+reg+"]']").val(dp.value)
 									$("#projects input[name='task_movedate["+reg+"]']").val(dp.value)
 									$('#projects .coform').ajaxSubmit(obj.poformOptions);

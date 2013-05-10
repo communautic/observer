@@ -4,11 +4,6 @@ function procsGrids(name) {
 	this.coPopupEditClass = 'popup-full';
 	var self = this;
 	this.coPopupEdit = '';
-	//this.coPopupEdit = '<div class="head">Bearbeiten</div><div class="content"><div class="fieldset2"><label>Titel</label><input type="text" class="title" maxlength="60" value="" /></div><div class="fieldset2"><label><span class="content-nav showDialog" request="getContactsDialog" field="coPopup-team" append="1"><span>Verantwortung</span></span></label><div class="contacts"><div id="coPopup-team" class="itemlist-field"></div><div id="coPopup-team_ct" class="itemlist-field"><a field="coPopup-team_ct" class="ct-content"></a></div></div><div style="clear: both;"></div></div><div class="fieldset2 tohide"><label>Dauer</label><input type="text" class="hours short" maxlength="100" value="" /> Stunde/n</div><div class="fieldset2 tohide"><label>Personalkosten</label><input id="personal" type="text" class="costs_employees currency" maxlength="60" value="" /></div><div class="fieldset2 tohide"><label>Materialkosten</label><input type="text" class="costs_materials currency" maxlength="60" value="" /></div><div class="fieldset2 tohide"><label>Fremdleistung</label><input type="text" class="costs_external currency" maxlength="60" value="" /></div><div class="fieldset2 tohide"><label>Sonstige Kosten</label><input type="text" class="costs_other currency" maxlength="60" value="" /></div><div class="fieldset"><label>Beschreibung</label><textarea class="text"></textarea></div><ul class="popupButtons"><li><a href="#" class="binItem alert" rel="">'+DATEPICKER_CLEAR+'</a></li></ul></div><span class="arrow"></span>';
-	$.ajax({ type: "GET", url: "/", data: "path=apps/procs/modules/grids&request=getCoPopup", success: function(html){
-	self.coPopupEdit = html;
-																																		  }});
-
 
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#procs input.title").fieldValue();
@@ -18,17 +13,14 @@ function procsGrids(name) {
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
 		}
-		
 		formData[formData.length] = processListApps('owner');
 		formData[formData.length] = processCustomTextApps('owner_ct');
 		formData[formData.length] = processListApps('management');
 		formData[formData.length] = processCustomTextApps('management_ct');
 		formData[formData.length] = processListApps('team');
 		formData[formData.length] = processCustomTextApps('team_ct');
-		
 		formData[formData.length] = processListApps('grid_access');
 	 }
-	 
 	 
 	 this.formResponse = function(data) {
 		 switch(data.action) {
@@ -46,11 +38,14 @@ function procsGrids(name) {
 		}
 	}
 	
-	
 	this.poformOptions = { beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
 
-
 	this.getDetails = function(moduleidx,liindex,list) {
+		if(self.coPopupEdit == '') {
+			$.ajax({ type: "GET", url: "/", data: "path=apps/procs/modules/grids&request=getCoPopup", success: function(html){
+				self.coPopupEdit = html;
+			}});
+		}
 		var id = $("#procs3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
 		$('#procs').data({ "third" : id});
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs/modules/grids&request=getDetails&id="+id, success: function(data){
@@ -1033,6 +1028,9 @@ $(document).ready(function() {
 				if (colheight < 158+8+4) {
 					colheight = 158+8+4;
 				}
+				if($('#procs-grid').height() < colheight) {
+					$('#procs-grid').height(colheight);
+				}
 				c.animate({height: listheight}).parent().animate({height: colheight});
 				
 				var costs = 0;
@@ -1105,7 +1103,6 @@ $(document).ready(function() {
 		});
 	})
 
-
 	$(document).on('click', '#modalDialogProcsGridClose', function(e) {
 		e.preventDefault();
 		$("#modalDialogProcsGrid").slideUp(function() {
@@ -1113,30 +1110,6 @@ $(document).ready(function() {
 		});
 	});
 
-	/*$('input.currency').livequery( function() {
-		//$(this).inputmask('integer', { 'autoGroup': true, 'groupSeparator': ".", 'groupSize': 3, 'autoUnmask' : true });
-		$(this).formatCurrency({ symbol: '', roundToDecimalPlace: -1, eventOnDecimalsEntered: true })
-		.keyup(function(e) {
-				var e = window.event || e;
-				var keyUnicode = e.charCode || e.keyCode;
-				if (e !== undefined) {
-					switch (keyUnicode) {
-						case 16: break; // Shift
-						case 27: this.value = ''; break; // Esc: clear entry
-						case 35: break; // End
-						case 36: break; // Home
-						case 37: break; // cursor left
-						case 38: break; // cursor up
-						case 39: break; // cursor right
-						case 40: break; // cursor down
-						case 78: break; // N (Opera 9.63+ maps the "." from the number key section to the "N" key too!) (See: http://unixpapa.com/js/key.html search for ". Del")
-						case 110: break; // . number block (Opera 9.63+ maps the "." from the number block to the "N" key (78) !!!)
-						case 190: break; // .
-						default: $(this).formatCurrency({ symbol: '', roundToDecimalPlace: -1, eventOnDecimalsEntered: true });
-					}
-				}
-			})
-	})*/
 	$('input.currency').livequery( function() {
 		$(this).number( true, 0, '', '.' );
 	})
