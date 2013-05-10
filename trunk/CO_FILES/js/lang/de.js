@@ -12,7 +12,7 @@ var ALERT_MESSAGE_SESSION_RENEW = 'Mit Ihren Zugangsdaten wurde an anderer Stell
 							      'Sie können sich abmelden oder durch eine erneute Passworteingabe wieder anmelden.<br /><br />Ihr Passwort: ';
 var ALERT_MESSAGE_SESSION_COOKIE = 'Ihr Plattformzugang wurde unterbrochen, da Ihre "browser cookies" offensichtlich gelöscht wurden.<br /><br />'+
 							      'Bitte melden Sie sich erneut im System durch die Eingabe Ihrer Zugangsdaten an. Tritt das Problem erneut auf, kontaktieren Sie Ihren EDV Administrator.';
-var ALERT_MESSAGE_INTERNET = 'Your internet connection appears to be down or the server you are trying to connect to is not responding.<br /><br />Once the connection can be reestablished this warning message will disappear automatically. If this problem persists please contact your IT administrator.';
+var ALERT_MESSAGE_INTERNET = 'Ihre Internetverbindung wurde unterbrochen oder<br />Ihr Server antwortet nicht mehr!<br /><br />Kontrollieren Sie bitte Ihren Internetzugang.';
 var ALERT_LOGOUT = "Möchten Sie sich abmelden?";
 var ALERT_NO_TITLE = "Bitte geben Sie einen Titel ein";
 var ALERT_CHANGES_NOT_SAVED = "Ihre aktuellen Änderungen wurden noch nicht gespeichert!\nDaten jetzt speichern?";
