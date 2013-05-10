@@ -94,7 +94,7 @@
 .ui-icon { width: 16px; height: 16px; background-image: url(images/ui-icons_000000_256x240.png); }
 .ui-widget-content .ui-icon {background-image: url(images/ui-icons_000000_256x240.png); }
 .ui-widget-header .ui-icon {background-image: url(images/ui-icons_ffffff_256x240.png); }
-.ui-state-default .ui-icon { background-image: url(images/ui-icons_cccccc_256x240.png); }
+.ui-state-default .ui-icon { background-image: url(images/ui-icons_ffffff_256x240.png); }
 .ui-state-hover .ui-icon, .ui-state-focus .ui-icon {background-image: url(images/ui-icons_ffffff_256x240.png); }
 .ui-state-active .ui-icon {background-image: url(images/ui-icons_222222_256x240.png); }
 .ui-state-highlight .ui-icon {background-image: url(images/ui-icons_4b8e0b_256x240.png); }
@@ -442,7 +442,7 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
  *
  * http://docs.jquery.com/UI/Dialog#theming
  */
-.ui-dialog { position: absolute; padding: 0; width: 300px; overflow: hidden; }
+.ui-dialog { position: absolute; padding: 0; width: 300px; overflow: hidden; z-index: 1000;}
 .ui-dialog .ui-dialog-titlebar { height: 25px; position: relative; display: none; }
 .ui-dialog .ui-dialog-title { display: block; padding-top: 4px; } 
 .ui-dialog .ui-dialog-titlebar-close { position: absolute; right: .3em; top: 50%; width: 19px; margin: -10px 0 0 0; padding: 0px; height: 18px; background: transparent; border: 0;}
