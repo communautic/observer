@@ -87,12 +87,12 @@ function contactsContact(name) {
 			formData[formData.length] = { "name": "lastname", "value": title };
 		}
 		
-		var email = $("#email").fieldValue();
+		/*var email = $("#email").fieldValue();
 		var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
 		if(email != "" && reg.test(email) == false) {
 			$.prompt(ALERT_NO_VALID_EMAIL, {submit: setTitleFocus});
 			return false;
-		}
+		}*/
 		
 		formData[formData.length] = processString('lang');
 		formData[formData.length] = processString('timezone');
@@ -1291,6 +1291,14 @@ $(document).ready(function() {
 			insertContactEmail(field,cid,name,html);
 		} else if(field == "custom") {
 			obj.customContactInsert(cid);
+		} else if(field.match(/coPopup-/)) {
+			//var f = field.replace(/coPopup-/, "");
+			if($("#"+field).html() != "") {
+				$("#"+field+" .listmember:visible:last").append(", ");
+			}
+			$("#"+field).append(html);
+			obj.coPopupContactInsert();
+			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=saveLastUsedContacts&id="+cid});
 		} else {
 			if($("#"+field).html() != "") {
 				$("#"+field+" .listmember:visible:last").append(", ");
@@ -1316,15 +1324,25 @@ $(document).ready(function() {
 			insertGroupEmail(field,gid);
 		} else if(field == "custom") {
 			obj.customGroupInsert(gid);
+		} else if(field.match(/coPopup-/)) {
+			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getUsersInGroupDialog&id="+gid+"&field="+field, success: function(data){
+				if($("#"+field).html() != "") {
+					$("#"+field+" .listmember:visible:last").append(", ");
+				}
+				$("#"+field).append(data);
+				obj.coPopupContactGroupInsert();
+				}
+			});
+
 		} else {
-		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getUsersInGroupDialog&id="+gid+"&field="+field, success: function(data){
-			if($("#"+field).html() != "") {
-				$("#"+field+" .listmember:visible:last").append(", ");
-			}
-			$("#"+field).append(data);
-			$('#'+app+' .coform').ajaxSubmit(obj.poformOptions);
-			}
-		});
+			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getUsersInGroupDialog&id="+gid+"&field="+field, success: function(data){
+				if($("#"+field).html() != "") {
+					$("#"+field+" .listmember:visible:last").append(", ");
+				}
+				$("#"+field).append(data);
+				$('#'+app+' .coform').ajaxSubmit(obj.poformOptions);
+				}
+			});
 		}
 	});
 
@@ -1335,7 +1353,11 @@ $(document).ready(function() {
 		var html = '<a field="' + field + '" class="ct-content">' + CUSTOM_NOTE + ' ' + $("#custom-text").val() + '</a>';
 		$("#"+field).html(html);
 		var obj = getCurrentModule();
-		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+		if(field.match(/coPopup-/)) {
+			obj.coPopupContactTextInsert();
+		} else {
+			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+		}
 	});
 
 	$(document).on('click', 'a.delete-listmember', function(e) {
@@ -1349,8 +1371,13 @@ $(document).ready(function() {
 			var textnew = text.split(", ");
 			$("#"+field+" .listmember-outer:visible:last .listmember").html(textnew[0]);
 		}
-		var obj = getCurrentModule();
-		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+		if(field.match(/coPopup-/)) {
+			var obj = getCurrentModule();
+			obj.coPopupContactDelete();
+		} else {
+			var obj = getCurrentModule();
+			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+		}
 	});
 	
 	$(document).on('click', 'a.listmember', function(e) {
@@ -1381,10 +1408,16 @@ $(document).ready(function() {
 
 	$(document).on('click', 'a.delete-ct', function(e) {
 		e.preventDefault();
+		var field = $(this).parent().parent().parent().attr('id');
 		$(this).parent().parent().prev().html("");
 		$(this).parent().parent().remove();
 		var obj = getCurrentModule();
-		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+		
+		if(field.match(/coPopup-/)) {
+			obj.coPopupContactTextDelete();
+		} else {
+			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+		}
 	});
 
 
