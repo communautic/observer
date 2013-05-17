@@ -1531,22 +1531,6 @@ $(document).ready(function() {
 		}
 	});
 	
-	$('#contacts .globalSearch').livequery(function() {
-		$(this).autocomplete({
-			appendTo: '#contacts',
-			position: {my: "left top", at: "left bottom", collision: "none",offset: "-104 0"},
-			source: "?path=apps/contacts&request=getGlobalSearch",
-			//minLength: 2,
-			select: function(event, ui) {
-				globalSearchAction(ui.item.id);
-				
-			},
-			close: function(event, ui) {
-				$(this).val("");
-			}
-		});
-	});
-	
 	
 	// autocomplete contacts import search
 	$('.contacts-import').livequery(function() { 

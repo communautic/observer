@@ -916,25 +916,5 @@ $(document).ready(function() {
 		var obj = getCurrentModule();
 		obj.addParentLink(id);
 	});
-	
-	$('#patients .globalSearch').livequery(function() {
-		$(this).autocomplete({
-			appendTo: '#patients',
-			position: {my: "left top", at: "left bottom", collision: "none",offset: "-104 0"},
-			source: "?path=apps/patients&request=getGlobalSearch",
-			//minLength: 2,
-			select: function(event, ui) {
-				var obj = getCurrentModule();
-				var cid = $('#'+getCurrentApp()+' input[name="id"]').val()
-				obj.checkIn(cid);
-				var href = ui.item.id.split(",");
-				externalLoadThreeLevels(href[0],href[1],href[2],href[3],href[4]);
-			},
-			close: function(event, ui) {
-				$(this).val("");
-			}
-		});
-	});
-
 
 });

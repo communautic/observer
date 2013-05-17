@@ -70,7 +70,7 @@
 ----------------------------------*/
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default { border: 1px solid #333; background-color: #7f7f7f; font-weight: normal; color: #ffffff; }
 .ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited { color: #ffffff; text-decoration: none; }
-.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus { border: 1px solid #333; background-color: #333; font-weight: normal; color: #ffffff; }
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus { border: 0; background-color: #333; font-weight: normal; color: #ffffff !important; }
 .ui-state-hover a, .ui-state-hover a:hover { color: #ffffff; text-decoration: none; }
 .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active { border: 1px solid #333; background-color: #333; font-weight: normal; color: #ffffff; }
 .ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited { color: #ffffff; text-decoration: none; }
@@ -581,6 +581,7 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 .ui-datepicker-close { display: none; }
 
 .ui-autocomplete { position: absolute; cursor: default; width: 146px !important; background: #ccc; }	
+.ui-autocomplete a:hover { color: #fff !important; }
 
 .ui-autocomplete-input {
     background-color: #FFFFFF;
@@ -860,6 +861,12 @@ background: -o-linear-gradient(top,  #d5d5d5 0%,#858585 50%,#7f7f7f 51%,#7f7f7f 
 background: -ms-linear-gradient(top,  #d5d5d5 0%,#858585 50%,#7f7f7f 51%,#7f7f7f 100%); /* IE10+ */
 background: linear-gradient(top,  #d5d5d5 0%,#858585 50%,#7f7f7f 51%,#7f7f7f 100%); /* W3C */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d5d5d5', endColorstr='#7f7f7f',GradientType=0 ); /* IE6-8 */
+}
+
+#tabs ul.ui-autocomplete li:hover {
+	border: 0;
+	background: #333;
+	border-radius: 3px;
 }
 
 #tabs a span {display: block; line-height: 18px; }

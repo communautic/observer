@@ -77,6 +77,11 @@ $lang["GLOBAL_TITLE"] = 'Titel';
 $lang["GLOBAL_RESPONSIBILITY"] = 'Verantwortung';
 $lang["GLOBAL_DESCRIPTION"] = 'Beschreibung';
 
+$lang['GLOBAL_COSTS_EMPLOYEES'] = 'Personalkosten';
+$lang['GLOBAL_COSTS_MATERIAL'] = 'Materialkosten';
+$lang['GLOBAL_COSTS_EXTERNAL'] = 'Fremdleistungen';
+$lang['GLOBAL_COSTS_OTHER'] = 'Sonstige Kosten';
+
 $lang["GLOBAL_STATUS"] 		= 	'Status';
 // Status definitions
 $lang["GLOBAL_STATUS_PLANNED"] = 'in Planung';
