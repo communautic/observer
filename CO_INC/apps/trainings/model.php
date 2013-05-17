@@ -2678,22 +2678,22 @@ function getTrainingTitleFromMeetingIDs($array,$target, $link = 0){
 			if($perm == 'guest') {
 				$sql = "and access = '1'";
 			}
-			// Grids
+			/* Grids
 			$qp = "SELECT id,CONVERT(title USING latin1) as title FROM " . CO_TBL_TRAININGS_GRIDS . " WHERE pid = '$pid' and bin = '0' $sql and title like '%$term%' ORDER BY title";
 			$resultp = mysql_query($qp, $this->_db->connection);
 			while($rowp = mysql_fetch_array($resultp)) {
 				$rows['value'] = htmlspecialchars_decode($rowp['title']);
 			 	$rows['id'] = 'grids,' .$folder. ',' . $pid . ',' .$rowp['id'].',trainings';
 			 	$r[] = $rows;
-			}
-			// Forums
+			}*/
+			/* Forums
 			$qp = "SELECT id,CONVERT(title USING latin1) as title, CONVERT(protocol USING latin1) as protocol FROM " . CO_TBL_TRAININGS_FORUMS . " WHERE pid = '$pid' and bin = '0' $sql and (title like '%$term%' || protocol like '%$term%') ORDER BY title";
 			$resultp = mysql_query($qp, $this->_db->connection);
 			while($rowp = mysql_fetch_array($resultp)) {
 				$rows['value'] = htmlspecialchars_decode($rowp['title']);
 			 	$rows['id'] = 'forums,' .$folder. ',' . $pid . ',' .$rowp['id'].',trainings';
 			 	$r[] = $rows;
-			}
+			}*/
 			// Meetings
 			if(in_array("meetings",$active_modules)) {
 				$qp = "SELECT id,CONVERT(title USING latin1) as title FROM " . CO_TBL_TRAININGS_MEETINGS . " WHERE pid = '$pid' and bin = '0' $sql and title like '%$term%' ORDER BY title";

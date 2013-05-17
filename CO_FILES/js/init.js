@@ -1546,6 +1546,30 @@ $(document).ready(function() {
 		));
    });
 	
+	$('input.globalSearch').livequery(function() {
+		var app = $(this).attr('rel');
+		$(this).autocomplete({
+			appendTo: '#'+app,
+			position: {my: "right top", at: "right bottom", collision: "none"},
+			source: '?path=apps/' + app + '&request=getGlobalSearch',
+			//minLength: 2,
+			select: function(event, ui) {
+				if(app == 'contacts') {
+					globalSearchAction(ui.item.id);
+				} else {
+					var obj = getCurrentModule();
+					var cid = $('#'+app+' input[name="id"]').val()
+					obj.checkIn(cid);
+					var href = ui.item.id.split(",");
+					externalLoadThreeLevels(href[0],href[1],href[2],href[3],href[4]);
+				}
+			},
+			close: function(event, ui) {
+				$(this).val("");
+			}
+		});
+	});
+	
 });
 
 function confirmNavigation() {
@@ -2400,8 +2424,7 @@ function externalLoadThreeLevels(objectname,f,p,ph,app) { // from Desktop
 	var objectnameCapsSingular = objectnameCaps.slice(0,-1);
 	var num_modules = window[objectname+'_num_modules'];
 	
-	
-	if(objectname == app && (objectname == 'projects' || objectname == 'procs' || objectname == 'productions' || objectname == 'brainstorms' || objectname == 'forums' || objectname == 'complaints' || objectname == 'employees' || objectname == 'patients' || objectname == 'trainings')) {
+	if(objectname == app && (objectname == 'projects' || objectname == 'procs' || objectname == 'productions' || objectname == 'brainstorms' || objectname == 'forums' || objectname == 'complaints' || objectname == 'employees' || objectname == 'patients' || objectname == 'trainings' || objectname == 'clients')) {
 		object.$first.data({ "first" : f});
 		$('#'+objectname+'1 .module-click').removeClass('deactivated');
 		var index = $('#'+objectname+'1 .module-click').index($('#'+objectname+'1 .module-click[rel='+f+']'));

@@ -63,7 +63,7 @@
         </div>
         </div>
         <div class="globalsearch">
-        	<input class="globalSearch ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"><div class="global-search-outer"></div>
+        	<input class="globalSearch ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true" rel="employees"><div class="global-search-outer"></div>
         </div>
     </div>
 	<div class="center-west">
