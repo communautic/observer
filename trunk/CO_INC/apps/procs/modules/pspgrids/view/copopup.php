@@ -9,7 +9,7 @@
             <li></li>
 		</ul></div>
     <div class="fieldset2 tohide" >
-        <label>Meilenstein</label>
+        <label id="msInit">Meilenstein</label>
         <div class="contacts">
             <div id="coPopupMS" class="" rel=""></div>
         </div>
@@ -18,7 +18,7 @@
     
   <div class="fieldset2">
     <label><?php echo $lang["GLOBAL_TITLE"];?></label>
-    <input type="text" class="title" maxlength="60" value="" />
+    <input type="text" class="title" maxlength="40" value="" />
   </div>
   <div class="fieldset2">
     <label><span class="content-nav showDialog" request="getContactsDialog" field="coPopup-team" append="1"><span><?php echo $lang["GLOBAL_RESPONSIBILITY"];?></span></span></label>
@@ -30,23 +30,23 @@
   </div>
   <div class="fieldset2 tohide tohideMS">
     <label><?php echo $lang['PROC_PSPGRID_DURATION'];?></label>
-    <input type="text" class="days short" maxlength="100" value="" />
+    <input type="text" class="days short" maxlength="3" value="" />
     <?php echo $lang['PROC_PSPGRID_DAYS'];?></div>
   <div class="fieldset2 tohide tohideMS">
     <label><?php echo $lang['PROC_PSPGRID_COSTS_EMPLOYEES'];?></label>
-    <input id="personal" type="text" class="costs_employees currency" maxlength="60" value="" />
+    <input id="personal" type="text" class="costs_employees currency" maxlength="10" value="" />
   </div>
   <div class="fieldset2 tohide tohideMS">
     <label><?php echo $lang['PROC_PSPGRID_COSTS_MATERIAL'];?></label>
-    <input type="text" class="costs_materials currency" maxlength="60" value="" />
+    <input type="text" class="costs_materials currency" maxlength="10" value="" />
   </div>
   <div class="fieldset2 tohide tohideMS">
     <label><?php echo $lang['PROC_PSPGRID_COSTS_EXTERNAL'];?></label>
-    <input type="text" class="costs_external currency" maxlength="60" value="" />
+    <input type="text" class="costs_external currency" maxlength="10" value="" />
   </div>
   <div class="fieldset2 tohide tohideMS">
     <label><?php echo $lang['PROC_PSPGRID_COSTS_OTHER'];?></label>
-    <input type="text" class="costs_other currency" maxlength="60" value="" />
+    <input type="text" class="costs_other currency" maxlength="10" value="" />
   </div>
   <div class="fieldset">
     <label><?php echo $lang['GLOBAL_DESCRIPTION'];?></label>

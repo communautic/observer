@@ -319,13 +319,14 @@ class ProcsGridsModel extends ProcsModel {
 			}
 			$num_notes[] = $n;
 			
-			$colheight=  $n*27+78+80+8+4;
-			if($colheight < 158+8+4) {
-				$colheight = 158+8+4;
+			//$colheight=  $n*27+78+80+8+4-27;
+			$colheight=  $n*27+170;
+			if($colheight < 170) {
+				$colheight = 170;
 			}
-			$listheight = $n*27+27;
-			if($listheight < 27) {
-				$listheight = 27;
+			$listheight = $n*27+54;
+			if($listheight < 54) {
+				$listheight = 54;
 			}
 			
 			if($n == 0 && $titleid == 0) {
@@ -374,13 +375,14 @@ class ProcsGridsModel extends ProcsModel {
 		
 		$array["max_items"] = max($num_notes);
 		
-		$colheight=  max($num_notes)*27+78+80+8;
-		if($colheight < 158+8) {
-			$colheight = 158+8;
+		//$colheight=  max($num_notes)*27+78+80+8-27;
+		$colheight=  max($num_notes)*27+170;
+		if($colheight < 170) {
+			$colheight = 170;
 		}
-		$listheight = max($num_notes)*27+27;
-		if($listheight < 27) {
-			$listheight = 27;
+		$listheight = max($num_notes)*27+54;
+		if($listheight < 54) {
+			$listheight = 54;
 		}
 		
 		// build the console

@@ -476,12 +476,12 @@ function procsGrids(name) {
 			col.find('div.costs').each(function() { 
 				costs += parseInt($(this).html());
 			})
-			col.next().next().find('span.totalcosts').html(costs).number( true, 0, '', '.' );
+			col.next().next().next().find('span.totalcosts').html(costs).number( true, 0, '', '.' );
 			var hours = 0;
 			col.find('div.hours').each(function() { 
 				hours += parseInt($(this).html());
 			})
-			col.next().next().find('span.totalhours').html(hours);
+			col.next().next().next().find('span.totalhours').html(hours);
 			}
 		});
 	}
@@ -496,9 +496,14 @@ function procsGrids(name) {
 				$.ajax({ type: "GET", url: "/", data: "path=apps/procs/modules/grids&request=saveGridNewManualTitle&pid="+pid+"&col="+col, cache: false, success: function(html){	
 						var phase = $('#gridscol_'+col+' .procs-col-title');
 						phase.html(html);
-						var element = phase.find('input');
+						phase.find('>div').fadeIn(function() {
+							$(this).trigger('click'); 
+							//phase.next().next().trigger('sortupdate');
+							var element = phase.find('input');
 						$.jNice.CheckAddPO(element);
 						phase.next().trigger('sortupdate');
+						})
+						
 					}
 				});
 			break;
@@ -508,9 +513,22 @@ function procsGrids(name) {
 				$.ajax({ type: "GET", url: "/", data: "path=apps/procs/modules/grids&request=saveGridNewManualNote&pid="+pid, cache: false, success: function(html){
 						var phase = $('#procs-grid .procs-phase:eq('+idx+')');
 						phase.append(html);
-						var element = phase.find('input:last');
-						$.jNice.CheckAddPO(element);
-						phase.trigger('sortupdate');
+						
+						phase.find('>div:last').slideDown(function() {
+							$(this).trigger('click'); 
+							var element = phase.find('input:last');
+							$.jNice.CheckAddPO(element);
+							phase.trigger('sortupdate');
+						})
+						
+						
+						//var phase = $('#procs-pspgrid .procs-phase:eq('+idx+')');
+						//phase.append(html);
+						/*phase.find('>div:last').slideDown(function() {
+							$(this).trigger('click'); 
+							phase.trigger('sortupdate');
+						})*/
+						
 					}
 				});
 			break;
@@ -520,6 +538,7 @@ function procsGrids(name) {
 				$.ajax({ type: "GET", url: "/", data: "path=apps/procs/modules/grids&request=saveGridNewManualStagegate&pid="+pid+"&col="+col, cache: false, success: function(html){	
 						var phase = $('#gridscol_'+col+' .procs-col-stagegate');
 						phase.html(html);
+						phase.find('>div:last').trigger('click'); 
 						var element = phase.find('input');
 						$.jNice.CheckAddPO(element);
 						phase.prev().trigger('sortupdate');
@@ -550,6 +569,7 @@ function procsGrids(name) {
 
 
 	this.binItem = function(id) {
+		var note = $("#procsgriditem_"+id);
 		var txt = ALERT_DELETE;
 		var langbuttons = {};
 		langbuttons[ALERT_YES] = true;
@@ -560,7 +580,26 @@ function procsGrids(name) {
 				if(v){
 					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs/modules/grids&request=binItem&id="+id, success: function(data){
 						if(data){
-							$("#procsgriditem_"+id).fadeOut(function() { 
+							if(note.hasClass('colTitle')) {
+								note.fadeOut(function() { 
+									//phase = note.parent().next();
+									note.parent().html('<span class="newNoteItem newItemOption newNoteTitle" rel="notetitle"></span>');
+									note.remove();
+								});
+							} else if(note.hasClass('colStagegate')) {
+								note.fadeOut(function() { 
+									//phase = note.parent().next();
+									note.parent().html('<span class="newNoteItem newItemOption newNoteStagegate" rel="stagegate"></span>');
+									note.remove();
+								});
+							} else {
+								note.slideUp(function() { 
+									phase = note.parent();
+									note.remove();
+									phase.trigger('sortupdate');
+								});
+							}
+							/*$("#procsgriditem_"+id).fadeOut(function() { 
 									phase = $(this).parent();
 									if($(this).hasClass('colTitle')) {
 										phase = $(this).parent().next();
@@ -573,7 +612,7 @@ function procsGrids(name) {
 									}
 									$(this).remove();
 									phase.trigger('sortupdate');
-								});
+								});*/
 						} 
 						}
 					});
@@ -946,6 +985,8 @@ $(document).ready(function() {
 		$(this).sortable({
 			items: '>div',
 			//handle: '.dragItem',
+			cursor: "move",
+			tolerance: 'intersect',
 			connectWith: '.procs-phase,.procs-col-title,.procs-col-stagegate',
 			receive: function (event, ui) { // add this handler
 				setTimeout(function() {
@@ -962,6 +1003,12 @@ $(document).ready(function() {
 		}).disableSelection().bind('sortupdate', function(event, ui) {
 			var col = parseInt($(this).parent().attr("id").replace(/gridscol_/, ""));
 			var idx = $('#procs-grid .procs-phase').index(this);
+			var phase = $('#procs-grid .procs-phase:eq('+idx+')');
+			if(phase.find('>div').length > 0) {
+				phase.next().removeClass('empty');
+			} else {
+				phase.next().addClass('empty');
+			}
 			$('#procs-grid .procs-phase:eq('+idx+')>div').each(function(index) {
 				var div = $(this);
 				var attr = div.attr('id');
@@ -1019,30 +1066,30 @@ $(document).ready(function() {
 					$('div.procs-col-footer:eq('+idx+') .procs-stagegate').addClass('active');
 				}
 				var c = $('#procs-grid .procs-phase:eq('+idx+')');
-				var items = c.find('>div').size();
-				var listheight = items*27+27;
+				/*var items = c.find('>div').size();
+				var listheight = items*27;
 				if (listheight < 27) {
 					listheight = 27;
 				}
-				var colheight = items*27+78+80+8+4;
-				if (colheight < 158+8+4) {
-					colheight = 158+8+4;
+				var colheight = items*27+143;
+				if (colheight < 170) {
+					colheight = 170;
 				}
 				if($('#procs-grid').height() < colheight) {
 					$('#procs-grid').height(colheight);
 				}
-				c.animate({height: listheight}).parent().animate({height: colheight});
+				c.animate({height: listheight}).parent().animate({height: colheight});*/
 				
 				var costs = 0;
 				c.find('div.costs').each(function() { 
 					costs += parseInt($(this).html());
 				})
-				c.next().next().find('span.totalcosts').html(costs).number( true, 0, '', '.' );
+				c.next().next().next().find('span.totalcosts').html(costs).number( true, 0, '', '.' );
 				var hours = 0;
 				c.find('div.hours').each(function() { 
 					hours += parseInt($(this).html());
 				})
-				c.next().next().find('span.totalhours').html(hours);
+				c.next().next().next().find('span.totalhours').html(hours);
 				
 				
 				
@@ -1069,7 +1116,7 @@ $(document).ready(function() {
 		var styles = '';
 		$("#procs-grid").width($("#procs-grid").width()+230);
 		$.ajax({ type: "GET", url: "/", data: "path=apps/procs/modules/grids&request=newGridColumn&id="+pid+"&sort="+sor, cache: false, success: function(num){
-			$("#procs-grid").append('<div id="gridscol_' + num + '"><div class="dragCol"><div id="procs-col-delete-' + num + '" class="procs-column-delete"><span class="icon-delete"></span></div></div><div class="procs-col-title  ui-droppable"><span rel="notetitle" class="newNoteItem newItemOption newNoteTitle"></span></div><div class="grids-spacer"></div><div style="height: 27px;" class="procs-phase procs-phase-design ui-sortable"><span rel="note" class="newNoteItem newItemOption newNote"></span></div><div class="grids-spacer"></div><div class="procs-col-footer"><div class="procs-col-footer-stagegate"><div class="procs-stagegate   "></div><div class="procs-col-stagegate ui-droppable"><span rel="stagegate" class="newNoteItem newItemOption newNoteStagegate"></span></div></div><div class="grids-spacer"></div><div class="procs-col-footer-days"><div class="left"><span class="totalhours"> 0</span> <span>h</span></div><div class="right"><span>&euro;</span> <span class="totalcosts">0</span></div><div></div></div></div></div>').sortable("refresh");
+			$("#procs-grid").append('<div id="gridscol_' + num + '"><div class="dragCol"><div id="procs-col-delete-' + num + '" class="procs-column-delete"><span class="icon-delete"></span></div></div><div class="procs-col-title  ui-droppable"><span rel="notetitle" class="newNoteItem newItemOption newNoteTitle"></span></div><div class="grids-spacer"></div><div class="procs-phase procs-phase-design ui-sortable"></div><span rel="note" class="newNoteItem newItemOption newNote empty"></span><div class="grids-spacer"></div><div class="procs-col-footer"><div class="procs-col-footer-stagegate"><div class="procs-stagegate   "></div><div class="procs-col-stagegate ui-droppable"><span rel="stagegate" class="newNoteItem newItemOption newNoteStagegate"></span></div></div><div class="grids-spacer"></div><div class="procs-col-footer-days"><div class="left"><span class="totalhours"> 0</span> <span>h</span></div><div class="right"><span>&euro;</span> <span class="totalcosts">0</span></div><div></div></div></div></div>').sortable("refresh");
 			}
 		});
 	})

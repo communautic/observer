@@ -84,8 +84,8 @@
 	</div>
 <?php } ?>
 <div class="content-spacer"></div>
-<div id="procs-grid-outer" style="position: relative; min-height: 65px;"><div style="position: absolute; top: 28px; height: 50px; width: 100%; background: #b2b2b2;"></div>
-<div id="procs-grid" style="width: <?php echo($grid->grid_width);?>px; height: <?php echo $colheight;?>px;"">
+<div style="position: absolute; top: 147px; height: 50px; width: 100%; background: #b2b2b2; z-index: -1;"></div>
+<div id="procs-grid" style="width: <?php echo($grid->grid_width);?>px;">
 <?php 
 $drag = '';
 $procsphase = '';
@@ -97,7 +97,7 @@ if($grid->canedit) {
 	$checkbox = 'noperm';
 }
 foreach($cols as $key => &$value){ 
-	echo '<div id="gridscol_'.$cols[$key]['id'].'" style="height: ' . $cols[$key]['colheight'] . 'px;">';
+	echo '<div id="gridscol_'.$cols[$key]['id'].'">';
 			if($grid->canedit) {
 		echo '<div class="dragCol dragColActive"><div class="procs-column-delete" id="procs-col-delete-'.$cols[$key]['id'].'"><span class="icon-delete"></span></div></div>';
 	} else {
@@ -117,7 +117,12 @@ foreach($cols as $key => &$value){
 		}
 		echo '</div><div class="grids-spacer"></div>';
 	// listitems
-	echo '<div class="' . $procsphase . ' procs-phase-design" style="height: ' . $cols[$key]['listheight'] . 'px;">';
+	echo '<div class="' . $procsphase . ' procs-phase-design"">';
+	$newNoteItemClass = ' empty';
+	$num_notes = sizeof($cols[$key]["notes"]);
+	if($num_notes > 0) {
+		$newNoteItemClass = '';
+	}
 	foreach($cols[$key]["notes"] as $tkey => &$tvalue){ 
 		$checked = "";
 		if ($cols[$key]["notes"][$tkey]['status'] == 1) {
@@ -128,10 +133,12 @@ foreach($cols as $key => &$value){
 		echo '<div id="procsgriditem-title-' . $cols[$key]["notes"][$tkey]['note_id'] . '" class="itemTitle ' . $checkbox . '">'.$cols[$key]["notes"][$tkey]['title'].'</div>';
 		echo '<div id="procsgriditem-text-' . $cols[$key]["notes"][$tkey]['note_id'] . '" style="display: none;">' . $cols[$key]["notes"][$tkey]['text'] . '</div><div id="procsgriditem-team-' . $cols[$key]["notes"][$tkey]['note_id'] . '" style="display: none;">' . $cols[$key]["notes"][$tkey]['team'] . '</div><div id="procsgriditem-costs_employees-' . $cols[$key]["notes"][$tkey]['note_id'] . '" style="display: none;" class="costs">' . $cols[$key]["notes"][$tkey]['costs_employees'] . '</div><div id="procsgriditem-costs_materials-' . $cols[$key]["notes"][$tkey]['note_id'] . '" style="display: none;" class="costs">' . $cols[$key]["notes"][$tkey]['costs_materials'] . '</div><div id="procsgriditem-costs_external-' . $cols[$key]["notes"][$tkey]['note_id'] . '" style="display: none;" class="costs">' . $cols[$key]["notes"][$tkey]['costs_external'] . '</div><div id="procsgriditem-costs_other-' . $cols[$key]["notes"][$tkey]['note_id'] . '" style="display: none;" class="costs">' . $cols[$key]["notes"][$tkey]['costs_other'] . '</div><div id="procsgriditem-hours-' . $cols[$key]["notes"][$tkey]['note_id'] . '" style="display: none;" class="hours">' . $cols[$key]["notes"][$tkey]['hours'] . '</div><div id="procsgriditem-team_ct-' . $cols[$key]["notes"][$tkey]['note_id'] . '" style="display: none;"><a class="ct-content" field="coPopup-team_ct">' . $cols[$key]["notes"][$tkey]['team_ct'] . '</a></div></div>';
 	}
+	
+	echo '</div>';
 	if($grid->canedit) {
-	echo '<span class="newNoteItem newItemOption newNote" rel="note"></span>';
+	echo '<span class="newNoteItem newItemOption newNote' . $newNoteItemClass . '" rel="note"></span>';
 	}
-	echo '</div><div class="grids-spacer"></div>';
+	echo '<div class="grids-spacer"></div>';
 	echo '<div class="procs-col-footer">';
 	
 	echo '<div class="procs-col-footer-stagegate">';
@@ -162,7 +169,6 @@ foreach($cols as $key => &$value){
 	echo '</div>';
  } ?>
  </div>
-</div>
 <div class="content-spacer" style="clear: both;"></div>
 <?php if($grid->perms != "guest") { ?>
 <div class="content-spacer"></div>

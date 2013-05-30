@@ -21,7 +21,7 @@ $lang["PROC_PSPGRID_STAGEGATE_NEW"] = 'Neues Stagegate';
 $lang['PROC_PSPGRID_NOTES'] = 'Tätigkeiten';
 
 $lang['PROC_PSPGRID_DURATION'] = 'Dauer';
-$lang['PROC_PSPGRID_DAYS'] = 'Tag/e';
+$lang['PROC_PSPGRID_DAYS'] = 'Tag(e)';
 $lang['PROC_PSPGRID_COSTS_EMPLOYEES'] = 'Personalkosten';
 $lang['PROC_PSPGRID_COSTS_MATERIAL'] = 'Materialkosten';
 $lang['PROC_PSPGRID_COSTS_EXTERNAL'] = 'Fremdleistungen';

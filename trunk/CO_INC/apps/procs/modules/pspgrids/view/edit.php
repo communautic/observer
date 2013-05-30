@@ -107,7 +107,7 @@
 <?php } ?>
 <div class="content-spacer"></div>
 <div style="position: absolute; top: 184px; height: 75px; width: 100%; background: #b2b2b2;"></div>
-<div id="procs-pspgrid" style="width: <?php echo($pspgrid->pspgrid_width);?>px; height: <?php echo $colheight;?>px;">
+<div id="procs-pspgrid" style="width: <?php echo($pspgrid->pspgrid_width);?>px;">
 <?php 
 $drag = '';
 $procsphase = '';
@@ -130,13 +130,14 @@ foreach($cols as $key => &$value){
 			echo '<div class="itemMilestone">0</div>';
 			echo '<div class="itemText">' . $cols[$key]['titletextcontent'] . '</div>';
 			echo '<div class="itemTeamprint">' . $cols[$key]['titleteamprint'] . '</div>';
-			echo '<div class="colTotals"><span class="totaldays"> ' . $cols[$key]['days'] . '</span> <span>' . $lang['PROC_PSPGRID_DAYS'] . '</span> - <span>&euro;</span> <span class="totalcosts">' . $cols[$key]['costs'] . '</span></div>';
+			echo '<div class="colTotals"><div class="left"><span class="totaldays"> ' . $cols[$key]['days'] . '</span> <span>' . $lang['PROC_PSPGRID_DAYS'] . '</span></div><div class="right"><span>&euro;</span> <span class="totalcosts">' . $cols[$key]['costs'] . '</span></div></div>';
 			echo '<div class="itemTeam">' . $cols[$key]['titleteam'] . '</div>';
 			echo '<div class="itemCostsEmployees costs">' . $cols[$key]['titlecosts_employees'] . '</div>';
 			echo '<div class="itemCostsMaterials costs">' . $cols[$key]['titlecosts_materials'] . '</div>';
 			echo '<div class="itemCostsExternal costs">' . $cols[$key]['titlecosts_external'] . '</div>';
 			echo '<div class="itemCostsOther costs">' . $cols[$key]['titlecosts_other'] . '</div>';
-			echo '<div class="itemDays"><span class="days">' . $cols[$key]['titledays'] . '</span> ' . $lang['PROC_PSPGRID_DAYS'] . '</div>';
+			//echo '<div class="itemDays"><span class="days">' . $cols[$key]['titledays'] . '</span> ' . $lang['PROC_PSPGRID_DAYS'] . '</div>';
+			echo '<div class="itemTotals"><div class="left"><span class="days"> ' . $cols[$key]['titledays'] . '</span> <span>' . $lang['PROC_PSPGRID_DAYS'] . '</span></div><div class="right"><span>&euro;</span> <span class="itemcosts">' . $cols[$key]['titlecosts_total'] . '</span></div></div>';
 			echo '<div class="itemTeamct"><a class="ct-content" field="coPopup-team_ct">' . $cols[$key]['titleteam_ct'] . '</a></div>';
 			echo '<div class="itemStatus">0</div>';
 			echo '</div></div>';
@@ -148,6 +149,12 @@ foreach($cols as $key => &$value){
 		echo '</div><div class="pspgrids-spacer"></div>';
 	// listitems
 	echo '<div class="' . $procsphase . ' procs-phase-design">';
+	
+	$newNoteItemClass = ' empty';
+	$num_notes = sizeof($cols[$key]["notes"]);
+	if($num_notes > 0) {
+		$newNoteItemClass = '';
+	}
 	foreach($cols[$key]["notes"] as $tkey => &$tvalue){ 
 		$class = 'planned';
 		switch($cols[$key]["notes"][$tkey]['status']) {
@@ -179,7 +186,8 @@ foreach($cols as $key => &$value){
 		echo '<div class="itemCostsMaterials costs">' . $cols[$key]["notes"][$tkey]['costs_materials'] . '</div>';
 		echo '<div class="itemCostsExternal costs">' . $cols[$key]["notes"][$tkey]['costs_external'] . '</div>';
 		echo '<div class="itemCostsOther costs">' . $cols[$key]["notes"][$tkey]['costs_other'] . '</div>';
-		echo '<div class="itemDays"><span class="days">' . $cols[$key]["notes"][$tkey]['days'] . '</span> ' . $lang['PROC_PSPGRID_DAYS'] . '</div>';
+		//echo '<div class="itemDays"><span class="days">' . $cols[$key]["notes"][$tkey]['days'] . '</span> ' . $lang['PROC_PSPGRID_DAYS'] . '</div>';
+		echo '<div class="itemTotals"><div class="left"><span class="days"> ' . $cols[$key]["notes"][$tkey]['days'] . '</span> <span>' . $lang['PROC_PSPGRID_DAYS'] . '</span></div><div class="right"><span>&euro;</span> <span class="itemcosts">' . $cols[$key]["notes"][$tkey]['itemcosts'] . '</span></div></div>';
 		echo '<div class="itemTeamct"><a class="ct-content" field="itemTeamct coPopup-team_ct">' . $cols[$key]["notes"][$tkey]['team_ct'] . '</a></div>';
 		echo '<div class="itemStatus">' . $cols[$key]["notes"][$tkey]['status'] . '</div>';
 		echo '</div></div>';
@@ -187,13 +195,13 @@ foreach($cols as $key => &$value){
 	
 	echo '</div>';
 if($pspgrid->canedit) {
-	echo '<span class="newNoteItem newItemOption newNote" rel="note"></span><span class="newNoteBlind" style="display: block; background: #fff; height: 20px; width: 10px; margin: -31px 0 0 0;"></span>';
+	echo '<span class="newNoteItem newItemOption newNote' . $newNoteItemClass . '" rel="note"></span><span class="newNoteBlind"></span>';
 	}
 	echo '</div>';
  } ?>
  </div>
-
 <div class="content-spacer" style="clear: both;"></div>
+<div class="content-spacer"></div>
 <?php if($pspgrid->perms != "guest") { ?>
 <div class="content-spacer"></div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
