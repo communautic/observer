@@ -20,7 +20,7 @@ $lang["PROC_GRID_STAGEGATE_NEW"] = 'Neues Stagegate';
 $lang['PROC_GRID_NOTES'] = 'Tätigkeiten';
 
 $lang['PROC_GRID_DURATION'] = 'Dauer';
-$lang['PROC_GRID_HOURS'] = 'Stunde/n';
+$lang['PROC_GRID_HOURS'] = 'Stunde(n)';
 $lang['PROC_GRID_COSTS_EMPLOYEES'] = 'Personalkosten';
 $lang['PROC_GRID_COSTS_MATERIAL'] = 'Materialkosten';
 $lang['PROC_GRID_COSTS_EXTERNAL'] = 'Fremdleistungen';

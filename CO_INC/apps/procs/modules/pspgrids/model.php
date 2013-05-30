@@ -258,6 +258,7 @@ class ProcsPspgridsModel extends ProcsModel {
 			$titlecosts_materials = 0;
 			$titlecosts_external = 0;
 			$titlecosts_other = 0;
+			$titlecosts_total = 0;
 			$qn = "SELECT * FROM " . CO_TBL_PROCS_PSPGRIDS_NOTES . " where cid = '$colID' and bin='0' ORDER BY sort";
 			$resultn = mysql_query($qn, $this->_db->connection);
 			$items = array();
@@ -278,6 +279,7 @@ class ProcsPspgridsModel extends ProcsModel {
 					$titlecosts_materials = $rown->costs_materials;
 					$titlecosts_external = $rown->costs_external;
 					$titlecosts_other = $rown->costs_other;
+					$titlecosts_total = $rown->costs_employees + $rown->costs_materials + $rown->costs_external + $rown->costs_other;
 				} else {
 					$items[] = array(
 						"note_id" => $rown->id,
@@ -292,7 +294,8 @@ class ProcsPspgridsModel extends ProcsModel {
 						"costs_employees" => $rown->costs_employees,
 						"costs_materials" => $rown->costs_materials,
 						"costs_external" => $rown->costs_external,
-						"costs_other" => $rown->costs_other
+						"costs_other" => $rown->costs_other,
+						"itemcosts" => $rown->costs_employees + $rown->costs_materials + $rown->costs_external + $rown->costs_other,
 					);
 					if($rown->isstagegate == 0) {
 						$costs += $rown->costs_employees + $rown->costs_materials + $rown->costs_external + $rown->costs_other;
@@ -347,6 +350,7 @@ class ProcsPspgridsModel extends ProcsModel {
 				"titlecosts_materials" => $titlecosts_materials,
 				"titlecosts_external" => $titlecosts_external,
 				"titlecosts_other" => $titlecosts_other,
+				"titlecosts_total" => $titlecosts_total,
 				"notes" => $items,
 				"days" => $days,
 				"costs" => $costs

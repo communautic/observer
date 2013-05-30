@@ -546,10 +546,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d8d3ab', end
 #procs-right .shape2 { position: absolute; width: 160px; height: 80px; cursor: pointer; border-radius: 80px / 40px; box-shadow: 1px 1px 4px #666;}
 #procs-right .shape2 div { width: 140px; height: 60px; padding: 10px; display: table-cell; vertical-align: middle; text-align: center; }
 /* rhombus */
-#procs-right .shape3 { position: absolute; width: 160px; height: 80px; cursor: pointer; }
-#procs-right .shape3:before { content: ""; width: 0; height: 0; position: absolute; top: 40px; left: 0px; border-top: 40px solid #ffc89b  ; border-left: 80px solid transparent; border-right: 80px solid transparent; z-index: 0;}
-#procs-right .shape3:after { content: ""; width: 0; height: 0; position: absolute; top: 0px; left: 0px; border-bottom: 40px solid #ffc89b  ; border-left: 80px solid transparent; border-right: 80px solid transparent; z-index: 0;}
-#procs-right .shape3 div { position: relative; width: 140px; height: 60px; padding: 10px; display: table-cell; vertical-align: middle; text-align: center; z-index: 1; }
+#procs-right .shape3 { position: absolute; width: 160px; height: 100px; cursor: pointer; }
+#procs-right .shape3:before { content: ""; width: 0; height: 0; position: absolute; top: 50px; left: 0px; border-top: 50px solid #ffc89b  ; border-left: 80px solid transparent; border-right: 80px solid transparent; z-index: 0;}
+#procs-right .shape3:after { content: ""; width: 0; height: 0; position: absolute; top: 0px; left: 0px; border-bottom: 50px solid #ffc89b  ; border-left: 80px solid transparent; border-right: 80px solid transparent; z-index: 0;}
+#procs-right .shape3 div { position: relative; width: 140px; height: 72px; padding: 15px; display: table-cell; vertical-align: middle; text-align: center; z-index: 1; }
 /* sqare + down arrow */
 #procs-right .shape4 { position: absolute; width: 160px; height: 60px; }
 #procs-right .shape4:after { content: ""; width: 0; height: 0; position: absolute; top: 60px; left: 0px; border-top-width: 20px; border-top-style: solid; border-left: 80px solid transparent; border-right: 80px solid transparent; }

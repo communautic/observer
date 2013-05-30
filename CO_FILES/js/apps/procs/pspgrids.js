@@ -263,7 +263,6 @@ function procsPspgrids(name) {
 			case "getProjectFolderDialog":
 				$.ajax({ type: "GET", url: "/", data: 'path=apps/projects&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
 					$("#modalDialog").html(html);
-					//$("#modalDialog").dialog('option', 'height', 50);
 					$("#modalDialog").dialog('option', 'position', offset);
 					$("#modalDialog").dialog('option', 'title', title);
 					$("#modalDialog").dialog('open');
@@ -273,7 +272,6 @@ function procsPspgrids(name) {
 			case "getAccessDialog":
 				$.ajax({ type: "GET", url: "/", data: 'path=apps/procs&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
 					$("#modalDialog").html(html);
-					//$("#modalDialog").dialog('option', 'height', 50);
 					$("#modalDialog").dialog('option', 'position', offset);
 					$("#modalDialog").dialog('option', 'title', title);
 					$("#modalDialog").dialog('open');
@@ -317,81 +315,76 @@ function procsPspgrids(name) {
 
 
 	this.coPopup = function(el,request) {
-				var elepos = el.position();
-				var id = parseInt(el.attr('id').replace(/procspspgriditem_/, ""));
-				currentProcPspgridEditedNote = id;
-				
-				var title = el.find('div.itemTitle').text();
-				var text = el.find('div.itemText').text();
-				var team = el.find('div.itemTeam').html();
-				var costs_employees = el.find('div.itemCostsEmployees').text();
-				var costs_materials = el.find('div.itemCostsMaterials').text();
-				var costs_external = el.find('div.itemCostsExternal').text();
-				var costs_other = el.find('div.itemCostsOther').text();
-				var days = el.find('span.days').text();
-				var team_ct = el.find('div.itemTeamct').html();
-				var status = el.find('div.itemStatus').text();
-				
-				var html = this.coPopupEdit;
-				var pclass = this.coPopupEditClass;
-				var copopup = $('#co-popup');
-				copopup.html(html);
-				copopup.find('.title').val(title);
-				copopup.find('.text').val(text);
-				copopup.find('.costs_employees').val(costs_employees);
-				copopup.find('.costs_materials').val(costs_materials);
-				copopup.find('.costs_external').val(costs_external);
-				copopup.find('.costs_other').val(costs_other);
-				copopup.find('.days').val(days);
-				copopup.find('.statusButton').removeClass('active');
-				copopup.find('.statusButton:eq('+status+')').addClass('active');
-				$('#coPopup-team').html(team);
-				$('#coPopup-team_ct').html(team_ct);
-				$('#co-popup a.binItem').attr('rel',id);
-				$('#coPopupMS').attr('rel',id);
-				$('#coPopupMS').removeClass('active');
-				copopup.find('.tohide').show();
-				copopup.find('.tohideMS').show();
-				switch(request) {
-					case 'title':
-						copopup.find('.tohide').hide();
-					break;
-					case 'ms':
-						copopup.find('.tohideMS').hide();
-						$('#coPopupMS').addClass('active');
-					break;
+		var elepos = el.position();
+		var id = parseInt(el.attr('id').replace(/procspspgriditem_/, ""));
+		currentProcPspgridEditedNote = id;
+		
+		var title = el.find('div.itemTitle').text();
+		var text = el.find('div.itemText').text();
+		var team = el.find('div.itemTeam').html();
+		var costs_employees = el.find('div.itemCostsEmployees').text();
+		var costs_materials = el.find('div.itemCostsMaterials').text();
+		var costs_external = el.find('div.itemCostsExternal').text();
+		var costs_other = el.find('div.itemCostsOther').text();
+		var days = el.find('span.days').text();
+		var team_ct = el.find('div.itemTeamct').html();
+		var status = el.find('div.itemStatus').text();
+		
+		var html = this.coPopupEdit;
+		var pclass = this.coPopupEditClass;
+		var copopup = $('#co-popup');
+		copopup.html(html);
+		copopup.find('.title').val(title);
+		copopup.find('.text').val(text);
+		copopup.find('.costs_employees').val(costs_employees);
+		copopup.find('.costs_materials').val(costs_materials);
+		copopup.find('.costs_external').val(costs_external);
+		copopup.find('.costs_other').val(costs_other);
+		copopup.find('.days').val(days);
+		copopup.find('.statusButton').removeClass('active');
+		copopup.find('.statusButton:eq('+status+')').addClass('active');
+		$('#coPopup-team').html(team);
+		$('#coPopup-team_ct').html(team_ct);
+		$('#co-popup a.binItem').attr('rel',id);
+		$('#coPopupMS').attr('rel',id);
+		$('#coPopupMS').removeClass('active');
+		copopup.find('.tohide').show();
+		copopup.find('.tohideMS').show();
+		switch(request) {
+			case 'title':
+				copopup.find('.tohide').hide();
+			break;
+			case 'ms':
+				copopup.find('.tohideMS').hide();
+				$('#coPopupMS').addClass('active');
+			break;
+		}
+		copopup
+			.removeClass(function (index, css) {
+				   return (css.match (/\bpopup-\w+/g) || []).join(' ');
+			   })
+			.addClass(pclass)
+			.position({
+				  my: "center center",
+				  at: "right+170 center",
+				  of: el,
+				  collision: 'flip fit',
+				  within: '#procs-right .scroll-pane',
+				  using: function(coords, ui) {
+						var $modal = $(this),
+						t = coords.top,
+						l = coords.left,
+						className = 'switch-' + ui.horizontal;
+						$modal.css({
+							left: l + 'px',
+							top: t + 'px'
+						}).removeClass(function (index, css) {
+							return (css.match (/\bswitch-\w+/g) || []).join(' ');
+						})
+						.addClass(className);
+						copopup.hide().animate({width:'toggle'}, function() { copopup.find('.arrow').offset({ top: ui.target.top+25 }); })
 				}
-				copopup
-					.removeClass(function (index, css) {
-						   return (css.match (/\bpopup-\w+/g) || []).join(' ');
-					   })
-					.addClass(pclass)
-					.position({
-						  my: "center center",
-						  at: "right+170 center",
-						  of: el,
-						  collision: 'flip fit',
-						  within: '#procs-right .scroll-pane',
-						  using: function(coords, ui) {
-								var $modal = $(this),
-								t = coords.top,
-								l = coords.left,
-								className = 'switch-' + ui.horizontal;
-								$modal.css({
-									//width: 0,
-									//display: 'none',
-									left: l + 'px',
-									top: t + 'px'
-								}).removeClass(function (index, css) {
-						   			return (css.match (/\bswitch-\w+/g) || []).join(' ');
-					   			})
-								.addClass(className);
-								
-								//copopup.animate(css, 200, "linear");
-								//copopup.fadeIn(5000);
-								copopup.hide().animate({width:'toggle'}, function() { copopup.find('.arrow').offset({ top: ui.target.top+25 }); })
-				  		}
-					});
+			});
 	}
 	
 	
@@ -507,10 +500,8 @@ this.coPopupType = function() {
 		var id = currentProcPspgridEditedNote;
 		var note = $('#procspspgriditem_'+id);
 		var team = $('#coPopup-team').html();
-		//$('#procspspgriditem-team-'+id).html(team);
 		note.find('div.itemTeam').html(team);
 		var team = $('#coPopup-team a:visible').text();
-		//$('#procspspgriditem-teamprint-'+id).text(team);
 		note.find('div.itemTeamprint').text(team);
 		this.saveItem();
 	}
@@ -519,7 +510,6 @@ this.coPopupType = function() {
 		var id = currentProcPspgridEditedNote;
 		var note = $('#procspspgriditem_'+id);
 		var team_ct = $('#coPopup-team_ct').html();
-		//$('#procspspgriditem-team_ct-'+id).html(team_ct);
 		note.find('div.itemTeamct').html(team_ct);
 		this.saveItem();
 	}
@@ -528,10 +518,8 @@ this.coPopupType = function() {
 		var id = currentProcPspgridEditedNote;
 		var note = $('#procspspgriditem_'+id);
 		var team = $('#coPopup-team').html();
-		//$('#procspspgriditem-team-'+id).html(team);
 		note.find('div.itemTeam').html(team);
 		var team = $('#coPopup-team a:visible').text();
-		//$('#procspspgriditem-teamprint-'+id).text(team);
 		note.find('div.itemTeamprint').text(team);
 		this.saveItem();
 	}
@@ -540,7 +528,6 @@ this.coPopupType = function() {
 		var id = currentProcPspgridEditedNote;
 		var note = $('#procspspgriditem_'+id);
 		var team_ct = $('#coPopup-team_ct').html();
-		//$('#procspspgriditem-team_ct-'+id).html(team_ct);
 		note.find('div.itemTeamct').html(team_ct);
 		this.saveItem();
 	}
@@ -581,6 +568,12 @@ this.coPopupType = function() {
 		if(costs_other == '') { costs_other = 0; }
 		note.find('div.itemCostsOther').text(costs_other);
 		
+		var itemcosts = 0;
+		note.find('div.costs').each(function() {
+			itemcosts += parseInt($(this).html());
+		})
+		note.find('span.itemcosts').html(itemcosts).number( true, 0, '', '.' );
+		
 		$.ajax({ type: "POST", url: "/", data: { path: 'apps/procs/modules/pspgrids', request: 'savePspgridNote', id: id, title: title, text: text, team: team, team_ct: team_ct, days: days, costs_employees: costs_employees, costs_materials: costs_materials, costs_external: costs_external, costs_other: costs_other }, success: function(data){
 			var costs = 0;
 			var col = note.parent();
@@ -615,7 +608,6 @@ this.coPopupType = function() {
 			case 'notetitle':
 				var col = parseInt(ele.parent().parent().attr("id").replace(/pspgridscol_/, ""));
 				var pid = $("#procs").data("third");
-				//ele.parent().addClass('planned');
 				$.ajax({ type: "GET", url: "/", data: "path=apps/procs/modules/pspgrids&request=savePspgridNewManualTitle&pid="+pid+"&col="+col, cache: false, success: function(html){	
 						var phase = $('#pspgridscol_'+col+' .procs-col-title');
 						phase.html(html);
@@ -640,23 +632,7 @@ this.coPopupType = function() {
 				});
 			break;
 		}
-}
-
-	/*this.newItem = function() {
-		var mid = $("#procs").data("third");
-		var num = parseInt($("#procs-right .task_sort").size());
-		$.ajax({ type: "GET", url: "/", data: "path=apps/procs/modules/pspgrids&request=addTask&mid=" + mid + "&num=" + num + "&sort=" + num, success: function(html){
-			$('#procspspgridtasks').append(html);
-			$('.pspgridouter:eq('+idx+')').slideDown(function() {
-				$(this).find(":text:eq(0)").focus();
-				if(idx == 6) {
-				$('#procs-right .addTaskTable').clone().insertAfter('#phasetasks');
-				}
-				initProcsContentScrollbar();
-			});
-			}
-		});
-	}*/
+	}
 
 
 	this.binItem = function(id) {
@@ -673,7 +649,6 @@ this.coPopupType = function() {
 						if(data){
 							if(note.hasClass('colTitle')) {
 								note.fadeOut(function() { 
-									phase = note.parent().next();
 									note.parent().html('<span class="newNoteItem newItemOption newNoteTitle" rel="notetitle"></span>');
 									note.remove();
 								});
@@ -706,7 +681,7 @@ this.coPopupType = function() {
 							$('#pspgridscol_'+id).animate({width: 0}, function(){ 
 								$(this).remove();
 								$("#procs-pspgrid").width($("#procs-pspgrid").width()-195);
-								self.updateOuterHeight();
+								//self.updateOuterHeight();
 							});
 						}
 					});
@@ -850,12 +825,12 @@ this.coPopupType = function() {
 		$('#modalDialogProcsPspgrid').slideDown();
 	}
 	
-	this.updateOuterHeight = function() {
+	/*this.updateOuterHeight = function() {
 		var maxHeight = Math.max.apply(null, $("#procs-pspgrid >div").map(function () {
 			return $(this).height();
 			}).get());
 		$('#procs-pspgrid').height(maxHeight+75);
-	}
+	}*/
 	
 	this.updateTotals = function(c) {
 		var items = c.find('>div').size();
@@ -954,10 +929,8 @@ $(document).ready(function() {
 					}
 				}
 				var idx = $('#procs-pspgrid .procs-col-title').index(this);
-				//var c = $('#procs-pspgrid .procs-phase:eq('+idx+')');
+				var c = $('#procs-pspgrid .procs-phase:eq('+idx+')');
 				if(tocopy) {
-					//$('#procs-pspgrid .procs-phase:eq('+idx+')').prepend(tocopy);
-					//$('#procs-pspgrid .procs-phase:eq('+idx+') > div:eq(0)').removeClass('colTitle').removeClass('ui-sortable-helper').removeClass('ui-draggable').removeClass('ui-draggable-dragging').attr('style','');
 					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs/modules/pspgrids&request=binItem&id="+tocopyid , success: function(data){
 						if(data){} 
 						}
@@ -972,9 +945,7 @@ $(document).ready(function() {
 					var id = ui.draggable.attr('rel');
 					$.ajax({ type: "GET", url: "/", data: "path=apps/procs/modules/pspgrids&request=savePspgridNewNoteTitle&pid="+pid+"&id=" + id+"&col="+col, cache: false, success: function(id){
 						insert.attr('id','procspspgriditem_' + id).attr('rel',id);
-						//insert.find('div.itemTitle').attr('id','procspspgriditem-title-' + id);
-						//insert.find('div.itemText').attr('id','procspspgriditem-text-' + id);
-						//$('#procs-pspgrid .procs-phase:eq('+idx+')').trigger('sortupdate');
+						procs_pspgrids.updateTotals(c);
 						}
 					});
 				} else { // if dropped from list
@@ -985,9 +956,7 @@ $(document).ready(function() {
 					ui.draggable.remove();
 					var id = attr.replace(/procspspgriditem_/, "");
 					$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/procs/modules/pspgrids&request=savePspgridNoteTitle&id=" + id + "&col="+col, cache: false, success: function(id){
-						/*if(dragidx != idx) {
-							$('#procs-pspgrid .procs-phase:eq('+idx+')').trigger('sortupdate');
-						}*/
+						procs_pspgrids.updateTotals(c);
 						}
 					});
 				}
@@ -1028,7 +997,13 @@ $(document).ready(function() {
 		}).disableSelection().bind('sortupdate', function(event, ui) {
 			var col = parseInt($(this).parent().attr("id").replace(/pspgridscol_/, ""));
 			var idx = $('#procs-pspgrid .procs-phase').index(this);
-			procs_pspgrids.updateOuterHeight();
+			//procs_pspgrids.updateOuterHeight();
+			var phase = $('#procs-pspgrid .procs-phase:eq('+idx+')');
+			if(phase.find('>div').length > 0) {
+				phase.next().removeClass('empty');
+			} else {
+				phase.next().addClass('empty');
+			}
 			$('#procs-pspgrid .procs-phase:eq('+idx+')>div').each(function(index) {
 				var div = $(this);
 				var attr = div.attr('id');
@@ -1084,7 +1059,7 @@ $(document).ready(function() {
 		var styles = '';
 		$("#procs-pspgrid").width($("#procs-pspgrid").width()+230);
 		$.ajax({ type: "GET", url: "/", data: "path=apps/procs/modules/pspgrids&request=newPspgridColumn&id="+pid+"&sort="+sor, cache: false, success: function(num){
-			$("#procs-pspgrid").append('<div id="pspgridscol_' + num + '"><div class="dragCol dragColActive"><div id="procs-pspgrid-col-delete-' + num + '" class="procs-pspgrid-column-delete"><span class="icon-delete"></span></div></div><div class="procs-col-title ui-droppable"><span rel="notetitle" class="newNoteItem newItemOption newNoteTitle"></span></div><div class="pspgrids-spacer"></div><div class="procs-phase procs-phase-design ui-sortable"></div><span rel="note" class="newNoteItem newItemOption newNote"></span><span style="display: block; background: #fff; height: 20px; width: 10px; margin: -31px 0 0 0;" class="newNoteBlind"></span></div>').sortable("refresh");
+			$("#procs-pspgrid").append('<div id="pspgridscol_' + num + '"><div class="dragCol dragColActive"><div id="procs-pspgrid-col-delete-' + num + '" class="procs-pspgrid-column-delete"><span class="icon-delete"></span></div></div><div class="procs-col-title ui-droppable"><span rel="notetitle" class="newNoteItem newItemOption newNoteTitle"></span></div><div class="pspgrids-spacer"></div><div class="procs-phase procs-phase-design ui-sortable"></div><span rel="note" class="newNoteItem newItemOption newNote empty"></span><span class="newNoteBlind"></span></div>').sortable("refresh");
 			}
 		});
 	})
@@ -1128,8 +1103,12 @@ $(document).ready(function() {
 	$('input.currency').livequery( function() {
 		$(this).number( true, 0, '', '.' );
 	})
-	$('span.totalcosts, #procPspgridCosts').livequery( function() {
+	$('span.totalcosts, #procPspgridCosts, span.itemcosts').livequery( function() {
 		$(this).number( true, 0, '', '.' );
+	})
+	$(document).on('click', '#msInit', function(e) {
+		e.preventDefault();
+		$('#coPopupMS').trigger('click');
 	})
 	$(document).on('click', '#coPopupMS', function(e) {
 		e.preventDefault();

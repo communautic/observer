@@ -284,7 +284,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#949494', end
 #co-popup .fieldset2 label { display: inline-block; padding-right: 10px;  line-height: 23px; width: 80px; }
 #co-popup .fieldset2 input { display: inline-block; width: 145px; padding: 0 10px 0 10px; height: 25px; background: #fff; border: 1px solid #b2b2b2; border-radius: 4px; margin-bottom: 8px;}
 #co-popup .fieldset2 input.short { display: inline-block; width: 30px; padding: 0 10px 0 10px; height: 25px; background: #fff; border: 1px solid #b2b2b2; border-radius: 4px; margin-bottom: 8px;}
-#co-popup .fieldset2 div.contacts { float: right; width: 176px; color: #000; margin: 3px 0 8px; min-height: 15px; }
+#co-popup .fieldset2 div.contacts { float: right; width: 175px; color: #000; margin: 3px 0 8px; min-height: 15px; }
 #co-popup .fieldset2 div.contacts a { color: #000; }
 #co-popup .fieldset2 div.contacts a:hover { color: #82AA0B; cursor: pointer; }
 

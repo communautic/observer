@@ -14,23 +14,23 @@
   </div>
   <div class="fieldset2 tohide">
     <label><?php echo $lang['PROC_GRID_DURATION'];?></label>
-    <input type="text" class="hours short" maxlength="100" value="" />
+    <input type="text" class="hours short" maxlength="3" value="" />
     <?php echo $lang['PROC_GRID_HOURS'];?></div>
   <div class="fieldset2 tohide">
     <label><?php echo $lang['PROC_GRID_COSTS_EMPLOYEES'];?></label>
-    <input id="personal" type="text" class="costs_employees currency" maxlength="60" value="" />
+    <input id="personal" type="text" class="costs_employees currency" maxlength="10" value="" />
   </div>
   <div class="fieldset2 tohide">
     <label><?php echo $lang['PROC_GRID_COSTS_MATERIAL'];?></label>
-    <input type="text" class="costs_materials currency" maxlength="60" value="" />
+    <input type="text" class="costs_materials currency" maxlength="10" value="" />
   </div>
   <div class="fieldset2 tohide">
     <label><?php echo $lang['PROC_GRID_COSTS_EXTERNAL'];?></label>
-    <input type="text" class="costs_external currency" maxlength="60" value="" />
+    <input type="text" class="costs_external currency" maxlength="10" value="" />
   </div>
   <div class="fieldset2 tohide">
     <label><?php echo $lang['PROC_GRID_COSTS_OTHER'];?></label>
-    <input type="text" class="costs_other currency" maxlength="60" value="" />
+    <input type="text" class="costs_other currency" maxlength="10" value="" />
   </div>
   <div class="fieldset">
     <label><?php echo $lang['GLOBAL_DESCRIPTION'];?></label>
