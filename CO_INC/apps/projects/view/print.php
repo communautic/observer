@@ -53,6 +53,21 @@
         <td><?php echo($project->status_text);?> <?php echo($project->status_text_time);?> <?php echo($project->status_date)?></td>
 	</tr>
 </table>
+<?php if($project->setting_costs == 1) { ?>
+&nbsp;
+<table width="100%" class="standard">
+	<tr>
+		<td class="tcell-left"><?php echo $lang["PROJECT_COSTS_PLAN"];?></td>
+		<td><?php echo $project->setting_currency;?> <?php echo $project->costs_plan_total;?></td>
+    </tr>
+</table>
+<table width="100%" class="standard">
+	<tr>
+		<td class="tcell-left"><?php echo $lang["PROJECT_COSTS_REAL"];?></td>
+		<td><?php echo $project->setting_currency;?> <?php echo $project->costs_real_total;?></td>
+    </tr>
+</table>
+<?php } ?>
 <?php if(!empty($project->protocol)) { ?>
 &nbsp;
 <table width="100%" class="protocol">

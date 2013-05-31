@@ -216,6 +216,9 @@ if (!empty($_GET['request'])) {
 		case 'getGlobalSearch':
 			echo($projects->getGlobalSearch($system->checkMagicQuotesTinyMCE($_GET['term'])));
 		break;
+		case 'toggleCosts':
+			echo($projects->toggleCosts($_GET['id'],$_GET['statusnew']));
+		break;
 	}
 }
 

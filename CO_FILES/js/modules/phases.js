@@ -327,15 +327,19 @@ function Phases(app) {
 					}
 				});
 			break;
-			/*case "getPhaseStatusDialog":
+			case "getTasksCostsDialog":
 				$.ajax({ type: "GET", url: "/", data: 'path=apps/'+ module.app +'/modules/phases&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
 					$("#modalDialog").html(html);
+					$("#modalDialog input.costs_employees").val($('#'+field+'-costs_employees').text());
+					$("#modalDialog input.costs_materials").val($('#'+field+'-costs_materials').text());
+					$("#modalDialog input.costs_external").val($('#'+field+'-costs_external').text());
+					$("#modalDialog input.costs_other").val($('#'+field+'-costs_other').text());
 					$("#modalDialog").dialog('option', 'position', offset);
 					$("#modalDialog").dialog('option', 'title', title);
 					$("#modalDialog").dialog('open');
 					}
 				});
-			break;*/
+			break;
 			case "getTasksDialog":
 				$.ajax({ type: "GET", url: "/", data: 'path=apps/'+ module.app +'/modules/phases&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
 					$("#modalDialog").html(html);
@@ -399,7 +403,7 @@ function Phases(app) {
 		var cat = rel;
 		$("#modalDialog").dialog("close");
 		if(cat == 2) {
-			this.actionDialog(0,'getProjectLinkDialog','status',1);
+			this.actionDialog("my: 'left top', at: 'right bottom', of: 'table.addTaskTable'",'getProjectLinkDialog','status',1);
 		} else {
 			$.ajax({ type: "GET", url: "/", data: 'path=apps/'+ module.app +'/modules/phases&request=addTask&pid=' + pid + '&phid=' + phid + '&date=' + enddate + '&enddate=' + enddate + '&cat=' + cat, success: function(html){
 				$('#'+ module.app +'phasetasks').append(html);
@@ -463,6 +467,62 @@ function Phases(app) {
 		var obj = getCurrentModule();
 		$('#'+ module.app +' .coform').ajaxSubmit(obj.poformOptions);
 	}
+	
+	
+	this.saveItem = function() {
+		//var module = this;
+		//var phaseid = $("#"+ module.app +"3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
+		var costs = 0;
+		var coststype = $('#costsfield').val();
+		var taskid = $('#coststaskid').val();
+		var costsfield = coststype+'-'+taskid;
+		
+		var costs_employees = parseInt($('#modalDialog input.costs_employees').val());
+		if(costs_employees == '') { costs_employees = 0; }
+		//note.find('div.itemCostsEmployees').text(costs_employees);
+		
+		var costs_materials = parseInt($('#modalDialog input.costs_materials').val());
+		if(costs_materials == '') { costs_materials = 0; }
+		//note.find('div.itemCostsMaterials').text(costs_materials);
+		
+		var costs_external = parseInt($('#modalDialog input.costs_external').val());
+		if(costs_external == '') { costs_external = 0; }
+		//note.find('div.itemCostsExternal').text(costs_external);
+		
+		var costs_other = parseInt($('#modalDialog input.costs_other').val());
+		if(costs_other == '') { costs_other = 0; }
+		
+		costs = costs_employees+costs_materials+costs_external+costs_other;
+		//note.find('div.itemCostsOther').text(costs_other);
+		$.ajax({ type: "POST", url: "/", data: { path: 'apps/projects/modules/phases', request: 'updateCosts', id: taskid, type: coststype, costs_employees: costs_employees, costs_materials: costs_materials, costs_external: costs_external, costs_other: costs_other }, success: function(data){
+						$('#'+costsfield+'-costs_employees').text(costs_employees);
+						$('#'+costsfield+'-costs_materials').text(costs_materials);
+						$('#'+costsfield+'-costs_external').text(costs_external);
+						$('#'+costsfield+'-costs_other').text(costs_other);
+						$('#'+costsfield).text(costs).number( true, 0, '', '.' );
+						
+						
+						switch(coststype) {
+							case 'costsplan':
+								var type = '.costsPlan';
+								var div = $('#phasecostsplan');
+							break;
+							case 'costsreal':
+								var type = '.costsReal';
+								var div = $('#phasecostsreal');
+							break;
+						}
+						var phasecosts = 0;
+						$('#projects-right').find(type).each(function() {
+							string = $(this).text();
+							string = string.replace(/\D/g,'');
+							phasecosts += parseInt(string);
+						})
+						div.text(phasecosts).number( true, 0, '', '.' );
+						
+			}																																																													   		})
+	}
+
 
 
 	this.binItem = function(id) {

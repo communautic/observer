@@ -81,6 +81,10 @@ $lang['GLOBAL_COSTS_EMPLOYEES'] = 'Personalkosten';
 $lang['GLOBAL_COSTS_MATERIAL'] = 'Materialkosten';
 $lang['GLOBAL_COSTS_EXTERNAL'] = 'Fremdleistungen';
 $lang['GLOBAL_COSTS_OTHER'] = 'Sonstige Kosten';
+$lang['GLOBAL_COSTS_EMPLOYEES_SHORT'] = 'Personal';
+$lang['GLOBAL_COSTS_MATERIAL_SHORT'] = 'Material';
+$lang['GLOBAL_COSTS_EXTERNAL_SHORT'] = 'Fremd';
+$lang['GLOBAL_COSTS_OTHER_SHORT'] = 'Sonstige';
 
 $lang["GLOBAL_STATUS"] 		= 	'Status';
 // Status definitions

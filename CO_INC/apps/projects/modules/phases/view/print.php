@@ -32,6 +32,21 @@
         <td><?php echo($phase->status_text);?> <?php echo($phase->status_text_time);?> <?php echo($phase->status_date)?></td>
 	</tr>
 </table>
+<?php if($phase->setting_costs == 1) { ?>
+&nbsp;
+<table width="100%" class="standard">
+	<tr>
+		<td class="tcell-left"><?php echo $lang["PROJECT_COSTS_PLAN"];?></td>
+		<td><?php echo $phase->setting_currency;?> <?php echo $phase->costs_plan_total;?></td>
+    </tr>
+</table>
+<table width="100%" class="standard">
+	<tr>
+		<td class="tcell-left"><?php echo $lang["PROJECT_COSTS_REAL"];?></td>
+		<td><?php echo $phase->setting_currency;?> <?php echo $phase->costs_real_total;?></td>
+    </tr>
+</table>
+<?php } ?>
 <?php if(!empty($phase->protocol)) { ?>
 &nbsp;
 <table width="100%" class="protocol">
