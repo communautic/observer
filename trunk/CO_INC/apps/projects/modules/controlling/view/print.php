@@ -53,12 +53,12 @@
         <table class="chart smalltext" width="95%">
             <tr><td class="fourCols-three greybg">&nbsp;</td><td class="greybg"><?php echo $lang["PROJECT_COSTS_PLAN"];?></td></tr>
             <tr><td class="fourCols-three">&nbsp;</td><td>
-            <table>
+            <table width="100%">
                 <tr>
-                    <td><?php echo $cont->setting_currency ;?> <?php echo number_format($cont->costs_plan,0,',','.');?></td>
-                    <td>&nbsp;</td>
+                    <td align="right"><?php echo $cont->setting_currency ;?> <?php echo number_format($cont->costs_plan,0,',','.');?>&nbsp;&nbsp;</td>
                 </tr>
             </table>
+            &nbsp;
             <table width="100%">
                 <tr>
                     <td><?php echo $lang["GLOBAL_COSTS_EMPLOYEES_SHORT"];?></td>
@@ -95,12 +95,12 @@
 		        </tr>
 		    <tr>
 		        <td class="fourCols-three">&nbsp;</td>
-		        <td><table>
+		        <td><table width="100%">
 		            <tr>
-		                <td><?php echo $cont->setting_currency ;?> <?php echo number_format($cont->costs_real,0,',','.');?></td>
-		                <td>&nbsp;</td>
+		                <td align="right"><?php echo $cont->setting_currency ;?> <?php echo number_format($cont->costs_real,0,',','.');?>&nbsp;&nbsp;</td>
 		                </tr>
 		            </table>
+                    &nbsp;
 		            <table width="100%">
                 <tr>
                     <td><?php echo $lang["GLOBAL_COSTS_EMPLOYEES_SHORT"];?></td>
@@ -137,12 +137,38 @@
 		        </tr>
 		    <tr>
 		        <td class="fourCols-three">&nbsp;</td>
-		        <td><table>
+		        <td><table width="100%">
 		            <tr>
-		                <td><?php echo $cont->setting_currency ;?> <?php echo number_format($cont->stats_calc,0,',','.');?></td>
-		                <td>&nbsp;</td>
+		                <td align="right"><?php echo $cont->setting_currency ;?> <?php echo number_format($cont->stats_calc,0,',','.');?>&nbsp;&nbsp;</td>
 		                </tr>
-		            </table></td>
+		            </table>
+                    &nbsp;
+                    <table width="100%">
+                <tr>
+                    <td><?php echo $lang["GLOBAL_COSTS_EMPLOYEES_SHORT"];?></td>
+                    <td align="right"><?php echo $cont->setting_currency ;?> <?php echo number_format($cont->stats_calc_employees,0,',','.');?>&nbsp;&nbsp;</td>
+                </tr>
+            </table>
+            <table width="100%">
+                <tr>
+                    <td><?php echo $lang["GLOBAL_COSTS_MATERIAL_SHORT"];?></td>
+                    <td align="right"><?php echo $cont->setting_currency ;?> <?php echo number_format($cont->stats_calc_materials,0,',','.');?>&nbsp;&nbsp;</td>
+                </tr>
+            </table>
+             <table width="100%">
+                <tr>
+                    <td><?php echo $lang["GLOBAL_COSTS_EXTERNAL_SHORT"];?></td>
+                    <td align="right"><?php echo $cont->setting_currency ;?> <?php echo number_format($cont->stats_calc_external,0,',','.');?>&nbsp;&nbsp;</td>
+                </tr>
+            </table>
+            <table width="100%">
+                <tr>
+                    <td><?php echo $lang["GLOBAL_COSTS_OTHER_SHORT"];?></td>
+                    <td align="right"><?php echo $cont->setting_currency ;?> <?php echo number_format($cont->stats_calc_other,0,',','.');?>&nbsp;&nbsp;</td>
+                </tr>
+            </table>
+                    
+                    </td>
 		        </tr>
 	    </table></td>
 	</tr>
