@@ -891,6 +891,15 @@ class Projects extends Controller {
 		$search = $this->model->getGlobalSearch($term);
 		return $search;
 	}
+	
+	function toggleCosts($id,$status) {
+		$retval = $this->model->toggleCosts($id,$status);
+		if($retval){
+			 return 'true';
+		  } else{
+			 return "error";
+		  }
+	}
 
 }
 

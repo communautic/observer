@@ -178,6 +178,10 @@ input, textarea {
 .dialog-text a { display: block; line-height: 26px; background-color: #e5e5e5; border-bottom: 1px solid #fff; padding: 0 10px;}
 .dialog-text a:hover { background-color: #bfbfbf; color: #000 !important; }
 
+.dialog-text .fieldset { color: #666; margin: 0 0 5px 10px; font-size: 11px; }
+.dialog-text .fieldset label {  line-height: 19px; }
+.dialog-text .fieldset input { width: 145px; padding: 0 10px 0 10px; height: 19px; background: #fff; border: 1px solid #b2b2b2; border-radius: 4px; }
+
 .dialog-text-2 { font-size:11px; 
 	border-right: 4px solid #333;
 	border-left: 4px solid #333;
@@ -356,3 +360,6 @@ div.listItem .arrow { float: right;
     padding-right: 4px; }
 	
 	.showAccessPermissions:hover { cursor: pointer;}
+
+.positive_number { color: #64780A;}
+.negative_number { color: #ff4102;}

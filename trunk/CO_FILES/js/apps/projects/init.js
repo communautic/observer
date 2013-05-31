@@ -72,6 +72,26 @@ function projectsApplication(name) {
 				}																																				 			}
 		});
 	}
+	
+	this.toggleCosts = function(ele,status) {
+		var id = $("#projects").data("second");
+		switch(status) {
+			case "0":
+				var statusnew = 1;
+			break;
+			case "1":
+				var statusnew = 0;
+			break;
+		}
+	
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=toggleCosts&id=" + id + "&statusnew=" + statusnew, cache: false, success: function(data){
+				ele.text(statusnew);
+				var obj = getCurrentModule();
+				obj.actionRefresh();
+				
+				}
+		});
+	}
 
 
 	this.actionClose = function() {
@@ -1056,6 +1076,14 @@ $(document).ready(function() {
 		var id = $(this).attr("rel");
 		var obj = getCurrentModule();
 		obj.addParentLink(id);
+	});
+	
+	$(document).on('click', 'a.toggleCosts', function(e) {
+		e.preventDefault();
+		var ele = $(this);
+		var status = ele.text();
+		var obj = getCurrentModule();
+		obj.toggleCosts(ele,status);
 	});
 
 });

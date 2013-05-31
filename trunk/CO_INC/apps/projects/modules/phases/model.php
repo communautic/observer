@@ -212,6 +212,10 @@ class ProjectsPhasesModel extends ProjectsModel {
 				$array[$key] = $val;
 			}
 		
+		foreach($this->getProjectSettings($array["pid"]) as $key => $val) {
+			$array[$key] = $val;
+		}
+		
 		$array["perms"] = $this->getProjectAccess($array["pid"]);
 		$array["canedit"] = false;
 		$array["showCheckout"] = false;		
@@ -319,14 +323,24 @@ class ProjectsPhasesModel extends ProjectsModel {
 			$array["checkpoint_date"] = $this->_date->formatDate($row['date'],CO_DATE_FORMAT);
 			}
 		}
-
-		$phase = new Lists($array);
 		
+		$array["costs_plan_total"] = 0;
+		$array["costs_real_total"] = 0;
 		// get the tasks
 		$task = array();
 		$qt = "SELECT * FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where phaseid = '$id' and bin='0' ORDER BY startdate";
 		$resultt = mysql_query($qt, $this->_db->connection);
 		while($rowt = mysql_fetch_array($resultt)) {
+			$tasks["costs_plan"] = 0;
+			$tasks["costs_employees"] = 0;
+			$tasks["costs_materials"] = 0;
+			$tasks["costs_external"] = 0;
+			$tasks["costs_other"] = 0;
+			$tasks["costs_real"] = 0;
+			$tasks["costs_employees_real"] = 0;
+			$tasks["costs_materials_real"] = 0;
+			$tasks["costs_external_real"] = 0;
+			$tasks["costs_other_real"] = 0;
 			foreach($rowt as $key => $val) {
 				$tasks[$key] = $val;
 			}
@@ -335,7 +349,15 @@ class ProjectsPhasesModel extends ProjectsModel {
 			$tasks["donedate"] = $this->_date->formatDate($tasks["donedate"],CO_DATE_FORMAT);
 			$tasks["team"] = $this->_contactsmodel->getUserList($tasks['team'],'task_team_'.$tasks["id"], "", $array["canedit"]);
 			$tasks["team_ct"] = empty($tasks["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $tasks['team_ct'];
-				
+			if($array['setting_costs'] == 1) {
+				$tasks["costs_plan"] = $tasks["costs_employees"]+$tasks["costs_materials"]+$tasks["costs_external"]+$tasks["costs_other"];
+				$array["costs_plan_total"] += $tasks["costs_plan"];
+				$tasks["costs_real"] = $tasks["costs_employees_real"]+$tasks["costs_materials_real"]+$tasks["costs_external_real"]+$tasks["costs_other_real"];
+				$array["costs_real_total"] += $tasks["costs_real"];
+				$tasks["costs_plan"] = number_format($tasks["costs_plan"],0,',','.');
+				$tasks["costs_real"] = number_format($tasks["costs_real"],0,',','.');
+			}
+			
 			$tasks["dependent_title"] = "";
 			if($tasks["dependent"] > 0) {
 				$dep = $tasks["dependent"];
@@ -387,6 +409,11 @@ class ProjectsPhasesModel extends ProjectsModel {
 				$task[] = new Lists($tasks);
 			}
 		}
+		if($array['setting_costs'] == 1) {
+			$array["costs_plan_total"] = number_format($array["costs_plan_total"],0,',','.');
+			$array["costs_real_total"] = number_format($array["costs_real_total"],0,',','.');
+		}
+		$phase = new Lists($array);
 		
 		$sendto = $this->getSendtoDetails("projects_phases",$id);
 		
@@ -497,6 +524,22 @@ class ProjectsPhasesModel extends ProjectsModel {
 	}
 
 
+	function updateCosts($id, $type, $costs_employees, $costs_materials, $costs_external, $costs_other) {
+		switch($type) {
+			case "costsplan":
+				$q = "UPDATE " . CO_TBL_PROJECTS_PHASES_TASKS . " set costs_employees = '$costs_employees', costs_materials = '$costs_materials', costs_external = '$costs_external', costs_other = '$costs_other' where id='$id'";
+			break;
+			case "costsreal":
+				$q = "UPDATE " . CO_TBL_PROJECTS_PHASES_TASKS . " set costs_employees_real = '$costs_employees', costs_materials_real = '$costs_materials', costs_external_real = '$costs_external', costs_other_real = '$costs_other' where id='$id'";
+			break;
+		}
+		$result = mysql_query($q, $this->_db->connection);
+		
+		if ($result) {
+			return true;
+		}
+	}
+
 
 	function createNew($pid,$num) {
 		global $session, $lang;
@@ -556,7 +599,7 @@ class ProjectsPhasesModel extends ProjectsModel {
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
 		// tasks
-		$qt = "SELECT id,pid,dependent,cat,text,protocol,startdate,enddate FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where phaseid='$id' and bin='0' ORDER BY startdate";		
+		$qt = "SELECT id,pid,dependent,cat,text,protocol,startdate,enddate,costs_employees,costs_materials,costs_external,costs_other FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where phaseid='$id' and bin='0' ORDER BY startdate";		
 		$resultt = mysql_query($qt, $this->_db->connection);
 		while($rowt = mysql_fetch_array($resultt)) {
 			$id = $rowt["id"];
@@ -566,8 +609,12 @@ class ProjectsPhasesModel extends ProjectsModel {
 			$protocol = mysql_real_escape_string($rowt["protocol"]);
 			$startdate = $rowt["startdate"];
 			$enddate = $rowt["enddate"];
+			$costs_employees = $rowt["costs_employees"];
+			$costs_materials = $rowt["costs_materials"];
+			$costs_external = $rowt["costs_external"];
+			$costs_other = $rowt["costs_other"];
 			$dependent = $rowt["dependent"];
-			$qtn = "INSERT INTO " . CO_TBL_PROJECTS_PHASES_TASKS . " set pid = '$pid', phaseid = '$id_new', dependent = '$dependent', cat = '$cat', status = '0', text = '$text', protocol = '$protocol', startdate = '$startdate', enddate = '$enddate'";
+			$qtn = "INSERT INTO " . CO_TBL_PROJECTS_PHASES_TASKS . " set pid = '$pid', phaseid = '$id_new', dependent = '$dependent', cat = '$cat', status = '0', text = '$text', protocol = '$protocol', startdate = '$startdate', enddate = '$enddate', costs_employees ='$costs_employees', costs_materials ='$costs_materials', costs_external ='$costs_external', costs_other ='$costs_other'";
 			$rpn = mysql_query($qtn, $this->_db->connection);
 			$id_t_new = mysql_insert_id();
 			// BUILD OLD NEW TASK ID ARRAY
@@ -743,6 +790,10 @@ class ProjectsPhasesModel extends ProjectsModel {
 		$id = mysql_insert_id();
 		
 		$task = array();
+		foreach($this->getProjectSettings($pid) as $key => $val) {
+				$tasks[$key] = $val;
+			}
+			
 		$q = "SELECT * FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
@@ -755,7 +806,9 @@ class ProjectsPhasesModel extends ProjectsModel {
 			$tasks["today"] = $this->_date->formatDate("now",CO_DATE_FORMAT);
 			$tasks["dependent_title"] = "";
 			$tasks["team"] = $this->_contactsmodel->getUserList($tasks['team'],'team');
-			
+			$tasks["costs_plan"] = 0;
+			$tasks["costs_real"] = 0;
+
 			$task[] = new Lists($tasks);
 		}
 		return $task;

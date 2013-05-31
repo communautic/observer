@@ -2,7 +2,7 @@
 <table border="0" cellpadding="0" cellspacing="0" class="table-title">
   <tr>
     <td class="tcell-left text11"><span class="<?php if($project->canedit) { ?>content-nav focusTitle<?php } ?>"><span><?php echo $lang["PROJECT_TITLE"];?></span></span></td>
-    <td class="tcell-right"><?php if($project->canedit) { ?><input name="title" type="text" class="title textarea-title" value="<?php echo($project->title);?>" maxlength="100" /><?php } else { ?><div class="textarea-title"><?php echo($project->title);?></div><?php } ?></td>
+    <td class="tcell-right"><?php if($project->canedit) { ?><input name="title" type="text" class="title textarea-title" value="<?php echo($project->title);?>" maxlength="100" /><?php } else { ?><div class="textarea-title"><?php echo($project->title);?></div><?php } ?><?php if($project->canedit) { ?><div class="appSettings" style="width: 21px; height: 21px; position: absolute; right:15px; top: 3px; background: url('/CO_FILES/img/icons.png') no-repeat scroll -320px -62px transparent;"></div><div class="appSettingsPopup" style="position: absolute; top: 24px; right: 15px; background: #E1F0AF; border: 1px solid #82AA0A; padding: 10px; display: none;">Kosten: <a class="toggleCosts"><?php echo $project->setting_costs;?></a><br />Currency: <?php echo $project->setting_currency;?> $ &pound; </div><?php } ?></td>
   </tr>
   <tr class="table-title-status">
     <td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_STATUS"];?></td>
@@ -83,6 +83,21 @@ echo $project->projectlink_access;
   </tr>
 </table>
 <div class="content-spacer"></div>
+<?php if($project->setting_costs == 1) { ?>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+  <tr>
+    <td class="tcell-left-inactive text11"><?php echo $lang["PROJECT_COSTS_PLAN"];?></td>
+    <td class="tcell-right-inactive"><?php echo $project->setting_currency;?> <?php echo $project->costs_plan_total;?></td>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+  <tr>
+    <td class="tcell-left-inactive text11"><?php echo $lang["PROJECT_COSTS_REAL"];?></td>
+    <td class="tcell-right-inactive"><?php echo $project->setting_currency;?> <?php echo $project->costs_real_total;?></td>
+  </tr>
+</table>
+<div class="content-spacer"></div>
+<?php } ?>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
 	<tr>
 		<td class="tcell-left text11"><span class="<?php if($project->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["PROJECT_DESCRIPTION"];?></span></span></td>

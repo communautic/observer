@@ -44,5 +44,4 @@
 <?php  $this->getChartFolder($folder->id,'realisation');?>
 <?php  $this->getChartFolder($folder->id,'timeing');?>
 <?php  $this->getChartFolder($folder->id,'tasks');?>
-
 </div>

@@ -81,6 +81,9 @@ if (!empty($_GET['request'])) {
 		case 'getTasksDialog':
 			echo($projectsPhases->getTasksDialog($_GET['sql'],$_GET['field']));
 		break;
+		case 'getTasksCostsDialog':
+			echo($projectsPhases->getTasksCostsDialog($_GET['sql'],$_GET['field']));
+		break;
 		case 'getTaskContext':
 			echo($projectsPhases->getTaskContext($_GET['id'],$_GET['field']));
 		break;
@@ -111,9 +114,9 @@ if (!empty($_GET['request'])) {
 		case 'deletePhaseTask':
 			echo($projectsPhases->deletePhaseTask($_GET['id']));
 		break;
-		case 'getPhaseStatusDialog':
+		/*case 'getPhaseStatusDialog':
 			echo($projectsPhases->getPhaseStatusDialog());
-		break;
+		break;*/
 		case 'getHelp':
 			echo($projectsPhases->getHelp());
 		break;
@@ -177,6 +180,9 @@ if (!empty($_POST['request'])) {
 		break;
 		case 'sendDetails':
 			echo($projectsPhases->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
+		break;
+		case 'updateCosts':
+			echo($projectsPhases->updateCosts($_POST['id'], $_POST['type'], $_POST['costs_employees'], $_POST['costs_materials'], $_POST['costs_external'], $_POST['costs_other']));
 		break;
 	}
 }

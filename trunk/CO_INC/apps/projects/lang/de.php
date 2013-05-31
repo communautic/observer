@@ -37,6 +37,10 @@ $lang['PROJECT_KICKOFF'] = 'Kick Off';
 $lang["PROJECT_CLIENT"] = 'Projektauftraggeber';
 $lang["PROJECT_MANAGEMENT"] = 'Projektleitung';
 $lang["PROJECT_TEAM"] = 'Projektteam';
+
+$lang["PROJECT_COSTS_PLAN"] = 'Kosten/Plan';
+$lang["PROJECT_COSTS_REAL"] = 'Kosten/Ist';
+
 $lang["PROJECT_DESCRIPTION"] = 'Beschreibung';
 
 $lang["PROJECT_HANDBOOK"] = 'Projekthandbuch';

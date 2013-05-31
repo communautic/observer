@@ -33,7 +33,80 @@ class ProjectsControllingModel extends ProjectsModel {
 		$array["inprogressphases"] = $this->getNumPhases($pid, "1");
 		$array["finishedphases"] = $this->getNumPhases($pid, "2");
 		
-		
+		foreach($this->getProjectSettings($pid) as $key => $val) {
+			$array[$key] = $val;
+		}
+		if($array['setting_costs'] == 1) {
+			$array['stats_calc_class'] = '';
+			$array['stats_calc_employees_class'] = '';
+			$array['stats_calc_materials_class'] = '';
+			$array['stats_calc_external_class'] = '';
+			$array['stats_calc_other_class'] = '';
+			
+			foreach($this->getProjectCosts($pid) as $key => $val) {
+				$array[$key] = $val;
+			}
+			
+			$array['stats_calc_employees'] = $array['costs_employees_plan'] - $array['costs_employees_real'];
+			if($array['stats_calc_employees'] < 0) { $array['stats_calc_employees_class'] = 'negative_number'; }
+			if($array['stats_calc_employees'] > 0) { $array['stats_calc_employees_class'] = 'positive_number'; }
+			
+			$array['stats_calc_materials'] = $array['costs_materials_plan'] - $array['costs_materials_real'];
+			if($array['stats_calc_materials'] < 0) { $array['stats_calc_materials_class'] = 'negative_number'; }
+			if($array['stats_calc_materials'] > 0) { $array['stats_calc_materials_class'] = 'positive_number'; }
+			
+			$array['stats_calc_external'] = $array['costs_external_plan'] - $array['costs_external_real'];
+			if($array['stats_calc_external'] < 0) { $array['stats_calc_external_class'] = 'negative_number'; }
+			if($array['stats_calc_external'] > 0) { $array['stats_calc_external_class'] = 'positive_number'; }
+			
+			$array['stats_calc_other'] = $array['costs_other_plan'] - $array['costs_other_real'];
+			if($array['stats_calc_other'] < 0) { $array['stats_calc_other_class'] = 'negative_number'; }
+			if($array['stats_calc_other'] > 0) { $array['stats_calc_other_class'] = 'positive_number'; }
+			
+			$array['stats_calc'] = $array['costs_plan'] - $array['costs_real'];
+			if($array['stats_calc'] < 0) { $array['stats_calc_class'] = 'negative_number'; }
+			if($array['stats_calc'] > 0) { $array['stats_calc_class'] = 'positive_number'; }
+		}
+		/*if($array['setting_costs'] == 1) {
+			
+			
+			foreach($this->getProjectCosts($pid,'finishedtasks') as $key => $val) {
+				$array[$key.'_finished'] = $val;
+			}
+			
+			
+		}*/
+		// last 3 finished tasks in project for tendency
+		$array["costs_tendency"] = "tendency_positive.png";
+		if($array['setting_costs'] == 1) {
+			$costs["costs_plan"] = 0;
+			$costs["costs_employees_plan"] = 0;
+			$costs["costs_materials_plan"] = 0;
+			$costs["costs_external_plan"] = 0;
+			$costs["costs_other_plan"] = 0;
+			$costs["costs_real"] = 0;
+			$costs["costs_employees_real"] = 0;
+			$costs["costs_materials_real"] = 0;
+			$costs["costs_external_real"] = 0;
+			$costs["costs_other_real"] = 0;
+			$qc = "SELECT * FROM " .  CO_TBL_PROJECTS_PHASES_TASKS. " WHERE pid='$pid' and status='1' and bin='0' ORDER BY donedate LIMIT 0,3";
+				$resultc = mysql_query($qc, $this->_db->connection);
+				while($row = mysql_fetch_array($resultc)) {
+					$costs["costs_plan"] += $row["costs_employees"]+$row["costs_materials"]+$row["costs_external"]+$row["costs_other"];
+					$costs["costs_employees_plan"] += $row["costs_employees"];
+					$costs["costs_materials_plan"] += $row["costs_materials"];
+					$costs["costs_external_plan"] += $row["costs_external"];
+					$costs["costs_other_plan"] += $row["costs_other"];
+					$costs["costs_real"] += $row["costs_employees_real"]+$row["costs_materials_real"]+$row["costs_external_real"]+$row["costs_other_real"];
+					$costs["costs_employees_real"] += $row["costs_employees_real"];
+					$costs["costs_materials_real"] += $row["costs_materials_real"];
+					$costs["costs_external_real"] += $row["costs_external_real"];
+					$costs["costs_other_real"] += $row["costs_other_real"];
+				}
+			if($costs['costs_real'] > $costs['costs_plan']) {
+				$array["costs_tendency"] = "tendency_negative.png";
+			}
+		}
 		$controlling = new Lists($array);
 		return $controlling;
    }

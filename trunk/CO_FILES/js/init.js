@@ -902,6 +902,10 @@ $(document).ready(function() {
 				$(this).remove()
 			});
 		}
+		if(clicked.is('.appSettingsPopup') || clicked.parents().is('.appSettingsPopup')) { 
+		} else {
+			$('.appSettingsPopup').slideUp();
+		}
 		if(clicked.is('#co-popup') || clicked.parents().is('#co-popup')) { 
 		} else {
 			if(clicked.is('#modalDialog') || clicked.parents().is('#modalDialog')) { 
@@ -1530,6 +1534,12 @@ function keyupSaveCheckpoint() {
 } 
 			
 $(document).ready(function() {
+	
+	$(document).on('click', 'div.appSettings',function(e) {
+		e.preventDefault();
+		$(this).next().slideDown();
+	})
+	
 	$('.textarea-title, .bg, .elastic').livequery(function () {
 		$(this).bind('keyup paste cut', $.debounce( 500, keyupSave));
    });
@@ -1538,7 +1548,7 @@ $(document).ready(function() {
 		$(this).bind('keyup paste cut', $.debounce( 500, keyupSaveCheckpoint));
 	});
 	
-	$('#co-popup input, #co-popup textarea').livequery(function () {
+	$('#co-popup input, #co-popup textarea, #modalDialog input').livequery(function () {
 		$(this).bind('keyup paste cut', $.debounce( 500, function() {
 			var obj = getCurrentModule();
 			obj.saveItem();

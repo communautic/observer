@@ -63,6 +63,7 @@
 .ui-widget-content a { color: #333; }
 .ui-widget-content a:hover { color: #fff; }
 .ui-widget-content a.ui-state-highlight:hover { color: #000; }
+
 .ui-widget-header { border: 0; background-color: #666; color: #ffffff; font-weight: bold; }
 .ui-widget-header a { color: #ffffff; }
 
@@ -71,7 +72,9 @@
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default { border: 1px solid #333; background-color: #7f7f7f; font-weight: normal; color: #ffffff; }
 .ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited { color: #ffffff; text-decoration: none; }
 .ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus { border: 0; background-color: #333; font-weight: normal; color: #ffffff !important; }
+#ui-datepicker-div .ui-datepicker-today .ui-state-hover, #ui-datepicker-div .ui-widget-content .ui-datepicker-today .ui-state-hover,  #ui-datepicker-div  .ui-datepicker-today .ui-state-focus, #ui-datepicker-div .ui-widget-content .ui-datepicker-today .ui-state-focus { color: #000 !important; }
 .ui-state-hover a, .ui-state-hover a:hover { color: #ffffff; text-decoration: none; }
+#ui-datepicker-div .ui-state-hover, #ui-datepicker-div .ui-widget-content .ui-state-hover,  #ui-datepicker-div .ui-state-focus, #ui-datepicker-div .ui-widget-content .ui-state-focus { border: 1px solid #333333; }
 .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active { border: 1px solid #333; background-color: #333; font-weight: normal; color: #ffffff; }
 .ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited { color: #ffffff; text-decoration: none; }
 .ui-widget :active { outline: none; }

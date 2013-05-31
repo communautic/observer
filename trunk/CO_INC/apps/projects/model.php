@@ -409,27 +409,6 @@ class ProjectsModel extends Model {
    }
 
 
-/*function barchartCalendar($date,$i) {
-		$day = array();
-		$day["month"] = "";
-		$day["week"] = "";
-		$day["color"] = "#000";
-		$day["number"] = $this->_date->formatDate($date,"d");
-		if($day["number"] == "01" || ($i == 0 && $day["number"] > 01 && $day["number"] < 28)) {
-			//$day["month"] = $this->_date->formatDate($date,"M y");
-			$day["month"] = utf8_encode(strftime("%b %y",strtotime($date)));
-		}
-		$day["wday"] = $this->_date->formatDate($date,"w");
-		if($day["wday"] == 1) {
-			$day["week"] = $this->_date->formatDate($date,"W");
-		}
-		if($day["wday"] == 0 || $day["wday"] == 6) {
-			$day["color"] = "#fff";
-		}
-
-		return $day;
-	}*/
-
    /**
    * get details for the project folder
    */
@@ -818,7 +797,16 @@ class ProjectsModel extends Model {
 			return true;
 		}
 	}
-	
+
+	function getProjectSettings($id) {
+		$q = "SELECT setting_costs,setting_currency FROM " . CO_TBL_PROJECTS . " where id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_array($result);
+		/*foreach($row as $key => $val) {
+			$array[$key] = $val;
+		}*/
+		return $row;
+	}
 
    function getProjectDetails($id, $option = "") {
 		global $session, $contactsmodel, $lang;
@@ -831,6 +819,10 @@ class ProjectsModel extends Model {
 		foreach($row as $key => $val) {
 			$array[$key] = $val;
 		}
+		
+		/*foreach($this->getProjectSettings($id) as $key => $val) {
+			$array[$key] = $val;
+		}*/
 		
 		// perms
 		$array["access"] = $this->getProjectAccess($id);
@@ -960,7 +952,7 @@ class ProjectsModel extends Model {
 			$array["projectlink_list"] = $this->getProjectTitleLinkFromIDs($projectlink,'projects');
 		}
 		
-		$project = new Lists($array);
+		
 		
 		$sql=" ";
 		if($array["access"] == "guest" || $array["access"] == "guestadmin") {
@@ -989,6 +981,8 @@ class ProjectsModel extends Model {
 				break;	
 			}
 		}
+		$array["costs_plan_total"] = 0;
+		$array["costs_real_total"] = 0;
 		$q = "select a.title,a.id,a.access,a.status,(SELECT MIN(startdate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as c WHERE c.phaseid=a.id and c.bin='0') as enddate from " . CO_TBL_PROJECTS_PHASES . " as a where a.pid = '$id' and a.bin != '1' " . $sql . $order;
 		$result = mysql_query($q, $this->_db->connection);
 	  	$phases = "";
@@ -1026,8 +1020,25 @@ class ProjectsModel extends Model {
 				$phase["realisation"] = round((100/$allTasks)*$doneTasks,2);
 			}
 			
+			if($array["setting_costs"] == 1) {
+				// costs
+				$qc = "SELECT * FROM " .  CO_TBL_PROJECTS_PHASES_TASKS. " WHERE phaseid='$phaseid' and bin='0'";
+				$resultc = mysql_query($qc, $this->_db->connection);
+				while($costs = mysql_fetch_array($resultc)) {
+					$costs["costs_plan"] = $costs["costs_employees"]+$costs["costs_materials"]+$costs["costs_external"]+$costs["costs_other"];
+					$array["costs_plan_total"] += $costs["costs_plan"];
+					$costs["costs_real"] = $costs["costs_employees_real"]+$costs["costs_materials_real"]+$costs["costs_external_real"]+$costs["costs_other_real"];
+					$array["costs_real_total"] += $costs["costs_real"];
+				}
+			}
+			
 			$phases[] = new Lists($phase);
 	  	}
+		
+		$array["costs_plan_total"] = number_format($array["costs_plan_total"],0,',','.');
+		$array["costs_real_total"] = number_format($array["costs_real_total"],0,',','.');
+				
+		$project = new Lists($array);
 		// generate phase numbering
 		$num = "";
 		$qn = "select a.id,(SELECT MIN(startdate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " WHERE phaseid=a.id and bin='0') as startdate from " . CO_TBL_PROJECTS_PHASES . " as a where a.pid = '$id' and a.bin != '1' " . $sql . " order by startdate";
@@ -1241,7 +1252,7 @@ class ProjectsModel extends Model {
 		
 		$now = gmdate("Y-m-d H:i:s");
 		// project
-		$q = "INSERT INTO " . CO_TBL_PROJECTS . " (folder,title,startdate,ordered_by,management,team,protocol,status,planned_date,emailed_to,created_date,created_user,edited_date,edited_user) SELECT folder,CONCAT(title,' ".$lang["GLOBAL_DUPLICAT"]."'),startdate,ordered_by,management,team,protocol,'0','$now',emailed_to,'$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_PROJECTS . " where id='$id'";
+		$q = "INSERT INTO " . CO_TBL_PROJECTS . " (folder,title,setting_costs,setting_currency,startdate,ordered_by,management,team,protocol,status,planned_date,emailed_to,created_date,created_user,edited_date,edited_user) SELECT folder,CONCAT(title,' ".$lang["GLOBAL_DUPLICAT"]."'),setting_costs,setting_currency,startdate,ordered_by,management,team,protocol,'0','$now',emailed_to,'$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_PROJECTS . " where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
 		
@@ -1264,7 +1275,7 @@ class ProjectsModel extends Model {
 			$rp = mysql_query($qp, $this->_db->connection);
 			$id_p_new = mysql_insert_id();
 			// tasks
-			$qt = "SELECT id,dependent,cat,text,protocol,startdate,enddate FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where phaseid='$phaseid' and bin='0' ORDER BY id ASC";		
+			$qt = "SELECT id,dependent,cat,text,protocol,startdate,enddate,costs_employees,costs_materials,costs_external,costs_other FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where phaseid='$phaseid' and bin='0' ORDER BY id ASC";		
 			$resultt = mysql_query($qt, $this->_db->connection);
 			while($rowt = mysql_fetch_array($resultt)) {
 				$id = $rowt["id"];
@@ -1273,8 +1284,12 @@ class ProjectsModel extends Model {
 				$protocol = mysql_real_escape_string($rowt["protocol"]);
 				$startdate = $rowt["startdate"];
 				$enddate = $rowt["enddate"];
+				$costs_employees = $rowt["costs_employees"];
+				$costs_materials = $rowt["costs_materials"];
+				$costs_external = $rowt["costs_external"];
+				$costs_other = $rowt["costs_other"];
 				$dependent = $rowt["dependent"];
-				$qtn = "INSERT INTO " . CO_TBL_PROJECTS_PHASES_TASKS . " set pid = '$id_new', phaseid = '$id_p_new', dependent = '$dependent', cat = '$cat',status = '0',text = '$text',protocol = '$protocol', startdate = '$startdate',enddate = '$enddate'";
+				$qtn = "INSERT INTO " . CO_TBL_PROJECTS_PHASES_TASKS . " set pid = '$id_new', phaseid = '$id_p_new', dependent = '$dependent', cat = '$cat',status = '0',text = '$text',protocol = '$protocol', startdate = '$startdate',enddate = '$enddate', costs_employees ='$costs_employees', costs_materials ='$costs_materials', costs_external ='$costs_external', costs_other ='$costs_other'";
 				$rpn = mysql_query($qtn, $this->_db->connection);
 				$id_t_new = mysql_insert_id();
 				// BUILD OLD NEW TASK ID ARRAY
@@ -1536,6 +1551,53 @@ class ProjectsModel extends Model {
 		return round(100-$value,2);
    }
 
+
+	function getProjectCosts($id,$option='') {
+		$costs["costs_plan"] = 0;
+		$costs["costs_employees_plan"] = 0;
+		$costs["costs_materials_plan"] = 0;
+		$costs["costs_external_plan"] = 0;
+		$costs["costs_other_plan"] = 0;
+		$costs["costs_real"] = 0;
+		$costs["costs_employees_real"] = 0;
+		$costs["costs_materials_real"] = 0;
+		$costs["costs_external_real"] = 0;
+		$costs["costs_other_real"] = 0;
+		$q = "select id from " . CO_TBL_PROJECTS_PHASES . " where pid = '$id' and bin != '1' ";
+		$result = mysql_query($q, $this->_db->connection);
+	  	$phases = "";
+	  	while ($row = mysql_fetch_array($result)) {
+			foreach($row as $key => $val) {
+				$phase[$key] = $val;
+			}
+			$phaseid = $phase["id"];
+			foreach($this->getProjectSettings($id) as $key => $val) {
+				$costs[$key] = $val;
+			}
+			$sql = '';
+			if($costs["setting_costs"] == 1) {
+				if($option == 'finishedtasks') {
+					$sql = "and status='1'";
+				}
+				// costs
+				$qc = "SELECT * FROM " .  CO_TBL_PROJECTS_PHASES_TASKS. " WHERE phaseid='$phaseid' $sql and bin='0'";
+				$resultc = mysql_query($qc, $this->_db->connection);
+				while($row = mysql_fetch_array($resultc)) {
+					$costs["costs_plan"] += $row["costs_employees"]+$row["costs_materials"]+$row["costs_external"]+$row["costs_other"];
+					$costs["costs_employees_plan"] += $row["costs_employees"];
+					$costs["costs_materials_plan"] += $row["costs_materials"];
+					$costs["costs_external_plan"] += $row["costs_external"];
+					$costs["costs_other_plan"] += $row["costs_other"];
+					$costs["costs_real"] += $row["costs_employees_real"]+$row["costs_materials_real"]+$row["costs_external_real"]+$row["costs_other_real"];
+					$costs["costs_employees_real"] += $row["costs_employees_real"];
+					$costs["costs_materials_real"] += $row["costs_materials_real"];
+					$costs["costs_external_real"] += $row["costs_external_real"];
+					$costs["costs_other_real"] += $row["costs_other_real"];
+				}
+			}
+	  	}
+		return $costs;
+	}
 
 	function getChartFolder($id, $what) { 
 		global $projectsControllingModel, $lang;
@@ -2722,6 +2784,16 @@ class ProjectsModel extends Model {
 		
 		$this->setUserSetting("last-used-projects",$str);
 	  return true;
+	}
+	
+	
+	function toggleCosts($id,$status) {
+		$q = "UPDATE " . CO_TBL_PROJECTS . " set setting_costs='$status' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		if ($result) {
+			return true;
+		}
 	}
 
 }

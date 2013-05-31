@@ -26,6 +26,27 @@
       <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="task_team_<?php echo $value->id;?>" append="1"><span><?php echo $lang["PROJECT_PHASE_TASK_TEAM"];?></span></span></td>
       <td class="tcell-right"><div id="task_team_<?php echo $value->id;?>" class="itemlist-field task_team_list"><?php echo($value->team);?></div><div id="task_team_<?php echo $value->id;?>_ct" class="itemlist-field task_team_list_ct"><a field="task_team_<?php echo $value->id;?>_ct" class="ct-content"><?php echo($value->team_ct);?></a></div></td>
     </tr>
+    <?php if($phase->setting_costs == 1) { ?>
+    <tr>
+      <td>&nbsp;</td>
+      <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav showDialog<?php } ?>" request="getTasksCostsDialog" field="costsplan-<?php echo $value->id;?>" sql="<?php echo $value->id;?>" append="0"><span><?php echo $lang["PROJECT_COSTS_PLAN"];?></span></span></td>
+      <td class="tcell-right"><?php echo $phase->setting_currency;?> <span id="costsplan-<?php echo $value->id;?>" class="costsPlan"><?php echo $value->costs_plan;?></span>
+      <div id="costsplan-<?php echo $value->id;?>-costs_employees" style="display: none;"><?php echo $value->costs_employees;?></div>
+      <div id="costsplan-<?php echo $value->id;?>-costs_materials" style="display: none;"><?php echo $value->costs_materials;?></div>
+      <div id="costsplan-<?php echo $value->id;?>-costs_external" style="display: none;"><?php echo $value->costs_external;?></div>
+      <div id="costsplan-<?php echo $value->id;?>-costs_other" style="display: none;"><?php echo $value->costs_other;?></div></td>
+    </tr>
+        <tr>
+      <td>&nbsp;</td>
+      <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav showDialog<?php } ?>" request="getTasksCostsDialog" field="costsreal-<?php echo $value->id;?>" sql="<?php echo $value->id;?>" append="0"><span><?php echo $lang["PROJECT_COSTS_REAL"];?></span></span></td>
+      <td class="tcell-right"><?php echo $phase->setting_currency;?> <span id="costsreal-<?php echo $value->id;?>" class="costsReal"><?php echo $value->costs_real;?></span>
+      <div id="costsreal-<?php echo $value->id;?>-costs_employees" style="display: none;"><?php echo $value->costs_employees_real;?></div>
+      <div id="costsreal-<?php echo $value->id;?>-costs_materials" style="display: none;"><?php echo $value->costs_materials_real;?></div>
+      <div id="costsreal-<?php echo $value->id;?>-costs_external" style="display: none;"><?php echo $value->costs_external_real;?></div>
+      <div id="costsreal-<?php echo $value->id;?>-costs_other" style="display: none;"><?php echo $value->costs_other_real;?></div>
+      </td>
+    </tr>
+    <?php } ?>
     <tr>
       <td>&nbsp;</td>
       <td class="tcell-left text11"><span class="<?php if($phase->canedit) { ?>content-nav showDialog<?php } ?>" request="getTasksDialog" field="dependent<?php echo $value->id;?>" sql="<?php echo $value->id;?>" append="1"><span><?php echo $lang["PROJECT_PHASE_TASK_DEPENDENT"];?></span></span></td>

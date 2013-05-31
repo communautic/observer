@@ -150,6 +150,13 @@ class ProjectsPhases extends Projects {
 			 return '{ "id": "' . $id . '", "status": "' . $status . '"}';
 		 }
 	}
+	
+	function updateCosts($id, $type, $costs_employees, $costs_materials, $costs_external, $costs_other) {
+		$retval = $this->model->updateCosts($id, $type, $costs_employees, $costs_materials, $costs_external, $costs_other);
+		if($retval){
+			 return '{ "id": "' . $id . '", "status": "' . $status . '"}';
+		 }
+	}
 
 	function createNew($id,$num) {
 		$retval = $this->model->createNew($id,$num);
@@ -233,6 +240,11 @@ class ProjectsPhases extends Projects {
 		  }
 	}
 	
+	function getTasksCostsDialog($id,$field) {
+		global $system, $lang;
+		include('view/dialog_costs.php');
+	}
+	
 	
 	function getTaskContext($id,$field) {
 		global $lang;
@@ -281,6 +293,7 @@ class ProjectsPhases extends Projects {
 		global $lang;
 		$task = $this->model->addTask($pid,$phid,$date,$cat);
 		$phase->canedit = 1;
+		$phase->setting_costs = 0;
 		foreach($task as $value) {
 			$checked = '';
 			$donedate_field = 'display: none';
@@ -288,11 +301,16 @@ class ProjectsPhases extends Projects {
 			if($value->status == 1) {
 				$checked = ' checked="checked"';
 			}
+			if($value->setting_costs == 1) {
+				$phase->setting_costs = 1;
+				$phase->setting_currency = $value->setting_currency;
+			}
 			if($value->cat == 0) {
 				include 'view/task.php';
 			} else {
 				include 'view/milestone.php';
 			}
+			
 		}
 	}
 	
@@ -375,7 +393,6 @@ class ProjectsPhases extends Projects {
 		$this->model->deleteCheckpoint($id);
 		return true;
    }
-
 
 }
 

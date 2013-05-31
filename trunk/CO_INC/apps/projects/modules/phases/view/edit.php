@@ -54,6 +54,21 @@
     <td class="tcell-right"><div id="projectsteam" class="itemlist-field"><?php echo($phase->team);?></div><div id="projectsteam_ct" class="itemlist-field"><a field="projectsteam_ct" class="ct-content"><?php echo($phase->team_ct);?></a></div></td>
   </tr>
 </table>
+<?php if($phase->setting_costs == 1) { ?>
+<div class="content-spacer"></div>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+  <tr>
+    <td class="tcell-left-inactive text11"><?php echo $lang["PROJECT_COSTS_PLAN"];?></td>
+    <td class="tcell-right-inactive"><?php echo $phase->setting_currency;?> <span id="phasecostsplan"><?php echo $phase->costs_plan_total;?></span></td>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+  <tr>
+    <td class="tcell-left-inactive text11"><?php echo $lang["PROJECT_COSTS_REAL"];?></td>
+    <td class="tcell-right-inactive"><?php echo $phase->setting_currency;?> <span id="phasecostsreal"><?php echo $phase->costs_real_total;?></span></td>
+  </tr>
+</table>
+<?php } ?>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
   <tr>
