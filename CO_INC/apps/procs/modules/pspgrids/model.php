@@ -829,14 +829,10 @@ class ProcsPspgridsModel extends ProcsModel {
 		$now = gmdate("Y-m-d H:i:s");
 		$title = mysql_real_escape_string($pspgrid->title);
 		// create project
-		$q = "INSERT INTO " . CO_TBL_PROJECTS . " set folder = '$folder', title = '$title', ordered_by = '$pspgrid->owner_convert', ordered_by_ct = '$pspgrid->owner_ct_convert', management = '$pspgrid->management_convert', management_ct = '$pspgrid->management_ct_convert', team = '$pspgrid->team_convert', team_ct = '$pspgrid->team_ct_convert', protocol = '$protocol', startdate = '$kickoff', enddate = '$kickoff', status = '0', planned_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+		$q = "INSERT INTO " . CO_TBL_PROJECTS . " set folder = '$folder', title = '$title', setting_costs = '1', ordered_by = '$pspgrid->owner_convert', ordered_by_ct = '$pspgrid->owner_ct_convert', management = '$pspgrid->management_convert', management_ct = '$pspgrid->management_ct_convert', team = '$pspgrid->team_convert', team_ct = '$pspgrid->team_ct_convert', protocol = '$protocol', startdate = '$kickoff', enddate = '$kickoff', status = '0', planned_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		$pid = mysql_insert_id();
 		// if admin insert him to access
-		/*if(!$session->isSysadmin()) {
-			$projectsAccessModel = new ProjectsAccessModel();
-			$projectsAccessModel->setDetails($pid,$session->uid,"");
-		}*/
 		// copy all access 
 		$qa = "SELECT * FROM co_procs_access where pid='$proc_id'";
 		$resulta = mysql_query($qa, $this->_db->connection);
@@ -878,7 +874,7 @@ class ProcsPspgridsModel extends ProcsModel {
 
 			} else {
 				// no title set
-				if($num_notes > 0 || $cols[$key]['stagegatetext'] != "") {
+				if($num_notes > 0) {
 					$phasetitle = 'Neue Phase';
 					$phasetext = "";
 					$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES . " set title = '$phasetitle', pid='$pid', team = '$pspgrid->team_convert', team_ct = '$pspgrid->team_ct_convert', protocol='$phasetext', access='0', status = '0', planned_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
@@ -890,65 +886,29 @@ class ProcsPspgridsModel extends ProcsModel {
 			}
 			
 			foreach($cols[$key]["notes"] as $tkey => &$tvalue){ 
-				/*if($i == 0) {
-					if($cols[$key]["notes"][$tkey]['istitle'] == 1) {
-					// add phase
-					$phasetitle = mysql_real_escape_string($cols[$key]["notes"][$tkey]['title']);
-					$phasetext = mysql_real_escape_string($cols[$key]["notes"][$tkey]['text']);
-					$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES . " set title = '$phasetitle', pid='$pid', protocol='$phasetext', access='0', status = '0', planned_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
-					$result = mysql_query($q, $this->_db->connection);
-					$phaseid = mysql_insert_id();
-					
-						if($num_notes == 1) {
-							// create ap with same name
-							$tasktitle = $phasetitle;
-							$taskprotocol = $phasetext;
-							$cat = 0;
-							$startdate = $this->_date->addDays($datecalc,"1");
-							$enddate = $this->_date->addDays($datecalc,"7");
-							$datecalc = $enddate;					
-							$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES_TASKS . " set pid='$pid', phaseid='$phaseid', cat='$cat', dependent = '$dependent', status = '0', text = '$tasktitle', protocol = '$taskprotocol', startdate = '$startdate', enddate = '$enddate'";
-							$result = mysql_query($q, $this->_db->connection);
-							$dependent = mysql_insert_id();
-						}
-					
-					} else {
-						
-					}
-					
-				} else {*/
 					// create aps
 					$tasktitle = mysql_real_escape_string($cols[$key]["notes"][$tkey]['title']);
 					$taskprotocol = mysql_real_escape_string($cols[$key]["notes"][$tkey]['text']);
-					/*if($cols[$key]["notes"][$tkey]['isstagegate'] == "1") {
+					$costs_employees = $cols[$key]["notes"][$tkey]['costs_employees'];
+					$costs_materials = $cols[$key]["notes"][$tkey]['costs_materials'];
+					$costs_external = $cols[$key]["notes"][$tkey]['costs_external'];
+					$costs_other = $cols[$key]["notes"][$tkey]['costs_other'];
+					if($cols[$key]["notes"][$tkey]['milestone'] == "1") {
 						$cat = 1;
 						$startdate = $this->_date->addDays($datecalc,"1");
 						$enddate = $this->_date->addDays($datecalc,"1");
-					} else {*/
-						//$cat = 0;
+					} else {
+						$cat = 0;
 						$startdate = $this->_date->addDays($datecalc,"1");
 						$enddate = $this->_date->addDays($datecalc,"7");
-					//}
-					$datecalc = $enddate;					
-					$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES_TASKS . " set pid='$pid', phaseid='$phaseid', cat='0', dependent = '$dependent', status = '0', text = '$tasktitle', protocol = '$taskprotocol', startdate = '$startdate', enddate = '$enddate'";
+					}
+					$datecalc = $enddate;
+					
+					$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES_TASKS . " set pid='$pid', phaseid='$phaseid', cat='$cat', dependent = '$dependent', status = '0', text = '$tasktitle', protocol = '$taskprotocol', costs_employees = '$costs_employees', costs_materials = '$costs_materials', costs_external = '$costs_external', costs_other = '$costs_other', startdate = '$startdate', enddate = '$enddate'";
 					$result = mysql_query($q, $this->_db->connection);
 					$dependent = mysql_insert_id();
-				//}
-				//$i++;
 				
 				}
-				
-				if($cols[$key]['stagegatetext'] != "") {
-					$mstitle = mysql_real_escape_string($cols[$key]['stagegatetext']);
-					$msprotocol = mysql_real_escape_string($cols[$key]['stagegatetextcontent']);
-					$startdate = $this->_date->addDays($datecalc,"1");
-					$enddate = $this->_date->addDays($datecalc,"1");
-					$datecalc = $enddate;
-					$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES_TASKS . " set pid='$pid', phaseid='$phaseid', cat='1', dependent = '$dependent', status = '0', text = '$mstitle', protocol = '$msprotocol', startdate = '$startdate', enddate = '$enddate'";
-					$result = mysql_query($q, $this->_db->connection);
-					$dependent = mysql_insert_id();
-
-			}
 		}
 		
 		$q = "INSERT INTO co_procs_pspgrids_log set rid = '$id', pid = '$pid', fid = '$folder', created_user = '$session->uid', created_date = '$now'";
@@ -964,6 +924,21 @@ class ProcsPspgridsModel extends ProcsModel {
 		
    }
    
+   function getSettings($id) {
+		$q = "SELECT setting_currency FROM " . CO_TBL_PROCS_PSPGRIDS . " where id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_result($result,0);
+		return $row;
+	}
+   
+   function toggleCurrency($id,$cur) {
+		$q = "UPDATE " . CO_TBL_PROCS_PSPGRIDS . " set setting_currency='$cur' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		if ($result) {
+			return true;
+		}
+	}
 
 }
 ?>

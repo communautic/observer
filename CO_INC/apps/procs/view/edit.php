@@ -45,11 +45,17 @@ if(is_array($notes)) {
 		if(!is_numeric($zindex)) { $zindex = 0; }
 		$request = 'note';
 		switch($note->shape) {
-			case 1: $col = 'color' . $note->color; break;
+			/*case 1: $col = 'color' . $note->color; break;
 			case 2: $col = 'color' . $note->color; break;
 			case 3: $col = 'shape3bordercolor' . $note->color; break;
 			case 4: $col = 'color' . $note->color . ' shape4bordercolor' . $note->color; break;
 			case 5: $col = 'color' . $note->color . ' shape5bordercolor' . $note->color; break;
+			
+			case 1: $col = 'color' . $note->color; break;
+			case 2: $col = 'color' . $note->color; break;
+			case 3: $col = 'shape3bordercolor' . $note->color; break;
+			case 4: $col = 'color' . $note->color . ' shape4bordercolor' . $note->color; break;
+			case 5: $col = 'color' . $note->color . ' shape5bordercolor' . $note->color; break;*/
 			
 			case 10: $col = 'arrow1'; $request = 'arrow'; break;
 			case 11: $note->shape = 10; $col = 'arrow2'; $request = 'arrow'; break;
@@ -59,11 +65,15 @@ if(is_array($notes)) {
 			case 15: $note->shape = 10; $col = 'arrow6'; $request = 'arrow'; break;
 			case 16: $note->shape = 10; $col = 'arrow7'; $request = 'arrow'; break;
 			case 17: $note->shape = 10; $col = 'arrow8'; $request = 'arrow'; break;
+			default:
+				$col = 'color' . $note->color;
 		}
 	?>
     <div id="note-<?php echo($note->id);?>" class="<?php if($proc->canedit) { ?>note<?php } ?> shape<?php echo($note->shape);?> <?php echo $col;?><?php if($proc->canedit) { ?> showCoPopup<?php } ?>" request="<?php echo $request;?>" style="left: <?php echo $left;?>px; top: <?php echo $top;?>px; z-index: <?php echo $zindex;?>;">
-        <div id="note-title-<?php echo($note->id);?>"><?php echo($note->title);?></div>
-        <div id="note-text-<?php echo($note->id);?>" style="display: none;"><?php echo($note->text);?></div>
+    	<div>
+            <div id="note-title-<?php echo($note->id);?>"><?php echo($note->title);?></div>
+            <div id="note-text-<?php echo($note->id);?>" style="display: none;"><?php echo($note->text);?></div>
+        </div>
     </div>
     <?php 
 	}

@@ -240,11 +240,11 @@ class ProcsGridsModel extends ProcsModel {
 		$num_notes = array('0');
 		$q = "SELECT * FROM " . CO_TBL_PROCS_GRIDS_COLUMNS . " where pid = '$id' and bin='0' ORDER BY sort";
 		$result = mysql_query($q, $this->_db->connection);
-		$days = 0;
+		$hours_total = 0;
 		while($row = mysql_fetch_object($result)) {
 			$colID = $row->id;
 			$coldays = $row->days;
-			$days += $coldays;
+			//$days += $coldays;
 			$titleid = 0;
 			$titletext = '';
 			$titletextcontent = '';
@@ -311,6 +311,7 @@ class ProcsGridsModel extends ProcsModel {
 					);
 					$costs += $rown->costs_employees + $rown->costs_materials + $rown->costs_external + $rown->costs_other;
 					$hours += $rown->hours;
+					$hours_total += $rown->hours;
 					if($rown->status == 1) {
 						$nchecked++;
 					}
@@ -369,6 +370,7 @@ class ProcsGridsModel extends ProcsModel {
 				"stagegatecosts_other" => $stagegatecosts_other,
 				"notes" => $items,
 				"hours" => $hours,
+				"hours_total" => $hours_total,
 				"costs" => $costs
 			);
 		}
@@ -401,7 +403,8 @@ class ProcsGridsModel extends ProcsModel {
 		$sendto = $this->getSendtoDetails("procs_grids",$id);
 		
 		$array["grid_width"] = sizeof($cols)*230;
-		$array["grid_days"] = $days;
+		//$array["grid_days"] = $days;
+		$array["hours_total"] = $hours_total;
 		
 		$grid = new Lists($array);
 		
@@ -1001,6 +1004,15 @@ class ProcsGridsModel extends ProcsModel {
 		return $return;
 		
    }
+   
+   function toggleCurrency($id,$cur) {
+		$q = "UPDATE " . CO_TBL_PROCS_GRIDS . " set setting_currency='$cur' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		if ($result) {
+			return true;
+		}
+	}
    
 
 }

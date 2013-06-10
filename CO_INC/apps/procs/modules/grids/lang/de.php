@@ -12,7 +12,7 @@ $lang["PROC_GRID_OWNER"] = 'Prozesseigner';
 $lang["PROC_GRID_MANAGEMENT"] = 'Prozessverantwortung';
 $lang["PROC_GRID_TEAM"] = 'Prozessteam';
 
-$lang["PROC_GRID_COLUMN_NEW"] = 'Ablaufdiagramm';
+$lang["PROC_GRID_COLUMN_NEW"] = 'Neuer Hauptprozess';
 $lang["PROC_GRID_TITLE_MAIN"] = 'Hauptprozess';
 $lang["PROC_GRID_TITLE_NEW"] = 'Neuer Hauptprozess';
 $lang["PROC_GRID_ITEM_NEW"] = 'Neue Tätigkeit';

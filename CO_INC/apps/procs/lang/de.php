@@ -1,6 +1,6 @@
 <?php
 // App name
-$procs_name = "Prozesse 2";
+$procs_name = "Prozesse";
 $lang["procs_name"] = 'Prozesse';
 
 // Left

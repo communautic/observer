@@ -11,7 +11,13 @@ $varheight = 100;
 <table width="100%" class="standard">
 	<tr>
 		<td class="tcell-left"><?php echo $lang["PROC_PSPGRID_TIME"];?></td>
-		<td class="smalltext"><?php echo $pspgrid->pspgrid_days;?> <?php echo $lang["GLOBAL_DAYS"];?></td>
+		<td class="smalltext"><?php echo $pspgrid->tdays;?> <?php echo $lang["GLOBAL_DAYS"];?></td>
+    </tr>
+</table>
+<table width="100%" class="standard">
+	<tr>
+		<td class="tcell-left"><?php echo $lang["PROC_PSPGRID_COSTS"];?></td>
+		<td class="smalltext"><?php echo $pspgrid->setting_currency;?> <?php echo number_format($pspgrid->tcosts,0,',','.');?></td>
     </tr>
 </table>
 <table width="100%" class="standard">
@@ -33,62 +39,76 @@ $varheight = 100;
     </tr>
 </table>
 </div>
-
-
-<div style="position: absolute; width: 95px; top: <?php echo(64+$varheight);?>px; left: 0px; padding-left: 24px; height: 38px; vertical-align: top; font-size: 10px;"><?php echo $lang["PROC_PSPGRID_COLUMN_NEW"];?></div>
-<div style="position: absolute; width: <?php echo($page_width);?>px; top: <?php echo(96+$varheight);?>px; left: 0px; padding-left: 24px; height: 46px; color: #666666; background-color: #E5E5E5; vertical-align: top; font-size: 10px;"><?php echo $lang["PROC_PSPGRID_TITLE_MAIN"];?></div>
-<div style="position: absolute; width: 100px; top: <?php echo(146+$varheight);?>px; left: 0px; padding-left: 24px; height: 20px; color: #666666; vertical-align: top; font-size: 10px;">Teilprozesse</div>
 <?php
-$left = 130;
-// days
-$daysadd = $varheight+145+$pspgrid->max_items*20; ?>
-<div style="position: absolute; width: 100px; top: <?php echo $daysadd+5;?>px; left: 0px; padding-left: 24px; height: 20px; color: #666666; vertical-align: top; font-size: 10px;">Dauer / Tage</div>
+$ptop = $top+150;
+$pleft = $left;
+$countPhases = 1;
+?>
+
+<div style="position: absolute; width: <?php echo($page_width);?>px; top: <?php echo($ptop);?>px; left: 0px; padding-left: 24px; padding-top: 6px; height: 67px; color: #666666; background-color: #E5E5E5; vertical-align: top; font-size: 10px;"><?php echo $lang["PROC_PSPGRID_PHASES"];?></div>
+<div style="position: absolute; width: 100px; top: <?php echo $ptop+94;?>px; left: 0px; padding-left: 24px; height: 58px; color: #666666; vertical-align: top; font-size: 10px;"><?php echo $lang['PROC_PSPGRID_NOTES'];?></div>
+<div style="position: absolute; top: <?php echo $ptop-11;?>px; left: <?php echo $pleft+90;?>px; height: 10px; width: 1px; background: #666;"></div>
 <?php
 foreach($cols as $key => &$value){ 
-$top = 58;
 
-$bg = '';
-switch($cols[$key]['status']) {
-	case 'planned':
-		$bg = '<img src="<?php echo CO_FILES;?>/img/print/pspgrid_planned.png" width="183" height="46" />';
-	break;
-	case 'progress':
-		$bg = '<img src="<?php echo CO_FILES;?>/img/print/pspgrid_progress.png" width="183" height="46" />';
-	break;
-	case 'finished':
-		$bg = '<img src="<?php echo CO_FILES;?>/img/print/pspgrid_finished.png" width="183" height="46" />';
-	break;
-	default:
-		$bg = '';
-}
+$bg = 'psp_barchart_color_planned';
+		switch($cols[$key]['status']) {
+			case 'planned':
+				$bg = 'psp_barchart_color_planned';
+			break;
+			case 'progress':
+				$bg = 'barchart_color_inprogress';
+			break;
+			case 'finished':
+				$bg = 'barchart_color_finished';
+			break;
+		}
 ?>
-<div style="position: absolute; left: <?php echo($left);?>px; top: <?php echo(96+$varheight);?>px; width: 183px; font-size: 10px; height: 46px;"><?php echo $bg;?></div>
-	<div style="position: absolute; left: <?php echo($left+20);?>px; top: <?php echo(111+$varheight);?>px; width: 183px; font-size: 12px; height: 46px; color: #000; z-index: 1;"><?php echo $cols[$key]['titletext']; ?></div>
+    <div style="position: absolute; z-index: 1; top: <?php echo $ptop;?>px; left: <?php echo($pleft);?>px; border: 1px solid #666; width: 178px; height: 71px; font-size: 11px; font-weight: bold; text-align:center; vertical-align: top; background-color: #fff;"></div>
+        <div style="position: absolute; z-index: 2; top: <?php echo $ptop+2;?>px; left: <?php echo($pleft+2);?>px; width: 159px; height: 32px; font-size: 11px; font-weight: bold; padding: 3px 9px 0 9px; overflow: hidden;" class="<?php echo($bg);?>"><?php echo($countPhases . ". " .$cols[$key]['titletext']);?></div><div style="position: absolute; z-index: 3; top: <?php echo $ptop+36;?>px; left: <?php echo($pleft+2);?>px; width: 177px;" class="<?php echo($bg);?>_line"></div>
+        <div style="position: absolute; z-index: 2; top: <?php echo $ptop+38;?>px; left: <?php echo($pleft+2);?>px; width: 159px; height: 14px; font-size: 11px; vertical-align: top; padding: 3px 9px 0 9px; overflow: hidden;" class="<?php echo($bg);?>_light"></div>
+        <div class="<?php echo($bg);?>_light" style="z-index: 3; position: absolute; top: <?php echo $ptop+55;?>px; left: <?php echo($pleft+2);?>px; width: 79px; height: 11px; font-size: 11px; vertical-align: top; padding: 1px 0 4px 9px;"><?php echo($cols[$key]['days'] . ' ' . $lang['PROC_PSPGRID_DAYS']);?></div>
+        <div class="<?php echo($bg);?>_light" style="z-index: 2; position: absolute; top: <?php echo $ptop+55;?>px; left: <?php echo($pleft+90);?>px; width: 80px; height: 11px; font-size: 11px; vertical-align: top; padding: 1px 9px 4px 0; text-align: right;"><?php echo($pspgrid->setting_currency.' ' . $cols[$key]['costs']);?></div>
+            <?php if($countPhases > 1) { ?>
+				<div style="position: absolute; top: <?php echo $ptop-11;?>px; left: <?php echo $pleft-100;?>px; height: 10px; width: 190px; border-top: 1px solid #666; border-right: 1px solid #666;"></div>
+			<?php } ?>
+            
 	<?php
-	$ntop = $varheight+142;
+	$ttop = $ptop+88;
+	
 	foreach($cols[$key]["notes"] as $tkey => &$tvalue){ 
-		$img = "";
-		if ($cols[$key]["notes"][$tkey]['status'] == 1) {
-			$img = '<img src="' . CO_FILES . '/img/print/done.png" width="10" height="10" vspace="4" hspace="4" />';
+		$bg = 'psp_barchart_color_planned';
+		switch($cols[$key]["notes"][$tkey]['status']) {
+			case '0':
+				$bg = 'psp_barchart_color_planned';
+			break;
+			case '1':
+				$bg = 'barchart_color_inprogress';
+			break;
+			case '2':
+				$bg = 'barchart_color_finished';
+			break;
 		}
 	?>
-<div style="position: absolute; left: <?php echo($left);?>px; top: <?php echo $ntop;?>px; height: 19px; width: 19px; border-right: 1px solid #666; border-bottom: 1px solid #666; border-left: 1px solid #666; font-size: 10px; overflow: hidden;"><?php echo $img;?></div>
-		<div style="position: absolute; left: <?php echo($left+20);?>px; top: <?php echo $ntop;?>px; height: 15px; width: 156px; border-right: 1px solid #666; border-bottom: 1px solid #666; border-left: 1px solid #666; font-size: 10px; line-height: 19px; padding-top: 4px; overflow: hidden; padding-left: 5px;"><?php echo $cols[$key]["notes"][$tkey]['title'];?></div>
+    <div style="position: absolute; z-index: 1; top: <?php echo $ttop;?>px; left: <?php echo($pleft+10);?>px; border: 1px solid #666; width: 168px; height: 71px;"></div>
+            <div style="position: absolute; z-index: 2; top: <?php echo $ttop+2;?>px; left: <?php echo($pleft+12);?>px; width: 149px; height: 31px; font-size: 11px; font-weight: bold; padding: 3px 9px 0 9px; overflow: hidden;" class="<?php echo($bg);?>"><?php echo($cols[$key]["notes"][$tkey]['title']);?></div><div style="position: absolute; z-index: 3; top: <?php echo $ttop+36;?>px; left: <?php echo($pleft+12);?>px; width: 167px;" class="<?php echo($bg);?>_line"></div>
+			
+            
+	<?php if($cols[$key]["notes"][$tkey]['milestone'] == 1) { // MS ?>
+        <div style="position: absolute; z-index: 2; top: <?php echo $ttop+38;?>px; left: <?php echo($pleft+12);?>px; width: 149px; height: 14px; font-size: 11px; vertical-align: top; padding: 3px 9px 0 9px; overflow: hidden;" class="<?php echo($bg);?>_light">&nbsp;</div>
+        <div class="<?php echo($bg);?>_light" style="z-index: 3; position: absolute; top: <?php echo $ttop+51;?>px; left: <?php echo($pleft+12);?>px; width: 74px; height: 16px; vertical-align: top; padding: 0 0 4px 9px;"><img src="<?php echo(CO_FILES);?>/img/print/milestone_large.png" width="16" height="16" /></div>
+        <div style="z-index: 2; position: absolute; top: <?php echo $ttop+55;?>px; left: <?php echo($pleft+95);?>px; width: 75px; height: 11px; font-size: 11px; vertical-align: top; padding: 1px 9px 4px 0; text-align: right;" class="<?php echo($bg);?>_light">&nbsp;</div>
+    <?php } else { //AP ?>
+    	<div style="position: absolute; z-index: 2; top: <?php echo $ttop+38;?>px; left: <?php echo($pleft+12);?>px; width: 149px; height: 14px; font-size: 11px; vertical-align: top; padding: 3px 9px 0 9px; overflow: hidden;" class="<?php echo($bg);?>_light"><?php echo($cols[$key]["notes"][$tkey]['teamprint']);?></div>
+    	<div class="<?php echo($bg);?>_light" style="z-index: 3; position: absolute; top: <?php echo $ttop+55;?>px; left: <?php echo($pleft+12);?>px; width: 74px; height: 11px; font-size: 11px; vertical-align: top; padding: 1px 0 4px 9px;"><?php echo($cols[$key]["notes"][$tkey]['days'] . ' ' . $lang['PROC_PSPGRID_DAYS']);?></div>
+         <div style="z-index: 2; position: absolute; top: <?php echo $ttop+55;?>px; left: <?php echo($pleft+95);?>px; width: 75px; height: 11px; font-size: 11px; vertical-align: top; padding: 1px 9px 4px 0; text-align: right;" class="<?php echo($bg);?>_light"><?php echo($pspgrid->setting_currency.' ' . $cols[$key]["notes"][$tkey]['itemcosts']);?></div>
+    <?php } ?>
+    <div style="position: absolute; top: <?php echo $ttop-51;?>px; left: <?php echo($pleft);?>px; height: 88px; width: 9px; border-bottom: 1px solid #666; border-left: 1px solid #666;"></div>
 	<?php 
-		$ntop = $ntop+20;
-	} ?>
-<div style="position: absolute; left: <?php echo($left);?>px; top: <?php echo $daysadd;?>px; height: 14px; width: 156px; border: 1px solid #666; background-color: #E5E5E5; font-size: 10px; line-height: 19px; padding-top: 4px; padding-left: 25px;"><?php echo $cols[$key]['coldays'];?> Tage</div>
-<?php
-	$left = $left+203;
-	$img = "";
-	if($cols[$key]['status'] == "finished" ) {
-		$img = '<img src="' . CO_FILES . '/img/print/pspgrid_stagegate_done.png" width="13" height="13" />';
+		$ttop += 88;
 	}
-?>
-<div style="position: absolute; left: <?php echo($left-20);?>px; top: <?php echo($varheight+$top);?>px; width: 100px; font-size: 10px; color: #666;">GATE</div>
-<div style="position: absolute; left: <?php echo($left-20);?>px; top: <?php echo($varheight+$top+16);?>px; width: 100px; font-size: 10px; z-index: 1;"><?php echo $cols[$key]['stagegatetext'];?></div>
-<div style="position: absolute; left: <?php echo($left-16);?>px; top: <?php echo($varheight+$top+113);?>px; width: 20px;"><?php echo $img;?></div>
-    <?php
+	$pleft += 190;
+    $countPhases++;
  } ?>
 <div style="position: absolute; width: <?php echo($page_width-24);?>px; top: <?php echo $page_height-50;?>px; left: 0px; height: 19px;  background-color: #e5e5e5; vertical-align: top; padding: 3px 0 0 24px;"><?php echo $lang["PROC_PSPGRID_TITLE"];?></div>
 <div style="position: absolute; width: <?php echo($page_width-235);?>px; top: <?php echo $page_height-52;?>px; left: 200px; height: 19px; text-align:center;"><table border="0" cellspacing="0" cellpadding="0" class="timeline-legend">

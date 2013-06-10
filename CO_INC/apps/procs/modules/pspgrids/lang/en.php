@@ -13,11 +13,11 @@ $lang["PROC_PSPGRID_MANAGEMENT"] = 'Manager';
 $lang["PROC_PSPGRID_TEAM"] = 'Team';
 
 $lang["PROC_PSPGRID_COLUMN_NEW"] = 'Columns';
-$lang["PROC_PSPGRID_TITLE_MAIN"] = 'Main Stage';
 $lang["PROC_PSPGRID_TITLE_NEW"] = 'Neuer main stage';
 $lang["PROC_PSPGRID_ITEM_NEW"] = 'New Item';
 $lang["PROC_PSPGRID_STAGEGATE_NEW"] = 'New Stagegate';
-$lang['PROC_PSPGRID_NOTES'] = 'Ideas';
+$lang['PROC_PSPGRID_PHASES'] = 'Phases';
+$lang['PROC_PSPGRID_NOTES'] = 'Tasks';
 
 $lang['PROC_PSPGRID_DURATION'] = 'Guration';
 $lang['PROC_PSPGRID_DAYS'] = 'hour/s';
@@ -30,7 +30,7 @@ $lang["PROC_PSPGRID_COLUMNS_BIN"] = 'Pspgrid/Columns';
 $lang["PROC_PSPGRID_NOTES_BIN"] = 'Pspgrid/Notes';
 $lang["PROC_PHASE_TITLE"] = 'Phase';
 
-$lang["PROC_PSPGRID_HELP"] = 'manual_prozesse_prozessraster.pdf';
+$lang["PROC_PSPGRID_HELP"] = 'manual_prozesse_projektraster.pdf';
 
 $lang["PROC_PRINT_PSPGRID"] = 'pspgrid.png';
 

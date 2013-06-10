@@ -3,7 +3,20 @@
 <table border="0" cellpadding="0" cellspacing="0" class="table-title">
   <tr>
     <td class="tcell-left text11"><span class="<?php if($grid->canedit) { ?>content-nav focusTitle<?php } ?>"><span><?php echo $lang["PROC_GRID_TITLE"];?></span></span></td>
-    <td><input name="title" type="text" class="title textarea-title" value="<?php echo($grid->title);?>" maxlength="100" /></td>
+    <td><input name="title" type="text" class="title textarea-title" value="<?php echo($grid->title);?>" maxlength="100" /><?php if($grid->canedit) { ?><div class="appSettings"></div><div class="appSettingsPopupContent" style="display: none;">
+    <div class="inner"><?php echo $lang["GLOBAL_CURRENCY"];?>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td valign="middle" width="20"><?php echo $lang['GLOBAL_CURRENCY_EURO'];?></td>
+        <td valign="middle" width="40"><span class="toggleCurrency coCheckbox<?php if($grid->setting_currency == $lang['GLOBAL_CURRENCY_EURO']) { echo ' active';}?>" rel="<?php echo $lang['GLOBAL_CURRENCY_EURO'];?>"></span></td>
+        <td valign="middle" width="20"><?php echo $lang['GLOBAL_CURRENCY_POUND'];?> </td>
+        <td valign="middle" width="40"><span class="toggleCurrency coCheckbox<?php if($grid->setting_currency == $lang['GLOBAL_CURRENCY_POUND']) { echo ' active';}?>" rel="<?php echo $lang['GLOBAL_CURRENCY_POUND'];?>"></span></td>
+        <td valign="middle" width="20"><?php echo $lang['GLOBAL_CURRENCY_DOLLAR'];?></td>
+        <td valign="middle"><span class="toggleCurrency coCheckbox<?php if($grid->setting_currency == $lang['GLOBAL_CURRENCY_DOLLAR']) { echo ' active';}?>" rel="<?php echo $lang['GLOBAL_CURRENCY_DOLLAR'];?>"></span></td>
+    </tr>
+</table>
+		  </div>
+    </div><?php } ?></td>
   </tr>
 </table>
 </div>
@@ -27,12 +40,12 @@
 </table>
 
 <?php } ?>
-<!--<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 		<td class="tcell-left-inactive text11"><?php echo $lang["PROC_GRID_TIME"];?></td>
-		<td class="tcell-right-inactive"><span id="procGridDays"><?php echo $grid->grid_days;?></span> <?php echo $lang["GLOBAL_DAYS"];?></td>
+		<td class="tcell-right-inactive"><span id="procGridHours"><?php echo $grid->hours_total;?></span> Stunden</td>
     </tr>
-</table>-->
+</table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 	  <td class="tcell-left text11"><span class="<?php if($grid->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="procsowner" append="0"><span><?php echo $lang["PROC_GRID_OWNER"];?></span></span></td>
@@ -84,7 +97,7 @@
 	</div>
 <?php } ?>
 <div class="content-spacer"></div>
-<div style="position: absolute; top: 147px; height: 50px; width: 100%; background: #b2b2b2; z-index: -1;"></div>
+<div style="position: absolute; top: 168px; height: 50px; width: 100%; background: #b2b2b2; z-index: -1;"></div>
 <div id="procs-grid" style="width: <?php echo($grid->grid_width);?>px;">
 <?php 
 $drag = '';
@@ -162,7 +175,7 @@ foreach($cols as $key => &$value){
 		echo '</div>';
 		echo '</div>';
 		echo '<div class="grids-spacer"></div>';
-		echo '<div class="procs-col-footer-days"><div class="left"><span class="totalhours"> ' . $cols[$key]['hours'] . '</span> <span>h</span></div><div class="right"><span>&euro;</span> <span class="totalcosts">' . $cols[$key]['costs'] . '</span></div>';
+		echo '<div class="procs-col-footer-days"><div class="left"><span class="totalhours"> ' . $cols[$key]['hours'] . '</span> <span>h</span></div><div class="right"><span>'.$grid->setting_currency.'</span> <span class="totalcosts">' . $cols[$key]['costs'] . '</span></div>';
 		echo '<div></div>';
 		echo '</div>';
 	echo '</div>';

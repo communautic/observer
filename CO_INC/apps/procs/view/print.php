@@ -24,12 +24,50 @@ $top = $top-7;
 		} else {
 			$height = 17;
 		}
+		$h = 90;
+		$xadd = 10;
+		$yadd = 27;
+		$w = 140;
+		$img = '/img/print/shapes/' . $note->shape . $note->color;
+		if($note->shape == 3) {
+			$h = 110;
+			$xadd = 20;
+			$yadd = 37;
+			$w = 130;
+		}
+		if($note->shape == 5) {
+			$xadd = 15;
+			$w = 135;
+		}
+		//switch($note->shape) {
+			//case 1: $bg_y = 0; break;
+			//case 2: $bg_y = -110; break;
+			//case 3: $bg_y = -430; $h = 110; break;
+			//case 4: $bg_y = -330; break;
+			//case 5: $bg_y = -220; break;
+		//}
+		/*switch($note->color) {
+			case 1: $bg_x = 0; break;
+			case 2: $bg_x = -180; break;
+			case 3: $bg_x = -360; break;
+			case 4: $bg_x = -540; break;
+			case 5: $bg_x = -720; break;
+		}*/
+		if($note->shape >= 10) {
+			switch($note->shape) {
+			case 10: $img = '/img/print/arrows/1'; break;
+			case 11: $img = '/img/print/arrows/2'; break;
+			case 12: $img = '/img/print/arrows/3'; break;
+			case 13: $img = '/img/print/arrows/4'; break;
+			case 14: $img = '/img/print/arrows/5'; break;
+			case 15: $img = '/img/print/arrows/6'; break;
+			case 16: $img = '/img/print/arrows/7'; break;
+			case 17: $img = '/img/print/arrows/8'; break;
+			}
+		}
 		?>
-    <div style="font-size: 11px; position:absolute; overflow:hidden; background-color: #FFF082; vertical-align: top; border: 1px solid #77713D; width: <?php echo $note->w;?>px; height: <?php echo $height;?>px; left: <?php echo $note->x;?>px; top: <?php echo $note->y+30;?>px; z-index: <?php echo $note->x;?>;">
-        <div style="padding: 2px 9px 0 9px; color: #fff; background-color: #77713D; height: 16px; vertical-align: top; overflow: hidden; "><?php echo($note->title);?></div>
-        <?php if($note->toggle == 0) { ?>
-        	<div style="padding: 1px 9px 0 9px;"><?php echo(nl2br($note->text));?></div>
-        <?php } ?>
+    <div style="position:absolute; overflow:hidden; vertical-align: top; width: 166px; height: <?php echo $h;?>px; left: <?php echo $note->x;?>px; top: <?php echo $note->y+30;?>px; z-index: <?php echo $note->x;?>;"><img src="<?php echo CO_FILES . $img . '.png';?>" /></div>
+        <div style="position:absolute; overflow:hidden; width: 150px; height: 60px; left: <?php echo $note->x+$xadd;?>px; top: <?php echo $note->y+$yadd;?>px; z-index: <?php echo $note->x+1;?>;"><div style="font-size: 11px; width: <?php echo $w; ?>px; height: 60px;"><table width="100%" height="60"><tr><td height="60" valign="middle" align="center"><?php echo($note->title);?></td></tr></table></div></div>
 	</div>	
         
         	<?php
