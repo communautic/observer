@@ -148,33 +148,43 @@ background-color: #e1f0af; }
 .barchart-outer { border-right:  1px solid #dedede; border-bottom:  1px solid #dedede; }
 .barchart-dependency { border-left:  1px solid #333; border-bottom:  1px solid #333; }
 .barchart-arrow { position: absolute; right: -6px; bottom: -6px; height: 6px; width: 13px; background-image:url(../../img/gantt_arrow.png) }
-.barchart_color_planned { background-color: #4BA0C8;}
+.psp-item .line { height: 1px; border-left: 1px solid #fff; }
+.barchart_color_planned { background-color: #6496DC;}
+.barchart_color_planned .line { background-color: #436593;}
+.barchart_color_planned .light { background-color: #c1d5f0;}
 .barchart_color_inprogress { background-color: #FFD20A;}
+.barchart_color_inprogress .line { background-color: #C9A409;}
+.barchart_color_inprogress .light { background-color: #ffe780;}
 .barchart_color_finished { background-color: #82aa0b;}
+.barchart_color_finished .line { background-color: #5A690A;}
+.barchart_color_finished .light { background-color: #e1f0af;}
 .barchart_color_not_finished { background-color: #7f7f7f;}
-.barchart_color_overdue { background-color: #EB4600;}
+.barchart_color_not_finished .line { background-color: #666;}
+.barchart_color_not_finished .light { background-color: #e5e5e5;}
+.barchart_color_overdue { background-color: #EB4600 !important;}
+.barchart_color_overdue .line { background-color: #8E1E00;}
+.barchart_color_overdue .light { background-color: #EB4600;}
 
 .timeline-legend { width: 700px; font-size: 11px; line-height: 16px; }
 .timeline-legend span { width: 120px; display: block; padding-left: 8px;}
 
-.psp-item { position: relative; margin-bottom: 20px; border: 1px solid #000; width: 150px; height: 56px; font-size: 11px; font-weight: bold; text-align:center}
-.psp-item-startdate { position: absolute; left: 0; bottom: 0; width: 75px; height: 13px; border-top: 1px solid #000;}
-.psp-item-startdate-projectlink { position: absolute; left: 21px; bottom: 0; width: 65px; height: 13px; border-top: 1px solid #000;}
-.psp-item-enddate { position: absolute; right: 0; bottom: 0; width: 74px; height: 13px; border-top: 1px solid #000; border-left: 1px solid #000;}
-.psp-item-projectlink { position: absolute; left: 0px; bottom: 0; width: 22px; height: 13px; border-top: 1px solid #000;}
-.icon-projectlink-psp {
-    background: url("../../img/icons.png") no-repeat scroll -550px -61px transparent;
-    display: block;
-    height: 15px;
-    margin: 2px 0 0 2px;
-    opacity: 0.7;
-    width: 21px;
-}
-.psp-item-enddate-projectlink { position: absolute; right: 0; bottom: 0; width: 64px; height: 13px; border-top: 1px solid #000; border-left: 1px solid #000;}
-.psp-connector-project-vert { position: absolute; top: 56px; left: 75px; height: 24px; width: 1px; background-color: #000; }
-.psp-connector-phase-hori { position: absolute; top: -10px; left: -94px; height: 9px; width: 170px; border-top: 1px solid #000; border-right: 1px solid #000; }
+.psp-item { position: relative; margin: 0 0 15px 10px; border: 1px solid #666; width: 168px; height: 71px; font-size: 11px;  }
+.psp-item.phase { width: 178px; margin-left: 0px; }
+.psp-item div.border { border-left: 1px solid #fff; border-top: 1px solid #fff; }
+.psp-item-startdate { position: absolute; left: 9px; bottom: 3px; width: 75px; height: 13px;}
+.psp-item-enddate { position: absolute; right: 9px; bottom: 3px; width: 74px; height: 13px; text-align: right;}
+.psp-item-datedash { position: absolute; left: 82px; bottom: 3px; width: 74px; height: 13px; }
+.psp-item-milestone { bottom: 5px; height: 16px; left: 9px; position: absolute; width: 75px; }
+.psp-item-projectlink { position: absolute; left: 0px; bottom: 0; width: 22px; height: 13px; }
+.icon-projectlink-psp { background: url("../../img/icons.png") no-repeat scroll -550px -84px transparent; display: block; height: 15px; margin: 0 0 0 9px; width: 21px; }
+.psp-item-startdate-projectlink { position: absolute; left: 40px; bottom: 3px; width: 55px; height: 13px;}
+.psp-item-enddate-projectlink { position: absolute; right: 9px; bottom: 3px; width: 64px; height: 13px; text-align: right;}
+.psp-connector-project-vert { position: absolute; top: 72px; left: -1px; height: 19px; width: 90px; }
+.psp-connector-project-vert .top { position: absolute; top: 0; left: 0; height: 9px; width: 89px; border-left: 1px solid #666; border-bottom: 1px solid #666; }
+.psp-connector-project-vert .bottom { position: absolute; top: 10px; right: 0px; height: 9px; width: 1px; background-color: #666; }
+.psp-connector-phase-hori { position: absolute; top: -11px; left: -102px; height: 9px; width: 190px; border-top: 1px solid #666; border-right: 1px solid #666; }
 .psp-connector-phase-vert { position: absolute; top: 28px; left: -10px; height: 1px; width: 9px; background-color: #000; }
-.psp-connector-vert { position: absolute; top: -50px; left: -10px; height: 78px; width: 9px; border-bottom: 1px solid #000; border-left: 1px solid #000; }
+.psp-connector-vert { position: absolute; top: -51px; left: -11px; height: 87px; width: 9px; border-bottom: 1px solid #666; border-left: 1px solid #666; }
 
 .td_border_top_right {
  border-top: 1px solid #24211D; 
