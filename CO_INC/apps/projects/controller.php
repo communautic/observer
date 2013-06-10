@@ -900,6 +900,14 @@ class Projects extends Controller {
 			 return "error";
 		  }
 	}
+	function toggleCurrency($id,$cur) {
+		$retval = $this->model->toggleCurrency($id,$cur);
+		if($retval){
+			 return 'true';
+		  } else{
+			 return "error";
+		  }
+	}
 
 }
 
