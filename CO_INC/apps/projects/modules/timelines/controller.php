@@ -123,7 +123,7 @@ class ProjectsTimelines extends Projects {
 				if($arr = $this->model->getDetails($pid)) {
 					$project = $arr["project"];
 					
-					$project["page_width"] = $project["css_width"];
+					$project["page_width"] = $project["css_width"]+30;
 					$project["page_height"] = $project["css_height"]+200;
 					if($project["page_width"] < 896) {
 						$project["page_width"] = 896;

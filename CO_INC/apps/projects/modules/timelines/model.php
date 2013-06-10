@@ -78,7 +78,7 @@ class ProjectsTimelinesModel extends ProjectsModel {
 	  	$numTasks = array(0);
 		//$numTasks[] = 0;
 		while ($row = mysql_fetch_object($result)) {
-			$project["css_width"] += 170;
+			$project["css_width"] += 190;
 			// phase status
 			switch($row->status) {
 				case "0":
