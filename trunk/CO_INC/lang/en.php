@@ -72,10 +72,25 @@ $lang["GLOBAL_RESET"] = 'Reset';
 $lang["GLOBAL_CONFIRM"] = 'Confirm';
 $lang["GLOBAL_SENDEMAIL"] = 'Send';
 $lang["GLOBAL_EDIT"] = 'Edit';
+$lang["GLOBAL_SETTINGS"] = 'Settings';
 
 $lang["GLOBAL_TITLE"] = 'Title';
 $lang["GLOBAL_RESPONSIBILITY"] = 'Responsibility';
 $lang["GLOBAL_DESCRIPTION"] = 'Description';
+
+$lang['GLOBAL_CURRENCY_POUND'] = '£';
+$lang['GLOBAL_CURRENCY_DOLLAR'] = '$';
+$lang['GLOBAL_CURRENCY_EURO'] = '€';
+$lang['GLOBAL_CURRENCY'] = 'Currency';
+$lang['GLOBAL_COSTS'] = 'Costs';
+$lang['GLOBAL_COSTS_EMPLOYEES'] = 'Personell';
+$lang['GLOBAL_COSTS_MATERIAL'] = 'Materials';
+$lang['GLOBAL_COSTS_EXTERNAL'] = 'External';
+$lang['GLOBAL_COSTS_OTHER'] = 'Other';
+$lang['GLOBAL_COSTS_EMPLOYEES_SHORT'] = 'Personell';
+$lang['GLOBAL_COSTS_MATERIAL_SHORT'] = 'Materials';
+$lang['GLOBAL_COSTS_EXTERNAL_SHORT'] = 'External';
+$lang['GLOBAL_COSTS_OTHER_SHORT'] = 'Other';
 
 $lang["GLOBAL_STATUS"] 		= 	'Status';
 // Status definitions
