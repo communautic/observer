@@ -156,6 +156,9 @@ if (!empty($_GET['request'])) {
 		case 'getHelp':
 			echo($procsPspgrids->getHelp());
 		break;
+		case 'toggleCurrency':
+			echo($procsPspgrids->toggleCurrency($_GET['id'],$_GET['cur']));
+		break;
 
 	}
 }

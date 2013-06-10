@@ -3,7 +3,20 @@
 <table border="0" cellpadding="0" cellspacing="0" class="table-title">
   <tr>
     <td class="tcell-left text11"><span class="<?php if($pspgrid->canedit) { ?>content-nav focusTitle<?php } ?>"><span><?php echo $lang["PROC_PSPGRID_TITLE"];?></span></span></td>
-    <td><input name="title" type="text" class="title textarea-title" value="<?php echo($pspgrid->title);?>" maxlength="100" /></td>
+    <td><input name="title" type="text" class="title textarea-title" value="<?php echo($pspgrid->title);?>" maxlength="100" /><?php if($pspgrid->canedit) { ?><div class="appSettings"></div><div class="appSettingsPopupContent" style="display: none;">
+    <div class="inner"><?php echo $lang["GLOBAL_CURRENCY"];?>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td valign="middle" width="20"><?php echo $lang['GLOBAL_CURRENCY_EURO'];?></td>
+        <td valign="middle" width="40"><span class="toggleCurrency coCheckbox<?php if($pspgrid->setting_currency == $lang['GLOBAL_CURRENCY_EURO']) { echo ' active';}?>" rel="<?php echo $lang['GLOBAL_CURRENCY_EURO'];?>"></span></td>
+        <td valign="middle" width="20"><?php echo $lang['GLOBAL_CURRENCY_POUND'];?> </td>
+        <td valign="middle" width="40"><span class="toggleCurrency coCheckbox<?php if($pspgrid->setting_currency == $lang['GLOBAL_CURRENCY_POUND']) { echo ' active';}?>" rel="<?php echo $lang['GLOBAL_CURRENCY_POUND'];?>"></span></td>
+        <td valign="middle" width="20"><?php echo $lang['GLOBAL_CURRENCY_DOLLAR'];?></td>
+        <td valign="middle"><span class="toggleCurrency coCheckbox<?php if($pspgrid->setting_currency == $lang['GLOBAL_CURRENCY_DOLLAR']) { echo ' active';}?>" rel="<?php echo $lang['GLOBAL_CURRENCY_DOLLAR'];?>"></span></td>
+    </tr>
+</table>
+		  </div>
+    </div><?php } ?></td>
   </tr>
 </table>
 </div>
@@ -36,7 +49,7 @@
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 		<td class="tcell-left-inactive text11"><?php echo $lang["PROC_PSPGRID_COSTS"];?></td>
-		<td class="tcell-right-inactive">&euro; <span id="procPspgridCosts"><?php echo $pspgrid->tcosts;?></span></td>
+		<td class="tcell-right-inactive"><?php echo $pspgrid->setting_currency;?> <span id="procPspgridCosts"><?php echo $pspgrid->tcosts;?></span></td>
     </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
@@ -91,7 +104,7 @@
 		echo '<div class="itemMilestone">0</div>';
 		echo '<div class="itemText">' . $item["text"] . '</div>';
 		echo '<div class="itemTeamprint"></div>';
-		echo '<div class="colTotals"><span class="totaldays">0</span> <span>' . $lang['PROC_PSPGRID_DAYS'] . '</span> - <span>&euro;</span> <span class="totalcosts">0</span></div>';
+		echo '<div class="colTotals"><span class="totaldays">0</span> <span>' . $lang['PROC_PSPGRID_DAYS'] . '</span> - <span>'.$pspgrid->setting_currency.'</span> <span class="totalcosts">0</span></div>';
 		echo '<div class="itemTeam"></div>';
 		echo '<div class="itemCostsEmployees costs">0</div>';
 		echo '<div class="itemCostsMaterials costs">0</div>';
@@ -130,14 +143,14 @@ foreach($cols as $key => &$value){
 			echo '<div class="itemMilestone">0</div>';
 			echo '<div class="itemText">' . $cols[$key]['titletextcontent'] . '</div>';
 			echo '<div class="itemTeamprint">' . $cols[$key]['titleteamprint'] . '</div>';
-			echo '<div class="colTotals"><div class="left"><span class="totaldays"> ' . $cols[$key]['days'] . '</span> <span>' . $lang['PROC_PSPGRID_DAYS'] . '</span></div><div class="right"><span>&euro;</span> <span class="totalcosts">' . $cols[$key]['costs'] . '</span></div></div>';
+			echo '<div class="colTotals"><div class="left"><span class="totaldays"> ' . $cols[$key]['days'] . '</span> <span>' . $lang['PROC_PSPGRID_DAYS'] . '</span></div><div class="right"><span>'.$pspgrid->setting_currency.'</span> <span class="totalcosts">' . $cols[$key]['costs'] . '</span></div></div>';
 			echo '<div class="itemTeam">' . $cols[$key]['titleteam'] . '</div>';
 			echo '<div class="itemCostsEmployees costs">' . $cols[$key]['titlecosts_employees'] . '</div>';
 			echo '<div class="itemCostsMaterials costs">' . $cols[$key]['titlecosts_materials'] . '</div>';
 			echo '<div class="itemCostsExternal costs">' . $cols[$key]['titlecosts_external'] . '</div>';
 			echo '<div class="itemCostsOther costs">' . $cols[$key]['titlecosts_other'] . '</div>';
 			//echo '<div class="itemDays"><span class="days">' . $cols[$key]['titledays'] . '</span> ' . $lang['PROC_PSPGRID_DAYS'] . '</div>';
-			echo '<div class="itemTotals"><div class="left"><span class="days"> ' . $cols[$key]['titledays'] . '</span> <span>' . $lang['PROC_PSPGRID_DAYS'] . '</span></div><div class="right"><span>&euro;</span> <span class="itemcosts">' . $cols[$key]['titlecosts_total'] . '</span></div></div>';
+			echo '<div class="itemTotals"><div class="left"><span class="days"> ' . $cols[$key]['titledays'] . '</span> <span>' . $lang['PROC_PSPGRID_DAYS'] . '</span></div><div class="right"><span>'.$pspgrid->setting_currency.'</span> <span class="itemcosts">' . $cols[$key]['titlecosts_total'] . '</span></div></div>';
 			echo '<div class="itemTeamct"><a class="ct-content" field="coPopup-team_ct">' . $cols[$key]['titleteam_ct'] . '</a></div>';
 			echo '<div class="itemStatus">0</div>';
 			echo '</div></div>';
@@ -180,14 +193,14 @@ foreach($cols as $key => &$value){
 		echo '<div class="itemMilestone">' . $cols[$key]["notes"][$tkey]['milestone'] . '</div>';
 		echo '<div class="itemText">' . $cols[$key]["notes"][$tkey]['text'] . '</div>';
 		echo '<div class="itemTeamprint">' . $cols[$key]["notes"][$tkey]['teamprint'] . '</div>';
-		echo '<div class="colTotals"><span class="totaldays">0</span> <span>' . $lang['PROC_PSPGRID_DAYS'] . '</span> - <span>&euro;</span> <span class="totalcosts">0</span></div>';
+		echo '<div class="colTotals"><span class="totaldays">0</span> <span>' . $lang['PROC_PSPGRID_DAYS'] . '</span> - <span>'.$pspgrid->setting_currency.'</span> <span class="totalcosts">0</span></div>';
 		echo '<div class="itemTeam">' . $cols[$key]["notes"][$tkey]['team'] . '</div>';
 		echo '<div class="itemCostsEmployees costs">' . $cols[$key]["notes"][$tkey]['costs_employees'] . '</div>';
 		echo '<div class="itemCostsMaterials costs">' . $cols[$key]["notes"][$tkey]['costs_materials'] . '</div>';
 		echo '<div class="itemCostsExternal costs">' . $cols[$key]["notes"][$tkey]['costs_external'] . '</div>';
 		echo '<div class="itemCostsOther costs">' . $cols[$key]["notes"][$tkey]['costs_other'] . '</div>';
 		//echo '<div class="itemDays"><span class="days">' . $cols[$key]["notes"][$tkey]['days'] . '</span> ' . $lang['PROC_PSPGRID_DAYS'] . '</div>';
-		echo '<div class="itemTotals"><div class="left"><span class="days"> ' . $cols[$key]["notes"][$tkey]['days'] . '</span> <span>' . $lang['PROC_PSPGRID_DAYS'] . '</span></div><div class="right"><span>&euro;</span> <span class="itemcosts">' . $cols[$key]["notes"][$tkey]['itemcosts'] . '</span></div></div>';
+		echo '<div class="itemTotals"><div class="left"><span class="days"> ' . $cols[$key]["notes"][$tkey]['days'] . '</span> <span>' . $lang['PROC_PSPGRID_DAYS'] . '</span></div><div class="right"><span>'.$pspgrid->setting_currency.'</span> <span class="itemcosts">' . $cols[$key]["notes"][$tkey]['itemcosts'] . '</span></div></div>';
 		echo '<div class="itemTeamct"><a class="ct-content" field="itemTeamct coPopup-team_ct">' . $cols[$key]["notes"][$tkey]['team_ct'] . '</a></div>';
 		echo '<div class="itemStatus">' . $cols[$key]["notes"][$tkey]['status'] . '</div>';
 		echo '</div></div>';

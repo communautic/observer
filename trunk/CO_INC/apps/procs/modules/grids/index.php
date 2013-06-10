@@ -165,6 +165,9 @@ if (!empty($_GET['request'])) {
 		case 'getHelp':
 			echo($procsGrids->getHelp());
 		break;
+		case 'toggleCurrency':
+			echo($procsGrids->toggleCurrency($_GET['id'],$_GET['cur']));
+		break;
 
 	}
 }

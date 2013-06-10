@@ -688,12 +688,17 @@ class ProcsModel extends Model {
 				$note['z'] = $coord[2];
 
 					//list($width,$height) = explode('x',$val);
-			$coord = explode('x',$note["wh"]);
+			/*$coord = explode('x',$note["wh"]);
 					$note['w'] = $coord[0];
 					$note['h'] = $coord[1];
 					$height[] = $note['y']+$note['h'];
+					$width[] = $note['x']+$note['w'];*/
+			
+			$note['h'] = 100;
+			$note['w'] = 100;
+					$height[] = $note['y']+$note['h'];
 					$width[] = $note['x']+$note['w'];
-
+			
 			$notes[] = new Lists($note);
 	  	}
 		

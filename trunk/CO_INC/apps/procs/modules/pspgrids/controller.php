@@ -67,7 +67,7 @@ class ProcsPspgrids extends Procs {
 			$projects = $arr["projects"];
 			
 			$page_width = sizeof($cols)*203+100+100;
-			$page_height = $pspgrid->max_items*20+5+20+142+100+100;
+			$page_height = $pspgrid->max_items*90+5+20+142+100+100;
 			if($page_width < 896) {
 				$page_width = 896;
 			}
@@ -281,8 +281,9 @@ class ProcsPspgrids extends Procs {
 	function savePspgridNewManualNote($pid) {
 			global $lang;
 			$retval = $this->model->savePspgridNewManualNote($pid);
+			$cur = $this->model->getSettings($pid);
 			if($retval){
-				$html = '<div request="note" class="droppable showCoPopup planned" rel="' . $retval . '" id="procspspgriditem_' . $retval . '" style="display: none;"><div class="itemTitle">' . $lang["PROC_PSPGRID_ITEM_NEW"] . '</div><div class="light"><div class="itemMilestone">0</div><div class="itemText"></div><div class="itemTeamprint"></div><div class="colTotals"><span class="totaldays">0</span> <span>Tag/e</span> - <span>' . CO_DEFAULT_CURRENCY . '</span> <span class="totalcosts">0</span></div><div class="itemTeam"></div><div class="itemCostsEmployees costs">0</div><div class="itemCostsMaterials costs">0</div><div class="itemCostsExternal costs">0</div><div class="itemCostsOther costs">0</div><div class="itemDays"><span class="days">0</span> Tag/e</div><div class="itemTeamct"><a field="itemTeamct coPopup-team_ct" class="ct-content"></a></div><div class="itemStatus">0</div></div></div>';
+				$html = '<div request="note" class="droppable showCoPopup planned" rel="' . $retval . '" id="procspspgriditem_' . $retval . '"><div class="itemTitle">' . $lang["PROC_PSPGRID_ITEM_NEW"] . '</div><div class="light"><div class="itemMilestone">0</div><div class="itemText"></div><div class="itemTeamprint"></div><div class="colTotals"><span class="totaldays">0</span> <span>' . $lang['PROC_PSPGRID_DAYS'] . '</span> - <span>'.$cur.'</span> <span class="totalcosts">0</span></div><div class="itemTeam"></div><div class="itemCostsEmployees costs">0</div><div class="itemCostsMaterials costs">0</div><div class="itemCostsExternal costs">0</div><div class="itemCostsOther costs">0</div><div class="itemTotals"><div class="left"><span class="days"> 0</span> <span>' . $lang['PROC_PSPGRID_DAYS'] . '</span></div><div class="right"><span>' . $cur . '</span> <span class="itemcosts">0</span></div></div><div class="itemTeamct"><a field="itemTeamct coPopup-team_ct" class="ct-content"></a></div><div class="itemStatus">0</div></div></div>';
 			 return $html;
 		  } else{
 			 return "error";
@@ -292,8 +293,9 @@ class ProcsPspgrids extends Procs {
 	function savePspgridNewManualTitle($pid,$col) {
 			global $lang;
 			$retval = $this->model->savePspgridNewManualTitle($pid,$col);
+			$cur = $this->model->getSettings($pid);
 			if($retval){
-				$html = '<div request="title" class="droppable showCoPopup colTitle planned" rel="' . $retval . '" id="procspspgriditem_' . $retval . '" style="display: none;"><div class="itemTitle">' . $lang["PROC_PSPGRID_TITLE_NEW"] . '</div><div class="light"><div class="itemMilestone milestone">0</div><div class="itemText"></div><div class="itemTeamprint"></div><div class="colTotals"><span class="totaldays"> 0</span> <span>Tag/e</span> - <span>' . CO_DEFAULT_CURRENCY . '</span> <span class="totalcosts">0</span></div><div class="itemTeam"></div><div class="itemCostsEmployees costs">0</div><div class="itemCostsMaterials costs">0</div><div class="itemCostsExternal costs">0</div><div class="itemCostsOther costs">0</div><div class="itemDays"><span class="days">10</span> ' . $lang['PROC_PSPGRID_DAYS'] . '</div><div class="itemTeamct"><a field="coPopup-team_ct" class="ct-content"></a></div><div class="itemStatus">0</div></div></div>';
+				$html = '<div request="title" class="droppable showCoPopup colTitle planned ui-draggable" rel="' . $retval . '" id="procspspgriditem_' . $retval . '"><div class="itemTitle">' . $lang["PROC_PSPGRID_TITLE_NEW"] . '</div><div class="light"><div class="itemMilestone">0</div><div class="itemText"></div><div class="itemTeamprint"></div><div class="colTotals"><div class="left"><span class="totaldays"> 0</span> <span>' . $lang['PROC_PSPGRID_DAYS'] . '</span></div><div class="right"><span>' . $cur . '</span> <span class="totalcosts">0</span></div></div><div class="itemTeam"></div><div class="itemCostsEmployees costs">0</div><div class="itemCostsMaterials costs">0</div><div class="itemCostsExternal costs">0</div><div class="itemCostsOther costs">0</div><div class="itemTotals"><div class="left"><span class="days"> 0</span> <span>' . $lang['PROC_PSPGRID_DAYS'] . '</span></div><div class="right"><span>' . $cur . '</span> <span class="itemcosts">0</span></div></div><div class="itemTeamct"><a field="coPopup-team_ct" class="ct-content"></a></div><div class="itemStatus">0</div></div></div>';
 			 return $html;
 		  } else{
 			 return "error";
@@ -491,6 +493,15 @@ class ProcsPspgrids extends Procs {
 		$data["app"] = "procs";
 		$data["module"] = "/modules/pspgrids";
 		$this->openHelpPDF($data);
+	}
+	
+	function toggleCurrency($id,$cur) {
+		$retval = $this->model->toggleCurrency($id,$cur);
+		if($retval){
+			 return 'true';
+		  } else{
+			 return "error";
+		  }
 	}
 
 }

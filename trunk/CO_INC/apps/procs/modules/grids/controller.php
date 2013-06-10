@@ -511,6 +511,15 @@ class ProcsGrids extends Procs {
 		$data["module"] = "/modules/grids";
 		$this->openHelpPDF($data);
 	}
+	
+	function toggleCurrency($id,$cur) {
+		$retval = $this->model->toggleCurrency($id,$cur);
+		if($retval){
+			 return 'true';
+		  } else{
+			 return "error";
+		  }
+	}
 
 }
 
