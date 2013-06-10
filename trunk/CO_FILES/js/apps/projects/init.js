@@ -78,17 +78,38 @@ function projectsApplication(name) {
 		switch(status) {
 			case "0":
 				var statusnew = 1;
+				ele.addClass('active');
+				$('#pcurrencyOuter').slideDown();
 			break;
 			case "1":
 				var statusnew = 0;
+				ele.removeClass('active');
+				$('#pcurrencyOuter').slideUp();
 			break;
 		}
 	
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=toggleCosts&id=" + id + "&statusnew=" + statusnew, cache: false, success: function(data){
-				ele.text(statusnew);
+				ele.attr('rel',statusnew);
 				var obj = getCurrentModule();
 				obj.actionRefresh();
 				
+				}
+		});
+	}
+	
+	
+	this.toggleCurrency = function(ele,cur) {
+		var id = $("#projects").data("second");
+		$('#projects .appSettingsPopup .toggleCurrency').each(function() {
+			if($(this).attr('rel') == cur)	{
+				$(this).addClass('active');
+			} else {
+				$(this).removeClass('active');
+			}
+		})
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=toggleCurrency&id=" + id + "&cur=" + cur, cache: false, success: function(data){
+				var obj = getCurrentModule();
+				obj.actionRefresh();
 				}
 		});
 	}
@@ -1078,12 +1099,4 @@ $(document).ready(function() {
 		obj.addParentLink(id);
 	});
 	
-	$(document).on('click', 'a.toggleCosts', function(e) {
-		e.preventDefault();
-		var ele = $(this);
-		var status = ele.text();
-		var obj = getCurrentModule();
-		obj.toggleCosts(ele,status);
-	});
-
 });

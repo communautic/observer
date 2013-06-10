@@ -39,6 +39,22 @@ function procsGrids(name) {
 	}
 	
 	this.poformOptions = { beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
+	
+	this.toggleCurrency = function(ele,cur) {
+		var id = $("#procs").data("third");
+		$('#procs .appSettingsPopup .toggleCurrency').each(function() {
+			if($(this).attr('rel') == cur)	{
+				$(this).addClass('active');
+			} else {
+				$(this).removeClass('active');
+			}
+		})
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs/modules/grids&request=toggleCurrency&id=" + id + "&cur=" + cur, cache: false, success: function(data){
+				var obj = getCurrentModule();
+				obj.actionRefresh();
+				}
+		});
+	}
 
 	this.getDetails = function(moduleidx,liindex,list) {
 		if(self.coPopupEdit == '') {
@@ -482,6 +498,11 @@ function procsGrids(name) {
 				hours += parseInt($(this).html());
 			})
 			col.next().next().next().find('span.totalhours').html(hours);
+			var hours_total = 0;
+			$('#procs-grid .totalhours').each(function() { 
+				hours_total += parseInt($(this).text());
+			})
+			$('#procGridHours').text(hours_total);
 			}
 		});
 	}
@@ -1113,10 +1134,11 @@ $(document).ready(function() {
 		e.preventDefault();
 		var pid = $("#procs").data("third");
 		var sor = $('#procs-grid>div').size();
+		var cur = $("#procs .toggleCurrency.active").attr('rel');
 		var styles = '';
 		$("#procs-grid").width($("#procs-grid").width()+230);
 		$.ajax({ type: "GET", url: "/", data: "path=apps/procs/modules/grids&request=newGridColumn&id="+pid+"&sort="+sor, cache: false, success: function(num){
-			$("#procs-grid").append('<div id="gridscol_' + num + '"><div class="dragCol"><div id="procs-col-delete-' + num + '" class="procs-column-delete"><span class="icon-delete"></span></div></div><div class="procs-col-title  ui-droppable"><span rel="notetitle" class="newNoteItem newItemOption newNoteTitle"></span></div><div class="grids-spacer"></div><div class="procs-phase procs-phase-design ui-sortable"></div><span rel="note" class="newNoteItem newItemOption newNote empty"></span><div class="grids-spacer"></div><div class="procs-col-footer"><div class="procs-col-footer-stagegate"><div class="procs-stagegate   "></div><div class="procs-col-stagegate ui-droppable"><span rel="stagegate" class="newNoteItem newItemOption newNoteStagegate"></span></div></div><div class="grids-spacer"></div><div class="procs-col-footer-days"><div class="left"><span class="totalhours"> 0</span> <span>h</span></div><div class="right"><span>&euro;</span> <span class="totalcosts">0</span></div><div></div></div></div></div>').sortable("refresh");
+			$("#procs-grid").append('<div id="gridscol_' + num + '"><div class="dragCol"><div id="procs-col-delete-' + num + '" class="procs-column-delete"><span class="icon-delete"></span></div></div><div class="procs-col-title  ui-droppable"><span rel="notetitle" class="newNoteItem newItemOption newNoteTitle"></span></div><div class="grids-spacer"></div><div class="procs-phase procs-phase-design ui-sortable"></div><span rel="note" class="newNoteItem newItemOption newNote empty"></span><div class="grids-spacer"></div><div class="procs-col-footer"><div class="procs-col-footer-stagegate"><div class="procs-stagegate   "></div><div class="procs-col-stagegate ui-droppable"><span rel="stagegate" class="newNoteItem newItemOption newNoteStagegate"></span></div></div><div class="grids-spacer"></div><div class="procs-col-footer-days"><div class="left"><span class="totalhours"> 0</span> <span>h</span></div><div class="right"><span>'+cur+'</span> <span class="totalcosts">0</span></div><div></div></div></div></div>').sortable("refresh");
 			}
 		});
 	})

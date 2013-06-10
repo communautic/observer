@@ -39,7 +39,25 @@ function procsPspgrids(name) {
 	}
 	
 	this.poformOptions = { beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
-
+	
+	
+	this.toggleCurrency = function(ele,cur) {
+		var id = $("#procs").data("third");
+		$('#procs .appSettingsPopup .toggleCurrency').each(function() {
+			if($(this).attr('rel') == cur)	{
+				$(this).addClass('active');
+			} else {
+				$(this).removeClass('active');
+			}
+		})
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs/modules/pspgrids&request=toggleCurrency&id=" + id + "&cur=" + cur, cache: false, success: function(data){
+				var obj = getCurrentModule();
+				obj.actionRefresh();
+				}
+		});
+	}
+	
+	
 	this.getDetails = function(moduleidx,liindex,list) {
 		if(self.coPopupEdit == '') {
 			$.ajax({ type: "GET", url: "/", data: "path=apps/procs/modules/pspgrids&request=getCoPopup", success: function(html){

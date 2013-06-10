@@ -521,6 +521,7 @@ ul.actionconsole span.actionBin.noactive { background: url(../img/buttons.png) n
 .icon-delete-white { display: block; width: 20px; height: 19px;  background: url(../img/icons.png) no-repeat -275px -16px; }
 .icon-restore { display: block; margin: 4px 0 0 5px; width: 15px; height: 15px;  background: url(../img/icons.png) no-repeat -260px 0px; }
 .icon-milestone { display: block; width: 15px; height: 15px;  background: url(../img/icons.png) no-repeat -180px 0px; }
+.icon-milestone-large { display: block; width: 16px; height: 16px;  background: url(../img/icons.png) no-repeat -360px -62px; }
 .icon-milestone-grey { display: block; width: 15px; height: 15px;  background: url(../img/icons.png) no-repeat -200px -20px; }
 .icon-projectlink { display: block; width: 19px; height: 15px;  background: url(../img/icons.png) no-repeat -550px -36px; }
 .icon-projectlink-barchart { display: block; width: 19px; height: 15px;  background: url(../img/icons.png) no-repeat -550px -61px; margin-left: 10px; opacity: 0.7;}

@@ -896,6 +896,7 @@ $(document).ready(function() {
 	// bind clicks to close diaolgs
 	$(document).mousedown(function(e) {
 		var clicked=$(e.target); // get the element clicked
+		var app = getCurrentApp();
 		if(clicked.is('.context') || clicked.parents().is('.context')) { 
 		} else {
 			$('.context').slideUp(function() {
@@ -904,7 +905,7 @@ $(document).ready(function() {
 		}
 		if(clicked.is('.appSettingsPopup') || clicked.parents().is('.appSettingsPopup')) { 
 		} else {
-			$('.appSettingsPopup').slideUp();
+			$('#'+app+' .appSettingsPopup').slideUp();
 		}
 		if(clicked.is('#co-popup') || clicked.parents().is('#co-popup')) { 
 		} else {
@@ -1537,8 +1538,27 @@ $(document).ready(function() {
 	
 	$(document).on('click', 'div.appSettings',function(e) {
 		e.preventDefault();
-		$(this).next().slideDown();
+		var app = getCurrentApp();
+		$('#'+app+' .appSettingsPopup .content').html($(this).next().html());
+		$('#'+app+' .appSettingsPopup').slideDown();
 	})
+	
+	// costs checkbox
+	$(document).on('click', 'span.toggleCosts', function(e) {
+		e.preventDefault();
+		var ele = $(this);
+		var status = ele.attr('rel');
+		var obj = getCurrentModule();
+		obj.toggleCosts(ele,status);
+	});
+	
+	$(document).on('click', 'span.toggleCurrency', function(e) {
+		e.preventDefault();
+		var ele = $(this);
+		var cur = ele.attr('rel');
+		var obj = getCurrentModule();
+		obj.toggleCurrency(ele,cur);
+	});
 	
 	$('.textarea-title, .bg, .elastic').livequery(function () {
 		$(this).bind('keyup paste cut', $.debounce( 500, keyupSave));
