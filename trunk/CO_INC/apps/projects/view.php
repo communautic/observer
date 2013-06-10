@@ -1,4 +1,5 @@
 <div id="projects" class="app">
+<div class="appSettingsPopup"><div class="head"><?php echo $lang["GLOBAL_SETTINGS"];?></div><div class="content"></div></div>
 <input name="projects-current" id="projects-current" type="hidden" value="" />
 <div class="ui-layout-west">
 <div class="radius-helper"><img src="<?php echo CO_FILES;?>/img/border-radius-fix-bl.png" width="8" height="8" class="border-radius-fix-bl" alt=""/><img src="<?php echo CO_FILES;?>/img/border-radius-fix-br.png" width="8" height="8" class="border-radius-fix-br" alt=""/>

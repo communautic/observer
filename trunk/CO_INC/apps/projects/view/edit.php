@@ -2,7 +2,26 @@
 <table border="0" cellpadding="0" cellspacing="0" class="table-title">
   <tr>
     <td class="tcell-left text11"><span class="<?php if($project->canedit) { ?>content-nav focusTitle<?php } ?>"><span><?php echo $lang["PROJECT_TITLE"];?></span></span></td>
-    <td class="tcell-right"><?php if($project->canedit) { ?><input name="title" type="text" class="title textarea-title" value="<?php echo($project->title);?>" maxlength="100" /><?php } else { ?><div class="textarea-title"><?php echo($project->title);?></div><?php } ?><?php if($project->canedit) { ?><div class="appSettings" style="width: 21px; height: 21px; position: absolute; right:15px; top: 3px; background: url('/CO_FILES/img/icons.png') no-repeat scroll -320px -62px transparent;"></div><div class="appSettingsPopup" style="position: absolute; top: 24px; right: 15px; background: #E1F0AF; border: 1px solid #82AA0A; padding: 10px; display: none;">Kosten: <a class="toggleCosts"><?php echo $project->setting_costs;?></a><br />Currency: <?php echo $project->setting_currency;?> $ &pound; </div><?php } ?></td>
+    <td class="tcell-right"><?php if($project->canedit) { ?><input name="title" type="text" class="title textarea-title" value="<?php echo($project->title);?>" maxlength="100" /><?php } else { ?><div class="textarea-title"><?php echo($project->title);?></div><?php } ?><?php if($project->canedit) { ?><div class="appSettings"></div><div class="appSettingsPopupContent" style="display: none;">
+    <div class="inner">
+    	<div class="left"><?php echo $lang["GLOBAL_COSTS"];?></div>
+    	<div class="right"><span class="toggleCosts coCheckbox<?php if($project->setting_costs == 1) { echo ' active';}?>" rel="<?php echo $project->setting_costs;?>"></span></div>
+    </div>
+    <div class="line"></div>
+    <div class="inner" id="pcurrencyOuter"<?php if($project->setting_costs == 0) { echo 'style="display: none;"';}?>><?php echo $lang["GLOBAL_CURRENCY"];?>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td valign="middle" width="20"><?php echo $lang['GLOBAL_CURRENCY_EURO'];?></td>
+        <td valign="middle" width="40"><span class="toggleCurrency coCheckbox<?php if($project->setting_currency == $lang['GLOBAL_CURRENCY_EURO']) { echo ' active';}?>" rel="<?php echo $lang['GLOBAL_CURRENCY_EURO'];?>"></span></td>
+        <td valign="middle" width="20"><?php echo $lang['GLOBAL_CURRENCY_POUND'];?> </td>
+        <td valign="middle" width="40"><span class="toggleCurrency coCheckbox<?php if($project->setting_currency == $lang['GLOBAL_CURRENCY_POUND']) { echo ' active';}?>" rel="<?php echo $lang['GLOBAL_CURRENCY_POUND'];?>"></span></td>
+        <td valign="middle" width="20"><?php echo $lang['GLOBAL_CURRENCY_DOLLAR'];?></td>
+        <td valign="middle"><span class="toggleCurrency coCheckbox<?php if($project->setting_currency == $lang['GLOBAL_CURRENCY_DOLLAR']) { echo ' active';}?>" rel="<?php echo $lang['GLOBAL_CURRENCY_DOLLAR'];?>"></span></td>
+    </tr>
+</table>
+		 
+		  </div>
+    </div><?php } ?></td>
   </tr>
   <tr class="table-title-status">
     <td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_STATUS"];?></td>

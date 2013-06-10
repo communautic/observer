@@ -219,6 +219,9 @@ if (!empty($_GET['request'])) {
 		case 'toggleCosts':
 			echo($projects->toggleCosts($_GET['id'],$_GET['statusnew']));
 		break;
+		case 'toggleCurrency':
+			echo($projects->toggleCurrency($_GET['id'],$_GET['cur']));
+		break;
 	}
 }
 

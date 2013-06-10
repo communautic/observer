@@ -2795,6 +2795,15 @@ class ProjectsModel extends Model {
 			return true;
 		}
 	}
+	
+	function toggleCurrency($id,$cur) {
+		$q = "UPDATE " . CO_TBL_PROJECTS . " set setting_currency='$cur' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		if ($result) {
+			return true;
+		}
+	}
 
 }
 
