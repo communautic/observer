@@ -92,6 +92,20 @@ foreach($task as $value) {
             <td class="grey smalltext"><?php echo $lang["PROJECT_PHASE_TASK_TEAM"];?> <?php echo($value->team . " " . $value->team_ct);?></td>
         </tr>
         <?php } ?>
+        <?php if($phase->setting_costs == 1) { ?>
+        <tr>
+            <td class="fourCols-one">&nbsp;</td>
+            <td class="fourCols-two">&nbsp;</td>
+            <td class="fourCols-three">&nbsp;</td>
+            <td class="grey smalltext"><?php echo $lang["PROJECT_COSTS_PLAN"];?> <?php echo $phase->setting_currency;?> <?php echo($value->costs_plan);?></td>
+        </tr>
+        <tr>
+            <td class="fourCols-one">&nbsp;</td>
+            <td class="fourCols-two">&nbsp;</td>
+            <td class="fourCols-three">&nbsp;</td>
+            <td class="grey smalltext"><?php echo $lang["PROJECT_COSTS_REAL"];?> <?php echo $phase->setting_currency;?> <?php echo($value->costs_real);?></td>
+        </tr>
+        <?php } ?>
         <?php if(!empty($value->dependent_title)) { ?>
         <tr>
             <td class="fourCols-one">&nbsp;</td>
