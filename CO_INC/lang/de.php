@@ -72,11 +72,17 @@ $lang["GLOBAL_RESET"] = 'Zurücksetzen';
 $lang["GLOBAL_CONFIRM"] = 'Bestätigen';
 $lang["GLOBAL_SENDEMAIL"] = 'Versenden';
 $lang["GLOBAL_EDIT"] = 'Bearbeiten';
+$lang["GLOBAL_SETTINGS"] = 'Einstellungen';
 
 $lang["GLOBAL_TITLE"] = 'Titel';
 $lang["GLOBAL_RESPONSIBILITY"] = 'Verantwortung';
 $lang["GLOBAL_DESCRIPTION"] = 'Beschreibung';
 
+$lang['GLOBAL_CURRENCY_POUND'] = '£';
+$lang['GLOBAL_CURRENCY_DOLLAR'] = '$';
+$lang['GLOBAL_CURRENCY_EURO'] = '€';
+$lang['GLOBAL_CURRENCY'] = 'Währung';
+$lang['GLOBAL_COSTS'] = 'Kosten';
 $lang['GLOBAL_COSTS_EMPLOYEES'] = 'Personalkosten';
 $lang['GLOBAL_COSTS_MATERIAL'] = 'Materialkosten';
 $lang['GLOBAL_COSTS_EXTERNAL'] = 'Fremdleistungen';
