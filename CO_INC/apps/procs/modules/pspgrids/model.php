@@ -210,6 +210,11 @@ class ProcsPspgridsModel extends ProcsModel {
 		$array["management_ct_convert"] = $array['management_ct'];
 		$array["management_ct"] = empty($array["management_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['management_ct'];
 		$array["team_print"] = $contactsmodel->getUserListPlain($array['team']);
+		if($option = 'prepareSendTo') {
+			$array["sendtoTeam"] = $contactsmodel->checkUserListEmail($array["team"],'projectsteam', "", $array["canedit"]);
+			$array["sendtoTeamNoEmail"] = $contactsmodel->checkUserListEmail($array["team"],'projectsteam', "", $array["canedit"], 0);
+			$array["sendtoError"] = false;
+		}
 		$array["team_convert"] = $array['team'];
 		$array["team"] = $contactsmodel->getUserList($array['team'],'procpspgridteam', "", $array["canedit"]);
 		$array["team_ct_convert"] = $array['team_ct'];
@@ -250,6 +255,7 @@ class ProcsPspgridsModel extends ProcsModel {
 			$titleid = 0;
 			$titletext = '';
 			$titletextcontent = '';
+			$titleteam_convert = '';
 			$titleteam = '';
 			$titleteamprint = '';
 			$titleteam_ct = '';
@@ -271,6 +277,7 @@ class ProcsPspgridsModel extends ProcsModel {
 					$titleid = $rown->id;
 					$titletext = $rown->title;
 					$titletextcontent = $rown->text;
+					$titleteam_convert =  $rown->team;
 					$titleteamprint =  $contactsmodel->getUserListPlain($rown->team);
 					$titleteam = $contactsmodel->getUserList($rown->team,'coPopup-team', "", '1');
 					$titleteam_ct = $rown->team_ct;
@@ -287,6 +294,7 @@ class ProcsPspgridsModel extends ProcsModel {
 						"title" => $rown->title,
 						"text" => $rown->text,
 						"status" => $rown->status,
+						"team_convert" => $rown->team,
 						"teamprint" => $contactsmodel->getUserListPlain($rown->team),
 						"team" => $contactsmodel->getUserList($rown->team,'coPopup-team', "", '1'),
 						"team_ct" => $rown->team_ct,
@@ -342,6 +350,7 @@ class ProcsPspgridsModel extends ProcsModel {
 				"titleid" => $titleid,
 				"titletext" => $titletext,
 				"titletextcontent" => $titletextcontent,
+				"titleteam_convert" => $titleteam_convert,
 				"titleteamprint" => $titleteamprint,
 				"titleteam" => $titleteam,
 				"titleteam_ct" => $titleteam_ct,
@@ -673,8 +682,13 @@ class ProcsPspgridsModel extends ProcsModel {
 				$isstagegate = $rown["isstagegate"];
 				$title = mysql_real_escape_string($rown["title"]);
 				$text = mysql_real_escape_string($rown["text"]);
+				$days = $rown["days"];
+				$costs_employees = $rown["costs_employees"];
+				$costs_materials = $rown["costs_materials"];
+				$costs_external = $rown["costs_external"];
+				$costs_other = $rown["costs_other"];
 				//$ms = $rown["ms"];
-				$qnn = "INSERT INTO " . CO_TBL_PROCS_PSPGRIDS_NOTES . " set cid='$colID_new', sort = '$sort', istitle = '$istitle', isstagegate = '$isstagegate', title = '$title', text = '$text', created_date='$now',created_user='$session->uid',edited_date='$now',edited_user='$session->uid'";
+				$qnn = "INSERT INTO " . CO_TBL_PROCS_PSPGRIDS_NOTES . " set cid='$colID_new', sort = '$sort', istitle = '$istitle', isstagegate = '$isstagegate', title = '$title', text = '$text', days = '$days', costs_employees ='$costs_employees', costs_materials = '$costs_materials', costs_external = '$costs_external', costs_other  = '$costs_other', created_date='$now',created_user='$session->uid',edited_date='$now',edited_user='$session->uid'";
 				$resultnn = mysql_query($qnn, $this->_db->connection);
 			}
 		}
@@ -855,7 +869,8 @@ class ProcsPspgridsModel extends ProcsModel {
 			if($cols[$key]['titletext'] != "") {
 				$phasetitle = mysql_real_escape_string($cols[$key]['titletext']);
 				$phasetext = mysql_real_escape_string($cols[$key]['titletextcontent']);
-				$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES . " set title = '$phasetitle', pid='$pid', team = '$pspgrid->team_convert', team_ct = '$pspgrid->team_ct_convert', protocol='$phasetext', access='0', status = '0', planned_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+				$phaseteam = $cols[$key]['titleteam_convert'];
+				$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES . " set title = '$phasetitle', pid='$pid', team = '$phaseteam', team_ct = '', protocol='$phasetext', access='0', status = '0', planned_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 				$result = mysql_query($q, $this->_db->connection);
 				$phaseid = mysql_insert_id();
 				
@@ -893,18 +908,23 @@ class ProcsPspgridsModel extends ProcsModel {
 					$costs_materials = $cols[$key]["notes"][$tkey]['costs_materials'];
 					$costs_external = $cols[$key]["notes"][$tkey]['costs_external'];
 					$costs_other = $cols[$key]["notes"][$tkey]['costs_other'];
+					$task_team = $cols[$key]["notes"][$tkey]['team_convert'];
 					if($cols[$key]["notes"][$tkey]['milestone'] == "1") {
 						$cat = 1;
 						$startdate = $this->_date->addDays($datecalc,"1");
 						$enddate = $this->_date->addDays($datecalc,"1");
 					} else {
 						$cat = 0;
+						$days = $cols[$key]["notes"][$tkey]['days'];
+						if($days < 1) {
+							$days = 1;
+						}
 						$startdate = $this->_date->addDays($datecalc,"1");
-						$enddate = $this->_date->addDays($datecalc,"7");
+						$enddate = $this->_date->addDays($datecalc,$days);
 					}
 					$datecalc = $enddate;
 					
-					$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES_TASKS . " set pid='$pid', phaseid='$phaseid', cat='$cat', dependent = '$dependent', status = '0', text = '$tasktitle', protocol = '$taskprotocol', costs_employees = '$costs_employees', costs_materials = '$costs_materials', costs_external = '$costs_external', costs_other = '$costs_other', startdate = '$startdate', enddate = '$enddate'";
+					$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES_TASKS . " set pid='$pid', phaseid='$phaseid', cat='$cat', dependent = '$dependent', status = '0', text = '$tasktitle', protocol = '$taskprotocol', team = '$task_team', costs_employees = '$costs_employees', costs_materials = '$costs_materials', costs_external = '$costs_external', costs_other = '$costs_other', startdate = '$startdate', enddate = '$enddate'";
 					$result = mysql_query($q, $this->_db->connection);
 					$dependent = mysql_insert_id();
 				

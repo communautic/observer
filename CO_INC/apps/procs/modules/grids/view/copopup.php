@@ -4,7 +4,7 @@
     <label><?php echo $lang["GLOBAL_TITLE"];?></label>
     <input type="text" class="title" maxlength="60" value="" />
   </div>
-  <div class="fieldset2">
+  <div class="fieldset2 tohide">
     <label><span class="content-nav showDialog" request="getContactsDialog" field="coPopup-team" append="1"><span><?php echo $lang["GLOBAL_RESPONSIBILITY"];?></span></span></label>
     <div class="contacts">
       <div id="coPopup-team" class="itemlist-field"></div>

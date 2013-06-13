@@ -149,6 +149,9 @@ class ProcsGrids extends Procs {
 			if($page_width < 896) {
 				$page_width = 896;
 			}
+			if($page_height < 595) {
+				$page_height = 595;
+			}
 			ob_start();
 				include 'view/print.php';
 				$html = ob_get_contents();

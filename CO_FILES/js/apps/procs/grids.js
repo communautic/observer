@@ -882,6 +882,7 @@ $(document).ready(function() {
 						insert.attr('id','procsgriditem_' + id).attr('rel',id);
 						insert.find('div.itemTitle').attr('id','procsgriditem-title-' + id);
 						insert.find('div.itemText').attr('id','procsgriditem-text-' + id);
+						insert.append('<div id="procsgriditem-team-'+ id +'" style="display: none;"></div><div id="procsgriditem-costs_employees-'+ id +'" style="display: none;" class="costs">0</div><div id="procsgriditem-costs_materials-'+ id +'" style="display: none;" class="costs">0</div><div id="procsgriditem-costs_external-'+ id +'" style="display: none;" class="costs">0</div><div id="procsgriditem-costs_other-'+ id +'" style="display: none;" class="costs">0</div><div id="procsgriditem-hours-'+ id +'" style="display: none;" class="hours">0</div><div id="procsgriditem-team_ct-'+ id +'" style="display: none;"><a class="ct-content" field="coPopup-team_ct"></a></div>');
 						var e = '<input name="" type="checkbox" value="'+id+'" class="cbx jNiceHidden" />';
 						var e = insert.find('div.statusItem').html(e);
 						
@@ -892,7 +893,7 @@ $(document).ready(function() {
 					});
 				} else { // if dropped from list
 					if(ui.draggable.hasClass('colTitle')) {
-						ui.draggable.parent().html('<span class="newNoteItem newNoteTitle"></span>');
+						ui.draggable.parent().html('<span class="newNoteItem newItemOption newNoteTitle" rel="notetitle"></span>');
 					}
 					var dragidx = $('#procs-grid .procs-phase').index(ui.draggable.parent());
 					ui.draggable.remove();
@@ -962,6 +963,7 @@ $(document).ready(function() {
 					var id = ui.draggable.attr('rel');
 					$.ajax({ type: "GET", url: "/", async: false, data: "path=apps/procs/modules/grids&request=saveGridNewNoteStagegate&pid="+pid+"&id=" + id+"&col="+col, cache: false, success: function(id){
 						insert.attr('id','procsgriditem_' + id).attr('rel',id);
+						insert.append('<div id="procsgriditem-team-'+ id +'" style="display: none;"></div><div id="procsgriditem-costs_employees-'+ id +'" style="display: none;" class="costs">0</div><div id="procsgriditem-costs_materials-'+ id +'" style="display: none;" class="costs">0</div><div id="procsgriditem-costs_external-'+ id +'" style="display: none;" class="costs">0</div><div id="procsgriditem-costs_other-'+ id +'" style="display: none;" class="costs">0</div><div id="procsgriditem-hours-'+ id +'" style="display: none;" class="hours">0</div><div id="procsgriditem-team_ct-'+ id +'" style="display: none;"><a class="ct-content" field="coPopup-team_ct"></a></div>');
 						var e = '<input name="" type="checkbox" value="'+id+'" class="cbx jNiceHidden" />';
 						var e = insert.find('div.statusItem').html(e);
 						var element = insert.find('input');
@@ -971,7 +973,7 @@ $(document).ready(function() {
 					});
 				} else { // if dropped from list
 					if(ui.draggable.hasClass('colStagegate')) {
-						ui.draggable.parent().html('<span class="newNoteItem newNoteStagegate"></span>');
+						ui.draggable.parent().html('<span class="newNoteItem newNoteStagegate" rel="stagegate"></span>');
 					}
 					var dragidx = $('#procs-grid .procs-phase').index(ui.draggable.parent());
 					ui.draggable.remove();
@@ -1012,11 +1014,11 @@ $(document).ready(function() {
 			receive: function (event, ui) { // add this handler
 				setTimeout(function() {
 					if(ui.item.hasClass('colTitle')) {
-						ui.item.parent().html('<span class="newNoteItem newNoteTitle"></span>');
+						ui.item.parent().html('<span class="newNoteItem newItemOption newNoteTitle" rel="notetitle"></span>');
 						ui.item.remove();
 					}
 					if(ui.item.hasClass('colStagegate')) {
-						ui.item.parent().html('<span class="newNoteItem newNoteStagegate"></span>');
+						ui.item.parent().html('<span class="newNoteItem newItemOption newNoteStagegate" rel="stagegate"></span>');
 						ui.item.remove();
 					}
 				}, 100);
@@ -1065,7 +1067,7 @@ $(document).ready(function() {
 			$.ajax({ type: "GET", url: "/", data: "path=apps/procs/modules/grids&request=saveGridItems&col="+col+"&"+ order, cache: false, success: function(data){
 				var titleset = $('div.procs-col-title:eq('+idx+')').html();
 				var title = 0;
-				if(titleset != "" && titleset != '<span class="newNoteItem newNoteTitle"></span>') {
+				if(titleset != "" && titleset != '<span class="newNoteItem newItemOption newNoteTitle" rel="notetitle"></span>') {
 					title = 1;
 				}
 				var ncbx = $('div.procs-phase:eq('+idx+') input:checkbox').length;

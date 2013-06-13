@@ -87,7 +87,7 @@ function projectsApplication(name) {
 				$('#pcurrencyOuter').slideUp();
 			break;
 		}
-	
+		setTimeout(function() {
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=toggleCosts&id=" + id + "&statusnew=" + statusnew, cache: false, success: function(data){
 				ele.attr('rel',statusnew);
 				var obj = getCurrentModule();
@@ -95,6 +95,7 @@ function projectsApplication(name) {
 				
 				}
 		});
+		},400)
 	}
 	
 	

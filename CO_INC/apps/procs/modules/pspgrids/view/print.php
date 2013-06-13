@@ -35,7 +35,7 @@ $varheight = 100;
 <table width="100%" class="standard">
 	<tr>
 		<td class="tcell-left"><?php echo $lang["PROC_PSPGRID_TEAM"];?></td>
-		<td class="smalltext"><?php echo($pspgrid->team);?> <?php echo($pspgrid->team_ct);?></td>
+		<td class="smalltext"><?php echo($pspgrid->team_print);?> <?php echo($pspgrid->team_ct);?></td>
     </tr>
 </table>
 </div>

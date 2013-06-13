@@ -881,7 +881,7 @@ class ProcsModel extends Model {
 	}
 
 
-	function updateNoteSize($id,$w,$h) {
+	/*function updateNoteSize($id,$w,$h) {
 		global $session;
 		
 		$now = gmdate("Y-m-d H:i:s");
@@ -891,7 +891,7 @@ class ProcsModel extends Model {
 		if ($result) {
 			return true;
 		}
-	}
+	}*/
 
 
 	/*function setProcNoteToggle($id,$t) {
@@ -920,17 +920,17 @@ class ProcsModel extends Model {
 			$procsAccessModel->setDetails($id_new,$session->uid,"");
 		}
 		// notes
-		$q = "SELECT id,title,text,xyz,wh,toggle FROM " . CO_TBL_PROCS_NOTES . " WHERE pid = '$id' and bin='0'";
+		$q = "SELECT id,title,text,xyz,shape,color FROM " . CO_TBL_PROCS_NOTES . " WHERE pid = '$id' and bin='0'";
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
 			$noteid = $row["id"];
 			$title = mysql_real_escape_string($row["title"]);
 			$text = mysql_real_escape_string($row["text"]);
 			$xyz = $row["xyz"];
-			$wh = $row["wh"];
-			$toggle = $row["toggle"];
+			$shape = $row["shape"];
+			$color = $row["color"];
 			
-			$qp = "INSERT INTO " . CO_TBL_PROCS_NOTES . " set pid='$id_new',title='$title',text='$text',xyz='$xyz',wh='$wh',toggle='$toggle',created_date='$now',created_user='$session->uid',edited_date='$now',edited_user='$session->uid'";
+			$qp = "INSERT INTO " . CO_TBL_PROCS_NOTES . " set pid='$id_new',title='$title',text='$text',xyz='$xyz',shape='$shape',color='$color',created_date='$now',created_user='$session->uid',edited_date='$now',edited_user='$session->uid'";
 			$rp = mysql_query($qp, $this->_db->connection);
 			$id_p_new = mysql_insert_id();
 		}		

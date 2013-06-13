@@ -82,7 +82,11 @@
     </tr>
 </table>
 <div class="content-spacer"></div>
-<?php if($grid->canedit) { ?>
+<?php 
+$showCoPopup = '';
+if($grid->canedit) { 
+	$showCoPopup = 'showCoPopup';
+?>
 	<div id="procs-console">
 		<div class="widget-head">
         	<a class="collapse">COLLAPSE</a>
@@ -91,13 +95,14 @@
         <div id="procs-console-notes">
     	<?php 
 		foreach($console_items as $item){ 
-			echo '<div rel="' . $item["id"] . '" class="droppable showCoPopup"><div class="statusItem"></div><div class="itemTitle">' . $item["title"] . '</div><div class="itemText" style="display: none;">' . $item["text"] . '</div></div>';
+			echo '<div rel="' . $item["id"] . '" class="droppable '.$showCoPopup.'"><div class="statusItem"></div><div class="itemTitle">' . $item["title"] . '</div><div class="itemText" style="display: none;">' . $item["text"] . '</div></div>';
+			//echo '<div rel="' . $item["id"] . '" class="droppable '.$showCoPopup.'"><div class="statusItem"></div><div class="itemTitle">' . $item["title"] . '</div><div class="itemText" style="display: none;">' . $item["text"] . '</div><div style="display: none;"></div><div class="costs" style="display: none;">0</div><div class="costs" style="display: none;">0</div><div class="costs" style="display: none;">0</div><div class="costs" style="display: none;">0</div><div class="hours" style="display: none;">0</div><div style="display: none;"><a field="coPopup-team_ct" class="ct-content"></a></div></div>';
 		 } ?>
         </div>
 	</div>
 <?php } ?>
 <div class="content-spacer"></div>
-<div style="position: absolute; top: 168px; height: 50px; width: 100%; background: #b2b2b2; z-index: -1;"></div>
+<div style="position: absolute; top: <?php if($grid->canedit) { echo '168'; } else { echo '207';} ?>px; height: 50px; width: 100%; background: #b2b2b2; z-index: -1;"></div>
 <div id="procs-grid" style="width: <?php echo($grid->grid_width);?>px;">
 <?php 
 $drag = '';
@@ -118,7 +123,7 @@ foreach($cols as $key => &$value){
 	}
 		echo '<div class="procs-col-title ' . $cols[$key]['status'] . '">';
 		if($cols[$key]['titletext'] != "") {
-			echo '<div id="procsgriditem_'.$cols[$key]['titleid'].'" rel="'.$cols[$key]['titleid'].'" class="droppable showCoPopup colTitle" request="title">';
+			echo '<div id="procsgriditem_'.$cols[$key]['titleid'].'" rel="'.$cols[$key]['titleid'].'" class="droppable '.$showCoPopup.' colTitle" request="title">';
 			echo '<div class="statusItem"><input name="" type="checkbox" value="'.$cols[$key]['titleid'].'" class="cbx jNiceHidden" /></div>';
 			echo '<div id="procsgriditem-title-'.$cols[$key]['titleid'].'" class="itemTitle ' . $checkbox . '">'.$cols[$key]['titletext'].'</div>';
 		echo '<div id="procsgriditem-text-' . $cols[$key]['titleid'] . '" style="display: none;">' . $cols[$key]['titletextcontent'] . '</div><div id="procsgriditem-team-' . $cols[$key]['titleid'] . '" style="display: none;">' . $cols[$key]['titleteam'] . '</div><div id="procsgriditem-costs_employees-' . $cols[$key]['titleid'] . '" style="display: none;" class="costs">' . $cols[$key]['titlecosts_employees'] . '</div><div id="procsgriditem-costs_materials-' . $cols[$key]['titleid'] . '" style="display: none;" class="costs">' . $cols[$key]['titlecosts_materials'] . '</div><div id="procsgriditem-costs_external-' . $cols[$key]['titleid'] . '" style="display: none;" class="costs">' . $cols[$key]['titlecosts_external'] . '</div><div id="procsgriditem-costs_other-' . $cols[$key]['titleid'] . '" style="display: none;" class="costs">' . $cols[$key]['titlecosts_other'] . '</div><div id="procsgriditem-hours-' . $cols[$key]['titleid'] . '" style="display: none;" class="hours">' . $cols[$key]['titlehours'] . '</div><div id="procsgriditem-team_ct-' . $cols[$key]['titleid'] . '" style="display: none;"><a class="ct-content" field="coPopup-team_ct">' . $cols[$key]['titleteam_ct'] . '</a></div></div>';
@@ -130,7 +135,7 @@ foreach($cols as $key => &$value){
 		}
 		echo '</div><div class="grids-spacer"></div>';
 	// listitems
-	echo '<div class="' . $procsphase . ' procs-phase-design"">';
+	echo '<div class="' . $procsphase . ' procs-phase-design">';
 	$newNoteItemClass = ' empty';
 	$num_notes = sizeof($cols[$key]["notes"]);
 	if($num_notes > 0) {
@@ -141,7 +146,7 @@ foreach($cols as $key => &$value){
 		if ($cols[$key]["notes"][$tkey]['status'] == 1) {
 			$checked = ' checked="checked"';
 		}
-		echo '<div id="procsgriditem_'.$cols[$key]["notes"][$tkey]['note_id'].'" rel="'.$cols[$key]["notes"][$tkey]['note_id'].'" class="droppable showCoPopup" request="note">';
+		echo '<div id="procsgriditem_'.$cols[$key]["notes"][$tkey]['note_id'].'" rel="'.$cols[$key]["notes"][$tkey]['note_id'].'" class="droppable '.$showCoPopup.'" request="note">';
 		echo '<div class="statusItem"><input name="" type="checkbox" value="'.$cols[$key]["notes"][$tkey]['note_id'].'" class="cbx jNiceHidden ' . $checkbox . '" ' . $checked . '/></div>';
 		echo '<div id="procsgriditem-title-' . $cols[$key]["notes"][$tkey]['note_id'] . '" class="itemTitle ' . $checkbox . '">'.$cols[$key]["notes"][$tkey]['title'].'</div>';
 		echo '<div id="procsgriditem-text-' . $cols[$key]["notes"][$tkey]['note_id'] . '" style="display: none;">' . $cols[$key]["notes"][$tkey]['text'] . '</div><div id="procsgriditem-team-' . $cols[$key]["notes"][$tkey]['note_id'] . '" style="display: none;">' . $cols[$key]["notes"][$tkey]['team'] . '</div><div id="procsgriditem-costs_employees-' . $cols[$key]["notes"][$tkey]['note_id'] . '" style="display: none;" class="costs">' . $cols[$key]["notes"][$tkey]['costs_employees'] . '</div><div id="procsgriditem-costs_materials-' . $cols[$key]["notes"][$tkey]['note_id'] . '" style="display: none;" class="costs">' . $cols[$key]["notes"][$tkey]['costs_materials'] . '</div><div id="procsgriditem-costs_external-' . $cols[$key]["notes"][$tkey]['note_id'] . '" style="display: none;" class="costs">' . $cols[$key]["notes"][$tkey]['costs_external'] . '</div><div id="procsgriditem-costs_other-' . $cols[$key]["notes"][$tkey]['note_id'] . '" style="display: none;" class="costs">' . $cols[$key]["notes"][$tkey]['costs_other'] . '</div><div id="procsgriditem-hours-' . $cols[$key]["notes"][$tkey]['note_id'] . '" style="display: none;" class="hours">' . $cols[$key]["notes"][$tkey]['hours'] . '</div><div id="procsgriditem-team_ct-' . $cols[$key]["notes"][$tkey]['note_id'] . '" style="display: none;"><a class="ct-content" field="coPopup-team_ct">' . $cols[$key]["notes"][$tkey]['team_ct'] . '</a></div></div>';
@@ -163,7 +168,7 @@ foreach($cols as $key => &$value){
 	echo '<div class="procs-stagegate   ' . $stagegatestatus . '"></div>';
 	echo '<div class="procs-col-stagegate">';
 		if($cols[$key]['stagegatetext'] != "") {
-			echo '<div id="procsgriditem_'.$cols[$key]['stagegateid'].'" rel="'.$cols[$key]['stagegateid'].'" class="droppable colStagegate showCoPopup" request="stagegate">';
+			echo '<div id="procsgriditem_'.$cols[$key]['stagegateid'].'" rel="'.$cols[$key]['stagegateid'].'" class="droppable colStagegate '.$showCoPopup.'" request="stagegate">';
 			echo '<div class="statusItem"><input name="" type="checkbox" value="'.$cols[$key]['stagegateid'].'" class="cbx jNiceHidden" /></div>';
 			echo '<div  id="procsgriditem-title-' . $cols[$key]['stagegateid'] . '" class="itemTitle ' . $checkbox . '">'.$cols[$key]['stagegatetext'].'</div>';
 			echo '<div id="procsgriditem-text-' . $cols[$key]['stagegateid'] . '" style="display: none;">' . $cols[$key]['stagegatetextcontent'] . '</div><div id="procsgriditem-team-' . $cols[$key]['stagegateid'] . '" style="display: none;">' . $cols[$key]['stagegateteam'] . '</div><div id="procsgriditem-costs_employees-' . $cols[$key]['stagegateid'] . '" style="display: none;" class="costs">' . $cols[$key]['stagegatecosts_employees'] . '</div><div id="procsgriditem-costs_materials-' . $cols[$key]['stagegateid'] . '" style="display: none;" class="costs">' . $cols[$key]['stagegatecosts_materials'] . '</div><div id="procsgriditem-costs_external-' . $cols[$key]['stagegateid'] . '" style="display: none;" class="costs">' . $cols[$key]['stagegatecosts_external'] . '</div><div id="procsgriditem-costs_other-' . $cols[$key]['stagegateid'] . '" style="display: none;" class="costs">' . $cols[$key]['stagegatecosts_other'] . '</div><div id="procsgriditem-hours-' . $cols[$key]['stagegateid'] . '" style="display: none;" class="hours">' . $cols[$key]['stagegatehours'] . '</div><div id="procsgriditem-team_ct-' . $cols[$key]['stagegateid'] . '" style="display: none;"><a class="ct-content" field="coPopup-team_ct">' . $cols[$key]['stagegateteam_ct'] . '</a></div></div>';
