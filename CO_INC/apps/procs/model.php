@@ -2064,6 +2064,14 @@ class ProcsModel extends Model {
 			 	$rows['id'] = 'procs,' .$folder. ',' . $pid . ',0,procs';
 			 	$r[] = $rows;
 			}
+			// PSP Grids
+			$qp = "SELECT id,CONVERT(title USING latin1) as title FROM " . CO_TBL_PROCS_PSPGRIDS . " WHERE pid = '$pid' and bin = '0' $sql and title like '%$term%' ORDER BY title";
+			$resultp = mysql_query($qp, $this->_db->connection);
+			while($rowp = mysql_fetch_array($resultp)) {
+				$rows['value'] = htmlspecialchars_decode($rowp['title']);
+			 	$rows['id'] = 'pspgrids,' .$folder. ',' . $pid . ',' .$rowp['id'].',procs';
+			 	$r[] = $rows;
+			}
 			// Grids
 			$qp = "SELECT id,CONVERT(title USING latin1) as title FROM " . CO_TBL_PROCS_GRIDS . " WHERE pid = '$pid' and bin = '0' $sql and title like '%$term%' ORDER BY title";
 			$resultp = mysql_query($qp, $this->_db->connection);
