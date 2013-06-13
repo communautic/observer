@@ -88,7 +88,11 @@
     </tr>
 </table>
 <div class="content-spacer"></div>
-<?php if($pspgrid->canedit) { ?>
+<?php 
+$showCoPopup = '';
+if($pspgrid->canedit) { 
+	$showCoPopup = 'showCoPopup';
+?>
 	<div id="procs-console-pspgrids">
 		<div class="widget-head">
         	<a class="collapse">COLLAPSE</a>
@@ -97,8 +101,7 @@
         <div id="procs-console-pspgrids-notes">
     	<?php 
 		foreach($console_items as $item){ 
-			//echo '<div rel="' . $item["id"] . '" class="droppable showCoPopup"><div class="itemTitle">' . $item["title"] . '</div><div class="itemText" style="display: none;">' . $item["text"] . '</div></div>';
-			echo '<div rel="'.$item["id"].'" class="droppable showCoPopup planned" request="note">';
+		echo '<div rel="'.$item["id"].'" class="droppable '.$showCoPopup.' planned" request="note">';
 		echo '<div class="itemTitle">'.$item["title"].'</div>';
 		echo '<div class="light">';
 		echo '<div class="itemMilestone">0</div>';
@@ -110,7 +113,7 @@
 		echo '<div class="itemCostsMaterials costs">0</div>';
 		echo '<div class="itemCostsExternal costs">0</div>';
 		echo '<div class="itemCostsOther costs">0</div>';
-		echo '<div class="itemDays"><span class="days">0</span> ' . $lang['PROC_PSPGRID_DAYS'] . '</div>';
+		echo '<div class="itemTotals"><div class="left"><span class="days"> 0</span> <span>' . $lang['PROC_PSPGRID_DAYS'] . '</span></div><div class="right"><span>'.$pspgrid->setting_currency.'</span> <span class="itemcosts">0</span></div></div>';
 		echo '<div class="itemTeamct"><a class="ct-content" field="itemTeamct coPopup-team_ct"></a></div>';
 		echo '<div class="itemStatus">0</div>';
 		echo '</div></div>';
@@ -119,7 +122,7 @@
 	</div>
 <?php } ?>
 <div class="content-spacer"></div>
-<div style="position: absolute; top: 184px; height: 75px; width: 100%; background: #b2b2b2;"></div>
+<div style="position: absolute; top: <?php if($pspgrid->canedit) { echo '184'; } else { echo '224';} ?>px; height: 75px; width: 100%; background: #b2b2b2;"></div>
 <div id="procs-pspgrid" style="width: <?php echo($pspgrid->pspgrid_width);?>px;">
 <?php 
 $drag = '';
@@ -137,7 +140,7 @@ foreach($cols as $key => &$value){
 	}
 		echo '<div class="procs-col-title">';
 		if($cols[$key]['titletext'] != "") {
-			echo '<div id="procspspgriditem_'.$cols[$key]['titleid'].'" rel="'.$cols[$key]['titleid'].'" class="droppable showCoPopup colTitle ' . $cols[$key]['status'] . '" request="title">';
+			echo '<div id="procspspgriditem_'.$cols[$key]['titleid'].'" rel="'.$cols[$key]['titleid'].'" class="droppable '.$showCoPopup.' colTitle ' . $cols[$key]['status'] . '" request="title">';
 			echo '<div class="itemTitle">'.$cols[$key]['titletext'].'</div>';
 			echo '<div class="light">';
 			echo '<div class="itemMilestone">0</div>';
@@ -187,7 +190,7 @@ foreach($cols as $key => &$value){
 			$milestone = ' ismilestone';
 			$popup = 'ms';
 		}
-		echo '<div id="procspspgriditem_'.$cols[$key]["notes"][$tkey]['note_id'].'" rel="'.$cols[$key]["notes"][$tkey]['note_id'].'" class="droppable showCoPopup ' . $class. '" request="' . $popup . '">';
+		echo '<div id="procspspgriditem_'.$cols[$key]["notes"][$tkey]['note_id'].'" rel="'.$cols[$key]["notes"][$tkey]['note_id'].'" class="droppable '.$showCoPopup.' ' . $class. '" request="' . $popup . '">';
 		echo '<div class="itemTitle">'.$cols[$key]["notes"][$tkey]['title'].'</div>';
 		echo '<div class="light' . $milestone . '">';
 		echo '<div class="itemMilestone">' . $cols[$key]["notes"][$tkey]['milestone'] . '</div>';

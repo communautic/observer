@@ -173,7 +173,7 @@ if (!empty($_POST['request'])) {
 			echo($procsPspgrids->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
 		break;
 		case 'savePspgridNote':
-			echo($procsPspgrids->savePspgridNote($_POST["id"],$system->checkMagicQuotes($_POST['title']), $_POST['team'],$system->checkMagicQuotes($_POST['team_ct']),$system->checkMagicQuotes($_POST['text']),$_POST['days'],$_POST['costs_employees'],$_POST['costs_materials'],$_POST['costs_external'],$_POST['costs_other']));
+			echo($procsPspgrids->savePspgridNote($_POST["id"],$system->checkMagicQuotes($_POST['title']), $_POST['team'],$system->checkMagicQuotes($_POST['team_ct']),htmlspecialchars($_POST['text']),$_POST['days'],$_POST['costs_employees'],$_POST['costs_materials'],$_POST['costs_external'],$_POST['costs_other']));
 		break;
 	}
 }

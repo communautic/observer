@@ -108,7 +108,7 @@ class ProcsPspgrids extends Procs {
 	
 	function getSend($id) {
 		global $lang;
-		if($arr = $this->model->getDetails($id)) {
+		if($arr = $this->model->getDetails($id, 'prepareSendTo')) {
 			$pspgrid = $arr["pspgrid"];
 			$cols = $arr["cols"];
 			$console_items = $arr["console_items"];
@@ -118,7 +118,7 @@ class ProcsPspgrids extends Procs {
 			
 			$form_url = $this->form_url;
 			$request = "sendDetails";
-			$to = "";
+			$to = $pspgrid->sendtoTeam;
 			$cc = "";
 			$subject = $pspgrid->title;
 			$variable = "";
@@ -145,9 +145,12 @@ class ProcsPspgrids extends Procs {
 			$projects = $arr["projects"];
 			
 			$page_width = sizeof($cols)*203+100+100;
-			$page_height = $pspgrid->max_items*20+5+20+142+100+100;
+			$page_height = $pspgrid->max_items*90+5+20+142+100+100;
 			if($page_width < 896) {
 				$page_width = 896;
+			}
+			if($page_height < 595) {
+				$page_height = 595;
 			}
 			ob_start();
 				include 'view/print.php';

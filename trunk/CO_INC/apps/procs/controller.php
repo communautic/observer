@@ -427,14 +427,14 @@ class Procs extends Controller {
 	}
 
 
-	function updateNoteSize($id,$w,$h) {
+	/*function updateNoteSize($id,$w,$h) {
 		$retval = $this->model->updateNoteSize($id,$w,$h);
 		if($retval){
 			 return 'true';
 		  } else{
 			 return "error";
 		  }
-	}
+	}*/
 	
 	
 	/*function setProcNoteToggle($id,$t) {

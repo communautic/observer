@@ -155,9 +155,9 @@ if (!empty($_GET['request'])) {
 		case 'updateNotePosition':
 			echo($procs->updateNotePosition($_GET['id'],$_GET['x'],$_GET['y'],$_GET['z']));
 		break;
-		case 'updateNoteSize':
+		/*case 'updateNoteSize':
 			echo($procs->updateNoteSize($_GET['id'],$_GET['w'],$_GET['h']));
-		break;
+		break;*/
 		/*case 'setProcNoteToggle':
 			echo($procs->setProcNoteToggle($_GET['id'],$_GET['t']));
 		break;*/
@@ -200,7 +200,7 @@ if (!empty($_POST['request'])) {
 			echo($procs->setProcDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['folder']));
 		break;
 		case 'saveProcNote':
-			echo($procs->saveProcNote($_POST['id'],$system->checkMagicQuotes($_POST['title']),$system->checkMagicQuotes($_POST['text'])));
+			echo($procs->saveProcNote($_POST['id'],htmlspecialchars($_POST['title']),htmlspecialchars($_POST['text'])));
 		break;
 		case 'moveProc':
 			echo($procs->moveProc($_POST['id'], $_POST['startdate'], $_POST['movedays']));

@@ -13,7 +13,7 @@ $lang["PROC_PSPGRID_OWNER"] = 'Projektauftraggeber';
 $lang["PROC_PSPGRID_MANAGEMENT"] = 'Projektleitung';
 $lang["PROC_PSPGRID_TEAM"] = 'Projektteam';
 
-$lang["PROC_PSPGRID_COLUMN_NEW"] = 'Neue Phase';
+$lang["PROC_PSPGRID_COLUMN_NEW"] = 'Phase';
 $lang["PROC_PSPGRID_TITLE_NEW"] = 'Neue Phase';
 $lang["PROC_PSPGRID_ITEM_NEW"] = 'Neues Arbeitspaket';
 $lang["PROC_PSPGRID_STAGEGATE_NEW"] = 'Neues Stagegate';

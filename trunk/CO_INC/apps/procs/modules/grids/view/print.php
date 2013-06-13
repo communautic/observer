@@ -1,7 +1,7 @@
 <?php
 $top = 50;
 $left = 150;
-$varheight = 100;
+$varheight = 70;
 ?>
 <div style="position: absolute; width: <?php echo($page_width-24);?>px; top: <?php echo $top-$top; ?>px; left: 0px; height: 19px;  background-color: #e5e5e5; vertical-align: top; padding: 3px 0 0 24px;"><?php echo $grid->title;?></div>
 <div style="position: absolute; width: <?php echo($page_width);?>px; top: <?php echo $top-$top; ?>px; left: 0px; height: 22px;  vertical-align: top; padding: 3px 0 0 0; text-align:center"><?php //echo $grid->title;?></div>
@@ -29,17 +29,15 @@ $varheight = 100;
 <table width="100%" class="standard">
 	<tr>
 		<td class="tcell-left"><?php echo $lang["PROC_GRID_TEAM"];?></td>
-		<td class="smalltext"><?php echo($grid->team);?> <?php echo($grid->team_ct);?></td>
+		<td class="smalltext"><?php echo($grid->team_print);?> <?php echo($grid->team_ct);?></td>
     </tr>
 </table>
 </div>
-<div style="position: absolute; width: <?php echo($page_width);?>px; top: <?php echo(96+$varheight);?>px; left: 0px; padding-left: 24px; height: 46px; color: #666666; background-color: #E5E5E5; vertical-align: top; font-size: 10px;"><?php echo $lang["PROC_GRID_TITLE_MAIN"];?></div>
-<div style="position: absolute; width: 100px; top: <?php echo(146+$varheight);?>px; left: 0px; padding-left: 24px; height: 20px; color: #666666; vertical-align: top; font-size: 10px;">Teilprozesse</div>
+<div style="position: absolute; width: <?php echo($page_width);?>px; top: <?php echo(96+$varheight);?>px; left: 0px; padding-left: 24px; height: 31px; padding-top: 15px; color: #666666; background-color: #E5E5E5; vertical-align: top; font-size: 10px;"><?php echo $lang["PROC_GRID_TITLE_MAIN"];?></div>
+<div style="position: absolute; width: 100px; top: <?php echo(148+$varheight);?>px; left: 0px; padding-left: 24px; height: 20px; color: #666666; vertical-align: top; font-size: 10px;">Teilprozesse</div>
 <?php
 $left = 130;
-// days
-$daysadd = $varheight+145+$grid->max_items*20; ?>
-<div style="position: absolute; width: 100px; top: <?php echo $daysadd+5;?>px; left: 0px; padding-left: 24px; height: 20px; color: #666666; vertical-align: top; font-size: 10px;">Dauer / Tage</div>
+ ?>
 <?php
 foreach($cols as $key => &$value){ 
 $top = 18;
@@ -59,33 +57,40 @@ switch($cols[$key]['status']) {
 		$bg = '';
 }
 ?>
+<div style="position: absolute; left: <?php echo($left-2);?>px; top: <?php echo(94+$varheight);?>px; width: 184px; height: 47px; border-top: 1px solid #7F7F7F; border-left: 1px solid #7F7F7F; border-right: 1px solid #7F7F7F; background: #fff;"></div>
 <div style="position: absolute; left: <?php echo($left);?>px; top: <?php echo(96+$varheight);?>px; width: 183px; font-size: 10px; height: 46px;"><?php echo $bg;?></div>
-	<div style="position: absolute; left: <?php echo($left+20);?>px; top: <?php echo(111+$varheight);?>px; width: 183px; font-size: 12px; height: 46px; color: #000; z-index: 1;"><?php echo $cols[$key]['titletext']; ?></div>
+	<div style="position: absolute; left: <?php echo($left+20);?>px; top: <?php echo(111+$varheight);?>px; width: 163px; font-size: 12px; height: 46px; color: #000; z-index: 1; height: 15px; line-height: 19px; overflow: hidden;"><?php echo $cols[$key]['titletext']; ?></div>
 	<?php
-	$ntop = $varheight+142;
+	$ntop = $varheight+144;
 	foreach($cols[$key]["notes"] as $tkey => &$tvalue){ 
 		$img = "";
 		if ($cols[$key]["notes"][$tkey]['status'] == 1) {
 			$img = '<img src="' . CO_FILES . '/img/print/done.png" width="10" height="10" vspace="4" hspace="4" />';
 		}
 	?>
-<div style="position: absolute; left: <?php echo($left);?>px; top: <?php echo $ntop;?>px; height: 19px; width: 19px; border-right: 1px solid #666; border-bottom: 1px solid #666; border-left: 1px solid #666; font-size: 10px; overflow: hidden;"><?php echo $img;?></div>
-		<div style="position: absolute; left: <?php echo($left+20);?>px; top: <?php echo $ntop;?>px; height: 15px; width: 156px; border-right: 1px solid #666; border-bottom: 1px solid #666; border-left: 1px solid #666; font-size: 10px; line-height: 19px; padding-top: 4px; overflow: hidden; padding-left: 5px;"><?php echo $cols[$key]["notes"][$tkey]['title'];?></div>
+<div style="position: absolute; left: <?php echo($left-2);?>px; top: <?php echo($ntop-2);?>px; width: 184px; height: 22px; border-left: 1px solid #7F7F7F; border-right: 1px solid #7F7F7F; background: #fff;"></div>
+<div style="position: absolute; left: <?php echo($left);?>px; top: <?php echo $ntop;?>px; height: 19px; width: 20px; border-bottom: 1px solid #a6a6a6;  font-size: 10px; overflow: hidden; background: #ccc;"><?php echo $img;?></div>
+		<div style="position: absolute; left: <?php echo($left+20);?>px; top: <?php echo $ntop;?>px; height: 15px; width: 157px; border-bottom: 1px solid #a6a6a6; border-left: 1px solid a6a6a6; font-size: 10px; line-height: 19px; padding-top: 4px; overflow: hidden; padding-left: 5px; background: #ccc;"><?php echo $cols[$key]["notes"][$tkey]['title'];?></div>
 	<?php 
-		$ntop = $ntop+20;
-	} ?>
-<div style="position: absolute; left: <?php echo($left);?>px; top: <?php echo $daysadd;?>px; height: 14px; width: 156px; border: 1px solid #666; background-color: #E5E5E5; font-size: 10px; line-height: 19px; padding-top: 4px; padding-left: 25px;"><?php echo $cols[$key]['hours'];?> h &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<?php echo $grid->setting_currency;?> <?php echo number_format($cols[$key]['costs'],0,',','.');?></div>
-<?php
-	$left = $left+203;
-	$img = "";
+		$ntop = $ntop+22;
+	}
+	$img = '<img src="' . CO_FILES . '/img/print/grid_stagegate.png" width="13" height="13" vspace="3" hspace="3" />';
 	if($cols[$key]['status'] == "finished" ) {
-		$img = '<img src="' . CO_FILES . '/img/print/grid_stagegate_done.png" width="13" height="13" />';
+		$img = '<img src="' . CO_FILES . '/img/print/grid_stagegate_done.png" width="13" height="13" vspace="3" hspace="3" />';
 	}
 ?>
-<div style="position: absolute; left: <?php echo($left-20);?>px; top: <?php echo($varheight+$top+40);?>px; width: 100px; font-size: 10px; color: #666;">GATE</div>
-<div style="position: absolute; left: <?php echo($left-20);?>px; top: <?php echo($varheight+$top+56);?>px; width: 100px; font-size: 10px; z-index: 1;"><?php echo $cols[$key]['stagegatetext'];?></div>
-<div style="position: absolute; left: <?php echo($left-16);?>px; top: <?php echo($varheight+$top+153);?>px; width: 20px;"><?php echo $img;?></div>
+<div style="position: absolute; left: <?php echo($left-2);?>px; top: <?php echo($ntop-2);?>px; width: 184px; height: 22px; border-left: 1px solid #7F7F7F; border-right: 1px solid #7F7F7F; background: #fff;"></div>
+<div style="position: absolute; left: <?php echo($left);?>px; top: <?php echo $ntop;?>px; height: 19px; width: 20px; border-bottom: 1px solid #a6a6a6;  font-size: 10px; overflow: hidden; background: #b2b2b2;"><?php echo $img;?></div>
+<div style="position: absolute; left: <?php echo($left+20);?>px; top: <?php echo $ntop;?>px; height: 15px; width: 157px; border-bottom: 1px solid #a6a6a6; border-left: 1px solid a6a6a6; font-size: 10px; line-height: 19px; padding-top: 4px; overflow: hidden; padding-left: 5px; background: #b2b2b2;"><?php echo $cols[$key]['stagegatetext'];?></div>
+
+<?php 
+		$ntop = $ntop+22;?>
+<div style="position: absolute; left: <?php echo($left-2);?>px; top: <?php echo($ntop-2);?>px; width: 184px; height: 21px; border-left: 1px solid #7F7F7F; border-right: 1px solid #7F7F7F; border-bottom: 1px solid #7F7F7F; background: #fff;"></div>
+<div style="position: absolute; left: <?php echo($left);?>px; top: <?php echo $ntop;?>px; height: 15px; width: 91px; background-color: #666; font-size: 10px; line-height: 19px; padding-top: 4px; text-align: center; color: #fff;"><?php echo $cols[$key]['hours'];?> h</div>
+<div style="position: absolute; left: <?php echo($left+93);?>px; top: <?php echo $ntop;?>px; height: 15px; width: 90px; background-color: #666; font-size: 10px; line-height: 19px; padding-top: 4px; text-align: center; color: #fff;"><?php echo $grid->setting_currency;?> <?php echo number_format($cols[$key]['costs'],0,',','.');?></div>
     <?php
+	$left = $left+191;
+	
  } ?>
 <div style="position: absolute; width: <?php echo($page_width-24);?>px; top: <?php echo $page_height-50;?>px; left: 0px; height: 19px;  background-color: #e5e5e5; vertical-align: top; padding: 3px 0 0 24px;"><?php echo $lang["PROC_GRID_TITLE"];?></div>
 <div style="position: absolute; width: <?php echo($page_width-235);?>px; top: <?php echo $page_height-52;?>px; left: 200px; height: 19px; text-align:center;"><table border="0" cellspacing="0" cellpadding="0" class="timeline-legend">

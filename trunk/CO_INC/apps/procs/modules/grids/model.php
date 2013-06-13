@@ -248,6 +248,7 @@ class ProcsGridsModel extends ProcsModel {
 			$titleid = 0;
 			$titletext = '';
 			$titletextcontent = '';
+			$titleteam_convert = '';
 			$titleteam = '';
 			$titleteam_ct = '';
 			$titlehours = 0;
@@ -277,6 +278,7 @@ class ProcsGridsModel extends ProcsModel {
 					$titleid = $rown->id;
 					$titletext = $rown->title;
 					$titletextcontent = $rown->text;
+					$titleteam_convert = $rown->team;
 					$titleteam = $contactsmodel->getUserList($rown->team,'coPopup-team', "", '1');
 					$titleteam_ct = $rown->team_ct;
 					$titlehours = $rown->hours;
@@ -301,6 +303,7 @@ class ProcsGridsModel extends ProcsModel {
 						"title" => $rown->title,
 						"text" => $rown->text,
 						"status" => $rown->status,
+						"team_convert" => $rown->team,
 						"team" => $contactsmodel->getUserList($rown->team,'coPopup-team', "", '1'),
 						"team_ct" => $rown->team_ct,
 						"hours" => $rown->hours,
@@ -351,6 +354,7 @@ class ProcsGridsModel extends ProcsModel {
 				"titleid" => $titleid,
 				"titletext" => $titletext,
 				"titletextcontent" => $titletextcontent,
+				"titleteam_convert" => $titleteam_convert,
 				"titleteam" => $titleteam,
 				"titleteam_ct" => $titleteam_ct,
 				"titlehours" => $titlehours,
@@ -721,8 +725,13 @@ class ProcsGridsModel extends ProcsModel {
 				$isstagegate = $rown["isstagegate"];
 				$title = mysql_real_escape_string($rown["title"]);
 				$text = mysql_real_escape_string($rown["text"]);
+				$hours = $rown["hours"];
+				$costs_employees = $rown["costs_employees"];
+				$costs_materials = $rown["costs_materials"];
+				$costs_external = $rown["costs_external"];
+				$costs_other = $rown["costs_other"];
 				//$ms = $rown["ms"];
-				$qnn = "INSERT INTO " . CO_TBL_PROCS_GRIDS_NOTES . " set cid='$colID_new', sort = '$sort', istitle = '$istitle', isstagegate = '$isstagegate', title = '$title', text = '$text', created_date='$now',created_user='$session->uid',edited_date='$now',edited_user='$session->uid'";
+				$qnn = "INSERT INTO " . CO_TBL_PROCS_GRIDS_NOTES . " set cid='$colID_new', sort = '$sort', istitle = '$istitle', isstagegate = '$isstagegate', title = '$title', text = '$text', hours = '$hours', costs_employees ='$costs_employees', costs_materials = '$costs_materials', costs_external = '$costs_external', costs_other  = '$costs_other', created_date='$now',created_user='$session->uid',edited_date='$now',edited_user='$session->uid'";
 				$resultnn = mysql_query($qnn, $this->_db->connection);
 			}
 		}
@@ -870,7 +879,7 @@ class ProcsGridsModel extends ProcsModel {
 		$now = gmdate("Y-m-d H:i:s");
 		$title = mysql_real_escape_string($grid->title);
 		// create project
-		$q = "INSERT INTO " . CO_TBL_PROJECTS . " set folder = '$folder', title = '$title', ordered_by = '$grid->owner_convert', ordered_by_ct = '$grid->owner_ct_convert', management = '$grid->management_convert', management_ct = '$grid->management_ct_convert', team = '$grid->team_convert', team_ct = '$grid->team_ct_convert', protocol = '$protocol', startdate = '$kickoff', enddate = '$kickoff', status = '0', planned_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+		$q = "INSERT INTO " . CO_TBL_PROJECTS . " set folder = '$folder', title = '$title', setting_costs = '1', ordered_by = '$grid->owner_convert', ordered_by_ct = '$grid->owner_ct_convert', management = '$grid->management_convert', management_ct = '$grid->management_ct_convert', team = '$grid->team_convert', team_ct = '$grid->team_ct_convert', protocol = '$protocol', startdate = '$kickoff', enddate = '$kickoff', status = '0', planned_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		$pid = mysql_insert_id();
 		// if admin insert him to access
@@ -900,7 +909,8 @@ class ProcsGridsModel extends ProcsModel {
 			if($cols[$key]['titletext'] != "") {
 				$phasetitle = mysql_real_escape_string($cols[$key]['titletext']);
 				$phasetext = mysql_real_escape_string($cols[$key]['titletextcontent']);
-				$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES . " set title = '$phasetitle', pid='$pid', team = '$grid->team_convert', team_ct = '$grid->team_ct_convert', protocol='$phasetext', access='0', status = '0', planned_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+				$phaseteam = $cols[$key]['titleteam_convert'];
+				$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES . " set title = '$phasetitle', pid='$pid', team = '$phaseteam', team_ct = '', protocol='$phasetext', access='0', status = '0', planned_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 				$result = mysql_query($q, $this->_db->connection);
 				$phaseid = mysql_insert_id();
 				
@@ -922,7 +932,7 @@ class ProcsGridsModel extends ProcsModel {
 				if($num_notes > 0 || $cols[$key]['stagegatetext'] != "") {
 					$phasetitle = 'Neue Phase';
 					$phasetext = "";
-					$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES . " set title = '$phasetitle', pid='$pid', team = '$grid->team_convert', team_ct = '$grid->team_ct_convert', protocol='$phasetext', access='0', status = '0', planned_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+					$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES . " set title = '$phasetitle', pid='$pid', team = '', team_ct = '', protocol='$phasetext', access='0', status = '0', planned_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 					$result = mysql_query($q, $this->_db->connection);
 					$phaseid = mysql_insert_id();
 					
@@ -961,6 +971,11 @@ class ProcsGridsModel extends ProcsModel {
 					// create aps
 					$tasktitle = mysql_real_escape_string($cols[$key]["notes"][$tkey]['title']);
 					$taskprotocol = mysql_real_escape_string($cols[$key]["notes"][$tkey]['text']);
+					$costs_employees = $cols[$key]["notes"][$tkey]['costs_employees'];
+					$costs_materials = $cols[$key]["notes"][$tkey]['costs_materials'];
+					$costs_external = $cols[$key]["notes"][$tkey]['costs_external'];
+					$costs_other = $cols[$key]["notes"][$tkey]['costs_other'];
+					$team_convert = $cols[$key]["notes"][$tkey]['team_convert'];
 					/*if($cols[$key]["notes"][$tkey]['isstagegate'] == "1") {
 						$cat = 1;
 						$startdate = $this->_date->addDays($datecalc,"1");
@@ -971,7 +986,7 @@ class ProcsGridsModel extends ProcsModel {
 						$enddate = $this->_date->addDays($datecalc,"7");
 					//}
 					$datecalc = $enddate;					
-					$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES_TASKS . " set pid='$pid', phaseid='$phaseid', cat='0', dependent = '$dependent', status = '0', text = '$tasktitle', protocol = '$taskprotocol', startdate = '$startdate', enddate = '$enddate'";
+					$q = "INSERT INTO " . CO_TBL_PROJECTS_PHASES_TASKS . " set pid='$pid', phaseid='$phaseid', cat='0', dependent = '$dependent', status = '0', text = '$tasktitle', protocol = '$taskprotocol', team = '$team_convert', costs_employees = '$costs_employees', costs_materials = '$costs_materials', costs_external = '$costs_external', costs_other = '$costs_other', startdate = '$startdate', enddate = '$enddate'";
 					$result = mysql_query($q, $this->_db->connection);
 					$dependent = mysql_insert_id();
 				//}
