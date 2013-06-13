@@ -126,6 +126,16 @@ function desktoploadModuleStart() {
 			});
 		}
 		
+		if(typeof procs == "object") {
+			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs&request=getWidgetAlerts", success: function(data){
+				$("#procsWidgetContent").html(data.html);
+				if(data.widgetaction == 'open' && $('#procsWidgetContent').is(':hidden')) {
+					$('#item_brainstormsWidget a.collapse').trigger('click');
+				}
+				}
+			});
+		}
+		
 		if(typeof forums == "object") {
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/forums&request=getWidgetAlerts", success: function(data){
 				$("#forumsWidgetContent").html(data.html);
@@ -336,6 +346,13 @@ $(document).ready(function() {
 		var href = $(this).attr('rel').split(",");
 		externalLoadThreeLevels(href[0],href[1],href[2],href[3],'brainstorms');
 		brainstorms.markNoticeRead(href[2]);
+	});
+	
+	$(document).on('click', '#desktop .procsLinkMarkRead', function(e) {
+		e.preventDefault();
+		var href = $(this).attr('rel').split(",");
+		externalLoadThreeLevels(href[0],href[1],href[2],href[3],'procs');
+		procs.markNoticeRead(href[2]);
 	});
 	
 	$(document).on('click', '#desktop .forumsLinkMarkRead', function(e) {
