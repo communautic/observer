@@ -364,7 +364,7 @@ div.listItem .arrow { float: right;
 .positive_number { color: #64780A;}
 .negative_number { color: #ff4102;}
 
-.appSettings { width: 21px; height: 21px; position: absolute; right:17px; top: 3px; background: url('/CO_FILES/img/icons.png') no-repeat scroll -320px -62px transparent; }
+.appSettings { width: 21px; height: 21px; position: absolute; right:17px; top: 3px; background: url('../img/icons.png') no-repeat scroll -320px -62px transparent; }
 .appSettings:hover { cursor: pointer;}
 
 .appSettingsPopup {
