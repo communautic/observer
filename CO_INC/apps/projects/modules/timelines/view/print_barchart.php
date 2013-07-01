@@ -102,7 +102,7 @@ $top = $top-7;
 					$dep_phase_key = $project["phases"][$key]["tasks"][$tkey]["dep_key"];
 					if($key != $dep_phase_key) {
 						$dep_top = $ptop[$dep_phase_key]+$project["tasks"][$dep_key]["css_top"];
-						$dep_height = $ptop[$key]+$project["phases"][$dep_phase_key]["tasks"][$tkey]["css_top"] - $dep_top -6;
+						$dep_height = $ptop[$key]+$project["phases"][$key]["tasks"][$tkey]["css_top"] - $dep_top -6;
 						$dep_left = $pleft[$key]+$project["phases"][$dep_phase_key]["css_left"]+$project["tasks"][$dep_key]["css_left"]+$project["tasks"][$dep_key]["css_width"]-$project["phases"][$key]["css_left"];
 						$dep_width = ($project["phases"][$key]["css_left"] + $project["phases"][$key]["tasks"][$tkey]["css_left"]) - ($project["phases"][$dep_phase_key]["css_left"]+$project["tasks"][$dep_key]["css_left"]+$project["tasks"][$dep_key]["css_width"]);
 						$dep_arrow_top = $dep_top + $dep_height;
@@ -132,7 +132,7 @@ $top = $top-7;
 				<?php } ?>
             	<!-- task dependency -->
                 <?php if(!empty($project["phases"][$key]["tasks"][$tkey]["overdue"])){ ?>
-                <div class="barchart_color_overdue coTooltip" style="z-index: 2; position: absolute; top: <?php echo($ptop[$key]+$project["phases"][$key]["tasks"][$tkey]["css_top"]);?>px; left: <?php echo($pleft[$key]+$project["phases"][$key]["tasks"][$tkey]["css_left"]+$project["phases"][$key]["tasks"][$tkey]["overdue"]["left"]);?>px; height: 10px; width: <?php echo($project["phases"][$key]["tasks"][$tkey]["overdue"]["width"]);?>px;" title="<?php echo($project["phases"][$key]["tasks"][$tkey]["overdue"]["days"]);?>"></div>
+                <div class="barchart_color_overdue coTooltip" style="z-index: 2; position: absolute; top: <?php echo($ptop[$key]+$project["phases"][$key]["tasks"][$tkey]["css_top"]);?>px; left: <?php echo($pleft[$key]+$project["phases"][$key]["tasks"][$tkey]["overdue"]["left"]);?>px; height: 10px; width: <?php echo($project["phases"][$key]["tasks"][$tkey]["overdue"]["width"]);?>px;" title="<?php echo($project["phases"][$key]["tasks"][$tkey]["overdue"]["days"]);?>"></div>
                 <?php } ?>
                 
                 <?php } else { ?>
@@ -169,7 +169,7 @@ $top = $top-7;
             	<?php } ?>
             
 			<?php if(!empty($project["phases"][$key]["overdue"])){ ?>
-			<div class="barchart_color_overdue barchart-phase-bg coTooltip" style="position: absolute; top: <?php echo($ptop[$key]);?>px; left: <?php echo($pleft[$key]+$project["phases"][$key]["css_width"]);?>px; height: <?php echo($project["phases"][$key]["css_height"]);?>px; width: <?php echo($project["phases"][$key]["overdue"]["width"]);?>px;" title="<?php echo($project["phases"][$key]["overdue"]["days"]);?>"></div>
+			<div class="barchart_color_overdue barchart-phase-bg coTooltip" style="opacity: 0.3; position: absolute; top: <?php echo($ptop[$key]);?>px; left: <?php echo($pleft[$key]+$project["phases"][$key]["css_width"]);?>px; height: <?php echo($project["phases"][$key]["css_height"]);?>px; width: <?php echo($project["phases"][$key]["overdue"]["width"]);?>px;" title="<?php echo($project["phases"][$key]["overdue"]["days"]);?>"></div>
             <?php } 
 			$i++;
 			 } ?>
