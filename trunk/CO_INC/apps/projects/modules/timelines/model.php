@@ -202,7 +202,7 @@ class ProjectsTimelinesModel extends ProjectsModel {
 				"tasks" => $tasks
 			);
 		}
-		$height = max($numTasks)*70;
+		$height = max($numTasks)*80;
 			$project["css_height"] += $height;
 		
 	  //return $project;

@@ -75,8 +75,8 @@ $width = $numPhases * 190;
 			<!--<div class="psp-connector-phase-vert"></div>-->
             <?php if($countPhases > 1) { echo '<div class="psp-connector-phase-hori"></div>'; } ?>
 			<div class="border bold" style="height: 31px; padding: 3px 9px 0 9px; overflow: hidden"><?php echo($countPhases . ". " .$project["phases"][$key]["title"]);?></div><div class="line"></div>
-            <div class="border light" style="height: 34px;">
-            <div class="psp-item-startdate <?php echo($datescolor);?>"><?php echo($project["phases"][$key]["startdate"]);?></div><div class="psp-item-datedash">-</div><div class="psp-item-enddate <?php echo($datescolor);?>"><?php echo($project["phases"][$key]["enddate"]);?></div>
+            <div class="border light <?php echo($datescolor);?>" style="height: 34px;">
+            <div class="psp-item-startdate"><?php echo($project["phases"][$key]["startdate"]);?></div><div class="psp-item-datedash">-</div><div class="psp-item-enddate"><?php echo($project["phases"][$key]["enddate"]);?></div>
             </div>
         </div>
 			<?php
