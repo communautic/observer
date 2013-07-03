@@ -78,9 +78,9 @@ $lang["GLOBAL_TITLE"] = 'Title';
 $lang["GLOBAL_RESPONSIBILITY"] = 'Responsibility';
 $lang["GLOBAL_DESCRIPTION"] = 'Description';
 
-$lang['GLOBAL_CURRENCY_POUND'] = '£';
+$lang['GLOBAL_CURRENCY_POUND'] = 'Â£';
 $lang['GLOBAL_CURRENCY_DOLLAR'] = '$';
-$lang['GLOBAL_CURRENCY_EURO'] = '€';
+$lang['GLOBAL_CURRENCY_EURO'] = 'â‚¬';
 $lang['GLOBAL_CURRENCY'] = 'Currency';
 $lang['GLOBAL_COSTS'] = 'Costs';
 $lang['GLOBAL_COSTS_EMPLOYEES'] = 'Personell';
@@ -134,7 +134,7 @@ $lang["GLOBAL_STATUS_MATERNITYLEAVE_TIME"] = 'seit';
 $lang["GLOBAL_STATUS_LEAVE"] = 'ausgeschieden';
 $lang["GLOBAL_STATUS_LEAVE_TIME"] = 'am';
 // trainings
-$lang["GLOBAL_STATUS_INACTION"] = 'in Ausführung';
+$lang["GLOBAL_STATUS_INACTION"] = 'in AusfÃ¼hrung';
 $lang["GLOBAL_STATUS_INACTION_TIME"] = 'seit';
 $lang["GLOBAL_STATUS_FINISHED2"] = 'abgehalten';
 $lang["GLOBAL_STATUS_FINISHED2_TIME"] = 'seit';

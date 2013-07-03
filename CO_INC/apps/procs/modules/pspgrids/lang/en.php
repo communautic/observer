@@ -8,6 +8,7 @@ $lang["PROC_PSPGRID_NEW"] = 'New Pspgrid';
 $lang["PROC_PSPGRID_ACTION_NEW"] = 'new Pspgrid';
 
 $lang["PROC_PSPGRID_TIME"] = 'Duration';
+$lang["PROC_PSPGRID_COSTS"] = 'Costs';
 $lang["PROC_PSPGRID_OWNER"] = 'Owner';
 $lang["PROC_PSPGRID_MANAGEMENT"] = 'Manager';
 $lang["PROC_PSPGRID_TEAM"] = 'Team';

@@ -1,15 +1,15 @@
 <?php
 // App name
-$procs_name = "Procs";
-$lang["procs_name"] = 'Procs';
+$procs_name = "Processes";
+$lang["procs_name"] = 'Processes';
 
 // Left
 $lang["PROC_FOLDER"] = 'Folder';
 $lang["PROC_FOLDER_NEW"] = 'New Folder';
 $lang["PROC_FOLDER_ACTION_NEW"] = 'new Folder';
-$lang["PROC_PROCS"] = 'Procs';
-$lang["PROC_NEW"] = 'New Proc';
-$lang["PROC_ACTION_NEW"] = 'new Idea';
+$lang["PROC_PROCS"] = 'Processes';
+$lang["PROC_NEW"] = 'New Process';
+$lang["PROC_ACTION_NEW"] = 'new Task';
 
 // Folder Right
 $lang["PROC_FOLDER_CREATED_ON"] = 'created on';
@@ -21,20 +21,20 @@ $lang["PROC_FOLDER_CHART_ADHERANCE"] = 'Timeliness';
 $lang["PROC_FOLDER_CHART_TASKS"] = 'Stage Timeliness';
 
 // Proc Right
-$lang["PROC_TITLE"] = 'Proc';
+$lang["PROC_TITLE"] = 'Process';
 $lang['PROC_NOTE_ADD'] = 'Notes';
 $lang['PROC_NOTE_NEW'] = 'new Note';
 
 $lang["PROC_CLIENT"] = 'Authorised by';
-$lang["PROC_MANAGEMENT"] = 'Proc Manager';
-$lang["PROC_TEAM"] = 'Proc Team';
+$lang["PROC_MANAGEMENT"] = 'Process Manager';
+$lang["PROC_TEAM"] = 'Process Team';
 $lang["PROC_DESCRIPTION"] = 'Description';
 
 // Bin
-$lang['PROC_TITLE_NOTES_BIN'] = 'Procs/Notes';
+$lang['PROC_TITLE_NOTES_BIN'] = 'Process/Notes';
 $lang['PROC_NOTE_BIN'] = 'Note';
 
-$lang["PROC_HANDBOOK"] = 'Proc Manual';
+$lang["PROC_HANDBOOK"] = 'Process Manual';
 
 $lang["PROC_HELP"] = 'manual_prozesse_prozesse.pdf';
 $lang["PROC_FOLDER_HELP"] = 'manual_prozesse_ordner.pdf';
