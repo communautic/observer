@@ -48,6 +48,12 @@
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
+		<td class="tcell-left-inactive text11"><?php echo $lang["PROC_GRID_COSTS"];?></td>
+		<td class="tcell-right-inactive"><?php echo $grid->setting_currency;?> <span id="procGridCosts"><?php echo $grid->tcosts;?></span></td>
+    </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+	<tr>
 	  <td class="tcell-left text11"><span class="<?php if($grid->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="procsowner" append="0"><span><?php echo $lang["PROC_GRID_OWNER"];?></span></span></td>
 	  <td class="tcell-right"><div id="procsowner" class="itemlist-field"><?php echo($grid->owner);?></div><div id="procsowner_ct" class="itemlist-field"><a field="procsowner_ct" class="ct-content"><?php echo($grid->owner_ct);?></a></div></td>
 	</tr>

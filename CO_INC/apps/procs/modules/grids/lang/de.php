@@ -8,6 +8,7 @@ $lang["PROC_GRID_NEW"] = 'Neues Prozessraster';
 $lang["PROC_GRID_ACTION_NEW"] = 'neues Prozessraster anlegen';
 
 $lang["PROC_GRID_TIME"] = 'Durchlaufzeit';
+$lang["PROC_GRID_COSTS"] = 'Prozesskosten';
 $lang["PROC_GRID_OWNER"] = 'Prozesseigner';
 $lang["PROC_GRID_MANAGEMENT"] = 'Prozessverantwortung';
 $lang["PROC_GRID_TEAM"] = 'Prozessteam';

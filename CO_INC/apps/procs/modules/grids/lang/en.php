@@ -8,6 +8,7 @@ $lang["PROC_GRID_NEW"] = 'New Grid';
 $lang["PROC_GRID_ACTION_NEW"] = 'new Grid';
 
 $lang["PROC_GRID_TIME"] = 'Duration';
+$lang["PROC_GRID_COSTS"] = 'Costs';
 $lang["PROC_GRID_OWNER"] = 'Owner';
 $lang["PROC_GRID_MANAGEMENT"] = 'Manager';
 $lang["PROC_GRID_TEAM"] = 'Team';

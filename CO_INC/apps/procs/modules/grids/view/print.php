@@ -1,7 +1,7 @@
 <?php
 $top = 50;
 $left = 150;
-$varheight = 70;
+$varheight = 80;
 ?>
 <div style="position: absolute; width: <?php echo($page_width-24);?>px; top: <?php echo $top-$top; ?>px; left: 0px; height: 19px;  background-color: #e5e5e5; vertical-align: top; padding: 3px 0 0 24px;"><?php echo $grid->title;?></div>
 <div style="position: absolute; width: <?php echo($page_width);?>px; top: <?php echo $top-$top; ?>px; left: 0px; height: 22px;  vertical-align: top; padding: 3px 0 0 0; text-align:center"><?php //echo $grid->title;?></div>
@@ -12,6 +12,12 @@ $varheight = 70;
 	<tr>
 		<td class="tcell-left"><?php echo $lang["PROC_GRID_TIME"];?></td>
 		<td class="smalltext"><?php echo($grid->hours_total);?> Stunden</td>
+    </tr>
+</table>
+<table width="100%" class="standard">
+	<tr>
+		<td class="tcell-left"><?php echo $lang["PROC_GRID_COSTS"];?></td>
+		<td class="smalltext"><?php echo $grid->setting_currency;?> <?php echo number_format($grid->tcosts,0,',','.');?></td>
     </tr>
 </table>
 <table width="100%" class="standard">
