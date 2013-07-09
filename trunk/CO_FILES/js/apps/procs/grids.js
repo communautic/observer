@@ -493,6 +493,13 @@ function procsGrids(name) {
 				costs += parseInt($(this).html());
 			})
 			col.next().next().next().find('span.totalcosts').html(costs).number( true, 0, '', '.' );
+			
+			var tcosts = 0;
+			$('#procs-grid span.totalcosts').each(function() {
+				tcosts += parseInt($(this).text());
+			})
+			$('#procGridCosts').text(tcosts).number( true, 0, '', '.' );
+			
 			var hours = 0;
 			col.find('div.hours').each(function() { 
 				hours += parseInt($(this).html());
@@ -798,6 +805,42 @@ function procsGrids(name) {
 	this.actionConvert = function() {
 		$('#modalDialogProcsGrid').slideDown();
 	}
+
+	this.updateTotals = function(c) {
+		/*var items = c.find('>div').size();
+		var items_planned = c.find('>div.planned').length;
+		var items_progress = c.find('>div.progress').length;
+		var items_finished = c.find('>div.finished').length;
+		if(items == items_planned) {
+			c.prev().prev().find('>div').removeClass('progress finished').addClass('planned');
+		} else if(items == items_finished) {
+			c.prev().prev().find('>div').removeClass('planned progress').addClass('finished');
+		} else {
+			c.prev().prev().find('>div').removeClass('planned finished').addClass('progress');
+		}
+		var costs = 0;
+		c.find('div.showCoPopup[request="note"] div.costs').each(function() {
+			costs += parseInt($(this).html());
+		})
+		c.prev().prev().find('span.totalcosts').html(costs).number( true, 0, '', '.' );
+		var tcosts = 0;
+		$('#procs-pspgrid div.showCoPopup[request="note"] div.costs').each(function() {
+			tcosts += parseInt($(this).text());
+		})
+		$('#procPspgridCosts').text(tcosts).number( true, 0, '', '.' );
+		
+		var days = 0;
+		c.find('div.showCoPopup[request="note"] span.days').each(function() {
+			days += parseInt($(this).html());
+		})
+		c.prev().prev().find('span.totaldays').html(days);
+		var tdays = 0;
+		$('#procs-pspgrid div.showCoPopup[request="note"] span.days').each(function() {
+			tdays += parseInt($(this).text());
+		})
+		$('#procPspgridDays').text(tdays);*/
+	}
+
 
 }
 var procs_grids = new procsGrids('procs_grids');
@@ -1108,12 +1151,24 @@ $(document).ready(function() {
 					costs += parseInt($(this).html());
 				})
 				c.next().next().next().find('span.totalcosts').html(costs).number( true, 0, '', '.' );
+				
+				var tcosts = 0;
+				$('#procs-grid div.showCoPopup[request="note"] div.costs').each(function() {
+					tcosts += parseInt($(this).text());
+				})
+				$('#procGridCosts').text(tcosts).number( true, 0, '', '.' );
+				
 				var hours = 0;
 				c.find('div.hours').each(function() { 
 					hours += parseInt($(this).html());
 				})
 				c.next().next().next().find('span.totalhours').html(hours);
 				
+				var hours_total = 0;
+				$('#procs-grid div.showCoPopup[request="note"] div.hours').each(function() { 
+					hours_total += parseInt($(this).text());
+				})
+				$('#procGridHours').text(hours_total);
 				
 				
 				}
@@ -1184,7 +1239,7 @@ $(document).ready(function() {
 	$('input.currency').livequery( function() {
 		$(this).number( true, 0, '', '.' );
 	})
-	$('span.totalcosts').livequery( function() {
+	$('span.totalcosts, #procGridCosts').livequery( function() {
 		$(this).number( true, 0, '', '.' );
 	})
 

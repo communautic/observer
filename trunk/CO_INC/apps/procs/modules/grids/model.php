@@ -241,6 +241,7 @@ class ProcsGridsModel extends ProcsModel {
 		$q = "SELECT * FROM " . CO_TBL_PROCS_GRIDS_COLUMNS . " where pid = '$id' and bin='0' ORDER BY sort";
 		$result = mysql_query($q, $this->_db->connection);
 		$hours_total = 0;
+		$tcosts = 0;
 		while($row = mysql_fetch_object($result)) {
 			$colID = $row->id;
 			$coldays = $row->days;
@@ -313,6 +314,7 @@ class ProcsGridsModel extends ProcsModel {
 						"costs_other" => $rown->costs_other
 					);
 					$costs += $rown->costs_employees + $rown->costs_materials + $rown->costs_external + $rown->costs_other;
+					$tcosts += $rown->costs_employees + $rown->costs_materials + $rown->costs_external + $rown->costs_other;
 					$hours += $rown->hours;
 					$hours_total += $rown->hours;
 					if($rown->status == 1) {
@@ -380,6 +382,7 @@ class ProcsGridsModel extends ProcsModel {
 		}
 		
 		$array["max_items"] = max($num_notes);
+		$array["tcosts"] = $tcosts;
 		
 		//$colheight=  max($num_notes)*27+78+80+8-27;
 		$colheight=  max($num_notes)*27+170;
