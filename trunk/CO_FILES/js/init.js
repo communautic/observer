@@ -1455,6 +1455,10 @@ $(document).ready(function() {
 		}, 300)
 	}
 	
+	function vdocsOnInit(ed) {
+		setTitleFocus();
+	}
+	
 	function vdocsSetup(ed) {
 		var timer;
 		var d = 500;
@@ -1510,6 +1514,7 @@ $(document).ready(function() {
 			content_css : "tiny_mce/editor.content.css",
 			autosave_ask_before_unload : false,
 			autoresize_on_init : false,
+			oninit : vdocsOnInit,
 			init_instance_callback: vdocsCallback,
 			setup :  vdocsSetup
 			});
