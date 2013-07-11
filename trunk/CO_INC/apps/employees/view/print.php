@@ -209,7 +209,7 @@
         <td><?php 
 		if(!empty($trainings)) {
 			foreach($trainings as $training) {
-				echo($training->title . ' (' . $training->total_result . '%)<br />');
+				echo($training->title . ' | ' . $training->dates_display . ' | ' . $training->total_result . '%<br />');
 			}
 		}
 		?></td>
