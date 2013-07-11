@@ -762,12 +762,50 @@ function getEmployeeTitleFromMeetingIDs($array,$target, $link = 0){
 
 	function getEmployeeTrainingsDetails($id){
 		$trainings = array();
-		$q = "SELECT b.*,c.title,c.folder,c.id as trainingid FROM co_employees as a, co_trainings_members as b, co_trainings as c, co_trainings_folders as d WHERE a.cid=b.cid and b.pid=c.id and b.tookpart='1' and c.folder=d.id and b.bin='0' and c.bin='0' and d.bin='0' and c.status='2' and a.id = '$id'";
+		$q = "SELECT b.*,c.title,c.folder,c.id as trainingid,c.date1,c.date2,c.date3,c.training FROM co_employees as a, co_trainings_members as b, co_trainings as c, co_trainings_folders as d WHERE a.cid=b.cid and b.pid=c.id and b.tookpart='1' and c.folder=d.id and b.bin='0' and c.bin='0' and d.bin='0' and c.status='2' and a.id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 			while($row = mysql_fetch_assoc($result)) {
 				foreach($row as $key => $val) {
-				$array[$key] = $val;
+					$array[$key] = $val;
+				}
+				
+				$array["dates_display"] = "";
+			switch($array["training"]) {
+				case '1': // Vortrag
+					$array["date1"] = $this->_date->formatDate($array["date1"],CO_DATE_FORMAT);
+					$array["dates_display"] = $array["date1"];
+				break;
+				case '2': // Vortrag & Coaching
+					$array["date1"] = $this->_date->formatDate($array["date1"],CO_DATE_FORMAT);
+					$array["date2"] = $this->_date->formatDate($array["date2"],CO_DATE_FORMAT);
+					$array["dates_display"] = $array["date1"] . ' - ' . $array["date2"];
+				break;
+				case '3': // e-training
+					$array["date1"] = $this->_date->formatDate($array["date1"],CO_DATE_FORMAT);
+					$array["date3"] = $this->_date->formatDate($array["date3"],CO_DATE_FORMAT);
+					$array["dates_display"] = $array["date1"] . ' - ' . $array["date3"];
+				break;
+				case '4': // e-training & Coaching
+					$array["date1"] = $this->_date->formatDate($array["date1"],CO_DATE_FORMAT);
+					$array["date2"] = $this->_date->formatDate($array["date2"],CO_DATE_FORMAT);
+					$array["dates_display"] = $training["date1"] . ' - ' . $array["date2"];
+				break;
+				case '5': // einzelcoaching
+					$array["date1"] = $this->_date->formatDate($array["date1"],CO_DATE_FORMAT);
+					$array["dates_display"] = $array["date1"];
+				break;
+				case '6': // workshop
+					$array["date1"] = $this->_date->formatDate($array["date1"],CO_DATE_FORMAT);
+					$array["dates_display"] = $array["date1"];
+				break;
+				case '7': // veranstaltungsreihe
+					$array["date1"] = $this->_date->formatDate($array["date1"],CO_DATE_FORMAT);
+					$array["date2"] = $this->_date->formatDate($array["date2"],CO_DATE_FORMAT);
+					$array["dates_display"] = $array["date1"] . ' - ' . $array["date2"];
+				break;
 			}
+				
+				
 			$total_result = 0;
 			$array["q1_result"] = 0;
 			$array["q2_result"] = 0;
