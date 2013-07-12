@@ -5,6 +5,7 @@ $lang["FORUM_DOCUMENT_TITLE"] = 'Aktenmappe';
 $lang["FORUM_DOCUMENT_DOCUMENTS"] = 'Aktenmappe';
 $lang["FORUM_DOCUMENT_NEW"] = 'Neue Aktenmappe';
 $lang["FORUM_DOCUMENT_ACTION_NEW"] = 'neue Aktenmappe anlegen';
+$lang["FORUM_DOCUMENT_DESCRIPTION"] = 'Beschreibung';
 $lang["FORUM_DOCUMENT_UPLOAD"] = 'Datei / Upload';
 $lang["FORUM_DOCUMENT_FILENAME"] = 'Dateiname/Format';
 $lang["FORUM_DOCUMENT_FILESIZE"] = 'Dateigrösse';

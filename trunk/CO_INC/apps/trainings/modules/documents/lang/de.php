@@ -5,6 +5,7 @@ $lang["TRAINING_DOCUMENT_TITLE"] = 'Aktenmappe';
 $lang["TRAINING_DOCUMENT_DOCUMENTS"] = 'Aktenmappe';
 $lang["TRAINING_DOCUMENT_NEW"] = 'Neue Aktenmappe';
 $lang["TRAINING_DOCUMENT_ACTION_NEW"] = 'neue Aktenmappe anlegen';
+$lang["TRAINING_DOCUMENT_DESCRIPTION"] = 'Beschreibung';
 $lang["TRAINING_DOCUMENT_UPLOAD"] = 'Datei / Upload';
 $lang["TRAINING_DOCUMENT_FILENAME"] = 'Dateiname/Format';
 $lang["TRAINING_DOCUMENT_FILESIZE"] = 'Dateigrösse';

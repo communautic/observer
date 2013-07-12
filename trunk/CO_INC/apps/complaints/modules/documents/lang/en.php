@@ -5,6 +5,7 @@ $lang["COMPLAINT_DOCUMENT_TITLE"] = 'Document';
 $lang["COMPLAINT_DOCUMENT_DOCUMENTS"] = 'Documents';
 $lang["COMPLAINT_DOCUMENT_NEW"] = 'New Document';
 $lang["COMPLAINT_DOCUMENT_ACTION_NEW"] = 'new Document';
+$lang["COMPLAINT_DOCUMENT_DESCRIPTION"] = 'Description';
 $lang["COMPLAINT_DOCUMENT_UPLOAD"] = 'File / Upload';
 $lang["COMPLAINT_DOCUMENT_FILENAME"] = 'Filename/Format';
 $lang["COMPLAINT_DOCUMENT_FILESIZE"] = 'Filesize';

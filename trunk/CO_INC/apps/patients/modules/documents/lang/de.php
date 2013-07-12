@@ -5,6 +5,7 @@ $lang["PATIENT_DOCUMENT_TITLE"] = 'Aktenmappe';
 $lang["PATIENT_DOCUMENT_DOCUMENTS"] = 'Aktenmappe';
 $lang["PATIENT_DOCUMENT_NEW"] = 'Neue Aktenmappe';
 $lang["PATIENT_DOCUMENT_ACTION_NEW"] = 'neue Aktenmappe anlegen';
+$lang["PATIENT_DOCUMENT_DESCRIPTION"] = 'Beschreibung';
 $lang["PATIENT_DOCUMENT_UPLOAD"] = 'Datei / Upload';
 $lang["PATIENT_DOCUMENT_FILENAME"] = 'Dateiname/Format';
 $lang["PATIENT_DOCUMENT_FILESIZE"] = 'Dateigrösse';

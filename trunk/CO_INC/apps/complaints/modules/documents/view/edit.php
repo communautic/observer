@@ -11,6 +11,14 @@
 <input type="hidden" id="path" name="path" value="<?php echo $this->form_url;?>">
 <input type="hidden" id="poformaction" name="request" value="setDetails">
 <input type="hidden" name="id" value="<?php echo($document->id);?>">
+<div class="content-spacer"></div>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
+  <tr>
+    <td class="tcell-left text11"><span class="<?php if($document->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["COMPLAINT_DOCUMENT_DESCRIPTION"];?></span></span></td>
+    <td class="tcell-right"><?php if($document->canedit) { ?><textarea name="protocol" class="elastic"><?php echo(strip_tags($document->protocol));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($document->protocol)));?><?php } ?></td>
+  </tr>
+</table>
+<div class="content-spacer"></div>
 </form>
 <?php if($document->canedit) { ?>
 <div id="complaints_documents_uploader" class="document-uploader">		

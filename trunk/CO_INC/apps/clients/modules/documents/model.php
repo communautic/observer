@@ -192,7 +192,7 @@ class ClientsDocumentsModel extends ClientsModel {
    }
 
 
-   function setDetails($id,$title,$document_access) {
+   function setDetails($id,$title,$protocol,$document_access) {
 		global $session;
 		
 		$now = gmdate("Y-m-d H:i:s");
@@ -202,7 +202,7 @@ class ClientsDocumentsModel extends ClientsModel {
 			$access_date = $now;
 		}
 		
-		$q = "UPDATE " . CO_TBL_CLIENTS_DOCUMENTS_FOLDERS . " set title = '$title', access='$document_access', access_date='$access_date', access_user = '$session->uid', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_CLIENTS_DOCUMENTS_FOLDERS . " set title = '$title', protocol = '$protocol', access='$document_access', access_date='$access_date', access_user = '$session->uid', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {

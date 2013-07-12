@@ -90,7 +90,7 @@ if (!empty($_GET['request'])) {
 if (!empty($_POST['request'])) {
 	switch ($_POST['request']) {
 		case 'setDetails':
-			echo($patientsDocuments->setDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']),$_POST['document_access']));
+			echo($patientsDocuments->setDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $system->checkMagicQuotes($_POST['protocol']),$_POST['document_access']));
 		break;
 		case 'sendDetails':
 			echo($patientsDocuments->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));

@@ -131,8 +131,8 @@ class EmployeesDocuments extends Employees {
 	}
 
 
-	function setDetails($id,$title,$document_access) {
-		$retval = $this->model->setDetails($id,$title,$document_access);
+	function setDetails($id,$title,$protocol,$document_access) {
+		$retval = $this->model->setDetails($id,$title,$protocol,$document_access);
 		if($retval){
 			return '{ "action": "edit" , "id": "' . $retval . '", "access": "' . $document_access . '"}';
 		} else{

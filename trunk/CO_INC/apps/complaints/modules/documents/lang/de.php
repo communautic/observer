@@ -5,6 +5,7 @@ $lang["COMPLAINT_DOCUMENT_TITLE"] = 'Aktenmappe';
 $lang["COMPLAINT_DOCUMENT_DOCUMENTS"] = 'Aktenmappe';
 $lang["COMPLAINT_DOCUMENT_NEW"] = 'Neue Aktenmappe';
 $lang["COMPLAINT_DOCUMENT_ACTION_NEW"] = 'neue Aktenmappe anlegen';
+$lang["COMPLAINT_DOCUMENT_DESCRIPTION"] = 'Beschreibung';
 $lang["COMPLAINT_DOCUMENT_UPLOAD"] = 'Datei / Upload';
 $lang["COMPLAINT_DOCUMENT_FILENAME"] = 'Dateiname/Format';
 $lang["COMPLAINT_DOCUMENT_FILESIZE"] = 'Dateigrösse';

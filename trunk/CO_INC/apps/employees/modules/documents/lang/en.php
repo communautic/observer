@@ -5,6 +5,7 @@ $lang["EMPLOYEE_DOCUMENT_TITLE"] = 'Document';
 $lang["EMPLOYEE_DOCUMENT_DOCUMENTS"] = 'Documents';
 $lang["EMPLOYEE_DOCUMENT_NEW"] = 'New Document';
 $lang["EMPLOYEE_DOCUMENT_ACTION_NEW"] = 'new Document';
+$lang["EMPLOYEE_DOCUMENT_DESCRIPTION"] = 'Description';
 $lang["EMPLOYEE_DOCUMENT_UPLOAD"] = 'File / Upload';
 $lang["EMPLOYEE_DOCUMENT_FILENAME"] = 'Filename/Format';
 $lang["EMPLOYEE_DOCUMENT_FILESIZE"] = 'Filesize';

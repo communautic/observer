@@ -5,6 +5,16 @@
 	</tr>
 </table>
 &nbsp;
+<?php if(!empty($document->protocol)) { ?>
+
+<table width="100%" class="protocol">
+	<tr>
+        <td class="tcell-left top"><?php echo $lang["PROJECT_DOCUMENT_DESCRIPTION"];?></td>
+        <td><?php echo(nl2br($document->protocol));?></td>
+	</tr>
+</table>
+&nbsp;
+<?php } ?>
 <?php
 $i = 1;
 foreach($doc as $value) { ?>

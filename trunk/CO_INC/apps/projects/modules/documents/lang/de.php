@@ -5,6 +5,7 @@ $lang["PROJECT_DOCUMENT_TITLE"] = 'Aktenmappe';
 $lang["PROJECT_DOCUMENT_DOCUMENTS"] = 'Aktenmappe';
 $lang["PROJECT_DOCUMENT_NEW"] = 'Neue Aktenmappe';
 $lang["PROJECT_DOCUMENT_ACTION_NEW"] = 'neue Aktenmappe anlegen';
+$lang["PROJECT_DOCUMENT_DESCRIPTION"] = 'Beschreibung';
 $lang["PROJECT_DOCUMENT_UPLOAD"] = 'Datei / Upload';
 $lang["PROJECT_DOCUMENT_FILENAME"] = 'Dateiname/Format';
 $lang["PROJECT_DOCUMENT_FILESIZE"] = 'Dateigrösse';
