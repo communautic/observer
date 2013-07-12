@@ -495,7 +495,7 @@ function procsGrids(name) {
 			col.next().next().next().find('span.totalcosts').html(costs).number( true, 0, '', '.' );
 			
 			var tcosts = 0;
-			$('#procs-grid span.totalcosts').each(function() {
+			$('#procs-grid div.showCoPopup[request="note"] div.costs').each(function() {
 				tcosts += parseInt($(this).text());
 			})
 			$('#procGridCosts').text(tcosts).number( true, 0, '', '.' );
