@@ -1277,10 +1277,7 @@ $(document).ready(function() {
 		$(this).datepicker({ dateFormat: 'dd.mm.yy', showOn: 'button', buttonText:"", buttonImage: co_files+'/img/pixel.gif',  buttonImageOnly: true, showButtonPanel: true, changeMonth: true, changeYear: true, yearRange: 'c-5:c+5', showAnim: 'slide',
 			beforeShow: function(input,inst) {
 				var today = new Date();
-				var d = today.getDate()
-				var m = today.getMonth()+1;
-				var y = today.getFullYear();
-				input.value = d+'.'+m+'.'+y;
+				input.value = today.toString("dd.MM.yyyy");
 				setTimeout(function() {
 					var d = new Date();
 					var m = d.getMonth()+1;
