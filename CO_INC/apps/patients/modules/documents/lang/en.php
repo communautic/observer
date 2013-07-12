@@ -5,6 +5,7 @@ $lang["PATIENT_DOCUMENT_TITLE"] = 'Document';
 $lang["PATIENT_DOCUMENT_DOCUMENTS"] = 'Documents';
 $lang["PATIENT_DOCUMENT_NEW"] = 'New Document';
 $lang["PATIENT_DOCUMENT_ACTION_NEW"] = 'new Document';
+$lang["PATIENT_DOCUMENT_DESCRIPTION"] = 'Description';
 $lang["PATIENT_DOCUMENT_UPLOAD"] = 'File / Upload';
 $lang["PATIENT_DOCUMENT_FILENAME"] = 'Filename/Format';
 $lang["PATIENT_DOCUMENT_FILESIZE"] = 'Filesize';

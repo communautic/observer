@@ -5,6 +5,7 @@ $lang["PROC_DOCUMENT_TITLE"] = 'Document';
 $lang["PROC_DOCUMENT_DOCUMENTS"] = 'Documents';
 $lang["PROC_DOCUMENT_NEW"] = 'New Document';
 $lang["PROC_DOCUMENT_ACTION_NEW"] = 'new Document';
+$lang["PROC_DOCUMENT_DESCRIPTION"] = 'Description';
 $lang["PROC_DOCUMENT_UPLOAD"] = 'File / Upload';
 $lang["PROC_DOCUMENT_FILENAME"] = 'Filename/Format';
 $lang["PROC_DOCUMENT_FILESIZE"] = 'Filesize';

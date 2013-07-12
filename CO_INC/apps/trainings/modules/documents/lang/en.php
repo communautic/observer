@@ -5,6 +5,7 @@ $lang["TRAINING_DOCUMENT_TITLE"] = 'Document';
 $lang["TRAINING_DOCUMENT_DOCUMENTS"] = 'Documents';
 $lang["TRAINING_DOCUMENT_NEW"] = 'New Document';
 $lang["TRAINING_DOCUMENT_ACTION_NEW"] = 'new Document';
+$lang["TRAINING_DOCUMENT_DESCRIPTION"] = 'Description';
 $lang["TRAINING_DOCUMENT_UPLOAD"] = 'File / Upload';
 $lang["TRAINING_DOCUMENT_FILENAME"] = 'Filename/Format';
 $lang["TRAINING_DOCUMENT_FILESIZE"] = 'Filesize';

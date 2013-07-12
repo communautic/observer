@@ -5,6 +5,7 @@ $lang["PROJECT_DOCUMENT_TITLE"] = 'Document';
 $lang["PROJECT_DOCUMENT_DOCUMENTS"] = 'Documents';
 $lang["PROJECT_DOCUMENT_NEW"] = 'New Document';
 $lang["PROJECT_DOCUMENT_ACTION_NEW"] = 'new Document';
+$lang["PROJECT_DOCUMENT_DESCRIPTION"] = 'Description';
 $lang["PROJECT_DOCUMENT_UPLOAD"] = 'File / Upload';
 $lang["PROJECT_DOCUMENT_FILENAME"] = 'Filename/Format';
 $lang["PROJECT_DOCUMENT_FILESIZE"] = 'Filesize';
