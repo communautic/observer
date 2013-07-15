@@ -138,16 +138,29 @@ class ProjectsPhases extends Projects {
 
 	function setDetails($id,$title,$team,$team_ct,$protocol,$documents,$phase_access,$phase_access_orig,$task_startdate,$task_enddate,$task_donedate,$task_id,$task_text,$task_protocol,$task,$task_cat,$task_dependent,$task_team,$task_team_ct) {
 		if($arr = $this->model->setDetails($id,$title,$team,$team_ct,$protocol,$documents,$phase_access,$phase_access_orig,$task_startdate,$task_enddate,$task_donedate,$task_id,$task_text,$task_protocol,$task,$task_cat,$task_dependent,$task_team,$task_team_ct)){
-			 return '{ "action": "edit" , "id": "' . $arr["id"] . '", "access": "' . $phase_access . '", "startdate": "' . $arr["startdate"] . '", "enddate": "' . $arr["enddate"] . '"}';
+			 return '{ "action": "edit" , "id": "' . $arr["id"] . '", "access": "' . $phase_access . '", "startdate": "' . $arr["startdate"] . '", "enddate": "' . $arr["enddate"] . '", "changePhaseStatus": "' . $arr["changePhaseStatus"] . '"}';
 		  } else{
 			 return "error";
 		  }
 	}
 
 	function updateStatus($id,$date,$status) {
+		$changeProjectStatus = 0;
 		$retval = $this->model->updateStatus($id,$date,$status);
+		if($status == 1) {
+			$checkProject = $this->model->updateStatusProject($id);
+			if($checkProject){
+				$changeProjectStatus = 1;
+			}
+		}
+		if($status == 2) {
+			$checkProject = $this->model->checkProjectFinished($id);
+			if($checkProject){
+				$changeProjectStatus = 2;
+			}
+		}
 		if($retval){
-			 return '{ "id": "' . $id . '", "status": "' . $status . '"}';
+			return '{ "id": "' . $id . '", "status": "' . $status . '", "changeProjectStatus": "' . $changeProjectStatus . '"}';
 		 }
 	}
 	

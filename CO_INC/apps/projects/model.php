@@ -1186,8 +1186,12 @@ class ProjectsModel extends Model {
 
    function updateStatus($id,$date,$status) {
 		global $session;
-		
-		$date = $this->_date->formatDate($date);
+		$now = gmdate("Y-m-d H:i:s");
+		if($date == '') {
+				$date = $now;
+		} else {
+			$date = $this->_date->formatDate($date);
+		}
 		
 		switch($status) {
 			case "0":
@@ -1204,9 +1208,6 @@ class ProjectsModel extends Model {
 				$sql = "stopped_date";
 			break;
 		}
-
-		$now = gmdate("Y-m-d H:i:s");
-		
 		$q = "UPDATE " . CO_TBL_PROJECTS . " set status = '$status', $sql = '$date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
