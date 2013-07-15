@@ -60,8 +60,10 @@ if($session->isSysadmin()) {
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0" />
 <meta http-equiv="X-UA-Compatible" content="IE=9" />
+<meta name="msapplication-TileImage" content="<?php echo CO_FILES;?>/img/favicon_touch.png"> 
 <title><?php echo $lang["APPLICATION_NAME"];?></title>
 <link rel="icon" type="image/x-icon" href="<?php echo CO_FILES;?>/img/favicon.ico" sizes="64x64" />
+<link rel="apple-touch-icon" href="<?php echo CO_FILES;?>/img/favicon_touch.png"/>
 <link href="<?php echo CO_FILES;?>/css/reset.css" rel="stylesheet" type="text/css" media="screen,projection" />
 <link href="<?php echo CO_FILES;?>/css/styles.css" rel="stylesheet" type="text/css" media="screen,projection" />
 <link href="<?php echo CO_FILES;?>/css/content.css" rel="stylesheet" type="text/css" media="screen,projection" />
