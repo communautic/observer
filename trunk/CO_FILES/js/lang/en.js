@@ -23,6 +23,12 @@ var ALERT_RESTORE = "Would you like to restore this data?";
 var ALERT_PROJECT_MOVE_ALL = "Would you like to change all start dates in relation to this new date?";
 var ALERT_PHASE_TASKS_MOVE_START = "Would you like to adjust all following dates?";
 var ALERT_PHASE_TASKS_MOVE_ALL = "Would you like to change all dates of dependent stages?";
+//Status Alerts
+var ALERT_STATUS_PROJECT_ACTIVATE = 'Would you like to set this project to „in progress”?';
+var ALERT_STATUS_PHASE_ACTIVATE = 'Would you like to set this phase to „in progress”?';
+var ALERT_STATUS_PHASE_COMPLETE = 'Would you like to set this phase to „completed”?';
+var ALERT_STATUS_PPROJECT_COMPLETE = 'Would you like to set this project to „completed”?';
+
 var ALERT_NO_FILE = "Please select a file to upload.";
 
 var ALERT_NO_VALID_EMAIL = "Please enter a valid email address.";

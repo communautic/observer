@@ -34,6 +34,7 @@ function Phases(app) {
 	
 	this.formResponse = function(data) {
 		var app = getCurrentApp();
+		var module = getCurrentModule();
 		switch(data.action) {
 			case "edit":
 				$("#"+ app +"3 ul[rel=phases] span[rel="+data.id+"] .text").html($("#"+ app +" .title").val());
@@ -52,6 +53,45 @@ function Phases(app) {
 						$("#"+ app +"3 ul[rel=phases] span[rel="+data.id+"] .module-access-status").addClass("module-access-active");
 					break;
 				}
+				var phaseid = data.id;
+				if(data.changePhaseStatus != "0") {
+					switch(data.changePhaseStatus) {
+						case "1":
+							var txt = ALERT_STATUS_PHASE_ACTIVATE;
+							var button = 'inprogress';
+						break;
+						case "2":
+							var txt = ALERT_STATUS_PHASE_COMPLETE;
+							var button = 'finished';
+						break;
+					}
+					var langbuttons = {};
+					langbuttons[ALERT_YES] = true;
+					langbuttons[ALERT_NO] = false;
+					$.prompt(txt,{ 
+						buttons:langbuttons,
+						submit: function(e,v,m,f){		
+							if(v){
+								$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/'+ app +'/modules/phases&request=updateStatus&id=' + phaseid + '&date=&status='+data.changePhaseStatus, cache: false, success: function(data){
+									switch(data.status) {
+										case "2":
+											$("#"+ app +"3 ul[rel=phases] span[rel="+data.id+"] .module-item-status").addClass("module-item-active");
+										break;
+										default:
+											$("#"+ app +"3 ul[rel=phases] span[rel="+data.id+"] .module-item-status").removeClass("module-item-active");
+									}
+									$('#'+ app +' span.statusButton').removeClass('active');
+									$('#'+ app +' span.statusButton.'+button).addClass('active');
+									var today = new Date();
+									var statusdate = today.toString("dd.MM.yyyy");
+									$('#'+ app +'-right input.statusdp').val(statusdate);
+									if(data.changeProjectStatus != 0) { module.setProjectStatus(data.changeProjectStatus); }
+									}
+								});
+							} 
+						}
+					});
+				}
 			break;
 		}	
 	}
@@ -61,6 +101,7 @@ function Phases(app) {
 	
 
 	this.statusOnClose = function(dp) {
+		var module = this;
 		var app = getCurrentApp();
 		var id = $('#'+ app).data("third");
 		var status = $('#'+ app +' .statusTabs li span.active').attr('rel');
@@ -72,8 +113,53 @@ function Phases(app) {
 					break;
 					default:
 						$("#"+ app +"3 ul[rel=phases] span[rel="+data.id+"] .module-item-status").removeClass("module-item-active");
-				}																																 			}
+				}
+				//if(data.changeProjectStatus == 1) { module.setProjectStatus(); }
+				if(data.changeProjectStatus != 0) { module.setProjectStatus(data.changeProjectStatus); }
+			}
 		});
+	}
+	
+	this.setProjectStatus = function(status) {
+		var app = getCurrentApp();
+		switch(status) {
+			case "1":
+				var txt = ALERT_STATUS_PROJECT_ACTIVATE;
+			break;
+			case "2":
+				var txt = ALERT_STATUS_PROJECT_COMPLETE;
+			break;
+		}
+		
+		
+					var langbuttons = {};
+					langbuttons[ALERT_YES] = true;
+					langbuttons[ALERT_NO] = false;
+					$.prompt(txt,{ 
+						buttons:langbuttons,
+						submit: function(e,v,m,f){		
+							if(v){
+								var pid = $('#'+ app).data("second");
+								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=updateStatus&id=" + pid + "&date=&status="+status, cache: false, success: function(data){
+									//$("#projects2 span[rel='"+data.id+"'] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
+									switch(status) {
+										case "2":
+											$("#projects2 span[rel='"+data.id+"'] .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
+										break;
+										/*case "3":
+											$("#projects2 span[rel='"+data.id+"'] .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
+										break;*/
+										default:
+											$("#projects2 span[rel='"+data.id+"'] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
+									}			
+									
+									
+									
+									}
+								});
+							} 
+						}
+					});
 	}
 
 

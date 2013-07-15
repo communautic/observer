@@ -23,6 +23,12 @@ var ALERT_RESTORE = "Möchten Sie die Daten wiederherstellen?";
 var ALERT_PROJECT_MOVE_ALL = "Wollen Sie alle Projekttermine an das neue Kick Off Datum anpassen?";
 var ALERT_PHASE_TASKS_MOVE_START = "Wollen Sie alle nachfolgenden Termine an das neue Startdatum anpassen?";
 var ALERT_PHASE_TASKS_MOVE_ALL = "Wollen Sie die Termine aller abhängigen Arbeitspakete anpassen?";
+//Status Alerts
+var ALERT_STATUS_PROJECT_ACTIVATE = 'Wollen Sie das Projekt mit heutigem Datum auf<br />„in Arbeit” setzen?';
+var ALERT_STATUS_PHASE_ACTIVATE = 'Wollen Sie die Phase mit heutigem Datum auf<br />„in Arbeit” setzen?';
+var ALERT_STATUS_PHASE_COMPLETE = 'Wollen Sie die Phase mit heutigem Datum auf<br />„abgeschlossen” setzen?';
+var ALERT_STATUS_PROJECT_COMPLETE = 'Wollen Sie das Projekt mit heutigem Datum auf<br />„abgeschlossen” setzen?';
+
 var ALERT_NO_FILE = "Bitte wählen Sie eine Datei aus";
 
 var ALERT_NO_VALID_EMAIL = "Bitte geben Sie eine gültige Email Adresse an.";

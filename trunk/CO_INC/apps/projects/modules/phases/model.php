@@ -446,6 +446,16 @@ class ProjectsPhasesModel extends ProjectsModel {
 		
 		// do tasks
 		$task_size = sizeof($task_id);
+		$tasks_checked_size = sizeof($task);
+		$phasestatus = $this->getStatus($id);
+		$changePhaseStatus = 0; // 1 = st to planned 2 = set to complete
+		// if only one see if phase is in progress or not
+		if($phasestatus != 1 && $tasks_checked_size == 1) {
+			$changePhaseStatus = 1;
+		}
+		if($phasestatus != 2 && $tasks_checked_size == $task_size) {
+			$changePhaseStatus = 2;
+		}
 		foreach ($task_id as $key => $value) {
 			if (is_array($task)) {
 				if (in_array($task_id[$key], $task) == true) {
@@ -490,17 +500,26 @@ class ProjectsPhasesModel extends ProjectsModel {
 		$enddate =  $this->_date->formatDate(max($datearray),CO_DATE_FORMAT);
 		
 		if ($result) {
-			$arr = array("id" => $id, "startdate" => $startdate, "enddate" => $enddate, "status" => "2");
+			$arr = array("id" => $id, "startdate" => $startdate, "enddate" => $enddate, "status" => "2", "changePhaseStatus" => $changePhaseStatus);
 			return $arr;
 		}
 	}
 	
 	
+	function getStatus($id) {
+		$q = "SELECT status FROM " . CO_TBL_PROJECTS_PHASES . " WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		return mysql_result($result,0);
+	}
+	
    function updateStatus($id,$date,$status) {
 		global $session;
-		
-		$date = $this->_date->formatDate($date);
-		
+		$now = gmdate("Y-m-d H:i:s");
+		if($date == '') {
+				$date = $now;
+		} else {
+			$date = $this->_date->formatDate($date);
+		}
 		switch($status) {
 			case "0":
 				$sql = "planned_date";
@@ -512,14 +531,42 @@ class ProjectsPhasesModel extends ProjectsModel {
 				$sql = "finished_date";
 			break;
 		}
-
-		$now = gmdate("Y-m-d H:i:s");
-		
 		$q = "UPDATE " . CO_TBL_PROJECTS_PHASES . " set status = '$status', $sql = '$date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
-		
 		if ($result) {
 			return true;
+		}
+	}
+	
+	
+	function updateStatusProject($id) {
+		$q = "SELECT a.status FROM " . CO_TBL_PROJECTS . " as a, " . CO_TBL_PROJECTS_PHASES . " as b WHERE b.id = '$id' and b.pid = a.id";
+		$result = mysql_query($q, $this->_db->connection);
+		$status = mysql_result($result,0);
+		if($status != 1) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	function checkProjectFinished($id) {
+		$q = "SELECT a.status,a.id FROM " . CO_TBL_PROJECTS . " as a, " . CO_TBL_PROJECTS_PHASES . " as b WHERE b.id = '$id' and b.pid = a.id";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_row($result);
+		$projectstatus = $row[0];
+		$pid = $row[1];
+		
+		$q = "SELECT status from " . CO_TBL_PROJECTS_PHASES . " WHERE pid = '$pid' and status !='2' and bin = '0';";
+		$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result) > 0) {
+			return false;
+		} else {
+			if($projectstatus != 2) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 	}
 
