@@ -7,15 +7,15 @@
 	</tr>
     	<tr>
 		<td class="tcell-left text11"><span class="<?php if($training->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["TRAINING_TIME_START"];?></span></span></td>
-		<td class="tcell-right"><input name="date1" type="text" class="input-date datepicker date1" value="<?php echo($training->date1)?>" /></td>
+		<td class="tcell-right"><input name="date1" type="text" class="input-date datepicker date1" value="<?php echo($training->date1)?>" readonly="readonly" /></td>
 	</tr>
 <tr>
 		<td class="tcell-left text11"><span class="<?php if($training->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["TRAINING_TIME_END"];?></span></span></td>
-		<td class="tcell-right"><input name="date3" type="text" class="input-date datepicker date3" value="<?php echo($training->date3)?>" /></td>
+		<td class="tcell-right"><input name="date3" type="text" class="input-date datepicker date3" value="<?php echo($training->date3)?>" readonly="readonly" /></td>
 	</tr>
     <tr>
 		<td class="tcell-left text11" style="padding-top: 10px;"><span class="<?php if($training->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span>Coaching</span></span></td>
-		<td class="tcell-right" style="padding-top: 12px;"><input name="date2" type="text" class="input-date datepicker date2" value="<?php echo($training->date2)?>" /></td>
+		<td class="tcell-right" style="padding-top: 12px;"><input name="date2" type="text" class="input-date datepicker date2" value="<?php echo($training->date2)?>" readonly="readonly" /></td>
 	</tr>
 	<tr>
 		<td class="tcell-left text11"><span class="<?php if($training->canedit) { ?>content-nav showDialogTime<?php } ?>" rel="trainingstime3"><span><?php echo $lang["TRAINING_TIME_START"];?></span></span></td>
@@ -33,6 +33,6 @@
 <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-inactive dark">
     <tr>
 		<td class="tcell-left text11" style="padding: 4px 15px 4px 0;"><span class="<?php if($training->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["TRAINING_REGISTRATION_END"];?></span></span></td>
-		<td class="tcell-right" style="padding: 6px 0 0 0;"><input name="registration_end" type="text" class="input-date datepicker date1" value="<?php echo($training->registration_end)?>" /></td>
+		<td class="tcell-right" style="padding: 6px 0 0 0;"><input name="registration_end" type="text" class="input-date datepicker date1" value="<?php echo($training->registration_end)?>" readonly="readonly" /></td>
 	</tr>
 </table>
