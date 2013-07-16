@@ -13,6 +13,7 @@ $lang["WIDGET_TITLE_FORUMS"] 	= 	'Forums';
 $lang["WIDGET_TITLE_SEARCH"] 	= 	'Search';
 $lang["WIDGET_TITLE_PRODUCTIONS"] 	= 	'Productions';
 $lang["WIDGET_TITLE_TRAININGS"] 	= 	'Trainings';
+$lang["WIDGET_REMOVE_NOTICE"] 	= 	'>>> remove';
 
 $lang["CHECKPOINTS_WIDGET_NO_ACTIVITY"]		=	'Currently there are no notices';
 
