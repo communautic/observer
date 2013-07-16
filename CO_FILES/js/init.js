@@ -2276,7 +2276,7 @@ function navThreeTitleThird(objectname, clicked, passed_id) {
 								}
 								$('#'+objectname+'3 ul:eq('+moduleidx+') .module-click:eq('+idx+')').addClass('active-link');
 								$('#'+objectname+'-top .top-subheadline').html(', ' + $('#'+objectname+'2 .deactivated').find(".text").html());
-								if(objectname == 'projects' || objectname == 'productions') {
+								if(objectname == 'projects') {
 									$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+objectname+"&request=getDates&id="+id, success: function(data){
 									$('#'+objectname+'-top .top-subheadlineTwo').html(data.startdate + ' - <span id="'+objectname+'enddate">' + data.enddate + '</span>');
 									}
@@ -2456,7 +2456,7 @@ function externalLoadThreeLevels(objectname,f,p,ph,app) { // from Desktop
 	var objectnameCapsSingular = objectnameCaps.slice(0,-1);
 	var num_modules = window[objectname+'_num_modules'];
 	
-	if(objectname == app && (objectname == 'projects' || objectname == 'procs' || objectname == 'productions' || objectname == 'brainstorms' || objectname == 'forums' || objectname == 'complaints' || objectname == 'employees' || objectname == 'patients' || objectname == 'trainings' || objectname == 'clients')) {
+	if(objectname == app && (objectname == 'projects' || objectname == 'procs' || objectname == 'forums' || objectname == 'complaints' || objectname == 'employees' || objectname == 'patients' || objectname == 'trainings' || objectname == 'clients')) {
 		object.$first.data({ "first" : f});
 		$('#'+objectname+'1 .module-click').removeClass('deactivated');
 		var index = $('#'+objectname+'1 .module-click').index($('#'+objectname+'1 .module-click[rel='+f+']'));
@@ -2613,7 +2613,7 @@ function externalLoadThreeLevels(objectname,f,p,ph,app) { // from Desktop
 			$('#'+app+'3 .sort:eq('+moduleidx+')').attr("rel", data.sort).addClass("sort"+data.sort);
 			$('#'+app+'-top .top-subheadline').html(', ' + $('#'+app+'2 .module-click:visible').find(".text").html());
 			var curapp = getCurrentApp();
-			if(app == 'projects' || app == 'productions') {
+			if(app == 'projects') {
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+app+"&request=getDates&id="+p, success: function(data){
 					$('#'+app+'-top .top-subheadlineTwo').html(data.startdate + ' - <span id="'+ app +'enddate">' + data.enddate + '</span>');
 					if(app != curapp) {

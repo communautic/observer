@@ -138,18 +138,6 @@ function desktoploadModuleStart() {
 		if(typeof forums == "object") { desktoploadForumsModuleStart() }
 		desktoploadCheckpointsModuleStart()
 		
-		/*if(typeof productions == "object") {
-			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/productions&request=getWidgetAlerts", success: function(data){
-				$("#productionsWidgetContent").html(data.html);
-				if(data.widgetaction == 'open' && $('#productionsWidgetContent').is(':hidden')) {
-					$('#item_productionsWidget a.collapse').trigger('click');
-				}
-				}
-			});
-		}*/
-
-		
-
 		/*if(typeof brainstorms == "object") {
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getWidgetAlerts", success: function(data){
 				$("#brainstormsWidgetContent").html(data.html);
@@ -379,20 +367,7 @@ $(document).ready(function() {
 		var href = $(this).attr('rel').split(",");
 		externalLoadThreeLevels(href[0],href[1],href[2],href[3],'trainings');
 	});
-	
-	/*$(document).on('click', '#desktop .productionsLink', function(e) {
-		e.preventDefault();
-		var href = $(this).attr('rel').split(",");
-		externalLoadThreeLevels(href[0],href[1],href[2],href[3],'productions');
-	});*/
-	
-	/*$(document).on('click', '#desktop .productionsLinkMarkRead', function(e) {
-		e.preventDefault();
-		var href = $(this).attr('rel').split(",");
-		externalLoadThreeLevels(href[0],href[1],href[2],href[3],'productions');
-		productions.markNoticeRead(href[2]);
-	});*/
-	
+
 	/*$(document).on('click', '#desktop .brainstormsLinkMarkRead', function(e) {
 		e.preventDefault();
 		var href = $(this).attr('rel').split(",");

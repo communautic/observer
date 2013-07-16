@@ -7,11 +7,10 @@ $lang["WIDGET_TITLE_CHECKPOINTS"] 	= 	'Checkpoints';
 $lang["WIDGET_TEXT_CHECKPOINTS"] 	= 	'Checkpoint set for ';
 
 $lang["WIDGET_TITLE_PROJECTS"] 	= 	'Projects';
-$lang["WIDGET_TITLE_BRAINSTORMS"] 	= 	'Brainstorms';
+/*$lang["WIDGET_TITLE_BRAINSTORMS"] 	= 	'Brainstorms';*/
 $lang["WIDGET_TITLE_PROCS"] 	= 	'Processes';
 $lang["WIDGET_TITLE_FORUMS"] 	= 	'Forums';
 $lang["WIDGET_TITLE_SEARCH"] 	= 	'Search';
-$lang["WIDGET_TITLE_PRODUCTIONS"] 	= 	'Productions';
 $lang["WIDGET_TITLE_TRAININGS"] 	= 	'Trainings';
 $lang["WIDGET_REMOVE_NOTICE"] 	= 	'>>> remove';
 
