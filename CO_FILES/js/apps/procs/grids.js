@@ -1236,11 +1236,4 @@ $(document).ready(function() {
 		});
 	});
 
-	$('input.currency').livequery( function() {
-		$(this).number( true, 0, '', '.' );
-	})
-	$('span.totalcosts, #procGridCosts').livequery( function() {
-		$(this).number( true, 0, '', '.' );
-	})
-
 });

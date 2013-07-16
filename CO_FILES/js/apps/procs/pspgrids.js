@@ -1118,12 +1118,6 @@ $(document).ready(function() {
 		});
 	});
 
-	$('input.currency').livequery( function() {
-		$(this).number( true, 0, '', '.' );
-	})
-	$('span.totalcosts, #procPspgridCosts, span.itemcosts').livequery( function() {
-		$(this).number( true, 0, '', '.' );
-	})
 	$(document).on('click', '#msInit', function(e) {
 		e.preventDefault();
 		$('#coPopupMS').trigger('click');

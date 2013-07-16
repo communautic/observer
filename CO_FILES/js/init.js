@@ -1562,6 +1562,13 @@ $(document).ready(function() {
 		obj.toggleCurrency(ele,cur);
 	});
 	
+	$('input.currency').livequery( function() {
+		$(this).number( true, 0, '', '.' );
+	})
+	$('span.totalcosts, #procGridCosts, #procPspgridCosts, span.itemcosts').livequery( function() {
+		$(this).number( true, 0, '', '.' );
+	})
+	
 	$('.textarea-title, .bg, .elastic').livequery(function () {
 		$(this).bind('keyup paste cut', $.debounce( 500, keyupSave));
    });
