@@ -18,7 +18,7 @@
     
   <div class="fieldset2">
     <label><?php echo $lang["GLOBAL_TITLE"];?></label>
-    <input type="text" class="title" maxlength="40" value="" />
+    <input type="text" class="title" maxlength="50" value="" />
   </div>
   <div class="fieldset2 tohideMS">
     <label><span class="content-nav showDialog" request="getContactsDialog" field="coPopup-team" append="1"><span><?php echo $lang["GLOBAL_RESPONSIBILITY"];?></span></span></label>

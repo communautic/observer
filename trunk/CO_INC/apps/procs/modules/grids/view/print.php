@@ -17,7 +17,7 @@ $varheight = 80;
 <table width="100%" class="standard">
 	<tr>
 		<td class="tcell-left"><?php echo $lang["PROC_GRID_COSTS"];?></td>
-		<td class="smalltext"><?php echo $grid->setting_currency;?> <?php echo number_format($grid->tcosts,0,',','.');?></td>
+		<td class="smalltext"><?php echo $grid->setting_currency;?> <?php echo $grid->tcosts;?></td>
     </tr>
 </table>
 <table width="100%" class="standard">
@@ -93,7 +93,7 @@ switch($cols[$key]['status']) {
 		$ntop = $ntop+22;?>
 <div style="position: absolute; left: <?php echo($left-2);?>px; top: <?php echo($ntop-2);?>px; width: 184px; height: 21px; border-left: 1px solid #7F7F7F; border-right: 1px solid #7F7F7F; border-bottom: 1px solid #7F7F7F; background: #fff;"></div>
 <div style="position: absolute; left: <?php echo($left);?>px; top: <?php echo $ntop;?>px; height: 15px; width: 91px; background-color: #666; font-size: 10px; line-height: 19px; padding-top: 4px; text-align: center; color: #fff;"><?php echo $cols[$key]['hours'];?> h</div>
-<div style="position: absolute; left: <?php echo($left+93);?>px; top: <?php echo $ntop;?>px; height: 15px; width: 90px; background-color: #666; font-size: 10px; line-height: 19px; padding-top: 4px; text-align: center; color: #fff;"><?php echo $grid->setting_currency;?> <?php echo number_format($cols[$key]['costs'],0,',','.');?></div>
+<div style="position: absolute; left: <?php echo($left+93);?>px; top: <?php echo $ntop;?>px; height: 15px; width: 90px; background-color: #666; font-size: 10px; line-height: 19px; padding-top: 4px; text-align: center; color: #fff;"><?php echo $grid->setting_currency;?> <?php echo $cols[$key]['costs'];?></div>
     <?php
 	$left = $left+191;
 	

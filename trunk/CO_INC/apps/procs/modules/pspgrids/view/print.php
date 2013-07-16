@@ -17,7 +17,7 @@ $varheight = 100;
 <table width="100%" class="standard">
 	<tr>
 		<td class="tcell-left"><?php echo $lang["PROC_PSPGRID_COSTS"];?></td>
-		<td class="smalltext"><?php echo $pspgrid->setting_currency;?> <?php echo number_format($pspgrid->tcosts,0,',','.');?></td>
+		<td class="smalltext"><?php echo $pspgrid->setting_currency;?> <?php echo $pspgrid->tcosts;?></td>
     </tr>
 </table>
 <table width="100%" class="standard">
