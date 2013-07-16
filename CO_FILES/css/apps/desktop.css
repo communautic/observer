@@ -117,6 +117,7 @@ width: 25%;
 
 #desktop .widget-content { 
 	max-height: 500px;
+	min-height: 15px;
 	overflow: auto;
 	border-radius: 3px 3px 3px 3px;
     margin: 0 3px 2px;
@@ -130,9 +131,10 @@ width: 25%;
 #searchWidgetContent { background-color:#A5A5A5;}
 
 
-.widgetItemOuter { border-radius: 4px; padding: 8px 5px 5px 5px; margin-bottom: 10px;}
+.widgetItemOuter { border-radius: 4px; padding: 8px 5px 4px 5px; margin-bottom: 10px;}
 .widgetItemOuter:hover { border-radius: 4px; cursor: pointer;}
-
+.widgetItemOuter.Read { margin-bottom: 0px;}
+.widgetItemRead { text-align: right; }
 
 #item_checkpointsWidget { background-color: #eb4600; border: 1px solid #eb4600; }
 #item_checkpointsWidget  .widget-head {
@@ -265,6 +267,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d9d980', end
 .widgetIconAlert { position: absolute; top: -1px; margin-left: -30px; width: 24px; height: 26px; background: url(../..//img/icons.png) no-repeat -60px -40px; }
 .widgetIconNotice { position: absolute; top: -1px; margin-left: -30px; width: 24px; height: 26px; background: url(../..//img/icons.png) no-repeat -90px -40px; }
 span.yellow { color: #FFD20A }
+.widgetItemRead span.yellow:hover{ color: #fff; }
 
 #desktop .widget-head a.collapse {
 background:url("../../img/icons.png") no-repeat scroll -440px 6px transparent;

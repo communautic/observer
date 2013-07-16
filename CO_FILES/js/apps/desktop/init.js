@@ -84,19 +84,61 @@ function desktopApplication(name) {
 
 var desktop = new desktopApplication('desktop');
 
+function desktoploadProjectsModuleStart() {
+	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getWidgetAlerts", success: function(data){
+		$("#projectsWidgetContent").html(data.html);
+		if(data.widgetaction == 'open' && $('#projectsWidgetContent').is(':hidden')) {
+			$('#item_projectsWidget a.collapse').trigger('click');
+		}
+		}
+	});
+}
+function desktoploadProcsModuleStart() {
+	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs&request=getWidgetAlerts", success: function(data){
+		$("#procsWidgetContent").html(data.html);
+		if(data.widgetaction == 'open' && $('#procsWidgetContent').is(':hidden')) {
+			$('#item_brainstormsWidget a.collapse').trigger('click');
+		}
+		}
+	});
+}
+function desktoploadTrainingsModuleStart() {
+	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/trainings&request=getWidgetAlerts", success: function(data){
+		$("#trainingsWidgetContent").html(data.html);
+		if(data.widgetaction == 'open' && $('#trainingsWidgetContent').is(':hidden')) {
+			$('#item_trainingsWidget a.collapse').trigger('click');
+		}
+		}
+	});
+}
+function desktoploadForumsModuleStart() {
+	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/forums&request=getWidgetAlerts", success: function(data){
+		$("#forumsWidgetContent").html(data.html);
+		if(data.widgetaction == 'open' && $('#forumsWidgetContent').is(':hidden')) {
+			$('#item_forumsWidget a.collapse').trigger('click');
+		}
+		}
+	});
+}
+function desktoploadCheckpointsModuleStart() {
+	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/desktop&request=getCheckpoints", success: function(data){
+		$("#checkpointsWidgetContent").empty().html(data.html);
+		if(data.widgetaction == 'open' && $('#checkpointsWidgetContent').is(':hidden')) {
+			$('#item_checkpointsWidget a.collapse').trigger('click');
+		}
+		}
+	});
+}
+
 function desktoploadModuleStart() {
 	if(getCurrentApp() == 'desktop') {
-		if(typeof projects == "object") {
-			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getWidgetAlerts", success: function(data){
-				$("#projectsWidgetContent").html(data.html);
-				if(data.widgetaction == 'open' && $('#projectsWidgetContent').is(':hidden')) {
-					$('#item_projectsWidget a.collapse').trigger('click');
-				}
-				}
-			});
-		}
+		if(typeof projects == "object") { desktoploadProjectsModuleStart() }
+		if(typeof procs == "object") { desktoploadProcsModuleStart() }
+		if(typeof trainings == "object") { desktoploadTrainingsModuleStart() }
+		if(typeof forums == "object") { desktoploadForumsModuleStart() }
+		desktoploadCheckpointsModuleStart()
 		
-		if(typeof productions == "object") {
+		/*if(typeof productions == "object") {
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/productions&request=getWidgetAlerts", success: function(data){
 				$("#productionsWidgetContent").html(data.html);
 				if(data.widgetaction == 'open' && $('#productionsWidgetContent').is(':hidden')) {
@@ -104,19 +146,11 @@ function desktoploadModuleStart() {
 				}
 				}
 			});
-		}
+		}*/
 
-		if(typeof trainings == "object") {
-			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/trainings&request=getWidgetAlerts", success: function(data){
-				$("#trainingsWidgetContent").html(data.html);
-				if(data.widgetaction == 'open' && $('#trainingsWidgetContent').is(':hidden')) {
-					$('#item_trainingsWidget a.collapse').trigger('click');
-				}
-				}
-			});
-		}
+		
 
-		if(typeof brainstorms == "object") {
+		/*if(typeof brainstorms == "object") {
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getWidgetAlerts", success: function(data){
 				$("#brainstormsWidgetContent").html(data.html);
 				if(data.widgetaction == 'open' && $('#brainstormsWidgetContent').is(':hidden')) {
@@ -124,37 +158,8 @@ function desktoploadModuleStart() {
 				}
 				}
 			});
-		}
-		
-		if(typeof procs == "object") {
-			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs&request=getWidgetAlerts", success: function(data){
-				$("#procsWidgetContent").html(data.html);
-				if(data.widgetaction == 'open' && $('#procsWidgetContent').is(':hidden')) {
-					$('#item_brainstormsWidget a.collapse').trigger('click');
-				}
-				}
-			});
-		}
-		
-		if(typeof forums == "object") {
-			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/forums&request=getWidgetAlerts", success: function(data){
-				$("#forumsWidgetContent").html(data.html);
-				if(data.widgetaction == 'open' && $('#forumsWidgetContent').is(':hidden')) {
-					$('#item_forumsWidget a.collapse').trigger('click');
-				}
-				}
-			});
-		}
-		
-		//checkpoints
-		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/desktop&request=getCheckpoints", success: function(data){
-			$("#checkpointsWidgetContent").empty().html(data.html);
-			if(data.widgetaction == 'open' && $('#checkpointsWidgetContent').is(':hidden')) {
-				$('#item_checkpointsWidget a.collapse').trigger('click');
-			}
-			}
-		});
-		
+		}*/
+
 		// postits
 		if(currentDesktopPostit == 0) {
 			var doit = 1;
@@ -306,20 +311,67 @@ $(document).ready(function() {
 		var href = $(this).attr('rel').split(",");
 		externalLoadThreeLevels(href[0],href[1],href[2],href[3],'projects');
 	});
-	
 	$(document).on('click', '#desktop .projectsLinkMarkRead', function(e) {
 		e.preventDefault();
 		var href = $(this).attr('rel').split(",");
 		externalLoadThreeLevels(href[0],href[1],href[2],href[3],'projects');
 		projects.markNoticeRead(href[2]);
+		setTimeout(function() { desktoploadProjectsModuleStart() },500);
 	});
-	
+	$(document).on('click', '#desktop .projectsInlineMarkRead', function(e) {
+		e.preventDefault();
+		e.stopPropagation();
+		var href = $(this).attr('rel').split(",");
+		var w = $(this).parent().parent();
+		w.slideUp(function() {
+			projects.markNoticeRead(href[2]);
+			w.remove();
+			if($("#projectsWidgetContent>div").length == 0) {
+				setTimeout(function() { desktoploadProjectsModuleStart() },500);
+			}
+		})
+	});
 	$(document).on('click', '#desktop .projectsLinkDelete', function(e) {
 		e.preventDefault();
 		var href = $(this).attr('rel').split(",");
 		var id = $(this).attr('link');
 		externalLoadThreeLevels(href[0],href[1],href[2],href[3],'projects');
 		projects.markNoticeDelete(id);
+		setTimeout(function() { desktoploadProjectsModuleStart() },500);
+	});
+	$(document).on('click', '#desktop .projectsLinkInlineDelete', function(e) {
+		e.preventDefault();
+		var href = $(this).attr('rel').split(",");
+		var id = $(this).attr('link');
+		var w = $(this).parent().parent();
+		w.slideUp(function() {
+			projects.markNoticeDelete(id);
+			w.remove();
+			if($("#projectsWidgetContent>div").length == 0) {
+				setTimeout(function() { desktoploadProjectsModuleStart() },500);
+			}
+		})
+		
+	});
+	
+	$(document).on('click', '#desktop .procsLinkMarkRead', function(e) {
+		e.preventDefault();
+		var href = $(this).attr('rel').split(",");
+		externalLoadThreeLevels(href[0],href[1],href[2],href[3],'procs');
+		procs.markNoticeRead(href[2]);
+		setTimeout(function() { desktoploadProcsModuleStart() },500);
+	});
+	$(document).on('click', '#desktop .procsInlineMarkRead', function(e) {
+		e.preventDefault();
+		var href = $(this).attr('rel').split(",");
+		var w = $(this).parent().parent();
+		w.slideUp(function() {
+			procs.markNoticeRead(href[2]);
+			w.remove();
+			if($("#procsWidgetContent>div").length == 0) {
+				setTimeout(function() { desktoploadProcsModuleStart() },500);
+			}
+		})
 	});
 	
 	$(document).on('click', '#desktop .trainingsLink', function(e) {
@@ -328,45 +380,63 @@ $(document).ready(function() {
 		externalLoadThreeLevels(href[0],href[1],href[2],href[3],'trainings');
 	});
 	
-	$(document).on('click', '#desktop .productionsLink', function(e) {
+	/*$(document).on('click', '#desktop .productionsLink', function(e) {
 		e.preventDefault();
 		var href = $(this).attr('rel').split(",");
 		externalLoadThreeLevels(href[0],href[1],href[2],href[3],'productions');
-	});
+	});*/
 	
-	$(document).on('click', '#desktop .productionsLinkMarkRead', function(e) {
+	/*$(document).on('click', '#desktop .productionsLinkMarkRead', function(e) {
 		e.preventDefault();
 		var href = $(this).attr('rel').split(",");
 		externalLoadThreeLevels(href[0],href[1],href[2],href[3],'productions');
 		productions.markNoticeRead(href[2]);
-	});
+	});*/
 	
-	$(document).on('click', '#desktop .brainstormsLinkMarkRead', function(e) {
+	/*$(document).on('click', '#desktop .brainstormsLinkMarkRead', function(e) {
 		e.preventDefault();
 		var href = $(this).attr('rel').split(",");
 		externalLoadThreeLevels(href[0],href[1],href[2],href[3],'brainstorms');
 		brainstorms.markNoticeRead(href[2]);
-	});
-	
-	$(document).on('click', '#desktop .procsLinkMarkRead', function(e) {
-		e.preventDefault();
-		var href = $(this).attr('rel').split(",");
-		externalLoadThreeLevels(href[0],href[1],href[2],href[3],'procs');
-		procs.markNoticeRead(href[2]);
-	});
-	
+	});*/
+
 	$(document).on('click', '#desktop .forumsLinkMarkRead', function(e) {
 		e.preventDefault();
 		var href = $(this).attr('rel').split(",");
 		externalLoadThreeLevels(href[0],href[1],href[2],href[3],'forums');
 		forums.markNoticeRead(href[2]);
+		setTimeout(function() { desktoploadForumsModuleStart() },500);
 	});
-	
+	$(document).on('click', '#desktop .forumsInlineMarkRead', function(e) {
+		e.preventDefault();
+		var href = $(this).attr('rel').split(",");
+		var w = $(this).parent().parent();
+		w.slideUp(function() {
+			forums.markNoticeRead(href[2]);
+			w.remove();
+			if($("#forumsWidgetContent>div").length == 0) {
+				setTimeout(function() { desktoploadForumsModuleStart() },500);
+			}
+		})
+	});
 	$(document).on('click', '#desktop .forumsLinkNewPostRead', function(e) {
 		e.preventDefault();
 		var href = $(this).attr('rel').split(",");
 		externalLoadThreeLevels(href[0],href[1],href[2],href[3],'forums');
 		forums.markNewPostRead(href[2]);
+		setTimeout(function() { desktoploadForumsModuleStart() },500);
+	});
+	$(document).on('click', '#desktop .forumsInlineNewPostRead', function(e) {
+		e.preventDefault();
+		var href = $(this).attr('rel').split(",");
+		var w = $(this).parent().parent();
+		w.slideUp(function() {
+			forums.markNewPostRead(href[2]);
+			w.remove();
+			if($("#forumsWidgetContent>div").length == 0) {
+				setTimeout(function() { desktoploadForumsModuleStart() },500);
+			}
+		})
 	});
 	
 	$(document).on('click', '#desktop .checkpointMarkRead', function(e) {
@@ -381,6 +451,25 @@ $(document).ready(function() {
 		}
 		desktop.markCheckpointRead(app,module,id);
 		externalLoadThreeLevels(href[4],href[1],href[2],href[3],href[0]);
+	});
+	$(document).on('click', '#desktop .checkpointInlineMarkRead', function(e) {
+		e.preventDefault();
+		var href = $(this).attr('rel').split(",");
+		var app = href[0];
+		var module = href[4];
+		if(app == module) {
+			var id = href[2];
+		} else {
+			var id = href[3];
+		}
+		var w = $(this).parent().parent();
+		w.slideUp(function() {
+			desktop.markCheckpointRead(app,module,id);
+			w.remove();
+			if($("#checkpointsWidgetContent>div").length == 0) {
+				setTimeout(function() { desktoploadCheckpointsModuleStart() },500);
+			}
+		})
 	});
 
 	$(document).on('click', 'a.forwardItem', function(e) {

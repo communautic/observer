@@ -12,6 +12,7 @@ $lang["WIDGET_TITLE_PROCS"] 	= 	'Prozesse';
 $lang["WIDGET_TITLE_FORUMS"] 	= 	'Foren';
 $lang["WIDGET_TITLE_PRODUCTIONS"] 	= 	'Produktionen';
 $lang["WIDGET_TITLE_TRAININGS"] 	= 	'Trainings';
+$lang["WIDGET_REMOVE_NOTICE"] 	= 	'>>> entfernen';
 
 
 $lang["CHECKPOINTS_WIDGET_NO_ACTIVITY"]		=	'Keine aktuellen Benachrichtigungen';

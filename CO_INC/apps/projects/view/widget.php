@@ -48,7 +48,8 @@ if(is_array($alerts)) {
 if(is_array($notices)) {
 	$message = 0;
 	foreach ($notices as $notice) { ?>
-		<div class="widgetItemOuter projectsLinkMarkRead" rel="projects,<?php echo $notice->folder . ',' . $notice->pid . ',0';?>"><div class="widgetItemTitle"><div class="widgetIconNotice"></div>
+		<div><div class="widgetItemOuter Read projectsLinkMarkRead" rel="projects,<?php echo $notice->folder . ',' . $notice->pid . ',0';?>">
+        <div class="widgetItemTitle"><div class="widgetIconNotice"></div>
     <?php
 		if($notice->perm == 0) {
 			echo $lang["PROJECT_WIDGET_TITLE_PROJECT"] . '</div><div class="widgetItemContent">';
@@ -58,6 +59,7 @@ if(is_array($notices)) {
 			echo sprintf($lang["PROJECT_WIDGET_INVITATION_GUEST"], $notice->projectitle);
 		} ?>
     	</div></div>
+        <div class="widgetItemRead"><span class="projectsInlineMarkRead text11 yellow co-link" rel="projects,<?php echo $notice->folder . ',' . $notice->pid . ',0';?>"><?php echo $lang["WIDGET_REMOVE_NOTICE"];?></span></div></div>
     <?php
 	}
 }
@@ -66,16 +68,16 @@ if(is_array($notices)) {
 if(is_array($projectlinks)) {
 	$message = 0;
 	foreach ($projectlinks as $projectlink) { ?>
-		
     <?php
 	if($projectlink->perm < 5) { ?>
-		<div class="widgetItemOuter projectsLinkDelete" link="<?php echo $projectlink->noticeid;?>" rel="phases,<?php echo $projectlink->relfolder . ',' . $projectlink->relid . ',' . $projectlink->phid . ',projects';?>"><div class="widgetItemTitle">
+		<div><div class="widgetItemOuter Read projectsLinkDelete" link="<?php echo $projectlink->noticeid;?>" rel="phases,<?php echo $projectlink->relfolder . ',' . $projectlink->relid . ',' . $projectlink->phid . ',projects';?>">
+        <div class="widgetItemTitle">
         <div class="widgetIconAlert"></div><?php echo $lang["PROJECT_WIDGET_PROJECTLINK_TITLE"];?></div><div class="widgetItemContent">
 	<?php } else { ?>
-		<div class="widgetItemOuter projectsLinkDelete" link="<?php echo $projectlink->noticeid;?>" rel="projects,<?php echo $projectlink->folder . ',' . $projectlink->pid . ',0,projects';?>"><div class="widgetItemTitle">
+		<div><div class="widgetItemOuter Read projectsLinkDelete" link="<?php echo $projectlink->noticeid;?>" rel="projects,<?php echo $projectlink->folder . ',' . $projectlink->pid . ',0,projects';?>">
+        <div class="widgetItemTitle">
         <div class="widgetIconAlert"></div><?php echo $lang["PROJECT_WIDGET_PROJECTLINK_NOTICE_TITLE"];?></div><div class="widgetItemContent">
 	<?php }
-	
 		switch($projectlink->perm) {
 			case 2:
 				echo sprintf($lang["PROJECT_WIDGET_PROJECTLINK_STARTEND"], $projectlink->projectitle);
@@ -92,7 +94,12 @@ if(is_array($projectlinks)) {
 		}
 	?>
     	</div></div>
-    <?php
+        <?php 
+        if($projectlink->perm < 5) { ?>
+            <div class="widgetItemRead"><span class="projectsLinkInlineDelete text11 yellow co-link" link="<?php echo $projectlink->noticeid;?>" rel="phases,<?php echo $projectlink->relfolder . ',' . $projectlink->relid . ',' . $projectlink->phid . ',projects';?>"><?php echo $lang["WIDGET_REMOVE_NOTICE"];?></span></div></div>
+        <?php } else { ?>
+            <div class="widgetItemRead"><span class="projectsLinkInlineDelete text11 yellow co-link" link="<?php echo $projectlink->noticeid;?>" rel="projects,<?php echo $projectlink->folder . ',' . $projectlink->pid . ',0,projects';?>"><?php echo $lang["WIDGET_REMOVE_NOTICE"];?></span></div></div>
+		<?php }
 	}
 }
 
