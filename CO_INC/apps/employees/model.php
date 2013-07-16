@@ -762,13 +762,13 @@ function getEmployeeTitleFromMeetingIDs($array,$target, $link = 0){
 
 	function getEmployeeTrainingsDetails($id){
 		$trainings = array();
-		$q = "SELECT b.*,c.title,c.folder,c.id as trainingid,c.date1,c.date2,c.date3,c.training FROM co_employees as a, co_trainings_members as b, co_trainings as c, co_trainings_folders as d WHERE a.cid=b.cid and b.pid=c.id and b.tookpart='1' and c.folder=d.id and b.bin='0' and c.bin='0' and d.bin='0' and c.status='2' and a.id = '$id'";
+		$q = "SELECT b.*,c.title,c.folder,c.id as trainingid,c.costs,c.date1,c.date2,c.date3,c.training FROM co_employees as a, co_trainings_members as b, co_trainings as c, co_trainings_folders as d WHERE a.cid=b.cid and b.pid=c.id and b.tookpart='1' and c.folder=d.id and b.bin='0' and c.bin='0' and d.bin='0' and c.status='2' and a.id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 			while($row = mysql_fetch_assoc($result)) {
 				foreach($row as $key => $val) {
 					$array[$key] = $val;
 				}
-				
+				$array["costs"] = number_format($array["costs"],0,',','.');
 				$array["dates_display"] = "";
 			switch($array["training"]) {
 				case '1': // Vortrag

@@ -69,6 +69,14 @@
         <td class="tcell-right"><div id="trainingstraining" class="itemlist-field"><?php echo($training->training);?></div><input type="hidden" name="training_id_orig" value="<?php echo($training->training_id);?>"></td>
 	</tr>
 </table>
+<div class="content-spacer"></div>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
+	  <td class="tcell-left text11"><span class="<?php if($training->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["TRAINING_COSTS"];?></span></span></td>
+        <td class="tcell-right-nopadding"><?php if($training->canedit) { ?><input name="costs" type="text" class="bg currency" style="margin-left: -5px;" value="<?php echo($training->costs);?>" /><?php } else { echo('' . $training->costs . '</span>'); } ?></td>
+	</tr>
+</table>
+
 <?php if(!empty($training->training_id)) { 
 /* Training cats 
 1 	Vortrag
