@@ -377,12 +377,12 @@ class ProcsGridsModel extends ProcsModel {
 				"notes" => $items,
 				"hours" => $hours,
 				"hours_total" => $hours_total,
-				"costs" => $costs
+				"costs" => number_format($costs,0,',','.')
 			);
 		}
 		
 		$array["max_items"] = max($num_notes);
-		$array["tcosts"] = $tcosts;
+		$array["tcosts"] = number_format($tcosts,0,',','.');
 		
 		//$colheight=  max($num_notes)*27+78+80+8-27;
 		$colheight=  max($num_notes)*27+170;
