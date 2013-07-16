@@ -39,6 +39,7 @@ $lang["TRAINING_MANAGEMENT"] = 'Organisation';
 $lang["TRAINING_COMPANY"] = 'Trainingsanbieter';
 $lang["TRAINING_TEAM"] = 'TrainerIn';
 $lang["TRAINING_TRAININGCAT"] = 'Trainingsart';
+$lang["TRAINING_COSTS"] = 'Teilnahmekosten';
 
 $lang["TRAINING_TIME_START"] = 'Start';
 $lang["TRAINING_TIME_END"] = 'Ende';

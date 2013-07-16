@@ -599,8 +599,8 @@ function sendFolderDetailsList($id,$to,$cc,$subject,$body) {
 	}
 
 
-	function setTrainingDetails($id,$title,$folder,$management,$management_ct,$company,$team,$team_ct,$trainer_details,$training,$training_id_orig,$registration_end,$protocol,$protocol1,$protocol2,$protocol3,$protocol4,$date1,$date2,$date3,$time1,$time2,$time3,$time4,$place1,$place1_ct,$place2,$place2_ct,$text1,$text2,$text3) {
-		$retval = $this->model->setTrainingDetails($id,$title,$folder,$management,$management_ct,$company,$team,$team_ct,$trainer_details,$training,$registration_end,$protocol,$protocol1,$protocol2,$protocol3,$protocol4,$date1,$date2,$date3,$time1,$time2,$time3,$time4,$place1,$place1_ct,$place2,$place2_ct,$text1,$text2,$text3);
+	function setTrainingDetails($id,$title,$folder,$management,$management_ct,$company,$team,$team_ct,$trainer_details,$training,$training_id_orig,$costs,$registration_end,$protocol,$protocol1,$protocol2,$protocol3,$protocol4,$date1,$date2,$date3,$time1,$time2,$time3,$time4,$place1,$place1_ct,$place2,$place2_ct,$text1,$text2,$text3) {
+		$retval = $this->model->setTrainingDetails($id,$title,$folder,$management,$management_ct,$company,$team,$team_ct,$trainer_details,$training,$costs,$registration_end,$protocol,$protocol1,$protocol2,$protocol3,$protocol4,$date1,$date2,$date3,$time1,$time2,$time3,$time4,$place1,$place1_ct,$place2,$place2_ct,$text1,$text2,$text3);
 		if($retval){
 			 if($training != $training_id_orig) {
 			 	return '{ "action": "refresh", "id": "' . $id . '"}';

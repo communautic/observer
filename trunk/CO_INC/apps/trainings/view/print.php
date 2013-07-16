@@ -49,6 +49,14 @@
 	</tr>
 </table>
 <?php } ?>
+<?php if(!empty($training->costs)) { ?>
+<table width="100%" class="standard">
+	<tr>
+		<td class="tcell-left"><?php echo $lang["TRAINING_COSTS"];?></td>
+		<td><?php echo number_format($training->costs,0,',','.');?></td>
+	</tr>
+</table>
+<?php } ?>
 &nbsp;
 <?php 
 switch($training->training_id) {
