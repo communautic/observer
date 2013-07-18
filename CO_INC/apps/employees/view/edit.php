@@ -229,7 +229,7 @@
         <td class="tcell-right-inactive tcell-right-nopadding text11"><?php 
 		if(!empty($trainings)) {
 			foreach($trainings as $training) {
-				echo '<div><span class="externalLoadThreeLevels co-link" rel="feedbacks,' . $training->folder . ',' . $training->trainingid . ',' . $training->id . ',trainings">' . $training->title . ' &nbsp; | &nbsp; ' . $training->dates_display  . ' &nbsp; | &nbsp; ' . $lang["TRAINING_COSTS"] . ' ' . $training->costs  . ' &nbsp; | &nbsp; Feedback ' . $training->total_result . '%</span></div>';
+				echo '<div><span class="externalLoadThreeLevels co-link" rel="trainings,' . $training->folder . ',' . $training->trainingid . ',0,trainings">' . $training->title . ' &nbsp; | &nbsp; ' . $training->dates_display  . ' &nbsp; | &nbsp; ' . $lang["TRAINING_COSTS"] . ' ' . $training->costs  . ' &nbsp; | &nbsp; Feedback ' . $training->total_result . '%</span></div>';
 			}
 		}
 		?></td>
