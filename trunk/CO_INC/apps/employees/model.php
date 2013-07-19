@@ -788,7 +788,7 @@ function getEmployeeTitleFromMeetingIDs($array,$target, $link = 0){
 				case '4': // e-training & Coaching
 					$array["date1"] = $this->_date->formatDate($array["date1"],CO_DATE_FORMAT);
 					$array["date2"] = $this->_date->formatDate($array["date2"],CO_DATE_FORMAT);
-					$array["dates_display"] = $training["date1"] . ' - ' . $array["date2"];
+					$array["dates_display"] = $array["date1"] . ' - ' . $array["date2"];
 				break;
 				case '5': // einzelcoaching
 					$array["date1"] = $this->_date->formatDate($array["date1"],CO_DATE_FORMAT);
