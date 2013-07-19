@@ -172,24 +172,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bfd482', end
 #item_projectsWidget .widgetItemOuter {  border: 2px solid #2D3A04; }
 #item_projectsWidget .widgetItemOuter:hover { border: 2px solid #82AA0B; }
 
-/*#item_brainstormsWidget { background-color: #b2a85b; border: 1px solid #b2a85b; }
-#item_brainstormsWidget  .widget-head {
-background: #d8d3ab;
-background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjZDhkM2FiIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjYzJiYTdlIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iNTElIiBzdG9wLWNvbG9yPSIjYjJhODViIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2IyYTg1YiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgPC9saW5lYXJHcmFkaWVudD4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);
-background: -moz-linear-gradient(top,  #d8d3ab 0, #c2ba7e 50%, #b2a85b 51%, #b2a85b 100%);
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0,#d8d3ab), color-stop(50%,#c2ba7e), color-stop(51%,#b2a85b), color-stop(100%,#b2a85b));
-background: -webkit-linear-gradient(top,  #d8d3ab 0,#c2ba7e 50%,#b2a85b 51%,#b2a85b 100%);
-background: -o-linear-gradient(top,  #d8d3ab 0,#c2ba7e 50%,#b2a85b 51%,#b2a85b 100%);
-background: -ms-linear-gradient(top,  #d8d3ab 0,#c2ba7e 50%,#b2a85b 51%,#b2a85b 100%);
-background: linear-gradient(to bottom,  #d8d3ab 0,#c2ba7e 50%,#b2a85b 51%,#b2a85b 100%);
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d8d3ab', endColorstr='#b2a85b',GradientType=0 );
-}
-
-#brainstormsWidgetContent { background-color: #3d391f; }
-#item_brainstormsWidget .widgetItemOuter {  border: 2px solid #3d391f; }
-#item_brainstormsWidget .widgetItemOuter:hover { border: 2px solid #b2a85b; }*/
-
-
 #item_procsWidget { background-color: #b2a85b; border: 1px solid #b2a85b; }
 #item_procsWidget  .widget-head {
 background: #d8d3ab;

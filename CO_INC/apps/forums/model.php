@@ -682,32 +682,6 @@ class ForumsModel extends Model {
 // get the posts
 		$post= array();
 		$answer= array();
-		/*
-		LINEAR
-		if($view == 0) {
-			$qt = "SELECT * FROM " . CO_TBL_BRAINSTORMS_FORUMS_POSTS . " where pid = '$id' and bin='0' ORDER BY id";
-			$resultt = mysql_query($qt, $this->_db->connection);
-			$num = 1;
-			while($rowt = mysql_fetch_array($resultt)) {
-				foreach($rowt as $key => $val) {
-					$posts[$key] = $val;
-					
-				}
-				
-				$posts["user"] = $this->_users->getUserFullname($posts["user"]);
-				$posts["datetime"] = $this->_date->formatDate($posts["datetime"],CO_DATETIME_FORMAT);
-				
-				if($posts["status"] == 1) {
-					$answer[] = new Lists($posts);
-				}
-				
-				$posts["num"] = $num;
-				
-				$post[] = new Lists($posts);
-				
-				$num++;
-			}
-		} */
 			$qt = "SELECT * FROM " . CO_TBL_FORUMS_POSTS . " where pid = '$id' and bin='0' ORDER BY id";
 			$resultt = mysql_query($qt, $this->_db->connection);
 			$num = 1;
@@ -744,8 +718,6 @@ class ForumsModel extends Model {
 			}
 			
 			$post = array_filter($post, create_function('$p', 'return !$p->replyid;'));
-
-		//$sendto = $this->getSendtoDetails("brainstorms_forums",$id);
 		
 		$arr = array("forum" => $forum, "posts" => $post, "answers" => $answer, "access" => $array["access"]);
 		
@@ -823,9 +795,6 @@ class ForumsModel extends Model {
 		}*/
 		
 		$now = gmdate("Y-m-d H:i:s");
-		
-		//$q = "UPDATE " . CO_TBL_BRAINSTORMS_FORUMS . " set title = '$title', protocol = '$protocol', documents = '$documents', $accesssql status = '$forum_status', $sql = '$forum_status_date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
-
 		
 		$q = "UPDATE " . CO_TBL_FORUMS . " set title = '$title', folder = '$folder', protocol = '$protocol', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);

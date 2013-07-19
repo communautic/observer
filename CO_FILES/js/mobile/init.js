@@ -8,7 +8,7 @@ $(document).ready(function() {
 	});*/
 	
 	// Desktop Postits Edit
-	$('#desktop div.postit-text, #brainstorms-outer div.note-text').livequery(function() {
+	$('#desktop div.postit-text').livequery(function() {
 		$(this).addSwipeEvents().live('doubletap', function(e, touch) {
 			$(this).trigger('dblclick');
 		});

@@ -97,7 +97,7 @@ function desktoploadProcsModuleStart() {
 	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs&request=getWidgetAlerts", success: function(data){
 		$("#procsWidgetContent").html(data.html);
 		if(data.widgetaction == 'open' && $('#procsWidgetContent').is(':hidden')) {
-			$('#item_brainstormsWidget a.collapse').trigger('click');
+			$('#item_procsWidget a.collapse').trigger('click');
 		}
 		}
 	});
@@ -137,16 +137,6 @@ function desktoploadModuleStart() {
 		if(typeof trainings == "object") { desktoploadTrainingsModuleStart() }
 		if(typeof forums == "object") { desktoploadForumsModuleStart() }
 		desktoploadCheckpointsModuleStart()
-		
-		/*if(typeof brainstorms == "object") {
-			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/brainstorms&request=getWidgetAlerts", success: function(data){
-				$("#brainstormsWidgetContent").html(data.html);
-				if(data.widgetaction == 'open' && $('#brainstormsWidgetContent').is(':hidden')) {
-					$('#item_brainstormsWidget a.collapse').trigger('click');
-				}
-				}
-			});
-		}*/
 
 		// postits
 		if(currentDesktopPostit == 0) {
@@ -368,13 +358,6 @@ $(document).ready(function() {
 		externalLoadThreeLevels(href[0],href[1],href[2],href[3],'trainings');
 	});
 
-	/*$(document).on('click', '#desktop .brainstormsLinkMarkRead', function(e) {
-		e.preventDefault();
-		var href = $(this).attr('rel').split(",");
-		externalLoadThreeLevels(href[0],href[1],href[2],href[3],'brainstorms');
-		brainstorms.markNoticeRead(href[2]);
-	});*/
-
 	$(document).on('click', '#desktop .forumsLinkMarkRead', function(e) {
 		e.preventDefault();
 		var href = $(this).attr('rel').split(",");
@@ -492,5 +475,4 @@ $(document).ready(function() {
 	});
 
 
-	
 });
