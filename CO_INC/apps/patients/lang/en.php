@@ -29,6 +29,7 @@ $lang["PATIENT_CONTACT_PHONE"] = 'Phone';
 $lang["PATIENT_CONTACT_EMAIL"] = 'E-mail';
 $lang["PATIENT_INSURANCE"] = 'Insurance';
 $lang["PATIENT_INSURANCE_NUMBER"] = 'NI number';
+$lang["PATIENT_INSURANCE_ADDITIONAL"] = 'Additional Insurance';
 $lang["PATIENT_DESCRIPTION"] = 'History';
 $lang["PATIENT_DOB"] = 'D.O.B';
 $lang["PATIENT_COO"] = 'Nationality';

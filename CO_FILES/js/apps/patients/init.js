@@ -31,6 +31,7 @@ function patientsApplication(name) {
 		formData[formData.length] = processListApps('management');
 		formData[formData.length] = processCustomTextApps('management_ct');
 		formData[formData.length] = processListAppsInsurance('insurance');
+		formData[formData.length] = processStringApps('insuranceadd');
 		//formData[formData.length] = processListApps('status');
 	}
 
@@ -320,6 +321,15 @@ function patientsApplication(name) {
 	this.actionDialog = function(offset,request,field,append,title,sql) {
 		switch(request) {
 			case "getPatientDialog":
+				$.ajax({ type: "GET", url: "/", data: 'path=apps/patients&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
+					$("#modalDialog").html(html);
+					$("#modalDialog").dialog('option', 'position', offset);
+					$("#modalDialog").dialog('option', 'title', title);
+					$("#modalDialog").dialog('open');
+					}
+				});
+			break;
+			case "getPatientDialogInsuranceAdd":
 				$.ajax({ type: "GET", url: "/", data: 'path=apps/patients&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
 					$("#modalDialog").html(html);
 					$("#modalDialog").dialog('option', 'position', offset);

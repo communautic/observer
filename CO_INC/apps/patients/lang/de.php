@@ -7,7 +7,7 @@ $lang["patients_name"] = 'Patienten';
 $lang["PATIENT_FOLDER"] = 'Ordner';
 $lang["PATIENT_FOLDER_NEW"] = 'Neuer Ordner';
 $lang["PATIENT_FOLDER_ACTION_NEW"] = 'neuen Ordner anlegen';
-$lang["PATIENT_PATIENTS"] = 'Patient';
+$lang["PATIENT_PATIENTS"] = 'Patienten';
 $lang["PATIENT_NEW"] = 'Neuer Patient';
 $lang["PATIENT_ACTION_NEW"] = 'neuen Patienten anlegen';
 
@@ -29,6 +29,7 @@ $lang["PATIENT_CONTACT_PHONE"] = 'Telefon';
 $lang["PATIENT_CONTACT_EMAIL"] = 'E-mail';
 $lang["PATIENT_INSURANCE"] = 'Versicherung';
 $lang["PATIENT_INSURANCE_NUMBER"] = 'Versicherungsnummer';
+$lang["PATIENT_INSURANCE_ADDITIONAL"] = 'Zusatzversicherung';
 $lang["PATIENT_DESCRIPTION"] = 'Historie';
 $lang["PATIENT_DOB"] = 'Geburtsdatum';
 $lang["PATIENT_COO"] = 'Nationalität';

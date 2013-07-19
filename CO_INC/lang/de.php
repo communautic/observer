@@ -78,6 +78,8 @@ $lang["GLOBAL_TITLE"] = 'Titel';
 $lang["GLOBAL_RESPONSIBILITY"] = 'Verantwortung';
 $lang["GLOBAL_DESCRIPTION"] = 'Beschreibung';
 
+$lang["GLOBAL_YES"] = 'ja';
+$lang["GLOBAL_NO"] = 'nein';
 $lang['GLOBAL_CURRENCY_POUND'] = '£';
 $lang['GLOBAL_CURRENCY_DOLLAR'] = '$';
 $lang['GLOBAL_CURRENCY_EURO'] = '€';

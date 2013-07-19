@@ -4,7 +4,7 @@
 			<h2><?php echo($patient->title);?></h2>
             &nbsp;
              &nbsp;
-             <h3><?php echo $lang["GLOBAL_STATUS"];?>: <?php echo($patient->status_text);?> <?php echo($patient->status_text_time);?> <?php echo($patient->status_date)?></h3> 
+             <h3><?php echo $lang["GLOBAL_STATUS"];?>: <?php echo date('d-m-Y')?></h3> 
 			</td>
 	</tr>
 </table>
