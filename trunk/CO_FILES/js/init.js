@@ -337,50 +337,54 @@ function activateSessionCheck() {
 					connectionError = 0;
 					$.prompt.close();
 				}
-				if(!data.active){
-					clearInterval(sessionactive);
-					if(data.user != undefined) {
-					var langbuttons = {};
-					langbuttons[ALERT_BUTTON_LOGOUT] = true;
-					langbuttons[ALERT_BUTTON_LOGIN] = false;
-					$.prompt(ALERT_MESSAGE_SESSION_RENEW + ' &nbsp; <input type="password" name="pass" /><input type="hidden" name="user" value="'+data.user+'" /><br /><br />',{ 
-						buttons:langbuttons,
-						submit: function(e,v,m,f){		
-							if(v){
-								e.preventDefault();
-								$.ajax({ type: "POST", url: "/", data: 'path=login/sessionCheck&request=logout', success: function(data){
-									document.location.href = '/';
-									}
-								});
-							} else {
-								e.preventDefault();
-								//reactivate sesssion
-								$.ajax({ type: "POST", url: "/", data: 'path=login/sessionCheck&request=reactivateLogin&user='+f.user+'&pass='+f.pass, success: function(data){
-										if(!data){
-											alert('double check password');
-										} else {
-											$.prompt.close();
-											// call action refresh
-											var obj = getCurrentModule();
-											obj.actionRefresh();
-											// re-activate sessioncheck
-											activateSessionCheck();
-										}
-									}
-								});
-							}
-						}
-					});
-					} else {
+				if($.isEmptyObject(data)) {
+					return true;
+				} else {
+					if(!data.active){
+						clearInterval(sessionactive);
+						if(data.user != undefined) {
 						var langbuttons = {};
-						langbuttons[ALERT_BUTTON_LOGIN] = true;
-						$.prompt(ALERT_MESSAGE_SESSION_COOKIE,{
+						langbuttons[ALERT_BUTTON_LOGOUT] = true;
+						langbuttons[ALERT_BUTTON_LOGIN] = false;
+						$.prompt(ALERT_MESSAGE_SESSION_RENEW + ' &nbsp; <input type="password" name="pass" /><input type="hidden" name="user" value="'+data.user+'" /><br /><br />',{ 
 							buttons:langbuttons,
-							submit: function(e,v,m,f){
-								e.preventDefault();
-								document.location.href = '/';
+							submit: function(e,v,m,f){		
+								if(v){
+									e.preventDefault();
+									$.ajax({ type: "POST", url: "/", data: 'path=login/sessionCheck&request=logout', success: function(data){
+										document.location.href = '/';
+										}
+									});
+								} else {
+									e.preventDefault();
+									//reactivate sesssion
+									$.ajax({ type: "POST", url: "/", data: 'path=login/sessionCheck&request=reactivateLogin&user='+f.user+'&pass='+f.pass, success: function(data){
+											if(!data){
+												alert('double check password');
+											} else {
+												$.prompt.close();
+												// call action refresh
+												var obj = getCurrentModule();
+												obj.actionRefresh();
+												// re-activate sessioncheck
+												activateSessionCheck();
+											}
+										}
+									});
+								}
 							}
 						});
+						} else {
+							var langbuttons = {};
+							langbuttons[ALERT_BUTTON_LOGIN] = true;
+							$.prompt(ALERT_MESSAGE_SESSION_COOKIE,{
+								buttons:langbuttons,
+								submit: function(e,v,m,f){
+									e.preventDefault();
+									document.location.href = '/';
+								}
+							});
+						}
 					}
 				}
 			},
@@ -402,6 +406,14 @@ activateSessionCheck();
 
 $(window).resize(function() {
 	resetNavScroll();
+});
+
+// prevent backspace if not focussed in input or textarea
+$(document).keydown(function(e) {
+    var elid = $(document.activeElement).is("input:focus, textarea:focus"); 
+    if(e.keyCode === 8 && !elid){ 
+       return false; 
+    }; 
 });
 
 // Apps zindex settings
@@ -1565,9 +1577,6 @@ $(document).ready(function() {
 	$('input.currency').livequery( function() {
 		$(this).number( true, 0, '', '.' );
 	})
-	$('span.totalcosts, #procGridCosts, #procPspgridCosts, span.itemcosts').livequery( function() {
-		$(this).number( true, 0, '', '.' );
-	})
 	
 	$('.textarea-title, .bg, .elastic').livequery(function () {
 		$(this).bind('keyup paste cut', $.debounce( 500, keyupSave));
@@ -1578,11 +1587,15 @@ $(document).ready(function() {
 	});
 	
 	$('#co-popup input, #co-popup textarea, #modalDialog input').livequery(function () {
-		$(this).bind('keyup paste cut', $.debounce( 500, function() {
-			var obj = getCurrentModule();
-			obj.saveItem();
+		if($(this).next().hasClass('filter-search-outer')) {
+			return false;
+		} else {
+			$(this).bind('keyup paste cut', $.debounce( 500, function() {
+				var obj = getCurrentModule();
+				obj.saveItem();
+				}
+			));
 		}
-		));
    });
 	
 	$('input.globalSearch').livequery(function() {
