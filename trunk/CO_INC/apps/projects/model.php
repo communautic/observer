@@ -2365,9 +2365,10 @@ class ProjectsModel extends Model {
 		
 		$reminders = "";
 		if($skip == 0) {
-			// reminders = MS, AP deren Phase "in Planung" oder "in Arbeit" ist UND das Projekt "in Arbeit" ist
-			//für Admins / Sysadmins die Projektleiter sind oder die für einen MS oder AP verantwortlich sind
-			$q ="select c.folder,a.pid,a.phaseid,a.cat,a.text,c.title as projectitle from " . CO_TBL_PROJECTS_PHASES_TASKS . " as a,  " . CO_TBL_PROJECTS_PHASES . " as b,  " . CO_TBL_PROJECTS . " as c where a.phaseid = b.id and a.pid = c.id and (b.status='0' or b.status='1') and a.status='0' and c.status='1' and a.cat != '2' and a.bin = '0' and b.bin = '0' and c.bin = '0' and a.enddate = '$tomorrow'" . $access . " and (c.management REGEXP '[[:<:]]" . $session->uid . "[[:>:]]' or (a.cat = '0' and a.team REGEXP '[[:<:]]" . $session->uid . "[[:>:]]'))";
+			// AP/MS deren Phase "in Planung" oder "in Arbeit" ist UND das Projekt "in Arbeit" ist
+			// AP: AP Verantwortliche der Admin/Sysadmin ist
+			// MS: Admin/Sysadmin der Projektleiter ist
+			$q ="select c.folder,a.pid,a.phaseid,a.cat,a.text,c.title as projectitle from " . CO_TBL_PROJECTS_PHASES_TASKS . " as a,  " . CO_TBL_PROJECTS_PHASES . " as b,  " . CO_TBL_PROJECTS . " as c where a.phaseid = b.id and a.pid = c.id and (b.status='0' or b.status='1') and a.status='0' and c.status='1' and a.cat != '2' and a.bin = '0' and b.bin = '0' and c.bin = '0' and a.enddate = '$tomorrow'" . $access . " and ((a.cat = '1' and c.management REGEXP '[[:<:]]" . $session->uid . "[[:>:]]') or (a.cat = '0' and a.team REGEXP '[[:<:]]" . $session->uid . "[[:>:]]'))";
 			$result = mysql_query($q, $this->_db->connection);
 			$reminders = "";
 			while ($row = mysql_fetch_array($result)) {
@@ -2379,11 +2380,13 @@ class ProjectsModel extends Model {
 			}
 		}
 
-		// Kick off = Admins / Sysadmins die auch Projektleiter sind
+		// Kick off
+		// Sysadmin ist projektleiter oder teammitglied
+		// Admin ist projektleiter oder teammitglied
 		$kickoffs = "";
 		$array = "";
 		if($skip == 0) {
-			$q ="select c.folder,c.id as pid,c.title from " . CO_TBL_PROJECTS . " as c where bin = '0' and startdate = '$tomorrow'" . $access . " and c.management REGEXP '[[:<:]]" . $session->uid . "[[:>:]]'";
+			$q ="select c.folder,c.id as pid,c.title from " . CO_TBL_PROJECTS . " as c where bin = '0' and startdate = '$tomorrow'" . $access . " and (c.management REGEXP '[[:<:]]" . $session->uid . "[[:>:]]' or c.team REGEXP '[[:<:]]" . $session->uid . "[[:>:]]')";
 			$result = mysql_query($q, $this->_db->connection);
 			while ($row = mysql_fetch_array($result)) {
 				foreach($row as $key => $val) {
@@ -2398,9 +2401,10 @@ class ProjectsModel extends Model {
 		$alerts = "";
 		$array = "";
 		if($skip == 0) {
-			// alerts = MS, AP deren Phase "in Arbeit" ist UND das Projekt "in Arbeit" ist
-			//für Admins / Sysadmins die Projektleiter sind oder die für einen MS oder AP verantwortlich sind
-			$q ="select c.folder,a.pid,a.phaseid,a.cat,a.text,c.title as projectitle from " . CO_TBL_PROJECTS_PHASES_TASKS . " as a,  " . CO_TBL_PROJECTS_PHASES . " as b,  " . CO_TBL_PROJECTS . " as c where a.phaseid = b.id and a.pid = c.id and b.status='1' and a.status='0' and c.status='1' and a.cat != '2' and a.bin = '0' and b.bin = '0' and c.bin = '0' and a.enddate < '$today'" . $access . " and (c.management REGEXP '[[:<:]]" . $session->uid . "[[:>:]]' or (a.cat = '0' and a.team REGEXP '[[:<:]]" . $session->uid . "[[:>:]]'))";
+			// AP/MS deren Phase "in Planung" oder "in Arbeit" ist UND das Projekt "in Arbeit" ist
+			// AP: Admin/Sysadmin der AP Verantwortung hat
+			// MS: Admin/Sysadmin der Projektleiter ist
+			$q ="select c.folder,a.pid,a.phaseid,a.cat,a.text,c.title as projectitle from " . CO_TBL_PROJECTS_PHASES_TASKS . " as a,  " . CO_TBL_PROJECTS_PHASES . " as b,  " . CO_TBL_PROJECTS . " as c where a.phaseid = b.id and a.pid = c.id and (b.status='0' or b.status='1') and a.status='0' and c.status='1' and a.cat != '2' and a.bin = '0' and b.bin = '0' and c.bin = '0' and a.enddate < '$today'" . $access . " and ((a.cat = '1' and c.management REGEXP '[[:<:]]" . $session->uid . "[[:>:]]') or (a.cat = '0' and a.team REGEXP '[[:<:]]" . $session->uid . "[[:>:]]'))";
 			$result = mysql_query($q, $this->_db->connection);
 			while ($row = mysql_fetch_array($result)) {
 				foreach($row as $key => $val) {

@@ -928,10 +928,10 @@ class ProjectsPhasesModel extends ProjectsModel {
 			$admins = mysql_result($result,0);
 		}
 		$users = $management;
-		if($users != "" && $admins != "") {
+		/*if($users != "" && $admins != "") {
 			$users .= ',';
-		}
-		$users .= $admins;
+		}*/
+		//$users .= $admins;
 		$users = array_unique(array_filter(explode(",", $users)));
 		$users = array_diff($users, array($session->uid));
 		foreach ($users as &$user) {
