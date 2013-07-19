@@ -614,7 +614,6 @@ class ContactsModel extends Model {
 	
 	function getLast10Contacts() {
 		global $session;
-		
 		$contacts = $this->getUserArray($this->getUserSetting("last-used-contacts"));
 	  return $contacts;
 	}
@@ -655,7 +654,47 @@ class ContactsModel extends Model {
 		
 		$this->setUserSetting("last-used-groups",$str);
 		return true;
-	}	
+	}
+	
+	function getLast10Places() {
+		global $session;
+		//$places = $this->getUserArray($this->getUserSetting("last-used-places"));
+		$last = $this->getUserSetting("last-used-places");
+		$places_string = explode(",", $last);
+		$places_total = sizeof($places_string);
+		$places = '';
+		if($places_total == 0) { 
+			return $places; 
+		}
+		// check if user is available and build array
+		$places_arr = "";
+		foreach ($places_string as &$value) {
+			$q = "SELECT id, firstname, lastname, address_line1, address_postcode, address_town FROM ".CO_TBL_USERS." where id = '$value' and bin='0'";
+			$result_user = mysql_query($q, $this->_db->connection);
+			if(mysql_num_rows($result_user) > 0) {
+				while($row_user = mysql_fetch_assoc($result_user)) {
+					$places_arr[] = array("id" => $row_user["id"], "name" => $row_user["lastname"] . ' ' . $row_user["firstname"], "address" => $row_user["address_line1"] . ', ' . $row_user["address_postcode"] . ' ' . $row_user["address_town"]);		
+				}
+			}
+		}
+	  return $places_arr;
+	}
+	
+	function saveLastUsedPlaces($id) {
+		global $session;
+		$string = $id . "," .$this->getUserSetting("last-used-places");
+		$string = rtrim($string, ",");
+		$ids_arr = explode(",", $string);
+		$res = array_unique($ids_arr);
+		foreach ($res as $key => $value) {
+			$ids_rtn[] = $value;
+		}
+		array_splice($ids_rtn, 7);
+		$str = implode(",", $ids_rtn);
+		
+		$this->setUserSetting("last-used-places",$str);
+	  return true;
+	}
 	
 	
 	function sortUserIDsByName($string) {
@@ -986,7 +1025,7 @@ class ContactsModel extends Model {
 	function getPlacesSearch($term){
 		global $system;
 		$num=0;
-		$q = "SELECT id, CONCAT(lastname, ' ',firstname,', ',address_line1, ', ', address_postcode, ' ', address_town) as label from " . CO_TBL_USERS . " where (lastname like '%$term%' or firstname like '%$term%') and bin ='0' and invisible = '0'";
+		$q = "SELECT id, CONCAT(lastname, ' ',firstname,', ',address_line1, ', ', address_postcode, ' ', address_town) as label from " . CO_TBL_USERS . " where (lastname like '%$term%' or firstname like '%$term%' or address_line1 like '%$term%' or address_postcode like '%$term%' or address_town like '%$term%') and bin ='0' and invisible = '0'";
 		$result = mysql_query($q, $this->_db->connection);
 		$num=mysql_affected_rows();
 		$rows = array();
