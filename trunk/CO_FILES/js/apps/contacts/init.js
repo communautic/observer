@@ -977,6 +977,14 @@ $(document).ready(function() {
 		} else if (obj.name == "trainings") {
 			obj.customContactInsert(id);
 			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=saveLastUsedContacts&id="+id});
+		} else if(field.match(/coPopup-/)) {
+			//var f = field.replace(/coPopup-/, "");
+			if($("#"+field).html() != "") {
+				$("#"+field+" .listmember:visible:last").append(", ");
+			}
+			$("#"+field).append(html);
+			obj.coPopupContactInsert();
+			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=saveLastUsedContacts&id="+id});
 		} else {
 			if($("#"+field).html() != "") {
 				$("#"+field+" .listmember:visible:last").append(", ");
@@ -996,6 +1004,16 @@ $(document).ready(function() {
 		if (obj.name == "trainings") {
 			obj.customGroupInsert(id);
 			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=saveLastUsedGroups&id="+id});	
+		} else if(field.match(/coPopup-/)) {
+			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=getUsersInGroupDialog&id="+id+"&field="+field, success: function(data){
+				if($("#"+field).html() != "") {
+					$("#"+field+" .listmember:visible:last").append(", ");
+				}
+				$("#"+field).append(data);
+				obj.coPopupContactGroupInsert();
+				$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=saveLastUsedGroups&id="+id});	
+				}
+			});
 		} else {
 			if($("#"+field).html() != "") {
 				$("#"+field+" .listmember:visible:last").append(", ");
