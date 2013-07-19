@@ -519,10 +519,20 @@ function getContactSend($id) {
 		   return "error";
 		}
 	}
+	
+	function saveLastUsedPlaces($id) {
+		$retval = $this->model->saveLastUsedPlaces($id);
+		if($retval){
+		   return "true";
+		} else{
+		   return "error";
+		}
+	}
 
 
 	function getContactsDialogPlace($request,$field,$append,$title,$sql) {
 		global $lang;
+		$places = $this->model->getLast10Places();
 		include_once dirname(__FILE__).'/view/dialog_places.php';
 	}
 	

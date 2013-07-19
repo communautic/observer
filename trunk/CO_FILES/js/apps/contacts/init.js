@@ -1034,6 +1034,7 @@ $(document).ready(function() {
 		$("#"+field).html(html);
 		var obj = getCurrentModule();
 		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=saveLastUsedPlaces&id="+id});
 	}
 	
 	// autocomplete contacts search
@@ -1364,6 +1365,22 @@ $(document).ready(function() {
 		}
 	});
 
+
+	$(document).on('click', 'a.insertPlacesfromDialog', function(e) {
+		e.preventDefault();
+		var field = $(this).attr("field");
+		var append = $(this).attr("append");
+		var cid = $(this).attr("cid");
+		var place = $(this).next().html();
+		var html = '<span class="listmember-outer"><a class="listmember" uid="' + cid + '" field="'+field+'">' + place + '</a>';
+		var app = getCurrentApp();
+		var obj = getCurrentModule();
+		$("#"+field).html(html);
+		//var obj = getCurrentModule();
+		$('#'+app+' .coform').ajaxSubmit(obj.poformOptions);
+		// save to lastused
+		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=saveLastUsedPlaces&id="+cid});
+	});
 
 	$(document).on('click', '.append-custom-text', function(e) {
 		e.preventDefault();
