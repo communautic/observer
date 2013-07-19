@@ -120,7 +120,7 @@ font-weight: normal;
 }
 
 
-#projects .table-content input.bg, #brainstorms .table-content input.bg, #clients .table-content input.bg { 
+#projects .table-content input.bg, #clients .table-content input.bg { 
 	font-weight: bold;
 }
 

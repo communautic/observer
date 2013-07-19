@@ -299,7 +299,6 @@ function forumsApplication(name) {
 	
 	this.insertItem = function(id,text,replyid) {
 		var num = $('#forumsPosts .forumouter').size()+1;
-		//$.ajax({ type: "POST", url: "/", dataType:  'json', data: "path=apps/brainstorms/modules/forums&request=addItem&id=" + id + "&text=" + text + "&replyid=" + replyid + "&num=" + num, success: function(data){
 		$.ajax({ type: "POST", url: "/", dataType:  'json', data: { path: 'apps/forums', request: 'addForumItem', id: id, text: text, replyid: replyid, num: num }, success: function(data){
 				if(replyid == 0) {
 					var prev = '<div id="forumsPostouter_' + data.itemid + '" class="parent" style="border-top: 1px solid #77713D">';
