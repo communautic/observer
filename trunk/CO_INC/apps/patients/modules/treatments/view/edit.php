@@ -117,7 +117,12 @@
                 </tr>
             </table>
 			
-            
+            <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
+  <tr>
+    <td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["PATIENT_TREATMENT_PROTOCOL2"];?></span></span></td>
+    <td class="tcell-right"><?php if($treatment->canedit) { ?><textarea name="protocol2" id="protocol2" class="elastic"><?php echo(strip_tags($treatment->protocol2));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($treatment->protocol2)));?><?php } ?></td>
+  </tr>
+</table>
         </div>
         <div id="PatientsTreatmentsSecond" style="display: none;">
 			<table border="0" cellpadding="0" cellspacing="0" class="table-content addTaskTable">
@@ -139,15 +144,17 @@
                          } ?>
                         </div>
             </table>
+            <div class="content-spacer"></div>
+            <table border="0" cellpadding="0" cellspacing="0" class="table-content">
+  <tr>
+    <td class="tcell-left-inactive text11"><?php echo $lang["PATIENT_TREATMENT_PROTOCOL2"];?></td>
+    <td class="tcell-right-inactive"><span id="protocol2_inactive"><?php echo(nl2br(strip_tags($treatment->protocol2)));?></span></td>
+  </tr>
+</table>
         </div>
     </div>
 </div>
-<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
-  <tr>
-    <td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["PATIENT_TREATMENT_PROTOCOL2"];?></span></span></td>
-    <td class="tcell-right"><?php if($treatment->canedit) { ?><textarea name="protocol2" class="elastic"><?php echo(strip_tags($treatment->protocol2));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($treatment->protocol2)));?><?php } ?></td>
-  </tr>
-</table>
+
 <?php if($treatment->perms != "guest") { ?>
 <div class="content-spacer"></div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">

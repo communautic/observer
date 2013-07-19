@@ -798,12 +798,12 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
    /**
    * get details for the patient folder
    */
-   function setPatientDetails($id,$management,$management_ct,$protocol,$folder,$number,$insurance,$dob,$coo) {
+   function setPatientDetails($id,$management,$management_ct,$protocol,$folder,$number,$insurance,$insuranceadd,$dob,$coo) {
 		global $session, $contactsmodel;
 		$dob = $this->_date->formatDate($dob);
 		$now = gmdate("Y-m-d H:i:s");
 		
-		$q = "UPDATE " . CO_TBL_PATIENTS . " set folder = '$folder', management='$management', management_ct='$management_ct', protocol = '$protocol', number = '$number', insurance = '$insurance', dob = '$dob', coo = '$coo', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PATIENTS . " set folder = '$folder', management='$management', management_ct='$management_ct', protocol = '$protocol', number = '$number', insurance = '$insurance', insurance_add = '$insuranceadd', dob = '$dob', coo = '$coo', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
@@ -845,9 +845,10 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 		global $session, $contactsmodel, $lang;
 		
 		$now = gmdate("Y-m-d H:i:s");
-		$title = $lang["PATIENT_NEW"];
+		//$title = $lang["PATIENT_NEW"];
+		$insurance_add = $lang["GLOBAL_NO"];
 		
-		$q = "INSERT INTO " . CO_TBL_PATIENTS . " set folder = '$id', cid='$cid', status = '0', planned_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+		$q = "INSERT INTO " . CO_TBL_PATIENTS . " set folder = '$id', cid='$cid', status = '0', planned_date = '$now',  insurance_add='$insurance_add', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			$id = mysql_insert_id();

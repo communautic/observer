@@ -56,7 +56,7 @@
         <td>&nbsp;</td>
 	</tr>
 </table>
-<?php if ($printcanvas == 1) { ?>
+<?php //if ($printcanvas == 1) { ?>
 <div style="height: 400px; width: 400px; position: relative;">
 <img src="<?php echo(CO_FILES);?>/img/body.png" />
 <?php $i = 1; 
@@ -73,13 +73,13 @@
 </div>
 <p>&nbsp;</p>
 <?php 
-}
+//}
 $i = 1;
 	foreach($diagnose as $value) { 
 	$curcol = ($i-1) % 10; ?>
     <table width="100%" class="standard">
         <tr>
-        <?php if ($printcanvas == 1) { ?><td class="top" style="width: 30px;"><div class="circle circle<?php echo $curcol;?>"><div><?php echo $i;?></div></div></td><?php } ?>
+        <td class="top" style="width: 30px;"><div class="circle circle<?php echo $curcol;?>"><div><?php echo $i;?></div></div></td>
           <td><?php echo $value->text;?>&nbsp;</td>
         </tr>
     </table>
@@ -157,6 +157,14 @@ if($value->status == 1) {
             <td class="fourCols-two">&nbsp;</td>
             <td class="fourCols-three">&nbsp;</td>
             <td class="grey smalltext"><?php echo $lang["PATIENT_TREATMENT_TASKS_DURATION"];?> <?php echo $value->min;?> Min</td>
+        </tr>
+        <?php } ?>
+        <?php if(!empty($value->text)) { ?>
+        <tr>
+            <td class="fourCols-one">&nbsp;</td>
+            <td class="fourCols-two">&nbsp;</td>
+            <td class="fourCols-three">&nbsp;</td>
+            <td class="grey smalltext"><?php echo $value->text;?></td>
         </tr>
         <?php } ?>
         

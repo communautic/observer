@@ -384,8 +384,8 @@ class Patients extends Controller {
 	}
 
 
-	function setPatientDetails($id,$management,$management_ct,$protocol,$folder,$number,$insurance,$dob,$coo) {
-		$retval = $this->model->setPatientDetails($id,$management,$management_ct,$protocol,$folder,$number,$insurance,$dob,$coo);
+	function setPatientDetails($id,$management,$management_ct,$protocol,$folder,$number,$insurance,$insuranceadd,$dob,$coo) {
+		$retval = $this->model->setPatientDetails($id,$management,$management_ct,$protocol,$folder,$number,$insurance,$insuranceadd,$dob,$coo);
 		if($retval){
 			 return '{ "action": "edit", "id": "' . $id . '"}';
 		  } else{
@@ -464,6 +464,11 @@ class Patients extends Controller {
 		  } else{
 			 return "error";
 		  }
+	}
+	
+	function getPatientDialogInsuranceAdd($field) {
+		global $lang;
+		include_once dirname(__FILE__).'/view/dialog_insurance.php';
 	}
 	
 

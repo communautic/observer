@@ -90,6 +90,7 @@ function patientsTreatments(name) {
 	 
 	 this.formResponse = function(data) {
 		$("#patients3 ul[rel=treatments] span[rel="+data.id+"] .text").html($("#patients .item_date").val() + ' - ' +$("#patients .title").val());
+		$("#protocol2_inactive").text($("#protocol2").nl2br());
 		switch(data.access) {
 			case "0":
 				$("#patients3 ul[rel=treatments] span[rel="+data.id+"] .module-access-status").removeClass("module-access-active");

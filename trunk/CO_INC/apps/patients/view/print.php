@@ -4,12 +4,12 @@
         <td><strong><?php echo($patient->title);?></strong></td>
 	</tr>
 </table>
-<table width="100%" class="standard">
+<!--<table width="100%" class="standard">
 	<tr>
 	  <td class="tcell-left"><?php echo $lang["PATIENT_FOLDER"];?></td>
         <td><?php echo($patient->folder);?></td>
 	</tr>
-</table>
+</table>-->
 <table width="100%" class="standard">
 	<tr>
 		<td class="tcell-left"><?php echo $lang["PATIENT_MANAGEMENT"];?></td>
@@ -40,13 +40,13 @@
 	</tr>
 </table>
 <?php } ?>
-<table width="100%" class="standard">
+<!--<table width="100%" class="standard">
 	<tr>
 	  <td class="tcell-left"><?php echo $lang["GLOBAL_STATUS"];?></td>
         <td><?php echo($patient->status_text);?> <?php echo($patient->status_text_time);?> <?php echo($patient->status_date)?></td>
 	</tr>
 </table>
-&nbsp;
+&nbsp;-->
 <?php if(!empty($patient->insurance)) { ?>
 <table width="100%" class="standard"> 
    <tr>
@@ -63,6 +63,12 @@
 	</tr>
 </table>
 <?php } ?>
+<table width="100%" class="standard"> 
+   <tr>
+		<td class="tcell-left"><?php echo $lang["PATIENT_INSURANCE_ADDITIONAL"];?></td>
+		<td><?php echo($patient->insurance_add);?></td>
+	</tr>
+</table>
 <?php if(!empty($patient->protocol)) { ?>
 &nbsp;
 <table width="100%" class="protocol">
