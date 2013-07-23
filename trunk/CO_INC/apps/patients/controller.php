@@ -384,8 +384,8 @@ class Patients extends Controller {
 	}
 
 
-	function setPatientDetails($id,$management,$management_ct,$protocol,$folder,$number,$insurance,$insuranceadd,$dob,$coo) {
-		$retval = $this->model->setPatientDetails($id,$management,$management_ct,$protocol,$folder,$number,$insurance,$insuranceadd,$dob,$coo);
+	function setPatientDetails($id,$management,$management_ct,$protocol,$folder,$number,$insurance,$insuranceadd,$dob,$coo,$documents) {
+		$retval = $this->model->setPatientDetails($id,$management,$management_ct,$protocol,$folder,$number,$insurance,$insuranceadd,$dob,$coo,$documents);
 		if($retval){
 			 return '{ "action": "edit", "id": "' . $id . '"}';
 		  } else{

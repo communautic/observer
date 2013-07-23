@@ -289,8 +289,9 @@ class PatientsTreatmentsModel extends PatientsModel {
 		}*/
 		
 		// get the tasks
+		$array['totalcosts'] = 0;
 		$task = array();
-		$q = "SELECT * FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where mid = '$id' and bin='0' ORDER BY sort";
+		$q = "SELECT * FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where mid = '$id' and bin='0' ORDER BY item_date ASC";
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
 			foreach($row as $key => $val) {
@@ -300,20 +301,23 @@ class PatientsTreatmentsModel extends PatientsModel {
 			$tasks["item_date"] = $this->_date->formatDate($tasks["item_date"],CO_DATE_FORMAT);
 			$tasks["team"] = $this->_contactsmodel->getUserList($tasks['team'],'task_team_'.$tasks["id"], "", $array["canedit"]);
 			$tasks["team_ct"] = empty($tasks["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $tasks['team_ct'];
-			if($tasks["type"] == 0) {
-				$tasks["min"] = "";
-				$tasks["type"] = "";
+			if($tasks["type"] == '') {
+				$tasks["min"] = 0;
+				$tasks["costs"] = 0;
+				$tasks["type"] = '';
 			} else {
 				
 				$tasks["min"] = $this->getTreatmentTypeMin($tasks["type"]);
-				$tasks["type"] = $this->getTreatmentTypeName($tasks["type"],'treatmenttype');
+				$tasks["costs"] = $this->getTreatmentTypeCosts($tasks["type"]);
+				//$tasks["type"] = $this->getTreatmentTypeName($tasks["type"],'treatmenttype');
+				$tasks["type"] = $this->getTreatmentList($tasks['type'],'task_treatmenttype_'.$tasks["id"], "", $array["canedit"]);
 				//$tasks["min"] = "";
 			}
 			$tasks["place"] = $this->_contactsmodel->getPlaceList($tasks['place'],'place', $array["canedit"]);
-			
+			$array['totalcosts'] += $tasks["costs"];
 			$task[] = new Lists($tasks);
 		}
-		
+		$array['totalcosts'] = number_format($array['totalcosts'],2,',','.');
 		
 		// get the diagnoses
 		$diagnose = array();
@@ -342,7 +346,7 @@ class PatientsTreatmentsModel extends PatientsModel {
    }
 
 
-   function setDetails($pid,$id,$title,$treatmentdate,$protocol,$protocol2,$protocol3,$doctor,$doctor_ct,$task_id,$task_title,$task_date,$task_time,$task_text,$task,$task_team,$task_team_ct,$task_treatmenttype,$task_place,$canvasList_id,$canvasList_text,$treatment_access,$treatment_access_orig) {
+   function setDetails($pid,$id,$title,$treatmentdate,$protocol,$protocol2,$protocol3,$doctor,$doctor_ct,$task_id,$task_date,$task_time,$task_text,$task,$task_team,$task_team_ct,$task_treatmenttype,$task_place,$canvasList_id,$canvasList_text,$treatment_access,$treatment_access_orig) {
 		global $session, $lang;
 		
 		$treatmentdate = $this->_date->formatDate($treatmentdate);
@@ -373,6 +377,16 @@ class PatientsTreatmentsModel extends PatientsModel {
 		
 		// do existing tasks
 		$task_size = sizeof($task_id);
+		$tasks_checked_size = sizeof($task);
+		$treatstatus = $this->getStatus($id);
+		$changeTreatmentStatus = 0; // 1 = st to planned 2 = set to complete
+		// if only one see if phase is in progress or not
+		if($treatstatus != 1 && $tasks_checked_size == 1) {
+			$changeTreatmentStatus = 1;
+		}
+		if($treatstatus != 2 && $tasks_checked_size == $task_size) {
+			$changeTreatmentStatus = 2;
+		}
 		foreach ($task_id as $key => $value) {
 			if (is_array($task)) {
 				if (in_array($task_id[$key], $task) == true) {
@@ -398,24 +412,32 @@ class PatientsTreatmentsModel extends PatientsModel {
 			} else {
 				$task_team_ct_i = "";
 			}
-			
-			
-			
-			
-			$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " set status = '$checked_items[$key]', title = '$task_title[$key]', text = '$task_text[$key]', team = '$task_team_i', team_ct = '$task_team_ct_i', item_date = '$item_date', type='$task_treatmenttype[$key]', place='$task_place[$key]' WHERE id='$task_id[$key]'";
+			$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " set status = '$checked_items[$key]', text = '$task_text[$key]', team = '$task_team_i', team_ct = '$task_team_ct_i', item_date = '$item_date', type='$task_treatmenttype[$key]', place='$task_place[$key]' WHERE id='$task_id[$key]'";
 			$result = mysql_query($q, $this->_db->connection);
 		}
 		if ($result) {
-			return $id;
+			//return $id;
+			$arr = array("id" => $id, "changeTreatmentStatus" => $changeTreatmentStatus);
+			return $arr;
 		}
    }
+   
+   function getStatus($id) {
+		$q = "SELECT status FROM " . CO_TBL_PATIENTS_TREATMENTS . " WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		return mysql_result($result,0);
+	}
 
 
    function updateStatus($id,$date,$status) {
 		global $session, $lang;
 		
-		$date = $this->_date->formatDate($date);
 		$now = gmdate("Y-m-d H:i:s");
+		if($date == '') {
+				$date = $now;
+		} else {
+			$date = $this->_date->formatDate($date);
+		}
 		
 		$q = "SELECT title FROM " . CO_TBL_PATIENTS_TREATMENTS . " where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
@@ -425,25 +447,40 @@ class PatientsTreatmentsModel extends PatientsModel {
 		
 		$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS . " set title = '$title_change', status = '$status', status_date = '$date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
-		
 		if ($result) {
-			$arr = array("id" => $id, "what" => "edit");
+			return true;
 		}
+	}
+	
+	function updateStatusPatient($id) {
+		$q = "SELECT a.status FROM " . CO_TBL_PATIENTS . " as a, " . CO_TBL_PATIENTS_TREATMENTS . " as b WHERE b.id = '$id' and b.pid = a.id";
+		$result = mysql_query($q, $this->_db->connection);
+		$status = mysql_result($result,0);
+		if($status != 1) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	function checkPatientFinished($id) {
+		$q = "SELECT a.status,a.id FROM " . CO_TBL_PATIENTS . " as a, " . CO_TBL_PATIENTS_TREATMENTS . " as b WHERE b.id = '$id' and b.pid = a.id";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_row($result);
+		$patientstatus = $row[0];
+		$pid = $row[1];
 		
-		// posponed
-		/*if($status == 3) {
-			$this->checkinTreatment($id);
-			$q = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS . " (pid,title,item_date,start,end,location,location_ct,length,management,management_ct,participants,participants_ct,status,status_date,created_date,created_user,edited_date,edited_user) SELECT pid,'$title','$date',start,end,location,location_ct,length,management,management_ct,participants,participants_ct,0,'$now','$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_PATIENTS_TREATMENTS . " where id='$id'";
-			$result = mysql_query($q, $this->_db->connection);
-			if ($result) {
-				$nid = mysql_insert_id();
-				// do tasks
-				$qt = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " (mid,status,title,text,sort) SELECT '$nid',status,title,text,sort FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where mid='$id'";
-				$resultt = mysql_query($qt, $this->_db->connection);
-				$arr = array("id" => $nid, "what" => "reload");
+		$q = "SELECT status from " . CO_TBL_PATIENTS_TREATMENTS . " WHERE pid = '$pid' and status !='2' and bin = '0';";
+		$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result) > 0) {
+			return false;
+		} else {
+			if($patientstatus != 2) {
+				return true;
+			} else {
+				return false;
 			}
-		}*/
-		return $arr;
+		}
 	}
 
 function getTreatmentTypeName($string,$field){
@@ -488,10 +525,32 @@ function getTreatmentTypeMin($string){
 				$q = "SELECT id, minutes from " . CO_TBL_PATIENTS_TREATMENTS_DIALOG . " where id = '$value'";
 				$result_user = mysql_query($q, $this->_db->connection);
 				while($row_user = mysql_fetch_assoc($result_user)) {
-					$users .= $row_user["minutes"];
-					if($i < $users_total) {
+					$users += $row_user["minutes"];
+					/*if($i < $users_total) {
 						$users .= ', ';
-					}
+					}*/
+				}
+			//}
+			$i++;
+			
+		}
+		return $users;
+   }
+   
+   function getTreatmentTypeCosts($string){
+		$users_string = explode(",", $string);
+		$users_total = sizeof($users_string);
+		$users = '';
+		if($users_total == 0) { return $users; }
+		$i = 1;
+		foreach ($users_string as &$value) {
+				$q = "SELECT id, costs from " . CO_TBL_PATIENTS_TREATMENTS_DIALOG . " where id = '$value'";
+				$result_user = mysql_query($q, $this->_db->connection);
+				while($row_user = mysql_fetch_assoc($result_user)) {
+					$users += $row_user["costs"];
+					/*if($i < $users_total) {
+						$users .= ', ';
+					}*/
 				}
 			//}
 			$i++;
@@ -530,7 +589,7 @@ function getTreatmentTypeMin($string){
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
 		// tasks
-		$qt = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " (mid,title,type,team,team_ct,place,place_ct,item_date,text,sort) SELECT $id_new,title,type,team,team_ct,place,place_ct,'$now',text,sort FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where mid='$id' and bin='0'";
+		$qt = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " (mid,type,team,team_ct,place,place_ct,item_date,text,sort) SELECT $id_new,type,team,team_ct,place,place_ct,'$now',text,sort FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where mid='$id' and bin='0'";
 		$resultt = mysql_query($qt, $this->_db->connection);
 		// diagnose
 		$qd = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS_DIAGNOSES . " (mid,text,canvas,xy,sort) SELECT $id_new,text,canvas,xy,sort FROM " . CO_TBL_PATIENTS_TREATMENTS_DIAGNOSES . " where mid='$id' and bin='0'";
@@ -602,7 +661,7 @@ function getTreatmentTypeMin($string){
 		
 		$now = gmdate("Y-m-d H:00");
 		
-		$q = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " set mid='$mid', item_date='$now', status = '0', title = '" . $lang["PATIENT_TREATMENT_TASK_NEW"] . "',  team='$session->uid', sort='$sort'";
+		$q = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " set mid='$mid', item_date='$now', status = '0',  team='$session->uid', sort='$sort'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id = mysql_insert_id();
 		
@@ -618,7 +677,8 @@ function getTreatmentTypeMin($string){
 			$tasks["item_date"] = $this->_date->formatDate($tasks["item_date"],CO_DATE_FORMAT);
 			$tasks["team"] = $this->_contactsmodel->getUserList($tasks['team'],'task_team_'.$tasks["id"], "", 1);
 			$tasks["team_ct"] = "";
-			$tasks["min"] = "";
+			$tasks["min"] = 0;
+			$tasks["costs"] = 0;
 			$tasks["type"] = "";
 
 			$tasks["place"] = "";
@@ -783,6 +843,95 @@ function getTreatmentTypeMin($string){
 		$str .= '</div>';	
 		return $str;
 	 }
+	 
+	 
+	function getTreatmentsSearch($term){
+		global $system, $session;
+		$num=0;
+		$access=" ";
+		if(!$session->isSysadmin()) {
+			$access = " and a.id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
+	  	}
+		$q ="select CONCAT(id,',',costs,',',minutes) as id, CONCAT(positionstext, ' ',shortname, ' (',minutes,')') as label from " . CO_TBL_PATIENTS_TREATMENTS_DIALOG . " where (positionstext like '%$term%' or shortname like '%$term%') and active = '1'";
+		
+		$result = mysql_query($q, $this->_db->connection);
+		$num=mysql_affected_rows();
+		$rows = array();
+		while($r = mysql_fetch_assoc($result)) {
+			 $rows[] = $r;
+		}
+		return json_encode($rows);
+	}
+	
+	
+	
+	function getTreatmentList($string, $field, $sql="", $canedit = true){
+		$users_string = explode(",", $string);
+		$users_total = sizeof($users_string);
+		$users = '';
+		
+		if($users_total == 0) { 
+			return $users; 
+		}
+		
+		// check if user is available and build array
+		$users_arr = array();
+		foreach ($users_string as &$value) {
+			$q = "SELECT id, positionstext, shortname, minutes, costs FROM ".CO_TBL_PATIENTS_TREATMENTS_DIALOG." where id = '$value' $sql";
+			$result_user = mysql_query($q, $this->_db->connection);
+			if(mysql_num_rows($result_user) > 0) {
+				while($row_user = mysql_fetch_assoc($result_user)) {
+					$users_arr[$row_user["id"]] = ' minutes="'.$row_user["minutes"].'" costs="'.$row_user["costs"].'">' .$row_user["positionstext"] . ' ' . $row_user["shortname"] . ' (' . $row_user["minutes"] . ')';		
+				}
+			}
+		}
+		$users_arr_total = sizeof($users_arr);
+		
+		// build string
+		if($canedit) {
+			$edit = ' edit="1"';
+		} else {
+			$edit = ' edit="0"';
+		}
+		$i = 1;
+		foreach ($users_arr as $key => &$value) {
+			$users .= '<span class="listmember-outer"><a href="patients_treatments" class="showItemContext" uid="' . $key . '" field="' . $field . '" ' . $edit . $value;		
+			if($i < $users_arr_total) {
+				$users .= ', ';
+			}
+			$users .= '</a></span>';	
+			$i++;
+		}
+		return $users;
+	}
+	
+	/*function getTaskContext($id,$field){
+		$q = "SELECT id FROM " . CO_TBL_PATIENTS_TREATMENTS_DIALOG . " where id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_array($result);
+		foreach($row as $key => $val) {
+			$array[$key] = $val;
+		}
+		
+		$array["field"] = $field;
+		
+		$document = new Lists($array); 
+		
+		$doc = array();
+		$qt = "SELECT * FROM " . CO_TBL_PATIENTS_DOCUMENTS . " where did = '$id' and bin='0' ORDER BY created_date DESC";
+		$resultt = mysql_query($qt, $this->_db->connection);
+		while($rowt = mysql_fetch_array($resultt)) {
+			foreach($rowt as $key => $val) {
+				$docs[$key] = $val;
+			}
+
+			$docs["filesize"] = $this->formatBytes($docs["filesize"]);
+			$doc[] = new Lists($docs);
+		}
+		
+		$arr = array("document" => $document, "doc" => $doc);
+		return $arr;
+	}*/
 
 }
 ?>

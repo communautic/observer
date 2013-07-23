@@ -614,6 +614,7 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 
    function getPatientDetails($id,$option = "") {
 		global $session, $contactsmodel, $lang;
+		$this->_documents = new PatientsDocumentsModel();
 		$q = "SELECT a.*,CONCAT(b.lastname,' ',b.firstname) as title,b.title as ctitle,b.title2,b.position,b.phone1,b.email FROM " . CO_TBL_PATIENTS . " as a, co_users as b where a.cid=b.id and a.id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if(mysql_num_rows($result) < 1) {
@@ -668,7 +669,7 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 		// other functions
 		$array["folder"] = $this->getPatientFolderDetails($array["folder"],"folder");		
 		$array["insurance"] = $this->getPatientIdDetails($array["insurance"],"patientsinsurance");
-		
+		$array["documents"] = $this->_documents->getDocListFromIDs($array['documents'],'documents');
 		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
 		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
 		$array["current_user"] = $session->uid;
@@ -798,12 +799,12 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
    /**
    * get details for the patient folder
    */
-   function setPatientDetails($id,$management,$management_ct,$protocol,$folder,$number,$insurance,$insuranceadd,$dob,$coo) {
+   function setPatientDetails($id,$management,$management_ct,$protocol,$folder,$number,$insurance,$insuranceadd,$dob,$coo,$documents) {
 		global $session, $contactsmodel;
 		$dob = $this->_date->formatDate($dob);
 		$now = gmdate("Y-m-d H:i:s");
 		
-		$q = "UPDATE " . CO_TBL_PATIENTS . " set folder = '$folder', management='$management', management_ct='$management_ct', protocol = '$protocol', number = '$number', insurance = '$insurance', insurance_add = '$insuranceadd', dob = '$dob', coo = '$coo', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PATIENTS . " set folder = '$folder', management='$management', management_ct='$management_ct', protocol = '$protocol', number = '$number', insurance = '$insurance', insurance_add = '$insuranceadd', dob = '$dob', coo = '$coo', documents = '$documents', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
@@ -815,9 +816,12 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 
    function updateStatus($id,$date,$status) {
 		global $session;
-		
-		$date = $this->_date->formatDate($date);
-		
+		$now = gmdate("Y-m-d H:i:s");
+		if($date == '') {
+				$date = $now;
+		} else {
+			$date = $this->_date->formatDate($date);
+		}		
 		switch($status) {
 			case "0":
 				$sql = "planned_date";
@@ -829,9 +833,6 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 				$sql = "stopped_date";
 			break;
 		}
-
-		$now = gmdate("Y-m-d H:i:s");
-		
 		$q = "UPDATE " . CO_TBL_PATIENTS . " set status = '$status', $sql = '$date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
