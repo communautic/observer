@@ -141,22 +141,36 @@ class PatientsTreatments extends Patients {
 	}
 	
 
-	function setDetails($pid,$id,$title,$treatmentdate,$protocol,$protocol2,$protocol3,$doctor,$doctor_ct,$task_id,$task_title,$task_date,$task_time,$task_text,$task,$task_team,$task_team_ct,$task_treatmenttype,$task_place,$canvasList_id,$canvasList_text,$treatment_access,$treatment_access_orig) {
-		if($retval = $this->model->setDetails($pid,$id,$title,$treatmentdate,$protocol,$protocol2,$protocol3,$doctor,$doctor_ct,$task_id,$task_title,$task_date,$task_time,$task_text,$task,$task_team,$task_team_ct,$task_treatmenttype,$task_place,$canvasList_id,$canvasList_text,$treatment_access,$treatment_access_orig)){
-			return '{ "id": "' . $id . '", "access": "' . $treatment_access . '"}';
-		} else{
-			return "error";
-		}
+	function setDetails($pid,$id,$title,$treatmentdate,$protocol,$protocol2,$protocol3,$doctor,$doctor_ct,$task_id,$task_date,$task_time,$task_text,$task,$task_team,$task_team_ct,$task_treatmenttype,$task_place,$canvasList_id,$canvasList_text,$treatment_access,$treatment_access_orig) {
+		if($arr = $this->model->setDetails($pid,$id,$title,$treatmentdate,$protocol,$protocol2,$protocol3,$doctor,$doctor_ct,$task_id,$task_date,$task_time,$task_text,$task,$task_team,$task_team_ct,$task_treatmenttype,$task_place,$canvasList_id,$canvasList_text,$treatment_access,$treatment_access_orig)){
+			 return '{ "id": "' . $arr["id"] . '", "access": "' . $treatment_access . '", "changeTreatmentStatus": "' . $arr["changeTreatmentStatus"] . '"}';
+		  } else{
+			 return "error";
+		  }
 	}
 
 
 	function updateStatus($id,$date,$status) {
-		$arr = $this->model->updateStatus($id,$date,$status);
-		//if($arr["what"] == "edit") {
-			return '{ "action": "edit" , "id": "' . $arr["id"] . '", "status": "' . $status . '"}';
-		/*} else {
-			return '{ "action": "reload" , "id": "' . $arr["id"] . '"}';
-		}*/
+		$changePatientStatus = 0;
+		$retval = $this->model->updateStatus($id,$date,$status);
+		if($status == 1) {
+			$checkPatient = $this->model->updateStatusPatient($id);
+			if($checkPatient){
+				$changePatientStatus = 1;
+			}
+		}
+		if($status == 2) {
+			$checkPatient = $this->model->checkPatientFinished($id);
+			if($checkPatient){
+				$changePatientStatus = 2;
+			}
+		}
+		if($status == 3) {
+				$changePatientStatus = 2;
+		}
+		if($retval){
+			return '{ "id": "' . $id . '", "status": "' . $status . '", "changePatientStatus": "' . $changePatientStatus . '"}';
+		 }
 	}
 
 
@@ -221,6 +235,7 @@ class PatientsTreatments extends Patients {
 		global $lang;
 		$task = $this->model->addTask($mid,$num,$sort);
 		$treatment->canedit = 1;
+		$i = $sort+1;
 		foreach($task as $value) {
 			$checked = '';
 			if($value->status == 1) {
@@ -282,13 +297,15 @@ class PatientsTreatments extends Patients {
 		include 'view/dialog_status.php';
 	}
 	
-	function getTreatmentsTypeDialog($field) {
-		$retval = $this->model->getTreatmentsTypeDialog($field);
+	function getTreatmentsTypeDialog($field,$append) {
+		global $lang;
+		/*$retval = $this->model->getTreatmentsTypeDialog($field,$append);
 		if($retval){
 			 return $retval;
 		  } else{
 			 return "error";
-		  }
+		  }*/
+		  include_once dirname(__FILE__).'/view/dialog_treatments.php';
 	}
 	
 	
@@ -350,7 +367,19 @@ class PatientsTreatments extends Patients {
 			return "error";
 		}
 	}
-
+	
+	function getTreatmentsSearch($term) {
+		$search = $this->model->getTreatmentsSearch($term);
+		return $search;
+	}
+	
+	function getTaskContext($id,$field) {
+		global $lang;
+		//if($arr = $this->model->getTaskContext($id,$field)) {
+			//$treatment = $arr["treatment"];
+			include 'view/context.php';
+		//}
+	}
 }
 
 $patientsTreatments = new PatientsTreatments("treatments");

@@ -67,8 +67,15 @@
   </tr>
 </table>
 <div class="content-spacer"></div>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+  <tr>
+    <td class="tcell-left text11"><span><span>Kosten</span></span></td>
+    <td class="tcell-right"><?php echo $lang['GLOBAL_CURRENCY_EURO'];?> <span id="totalcosts"><?php echo $treatment->totalcosts;?></span></td>
+  </tr>
+</table>
+<div class="content-spacer"></div>
 
-<div id="contactTabs" class="contentTabs">
+<div id="patientTabs" class="contentTabs">
 	<ul class="contentTabsList">
 		<li><span class="active" rel="PatientsTreatmentsFirst"><?php echo $lang["PATIENT_TREATMENT_DIAGNOSE"];?></span></li>
 		<li><span rel="PatientsTreatmentsSecond"><?php echo $lang["PATIENT_TREATMENT_PLAN"];?></span></li>
@@ -135,12 +142,14 @@
 </table>
                     <div id="patientstreatmenttasks">
 						<?php 
+						$i = 1;
                         foreach($task as $value) { 
 							$checked = '';
 							if($value->status == 1) {
 								$checked = ' checked="checked"';
 							}
                             include("task.php");
+							$i++;
                          } ?>
                         </div>
             </table>

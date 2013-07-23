@@ -64,7 +64,9 @@
 	foreach($diagnose as $value) { 
 		$curcol = ($i-1) % 10;
 		?>
+        <?php if(!empty($value->canvas)) { ?>
 	   <div style="position: absolute;"><img src="data:image/png;base64,<?php echo $value->canvas;?>" /></div>
+       <?php }?>
 	   <div style="position: absolute; z-index: 10<?php echo $i;?>; top: <?php echo $value->y;?>px; left: <?php echo $value->x;?>px;" class="loadCanvas circle circle<?php echo $curcol;?>"><div><?php echo $i;?></div></div>
 	<?php 
 	$i++;

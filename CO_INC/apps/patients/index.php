@@ -191,7 +191,7 @@ if (!empty($_POST['request'])) {
 			echo($patients->setFolderDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['patientstatus']));
 		break;
 		case 'setPatientDetails':
-			echo($patients->setPatientDetails($_POST['id'], $_POST['management'], $system->checkMagicQuotes($_POST['management_ct']), $system->checkMagicQuotes($_POST['protocol']), $_POST['folder'], $_POST['number'], $_POST['insurance'], $_POST['insuranceadd'], $_POST['dob'], $_POST['coo']));
+			echo($patients->setPatientDetails($_POST['id'], $_POST['management'], $system->checkMagicQuotes($_POST['management_ct']), $system->checkMagicQuotes($_POST['protocol']), $_POST['folder'], $_POST['number'], $_POST['insurance'], $_POST['insuranceadd'], $_POST['dob'], $_POST['coo'], $_POST['documents']));
 		break;
 		case 'movePatient':
 			echo($patients->movePatient($_POST['id'], $_POST['startdate'], $_POST['movedays']));

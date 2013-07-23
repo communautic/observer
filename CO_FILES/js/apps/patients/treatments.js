@@ -1,6 +1,7 @@
 /* treatments Object */
 function patientsTreatments(name) {
 	this.name = name;
+	this.isRefresh = false;
 
 
 	this.formProcess = function(formData, form, poformOptions) {
@@ -47,7 +48,7 @@ function patientsTreatments(name) {
 		$('#patients div.task_treatmenttype').each(function() {
 			var id = $(this).attr("id");
 			var reg = /[0-9]+/.exec(id);
-			formData[formData.length] = processListArray('task_treatmenttype',reg);
+			formData[formData.length] = processListArrayTwo('task_treatmenttype',reg);
 		});
 		
 		$('#patients div.task_time_list').each(function() {
@@ -89,8 +90,9 @@ function patientsTreatments(name) {
 	 
 	 
 	 this.formResponse = function(data) {
+		 var module = getCurrentModule();
 		$("#patients3 ul[rel=treatments] span[rel="+data.id+"] .text").html($("#patients .item_date").val() + ' - ' +$("#patients .title").val());
-		$("#protocol2_inactive").text($("#protocol2").nl2br());
+		$("#protocol2_inactive").html($.nl2br($("#protocol2").val()));
 		switch(data.access) {
 			case "0":
 				$("#patients3 ul[rel=treatments] span[rel="+data.id+"] .module-access-status").removeClass("module-access-active");
@@ -99,6 +101,48 @@ function patientsTreatments(name) {
 				$("#patients3 ul[rel=treatments] span[rel="+data.id+"] .module-access-status").addClass("module-access-active");
 			break;
 		}
+		var treatid = data.id;
+		if(data.changeTreatmentStatus != "0") {
+			switch(data.changeTreatmentStatus) {
+				case "1":
+					var txt = ALERT_STATUS_TREATMENT_ACTIVATE;
+					var button = 'inprogress';
+				break;
+				case "2":
+					var txt = ALERT_STATUS_TREATMENT_COMPLETE;
+					var button = 'finished';
+				break;
+			}
+			var langbuttons = {};
+			langbuttons[ALERT_YES] = true;
+			langbuttons[ALERT_NO] = false;
+			$.prompt(txt,{ 
+				buttons:langbuttons,
+				submit: function(e,v,m,f){		
+					if(v){
+						$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/patients/modules/treatments&request=updateStatus&id=' + treatid + '&date=&status='+data.changeTreatmentStatus, cache: false, success: function(data){
+							switch(data.status) {
+								case "2":
+									$("#patients3 ul[rel=treatments] span[rel="+treatid+"] .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
+								break;
+								case "3":
+									$("#patients3 ul[rel=treatments] span[rel="+treatid+"] .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
+								break;
+								default:
+									$("#patients3 ul[rel=treatments] span[rel="+treatid+"] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
+							}
+							$('#patients span.statusButton').removeClass('active');
+							$('#patients span.statusButton.'+button).addClass('active');
+							var today = new Date();
+							var statusdate = today.toString("dd.MM.yyyy");
+							$('#patients-right input.statusdp').val(statusdate);
+							if(data.changePatientStatus != 0) { module.setPatientStatus(data.changePatientStatus); }
+							}
+						});
+					} 
+				}
+			});
+		}
 	}
 
 
@@ -106,36 +150,59 @@ function patientsTreatments(name) {
 
 
 	this.statusOnClose = function(dp) {
+		var module = this;
 		var id = $("#patients").data("third");
 		var status = $("#patients .statusTabs li span.active").attr('rel');
 		var date = $("#patients .statusTabs input").val();
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients/modules/treatments&request=updateStatus&id=" + id + "&date=" + date + "&status=" + status, cache: false, success: function(data){
-			switch(data.action) {
-				case "edit":
-					switch(data.status) {
-						case "2":
-							$("#patients3 ul[rel=treatments] span[rel="+data.id+"] .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
-						break;
-						case "3":
-							$("#patients3 ul[rel=treatments] span[rel="+data.id+"] .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
-						break;
-						default:
-							$("#patients3 ul[rel=treatments] span[rel="+data.id+"] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
-					}
-				break;
-				/*case "reload":
-					var module = getCurrentModule();
-					var id = $('#patients').data('second');
-					$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/patients/modules/treatments&request=getList&id="+id, success: function(list){
-						$('#patients3 ul[rel=treatments]').html(list.html);
-						$('#patients_treatments_items').html(list.items);
-						var moduleidx = $("#patients3 ul").index($("#patients3 ul[rel=treatments]"));
-						var liindex = $("#patients3 ul[rel=treatments] .module-click").index($("#patients3 ul[rel=treatments] .module-click[rel='"+data.id+"']"));
-						module.getDetails(moduleidx,liindex);
-						$("#patients3 ul[rel=treatments] .module-click:eq("+liindex+")").addClass('active-link');
+				switch(data.status) {
+					case "2":
+						$("#patients3 ul[rel=treatments] span[rel="+data.id+"] .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
+					break;
+					case "3":
+						$("#patients3 ul[rel=treatments] span[rel="+data.id+"] .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
+					break;
+					default:
+						$("#patients3 ul[rel=treatments] span[rel="+data.id+"] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
+				}
+				if(data.changePatientStatus != 0) { module.setPatientStatus(data.changePatientStatus); }
+			}
+		});
+	}
+
+
+	this.setPatientStatus = function(status) {
+		var app = getCurrentApp();
+		switch(status) {
+			case "1":
+				var txt = ALERT_STATUS_PATIENT_ACTIVATE;
+			break;
+			case "2":
+				var txt = ALERT_STATUS_PATIENT_COMPLETE;
+			break;
+		}
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			submit: function(e,v,m,f){		
+				if(v){
+					var pid = $('#'+ app).data("second");
+					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients&request=updateStatus&id=" + pid + "&date=&status="+status, cache: false, success: function(data){
+						switch(data.status) {
+							case "0":
+								$("#patients2 .active-link .module-item-status").addClass("module-item-active-trial").removeClass("module-item-active-circle");
+							break;
+							case "1":
+								$("#patients2 .active-link .module-item-status").addClass("module-item-active-circle").removeClass("module-item-active-trial");
+							break;
+							default:
+								$("#patients2 .active-link .module-item-status").removeClass("module-item-active-trial").removeClass("module-item-active-circle");
+						}			
 						}
 					});
-				break;	*/																																													  				}
+				} 
 			}
 		});
 	}
@@ -146,8 +213,15 @@ function patientsTreatments(name) {
 		contexts = [];
 		var id = $("#patients3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
 		$('#patients').data({ "third" : id});
+		if(this.isRefresh) {
+			var activetab = $('#patients-right .contentTabsList li span.active');
+			var tab = $('#patients-right .contentTabsList li span').index(activetab);
+			this.isRefresh = false;
+		}
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients/modules/treatments&request=getDetails&id="+id, success: function(data){
 			$("#patients-right").empty().html(data.html);
+			
+			if(tab != 0) { $('#patients-right .contentTabsList li span:eq('+tab+')').trigger('click'); }
 			
 			if($('#checkedOut').length > 0) {
 					$("#patients3 ul[rel=treatments] .active-link .icon-checked-out").addClass('icon-checked-out-active');
@@ -311,6 +385,7 @@ function patientsTreatments(name) {
 	
 	
 	this.actionRefresh = function() {
+		this.isRefresh = true;
 		var id = $("#patients").data("third");
 		var pid = $("#patients").data("second");
 		$("#patients3 ul[rel=treatments] .active-link").trigger("click");
@@ -443,7 +518,17 @@ function patientsTreatments(name) {
 			});
 		}
 	}
-
+	
+	
+	this.showItemContext = function(ele,uid,field) {
+		var module = this;
+		//var id = $("#"+field).val();
+		$.ajax({ type: "GET", url: "/", data: 'path=apps/patients/modules/treatments&request=getTaskContext&id='+uid+'&field='+field, success: function(html){
+			ele.parent().append(html);
+			ele.next().slideDown();
+			}
+		});
+	}
 
 	this.insertStatus = function(rel,text) {
 		var module = this;
@@ -482,7 +567,7 @@ function patientsTreatments(name) {
 	this.newItem = function() {
 		var module = this;
 		var mid = $("#patients").data("third");
-		var num = parseInt($("#patients-right .task_sort").size());
+		var num = $("#patientstreatmenttasks>div").length;
 		$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/treatments&request=addTask&mid=" + mid + "&num=" + num + "&sort=" + num, success: function(html){
 			$('#patientstreatmenttasks').append(html);
 			var idx = parseInt($('#patientstreatmenttasks .cbx').size() -1);
@@ -491,9 +576,6 @@ function patientsTreatments(name) {
 			$.jNice.CheckAddPO(element);
 			$('.treatmenttaskouter:eq('+idx+')').slideDown(function() {
 				$(this).find(":text:eq(0)").focus();
-				/*if(idx == 6) {
-				$('#patients-right .addTaskTable').clone().insertAfter('#phasetasks');
-				}*/
 				initPatientsContentScrollbar();
 				 module.calculateTasks();
 			});
@@ -501,6 +583,37 @@ function patientsTreatments(name) {
 		});
 	}
 
+	this.removeItem = function(clicked,field) {
+		var module = this;
+		//alert(field);
+		clicked.parent().parent().fadeOut();
+		clicked.parent().parent().prev().toggleClass('deletefromlist');
+		clicked.parents(".listmember-outer").hide();
+		if($("#"+field+" .listmember-outer:visible").length > 0) {
+		var text = $("#"+field+" .listmember-outer:visible:last .showItemContext").html();
+		var textnew = text.split(", ");
+		$("#"+field+" .listmember-outer:visible:last .showItemContext").html(textnew[0]);
+		}
+		var tid = field.replace(/task_treatmenttype_/, "");
+			var tcosts = 0;
+			var tmins = 0;
+			$("#"+field).find('.showItemContext:visible').each(function() {
+				tcosts += parseInt($(this).attr('costs'));
+				tmins += parseInt($(this).attr('minutes'));
+			})
+			$("#costs_"+tid).text(tcosts).number( true, 2, ',', '.' );
+			$("#minutes_"+tid).text(tmins);
+			
+			
+			var totalcosts = 0;
+			$("#patients-right").find('.showItemContext:visible').each(function() {
+				totalcosts += parseInt($(this).attr('costs'));
+			})
+			$("#totalcosts").text(totalcosts).number( true, 2, ',', '.' );
+			
+		//var obj = getCurrentModule();
+		$('#patients .coform').ajaxSubmit(module.poformOptions);
+	}
 
 	this.binItem = function(id) {
 		var module = this;
@@ -783,9 +896,66 @@ var colors = ['#3C4664','#EB4600','#915500','#0A960A','#AA19AA','#3C4664','#EB46
 		}  
 		img.src = dataURL; 
 	}  
-
+	
+	
+	function treatmentsSelect(field,str,value) {
+		closedialog = 0;
+		str = str.split(",");
+		var id = str[0];
+		var costs = str[1];
+		var minutes = str[2];
+		var html = '<span class="listmember-outer"><a href="patients_treatments" class="showItemContext" uid="' + id + '" field="'+field+'" costs="'+costs+'" minutes="'+minutes+'">' + value + '</a>';
+		var app = getCurrentApp();
+		var obj = getCurrentModule();
+			if($("#"+field).html() != "") {
+				$("#"+field+" .showItemContext:visible:last").append(", ");
+			}
+			$("#"+field).append(html);
+			
+			// recalc
+			var tid = field.replace(/task_treatmenttype_/, "");
+			var tcosts = 0;
+			var tmins = 0;
+			$("#"+field).find('.showItemContext:visible').each(function() {
+				tcosts += parseInt($(this).attr('costs'));
+				tmins += parseInt($(this).attr('minutes'));
+			})
+			$("#costs_"+tid).text(tcosts).number( true, 2, ',', '.' );
+			$("#minutes_"+tid).text(tmins);
+			
+			var totalcosts = 0;
+			$("#patients-right").find('.showItemContext:visible').each(function() {
+				totalcosts += parseInt($(this).attr('costs'));
+			})
+			$("#totalcosts").text(totalcosts).number( true, 2, ',', '.' );
+			
+			
+			$('#'+app+' .coform').ajaxSubmit(obj.poformOptions);
+			$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/treatments&request=saveLastUsedTreatments&id="+id}); 
+			
+	}
+	
 
 	$(document).ready(function () {
+		
+		
+		// autocomplete contacts search
+	$('.treatments-search').livequery(function() { 
+		$(this).autocomplete({
+			appendTo: '#tabs-1',
+			source: "?path=apps/patients/modules/treatments&request=getTreatmentsSearch",
+			//minLength: 2,
+			select: function(event, ui) {
+				var field = $(this).attr("field");
+				treatmentsSelect(field, ui.item.id, ui.item.value);
+			},
+			close: function(event, ui) {
+				$(this).val("");
+			}
+		});
+	});
+		
+		
 		$("div.loadCanvas").livequery( function() {
 			$(this).each(function(){
 				tmp = $(this).css('z-index');

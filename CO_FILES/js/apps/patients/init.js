@@ -32,7 +32,7 @@ function patientsApplication(name) {
 		formData[formData.length] = processCustomTextApps('management_ct');
 		formData[formData.length] = processListAppsInsurance('insurance');
 		formData[formData.length] = processStringApps('insuranceadd');
-		//formData[formData.length] = processListApps('status');
+		formData[formData.length] = processDocListApps('documents');
 	}
 
 	
@@ -349,6 +349,16 @@ function patientsApplication(name) {
 			break;
 			case "getPatientCatDialog":
 				$.ajax({ type: "GET", url: "/", data: 'path=apps/patients&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
+					$("#modalDialog").html(html);
+					$("#modalDialog").dialog('option', 'position', offset);
+					$("#modalDialog").dialog('option', 'title', title);
+					$("#modalDialog").dialog('open');
+					}
+				});
+			break;
+			case "getDocumentsDialog":
+				var id = $("#patients").data("second");
+				$.ajax({ type: "GET", url: "/", data: 'path=apps/patients/modules/documents&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql+'&id='+ id, success: function(html){
 					$("#modalDialog").html(html);
 					$("#modalDialog").dialog('option', 'position', offset);
 					$("#modalDialog").dialog('option', 'title', title);

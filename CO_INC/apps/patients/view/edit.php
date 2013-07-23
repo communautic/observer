@@ -93,6 +93,12 @@
 </form>
 <?php if($patient->access != "guest") { ?>
 <div class="content-spacer"></div>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+  <tr>
+    <td class="tcell-left text11"><span class="<?php if($patient->canedit) { ?>content-nav showDialog<?php } ?>" request="getDocumentsDialog" field="patientsdocuments" append="1"><span><?php echo $lang["PATIENT_DOCUMENT_DOCUMENTS"];?></span></span></td>
+    <td class="tcell-right"><div id="patientsdocuments" class="itemlist-field"><?php echo($patient->documents);?></div></td>
+  </tr>
+</table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 	  <td class="tcell-left text11"><span class="content-nav ui-datepicker-trigger-action"><span><?php echo $lang['GLOBAL_CHECKPOINT'];?></span></span></td>

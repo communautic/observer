@@ -6,16 +6,15 @@
   <table width="100%" border="0" cellpadding="0" cellspacing="0">
     <tr>
       <td width="20" style="padding-top: 4px;"><input name="task[<?php echo $value->id;?>]" type="checkbox" value="<?php echo $value->id;?>" class="cbx jNiceHidden <?php if(!$treatment->canedit) { ?>noperm<?php } ?>" <?php echo $checked ;?> /></td>
-      <td class="text11" style="padding-top: 0px;"><?php if($treatment->canedit) { ?>
-          <span class="text11" style="padding-top: 0px;"><input name="task_title[<?php echo $value->id;?>]" type="text" class="bg bold" value="<?php echo $value->title;?>" maxlength="100" /></span>
-          <?php } else { ?><div class="text13 bold" style="margin-left: 7px;"><?php echo $value->title;?></div><?php } ?><input name="task_id[<?php echo $value->id;?>]" type="hidden" value="<?php echo $value->id;?>"><input class="task_sort" name="task_sort[<?php echo $value->id;?>]" type="hidden" value=""></td><?php if($treatment->canedit) { ?><td width="25"><a class="binItem" rel="<?php echo $value->id;?>"><span class="icon-delete"></span></a></td><?php } ?>
+      <td class="text11" style="padding-top: 0px;">
+          <div class="text13 bold" style="margin-left: 7px;"><?php echo $i;?>. Sitzung</div><input name="task_id[<?php echo $value->id;?>]" type="hidden" value="<?php echo $value->id;?>"><input class="task_sort" name="task_sort[<?php echo $value->id;?>]" type="hidden" value=""></td><?php if($treatment->canedit) { ?><td width="25"><a class="binItem" rel="<?php echo $value->id;?>"><span class="icon-delete"></span></a></td><?php } ?>
     </tr>
   </table>
 
   <table width="100%" border="0" cellpadding="0" cellspacing="0">
     <tr>
       <td width="12"></td>
-      <td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav showDialog<?php } ?>" request="getTreatmentsTypeDialog" field="task_treatmenttype_<?php echo $value->id;?>" append="0"><span><?php echo $lang["PATIENT_TREATMENT_TASKS_TYPE"];?></span></span></td>
+      <td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav showDialog<?php } ?>" request="getTreatmentsTypeDialog" field="task_treatmenttype_<?php echo $value->id;?>" append="1"><span><?php echo $lang["PATIENT_TREATMENT_TASKS_TYPE"];?></span></span></td>
       <td class="tcell-right"><div id="task_treatmenttype_<?php echo $value->id;?>" class="itemlist-field task_treatmenttype"><?php echo($value->type);?></div></td>
     </tr>
     <tr>
@@ -42,6 +41,11 @@
          <td width="12"></td>
 		<td class="tcell-left-inactive text11"><span><span><?php echo $lang["PATIENT_TREATMENT_TASKS_DURATION"];?></span></span></td>
 		<td class="tcell-right-inactive"><span id="minutes_<?php echo $value->id;?>"><?php echo $value->min;?></span> Min</td>
+    </tr>
+    <tr>
+         <td width="12"></td>
+		<td class="tcell-left-inactive text11"><span><span>Kosten</span></span></td>
+		<td class="tcell-right-inactive"><?php echo $lang['GLOBAL_CURRENCY_EURO'];?> <span id="costs_<?php echo $value->id;?>" class="currency"><?php echo number_format($value->costs,2,',','.');;?></span></td>
     </tr>
     </table>
 
