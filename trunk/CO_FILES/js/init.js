@@ -1,10 +1,9 @@
-jQuery.fn.nl2br = function(){
-    return this.each(function(){
-        var that = jQuery(this);
-        that.val(that.val().replace(/(<br\s*\/?>)|(<p><\/p>)/gi, "\r\n"));
-    });
+jQuery.nl2br = function(str){ // $.nl2br("multi\nline");
+	return str.replace(/(\r\n|\n\r|\r|\n)/g, "<br />");
 };
-//jQuery("textarea").nl2br();
+jQuery.br2nl = function(str){ // $.br2nl("multi<br>line");
+	return str.replace(/<br>/g, "\r");
+};
 
 function iOS(){
     return (
@@ -165,6 +164,24 @@ function processListArray(field,num) {
 	var items = $("#"+field+"_"+num+" .listmember").size();
 	var itemlist = "";
 	$("#"+field+"_"+num+" .listmember").each( function(i) {
+		if ( $(this).hasClass("deletefromlist") ) {
+			itemlist += "";
+		} else if ( $(this).hasClass("addtolist") ) {
+			itemlist += $(this).attr("uid") + ",";
+		} else {
+			itemlist += $(this).attr("uid") + ",";
+		}
+		if(items-1 == i) {
+		itemlist = itemlist.slice(0, -1)
+		}
+	})
+	return { "name": field+"["+num+"]", "value": itemlist };
+}
+
+function processListArrayTwo(field,num) {
+	var items = $("#"+field+"_"+num+" .showItemContext").size();
+	var itemlist = "";
+	$("#"+field+"_"+num+" .showItemContext").each( function(i) {
 		if ( $(this).hasClass("deletefromlist") ) {
 			itemlist += "";
 		} else if ( $(this).hasClass("addtolist") ) {
