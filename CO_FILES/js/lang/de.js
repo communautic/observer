@@ -28,6 +28,11 @@ var ALERT_STATUS_PROJECT_ACTIVATE = 'Wollen Sie das Projekt mit heutigem Datum a
 var ALERT_STATUS_PHASE_ACTIVATE = 'Wollen Sie die Phase mit heutigem Datum auf<br />„in Arbeit” setzen?';
 var ALERT_STATUS_PHASE_COMPLETE = 'Wollen Sie die Phase mit heutigem Datum auf<br />„abgeschlossen” setzen?';
 var ALERT_STATUS_PROJECT_COMPLETE = 'Wollen Sie das Projekt mit heutigem Datum auf<br />„abgeschlossen” setzen?';
+// Status Alerts patients
+var ALERT_STATUS_PATIENT_ACTIVATE = 'Wollen Sie den Patienten mit heutigem Datum auf<br />„in Betreuung” setzen?';
+var ALERT_STATUS_TREATMENT_ACTIVATE = 'Wollen Sie die Behandlung mit heutigem Datum auf<br />„in Behandliung” setzen?';
+var ALERT_STATUS_TREATMENT_COMPLETE = 'Wollen Sie die Behandlung mit heutigem Datum auf<br />„abgeschlossen” setzen?';
+var ALERT_STATUS_PATIENT_COMPLETE = 'Wollen Sie den Patienten mit heutigem Datum auf<br />„in Evidenz” setzen?';
 
 var ALERT_NO_FILE = "Bitte wählen Sie eine Datei aus";
 
