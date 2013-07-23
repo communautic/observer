@@ -114,7 +114,6 @@ function Phases(app) {
 					default:
 						$("#"+ app +"3 ul[rel=phases] span[rel="+data.id+"] .module-item-status").removeClass("module-item-active");
 				}
-				//if(data.changeProjectStatus == 1) { module.setProjectStatus(); }
 				if(data.changeProjectStatus != 0) { module.setProjectStatus(data.changeProjectStatus); }
 			}
 		});
@@ -130,36 +129,27 @@ function Phases(app) {
 				var txt = ALERT_STATUS_PROJECT_COMPLETE;
 			break;
 		}
-		
-		
-					var langbuttons = {};
-					langbuttons[ALERT_YES] = true;
-					langbuttons[ALERT_NO] = false;
-					$.prompt(txt,{ 
-						buttons:langbuttons,
-						submit: function(e,v,m,f){		
-							if(v){
-								var pid = $('#'+ app).data("second");
-								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=updateStatus&id=" + pid + "&date=&status="+status, cache: false, success: function(data){
-									//$("#projects2 span[rel='"+data.id+"'] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
-									switch(status) {
-										case "2":
-											$("#projects2 span[rel='"+data.id+"'] .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
-										break;
-										/*case "3":
-											$("#projects2 span[rel='"+data.id+"'] .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
-										break;*/
-										default:
-											$("#projects2 span[rel='"+data.id+"'] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
-									}			
-									
-									
-									
-									}
-								});
-							} 
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			submit: function(e,v,m,f){		
+				if(v){
+					var pid = $('#'+ app).data("second");
+					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=updateStatus&id=" + pid + "&date=&status="+status, cache: false, success: function(data){
+						switch(status) {
+							case "2":
+								$("#projects2 span[rel='"+data.id+"'] .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
+							break;
+							default:
+								$("#projects2 span[rel='"+data.id+"'] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
+						}			
 						}
 					});
+				} 
+			}
+		});
 	}
 
 
