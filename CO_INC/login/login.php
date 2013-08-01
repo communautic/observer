@@ -12,8 +12,11 @@ if(isset($_GET['path'])) {
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta http-equiv="X-UA-Compatible" content="IE=9" />
+<meta name="msapplication-TileImage" content="<?php echo CO_FILES;?>/img/favicon_touch.png"> 
 <title><?php echo $lang["APPLICATION_NAME"];?></title>
 <link rel="icon" type="image/x-icon" href="<?php echo CO_FILES;?>/img/favicon.ico" sizes="64x64" />
+<link rel="apple-touch-icon" href="<?php echo CO_FILES;?>/img/favicon_touch.png"/>
 <link href="<?php echo CO_FILES;?>/css/login/styles.css" rel="stylesheet" type="text/css" media="screen,projection" />
 <!--[if IE 8]>
 <link href="<?php echo CO_FILES;?>/css/login/ie8.css" rel="stylesheet" type="text/css" media="screen,projection" />
