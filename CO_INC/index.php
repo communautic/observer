@@ -176,6 +176,7 @@ include(CO_INC . "/view/footer.php");
 <div id="modalDialogTime"></div>
 <div id="modalDialogForward" title="Weiterleitung"></div>
 <div id="co-popup" class="switch-left"></div>
+<div id="co-splitActions" class="switch-left"></div>
 <iframe id="documentloader" name="documentloader" src="about:blank" style="position: absolute; top: -1000px; left: -1000px;" /></iframe>
 </body>
 </html>
