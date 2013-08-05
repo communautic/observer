@@ -400,7 +400,10 @@ function procsPspgrids(name) {
 							return (css.match (/\bswitch-\w+/g) || []).join(' ');
 						})
 						.addClass(className);
-						copopup.hide().animate({width:'toggle'}, function() { copopup.find('.arrow').offset({ top: ui.target.top+25 }); })
+						copopup.hide().animate({width:'toggle'}, function() { 
+							var arrowtop = Math.round(ui.target.top - ui.element.top)+37;
+							copopup.find('.arrow').css('top', arrowtop); 
+						})
 				}
 			});
 	}

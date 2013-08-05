@@ -361,8 +361,10 @@ function procsGrids(name) {
 				$('#co-popup a.binItem').attr('rel',id);
 				if(request == 'title' || request == 'stagegate') {
 					copopup.find('.tohide').hide();
+					var r = 211;
 				} else {
 					copopup.find('.tohide').show();
+					var r = 170;
 				}
 				copopup
 					.removeClass(function (index, css) {
@@ -371,7 +373,7 @@ function procsGrids(name) {
 					.addClass(pclass)
 					.position({
 						  my: "center center",
-						  at: "right+170 center",
+						  at: "right+"+r+" center",
 						  of: el,
 						  collision: 'flip fit',
 						  within: '#procs-right .scroll-pane',
@@ -387,7 +389,9 @@ function procsGrids(name) {
 						   			return (css.match (/\bswitch-\w+/g) || []).join(' ');
 					   			})
 								.addClass(className);
-								copopup.find('.arrow').offset({ top: ui.target.top });
+								//copopup.find('.arrow').offset({ top: ui.target.top });
+								var arrowtop = Math.round(ui.target.top - ui.element.top)+14;
+								copopup.find('.arrow').css('top', arrowtop); 
 				  		}
 					});
 	}
