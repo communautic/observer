@@ -24,15 +24,15 @@ var ALERT_PROJECT_MOVE_ALL = "Would you like to change all start dates in relati
 var ALERT_PHASE_TASKS_MOVE_START = "Would you like to adjust all following dates?";
 var ALERT_PHASE_TASKS_MOVE_ALL = "Would you like to change all dates of dependent stages?";
 //Status Alerts
-var ALERT_STATUS_PROJECT_ACTIVATE = 'Would you like to set this project to Ñin progressî?';
-var ALERT_STATUS_PHASE_ACTIVATE = 'Would you like to set this phase to Ñin progressî?';
-var ALERT_STATUS_PHASE_COMPLETE = 'Would you like to set this phase to Ñcompletedî?';
-var ALERT_STATUS_PPROJECT_COMPLETE = 'Would you like to set this project to Ñcompletedî?';
+var ALERT_STATUS_PROJECT_ACTIVATE = 'Would you like to set this project to ‚Äûin progress‚Äù?';
+var ALERT_STATUS_PHASE_ACTIVATE = 'Would you like to set this phase to ‚Äûin progress‚Äù?';
+var ALERT_STATUS_PHASE_COMPLETE = 'Would you like to set this phase to ‚Äûcompleted‚Äù?';
+var ALERT_STATUS_PPROJECT_COMPLETE = 'Would you like to set this project to ‚Äûcompleted‚Äù?';
 // Status Alerts patients
-var ALERT_STATUS_PATIENT_ACTIVATE = 'Wollen Sie den Patienten mit heutigem Datum auf<br />Ñin Behandliungî setzen?';
-var ALERT_STATUS_TREATMENT_ACTIVATE = 'Wollen Sie die Behandlung mit heutigem Datum auf<br />Ñin Arbeitî setzen?';
-var ALERT_STATUS_TREATMENT_COMPLETE = 'Wollen Sie die Behandlung mit heutigem Datum auf<br />Ñabgeschlossenî setzen?';
-var ALERT_STATUS_PATIENT_COMPLETE = 'Wollen Sie den Patienten mit heutigem Datum auf<br />Ñabgeschlossenî setzen?';
+var ALERT_STATUS_PATIENT_ACTIVATE = 'Wollen Sie den Patienten mit heutigem Datum auf<br />‚Äûin Behandlung‚Äù setzen?';
+var ALERT_STATUS_TREATMENT_ACTIVATE = 'Wollen Sie die Behandlung mit heutigem Datum auf<br />‚Äûin Arbeit‚Äù setzen?';
+var ALERT_STATUS_TREATMENT_COMPLETE = 'Wollen Sie die Behandlung mit heutigem Datum auf<br />‚Äûabgeschlossen‚Äù setzen?';
+var ALERT_STATUS_PATIENT_COMPLETE = 'Wollen Sie den Patienten mit heutigem Datum auf<br />‚Äûabgeschlossen‚Äù setzen?';
 
 var ALERT_NO_FILE = "Please select a file to upload.";
 
@@ -56,9 +56,9 @@ var ALERT_UPLOAD_TYPE = "{file} has invalid extension. Only {extensions} are all
 var UPLOAD_FROM = "from";
 var UPLOAD_CANCEL = "Cancel";
 
-var ALERT_CLIENT_ACCESS = 'Mˆchten Sie die Bestellberechtigung jetzt vergeben?';
-var ALERT_CLIENT_ACCESS_REMOVE = 'Mˆchten Sie die Bestellberechtigung jetzt entziehen?';
-var ALERT_PUBLISHERS_ARCHIVE_OTHERS = 'Mˆchten Sie alle anderen publizierten Daten archivieren?';
+var ALERT_CLIENT_ACCESS = 'M√∂chten Sie die Bestellberechtigung jetzt vergeben?';
+var ALERT_CLIENT_ACCESS_REMOVE = 'M√∂chten Sie die Bestellberechtigung jetzt entziehen?';
+var ALERT_PUBLISHERS_ARCHIVE_OTHERS = 'M√∂chten Sie alle anderen publizierten Daten archivieren?';
 
 var DATEPICKER_CLEAR = 'Clear';
 
