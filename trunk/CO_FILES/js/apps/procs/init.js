@@ -312,7 +312,9 @@ function procsApplication(name) {
 						   			return (css.match (/\bswitch-\w+/g) || []).join(' ');
 					   			})
 								.addClass(className);
-								copopup.find('.arrow').offset({ top: ui.target.top+25 });
+								//copopup.find('.arrow').offset({ top: ui.target.top+25 });
+								var arrowtop = Math.round(ui.target.top - ui.element.top)+40;
+								copopup.find('.arrow').css('top', arrowtop); 
 				  		}
 						  /*using: function(coords, feedback) {
 								var $modal = $(this),
@@ -357,7 +359,7 @@ function procsApplication(name) {
 					.addClass(pclass)
 					.position({
 						  my: "center center",
-						  at: "right+150 center+1",
+						  at: "right+170 center+1",
 						  of: el,
 						  collision: 'flip fit',
 						  within: '#notesOuter',
@@ -373,7 +375,9 @@ function procsApplication(name) {
 						   			return (css.match (/\bswitch-\w+/g) || []).join(' ');
 					   			})
 								.addClass(className);
-								copopup.find('.arrow').offset({ top: ui.target.top-6 });
+								//copopup.find('.arrow').offset({ top: ui.target.top-6 });
+								var arrowtop = Math.round(ui.target.top - ui.element.top)+11;
+								copopup.find('.arrow').css('top', arrowtop); 
 				  		}
 						 /* using: function(coords, feedback) {
 								var $modal = $(this),
