@@ -17,6 +17,11 @@ body {
 	font-size: 12px; 
 	font-family: Arial, Verdana, Helvetica, sans-serif;
 	background: #1a1b18;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none; 
 }
 
 *:first-child+html #container {height: 85%;} /* IE 7 Fix */
@@ -957,7 +962,12 @@ border:1px dashed black;
 	width: 100%;
 }
 
-.postit-text, .note-text-design {
+.postit-text{
+	font-family: 'Comic Sans MS', 'Marker Felt';
+	font-size: 16px;
+}
+
+.note-text-design {
 	font-family: 'Comic Sans MS', 'Marker Felt';
 	font-size: 16px;
 	overflow: hidden;
@@ -967,6 +977,7 @@ border:1px dashed black;
 	position: absolute; width: 100%; bottom: 10px; text-align: center; height: 25px;
 	}
 
+.postit-markread { display: inline-block; width: 23px; height: 20px; margin-right: 33px; }
 .postit-forward { display: inline-block; width: 23px; height: 20px; cursor: pointer; margin-right: 35px; }
 .postit-delete { display: inline-block; width: 20px; height: 25px; cursor: pointer; margin-right: 35px; }
 .postit-info { display: inline-block; width: 20px; height: 25px; cursor: pointer; }

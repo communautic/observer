@@ -660,7 +660,7 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 		$array["avatar"] = $contactsmodel->_users->getAvatar($array["cid"]);
 		$array["dob"] = $this->_date->formatDate($array["dob"],CO_DATE_FORMAT);
 		$array["management_print"] = $contactsmodel->getUserListPlain($array['management']);
-		$array["management"] = $contactsmodel->getUserList($array['management'],'complaintsmanagement', "", $array["canedit"]);
+		$array["management"] = $contactsmodel->getUserList($array['management'],'patientsmanagement', "", $array["canedit"]);
 		$array["management_ct"] = empty($array["management_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['management_ct'];
 
 		$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
@@ -849,7 +849,7 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 		//$title = $lang["PATIENT_NEW"];
 		$insurance_add = $lang["GLOBAL_NO"];
 		
-		$q = "INSERT INTO " . CO_TBL_PATIENTS . " set folder = '$id', cid='$cid', status = '0', planned_date = '$now',  insurance_add='$insurance_add', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+		$q = "INSERT INTO " . CO_TBL_PATIENTS . " set folder = '$id', cid='$cid', status = '0', planned_date = '$now',  management='$session->uid', insurance_add='$insurance_add', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			$id = mysql_insert_id();
@@ -1693,6 +1693,10 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 			$patientsReportsModel = new PatientsReportsModel();
 			$data["patients_reports_items"] = $patientsReportsModel->getNavNumItems($id);
 		}
+		if(in_array("invoices",$active_modules)) {
+			$patientsInvoicesModel = new PatientsInvoicesModel();
+			$data["patients_invoices_items"] = $patientsInvoicesModel->getNavNumItems($id);
+		}
 		if(in_array("meetings",$active_modules)) {
 			$patientsMeetingsModel = new PatientsMeetingsModel();
 			$data["patients_meetings_items"] = $patientsMeetingsModel->getNavNumItems($id);
@@ -1778,6 +1782,18 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 				include_once("modules/".$module."/model.php");
 				$patientsMeetingsModel = new PatientsMeetingsModel();
 				$row = $patientsMeetingsModel->getCheckpointDetails($id);
+				return $row;
+			}
+			if($module == 'invoices' && in_array("invoices",$active_modules)) {
+				include_once("modules/treatments/config.php");
+				include_once("modules/treatments/lang/" . $session->userlang . ".php");
+				include_once("modules/treatments/model.php");
+				include_once("modules/treatments/controller.php");
+				include_once("modules/".$module."/config.php");
+				include_once("modules/".$module."/lang/" . $session->userlang . ".php");
+				include_once("modules/".$module."/model.php");
+				$patientsInvoicesModel = new PatientsInvoicesModel();
+				$row = $patientsInvoicesModel->getCheckpointDetails($id);
 				return $row;
 			}
 		}
@@ -2228,6 +2244,92 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 		$this->setUserSetting("last-used-patients",$str);
 	  return true;
 	}
+	
+	
+	
+	function existUserPatientsWidgets() {
+		global $session;
+		$q = "select count(*) as num from " . CO_TBL_PATIENTS_DESKTOP_SETTINGS . " where uid='$session->uid'";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_assoc($result);
+		if($row["num"] < 1) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	
+	function getUserPatientsWidgets() {
+		global $session;
+		$q = "select * from " . CO_TBL_PATIENTS_DESKTOP_SETTINGS . " where uid='$session->uid'";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_assoc($result);
+		return $row;
+	}
+	
+	
+	 function getWidgetAlerts() {
+		global $session, $date;
+	  	
+		$now = new DateTime("now");
+		$today = $date->formatDate("now","Y-m-d");
+		$tomorrow = $date->addDays($today, 1);
+		$string = "";
+		
+		$access = "";
+		$skip = 0;
+		if(!$session->isSysadmin()) {
+			// check if admin
+			$editperms = $this->getEditPerms($session->uid);
+			if(empty($editperms)) {
+				$skip = 1;
+			}
+			$access = " and c.id IN (" . implode(',', $editperms) . ") ";
+
+		}
+
+		$alerts = "";
+		$array = "";
+		if($skip == 0) {
+			// AP/MS deren Phase "in Planung" oder "in Arbeit" ist UND das Projekt "in Arbeit" ist
+			// AP: Admin/Sysadmin der AP Verantwortung hat
+			// MS: Admin/Sysadmin der Projektleiter ist
+			//$q ="select c.folder,a.pid,a.phaseid,a.cat,a.text,c.title as projectitle from " . CO_TBL_PROJECTS_PHASES_TASKS . " as a,  " . CO_TBL_PROJECTS_PHASES . " as b,  " . CO_TBL_PROJECTS . " as c where a.phaseid = b.id and a.pid = c.id and (b.status='0' or b.status='1') and a.status='0' and c.status='1' and a.cat != '2' and a.bin = '0' and b.bin = '0' and c.bin = '0' and a.enddate < '$today'" . $access . " and ((a.cat = '1' and c.management REGEXP '[[:<:]]" . $session->uid . "[[:>:]]') or (a.cat = '0' and a.team REGEXP '[[:<:]]" . $session->uid . "[[:>:]]'))";
+			//$q ="select id,pid,title,item_date,access,status_invoice,checked_out,checked_out_user from " . CO_TBL_PATIENTS_TREATMENTS . " where (status='2' or status='3') and bin != '1'";
+			
+			
+			$q ="select b.folder,a.pid,a.id, a.title as text, CONCAT(c.lastname,' ',c.firstname) as title from " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE a.status_invoice='1' and a.pid = b.id and b.cid=c.id and a.bin = '0' and b.bin = '0' and a.payment_reminder <= '$tomorrow'" . $access;
+			$result = mysql_query($q, $this->_db->connection);
+			while ($row = mysql_fetch_array($result)) {
+				foreach($row as $key => $val) {
+					$array[$key] = $val;
+				}
+				$string .= $array["folder"] . "," . $array["pid"] . "," . $array["id"] . ",";
+				$alerts[] = new Lists($array);
+			}
+		}
+
+		if(!$this->existUserPatientsWidgets()) {
+			$q = "insert into " . CO_TBL_PATIENTS_DESKTOP_SETTINGS . " set uid='$session->uid', value='$string'";
+			$result = mysql_query($q, $this->_db->connection);
+			$widgetaction = "open";
+		} else {
+			$row = $this->getUserPatientsWidgets();
+			$id = $row["id"];
+			if($string == $row["value"]) {
+				$widgetaction = "";
+			} else {
+				$widgetaction = "open";
+			}
+			$q = "UPDATE " . CO_TBL_PATIENTS_DESKTOP_SETTINGS . " set value='$string' WHERE id = '$id'";
+			$result = mysql_query($q, $this->_db->connection);
+		}
+		
+		$arr = array("alerts" => $alerts, "widgetaction" => $widgetaction);
+		return $arr;
+   }
+
 
 
 

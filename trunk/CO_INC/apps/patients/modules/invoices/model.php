@@ -81,6 +81,17 @@ class PatientsInvoicesModel extends PatientsModel {
 		foreach($row as $key => $val) {
 				$array[$key] = $val;
 			}
+			
+			// status
+			$itemstatus = "";
+			if($array["status_invoice"] == 1) {
+				$itemstatus = " module-item-active-trial";
+			}
+			if($array["status_invoice"] == 2) {
+				$itemstatus = " module-item-active-circle";
+			}
+			$array["itemstatus"] = $itemstatus;
+			
 			$invoices[] = new Lists($array);
 	  }
 		
@@ -95,7 +106,7 @@ class PatientsInvoicesModel extends PatientsModel {
 		if( $perm ==  "guest") {
 			$sql = " and access = '1' ";
 		}*/
-		$q = "select count(*) as items from " . CO_TBL_PATIENTS_MEMBERS . " where pid = '$id' and tookpart='1' and bin != '1'";
+		$q = "select count(*) as items from " . CO_TBL_PATIENTS_TREATMENTS . " where pid = '$id' and (status='2' or status='3') and bin != '1'";
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_fetch_array($result);
 		$items = $row['items'];
@@ -103,10 +114,10 @@ class PatientsInvoicesModel extends PatientsModel {
 	}
 
 
-function getDetails($id, $option = "") {
+	function getDetails($id, $option = "") {
 		global $session, $lang;
 		
-		//$this->_documents = new PatientsDocumentsModel();
+		$this->_documents = new PatientsDocumentsModel();
 		
 		$q = "SELECT a.*,(SELECT MIN(item_date) FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " as b WHERE b.mid=a.id and b.bin='0') as treatment_start,(SELECT MAX(item_date) FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " as b WHERE b.mid=a.id and b.bin='0') as treatment_end FROM " . CO_TBL_PATIENTS_TREATMENTS . "  as a where a.id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
@@ -157,7 +168,7 @@ function getDetails($id, $option = "") {
 		$array["treatment_end"] = $this->_date->formatDate($array["treatment_end"],CO_DATE_FORMAT);
 		$array["invoice_date"] = $this->_date->formatDate($array["invoice_date"],CO_DATE_FORMAT);
 		$array["invoice_date_sent"] = $this->_date->formatDate($array["invoice_date_sent"],CO_DATE_FORMAT);
-		
+		$array["payment_reminder"] = $this->_date->formatDate($array["payment_reminder"],CO_DATE_FORMAT);
 		
 		// time
 		$array["today"] = $this->_date->formatDate("now",CO_DATE_FORMAT);
@@ -172,6 +183,7 @@ function getDetails($id, $option = "") {
 		$array["doctor_print"] = $this->_contactsmodel->getUserListPlain($array["doctor"]);
 		$array["doctor"] = $this->_contactsmodel->getUserList($array['doctor'],'patientsdoctor', "", $array["canedit"]);
 		$array["doctor_ct"] = empty($array["doctor_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['doctor_ct'];
+		$array["documents"] = $this->_documents->getDocListFromIDs($array['documents'],'documents');
 		
 		switch($array["access"]) {
 			case "0":
@@ -196,29 +208,29 @@ function getDetails($id, $option = "") {
 				$array["status_text"] = $lang["PATIENT_TREATMENT_STATUS_PLANNED"];
 				$array["status_text_time"] = $lang["PATIENT_INVOICE_STATUS_PLANNED_TIME"];
 				$array["status_planned_active"] = " active";
-				$array["status_date"] = $array["status_date"];
+				//$array["status_date"] = $array["status_date"];
 			break;
 			case "1":
 				$array["status_text"] = $lang["PATIENT_TREATMENT_STATUS_INPROGRESS"];
 				$array["status_text_time"] = $lang["PATIENT_INVOICE_STATUS_INPROGRESS_TIME"];
 				$array["status_inprogress_active"] = " active";
-				$array["status_date"] = $array["invoice_inprogress_date"];
+				//$array["status_date"] = $array["invoice_inprogress_date"];
 			break;
 			case "2":
 				$array["status_text"] = $lang["PATIENT_TREATMENT_STATUS_FINISHED"];
 				$array["status_text_time"] = $lang["PATIENT_INVOICE_STATUS_FINISHED_TIME"];
 				$array["status_finished_active"] = " active";
-				$array["status_date"] = $array["invoice_finished_date"];
+				//$array["status_date"] = $array["invoice_finished_date"];
 			break;
 		}
-		$array["status_date"] = $this->_date->formatDate($array["status_date"],CO_DATE_FORMAT);
+		$array["status_date"] = $this->_date->formatDate($array["status_invoice_date"],CO_DATE_FORMAT);
 		
 		
 		// checkpoint
-		/*$array["checkpoint"] = 0;
+		$array["checkpoint"] = 0;
 		$array["checkpoint_date"] = "";
 		$array["checkpoint_note"] = "";
-		$q = "SELECT date,note FROM " . CO_TBL_USERS_CHECKPOINTS . " where uid='$session->uid' and app = 'patients' and module = 'treatments' and app_id = '$id' LIMIT 1";
+		$q = "SELECT date,note FROM " . CO_TBL_USERS_CHECKPOINTS . " where uid='$session->uid' and app = 'patients' and module = 'invoices' and app_id = '$id' LIMIT 1";
 		$result = mysql_query($q, $this->_db->connection);
 		if(mysql_num_rows($result) > 0) {
 			while ($row = mysql_fetch_assoc($result)) {
@@ -226,7 +238,7 @@ function getDetails($id, $option = "") {
 			$array["checkpoint_date"] = $this->_date->formatDate($row['date'],CO_DATE_FORMAT);
 			$array["checkpoint_note"] = $row['note'];
 			}
-		}*/
+		}
 		
 		// get the tasks
 		$array['totalcosts'] = 0;
@@ -281,19 +293,20 @@ function getDetails($id, $option = "") {
 			$diagnose[] = new Lists($diagnoses);
 		}
 		
-		$sendto = $this->getSendtoDetails("patients_treatments",$id);
+		$sendto = $this->getSendtoDetails("patients_invoices",$id);
 
 		$invoice = new Lists($array);
 		$arr = array("invoice" => $invoice, "diagnose" => $diagnose, "task" => $task, "sendto" => $sendto, "access" => $array["perms"]);
 		return $arr;
    }
 
-   function setDetails($pid,$id,$protocol) {
+   function setDetails($pid,$id,$invoice_date,$invoice_date_sent,$invoice_number,$payment_reminder,$protocol_payment_reminder,$protocol,$documents) {
 		global $session, $lang;
-
 		$now = gmdate("Y-m-d H:i:s");
-		
-		$q = "UPDATE " . CO_TBL_PATIENTS_MEMBERS . " set invoice_text='$protocol' where id='$id'";
+		$invoice_date = $this->_date->formatDate($invoice_date);
+		$invoice_date_sent = $this->_date->formatDate($invoice_date_sent);
+		$payment_reminder = $this->_date->formatDate($payment_reminder);
+		$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS . " set invoice_date='$invoice_date', invoice_date_sent='$invoice_date_sent', invoice_number='$invoice_number', payment_reminder='$payment_reminder', protocol_payment_reminder='$protocol_payment_reminder', protocol_invoice='$protocol', documents = '$documents' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
@@ -301,6 +314,80 @@ function getDetails($id, $option = "") {
 		}
    }
 
+
+	function updateStatus($id,$date,$status) {
+		global $session, $lang;
+		
+		$date = $this->_date->formatDate($date);
+		$now = gmdate("Y-m-d H:i:s");
+		
+		$sql = "";
+		if($status == 2) {
+			$sql = ", payment_reminder = ''";
+		}
+		
+		$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS . " set status_invoice = '$status', status_invoice_date = '$date', edited_user = '$session->uid', edited_date = '$now' $sql where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		if ($result) {
+			$arr = array("id" => $id, "what" => "edit");
+		}
+		return $arr;
+	}
+	
+	
+	function newCheckpoint($id,$date){
+		global $session;
+		$date = $this->_date->formatDate($date);
+		$q = "INSERT INTO " . CO_TBL_USERS_CHECKPOINTS . " SET uid = '$session->uid', date = '$date', app = 'patients', module = 'invoices', app_id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+			return true;
+		}
+   }
+
+ 	function updateCheckpoint($id,$date){
+		global $session;
+		$date = $this->_date->formatDate($date);
+		$q = "UPDATE " . CO_TBL_USERS_CHECKPOINTS . " SET date = '$date', status='0' WHERE uid = '$session->uid' and app = 'patients' and module = 'invoices' and app_id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+			return true;
+		}
+   }
+
+ 	function deleteCheckpoint($id){
+		global $session;
+		$q = "DELETE FROM " . CO_TBL_USERS_CHECKPOINTS . " WHERE uid = '$session->uid'and app = 'patients' and module = 'invoices' and app_id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+			return true;
+		}
+   }
+
+	function updateCheckpointText($id,$text){
+		global $session;
+		$q = "UPDATE " . CO_TBL_USERS_CHECKPOINTS . " SET note = '$text' WHERE uid = '$session->uid' and app = 'patients' and module = 'invoices' and app_id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+			return true;
+		}
+   }
+   
+   function getCheckpointDetails($id){
+		global $lang;
+		$row = "";
+		$q = "SELECT a.pid,a.title,b.folder FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b WHERE a.pid = b.id and a.id='$id' and a.bin='0'";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_array($result);
+		if(mysql_num_rows($result) > 0) {
+			$row['checkpoint_app_name'] = $lang["PATIENT_INVOICE_TITLE"];
+			$row['app_id'] = $row['pid'];
+			$row['app_id_app'] = $id;
+		}
+		return $row;
+   }
+	
 
     function updateQuestion($id,$field,$val){
 		global $session;

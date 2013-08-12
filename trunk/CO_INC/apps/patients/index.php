@@ -155,6 +155,9 @@ if (!empty($_GET['request'])) {
 		case 'emptyBin':
 			echo($patients->emptyBin());
 		break;
+		case 'getWidgetAlerts':
+			echo($patients->getWidgetAlerts());
+		break;
 		case 'getNavModulesNumItems':
 			echo($patients->getNavModulesNumItems($_GET['id']));
 		break;

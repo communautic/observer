@@ -1,8 +1,8 @@
 <div class="table-title-outer">
 <table border="0" cellpadding="0" cellspacing="0" class="table-title">
   <tr>
-    <td class="tcell-left text11"><span class="<?php if($invoice->canedit) { ?>content-nav focusTitle<?php } ?>"><span><?php echo $lang["PATIENT_INVOICE_TITLE"];?></span></span></td>
-    <td><input name="title" type="text" class="title textarea-title" value="<?php echo($invoice->title);?>" maxlength="100" /></td>
+    <td class="tcell-left text11"><span><span><?php echo $lang["PATIENT_INVOICE_TITLE"];?></span></span></td>
+    <td><div class="textarea-title"><?php echo($invoice->title);?></div></td>
   </tr>
   <tr class="table-title-status">
     <td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_STATUS"];?></td>
@@ -77,7 +77,7 @@
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
   <tr>
-    <td class="tcell-left-shorter text11"><span><span>Auflistung</span></span></td>
+    <td class="tcell-left-shorter text11"><span><span style="color: #666;">Auflistung</span></span></td>
     <td class="tcell-right-nopadding"><div style="width: 530px; border: 1px solid #ccc; color: #666;">
 	<?php 
 	$i = 1;
@@ -122,15 +122,50 @@
 <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
   <tr>
     <td class="tcell-left text11"><span class="<?php if($invoice->canedit) { ?>content-nav selectTextarea<?php } ?>"><span>Notiz</span></span></td>
-    <td class="tcell-right"><?php if($invoice->canedit) { ?><textarea name="protocol" class="elastic"><?php echo(strip_tags($invoice->protocol));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($invoice->protocol)));?><?php } ?></td>
+    <td class="tcell-right"><?php if($invoice->canedit) { ?><textarea name="protocol_invoice" class="elastic"><?php echo(strip_tags($invoice->protocol_invoice));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($invoice->protocol_invoice)));?><?php } ?></td>
+  </tr>
+</table>
+<div class="content-spacer"></div>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+  <tr>
+    <td class="tcell-left text11"><span class="<?php if($invoice->canedit) { ?>content-nav showDialog<?php } ?>" request="getDocumentsDialog" field="patientsdocuments" append="1"><span><?php echo $lang["PATIENT_DOCUMENT_DOCUMENTS"];?></span></span></td>
+    <td class="tcell-right"><div id="patientsdocuments" class="itemlist-field"><?php echo($invoice->documents);?></div></td>
+  </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
+		<td class="tcell-left text11"><span class="<?php if($invoice->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["PATIENT_INVOICE_PAYMENT_REMINDER"];?></span></span></td>
+		<td class="tcell-right"><input name="payment_reminder" type="text" class="input-date datepicker payment_reminder" value="<?php echo($invoice->payment_reminder)?>" /></td>
+	</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
+  <tr>
+    <td class="tcell-left text11"><span class="<?php if($invoice->canedit) { ?>content-nav selectTextarea<?php } ?>"><span>&nbsp;</span></span></td>
+    <td class="tcell-right"><?php if($invoice->canedit) { ?><textarea name="protocol_payment_reminder" class="elastic"><?php echo(strip_tags($invoice->protocol_payment_reminder));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($invoice->protocol_payment_reminder)));?><?php } ?></td>
   </tr>
 </table>
 <?php if($invoice->perms != "guest") { ?>
 <div class="content-spacer"></div>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
+	  <td class="tcell-left text11"><span class="content-nav ui-datepicker-trigger-action"><span><?php echo $lang['GLOBAL_CHECKPOINT'];?></span></span></td>
+		<td class="tcell-right"><input name="checkpoint" type="text" class="input-date checkpointdp" value="<?php echo($invoice->checkpoint_date);?>" readonly="readonly" /><span style="display: none;"><?php echo($invoice->checkpoint);?></span></td>
+	</tr>
+</table>
+<?php if($invoice->checkpoint == 1) { $show = 'display: block'; } else { $show = 'display: none'; }?>
+<div id="patients_invoicesCheckpoint" style="<?php echo $show;?>">
+<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
+	<tr>
+		<td class="tcell-left text11"><span class="selectTextarea"><span>&nbsp;</span></span></td>
+        <td class="tcell-right"><textarea name="checkpoint_note" class="elastic-two"><?php echo(strip_tags($invoice->checkpoint_note));?></textarea></td>
+	</tr>
+</table>
+<div style="height: 2px;"></div>
+</div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 		<td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_EMAILED_TO"];?></td>
-		<td class="tcell-right-inactive tcell-right-nopadding"><div id="patientstreatment_sendto">
+		<td class="tcell-right-inactive tcell-right-nopadding"><div id="patientsinvoice_sendto">
         <?php 
 			foreach($sendto as $value) { 
 				if(!empty($value->who)) {
@@ -148,9 +183,9 @@
 <div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-footer">
   <tr>
-    <td class="left"><?php echo $lang["EDITED_BY_ON"];?> <?php echo($invoice->edited_user.", ".$invoice->edited_date)?></td>
-    <td class="middle"><?php echo $invoice->access_footer;?></td>
-    <td class="right"><?php echo $lang["CREATED_BY_ON"];?> <?php echo($invoice->created_user.", ".$invoice->created_date);?></td>
+    <td class="left"><?php echo($lang["GLOBAL_FOOTER_STATUS"] . " " . $invoice->today);?></td>
+    <td class="middle"></td>
+    <td class="right"></td>
   </tr>
 </table>
 </div>

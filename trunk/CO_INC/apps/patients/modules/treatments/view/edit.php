@@ -8,10 +8,10 @@
     <td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_STATUS"];?></td>
     <td colspan="2"><div class="statusTabs">
     	<ul>
-        	<li><span class="left<?php if($treatment->canedit) { ?> statusButton <?php } ?> planned<?php echo $treatment->status_planned_active;?>" rel="0" reltext="<?php echo $lang["PATIENT_TREATMENT_STATUS_PLANNED_TIME"];?>"><?php echo $lang["PATIENT_TREATMENT_STATUS_PLANNED"];?></span></li>
-            <li><span class="<?php if($treatment->canedit) { ?>statusButton <?php } ?>inprogress<?php echo $treatment->status_inprogress_active;?>" rel="1" reltext="<?php echo $lang["PATIENT_TREATMENT_STATUS_INPROGRESS_TIME"];?>"><?php echo $lang["PATIENT_TREATMENT_STATUS_INPROGRESS"];?></span></li>
-            <li><span class="<?php if($treatment->canedit) { ?>statusButton <?php } ?>finished<?php echo $treatment->status_finished_active;?>" rel="2" reltext="<?php echo $lang["PATIENT_TREATMENT_STATUS_FINISHED_TIME"];?>"><?php echo $lang["PATIENT_TREATMENT_STATUS_FINISHED"];?></span></li>
-            <li><span class="right<?php if($treatment->canedit) { ?> statusButton<?php } ?> stopped<?php echo $treatment->status_stopped_active;?>" rel="3" reltext="<?php echo $lang["PATIENT_TREATMENT_STATUS_STOPPED_TIME"];?>"><?php echo $lang["PATIENT_TREATMENT_STATUS_STOPPED"];?></span></li>
+        	<li><span class="left<?php if($treatment->canedit) { ?> statusButton noDate<?php } ?> planned<?php echo $treatment->status_planned_active;?>" rel="0" reltext=""><?php echo $lang["PATIENT_TREATMENT_STATUS_PLANNED"];?></span></li>
+            <li><span class="<?php if($treatment->canedit) { ?>statusButton noDate<?php } ?> inprogress<?php echo $treatment->status_inprogress_active;?>" rel="1" reltext=""><?php echo $lang["PATIENT_TREATMENT_STATUS_INPROGRESS"];?></span></li>
+            <li><span class="<?php if($treatment->canedit) { ?>statusButton noDate<?php } ?> finished<?php echo $treatment->status_finished_active;?>" rel="2" reltext=""><?php echo $lang["PATIENT_TREATMENT_STATUS_FINISHED"];?></span></li>
+            <li><span class="right<?php if($treatment->canedit) { ?> statusButton noDate<?php } ?> stopped<?php echo $treatment->status_stopped_active;?>" rel="3" reltext=""><?php echo $lang["PATIENT_TREATMENT_STATUS_STOPPED"];?></span></li>
             <li><div class="status-time"><?php echo($treatment->status_text_time)?></div><div class="status-input"><input name="phase_status_date" type="text" class="input-date statusdp" value="<?php echo($treatment->status_date)?>" readonly="readonly" /></div></li>
 		</ul></div></td>
   </tr>
@@ -69,12 +69,17 @@
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
   <tr>
-    <td class="tcell-left text11"><span><span>Kosten</span></span></td>
-    <td class="tcell-right"><?php echo $lang['GLOBAL_CURRENCY_EURO'];?> <span id="totalcosts"><?php echo $treatment->totalcosts;?></span></td>
+    <td class="tcell-left-inactive text11"><span><span>Kosten</span></span></td>
+    <td class="tcell-right-inactive"><?php echo $lang['GLOBAL_CURRENCY_EURO'];?> <span id="totalcosts"><?php echo $treatment->totalcosts;?></span></td>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+  <tr>
+    <td class="tcell-left-shorter text11"><span class="<?php if($treatment->canedit) { ?>content-nav selectTextfield<?php } ?>"><span>Rabattierung (%)</span></span></td>
+    <td class="tcell-right-nopadding"><?php if($treatment->canedit) { ?><input id="discount" name="discount" type="text" class="bg" value="<?php echo($treatment->discount);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $treatment->discount . '</span>'); } ?></td>
   </tr>
 </table>
 <div class="content-spacer"></div>
-
 <div id="patientTabs" class="contentTabs">
 	<ul class="contentTabsList">
 		<li><span class="active" rel="PatientsTreatmentsFirst"><?php echo $lang["PATIENT_TREATMENT_DIAGNOSE"];?></span></li>
@@ -163,7 +168,6 @@
         </div>
     </div>
 </div>
-
 <?php if($treatment->perms != "guest") { ?>
 <div class="content-spacer"></div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">

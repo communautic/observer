@@ -12,7 +12,7 @@ $lang["PATIENT_INVOICE_TASK_NEW"] = 'Neues Einzelziel';
 $lang["PATIENT_INVOICE_DATE"] = 'Rechnungsdatum';
 $lang["PATIENT_INVOICE_DATE_SENT"] = 'Rechnungsversand';
 $lang["PATIENT_INVOICE_NUMBER"] = 'Rechnungsnummer';
-
+$lang["PATIENT_INVOICE_PAYMENT_REMINDER"] = 'Mahnung';
 
 
 $lang["PATIENT_INVOICE_PLACE"] = 'Ort';
