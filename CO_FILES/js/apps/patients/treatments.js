@@ -33,17 +33,17 @@ function patientsTreatments(name) {
 			}
 		});
 		
-		$('#patients div.task_team_list').each(function() {
+		$('#patients div.treatments_task_team_list').each(function() {
 			var id = $(this).attr("id");
 			var reg = /[0-9]+/.exec(id);
-			formData[formData.length] = processListArray('task_team',reg);
+			formData[formData.length] = processListArray('treatments_task_team',reg);
 		});
 		
-		$('#patients div.task_team_list_ct').each(function() {
+		/*$('#patients div.treatments_task_team_list_ct').each(function() {
 			var id = $(this).attr("id");
-			var reg = /[0-9]+/.exec(id);
-			formData[formData.length] = processCustomTextArray(reg);
-		});
+			//var reg = /[0-9]+/.exec(id);
+			formData[formData.length] = processCustomTextFieldArray(id);
+		});*/
 		
 		$('#patients div.task_treatmenttype').each(function() {
 			var id = $(this).attr("id");
@@ -566,9 +566,10 @@ function patientsTreatments(name) {
 
 	this.newItem = function() {
 		var module = this;
+		var pid = $("#patients").data("second");
 		var mid = $("#patients").data("third");
 		var num = $("#patientstreatmenttasks>div").length;
-		$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/treatments&request=addTask&mid=" + mid + "&num=" + num + "&sort=" + num, success: function(html){
+		$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/treatments&request=addTask&pid=" + pid + "&mid=" + mid + "&num=" + num + "&sort=" + num, success: function(html){
 			$('#patientstreatmenttasks').append(html);
 			var idx = parseInt($('#patientstreatmenttasks .cbx').size() -1);
 			//console.log(idx);
@@ -609,7 +610,12 @@ function patientsTreatments(name) {
 			$("#patients-right").find('.showItemContext:visible').each(function() {
 				totalcosts += parseInt($(this).attr('costs'));
 			})
-			$("#totalcosts").text(totalcosts).number( true, 2, ',', '.' );
+			var discount = parseInt($('#discount').val());
+			if(discount != 0 && totalcosts != 0) {
+				totalcosts = totalcosts - ((totalcosts/100)*discount);
+			}
+			totalcosts = $.number( totalcosts, 2, ',', '.' );
+			$("#totalcosts").text(totalcosts);
 			
 		//var obj = getCurrentModule();
 		$('#patients .coform').ajaxSubmit(module.poformOptions);
@@ -927,7 +933,12 @@ var colors = ['#3C4664','#EB4600','#915500','#0A960A','#AA19AA','#3C4664','#EB46
 			$("#patients-right").find('.showItemContext:visible').each(function() {
 				totalcosts += parseInt($(this).attr('costs'));
 			})
-			$("#totalcosts").text(totalcosts).number( true, 2, ',', '.' );
+			var discount = parseInt($('#discount').val());
+			if(discount != 0 && totalcosts != 0) {
+				totalcosts = totalcosts - ((totalcosts/100)*discount);
+			}
+			totalcosts = $.number( totalcosts, 2, ',', '.' );
+			$("#totalcosts").text(totalcosts);
 			
 			
 			$('#'+app+' .coform').ajaxSubmit(obj.poformOptions);
@@ -1293,4 +1304,47 @@ var colors = ['#3C4664','#EB4600','#915500','#0A960A','#AA19AA','#3C4664','#EB46
 				}
 			});
 		}
+	});
+	
+	$(document).on('click', 'a.insertTreatmentfromDialog', function(e) {
+		e.preventDefault();
+		var field = $(this).attr("field");
+		var append = $(this).attr("append");
+		var cid = $(this).attr("cid");
+		var name = $(this).html();
+		var costs = $(this).attr("costs");
+		var minutes = $(this).attr("minutes");
+		var html = '<span class="listmember-outer"><a href="patients_treatments" class="showItemContext" uid="' + cid + '" field="'+field+'" costs="'+costs+'" minutes="'+minutes+'">' + name + '</a>';
+		var app = getCurrentApp();
+		var obj = getCurrentModule();
+			if($("#"+field).html() != "") {
+				$("#"+field+" .listmember:visible:last").append(", ");
+			}
+			$("#"+field).append(html);
+			// recalc
+			var tid = field.replace(/task_treatmenttype_/, "");
+			var tcosts = 0;
+			var tmins = 0;
+			$("#"+field).find('.showItemContext:visible').each(function() {
+				tcosts += parseInt($(this).attr('costs'));
+				tmins += parseInt($(this).attr('minutes'));
+			})
+			$("#costs_"+tid).text(tcosts).number( true, 2, ',', '.' );
+			$("#minutes_"+tid).text(tmins);
+			
+			var totalcosts = 0;
+			$("#patients-right").find('.showItemContext:visible').each(function() {
+				totalcosts += parseInt($(this).attr('costs'));
+			})
+			var discount = parseInt($('#discount').val());
+			if(discount != 0 && totalcosts != 0) {
+				totalcosts = totalcosts - ((totalcosts/100)*discount);
+			}
+			totalcosts = $.number( totalcosts, 2, ',', '.' );
+			$("#totalcosts").text(totalcosts);
+			
+			//var obj = getCurrentModule();
+			$('#'+app+' .coform').ajaxSubmit(obj.poformOptions);
+			// save to lastused
+			$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/treatments&request=saveLastUsedTreatments&id="+cid});
 	});

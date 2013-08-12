@@ -44,6 +44,10 @@ $lang["PRINT_PATIENT_MANUAL"] = 'patientenakt.png';
 $lang["PRINT_PATIENT"] = 'patient.png';
 $lang["PRINT_PATIENT_FOLDER"] = 'ordner.png';
 
+// Dektop Widget
+$lang["PATIENT_WIDGET_NO_ACTIVITY"]		=	'Keine aktuellen Benachrichtigungen';
+$lang["PATIENT_WIDGET_TITLE"] 	=	'Mahnung';
+$lang["PATIENT_WIDGET_ALERT"] 	= 	'Rechnung "%1$s" für den Patienten "%2$s" ist <span class="yellow">außer Plan</span>';
 
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/patients/de.php";

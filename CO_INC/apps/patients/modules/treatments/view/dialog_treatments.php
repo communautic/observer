@@ -4,9 +4,9 @@
 <div class="dialog-text-4">
 <div>
 <?php
-    if(is_array($contacts)) {
-        foreach ($contacts as $contact) { ?>
-            <a href="#" class="insertContactfromDialog" field="<?php echo($field);?>" append="<?php echo($append);?>" cid="<?php echo($contact["id"]);?>"><?php echo($contact["name"]);?></a>
+    if(is_array($treatments)) {
+        foreach ($treatments as $treatment) { ?>
+            <a href="#" class="insertTreatmentfromDialog" field="<?php echo($field);?>" append="<?php echo($append);?>" cid="<?php echo($treatment["id"]);?>" costs="<?php echo($treatment["costs"]);?>" minutes="<?php echo($treatment["minutes"]);?>"><?php echo($treatment["shortname"]);?></a>
     <?php
         }
     }

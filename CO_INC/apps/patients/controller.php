@@ -665,6 +665,25 @@ class Patients extends Controller {
 		$context = $this->model->getInsuranceContext($id,$field);
 		include 'view/insurance_context.php';
 	}
+	
+	function getWidgetAlerts() {
+		global $lang, $system;
+		if($arr = $this->model->getWidgetAlerts()) {
+			$alerts = $arr["alerts"];
+			ob_start();
+			include 'view/widget.php';
+			$data["html"] = ob_get_contents();
+			ob_end_clean();
+			$data["widgetaction"] = $arr["widgetaction"];
+			return json_encode($data);
+		} else {
+			ob_start();
+			include CO_INC .'/view/default.php';
+			$data["html"] = ob_get_contents();
+			ob_end_clean();
+			return json_encode($data);
+		}
+	}
    
 }
 

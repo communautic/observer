@@ -81,7 +81,7 @@ if (!empty($_GET['request'])) {
 			echo($patientsTreatments->toggleIntern($_GET['id'],$_GET['status']));
 		break;
 		case 'addTask':
-			echo($patientsTreatments->addTask($_GET['mid'],$_GET['num'],$_GET['sort']));
+			echo($patientsTreatments->addTask($_GET['pid'],$_GET['mid'],$_GET['num'],$_GET['sort']));
 		break;
 		case 'deleteTask':
 			echo($patientsTreatments->deleteTask($_GET['id']));
@@ -138,6 +138,10 @@ if (!empty($_GET['request'])) {
 		case 'getTaskContext':
 			echo($patientsTreatments->getTaskContext($_GET['id'],$_GET['field']));
 		break;
+		case 'saveLastUsedTreatments':
+			echo($patientsTreatments->saveLastUsedTreatments($_GET['id']));
+		break;
+		
 	}
 }
 
@@ -182,8 +186,8 @@ if (!empty($_POST['request'])) {
 					$task_text[$key] = $text_new;
 				}
 				$task_date = $_POST['task_date'];
-				$task_team = $_POST['task_team'];
-				$task_team_ct = $_POST['task_team_ct'];
+				$treatments_task_team = $_POST['treatments_task_team'];
+				$treatments_task_team_ct = '';
 				$task_treatmenttype = $_POST['task_treatmenttype'];
 				$task_place = $_POST['task_place'];
 				$task_time = $_POST['task_time'];
@@ -194,7 +198,7 @@ if (!empty($_POST['request'])) {
 			if(isset($_POST['task_sort'])) {
 				$task_sort = $_POST['task_sort'];
 			}
-			echo($patientsTreatments->setDetails($_POST['pid'], $_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['item_date'], $system->checkMagicQuotes($_POST['protocol']),$system->checkMagicQuotes($_POST['protocol2']),$system->checkMagicQuotes($_POST['protocol3']), $_POST['doctor'], $system->checkMagicQuotes($_POST['doctor_ct']),$task_id,$task_date,$task_time,$task_text,$task,$task_team,$task_team_ct,$task_treatmenttype,$task_place,$canvasList_id,$canvasList_text,$_POST['treatment_access'],$_POST['treatment_access_orig']));
+			echo($patientsTreatments->setDetails($_POST['pid'], $_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['item_date'], $system->checkMagicQuotes($_POST['protocol']),$system->checkMagicQuotes($_POST['protocol2']),$system->checkMagicQuotes($_POST['protocol3']), $_POST['discount'], $_POST['doctor'], $system->checkMagicQuotes($_POST['doctor_ct']),$task_id,$task_date,$task_time,$task_text,$task,$treatments_task_team,$treatments_task_team_ct,$task_treatmenttype,$task_place,$canvasList_id,$canvasList_text,$_POST['treatment_access'],$_POST['treatment_access_orig']));
 		break;
 		case 'sendDetails':
 			echo($patientsTreatments->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));

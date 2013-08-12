@@ -23,6 +23,12 @@ include_once(CO_INC . "/apps/patients/modules/invoices/model.php");
 include_once(CO_INC . "/apps/patients/modules/invoices/controller.php");
 $patientsInvoices = new PatientsInvoices("invoices");
 
+// get dependend module documents
+include_once(CO_INC . "/apps/patients/modules/documents/config.php");
+include_once(CO_INC . "/apps/patients/modules/documents/lang/" . $session->userlang . ".php");
+include_once(CO_INC . "/apps/patients/modules/documents/model.php");
+include_once(CO_INC . "/apps/patients/modules/documents/controller.php");
+
 
 if (!empty($_GET['request'])) {
 	switch ($_GET['request']) {
@@ -41,10 +47,10 @@ if (!empty($_GET['request'])) {
 			if(!empty($_GET['t'])) {
 				$t = $_GET['t'];
 			}
-			echo($patientsInvoices->printDetails($_GET['id'],$t));
+			echo($patientsInvoices->printDetails($_GET['id'],$t,$_GET['option']));
 		break;
 		case 'getSend':
-			echo($patientsInvoices->getSend($_GET['id']));
+			echo($patientsInvoices->getSend($_GET['id'],$_GET['option']));
 		break;
 		case 'getSendtoDetails':
 			echo($patientsInvoices->getSendtoDetails("patients_invoices",$_GET['id']));
@@ -58,6 +64,21 @@ if (!empty($_GET['request'])) {
 		case 'getPrintOptions':
 			echo($patientsInvoices->getPrintOptions());
 		break;
+		case 'getSendToOptions':
+			echo($patientsInvoices->getSendToOptions());
+		break;
+		case 'newCheckpoint':
+			echo($patientsInvoices->newCheckpoint($_GET['id'],$_GET['date']));
+		break;
+		case 'updateCheckpoint':
+			echo($patientsInvoices->updateCheckpoint($_GET['id'],$_GET['date']));
+		break;
+		case 'deleteCheckpoint':
+			echo($patientsInvoices->deleteCheckpoint($_GET['id']));
+		break;
+		case 'updateStatus':
+			echo($patientsInvoices->updateStatus($_GET['id'],$_GET['date'],$_GET['status']));
+		break;
 	}
 }
 
@@ -65,10 +86,13 @@ if (!empty($_POST['request'])) {
 	
 	switch ($_POST['request']) {
 		case 'setDetails':
-			echo($patientsInvoices->setDetails($_POST['pid'], $_POST['id'], $system->checkMagicQuotes($_POST['protocol'])));
+			echo($patientsInvoices->setDetails($_POST['pid'], $_POST['id'], $_POST['invoice_date'], $_POST['invoice_date_sent'], $_POST['invoice_number'],$_POST['payment_reminder'], $system->checkMagicQuotes($_POST['protocol_payment_reminder']), $system->checkMagicQuotes($_POST['protocol_invoice']),$_POST['documents']));
 		break;
 		case 'sendDetails':
 			echo($patientsInvoices->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
+		break;
+		case 'updateCheckpointText':
+			echo($patientsInvoices->updateCheckpointText($_POST['id'],$system->checkMagicQuotes($_POST['text'])));
 		break;
 	}
 }

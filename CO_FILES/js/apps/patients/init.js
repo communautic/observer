@@ -757,6 +757,8 @@ function patientsActions(status) {
 		case 0: 
 			if(obj.name == 'patients') {
 				actions = ['1','2','3','5','6','7','8']; 
+			} else if(obj.name == 'patients_invoices') {
+				actions = ['2','3','5','6','7']; 
 			} else {
 				actions = ['0','2','3','4','5','6','7','8']; 
 			}
@@ -764,7 +766,9 @@ function patientsActions(status) {
 		case 1: actions = ['0','5','6','7']; break;
 		case 3: 
 			if(obj.name == 'patients') {
-				actions = ['1','6','7']; 
+				actions = ['1','6','7'];
+			} else if(obj.name == 'patients_invoices') {
+				actions = ['6','7']; 
 			} else {
 				actions = ['0','5','6','7']; 
 			}

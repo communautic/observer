@@ -19,8 +19,8 @@
     </tr>
     <tr>
       <td>&nbsp;</td>
-      <td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="task_team_<?php echo $value->id;?>" append="0"><span><?php echo $lang["PATIENT_TREATMENT_TASKS_THERAPIST"];?></span></span></td>
-      <td class="tcell-right"><div id="task_team_<?php echo $value->id;?>" class="itemlist-field task_team_list"><?php echo($value->team);?></div><div id="task_team_<?php echo $value->id;?>_ct" class="itemlist-field task_team_list_ct"><a field="task_team_<?php echo $value->id;?>_ct" class="ct-content"><?php echo($value->team_ct);?></a></div></td>
+      <td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="treatments_task_team_<?php echo $value->id;?>" append="0"><span><?php echo $lang["PATIENT_TREATMENT_TASKS_THERAPIST"];?></span></span></td>
+      <td class="tcell-right"><div id="treatments_task_team_<?php echo $value->id;?>" class="itemlist-field treatments_task_team_list"><?php echo($value->team);?></div><div id="treatments_task_team_<?php echo $value->id;?>_ct" class="itemlist-field treatments_task_team_list_ct"><a field="treatments_task_team_<?php echo $value->id;?>_ct" class="ct-content"><?php echo($value->team_ct);?></a></div></td>
     </tr>
     <tr>
       <td>&nbsp;</td>

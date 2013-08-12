@@ -7,12 +7,18 @@ if(is_array($posts)) {
 	?>
     <div id="postit-<?php echo($postit->id);?>" class="postit postit-design" style="width: <?php echo $width;?>px; height: <?php echo $height;?>px; left: <?php echo $left;?>px; top: <?php echo $top;?>px; z-index: <?php echo $zindex;?>;">
         <div class="postit-header"><span class="postit-header-left"><?php echo $postit->days;?></span><span class="postit-header-right"><?php echo $postit->date;?></span></div>
-        <div id="postit-text-<?php echo($postit->id);?>" class="postit-text" style="height: <?php echo $height-80;?>px;"><?php echo(nl2br($postit->text));?></div>
+        <textarea style="height: <?php echo $height-80;?>px; border: 0;" name="postit-text-<?php echo($postit->id);?>" id="postit-text-<?php echo($postit->id);?>" class="postit-text" rel="<?php echo($postit->id);?>"><?php echo $postit->text;?></textarea>
         <div class="postit-footer">
-        	<span id="postit-forward-<?php echo($postit->id);?>" class="postit-forward"><a rel="<?php echo($postit->id);?>" class="forwardItem"><span class="desktop-icon-forward"></span></a></span>
+        	<?php if($postit->display_readby) { ?><span id="postit-markread-<?php echo($postit->id);?>" class="postit-markread">
+            <?php if($postit->display_readby_active) { ?><a rel="<?php echo($postit->id);?>" class="markreadItem"><?php } ?>
+            	<span class="<?php echo $postit->display_readby_class; ?>"></span>
+            <?php if($postit->display_readby_active) { ?></a><?php } ?>
+            </span><?php } ?>
+            <span id="postit-forward-<?php echo($postit->id);?>" class="postit-forward"><a rel="<?php echo($postit->id);?>" class="forwardItem"><span class="desktop-icon-forward"></span></a></span>
         	<span id="postit-delete-<?php echo($postit->id);?>" class="postit-delete"><a rel="<?php echo($postit->id);?>" class="binItem"><span class="desktop-icon-delete"></span></a></span>
         	<span id="postit-info-<?php echo($postit->id);?>" class="postit-info coTooltip"><span class="desktop-icon-info"></span><div class="coTooltipHtml" style="display: none">
-            	<?php echo $lang["SENDTO_BY_ON"];?> <?php echo($postit->sendto)?><br>
+				<?php echo $lang["READ_BY_ON"];?> <?php echo($postit->readby)?><br>
+				<?php echo $lang["SENDTO_BY_ON"];?> <?php echo($postit->sendto)?><br>
 				<?php echo $lang["SENDFROM_BY_ON"];?> <?php echo($postit->sendfrom);?><br>
 				<?php echo $lang["EDITED_BY_ON"];?> <?php echo($postit->edited_user.", ".$postit->edited_date)?><br>
 				<?php echo $lang["CREATED_BY_ON"];?> <?php echo($postit->created_user.", ".$postit->created_date);?>
