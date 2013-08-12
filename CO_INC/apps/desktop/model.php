@@ -147,23 +147,34 @@ class DesktopModel extends Model {
 			}
 			
 			$note["date"] = $this->_date->formatDate($note['edited_date'],CO_DATETIME_FORMAT);
-			
-			
 			// dates
 			$note["created_date"] = $this->_date->formatDate($note["created_date"],CO_DATETIME_FORMAT);
 			$note["edited_date"] = $this->_date->formatDate($note["edited_date"],CO_DATETIME_FORMAT);
 			
 			// other functions
+			$note["display_readby"] = true;
+			$note["display_readby_active"] = true;
+			$note["display_readby_class"] = 'desktop-icon-markread';
+			if($note["created_user"] == $session->uid && $note["sendfrom"] =="") {
+				$note["display_readby"] = false;
+			} else {
+				if($note["readbychecked"] == 1) {
+					//$note["display_readby"] = false;
+					$note["display_readby_active"] = false;
+					$note["display_readby_class"] = 'desktop-icon-markread-inactive';
+				}
+			}
 			$note["created_user"] = $this->_users->getUserFullname($note["created_user"]);
 			$note["edited_user"] = $this->_users->getUserFullname($note["edited_user"]);
 			
 			$note["sendto"] = $contactsmodel->getUserListPlain($note['sendto']);
 			$note["sendfrom"] = $contactsmodel->getUserListPlain($note['sendfrom']);
-			
+			if($note['readby'] !="") {
+				$note["readby"] = $contactsmodel->getUserListPlainDate($note['readby']);
+			}
 			
 			$notes[] = new Lists($note);
 	  	}
-		
 		$arr = array("notes" => $notes);
 		return $arr;
 	}
@@ -220,6 +231,36 @@ class DesktopModel extends Model {
 		}
 	}
 	
+	function markPostitRead($id) {
+		global $session;
+		
+		$now = gmdate("Y-m-d H:i:s");
+		
+		$q = "SELECT oid FROM " . CO_TBL_DESKTOP_POSTITS . " WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$oid = mysql_result($result,0);
+		
+		if($oid != 0) {
+			$q = "SELECT readby FROM " . CO_TBL_DESKTOP_POSTITS . " WHERE id='$oid'";
+			$result = mysql_query($q, $this->_db->connection);
+			$readby = mysql_result($result,0);
+		}
+		if($readby == "") {
+			$readby .= $session->uid . ';' . $now;
+		} else {
+			$readby .= ','.$session->uid . ';' . $now;
+		}
+		
+		$q = "UPDATE " . CO_TBL_DESKTOP_POSTITS . " set readby = '$readby' WHERE id='$oid'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		$q = "UPDATE " . CO_TBL_DESKTOP_POSTITS . " set readbychecked = '1' WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+			return true;
+		}
+	}
+	
 	
 	function forwardPostit($id,$users) {
 		global $session, $contactsmodel;
@@ -244,7 +285,7 @@ class DesktopModel extends Model {
 		$users_arr = explode(",",$users);
 		
 		foreach($users_arr as $user) {
-			$q = "INSERT INTO " . CO_TBL_DESKTOP_POSTITS . " set text = '$text', uid = '$user', xyz = '15x70x1000', wh = '$wh', sendfrom ='$session->uid', created_user = '$edited_user', created_date = '$now', edited_user = '$edited_user', edited_date = '$now'";
+			$q = "INSERT INTO " . CO_TBL_DESKTOP_POSTITS . " set oid='$id', text = '$text', uid = '$user', xyz = '15x70x1000', wh = '$wh', sendfrom ='$session->uid', created_user = '$edited_user', created_date = '$now', edited_user = '$edited_user', edited_date = '$now'";
 			$result = mysql_query($q, $this->_db->connection);
 		}
 		

@@ -864,6 +864,44 @@ class ContactsModel extends Model {
 		}
 		return $users;
 	}
+	
+	function getUserListPlainDate($string){
+		$users_string = explode(",", $string);
+		$users_total = sizeof($users_string);
+		$users = '';
+		
+		if($users_total == 0) { 
+			return $users; 
+		}
+		
+		// check if user is available and build array
+		$users_arr = array();
+		foreach ($users_string as &$value) {
+			$value = explode(";", $value);
+			$user = $value[0];
+			$date = $this->_date->formatDate($value[1],CO_DATETIME_FORMAT);
+			$q = "SELECT id, firstname, lastname FROM ".CO_TBL_USERS." where id = '$user'";
+			$result_user = mysql_query($q, $this->_db->connection);
+			if(mysql_num_rows($result_user) > 0) {
+				while($row_user = mysql_fetch_assoc($result_user)) {
+					$users_arr[$row_user["id"]] = $row_user["lastname"] . ' ' . $row_user["firstname"] . ' '.$date;	
+				}
+			}
+		}
+		$users_arr_total = sizeof($users_arr);
+		
+		// build string
+		$i = 1;
+		foreach ($users_arr as $key => &$value) {
+			$users .= $value;		
+			if($i < $users_arr_total) {
+				$users .= ', ';
+			}
+			$users .= '';	
+			$i++;
+		}
+		return $users;
+	}
 
 
 	function checkUserListEmail($string, $field, $sql="", $canedit = true, $withEmail = 1){

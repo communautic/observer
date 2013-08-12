@@ -7,6 +7,7 @@ $lang["WIDGET_TITLE_CHECKPOINTS"] 	= 	'Checkpoints';
 $lang["WIDGET_TEXT_CHECKPOINTS"] 	= 	'Checkpointtermin für ';
 
 $lang["WIDGET_TITLE_PROJECTS"] 	= 	'Projekte';
+$lang["WIDGET_TITLE_PATIENTS"] 	= 	'Patienten';
 $lang["WIDGET_TITLE_PROCS"] 	= 	'Prozesse';
 $lang["WIDGET_TITLE_FORUMS"] 	= 	'Foren';
 $lang["WIDGET_TITLE_TRAININGS"] 	= 	'Trainings';

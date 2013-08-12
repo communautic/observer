@@ -27,19 +27,23 @@ function desktopApplication(name) {
 					desktoploadModuleStart();
 				}
 			}
-			
+		});
+	}
+	
+	this.markRead = function(id) {
+		$.ajax({ type: "POST", url: "/", data: 'path=apps/desktop&request=markPostitRead&id='+id, success: function(data){
+				if(data){
+					desktoploadModuleStart();
+				}
+			}
 		});
 	}
 	
 	// notes
 	this.saveItem = function(id) {
-		if($("#postit-text-"+id).length > 0) {
-			var text = $("#postit-text-"+id).val();
-		} else {
-			var text = $("#postit-text-"+id).html().replace(/(<br\s*\/?>)|(<p><\/p>)/gi, "");
-		}
+		var text = $("#postit-text-"+id).val();
 		$.ajax({ type: "POST", url: "/", dataType:  'json', data: { path: 'apps/desktop', request: 'savePostit', id: id, text: text }, success: function(data){
-				desktoploadModuleStart();
+				//desktoploadModuleStart();
 			}
 		});
 	}
@@ -93,6 +97,15 @@ function desktoploadProjectsModuleStart() {
 		}
 	});
 }
+function desktoploadPatientsModuleStart() {
+	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients&request=getWidgetAlerts", success: function(data){
+		$("#patientsWidgetContent").html(data.html);
+		if(data.widgetaction == 'open' && $('#patientsWidgetContent').is(':hidden')) {
+			$('#item_patientsWidget a.collapse').trigger('click');
+		}
+		}
+	});
+}
 function desktoploadProcsModuleStart() {
 	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs&request=getWidgetAlerts", success: function(data){
 		$("#procsWidgetContent").html(data.html);
@@ -133,33 +146,33 @@ function desktoploadCheckpointsModuleStart() {
 function desktoploadModuleStart() {
 	if(getCurrentApp() == 'desktop') {
 		if(typeof projects == "object") { desktoploadProjectsModuleStart() }
+		if(typeof patients == "object") { desktoploadPatientsModuleStart() }
 		if(typeof procs == "object") { desktoploadProcsModuleStart() }
 		if(typeof trainings == "object") { desktoploadTrainingsModuleStart() }
 		if(typeof forums == "object") { desktoploadForumsModuleStart() }
 		desktoploadCheckpointsModuleStart()
-
 		// postits
-		if(currentDesktopPostit == 0) {
-			var doit = 1;
-			$("#desktopPostIts div.sendtoWindow").each(function() {
-				if($(this).is(':visible'))	{
-					doit = 0;
-				}
-			})
-				
-			if(doit == 1) {
+		var doit = 1;
+		$("#desktopPostIts div.sendtoWindow").each(function() {
+			if($(this).is(':visible')) {
+				doit = 0;
+			}
+		})
+		$("#desktopPostIts textarea.postit-text").each(function() {
+			if($(this).is(':focus')) {
+				doit = 0;
+			}
+		})
+		if(doit == 1) {
 			$.ajax({ type: "GET", url: "/", data: "path=apps/desktop&request=getPostIts", success: function(data){
 				$("#desktopPostIts").html(data);
 				}
 			});
-			}
 		}
 	}
-		
 }
 
 var desktopzIndex = 0; // zindex notes for mindmap
-var currentDesktopPostit = 0;
 
 $(document).ready(function() { 
 	desktoploadModuleStart()
@@ -233,7 +246,7 @@ $(document).ready(function() {
 					$(this).find("textarea").height($(this).height()-80);
 				},
 				resize: function(e,ui){ 
-					$(this).find("div.postit-text").height($(this).height()-80);
+					$(this).find("textarea").height($(this).height()-80);
 				},
 				stop: function(e,ui){
 					var w = ui.size.width;
@@ -269,21 +282,7 @@ $(document).ready(function() {
 			}
 		});
 	});
-
-
-	$(document).on('click', '#desktop div.postit-text', function(e) {
-		e.preventDefault();
-		var id = parseInt($(this).attr("id").replace(/postit-text-/, ""));
-		currentDesktopPostit = id;
-		var html = $(this).html().replace(/(<br\s*\/?>)|(<p><\/p>)/gi, "");
-		//var width = $(this).width();
-		var height = $(this).height();
-		var input = '<textarea id="postit-text-' + id + '" name="postit-text-' + id + '" style="height: '+ height +'px; border: 0;">' + html+ '</textarea>';
-		$("#postit-text-" + id).replaceWith(input);
-		$("#postit-text-" + id).focus();
-	});
 	
-
 	$(document).on('click', '#desktop .projectsLink', function(e) {
 		e.preventDefault();
 		var href = $(this).attr('rel').split(",");
@@ -350,6 +349,12 @@ $(document).ready(function() {
 				setTimeout(function() { desktoploadProcsModuleStart() },500);
 			}
 		})
+	});
+	
+	$(document).on('click', '#desktop .patientsLink', function(e) {
+		e.preventDefault();
+		var href = $(this).attr('rel').split(",");
+		externalLoadThreeLevels(href[0],href[1],href[2],href[3],'patients');
 	});
 	
 	$(document).on('click', '#desktop .trainingsLink', function(e) {
@@ -430,6 +435,12 @@ $(document).ready(function() {
 		})
 	});
 
+	$(document).on('click', 'a.markreadItem', function(e) {
+		e.preventDefault();
+		var id = $(this).attr('rel');
+		desktop.markRead(id);
+	});
+	
 	$(document).on('click', 'a.forwardItem', function(e) {
 		e.preventDefault();
 		var id = $(this).attr('rel');
@@ -453,26 +464,5 @@ $(document).ready(function() {
 		})
 		desktop.forwardItem(id,users);
 	});
-
-
-	$(document).mousedown(function(e) {
-		var obj = getCurrentModule();
-		if(obj.name == 'desktop') {
-			var clicked=$(e.target); // get the element clicked
-			if(currentDesktopPostit != 0) {
-				if(clicked.is('.poostit') || clicked.parents().is('.postit')) { 
-					var id = /[0-9]+/.exec(e.target.id);
-					if(id != currentDesktopPostit) {
-						desktop.saveItem(currentDesktopPostit);
-						currentDesktopPostit = 0;
-					}
-				} else {
-					desktop.saveItem(currentDesktopPostit);
-					currentDesktopPostit = 0;
-				}
-			}
-		}
-	});
-
 
 });

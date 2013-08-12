@@ -967,7 +967,7 @@ $(document).ready(function() {
 	//**************************
 		
 	// function to add selection to list
-	function log(field,id,value) {
+	function log(field,append,id,value) {
 		closedialog = 0;
 		var html = '<span class="listmember-outer"><a class="listmember" uid="' + id + '" field="'+field+'">' + value + '</a>';
 		var app = getCurrentApp();
@@ -986,10 +986,14 @@ $(document).ready(function() {
 			obj.coPopupContactInsert();
 			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=saveLastUsedContacts&id="+id});
 		} else {
-			if($("#"+field).html() != "") {
-				$("#"+field+" .listmember:visible:last").append(", ");
+			if(append == 0) {
+				$("#"+field).html(html);
+			} else {
+				if($("#"+field).html() != "") {
+					$("#"+field+" .listmember:visible:last").append(", ");
+				}
+				$("#"+field).append(html);
 			}
-			$("#"+field).append(html);
 			//var obj = getCurrentModule();
 			$('#'+app+' .coform').ajaxSubmit(obj.poformOptions);
 			
@@ -1045,7 +1049,8 @@ $(document).ready(function() {
 			//minLength: 2,
 			select: function(event, ui) {
 				var field = $(this).attr("field");
-				log(field, ui.item.id, ui.item.value);
+				var append = $(this).attr("append");
+				log(field, append, ui.item.id, ui.item.value);
 			},
 			close: function(event, ui) {
 				$(this).val("");
@@ -1319,10 +1324,14 @@ $(document).ready(function() {
 			obj.coPopupContactInsert();
 			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=saveLastUsedContacts&id="+cid});
 		} else {
-			if($("#"+field).html() != "") {
-				$("#"+field+" .listmember:visible:last").append(", ");
+			if(append == 0) {
+				$("#"+field).html(html);
+			} else {
+				if($("#"+field).html() != "") {
+					$("#"+field+" .listmember:visible:last").append(", ");
+				}
+				$("#"+field).append(html);
 			}
-			$("#"+field).append(html);
 			//var obj = getCurrentModule();
 			$('#'+app+' .coform').ajaxSubmit(obj.poformOptions);
 			// save to lastused

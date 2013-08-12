@@ -54,8 +54,9 @@ if (!empty($_POST['request'])) {
 		case 'savePostit':
 			echo($desktop->savePostit($_POST['id'],$system->checkMagicQuotes($_POST['text'])));
 		break;
-	}
-	switch ($_POST['request']) {
+		case 'markPostitRead':
+			echo($desktop->markPostitRead($_POST['id']));
+		break;
 		case 'forwardPostit':
 			echo($desktop->forwardPostit($_POST['id'],$_POST['users']));
 		break;
