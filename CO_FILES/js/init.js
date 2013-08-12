@@ -546,13 +546,7 @@ $(document).ready(function() {
 			return false;
 		}
 		e.preventDefault();
-		/*var offsetsubtract = 70;
-		if($(this).attr("offsetsubract") > 0) {
-			var offsetsubtract = 70 - $(this).attr("offsetsubract");
-		}
-		var offset = $(this).offset();*/
 		var offset = { my: "left top", at: "right+15 top", of: $(this) }
-		//offset = [offset.left+offsetsubtract,offset.top];
 		var obj = getCurrentModule();
 		obj.actionContact(offset);
 	})
@@ -1024,14 +1018,6 @@ $(document).ready(function() {
 
 	$(document).on('click', '.showDialog',function(e) {
 		e.preventDefault();
-		/*var offsetsubtract = 150;
-		if($(this).attr("offsetsubract") > 0) {
-			var offsetsubtract = 150 - $(this).attr("offsetsubract");
-		}
-		var offset = $(this).offset();
-		offset = [offset.left+offsetsubtract,offset.top+18];*/
-		//new 10.2 ui offset
-		//$("#modalDialog").dialog('option', 'appendTo', 'body');
 		var offset = { my: "left top", at: "right+15 bottom", of: $(this) }
 		var sql;
 		var request = $(this).attr("request"); // function name
