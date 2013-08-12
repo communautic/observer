@@ -52,6 +52,7 @@ $lang["TEXT_NOTE"] = "";
 $lang["CREATED_BY_ON"]		= 	'angelegt:';
 $lang["EDITED_BY_ON"] 		= 	'aktualisiert:';
 $lang["CREATED_BY_ON"]		= 	'angelegt:';
+$lang["READ_BY_ON"] 		= 	'gelesen von:';
 $lang["SENDTO_BY_ON"] 		= 	'weitergeleitet an:';
 $lang["SENDFROM_BY_ON"] 	= 	'erhalten von:';
 $lang["DELETED_BY_ON"] 		= 	'gelöscht';

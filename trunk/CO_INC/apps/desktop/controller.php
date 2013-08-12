@@ -199,6 +199,18 @@ class Desktop extends Controller {
 		  }
 	}
 	
+	function markPostitRead($id) {
+		global $lang;
+		if($date = $this->model->markPostitRead($id)){
+			 $data["text"] = nl2br(stripslashes($text));
+			 $data["date"] = $date;
+			 $data["days"] = $lang["GLOBAL_TODAY"];
+			 return json_encode($data);
+		  } else{
+			 return "error";
+		  }
+	}
+	
 	function forwardPostit($id,$users) {
 		$retval = $this->model->forwardPostit($id,$users);
 		if($retval){

@@ -566,6 +566,12 @@ $(document).ready(function() {
 		obj.actionPrint();
 	});
 	
+	$(document).on('click','span.actionPrintOption',function(e) {
+		e.preventDefault();
+		var option = $(this).attr('rel');
+		var obj = getCurrentModule();
+		obj.actionPrintOption(option);
+	});
 	
 	$('span.actionSend').on('click', function(e){
 		e.preventDefault();
@@ -574,6 +580,13 @@ $(document).ready(function() {
 		}
 		var obj = getCurrentModule();
 		obj.actionSend();
+	});
+	
+	$(document).on('click','span.actionSendToOption',function(e) {
+		e.preventDefault();
+		var option = $(this).attr('rel');
+		var obj = getCurrentModule();
+		obj.actionSendToOption(option);
 	});
 	
 	$('span.actionSendVcard').on('click',function(e){
@@ -941,11 +954,13 @@ $(document).ready(function() {
 			if(clicked.is('#modalDialog') || clicked.parents().is('#modalDialog')) { 
 			} else {
 			$('#co-popup').css('left',-1000);
-			/*if($('#co-popup').css('left') != '-1000px') {
-			$('#co-popup').animate({width:'toggle'}, function() {
-				$(this).css('left',-1000).show();
-			})
-			}*/
+			}
+		}
+		if(clicked.is('#co-splitActions') || clicked.parents().is('#co-splitActions')) { 
+		} else {
+			if(clicked.is('#modalDialog') || clicked.parents().is('#modalDialog')) { 
+			} else {
+			$('#co-splitActions').css('left',-1000);
 			}
 		}
 		if($('#modalDialog').dialog("isOpen")) {
@@ -1560,6 +1575,13 @@ function keyupSave() {
 	$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);					   
 }
 
+function keyupSaveID() { // used by postits
+	formChanged = false;
+	var id = $(this).attr('rel');
+	var obj = getCurrentModule();
+	obj.saveItem(id);
+}
+
 function keyupSaveCheckpoint() {
 	var obj = getCurrentModule();
 	obj.saveCheckpointText();
@@ -1597,6 +1619,10 @@ $(document).ready(function() {
 	
 	$('.textarea-title, .bg, .elastic').livequery(function () {
 		$(this).bind('keyup paste cut', $.debounce( 500, keyupSave));
+   });
+	
+	$('.postit-text').livequery(function () {
+		$(this).bind('keyup paste cut', $.debounce( 500, keyupSaveID));
    });
 	
 	$('textarea.elastic-two').livequery(function () {
