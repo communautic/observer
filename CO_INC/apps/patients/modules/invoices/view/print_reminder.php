@@ -1,323 +1,69 @@
-<table width="100%" class="title grey">
-	<tr>
-        <td class="tcell-left"><?php echo $lang["PATIENT_INVOICE_PAYMENT_REMINDER"];?></td>
-        <td><strong><?php echo($invoice->title);?></strong></td>
-	</tr>
-</table>
-&nbsp;
 <table width="100%" class="standard">
 	<tr>
-		<td class="tcell-left">Patient</td>
-		<td><?php echo($patient->title);?></td>
+		<td style="text-align: right;"><p class="smalltext" style="line-height: 15px;"><?php echo($invoice->m_title)?> <?php echo($invoice->m_firstname)?> <?php echo($invoice->m_lastname)?></p>
+        <p class="smalltext" style="line-height: 15px;"><?php echo($invoice->m_phone)?></p>
+        <p class="smalltext" style="line-height: 15px;"><?php echo($invoice->m_email)?></p>
+        <p class="smalltext" style="line-height: 10px;">&nbsp;</p>
+        <p class="smalltext" style="line-height: 15px;">Rechnungsnummer <?php echo($invoice->invoice_number);?></p>
+        <p style="line-height: 25px;"><strong>MAHNUNG</strong></p>
 	</tr>
 </table>
-<?php if(!empty($patient->company)) { ?>
-<table width="100%" class="standard">
-	<tr>
-		<td class="tcell-left"><?php echo $lang["PATIENT_COMPANY"];?></td>
-		<td><?php echo($patient->company);?></td>
-	</tr>
-</table>
-<?php } ?>
-<?php if(!empty($patient->team_print) || !empty($patient->team_ct)) { ?>
-<table width="100%" class="standard">
-	<tr>
-		<td class="tcell-left"><?php echo $lang["PATIENT_TEAM"];?></td>
-		<td><?php echo($patient->team_print);?><br /><?php echo($patient->team_ct);?></td>
-	</tr>
-</table>
-<?php } ?>
-<?php if(!empty($patient->patient)) { ?>
-<table width="100%" class="standard">
-	<tr>
-		<td class="tcell-left"><?php echo $lang["PATIENT_PATIENTCAT"];?></td>
-		<td><?php echo($patient->patient);?></td>
-	</tr>
-</table>
-<?php } ?>
-&nbsp;
-<?php 
-switch($patient->patient_id) {
-	case '1'; ?> <!-- 1 	Vortrag -->
-        <table width="100%" class="standard-grey">
-            <tr>
-              <td class="tcell-left">Vortrag</td>
-                <td><?php echo $patient->date1;?></td>
-            </tr>
-        </table>
-        <table width="100%" class="standard-grey">
-            <tr>
-              <td class="tcell-left"><?php echo $lang["PATIENT_TIME_START"];?></td>
-                <td><?php echo $patient->time1;?></td>
-            </tr>
-        </table>
-        <table width="100%" class="standard-grey">
-            <tr>
-              <td class="tcell-left"><?php echo $lang["PATIENT_TIME_END"];?></td>
-                <td><?php echo $patient->time2;?></td>
-            </tr>
-        </table>
-        <table width="100%" class="standard-grey-paddingBottom">
-            <tr>
-              <td class="tcell-left"><?php echo $lang["PATIENT_PLACE"];?></td>
-                <td><?php echo $patient->place1;?><?php echo $patient->place1_ct;?></td>
-            </tr>
-        </table>
-<?php
-    break;
-	case '2'; ?> <!-- 2 	Vortrag & Gruppencoaching -->
-        <table width="100%" class="standard-grey">
-            <tr>
-              <td class="tcell-left">Vortrag</td>
-                <td><?php echo $patient->date1;?></td>
-            </tr>
-        </table>
-        <table width="100%" class="standard-grey">
-            <tr>
-              <td class="tcell-left"><?php echo $lang["PATIENT_TIME_START"];?></td>
-                <td><?php echo $patient->time1;?></td>
-            </tr>
-        </table>
-        <table width="100%" class="standard-grey">
-            <tr>
-              <td class="tcell-left"><?php echo $lang["PATIENT_TIME_END"];?></td>
-                <td><?php echo $patient->time2;?></td>
-            </tr>
-        </table>
-        <table width="100%" class="standard-grey">
-            <tr>
-              <td class="tcell-left"><?php echo $lang["PATIENT_PLACE"];?></td>
-                <td><?php echo $patient->place1;?><?php echo $patient->place1_ct;?></td>
-            </tr>
-        </table>
-        <table width="100%" class="standard-grey">
-            <tr>
-              <td class="tcell-left">Coaching</td>
-                <td><?php echo $patient->date2;?></td>
-            </tr>
-        </table>
-        <table width="100%" class="standard-grey">
-            <tr>
-              <td class="tcell-left"><?php echo $lang["PATIENT_TIME_START"];?></td>
-                <td><?php echo $patient->time3;?></td>
-            </tr>
-        </table>
-        <table width="100%" class="standard-grey">
-            <tr>
-              <td class="tcell-left"><?php echo $lang["PATIENT_TIME_END"];?></td>
-                <td><?php echo $patient->time4;?></td>
-            </tr>
-        </table>
-        <table width="100%" class="standard-grey-paddingBottom">
-            <tr>
-              <td class="tcell-left"><?php echo $lang["PATIENT_PLACE"];?></td>
-                <td><?php echo $patient->place2;?><?php echo $patient->place2_ct;?></td>
-            </tr>
-        </table>
-<?php
-    break;
-	case '3'; ?> <!-- 3 	e-patient -->
-        <table width="100%" class="standard-grey">
-            <tr>
-              <td class="tcell-left">e-patient</td>
-                <td>https://webbased-academy.communautic.com</td>
-            </tr>
-        </table>
-        <table width="100%" class="standard-grey">
-            <tr>
-              <td class="tcell-left"><?php echo $lang["PATIENT_TIME_START"];?></td>
-                <td><?php echo $patient->date1;?></td>
-            </tr>
-        </table>
-        <table width="100%" class="standard-grey-paddingBottom">
-            <tr>
-              <td class="tcell-left"><?php echo $lang["PATIENT_TIME_END"];?></td>
-                <td><?php echo $patient->date3;?></td>
-            </tr>
-        </table>
-<?php
-    break;
-	case '4'; ?> <!-- 4 	e-patient & Praesenzcoaching -->
-        <table width="100%" class="standard-grey">
-            <tr>
-              <td class="tcell-left">e-patient</td>
-                <td>https://webbased-academy.communautic.com</td>
-            </tr>
-        </table>
-        <table width="100%" class="standard-grey">
-            <tr>
-              <td class="tcell-left"><?php echo $lang["PATIENT_TIME_START"];?></td>
-                <td><?php echo $patient->date1;?></td>
-            </tr>
-        </table>
-        <table width="100%" class="standard-grey">
-            <tr>
-              <td class="tcell-left"><?php echo $lang["PATIENT_TIME_END"];?></td>
-                <td><?php echo $patient->date3;?></td>
-            </tr>
-        </table>
-        <table width="100%" class="standard-grey">
-            <tr>
-              <td class="tcell-left">Coaching</td>
-                <td><?php echo $patient->date2;?></td>
-            </tr>
-        </table>
-        <table width="100%" class="standard-grey">
-            <tr>
-              <td class="tcell-left"><?php echo $lang["PATIENT_TIME_START"];?></td>
-                <td><?php echo $patient->time3;?></td>
-            </tr>
-        </table>
-        <table width="100%" class="standard-grey">
-            <tr>
-              <td class="tcell-left"><?php echo $lang["PATIENT_TIME_END"];?></td>
-                <td><?php echo $patient->time4;?></td>
-            </tr>
-        </table>
-        <table width="100%" class="standard-grey-paddingBottom">
-            <tr>
-              <td class="tcell-left"><?php echo $lang["PATIENT_PLACE"];?></td>
-                <td><?php echo $patient->place2;?><?php echo $patient->place2_ct;?></td>
-            </tr>
-        </table>
-<?php
-    break;
-	case '5'; ?> <!-- 5 Einzelcoaching -->
-        <table width="100%" class="standard-grey">
-            <tr>
-              <td class="tcell-left">Coaching</td>
-                <td><?php echo $patient->date1;?></td>
-            </tr>
-        </table>
-        <table width="100%" class="standard-grey">
-            <tr>
-              <td class="tcell-left"><?php echo $lang["PATIENT_TIME_START"];?></td>
-                <td><?php echo $patient->time1;?></td>
-            </tr>
-        </table>
-        <table width="100%" class="standard-grey">
-            <tr>
-              <td class="tcell-left"><?php echo $lang["PATIENT_TIME_END"];?></td>
-                <td><?php echo $patient->time2;?></td>
-            </tr>
-        </table>
-        <table width="100%" class="standard-grey-paddingBottom">
-            <tr>
-              <td class="tcell-left"><?php echo $lang["PATIENT_PLACE"];?></td>
-                <td><?php echo $patient->place1;?><?php echo $patient->place1_ct;?></td>
-            </tr>
-        </table>
-<?php
-    break;
-	case '6'; ?> <!-- 5 Einzelcoaching -->
-        <table width="100%" class="standard-grey">
-            <tr>
-              <td class="tcell-left">Workshop</td>
-                <td><?php echo $patient->date1;?></td>
-            </tr>
-        </table>
-        <table width="100%" class="standard-grey">
-            <tr>
-              <td class="tcell-left"><?php echo $lang["PATIENT_TIME_START"];?></td>
-                <td><?php echo $patient->time1;?></td>
-            </tr>
-        </table>
-        <table width="100%" class="standard-grey">
-            <tr>
-              <td class="tcell-left"><?php echo $lang["PATIENT_TIME_END"];?></td>
-                <td><?php echo $patient->time2;?></td>
-            </tr>
-        </table>
-        <table width="100%" class="standard-grey-paddingBottom">
-            <tr>
-              <td class="tcell-left"><?php echo $lang["PATIENT_PLACE"];?></td>
-                <td><?php echo $patient->place1;?><?php echo $patient->place1_ct;?></td>
-            </tr>
-        </table>
-<?php
-    break;
-	case '7'; ?> <!-- 7 Veranstaltungsreihe -->
-        <table width="100%" class="standard-grey">
-            <tr>
-              <td class="tcell-left">Veranstaltungsbeginn</td>
-                <td><?php echo $patient->date1;?></td>
-            </tr>
-        </table>
-        <table width="100%" class="standard-grey">
-            <tr>
-              <td class="tcell-left">Folgetermine</td>
-                <td><?php echo $patient->text1;?></td>
-            </tr>
-        </table>
-        <table width="100%" class="standard-grey">
-            <tr>
-              <td class="tcell-left">Veranstaltungsende</td>
-                <td><?php echo $patient->date2;?></td>
-            </tr>
-        </table>
-        <table width="100%" class="standard-grey">
-            <tr>
-              <td class="tcell-left">Dauer</td>
-                <td><?php echo $patient->text2;?></td>
-            </tr>
-        </table>
-        <table width="100%" class="standard-grey-paddingBottom">
-            <tr>
-              <td class="tcell-left"><?php echo $lang["PATIENT_PLACE"];?></td>
-                <td><?php echo $patient->text3;?></td>
-            </tr>
-        </table>
-<?php
-    break;
-} ?>
-&nbsp;<br />
-&nbsp;<br />
-<table width="100%" class="standard-grey-paddingBottom">
-	<tr>
-	  <td class="tcell-left">erreichte Zufriedenheit</td>
-        <td><strong><?php echo $invoice->total_result;?>%</strong></td>
-	</tr>
-</table>
-&nbsp;<br />
 <table width="100%" class="standard">
     <tr>
-		<td>1 &nbsp; <?php echo $lang["PATIENT_INVOICE_QUESTION_1"];?></td>
-        <td width="40" style="text-align: right;"><?php echo $invoice->q1_result;?>%</td>
-	</tr>
+        <td><p style="line-height: 20px;"><?php echo($invoice->ctitle)?> <?php echo($invoice->title2)?> <?php echo($invoice->patient);?></p>
+        <p style="line-height: 20px;"><?php echo($invoice->address_line1)?></p>
+        <p style="line-height: 20px;"><?php echo($invoice->address_postcode)?> <?php echo($invoice->address_town)?></p></td>
+        <td valign="bottom" style="text-align: right;">Telfs, am <?php echo date('d.m.Y');?></td>
+    </tr>
 </table>
-&nbsp;<br />
-<table width="100%" class="standard">
-    <tr>
-		<td>2&nbsp; <?php echo $lang["PATIENT_INVOICE_QUESTION_2"];?></td>
-        <td width="40" style="text-align: right;"><?php echo $invoice->q2_result;?>%</td>
-	</tr>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>Sehr geehrte/r <?php echo($invoice->ctitle)?> <?php echo(ucfirst(strtolower($invoice->lastname)))?> !</p>
+<p>&nbsp;</p>
+<p style="line-height: 20px;">F&uuml;r die im Rahmen der Therapie erfolgten Anwendungen erlaube ich mir nachstehende Honorarnote zu legen:</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<table width="100%" class="standard" style="border:1px solid #ccc;">
+	<?php 
+	$i = 1;
+	foreach($task as $value) { 
+		$checked = '';
+		if($value->status == 1) { ?>
+      <tr>
+        <td width="20%" style="border-bottom:1px solid #ccc; padding: 6px 0;"><span style="margin-left: 7px;"><?php echo $i;?>. Sitzung</span></td>
+        <td style="border-bottom:1px solid #ccc; padding: 8px 0;"><span class="smalltext" style="line-height: 15px;"> (<?php echo $value->item_date;?>)</span></td>
+        <td style="border-bottom:1px solid #ccc; padding: 8px 0;" class="smalltext"><?php foreach($value->type as $t) { echo '<span style="line-height: 15px;">' . $t['positionstext'] . ' ' . $t['shortname'] . '</span><br />'; } ?></td>
+        <td style="border-bottom:1px solid #ccc; padding: 8px 0;" class="smalltext"><?php foreach($value->type as $t) { echo '<span style="line-height: 15px;">' . $t['minutes'] . 'min.</span><br />'; }?></td>
+        <td style="padding: 8px 0; text-align: right; border-left: 1px solid #ccc; border-bottom: 1px solid #ccc;" class="smalltext"><?php foreach($value->type as $t) { echo '<span style="line-height: 15px;">' . $lang['GLOBAL_CURRENCY_EURO'] . ' ' . $t['costs'] . ' &nbsp; &nbsp; </span><br />'; } ?> </td>
+    </tr>
+   
+<?php }
+		$i++;
+	 } ?>
+	 <?php if($invoice->discount > 0) { ?>
+              <tr>
+                <td style="border-bottom:1px solid #ccc; padding: 6px 0;"><span class="text13 bold" style="margin-left: 7px;">&nbsp;</span></td>
+                <td style="border-bottom:1px solid #ccc; padding: 7px 0 4px 0;">&nbsp;</td>
+                <td style="border-bottom:1px solid #ccc; padding: 7px 0 4px 0;">&nbsp;</td>
+				<td style="border-bottom:1px solid #ccc; padding: 7px 0 4px 0;">-<?php echo $invoice->discount;?>% Rabatt</td>
+				<td style="border-bottom:1px solid #ccc; text-align: right; border-left: 1px solid #ccc; padding: 7px 0 4px 0;" class="smalltext">-<?php echo $lang['GLOBAL_CURRENCY_EURO'] . ' ' . $invoice->discount_costs;?> &nbsp; &nbsp; </td>
+</tr>
+	 <?php }?>
+      <tr style="background: #e5e5e5;">
+        <td style="padding: 6px 0 4px 0;"><span class="bold" style="margin-left: 7px;">Gesamthonorar</span></td>
+        <td class="text11" style="padding: 6px 0 4px 0;">&nbsp;</td>
+        <td class="text11" style="padding: 6px 0 4px 0;">&nbsp;</td>
+             <td class="text11" style="padding: 6px 0 4px 0;">&nbsp;</td>
+          <td class="smalltext bold" style="text-align: right; border-left: 1px solid #ccc; padding: 6px 0 4px 0;"><?php echo $lang['GLOBAL_CURRENCY_EURO'];?> <?php echo $invoice->totalcosts;?> &nbsp; &nbsp; </td>
+      </tr>
 </table>
-&nbsp;<br />
-<table width="100%" class="standard">
-    <tr>
-		<td>3&nbsp; <?php echo $lang["PATIENT_INVOICE_QUESTION_3"];?></td>
-        <td width="40" style="text-align: right;"><?php echo $invoice->q3_result;?>%</td>
-	</tr>
-</table>
-&nbsp;<br />
-<table width="100%" class="standard">
-    <tr>
-		<td>4&nbsp; <?php echo $lang["PATIENT_INVOICE_QUESTION_4"];?></td>
-        <td width="40" style="text-align: right;"><?php echo $invoice->q4_result;?>%</td>
-	</tr>
-</table>
-&nbsp;<br />
-<table width="100%" class="standard">
-    <tr>
-		<td>5&nbsp; <?php echo $lang["PATIENT_INVOICE_QUESTION_5"];?></td>
-        <td width="40" style="text-align: right;"><?php echo $invoice->q5_result;?>%</td>
-	</tr>
-</table>
-&nbsp;<br />
-<table width="100%" class="protocol">
-	<tr>
-        <td class="tcell-left top"><?php echo $lang["PATIENT_INVOICE_QUESTION_6"];?></td>
-        <td><?php echo(nl2br($invoice->invoice_text));?></td>
-	</tr>
-</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p style="line-height: 20px;">Ich danke f&uuml;r Ihr Vertrauen und bitte um Anweisung des Gesamthonorars innerhalb von 3 Tagen und stehe auch weiterhin gerne zu Diensten.</p>
+<p style="line-height: 20px;">&nbsp;</p>
+<p style="line-height: 20px;">Zwecks tarifgem&auml;&szlig;er R&uuml;ckerstattung sollten Sie die Therapiebelege (Rechnung im Original, &Uuml;berweisungsschein und Einzahlungsbeleg) bei Ihrer Versicherung einreichen. Ich danke Ihnen f&uuml;r die prompte Erledigung und verbleibe</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>mit freundlichen Gr&uuml;&szlig;en</p>
 <div style="page-break-after:always;">&nbsp;</div>

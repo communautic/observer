@@ -33,7 +33,7 @@ $lang["PATIENT_INVOICE_TASKS_END"] = 'Ende';
 
 $lang["PATIENT_INVOICE_POSPONED"] = 'verschoben';
 
-$lang["PATIENT_INVOICE_HELP"] = 'manual_patients_invoices.pdf';
+$lang["PATIENT_INVOICE_HELP"] = 'manual_patienten_rechnungen.pdf';
 
 $lang["PATIENT_PRINT_INVOICE"] = 'invoice.png';
 

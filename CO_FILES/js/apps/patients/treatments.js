@@ -166,6 +166,11 @@ function patientsTreatments(name) {
 						$("#patients3 ul[rel=treatments] span[rel="+data.id+"] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
 				}
 				if(data.changePatientStatus != 0) { module.setPatientStatus(data.changePatientStatus); }
+				var pid = $("#patients").data("second");
+				$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/patients/modules/invoices&request=getList&id="+pid, success: function(data){																																																																				
+			$('#patients_invoices_items').html(data.items);
+					}
+				});
 			}
 		});
 	}
