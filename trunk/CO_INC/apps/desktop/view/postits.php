@@ -27,7 +27,7 @@ if(is_array($posts)) {
         
         <div id="postit-window-<?php echo($postit->id);?>" style="display: none; z-index: 99999; outline: 0px none; position: absolute; width: 300px; height: auto; bottom: 0;" class="nodrag ui-dialog ui-widget ui-widget-content ui-corner-all sendtoWindow" tabindex="-1" role="dialog" aria-labelledby="ui-dialog-title-modalDialogForward">
         <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix"><span class="ui-dialog-title" id="ui-dialog-title-modalDialogForward">Weiterleitung</span><a href="#" rel="<?php echo($postit->id);?>" class="ui-dialog-titlebar-close ui-corner-all forwardClose" role="button"><span class="ui-icon ui-icon-closethick">close</span></a></div>
-        <div id="modalDialogPostitForward" style="height: 100px;" class="ui-dialog-content ui-widget-content" scrolltop="0" scrollleft="0"><div class="content-spacer"></div>
+        <div id="modalDialogPostitForward" style="height: 100px; overflow: auto;" class="ui-dialog-content ui-widget-content" scrolltop="0" scrollleft="0"><div class="content-spacer"></div>
 <table cellspacing="0" cellpadding="0" border="0" class="table-window">
 	<tbody><tr>
 		<td class="tcell-left text11"><a append="1" field="postitto<?php echo($postit->id);?>" request="getContactsDialog" class="content-nav showDialog" href="#"><span>An</span></a></td>
