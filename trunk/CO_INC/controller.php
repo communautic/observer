@@ -85,6 +85,39 @@ class Controller extends MySQLDB {
 		$dompdf->stream($title.".pdf", $options);
 	}
 	
+	function printInvoice($title,$text,$stationary=1,$headerimg='logo_print.png') {
+		global $lang;
+		$header = "";
+		$headerpdf = "";
+		$GLOBALS['STATIONARY'] = $stationary;
+		$GLOBALS['HEADERIMG'] = $headerimg;
+		
+		ob_start();
+			include(CO_INC . "/view/printheader.php");
+			$header = ob_get_contents();
+		ob_end_clean();
+		
+		$pdfheader = CO_PATH_BASE . "/data/templates/pdf_invoice.php";
+		if(file_exists($pdfheader)) {
+			ob_start();
+				include_once($pdfheader);
+				$headerpdf = ob_get_contents();
+			ob_end_clean();
+		}
+		
+		$footer = "</body></html>";
+		$html = $header . '<script type="text/php">' . $headerpdf  . '</script>' . $text . $footer;
+		require_once(CO_INC . "/classes/dompdf_60_beta2/dompdf_config.inc.php");
+		$dompdf = new DOMPDF();
+		$dompdf->load_html($html);
+		$dompdf->set_paper('a4', 'portrait'); // change 'a4' to whatever you want 
+		$dompdf->render();
+		$options['Attachment'] = 1;
+		$options['Accept-Ranges'] = 0;
+		$options['compress'] = 1;
+		$dompdf->stream($title.".pdf", $options);
+	}
+	
     
 	function normal_chars($string) {
 		$string = htmlentities($string, ENT_QUOTES, 'UTF-8');
@@ -104,6 +137,37 @@ class Controller extends MySQLDB {
 		ob_end_clean();
 		
 		$pdfheader = CO_PATH_BASE . "/data/templates/pdfheader.php";
+		if(file_exists($pdfheader)) {
+			ob_start();
+				include_once($pdfheader);
+				$headerpdf = ob_get_contents();
+			ob_end_clean();
+		} else {
+			$headerpdf = "";
+		}
+		
+		$footer = "</body></html>";
+		$html = $header . '<script type="text/php">' . $headerpdf . '</script>' . $text . $footer;
+		require_once(CO_INC . "/classes/dompdf_60_beta2/dompdf_config.inc.php");
+		$dompdf = new DOMPDF();
+		$dompdf->load_html($html);
+		$dompdf->set_paper('a4', 'portrait'); // change 'a4' to whatever you want
+		$dompdf->render();
+		$pdf = $dompdf->output();
+		file_put_contents( $path, $pdf);
+	}
+	
+	function saveInvoice($title,$text,$path,$stationary=1,$headerimg='logo_print.png') {
+		global $lang;
+		$GLOBALS['STATIONARY'] = $stationary;
+		$GLOBALS['HEADERIMG'] = $headerimg;
+		
+		ob_start();
+			include(CO_INC . "/view/printheader.php");
+			$header = ob_get_contents();
+		ob_end_clean();
+		
+		$pdfheader = CO_PATH_BASE . "/data/templates/pdf_invoice.php";
 		if(file_exists($pdfheader)) {
 			ob_start();
 				include_once($pdfheader);

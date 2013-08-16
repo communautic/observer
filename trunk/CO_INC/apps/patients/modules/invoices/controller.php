@@ -75,6 +75,7 @@ class PatientsInvoices extends Patients {
 			case 'invoice':
 				if($arr = $this->model->getDetails($id)) {
 					$invoice = $arr["invoice"];
+					$task = $arr["task"];
 					$pid = $invoice->pid;
 					if($arr = $this->model->getPatientDetails($pid)) {
 						$patient = $arr["patient"];
@@ -86,17 +87,19 @@ class PatientsInvoices extends Patients {
 					$title = $lang["PATIENT_INVOICE_TITLE"] . ' ' . $invoice->title;
 				}
 				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_INVOICE"];
+				$GLOBALS['BANKING'] = CO_INVOICE_FOOTER;
 				switch($t) {
 					case "html":
-						$this->printHTML($title,$html,1,'logo_print_patient.png');
+						$this->printHTML($title,$html);
 					break;
 					default:
-						$this->printPDF($title,$html,1,'logo_print_patient.png');
+						$this->printInvoice($title,$html);
 				}
 			break;
 			case 'reminder':
 				if($arr = $this->model->getDetails($id)) {
 					$invoice = $arr["invoice"];
+					$task = $arr["task"];
 					$pid = $invoice->pid;
 					if($arr = $this->model->getPatientDetails($pid)) {
 						$patient = $arr["patient"];
@@ -107,13 +110,14 @@ class PatientsInvoices extends Patients {
 					ob_end_clean();
 					$title = $lang["PATIENT_INVOICE_PAYMENT_REMINDER"] . ' ' . $invoice->title;
 				}
-				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_INVOICE"];
+				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_REMINDER"];
+				$GLOBALS['BANKING'] = CO_INVOICE_FOOTER;
 				switch($t) {
 					case "html":
-						$this->printHTML($title,$html,1,'logo_print_patient.png');
+						$this->printHTML($title,$html);
 					break;
 					default:
-						$this->printPDF($title,$html,1,'logo_print_patient.png');
+						$this->printInvoice($title,$html);
 				}
 			break;
 			case 'stationary':
@@ -129,16 +133,42 @@ class PatientsInvoices extends Patients {
 					ob_end_clean();
 					$title = 'Kuvert ' . $invoice->title;
 				}
-				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_INVOICE"];
-				switch($t) {
-					case "html":
-						$this->printHTML($title,$html,1,'logo_print_patient.png');
-					break;
-					default:
-						$this->printPDF($title,$html,1,'logo_print_patient.png');
-				}
+				//$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_INVOICE"];
+				$this->printStationary($title,$html,'595','290');
 			break;
 		}
+	}
+	
+	
+	function printStationary($title,$text,$width,$height,$headerimg='logo_print.png') {
+		global $lang;
+		$GLOBALS['STATIONARY'] = 1;
+		$GLOBALS['HEADERIMG'] = $headerimg;
+		ob_start();
+			include(CO_INC . "/view/printheader.php");
+			$header = ob_get_contents();
+		ob_end_clean();	
+		
+		$pdfheader = CO_PATH_BASE . "/data/templates/pdfheader_logo.php";
+		if(file_exists($pdfheader)) {
+			ob_start();
+				include_once($pdfheader);
+				$headerpdf = ob_get_contents();
+			ob_end_clean();
+		}
+		$footer = "</body></html>";
+		$html = $header . '<script type="text/php">' . $headerpdf  . '</script>' . $text . $footer;
+		require_once(CO_INC . "/classes/dompdf_60_beta2/dompdf_config.inc.php");
+		$dompdf = new DOMPDF();
+		$dompdf->load_html($html);
+		/*$dompdf->set_paper('a4', 'portrait');  change 'a4' to whatever you want 
+         breite, höhe pixel dividiert durch 96 * 72*/
+        $dompdf->set_paper( array(0,0, $width, $height), "portrait" );
+		$dompdf->render();
+		$options['Attachment'] = 1;
+		$options['Accept-Ranges'] = 0;
+		$options['compress'] = 1;
+		$dompdf->stream($title.".pdf", $options);
 	}
 
 	
@@ -177,6 +207,7 @@ class PatientsInvoices extends Patients {
 			case 'invoice':
 				if($arr = $this->model->getDetails($id)) {
 					$invoice = $arr["invoice"];
+					$task = $arr["task"];
 					$pid = $invoice->pid;
 					if($arr = $this->model->getPatientDetails($pid)) {
 						$patient = $arr["patient"];
@@ -188,12 +219,14 @@ class PatientsInvoices extends Patients {
 					$title = $invoice->title;
 				}
 				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_INVOICE"];
+				$GLOBALS['BANKING'] = CO_INVOICE_FOOTER;
 				$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
-				$pdf = $this->savePDF($title,$html,$attachment,1,'logo_print_patient.png');
+				$pdf = $this->saveInvoice($title,$html,$attachment);
 			break;
 			case 'reminder':
 				if($arr = $this->model->getDetails($id)) {
 					$invoice = $arr["invoice"];
+					$task = $arr["task"];
 					$pid = $invoice->pid;
 					if($arr = $this->model->getPatientDetails($pid)) {
 						$patient = $arr["patient"];
@@ -204,9 +237,10 @@ class PatientsInvoices extends Patients {
 					ob_end_clean();
 					$title = $invoice->title;
 				}
-				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_INVOICE"];
+				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_REMINDER"];
+				$GLOBALS['BANKING'] = CO_INVOICE_FOOTER;
 				$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
-				$pdf = $this->savePDF($title,$html,$attachment,1,'logo_print_patient.png');
+				$pdf = $this->saveInvoice($title,$html,$attachment);
 			break;
 			case 'stationary':
 				if($arr = $this->model->getDetails($id)) {

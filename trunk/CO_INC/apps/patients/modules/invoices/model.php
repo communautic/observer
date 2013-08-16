@@ -131,13 +131,13 @@ class PatientsInvoicesModel extends PatientsModel {
 		
 		$patientid = $array["pid"];
 		
-		$q = "SELECT CONCAT(b.lastname,' ',b.firstname) as patient,b.title as ctitle,b.title2,b.position,b.phone1,b.email FROM " . CO_TBL_PATIENTS . " as a, co_users as b where a.cid=b.id and a.id = '$patientid'";
+		$q = "SELECT b.lastname,b.firstname,b.title as ctitle,b.title2,b.position,b.phone1,b.email,b.address_line1,b.address_line2,b.address_town,b.address_postcode FROM " . CO_TBL_PATIENTS . " as a, co_users as b where a.cid=b.id and a.id = '$patientid'";
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_fetch_array($result);
 		foreach($row as $key => $val) {
 			$array[$key] = $val;
 		}	
-			
+		$array['patient'] = $array['lastname'] . ' ' . $array['firstname'];
 		$array["perms"] = $this->getPatientAccess($array["pid"]);
 		$array["canedit"] = true;
 		$array["showCheckout"] = false;
@@ -178,6 +178,14 @@ class PatientsInvoicesModel extends PatientsModel {
 		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
 		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
 		$array["current_user"] = $session->uid;
+		
+		$management_print = $this->getPatientField($array["pid"],'management');
+		$q = "SELECT lastname as m_lastname,firstname as m_firstname,title2 as m_title, phone1 as m_phone, email as m_email FROM co_users where id = '$management_print'";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_array($result);
+		foreach($row as $key => $val) {
+			$array[$key] = $val;
+		}	
 		
 		$array["management"] = $this->_contactsmodel->getUserListPlain($this->getPatientField($array["pid"],'management'));
 		$array["doctor_print"] = $this->_contactsmodel->getUserListPlain($array["doctor"]);
