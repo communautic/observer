@@ -43,6 +43,12 @@ define("CO_DEFAULT_TIMEZONE"	, 			"Europe/London" 					);
 date_default_timezone_set("UTC");
 
 /* -------------------------------------------------------------------------
+* Settings for Invoice Reminder Days
+* -------------------------------------------------------------------------*/
+define("CO_INVOICE_REMINDER_DAYS"	, 30);
+define("CO_INVOICE_FOOTER"	, "Konto: Raika Hall Regionalbank | BLZ: 36362 | Kontonummer: 120824");
+
+/* -------------------------------------------------------------------------
 * Settings for Module Trainings if installed
 * -------------------------------------------------------------------------*/
 
