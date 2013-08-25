@@ -65,7 +65,7 @@
   </tr>
 </table>
 <div class="content-spacer"></div>
-    <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-inactive no-margin loadContactExternal" rel="<?php echo($patient->cid)?>" style="cursor: pointer;">
+    <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-inactive no-margin loadContactExternal" rel="<?php echo($invoice->patient_id)?>" style="cursor: pointer;">
   <tr>
 		<td class="tcell-left-inactive text11" style="padding-top: 2px;"><?php echo $lang["PATIENT_CONTACT_DETAILS"];?></td>
     	<td class="tcell-right-inactive"><?php echo($invoice->ctitle)?> <?php echo($invoice->title2)?> <?php echo($invoice->patient);?><br />
