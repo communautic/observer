@@ -131,7 +131,7 @@ class PatientsInvoicesModel extends PatientsModel {
 		
 		$patientid = $array["pid"];
 		
-		$q = "SELECT b.lastname,b.firstname,b.title as ctitle,b.title2,b.position,b.phone1,b.email,b.address_line1,b.address_line2,b.address_town,b.address_postcode FROM " . CO_TBL_PATIENTS . " as a, co_users as b where a.cid=b.id and a.id = '$patientid'";
+		$q = "SELECT b.id as patient_id, b.lastname,b.firstname,b.title as ctitle,b.title2,b.position,b.phone1,b.email,b.address_line1,b.address_line2,b.address_town,b.address_postcode FROM " . CO_TBL_PATIENTS . " as a, co_users as b where a.cid=b.id and a.id = '$patientid'";
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_fetch_array($result);
 		foreach($row as $key => $val) {
@@ -283,7 +283,7 @@ class PatientsInvoicesModel extends PatientsModel {
 		$array['totalcosts'] = number_format($array['totalcosts'],2,',','.');
 		
 		// get the diagnoses
-		$diagnose = array();
+		/*$diagnose = array();
 		$q = "SELECT * FROM " . CO_TBL_PATIENTS_TREATMENTS_DIAGNOSES . " where mid = '$id' and bin='0' ORDER BY sort";
 		$result = mysql_query($q, $this->_db->connection);
 		$array["diagnoses"] = mysql_num_rows($result);
@@ -299,12 +299,12 @@ class PatientsInvoicesModel extends PatientsModel {
 			$diagnoses['y'] = $coord[1];
 			
 			$diagnose[] = new Lists($diagnoses);
-		}
+		}*/
 		
 		$sendto = $this->getSendtoDetails("patients_invoices",$id);
 
 		$invoice = new Lists($array);
-		$arr = array("invoice" => $invoice, "diagnose" => $diagnose, "task" => $task, "sendto" => $sendto, "access" => $array["perms"]);
+		$arr = array("invoice" => $invoice, "task" => $task, "sendto" => $sendto, "access" => $array["perms"]);
 		return $arr;
    }
 

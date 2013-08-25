@@ -201,11 +201,8 @@ class Desktop extends Controller {
 	
 	function markPostitRead($id) {
 		global $lang;
-		if($date = $this->model->markPostitRead($id)){
-			 $data["text"] = nl2br(stripslashes($text));
-			 $data["date"] = $date;
-			 $data["days"] = $lang["GLOBAL_TODAY"];
-			 return json_encode($data);
+		if($data = $this->model->markPostitRead($id)){
+			 return 'true';
 		  } else{
 			 return "error";
 		  }
