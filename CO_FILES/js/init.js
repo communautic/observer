@@ -719,6 +719,7 @@ $(document).ready(function() {
 		var rel = $(this).attr("rel");
 		var module = getCurrentModule();
 		module.newItemOption(ele,rel);
+		prevent_dblclick(e)
 	});
 
 	$(document).on('click','a.newItemSelection',function(e) {
@@ -2506,7 +2507,7 @@ function externalLoadThreeLevels(objectname,f,p,ph,app) { // from Desktop
 	var num_modules = window[objectname+'_num_modules'];
 	
 	if(objectname == app && (objectname == 'projects' || objectname == 'procs' || objectname == 'forums' || objectname == 'complaints' || objectname == 'employees' || objectname == 'patients' || objectname == 'trainings' || objectname == 'clients')) {
-		object.$first.data({ "first" : f});
+		$('#'+app).data({ "first" : f});
 		$('#'+objectname+'1 .module-click').removeClass('deactivated');
 		var index = $('#'+objectname+'1 .module-click').index($('#'+objectname+'1 .module-click[rel='+f+']'));
 		$.ajax({ type: "GET", url: "/", dataType:  'json', async: false, data: "path=apps/" + objectname +"&request=get"+objectnameCapsSingular+"List&id="+f, success: function(data){

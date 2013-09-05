@@ -422,9 +422,12 @@ function procsApplication(name) {
 		var outer = $("#notesOuter");
 		var x = outer.scrollLeft() + 20;
 		var y = outer.scrollTop() + 75;
-		var zMax = Math.max.apply(null,$.map($('#procs-right div.note'), function(e,n){
+		var zMax = 0;
+		if($('#procs-right div.note').length > 0) {
+			zMax = Math.max.apply(null,$.map($('#procs-right div.note'), function(e,n){
 						return parseInt($(e).css('z-index'))||1 ;
 					}));
+		}
 		var z = zMax + 1;
 		procszIndex = z;
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/procs&request=newProcNote&id="+id+"&x="+x+"&y="+y+"&z="+z+"&what="+what, success: function(data){
