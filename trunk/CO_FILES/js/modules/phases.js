@@ -54,7 +54,7 @@ function Phases(app) {
 					break;
 				}
 				var phaseid = data.id;
-				if(data.changePhaseStatus != "0") {
+				if(data.changePhaseStatus != "0" && $('.jqibox').length == 0) {
 					switch(data.changePhaseStatus) {
 						case "1":
 							var txt = ALERT_STATUS_PHASE_ACTIVATE;

@@ -451,7 +451,7 @@ function projectsApplication(name) {
 					var obj = getCurrentModule();
 					$('#projects .coform').ajaxSubmit(obj.poformOptions);
 					$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=getTaskDependencyExists&id="+reg, success: function(data){																																																																				
-						if(data == "true") {
+						if(data == "true" && $('.jqibox').length == 0) {
 							var txt = ALERT_PHASE_TASKS_MOVE_START;
 							var langbuttons = {};
 							langbuttons[ALERT_YES] = true;
@@ -548,7 +548,7 @@ function projectsApplication(name) {
 			var en = $("#projects input[name='task_movedate["+reg+"]']").val();
 			if(s != en) {
 				$.ajax({ type: "GET", url: "/", data: "path=apps/projects/modules/phases&request=getTaskDependencyExists&id="+reg, success: function(data){																																																																				
-					if(data == "true") {
+					if(data == "true" && $('.jqibox').length == 0) {
 						var txt = ALERT_PHASE_TASKS_MOVE_ALL;
 						var langbuttons = {};
 						langbuttons[ALERT_YES] = true;
