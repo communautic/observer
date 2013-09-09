@@ -107,8 +107,9 @@ if($grid->canedit) {
         </div>
 	</div>
 <?php } ?>
-<div class="content-spacer"></div>
-<div style="position: absolute; top: <?php if($grid->canedit) { echo '168'; } else { echo '207';} ?>px; height: 50px; width: 100%; background: #b2b2b2; z-index: -1;"></div>
+<div class="content-spacer" style="position: relative;">
+<div style="position: absolute; top: 41px; height: 50px; width: 100%; background: #b2b2b2; z-index: -1;"></div>
+</div>
 <div id="procs-grid" style="width: <?php echo($grid->grid_width);?>px;">
 <?php 
 $drag = '';

@@ -963,6 +963,7 @@ $(document).ready(function() {
 			//handle: '.dragItem',
 			revert: 'invalid',
 			appendTo: '#procs-right',
+			//snapTolerance: 2,
 			zIndex: 101,
 			start: function(e, ui) {
 				$(ui.helper).addClass("ui-draggable-helper-grid");
@@ -975,6 +976,7 @@ $(document).ready(function() {
 	$('#procs-grid .procs-col-stagegate').livequery( function() {
 		$(this).droppable({
 			accept: '.droppable',
+			tolerance: 'pointer',
 			drop: function( event, ui ) {
 				var tocopy = false;
 				var orig = false;
@@ -1056,7 +1058,7 @@ $(document).ready(function() {
 			items: '>div',
 			//handle: '.dragItem',
 			cursor: "move",
-			tolerance: 'intersect',
+			tolerance: 'pointer',
 			connectWith: '.procs-phase,.procs-col-title,.procs-col-stagegate',
 			receive: function (event, ui) { // add this handler
 				setTimeout(function() {
