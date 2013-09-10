@@ -69,49 +69,8 @@ class PublishersMenues extends Publishers {
 				$this->printPDF($title,$html);
 		}
 	}
-	
-	/*function printMenue($id) {
-		global $session, $lang;
-		$title = "";
-		$html = "";
-		if($arr = $this->model->getDetails($id)) {
-			$menue = $arr["menue"];
-			$sendto = $arr["sendto"];
-			ob_start();
-				include 'view/print_external.php';
-				$html = ob_get_contents();
-			ob_end_clean();
-			$title = $menue->title;
-		}
-		
-		ob_start();
-			include("view/printheader.php");
-			$header = ob_get_contents();
-		ob_end_clean();
-		
-		$pdfheader = CO_PATH_BASE . "/data/templates/menueheader.php";
-		if(file_exists($pdfheader)) {
-			ob_start();
-				include_once($pdfheader);
-				$headerpdf = ob_get_contents();
-			ob_end_clean();
-		} else {
-			$headerpdf = "";
-		}
-		$footer = "</body></html>";
-        $html = $header . '<script type="text/php">' . $headerpdf  . '</script>' . $html . $footer;
-		require_once(CO_INC . "/classes/dompdf_60_beta2/dompdf_config.inc.php");
-		$dompdf = new DOMPDF();
-		$dompdf->load_html($html);
-		$dompdf->set_paper('a4', 'landscape');
-		$dompdf->render();
-		$options['Attachment'] = 1;
-		$options['Accept-Ranges'] = 0;
-		$options['compress'] = 1;
-		$dompdf->stream($title.".pdf", $options);
-	}*/
-	
-	
+
+
 	function getSend($id) {
 		global $lang;
 		if($arr = $this->model->getDetails($id)) {
