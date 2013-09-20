@@ -5,6 +5,7 @@ function initPublishersContentScrollbar() {
 /* publishers Object */
 function publishersApplication(name) {
 	this.name = name;
+	this.isRefresh = false;
 	
 	this.actionClose = function() {
 		publishersLayout.toggle('west');

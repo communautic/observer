@@ -5,7 +5,7 @@ function initEmployeesContentScrollbar() {
 /* employees Object */
 function employeesApplication(name) {
 	this.name = name;
-	
+	this.isRefresh = false;
 
 	this.init = function() {
 		this.$app = $('#employees');

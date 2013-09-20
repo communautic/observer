@@ -5,7 +5,7 @@ function initPatientsContentScrollbar() {
 /* patients Object */
 function patientsApplication(name) {
 	this.name = name;
-	
+	this.isRefresh = false;
 
 	this.init = function() {
 		this.$app = $('#patients');
@@ -588,9 +588,20 @@ function patientsFolders(name) {
 	this.checkIn = function(id) {
 		return true;
 	}
+	
+	
+	this.actionLoadTab = function(what) {
+		var id = $("#patients").data("first");
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/patients&request=get'+what+'&id='+id, success: function(data){
+			$('#patientsFoldersTabsContent').empty().html(data.html);
+			initPatientsContentScrollbar()
+			}
+		});
+	}
 
 
 	this.actionRefresh = function() {
+		patients.isRefresh = true;
 		var id = $("#patients").data("first");
 		$("#patients1 .active-link").trigger("click");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients&request=getFolderList", success: function(data){

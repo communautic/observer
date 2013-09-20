@@ -5,6 +5,7 @@ function initForumsContentScrollbar() {
 /* forums Object */
 function forumsApplication(name) {
 	this.name = name;
+	this.isRefresh = false;
 	
 	this.init = function() {
 		this.$app = $('#forums');

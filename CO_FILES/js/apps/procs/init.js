@@ -6,6 +6,7 @@ function initProcsContentScrollbar() {
 function procsApplication(name) {
 	this.name = name;
 	var module = this;
+	this.isRefresh = false;
 	
 	this.init = function() {
 		this.$app = $('#procs');

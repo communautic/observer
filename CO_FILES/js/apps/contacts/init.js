@@ -8,7 +8,7 @@ function initContactsContentScrollbar() {
 
 function contactsContact(name) {
 	this.name = name;
-
+	this.isRefresh = false;
 
 	this.createUploader = function(ele){            
 		var did = $("#contacts").data("first");

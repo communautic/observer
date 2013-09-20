@@ -5,7 +5,7 @@ function initTrainingsContentScrollbar() {
 /* trainings Object */
 function trainingsApplication(name) {
 	this.name = name;
-	
+	this.isRefresh = false;
 
 	this.init = function() {
 		this.$app = $('#trainings');
@@ -885,6 +885,7 @@ function trainingsFolders(name) {
 	}
 
 	this.actionRefresh = function() {
+		trainings.isRefresh = true;
 		var id = $("#trainings").data("first");
 		$("#trainings1 .active-link").trigger("click");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/trainings&request=getFolderList", success: function(data){
