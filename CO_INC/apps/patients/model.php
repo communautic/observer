@@ -799,7 +799,7 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
    /**
    * get details for the patient folder
    */
-   function setPatientDetails($id,$management,$management_ct,$protocol,$folder,$number,$insurance,$insuranceadd,$dob,$coo,$documents) {
+   function setPatientDetails($id,$folder,$management,$management_ct,$protocol,$number,$insurance,$insuranceadd,$dob,$coo,$documents) {
 		global $session, $contactsmodel;
 		$dob = $this->_date->formatDate($dob);
 		$now = gmdate("Y-m-d H:i:s");
@@ -868,7 +868,7 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 		
 		$now = gmdate("Y-m-d H:i:s");
 		// patient
-		$q = "INSERT INTO " . CO_TBL_PATIENTS . " (folder,title,startdate,ordered_by,management,team,patient,patient_more,patient_cat,patient_cat_more,product,product_desc,charge,number,protocol,planned_date,created_date,created_user,edited_date,edited_user) SELECT folder,CONCAT(title,' ".$lang["GLOBAL_DUPLICAT"]."'),'$now',ordered_by,management,team,patient,patient_more,patient_cat,patient_cat_more,product,product_desc,charge,number,protocol,'$now','$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_PATIENTS . " where id='$id'";
+		$q = "INSERT INTO " . CO_TBL_PATIENTS . " (folder,cid,management,management_ct,insurance,insurance_add,number,protocol,dob,coo,status,planned_date,created_date,created_user,edited_date,edited_user) SELECT folder,cid,management,management_ct,insurance,insurance_add,number,protocol,dob,coo,'0','$now','$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_PATIENTS . " where id='$id'";
 
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
@@ -879,7 +879,7 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 		}
 			
 		// processes
-		$q = "SELECT id FROM " . CO_TBL_PATIENTS_GRIDS . " WHERE pid = '$id' and bin='0'";
+		/*$q = "SELECT id FROM " . CO_TBL_PATIENTS_GRIDS . " WHERE pid = '$id' and bin='0'";
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
 			$gridid = $row["id"];
@@ -915,16 +915,16 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 					$resultnn = mysql_query($qnn, $this->_db->connection);
 				}
 			}
-		}
+		}*/
 		
 		//vdocs
-		$q = "SELECT id FROM " . CO_TBL_PATIENTS_VDOCS . " WHERE pid = '$id' and bin='0'";
+		/*$q = "SELECT id FROM " . CO_TBL_PATIENTS_VDOCS . " WHERE pid = '$id' and bin='0'";
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
 			$vdocid = $row["id"];
 			$qv = "INSERT INTO " . CO_TBL_PATIENTS_VDOCS . " (pid,title,content) SELECT '$id_new',title,content FROM " . CO_TBL_PATIENTS_VDOCS . " where id='$vdocid'";
 			$resultv = mysql_query($qv, $this->_db->connection);
-		}
+		}*/
 		
 		if ($result) {
 			return $id_new;

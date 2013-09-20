@@ -389,17 +389,17 @@ function patientsApplication(name) {
 		$("#modalDialog").dialog("close");
 		$("#patientsstatus").nextAll('img').trigger('click');
 	}
-	
-	
-	/*this.insertPatientFromDialog = function(field,gid,title) {
+
+
+	this.insertFolderFromDialog = function(field,gid,title) {
 		var html = '<a class="listmember" uid="' + gid + '" field="'+field+'">' + title + '</a>';
 		$("#"+field).html(html);
 		$("#modalDialog").dialog('close');
 		var obj = getCurrentModule();
 		$('#patients .coform').ajaxSubmit(obj.poformOptions);
-	}*/
-	
-	
+	}
+
+
 	this.insertFromDialog = function(field,gid,title) {
 		var html = '<span class="listmember-outer"><a class="listmemberInsurance" uid="' + gid + '" field="'+field+'">' + title + '</a></div>';
 		$("#"+field).html(html);
@@ -756,7 +756,7 @@ function patientsActions(status) {
 	switch(status) {
 		case 0: 
 			if(obj.name == 'patients') {
-				actions = ['1','2','3','5','6','7','8']; 
+				actions = ['1','2','3','4','5','6','7','8']; 
 			} else if(obj.name == 'patients_invoices') {
 				actions = ['2','3','5','6','7']; 
 			} else {
@@ -885,7 +885,7 @@ $(document).ready(function() {
 		var gid = $(this).attr("gid");
 		var title = $(this).attr("title");
 		var obj = getCurrentModule();
-		obj.insertFromDialog(field,gid,title);
+		obj.insertFolderFromDialog(field,gid,title);
 	});
 	
 	
