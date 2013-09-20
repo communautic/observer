@@ -167,6 +167,7 @@ $lang["GLOBAL_DAYS"] = 'Tage';
 $lang["GLOBAL_TODAY"] = 'Heute';
 $lang["GLOBAL_YESTERDAY"] = 'Gestern';
 $lang["GLOBAL_DAYS_AGO"] = 'vor %1$s Tagen';
+$lang["GLOBAL_WEEK_SHORT"] = 'KW';
 
 $lang["GLOBAL_ALERT"] = 'Warnung';
 $lang["GLOBAL_CONTENT_EDITED_BY"] = 'Dieser Inhaltsbereich wird aktuell bearbeitet von:';

@@ -39,7 +39,7 @@ $ltop = $ltop+36;
 		$now = "";
 		$bg = "#b2b2b2";
 		if($yo["week"] != "") { ?>
-			<div style="position: absolute; top: <?php echo $top-30;?>px; left: <?php echo $dleft;?>px; width: 45px; color: #000; font-size: 10px;">KW <?php echo $yo["week"];?></div>
+			<div style="position: absolute; top: <?php echo $top-30;?>px; left: <?php echo $dleft;?>px; width: 45px; color: #000; font-size: 10px;"><?php echo $lang["GLOBAL_WEEK_SHORT"];?> <?php echo $yo["week"];?></div>
 		<?php }
 		if($yo["month"] != "") { ?>
 			<div style="position: absolute; top: <?php echo $top-50;?>px; left: <?php echo $dleft;?>px; width: 45px; color: #000; font-size: 10px;"><?php echo  $yo["month"];?></div>

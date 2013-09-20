@@ -67,7 +67,7 @@
 		$now = "";
 		$bg = "#b2b2b2";
 		if($yo["week"] != "") {
-			$week = '<div style="position: absolute; top: -15px; width: 45px; color: #000; text-align: left;">KW ' . $yo["week"] . '</div>';
+			$week = '<div style="position: absolute; top: -15px; width: 45px; color: #000; text-align: left;">'.$lang["GLOBAL_WEEK_SHORT"].' ' . $yo["week"] . '</div>';
 		}
 		if($yo["month"] != "") {
 			$month = '<div style="position: absolute; top: -30px; width: 45px; color: #000; text-align: left;">' . $yo["month"] . '</div>';
