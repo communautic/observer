@@ -41,6 +41,12 @@ $lang['CONTACTS_TOWN'] = 'Ort';
 $lang['CONTACTS_POSTCODE'] = 'Plz';
 $lang['CONTACTS_COUNTRY'] = 'Land';
 
+$lang['CONTACTS_BANK_NAME'] = 'Bank';
+$lang['CONTACTS_BANK_SORT_CODE'] = 'BLZ';
+$lang['CONTACTS_BANK_ACCOUNT_NBR'] = 'Konto';
+$lang['CONTACTS_BANK_ACCOUNT_BIC'] = 'BIC';
+$lang['CONTACTS_BANK_ACCOUNT_IBAN'] = 'IBAN';
+
 $lang['CONTACTS_LANGUAGE'] = 'Systemsprache';
 $lang['CONTACTS_TIMEZONE'] = 'Systemzeitzone';
 
