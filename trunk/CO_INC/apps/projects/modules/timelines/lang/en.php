@@ -1,7 +1,7 @@
 <?php
 $projects_timelines_name = "Timelines";
 
-$lang["PROJECT_TIMELINE_PROJECT_PLAN"] = "Gantt Chart";
+$lang["PROJECT_TIMELINE_PROJECT_PLAN"] = "Flow Chart";
 $lang["PROJECT_TIMELINE_DATES_LIST"] = "Phasing";
 $lang["PROJECT_TIMELINE_PROJECT_STRUCTURE"] = "Org Chart";
 $lang["PROJECT_TIMELINE_DATES_MILESTONES"] = "Milestones";

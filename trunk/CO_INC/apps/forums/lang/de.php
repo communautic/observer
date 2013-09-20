@@ -20,6 +20,7 @@ $lang["FORUM_TITLE"] = 'Forum';
 $lang["FORUM_QUESTION"] = 'Frage';
 $lang["FORUM_ANSWERS"] = 'Antwort';
 $lang["FORUM_DISCUSSION"] = 'Diskussion';
+$lang["FORUM_REPLY"] = 'Antworten';
 
 $lang["FORUM_POSTS"] = 'Foren / Antworten';
 
