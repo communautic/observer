@@ -1,6 +1,7 @@
 function desktopApplication(name) {
 	this.name = name;
-
+	this.isRefresh = false;
+	
 	this.checkIn = function(id) {
 		return true;
 	}

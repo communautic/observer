@@ -218,9 +218,10 @@ function patientsTreatments(name) {
 		contexts = [];
 		var id = $("#patients3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
 		$('#patients').data({ "third" : id});
+		var tab = 0;
 		if(this.isRefresh) {
 			var activetab = $('#patients-right .contentTabsList li span.active');
-			var tab = $('#patients-right .contentTabsList li span').index(activetab);
+			tab = $('#patients-right .contentTabsList li span').index(activetab);
 			this.isRefresh = false;
 		}
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients/modules/treatments&request=getDetails&id="+id, success: function(data){

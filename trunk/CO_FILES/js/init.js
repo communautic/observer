@@ -2381,8 +2381,19 @@ function navItemFirst(objectname, clicked) {
 	$('#'+objectname+'2-outer').delay(200).animate({top: h}, function() {
 		$(this).animate({top: h-27});
 	});
+	
+	var tab = 0;
+	if(object.isRefresh && $('#'+objectname+'-right .contentTabsList').length > 0) {
+		var activetab = $('#'+objectname+'-right .contentTabsList li span.active');
+		tab = $('#'+objectname+'-right .contentTabsList li span').index(activetab);
+		object.isRefresh = false;
+	}
 	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+objectname+"&request=getFolderDetails&id="+id, success: function(text){
 		object.$appContent.html(text.html);
+		if(tab != 0) {
+			$('#'+objectname+'FoldersTabsContent').empty()
+			$('#'+objectname+'-right .contentTabsList li span:eq('+tab+')').trigger('click'); 
+		}
 		window['init'+objectnameCaps+'ContentScrollbar']();
 		if(text.access == "guest") {
 				window[objectname+'Actions']();

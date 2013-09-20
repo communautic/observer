@@ -1,7 +1,7 @@
 /* bin Object */
 function binApplication(name) {
 	this.name = name;
-
+	this.isRefresh = false;
 
 	this.actionClose = function() {
 	  binLayout.toggle('west');

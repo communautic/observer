@@ -5,6 +5,7 @@ function initProjectsContentScrollbar() {
 /* projects Object */
 function projectsApplication(name) {
 	this.name = name;
+	this.isRefresh = false;
 	
 	this.init = function() {
 		this.$app = $('#projects');
@@ -735,6 +736,7 @@ function projectsFolders(name) {
 
 
 	this.actionRefresh = function() {
+		projects.isRefresh = true;
 		var id = $("#projects").data("first");
 		$("#projects1 .active-link").trigger("click");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getFolderList", success: function(data){
