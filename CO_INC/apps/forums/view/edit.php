@@ -145,7 +145,7 @@ foreach($posts as $post) {
     <td width="136" valign="top">
     <div class="modalDialogForumsPostHeader" style="height: 26px; border-radius: 4px 0 0 0;"></div>
     <div style="height: 70px;"></div>
-    <div class="coButton-outer"><span class="content-nav actionForumsReply coButton">Antworten</span></div>
+    <div class="coButton-outer"><span class="content-nav actionForumsReply coButton"><?php echo $lang["FORUM_REPLY"];?></span></div>
     
     </td>
     <td valign="top"><textarea id="forumsReplyText" name="forumsReplyText" style="width: 100%; height: 100px; "></textarea>

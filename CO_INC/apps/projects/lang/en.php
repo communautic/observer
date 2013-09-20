@@ -14,7 +14,7 @@ $lang["PROJECT_ACTION_NEW"] = 'new Project';
 // Folder Right
 $lang["PROJECT_FOLDER_TAB_PROJECTS"] = 'Projects';
 $lang["PROJECT_FOLDER_TAB_MULTIVIEW"] = 'Multi View';
-$lang["PROJECT_FOLDER_TAB_STATUS"] = 'Folder Status';
+$lang["PROJECT_FOLDER_TAB_STATUS"] = 'Performance';
 
 $lang["PROJECT_FOLDER_PROJECTS_CREATED"] = 'Total Projects';
 $lang["PROJECT_FOLDER_PROJECTS_PLANNED"] = 'planned';
@@ -43,7 +43,7 @@ $lang["PROJECT_COSTS_REAL"] = 'Actual Costs';
 
 $lang["PROJECT_DESCRIPTION"] = 'Description';
 
-$lang["PROJECT_HANDBOOK"] = 'Project Manual';
+$lang["PROJECT_HANDBOOK"] = 'Project Guide';
 
 $lang["PROJECT_HELP"] = 'manual_projekte_projekte.pdf';
 $lang["PROJECT_FOLDER_HELP"] = 'manual_projekte_ordner.pdf';

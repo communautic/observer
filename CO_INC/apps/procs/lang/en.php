@@ -1,14 +1,14 @@
 <?php
 // App name
-$procs_name = "Processes";
-$lang["procs_name"] = 'Processes';
+$procs_name = "Workplan";
+$lang["procs_name"] = 'Workplan';
 
 // Left
 $lang["PROC_FOLDER"] = 'Folder';
 $lang["PROC_FOLDER_NEW"] = 'New Folder';
 $lang["PROC_FOLDER_ACTION_NEW"] = 'new Folder';
-$lang["PROC_PROCS"] = 'Processes';
-$lang["PROC_NEW"] = 'New Process';
+$lang["PROC_PROCS"] = 'Workplan';
+$lang["PROC_NEW"] = 'New Workplan';
 $lang["PROC_ACTION_NEW"] = 'new Task';
 
 // Folder Right
@@ -21,7 +21,7 @@ $lang["PROC_FOLDER_CHART_ADHERANCE"] = 'Timeliness';
 $lang["PROC_FOLDER_CHART_TASKS"] = 'Stage Timeliness';
 
 // Proc Right
-$lang["PROC_TITLE"] = 'Process';
+$lang["PROC_TITLE"] = 'Workplan';
 $lang['PROC_NOTE_ADD'] = 'Notes';
 $lang['PROC_NOTE_NEW'] = 'new Note';
 
@@ -31,10 +31,10 @@ $lang["PROC_TEAM"] = 'Process Team';
 $lang["PROC_DESCRIPTION"] = 'Description';
 
 // Bin
-$lang['PROC_TITLE_NOTES_BIN'] = 'Process/Notes';
+$lang['PROC_TITLE_NOTES_BIN'] = 'Workplan/Notes';
 $lang['PROC_NOTE_BIN'] = 'Note';
 
-$lang["PROC_HANDBOOK"] = 'Process Manual';
+$lang["PROC_HANDBOOK"] = 'Workplan Guide';
 
 $lang["PROC_HELP"] = 'manual_prozesse_prozesse.pdf';
 $lang["PROC_FOLDER_HELP"] = 'manual_prozesse_ordner.pdf';

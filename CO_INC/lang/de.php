@@ -152,6 +152,7 @@ $lang["GLOBAL_ACCESS_PUBLIC"] = 'freigegeben';
 $lang["GLOBAL_ACCESS_FOOTER"] = 'freigegeben:';
 $lang["GLOBAL_FOOTER_STATUS"] = 'Stand';
 
+$lang["GLOBAL_FORWARD"] = 'Weiterleitung';
 $lang["GLOBAL_TO"] = 'An';
 $lang["GLOBAL_CC"] = 'CC';
 $lang["GLOBAL_BCC"] = 'BCC';
@@ -166,6 +167,9 @@ $lang["GLOBAL_DAYS"] = 'Tage';
 $lang["GLOBAL_TODAY"] = 'Heute';
 $lang["GLOBAL_YESTERDAY"] = 'Gestern';
 $lang["GLOBAL_DAYS_AGO"] = 'vor %1$s Tagen';
+
+$lang["GLOBAL_ALERT"] = 'Warnung';
+$lang["GLOBAL_CONTENT_EDITED_BY"] = 'Dieser Inhaltsbereich wird aktuell bearbeitet von:';
 
 // email footer
 $lang["GLOBAL_EMAIL_FOOTER"] = 	'<p style="font-face: Arial, Verdana; font-size:small; color: #999999;">_____powered by '.$lang["APPLICATION_NAME_ALT"].'</p>' .

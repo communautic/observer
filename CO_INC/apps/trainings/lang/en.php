@@ -13,7 +13,7 @@ $lang["TRAINING_ACTION_NEW"] = 'create new Training';
 
 $lang["TRAINING_FOLDER_TAB_TRAININGS"] = "List of trainings";
 $lang["TRAINING_FOLDER_TAB_MULTIVIEW"] = "Calendar";
-$lang["TRAINING_FOLDER_TAB_STATUS"] = "Folder Status";
+$lang["TRAINING_FOLDER_TAB_STATUS"] = "Performance";
 $lang['TRAINING_TIMELINE_TIME'] = "Days";
 $lang['TRAINING_TIMELINE_ACTION'] = "Training";
 
