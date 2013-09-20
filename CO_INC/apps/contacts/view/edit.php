@@ -138,7 +138,37 @@
     <td class="tcell-right-nopadding"><input name="fax" id="fax" type="text" class="bg" value="<?php echo($contact->fax);?>" /></td>
   </tr>
 </table>
-    
+<div class="content-spacer"></div>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+    <tr>
+        <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_BANK_NAME'];?></span></span></td>
+        <td class="tcell-right-nopadding"><input name="bank_name" id="bank_name" type="text" class="bg" value="<?php echo($contact->bank_name);?>" /></td>
+        </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+    <tr>
+        <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_BANK_SORT_CODE'];?></span></span></td>
+        <td class="tcell-right-nopadding"><input name="sort_code" id="sort_code" type="text" class="bg" value="<?php echo($contact->sort_code);?>" /></td>
+        </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+    <tr>
+        <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_BANK_ACCOUNT_NBR'];?></span></span></td>
+        <td class="tcell-right-nopadding"><input name="account_number" id="account_number" type="text" class="bg" value="<?php echo($contact->account_number);?>" /></td>
+        </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+    <tr>
+        <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_BANK_ACCOUNT_BIC'];?></span></span></td>
+        <td class="tcell-right-nopadding"><input name="bic" id="bic" type="text" class="bg" value="<?php echo($contact->bic);?>" /></td>
+        </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+    <tr>
+        <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_BANK_ACCOUNT_IBAN'];?></span></span></td>
+        <td class="tcell-right-nopadding"><input name="iban" id="iban" type="text" class="bg" value="<?php echo($contact->iban);?>" /></td>
+        </tr>
+</table>
     
     </div>
     <div id="ContactAccess" style="display: none;">

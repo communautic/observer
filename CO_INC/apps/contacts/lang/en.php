@@ -40,6 +40,12 @@ $lang['CONTACTS_TOWN'] = 'Town';
 $lang['CONTACTS_POSTCODE'] = 'Postal code';
 $lang['CONTACTS_COUNTRY'] = 'Country';
 
+$lang['CONTACTS_BANK_NAME'] = 'Bank';
+$lang['CONTACTS_BANK_SORT_CODE'] = 'Sort code';
+$lang['CONTACTS_BANK_ACCOUNT_NBR'] = 'Account no';
+$lang['CONTACTS_BANK_ACCOUNT_BIC'] = 'BIC';
+$lang['CONTACTS_BANK_ACCOUNT_IBAN'] = 'IBAN';
+
 $lang['CONTACTS_LANGUAGE'] = 'Language';
 $lang['CONTACTS_TIMEZONE'] = 'Timezone';
 
