@@ -14,6 +14,21 @@ if(is_array($alerts)) {
 	}
 }
 
+if(is_array($reminders)) {
+	$message = 0;
+	foreach ($reminders as $reminder) { ?>
+		<div class="widgetItemOuter patientsLink" rel="invoices,<?php echo $reminder->folder . ',' . $reminder->pid . ',' . $reminder->id;?>"><div class="widgetItemTitle"><div class="widgetIconReminder"></div>
+    <?php
+			echo $lang["PATIENT_WIDGET_TITLE_INVOICE"] . '</div><div class="widgetItemContent">';
+			echo sprintf($lang["PATIENT_WIDGET_REMINDER_INVOICE"], $reminder->text, $reminder->title);
+		?>
+    	</div></div>
+    <?php
+	}
+}
+
+
+
 if($message == 1) {
 	echo $lang["PATIENT_WIDGET_NO_ACTIVITY"];
 }

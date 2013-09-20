@@ -2289,16 +2289,23 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 
 		}
 
+		$reminders = "";
+		if($skip == 0) {
+			$q ="select b.folder,a.pid,a.id, a.title as text, CONCAT(c.lastname,' ',c.firstname) as title from " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE a.status_invoice='0' and a.pid = b.id and b.cid=c.id and a.bin = '0' and b.bin = '0'" . $access;
+			$result = mysql_query($q, $this->_db->connection);
+			$reminders = "";
+			while ($row = mysql_fetch_array($result)) {
+				foreach($row as $key => $val) {
+					$array[$key] = $val;
+				}
+				$string .= $array["folder"] . "," . $array["pid"] . "," . $array["id"] . ",";
+				$reminders[] = new Lists($array);
+			}
+		}
+
 		$alerts = "";
 		$array = "";
 		if($skip == 0) {
-			// AP/MS deren Phase "in Planung" oder "in Arbeit" ist UND das Projekt "in Arbeit" ist
-			// AP: Admin/Sysadmin der AP Verantwortung hat
-			// MS: Admin/Sysadmin der Projektleiter ist
-			//$q ="select c.folder,a.pid,a.phaseid,a.cat,a.text,c.title as projectitle from " . CO_TBL_PROJECTS_PHASES_TASKS . " as a,  " . CO_TBL_PROJECTS_PHASES . " as b,  " . CO_TBL_PROJECTS . " as c where a.phaseid = b.id and a.pid = c.id and (b.status='0' or b.status='1') and a.status='0' and c.status='1' and a.cat != '2' and a.bin = '0' and b.bin = '0' and c.bin = '0' and a.enddate < '$today'" . $access . " and ((a.cat = '1' and c.management REGEXP '[[:<:]]" . $session->uid . "[[:>:]]') or (a.cat = '0' and a.team REGEXP '[[:<:]]" . $session->uid . "[[:>:]]'))";
-			//$q ="select id,pid,title,item_date,access,status_invoice,checked_out,checked_out_user from " . CO_TBL_PATIENTS_TREATMENTS . " where (status='2' or status='3') and bin != '1'";
-			
-			
 			$q ="select b.folder,a.pid,a.id, a.title as text, CONCAT(c.lastname,' ',c.firstname) as title from " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE a.status_invoice='1' and a.pid = b.id and b.cid=c.id and a.bin = '0' and b.bin = '0' and a.payment_reminder <= '$tomorrow'" . $access;
 			$result = mysql_query($q, $this->_db->connection);
 			while ($row = mysql_fetch_array($result)) {
@@ -2326,7 +2333,7 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 			$result = mysql_query($q, $this->_db->connection);
 		}
 		
-		$arr = array("alerts" => $alerts, "widgetaction" => $widgetaction);
+		$arr = array("reminders" => $reminders, "alerts" => $alerts, "widgetaction" => $widgetaction);
 		return $arr;
    }
 

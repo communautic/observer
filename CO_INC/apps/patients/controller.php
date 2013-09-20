@@ -670,6 +670,7 @@ class Patients extends Controller {
 		global $lang, $system;
 		if($arr = $this->model->getWidgetAlerts()) {
 			$alerts = $arr["alerts"];
+			$reminders = $arr["reminders"];
 			ob_start();
 			include 'view/widget.php';
 			$data["html"] = ob_get_contents();
