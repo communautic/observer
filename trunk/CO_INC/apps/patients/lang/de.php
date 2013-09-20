@@ -48,6 +48,8 @@ $lang["PRINT_PATIENT_FOLDER"] = 'ordner.png';
 $lang["PATIENT_WIDGET_NO_ACTIVITY"]		=	'Keine aktuellen Benachrichtigungen';
 $lang["PATIENT_WIDGET_TITLE"] 	=	'Mahnung';
 $lang["PATIENT_WIDGET_ALERT"] 	= 	'Rechnung "%1$s" für den Patienten "%2$s" ist <span class="yellow">außer Plan</span>';
+$lang["PATIENT_WIDGET_TITLE_INVOICE"] 	=	'Rechnung';
+$lang["PATIENT_WIDGET_REMINDER_INVOICE"] 	= 	'Rechnung "%1$s" für den Patienten "%2$s" ist <span class="yellow">erstellt</span>';
 
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/patients/de.php";
