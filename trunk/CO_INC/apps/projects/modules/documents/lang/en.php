@@ -9,6 +9,7 @@ $lang["PROJECT_DOCUMENT_DESCRIPTION"] = 'Description';
 $lang["PROJECT_DOCUMENT_UPLOAD"] = 'File / Upload';
 $lang["PROJECT_DOCUMENT_FILENAME"] = 'Filename/Format';
 $lang["PROJECT_DOCUMENT_FILESIZE"] = 'Filesize';
+$lang["PROJECT_DOCUMENT_FILES"] = 'Files';
 
 $lang["PROJECT_DOCUMENT_HELP"] = 'manual_projekte_aktenmappen.pdf';
 

@@ -9,6 +9,7 @@ $lang["PATIENT_DOCUMENT_DESCRIPTION"] = 'Description';
 $lang["PATIENT_DOCUMENT_UPLOAD"] = 'File / Upload';
 $lang["PATIENT_DOCUMENT_FILENAME"] = 'Filename/Format';
 $lang["PATIENT_DOCUMENT_FILESIZE"] = 'Filesize';
+$lang["PATIENT_DOCUMENT_FILES"] = 'Files';
 
 $lang["PATIENT_DOCUMENT_HELP"] = 'manual_patienten_aktenmappen.pdf';
 

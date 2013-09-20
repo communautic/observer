@@ -9,6 +9,7 @@ $lang["TRAINING_DOCUMENT_DESCRIPTION"] = 'Description';
 $lang["TRAINING_DOCUMENT_UPLOAD"] = 'File / Upload';
 $lang["TRAINING_DOCUMENT_FILENAME"] = 'Filename/Format';
 $lang["TRAINING_DOCUMENT_FILESIZE"] = 'Filesize';
+$lang["TRAINING_DOCUMENT_FILES"] = 'Files';
 
 $lang["TRAINING_DOCUMENT_HELP"] = 'manual_trainings_aktenmappen.pdf';
 

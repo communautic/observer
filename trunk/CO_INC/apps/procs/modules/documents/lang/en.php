@@ -9,6 +9,7 @@ $lang["PROC_DOCUMENT_DESCRIPTION"] = 'Description';
 $lang["PROC_DOCUMENT_UPLOAD"] = 'File / Upload';
 $lang["PROC_DOCUMENT_FILENAME"] = 'Filename/Format';
 $lang["PROC_DOCUMENT_FILESIZE"] = 'Filesize';
+$lang["PROC_DOCUMENT_FILES"] = 'Files';
 
 $lang["PROC_DOCUMENT_HELP"] = 'manual_prozesse_aktenmappen.pdf';
 

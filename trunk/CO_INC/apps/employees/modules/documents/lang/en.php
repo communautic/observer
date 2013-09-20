@@ -9,6 +9,7 @@ $lang["EMPLOYEE_DOCUMENT_DESCRIPTION"] = 'Description';
 $lang["EMPLOYEE_DOCUMENT_UPLOAD"] = 'File / Upload';
 $lang["EMPLOYEE_DOCUMENT_FILENAME"] = 'Filename/Format';
 $lang["EMPLOYEE_DOCUMENT_FILESIZE"] = 'Filesize';
+$lang["EMPLOYEE_DOCUMENT_FILES"] = 'Files';
 
 $lang["EMPLOYEE_DOCUMENT_HELP"] = 'manual_mitarbeiter_aktenmappen.pdf';
 
