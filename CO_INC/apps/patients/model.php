@@ -877,6 +877,16 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 			$patientsAccessModel = new PatientsAccessModel();
 			$patientsAccessModel->setDetails($id_new,$session->uid,"");
 		}
+		
+		// documents_folder
+		$patientsDocumentsModel = new PatientsDocumentsModel();
+		$qd ="select id FROM " . CO_TBL_PATIENTS_DOCUMENTS_FOLDERS . " where pid = '$id' and bin='0'";
+		$resultd = mysql_query($qd, $this->_db->connection);
+		while ($rowd = mysql_fetch_array($resultd)) {
+			$did = $rowd["id"];
+			$patientsDocumentsModel->createDuplicate($did,$id_new);
+		}
+		
 			
 		// processes
 		/*$q = "SELECT id FROM " . CO_TBL_PATIENTS_GRIDS . " WHERE pid = '$id' and bin='0'";
