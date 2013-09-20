@@ -2,13 +2,13 @@
 <div style="position: absolute; width: 100%; height: 30px; overflow: hidden">
     <div id="projectsFoldersSubTabs" class="contentSubTabs" style="position: absolute;">
 	<ul>
-		<li><span class="left<?php if($view == 'Timeline') { echo ' active';}?>" rel="Timeline">Zeitraum</span></li>
-		<li><span class="<?php if($view == 'Management') { echo ' active';}?>" rel="Management">Leitung</span></li>
-        <li><span class="right<?php if($view == 'Status') { echo ' active';}?>" rel="Status">Status</span></li>
+		<li><span class="left<?php if($view == 'Timeline') { echo ' active';}?>" rel="Timeline"><?php echo $lang["PROJECT_FOLDER_TAB_MULTIVIEW_TIME"];?></span></li>
+		<li><span class="<?php if($view == 'Management') { echo ' active';}?>" rel="Management"><?php echo $lang["PROJECT_FOLDER_TAB_MULTIVIEW_MANAGEMENT"];?></span></li>
+        <li><span class="right<?php if($view == 'Status') { echo ' active';}?>" rel="Status"><?php echo $lang["PROJECT_FOLDER_TAB_MULTIVIEW_STATUS"];?></span></li>
 	</ul>
 </div>
     
-   <div style="position: absolute; left: 225px; top: 2px;">
+<div style="position: absolute; left: 225px; top: 2px;">
 <table border="0" cellspacing="0" cellpadding="0" class="timeline-legend">
     <tr>
         <td class="barchart_color_planned"><span><?php echo $lang["GLOBAL_STATUS_PLANNED"];?></span></td>
@@ -70,7 +70,7 @@
 		$now = "";
 		$bg = "#b2b2b2";
 		if($yo["week"] != "") {
-			$week = '<div style="position: absolute; top: -15px; width: 45px; color: #000; text-align: left;">KW ' . $yo["week"] . '</div>';
+			$week = '<div style="position: absolute; top: -15px; width: 45px; color: #000; text-align: left;">'.$lang["GLOBAL_WEEK_SHORT"].' ' . $yo["week"] . '</div>';
 		}
 		if($yo["month"] != "") {
 			$month = '<div style="position: absolute; top: -30px; width: 45px; color: #000; text-align: left;">' . $yo["month"] . '</div>';

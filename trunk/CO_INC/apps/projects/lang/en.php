@@ -14,6 +14,9 @@ $lang["PROJECT_ACTION_NEW"] = 'new Project';
 // Folder Right
 $lang["PROJECT_FOLDER_TAB_PROJECTS"] = 'Projects';
 $lang["PROJECT_FOLDER_TAB_MULTIVIEW"] = 'Multi View';
+$lang["PROJECT_FOLDER_TAB_MULTIVIEW_TIME"] = 'Schedule';
+$lang["PROJECT_FOLDER_TAB_MULTIVIEW_MANAGEMENT"] = 'Managers';
+$lang["PROJECT_FOLDER_TAB_MULTIVIEW_STATUS"] = 'Status';
 $lang["PROJECT_FOLDER_TAB_STATUS"] = 'Performance';
 
 $lang["PROJECT_FOLDER_PROJECTS_CREATED"] = 'Total Projects';

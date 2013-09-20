@@ -14,6 +14,9 @@ $lang["PROJECT_ACTION_NEW"] = 'neues Projekt anlegen';
 // Folder Right
 $lang["PROJECT_FOLDER_TAB_PROJECTS"] = 'Projektliste';
 $lang["PROJECT_FOLDER_TAB_MULTIVIEW"] = 'Multiprojektübersicht';
+$lang["PROJECT_FOLDER_TAB_MULTIVIEW_TIME"] = 'Zeitraum';
+$lang["PROJECT_FOLDER_TAB_MULTIVIEW_MANAGEMENT"] = 'Leitung';
+$lang["PROJECT_FOLDER_TAB_MULTIVIEW_STATUS"] = 'Status';
 $lang["PROJECT_FOLDER_TAB_STATUS"] = 'Ordnerstatus';
 
 $lang["PROJECT_FOLDER_PROJECTS_CREATED"] = 'Projekte insgesamt';
