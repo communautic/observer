@@ -224,12 +224,15 @@ class PatientsDocumentsModel extends PatientsModel {
 		}
    }
 	 
-	function createDuplicate($id) {
+	function createDuplicate($id,$newParent=0) {
 		global $session, $lang;
 		
 		$now = gmdate("Y-m-d H:i:s");
-		
-		$q = "INSERT INTO " . CO_TBL_PATIENTS_DOCUMENTS_FOLDERS . " (pid,title,created_date,created_user,edited_date,edited_user) SELECT pid,CONCAT(title,' " . $lang["GLOBAL_DUPLICAT"]. "'),'$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_PATIENTS_DOCUMENTS_FOLDERS . " where id='$id'";
+		if($newParent != 0) {
+			$q = "INSERT INTO " . CO_TBL_PATIENTS_DOCUMENTS_FOLDERS . " (pid,title,created_date,created_user,edited_date,edited_user) SELECT '$newParent',title,'$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_PATIENTS_DOCUMENTS_FOLDERS . " where id='$id'";
+		} else {
+			$q = "INSERT INTO " . CO_TBL_PATIENTS_DOCUMENTS_FOLDERS . " (pid,title,created_date,created_user,edited_date,edited_user) SELECT pid,CONCAT(title,' " . $lang["GLOBAL_DUPLICAT"]. "'),'$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_PATIENTS_DOCUMENTS_FOLDERS . " where id='$id'";
+		}
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
 		
