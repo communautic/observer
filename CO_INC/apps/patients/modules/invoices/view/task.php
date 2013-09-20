@@ -2,7 +2,7 @@
 	<table width="530" border="0" cellpadding="0" cellspacing="0">
       <tr>
         <td style="width: 215px; padding: 6px 0;">
-            <span class="bold" style="margin-left: 7px;"><?php echo $i;?>. Sitzung</span><span class="text11"> (<?php echo $value->item_date;?>)</span></td>
+            <span class="bold" style="margin-left: 7px;"><?php echo $i;?>. <?php echo $lang["PATIENT_TREATMENT_GOALS_SINGUAL"];?></span><span class="text11"> (<?php echo $value->item_date;?>)</span></td>
         <td class="text11" style="width: 157px; padding: 7px 0 4px 0;">
             <?php 
 			foreach($value->type as $t) {
