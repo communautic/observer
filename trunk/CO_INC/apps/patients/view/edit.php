@@ -25,8 +25,8 @@
 <?php if($patient->showCheckout) { ?>
 <table id="checkedOut" border="0" cellpadding="0" cellspacing="0" class="table-content" style="background-color: #eb4600">
 	<tr>
-		<td class="tcell-left text11"><strong><span><span>Warnung</span></span></strong></td>
-		<td class="tcell-right"><strong>Dieser Inhaltsbereich wird aktuell bearbeitet von: <?php echo($patient->checked_out_user_text);?></strong></td>
+		<td class="tcell-left text11"><strong><span><span><?php echo $lang["GLOBAL_ALERT"];?></span></span></strong></td>
+		<td class="tcell-right"><strong><?php echo $lang["GLOBAL_CONTENT_EDITED_BY"];?> <?php echo($patient->checked_out_user_text);?></strong></td>
     </tr>
     <tr>
 		<td class="tcell-left text11">&nbsp;</td>
@@ -64,7 +64,12 @@
     
   </tr>
 </table>
-<input name="coo" type="hidden" class="bg" value="<?php echo($patient->coo);?>" />
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+  <tr>
+    <td class="tcell-left-shorter text11"><span class="<?php if($patient->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["PATIENT_COO"];?></span></span></td>
+    <td class="tcell-right-nopadding"><?php if($patient->canedit) { ?><input name="coo" type="text" class="bg" value="<?php echo($patient->coo);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $patient->coo . '</span>'); } ?></td>
+  </tr>
+</table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 	  <td class="tcell-left text11"><span class="<?php if($patient->canedit) { ?>content-nav showDialog<?php } ?>" request="getPatientDialog" field="patientsinsurance" append="0" sql="insurance"><span><?php echo $lang["PATIENT_INSURANCE"];?></span></span></td>

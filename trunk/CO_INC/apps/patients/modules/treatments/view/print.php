@@ -111,7 +111,7 @@ if($value->status == 1) {
             <td class="fourCols-one"><?php if($i == 1) { echo $lang["PATIENT_TREATMENT_PLAN"]; }?>&nbsp;</td>
             <td class="fourCols-two"><?php echo $img;?></td>
             <td class="fourCols-three greybg">&nbsp;</td>
-            <td class="fourCols-four greybg"><?php echo($value->title);?></td>
+            <td class="fourCols-four greybg"><?php echo $i;?>. <?php echo $lang["PATIENT_TREATMENT_GOALS_SINGUAL"];?></td>
         </tr>
         <?php if(!empty($value->type)) { ?>
         <tr>

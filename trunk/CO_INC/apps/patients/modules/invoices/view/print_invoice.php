@@ -31,7 +31,7 @@
 		$checked = '';
 		if($value->status == 1) { ?>
       <tr>
-        <td width="20%" style="border-bottom:1px solid #ccc; padding: 6px 0;"><span style="margin-left: 7px;"><?php echo $i;?>. Sitzung</span></td>
+        <td width="20%" style="border-bottom:1px solid #ccc; padding: 6px 0;"><span style="margin-left: 7px;"><?php echo $i;?>. <?php echo $lang["PATIENT_TREATMENT_GOALS_SINGUAL"];?></span></td>
         <td style="border-bottom:1px solid #ccc; padding: 8px 0;"><span class="smalltext" style="line-height: 15px;"> (<?php echo $value->item_date;?>)</span></td>
         <td style="border-bottom:1px solid #ccc; padding: 8px 0;" class="smalltext"><?php foreach($value->type as $t) { echo '<span style="line-height: 15px;">' . $t['positionstext'] . ' ' . $t['shortname'] . '</span><br />'; } ?></td>
         <td style="border-bottom:1px solid #ccc; padding: 8px 0;" class="smalltext"><?php foreach($value->type as $t) { echo '<span style="line-height: 15px;">' . $t['minutes'] . 'min.</span><br />'; }?></td>

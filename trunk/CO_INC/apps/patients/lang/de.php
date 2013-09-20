@@ -30,9 +30,9 @@ $lang["PATIENT_CONTACT_EMAIL"] = 'E-mail';
 $lang["PATIENT_INSURANCE"] = 'Versicherung';
 $lang["PATIENT_INSURANCE_NUMBER"] = 'Versicherungsnummer';
 $lang["PATIENT_INSURANCE_ADDITIONAL"] = 'Zusatzversicherung';
-$lang["PATIENT_DESCRIPTION"] = 'Historie';
+$lang["PATIENT_DESCRIPTION"] = 'Notiz';
 $lang["PATIENT_DOB"] = 'Geburtsdatum';
-$lang["PATIENT_COO"] = 'Nationalität';
+$lang["PATIENT_COO"] = 'Beruf';
 
 $lang["PATIENT_HANDBOOK"] = 'Patientenakt';
 
