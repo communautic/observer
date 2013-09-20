@@ -9,6 +9,7 @@ $lang["CLIENT_DOCUMENT_DESCRIPTION"] = 'Description';
 $lang["CLIENT_DOCUMENT_UPLOAD"] = 'File / Upload';
 $lang["CLIENT_DOCUMENT_FILENAME"] = 'Filename/Format';
 $lang["CLIENT_DOCUMENT_FILESIZE"] = 'Filesize';
+$lang["CLIENT_DOCUMENT_FILES"] = 'Files';
 
 $lang["CLIENT_DOCUMENT_HELP"] = 'manual_kunden_aktenmappen.pdf';
 

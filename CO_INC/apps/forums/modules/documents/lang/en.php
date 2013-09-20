@@ -9,6 +9,7 @@ $lang["FORUM_DOCUMENT_DESCRIPTION"] = 'Description';
 $lang["FORUM_DOCUMENT_UPLOAD"] = 'File / Upload';
 $lang["FORUM_DOCUMENT_FILENAME"] = 'Filename/Format';
 $lang["FORUM_DOCUMENT_FILESIZE"] = 'Filesize';
+$lang["FORUM_DOCUMENT_FILES"] = 'Files';
 
 $lang["FORUM_DOCUMENT_HELP"] = 'manual_foren_aktenmappen.pdf';
 
