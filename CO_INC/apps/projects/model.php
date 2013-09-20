@@ -2695,7 +2695,7 @@ class ProjectsModel extends Model {
 					$r[] = $rows;
 				}
 				// Documents
-				$qp = "SELECT b.id,CONVERT(a.filename USING latin1) as title FROM " . CO_TBL_PROJECTS_DOCUMENTS . " as a, " . CO_TBL_PROJECTS_DOCUMENTS_FOLDERS . " as b WHERE b.pid = '$pid' and a.did = b.id and a.bin = '0' and b.bin = '0' $sql and a.filename like '%$term%' ORDER BY a.filename";
+				$qp = "SELECT b.id,CONVERT(a.filename USING latin1) as title FROM " . CO_TBL_PROJECTS_DOCUMENTS . " as a, " . CO_TBL_PROJECTS_DOCUMENTS_FOLDERS . " as b WHERE b.pid = '$pid' and a.did = b.id and a.bin = '0' and b.bin = '0' and a.filename like '%$term%' ORDER BY a.filename";
 				$resultp = mysql_query($qp, $this->_db->connection);
 				while($rowp = mysql_fetch_array($resultp)) {
 					$rows['value'] = htmlspecialchars_decode($rowp['title']);
