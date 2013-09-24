@@ -195,8 +195,11 @@ class ProjectsControllingModel extends ProjectsModel {
 				
 				$chart = $this->getChart($id, 'tasks');
 				$tasks = $chart["real"];
-				
-				$chart["real"] = round(($timeing+$tasks)/2,0);
+				if($tasks == 0) {
+						$chart["real"] = round($timeing);
+				} else {
+					$chart["real"] = round(($timeing+$tasks)/2,0);
+				}
 				$chart["title"] = $lang["PROJECT_CONTROLLING_STABILITY"];
 				$chart["img_name"] = "p_" . $id . "_stability.png";
 				$chart["url"] = 'https://chart.googleapis.com/chart?chs=150x90&cht=gm&chd=t:' . $chart["real"];
