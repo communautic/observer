@@ -70,7 +70,7 @@
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
   <tr>
     <td class="tcell-left-inactive text11"><span><span>Kosten</span></span></td>
-    <td class="tcell-right-inactive"><?php echo $lang['GLOBAL_CURRENCY_EURO'];?> <span id="totalcosts"><?php echo $treatment->totalcosts;?></span></td>
+    <td class="tcell-right-inactive"><?php echo CO_DEFAULT_CURRENCY;?> <span id="totalcosts"><?php echo $treatment->totalcosts;?></span></td>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">

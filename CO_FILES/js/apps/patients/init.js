@@ -461,6 +461,16 @@ function patientsApplication(name) {
 		var obj = getCurrentModule();
 		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 	}
+	
+	this.inlineDatepickerOnClose = function(dp) {
+		if (dp.name == 'startdate'){
+			var start = $("#patients input[name='startdate']").val();
+			var end = $("#patients input[name='enddate']").val();
+			if(Date.parse(end) < Date.parse(dp.value)) {
+				$("#patients input[name='enddate']").val(dp.value)
+			}
+		}
+	}
 
 
 	this.manageCheckpoint = function(action,date) {
@@ -593,6 +603,16 @@ function patientsFolders(name) {
 	this.actionLoadTab = function(what) {
 		var id = $("#patients").data("first");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/patients&request=get'+what+'&id='+id, success: function(data){
+			$('#patientsFoldersTabsContent').empty().html(data.html);
+			initPatientsContentScrollbar()
+			}
+		});
+	}
+	
+	this.actionLoadSubTab = function(view) {
+		var id = $("#patients").data("first");
+		var what = $('#patientsFoldersTabs ul.contentTabsList span[class=active]').attr('rel');
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/patients&request=get'+what+'&view='+view+'&id='+id, success: function(data){
 			$('#patientsFoldersTabsContent').empty().html(data.html);
 			initPatientsContentScrollbar()
 			}
@@ -914,6 +934,19 @@ $(document).ready(function() {
 		$("#patients2-outer > h3").trigger('click', [id]);
 	});
 	
+	$(document).on('click', '.loadInvoice', function(e) {
+		e.stopPropagation();
+		var obj = getCurrentModule();
+		/*if(confirmNavigation()) {
+			formChanged = false;
+			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+		}*/
+		var fid = $("#patients").data("first");
+		var pid = $(this).attr("pid");
+		var id = $(this).attr("rel");
+		externalLoadThreeLevels('invoices',fid,pid,id,'patients');
+	});
+	
 	$(document).on('click', 'a.listmemberInsurance', function(e) {
 		e.preventDefault();
 		var ele = $(this);
@@ -950,6 +983,17 @@ $(document).ready(function() {
 		var id = $(this).attr("rel");
 		var obj = getCurrentModule();
 		obj.addParentLink(id);
+	});
+	
+	$(document).on('click', '#calculateRevenue', function(e) {
+		e.preventDefault();
+		var who = $('#calcWho').val();
+		var start = $('#calcStart').val();
+		var end = $('#calcEnd').val();
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients&request=getFolderDetailsRevenueResults&who=" + who + "&start=" + start + "&end=" + end, cache: false, success: function(data){
+			$('#revenueResult').html(data.html);
+			}
+		});
 	});
 
 });

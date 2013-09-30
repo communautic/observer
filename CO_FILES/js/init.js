@@ -1652,6 +1652,64 @@ $(document).ready(function() {
 		});
 	});
 	
+	$('input.inlineSearch').livequery(function() {
+		var app = $(this).attr('rel');
+		$(this).autocomplete({
+			appendTo: '#'+app,
+			position: {my: "left top", at: "left bottom", collision: "none"},
+			source: '?path=apps/' + app + '&request=getInlineSearch',
+			//minLength: 2,
+			select: function(event, ui) {
+					/*var obj = getCurrentModule();
+					var cid = $('#'+app+' input[name="id"]').val()
+					obj.checkIn(cid);
+					var href = ui.item.id.split(",");
+					externalLoadThreeLevels(href[0],href[1],href[2],href[3],href[4]);*/
+					$('#calcWho').val(ui.item.id);
+			},
+			close: function(event, ui) {
+				//$(this).val("");
+			}
+		});
+	});
+	
+	$('.inlineDatepicker').livequery(function() { 
+		$(this).datepicker({ dateFormat: 'dd.mm.yy', showButtonPanel: true, changeMonth: true, changeYear: true, yearRange: 'c-5:c+5', showAnim: 'slide',
+			beforeShow: function(input,inst) {
+				if(input.name == 'enddate') {
+					$(this).datepicker('option', 'minDate', new Date(Date.parse($("input[name='startdate']").val())));
+				}
+				setTimeout(function() {
+					var d = new Date();
+					var m = d.getMonth()+1;
+					var y = d.getFullYear();
+					var is = new Date(Date.parse(input.value));
+					var month = is.getMonth()+1;
+					var year = is.getFullYear();
+					if(m == month && y == year ) {
+						$('button.ui-datepicker-current').addClass('disabled');
+					}
+				}, 1 );
+			},
+			onChangeMonthYear: function(year,month, inst ) {
+				setTimeout(function() {
+					var d = new Date();
+					var m = d.getMonth()+1;
+					var y = d.getFullYear();
+					if(m == month && y == year ) {
+						$('button.ui-datepicker-current').addClass('disabled');
+					}
+				}, 1 );
+			},
+			onClose: function(dateText, inst) {
+				var app = getCurrentApp();
+				var object = window[app];
+				object.inlineDatepickerOnClose(this);
+				//setTimeout(function() { inst.input.click(); }, 5000);
+	   		}
+ 		});
+	});
+	
 });
 
 function confirmNavigation() {

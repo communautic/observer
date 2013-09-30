@@ -58,6 +58,73 @@ class Patients extends Controller {
 			return $system->json_encode($data);
 		}
 	}
+	
+	
+	function getFolderDetailsList($id) {
+		global $lang, $system;
+		if($arr = $this->model->getFolderDetails($id)) {
+			$folder = $arr["folder"];
+			$patients = $arr["patients"];
+			ob_start();
+			include 'view/folder_edit_list.php';
+			$data["html"] = ob_get_contents();
+			ob_end_clean();
+			$data["access"] = $arr["access"];
+			return $system->json_encode($data);
+		} else {
+			ob_start();
+			include CO_INC .'/view/default.php';
+			$data["html"] = ob_get_contents();
+			ob_end_clean();
+			return $system->json_encode($data);
+		}
+	}
+	
+	
+	function getFolderDetailsInvoices($id,$view) {
+		global $date, $lang, $system;
+		if($arr = $this->model->getFolderDetailsInvoices($id,$view)) {
+		$invoices = $arr["invoices"];
+		ob_start();
+			include('view/folder_edit_invoices.php');
+			$data["html"] = ob_get_contents();
+		ob_end_clean();
+		$data["access"] = $arr["access"];
+		return $system->json_encode($data);
+		} else {
+			ob_start();
+			include CO_INC .'/view/default.php';
+			$data["html"] = ob_get_contents();
+			ob_end_clean();
+			return $system->json_encode($data);
+		}
+	}
+	
+	function getFolderDetailsRevenue($id) {
+		global $date, $lang, $system;
+		$start = new DateTime("first day of last month");
+		$end = new DateTime("last day of last month");
+		$start_date = $start->format('d.m.Y');
+		$end_date = $end->format('d.m.Y');
+		ob_start();
+			include('view/folder_edit_revenue.php');
+			$data["html"] = ob_get_contents();
+		ob_end_clean();
+		return json_encode($data);
+	}
+	
+	function getFolderDetailsRevenueResults($who,$start,$end) {
+		global $date, $lang, $system;
+		$arr = $this->model->getFolderDetailsRevenueResults($who,$start,$end);
+		$calctotal = $arr["calctotal"];
+		$invoices = $arr["invoices"];
+		ob_start();
+			include('view/folder_edit_revenue_results.php');
+			$data["html"] = ob_get_contents();
+		ob_end_clean();
+		$data["access"] = $arr["access"];
+		return json_encode($data);
+	}
 
 
 	function printFolderDetails($id, $t) {
@@ -657,6 +724,11 @@ class Patients extends Controller {
 
 	function getGlobalSearch($term) {
 		$search = $this->model->getGlobalSearch($term);
+		return $search;
+	}
+	
+	function getInlineSearch($term) {
+		$search = $this->model->getInlineSearch($term);
 		return $search;
 	}
 	

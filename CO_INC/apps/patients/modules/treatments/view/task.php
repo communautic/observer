@@ -45,7 +45,7 @@
     <tr>
          <td width="12"></td>
 		<td class="tcell-left-inactive text11"><span><span>Kosten</span></span></td>
-		<td class="tcell-right-inactive"><?php echo $lang['GLOBAL_CURRENCY_EURO'];?> <span id="costs_<?php echo $value->id;?>" class="currency"><?php echo number_format($value->costs,2,',','.');;?></span></td>
+		<td class="tcell-right-inactive"><?php echo CO_DEFAULT_CURRENCY;?> <span id="costs_<?php echo $value->id;?>" class="currency"><?php echo number_format($value->costs,2,',','.');;?></span></td>
     </tr>
     </table>
 

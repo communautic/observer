@@ -87,7 +87,7 @@ class PatientsInvoices extends Patients {
 					$title = $lang["PATIENT_INVOICE_TITLE"] . ' ' . $invoice->title;
 				}
 				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_INVOICE"];
-				$GLOBALS['BANKING'] = CO_INVOICE_FOOTER;
+				$GLOBALS['BANKING'] = $invoice->m_bank . ' | BLZ: ' . $invoice->m_sort_code . ' | Kontonr.: ' . $invoice->m_account_number . ' | IBAN: ' . $invoice->m_iban . ' | BIC: ' . $invoice->m_bic;
 				switch($t) {
 					case "html":
 						$this->printHTML($title,$html);

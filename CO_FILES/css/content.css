@@ -430,3 +430,18 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#949494', end
 span.coCheckbox { display: inline-block; width: 25px; height: 25px;  background: url(../img/icons.png) no-repeat -400px -59px; }
 span.coCheckbox.active { background-position: -440px -59px; }
 span.coCheckbox:hover { cursor: pointer; }
+
+
+input.inlineDatepicker {
+    background-color: #FFFFFF;
+    border: 1px solid #494949;
+    font-size: 11px !important;
+    margin: 0;
+	border-radius: 8px;
+    width: 125px;
+	padding-left: 20px;
+	height: 18px;
+}
+
+#calculateRevenue:hover { cursor: pointer; }
+.contentArrow { width: 17px; height: 7px; background: url(../img/icons.png) no-repeat -400px 0px; display: inline-block; }

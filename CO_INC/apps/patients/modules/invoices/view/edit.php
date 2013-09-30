@@ -83,11 +83,12 @@
 	$i = 1;
 	foreach($task as $value) { 
 		$checked = '';
-		if($value->status == 1) {
+		if($value->status == 1  && is_array($value->type)) {
 			include("task.php");
 		}
 		$i++;
-	 } ?>
+	 } 
+	?>
 	 <?php if($invoice->discount > 0) { ?>
 		 <div style="border-bottom: 1px solid #ccc;">
             <table width="530" border="0" cellpadding="0" cellspacing="0">
@@ -96,7 +97,7 @@
                     <span class="text13 bold" style="margin-left: 7px;">&nbsp;</span></td>
                 <td class="text11" style="width: 157px; padding: 7px 0 4px 0;">&nbsp;</td>
                      <td class="text11" style="padding: 7px 0 4px 0;">-<?php echo $invoice->discount;?>% Rabatt</td>
-                    <td class="text11" style="width: 88px; text-align: right; border-left: 1px solid #ccc; padding: 7px 0 4px 0;">-<?php echo $lang['GLOBAL_CURRENCY_EURO'] . ' ' . $invoice->discount_costs;?> &nbsp; &nbsp; </td>
+                    <td class="text11" style="width: 88px; text-align: right; border-left: 1px solid #ccc; padding: 7px 0 4px 0;">-<?php echo CO_DEFAULT_CURRENCY . ' ' . $invoice->discount_costs;?> &nbsp; &nbsp; </td>
               </tr>
             </table>
         </div>
@@ -109,7 +110,7 @@
         <td style="width: 215px; padding: 6px 0 4px 0;"><span class="bold" style="margin-left: 7px;">Gesamthonorar</span></td>
         <td class="text11" style="width: 157px; padding: 6px 0 4px 0;">&nbsp;</td>
              <td class="text11" style="padding: 6px 0 4px 0;">&nbsp;</td>
-            <td class="text11 bold" style="width: 88px; text-align: right; border-left: 1px solid #ccc; padding: 6px 0 4px 0;"><?php echo $lang['GLOBAL_CURRENCY_EURO'];?> <?php echo $invoice->totalcosts;?> &nbsp; &nbsp; </td>
+            <td class="text11 bold" style="width: 88px; text-align: right; border-left: 1px solid #ccc; padding: 6px 0 4px 0;"><?php echo CO_DEFAULT_CURRENCY;?> <?php echo $invoice->totalcosts;?> &nbsp; &nbsp; </td>
       </tr>
     </table>
 </div>

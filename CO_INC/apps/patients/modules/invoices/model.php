@@ -180,7 +180,7 @@ class PatientsInvoicesModel extends PatientsModel {
 		$array["current_user"] = $session->uid;
 		
 		$management_print = $this->getPatientField($array["pid"],'management');
-		$q = "SELECT lastname as m_lastname,firstname as m_firstname,title2 as m_title, phone1 as m_phone, email as m_email FROM co_users where id = '$management_print'";
+		$q = "SELECT lastname as m_lastname,firstname as m_firstname,title2 as m_title, phone1 as m_phone, email as m_email, bank_name as m_bank, sort_code as m_sort_code, account_number as m_account_number, bic as m_bic, iban as m_iban FROM co_users where id = '$management_print'";
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_fetch_array($result);
 		foreach($row as $key => $val) {
@@ -251,7 +251,7 @@ class PatientsInvoicesModel extends PatientsModel {
 		// get the tasks
 		$array['totalcosts'] = 0;
 		$task = array();
-		$q = "SELECT * FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where mid = '$id' and bin='0' ORDER BY item_date ASC";
+		$q = "SELECT * FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where status='1' and mid = '$id' and bin='0' ORDER BY item_date ASC";
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
 			foreach($row as $key => $val) {
