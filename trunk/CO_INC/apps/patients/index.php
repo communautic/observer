@@ -29,6 +29,22 @@ if (!empty($_GET['request'])) {
 		case 'getFolderDetails':
 			echo($patients->getFolderDetails($_GET['id']));
 		break;
+		case 'getFolderDetailsList':
+			echo($patients->getFolderDetailsList($_GET['id']));
+		break;
+		case 'getFolderDetailsInvoices':
+			$view = "Timeline";
+			if(!empty($_GET['view'])) {
+				$view = $_GET['view'];
+			}
+			echo($patients->getFolderDetailsInvoices($_GET['id'],$view));
+		break;
+		case 'getFolderDetailsRevenue':
+			echo($patients->getFolderDetailsRevenue($_GET['id']));
+		break;
+		case 'getFolderDetailsRevenueResults':
+			echo($patients->getFolderDetailsRevenueResults($_GET['who'],$_GET['start'],$_GET['end']));
+		break;
 		case 'setFolderOrder':
 			echo($patients->setSortOrder("patients-folder-sort",$_GET['folderItem']));
 		break;
@@ -181,6 +197,9 @@ if (!empty($_GET['request'])) {
 		break;
 		case 'getGlobalSearch':
 			echo($patients->getGlobalSearch($system->checkMagicQuotesTinyMCE($_GET['term'])));
+		break;
+		case 'getInlineSearch':
+			echo($patients->getInlineSearch($system->checkMagicQuotesTinyMCE($_GET['term'])));
 		break;
 		case 'getInsuranceContext':
 			echo($patients->getInsuranceContext($_GET['id'],$_GET['field'],$_GET['edit']));

@@ -12,6 +12,18 @@ $lang["PATIENT_NEW"] = 'Neuer Patient';
 $lang["PATIENT_ACTION_NEW"] = 'neuen Patienten anlegen';
 
 // Patient Right
+$lang["PATIENT_FOLDER_TAB_LIST"] = 'Patientenliste';
+$lang["PATIENT_FOLDER_TAB_INVOICES"] = 'Rechnungsarchiv';
+$lang["PATIENT_FOLDER_TAB_INVOICES_DATE"] = 'Datum';
+$lang["PATIENT_FOLDER_TAB_INVOICES_PATIENT"] = 'Patient';
+$lang["PATIENT_FOLDER_TAB_INVOICES_STATUS"] = 'Status';
+$lang["PATIENT_FOLDER_TAB_REVENUE"] = 'Umsatzberechnung';
+$lang["PATIENT_FOLDER_TAB_FILTER"] = 'Datenfilter';
+$lang["PATIENT_FOLDER_TAB_THERAPIST"] = 'Betreuer';
+$lang["PATIENT_FOLDER_TAB_CALCULATE"] = 'berechnen';
+$lang["PATIENT_FOLDER_TAB_INVOICES"] = 'Rechnungen';
+$lang["PATIENT_FOLDER_TAB_REVENUE"] = 'Umsatzergebnis';
+
 $lang["PATIENT_TITLE"] = 'Patient';
 
 $lang["PATIENT_STATUS_PLANNED"] = 'erfasst';

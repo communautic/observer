@@ -1,4 +1,4 @@
-<table width="100%" class="standard">
+<table width="100%" class="standard" style="margin-top: 20px;">
 	<tr>
 		<td style="text-align: right;"><p class="smalltext" style="line-height: 15px;"><?php echo($invoice->m_title)?> <?php echo($invoice->m_firstname)?> <?php echo($invoice->m_lastname)?></p>
         <p class="smalltext" style="line-height: 15px;"><?php echo($invoice->m_phone)?></p>
@@ -10,12 +10,15 @@
 </table>
 <table width="100%" class="standard">
     <tr>
-        <td><p style="line-height: 20px;"><?php echo($invoice->ctitle)?> <?php echo($invoice->title2)?> <?php echo($invoice->patient);?></p>
-        <p style="line-height: 20px;"><?php echo($invoice->address_line1)?></p>
-        <p style="line-height: 20px;"><?php echo($invoice->address_postcode)?> <?php echo($invoice->address_town)?></p></td>
+        <td><p style="line-height: 25px;"><?php echo($invoice->ctitle)?> <?php echo($invoice->title2)?> <?php echo($invoice->patient);?></p>
+        <p style="line-height: 25px;"><?php echo($invoice->address_line1)?></p>
+        <p style="line-height: 25px;"><?php echo($invoice->address_postcode)?> <?php echo($invoice->address_town)?></p></td>
         <td valign="bottom" style="text-align: right;">Telfs, am <?php echo date('d.m.Y');?></td>
     </tr>
 </table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
@@ -29,13 +32,13 @@
 	$i = 1;
 	foreach($task as $value) { 
 		$checked = '';
-		if($value->status == 1) { ?>
+		if($value->status == 1 && is_array($value->type)) { ?>
       <tr>
         <td width="20%" style="border-bottom:1px solid #ccc; padding: 6px 0;"><span style="margin-left: 7px;"><?php echo $i;?>. <?php echo $lang["PATIENT_TREATMENT_GOALS_SINGUAL"];?></span></td>
-        <td style="border-bottom:1px solid #ccc; padding: 8px 0;"><span class="smalltext" style="line-height: 15px;"> (<?php echo $value->item_date;?>)</span></td>
-        <td style="border-bottom:1px solid #ccc; padding: 8px 0;" class="smalltext"><?php foreach($value->type as $t) { echo '<span style="line-height: 15px;">' . $t['positionstext'] . ' ' . $t['shortname'] . '</span><br />'; } ?></td>
-        <td style="border-bottom:1px solid #ccc; padding: 8px 0;" class="smalltext"><?php foreach($value->type as $t) { echo '<span style="line-height: 15px;">' . $t['minutes'] . 'min.</span><br />'; }?></td>
-        <td style="padding: 8px 0; text-align: right; border-left: 1px solid #ccc; border-bottom: 1px solid #ccc;" class="smalltext"><?php foreach($value->type as $t) { echo '<span style="line-height: 15px;">' . $lang['GLOBAL_CURRENCY_EURO'] . ' ' . $t['costs'] . ' &nbsp; &nbsp; </span><br />'; } ?> </td>
+        <td style="border-bottom:1px solid #ccc; padding: 8px 0;"><span class="smalltext" style="line-height: 20px;"> (<?php echo $value->item_date;?>)</span></td>
+        <td style="border-bottom:1px solid #ccc; padding: 8px 0;" class="smalltext"><?php foreach($value->type as $t) { echo '<span style="line-height: 20px;">' . $t['positionstext'] . ' ' . $t['shortname'] . '</span><br />'; } ?></td>
+        <td style="border-bottom:1px solid #ccc; padding: 8px 0;" class="smalltext"><?php foreach($value->type as $t) { echo '<span style="line-height: 20px;">' . $t['minutes'] . 'min.</span><br />'; }?></td>
+        <td style="padding: 8px 0; text-align: right; border-left: 1px solid #ccc; border-bottom: 1px solid #ccc;" class="smalltext"><?php foreach($value->type as $t) { echo '<span style="line-height: 20px;">' . CO_DEFAULT_CURRENCY . ' ' . $t['costs'] . ' &nbsp; &nbsp; </span><br />'; } ?> </td>
     </tr>
    
 <?php }
@@ -47,7 +50,7 @@
                 <td style="border-bottom:1px solid #ccc; padding: 7px 0 4px 0;">&nbsp;</td>
                 <td style="border-bottom:1px solid #ccc; padding: 7px 0 4px 0;">&nbsp;</td>
 				<td style="border-bottom:1px solid #ccc; padding: 7px 0 4px 0;">-<?php echo $invoice->discount;?>% Rabatt</td>
-				<td style="border-bottom:1px solid #ccc; text-align: right; border-left: 1px solid #ccc; padding: 7px 0 4px 0;" class="smalltext">-<?php echo $lang['GLOBAL_CURRENCY_EURO'] . ' ' . $invoice->discount_costs;?> &nbsp; &nbsp; </td>
+				<td style="border-bottom:1px solid #ccc; text-align: right; border-left: 1px solid #ccc; padding: 7px 0 4px 0;" class="smalltext">-<?php echo CO_DEFAULT_CURRENCY . ' ' . $invoice->discount_costs;?> &nbsp; &nbsp; </td>
 </tr>
 	 <?php }?>
       <tr style="background: #e5e5e5;">
@@ -55,7 +58,7 @@
         <td class="text11" style="padding: 6px 0 4px 0;">&nbsp;</td>
         <td class="text11" style="padding: 6px 0 4px 0;">&nbsp;</td>
              <td class="text11" style="padding: 6px 0 4px 0;">&nbsp;</td>
-          <td class="smalltext bold" style="text-align: right; border-left: 1px solid #ccc; padding: 6px 0 4px 0;"><?php echo $lang['GLOBAL_CURRENCY_EURO'];?> <?php echo $invoice->totalcosts;?> &nbsp; &nbsp; </td>
+          <td class="smalltext bold" style="text-align: right; border-left: 1px solid #ccc; padding: 6px 0 4px 0;"><?php echo CO_DEFAULT_CURRENCY;?> <?php echo $invoice->totalcosts;?> &nbsp; &nbsp; </td>
       </tr>
 </table>
 <p>&nbsp;</p>

@@ -221,7 +221,163 @@ class PatientsModel extends Model {
 		$arr = array("folder" => $folder, "patients" => $patients, "access" => $access);
 		return $arr;
    }
-
+   
+   
+   
+     function getFolderDetailsInvoices($id, $view) {
+		global $session, $contactsmodel, $patientsControllingModel, $lang;
+		
+		switch($view) {
+			case 'Timeline':
+				$order = "a.invoice_date DESC";
+			break;
+			case 'Patient':
+				$order = "patient ASC";
+			break;
+			case 'Status':
+				$order = "status_invoice DESC";
+			break;
+		}
+		
+		$q = "SELECT a.id,a.title,a.invoice_date,a.status_invoice, b.id as pid, b.management, CONCAT(c.lastname,' ',c.firstname) as patient FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE a.status='2' and a.pid=b.id and b.folder='$id' and b.cid=c.id and a.bin='0' and b.bin='0' ORDER BY " . $order;
+		
+		
+		$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result) < 1) {
+			return false;
+		}
+		while($row = mysql_fetch_array($result)) {
+		foreach($row as $key => $val) {
+			$array[$key] = $val;
+		}
+		$id = $array["id"];
+		$array["invoice_date"] = $this->_date->formatDate($array["invoice_date"],CO_DATE_FORMAT);
+		$array["management"] = $contactsmodel->getUserListPlain($array['management']);
+		
+		switch($array["status_invoice"]) {
+			case 2:
+				$array["status_invoice_class"] = 'barchart_color_finished';
+			break;
+			case 1:
+				$array["status_invoice_class"] = 'barchart_color_inprogress';
+				
+			break;
+			default:
+				$array["status_invoice_class"] = 'barchart_color_planned';
+		}
+		
+		// get the tasks
+		$array['totalcosts'] = 0;
+		$qt = "SELECT type FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where mid = '$id' and bin='0' ORDER BY item_date ASC";
+		$resultt = mysql_query($qt, $this->_db->connection);
+		$PatientsTreatmentsModel = new PatientsTreatmentsModel();
+		if(mysql_num_rows($resultt) > 0) {
+		while($rowt = mysql_fetch_array($resultt)) {
+			if($rowt["type"] == '') {
+				$costs = 0;
+			} else {
+				$costs = $PatientsTreatmentsModel->getTreatmentTypeCosts($rowt["type"]);
+			}
+			$array['totalcosts'] += $costs;
+		}
+		}
+		/*if($array['discount'] != 0) {
+			$array['discount_costs'] = ($array['totalcosts']/100)*$array['discount'];
+			$array['discount_costs'] = number_format($array['discount_costs'],2,',','.');
+			$array['totalcosts'] = $array['totalcosts']-(($array['totalcosts']/100)*$array['discount']);
+		}*/
+		$array['totalcosts'] = number_format($array['totalcosts'],2,',','.');
+		
+		
+		$invoices[] = new Lists($array);
+		
+		}
+		
+				
+		
+		
+		
+		$access = "guest";
+		  if($session->isSysadmin()) {
+			  $access = "sysadmin";
+		  }
+		
+		$arr = array("invoices" => $invoices, "access" => $access);
+		return $arr;
+   }
+	
+	
+	function getFolderDetailsRevenueResults($who,$start,$end) {
+		global $session, $contactsmodel, $patientsControllingModel, $lang;
+		
+		$start = $this->_date->formatDate($start);
+		$end = $this->_date->formatDate($end);
+		$calctotal = 0;
+		
+		$q = "SELECT a.id,a.title,a.invoice_date,a.status_invoice, b.id as pid, b.management, CONCAT(c.lastname,' ',c.firstname) as patient FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE b.management='$who' and a.invoice_date >= '$start' and a.invoice_date <= '$end' and a.status='2' and a.pid=b.id and b.cid=c.id and a.bin='0' and b.bin='0'";
+		
+		$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result) < 1) {
+			return false;
+		}
+		while($row = mysql_fetch_array($result)) {
+		foreach($row as $key => $val) {
+			$array[$key] = $val;
+		}
+		$id = $array["id"];
+		$array["invoice_date"] = $this->_date->formatDate($array["invoice_date"],CO_DATE_FORMAT);
+		$array["management"] = $contactsmodel->getUserListPlain($array['management']);
+		
+		switch($array["status_invoice"]) {
+			case 2:
+				$array["status_invoice_class"] = 'barchart_color_finished';
+			break;
+			case 1:
+				$array["status_invoice_class"] = 'barchart_color_inprogress';
+				
+			break;
+			default:
+				$array["status_invoice_class"] = 'barchart_color_planned';
+		}
+		
+		// get the tasks
+		$array['totalcosts'] = 0;
+		$qt = "SELECT type FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where mid = '$id' and bin='0' ORDER BY item_date ASC";
+		$resultt = mysql_query($qt, $this->_db->connection);
+		$PatientsTreatmentsModel = new PatientsTreatmentsModel();
+		if(mysql_num_rows($resultt) > 0) {
+		while($rowt = mysql_fetch_array($resultt)) {
+			if($rowt["type"] == '') {
+				$costs = 0;
+			} else {
+				$costs = $PatientsTreatmentsModel->getTreatmentTypeCosts($rowt["type"]);
+			}
+			$array['totalcosts'] += $costs;
+		}
+		}
+		/*if($array['discount'] != 0) {
+			$array['discount_costs'] = ($array['totalcosts']/100)*$array['discount'];
+			$array['discount_costs'] = number_format($array['discount_costs'],2,',','.');
+			$array['totalcosts'] = $array['totalcosts']-(($array['totalcosts']/100)*$array['discount']);
+		}*/
+		$calctotal += $array['totalcosts'];
+		$array['totalcosts'] = number_format($array['totalcosts'],2,',','.');
+		
+		$invoices[] = new Lists($array);
+		
+		}
+		$calctotal = number_format($calctotal,2,',','.');
+		
+		$access = "guest";
+		  if($session->isSysadmin()) {
+			  $access = "sysadmin";
+		  }
+		
+		$arr = array("calctotal" => $calctotal, "invoices" => $invoices, "access" => $access);
+		return $arr;
+	}
+	
+	
 
    /**
    * get details for the patient folder
@@ -1934,7 +2090,7 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 					$r[] = $rows;
 				}
 				// Documents
-				$qp = "SELECT b.id,CONVERT(a.filename USING latin1) as title FROM " . CO_TBL_PATIENTS_DOCUMENTS . " as a, " . CO_TBL_PATIENTS_DOCUMENTS_FOLDERS . " as b WHERE b.pid = '$pid' and a.did = b.id and a.bin = '0' and b.bin = '0' $sql and a.filename like '%$term%' ORDER BY a.filename";
+				$qp = "SELECT b.id,CONVERT(a.filename USING latin1) as title FROM " . CO_TBL_PATIENTS_DOCUMENTS . " as a, " . CO_TBL_PATIENTS_DOCUMENTS_FOLDERS . " as b WHERE b.pid = '$pid' and a.did = b.id and a.bin = '0' and b.bin = '0' and a.filename like '%$term%' ORDER BY a.filename";
 				$resultp = mysql_query($qp, $this->_db->connection);
 				while($rowp = mysql_fetch_array($resultp)) {
 					$rows['value'] = htmlspecialchars_decode($rowp['title']);
@@ -2181,6 +2337,34 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
    }
 
 
+	function getInlineSearch($term){
+		global $system, $session;
+		$num=0;
+		$access=" ";
+		if(!$session->isSysadmin()) {
+			$access = " and a.id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
+	  	}
+		
+		//$q = "SELECT a.id,CONCAT(b.lastname,' ',b.firstname) as label FROM " . CO_TBL_PATIENTS . " as a, co_users as b WHERE a.id != '$exclude' and a.cid=b.id and (lastname like '%$term%' or firstname like '%$term%') and  a.bin='0'" . $access ."ORDER BY lastname, firstname ASC";
+		
+		$q = "SELECT id,CONCAT(lastname,' ',firstname) as label FROM co_users WHERE (lastname like '%$term%' or firstname like '%$term%') and  bin='0'" . $access ."ORDER BY lastname, firstname ASC";
+		
+		$result = mysql_query($q, $this->_db->connection);
+		$num=mysql_affected_rows();
+		$rows = array();
+		$r = array();
+		/*while($r = mysql_fetch_assoc($result)) {
+			 $rows[] = $r;
+		}*/
+		while($row = mysql_fetch_array($result)) {
+			$rows['value'] = htmlspecialchars_decode($row['label']);
+			$rows['id'] = $row['id'];
+			$r[] = $rows;
+		}
+		return json_encode($r);
+	}
+	
+	
 	function getPatientsSearch($term,$exclude){
 		global $system, $session;
 		$num=0;
@@ -2301,7 +2485,7 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 
 		$reminders = "";
 		if($skip == 0) {
-			$q ="select b.folder,a.pid,a.id, a.title as text, CONCAT(c.lastname,' ',c.firstname) as title from " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE a.status_invoice='0' and a.pid = b.id and b.cid=c.id and a.bin = '0' and b.bin = '0'" . $access;
+			$q ="select b.folder,a.pid,a.id, a.title as text, CONCAT(c.lastname,' ',c.firstname) as title from " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE a.status='2' and a.status_invoice='0' and a.pid = b.id and b.cid=c.id and a.bin = '0' and b.bin = '0'" . $access;
 			$result = mysql_query($q, $this->_db->connection);
 			$reminders = "";
 			while ($row = mysql_fetch_array($result)) {

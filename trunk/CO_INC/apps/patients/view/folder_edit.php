@@ -7,7 +7,7 @@
 	</tr>
 </table>
 </div>
-<div class="ui-layout-content"><div class="scroll-pane">
+<div class="ui-layout-content"><div class="scroll-pane contentTabsStyle">
 <?php if($folder->access == "sysadmin") { ?>
 <form action="/" method="post" name="coform" class="<?php if($folder->canedit) { ?>coform <?php } ?>">
 <input type="hidden" id="path" name="path" value="<?php echo $this->form_url;?>">
@@ -16,27 +16,22 @@
 <input name="patientstatus" type="hidden" value="0" />
 </form>
 <?php } ?>
-<table border="0" cellpadding="0" cellspacing="0" class="table-content">
-	<tr>
-		<td class="tcell-left-inactive text11"><?php echo $lang["PATIENT_PATIENTS"];?></td>
-    <td class="tcell-right">&nbsp;</td>
-    </tr>
-</table>
-<?php
-if(is_array($patients)) {
-	foreach ($patients as $patient) { 
-	?>
-    <div class="loadPatient listOuter"  rel="<?php echo($patient->id);?>">
-    <div class="bold co-link listTitle"><?php echo($patient->title);?></div>
-    <div class="text11 listText"><div><?php echo($patient->status_text . " " . $patient->status_text_time . " " . $patient->status_date);?></div></div>
+<div id="patientsFoldersTabs" class="contentTabs">
+	<ul class="contentTabsList">
+		<li><span class="active" rel="FolderDetailsList"><?php echo $lang["PATIENT_FOLDER_TAB_LIST"];?></span></li>
+		<li><span rel="FolderDetailsInvoices"><?php echo $lang["PATIENT_FOLDER_TAB_INVOICES"];?></span></li>
+        <?php if($folder->access == "sysadmin") { ?>
+		<li><span rel="FolderDetailsRevenue"><?php echo $lang["PATIENT_FOLDER_TAB_REVENUE"];?></span></li>
+        <?php } ?>
+	</ul>
+    <div id="patientsFoldersTabsContent" class="contentTabsContent">
+    <?php include('folder_edit_list.php');?>
     </div>
-    <?php 
-	}
-}
-?>
+</div>
+
 </div>
 </div>
-<div>
+<div class="table-footer-outer">
 <table border="0" cellspacing="0" cellpadding="0" class="table-footer">
   <tr>
     <td class="left"><?php echo($lang["GLOBAL_FOOTER_STATUS"] . " " . $folder->today);?></td>
