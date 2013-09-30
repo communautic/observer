@@ -538,7 +538,6 @@ function contactsGroups(name) {
 									contactsActions(0);
 								} else {
 									contactsActions(1);
-									//$('#contacts1').find('input.filter').quicksearch('#contacts1 li');
 								}
 								$("#contacts1 ul:eq(1)").html(data.html);
 								var id = $("#contacts1 ul:eq(1) .module-click:eq(0)").attr("rel");
