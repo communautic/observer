@@ -67,7 +67,6 @@ function publishersloadModuleStart() {
 			  publishersActions(1);
 		  } else {
 			  publishersActions(0);
-			  $('#publishers1').find('input.filter').quicksearch('#publishers1 li');
 		  }
 		  var id = $("#publishers1 ul:eq(0) .module-click:eq(0)").attr("rel");
 		  $("#publishers").data("first",id);
@@ -185,7 +184,6 @@ $(document).ready(function() {
 						publishersActions(0);
 					} else {
 						publishersActions(1);
-						$('#publishers1').find('input.filter').quicksearch('#publishers1 li');
 					}
 				
 					if(passed_id === undefined) {
