@@ -271,7 +271,7 @@ class DesktopModel extends Model {
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
 			$text = $row['text'];
-			//$xyz = $row['xyz'];
+			$xyz = $row['xyz'];
 			$wh = $row['wh'];
 			$edited_user = $row['edited_user'];
 			$sendto = $row['sendto'];
@@ -285,7 +285,7 @@ class DesktopModel extends Model {
 		$users_arr = explode(",",$users);
 		
 		foreach($users_arr as $user) {
-			$q = "INSERT INTO " . CO_TBL_DESKTOP_POSTITS . " set oid='$id', text = '$text', uid = '$user', xyz = '15x70x1000', wh = '$wh', sendfrom ='$session->uid', created_user = '$edited_user', created_date = '$now', edited_user = '$edited_user', edited_date = '$now'";
+			$q = "INSERT INTO " . CO_TBL_DESKTOP_POSTITS . " set oid='$id', text = '$text', uid = '$user', xyz = '$xyz', wh = '$wh', sendfrom ='$session->uid', created_user = '$edited_user', created_date = '$now', edited_user = '$edited_user', edited_date = '$now'";
 			$result = mysql_query($q, $this->_db->connection);
 		}
 		
