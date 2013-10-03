@@ -1942,6 +1942,14 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 			foreach($patients->modules as $m => $v) {
 					$active_modules[] = $m;
 			}
+			if($module == 'treatments' && in_array("treatments",$active_modules)) {
+				include_once("modules/".$module."/config.php");
+				include_once("modules/".$module."/lang/" . $session->userlang . ".php");
+				include_once("modules/".$module."/model.php");
+				$patientsTreatmentsModel = new PatientsTreatmentsModel();
+				$row = $patientsTreatmentsModel->getCheckpointDetails($id);
+				return $row;
+			}
 			if($module == 'meetings' && in_array("meetings",$active_modules)) {
 				include_once("modules/".$module."/config.php");
 				include_once("modules/".$module."/lang/" . $session->userlang . ".php");
