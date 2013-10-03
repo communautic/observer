@@ -1674,7 +1674,7 @@ $(document).ready(function() {
 	});
 	
 	$('.inlineDatepicker').livequery(function() { 
-		$(this).datepicker({ dateFormat: 'dd.mm.yy', showButtonPanel: true, changeMonth: true, changeYear: true, yearRange: 'c-5:c+5', showAnim: 'slide',
+		$(this).datepicker({ dateFormat: 'dd.mm.yy', showButtonPanel: true, changeMonth: true, changeYear: true, yearRange: 'c-5:c+5', showAnim: 'slideDown',
 			beforeShow: function(input,inst) {
 				if(input.name == 'enddate') {
 					$(this).datepicker('option', 'minDate', new Date(Date.parse($("input[name='startdate']").val())));
