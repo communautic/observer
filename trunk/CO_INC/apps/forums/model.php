@@ -1055,7 +1055,7 @@ class ForumsModel extends Model {
 	function writeNewPostsWidgetAlert($pid) {
 		global $session;
 		$users = "";
-		// select all users that have reminders for this forum
+		// select all admins, guests for this forum
 		$q = "SELECT admins,guests FROM co_forums_access where pid='$pid'";
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
@@ -1067,7 +1067,14 @@ class ForumsModel extends Model {
 			}
 		}
 		
-		$q = "SELECT a.created_user FROM " . CO_TBL_FORUMS_FOLDERS . " as a, " . CO_TBL_FORUMS . " as b where b.folder = a.id and b.id='$pid'";
+		// select all posters to this forum
+		$q = "SELECT user FROM " . CO_TBL_FORUMS_POSTS . " where pid='$pid' and bin='0'";
+		$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+				$users .= $row['user'] . ',';
+		}
+		
+		$q = "SELECT created_user FROM " . CO_TBL_FORUMS . " where id='$pid'";
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
 			if($row['created_user'] != "") {
@@ -1076,7 +1083,7 @@ class ForumsModel extends Model {
 		}
 		$users = rtrim($users, ",");
 		if($users != "") {
-			$users = explode(",",$users);
+			$users = array_unique(explode(",",$users));
 		} else {
 			$users = array();
 		}
