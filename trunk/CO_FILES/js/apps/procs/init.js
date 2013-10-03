@@ -209,11 +209,6 @@ function procsApplication(name) {
 
 	this.actionSendtoResponse = function() {
 		var id = $("#procs").data("second");
-		//$.ajax({ type: "GET", url: "/", data: "path=apps/procs&request=getSendtoDetails&id="+id, success: function(html){
-			//$("#proc_sendto").html(html);
-			//$("#modalDialogForward").dialog('close');
-			//}
-		//});
 	}
 
 
@@ -317,28 +312,6 @@ function procsApplication(name) {
 								var arrowtop = Math.round(ui.target.top - ui.element.top)+40;
 								copopup.find('.arrow').css('top', arrowtop); 
 				  		}
-						  /*using: function(coords, feedback) {
-								var $modal = $(this),
-								top = coords.top,
-								left = coords.left,
-								className = 'switch-' + feedback.horizontal;
-								if(top < 0) {
-									top = elepos.top+100;
-									left = elepos.left-60;
-									className = 'switch-north';
-								}
-								if(left < 0) {
-									left = 0;
-								}
-								$modal.css({
-									left: left + 'px',
-									top: top + 'px'
-								})
-								.removeClass(function (index, css) {
-						   			return (css.match (/\bswitch-\w+/g) || []).join(' ');
-					   			})
-								.addClass(className);
-				  		}*/
 					});
 			break;
 			case 'arrow':
@@ -380,28 +353,6 @@ function procsApplication(name) {
 								var arrowtop = Math.round(ui.target.top - ui.element.top)+11;
 								copopup.find('.arrow').css('top', arrowtop); 
 				  		}
-						 /* using: function(coords, feedback) {
-								var $modal = $(this),
-								top = coords.top,
-								left = coords.left,
-								className = 'switch-' + feedback.horizontal;
-								if(top < 0) {
-									top = elepos.top+100;
-									left = elepos.left-60;
-									className = 'switch-north';
-								}
-								if(left < 0) {
-									left = 0;
-								}
-								$modal.css({
-									left: left + 'px',
-									top: top + 'px'
-								})
-								.removeClass(function (index, css) {
-									return (css.match (/\bswitch-\w+/g) || []).join(' ');
-								})
-								.addClass(className);
-						}*/
 					});
 			break;
 		}
@@ -472,19 +423,6 @@ function procsApplication(name) {
 		$('#note-'+id).removeClass(function (index, css) {
 			return (css.match (/\bcolor\w+/g) || []).join(' ');
 		})
-		/*switch(shape) {
-			case '3':
-				$('#note-'+id).addClass('shape3 shape3bordercolor'+color);
-			break;
-			case '4':
-				$('#note-'+id).addClass('shape4 color'+color+' shape4bordercolor'+color);
-			break;
-			case '5':
-				$('#note-'+id).addClass('shape5 color'+color+' shape5bordercolor'+color);
-			break;
-			default:
-				$('#note-'+id).addClass('shape'+shape+' color'+color);
-		}*/
 		$('#note-'+id).addClass('shape'+shape+' color'+color);
 		$.ajax({ type: "GET", url: "/", data: 'path=apps/procs&request=saveItemStyle&id='+id+'&shape='+shape+'&color='+color, success: function(html){
 			}
@@ -504,19 +442,6 @@ function procsApplication(name) {
 		$('#note-'+id).removeClass(function (index, css) {
 			return (css.match (/\bcolor\w+/g) || []).join(' ');
 		})
-		/*switch(shape) {
-			case '3':
-				$('#note-'+id).addClass('shape3 shape3bordercolor'+color);
-			break;
-			case '4':
-				$('#note-'+id).addClass('shape4 color'+color+' shape4bordercolor'+color);
-			break;
-			case '5':
-				$('#note-'+id).addClass('shape5 color'+color+' shape5bordercolor'+color);
-			break;
-			default:
-				$('#note-'+id).addClass('shape'+shape+' color'+color);
-		}*/
 		$('#note-'+id).addClass('shape'+shape+' color'+color);
 		$.ajax({ type: "GET", url: "/", data: 'path=apps/procs&request=saveItemStyle&id='+id+'&shape='+shape+'&color='+color, success: function(html){
 			}
@@ -538,28 +463,6 @@ function procsApplication(name) {
 			}
 		});
 	}
-	
-	/*this.toggleItem = function(id) {
-		var height = $(this).attr("rel");
-		if($(this).parents("div.note").height() == 20) {
-			$(this).find('span').addClass("icon-toggle").removeClass("icon-toggle-active");
-			$(this).parents("div.note")
-				.animate({
-					height: height+'px'
-					}, function() {
-						$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs&request=setProcNoteToggle&id="+id+"&t=0"});
-				});
-		} else {
-			$(this).find('span').addClass("icon-toggle-active").removeClass("icon-toggle");
-			$(this).parents("div.note")
-				.animate({
-					height: 20
-  					}, function() {
-						$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs&request=setProcNoteToggle&id="+id+"&t=1"});
-				});
-		}
-	}*/
-	
 	
 	this.binItem = function(id) {
 		var txt = ALERT_DELETE_REALLY;
@@ -1111,103 +1014,7 @@ $(document).ready(function() {
 		$("#procs2-outer > h3").trigger('click', [id]);
 	});
 
-
-	/*$('span.actionConvert').on('click', function(e){
-		e.preventDefault();
-		if($(this).hasClass("noactive")) {
-			return false;
-		}
-		procs_grids.actionConvert();
-	});*/
-
-
 	var tmp;
-	//procs.initItems();
-
-	/*$(document).on('click', 'div.procsNoteToggle', function(e) {
-		e.preventDefault();
-		var id = $(this).attr("id").replace(/note-toggle-/, "");
-		var height = $(this).attr("rel");
-		if($(this).parents("div.note").height() == 20) {
-			$(this).find('span').addClass("icon-toggle").removeClass("icon-toggle-active");
-			$(this).parents("div.note")
-				.animate({ height: height+'px' }, function() {
-						$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs&request=setProcNoteToggle&id="+id+"&t=0"});
-				});
-		} else {
-			$(this).find('span').addClass("icon-toggle-active").removeClass("icon-toggle");
-			$(this).parents("div.note")
-				.animate({ height: 20 }, function() {
-						$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs&request=setProcNoteToggle&id="+id+"&t=1"});
-				});
-		}
-	});*/
-
-
-	/*$(document).on('click', 'span.procsAddNote', function(e) {
-		e.preventDefault();
-		var oid = $('#procs').data('first');
-		var id = $('#procs').data('second');	
-		//var z = ++procszIndex;
-		var zMax = Math.max.apply(null,$.map($('#procs-right div.note'), function(e,n){
-				return parseInt($(e).css('z-index'))||1 ;
-				})
-			);
-		var z = zMax + 1;
-		procszIndex = z;
-		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs&request=newProcNote&id="+id+"&z="+z, success: function(data){
-			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs&request=getProcDetails&fid="+oid+"&id="+id, success: function(text){
-				$("#procs-right").html(text.html);
-				initProcsContentScrollbar();
-				}
-			});
-			}
-		});
-	});*7
-
-	/*$(document).on('click', '#procs-outer div.note-title', function(e) {
-		e.preventDefault();
-		var id = parseInt($(this).attr("id").replace(/note-title-/, ""));
-		currentProcEditedNote = id;
-		var html = $(this).html().replace(/(")/gi, "&quot;");
-		var input = '<input type="text" id="input-note-' + id + '" name="input-note-' + id + '" value="' + html+ '" />';
-		$("#note-title-" + id).replaceWith(input);
-		$("#input-note-" + id).focus();
-	});
-
-	$(document).on('click', '#procs-outer div.note-text', function(e) {
-		e.preventDefault();
-		var id = parseInt($(this).attr("id").replace(/note-text-/, ""));
-		currentProcEditedNote = id;
-		var html = $(this).html().replace(/(<br\s*\/?>)|(<p><\/p>)/gi, "");
-		//var width = $(this).width();
-		var height = $(this).height();
-		var input = '<textarea id="input-text-' + id + '" name="input-text-' + id + '" style=" height: '+ height +'px; border: 0;">' + html+ '</textarea>';
-		$("#note-text-" + id).replaceWith(input);
-		$("#input-text-" + id).focus();
-	});*/
-
-
-	/*$(document).mousedown(function(e) {
-		var obj = getCurrentModule();
-		if(obj.name == 'procs') {
-			var clicked=$(e.target); // get the element clicked
-			if(currentProcEditedNote != 0) {
-				if(clicked.is('.note') || clicked.parents().is('.note')) { 
-					var id = /[0-9]+/.exec(e.target.id);
-					if(id != currentProcEditedNote) {
-						procs.saveItem(currentProcEditedNote);
-						currentProcEditedNote = 0;
-					}
-				} else {
-					procs.saveItem(currentProcEditedNote);
-					currentProcEditedNote = 0;
-				}
-			}
-		}
-	});*/
-	
-
 	// autocomplete procs search
 	$('.procs-search').livequery(function() {
 		var id = $("#procs").data("second");
@@ -1233,105 +1040,6 @@ $(document).ready(function() {
 	});
 	
 	
-	/*$(document).on('click','.showCoPopupProcs',function(e) {
-		e.preventDefault();
-		var ele = $(this);
-		var elepos = ele.position();
-		var id = /[0-9]+/.exec($(this).attr('id'));
-		var title = $(this).find('div:eq(0)').text();
-		var text = $(this).find('div:eq(1)').text();
-		var html = procs.coPopupEdit;
-		var pclass = procs.coPopupEditClass;
-		$('#co-popup').html(html);
-		$('#editTitle').html(title);
-		$('#editText').html(text);
-		$('#co-popup a.binItem').attr('rel',id);
-		$('#co-popup').removeClass(function (index, css) {
-                   return (css.match (/\bpopup-\w+/g) || []).join(' ');
-               })
-		.addClass(pclass).position({
-		  my: "center center",
-		  at: "right+170 center",
-		  of: ele,
-		//  offset: '0 160',
-		 //collision: 'flipfit'
-		  using: function(coords, feedback) {
-			  //console.log(feedback.horizontal);
-			  //console.log(feedback.vertical);
-			  var $modal = $(this),
-                top = coords.top,
-				left = coords.left,
-                className = 'switch-' + feedback.horizontal;
-				if(top < 0) {
-					top = elepos.top+100;
-					left = elepos.left-60;
-					className = 'switch-north';
-				}
-				if(left < 0) {
-					left = 0;
-				}
-            $modal.css({
-                left: left + 'px',
-                top: top + 'px'
-            }).removeClass(function (index, css) {
-                   return (css.match (/\bswitch-\w+/g) || []).join(' ');
-               }).addClass(className);
-		  }
-		});
-	});*/
-	
-	
-	/*$(document).on('click','.showCoPopupProcsArrow',function(e) {
-		e.preventDefault();
-		var ele = $(this);
-		var elepos = ele.position();
-		var id = /[0-9]+/.exec($(this).attr('id'));
-		var html = procs.coPopupEditArrow;
-		var pclass = procs.coPopupEditClassArrow;
-		$('#co-popup').html(html);
-		$('#co-popup a.binItem').attr('rel',id);
-		$('#co-popup').removeClass(function (index, css) {
-                   return (css.match (/\bpopup-\w+/g) || []).join(' ');
-               })
-		.addClass(pclass).position({
-		  my: "center center",
-		  at: "right+170 center",
-		  of: ele,
-		//  offset: '0 160',
-		 //collision: 'flipfit'
-		  using: function(coords, feedback) {
-			  //console.log(feedback.horizontal);
-			  //console.log(feedback.vertical);
-			  var $modal = $(this),
-                top = coords.top,
-				left = coords.left,
-                className = 'switch-' + feedback.horizontal;
-				if(top < 0) {
-					top = elepos.top+100;
-					left = elepos.left-60;
-					className = 'switch-north';
-				}
-				if(left < 0) {
-					left = 0;
-				}
-            $modal.css({
-                left: left + 'px',
-                top: top + 'px'
-            }).removeClass(function (index, css) {
-                   return (css.match (/\bswitch-\w+/g) || []).join(' ');
-               }).addClass(className);
-		  }
-		});
-	});*/
-	
-	
-	/*$('#procs-outer div.note').each(function(){
-		// Finding the biggest z-index value of the notes 
-		tmp = $(this).css('z-index');
-		if(tmp>zIndex) zIndex = tmp;
-	})*/
-	
-	
 	$("#notesOuter div.note").livequery( function() {
 		$(this).each(function(){
 			tmp = $(this).css('z-index');
@@ -1340,17 +1048,39 @@ $(document).ready(function() {
 			}
 		}).draggable({
 			containment:[405,200],
-			start: function(e,ui){ $(this).css('z-index',++procszIndex); },
+			start: function(e,ui){ 
+				var zMax = 0;
+				zMax = Math.max.apply(null,$.map($('#procs-right div.note'), function(e,n){
+					return parseInt($(e).css('z-index'))||1 ;
+				}));
+				var z = zMax + 1;
+				$(this).css('z-index',z); },
 			stop: function(e,ui){
 				var x = Math.round(ui.position.left);
 				var y = Math.round(ui.position.top);
-				var z = procszIndex;
+				var z = $(this).css('z-index');
 				var id = $(this).attr("id").replace(/note-/, "");
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs&request=updateNotePosition&id="+id+"&x="+x+"&y="+y+"&z="+z, success: function(data){
 					}
 				});
 			}
 		})
+		.click(function(e) { 
+			e.preventDefault();
+			var zMax = 0;
+			zMax = Math.max.apply(null,$.map($('#procs-right div.note'), function(e,n){
+				return parseInt($(e).css('z-index'))||1 ;
+			}));
+			var z = zMax + 1;
+			$(this).css('z-index',z);
+			var loc = $(this).position();
+			var x = loc.left;
+			var y = loc.top;
+			var id = $(this).attr("id").replace(/note-/, "");
+			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs&request=updateNotePosition&id="+id+"&x="+x+"&y="+y+"&z="+z, success: function(data){
+				}
+			});
+		} )
 	})
 	
 	
