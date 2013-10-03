@@ -275,7 +275,7 @@ class PatientsTreatmentsModel extends PatientsModel {
 		
 		
 		// checkpoint
-		/*$array["checkpoint"] = 0;
+		$array["checkpoint"] = 0;
 		$array["checkpoint_date"] = "";
 		$array["checkpoint_note"] = "";
 		$q = "SELECT date,note FROM " . CO_TBL_USERS_CHECKPOINTS . " where uid='$session->uid' and app = 'patients' and module = 'treatments' and app_id = '$id' LIMIT 1";
@@ -286,7 +286,7 @@ class PatientsTreatmentsModel extends PatientsModel {
 			$array["checkpoint_date"] = $this->_date->formatDate($row['date'],CO_DATE_FORMAT);
 			$array["checkpoint_note"] = $row['note'];
 			}
-		}*/
+		}
 		
 		// get the tasks
 		$array['totalcosts'] = 0;

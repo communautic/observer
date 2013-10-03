@@ -431,15 +431,20 @@ span.coCheckbox { display: inline-block; width: 25px; height: 25px;  background:
 span.coCheckbox.active { background-position: -440px -59px; }
 span.coCheckbox:hover { cursor: pointer; }
 
+.inlineSearch.ui-autocomplete-input {
+	border: 1px solid #ccc;
+	padding-left: 9px;
+	width: 143px;
+}
 
 input.inlineDatepicker {
     background-color: #FFFFFF;
-    border: 1px solid #494949;
+    border: 1px solid #ccc;
     font-size: 11px !important;
     margin: 0;
 	border-radius: 8px;
-    width: 125px;
-	padding-left: 20px;
+    width: 143px;
+	padding-left: 9px;
 	height: 18px;
 }
 

@@ -176,6 +176,23 @@
         <td class="tcell-right"><div id="patientstreatment_access" class="itemlist-field"><div class="listmember" field="patientstreatment_access" uid="<?php echo($treatment->access);?>" style="float: left"><?php echo($treatment->access_text);?></div></div><input type="hidden" name="treatment_access_orig" value="<?php echo($treatment->access);?>" /></td>
 	</tr>
 </table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
+	  <td class="tcell-left text11"><span class="content-nav ui-datepicker-trigger-action"><span><?php echo $lang['GLOBAL_CHECKPOINT'];?></span></span></td>
+		<td class="tcell-right"><input name="checkpoint" type="text" class="input-date checkpointdp" value="<?php echo($treatment->checkpoint_date);?>" readonly="readonly" /><span style="display: none;"><?php echo($treatment->checkpoint);?></span></td>
+	</tr>
+</table>
+<?php if($treatment->checkpoint == 1) { $show = 'display: block'; } else { $show = 'display: none'; }?>
+<div id="patients_treatmentsCheckpoint" style="<?php echo $show;?>">
+<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
+	<tr>
+		<td class="tcell-left text11"><span class="selectTextarea"><span>&nbsp;</span></span></td>
+        <td class="tcell-right"><textarea name="checkpoint_note" class="elastic-two"><?php echo(strip_tags($treatment->checkpoint_note));?></textarea></td>
+	</tr>
+</table>
+<div style="height: 2px;"></div>
+</div>
+<div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 		<td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_EMAILED_TO"];?></td>
