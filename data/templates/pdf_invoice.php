@@ -24,7 +24,7 @@ if($GLOBALS['STATIONARY'] == 1) {
     // page numbering
     $lang_page = $GLOBALS['PAGE'];
     $lang_of = $GLOBALS['OF'];
-	$pdf->page_text($w-104, $h-22, "$lang_page {PAGE_NUM} $lang_of {PAGE_COUNT}", $font, 8, array(0.4,0.4,0.4));
+	$pdf->page_text($w-90, $h-22, "$lang_page {PAGE_NUM} / {PAGE_COUNT}", $font, 8, array(0.4,0.4,0.4));
 	
     // powered by
     //$pdf->image(CO_FILES . "/img/print/".$GLOBALS["APPLICATION_LOGO_PRINT"]."", "png", 57, $h-22, 135, 9);
