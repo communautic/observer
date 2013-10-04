@@ -2493,7 +2493,7 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 
 		$reminders = "";
 		if($skip == 0) {
-			$q ="select b.folder,a.pid,a.id, a.title as text, CONCAT(c.lastname,' ',c.firstname) as title from " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE a.status='2' and a.status_invoice='0' and a.pid = b.id and b.cid=c.id and a.bin = '0' and b.bin = '0'" . $access;
+			$q ="select b.folder,a.pid,a.id, a.title as text, CONCAT(c.lastname,' ',c.firstname) as title from " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE a.status='2' and a.status_invoice='0' and a.pid = b.id and b.cid=c.id and a.bin = '0' and b.bin = '0' and c.bin='0'" . $access;
 			$result = mysql_query($q, $this->_db->connection);
 			$reminders = "";
 			while ($row = mysql_fetch_array($result)) {
@@ -2508,7 +2508,7 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 		$alerts = "";
 		$array = "";
 		if($skip == 0) {
-			$q ="select b.folder,a.pid,a.id, a.title as text, CONCAT(c.lastname,' ',c.firstname) as title from " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE a.status_invoice='1' and a.pid = b.id and b.cid=c.id and a.bin = '0' and b.bin = '0' and a.payment_reminder <= '$tomorrow'" . $access;
+			$q ="select b.folder,a.pid,a.id, a.title as text, CONCAT(c.lastname,' ',c.firstname) as title from " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE a.status_invoice='1' and a.pid = b.id and b.cid=c.id and a.bin = '0' and b.bin = '0'  and c.bin='0' and a.payment_reminder <= '$tomorrow'" . $access;
 			$result = mysql_query($q, $this->_db->connection);
 			while ($row = mysql_fetch_array($result)) {
 				foreach($row as $key => $val) {
