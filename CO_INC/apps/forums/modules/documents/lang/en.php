@@ -1,10 +1,10 @@
 <?php
-$forums_documents_name = "Documents";
+$forums_documents_name = "Files";
 
-$lang["FORUM_DOCUMENT_TITLE"] = 'Document';
-$lang["FORUM_DOCUMENT_DOCUMENTS"] = 'Documents';
-$lang["FORUM_DOCUMENT_NEW"] = 'New Document';
-$lang["FORUM_DOCUMENT_ACTION_NEW"] = 'new Document';
+$lang["FORUM_DOCUMENT_TITLE"] = 'File';
+$lang["FORUM_DOCUMENT_DOCUMENTS"] = 'Files';
+$lang["FORUM_DOCUMENT_NEW"] = 'New File';
+$lang["FORUM_DOCUMENT_ACTION_NEW"] = 'new File';
 $lang["FORUM_DOCUMENT_DESCRIPTION"] = 'Description';
 $lang["FORUM_DOCUMENT_UPLOAD"] = 'File / Upload';
 $lang["FORUM_DOCUMENT_FILENAME"] = 'Filename/Format';

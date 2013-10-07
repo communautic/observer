@@ -167,7 +167,7 @@ $lang["GLOBAL_DAYS"] = 'days';
 $lang["GLOBAL_TODAY"] = 'Today';
 $lang["GLOBAL_YESTERDAY"] = 'Yesterday';
 $lang["GLOBAL_DAYS_AGO"] = '%1$s days ago';
-$lang["GLOBAL_WEEK_SHORT"] = 'wk';
+$lang["GLOBAL_WEEK_SHORT"] = 'Wk';
 $lang["GLOBAL_TIME_FROM"] = 'from';
 $lang["GLOBAL_TIME_TO"] = 'to';
 

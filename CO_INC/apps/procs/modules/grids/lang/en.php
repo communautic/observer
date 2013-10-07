@@ -1,11 +1,11 @@
 <?php
-$procs_grids_name = "Grids";
+$procs_grids_name = "Workplan Templates";
 
-$lang["PROC_GRID_TITLE"] = 'Grid';
-$lang["PROC_GRIDS"] = 'Grids';
+$lang["PROC_GRID_TITLE"] = 'Workplan Template';
+$lang["PROC_GRIDS"] = 'Workplan Templates';
 
-$lang["PROC_GRID_NEW"] = 'New Grid';
-$lang["PROC_GRID_ACTION_NEW"] = 'new Grid';
+$lang["PROC_GRID_NEW"] = 'New Workplan Template';
+$lang["PROC_GRID_ACTION_NEW"] = 'new Workplan Template';
 
 $lang["PROC_GRID_TIME"] = 'Duration';
 $lang["PROC_GRID_COSTS"] = 'Costs';

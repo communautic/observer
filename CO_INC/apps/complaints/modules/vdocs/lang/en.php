@@ -1,8 +1,8 @@
 <?php
-$complaints_vdocs_name = "VDocs";
+$complaints_vdocs_name = "Documents";
 
-$lang["COMPLAINT_VDOC_TITLE"] = 'VDoc';
-$lang["COMPLAINT_VDOC_NEW"] = 'New VDoc';
+$lang["COMPLAINT_VDOC_TITLE"] = 'Document';
+$lang["COMPLAINT_VDOC_NEW"] = 'New Document';
 $lang["COMPLAINT_VDOC_TASK_NEW"] = 'New Topic';
 $lang["COMPLAINT_VDOC_ACTION_NEW"] = 'new virtual document';
 

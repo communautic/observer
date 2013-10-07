@@ -1,10 +1,10 @@
 <?php
-$trainings_documents_name = "Documents";
+$trainings_documents_name = "Files";
 
-$lang["TRAINING_DOCUMENT_TITLE"] = 'Document';
-$lang["TRAINING_DOCUMENT_DOCUMENTS"] = 'Documents';
-$lang["TRAINING_DOCUMENT_NEW"] = 'New Document';
-$lang["TRAINING_DOCUMENT_ACTION_NEW"] = 'new Document';
+$lang["TRAINING_DOCUMENT_TITLE"] = 'File';
+$lang["TRAINING_DOCUMENT_DOCUMENTS"] = 'Files';
+$lang["TRAINING_DOCUMENT_NEW"] = 'New File';
+$lang["TRAINING_DOCUMENT_ACTION_NEW"] = 'new File';
 $lang["TRAINING_DOCUMENT_DESCRIPTION"] = 'Description';
 $lang["TRAINING_DOCUMENT_UPLOAD"] = 'File / Upload';
 $lang["TRAINING_DOCUMENT_FILENAME"] = 'Filename/Format';

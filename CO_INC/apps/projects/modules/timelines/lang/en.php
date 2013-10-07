@@ -1,5 +1,5 @@
 <?php
-$projects_timelines_name = "Timelines";
+$projects_timelines_name = "Schedule";
 
 $lang["PROJECT_TIMELINE_PROJECT_PLAN"] = "Flow Chart";
 $lang["PROJECT_TIMELINE_DATES_LIST"] = "Phasing";

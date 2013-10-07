@@ -1,10 +1,10 @@
 <?php
-$employees_documents_name = "Documents";
+$employees_documents_name = "Files";
 
-$lang["EMPLOYEE_DOCUMENT_TITLE"] = 'Document';
-$lang["EMPLOYEE_DOCUMENT_DOCUMENTS"] = 'Documents';
-$lang["EMPLOYEE_DOCUMENT_NEW"] = 'New Document';
-$lang["EMPLOYEE_DOCUMENT_ACTION_NEW"] = 'new Document';
+$lang["EMPLOYEE_DOCUMENT_TITLE"] = 'File';
+$lang["EMPLOYEE_DOCUMENT_DOCUMENTS"] = 'Files';
+$lang["EMPLOYEE_DOCUMENT_NEW"] = 'New File';
+$lang["EMPLOYEE_DOCUMENT_ACTION_NEW"] = 'new File';
 $lang["EMPLOYEE_DOCUMENT_DESCRIPTION"] = 'Description';
 $lang["EMPLOYEE_DOCUMENT_UPLOAD"] = 'File / Upload';
 $lang["EMPLOYEE_DOCUMENT_FILENAME"] = 'Filename/Format';
