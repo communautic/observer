@@ -1,8 +1,8 @@
 <?php
-$forums_vdocs_name = "VDocs";
+$forums_vdocs_name = "Documents";
 
-$lang["FORUM_VDOC_TITLE"] = 'VDoc';
-$lang["FORUM_VDOC_NEW"] = 'New VDoc';
+$lang["FORUM_VDOC_TITLE"] = 'Document';
+$lang["FORUM_VDOC_NEW"] = 'New Document';
 $lang["FORUM_VDOC_TASK_NEW"] = 'New Topic';
 $lang["FORUM_VDOC_ACTION_NEW"] = 'new virtual document';
 

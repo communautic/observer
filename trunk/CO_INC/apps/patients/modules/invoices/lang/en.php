@@ -1,12 +1,12 @@
 <?php
 $patients_invoices_name = "Invoices";
 
-$lang["PATIENT_INVOICE_TITLE"] = 'Einzelinvoice';
-$lang["PATIENT_INVOICE_TITLE_STATISTICS"] = 'Gesamtstatistik';
+$lang["PATIENT_INVOICE_TITLE"] = 'Invoice';
+$lang["PATIENT_INVOICE_TITLE_STATISTICS"] = 'Totals';
 $lang["PATIENT_INVOICES"] = 'Invoices';
 
-$lang["PATIENT_INVOICE_NEW"] = 'Neue Invoice';
-$lang["PATIENT_INVOICE_ACTION_NEW"] = 'neue Invoice anlegen';
+$lang["PATIENT_INVOICE_NEW"] = 'New Invoice';
+$lang["PATIENT_INVOICE_ACTION_NEW"] = 'new Invoice';
 $lang["PATIENT_INVOICE_TASK_NEW"] = 'Neues Einzelziel';
 //define('INVOICE_RELATES_TO', 'bezogen auf');
 $lang["PATIENT_INVOICE_DATE"] = 'Datum';

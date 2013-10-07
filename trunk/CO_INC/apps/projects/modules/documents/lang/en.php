@@ -1,10 +1,10 @@
 <?php
-$projects_documents_name = "Documents";
+$projects_documents_name = "Files";
 
-$lang["PROJECT_DOCUMENT_TITLE"] = 'Document';
-$lang["PROJECT_DOCUMENT_DOCUMENTS"] = 'Documents';
-$lang["PROJECT_DOCUMENT_NEW"] = 'New Document';
-$lang["PROJECT_DOCUMENT_ACTION_NEW"] = 'new Document';
+$lang["PROJECT_DOCUMENT_TITLE"] = 'File';
+$lang["PROJECT_DOCUMENT_DOCUMENTS"] = 'Files';
+$lang["PROJECT_DOCUMENT_NEW"] = 'New File';
+$lang["PROJECT_DOCUMENT_ACTION_NEW"] = 'new File';
 $lang["PROJECT_DOCUMENT_DESCRIPTION"] = 'Description';
 $lang["PROJECT_DOCUMENT_UPLOAD"] = 'File / Upload';
 $lang["PROJECT_DOCUMENT_FILENAME"] = 'Filename/Format';

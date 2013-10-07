@@ -1,10 +1,10 @@
 <?php
-$clients_documents_name = "Documents";
+$clients_documents_name = "Files";
 
-$lang["CLIENT_DOCUMENT_TITLE"] = 'Document';
-$lang["CLIENT_DOCUMENT_DOCUMENTS"] = 'Documents';
-$lang["CLIENT_DOCUMENT_NEW"] = 'New Document';
-$lang["CLIENT_DOCUMENT_ACTION_NEW"] = 'new Document';
+$lang["CLIENT_DOCUMENT_TITLE"] = 'File';
+$lang["CLIENT_DOCUMENT_DOCUMENTS"] = 'Files';
+$lang["CLIENT_DOCUMENT_NEW"] = 'New File';
+$lang["CLIENT_DOCUMENT_ACTION_NEW"] = 'new File';
 $lang["CLIENT_DOCUMENT_DESCRIPTION"] = 'Description';
 $lang["CLIENT_DOCUMENT_UPLOAD"] = 'File / Upload';
 $lang["CLIENT_DOCUMENT_FILENAME"] = 'Filename/Format';

@@ -3,7 +3,7 @@ $patients_invoices_name = "Rechnungen";
 
 $lang["PATIENT_INVOICE_TITLE"] = 'Rechnung';
 $lang["PATIENT_INVOICE_TITLE_STATISTICS"] = 'Gesamtstatistik';
-$lang["PATIENT_INVOICES"] = 'Invoices';
+$lang["PATIENT_INVOICES"] = 'Rechnungen';
 
 $lang["PATIENT_INVOICE_NEW"] = 'Neue Rechnung';
 $lang["PATIENT_INVOICE_ACTION_NEW"] = 'neue Rechnung anlegen';

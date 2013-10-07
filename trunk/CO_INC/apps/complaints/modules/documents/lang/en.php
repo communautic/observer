@@ -1,10 +1,10 @@
 <?php
-$complaints_documents_name = "Documents";
+$complaints_documents_name = "Files";
 
-$lang["COMPLAINT_DOCUMENT_TITLE"] = 'Document';
-$lang["COMPLAINT_DOCUMENT_DOCUMENTS"] = 'Documents';
-$lang["COMPLAINT_DOCUMENT_NEW"] = 'New Document';
-$lang["COMPLAINT_DOCUMENT_ACTION_NEW"] = 'new Document';
+$lang["COMPLAINT_DOCUMENT_TITLE"] = 'File';
+$lang["COMPLAINT_DOCUMENT_DOCUMENTS"] = 'Files';
+$lang["COMPLAINT_DOCUMENT_NEW"] = 'New File';
+$lang["COMPLAINT_DOCUMENT_ACTION_NEW"] = 'new File';
 $lang["COMPLAINT_DOCUMENT_DESCRIPTION"] = 'Description';
 $lang["COMPLAINT_DOCUMENT_UPLOAD"] = 'File / Upload';
 $lang["COMPLAINT_DOCUMENT_FILENAME"] = 'Filename/Format';

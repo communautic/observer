@@ -1,11 +1,11 @@
 <?php
-$procs_pspgrids_name = "Pspgrids";
+$procs_pspgrids_name = "Project Templates";
 
-$lang["PROC_PSPGRID_TITLE"] = 'Pspgrid';
-$lang["PROC_PSPGRIDS"] = 'Pspgrids';
+$lang["PROC_PSPGRID_TITLE"] = 'Project Template';
+$lang["PROC_PSPGRIDS"] = 'Project Templates';
 
-$lang["PROC_PSPGRID_NEW"] = 'New Pspgrid';
-$lang["PROC_PSPGRID_ACTION_NEW"] = 'new Pspgrid';
+$lang["PROC_PSPGRID_NEW"] = 'New Project Template';
+$lang["PROC_PSPGRID_ACTION_NEW"] = 'new Project Template';
 
 $lang["PROC_PSPGRID_TIME"] = 'Duration';
 $lang["PROC_PSPGRID_COSTS"] = 'Costs';

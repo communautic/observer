@@ -1,8 +1,8 @@
 <?php
-$procs_vdocs_name = "VDocs";
+$procs_vdocs_name = "Documents";
 
-$lang["PROC_VDOC_TITLE"] = 'VDoc';
-$lang["PROC_VDOC_NEW"] = 'New VDoc';
+$lang["PROC_VDOC_TITLE"] = 'Document';
+$lang["PROC_VDOC_NEW"] = 'New Document';
 $lang["PROC_VDOC_TASK_NEW"] = 'New Topic';
 $lang["PROC_VDOC_ACTION_NEW"] = 'new virtual document';
 
