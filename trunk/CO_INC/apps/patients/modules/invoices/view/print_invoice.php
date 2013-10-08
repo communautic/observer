@@ -20,12 +20,9 @@
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
 <p>Sehr geehrte/r <?php echo($invoice->ctitle)?> <?php echo(ucfirst(strtolower($invoice->lastname)))?> !</p>
 <p>&nbsp;</p>
 <p style="line-height: 20px;">F&uuml;r die im Rahmen der Therapie erfolgten Anwendungen erlaube ich mir nachstehende Honorarnote zu legen:</p>
-<p>&nbsp;</p>
 <p>&nbsp;</p>
 <table width="100%" class="standard" style="border:1px solid #ccc;">
 	<?php 
@@ -66,7 +63,6 @@
 <p style="line-height: 20px;">Ich danke f&uuml;r Ihr Vertrauen und bitte um Anweisung des Gesamthonorars innerhalb von 10 Tagen und stehe auch weiterhin gerne zu Diensten.</p>
 <p style="line-height: 20px;">&nbsp;</p>
 <p style="line-height: 20px;">Zwecks tarifgem&auml;&szlig;er R&uuml;ckerstattung sollten Sie die Therapiebelege (Rechnung im Original, &Uuml;berweisungsschein und Einzahlungsbeleg) bei Ihrer Versicherung einreichen. Ich danke Ihnen f&uuml;r die prompte Erledigung und verbleibe</p>
-<p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>mit freundlichen Gr&uuml;&szlig;en</p>
 <div style="page-break-after:always;">&nbsp;</div>
