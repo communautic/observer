@@ -916,7 +916,7 @@ border:1px dashed black;
 
 .table-window .tcell-left span { display: block; padding: 0 0 0 15px; }
 .table-window .tcell-left-short span { display: block; padding: 0 0 0 15px; }
-.table-window a.content-nav         { color: #000; }
+.table-window a.content-nav         { color: #000; display: block; }
 .table-window a.content-nav :link    { color: #000; }
 .table-window a.content-nav :active  { color: #000; }
 .table-window a.content-nav :visited { color: #000; }
