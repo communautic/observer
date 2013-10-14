@@ -176,7 +176,7 @@ li.ui-state-highlight { height: 13px; margin: 0 0 5px 0;}
 .filter-box-outer form { font-size: 10px; }
 .filter-box { background-color: #fff; margin-left: 9px; width: 100px; height: 14px; border: 0; font-size: 11px;}
 
-.filter-search-outer { position: absolute; top: 7px; left: 28px; background: #fff url(../img/icons.png) no-repeat -200px 0px; width: 14px; height: 14px; }
+.filter-search-outer { position: absolute; top: 7px; left: 32px; background: #fff url(../img/icons.png) no-repeat -200px 0px; width: 14px; height: 14px; }
 .global-search-outer { position: absolute; top: 3px; left: 4px; background: #fff url(../img/icons.png) no-repeat -200px 0px; width: 14px; height: 14px; }
 
 
@@ -1084,10 +1084,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 
 
 }
-div.statusTabs li span:hover {
+div.statusTabs li span.statusButton:hover {
 	cursor: pointer;
-	color: #fff;
-	border: 1px solid #666;
+	/*color: #fff;
+	border: 1px solid #666;*/
 }
 div.statusTabs li span.left {
 -webkit-border-radius: 3px 0 0 3px;
@@ -1121,10 +1121,13 @@ div.statusTabs li div.status-time {
 div.statusTabs li div.status-input {
 	float: left;
 	margin-top: 1px;
+	font-size: 11px;
 }
 
 /* status planned */
-div.statusTabs li span.planned:hover, div.statusTabs li span.planned.active {
+div.statusTabs li span.statusButton.planned:hover, div.statusTabs li span.planned.active {
+color: #fff;
+border: 1px solid #666;
 background: #0d3bbe;
 background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzBkM2JiZSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iIzU1ODZkNyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUxJSIgc3RvcC1jb2xvcj0iIzY0OTZkYyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM2NDk2ZGMiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
 background: -moz-linear-gradient(top,  #0d3bbe 0%, #5586d7 50%, #6496dc 51%, #6496dc 100%);
@@ -1134,10 +1137,11 @@ background: -o-linear-gradient(top,  #0d3bbe 0%,#5586d7 50%,#6496dc 51%,#6496dc 
 background: -ms-linear-gradient(top,  #0d3bbe 0%,#5586d7 50%,#6496dc 51%,#6496dc 100%);
 background: linear-gradient(to bottom,  #0d3bbe 0%,#5586d7 50%,#6496dc 51%,#6496dc 100%);
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0d3bbe', endColorstr='#6496dc',GradientType=0 );
-
 }
 /* status in progress */
-div.statusTabs li span.inprogress:hover, div.statusTabs li span.inprogress.active {
+div.statusTabs li span.statusButton.inprogress:hover, div.statusTabs li span.inprogress.active {
+color: #fff;
+border: 1px solid #666;
 background: #c57801;
 background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2M1NzgwMSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2RiYWMwOSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUxJSIgc3RvcC1jb2xvcj0iI2UwYjcwYSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlMGI3MGEiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
 background: -moz-linear-gradient(top,  #c57801 0%, #dbac09 50%, #e0b70a 51%, #e0b70a 100%);
@@ -1149,7 +1153,9 @@ background: linear-gradient(to bottom,  #c57801 0%,#dbac09 50%,#e0b70a 51%,#e0b7
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c57801', endColorstr='#e0b70a',GradientType=0 );
 }
 /* status finished */
-div.statusTabs li span.finished:hover, div.statusTabs li span.finished.active {
+div.statusTabs li span.statusButton.finished:hover, div.statusTabs li span.finished.active {
+color: #fff;
+border: 1px solid #666;
 background: #156001;
 background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzE1NjAwMSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iIzZmOWQwOSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUxJSIgc3RvcC1jb2xvcj0iIzgyYWEwYSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM4MmFhMGEiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
 background: -moz-linear-gradient(top,  #156001 0%, #6f9d09 50%, #82aa0a 51%, #82aa0a 100%);
@@ -1161,7 +1167,9 @@ background: linear-gradient(to bottom,  #156001 0%,#6f9d09 50%,#82aa0a 51%,#82aa
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#156001', endColorstr='#82aa0a',GradientType=0 );
 }
 /* status stopped */
-div.statusTabs li span.stopped:hover, div.statusTabs li span.stopped.active {
+div.statusTabs li span.statusButton.stopped:hover, div.statusTabs li span.stopped.active {
+color: #fff;
+border: 1px solid #666;
 background: #101010;
 background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzEwMTAxMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iIzZjNmM2YyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUxJSIgc3RvcC1jb2xvcj0iIzdmN2Y3ZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM3ZjdmN2YiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
 background: -moz-linear-gradient(top,  #101010 0%, #6c6c6c 50%, #7f7f7f 51%, #7f7f7f 100%);
