@@ -235,7 +235,7 @@ class PatientsModel extends Model {
 				$order = "patient ASC";
 			break;
 			case 'Status':
-				$order = "status_invoice DESC";
+				$order = "status_invoice ASC";
 			break;
 		}
 		
