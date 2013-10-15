@@ -173,7 +173,7 @@ function desktoploadModuleStart() {
 	}
 }
 
-var desktopzIndex = 0; // zindex notes for mindmap
+//var desktopzIndex = 0; // zindex notes for mindmap
 
 $(document).ready(function() { 
 	desktoploadModuleStart()
@@ -230,11 +230,19 @@ $(document).ready(function() {
 			cancel: '.nodrag,textarea',
 			cursor: 'move',
 			handle: '.postit-header',
-			start: function(e,ui){ ui.helper.css('z-index',++desktopzIndex); },
+			start: function(e,ui){ 
+			//ui.helper.css('z-index',++desktopzIndex); 
+				var zMax = 0;
+				zMax = Math.max.apply(null,$.map($('#desktopPostIts div.postit'), function(e,n){
+					return parseInt($(e).css('z-index'))||1 ;
+				}));
+				var z = zMax + 1;
+				$(this).css('z-index',z);
+			},
 				stop: function(e,ui){
-					var x = ui.position.left;
-					var y = ui.position.top;
-					var z = desktopzIndex;
+					var x = Math.round(ui.position.left);
+					var y = Math.round(ui.position.top);
+					var z = $(this).css('z-index');
 					var id = $(this).attr("id").replace(/postit-/, "");
 					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/desktop&request=updatePostitPosition&id="+id+"&x="+x+"&y="+y+"&z="+z});
 				}
@@ -243,21 +251,45 @@ $(document).ready(function() {
 				minHeight: 130,
 				minWidth: 300,
 				start: function(e,ui){ 
-					ui.helper.css('z-index',++desktopzIndex);
+					//ui.helper.css('z-index',++desktopzIndex);
+					var zMax = 0;
+					zMax = Math.max.apply(null,$.map($('#desktopPostIts div.postit'), function(e,n){
+						return parseInt($(e).css('z-index'))||1 ;
+					}));
+					var z = zMax + 1;
+					$(this).css('z-index',z);
 					$(this).find("textarea").height($(this).height()-80);
+					var x = Math.round(ui.position.left);
+					var y = Math.round(ui.position.top);
+					var id = $(this).attr("id").replace(/postit-/, "");
+					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/desktop&request=updatePostitPosition&id="+id+"&x="+x+"&y="+y+"&z="+z});
 				},
 				resize: function(e,ui){ 
 					$(this).find("textarea").height($(this).height()-80);
 				},
 				stop: function(e,ui){
-					var w = ui.size.width;
-					var h = ui.size.height;
+					var w = Math.round(ui.size.width);
+					var h = Math.round(ui.size.height);
 					var id = $(this).attr("id").replace(/postit-/, "");
 					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/desktop&request=updatePostitSize&id="+id+"&w="+w+"&h="+h, success: function(data){
 						}
 					});
 				}	   
-			});
+			})
+			.click(function(e) { 
+				e.preventDefault();
+				var zMax = 0;
+				zMax = Math.max.apply(null,$.map($('#desktopPostIts div.postit'), function(e,n){
+					return parseInt($(e).css('z-index'))||1 ;
+				}));
+				var z = zMax + 1;
+				$(this).css('z-index',z);
+				var loc = $(this).position();
+				var x = loc.left;
+				var y = loc.top;
+				var id = $(this).attr("id").replace(/postit-/, "");
+				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/desktop&request=updatePostitPosition&id="+id+"&x="+x+"&y="+y+"&z="+z});
+			})
 	});
 	
 	
@@ -271,12 +303,14 @@ $(document).ready(function() {
 	$("#desktopNewPostit").on('click', function(e) {
 		e.preventDefault();
 		prevent_dblclick(e)
-		var zMax = Math.max.apply(null,$.map($('#desktopPostIts div.postit'), function(e,n){
-				return parseInt($(e).css('z-index'))||1 ;
-				})
-			);
+		var zMax = 0;
+		if($('#desktopPostIts div.postit').length > 0) {
+			zMax = Math.max.apply(null,$.map($('#desktopPostIts div.postit'), function(e,n){
+						return parseInt($(e).css('z-index'))||1 ;
+					}));
+		}
 		var z = zMax + 1;
-		desktopzIndex = z;
+		//desktopzIndex = z;
 		var x = $('#desktop').width()/2 - 152;
 		$.ajax({ type: "GET", url: "/", data: "path=apps/desktop&request=newPostit&z="+z+"&x=" + x, success: function(data){
 				desktoploadModuleStart();
