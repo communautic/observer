@@ -1592,6 +1592,14 @@ $(document).ready(function() {
 		obj.toggleCosts(ele,status);
 	});
 	
+	$(document).on('click', 'span.inlineCheckbox', function(e) {
+		e.preventDefault();
+		var ele = $(this);
+		var status = ele.attr('rel');
+		var obj = getCurrentModule();
+		obj.toggleCheckbox(ele,status);
+	});
+	
 	$(document).on('click', 'span.toggleCurrency', function(e) {
 		e.preventDefault();
 		var ele = $(this);

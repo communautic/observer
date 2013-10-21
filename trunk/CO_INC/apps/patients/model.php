@@ -307,14 +307,22 @@ class PatientsModel extends Model {
    }
 	
 	
-	function getFolderDetailsRevenueResults($who,$start,$end) {
+	function getFolderDetailsRevenueResults($id,$who,$start,$end) {
 		global $session, $contactsmodel, $patientsControllingModel, $lang;
 		
 		$start = $this->_date->formatDate($start);
 		$end = $this->_date->formatDate($end);
 		$calctotal = 0;
+		$management = "b.management='$who' and ";
+		if($who == 0) {
+			$management = '';
+		}
+		$folder = "b.folder='$id' and ";
+		if($id == 0) {
+			$folder = '';
+		}
 		
-		$q = "SELECT a.id,a.title,a.invoice_date,a.status_invoice, b.id as pid, b.management, CONCAT(c.lastname,' ',c.firstname) as patient FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE b.management='$who' and a.invoice_date >= '$start' and a.invoice_date <= '$end' and a.status='2' and a.pid=b.id and b.cid=c.id and a.bin='0' and b.bin='0'";
+		$q = "SELECT a.id,a.title,a.invoice_date,a.status_invoice, b.id as pid, b.folder, b.management, CONCAT(c.lastname,' ',c.firstname) as patient FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE $management $folder a.invoice_date >= '$start' and a.invoice_date <= '$end' and a.status='2' and a.pid=b.id and b.cid=c.id and a.bin='0' and b.bin='0'";
 		
 		$result = mysql_query($q, $this->_db->connection);
 		if(mysql_num_rows($result) < 1) {
@@ -327,7 +335,13 @@ class PatientsModel extends Model {
 		$id = $array["id"];
 		$array["invoice_date"] = $this->_date->formatDate($array["invoice_date"],CO_DATE_FORMAT);
 		$array["management"] = $contactsmodel->getUserListPlain($array['management']);
-		
+		$manager = $array["management"];
+		$array["showmanagertoitem"] = false;
+		if($who == 0) {
+			//$array["management"] = "";
+			$manager = "";
+			$array["showmanagertoitem"] = true;
+		}
 		switch($array["status_invoice"]) {
 			case 2:
 				$array["status_invoice_class"] = 'barchart_color_finished';
@@ -373,7 +387,7 @@ class PatientsModel extends Model {
 			  $access = "sysadmin";
 		  }
 		
-		$arr = array("calctotal" => $calctotal, "invoices" => $invoices, "access" => $access);
+		$arr = array("calctotal" => $calctotal, "invoices" => $invoices, "access" => $access, "manager" => $manager);
 		return $arr;
 	}
 	

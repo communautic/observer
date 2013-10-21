@@ -644,17 +644,60 @@ function patientsFolders(name) {
 
 	this.actionPrint = function() {
 		var id = $("#patients").data("first");
-		var url ='/?path=apps/patients&request=printFolderDetails&id='+id;
+		//var url ='/?path=apps/patients&request=printFolderDetails&id='+id;
+		//$("#documentloader").attr('src', url);
+		// FolderDetailsList, FolderDetailsInvoices, FolderDetailsRevenue
+		var what = $('#patientsFoldersTabs ul.contentTabsList span[class=active]').attr('rel');
+		if(what == 'FolderDetailsInvoices') {
+			var view= $('#patientsFoldersSubTabs ul span[class~=active]').attr('rel');
+			what = what + '&view=' + view;
+		}
+		if(what == 'FolderDetailsRevenue') {
+			var id = $("#patients").data("first");
+			if($('#calcFolder').attr('rel') == '1') {
+				id = 0;
+			}
+			var who = $('#calcWho').val();
+			if($('#calcWhoField').val() == '') {
+				who = 0;
+			}
+			var start = $('#calcStart').val();
+			var end = $('#calcEnd').val();
+			what = what + '&who=' + who + '&start=' + start + '&end=' + end;
+		}
+		var url ='/?path=apps/patients&request=print'+what+'&id='+id;
 		$("#documentloader").attr('src', url);
 	}
 
 
 	this.actionSend = function() {
 		var id = $("#patients").data("first");
-		$.ajax({ type: "GET", url: "/", data: "path=apps/patients&request=getFolderSend&id="+id, success: function(html){
+		var what = $('#patientsFoldersTabs ul.contentTabsList span[class=active]').attr('rel');
+		if(what == 'FolderDetailsInvoices') {
+			var view= $('#patientsFoldersSubTabs ul span[class~=active]').attr('rel');
+			what = what + '&view=' + view;
+		}
+		if(what == 'FolderDetailsRevenue') {
+			var id = $("#patients").data("first");
+			if($('#calcFolder').attr('rel') == '1') {
+				id = 0;
+			}
+			var who = $('#calcWho').val();
+			if($('#calcWhoField').val() == '') {
+				who = 0;
+			}
+			var start = $('#calcStart').val();
+			var end = $('#calcEnd').val();
+			what = what + '&who=' + who + '&start=' + start + '&end=' + end;
+		}
+		$.ajax({ type: "GET", url: "/", data: 'path=apps/patients&request=getSend'+what+'&id='+id, success: function(html){
 			$("#modalDialogForward").html(html).dialog('open');
 			}
 		});
+		/*$.ajax({ type: "GET", url: "/", data: "path=apps/patients&request=getFolderSend&id="+id, success: function(html){
+			$("#modalDialogForward").html(html).dialog('open');
+			}
+		});*/
 	}
 
 
@@ -724,6 +767,21 @@ function patientsFolders(name) {
 				});
 		}
 		
+	}
+	
+	
+	this.toggleCheckbox = function(ele,status) {
+		switch(status) {
+			case "0":
+				var statusnew = 1;
+				ele.addClass('active');
+			break;
+			case "1":
+				var statusnew = 0;
+				ele.removeClass('active');
+			break;
+		}
+		ele.attr('rel',statusnew);
 	}
 
 
@@ -936,12 +994,15 @@ $(document).ready(function() {
 	
 	$(document).on('click', '.loadInvoice', function(e) {
 		e.stopPropagation();
-		var obj = getCurrentModule();
-		/*if(confirmNavigation()) {
-			formChanged = false;
-			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
-		}*/
 		var fid = $("#patients").data("first");
+		var pid = $(this).attr("pid");
+		var id = $(this).attr("rel");
+		externalLoadThreeLevels('invoices',fid,pid,id,'patients');
+	});
+	
+	$(document).on('click', '.loadInvoiceRevenue', function(e) {
+		e.stopPropagation();
+		var fid = $(this).attr("folder");
 		var pid = $(this).attr("pid");
 		var id = $(this).attr("rel");
 		externalLoadThreeLevels('invoices',fid,pid,id,'patients');
@@ -987,10 +1048,17 @@ $(document).ready(function() {
 	
 	$(document).on('click', '#calculateRevenue', function(e) {
 		e.preventDefault();
+		var id = $("#patients").data("first");
+		if($('#calcFolder').attr('rel') == '1') {
+			id = 0;
+		}
 		var who = $('#calcWho').val();
+		if($('#calcWhoField').val() == '') {
+			who = 0;
+		}
 		var start = $('#calcStart').val();
 		var end = $('#calcEnd').val();
-		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients&request=getFolderDetailsRevenueResults&who=" + who + "&start=" + start + "&end=" + end, cache: false, success: function(data){
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients&request=getFolderDetailsRevenueResults&id=" + id + "&who=" + who + "&start=" + start + "&end=" + end, cache: false, success: function(data){
 			$('#revenueResult').html(data.html);
 			}
 		});

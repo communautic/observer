@@ -43,7 +43,7 @@ if (!empty($_GET['request'])) {
 			echo($patients->getFolderDetailsRevenue($_GET['id']));
 		break;
 		case 'getFolderDetailsRevenueResults':
-			echo($patients->getFolderDetailsRevenueResults($_GET['who'],$_GET['start'],$_GET['end']));
+			echo($patients->getFolderDetailsRevenueResults($_GET['id'],$_GET['who'],$_GET['start'],$_GET['end']));
 		break;
 		case 'setFolderOrder':
 			echo($patients->setSortOrder("patients-folder-sort",$_GET['folderItem']));
@@ -54,12 +54,27 @@ if (!empty($_GET['request'])) {
 		case 'newFolder':
 			echo($patients->newFolder());
 		break;
-		case 'printFolderDetails':
+		case 'printFolderDetailsList':
 			$t = "pdf"; // options: pdf, html
 			if(!empty($_GET['t'])) {
 				$t = $_GET['t'];
 			}
-			echo($patients->printFolderDetails($_GET['id'],$t));
+			echo($patients->printFolderDetailsList($_GET['id'],$t));
+		break;
+		case 'printFolderDetailsInvoices':
+			echo($patients->printFolderDetailsInvoices($_GET['id'],$_GET['view']));
+		break;
+		case 'printFolderDetailsRevenue':
+			echo $patients->printFolderDetailsRevenue($_GET['id'],$_GET['who'],$_GET['start'],$_GET['end']);
+		break;
+		case 'getSendFolderDetailsList':
+			echo($patients->getFolderSend($_GET['id']));
+		break;
+		case 'getSendFolderDetailsInvoices':
+			echo($patients->getFolderSendInvoices($_GET['id'],$_GET['view']));
+		break;
+		case 'getSendFolderDetailsRevenue':
+			echo $patients->getFolderSendRevenue($_GET['id'],$_GET['who'],$_GET['start'],$_GET['end']);
 		break;
 		case 'binFolder':
 			echo($patients->binFolder($_GET['id']));
@@ -102,9 +117,6 @@ if (!empty($_GET['request'])) {
 		break;
 		case 'getPatientSend':
 			echo($patients->getPatientSend($_GET['id']));
-		break;
-		case 'getFolderSend':
-			echo($patients->getFolderSend($_GET['id']));
 		break;
 		case 'getSendtoDetails':
 			echo($patients->getSendtoDetails("patients",$_GET['id']));
@@ -223,6 +235,12 @@ if (!empty($_POST['request'])) {
 		break;
 		case 'sendFolderDetails':
 			echo($patients->sendFolderDetails($_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
+		break;
+		case 'sendFolderDetailsInvoices':
+			echo($patients->sendFolderDetailsInvoices($_POST['variable'], $_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
+		break;
+		case 'sendFolderDetailsRevenue':
+			echo($patients->sendFolderDetailsRevenue($_POST['variable'], $_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
 		break;
 		case 'updateCheckpointText':
 			echo($patients->updateCheckpointText($_POST['id'],$system->checkMagicQuotes($_POST['text'])));
