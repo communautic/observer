@@ -113,9 +113,9 @@ class Patients extends Controller {
 		return json_encode($data);
 	}
 	
-	function getFolderDetailsRevenueResults($who,$start,$end) {
+	function getFolderDetailsRevenueResults($id,$who,$start,$end) {
 		global $date, $lang, $system;
-		$arr = $this->model->getFolderDetailsRevenueResults($who,$start,$end);
+		$arr = $this->model->getFolderDetailsRevenueResults($id,$who,$start,$end);
 		$calctotal = $arr["calctotal"];
 		$invoices = $arr["invoices"];
 		ob_start();
@@ -127,7 +127,7 @@ class Patients extends Controller {
 	}
 
 
-	function printFolderDetails($id, $t) {
+	function printFolderDetailsList($id, $t) {
 		global $session,$lang;
 		$title = "";
 		$html = "";
@@ -148,7 +148,48 @@ class Patients extends Controller {
 			default:
 				$this->printPDF($title,$html);
 		}
-		
+	}
+	
+	
+	function printFolderDetailsInvoices($id,$view) {
+		global $session,$lang;
+		$title = "";
+		$html = "";
+		if($arr = $this->model->getFolderDetails($id)) {
+			$folder = $arr["folder"];
+			$title = $folder->title;
+		}
+		if($arr = $this->model->getFolderDetailsInvoices($id,$view)) {
+			  $invoices = $arr["invoices"];
+				ob_start();
+					include('view/folder_print_invoices.php');
+					$html = ob_get_contents();
+				ob_end_clean();		
+		}
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_PATIENT_FOLDER"];
+		$this->printPDF($title,$html);
+	}
+
+
+	function printFolderDetailsRevenue($id,$who,$start,$end) {
+		global $date,$session,$lang;
+		$title = $lang["PATIENT_FOLDER_TAB_REVENUE"];
+		$html = "";
+		if($arr = $this->model->getFolderDetails($id)) {
+			$folder = $arr["folder"];
+			//$title = $lang["PATIENT_FOLDER_TAB_REVENUE"];
+		}
+		if($arr = $this->model->getFolderDetailsRevenueResults($id,$who,$start,$end)) {
+			$calctotal = $arr["calctotal"];
+			$invoices = $arr["invoices"];
+			$manager = $arr["manager"];
+			ob_start();
+				include('view/folder_print_revenue.php');
+				$html = ob_get_contents();
+			ob_end_clean();	
+		}
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_PATIENT_FOLDER"];
+		$this->printPDF($title,$html);
 	}
 
 
@@ -169,7 +210,6 @@ class Patients extends Controller {
 			include CO_INC .'/view/default.php';
 		}
 	}
-
 
 	function sendFolderDetails($id,$to,$cc,$subject,$body) {
 		global $session,$users, $lang;
@@ -193,6 +233,100 @@ class Patients extends Controller {
 		//$this->writeSendtoLog("patients",$id,$to,$subject,$body);
 		
 		//$to,$from,$fromName,$subject,$body,$attachment
+		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment);
+	}
+	
+	
+	function getFolderSendInvoices($id,$view) {
+		global $lang;
+		if($arr = $this->model->getFolderDetailsInvoices($id,$view)) {
+			$invoices = $arr["invoices"];
+			if($arr = $this->model->getFolderDetails($id)) {
+			$folder = $arr["folder"];
+		}
+			$form_url = $this->form_url;
+			$request = "sendFolderDetailsInvoices";
+			$to = "";
+			$cc = "";
+			$subject = $folder->title;
+			$variable = $view;
+			include CO_INC .'/view/dialog_send.php';
+		}
+		else {
+			include CO_INC .'/view/default.php';
+		}
+	}
+
+	function sendFolderDetailsInvoices($variable,$id,$to,$cc,$subject,$body) {
+		global $session,$users, $lang;
+		$title = "";
+		$html = "";
+		if($arr = $this->model->getFolderDetails($id)) {
+			$folder = $arr["folder"];
+			$title = $folder->title;
+		}
+		if($arr = $this->model->getFolderDetailsInvoices($id,$variable)) {
+			$invoices = $arr["invoices"];
+			ob_start();
+				include 'view/folder_print_invoices.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			//$title = $folder->title;
+		}
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_PATIENT_FOLDER"];
+		$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
+		$pdf = $this->savePDF($title,$html,$attachment);
+		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment);
+	}
+
+
+	function getFolderSendRevenue($id,$who,$start,$end) {
+		global $lang;
+		if($arr = $this->model->getFolderDetailsRevenueResults($id,$who,$start,$end)) {
+			$calctotal = $arr["calctotal"];
+			$invoices = $arr["invoices"];
+			$manager = $arr["manager"];
+			if($arr = $this->model->getFolderDetails($id)) {
+			$folder = $arr["folder"];
+		}
+			$form_url = $this->form_url;
+			$request = "sendFolderDetailsRevenue";
+			$to = "";
+			$cc = "";
+			$subject = $folder->title;
+			$variable = $who.'-'.$start.'-'.$end;
+			include CO_INC .'/view/dialog_send.php';
+		}
+		else {
+			include CO_INC .'/view/default.php';
+		}
+	}
+
+	function sendFolderDetailsRevenue($variable,$id,$to,$cc,$subject,$body) {
+		global $session,$users, $lang;
+		$title = "";
+		$html = "";
+		if($arr = $this->model->getFolderDetails($id)) {
+			$folder = $arr["folder"];
+			$title = $folder->title;
+		}
+		$var = explode("-", $variable);
+		$who = $var[0];
+		$start = $var[1];
+		$end = $var[2];
+		if($arr = $this->model->getFolderDetailsRevenueResults($id,$who,$start,$end)) {
+			$calctotal = $arr["calctotal"];
+			$invoices = $arr["invoices"];
+			$manager = $arr["manager"];
+			ob_start();
+				include 'view/folder_print_revenue.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			//$title = $folder->title;
+		}
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_PATIENT_FOLDER"];
+		$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
+		$pdf = $this->savePDF($title,$html,$attachment);
 		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment);
 	}
 

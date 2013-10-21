@@ -16,7 +16,7 @@ if(is_array($invoices)) { ?>
 		<td class="tcell-right-inactive tcell-right-nopadding">
         <?php 
 			foreach ($invoices as $invoice) {  ?>
-				<div class="loadInvoice" pid="<?php echo($invoice->pid);?>" rel="<?php echo($invoice->id);?>"><div class="co-link listTitle"><?php echo($invoice->title);?>, <?php echo($invoice->invoice_date);?>, <?php echo($invoice->patient);?> &nbsp; &nbsp; <?php echo(CO_DEFAULT_CURRENCY . ' ' . $invoice->totalcosts);?></div></div>
+				<div class="loadInvoiceRevenue" folder="<?php echo($invoice->folder);?>" pid="<?php echo($invoice->pid);?>" rel="<?php echo($invoice->id);?>"><div class="co-link listTitle"><?php echo($invoice->title);?>, <?php echo($invoice->invoice_date);?>, <?php echo($invoice->patient);?> &nbsp; &nbsp; <?php echo(CO_DEFAULT_CURRENCY . ' ' . $invoice->totalcosts);?> &nbsp; &nbsp; <?php if($invoice->showmanagertoitem) { echo $invoice->management; } ?></div></div>
 		 <?php } ?></td>
     </tr>
 </table>

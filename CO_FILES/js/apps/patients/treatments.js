@@ -2,6 +2,7 @@
 function patientsTreatments(name) {
 	this.name = name;
 	this.isRefresh = false;
+	this.askStatus = true;
 
 
 	this.formProcess = function(formData, form, poformOptions) {
@@ -102,7 +103,7 @@ function patientsTreatments(name) {
 			break;
 		}
 		var treatid = data.id;
-		if(data.changeTreatmentStatus != "0") {
+		if(data.changeTreatmentStatus != "0" && module.askStatus && $('.jqibox').length == 0) {
 			switch(data.changeTreatmentStatus) {
 				case "1":
 					var txt = ALERT_STATUS_TREATMENT_ACTIVATE;
@@ -139,7 +140,9 @@ function patientsTreatments(name) {
 							if(data.changePatientStatus != 0) { module.setPatientStatus(data.changePatientStatus); }
 							}
 						});
-					} 
+					} else {
+						module.askStatus = false;
+					}
 				}
 			});
 		}
@@ -215,6 +218,7 @@ function patientsTreatments(name) {
 
 	this.getDetails = function(moduleidx,liindex,list) {
 		//loadDemand();
+		this.askStatus = true;
 		contexts = [];
 		var id = $("#patients3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
 		$('#patients').data({ "third" : id});
@@ -584,7 +588,8 @@ function patientsTreatments(name) {
 			$('.treatmenttaskouter:eq('+idx+')').slideDown(function() {
 				$(this).find(":text:eq(0)").focus();
 				initPatientsContentScrollbar();
-				 module.calculateTasks();
+				 //module.calculateTasks();
+				 module.askStatus = true;
 			});
 			}
 		});
@@ -639,7 +644,9 @@ function patientsTreatments(name) {
 				if(v){
 				$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/treatments&request=deleteTask&id=" + id, success: function(data){
 					if(data){
-						$("#task_"+id).slideUp(function(){ $(this).remove(); module.calculateTasks(); });
+						$("#task_"+id).slideUp(function(){ $(this).remove(); 
+																		  //module.calculateTasks();
+																		  });
 						
 					} 
 					}
@@ -702,7 +709,9 @@ function patientsTreatments(name) {
 				if(v){
 				$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/treatments&request=deleteTask&id=" + id, success: function(data){
 					if(data){
-						$("#task_"+id).slideUp(function(){ $(this).remove(); module.calculateTasks(); });
+						$("#task_"+id).slideUp(function(){ $(this).remove(); 
+																		  //module.calculateTasks(); 
+																		  });
 						
 					} 
 					}
@@ -863,7 +872,7 @@ this.binDeleteColumn = function(id) {
 		$.ajax({ type: "POST", url: "/", data: "path=apps/patients/modules/treatments&request=updateCheckpointText&id=" + pid + "&text=" + text, cache: false });
 	}
 	
-	this.calculateTasks = function() {
+	/*this.calculateTasks = function() {
 		var total = 0;
 		var num = $('#PatientsTreatmentsThird .answers-outer-dynamic').size()*10;
 		$('#PatientsTreatmentsThird .answers-outer-dynamic span').each( function() {
@@ -875,7 +884,7 @@ this.binDeleteColumn = function(id) {
 			var res = Math.round(100/num*total);
 		}
 		$('#tab3result').html(res);
-	}
+	}*/
 	
 }
 
