@@ -70,7 +70,8 @@ if(is_array($notes)) {
 		}
 	?>
     <div id="note-<?php echo($note->id);?>" class="<?php if($proc->canedit) { ?>note<?php } ?> shape<?php echo($note->shape);?> <?php echo $col;?><?php if($proc->canedit) { ?> showCoPopup<?php } ?>" request="<?php echo $request;?>" style="left: <?php echo $left;?>px; top: <?php echo $top;?>px; z-index: <?php echo $zindex;?>;">
-    	<div>
+        <div>
+        	<span id="note-more-<?php echo($note->id);?>" class="note-readmore" style="<?php if($note->text == "") { echo 'display: none;';}?>"></span>
             <div id="note-title-<?php echo($note->id);?>"><?php echo($note->title);?></div>
             <div id="note-text-<?php echo($note->id);?>" style="display: none;"><?php echo($note->text);?></div>
         </div>

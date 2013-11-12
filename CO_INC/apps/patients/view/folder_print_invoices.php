@@ -40,6 +40,12 @@ if(is_array($invoices)) { ?>
             <td class="grey smalltext fourCols-paddingTop"><?php echo($invoice->title);?></td>
         </tr>
         <tr>
+            <td class="grey fourCols-one smalltext" style="padding-left: 15pt;">Rechnungsnummer</td>
+            <td class="fourCols-two">&nbsp;</td>
+            <td class="fourCols-three">&nbsp;</td>
+            <td class="grey smalltext fourCols-paddingTop"><?php echo($invoice->invoice_number);?></td>
+        </tr>
+        <tr>
             <td class="grey fourCols-one smalltext" style="padding-left: 15pt;">Datum</td>
             <td class="fourCols-two">&nbsp;</td>
             <td class="fourCols-three">&nbsp;</td>

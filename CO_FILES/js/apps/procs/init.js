@@ -407,6 +407,11 @@ function procsApplication(name) {
 		
 		
 		$.ajax({ type: "POST", url: "/", data: { path: 'apps/procs', request: 'saveProcNote', id: id, title: title, text: text }, success: function(data){
+				if(text == "") {
+					$('#note-more-'+id).hide()
+				} else {
+					$('#note-more-'+id).show()
+				}
 			}
 		});
 	}

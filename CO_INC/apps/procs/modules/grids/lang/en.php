@@ -20,7 +20,7 @@ $lang["PROC_GRID_ITEM_NEW"] = 'New Item';
 $lang["PROC_GRID_STAGEGATE_NEW"] = 'New Stagegate';
 $lang['PROC_GRID_NOTES'] = 'Ideas';
 
-$lang['PROC_GRID_DURATION'] = 'Guration';
+$lang['PROC_GRID_DURATION'] = 'Duration';
 $lang['PROC_GRID_HOURS'] = 'hour/s';
 $lang['PROC_GRID_COSTS_EMPLOYEES'] = 'Costs Employees';
 $lang['PROC_GRID_COSTS_MATERIAL'] = 'Costs Materials';

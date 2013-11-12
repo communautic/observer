@@ -1105,6 +1105,7 @@ div.statusTabs input {
 	font-size: 11px;
 	color: #000;
 	width: 60px;
+	padding-top: 2px;
 }
 
 div.statusTabs li span.active {
