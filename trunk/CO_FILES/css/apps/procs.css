@@ -605,6 +605,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d8d3ab', end
 #procs-right .shape10.arrow7 {width: 22px; height: 44px; background-position: -461px 0px; }
 #procs-right .shape10.arrow8 {width: 40px; height: 44px; background-position: -525px 0px; }
 
+#procs-right span.note-readmore { height: 10px; left: 77px; position: absolute; top: 10px; width: 8px; background: url(../../img/icons.png) no-repeat -200px -75px; }
+
 #co-popup .saveItemShape, #co-popup .saveItemColor { height: 65px; background: #fff; border: 1px solid #b2b2b2; border-radius: 4px; margin-bottom: 8px;}
 #co-popup .saveItemArrow { height: 128px; background: #fff; border: 1px solid #b2b2b2; border-radius: 4px; margin-bottom: 8px;}
 

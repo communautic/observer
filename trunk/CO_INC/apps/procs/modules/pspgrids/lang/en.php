@@ -20,7 +20,7 @@ $lang["PROC_PSPGRID_STAGEGATE_NEW"] = 'New Stagegate';
 $lang['PROC_PSPGRID_PHASES'] = 'Phases';
 $lang['PROC_PSPGRID_NOTES'] = 'Tasks';
 
-$lang['PROC_PSPGRID_DURATION'] = 'Guration';
+$lang['PROC_PSPGRID_DURATION'] = 'Duration';
 $lang['PROC_PSPGRID_DAYS'] = 'hour/s';
 $lang['PROC_PSPGRID_COSTS_EMPLOYEES'] = 'Costs Employees';
 $lang['PROC_PSPGRID_COSTS_MATERIAL'] = 'Costs Materials';
