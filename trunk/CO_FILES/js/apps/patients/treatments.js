@@ -125,6 +125,11 @@ function patientsTreatments(name) {
 							switch(data.status) {
 								case "2":
 									$("#patients3 ul[rel=treatments] span[rel="+treatid+"] .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
+									var pid = $("#patients").data("second");
+									$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/patients/modules/invoices&request=getList&id="+pid, success: function(data){
+										$('#patients_invoices_items').html(data.items);
+										}
+									});
 								break;
 								case "3":
 									$("#patients3 ul[rel=treatments] span[rel="+treatid+"] .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
@@ -207,7 +212,7 @@ function patientsTreatments(name) {
 							break;
 							default:
 								$("#patients2 .active-link .module-item-status").removeClass("module-item-active-trial").removeClass("module-item-active-circle");
-						}			
+						}		
 						}
 					});
 				} 
@@ -1333,7 +1338,7 @@ var colors = ['#3C4664','#EB4600','#915500','#0A960A','#AA19AA','#3C4664','#EB46
 		var app = getCurrentApp();
 		var obj = getCurrentModule();
 			if($("#"+field).html() != "") {
-				$("#"+field+" .listmember:visible:last").append(", ");
+				$("#"+field+" .showItemContext:visible:last").append(", ");
 			}
 			$("#"+field).append(html);
 			// recalc
