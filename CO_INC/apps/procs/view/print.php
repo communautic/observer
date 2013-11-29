@@ -66,8 +66,8 @@ $top = $top-7;
 			}
 		}
 		?>
-    <div style="position:absolute; overflow:hidden; vertical-align: top; width: 166px; height: <?php echo $h;?>px; left: <?php echo $note->x;?>px; top: <?php echo $note->y+30;?>px; z-index: <?php echo $note->x;?>;"><img src="<?php echo CO_FILES . $img . '.png';?>" /></div>
-        <div style="position:absolute; overflow:hidden; width: 150px; height: 60px; left: <?php echo $note->x+$xadd;?>px; top: <?php echo $note->y+$yadd;?>px; z-index: <?php echo $note->x+1;?>;"><div style="font-size: 11px; width: <?php echo $w; ?>px; height: 60px;"><table width="100%" height="60"><tr><td height="60" valign="middle" align="center"><?php echo($note->title);?></td></tr></table></div></div>
+    <div style="position:absolute; overflow:hidden; vertical-align: top; width: 166px; height: <?php echo $h;?>px; left: <?php echo $note->x;?>px; top: <?php echo $note->y+30;?>px; z-index: <?php echo $note->z;?>;"><img src="<?php echo CO_FILES . $img . '.png';?>" /></div>
+        <div style="position:absolute; overflow:hidden; width: 150px; height: 60px; left: <?php echo $note->x+$xadd;?>px; top: <?php echo $note->y+$yadd;?>px; z-index: <?php echo $note->z;?>;"><div style="font-size: 11px; width: <?php echo $w; ?>px; height: 60px;"><table width="100%" height="60"><tr><td height="60" valign="middle" align="center"><?php echo($note->title);?></td></tr></table></div></div>
 	</div>	
         
         	<?php
