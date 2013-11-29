@@ -517,7 +517,7 @@ function getTreatmentTypeName($string,$field){
    
 function getTreatmentTypeMin($string){
 		$users_string = explode(",", $string);
-		$users_string = array_unique($users_string);
+		//$users_string = array_unique($users_string);
 		$users_total = sizeof($users_string);
 		$users = '';
 		if($users_total == 0) { return $users; }
@@ -540,7 +540,7 @@ function getTreatmentTypeMin($string){
    
    function getTreatmentTypeCosts($string){
 		$users_string = explode(",", $string);
-		$users_string = array_unique($users_string);
+		//$users_string = array_unique($users_string);
 		$users_total = sizeof($users_string);
 		$users = '';
 		if($users_total == 0) { return $users; }
@@ -883,7 +883,7 @@ function getTreatmentTypeMin($string){
 			$result_user = mysql_query($q, $this->_db->connection);
 			if(mysql_num_rows($result_user) > 0) {
 				while($row_user = mysql_fetch_assoc($result_user)) {
-					$users_arr[$row_user["id"]] = ' minutes="'.$row_user["minutes"].'" costs="'.$row_user["costs"].'">' .$row_user["positionstext"] . ' ' . $row_user["shortname"] . ' (' . $row_user["minutes"] . ')';		
+					$users_arr[] = ' uid="' . $row_user["id"] . '" minutes="'.$row_user["minutes"].'" costs="'.$row_user["costs"].'">' .$row_user["positionstext"] . ' ' . $row_user["shortname"] . ' (' . $row_user["minutes"] . ')';		
 				}
 			}
 		}
@@ -897,7 +897,7 @@ function getTreatmentTypeMin($string){
 		}
 		$i = 1;
 		foreach ($users_arr as $key => &$value) {
-			$users .= '<span class="listmember-outer"><a href="patients_treatments" class="showItemContext" uid="' . $key . '" field="' . $field . '" ' . $edit . $value;		
+			$users .= '<span class="listmember-outer"><a href="patients_treatments" class="showItemContext" field="' . $field . '" ' . $edit . $value;		
 			if($i < $users_arr_total) {
 				$users .= ', ';
 			}

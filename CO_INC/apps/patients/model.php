@@ -239,7 +239,7 @@ class PatientsModel extends Model {
 			break;
 		}
 		
-		$q = "SELECT a.id,a.title,a.invoice_date,a.status_invoice, b.id as pid, b.management, CONCAT(c.lastname,' ',c.firstname) as patient FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE a.status='2' and a.pid=b.id and b.folder='$id' and b.cid=c.id and a.bin='0' and b.bin='0' ORDER BY " . $order;
+		$q = "SELECT a.id,a.title,a.invoice_date,a.invoice_number,a.status_invoice, b.id as pid, b.management, CONCAT(c.lastname,' ',c.firstname) as patient FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE a.status='2' and a.pid=b.id and b.folder='$id' and b.cid=c.id and a.bin='0' and b.bin='0' ORDER BY " . $order;
 		
 		
 		$result = mysql_query($q, $this->_db->connection);
@@ -310,8 +310,8 @@ class PatientsModel extends Model {
 	function getFolderDetailsRevenueResults($id,$who,$start,$end) {
 		global $session, $contactsmodel, $patientsControllingModel, $lang;
 		
-		$start = $this->_date->formatDate($start);
-		$end = $this->_date->formatDate($end);
+		$start = $this->_date->formatDate($start, "Y-m-d");
+		$end = $this->_date->formatDate($end, "Y-m-d");
 		$calctotal = 0;
 		$management = "b.management='$who' and ";
 		if($who == 0) {
