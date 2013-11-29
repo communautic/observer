@@ -11,6 +11,7 @@ class Contacts extends Controller {
 			$this->modules = $this->getModules($this->application);
 			$this->num_modules = sizeof((array)$this->modules);
 			$this->binDisplay = true;
+			$this->archiveDisplay = false;
 			$this->contactsDisplay = false; // list access status on contact page
 	}
 	

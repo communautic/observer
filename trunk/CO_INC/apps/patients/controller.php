@@ -14,6 +14,7 @@ class Patients extends Controller {
 			$this->modules = $this->getModules($this->application);
 			$this->num_modules = sizeof((array)$this->modules);
 			$this->binDisplay = true;
+			$this->archiveDisplay = false;
 			$this->contactsDisplay = true; // list access status on contact page
 			
 			if (!$session->isSysadmin()) {

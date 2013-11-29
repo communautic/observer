@@ -9,6 +9,7 @@ class Bin extends Controller {
 			$this->modules = array();
 			$this->num_modules = 0;
 			$this->binDisplay = false;
+			$this->archiveDisplay = false;
 			$this->contactsDisplay = false; // list access status on contact page
 	}
 	
