@@ -79,6 +79,12 @@
     <td class="tcell-right-nopadding"><?php if($treatment->canedit) { ?><input id="discount" name="discount" type="text" class="bg" value="<?php echo($treatment->discount);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $treatment->discount . '</span>'); } ?></td>
   </tr>
 </table>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+  <tr>
+    <td class="tcell-left-shorter text11"><span class="<?php if($treatment->canedit) { ?>content-nav selectTextfield<?php } ?>"><span>Mehrwertsteuer (%)</span></span></td>
+    <td class="tcell-right-nopadding"><?php if($treatment->canedit) { ?><input id="vat" name="vat" type="text" class="bg" value="<?php echo($treatment->vat);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $treatment->vat . '</span>'); } ?></td>
+  </tr>
+</table>
 <div class="content-spacer"></div>
 <div id="patientTabs" class="contentTabs">
 	<ul class="contentTabsList">

@@ -280,6 +280,11 @@ class PatientsInvoicesModel extends PatientsModel {
 			$array['discount_costs'] = number_format($array['discount_costs'],2,',','.');
 			$array['totalcosts'] = $array['totalcosts']-(($array['totalcosts']/100)*$array['discount']);
 		}
+		if($array['vat'] != 0) {
+			$array['vat_costs'] = ($array['totalcosts']/100)*$array['vat'];
+			$array['vat_costs'] = number_format($array['vat_costs'],2,',','.');
+			$array['totalcosts'] = $array['totalcosts']+(($array['totalcosts']/100)*$array['vat']);
+		}
 		$array['totalcosts'] = number_format($array['totalcosts'],2,',','.');
 		
 		// get the diagnoses
