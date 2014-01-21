@@ -102,6 +102,19 @@
             </table>
         </div>
 	 <?php }?>
+     <?php if($invoice->vat > 0) { ?>
+		 <div style="border-bottom: 1px solid #ccc;">
+            <table width="530" border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td class="text11" style="width: 215px; padding: 6px 0;">
+                    <span class="text13 bold" style="margin-left: 7px;">&nbsp;</span></td>
+                <td class="text11" style="width: 157px; padding: 7px 0 4px 0;">&nbsp;</td>
+                     <td class="text11" style="padding: 7px 0 4px 0;"><?php echo $invoice->vat;?>% Mwst</td>
+                    <td class="text11" style="width: 88px; text-align: right; border-left: 1px solid #ccc; padding: 7px 0 4px 0;"><?php echo CO_DEFAULT_CURRENCY . ' ' . $invoice->vat_costs;?> &nbsp; &nbsp; </td>
+              </tr>
+            </table>
+        </div>
+	 <?php }?>
 
 
 <div style="background: #e5e5e5;">
