@@ -12,7 +12,7 @@ $lang["PATIENT_INVOICE_ACTION_NEW"] = 'neue Rechnung anlegen';
 $lang["PATIENT_INVOICE_DATE"] = 'Rechnungsdatum';
 $lang["PATIENT_INVOICE_DATE_SENT"] = 'Rechnungsversand';
 $lang["PATIENT_INVOICE_NUMBER"] = 'Rechnungsnummer';
-$lang["PATIENT_INVOICE_PAYMENT_REMINDER"] = 'MAHNUNG';
+$lang["PATIENT_INVOICE_PAYMENT_REMINDER"] = 'Mahnung';
 
 $lang["PATIENT_INVOICE_TEXT_CITATION"] = 'Sehr geehrte/r';
 $lang["PATIENT_INVOICE_TEXT_LINE1"] = 'Für die von uns erbrachten Leistungen erlaube ich mir nachstehende Honorarnote zu legen:';
