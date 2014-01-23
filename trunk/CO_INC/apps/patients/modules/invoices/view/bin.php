@@ -32,7 +32,7 @@
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
-		<td class="tcell-left-inactive text11"><?php echo $lang["PATIENT_INVOICE_GOALS"];?></td>
+		<td class="tcell-left-inactive text11"></td>
     <td class="tcell-right">&nbsp;</td>
     </tr>
 </table>

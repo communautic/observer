@@ -7,21 +7,27 @@ $lang["PATIENT_INVOICES"] = 'Rechnungen';
 
 $lang["PATIENT_INVOICE_NEW"] = 'Neue Rechnung';
 $lang["PATIENT_INVOICE_ACTION_NEW"] = 'neue Rechnung anlegen';
-$lang["PATIENT_INVOICE_TASK_NEW"] = 'Neues Einzelziel';
+//$lang["PATIENT_INVOICE_TASK_NEW"] = 'Neues Einzelziel';
 //define('INVOICE_RELATES_TO', 'bezogen auf');
 $lang["PATIENT_INVOICE_DATE"] = 'Rechnungsdatum';
 $lang["PATIENT_INVOICE_DATE_SENT"] = 'Rechnungsversand';
 $lang["PATIENT_INVOICE_NUMBER"] = 'Rechnungsnummer';
-$lang["PATIENT_INVOICE_PAYMENT_REMINDER"] = 'Mahnung';
+$lang["PATIENT_INVOICE_PAYMENT_REMINDER"] = 'MAHNUNG';
+
+$lang["PATIENT_INVOICE_TEXT_CITATION"] = 'Sehr geehrte/r';
+$lang["PATIENT_INVOICE_TEXT_LINE1"] = 'Für die von uns erbrachten Leistungen erlaube ich mir nachstehende Honorarnote zu legen:';
+$lang["PATIENT_INVOICE_TEXT_LINE2"] = 'Ich danke für Ihr Vertrauen und bitte um Anweisung des Gesamthonorars innerhalb von 10 Tagen.';
+$lang["PATIENT_INVOICE_TEXT_LINE3"] = 'Für eine tarifgemäße Rückerstattung von Kosten übermitteln Sie Ihrer Versicherung diese Honorarnote im Original sowie Ihren Überweisungsschein und Einzahlungsbeleg.';
+$lang["PATIENT_INVOICE_TEXT_LINE4"] = 'Ich bedanke mich für die prompte Erledigung und verbleibe mit freundlichen Grüßen,';
 
 
-$lang["PATIENT_INVOICE_PLACE"] = 'Ort';
+/*$lang["PATIENT_INVOICE_PLACE"] = 'Ort';
 $lang["PATIENT_INVOICE_TIME_START"] = 'Start';
 $lang["PATIENT_INVOICE_TIME_END"] = 'Ende';
 
 $lang["PATIENT_INVOICE_ATTENDEES"] = 'Teilnehmer';
 $lang["PATIENT_INVOICE_MANAGEMENT"] = 'Protokollführer';
-$lang["PATIENT_INVOICE_DESCRIPTION"] = 'Beschreibung';
+$lang["PATIENT_INVOICE_DESCRIPTION"] = 'Beschreibung';*/
 
 $lang["PATIENT_INVOICE_STATUS_PLANNED"] = 'erstellt';
 $lang["PATIENT_INVOICE_STATUS_PLANNED_TIME"] = 'am';
@@ -31,21 +37,16 @@ $lang["PATIENT_INVOICE_STATUS_FINISHED"] = 'bezahlt';
 $lang["PATIENT_INVOICE_STATUS_FINISHED_TIME"] = 'am';
 
 $lang["PATIENT_INVOICE_DURATION"] = 'Behandlungsdauer';
+$lang["PATIENT_INVOICE_LIST"] = 'Auflistung';
+$lang["PATIENT_INVOICE_TOTALS"] = 'Gesamthonorar';
 
-$lang["PATIENT_INVOICE_QUESTIONS_INTRO"] = 'Beurteilen Sie zum Abschluss bitte die Qualität der Patientsveranstaltung durch das Anwählen einer jeweiligen Kategorie pro Fragestellung (von 0 - Unzureichend bis 5 - Ausgezeichnet). Unter Punkt 6 finden Sie weiters die Möglichkeit, persönlich gehaltene Bemerkungen abzugeben. Danke für Ihre Meinung, sie ist uns wichtig!';
-$lang["PATIENT_INVOICE_QUESTION_1"] = 'Wie sehr hat Ihnen die Veranstaltung insgesamt zugesagt?';
-$lang["PATIENT_INVOICE_QUESTION_2"] = 'Wie bewerten Sie die Relation Zeitaufwand-Informationsgewinn?';
-$lang["PATIENT_INVOICE_QUESTION_3"] = 'Wie qualifiziert war der/die TrainerIn?';
-$lang["PATIENT_INVOICE_QUESTION_4"] = 'Wie hoch ist der Praxiswert der Inhalte einzuschätzen?';
-$lang["PATIENT_INVOICE_QUESTION_5"] = 'Wurde das persönliche Weiterbildungsziel erreicht?';
-$lang["PATIENT_INVOICE_QUESTION_6"] = 'Weitere Kommentare';
-$lang["PATIENT_INVOICE_SUBMIT"] = 'Abschicken';
+$lang["PATIENT_INVOICE_NOTES"] = 'Notiz';
 
-$lang["PATIENT_INVOICE_GOALS"] = 'Einzelziele';
-$lang["PATIENT_INVOICE_TASKS_START"] = 'Start';
-$lang["PATIENT_INVOICE_TASKS_END"] = 'Ende';
+//$lang["PATIENT_INVOICE_GOALS"] = 'Einzelziele';
+//$lang["PATIENT_INVOICE_TASKS_START"] = 'Start';
+//$lang["PATIENT_INVOICE_TASKS_END"] = 'Ende';
 
-$lang["PATIENT_INVOICE_POSPONED"] = 'verschoben';
+//$lang["PATIENT_INVOICE_POSPONED"] = 'verschoben';
 
 $lang["PATIENT_INVOICE_HELP"] = 'manual_patienten_rechnungen.pdf';
 

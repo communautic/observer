@@ -24,6 +24,12 @@ $lang["PATIENT_TREATMENT_DOCTOR_DIAGNOSE"] = 'Arztdiagnose';
 $lang["PATIENT_TREATMENT_DESCRIPTION"] = 'Beschreibung';
 $lang["PATIENT_TREATMENT_PROTOCOL2"] = 'Verordnung';
 
+$lang["PATIENT_TREATMENT_AMOUNT"] = 'Kosten';
+$lang["PATIENT_TREATMENT_DISCOUNT"] = 'Rabattierung';
+$lang["PATIENT_TREATMENT_DISCOUNT_SHORT"] = 'Rabatt';
+$lang["PATIENT_TREATMENT_VAT"] = 'Mehrwertsteuer';
+$lang["PATIENT_TREATMENT_VAT_SHORT"] = 'Mwst';
+
 $lang["PATIENT_TREATMENT_DIAGNOSE"] = 'Befundung';
 $lang["PATIENT_TREATMENT_DIAGNOSES"] = 'Befundungen';
 $lang["PATIENT_TREATMENT_PLAN"] = 'Behandlungsplan';

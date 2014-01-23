@@ -77,7 +77,7 @@
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
   <tr>
-    <td class="tcell-left-shorter text11"><span><span style="color: #666;">Auflistung</span></span></td>
+    <td class="tcell-left-shorter text11"><span><span style="color: #666;"><?php echo $lang["PATIENT_INVOICE_LIST"];?></span></span></td>
     <td class="tcell-right-nopadding"><div style="width: 530px; border: 1px solid #ccc; color: #666;">
 	<?php 
 	$i = 1;
@@ -96,7 +96,7 @@
                 <td class="text11" style="width: 215px; padding: 6px 0;">
                     <span class="text13 bold" style="margin-left: 7px;">&nbsp;</span></td>
                 <td class="text11" style="width: 157px; padding: 7px 0 4px 0;">&nbsp;</td>
-                     <td class="text11" style="padding: 7px 0 4px 0;">-<?php echo $invoice->discount;?>% Rabatt</td>
+                     <td class="text11" style="padding: 7px 0 4px 0;">-<?php echo $invoice->discount;?>% <?php echo $lang["PATIENT_TREATMENT_DISCOUNT_SHORT"];?></td>
                     <td class="text11" style="width: 88px; text-align: right; border-left: 1px solid #ccc; padding: 7px 0 4px 0;">-<?php echo CO_DEFAULT_CURRENCY . ' ' . $invoice->discount_costs;?> &nbsp; &nbsp; </td>
               </tr>
             </table>
@@ -109,7 +109,7 @@
                 <td class="text11" style="width: 215px; padding: 6px 0;">
                     <span class="text13 bold" style="margin-left: 7px;">&nbsp;</span></td>
                 <td class="text11" style="width: 157px; padding: 7px 0 4px 0;">&nbsp;</td>
-                     <td class="text11" style="padding: 7px 0 4px 0;"><?php echo $invoice->vat;?>% Mwst</td>
+                     <td class="text11" style="padding: 7px 0 4px 0;"><?php echo $invoice->vat;?>% <?php echo $lang["PATIENT_TREATMENT_VAT_SHORT"];?></td>
                     <td class="text11" style="width: 88px; text-align: right; border-left: 1px solid #ccc; padding: 7px 0 4px 0;"><?php echo CO_DEFAULT_CURRENCY . ' ' . $invoice->vat_costs;?> &nbsp; &nbsp; </td>
               </tr>
             </table>
@@ -120,7 +120,7 @@
 <div style="background: #e5e5e5;">
 	<table width="530" border="0" cellpadding="0" cellspacing="0">
       <tr>
-        <td style="width: 215px; padding: 6px 0 4px 0;"><span class="bold" style="margin-left: 7px;">Gesamthonorar</span></td>
+        <td style="width: 215px; padding: 6px 0 4px 0;"><span class="bold" style="margin-left: 7px;"><?php echo $lang["PATIENT_INVOICE_TOTALS"];?></span></td>
         <td class="text11" style="width: 157px; padding: 6px 0 4px 0;">&nbsp;</td>
              <td class="text11" style="padding: 6px 0 4px 0;">&nbsp;</td>
             <td class="text11 bold" style="width: 88px; text-align: right; border-left: 1px solid #ccc; padding: 6px 0 4px 0;"><?php echo CO_DEFAULT_CURRENCY;?> <?php echo $invoice->totalcosts;?> &nbsp; &nbsp; </td>
@@ -135,7 +135,7 @@
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
   <tr>
-    <td class="tcell-left text11"><span class="<?php if($invoice->canedit) { ?>content-nav selectTextarea<?php } ?>"><span>Notiz</span></span></td>
+    <td class="tcell-left text11"><span class="<?php if($invoice->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["PATIENT_INVOICE_NOTES"];?></span></span></td>
     <td class="tcell-right"><?php if($invoice->canedit) { ?><textarea name="protocol_invoice" class="elastic"><?php echo(strip_tags($invoice->protocol_invoice));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($invoice->protocol_invoice)));?><?php } ?></td>
   </tr>
 </table>
