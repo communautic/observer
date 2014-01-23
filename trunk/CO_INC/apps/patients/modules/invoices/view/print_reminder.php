@@ -5,7 +5,7 @@
         <p class="smalltext" style="line-height: 15px;"><?php echo($invoice->m_email)?></p>
         <p class="smalltext" style="line-height: 10px;">&nbsp;</p>
         <p class="smalltext" style="line-height: 15px;"><?php echo $lang["PATIENT_INVOICE_NUMBER"];?>: <?php echo($invoice->invoice_number);?></p>
-        <p style="line-height: 25px;"><strong><?php echo $lang["PATIENT_INVOICE_PAYMENT_REMINDER"];?></strong></p>
+        <p style="line-height: 25px;"><strong><?php echo strtoupper($lang["PATIENT_INVOICE_PAYMENT_REMINDER"]);?></strong></p>
 	</tr>
 </table>
 <table width="100%" class="standard">
