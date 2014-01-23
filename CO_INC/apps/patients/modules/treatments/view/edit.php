@@ -69,19 +69,19 @@
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
   <tr>
-    <td class="tcell-left-inactive text11"><span><span>Kosten</span></span></td>
+    <td class="tcell-left-inactive text11"><span><span><?php echo $lang["PATIENT_TREATMENT_AMOUNT"];?></span></span></td>
     <td class="tcell-right-inactive"><?php echo CO_DEFAULT_CURRENCY;?> <span id="totalcosts"><?php echo $treatment->totalcosts;?></span></td>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
   <tr>
-    <td class="tcell-left-shorter text11"><span class="<?php if($treatment->canedit) { ?>content-nav selectTextfield<?php } ?>"><span>Rabattierung (%)</span></span></td>
+    <td class="tcell-left-shorter text11"><span class="<?php if($treatment->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["PATIENT_TREATMENT_DISCOUNT"];?> (%)</span></span></td>
     <td class="tcell-right-nopadding"><?php if($treatment->canedit) { ?><input id="discount" name="discount" type="text" class="bg" value="<?php echo($treatment->discount);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $treatment->discount . '</span>'); } ?></td>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
   <tr>
-    <td class="tcell-left-shorter text11"><span class="<?php if($treatment->canedit) { ?>content-nav selectTextfield<?php } ?>"><span>Mehrwertsteuer (%)</span></span></td>
+    <td class="tcell-left-shorter text11"><span class="<?php if($treatment->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["PATIENT_TREATMENT_VAT"];?> (%)</span></span></td>
     <td class="tcell-right-nopadding"><?php if($treatment->canedit) { ?><input id="vat" name="vat" type="text" class="bg" value="<?php echo($treatment->vat);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $treatment->vat . '</span>'); } ?></td>
   </tr>
 </table>

@@ -24,11 +24,18 @@ $lang["PATIENT_TREATMENT_DOCTOR_DIAGNOSE"] = 'Doctor diagnosis';
 $lang["PATIENT_TREATMENT_DESCRIPTION"] = 'Description';
 $lang["PATIENT_TREATMENT_PROTOCOL2"] = 'Prescription';
 
+$lang["PATIENT_TREATMENT_AMOUNT"] = 'Amount';
+$lang["PATIENT_TREATMENT_DISCOUNT"] = 'Discount';
+$lang["PATIENT_TREATMENT_DISCOUNT_SHORT"] = 'Discount';
+$lang["PATIENT_TREATMENT_VAT"] = 'VAT';
+$lang["PATIENT_TREATMENT_VAT_SHORT"] = 'VAT';
+
 $lang["PATIENT_TREATMENT_DIAGNOSE"] = 'Diagnosis';
 $lang["PATIENT_TREATMENT_DIAGNOSES"] = 'Diagnosis';
 $lang["PATIENT_TREATMENT_PLAN"] = 'Treatment Plan';
 
 $lang["PATIENT_TREATMENT_GOALS"] = 'Sessions';
+$lang["PATIENT_TREATMENT_GOALS_SINGUAL"] = 'Session';
 $lang["PATIENT_TREATMENT_TASKS_TYPE"] = 'Treatment Type';
 $lang["PATIENT_TREATMENT_TASKS_THERAPIST"] = 'Therapist';
 $lang["PATIENT_TREATMENT_TASKS_PLACE"] = 'Location';

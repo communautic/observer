@@ -12,10 +12,10 @@ $lang["PATIENT_NEW"] = 'New patient';
 $lang["PATIENT_ACTION_NEW"] = 'create new patient';
 
 // Patient Right
-
 $lang["PATIENT_FOLDER_TAB_LIST"] = 'Patients';
 $lang["PATIENT_FOLDER_TAB_INVOICES"] = 'Invoices';
 $lang["PATIENT_FOLDER_TAB_INVOICES_DATE"] = 'Date';
+
 $lang["PATIENT_FOLDER_TAB_INVOICES_PATIENT"] = 'Patient';
 $lang["PATIENT_FOLDER_TAB_INVOICES_STATUS"] = 'Status';
 $lang["PATIENT_FOLDER_TAB_REVENUE"] = 'Revenue';
@@ -34,7 +34,7 @@ $lang["PATIENT_STATUS_FINISHED_TIME"] = '';
 $lang["PATIENT_STATUS_STOPPED"] = 'in evidence';
 $lang["PATIENT_STATUS_STOPPED_TIME"] = '';
 
-$lang["PATIENT_MANAGEMENT"] = 'Physio';
+$lang["PATIENT_MANAGEMENT"] = 'Therapist';
 $lang["PATIENT_CONTACT_DETAILS"] = 'Contact Details';
 
 $lang["PATIENT_CONTACT_POSITION"] = 'Position';
