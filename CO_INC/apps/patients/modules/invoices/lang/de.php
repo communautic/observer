@@ -48,6 +48,10 @@ $lang["PATIENT_INVOICE_NOTES"] = 'Notiz';
 
 //$lang["PATIENT_INVOICE_POSPONED"] = 'verschoben';
 
+$lang["PATIENT_INVOICE_PRINTOPTION_INVOICE"] = 'Rechnung';
+$lang["PATIENT_INVOICE_PRINTOPTION_PAYMENT_REMINDER"] = 'Mahnung';
+$lang["PATIENT_INVOICE_PRINTOPTION_ENVELOPE"] = 'Kuvert';
+
 $lang["PATIENT_INVOICE_HELP"] = 'manual_patienten_rechnungen.pdf';
 
 $lang["PATIENT_PRINT_INVOICE"] = 'rechnung.png';

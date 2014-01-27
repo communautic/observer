@@ -48,10 +48,14 @@ $lang["PATIENT_INVOICE_NOTES"] = 'Notes';
 
 //$lang["PATIENT_INVOICE_POSPONED"] = 'verschoben';
 
+$lang["PATIENT_INVOICE_PRINTOPTION_INVOICE"] = 'Invoice';
+$lang["PATIENT_INVOICE_PRINTOPTION_PAYMENT_REMINDER"] = 'Payment Reminder';
+$lang["PATIENT_INVOICE_PRINTOPTION_ENVELOPE"] = 'Envelope';
+
 $lang["PATIENT_INVOICE_HELP"] = 'manual_patienten_rechnungen.pdf';
 
 $lang["PATIENT_PRINT_INVOICE"] = 'invoice.png';
-$lang["PATIENT_PRINT_REMINDER"] = 'mahnung.png';
+$lang["PATIENT_PRINT_REMINDER"] = 'payment_reminder.png';
 
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/patients/invoices/en.php";
