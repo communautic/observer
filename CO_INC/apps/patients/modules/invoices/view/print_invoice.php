@@ -70,8 +70,8 @@
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p style="line-height: 20px;"><?php echo $lang["PATIENT_INVOICE_TEXT_LINE2"];?></p>
-<p style="line-height: 20px;">&nbsp;</p>
-<p style="line-height: 20px;"><?php echo $lang["PATIENT_INVOICE_TEXT_LINE3"];?></p>
 <p>&nbsp;</p>
-<p><?php echo $lang["PATIENT_INVOICE_TEXT_LINE4"];?></p>
+<p style="line-height: 20px;"><?php echo $lang["PATIENT_INVOICE_TEXT_LINE3"];?></p>
+<p>&nbsp;<br /><br /></p>
+<p style="line-height: 20px;"><?php echo $lang["PATIENT_INVOICE_TEXT_LINE4"];?></p>
 <div style="page-break-after:always;">&nbsp;</div>

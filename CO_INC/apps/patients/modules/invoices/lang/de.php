@@ -13,12 +13,16 @@ $lang["PATIENT_INVOICE_DATE"] = 'Rechnungsdatum';
 $lang["PATIENT_INVOICE_DATE_SENT"] = 'Rechnungsversand';
 $lang["PATIENT_INVOICE_NUMBER"] = 'Rechnungsnummer';
 $lang["PATIENT_INVOICE_PAYMENT_REMINDER"] = 'Mahnung';
+$lang["PATIENT_INVOICE_SERVICES"] = 'Leistungen';
+$lang["PATIENT_INVOICE_SERVICES_LIST"] = 'Leistungsaufstellung';
+$lang["PATIENT_INVOICE_SERVICES_FOR"] = 'für';
+$lang["PATIENT_INVOICE_SERVICES_INVOICENO"] = 'zu Rechnungsnummer';
 
 $lang["PATIENT_INVOICE_TEXT_CITATION"] = 'Sehr geehrte/r';
 $lang["PATIENT_INVOICE_TEXT_LINE1"] = 'Für die von uns erbrachten Leistungen erlaube ich mir nachstehende Honorarnote zu legen:';
 $lang["PATIENT_INVOICE_TEXT_LINE2"] = 'Ich danke für Ihr Vertrauen und bitte um Anweisung des Gesamthonorars innerhalb von 10 Tagen.';
-$lang["PATIENT_INVOICE_TEXT_LINE3"] = 'Für eine tarifgemäße Rückerstattung von Kosten übermitteln Sie Ihrer Versicherung diese Honorarnote im Original sowie Ihren Überweisungsschein und Einzahlungsbeleg.';
-$lang["PATIENT_INVOICE_TEXT_LINE4"] = 'Ich bedanke mich für die prompte Erledigung und verbleibe mit freundlichen Grüßen,';
+$lang["PATIENT_INVOICE_TEXT_LINE3"] = 'Wenn die Möglichkeit einer tarifgemäßen Rückerstattung von Kosten besteht, dann übermitteln Sie Ihrer Versicherung diese Honorarnote im Original sowie Ihren Überweisungsschein und Einzahlungsbeleg.';
+$lang["PATIENT_INVOICE_TEXT_LINE4"] = 'Mit freundlichen Grüßen,';
 
 
 /*$lang["PATIENT_INVOICE_PLACE"] = 'Ort';
@@ -49,12 +53,14 @@ $lang["PATIENT_INVOICE_NOTES"] = 'Notiz';
 //$lang["PATIENT_INVOICE_POSPONED"] = 'verschoben';
 
 $lang["PATIENT_INVOICE_PRINTOPTION_INVOICE"] = 'Rechnung';
+$lang["PATIENT_INVOICE_PRINTOPTION_SERVICES"] = 'Leistungen';
 $lang["PATIENT_INVOICE_PRINTOPTION_PAYMENT_REMINDER"] = 'Mahnung';
 $lang["PATIENT_INVOICE_PRINTOPTION_ENVELOPE"] = 'Kuvert';
 
 $lang["PATIENT_INVOICE_HELP"] = 'manual_patienten_rechnungen.pdf';
 
 $lang["PATIENT_PRINT_INVOICE"] = 'rechnung.png';
+$lang["PATIENT_PRINT_SERVICES"] = 'leistungen.png';
 $lang["PATIENT_PRINT_REMINDER"] = 'mahnung.png';
 
 // check for custom lang file
