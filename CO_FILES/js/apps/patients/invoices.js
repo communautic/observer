@@ -127,6 +127,11 @@ function patientsInvoices(name) {
 				var url ='/?path=apps/patients/modules/invoices&request=printDetails&option=stationary&id='+id;
 				$("#documentloader").attr('src', url);
 			break;
+			case '4':
+				var id = $("#patients").data("third");
+				var url ='/?path=apps/patients/modules/invoices&request=printDetails&option=services&id='+id;
+				$("#documentloader").attr('src', url);
+			break;
 		}
 	}
 	
@@ -187,35 +192,46 @@ function patientsInvoices(name) {
 			case '1':
 				var id = $("#patients").data("third");
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients/modules/invoices&request=getSend&option=invoice&id="+id, success: function(data){
-			$("#modalDialogForward").html(data.html).dialog('open');
-			if(data.error == 1) {
-				$.prompt('<div style="text-align: center">' + ALERT_REMOVE_RECIPIENT + data.error_message + '<br /></div>');
-				return false;
-			}
-			}
-		});
+					$("#modalDialogForward").html(data.html).dialog('open');
+					if(data.error == 1) {
+						$.prompt('<div style="text-align: center">' + ALERT_REMOVE_RECIPIENT + data.error_message + '<br /></div>');
+						return false;
+					}
+					}
+				});
 			break;
 			case '2':
 				var id = $("#patients").data("third");
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients/modules/invoices&request=getSend&option=reminder&id="+id, success: function(data){
-			$("#modalDialogForward").html(data.html).dialog('open');
-			if(data.error == 1) {
-				$.prompt('<div style="text-align: center">' + ALERT_REMOVE_RECIPIENT + data.error_message + '<br /></div>');
-				return false;
-			}
-			}
-		});
+					$("#modalDialogForward").html(data.html).dialog('open');
+					if(data.error == 1) {
+						$.prompt('<div style="text-align: center">' + ALERT_REMOVE_RECIPIENT + data.error_message + '<br /></div>');
+						return false;
+					}
+					}
+				});
 			break;
 			case '3':
 				var id = $("#patients").data("third");
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients/modules/invoices&request=getSend&option=stationary&id="+id, success: function(data){
-			$("#modalDialogForward").html(data.html).dialog('open');
-			if(data.error == 1) {
-				$.prompt('<div style="text-align: center">' + ALERT_REMOVE_RECIPIENT + data.error_message + '<br /></div>');
-				return false;
-			}
-			}
-		});
+					$("#modalDialogForward").html(data.html).dialog('open');
+					if(data.error == 1) {
+						$.prompt('<div style="text-align: center">' + ALERT_REMOVE_RECIPIENT + data.error_message + '<br /></div>');
+						return false;
+					}
+					}
+				});
+			break;
+			case '4':
+				var id = $("#patients").data("third");
+				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients/modules/invoices&request=getSend&option=services&id="+id, success: function(data){
+					$("#modalDialogForward").html(data.html).dialog('open');
+					if(data.error == 1) {
+						$.prompt('<div style="text-align: center">' + ALERT_REMOVE_RECIPIENT + data.error_message + '<br /></div>');
+						return false;
+					}
+					}
+				});
 			break;
 		}
 	}
