@@ -13,6 +13,10 @@ $lang["PATIENT_INVOICE_DATE"] = 'Invoice date';
 $lang["PATIENT_INVOICE_DATE_SENT"] = 'Invoice sent';
 $lang["PATIENT_INVOICE_NUMBER"] = 'Invoice No.';
 $lang["PATIENT_INVOICE_PAYMENT_REMINDER"] = 'Payment Reminder';
+$lang["PATIENT_INVOICE_SERVICES"] = 'Services';
+$lang["PATIENT_INVOICE_SERVICES_LIST"] = 'Services';
+$lang["PATIENT_INVOICE_SERVICES_FOR"] = 'for';
+$lang["PATIENT_INVOICE_SERVICES_INVOICENO"] = 'for Invoice Number';
 
 $lang["PATIENT_INVOICE_TEXT_CITATION"] = 'Dear';
 $lang["PATIENT_INVOICE_TEXT_LINE1"] = 'Please see the following invoice for the provided services by us:';
@@ -49,12 +53,14 @@ $lang["PATIENT_INVOICE_NOTES"] = 'Notes';
 //$lang["PATIENT_INVOICE_POSPONED"] = 'verschoben';
 
 $lang["PATIENT_INVOICE_PRINTOPTION_INVOICE"] = 'Invoice';
+$lang["PATIENT_INVOICE_PRINTOPTION_SERVICES"] = 'Services';
 $lang["PATIENT_INVOICE_PRINTOPTION_PAYMENT_REMINDER"] = 'Payment Reminder';
 $lang["PATIENT_INVOICE_PRINTOPTION_ENVELOPE"] = 'Envelope';
 
 $lang["PATIENT_INVOICE_HELP"] = 'manual_patienten_rechnungen.pdf';
 
 $lang["PATIENT_PRINT_INVOICE"] = 'invoice.png';
+$lang["PATIENT_PRINT_SERVICES"] = 'services.png';
 $lang["PATIENT_PRINT_REMINDER"] = 'payment_reminder.png';
 
 // check for custom lang file
