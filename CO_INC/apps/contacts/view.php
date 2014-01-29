@@ -42,7 +42,7 @@
            <li class="listNew"><span class="actionNew" title="<?php echo $lang["ACTION_NEW"];?>"></span></li>
 			<li class="listPrint"><span class="actionPrint" title="<?php echo $lang["ACTION_PRINT"];?>"></span></li>
 			<li class="listSend"><span class="actionSend" title="<?php echo $lang["ACTION_SENDTO"];?>"></span></li>
-			<li class="listSendVcard"><span class="actionSendVcard" title="<?php echo $lang["ACTION_SENDTO"];?>"></span></li>
+			<li class="listSendVcard"><span class="actionSendVcard" title="vcf <?php echo $lang["ACTION_SENDTO"];?>"></span></li>
             <li class="listDuplicate"><span class="actionDuplicate" title="<?php echo $lang["ACTION_DUPLICATE"];?>"></span></li>
             <li class="listRefresh"><span class="actionRefresh" title="<?php echo $lang["ACTION_REFRESH"];?>"></span></li>
             <li class="listHelp"><span class="actionHelp" title="<?php echo $lang["ACTION_HELP"];?>"></span></li>
