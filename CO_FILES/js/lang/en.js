@@ -29,10 +29,10 @@ var ALERT_STATUS_PHASE_ACTIVATE = 'Would you like to set this phase to „in pro
 var ALERT_STATUS_PHASE_COMPLETE = 'Would you like to set this phase to „completed”?';
 var ALERT_STATUS_PPROJECT_COMPLETE = 'Would you like to set this project to „completed”?';
 // Status Alerts patients
-var ALERT_STATUS_PATIENT_ACTIVATE = 'Wollen Sie den Patienten mit heutigem Datum auf<br />„in Behandlung” setzen?';
-var ALERT_STATUS_TREATMENT_ACTIVATE = 'Wollen Sie die Behandlung mit heutigem Datum auf<br />„in Arbeit” setzen?';
-var ALERT_STATUS_TREATMENT_COMPLETE = 'Wollen Sie die Behandlung mit heutigem Datum auf<br />„abgeschlossen” setzen?';
-var ALERT_STATUS_PATIENT_COMPLETE = 'Wollen Sie den Patienten mit heutigem Datum auf<br />„abgeschlossen” setzen?';
+var ALERT_STATUS_PATIENT_ACTIVATE = 'Would you like to set this patient to<br />„in care”?';
+var ALERT_STATUS_TREATMENT_ACTIVATE = 'Would you like to set this treatment with todays date to<br />„in Treatment”?';
+var ALERT_STATUS_TREATMENT_COMPLETE = 'Would you like to set this treatment with todays date to<br />„completed”?';
+var ALERT_STATUS_PATIENT_COMPLETE = 'Would you like to set this patient with todays date to<br />„in evidence”?';
 
 var ALERT_NO_FILE = "Please select a file to upload.";
 
