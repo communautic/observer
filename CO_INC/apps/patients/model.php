@@ -239,7 +239,7 @@ class PatientsModel extends Model {
 			break;
 		}
 		
-		$q = "SELECT a.id,a.title,a.invoice_date,a.invoice_number,a.status_invoice, b.id as pid, b.management, CONCAT(c.lastname,' ',c.firstname) as patient FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE a.status='2' and a.pid=b.id and b.folder='$id' and b.cid=c.id and a.bin='0' and b.bin='0' ORDER BY " . $order;
+		$q = "SELECT a.id,a.title,a.invoice_date,a.invoice_number,a.status_invoice, a.discount, a.vat, b.id as pid, b.management, CONCAT(c.lastname,' ',c.firstname) as patient FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE a.status='2' and a.pid=b.id and b.folder='$id' and b.cid=c.id and a.bin='0' and b.bin='0' ORDER BY " . $order;
 		
 		
 		$result = mysql_query($q, $this->_db->connection);
@@ -281,13 +281,17 @@ class PatientsModel extends Model {
 			$array['totalcosts'] += $costs;
 		}
 		}
-		/*if($array['discount'] != 0) {
+		if($array['discount'] != 0) {
 			$array['discount_costs'] = ($array['totalcosts']/100)*$array['discount'];
 			$array['discount_costs'] = number_format($array['discount_costs'],2,',','.');
 			$array['totalcosts'] = $array['totalcosts']-(($array['totalcosts']/100)*$array['discount']);
-		}*/
+		}
+		if($array['vat'] != 0) {
+			$array['vat_costs'] = ($array['totalcosts']/100)*$array['vat'];
+			$array['vat_costs'] = number_format($array['vat_costs'],2,',','.');
+			$array['totalcosts'] = $array['totalcosts']+(($array['totalcosts']/100)*$array['vat']);
+		}
 		$array['totalcosts'] = number_format($array['totalcosts'],2,',','.');
-		
 		
 		$invoices[] = new Lists($array);
 		
@@ -322,7 +326,7 @@ class PatientsModel extends Model {
 			$folder = '';
 		}
 		
-		$q = "SELECT a.id,a.title,a.invoice_date,a.status_invoice, b.id as pid, b.folder, b.management, CONCAT(c.lastname,' ',c.firstname) as patient FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE $management $folder a.invoice_date >= '$start' and a.invoice_date <= '$end' and a.status='2' and a.pid=b.id and b.cid=c.id and a.bin='0' and b.bin='0'";
+		$q = "SELECT a.id,a.title,a.invoice_date,a.status_invoice, a.discount, b.id as pid, b.folder, b.management, CONCAT(c.lastname,' ',c.firstname) as patient FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE $management $folder a.invoice_date >= '$start' and a.invoice_date <= '$end' and a.status='2' and a.pid=b.id and b.cid=c.id and a.bin='0' and b.bin='0'";
 		
 		$result = mysql_query($q, $this->_db->connection);
 		if(mysql_num_rows($result) < 1) {
@@ -369,11 +373,11 @@ class PatientsModel extends Model {
 			$array['totalcosts'] += $costs;
 		}
 		}
-		/*if($array['discount'] != 0) {
+		if($array['discount'] != 0) {
 			$array['discount_costs'] = ($array['totalcosts']/100)*$array['discount'];
 			$array['discount_costs'] = number_format($array['discount_costs'],2,',','.');
 			$array['totalcosts'] = $array['totalcosts']-(($array['totalcosts']/100)*$array['discount']);
-		}*/
+		}
 		$calctotal += $array['totalcosts'];
 		$array['totalcosts'] = number_format($array['totalcosts'],2,',','.');
 		
