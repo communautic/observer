@@ -615,7 +615,7 @@ function patientsTreatments(name) {
 			var tcosts = 0;
 			var tmins = 0;
 			$("#"+field).find('.showItemContext:visible').each(function() {
-				tcosts += parseInt($(this).attr('costs'));
+				tcosts += parseFloat($(this).attr('costs'));
 				tmins += parseInt($(this).attr('minutes'));
 			})
 			$("#costs_"+tid).text(tcosts).number( true, 2, ',', '.' );
@@ -624,7 +624,7 @@ function patientsTreatments(name) {
 			
 			var totalcosts = 0;
 			$("#patients-right").find('.showItemContext:visible').each(function() {
-				totalcosts += parseInt($(this).attr('costs'));
+				totalcosts += parseFloat($(this).attr('costs'));
 			})
 			var discount = parseInt($('#discount').val());
 			if(discount != 0 && totalcosts != 0) {
@@ -943,7 +943,7 @@ var colors = ['#3C4664','#EB4600','#915500','#0A960A','#AA19AA','#3C4664','#EB46
 			var tcosts = 0;
 			var tmins = 0;
 			$("#"+field).find('.showItemContext:visible').each(function() {
-				tcosts += parseInt($(this).attr('costs'));
+				tcosts += parseFloat($(this).attr('costs'));
 				tmins += parseInt($(this).attr('minutes'));
 			})
 			$("#costs_"+tid).text(tcosts).number( true, 2, ',', '.' );
@@ -951,7 +951,7 @@ var colors = ['#3C4664','#EB4600','#915500','#0A960A','#AA19AA','#3C4664','#EB46
 			
 			var totalcosts = 0;
 			$("#patients-right").find('.showItemContext:visible').each(function() {
-				totalcosts += parseInt($(this).attr('costs'));
+				totalcosts += parseFloat($(this).attr('costs'));
 			})
 			var discount = parseInt($('#discount').val());
 			if(discount != 0 && totalcosts != 0) {
@@ -1346,7 +1346,7 @@ var colors = ['#3C4664','#EB4600','#915500','#0A960A','#AA19AA','#3C4664','#EB46
 			var tcosts = 0;
 			var tmins = 0;
 			$("#"+field).find('.showItemContext:visible').each(function() {
-				tcosts += parseInt($(this).attr('costs'));
+				tcosts += parseFloat($(this).attr('costs'));
 				tmins += parseInt($(this).attr('minutes'));
 			})
 			$("#costs_"+tid).text(tcosts).number( true, 2, ',', '.' );
@@ -1354,7 +1354,7 @@ var colors = ['#3C4664','#EB4600','#915500','#0A960A','#AA19AA','#3C4664','#EB46
 			
 			var totalcosts = 0;
 			$("#patients-right").find('.showItemContext:visible').each(function() {
-				totalcosts += parseInt($(this).attr('costs'));
+				totalcosts += parseFloat($(this).attr('costs'));
 			})
 			var discount = parseInt($('#discount').val());
 			if(discount != 0 && totalcosts != 0) {
