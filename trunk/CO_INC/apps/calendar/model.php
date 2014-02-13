@@ -1,6 +1,93 @@
 <?php
 class CalendarModel extends Model {
 
+	// Get all Calendars
+   function getFolderList($sort) {
+      global $session;
+	  if($sort == 0) {
+		  $sortstatus = $this->getSortStatus("calendar-sort-status");
+		  if(!$sortstatus) {
+		  	$order = "order by a.lastname ASC, a.firstname ASC";
+			$sortcur = '1';
+		  } else {
+			  switch($sortstatus) {
+				  case "1":
+				  		$order = "order by a.lastname ASC, a.firstname ASC";
+						$sortcur = '1';
+				  break;
+				  case "2":
+				  		$order = "order by a.lastname DESC, a.firstname DESC";
+						$sortcur = '2';
+				  break;
+				  case "3":
+				  		$sortorder = $this->getSortOrder("calendar-sort-order");
+				  		if(!$sortorder) {
+						  	$order = "order by a.lastname ASC, a.firstname ASC";
+							$sortcur = '1';
+						  } else {
+							$order = "order by field(a.id,$sortorder)";
+							$sortcur = '3';
+						  }
+				  break;
+			  }
+		  }
+	  } else {
+		  switch($sort) {
+				  case "1":
+				  		$order = "order by a.lastname ASC, a.firstname ASC";
+						$sortcur = '1';
+				  break;
+				  case "2":
+				  		$order = "order by a.lastname DESC, a.firstname DESC";
+						$sortcur = '2';
+				  break;
+				  case "3":
+				  		$sortorder = $this->getSortOrder("calendar-sort-order");
+				  		if(!$sortorder) {
+						  	$order = "order by a.lastname ASC, a.firstname ASC";
+							$sortcur = '1';
+						  } else {
+							$order = "order by field(a.id,$sortorder)";
+							$sortcur = '3';
+						  }
+				  break;	
+			  }
+	  }
+	  
+		if(!$session->isSysadmin()) {
+			//$q ="select a.id, a.title from " . CO_TBL_PROJECTS_FOLDERS . " as a where a.status='0' and a.bin = '0' and (SELECT count(*) FROM co_projects_access as b, co_projects as c WHERE (b.admins REGEXP '[[:<:]]" . $session->uid . "[[:>:]]' or b.guests REGEXP '[[:<:]]" . $session->uid . "[[:>:]]') and c.folder=a.id and b.pid=c.id) > 0 " . $order;
+			$q = "select id,firstname,lastname from co_users as a, oc_clndr_calendars as.b where calendar = '1' and invisible = '0' and bin = '0' " . $order;
+		} else {
+			$q = "SELECT a.id, a.firstname, a.lastname, a.username, b.id as calendarid, b.active as calactive, b.calendarcolor FROM co_users as a, oc_clndr_calendars as b WHERE (a.username = b.userid or a.calendar_uid = b.userid) and a.calendar = '1' and a.invisible = '0' and a.bin = '0' " . $order;
+		}
+		
+	  $this->setSortStatus("calendar-sort-status",$sortcur);
+      $result = mysql_query($q, $this->_db->connection);
+	  $folders = "";
+	  $eventSources = "";
+	  while ($row = mysql_fetch_array($result)) {
+		foreach($row as $key => $val) {
+				$array[$key] = $val;
+			}
+			if($array['calactive'] == 1) {
+					$eventSources[] = array(
+										'url' => '/?path=apps/calendar&request=getrequestedEvents&calendar_id=' . $array['calendarid'],
+										'backgroundColor' => $array['calendarcolor'],
+										"borderColor" => "#888",
+										"textColor" => "#000000",
+										"cache" => true					
+									  );
+				}
+			
+			$folders[] = new Lists($array);
+	  }
+	  
+	  $arr = array("folders" => $folders, "eventSources" => $eventSources, "sort" => $sortcur);
+	  
+	  return $arr;
+   }
+
+
 
 	/**
 	 * @brief Returns all objects of a calendar between $start and $end
@@ -100,7 +187,40 @@ class CalendarModel extends Model {
 		//$start = DateTime::createFromFormat('U', $start);
 		//$start = $start->format('Y-m-d');
 	}
+	
+	
+	/**
+	 * @brief Gets the data of one calendar
+	 * @param integer $id
+	 * @return associative array
+	 */
+	function findCalendar($id) {
+		/*$stmt = OCP\DB::prepare( 'SELECT * FROM `*PREFIX*clndr_calendars` WHERE `id` = ?' );
+		$result = $stmt->execute(array($id));
+		$row = $result->fetchRow();*/
+		/*if($row['userid'] != OCP\USER::getUser() && !OC_Group::inGroup(OCP\User::getUser(), 'admin')) {
+			$sharedCalendar = OCP\Share::getItemSharedWithBySource('calendar', $id);
+			if (!$sharedCalendar || !($sharedCalendar['permissions'] & OCP\PERMISSION_READ)) {
+				return $row; // I have to return the row so e.g. OC_Calendar_Object::getowner() works.
+			}
+			$row['permissions'] = $sharedCalendar['permissions'];
+		} else {
+			$row['permissions'] = OCP\PERMISSION_ALL;
+		}*/
+		
+		$q ="SELECT * FROM oc_clndr_calendars WHERE id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		/*while($row = mysql_fetch_array($result))  {
+			$return = $row;
+		}*/
+		return $row = mysql_fetch_array($result);
+	}
 
+
+	function toggleView($id, $active) {
+		$q ="UPDATE oc_clndr_calendars SET active='$active' WHERE id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+	}
 
 	
 	

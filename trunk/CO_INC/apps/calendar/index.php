@@ -19,10 +19,20 @@ foreach($controller->applications as $app => $display) {
 
 if (!empty($_GET['request'])) {
 	switch ($_GET['request']) {
+		case 'getFolderList':
+			$sort = "0";
+			if(!empty($_GET['sort'])) {
+				$sort = $_GET['sort'];
+			}
+			echo($calendar->getFolderList($sort));
+		break;
 		case 'getrequestedEvents':
 			echo($calendar->getrequestedEvents($_GET["calendar_id"], $_GET["start"], $_GET["end"]));
-			//echo '[{"id":111,"title":"Event1","start":"2013-12-10","url":"http:\/\/yahoo.com\/"},{"id":222,"title":"Event2","start":"2013-12-20","end":"2013-12-22","url":"http:\/\/yahoo.com\/"}]';
 		break;
+		case 'toggleView':
+			echo($calendar->toggleView($_GET["calendarid"], $_GET["active"]));
+		break;
+		
 	}
 }
 
@@ -30,6 +40,9 @@ if (!empty($_POST['request'])) {
 	switch ($_POST['request']) {
 		case 'setFolderDetails':
 			echo($projects->setFolderDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['projectstatus']));
+		break;
+		case 'newEventForm':
+			echo($calendar->newEventForm($_POST["start"], $_POST["end"], $_POST["allday"]));
 		break;
 	}
 }
