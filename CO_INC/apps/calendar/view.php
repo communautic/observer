@@ -8,15 +8,7 @@
     <div id="calendar1" class="module-bg-active">
     	<div class="module-inner west-ui-content">
         <div class="scrolling-content">
-            <ul class="sortable">
-            	<?php
-				foreach($controller->applications as $app => $display) {
-							if(${$app}->binDisplay) {
-							echo('<li id="folderItem_"><span rel="' . $app . '" class="module-click"><span class="text">' . ${$app.'_name'} . '</span></span></li>');
-							}
-				}
-				?>
-            </ul>
+            <ul class="sortable"></ul>
         </div>
         </div>
 	</div>
@@ -42,6 +34,6 @@
 			<li class="listBin"><span class="actionBin" title="<?php echo $lang["ACTION_DELETE"];?>"></span></li>
 		</ul>
 	</div>
-	<div class="center-center" id="calendar-right"></div>
+	<div class="center-center" id="calendar-right"></div><div id="dialog_holder"></div>
 </div>
 </div>

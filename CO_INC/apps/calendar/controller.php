@@ -12,6 +12,19 @@ class Calendar extends Controller {
 			$this->archiveDisplay = false;
 			$this->contactsDisplay = false; // list access status on contact page
 	}
+	
+	function getFolderList($sort) {
+		global $system, $lang;
+		$arr = $this->model->getFolderList($sort);
+		$folders = $arr["folders"];
+		$data["eventSources"] = $arr["eventSources"];
+		ob_start();
+			include('view/folders_list.php');
+			$data["html"] = ob_get_contents();
+		ob_end_clean();
+		$data["sort"] = $arr["sort"];
+		return json_encode($data);
+	}
 
 
 	function getrequestedEvents($calendarid, $start, $end) {
@@ -172,6 +185,37 @@ class Calendar extends Controller {
 		return ($event['repeating'] == 1)?true:false;
 	}
 	
+	
+	/**
+	 * @brief returns informations about a calendar
+	 * @param int $id - id of the calendar
+	 * @param bool $security - check access rights or not
+	 * @param bool $shared - check if the user got access via sharing
+	 * @return mixed - bool / array
+	 */
+	function getCalendar($id, $security = false, $shared = false) {
+		if(! is_numeric($id)) {
+			return false;
+		}
+
+		//$calendar = OC_Calendar_Calendar::find($id);
+		$calendar = $this->model->findCalendar($id);
+		// FIXME: Correct arguments to just check for permissions
+		/*if($security === true && $shared === false) {
+			if(OCP\User::getUser() === $calendar['userid']){
+				return $calendar;
+			}else{
+				return false;
+			}
+		}
+		if($security === true && $shared === true) {
+			if(OCP\Share::getItemSharedWithBySource('calendar', $id)) {
+				return $calendar;
+			}
+		}*/
+		return $calendar;
+	}
+	
 	/**
 	 * @brief checks if an event is already cached in a specific period
 	 * @param (int) id - id of the event
@@ -186,6 +230,62 @@ class Calendar extends Controller {
 			return false;
 		}
 
+	}
+	
+	// OC: setCalendarActive
+	function toggleView($calendarid, $active) {
+		$this->model->toggleView($calendarid, $active);
+		$calendar = $this->getCalendar($calendarid, true);
+		
+		return json_encode(array(
+			'active' => $active,
+			'eventSource' => $this->getEventSourceInfo($calendar)
+		));
+	}
+	
+	/**
+	 * @brief generates the Event Source Info for our JS
+	 * @param array $calendar calendar data
+	 * @return array
+	 */
+	function getEventSourceInfo($calendar) {
+		return array(
+			'url' => '/?path=apps/calendar&request=getrequestedEvents&calendar_id='.$calendar['id'],
+			'backgroundColor' => $calendar['calendarcolor'],
+			'borderColor' => '#888',
+			'textColor' => $this->generateTextColor($calendar['calendarcolor']),
+			'cache' => true,
+		);
+	}
+	
+	/*
+	 * @brief generates the text color for the calendar
+	 * @param string $calendarcolor rgb calendar color code in hex format (with or without the leading #)
+	 * (this function doesn't pay attention on the alpha value of rgba color codes)
+	 * @return boolean
+	 */
+	function generateTextColor($calendarcolor) {
+		if(substr_count($calendarcolor, '#') == 1) {
+			$calendarcolor = substr($calendarcolor,1);
+		}
+		$red = hexdec(substr($calendarcolor,0,2));
+		$green = hexdec(substr($calendarcolor,2,2));
+		$blue = hexdec(substr($calendarcolor,4,2));
+		//recommendation by W3C
+		$computation = ((($red * 299) + ($green * 587) + ($blue * 114)) / 1000);
+		return ($computation > 130)?'#000000':'#FAFAFA';
+	}
+	
+	
+	function newEventForm($start, $end, $allday) {
+		global $system, $lang;
+		//$arr = $this->model->getFolderList($sort);
+		//$folders = $arr["folders"];
+		ob_start();
+			include('view/eventform.php');
+			$html = ob_get_contents();
+		ob_end_clean();
+		return $html;
 	}
 	
 
