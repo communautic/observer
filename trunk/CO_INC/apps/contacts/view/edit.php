@@ -71,6 +71,7 @@
 	<ul class="contentTabsList">
 		<li><span class="active" rel="ContactAddress"><?php echo $lang["CONTACT_TAB_ADDRESS"];?></span></li>
 		<li><span rel="ContactAccess"><?php echo $lang["CONTACT_TAB_ACCESS"];?></span></li>
+        <li><span rel="ContactCalendar"><?php echo $lang["CONTACT_TAB_CALENDAR"];?></span></li>
 	</ul>
     <div id="ContactTabsContent" class="contentTabsContent">
     <div id="ContactAddress">
@@ -216,6 +217,22 @@ foreach($contact->applications as $key => $val) { ?>
 }
 ?>
     </div>
+    
+    
+    <div id="ContactCalendar" style="display: none;">
+		<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+            <tr>
+              <td class="tcell-left text11"><span class="<?php if($contact->access_status == 0) { ?>content-nav showDialog<?php } ?>" id="calendarlink" request="getCalendarDialog" field="hasCalendar" append="0" sql="<?php echo($contact->calendar);?>"><span>Kalender</span></span></td>
+              <td class="tcell-right"><div id="hasCalendar" class="itemlist-field"><?php echo($contact->calendar);?></div></td>
+            </tr>
+        </table>
+        Kalenderfarbe<br />
+        caldav URLS:<br />
+        Eigener: https://dev.sync.companyobserver.com/remote.php/caldav/calendars/grandolf/gunharthrandolf<br />
+        Shared: https://dev.sync.companyobserver.com/remote.php/caldav/calendars/grandolf/klauskneter_shared_by_klauskneter<br />
+    </div>
+    
+    
     </div>
 </div>
 </form>

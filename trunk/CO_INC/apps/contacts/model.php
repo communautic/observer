@@ -1003,6 +1003,45 @@ class ContactsModel extends Model {
 		}
 		return $users;
 	}
+	
+	
+	function getPlaceListPlain($string,$field,$canedit = true){
+		$users_string = explode(",", $string);
+		$users_total = sizeof($users_string);
+		$users = '';
+		
+		if($users_total == 0) { 
+			return $users; 
+		}
+		
+		// check if user is available and build array
+		$users_arr = array();
+		foreach ($users_string as &$value) {
+			$q = "SELECT id, address_line1, address_postcode, address_town FROM ".CO_TBL_USERS." where id = '$value'";
+			$result_user = mysql_query($q, $this->_db->connection);
+			if(mysql_num_rows($result_user) > 0) {
+				while($row_user = mysql_fetch_assoc($result_user)) {
+					$users_arr[$row_user["id"]] = $row_user["address_line1"] . ", " . $row_user["address_postcode"] . " " . $row_user["address_town"];		
+				}
+			}
+		}
+		$users_arr_total = sizeof($users_arr);
+		
+		// build string
+		if($canedit) {
+			$edit = ' edit="1"';
+		} else {
+			$edit = ' edit="0"';
+		}
+		
+		$i = 1;
+		foreach ($users_arr as $key => &$value) {
+			$users .= $value;			
+			$i++;
+		}
+		return $users;
+	}
+
 
    
 	 
@@ -1228,6 +1267,65 @@ class ContactsModel extends Model {
 			 $r[] = $rows;
 		}
 		return json_encode($r);
+	}
+	
+	function setCalendar($id) {
+		// update userfield
+		$q = "UPDATE co_users SET calendar='1' WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		// check if a calendar exists for this user
+		$q = "SELECT * FROM oc_users WHERE couid='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+
+		if(mysql_num_rows($result) > 0) {
+			$q = "SELECT * FROM co_users WHERE id='$id'";
+			$result = mysql_query($q, $this->_db->connection);
+			while($row = mysql_fetch_array($result)) {
+				$username = $row['username'];
+				$password = $row['password'];
+				$name = $row['lastname'] . ' ' . $row['firstname'];
+				$uri = strtolower($row['firstname'].$row['lastname']);
+			}
+		} else {
+			$q = "SELECT * FROM co_users WHERE id='$id'";
+			$result = mysql_query($q, $this->_db->connection);
+			while($row = mysql_fetch_array($result)) {
+				$username = $row['username'];
+				$password = $row['password'];
+				$name = $row['lastname'] . ' ' . $row['firstname'];
+				$uri = strtolower($row['firstname'].$row['lastname']);
+			}
+			
+			// create OC user
+			$q = "INSERT INTO oc_users SET uid='$username', couid='$id', password='$password'";
+			$result = mysql_query($q, $this->_db->connection);
+			
+			// add to coUsers group
+			$q = "INSERT INTO oc_group_user SET gid='coUsers', uid='$username'";
+			$result = mysql_query($q, $this->_db->connection);
+			
+			// create calendar
+			$q = "INSERT INTO oc_clndr_calendars SET userid='$username', displayname='$name', uri='$uri', active='1', calendarcolor='#ff0000', components='VEVENT,VTODO,VJOURNAL'";
+			$result = mysql_query($q, $this->_db->connection);
+			$calid = mysql_insert_id();
+			
+			// share calendar
+			$q = "INSERT INTO oc_share SET share_type='1', share_with='coUsers', uid_owner='$username', item_type='calendar', item_source='$calid', item_target='$name', permissions='31'";
+			$result = mysql_query($q, $this->_db->connection);
+		}
+
+	}
+
+	
+	function removeCalendar($id) {
+		// update userfield
+		$q = "UPDATE co_users SET calendar='0' WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		// remove davcal user
+		// remove calendar
+		// remove calendar objects
+		// remove share
 	}
 
 	
