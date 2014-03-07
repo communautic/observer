@@ -102,7 +102,7 @@ Calendar={
 				$('#loading').hide();
 			}
 		},*/
-		busy: 'false',
+		busy: false,
 		startEventDialog:function(){
 			//Calendar.UI.loading(false);
 			$('#calendar-right').fullCalendar('unselect');
