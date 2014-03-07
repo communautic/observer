@@ -6,6 +6,7 @@
 	<div id="calendar1-outer">
     <h3 class="module-bg-active"><?php echo $lang["BIN_FOLDER"];?></h3>
     <div id="calendar1" class="module-bg-active">
+    <div class="module-actions"><div class="sort-outer"><span class="sort" rel="1"></span></div></div>
     	<div class="module-inner west-ui-content">
         <div class="scrolling-content">
             <ul class="sortable"></ul>

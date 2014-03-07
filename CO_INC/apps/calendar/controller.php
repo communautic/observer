@@ -1,5 +1,11 @@
 <?php
 
+/**
+* Event types:
+* Freier Termin = 0
+* Treatment = 1
+**/
+
 class Calendar extends Controller {
 	// get all available apps
 	function __construct($name) {
@@ -71,20 +77,6 @@ class Calendar extends Controller {
 	 */
 	function generateEventOutput(array $event, $start, $end) {
 		global $session;
-		require_once('/home/dev/public_html/sync/3rdparty/Sabre/VObject/Node.php');
-		require_once('/home/dev/public_html/sync/3rdparty/Sabre/VObject/ElementList.php');
-		require_once('/home/dev/public_html/sync/3rdparty/Sabre/VObject/Component.php');
-		require_once('/home/dev/public_html/sync/3rdparty/Sabre/VObject/Component/VCalendar.php');
-		require_once('/home/dev/public_html/sync/3rdparty/Sabre/VObject/Component/VEvent.php');
-		require_once('/home/dev/public_html/sync/3rdparty/Sabre/VObject/Property.php');
-		require_once('/home/dev/public_html/sync/3rdparty/Sabre/VObject/TimeZoneUtil.php');
-		require_once('/home/dev/public_html/sync/3rdparty/Sabre/VObject/Property/DateTime.php');
-		require_once('/home/dev/public_html/sync/3rdparty/Sabre/VObject/Parameter.php');
-		require_once('/home/dev/public_html/sync/3rdparty/Sabre/VObject/Reader.php');
-		require_once('/home/dev/public_html/sync/lib/private/vobject.php');
-		require_once('/home/dev/public_html/sync/apps/calendar/lib/calendar.php');
-		require_once('/home/dev/public_html/sync/apps/calendar/lib/object.php');
-		
 		
 		if(!isset($event['calendardata']) && !isset($event['vevent'])) {
 			return false;
@@ -124,11 +116,40 @@ class Calendar extends Controller {
 			$allday = ($vevent->DTSTART->getDateType() == Sabre\VObject\Property\DateTime::DATE)?true:false;
 			$last_modified = @$vevent->__get('LAST-MODIFIED');
 			$lastmodified = ($last_modified)?$last_modified->getDateTime()->format('U'):0;
+			// title
+			$event['treat'] = 0;
+			$event['patientid'] = 0;
+			$event['folderid'] = 0;
+			//$regularEventDisplay = '';
+			//$treatmentEventDisplay = '';
+			if($event['eventtype'] == 1) {
+				//$regularEventDisplay  = ' style="display: none"';
+				//$treatmentEventDisplay = ' style="display: block"';
+				$treatmentsModel = new PatientsTreatmentsModel();
+				$treatmentevent = $treatmentsModel->getTreatmentEvent($event['eventid']);
+				$title = $treatmentevent['patient'] . ', ' . $treatmentevent['title'];
+				$event['treat'] = $treatmentevent['mid'];
+				$event['patientid'] = $treatmentevent['id'];
+				$event['folderid'] = $treatmentevent['folder'];
+			} else {
+				//$regularEventDisplay  = ' style="display: block"';
+				//$treatmentEventDisplay = ' style="display: none"';
+				//$title = (!is_null($vevent->SUMMARY) && $vevent->SUMMARY->value != '')? strtr($vevent->SUMMARY->value, array('\,' => ',', '\;' => ';')) : self::$l10n->t('unnamed');
+				$title = (!is_null($vevent->SUMMARY) && $vevent->SUMMARY->value != '')? strtr($vevent->SUMMARY->value, array('\,' => ',', '\;' => ';')) : 'no title';
+			}
+			
 			$staticoutput = array('id'=>(int)$event['id'],
-							'title' => (!is_null($vevent->SUMMARY) && $vevent->SUMMARY->value != '')? strtr($vevent->SUMMARY->value, array('\,' => ',', '\;' => ';')) : self::$l10n->t('unnamed'),
+							//'title' => (!is_null($vevent->SUMMARY) && $vevent->SUMMARY->value != '')? strtr($vevent->SUMMARY->value, array('\,' => ',', '\;' => ';')) : self::$l10n->t('unnamed'),
+							'title' => $title,
 							'description' => isset($vevent->DESCRIPTION)?strtr($vevent->DESCRIPTION->value, array('\,' => ',', '\;' => ';')):'',
 							'lastmodified'=>$lastmodified,
-							'allDay'=>$allday);
+							'allDay'=>$allday,
+							'eventtype'=>$event['eventtype'],
+							'treatment'=>$event['eventid'],
+							'treatmentid'=>$event['treat'],
+							'patientid'=>$event['patientid'],
+							'folderid'=>$event['folderid']
+							);
 			
 			if($this->isrepeating($id) && $this->model->is_cached_inperiod($event['id'], $start, $end)) {
 				$cachedinperiod = $this->model->get_inperiod($id, $start, $end);
@@ -234,11 +255,18 @@ class Calendar extends Controller {
 	
 	// OC: setCalendarActive
 	function toggleView($calendarid, $active) {
-		$this->model->toggleView($calendarid, $active);
+		//$this->model->toggleView($calendarid, $active);
 		$calendar = $this->getCalendar($calendarid, true);
 		
 		return json_encode(array(
 			'active' => $active,
+			'eventSource' => $this->getEventSourceInfo($calendar)
+		));
+	}
+	function showSingleCalendar($calendarid) {
+		$calendar = $this->getCalendar($calendarid, true);
+		return json_encode(array(
+			'active' => 1,
 			'eventSource' => $this->getEventSourceInfo($calendar)
 		));
 	}
@@ -254,7 +282,7 @@ class Calendar extends Controller {
 			'backgroundColor' => $calendar['calendarcolor'],
 			'borderColor' => '#888',
 			'textColor' => $this->generateTextColor($calendar['calendarcolor']),
-			'cache' => true,
+			'cache' => false,
 		);
 	}
 	
@@ -277,16 +305,971 @@ class Calendar extends Controller {
 	}
 	
 	
-	function newEventForm($start, $end, $allday) {
-		global $system, $lang;
-		//$arr = $this->model->getFolderList($sort);
-		//$folders = $arr["folders"];
+	function newEventForm($start, $end, $allday, $calendarid) {
+		global $session,$system, $lang;
+		
+		$start = $_POST['start'];
+		$end = $_POST['end'];
+		$allday = $_POST['allday'];
+		
+		if (!$end) {
+			//$duration = OCP\Config::getUserValue( OCP\USER::getUser(), 'calendar', 'duration', '60');
+			$end = $start + (60 * 60);
+		}
+		$start = new DateTime('@'.$start);
+		$end = new DateTime('@'.$end);
+		//$timezone = OC_Calendar_App::getTimezone();
+		$timezone = $session->timezone;
+		$start->setTimezone(new DateTimeZone($timezone));
+		$end->setTimezone(new DateTimeZone($timezone));
+		
+		$startdate = $start->format('d.m.Y');
+		$starttime = $start->format('H:i');
+		$enddate = $end->format('d.m.Y');
+		$endtime = $end->format('H:i');
+		//$tmpl->assign('allday', $allday);
+		
+		$arr = $this->model->getFolderList(0,1);
+		$calendars = $arr["folders"];
+		
+		$regularEventDisplay = ' style="display: none"';
+		$treatmentEventDisplay = ' style="display: block"';
+		$eventtype = 1;
+		
 		ob_start();
-			include('view/eventform.php');
+			include('view/new.php');
 			$html = ob_get_contents();
 		ob_end_clean();
 		return $html;
 	}
+	
+	function newEvent($cal, $post) {
+		global $system, $lang;
+		
+		$eventtype = $post['eventtype'];
+		$cal = $post['calendar'];
+		$t_id = $post['treatmentid'];
+		$t_loc = $post['treatmentlocationid'];
+		$t_locuid = $post['treatmentlocationuid'];
+		
+		$errarr = $this->validateRequest($post);
+		if($errarr) {
+			$data["status"] = 'error';
+			foreach($errarr as $key => $value) {
+				$data[$key] = $value;
+			}
+		} else {
+			$vcalendar = $this->createVCalendarFromRequest($post);
+			$this->add($cal, $vcalendar->serialize(), $eventtype, $t_id, $t_loc, $t_locuid);
+			$data["status"] = 'success';
+		}
+		return json_encode($data);
+	}
+	
+	function editEventForm($id) {
+		global $session,$system, $lang;
+
+		$data = $this->getEventObject($id, false, false);
+		$eventid = $id;
+		$calendarid = $data['calendarid'];
+		
+		$object = OC_VObject::parse($data['calendardata']);
+		$vevent = $object->VEVENT;		
+		$dtstart = $vevent->DTSTART;
+		$dtend = OC_Calendar_Object::getDTEndFromVEvent($vevent);
+		switch($dtstart->getDateType()) {
+			case Sabre\VObject\Property\DateTime::UTC:
+				$timezone = new DateTimeZone(OC_Calendar_App::getTimezone());
+				$newDT    = $dtstart->getDateTime();
+				$newDT->setTimezone($timezone);
+				$dtstart->setDateTime($newDT);
+				$newDT    = $dtend->getDateTime();
+				$newDT->setTimezone($timezone);
+				$dtend->setDateTime($newDT);
+			case Sabre\VObject\Property\DateTime::LOCALTZ:
+			case Sabre\VObject\Property\DateTime::LOCAL:
+				$startdate = $dtstart->getDateTime()->format('d.m.Y');
+				$starttime = $dtstart->getDateTime()->format('H:i');
+				$enddate = $dtend->getDateTime()->format('d.m.Y');
+				$endtime = $dtend->getDateTime()->format('H:i');
+				$allday = false;
+				break;
+			case Sabre\VObject\Property\DateTime::DATE:
+				$startdate = $dtstart->getDateTime()->format('d.m.Y');
+				$starttime = '00:00';
+				$dtend->getDateTime()->modify('-1 day');
+				$enddate = $dtend->getDateTime()->format('d.m.Y');
+				$endtime = '00:00';
+				$allday = true;
+				break;
+		}
+		$summary = strtr($vevent->getAsString('SUMMARY'), array('\,' => ',', '\;' => ';'));
+		// check for Treatment
+		$treatmentid = 0;
+		$treatmenttitle = '';
+		$treatmentlocationid = 0;
+		$treatmentlocation = '';
+		$treatid = 0;
+		$regularEventDisplay = ' style="display: block"';
+		$treatmentEventDisplay = ' style="display: none"';
+		$eventtype = $data['eventtype'];
+		$treatmentsModel = new PatientsTreatmentsModel();
+		if($data['eventtype'] == 1) {
+			//$eventtype = 'Behandlung';
+			$regularEventDisplay  = ' style="display: none"';
+			$treatmentEventDisplay = ' style="display: block"';
+			$treatmentid = $data['eventid'];
+			
+			$treatmentevent = $treatmentsModel->getTreatmentEvent($treatmentid);
+			$treatid = $treatmentevent['mid'];
+			$treatmenttitle = '<span class="listmember" uid="' .  $treatid . '">' . $treatmentevent['patient'] . ', ' . $treatmentevent['title'] . '</span>';
+		}
+		$eventlocation = $data['eventlocation'];
+		$eventlocationuid = $data['eventlocationuid'];
+		$location = strtr($vevent->getAsString('LOCATION'), array('\,' => ',', '\;' => ';'));
+		if($eventlocation != 0) {
+			$location = $treatmentsModel->getTreatmentLocation($eventlocation);
+		}
+		if($eventlocationuid != 0) {
+			$contactsModel = new ContactsModel();
+			$location = $contactsModel->getPlaceListPlain($eventlocationuid,'calendarTreatmentLocation', false);
+		}
+		
+		$categories = $vevent->getAsString('CATEGORIES');
+		$description = strtr($vevent->getAsString('DESCRIPTION'), array('\,' => ',', '\;' => ';'));
+		$last_modified = $vevent->__get('LAST-MODIFIED');
+		if ($last_modified) {
+			$lastmodified = $last_modified->getDateTime()->format('U');
+		}else{
+			$lastmodified = 0;
+		}
+		$arr = $this->model->getFolderList(0,1);
+		$calendars = $arr["folders"];
+		ob_start();
+			include('view/edit.php');
+			$html = ob_get_contents();
+		ob_end_clean();
+		return $html;
+		
+	}
+	
+	
+	function editEvent($post) {
+		global $system, $lang;
+		
+		$eventtype = $post['eventtype'];
+		$id = $post['EventId'];
+		$cal = $post['calendar'];
+		$t_id = $post['treatmentid'];
+		$t_id_old = $this->model->getTreatmentEvent($id);
+		$t_loc = $post['treatmentlocationid'];
+		$t_locuid = $post['treatmentlocationuid'];
+		
+		$errarr = $this->validateRequest($post);
+		if($errarr) {
+			$data["status"] = 'error';
+			foreach($errarr as $key => $value) {
+				$data[$key] = $value;
+			}
+		} else {
+			$data = $this->getEventObject($id, false, false);
+			$vcalendar = OC_VObject::parse($data['calendardata']);
+			self::updateVCalendarFromRequest($post, $vcalendar);
+			
+			$edit = $this->edit($id, $vcalendar->serialize(), $eventtype, $t_id, $t_id_old, $t_loc, $t_locuid);
+			//echo $data['status'];
+			if($edit['status'] == 'error') {
+				$data["status"] = 'error';
+			} else {
+				if($edit['status'] == 'busy') {
+					$data["status"] = 'busy';
+				} else {
+					if ($data['calendarid'] != $cal) {
+						$this->model->moveToCalendar($id, $cal);
+					}
+					$data["status"] = 'success';
+				}
+			}
+		}
+		return json_encode($data);
+	}
+	
+	
+	/**
+	 * @brief returns informations about an event
+	 * @param int $id - id of the event
+	 * @param bool $security - check access rights or not
+	 * @param bool $shared - check if the user got access via sharing
+	 * @return mixed - bool / array
+	 */
+	function getEventObject($id, $security = true, $shared = false) {
+		$event = $this->model->find($id);
+		if($shared === true || $security === true) {
+			$permissions = self::getPermissions($id, self::EVENT);
+			OCP\Util::writeLog('contacts', __METHOD__.' id: '.$id.', permissions: '.$permissions, OCP\Util::DEBUG);
+			if(self::getPermissions($id, self::EVENT)) {
+				return $event;
+			}
+		} else {
+			return $event;
+		}
+		return false;
+	}
+
+	
+	/**
+	 * @brief creates an VCalendar Object from the request data
+	 * @param array $request
+	 * @return object created $vcalendar
+	 */	public static function createVCalendarFromRequest($request) {
+		
+		$vcalendar = new OC_VObject('VCALENDAR');
+		$vcalendar->add('PRODID', 'ownCloud Calendar');
+		$vcalendar->add('VERSION', '2.0');
+
+		$vevent = new OC_VObject('VEVENT');
+		$vcalendar->add($vevent);
+
+		$vevent->setDateTime('CREATED', 'now', Sabre\VObject\Property\DateTime::UTC);
+
+		$vevent->setUID();
+		return self::updateVCalendarFromRequest($request, $vcalendar);
+	}
+	
+	/**
+	 * @brief updates an VCalendar Object from the request data
+	 * @param array $request
+	 * @param object $vcalendar
+	 * @return object updated $vcalendar
+	 */
+	public static function updateVCalendarFromRequest($request, $vcalendar) {
+		global $session;
+		
+		//$accessclass = $request["accessclass"];
+		$title = $request["title"];
+		$location = $request["location"];
+		//$categories = $request["categories"];
+		$allday = isset($request["allday"]);
+		$from = $request["from"];
+		$to  = $request["to"];
+		if (!$allday) {
+			$fromtime = $request['fromtime'];
+			$totime = $request['totime'];
+		}
+		$vevent = $vcalendar->VEVENT;
+		$description = $request["description"];
+		//$repeat = $request["repeat"];
+		$repeat = 'doesnotrepeat';
+		if($repeat != 'doesnotrepeat') {
+			$rrule = '';
+			$interval = $request['interval'];
+			$end = $request['end'];
+			$byoccurrences = $request['byoccurrences'];
+			switch($repeat) {
+				case 'daily':
+					$rrule .= 'FREQ=DAILY';
+					break;
+				case 'weekly':
+					$rrule .= 'FREQ=WEEKLY';
+					if(array_key_exists('weeklyoptions', $request)) {
+						$byday = '';
+						$daystrings = array_flip(self::getWeeklyOptions(OC_Calendar_App::$l10n));
+						foreach($request['weeklyoptions'] as $days) {
+							if($byday == '') {
+								$byday .= $daystrings[$days];
+							}else{
+								$byday .= ',' .$daystrings[$days];
+							}
+						}
+						$rrule .= ';BYDAY=' . $byday;
+					}
+					break;
+				case 'weekday':
+					$rrule .= 'FREQ=WEEKLY';
+					$rrule .= ';BYDAY=MO,TU,WE,TH,FR';
+					break;
+				case 'biweekly':
+					$rrule .= 'FREQ=WEEKLY';
+					$interval = $interval * 2;
+					break;
+				case 'monthly':
+					$rrule .= 'FREQ=MONTHLY';
+					if($request['advanced_month_select'] == 'monthday') {
+						break;
+					}elseif($request['advanced_month_select'] == 'weekday') {
+						if($request['weekofmonthoptions'] == 'auto') {
+							list($_day, $_month, $_year) = explode('-', $from);
+							$weekofmonth = floor($_day/7);
+						}else{
+							$weekofmonth = $request['weekofmonthoptions'];
+						}
+						$days = array_flip(self::getWeeklyOptions(OC_Calendar_App::$l10n));
+						$byday = '';
+						foreach($request['weeklyoptions'] as $day) {
+							if($byday == '') {
+								$byday .= $weekofmonth . $days[$day];
+							}else{
+								$byday .= ',' . $weekofmonth . $days[$day];
+							}
+						}
+						if($byday == '') {
+							$byday = 'MO,TU,WE,TH,FR,SA,SU';
+						}
+						$rrule .= ';BYDAY=' . $byday;
+					}
+					break;
+				case 'yearly':
+					$rrule .= 'FREQ=YEARLY';
+					if($request['advanced_year_select'] == 'bydate') {
+
+					}elseif($request['advanced_year_select'] == 'byyearday') {
+						list($_day, $_month, $_year) = explode('-', $from);
+						$byyearday = date('z', mktime(0,0,0, $_month, $_day, $_year)) + 1;
+						if(array_key_exists('byyearday', $request)) {
+							foreach($request['byyearday'] as $yearday) {
+								$byyearday .= ',' . $yearday;
+							}
+						}
+						$rrule .= ';BYYEARDAY=' . $byyearday;
+					}elseif($request['advanced_year_select'] == 'byweekno') {
+						list($_day, $_month, $_year) = explode('-', $from);
+						$rrule .= ';BYDAY=' . strtoupper(substr(date('l', mktime(0,0,0, $_month, $_day, $_year)), 0, 2));
+						$byweekno = '';
+						foreach($request['byweekno'] as $weekno) {
+							if($byweekno == '') {
+								$byweekno = $weekno;
+							}else{
+								$byweekno .= ',' . $weekno;
+							}
+						}
+						$rrule .= ';BYWEEKNO=' . $byweekno;
+					}elseif($request['advanced_year_select'] == 'bydaymonth') {
+						if(array_key_exists('weeklyoptions', $request)) {
+							$days = array_flip(self::getWeeklyOptions(OC_Calendar_App::$l10n));
+							$byday = '';
+							foreach($request['weeklyoptions'] as $day) {
+								if($byday == '') {
+								      $byday .= $days[$day];
+								}else{
+								      $byday .= ',' . $days[$day];
+								}
+							}
+							$rrule .= ';BYDAY=' . $byday;
+						}
+						if(array_key_exists('bymonth', $request)) {
+							$monthes = array_flip(self::getByMonthOptions(OC_Calendar_App::$l10n));
+							$bymonth = '';
+							foreach($request['bymonth'] as $month) {
+								if($bymonth == '') {
+								      $bymonth .= $monthes[$month];
+								}else{
+								      $bymonth .= ',' . $monthes[$month];
+								}
+							}
+							$rrule .= ';BYMONTH=' . $bymonth;
+
+						}
+						if(array_key_exists('bymonthday', $request)) {
+							$bymonthday = '';
+							foreach($request['bymonthday'] as $monthday) {
+								if($bymonthday == '') {
+								      $bymonthday .= $monthday;
+								}else{
+								      $bymonthday .= ',' . $monthday;
+								}
+							}
+							$rrule .= ';BYMONTHDAY=' . $bymonthday;
+
+						}
+					}
+					break;
+				default:
+					break;
+			}
+			if($interval != '') {
+				$rrule .= ';INTERVAL=' . $interval;
+			}
+			if($end == 'count') {
+				$rrule .= ';COUNT=' . $byoccurrences;
+			}
+			if($end == 'date') {
+				list($bydate_day, $bydate_month, $bydate_year) = explode('-', $request['bydate']);
+				$rrule .= ';UNTIL=' . $bydate_year . $bydate_month . $bydate_day;
+			}
+			$vevent->setString('RRULE', $rrule);
+			$repeat = "true";
+		}else{
+			$repeat = "false";
+		}
+
+
+		$vevent->setDateTime('LAST-MODIFIED', 'now', Sabre\VObject\Property\DateTime::UTC);
+		$vevent->setDateTime('DTSTAMP', 'now', Sabre\VObject\Property\DateTime::UTC);
+		$vevent->setString('SUMMARY', $title);
+
+		if($allday) {
+			$start = new DateTime($from);
+			$end = new DateTime($to.' +1 day');
+			$vevent->setDateTime('DTSTART', $start, Sabre\VObject\Property\DateTime::DATE);
+			$vevent->setDateTime('DTEND', $end, Sabre\VObject\Property\DateTime::DATE);
+		}else{
+			//$timezone = OC_Calendar_App::getTimezone();
+			$timezone = $session->timezone;
+			$timezone = new DateTimeZone($timezone);
+			$start = new DateTime($from.' '.$fromtime, $timezone);
+			$end = new DateTime($to.' '.$totime, $timezone);
+			$vevent->setDateTime('DTSTART', $start, Sabre\VObject\Property\DateTime::LOCALTZ);
+			$vevent->setDateTime('DTEND', $end, Sabre\VObject\Property\DateTime::LOCALTZ);
+		}
+		unset($vevent->DURATION);
+
+		//$vevent->setString('CLASS', $accessclass);
+		$vevent->setString('LOCATION', $location);
+		$vevent->setString('DESCRIPTION', $description);
+		//$vevent->setString('CATEGORIES', $categories);
+
+		/*if($repeat == "true") {
+			$vevent->RRULE = $repeat;
+		}*/
+
+		return $vcalendar;
+	}
+	
+	
+	/**
+	 * @brief Adds an object
+	 * @param integer $id Calendar id
+	 * @param string $data  object
+	 * @return insertid
+	 */
+	function add($id,$data, $eventtype, $eventid='0', $eventlocation='0', $eventlocationuid='0') {
+		$object = OC_VObject::parse($data);
+		list($type,$startdate,$enddate,$summary,$repeating,$uid) = $this->extractData($object);
+		if(is_null($uid)) {
+			$object->setUID();
+			$data = $object->serialize();
+		}
+		$uri = 'owncloud-'.md5($data.rand().time()).'.ics';
+		$object_id = $this->model->newEvent($id,$type,$startdate,$enddate,$repeating,$summary,$data,$uri,time(),$eventtype,$eventid,$eventlocation, $eventlocationuid);
+		$this->model->touchCalendar($id);
+		return $object_id;
+	}
+	
+	
+	/**
+	 * @brief edits an object
+	 * @param integer $id id of object
+	 * @param string $data  object
+	 * @return boolean
+	 */
+	function edit($id, $data, $eventtype, $eventid='0', $oldeventid='0', $eventlocation='0', $eventlocationuid='0') {
+		$oldobject = $this->model->find($id);
+		$calid = $oldobject['calendarid'];
+		$calendar = $this->model->findCalendar($calid);
+		$oldvobject = OC_VObject::parse($oldobject['calendardata']);
+		$object = OC_VObject::parse($data);
+		
+		list($type,$startdate,$enddate,$summary,$repeating,$uid) = self::extractData($object);
+		
+		$errarr['status'] = '';
+		if($eventlocation != 0) {
+			if($this->model->isRoomBusy($eventlocation,$startdate,$enddate,$id)) {
+				$eventlocation = 0;
+				$errarr['status'] = 'busy';
+			}
+		}
+		
+		$stmt = $this->model->editEvent($id,$type,$startdate,$enddate,$repeating,$summary,$data,time(),$eventtype,$eventid,$oldeventid,$eventlocation, $eventlocationuid);
+		if(!$stmt) {
+			$errarr['status'] = 'error';
+		} else {
+			$this->model->touchCalendar($oldobject['calendarid']);
+			if(!$errarr['status'] == 'busy') {
+				$errarr['status'] = 'success';
+			}
+		}
+		return $errarr;
+	}
+	
+
+	/**
+	 * @brief Extracts data from a vObject-Object
+	 * @param Sabre_VObject $object
+	 * @return array
+	 *
+	 * [type, start, end, summary, repeating, uid]
+	 */
+	function extractData($object) {
+		$return = array('',null,null,'',0,null);
+
+		// Child to use
+		$children = 0;
+		$use = null;
+		foreach($object->children as $property) {
+			if($property->name == 'VEVENT') {
+				$children++;
+				$thisone = true;
+
+				foreach($property->children as &$element) {
+					if($element->name == 'RECURRENCE-ID') {
+						$thisone = false;
+					}
+				} unset($element);
+
+				if($thisone) {
+					$use = $property;
+				}
+			}
+			elseif($property->name == 'VTODO' || $property->name == 'VJOURNAL') {
+				$return[0] = $property->name;
+				foreach($property->children as &$element) {
+					if($element->name == 'SUMMARY') {
+						$return[3] = $element->value;
+					}
+					elseif($element->name == 'UID') {
+						$return[5] = $element->value;
+					}
+				};
+
+				// Only one VTODO or VJOURNAL per object
+				// (only one UID per object but a UID is required by a VTODO =>
+				//    one VTODO per object)
+				break;
+			}
+		}
+
+		// find the data
+		if(!is_null($use)) {
+			$return[0] = $use->name;
+			foreach($use->children as $property) {
+				if($property->name == 'DTSTART') {
+					$return[1] = $this->getUTCforMDB($property->getDateTime());
+				}
+				elseif($property->name == 'DTEND') {
+					$return[2] = $this->getUTCforMDB($property->getDateTime());
+				}
+				elseif($property->name == 'SUMMARY') {
+					$return[3] = $property->value;
+				}
+				elseif($property->name == 'RRULE') {
+					$return[4] = 1;
+				}
+				elseif($property->name == 'UID') {
+					$return[5] = $property->value;
+				}
+			}
+		}
+
+		// More than one child means reoccuring!
+		if($children > 1) {
+			$return[4] = 1;
+		}
+		return $return;
+	}
+	
+	
+	/**
+	 * @brief DateTime to UTC string
+	 * @param DateTime $datetime The date to convert
+	 * @returns date as YYYY-MM-DD hh:mm
+	 *
+	 * This function creates a date string that can be used by MDB2.
+	 * Furthermore it converts the time to UTC.
+	 */
+	function getUTCforMDB($datetime) {
+		return date('Y-m-d H:i', $datetime->format('U'));
+	}
+	
+	/**
+	 * @brief checks if an event was edited and dies if it was
+	 * @param (object) $vevent - vevent object of the event
+	 * @param (int) $lastmodified - time of last modification as unix timestamp
+	 * @return (bool)
+	 */
+	function isNotModified($vevent, $lastmodified) {
+		$last_modified = $vevent->__get('LAST-MODIFIED');
+		/*if($last_modified && $lastmodified != $last_modified->getDateTime()->format('U')) {
+			OCP\JSON::error(array('modified'=>true));
+			exit;
+		}*/
+		return true;
+	}
+	
+	
+	function deleteEvent($id) {
+		//global $system, $lang;
+		$treatmentid = $this->model->getTreatmentTaskEvent($id);
+		if($treatmentid != 0) {
+			$treatmentsModel = new PatientsTreatmentsModel();
+			$treatmentevent = $treatmentsModel->deleteTreatmentTask($treatmentid);
+		}
+		$this->model->deleteEvent($id);
+		
+		//deleteTreatmentTask
+		
+		
+		$data["status"] = 'success';
+		return json_encode($data);
+	}
+
+
+	function moveEvent($post) {
+		$id = $post['id'];
+		$eventtype = $this->model->getTreatmentEventType($id);
+		$t_id = $this->model->getTreatmentTaskEvent($id);
+		$t_loc = $this->model->getTreatmentLocationEvent($id);
+		$t_locuid = $this->model->getTreatmentLocationUidEvent($id);
+
+		$vcalendar = $this->getVCalendar($id, false, false);
+		$vevent = $vcalendar->VEVENT;
+		
+		$allday = $post['allDay'];
+		$delta = new DateInterval('P0D');
+		$delta->d = $post['dayDelta'];
+		$delta->i = $post['minuteDelta'];
+		$this->isNotModified($vevent, $post['lastmodified']);
+		
+		$dtstart = $vevent->DTSTART;
+		$dtend = $this->getDTEndFromVEvent($vevent);
+		$start_type = $dtstart->getDateType();
+		$end_type = $dtend->getDateType();
+		if ($allday && $start_type != Sabre\VObject\Property\DateTime::DATE) {
+			$start_type = $end_type = Sabre\VObject\Property\DateTime::DATE;
+			$dtend->setDateTime($dtend->getDateTime()->modify('+1 day'), $end_type);
+		}
+		if (!$allday && $start_type == Sabre\VObject\Property\DateTime::DATE) {
+			$start_type = $end_type = Sabre\VObject\Property\DateTime::LOCALTZ;
+		}
+		$dtstart->setDateTime($dtstart->getDateTime()->add($delta), $start_type);
+		$dtend->setDateTime($dtend->getDateTime()->add($delta), $end_type);
+		unset($vevent->DURATION);
+		
+		$vevent->setDateTime('LAST-MODIFIED', 'now', Sabre\VObject\Property\DateTime::UTC);
+		$vevent->setDateTime('DTSTAMP', 'now', Sabre\VObject\Property\DateTime::UTC);
+
+		$edit = $this->edit($id, $vcalendar->serialize(), $eventtype, $t_id, $t_id, $t_loc, $t_locuid);
+		/*if(!$edit) {
+			$ret["status"] = 'error';
+		} else {
+			$lastmodified = $vevent->__get('LAST-MODIFIED')->getDateTime();
+			$ret["status"] = 'success';
+			$ret["lastmodified"] = (int)$lastmodified->format('U');
+		}*/
+		if($edit['status'] == 'error') {
+				$data["status"] = 'error';
+			} else {
+				if($edit['status'] == 'busy') {
+					$data["status"] = 'busy';
+				} else {
+					$lastmodified = $vevent->__get('LAST-MODIFIED')->getDateTime();
+					//$ret["status"] = 'success';
+					$data["lastmodified"] = (int)$lastmodified->format('U');
+					$data["status"] = 'success';
+				}
+			}
+		return json_encode($data);
+	}
+	
+	function resizeEvent($post) {
+		$id = $post['id'];
+		$eventtype = $this->model->getTreatmentEventType($id);
+		$t_id = $this->model->getTreatmentTaskEvent($id);
+		$t_loc = $this->model->getTreatmentLocationEvent($id);
+		$t_locuid = $this->model->getTreatmentLocationUidEvent($id);
+		
+		$vcalendar = $this->getVCalendar($id, false, false);
+		$vevent = $vcalendar->VEVENT;
+		
+		$delta = new DateInterval('P0D');
+		$delta->d = $post['dayDelta'];
+		$delta->i = $post['minuteDelta'];
+		$this->isNotModified($vevent, $post['lastmodified']);
+		
+		$dtend = $this->getDTEndFromVEvent($vevent);
+		$end_type = $dtend->getDateType();
+		$dtend->setDateTime($dtend->getDateTime()->add($delta), $end_type);
+		unset($vevent->DURATION);
+		
+		$vevent->setDateTime('LAST-MODIFIED', 'now', Sabre\VObject\Property\DateTime::UTC);
+		$vevent->setDateTime('DTSTAMP', 'now', Sabre\VObject\Property\DateTime::UTC);
+
+		$edit = $this->edit($id, $vcalendar->serialize(), $eventtype, $t_id, $t_id, $t_loc, $t_locuid);
+		/*if(!$edit) {
+			$ret["status"] = 'error';
+		} else {
+			$lastmodified = $vevent->__get('LAST-MODIFIED')->getDateTime();
+			$ret["status"] = 'success';
+			$ret["lastmodified"] = (int)$lastmodified->format('U');
+		}
+		return json_encode($ret);*/
+		if($edit['status'] == 'error') {
+				$data["status"] = 'error';
+			} else {
+				if($edit['status'] == 'busy') {
+					$data["status"] = 'busy';
+				} else {
+					$lastmodified = $vevent->__get('LAST-MODIFIED')->getDateTime();
+					//$ret["status"] = 'success';
+					$data["lastmodified"] = (int)$lastmodified->format('U');
+					$data["status"] = 'success';
+				}
+			}
+		return json_encode($data);
+	}
+	
+	/**
+	 * @brief returns the DTEND of an $vevent object
+	 * @param object $vevent vevent object
+	 * @return object
+	 */
+	function getDTEndFromVEvent($vevent) {
+		if ($vevent->DTEND) {
+			$dtend = $vevent->DTEND;
+		}else{
+			$dtend = clone $vevent->DTSTART;
+			// clone creates a shallow copy, also clone DateTime
+			$dtend->setDateTime(clone $dtend->getDateTime(), $dtend->getDateType());
+			if ($vevent->DURATION) {
+				$duration = strval($vevent->DURATION);
+				$invert = 0;
+				if ($duration[0] == '-') {
+					$duration = substr($duration, 1);
+					$invert = 1;
+				}
+				if ($duration[0] == '+') {
+					$duration = substr($duration, 1);
+				}
+				$interval = new DateInterval($duration);
+				$interval->invert = $invert;
+				$dtend->getDateTime()->add($interval);
+			}
+		}
+		return $dtend;
+	}
+	
+	/**
+	 * @brief returns the parsed calendar data
+	 * @param int $id - id of the event
+	 * @param bool $security - check access rights or not
+	 * @return mixed - bool / object
+	 */
+	function getVCalendar($id, $security = true, $shared = false) {
+		
+		$event_object = $this->getEventObject($id, $security, $shared);
+		if($event_object === false) {
+			return false;
+		}
+		$vobject = OC_VObject::parse($event_object['calendardata']);
+		if(is_null($vobject)) {
+			return false;
+		}
+		return $vobject;
+	}
+	
+	function getEventTypesDialog($field,$title) {
+		$retval = $this->model->getEventTypesDialog($field,$title);
+		if($retval){
+			 return $retval;
+		  } else{
+			 return "error";
+		  }
+	}
+	
+	function getTreatmentsLocationsDialog($field,$title,$from,$fromtime,$totime,$eventtype) {
+		global $lang;
+		$treatmentsModel = new PatientsTreatmentsModel();
+		$locations = $treatmentsModel->getTreatmentLocations();
+		$busy = $this->model->getBusyLocations($from,$fromtime,$totime);
+		$str = '<div class="dialog-text">';
+		foreach($locations as $key => $value) {
+			if(!in_array($key,$busy)) {
+			$str .= '<a href="#" class="insertLocationFromDialog" title="' . $value . '" field="'.$field.'" gid="'.$key.'">' . $value . '</a>';
+			}
+		}
+		$str .= '</div>';
+		//return $str;
+		include_once dirname(__FILE__).'/view/dialog_locations.php';
+	}
+	
+	function getCalendarsDialog($field,$title) {
+		$str = '<div class="dialog-text">';
+		$arr = $this->model->getFolderList(0,1);
+		$calendars = $arr["folders"];
+		foreach($calendars as $calendar) {
+			$str .= '<a href="#" class="insertCalendarFromDialog" title="'.$calendar->lastname . " " . $calendar->firstname.'" field="'.$field.'" gid="'.$calendar->calendarid.'">'.$calendar->lastname . " " . $calendar->firstname.'</a>';
+		}
+		$str .= '</div>';
+		return $str;
+	}
+	
+	
+	
+	/**
+	 * @brief validates a request
+	 * @param array $request
+	 * @return mixed (array / boolean)
+	 */
+	public static function validateRequest($request) {
+		$errnum = 0;
+		//$errarr = array('title'=>'false', 'cal'=>'false', 'from'=>'false', 'fromtime'=>'false', 'to'=>'false', 'totime'=>'false', 'endbeforestart'=>'false');
+		
+		$errarr = array('treatment'=>'false','treatmentlocation'=>'false','title'=>'false');
+		if($request['eventtype'] == 0 && $request['title'] == '') {
+			$errarr['title'] = 'true';
+			$errnum++;
+		}
+		if($request['eventtype'] == 1 && $request['treatmentid'] == 0) {
+			$errarr['treatment'] = 'true';
+			$errnum++;
+		}
+		if($request['eventtype'] == 1 && $request['treatmentlocationid'] == 0 && $request['treatmentlocationuid'] == 0) {
+			$errarr['treatmentlocation'] = 'true';
+			$errnum++;
+		}
+
+		/*$fromday = substr($request['from'], 0, 2);
+		$frommonth = substr($request['from'], 3, 2);
+		$fromyear = substr($request['from'], 6, 4);
+		if(!checkdate($frommonth, $fromday, $fromyear)) {
+			$errarr['from'] = 'true';
+			$errnum++;
+		}
+		$allday = isset($request['allday']);
+		if(!$allday && self::checkTime(urldecode($request['fromtime']))) {
+			$errarr['fromtime'] = 'true';
+			$errnum++;
+		}
+
+		$today = substr($request['to'], 0, 2);
+		$tomonth = substr($request['to'], 3, 2);
+		$toyear = substr($request['to'], 6, 4);
+		if(!checkdate($tomonth, $today, $toyear)) {
+			$errarr['to'] = 'true';
+			$errnum++;
+		}*/
+		
+		/*if($request['repeat'] != 'doesnotrepeat') {
+			if(is_nan($request['interval']) && $request['interval'] != '') {
+				$errarr['interval'] = 'true';
+				$errnum++;
+			}
+			if(array_key_exists('repeat', $request) && !array_key_exists($request['repeat'], self::getRepeatOptions(OC_Calendar_App::$l10n))) {
+				$errarr['repeat'] = 'true';
+				$errnum++;
+			}
+			if(array_key_exists('advanced_month_select', $request) && !array_key_exists($request['advanced_month_select'], self::getMonthOptions(OC_Calendar_App::$l10n))) {
+				$errarr['advanced_month_select'] = 'true';
+				$errnum++;
+			}
+			if(array_key_exists('advanced_year_select', $request) && !array_key_exists($request['advanced_year_select'], self::getYearOptions(OC_Calendar_App::$l10n))) {
+				$errarr['advanced_year_select'] = 'true';
+				$errnum++;
+			}
+			if(array_key_exists('weekofmonthoptions', $request) && !array_key_exists($request['weekofmonthoptions'], self::getWeekofMonth(OC_Calendar_App::$l10n))) {
+				$errarr['weekofmonthoptions'] = 'true';
+				$errnum++;
+			}
+			if($request['end'] != 'never') {
+				if(!array_key_exists($request['end'], self::getEndOptions(OC_Calendar_App::$l10n))) {
+					$errarr['end'] = 'true';
+					$errnum++;
+				}
+				if($request['end'] == 'count' && is_nan($request['byoccurrences'])) {
+					$errarr['byoccurrences'] = 'true';
+					$errnum++;
+				}
+				if($request['end'] == 'date') {
+					list($bydate_day, $bydate_month, $bydate_year) = explode('-', $request['bydate']);
+					if(!checkdate($bydate_month, $bydate_day, $bydate_year)) {
+						$errarr['bydate'] = 'true';
+						$errnum++;
+					}
+				}
+			}
+			if(array_key_exists('weeklyoptions', $request)) {
+				foreach($request['weeklyoptions'] as $option) {
+					if(!in_array($option, self::getWeeklyOptions(OC_Calendar_App::$l10n))) {
+						$errarr['weeklyoptions'] = 'true';
+						$errnum++;
+					}
+				}
+			}
+			if(array_key_exists('byyearday', $request)) {
+				foreach($request['byyearday'] as $option) {
+					if(!array_key_exists($option, self::getByYearDayOptions())) {
+						$errarr['byyearday'] = 'true';
+						$errnum++;
+					}
+				}
+			}
+			if(array_key_exists('weekofmonthoptions', $request)) {
+				if(is_nan((double)$request['weekofmonthoptions'])) {
+					$errarr['weekofmonthoptions'] = 'true';
+					$errnum++;
+				}
+			}
+			if(array_key_exists('bymonth', $request)) {
+				foreach($request['bymonth'] as $option) {
+					if(!in_array($option, self::getByMonthOptions(OC_Calendar_App::$l10n))) {
+						$errarr['bymonth'] = 'true';
+						$errnum++;
+					}
+				}
+			}
+			if(array_key_exists('byweekno', $request)) {
+				foreach($request['byweekno'] as $option) {
+					if(!array_key_exists($option, self::getByWeekNoOptions())) {
+						$errarr['byweekno'] = 'true';
+						$errnum++;
+					}
+				}
+			}
+			if(array_key_exists('bymonthday', $request)) {
+				foreach($request['bymonthday'] as $option) {
+					if(!array_key_exists($option, self::getByMonthDayOptions())) {
+						$errarr['bymonthday'] = 'true';
+						$errnum++;
+					}
+				}
+			}
+		}*/
+		/*if(!$allday && self::checkTime(urldecode($request['totime']))) {
+			$errarr['totime'] = 'true';
+			$errnum++;
+		}
+		if($today < $fromday && $frommonth == $tomonth && $fromyear == $toyear) {
+			$errarr['endbeforestart'] = 'true';
+			$errnum++;
+		}
+		if($today == $fromday && $frommonth > $tomonth && $fromyear == $toyear) {
+			$errarr['endbeforestart'] = 'true';
+			$errnum++;
+		}
+		if($today == $fromday && $frommonth == $tomonth && $fromyear > $toyear) {
+			$errarr['endbeforestart'] = 'true';
+			$errnum++;
+		}
+		if(!$allday && $fromday == $today && $frommonth == $tomonth && $fromyear == $toyear) {
+			list($tohours, $tominutes) = explode(':', $request['totime']);
+			list($fromhours, $fromminutes) = explode(':', $request['fromtime']);
+			if($tohours < $fromhours) {
+				$errarr['endbeforestart'] = 'true';
+				$errnum++;
+			}
+			if($tohours == $fromhours && $tominutes < $fromminutes) {
+				$errarr['endbeforestart'] = 'true';
+				$errnum++;
+			}
+		}*/
+		if ($errnum)
+		{
+			return $errarr;
+		}
+		return false;
+	}
+
+	
+	
 	
 
 }

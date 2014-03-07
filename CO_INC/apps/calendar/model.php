@@ -2,7 +2,7 @@
 class CalendarModel extends Model {
 
 	// Get all Calendars
-   function getFolderList($sort) {
+   function getFolderList($sort, $showGroupCalendar = 0) {
       global $session;
 	  if($sort == 0) {
 		  $sortstatus = $this->getSortStatus("calendar-sort-status");
@@ -54,12 +54,13 @@ class CalendarModel extends Model {
 			  }
 	  }
 	  
-		if(!$session->isSysadmin()) {
+		/*if(!$session->isSysadmin()) {
 			//$q ="select a.id, a.title from " . CO_TBL_PROJECTS_FOLDERS . " as a where a.status='0' and a.bin = '0' and (SELECT count(*) FROM co_projects_access as b, co_projects as c WHERE (b.admins REGEXP '[[:<:]]" . $session->uid . "[[:>:]]' or b.guests REGEXP '[[:<:]]" . $session->uid . "[[:>:]]') and c.folder=a.id and b.pid=c.id) > 0 " . $order;
-			$q = "select id,firstname,lastname from co_users as a, oc_clndr_calendars as.b where calendar = '1' and invisible = '0' and bin = '0' " . $order;
+			$q = "select id,firstname,lastname from co_users as a, oc_clndr_calendars asb where a.calendar = '1' and a.invisible = '0' and a.bin = '0' " . $order;
 		} else {
 			$q = "SELECT a.id, a.firstname, a.lastname, a.username, b.id as calendarid, b.active as calactive, b.calendarcolor FROM co_users as a, oc_clndr_calendars as b WHERE (a.username = b.userid or a.calendar_uid = b.userid) and a.calendar = '1' and a.invisible = '0' and a.bin = '0' " . $order;
-		}
+		}*/
+		$q = "SELECT a.id, a.firstname, a.lastname, a.username, b.id as calendarid, b.active as calactive, b.calendarcolor FROM co_users as a, oc_clndr_calendars as b WHERE (a.username = b.userid or a.calendar_uid = b.userid) and a.calendar = '1' and a.invisible = '0' and a.bin = '0' " . $order;
 		
 	  $this->setSortStatus("calendar-sort-status",$sortcur);
       $result = mysql_query($q, $this->_db->connection);
@@ -67,20 +68,36 @@ class CalendarModel extends Model {
 	  $eventSources = "";
 	  while ($row = mysql_fetch_array($result)) {
 		foreach($row as $key => $val) {
+			$array[$key] = $val;
+		}
+		if($array['calactive'] == 1) {
+			$eventSources[] = array(
+								'url' => '/?path=apps/calendar&request=getrequestedEvents&calendar_id=' . $array['calendarid'],
+								'backgroundColor' => $array['calendarcolor'],
+								"borderColor" => "#888",
+								"textColor" => "#000000",
+								"cache" => true					
+							  );
+		}
+		
+		$folders[] = new Lists($array);
+		
+	  }
+	  
+	  if($showGroupCalendar == 1) { // Gruppencalender
+			$qg = "SELECT id as calendarid, displayname as lastname, '' as firstname FROM oc_clndr_calendars WHERE id='2'";
+			$resultg = mysql_query($qg, $this->_db->connection);
+			while ($rowg = mysql_fetch_array($resultg)) {
+			foreach($rowg as $key => $val) {
 				$array[$key] = $val;
 			}
-			if($array['calactive'] == 1) {
-					$eventSources[] = array(
-										'url' => '/?path=apps/calendar&request=getrequestedEvents&calendar_id=' . $array['calendarid'],
-										'backgroundColor' => $array['calendarcolor'],
-										"borderColor" => "#888",
-										"textColor" => "#000000",
-										"cache" => true					
-									  );
-				}
-			
 			$folders[] = new Lists($array);
-	  }
+			}
+			
+		}
+			
+			
+		
 	  
 	  $arr = array("folders" => $folders, "eventSources" => $eventSources, "sort" => $sortcur);
 	  
@@ -222,8 +239,163 @@ class CalendarModel extends Model {
 		$result = mysql_query($q, $this->_db->connection);
 	}
 
+	function newEvent($id,$type,$startdate,$enddate,$repeating,$summary,$data,$uri,$time,$eventtype,$treatmentid,$treatmentlocation,$eventlocationuid) {
+		// `calendarid`,`objecttype`,`startdate`,`enddate`,`repeating`,`summary`,`calendardata`,`uri`,`lastmodified
+		$now = gmdate("Y-m-d H:00");
+		$tid = 0;
+		if($treatmentid != 0) {
+			$q = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " set mid='$treatmentid', item_date='$now', status = '0'";
+			$result = mysql_query($q, $this->_db->connection);
+			$tid = mysql_insert_id();
+		}
+		
+		$q ="INSERT INTO oc_clndr_objects SET calendarid='$id', objecttype='$type', startdate='$startdate', enddate='$enddate', repeating='$repeating', summary='$summary', calendardata='$data',uri='$uri', lastmodified='$time', eventtype='$eventtype', eventid='$tid', eventlocation='$treatmentlocation', eventlocationuid='$eventlocationuid'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+		  	$id = mysql_insert_id();
+			return $id;
+		}
+	}
+	
+	function editEvent($id,$type,$startdate,$enddate,$repeating,$summary,$data,$time,$eventtype,$treatmentid,$oldtreatmentid,$treatmentlocation,$eventlocationuid) {
+		$now = gmdate("Y-m-d H:00");
+		if($eventtype == 1) { //is treatment
+			if($treatmentid == $oldtreatmentid) {
+				$taskid = $this->getTreatmentTaskEvent($id);
+				$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " SET item_date='$startdate' WHERE id='$taskid'";
+				$result = mysql_query($q, $this->_db->connection);
+			} else {
+				if($oldtreatmentid != 0) {
+					$taskid = $this->getTreatmentTaskEvent($id);
+					// move old task to bin
+					$treatmentsModel = new PatientsTreatmentsModel();
+					$treatmentsModel->deleteTask($taskid);
+				}
+				$q = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " set mid='$treatmentid', item_date='$startdate', status = '0'";
+				$result = mysql_query($q, $this->_db->connection);
+				$taskid = mysql_insert_id();
+			}
+			$q ="UPDATE oc_clndr_objects SET eventtype='$eventtype', eventid='$taskid', eventlocation='$treatmentlocation', eventlocationuid='$eventlocationuid', objecttype='$type', startdate='$startdate', enddate='$enddate', repeating='$repeating', summary='$summary', calendardata='$data', lastmodified='$time' WHERE id='$id'";
+			$result = mysql_query($q, $this->_db->connection);
+			return true;
+		} else {
+			// check if it was a treatment
+			$taskid = $this->getTreatmentTaskEvent($id);
+			if($taskid != 0) {
+				$treatmentsModel = new PatientsTreatmentsModel();
+				$treatmentsModel->deleteTask($taskid);
+			}
+			// just update event
+			$q ="UPDATE oc_clndr_objects SET eventtype='0', eventid='0', eventlocation='$treatmentlocation', eventlocationuid='$eventlocationuid', objecttype='$type', startdate='$startdate', enddate='$enddate', repeating='$repeating', summary='$summary', calendardata='$data', lastmodified='$time' WHERE id='$id'";
+			$result = mysql_query($q, $this->_db->connection);
+			return true;
+		}
+	}
+
+
+	function isRoomBusy($location,$startdate,$enddate,$id) {
+		$q ="SELECT * FROM oc_clndr_objects WHERE eventlocation='$location' and eventlocation!='0' and ((startdate<='$startdate' and enddate>'$startdate') or (startdate<'$enddate' and enddate>='$enddate') or (startdate>'$startdate' and enddate<'$enddate')) and id!='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result) > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	function getTreatmentEventType($id) {
+		$q = "SELECT eventtype FROM oc_clndr_objects WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$treatmentid = mysql_result($result,0);
+		return $treatmentid;
+	}
+	
+	function getTreatmentTaskEvent($id) {
+		$q = "SELECT eventid FROM oc_clndr_objects WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$treatmentid = mysql_result($result,0);
+		return $treatmentid;
+	}
+	
+	function getTreatmentLocationEvent($id) {
+		$q = "SELECT eventlocation FROM oc_clndr_objects WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$treatmentloc = mysql_result($result,0);
+		return $treatmentloc;
+	}
+	
+	function getTreatmentLocationUidEvent($id) {
+		$q = "SELECT eventlocationuid FROM oc_clndr_objects WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$treatmentloc = mysql_result($result,0);
+		return $treatmentloc;
+	}
+	
+	function getTreatmentEvent($id) {
+		$q = "SELECT a.mid FROM co_patients_treatments_tasks as a,oc_clndr_objects as b WHERE b.id='$id' and b.eventid = a.id";
+		$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result) < 1) {
+			return 0;
+		} else {
+			$treatmentid = mysql_result($result,0);
+			return $treatmentid;
+		}
+	}
 	
 	
+	function deleteEvent($id) {
+		// if treatment bin task!!!!
+		$q ="DELETE FROM oc_clndr_objects WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+			return true;
+		}
+	}
+	
+	
+	
+	/**
+	 * @brief Updates ctag for calendar
+	 * @param integer $id
+	 * @return boolean
+	 */
+	function touchCalendar($id) {
+		//$stmt = OCP\DB::prepare( 'UPDATE `*PREFIX*clndr_calendars` SET `ctag` = `ctag` + 1 WHERE `id` = ?' );
+		//$stmt->execute(array($id));
+		$q ="UPDATE oc_clndr_calendars SET ctag=ctag+1 WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		return true;
+	}
+	
+	function moveToCalendar($id, $calendarid) {
+		$q ="UPDATE oc_clndr_objects SET calendarid='$calendarid' WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		return true;
+	}
+	
+	function getEventTypesDialog($field,$title) {
+		global $session,$lang;
+		$str = '<div class="dialog-text">';
+		//$q ="select id, title from " . CO_TBL_PROJECTS_FOLDERS . " where status='0' and bin = '0' ORDER BY title";
+		foreach($lang["EVENTTYPE"] as $key => $value) {
+			$str .= '<a href="#" class="insertEventTypeFromDialog" title="' . $value . '" field="'.$field.'" gid="'.$key.'">' . $value . '</a>';
+		}
+		$str .= '</div>';	
+		return $str;
+	 }
+	 
+	function getBusyLocations($from,$fromtime,$totime) {
+		
+		$locations = array();
+		$startdate = $this->_date->formatDateGMT($from . " " . $fromtime);
+		$enddate = $this->_date->formatDateGMT( $from . " " . $totime);
+		$q ="SELECT eventlocation FROM oc_clndr_objects WHERE ((startdate<='$startdate' and enddate>'$startdate') or (startdate<'$enddate' and enddate>='$enddate') or (startdate>'$startdate' and enddate<'$enddate'))";
+		$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+			$locations[] = $row['eventlocation'];
+		}
+		return $locations;
+	}
 	
 }
 

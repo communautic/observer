@@ -17,6 +17,31 @@ foreach($controller->applications as $app => $display) {
 	include_once("modules/".$module."/controller.php");
 }*/
 
+// Treatments
+include_once(CO_INC . "/apps/patients/modules/treatments/config.php");
+include_once(CO_INC . "/apps/patients/modules/treatments/lang/" . $session->userlang . ".php");
+include_once(CO_INC . "/apps/patients/modules/treatments/model.php");
+include_once(CO_INC . "/apps/patients/modules/treatments/controller.php");
+$patientsTreatments = new PatientsTreatments("treatments");
+
+
+// OC Libraries
+require_once('/home/dev/public_html/sync/3rdparty/Sabre/VObject/Node.php');
+require_once('/home/dev/public_html/sync/3rdparty/Sabre/VObject/ElementList.php');
+require_once('/home/dev/public_html/sync/3rdparty/Sabre/VObject/Component.php');
+require_once('/home/dev/public_html/sync/3rdparty/Sabre/VObject/Component/VAlarm.php');
+require_once('/home/dev/public_html/sync/3rdparty/Sabre/VObject/Component/VCalendar.php');
+require_once('/home/dev/public_html/sync/3rdparty/Sabre/VObject/Component/VEvent.php');
+require_once('/home/dev/public_html/sync/3rdparty/Sabre/VObject/Property.php');
+require_once('/home/dev/public_html/sync/3rdparty/Sabre/VObject/TimeZoneUtil.php');
+require_once('/home/dev/public_html/sync/3rdparty/Sabre/VObject/Property/DateTime.php');
+require_once('/home/dev/public_html/sync/3rdparty/Sabre/VObject/Parameter.php');
+require_once('/home/dev/public_html/sync/3rdparty/Sabre/VObject/Reader.php');
+require_once('/home/dev/public_html/sync/lib/private/vobject.php');
+require_once('/home/dev/public_html/sync/apps/calendar/lib/calendar.php');
+require_once('/home/dev/public_html/sync/apps/calendar/lib/object.php');
+
+
 if (!empty($_GET['request'])) {
 	switch ($_GET['request']) {
 		case 'getFolderList':
@@ -26,13 +51,27 @@ if (!empty($_GET['request'])) {
 			}
 			echo($calendar->getFolderList($sort));
 		break;
+		case 'setSortOrder':
+			echo($calendar->setSortOrder("calendar-sort",$_GET['folderItem']));
+		break;
 		case 'getrequestedEvents':
 			echo($calendar->getrequestedEvents($_GET["calendar_id"], $_GET["start"], $_GET["end"]));
 		break;
 		case 'toggleView':
 			echo($calendar->toggleView($_GET["calendarid"], $_GET["active"]));
 		break;
-		
+		case 'showSingleCalendar':
+			echo($calendar->showSingleCalendar($_GET["calendarid"]));
+		break;
+		case 'getEventTypesDialog':
+			echo($calendar->getEventTypesDialog($_GET['field'],$_GET['title']));
+		break;
+		case 'getTreatmentsLocationsDialog':
+			echo($calendar->getTreatmentsLocationsDialog($_GET['field'],$_GET['title'],$_GET['from'],$_GET['fromtime'],$_GET['totime'],$_GET['eventtype']));
+		break;
+		case 'getCalendarsDialog':
+			echo($calendar->getCalendarsDialog($_GET['field'],$_GET['title']));
+		break;
 	}
 }
 
@@ -42,7 +81,25 @@ if (!empty($_POST['request'])) {
 			echo($projects->setFolderDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['projectstatus']));
 		break;
 		case 'newEventForm':
-			echo($calendar->newEventForm($_POST["start"], $_POST["end"], $_POST["allday"]));
+			echo($calendar->newEventForm($_POST["start"], $_POST["end"], $_POST["allday"], $_POST["calendar"]));
+		break;
+		case 'newEvent':
+			echo($calendar->newEvent($_POST["calendar"], $_POST));
+		break;
+		case 'editEventForm':
+			echo($calendar->editEventForm($_POST["id"]));
+		break;
+		case 'editEvent':
+			echo($calendar->editEvent($_POST));
+		break;
+		case 'deleteEvent':
+			echo($calendar->deleteEvent($_POST["id"]));
+		break;
+		case 'moveEvent':
+			echo $calendar->moveEvent($_POST);
+		break;
+		case 'resizeEvent':
+			echo $calendar->resizeEvent($_POST);
 		break;
 	}
 }
