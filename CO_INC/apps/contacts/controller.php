@@ -489,6 +489,11 @@ function getContactSend($id) {
 		include_once dirname(__FILE__).'/view/dialog_sysadmin.php';
 	}
 	
+	function getCalendarDialog($request,$field,$append,$title,$sql) {
+		global $lang;
+		include_once dirname(__FILE__).'/view/dialog_calendar.php';
+	}
+	
 	function getContactsDialog($request,$field,$append,$title,$sql) {
 		global $lang;
 		$groups = $this->model->getLast10Groups();
@@ -689,6 +694,16 @@ function getContactSend($id) {
 	function getGlobalSearch($term) {
 		$search = $this->model->getGlobalSearch($term);
 		return $search;
+	}
+	
+	function setCalendar($id) {
+		$this->model->setCalendar($id);
+		return "1";
+	}
+	
+	function removeCalendar($id) {
+		$this->model->removeCalendar($id);
+		return "0";
 	}
 
 }

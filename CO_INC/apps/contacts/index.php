@@ -145,6 +145,9 @@ if (!empty($_GET['request'])) {
 		case 'getSysadminDialog':
 			echo($contacts->getSysadminDialog($_GET['request'],$_GET['field'],$_GET['append'],$_GET['title'],$_GET['sql']));
 		break;
+		case 'getCalendarDialog':
+			echo($contacts->getCalendarDialog($_GET['request'],$_GET['field'],$_GET['append'],$_GET['title'],$_GET['sql']));
+		break;
 		case 'getContactsDialog':
 			echo($contacts->getContactsDialog($_GET['request'],$_GET['field'],$_GET['append'],$_GET['title'],$_GET['sql']));
 		break;
@@ -190,6 +193,13 @@ if (!empty($_GET['request'])) {
 		case 'getGlobalSearch':
 			echo($contacts->getGlobalSearch($system->checkMagicQuotesTinyMCE($_GET['term'])));
 		break;
+		case 'setCalendar':
+			echo $contacts->setCalendar($_GET['id']);
+		break;
+		case 'removeCalendar':
+			echo $contacts->removeCalendar($_GET['id']);
+		break;
+		
 	}
 	
 }

@@ -32,6 +32,8 @@ $lang['CONTACTS_FAX'] = 'Fax';
 
 $lang["CONTACT_TAB_ADDRESS"] = "Address";
 $lang["CONTACT_TAB_ACCESS"] = "Access";
+$lang["CONTACT_TAB_CALENDAR"] = "Calendar";
+
 
 $lang['CONTACTS_ADDRESS'] = 'Address';
 $lang['CONTACTS_ADDRESS_LINE1'] = 'Street 1';
@@ -62,6 +64,8 @@ $lang['CONTACTS_SYSADMIN_ACTIVE'] = 'given on %s by %s';
 $lang['CONTACTS_SYSADMIN_REMOVE'] = 'removed on %s by %s';
 $lang['CONTACTS_SYSADMIN_GIVE_RIGHT'] = 'give Rights';
 $lang['CONTACTS_SYSADMIN_REMOVE_RIGHT'] = 'remove Rights';
+$lang['CONTACTS_CALENDAR_GIVE_RIGHT'] = 'create calendar';
+$lang['CONTACTS_CALENDAR_REMOVE_RIGHT'] = 'remove calendar';
 
 $lang['CONTACTS_CUSTOM'] = 'Note';
 
