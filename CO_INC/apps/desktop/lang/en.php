@@ -16,5 +16,5 @@ $lang["WIDGET_REMOVE_NOTICE"] 	= 	'>>> remove';
 
 $lang["CHECKPOINTS_WIDGET_NO_ACTIVITY"]		=	'Currently there are no notices';
 
-$lang["DESKTOP_HELP"] = 'manual_desktop.pdf';
+$lang["DESKTOP_HELP"] = 'manual_dashboard.pdf';
 ?>

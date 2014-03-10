@@ -49,8 +49,8 @@ $lang["PATIENT_COO"] = 'Profession';
 
 $lang["PATIENT_HANDBOOK"] = 'Patient File';
 
-$lang["PATIENT_HELP"] = 'manual_patienten_patienten.pdf';
-$lang["PATIENT_FOLDER_HELP"] = 'manual_patienten_ordner.pdf';
+$lang["PATIENT_HELP"] = 'manual_patients_patients.pdf';
+$lang["PATIENT_FOLDER_HELP"] = 'manual_patients_folders.pdf';
 
 // Print images
 $lang["PRINT_PATIENT_MANUAL"] = 'patientfile.png';
@@ -63,6 +63,8 @@ $lang["PATIENT_WIDGET_TITLE"] 	=	'Payment reminder';
 $lang["PATIENT_WIDGET_ALERT"] 	= 	'Invoice "%1$s" for patient "%2$s" is <span class="yellow">overdue</span>';
 $lang["PATIENT_WIDGET_TITLE_INVOICE"] 	=	'Invoice';
 $lang["PATIENT_WIDGET_REMINDER_INVOICE"] 	= 	'Invoice "%1$s" for patient "%2$s" was <span class="yellow">created</span>';
+
+$lang["EVENTTYPE"][1] = 'Treatment';
 
 
 // check for custom lang file

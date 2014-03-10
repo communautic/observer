@@ -57,7 +57,7 @@ $lang["PATIENT_INVOICE_PRINTOPTION_SERVICES"] = 'Services';
 $lang["PATIENT_INVOICE_PRINTOPTION_PAYMENT_REMINDER"] = 'Payment Reminder';
 $lang["PATIENT_INVOICE_PRINTOPTION_ENVELOPE"] = 'Envelope';
 
-$lang["PATIENT_INVOICE_HELP"] = 'manual_patienten_rechnungen.pdf';
+$lang["PATIENT_INVOICE_HELP"] = 'manual_patients_invoices.pdf';
 
 $lang["PATIENT_PRINT_INVOICE"] = 'invoice.png';
 $lang["PATIENT_PRINT_SERVICES"] = 'services.png';

@@ -21,7 +21,7 @@ $lang["PATIENT_MEETING_COPY"] = 'Copy';
 $lang["PATIENT_MEETING_POSPONED"] = 'posponed';
 
 
-$lang["PATIENT_MEETING_HELP"] = 'manual_patienten_besprechungen.pdf';
+$lang["PATIENT_MEETING_HELP"] = 'manual_patients_meetings.pdf';
 
 $lang["PATIENT_PRINT_MEETING"] = 'meeting.png';
 

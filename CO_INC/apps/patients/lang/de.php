@@ -63,6 +63,8 @@ $lang["PATIENT_WIDGET_ALERT"] 	= 	'Rechnung "%1$s" für den Patienten "%2$s" ist
 $lang["PATIENT_WIDGET_TITLE_INVOICE"] 	=	'Rechnung';
 $lang["PATIENT_WIDGET_REMINDER_INVOICE"] 	= 	'Rechnung "%1$s" für den Patienten "%2$s" ist <span class="yellow">erstellt</span>';
 
+$lang["EVENTTYPE"][1] = 'Behandlung';
+
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/patients/de.php";
 if(file_exists($custom_lang)) {
