@@ -2,8 +2,8 @@
 $projects_vdocs_name = "Documents";
 
 $lang["PROJECT_VDOC_TITLE"] = 'Document';
+$lang["PROJECT_VDOC_VDOCS"] = 'Documents';
 $lang["PROJECT_VDOC_NEW"] = 'New Document';
-$lang["PROJECT_VDOC_TASK_NEW"] = 'New Topic';
 $lang["PROJECT_VDOC_ACTION_NEW"] = 'new virtual document';
 
 $lang["PROJECT_VDOC_HELP"] = 'manual_projekte_textbeitraege.pdf';

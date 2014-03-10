@@ -81,8 +81,8 @@ $lang['ACCESS_CODES_EMAIL'] =	'<p style="font-face: Arial, Verdana; font-size: s
 								'<p style="font-face: Arial, Verdana; font-size: small;">Thank you!</p>';
 
 
-$lang["CONTACTS_HELP"] = 'manual_kontakte_kontakte.pdf';
-$lang["PCONTACTS_GROUPS_HELP"] = 'manual_kontakte_gruppen.pdf';
+$lang["CONTACTS_HELP"] = 'manual_contacts_contacts.pdf';
+$lang["PCONTACTS_GROUPS_HELP"] = 'manual_contacts_groups.pdf';
 
 $lang["PRINT_GROUP"] = 'group.png';
 $lang["PRINT_CONTACT"] = 'contact.png';
