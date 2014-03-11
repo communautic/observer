@@ -1,7 +1,11 @@
 #calendar .module-bg-active {
 	border-top: 1px solid #fff;
 	border-bottom: 1px solid #666;
-	background: #999;
+	background: #575757;
+}
+
+#calendar .ui-layout-west li > span {
+    color: #fff;
 }
 
 #calendar1, #calendar2, #calendar3 { padding:0; overflow: hidden !important; /* prevent scrollbars auto-added by Layout */}
@@ -10,8 +14,8 @@
 
 .bin3-content { width: 325px;; background-color: #82aa0a; padding:0; overflow:hidden !important;}*/
 
-#calendar .ui-layout-west li>span:hover   { background-color: #E5E5E5}
-#calendar .ui-layout-west li>span.active-link  { background-color: #E5E5E5}
+#calendar .ui-layout-west li>span:hover   { background-color: #333}
+#calendar .ui-layout-west li>span.active-link  { background-color: #333}
 #calendar .hover-bg  { background-color: #666}
 #calendar .hover-outline { border: 1px solid #666}
 
@@ -46,6 +50,8 @@ background-color: #e1f0af; }
 
 #calendar-right .tcell-left span { display: block; padding: 0 0 0 15px; }
 #calendar-right .tcell-left-short span { display: block; padding: 0 0 0 15px; }
+
+
 
 /*!
  * FullCalendar v1.6.4 Stylesheet
@@ -634,3 +640,173 @@ table.fc-border-separate {
 .fc-agenda .ui-resizable-resizing { /* TODO: better selector */
 	_overflow: hidden;
 	}
+	
+	
+.calendarDialog .ui-corner-all {
+	border-radius: 0;
+}
+
+.calendarDialog { 
+background-color: #2D2D2D !important; 
+border: 1px solid #2D2D2D;
+border-radius: 6px;
+box-shadow: 0;
+overflow: visible;
+}
+
+.calendarDialog .ui-widget-header { 
+border-radius: 4px 4px 4px 4px;
+    color: #d3d3d3;
+    height: 25px;
+    line-height: 24px;
+    overflow: hidden;
+    text-align: center;
+	padding: 1px 4px;
+	background: #949494;
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjOTQ5NDk0IiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjNGU0ZTRlIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iNTElIiBzdG9wLWNvbG9yPSIjMWYxZjFmIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzFmMWYxZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgPC9saW5lYXJHcmFkaWVudD4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);
+background: -moz-linear-gradient(top,  #949494 0, #4e4e4e 50%, #1f1f1f 51%, #1f1f1f 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0,#949494), color-stop(50%,#4e4e4e), color-stop(51%,#1f1f1f), color-stop(100%,#1f1f1f));
+background: -webkit-linear-gradient(top,  #949494 0,#4e4e4e 50%,#1f1f1f 51%,#1f1f1f 100%);
+background: -o-linear-gradient(top,  #949494 0,#4e4e4e 50%,#1f1f1f 51%,#1f1f1f 100%);
+background: -ms-linear-gradient(top,  #949494 0,#4e4e4e 50%,#1f1f1f 51%,#1f1f1f 100%);
+background: linear-gradient(to bottom,  #949494 0,#4e4e4e 50%,#1f1f1f 51%,#1f1f1f 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#949494', endColorstr='#1f1f1f',GradientType=0 );
+}
+
+.calendarDialog .ui-tabs-nav.ui-widget-header {
+	background: none;
+	text-align: left;
+	height: 46px;
+}
+
+.calendarDialog .ui-dialog-title {
+	padding: 0;
+}
+
+
+
+.calendarDialog .ui-widget-content { 
+/*border-right: 3px solid #6699cc;
+border-bottom: 3px solid #6699cc;
+border-left: 3px solid #6699cc;
+border-radius:  0 0 8px 8px;*/
+    background-color: #D8D8D8;
+    border-radius: 3px;
+    height: auto;
+    margin: 0 3px 2px;
+    padding: 10px 12px;
+    width: 268px;
+}
+
+.calendarDialog .ui-state-hover, .calendarDialog .ui-state-focus { background-color: transparent !important; border: 0;}
+
+.calendarDialog span.coButton  { 
+color: #fff; border-radius: 4px; font-weight: bold; 
+border: 1px solid #436593;
+background: #a0bee9; /* Old browsers */
+/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2EwYmVlOSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iIzZhOWFkZCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUxJSIgc3RvcC1jb2xvcj0iIzY0OTZkYyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM2NDk2ZGMiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+background: -moz-linear-gradient(top,  #a0bee9 0%, #6a9add 50%, #6496dc 51%, #6496dc 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#a0bee9), color-stop(50%,#6a9add), color-stop(51%,#6496dc), color-stop(100%,#6496dc)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #a0bee9 0%,#6a9add 50%,#6496dc 51%,#6496dc 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #a0bee9 0%,#6a9add 50%,#6496dc 51%,#6496dc 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #a0bee9 0%,#6a9add 50%,#6496dc 51%,#6496dc 100%); /* IE10+ */
+background: linear-gradient(top,  #a0bee9 0%,#6a9add 50%,#6496dc 51%,#6496dc 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a0bee9', endColorstr='#6496dc',GradientType=0 ); /* IE6-8 */
+
+
+}
+.calendarDialog span.coButton:hover   { border: 1px solid #fff; color: #fff; cursor: pointer; }
+.calendarDialog input { border: 0;}
+.calendarDialog textarea { border: 0; height: 140px;}
+
+.calendarDialog .content-nav         {  display: block; }
+.calendarDialog .content-nav:hover   { color: #000; cursor: pointer; }
+
+.calendarDialog .fieldset {
+    color: #666666;
+}
+.calendarDialog .fieldset label {
+    display: inline-block;
+    line-height: 23px;
+    padding-right: 10px;
+}
+.calendarDialog .fieldset input {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #B2B2B2;
+    border-radius: 4px;
+    display: inline-block;
+    height: 25px;
+    margin-bottom: 8px;
+    padding-left: 10px;
+    width: 223px;
+}
+.calendarDialog .fieldset textarea {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #B2B2B2;
+    border-radius: 4px;
+    height: 70px;
+    margin-bottom: 4px;
+    padding: 10px;
+    width: 245px;
+}
+
+
+.calendarDialog .fieldset2 {
+    color: #666666;
+	font-size: 13px;
+}
+.calendarDialog .fieldset2 label {
+    display: inline-block;
+    line-height: 23px;
+    padding-right: 10px;
+    width: 79px;
+	font-size: 11px;
+}
+
+.calendarDialog .fieldset2 input {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #B2B2B2;
+    border-radius: 4px;
+    display: inline-block;
+    height: 25px;
+    margin-bottom: 8px;
+    padding: 0 10px;
+    width: 145px;
+	font-size: 13px;
+}
+.calendarDialog .fieldset2 input.short {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #B2B2B2;
+    border-radius: 4px;
+    display: inline-block;
+    height: 25px;
+    margin-bottom: 8px;
+    padding: 0 10px;
+    width: 30px;
+}
+.calendarDialog .fieldset2 div.contacts {
+    color: #000000;
+    float: right;
+    margin: 3px 0 8px;
+    min-height: 15px;
+    width: 175px;
+}
+.calendarDialog .fieldset2 div.dates {
+    float: right;
+    width: 175px;
+	
+}
+.calendarDialog .fieldset2 div.contacts a {
+    color: #000000;
+}
+.calendarDialog .fieldset2 div.contacts a:hover {
+    color: #82AA0B;
+    cursor: pointer;
+}
+
+.calendarDialog .coButton.delete {
+    background: linear-gradient(to bottom, #F7B599 0%, #F18050 50%, #EB4600 51%, #EB4600 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border: 1px solid #EB4600;
+    color: #FFFFFF;
+}
