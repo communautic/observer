@@ -36,6 +36,7 @@ require_once('/home/dev/public_html/sync/3rdparty/Sabre/VObject/Property.php');
 require_once('/home/dev/public_html/sync/3rdparty/Sabre/VObject/TimeZoneUtil.php');
 require_once('/home/dev/public_html/sync/3rdparty/Sabre/VObject/Property/DateTime.php');
 require_once('/home/dev/public_html/sync/3rdparty/Sabre/VObject/Parameter.php');
+require_once('/home/dev/public_html/sync/3rdparty/Sabre/VObject/ParseException.php');
 require_once('/home/dev/public_html/sync/3rdparty/Sabre/VObject/Reader.php');
 require_once('/home/dev/public_html/sync/lib/private/vobject.php');
 require_once('/home/dev/public_html/sync/apps/calendar/lib/calendar.php');
@@ -71,6 +72,18 @@ if (!empty($_GET['request'])) {
 		break;
 		case 'getCalendarsDialog':
 			echo($calendar->getCalendarsDialog($_GET['field'],$_GET['title']));
+		break;
+		case 'getWidgetAlerts':
+			echo($calendar->getWidgetAlerts());
+		break;
+		case 'markRead':
+			echo($calendar->markRead($_GET['id']));
+		break;
+		case 'getHelp':
+			echo($calendar->getHelp());
+		break;
+		case 'saveLastUsedTreatments':
+			echo($calendar->saveLastUsedTreatments($_GET['id']));
 		break;
 	}
 }
