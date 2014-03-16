@@ -4,7 +4,7 @@
 <div class="radius-helper">
 <?php include(CO_INC . "/view/logo.php"); ?>
 	<div id="calendar1-outer">
-    <h3 class="module-bg-active"><?php echo $lang["BIN_FOLDER"];?></h3>
+    <h3 class="module-bg-active"><?php echo $lang["CALENDAR_CALENDARS"];?></h3>
     <div id="calendar1" class="module-bg-active">
     <div class="module-actions"><div class="sort-outer"><span class="sort" rel="1"></span></div></div>
     	<div class="module-inner west-ui-content">

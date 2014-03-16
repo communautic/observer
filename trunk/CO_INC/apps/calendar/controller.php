@@ -76,7 +76,7 @@ class Calendar extends Controller {
 	 * @return (array) $output - readable output
 	 */
 	function generateEventOutput(array $event, $start, $end) {
-		global $session;
+		global $session, $lang;
 		
 		if(!isset($event['calendardata']) && !isset($event['vevent'])) {
 			return false;
@@ -126,8 +126,15 @@ class Calendar extends Controller {
 				//$regularEventDisplay  = ' style="display: none"';
 				//$treatmentEventDisplay = ' style="display: block"';
 				$treatmentsModel = new PatientsTreatmentsModel();
-				$treatmentevent = $treatmentsModel->getTreatmentEvent($event['eventid']);
-				$title = $treatmentevent['patient'] . ', ' . $treatmentevent['title'];
+				$treatmentevent = $treatmentsModel->getTreatmentEvent($event['eventid'],1);
+				//$title = $treatmentevent['patient'] . ', ' . $treatmentevent['title'];
+				$title = $treatmentevent['patient'];
+				if($event['eventlocation'] != 0) {
+					$title .= '<br /> <span style="font-weight: normal">' . $treatmentsModel->getTreatmentLocation($event['eventlocation']) . '</span>';
+				}
+				if($event['eventlocationuid'] != 0) {
+					$title .=  '<br /> <span style="font-weight: normal">' . $lang['CALENDAR_EVENT_HOUSE_CALL'] . '</span>';
+				}
 				$event['treat'] = $treatmentevent['mid'];
 				$event['patientid'] = $treatmentevent['id'];
 				$event['folderid'] = $treatmentevent['folder'];
@@ -136,6 +143,10 @@ class Calendar extends Controller {
 				//$treatmentEventDisplay = ' style="display: none"';
 				//$title = (!is_null($vevent->SUMMARY) && $vevent->SUMMARY->value != '')? strtr($vevent->SUMMARY->value, array('\,' => ',', '\;' => ';')) : self::$l10n->t('unnamed');
 				$title = (!is_null($vevent->SUMMARY) && $vevent->SUMMARY->value != '')? strtr($vevent->SUMMARY->value, array('\,' => ',', '\;' => ';')) : 'no title';
+				if($event['eventlocation'] != 0) {
+					$treatmentsModel = new PatientsTreatmentsModel();
+					$title .= '<br /> <span style="font-weight: normal">' . $treatmentsModel->getTreatmentLocation($event['eventlocation']) . '</span>';
+				}
 			}
 			
 			$staticoutput = array('id'=>(int)$event['id'],
@@ -280,8 +291,9 @@ class Calendar extends Controller {
 		return array(
 			'url' => '/?path=apps/calendar&request=getrequestedEvents&calendar_id='.$calendar['id'],
 			'backgroundColor' => $calendar['calendarcolor'],
-			'borderColor' => '#888',
-			'textColor' => $this->generateTextColor($calendar['calendarcolor']),
+			'borderColor' => $calendar['calendarcolor'],
+			//'textColor' => $this->generateTextColor($calendar['calendarcolor']),
+			'textColor' => '#000',
 			'cache' => false,
 		);
 	}
@@ -292,7 +304,7 @@ class Calendar extends Controller {
 	 * (this function doesn't pay attention on the alpha value of rgba color codes)
 	 * @return boolean
 	 */
-	function generateTextColor($calendarcolor) {
+	/*function generateTextColor($calendarcolor) {
 		if(substr_count($calendarcolor, '#') == 1) {
 			$calendarcolor = substr($calendarcolor,1);
 		}
@@ -302,7 +314,7 @@ class Calendar extends Controller {
 		//recommendation by W3C
 		$computation = ((($red * 299) + ($green * 587) + ($blue * 114)) / 1000);
 		return ($computation > 130)?'#000000':'#FAFAFA';
-	}
+	}*/
 	
 	
 	function newEventForm($start, $end, $allday, $calendarid) {
@@ -352,6 +364,22 @@ class Calendar extends Controller {
 		$t_loc = $post['treatmentlocationid'];
 		$t_locuid = $post['treatmentlocationuid'];
 		
+		// title
+		$title = $post['title'];
+			if($eventtype == 1) {
+				$treatmentsModel = new PatientsTreatmentsModel();
+				$pid = $treatmentsModel->getTreatmentPatientID($t_id);
+				$contactsModel = new ContactsModel();
+				$title = $contactsModel->getUserFullnameShortFirstname($pid);
+				if($t_loc != 0) {
+					$title .= ', ' . $post['location'];
+				}
+				if($t_locuid != 0) {
+					$title .=  ', ' . $lang['CALENDAR_EVENT_HOUSE_CALL'];
+				}
+			}
+		$post['title'] = $title;
+		
 		$errarr = $this->validateRequest($post);
 		if($errarr) {
 			$data["status"] = 'error';
@@ -360,7 +388,20 @@ class Calendar extends Controller {
 			}
 		} else {
 			$vcalendar = $this->createVCalendarFromRequest($post);
-			$this->add($cal, $vcalendar->serialize(), $eventtype, $t_id, $t_loc, $t_locuid);
+			$res = $this->add($cal, $vcalendar->serialize(), $eventtype, $t_id, $t_loc, $t_locuid);
+			if($post['desktop'] == 1) {
+				if($cal == 2) {
+					$arr = $this->model->getFolderList(0);
+					$folders = $arr["folders"];
+					foreach($folders as $folder) {
+						//echo $folder->id . ' ';
+						$this->model->newWidgetItem($folder->id,$res);
+					}
+				} else {
+					$uid = $this->model->getUIDFromCalendar($cal);
+					$this->model->newWidgetItem($uid,$res);
+				}
+			}
 			$data["status"] = 'success';
 		}
 		return json_encode($data);
@@ -464,6 +505,23 @@ class Calendar extends Controller {
 		$t_id_old = $this->model->getTreatmentEvent($id);
 		$t_loc = $post['treatmentlocationid'];
 		$t_locuid = $post['treatmentlocationuid'];
+		//$post['description'] = preg_replace('/\r\n|\r/', "\n", $post['description']); 
+		
+		// title
+		$title = $post['title'];
+			if($eventtype == 1) {
+				$treatmentsModel = new PatientsTreatmentsModel();
+				$pid = $treatmentsModel->getTreatmentPatientID($t_id);
+				$contactsModel = new ContactsModel();
+				$title = $contactsModel->getUserFullnameShortFirstname($pid);
+				if($t_loc != 0) {
+					$title .= ', ' . $post['location'];
+				}
+				if($t_locuid != 0) {
+					$title .=  ', ' . $lang['CALENDAR_EVENT_HOUSE_CALL'];
+				}
+			}
+		$post['title'] = $title;
 		
 		$errarr = $this->validateRequest($post);
 		if($errarr) {
@@ -481,6 +539,19 @@ class Calendar extends Controller {
 			if($edit['status'] == 'error') {
 				$data["status"] = 'error';
 			} else {
+				if($post['desktop'] == 1) {
+					if($cal == 2) {
+						$arr = $this->model->getFolderList(0);
+						$folders = $arr["folders"];
+						foreach($folders as $folder) {
+							$this->model->newWidgetItem($folder->id,$id);
+						}
+					} else {
+						$uid = $this->model->getUIDFromCalendar($cal);
+						$this->model->newWidgetItem($uid,$id);
+					}
+				}
+				
 				if($edit['status'] == 'busy') {
 					$data["status"] = 'busy';
 				} else {
@@ -549,10 +620,10 @@ class Calendar extends Controller {
 		$title = $request["title"];
 		$location = $request["location"];
 		//$categories = $request["categories"];
-		$allday = isset($request["allday"]);
+		$allday = $request["allday"];
 		$from = $request["from"];
 		$to  = $request["to"];
-		if (!$allday) {
+		if ($allday == 0) {
 			$fromtime = $request['fromtime'];
 			$totime = $request['totime'];
 		}
@@ -707,7 +778,7 @@ class Calendar extends Controller {
 		$vevent->setDateTime('DTSTAMP', 'now', Sabre\VObject\Property\DateTime::UTC);
 		$vevent->setString('SUMMARY', $title);
 
-		if($allday) {
+		if($allday == 1) {
 			$start = new DateTime($from);
 			$end = new DateTime($to.' +1 day');
 			$vevent->setDateTime('DTSTART', $start, Sabre\VObject\Property\DateTime::DATE);
@@ -898,11 +969,11 @@ class Calendar extends Controller {
 	
 	function deleteEvent($id) {
 		//global $system, $lang;
-		$treatmentid = $this->model->getTreatmentTaskEvent($id);
+		/*$treatmentid = $this->model->getTreatmentTaskEvent($id);
 		if($treatmentid != 0) {
 			$treatmentsModel = new PatientsTreatmentsModel();
 			$treatmentevent = $treatmentsModel->deleteTreatmentTask($treatmentid);
-		}
+		}*/
 		$this->model->deleteEvent($id);
 		
 		//deleteTreatmentTask
@@ -1267,9 +1338,51 @@ class Calendar extends Controller {
 		}
 		return false;
 	}
+	
+	function getWidgetAlerts() {
+		global $lang, $system;
+		if($arr = $this->model->getWidgetAlerts()) {
+			$reminders = $arr["reminders"];
+			ob_start();
+			include 'view/widget.php';
+			$data["html"] = ob_get_contents();
+			ob_end_clean();
+			$data["widgetaction"] = $arr["widgetaction"];
+			return json_encode($data);
+		} else {
+			ob_start();
+			include CO_INC .'/view/default.php';
+			$data["html"] = ob_get_contents();
+			ob_end_clean();
+			return json_encode($data);
+		}
+	}
+	
+	function markRead($id) {
+		global $lang, $system;
+		$retval = $this->model->markRead($id);
+		if($retval){
+			 return $retval;
+		  } else{
+			 return "error";
+		  }
+	}
 
 	
+	function getHelp() {
+		global $lang;
+		$data["file"] = $lang["CALENDAR_HELP"];
+		$this->openHelpPDF($data);
+	}
 	
+	function saveLastUsedTreatments($id) {
+		$retval = $this->model->saveLastUsedTreatments($id);
+		if($retval){
+		   return "true";
+		} else{
+		   return "error";
+		}
+	}
 	
 
 }

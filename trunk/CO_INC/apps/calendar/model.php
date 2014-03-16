@@ -3,7 +3,7 @@ class CalendarModel extends Model {
 
 	// Get all Calendars
    function getFolderList($sort, $showGroupCalendar = 0) {
-      global $session;
+      global $session,$lang;
 	  if($sort == 0) {
 		  $sortstatus = $this->getSortStatus("calendar-sort-status");
 		  if(!$sortstatus) {
@@ -74,7 +74,7 @@ class CalendarModel extends Model {
 			$eventSources[] = array(
 								'url' => '/?path=apps/calendar&request=getrequestedEvents&calendar_id=' . $array['calendarid'],
 								'backgroundColor' => $array['calendarcolor'],
-								"borderColor" => "#888",
+								"borderColor" => $array['calendarcolor'],
 								"textColor" => "#000000",
 								"cache" => true					
 							  );
@@ -91,6 +91,7 @@ class CalendarModel extends Model {
 			foreach($rowg as $key => $val) {
 				$array[$key] = $val;
 			}
+			$array['lastname'] = $lang["CALENDAR_OFFICE_CALENDAR"];
 			$folders[] = new Lists($array);
 			}
 			
@@ -118,13 +119,14 @@ class CalendarModel extends Model {
 	 */
 	function allInPeriod($id, $start, $end) {
 		global $session;
-		$start = DateTime::createFromFormat('U', $start);
+		/*$start = DateTime::createFromFormat('U', $start);
 		$start = $start->format('Y-m-d');
 		$end = DateTime::createFromFormat('U', $end);
-		$end = $end->format('Y-m-d');
+		$end = $end->format('Y-m-d');*/
 		
 		//require_once('/home/dev/public_html/sync/3rdparty/Sabre/VObject/Property/DateTime.php');
-		
+		$start = self::getUTCforMDB($start);
+		$end = self::getUTCforMDB($end);
 		
 		$calendarobjects = array();
 		$q ="SELECT * FROM oc_clndr_objects WHERE calendarid = '$id' AND objecttype = 'VEVENT' AND ((startdate >= '$start' AND enddate <= '$end' AND repeating = '0') OR (enddate >= '$end' AND startdate <= '$start' AND repeating = 0) OR (startdate <= '$end' AND repeating = '1') )";
@@ -260,6 +262,7 @@ class CalendarModel extends Model {
 	function editEvent($id,$type,$startdate,$enddate,$repeating,$summary,$data,$time,$eventtype,$treatmentid,$oldtreatmentid,$treatmentlocation,$eventlocationuid) {
 		$now = gmdate("Y-m-d H:00");
 		if($eventtype == 1) { //is treatment
+			
 			if($treatmentid == $oldtreatmentid) {
 				$taskid = $this->getTreatmentTaskEvent($id);
 				$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " SET item_date='$startdate' WHERE id='$taskid'";
@@ -267,13 +270,18 @@ class CalendarModel extends Model {
 			} else {
 				if($oldtreatmentid != 0) {
 					$taskid = $this->getTreatmentTaskEvent($id);
+					//$taskid = $this->getTreatmentTaskEvent($id);
 					// move old task to bin
-					$treatmentsModel = new PatientsTreatmentsModel();
-					$treatmentsModel->deleteTask($taskid);
-				}
-				$q = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " set mid='$treatmentid', item_date='$startdate', status = '0'";
+					//$treatmentsModel = new PatientsTreatmentsModel();
+					//$treatmentsModel->deleteTaskOnly($taskid);
+					$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " SET mid='$treatmentid', item_date='$startdate' WHERE id='$taskid'";
 				$result = mysql_query($q, $this->_db->connection);
-				$taskid = mysql_insert_id();
+				} else {
+					$now = gmdate("Y-m-d H:00");
+					$q = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " set mid='$treatmentid', item_date='$now', status = '0'";
+					$result = mysql_query($q, $this->_db->connection);
+					$taskid = mysql_insert_id();
+				}
 			}
 			$q ="UPDATE oc_clndr_objects SET eventtype='$eventtype', eventid='$taskid', eventlocation='$treatmentlocation', eventlocationuid='$eventlocationuid', objecttype='$type', startdate='$startdate', enddate='$enddate', repeating='$repeating', summary='$summary', calendardata='$data', lastmodified='$time' WHERE id='$id'";
 			$result = mysql_query($q, $this->_db->connection);
@@ -283,7 +291,7 @@ class CalendarModel extends Model {
 			$taskid = $this->getTreatmentTaskEvent($id);
 			if($taskid != 0) {
 				$treatmentsModel = new PatientsTreatmentsModel();
-				$treatmentsModel->deleteTask($taskid);
+				$treatmentsModel->deleteTaskOnly($taskid);
 			}
 			// just update event
 			$q ="UPDATE oc_clndr_objects SET eventtype='0', eventid='0', eventlocation='$treatmentlocation', eventlocationuid='$eventlocationuid', objecttype='$type', startdate='$startdate', enddate='$enddate', repeating='$repeating', summary='$summary', calendardata='$data', lastmodified='$time' WHERE id='$id'";
@@ -294,7 +302,7 @@ class CalendarModel extends Model {
 
 
 	function isRoomBusy($location,$startdate,$enddate,$id) {
-		$q ="SELECT * FROM oc_clndr_objects WHERE eventlocation='$location' and eventlocation!='0' and ((startdate<='$startdate' and enddate>'$startdate') or (startdate<'$enddate' and enddate>='$enddate') or (startdate>'$startdate' and enddate<'$enddate')) and id!='$id'";
+		$q ="SELECT * FROM oc_clndr_objects WHERE eventlocation='$location' and eventlocation!='0' and ((startdate<='$startdate' and enddate>'$startdate') or (startdate<'$enddate' and enddate>='$enddate') or (startdate>'$startdate' and enddate<'$enddate')) and id !='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if(mysql_num_rows($result) > 0) {
 			return true;
@@ -344,12 +352,31 @@ class CalendarModel extends Model {
 	
 	
 	function deleteEvent($id) {
-		// if treatment bin task!!!!
-		$q ="DELETE FROM oc_clndr_objects WHERE id='$id'";
+		
+		// delete all notices if exist
+		$q ="DELETE FROM " . CO_TBL_CALENDAR_DESKTOP . " WHERE pid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
-		if ($result) {
-			return true;
+		
+		$q ="SELECT eventtype,eventid FROM oc_clndr_objects WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_row($result);
+		if($row[0] == 1) {
+			$taskid = $row[1];
+			$treatmentsModel = new PatientsTreatmentsModel();
+			$treatmentsModel->deleteTask($taskid);
+		} else {
+			$q ="DELETE FROM oc_clndr_objects WHERE id='$id'";
+			$result = mysql_query($q, $this->_db->connection);
 		}
+		//if ($result) {
+			return true;
+		//}
+	}
+	
+	function getUIDFromCalendar($cal) {
+		$q = "SELECT a.couid FROM oc_users as a, oc_clndr_calendars as b WHERE a.uid = b.userid and b.id='$cal'";
+		$result = mysql_query($q, $this->_db->connection);
+		return mysql_result($result,0);
 	}
 	
 	
@@ -387,14 +414,201 @@ class CalendarModel extends Model {
 	function getBusyLocations($from,$fromtime,$totime) {
 		
 		$locations = array();
-		$startdate = $this->_date->formatDateGMT($from . " " . $fromtime);
-		$enddate = $this->_date->formatDateGMT( $from . " " . $totime);
+		//$startdate = $this->_date->formatDateGMT($from . " " . $fromtime);
+		//$enddate = $this->_date->formatDateGMT( $from . " " . $totime);
+		$startdate = $this->_date->formatDate($from . " " . $fromtime);
+		$enddate = $this->_date->formatDate($from . " " . $totime);
 		$q ="SELECT eventlocation FROM oc_clndr_objects WHERE ((startdate<='$startdate' and enddate>'$startdate') or (startdate<'$enddate' and enddate>='$enddate') or (startdate>'$startdate' and enddate<'$enddate'))";
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
 			$locations[] = $row['eventlocation'];
 		}
 		return $locations;
+	}
+	
+	function newWidgetItem($uid,$id) {
+		global $session;
+		$q = "INSERT INTO " . CO_TBL_CALENDAR_DESKTOP . " set pid='$id', uid = '$uid'";
+		$result = mysql_query($q, $this->_db->connection);
+   }
+
+	
+	
+	/*function newWidgetItems($id) {
+		global $session;
+		$users = "";
+		// select all admins, guests for this forum
+		$q = "SELECT admins,guests FROM co_forums_access where pid='$pid'";
+		$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+			if($row['admins'] != "") {
+				$users .= $row['admins'] . ',';
+			}
+			if($row['guests'] != "") {
+				$users .= $row['guests'] . ',';
+			}
+		}
+		
+		// select all posters to this forum
+		$q = "SELECT user FROM " . CO_TBL_FORUMS_POSTS . " where pid='$pid' and bin='0'";
+		$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+				$users .= $row['user'] . ',';
+		}
+		
+		$q = "SELECT created_user FROM " . CO_TBL_FORUMS . " where id='$pid'";
+		$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+			if($row['created_user'] != "") {
+				$users .= $row['created_user'] . ',';
+			}
+		}
+		$users = rtrim($users, ",");
+		if($users != "") {
+			$users = array_unique(explode(",",$users));
+		} else {
+			$users = array();
+		}
+		foreach($users as $user) {
+			if($user != $session->uid) {
+				$q = "INSERT INTO " . CO_TBL_FORUMS_DESKTOP . " set pid='$pid', uid = '$user', newpost='1'";
+				$result = mysql_query($q, $this->_db->connection);
+			}
+		}
+		
+   }*/
+
+	
+	
+	function existUserCalendarWidgets() {
+		global $session;
+		$q = "select count(*) as num from " . CO_TBL_CALENDAR_DESKTOP_SETTINGS . " where uid='$session->uid'";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_assoc($result);
+		if($row["num"] < 1) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+
+	function getUserCalendarWidgets() {
+		global $session;
+		$q = "select * from " . CO_TBL_CALENDAR_DESKTOP_SETTINGS . " where uid='$session->uid'";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_assoc($result);
+		return $row;
+	}
+
+
+	function getWidgetAlerts() {
+		global $session, $date;
+	  	
+		$now = new DateTime("now");
+		$today = $date->formatDate("now","Y-m-d");
+		$tomorrow = $date->addDays($today, 1);
+		$string = "";
+		
+		// notices for this user
+		//$q ="select a.id as pid,a.folder,a.title as brainstormtitle,b.perm from " . CO_TBL_FORUMS . " as a,  " . CO_TBL_FORUMS_DESKTOP . " as b where a.id = b.pid and a.bin = '0' and b.uid = '$session->uid' and b.status = '0' and newpost!='1'";
+		$q ="select a.id as pid, a.startdate, a.summary FROM oc_clndr_objects as a,  " . CO_TBL_CALENDAR_DESKTOP . " as b where a.id = b.pid and b.uid = '$session->uid'";
+		$result = mysql_query($q, $this->_db->connection);
+		$notices = "";
+		$array = "";
+		while ($row = mysql_fetch_array($result)) {
+			foreach($row as $key => $val) {
+				$array[$key] = $val;
+			}
+			$string .= $array["pid"] . ",";
+			$notices[] = new Lists($array);
+		}
+		
+		// reminders = neue posts für initiator und admins
+		//$q ="select c.folder,c.id as pid,c.title as title from  " . CO_TBL_FORUMS . " as c where c.status='1' and c.bin = '0' " . $access;
+		$reminders = "";
+		//$q ="select a.id as pid,a.folder,a.title as forumtitle from " . CO_TBL_FORUMS . " as a,  " . CO_TBL_FORUMS_DESKTOP . " as b where a.id = b.pid and b.newpost = '1' and a.bin = '0' and b.uid = '$session->uid' GROUP BY pid ORDER BY b.id DESC";
+		$q ="select a.id as pid, b.id as folderid, b.uid, a.startdate, a.summary FROM oc_clndr_objects as a,  " . CO_TBL_CALENDAR_DESKTOP . " as b where a.id = b.pid and b.uid = '$session->uid'";
+
+		$result = mysql_query($q, $this->_db->connection);
+		while ($row = mysql_fetch_array($result)) {
+			foreach($row as $key => $val) {
+				$array[$key] = $val;
+			}
+			$date = new DateTime($array['startdate']);
+			$array['startdate'] = $date->format('d.m.Y');
+			$array['starttime'] = $date->format('H:i');
+			$array['linkyear'] = $date->format('Y');
+			$array['linkmonth'] = $date->format('n')-1;
+			$array['linkday'] = $date->format('d');
+			$string .= $array["folderid"] . "," . $array["pid"] . ",";
+			$reminders[] = new Lists($array);
+		}
+		
+
+		if(!$this->existUserCalendarWidgets()) {
+			$q = "insert into " . CO_TBL_CALENDAR_DESKTOP_SETTINGS . " set uid='$session->uid', value='$string'";
+			$result = mysql_query($q, $this->_db->connection);
+			$widgetaction = "open";
+		} else {
+			$row = $this->getUserCalendarWidgets();
+			$id = $row["id"];
+			if($string == $row["value"]) {
+				$widgetaction = "";
+			} else {
+				$widgetaction = "open";
+			}
+			$q = "UPDATE " . CO_TBL_CALENDAR_DESKTOP_SETTINGS . " set value='$string' WHERE id = '$id'";
+			$result = mysql_query($q, $this->_db->connection);
+		}
+		
+		$arr = array("reminders" => $reminders, "widgetaction" => $widgetaction);
+		return $arr;
+   }
+
+   
+	function markRead($id) {
+		global $session;
+		$q ="DELETE FROM " . CO_TBL_CALENDAR_DESKTOP . " WHERE uid = '$session->uid' and pid = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		return true;
+	}
+	
+	
+	function saveLastUsedTreatments($id) {
+		global $session;
+		$string = $id . "," .$this->getUserSetting("last-used-caltreatments");
+		$string = rtrim($string, ",");
+		$ids_arr = explode(",", $string);
+		$res = array_unique($ids_arr);
+		foreach ($res as $key => $value) {
+			$ids_rtn[] = $value;
+		}
+		array_splice($ids_rtn, 7);
+		$str = implode(",", $ids_rtn);
+		$this->setUserSetting("last-used-caltreatments",$str);
+	  return true;
+	}
+	
+	function getTreatmentsArray($string){
+		$users_string = explode(",", $string);
+		$users_total = sizeof($users_string);
+		$users = '';
+		if($users_total == 0) { 
+			return $users; 
+		}
+		// check if user is available and build array
+		$users_arr = "";
+		foreach ($users_string as &$value) {
+			$q = "SELECT id, positionstext, shortname, minutes, costs FROM ".CO_TBL_PATIENTS_TREATMENTS_DIALOG." where id = '$value' and active='1'";
+			$result_user = mysql_query($q, $this->_db->connection);
+			if(mysql_num_rows($result_user) > 0) {
+				while($row_user = mysql_fetch_assoc($result_user)) {
+					$users_arr[] = array("id" => $row_user["id"], "shortname" => $row_user["positionstext"] . ' ' . $row_user["shortname"] . ' (' . $row_user["minutes"] . ')', "costs" => $row_user["costs"], "minutes" => $row_user["minutes"]);		
+				}
+			}
+		}
+		return $users_arr;
 	}
 	
 }
