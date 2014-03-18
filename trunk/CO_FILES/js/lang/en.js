@@ -66,3 +66,27 @@ var ALERT_SUCCESS_COPY_MEETING = 'The meeting was successfully copied to: <br />
 var ALERT_SUCCESS_PROJECT_EXPORT = 'The project was successfully exported to: <br />';
 
 var ALERT_TRAINING_MOVE_ALL = "Wollen Sie alle Trainingstermine an das neue Startdatum anpassen?";
+
+var ALERT_CALENDAR_DATA = "Please check the following entries:<br />";
+var ALERT_CALENDAR_MISSING_TITLE = "Title";
+var ALERT_CALENDAR_MISSING_TREATMENT = "Treatment";
+var ALERT_CALENDAR_MISSING_LOCATION = "Location";
+var ALERT_CALENDAR_ROOM_BUSY = "This locatiuon is buys.<br />Please choose a different location.";
+
+// calendar settings
+var defaultView="agendaWeek";
+var eventSources=[];
+var dayNames=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+var dayNamesShort=["Sun.","Mon.","Tue.","Wed.","Thu.","Fri.","Sat."];
+var monthNames=["January","February","March","April","May","June","July","August","September","October","November","December"];
+var monthNamesShort=["Jan.","Feb.","Mar.","Apr.","May.","Jun.","Jul.","Aug.","Sep.","Oct.","Nov.","Dec."];
+var agendatime="HH:mm{ -HH:mm}";
+var defaulttime="HH:mm";
+var allDayText="All day";
+var firstDay=1;
+var buttonTextToday='Today';
+var buttonTextMonth='Month';
+var buttonTextWeek='Week';
+var buttonTextDay='Day';
+var holidayCalendar='22';
+var weekNumberTitle = 'wk ';

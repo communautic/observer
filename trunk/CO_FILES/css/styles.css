@@ -800,7 +800,7 @@ width:7.2em;
 float:left;
 width:3.6em;
 }
-.coTime-pkr .coTime-hr-btn {
+.coTime-pkr .coTime-hr-btn, .coTime-pkr .coCalendarTime-hr-btn {
 padding-right:0.25em;
 text-align:right;
 width:3em;
@@ -816,7 +816,7 @@ width:4.7em;
 float:left;
 width:2.3em;
 }
-.coTime-pkr .coTime-min-ten-btn, .coTime-pkr .coTime-min-one-btn {
+.coTime-pkr .coTime-min-ten-btn, .coTime-pkr .coCalendarTime-min-ten-btn, .coTime-pkr .coTime-min-one-btn, .coTime-pkr .coCalendarTime-min-one-btn {
 float:left;
 text-align:center;
 width:2em;

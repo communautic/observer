@@ -34,11 +34,11 @@ function patientsTreatments(name) {
 			}
 		});
 		
-		$('#patients div.treatments_task_team_list').each(function() {
+		/*$('#patients div.treatments_task_team_list').each(function() {
 			var id = $(this).attr("id");
 			var reg = /[0-9]+/.exec(id);
 			formData[formData.length] = processListArray('treatments_task_team',reg);
-		});
+		});*/
 		
 		/*$('#patients div.treatments_task_team_list_ct').each(function() {
 			var id = $(this).attr("id");
@@ -52,7 +52,7 @@ function patientsTreatments(name) {
 			formData[formData.length] = processListArrayTwo('task_treatmenttype',reg);
 		});
 		
-		$('#patients div.task_time_list').each(function() {
+		/*$('#patients div.task_time_list').each(function() {
 			var id = $(this).attr("id");
 			var reg = /[0-9]+/.exec(id);
 			var html = $(this).html();
@@ -63,7 +63,7 @@ function patientsTreatments(name) {
 			var id = $(this).attr("id");
 			var reg = /[0-9]+/.exec(id);
 			formData[formData.length] = processListArray('task_place',reg);
-		});
+		});*/
 		
 		$("#canvasDivText > div").each(function() {
 			var id = $(this).attr('id');
@@ -237,6 +237,10 @@ function patientsTreatments(name) {
 			$("#patients-right").empty().html(data.html);
 			
 			if(tab != 0) { $('#patients-right .contentTabsList li span:eq('+tab+')').trigger('click'); }
+			if(appTab) {
+				$('#patients-right .contentTabsList li span:eq(1)').trigger('click');
+				appTab = false;
+			}
 			
 			if($('#checkedOut').length > 0) {
 					$("#patients3 ul[rel=treatments] .active-link .icon-checked-out").addClass('icon-checked-out-active');

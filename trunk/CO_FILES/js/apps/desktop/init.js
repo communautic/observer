@@ -143,6 +143,15 @@ function desktoploadCheckpointsModuleStart() {
 		}
 	});
 }
+function desktoploadCalendarModuleStart() {
+	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/calendar&request=getWidgetAlerts", success: function(data){
+		$("#calendarWidgetContent").html(data.html);
+		if(data.widgetaction == 'open' && $('#calendarWidgetContent').is(':hidden')) {
+			$('#item_calendarWidget a.collapse').trigger('click');
+		}
+		}
+	});
+}
 
 function desktoploadModuleStart() {
 	if(getCurrentApp() == 'desktop') {
@@ -151,6 +160,7 @@ function desktoploadModuleStart() {
 		if(typeof procs == "object") { desktoploadProcsModuleStart() }
 		if(typeof trainings == "object") { desktoploadTrainingsModuleStart() }
 		if(typeof forums == "object") { desktoploadForumsModuleStart() }
+		if(typeof calendar == "object") { desktoploadCalendarModuleStart() }
 		desktoploadCheckpointsModuleStart()
 		// postits
 		var doit = 1;
@@ -433,6 +443,33 @@ $(document).ready(function() {
 			w.remove();
 			if($("#forumsWidgetContent>div").length == 0) {
 				setTimeout(function() { desktoploadForumsModuleStart() },500);
+			}
+		})
+	});
+	
+	function externalLoadCalendar(uid,year,month,day) {
+		if($('#calendar').data("first") != uid) {
+			$('#calendar').data({ "first" : uid});
+			$('#calendar1 .module-click[rel='+uid+']').trigger('click');
+		}
+		$('span.app_calendar').trigger('click');
+		$('#calendar-right').fullCalendar( 'gotoDate',year,month,day)
+	}
+	$(document).on('click', '#desktop .calendarLinkRead', function(e) {
+		e.preventDefault();
+		var href = $(this).attr('rel').split(",");
+		externalLoadCalendar(href[0],href[1],href[2],href[3]);
+		setTimeout(function() { desktoploadCalendarModuleStart() },500);
+	});
+	$(document).on('click', '#desktop .calendarInlineRead', function(e) {
+		e.preventDefault();
+		var href = $(this).attr('rel');
+		var w = $(this).parent().parent();
+		w.slideUp(function() {
+			calendar.markRead(href);
+			w.remove();
+			if($("#calendarWidgetContent>div").length == 0) {
+				setTimeout(function() { desktoploadCalendarModuleStart() },500);
 			}
 		})
 	});
