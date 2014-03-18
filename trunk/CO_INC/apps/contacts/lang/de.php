@@ -64,8 +64,10 @@ $lang['CONTACTS_SYSADMIN_ACTIVE'] = 'Berechtigung erteilt am %s durch %s';
 $lang['CONTACTS_SYSADMIN_REMOVE'] = 'Berechtigung entfernt am %s durch %s';
 $lang['CONTACTS_SYSADMIN_GIVE_RIGHT'] = 'Berechtigung erteilen';
 $lang['CONTACTS_SYSADMIN_REMOVE_RIGHT'] = 'Berechtigung entfernen';
-$lang['CONTACTS_CALENDAR_GIVE_RIGHT'] = 'Kalender erstellen';
-$lang['CONTACTS_CALENDAR_REMOVE_RIGHT'] = 'Kalender entfernen';
+$lang['CONTACTS_CALENDAR_GIVE_RIGHT'] = 'aktivieren';
+$lang['CONTACTS_CALENDAR_REMOVE_RIGHT'] = 'deaktivieren';
+$lang['CONTACTS_CALENDAR_ACTIVE'] = 'aktiviert';
+$lang['CONTACTS_CALENDAR_DEACTIVE'] = 'deaktiviert';
 
 $lang['CONTACTS_CUSTOM'] = 'Text';
 

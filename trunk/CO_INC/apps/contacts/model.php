@@ -329,6 +329,12 @@ class ContactsModel extends Model {
 		$array["sysadmin"] = $lang['CONTACTS_SYSADMIN_NORIGHTS'];
 		$array["applications"] = "";
 		
+		// calendar
+		$array["calendar_status"] = $lang['CONTACTS_CALENDAR_DEACTIVE'];
+		if($array["calendar"] == 1) {
+			$array["calendar_status"] = $lang['CONTACTS_CALENDAR_ACTIVE'];
+		}
+		
 		if(!empty($array["username"])) {
 			$array["access"] = sprintf($lang['CONTACTS_ACCESS_ACTIVE'], $array["access_date"], $array["access_user"]);
 			/*$class = "ProjectsModel";
@@ -457,6 +463,25 @@ class ContactsModel extends Model {
 		global $session;
 		$now = gmdate("Y-m-d H:i:s");
 		
+		// check for calendar
+		$calendar = $this->_db->checkCalendar($id);
+		if($calendar) { // update display name
+			$q = "SELECT uid FROM oc_users WHERE couid='$id'";
+			$result = mysql_query($q, $this->_db->connection);
+			$calendar_userid = mysql_result($result,0);
+			$displayname = $lastname . ' ' . $firstname;
+			$uri = strtolower($firstname.$lastname);
+			$q = "UPDATE oc_clndr_calendars set displayname = '$displayname', uri='$uri' WHERE userid='$calendar_userid'";
+			$result = mysql_query($q, $this->_db->connection);
+			// check for share
+			$q = "SELECT * FROM oc_share WHERE uid_owner='$calendar_userid'";
+			$result = mysql_query($q, $this->_db->connection);
+			if(mysql_num_rows($result) > 0) {
+				$q = "UPDATE oc_share set item_target='$displayname' WHERE uid_owner='$calendar_userid'";
+				$result = mysql_query($q, $this->_db->connection);
+			}
+		}
+		
 		$q = "UPDATE " . CO_TBL_USERS . " set lastname = '$lastname', firstname = '$firstname', title = '$title', title2 = '$title2', company = '$company', position = '$position', email = '$email', email_alt = '$email_alt', phone1 = '$phone1', phone2 = '$phone2', fax = '$fax', address_line1 = '$address_line1', address_line2 = '$address_line2', address_town = '$address_town', address_postcode = '$address_postcode', address_country = '$address_country', lang = '$lang', timezone = '$timezone', bank_name='$bank_name', sort_code='$sort_code', account_number='$account_number', bic='$bic', iban='$iban', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		
 		$result = mysql_query($q, $this->_db->connection);
@@ -467,6 +492,21 @@ class ContactsModel extends Model {
 	
 	function setContactAccessDetails($id, $username, $password) {
 		global $session;
+		// check for calendar
+		$calendar = $this->_db->checkCalendar($id);
+		if($calendar) { // update display name
+			$q = "SELECT uid FROM oc_users WHERE couid='$id'";
+			$result = mysql_query($q, $this->_db->connection);
+			$calendar_userid = mysql_result($result,0);
+
+			$q = "UPDATE oc_clndr_calendars set userid = '$username' WHERE userid='$calendar_userid'";
+			$result = mysql_query($q, $this->_db->connection);
+			
+			$q = "UPDATE oc_users set uid = '$username' WHERE couid='$id'";
+			$result = mysql_query($q, $this->_db->connection);
+		}
+		
+		
 		$now = gmdate("Y-m-d H:i:s");
 		
 		$pwd = md5($password);
@@ -592,6 +632,14 @@ class ContactsModel extends Model {
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_fetch_assoc($result);
 		$user = $row["lastname"] . ' ' . $row["firstname"];
+		return $user;
+	}
+	
+	function getUserFullnameShortFirstname($id){
+		$q = "SELECT id, firstname, lastname FROM ".CO_TBL_USERS." where id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_assoc($result);
+		$user = $row["lastname"] . ' ' . substr($row["firstname"], 0, 1) . '.';
 		return $user;
 	}
 	
@@ -1275,18 +1323,25 @@ class ContactsModel extends Model {
 		$result = mysql_query($q, $this->_db->connection);
 		
 		// check if a calendar exists for this user
-		$q = "SELECT * FROM oc_users WHERE couid='$id'";
-		$result = mysql_query($q, $this->_db->connection);
-
-		if(mysql_num_rows($result) > 0) {
+		//$q = "SELECT * FROM oc_users WHERE couid='$id'";
+		//$result = mysql_query($q, $this->_db->connection);
+		$calendar = $this->_db->checkCalendar($id);
+		if($calendar) {
+			// reactivate
 			$q = "SELECT * FROM co_users WHERE id='$id'";
 			$result = mysql_query($q, $this->_db->connection);
 			while($row = mysql_fetch_array($result)) {
 				$username = $row['username'];
-				$password = $row['password'];
 				$name = $row['lastname'] . ' ' . $row['firstname'];
 				$uri = strtolower($row['firstname'].$row['lastname']);
 			}
+			// get calid
+			$q = "SELECT id FROM oc_clndr_calendars WHERE userid = '$username'";
+			$result = mysql_query($q, $this->_db->connection);
+			$calid = mysql_result($result,0);
+			// share calendar
+			$q = "INSERT INTO oc_share SET share_type='1', share_with='coUsers', uid_owner='$username', item_type='calendar', item_source='$calid', item_target='$name', permissions='1'";
+			$result = mysql_query($q, $this->_db->connection);
 		} else {
 			$q = "SELECT * FROM co_users WHERE id='$id'";
 			$result = mysql_query($q, $this->_db->connection);
@@ -1306,14 +1361,14 @@ class ContactsModel extends Model {
 			$result = mysql_query($q, $this->_db->connection);
 			
 			// create calendar
-			$q = "INSERT INTO oc_clndr_calendars SET userid='$username', displayname='$name', uri='$uri', active='1', calendarcolor='#ff0000', components='VEVENT,VTODO,VJOURNAL'";
+			$q = "INSERT INTO oc_clndr_calendars SET userid='$username', displayname='$name', uri='$uri', active='1', calendarcolor='#E1F0AF', components='VEVENT,VTODO,VJOURNAL'";
 			$result = mysql_query($q, $this->_db->connection);
 			$calid = mysql_insert_id();
 			
 			// share calendar
-			$q = "INSERT INTO oc_share SET share_type='1', share_with='coUsers', uid_owner='$username', item_type='calendar', item_source='$calid', item_target='$name', permissions='31'";
+			$q = "INSERT INTO oc_share SET share_type='1', share_with='coUsers', uid_owner='$username', item_type='calendar', item_source='$calid', item_target='$name', permissions='1'";
 			$result = mysql_query($q, $this->_db->connection);
-		}
+		} 
 
 	}
 
@@ -1322,6 +1377,16 @@ class ContactsModel extends Model {
 		// update userfield
 		$q = "UPDATE co_users SET calendar='0' WHERE id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
+		
+		$q = "SELECT * FROM co_users WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+			while($row = mysql_fetch_array($result)) {
+				$username = $row['username'];
+			}
+			
+		$q = "DELETE FROM oc_share WHERE uid_owner='$username'";
+		$result = mysql_query($q, $this->_db->connection);
+		
 		// remove davcal user
 		// remove calendar
 		// remove calendar objects

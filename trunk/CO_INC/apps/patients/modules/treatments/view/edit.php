@@ -146,7 +146,8 @@
 			<table border="0" cellpadding="0" cellspacing="0" class="table-content addTaskTable">
                 <tr>
                     <td class="tcell-left text11">
-                    <span class="<?php if($treatment->canedit) { ?>content-nav newItem<?php } ?>"><span><?php echo $lang["PATIENT_TREATMENT_GOALS"];?></span></span>
+                    <!--<span class="<?php if($treatment->canedit) { ?>content-nav newItem<?php } ?>"><span><?php echo $lang["PATIENT_TREATMENT_GOALS"];?></span></span>-->
+                    <span><span><?php echo $lang["PATIENT_TREATMENT_GOALS"];?></span></span>
                     </td>
                     <td class="tcell-right">&nbsp;</td>
     </tr>

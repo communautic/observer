@@ -6,8 +6,10 @@ switch($field) {
 		$hideTab3 = 1;
 	break;
 	case "patientsmanagement":
-		$hideTab2 = 1;
-		$hideTab3 = 1;
+		if($title == 'therapist') {
+			$hideTab2 = 1;
+			$hideTab3 = 1;
+		}
 	break;
 }
 if (preg_match("/postitto/i", $field)) {

@@ -4,7 +4,7 @@
 <div class="radius-helper">
 <?php include(CO_INC . "/view/logo.php"); ?>
 	<div id="bin1-outer">
-    <h3 class="module-bg-active"><?php echo $lang["BIN_FOLDER"];?></h3>
+    <h3 class="module-bg-active"><?php echo $lang["GLOBAL_FOLDERS"];?></h3>
     <div id="bin1" class="module-bg-active">
     	<div class="module-inner west-ui-content">
         <div class="scrolling-content">

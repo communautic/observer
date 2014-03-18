@@ -690,20 +690,21 @@ function getContactSend($id) {
 		  }
 	}
 
-
 	function getGlobalSearch($term) {
 		$search = $this->model->getGlobalSearch($term);
 		return $search;
 	}
 	
 	function setCalendar($id) {
+		global $lang;
 		$this->model->setCalendar($id);
-		return "1";
+		return $lang['CONTACTS_CALENDAR_ACTIVE'];
 	}
 	
 	function removeCalendar($id) {
+		global $lang;
 		$this->model->removeCalendar($id);
-		return "0";
+		return $lang['CONTACTS_CALENDAR_DEACTIVE'];
 	}
 
 }

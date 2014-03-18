@@ -4,7 +4,7 @@
 <div class="radius-helper"><img src="<?php echo CO_FILES;?>/img/border-radius-fix-bl.png" width="8" height="8" class="border-radius-fix-bl" alt=""/><img src="<?php echo CO_FILES;?>/img/border-radius-fix-br.png" width="8" height="8" class="border-radius-fix-br" alt=""/>
 <?php include(CO_INC . "/view/logo.php"); ?>
 	<div id="patients1-outer" class="firstLevelOuter">
-    <h3 class="module-bg-active"><?php echo $lang["PATIENT_FOLDER"];?></h3>
+    <h3 class="module-bg-active"><?php echo $lang["GLOBAL_FOLDERS"];?></h3>
     <div id="patients1" class="gradient module-bg-active">
 		<div class="module-actions"><div class="sort-outer"><span class="sort" rel="1"></span></div></div>
         <div class="module-inner west-ui-content">

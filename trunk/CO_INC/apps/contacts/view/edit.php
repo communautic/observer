@@ -222,14 +222,29 @@ foreach($contact->applications as $key => $val) { ?>
     <div id="ContactCalendar" style="display: none;">
 		<table border="0" cellpadding="0" cellspacing="0" class="table-content">
             <tr>
-              <td class="tcell-left text11"><span class="<?php if($contact->access_status == 0) { ?>content-nav showDialog<?php } ?>" id="calendarlink" request="getCalendarDialog" field="hasCalendar" append="0" sql="<?php echo($contact->calendar);?>"><span>Kalender</span></span></td>
-              <td class="tcell-right"><div id="hasCalendar" class="itemlist-field"><?php echo($contact->calendar);?></div></td>
+              <td class="tcell-left text11"><span class="<?php if($contact->access_status == 0) { ?>content-nav showDialog<?php } ?>" id="calendarLink" request="getCalendarDialog" field="hasCalendar" append="0" sql="<?php echo($contact->calendar);?>"><span>Kalender</span></span></td>
+              <td class="tcell-right"><div id="hasCalendar" class="itemlist-field"><?php echo($contact->calendar_status);?></div></td>
             </tr>
         </table>
-        Kalenderfarbe<br />
-        caldav URLS:<br />
-        Eigener: https://dev.sync.companyobserver.com/remote.php/caldav/calendars/grandolf/gunharthrandolf<br />
-        Shared: https://dev.sync.companyobserver.com/remote.php/caldav/calendars/grandolf/klauskneter_shared_by_klauskneter<br />
+        <div class="content-spacer"></div>
+        <table border="0" cellpadding="0" cellspacing="0" class="table-content">
+            <tr>
+              <td class="tcell-left text11"><span><span>Anleitungen</span></span></td>
+              <td class="tcell-right">noch ausarbeiten!!!!</td>
+            </tr>
+        </table>
+        <table border="0" cellpadding="0" cellspacing="0" class="table-content">
+            <tr>
+              <td class="tcell-left text11"><span><span>iOS</span></span></td>
+              <td class="tcell-right">https://dev.sync.companyobserver.com/remote.php/caldav/calendars/grandolf/gunharthrandolf</td>
+            </tr>
+        </table>
+        <table border="0" cellpadding="0" cellspacing="0" class="table-content">
+            <tr>
+              <td class="tcell-left text11"><span><span>Shared</span></span></td>
+              <td class="tcell-right">https://dev.sync.companyobserver.com/remote.php/caldav/calendars/grandolf/klauskneter_shared_by_klauskneter</td>
+            </tr>
+        </table>
     </div>
     
     

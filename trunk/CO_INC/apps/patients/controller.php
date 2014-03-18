@@ -701,6 +701,17 @@ class Patients extends Controller {
 		  }
 	}
 	
+	function getTreatmentsDialog($field,$append) {
+		global $lang;
+		$treatments = $this->model->getLast10CalTreatments();
+		include_once dirname(__FILE__).'/view/dialog_treatments.php';
+	}
+	
+	function getCalendarTreatmentsSearch($term) {
+		$search = $this->model->getCalendarTreatmentsSearch($term);
+		return $search;
+	}
+	
 
 	function getAccessDialog() {
 		global $lang;

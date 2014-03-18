@@ -7,7 +7,7 @@ $lang["patients_name"] = 'Patients';
 $lang["PATIENT_FOLDER"] = 'Folder';
 $lang["PATIENT_FOLDER_NEW"] = 'New Folder';
 $lang["PATIENT_FOLDER_ACTION_NEW"] = 'create new folder';
-$lang["PATIENT_PATIENTS"] = 'Patient';
+$lang["PATIENT_PATIENTS"] = 'Patients';
 $lang["PATIENT_NEW"] = 'New patient';
 $lang["PATIENT_ACTION_NEW"] = 'create new patient';
 
