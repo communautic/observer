@@ -5,6 +5,7 @@ switch(CO_PRODUCT_VARIANT) {
 		$lang["APPLICATION_NAME_ALT"] = "company.observer";
 		$lang["APPLICATION_LOGO"] = "company_observer.png";
 		$lang["APPLICATION_LOGO_LOGIN"] = "company_observer_login.png";
+		$lang["APPLICATION_WEBSITE"] = "http://companyobserver.com";
 		$GLOBALS["APPLICATION_LOGO_PRINT"] = "poweredby_company_observer.png";
 	break;
 	case 1:
@@ -12,6 +13,7 @@ switch(CO_PRODUCT_VARIANT) {
 		$lang["APPLICATION_NAME_ALT"] = "physio.observer";
 		$lang["APPLICATION_LOGO"] = "physio_observer.png";
 		$lang["APPLICATION_LOGO_LOGIN"] = "physio_observer_login.png";
+		$lang["APPLICATION_WEBSITE"] = "http://physioobserver.com";
 		$GLOBALS["APPLICATION_LOGO_PRINT"] = "poweredby_physio_observer.png";
 	break;
 }
@@ -58,13 +60,14 @@ $lang["SENDFROM_BY_ON"] 	= 	'forwarded by:';
 $lang["DELETED_BY_ON"] 		= 	'deleted';
 $lang["INTERNAL_CHANGED"] 	= 	'released:';
 
+$lang["GLOBAL_FOLDERS"] = 'Folders';
 $lang["GLOBAL_USER"] = 'User:';
 $lang["GLOBAL_ADMIN"] = 'Administrator';
 $lang["GLOBAL_ADMIN_SHORT"] = 'Admin';
 $lang["GLOBAL_ADMINS"] = 'Administrators';
 $lang["GLOBAL_GUEST"] = 'Guest';
 $lang["GLOBAL_GUEST_SHORT"] = 'Guest';
-$lang["GLOBAL_GUESTS"] = 'Guests';
+$lang["GLOBAL_GUESTS"] = 'Observers';
 $lang["GLOBAL_OWNER"] = 'Owner';
 
 $lang["GLOBAL_SAVE"] = 'Save';
@@ -143,12 +146,12 @@ $lang["GLOBAL_STATUS_FINISHED2"] = 'abgehalten';
 $lang["GLOBAL_STATUS_FINISHED2_TIME"] = 'seit';
 
 $lang["GLOBAL_DURATION"] 	= 	'Timeline';
-$lang["GLOBAL_EMAILED_TO"] 	= 	'Send';
+$lang["GLOBAL_EMAILED_TO"] 	= 	'Sent';
 $lang["GLOBAL_DUPLICAT"] 	= 	'Duplicate';
 
-$lang["GLOBAL_ACCESS"] = 'Access';
-$lang["GLOBAL_ACCESS_INTERNAL"] = 'internal';
-$lang["GLOBAL_ACCESS_PUBLIC"] = 'external';
+$lang["GLOBAL_ACCESS"] = 'Observer';
+$lang["GLOBAL_ACCESS_INTERNAL"] = 'not authorised';
+$lang["GLOBAL_ACCESS_PUBLIC"] = 'authorised';
 $lang["GLOBAL_ACCESS_FOOTER"] = 'access:';
 $lang["GLOBAL_FOOTER_STATUS"] = 'Status';
 

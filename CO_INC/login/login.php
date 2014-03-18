@@ -65,7 +65,7 @@ $(document).ready(function() {
 <div id="header-logos"><table width="941" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr>
     <td width="782" valign="top"><a href="http://www.communautic.com" target="_blank"><img src="<?php echo CO_FILES;?>/img/login/cn_logo.gif" alt="communautic" width="221" height="39" border="0" /></a></td>
-    <td valign="top"><a href="http://www.communautic.com" target="_blank"><img src="<?php echo CO_FILES;?>/img/login/<?php echo $lang["APPLICATION_LOGO_LOGIN"];?>" alt="<?php echo $lang["APPLICATION_NAME_ALT"];?>" width="206" height="22" border="0" style="margin-top: 22px" /></a></td>
+    <td valign="top"><a href="<?php echo $lang["APPLICATION_WEBSITE"];?>" target="_blank"><img src="<?php echo CO_FILES;?>/img/login/<?php echo $lang["APPLICATION_LOGO_LOGIN"];?>" alt="<?php echo $lang["APPLICATION_NAME_ALT"];?>" width="206" height="22" border="0" style="margin-top: 22px" /></a></td>
   </tr>
 </table></div>
 <div id="top-green-bar" class="opac">&nbsp;</div>

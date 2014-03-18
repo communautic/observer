@@ -45,24 +45,44 @@ class MySQLDB
       }
 
       /* Verify that user is in database */
-      $q = "SELECT password FROM ".CO_TBL_USERS." WHERE username = '$username' and password = '$password'";
+      //$q = "SELECT password FROM ".CO_TBL_USERS." WHERE username = '$username' and password = '$password'";
+	  $q = "SELECT password FROM ".CO_TBL_USERS." WHERE username = '$username'";
       $result = mysql_query($q, $this->connection);
       if(!$result || (mysql_numrows($result) < 1)){
          return 1; //Indicates username failure
       }
-
       /* Retrieve password from result, strip slashes */
       $dbarray = mysql_fetch_array($result);
       $dbarray['password'] = stripslashes($dbarray['password']);
       $password = stripslashes($password);
-
+	  
+	  // first try new password hashing
+	  $hasher = new PasswordHash(8, 0);
+	  if ($hasher->CheckPassword($password.PASSWORDSALT, $dbarray['password'])) {
+		 return 0; //Success! Username and password confirmed
+	  } else {
+		 // check if md5 works
+		 if($dbarray['password'] == md5($password)) {
+		 	
+			$hasher = new PasswordHash(8, 0);
+			$hash = $hasher->HashPassword($password.PASSWORDSALT);
+			$this->updateUserField($username, 'password', $hash);
+			return 0;
+		 
+		 // now update to new pwd hash
+		 } else {
+		 	return 2; //Indicates password failure
+		 }
+	  }
+	  
+	  
       /* Validate that password is correct */
-      if($password == $dbarray['password']){
+      /*if($password == $dbarray['password']){
          return 0; //Success! Username and password confirmed
       }
       else{
          return 2; //Indicates password failure
-      }
+      }*/
    }
    
    /**
@@ -290,6 +310,35 @@ class MySQLDB
     */
    function query($query){
       return mysql_query($query, $this->connection);
+   }
+   
+   function checkCalendar($id) {
+	   $q = "SELECT * FROM oc_users WHERE couid = '$id'";
+		$result = mysql_query($q, $this->connection);
+		if(mysql_num_rows($result) > 0) {
+			return true;
+		} else {
+			return false;
+		}
+   }
+   
+   function updateUserCalendar($id,$username,$password) {
+	    $q = "SELECT uid FROM oc_users WHERE couid='$id'";
+		$result = mysql_query($q, $this->connection);
+		$calendar_userid = mysql_result($result,0);
+
+		$q = "UPDATE oc_clndr_calendars set userid = '$username' WHERE userid='$calendar_userid'";
+		$result = mysql_query($q, $this->connection);
+		
+		$q = "SELECT * FROM oc_share WHERE uid_owner='$calendar_userid'";
+		$result = mysql_query($q, $this->connection);
+		if(mysql_num_rows($result) > 0) {
+			$q = "UPDATE oc_share set uid_owner = '$username' WHERE uid_owner='$calendar_userid'";
+			$result = mysql_query($q, $this->connection);
+		}
+			
+		$q = "UPDATE oc_users set uid = '$username' WHERE couid='$id'";
+		$result = mysql_query($q, $this->connection);
    }
    
    
