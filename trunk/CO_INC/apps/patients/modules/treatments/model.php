@@ -683,8 +683,8 @@ function getTreatmentTypeMin($string){
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
 		// tasks
-		$qt = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " (mid,type,team,team_ct,place,place_ct,item_date,text,sort) SELECT $id_new,type,team,team_ct,place,place_ct,'$now',text,sort FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where mid='$id' and bin='0'";
-		$resultt = mysql_query($qt, $this->_db->connection);
+		//$qt = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " (mid,type,team,team_ct,place,place_ct,item_date,text,sort) SELECT $id_new,type,team,team_ct,place,place_ct,'$now',text,sort FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where mid='$id' and bin='0'";
+		//$resultt = mysql_query($qt, $this->_db->connection);
 		// diagnose
 		$qd = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS_DIAGNOSES . " (mid,text,canvas,xy,sort) SELECT $id_new,text,canvas,xy,sort FROM " . CO_TBL_PATIENTS_TREATMENTS_DIAGNOSES . " where mid='$id' and bin='0'";
 		$resultd = mysql_query($qd, $this->_db->connection);
@@ -698,6 +698,14 @@ function getTreatmentTypeMin($string){
 		global $session;
 		$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS . " set bin = '1', bintime = NOW(), binuser= '$session->uid' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
+		
+		$q = "SELECT id FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " WHERE mid='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+			$tid = $row['id'];
+			$this->deleteTask($tid);
+		}
+		
 		if ($result) {
 		  	return true;
 		}
@@ -706,6 +714,14 @@ function getTreatmentTypeMin($string){
    function restoreTreatment($id) {
 		$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS . " set bin = '0' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
+		
+		$q = "SELECT id FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " WHERE mid='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+			$tid = $row['id'];
+			$this->restoreTreatmentTask($tid);
+		}
+		
 		if ($result) {
 		  	return true;
 		}
@@ -871,6 +887,8 @@ function getTreatmentTypeMin($string){
 		global $session;
 		// delete cal item
 		$q = "DELETE FROM oc_clndr_objects WHERE eventid='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$q = "DELETE FROM oc_clndr_objects_bin WHERE eventid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		$q = "DELETE FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " WHERE id='$id'";
