@@ -1040,6 +1040,19 @@ $(document).ready(function() {
 		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=saveLastUsedPlaces&id="+id});
 	}
 	
+	function logLocationCalendar(field,id,value) {
+		closedialog = 0;
+		var html = '<span class="listmember" uid="' + id + '" field="'+field+'">' + value + '</span>';
+		$("#"+field).html(html);
+		$('#event-location').val(value);
+		$('#treatment-location').val(0);
+		$('#treatment-locationuid').val(id);
+		$("#modalDialog").dialog('close');
+		//var obj = getCurrentModule();
+		//$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+		//$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=saveLastUsedPlaces&id="+id});
+	}
+	
 	// autocomplete contacts search
 	$('.contacts-search').livequery(function() { 
 		$(this).autocomplete({
@@ -1085,6 +1098,25 @@ $(document).ready(function() {
 					text = text.split(",");
 					text = text[1] + ', ' + text[2];
 				logLocation(field, ui.item.id, text);
+			},
+			close: function(event, ui) {
+				$(this).val("");
+			}
+		});
+	});
+	
+	// autocomplete locations search
+	$('.places-search-calendar').livequery(function() { 
+		$(this).autocomplete({
+			appendTo: '#tabs-1',
+			source: "?path=apps/contacts&request=getPlacesSearch",
+			//minLength: 2,
+			select: function(event, ui) {
+				var field = $(this).attr("field");
+				var text = ui.item.value;
+					text = text.split(",");
+					text = text[1] + ', ' + text[2];
+				logLocationCalendar(field, ui.item.id, text);
 			},
 			close: function(event, ui) {
 				$(this).val("");
@@ -1402,6 +1434,17 @@ $(document).ready(function() {
 			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
 		}
 	});
+	
+	$(document).on('click', '.calendar-custom-location', function(e) {
+		e.preventDefault();
+		var field = $(this).attr("field");
+		var html = $("#custom-text").val();
+		$("#"+field).html(html);
+		$('#event-location').val(html);
+		$('#treatment-location').val(0);
+		$('#treatment-locationuid').val(0);
+		$('#modalDialog').dialog("close");
+	});
 
 	$(document).on('click', 'a.delete-listmember', function(e) {
 		e.preventDefault();
@@ -1526,6 +1569,41 @@ $(document).ready(function() {
 			$('#sysadminlink').attr('sql','1');
 			$("#modalDialog").dialog('close');
 			contactsInnerLayout.initContent('center');
+			}
+		});
+	});
+	
+	$(document).on('click', '#actionCalendar', function(e) {
+		e.preventDefault();
+		var id = $("#contacts").data("first");
+		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=setCalendar&id=" + id, cache: false, success: function(data){	
+			$('#hasCalendar').html(data);
+			$('#calendarLink').attr('sql','1');
+			$("#modalDialog").dialog('close');
+			contactsInnerLayout.initContent('center');
+			}																																			
+		});
+	});
+	
+	$(document).on('click', '#actionCalendarRemove', function(e) {
+		e.preventDefault();
+		var id = $("#contacts").data("first");
+		var txt = ALERT_DELETE_REALLY;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			submit: function(e,v,m,f){		
+				if(v){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=removeCalendar&id=" + id, cache: false, success: function(data){
+					$('#hasCalendar').html(data);
+					$('#calendarLink').attr('sql','0');
+					$("#modalDialog").dialog('close');
+					contactsInnerLayout.initContent('center');
+			}
+		});
+				} 
 			}
 		});
 	});

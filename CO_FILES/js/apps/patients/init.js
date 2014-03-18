@@ -139,6 +139,22 @@ function patientsApplication(name) {
 			}
 		});
 	}
+	
+	// autocomplete contacts search
+	$('.calendartreatments-search').livequery(function() { 
+		$(this).autocomplete({
+			appendTo: '#tabs-cal',
+			source: "?path=apps/patients&request=getCalendarTreatmentsSearch",
+			//minLength: 2,
+			select: function(event, ui) {
+				var field = $(this).attr("field");
+				calendartreatmentsSelect(field, ui.item.id, ui.item.value);
+			},
+			close: function(event, ui) {
+				$(this).val("");
+			}
+		});
+	});
 
 
 
@@ -889,6 +905,17 @@ function patientsActions(status) {
 var patientsLayout, patientsInnerLayout;
 
 
+function calendartreatmentsSelect(field,str,value) {
+		closedialog = 0;
+		var html = '<span class="listmember" uid="' + str + '">' + value + '</span>';
+		$('#event-treatment').val(str);
+		$('#event-title').val(value);
+		$("#"+field).html(html);
+		$("#modalDialog").dialog('close');
+		$.ajax({ type: "GET", url: "/", data: "path=apps/calendar/&request=saveLastUsedTreatments&id="+str}); 
+	}
+
+
 $(document).ready(function() {
 	
 	patients.init();
@@ -975,6 +1002,20 @@ $(document).ready(function() {
 		var title = $(this).attr("title");
 		var obj = getCurrentModule();
 		obj.insertFolderFromDialog(field,gid,title);
+	});
+	
+	$(document).on('click', 'a.insertCalendarTreatmentfromDialog', function(e) {
+		e.preventDefault();
+		var field = $(this).attr("field");
+		var cid = $(this).attr("cid");
+		var title = $(this).html();
+
+		var html = '<span class="listmember" uid="' + cid + '">' + title + '</span>';
+		$('#event-treatment').val(cid);
+		$('#event-title').val(title);
+		$("#"+field).html(html);
+		$("#modalDialog").dialog('close');
+		$.ajax({ type: "GET", url: "/", data: "path=apps/calendar/&request=saveLastUsedTreatments&id="+cid}); 
 	});
 	
 	

@@ -436,6 +436,7 @@ $(document).keydown(function(e) {
 // Apps zindex settings
 var z = num_apps; //for setting the initial z-index's
 var inAnimation = false; //flag for testing if we are in a animation
+var appTab = false; // hack to load treatmentlist for patients
 
 
 $(document).ready(function() {
@@ -511,7 +512,7 @@ $(document).ready(function() {
 				var vdoct = $('#'+app+' div.mceExternalToolbar');
 				if($('#'+app).data("current") == 'vdocs') {
 					vdoct.fadeIn('slow').css('cssText', 'top: 130px !important');
-				}					   
+				}
 			})
 			var appobject = window[app];
 		}
@@ -968,6 +969,12 @@ $(document).ready(function() {
 			if(clicked.is('#modalDialogTime') || clicked.parents().is('#modalDialogTime')) { 
 			} else {
 				$('#modalDialogTime').dialog("close");
+			}
+		}
+		if($('#modalDialogTimeCalendar').dialog("isOpen")) {
+			if(clicked.is('#modalDialogTimeCalendar') || clicked.parents().is('#modalDialogTimeCalendar')) { 
+			} else {
+				$('#modalDialogTimeCalendar').dialog("close");
 			}
 		}
 	});
@@ -2756,5 +2763,6 @@ function externalLoadThreeLevels(objectname,f,p,ph,app) { // from Desktop
 			}
 		});
 	}
+	
 
 }
