@@ -5,6 +5,7 @@ switch(CO_PRODUCT_VARIANT) {
 		$lang["APPLICATION_NAME_ALT"] = "company.observer";
 		$lang["APPLICATION_LOGO"] = "company_observer.png";
 		$lang["APPLICATION_LOGO_LOGIN"] = "company_observer_login.png";
+		$lang["APPLICATION_WEBSITE"] = "http://companyobserver.at";
 		$GLOBALS["APPLICATION_LOGO_PRINT"] = "poweredby_company_observer.png";
 	break;
 	case 1:
@@ -12,6 +13,7 @@ switch(CO_PRODUCT_VARIANT) {
 		$lang["APPLICATION_NAME_ALT"] = "physio.observer";
 		$lang["APPLICATION_LOGO"] = "physio_observer.png";
 		$lang["APPLICATION_LOGO_LOGIN"] = "physio_observer_login.png";
+		$lang["APPLICATION_WEBSITE"] = "http://physioobserver.at";
 		$GLOBALS["APPLICATION_LOGO_PRINT"] = "poweredby_physio_observer.png";
 	break;
 }
@@ -58,6 +60,7 @@ $lang["SENDFROM_BY_ON"] 	= 	'erhalten von:';
 $lang["DELETED_BY_ON"] 		= 	'gelöscht';
 $lang["INTERNAL_CHANGED"] 	= 	'freigegeben:';
 
+$lang["GLOBAL_FOLDERS"] = 'Ordner';
 $lang["GLOBAL_USER"] = 'Benutzer:';
 $lang["GLOBAL_ADMIN"] = 'Administrator';
 $lang["GLOBAL_ADMIN_SHORT"] = 'Admin';

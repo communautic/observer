@@ -5,6 +5,7 @@ include("system.php");
 include("form.php");
 include("date.php");
 include("class.phpmailer-lite.php");
+include("PasswordHash.php");
 
 class Session
 {
@@ -22,6 +23,7 @@ class Session
    var $url;          //The page url current being viewed
    var $referrer;     //Last recorded site page viewed
     var $pwd_pick;     //Last recorded site page viewed
+	var $calendar;
    //var $canView = array();
    //var $canEdit = array();
    //var $canAccess = array();
@@ -123,6 +125,7 @@ class Session
 		 $this->useroffset = $this->userinfo['offset'];
 		 $this->timezone = $this->userinfo['timezone'];
 		 $this->pwd_pick = $this->userinfo['pwd_pick'];
+		 $this->calendar = $this->userinfo['calendar'];
 		 //$this->canView = "";
 		 /*if (!$this->isSysadmin()) {
 			 $this->canView = $database->getViewPerms($this->uid);
@@ -172,7 +175,8 @@ class Session
 
       /* Checks that username is in database and password is correct */
       $subuser = stripslashes($subuser);
-      $result = $database->confirmUserPass($subuser, md5($subpass));
+      //$result = $database->confirmUserPass($subuser, md5($subpass));
+	  $result = $database->confirmUserPass($subuser, $subpass);
 
       /* Check error codes */
       if($result == 1){
@@ -221,8 +225,17 @@ class Session
 	function changeLogin($username, $password){
 		global $database;  //The database and form object 
 		$database->updateUser($this->uid, "username", $username);
-		$database->updateUser($this->uid, "password", md5($password));
+		//$database->updateUser($this->uid, "password", md5($password));
+		$hasher = new PasswordHash(8, 0);
+		$hash = $hasher->HashPassword($password.PASSWORDSALT);
+		$database->updateUser($this->uid, "password", $hash);
 		$database->updateUser($this->uid, "pwd_pick", '1');
+		
+		//check for calendar
+		if($database->checkCalendar($this->uid)) {
+			$database->updateUserCalendar($this->uid,$username,$hash);
+		}
+		
 		return true;
 	}
 

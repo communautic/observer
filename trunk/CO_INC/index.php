@@ -33,6 +33,9 @@ if($session->isSysadmin()) {
 		if($app == "contacts") {
 			$userapps[] = $app;	
 		}
+		if($app == "calendar") {
+			$userapps[] = $app;	
+		}
 		foreach(${$app}->modules as $module => $value) {
 			if($module == 'access') {
 				if(${$app}->isAdmin()) {
@@ -48,6 +51,7 @@ if($session->isSysadmin()) {
 		$num_apps++;
 	}
 	if($adminstatus == 0) {
+		$userapps = array_values(array_diff($userapps,array('calendar')));
 		$userapps = array_values(array_diff($userapps,array('contacts')));
 		$userapps = array_values(array_diff($userapps,array('desktop')));
 	}
@@ -173,6 +177,7 @@ include(CO_INC . "/view/footer.php");
 </div>
 <div id="modalDialog"></div>
 <div id="modalDialogTime"></div>
+<div id="modalDialogTimeCalendar"></div>
 <div id="modalDialogForward" title="<?php echo $lang["GLOBAL_FORWARD"];?>"></div>
 <div id="co-popup" class="switch-left"></div>
 <div id="co-splitActions" class="switch-left"></div>
