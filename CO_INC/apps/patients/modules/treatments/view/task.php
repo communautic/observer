@@ -18,24 +18,29 @@
       <td class="tcell-right"><div id="task_treatmenttype_<?php echo $value->id;?>" class="itemlist-field task_treatmenttype"><?php echo($value->type);?></div></td>
     </tr>
     <tr>
-      <td>&nbsp;</td>
-      <td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="treatments_task_team_<?php echo $value->id;?>" append="0"><span><?php echo $lang["PATIENT_TREATMENT_TASKS_THERAPIST"];?></span></span></td>
-      <td class="tcell-right"><div id="treatments_task_team_<?php echo $value->id;?>" class="itemlist-field treatments_task_team_list"><?php echo($value->team);?></div><div id="treatments_task_team_<?php echo $value->id;?>_ct" class="itemlist-field treatments_task_team_list_ct"><a field="treatments_task_team_<?php echo $value->id;?>_ct" class="ct-content"><?php echo($value->team_ct);?></a></div></td>
+         <td width="12"></td>
+		<td class="tcell-left-inactive text11"><span><span><?php echo $lang["PATIENT_TREATMENT_TASKS_THERAPIST"];?></span></span></td>
+		<td class="tcell-right-inactive"><?php echo $value->displayname;?></td>
     </tr>
     <tr>
-      <td>&nbsp;</td>
-      <td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialogPlace" field="task_place_<?php echo $value->id;?>" append="0"><span><?php echo $lang["PATIENT_TREATMENT_TASKS_PLACE"];?></span></span></td>
-      <td class="tcell-right"><div id="task_place_<?php echo $value->id;?>" class="itemlist-field task_place_list"><?php echo($value->place);?></div><div id="task_place_<?php echo $value->id;?>_ct" class="itemlist-field task_place_list_ct"><a field="task_place_<?php echo $value->id;?>_ct" class="ct-content"><?php echo($value->place_ct);?></a></div></td>
-    </tr>
-        <tr>
-      <td width="12"></td>
-      <td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["PATIENT_TREATMENT_TASKS_DATE"];?></span></span></td>
-      <td class="tcell-right"><?php if($treatment->canedit) { ?><input name="task_date[<?php echo $value->id;?>]" type="text" class="input-date datepicker task_date" value="<?php echo $value->item_date;?>" readonly="readonly" /><?php } else { ?><?php echo $value->item_date;?><?php } ?></td>
-    </tr>
-    	<tr>
          <td width="12"></td>
-		<td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav showDialogTime<?php } ?>" rel="task_time_<?php echo $value->id;?>"><span><?php echo $lang["PATIENT_TREATMENT_TASKS_TIME"];?></span></span></td>
-		<td class="tcell-right"><div id="task_time_<?php echo $value->id;?>" class="itemlist-field task_time_list"><?php echo $value->time;?></div></td>
+		<td class="tcell-left-inactive text11"><span><span><?php echo $lang["PATIENT_TREATMENT_TASKS_PLACE"];?></span></span></td>
+		<td class="tcell-right-inactive"><?php echo $value->location;?></td>
+    </tr>
+    <tr>
+         <td width="12"></td>
+		<td class="tcell-left-inactive text11"><span><span><?php echo $lang["PATIENT_TREATMENT_TASKS_DATE_CALENDAR"];?></span></span></td>
+		<td class="tcell-right-inactive"><?php echo $value->startdate;?></td>
+    </tr>
+    <tr>
+         <td width="12"></td>
+		<td class="tcell-left-inactive text11"><span><span><?php echo $lang["PATIENT_TREATMENT_TASKS_TIME"];?></span></span></td>
+		<td class="tcell-right-inactive"><?php echo $value->time;?></td>
+    </tr>
+    <tr>
+      <td width="12"></td>
+      <td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["PATIENT_TREATMENT_TASKS_DATE_INVOICE"];?></span></span></td>
+      <td class="tcell-right"><?php if($treatment->canedit) { ?><input name="task_date[<?php echo $value->id;?>]" type="text" class="input-date datepicker task_date" value="<?php echo $value->item_date;?>" readonly="readonly" /><?php } else { ?><?php echo $value->item_date;?><?php } ?></td>
     </tr>
     <tr>
          <td width="12"></td>

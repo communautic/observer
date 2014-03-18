@@ -243,10 +243,10 @@ class CalendarModel extends Model {
 
 	function newEvent($id,$type,$startdate,$enddate,$repeating,$summary,$data,$uri,$time,$eventtype,$treatmentid,$treatmentlocation,$eventlocationuid) {
 		// `calendarid`,`objecttype`,`startdate`,`enddate`,`repeating`,`summary`,`calendardata`,`uri`,`lastmodified
-		$now = gmdate("Y-m-d H:00");
+		//$now = gmdate("Y-m-d H:00");
 		$tid = 0;
 		if($treatmentid != 0) {
-			$q = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " set mid='$treatmentid', item_date='$now', status = '0'";
+			$q = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " set mid='$treatmentid', item_date='$startdate', status = '0'";
 			$result = mysql_query($q, $this->_db->connection);
 			$tid = mysql_insert_id();
 		}
@@ -260,9 +260,8 @@ class CalendarModel extends Model {
 	}
 	
 	function editEvent($id,$type,$startdate,$enddate,$repeating,$summary,$data,$time,$eventtype,$treatmentid,$oldtreatmentid,$treatmentlocation,$eventlocationuid) {
-		$now = gmdate("Y-m-d H:00");
+		//$now = gmdate("Y-m-d H:00");
 		if($eventtype == 1) { //is treatment
-			
 			if($treatmentid == $oldtreatmentid) {
 				$taskid = $this->getTreatmentTaskEvent($id);
 				$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " SET item_date='$startdate' WHERE id='$taskid'";
@@ -278,7 +277,7 @@ class CalendarModel extends Model {
 				$result = mysql_query($q, $this->_db->connection);
 				} else {
 					$now = gmdate("Y-m-d H:00");
-					$q = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " set mid='$treatmentid', item_date='$now', status = '0'";
+					$q = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " set mid='$treatmentid', item_date='$startdate', status = '0'";
 					$result = mysql_query($q, $this->_db->connection);
 					$taskid = mysql_insert_id();
 				}

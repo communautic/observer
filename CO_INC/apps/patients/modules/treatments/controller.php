@@ -141,8 +141,8 @@ class PatientsTreatments extends Patients {
 	}
 	
 
-	function setDetails($pid,$id,$title,$treatmentdate,$protocol,$protocol2,$protocol3,$discount,$vat,$doctor,$doctor_ct,$task_id,$task_date,$task_time,$task_text,$task,$treatments_task_team,$treatments_task_team_ct,$task_treatmenttype,$task_place,$canvasList_id,$canvasList_text,$treatment_access,$treatment_access_orig) {
-		if($arr = $this->model->setDetails($pid,$id,$title,$treatmentdate,$protocol,$protocol2,$protocol3,$discount,$vat,$doctor,$doctor_ct,$task_id,$task_date,$task_time,$task_text,$task,$treatments_task_team,$treatments_task_team_ct,$task_treatmenttype,$task_place,$canvasList_id,$canvasList_text,$treatment_access,$treatment_access_orig)){
+	function setDetails($pid,$id,$title,$treatmentdate,$protocol,$protocol2,$protocol3,$discount,$vat,$doctor,$doctor_ct,$task_id,$task_date,$task_text,$task,$task_treatmenttype,$canvasList_id,$canvasList_text,$treatment_access,$treatment_access_orig) {
+		if($arr = $this->model->setDetails($pid,$id,$title,$treatmentdate,$protocol,$protocol2,$protocol3,$discount,$vat,$doctor,$doctor_ct,$task_id,$task_date,$task_text,$task,$task_treatmenttype,$canvasList_id,$canvasList_text,$treatment_access,$treatment_access_orig)){
 			 return '{ "id": "' . $arr["id"] . '", "access": "' . $treatment_access . '", "changeTreatmentStatus": "' . $arr["changeTreatmentStatus"] . '"}';
 		  } else{
 			 return "error";

@@ -38,7 +38,7 @@
     <div id="titleDisplay" class="fieldset2" <?php echo $regularEventDisplay;?>>
 		<label style="width: 79px;"><?php echo $lang["CALENDAR_EVENT_TITLE"];?></label>
 		<div class="dates" style="width: 187px;">
-			<input id="event-title" type="text" size="100" value="<?php echo $summary;?>" maxlength="100" name="title" autofocus="autofocus" />
+			<input id="event-title" type="text" size="100" value="<?php echo htmlspecialchars($summary, ENT_QUOTES);?>" maxlength="100" name="title" autofocus="autofocus" />
 		</div>
 		<div style="clear: both;"></div>
 	</div>

@@ -166,6 +166,7 @@ if (!empty($_POST['request'])) {
 			$task_id = array();
 			//$task_title = array();
 			$task_text = array();
+			$task_date = array();
 			$task_treatmenttype = array();
 			
 			$task = array();
@@ -186,11 +187,11 @@ if (!empty($_POST['request'])) {
 					$task_text[$key] = $text_new;
 				}
 				$task_date = $_POST['task_date'];
-				$treatments_task_team = $_POST['treatments_task_team'];
-				$treatments_task_team_ct = '';
+				//$treatments_task_team = $_POST['treatments_task_team'];
+				//$treatments_task_team_ct = '';
 				$task_treatmenttype = $_POST['task_treatmenttype'];
-				$task_place = $_POST['task_place'];
-				$task_time = $_POST['task_time'];
+				//$task_place = $_POST['task_place'];
+				//$task_time = $_POST['task_time'];
 			}
 			if(isset($_POST['task'])) {
 				$task = $_POST['task'];
@@ -198,7 +199,7 @@ if (!empty($_POST['request'])) {
 			if(isset($_POST['task_sort'])) {
 				$task_sort = $_POST['task_sort'];
 			}
-			echo($patientsTreatments->setDetails($_POST['pid'], $_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['item_date'], $system->checkMagicQuotes($_POST['protocol']),$system->checkMagicQuotes($_POST['protocol2']),$system->checkMagicQuotes($_POST['protocol3']), $_POST['discount'], $_POST['vat'], $_POST['doctor'], $system->checkMagicQuotes($_POST['doctor_ct']),$task_id,$task_date,$task_time,$task_text,$task,$treatments_task_team,$treatments_task_team_ct,$task_treatmenttype,$task_place,$canvasList_id,$canvasList_text,$_POST['treatment_access'],$_POST['treatment_access_orig']));
+			echo($patientsTreatments->setDetails($_POST['pid'], $_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['item_date'], $system->checkMagicQuotes($_POST['protocol']),$system->checkMagicQuotes($_POST['protocol2']),$system->checkMagicQuotes($_POST['protocol3']), $_POST['discount'], $_POST['vat'], $_POST['doctor'], $system->checkMagicQuotes($_POST['doctor_ct']),$task_id,$task_date,$task_text,$task,$task_treatmenttype,$canvasList_id,$canvasList_text,$_POST['treatment_access'],$_POST['treatment_access_orig']));
 		break;
 		case 'sendDetails':
 			echo($patientsTreatments->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));

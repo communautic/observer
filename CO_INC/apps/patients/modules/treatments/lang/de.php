@@ -41,7 +41,9 @@ $lang["PATIENT_TREATMENT_TASKS_THERAPIST"] = 'Therapeut';
 $lang["PATIENT_TREATMENT_TASKS_PLACE"] = 'Behandlungsort';
 $lang["PATIENT_TREATMENT_TASKS_PLACE2"] = 'Ort';
 $lang["PATIENT_TREATMENT_TASKS_DATE"] = 'Datum';
+$lang["PATIENT_TREATMENT_TASKS_DATE_CALENDAR"] = 'Kalenderdatum';
 $lang["PATIENT_TREATMENT_TASKS_TIME"] = 'Uhrzeit';
+$lang["PATIENT_TREATMENT_TASKS_DATE_INVOICE"] = 'Verrechnungsdatum';
 $lang["PATIENT_TREATMENT_TASKS_DURATION"] = 'Behandlungsdauer';
 
 $lang["PATIENT_TREATMENT_HELP"] = 'manual_patienten_behandlungen.pdf';

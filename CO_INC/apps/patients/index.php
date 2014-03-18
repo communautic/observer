@@ -216,6 +216,15 @@ if (!empty($_GET['request'])) {
 		case 'getInsuranceContext':
 			echo($patients->getInsuranceContext($_GET['id'],$_GET['field'],$_GET['edit']));
 		break;
+		case 'getTreatmentsDialog':
+			echo($patients->getTreatmentsDialog($_GET['field'],$_GET['append']));
+		break;
+		case 'getTreatmentsLocationsDialog':
+			echo($patients->getTreatmentsLocationsDialog($_GET['field'],$_GET['append']));
+		break;
+		case 'getCalendarTreatmentsSearch':
+			echo($patients->getCalendarTreatmentsSearch($_GET['term']));
+		break;
 	}
 }
 

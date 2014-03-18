@@ -1,9 +1,9 @@
 <?php
 $patients_invoices_name = "Invoices";
 
-$lang["PATIENT_INVOICE_TITLE"] = 'Rechnung';
-$lang["PATIENT_INVOICE_TITLE_STATISTICS"] = 'Gesamtstatistik';
-$lang["PATIENT_INVOICES"] = 'Rechnungen';
+$lang["PATIENT_INVOICE_TITLE"] = 'Invoice';
+$lang["PATIENT_INVOICE_TITLE_STATISTICS"] = 'Totals';
+$lang["PATIENT_INVOICES"] = 'Invoices';
 
 $lang["PATIENT_INVOICE_NEW"] = 'Neue Rechnung';
 $lang["PATIENT_INVOICE_ACTION_NEW"] = 'neue Rechnung anlegen';
@@ -12,7 +12,7 @@ $lang["PATIENT_INVOICE_ACTION_NEW"] = 'neue Rechnung anlegen';
 $lang["PATIENT_INVOICE_DATE"] = 'Invoice date';
 $lang["PATIENT_INVOICE_DATE_SENT"] = 'Invoice sent';
 $lang["PATIENT_INVOICE_NUMBER"] = 'Invoice No.';
-$lang["PATIENT_INVOICE_PAYMENT_REMINDER"] = 'Payment Reminder';
+$lang["PATIENT_INVOICE_PAYMENT_REMINDER"] = 'Payment reminder';
 $lang["PATIENT_INVOICE_SERVICES"] = 'Services';
 $lang["PATIENT_INVOICE_SERVICES_LIST"] = 'Services';
 $lang["PATIENT_INVOICE_SERVICES_FOR"] = 'for';
@@ -34,11 +34,11 @@ $lang["PATIENT_INVOICE_MANAGEMENT"] = 'Protokollführer';
 $lang["PATIENT_INVOICE_DESCRIPTION"] = 'Beschreibung';*/
 
 $lang["PATIENT_INVOICE_STATUS_PLANNED"] = 'created';
-$lang["PATIENT_INVOICE_STATUS_PLANNED_TIME"] = 'on';
+$lang["PATIENT_INVOICE_STATUS_PLANNED_TIME"] = '';
 $lang["PATIENT_INVOICE_STATUS_INPROGRESS"] = 'overdue';
-$lang["PATIENT_INVOICE_STATUS_INPROGRESS_TIME"] = 'since';
+$lang["PATIENT_INVOICE_STATUS_INPROGRESS_TIME"] = '';
 $lang["PATIENT_INVOICE_STATUS_FINISHED"] = 'paid';
-$lang["PATIENT_INVOICE_STATUS_FINISHED_TIME"] = 'on';
+$lang["PATIENT_INVOICE_STATUS_FINISHED_TIME"] = '';
 
 $lang["PATIENT_INVOICE_DURATION"] = 'Duration';
 $lang["PATIENT_INVOICE_LIST"] = 'Services';
@@ -54,7 +54,7 @@ $lang["PATIENT_INVOICE_NOTES"] = 'Notes';
 
 $lang["PATIENT_INVOICE_PRINTOPTION_INVOICE"] = 'Invoice';
 $lang["PATIENT_INVOICE_PRINTOPTION_SERVICES"] = 'Services';
-$lang["PATIENT_INVOICE_PRINTOPTION_PAYMENT_REMINDER"] = 'Payment Reminder';
+$lang["PATIENT_INVOICE_PRINTOPTION_PAYMENT_REMINDER"] = 'Payment reminder';
 $lang["PATIENT_INVOICE_PRINTOPTION_ENVELOPE"] = 'Envelope';
 
 $lang["PATIENT_INVOICE_HELP"] = 'manual_patients_invoices.pdf';

@@ -363,6 +363,7 @@ class Calendar extends Controller {
 		$t_id = $post['treatmentid'];
 		$t_loc = $post['treatmentlocationid'];
 		$t_locuid = $post['treatmentlocationuid'];
+		//$post['description'] = str_replace("\r\n", '\n', $system->checkMagicQuotes($post['description']));
 		
 		// title
 		$title = $post['title'];
@@ -505,7 +506,8 @@ class Calendar extends Controller {
 		$t_id_old = $this->model->getTreatmentEvent($id);
 		$t_loc = $post['treatmentlocationid'];
 		$t_locuid = $post['treatmentlocationuid'];
-		//$post['description'] = preg_replace('/\r\n|\r/', "\n", $post['description']); 
+		//$post['description'] = str_replace("\r\n", '\n', $post['description']);
+		//$post['description'] = str_replace("\n", '\n', $post['description']);
 		
 		// title
 		$title = $post['title'];
@@ -814,6 +816,7 @@ class Calendar extends Controller {
 	 * @return insertid
 	 */
 	function add($id,$data, $eventtype, $eventid='0', $eventlocation='0', $eventlocationuid='0') {
+		global $system;
 		$object = OC_VObject::parse($data);
 		list($type,$startdate,$enddate,$summary,$repeating,$uid) = $this->extractData($object);
 		if(is_null($uid)) {
@@ -821,7 +824,7 @@ class Calendar extends Controller {
 			$data = $object->serialize();
 		}
 		$uri = 'owncloud-'.md5($data.rand().time()).'.ics';
-		$object_id = $this->model->newEvent($id,$type,$startdate,$enddate,$repeating,$summary,$data,$uri,time(),$eventtype,$eventid,$eventlocation, $eventlocationuid);
+		$object_id = $this->model->newEvent($id,$type,$startdate,$enddate,$repeating,$system->checkMagicQuotesTinyMCE($summary),$system->checkMagicQuotesTinyMCE($data),$uri,time(),$eventtype,$eventid,$eventlocation, $eventlocationuid);
 		$this->model->touchCalendar($id);
 		return $object_id;
 	}
@@ -834,6 +837,7 @@ class Calendar extends Controller {
 	 * @return boolean
 	 */
 	function edit($id, $data, $eventtype, $eventid='0', $oldeventid='0', $eventlocation='0', $eventlocationuid='0') {
+		global $system;
 		$oldobject = $this->model->find($id);
 		$calid = $oldobject['calendarid'];
 		$calendar = $this->model->findCalendar($calid);
@@ -850,7 +854,7 @@ class Calendar extends Controller {
 			}
 		}
 		
-		$stmt = $this->model->editEvent($id,$type,$startdate,$enddate,$repeating,$summary,$data,time(),$eventtype,$eventid,$oldeventid,$eventlocation, $eventlocationuid);
+		$stmt = $this->model->editEvent($id,$type,$startdate,$enddate,$repeating,$system->checkMagicQuotesTinyMCE($summary),$system->checkMagicQuotesTinyMCE($data),time(),$eventtype,$eventid,$oldeventid,$eventlocation, $eventlocationuid);
 		if(!$stmt) {
 			$errarr['status'] = 'error';
 		} else {

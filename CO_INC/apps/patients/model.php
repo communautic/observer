@@ -1416,6 +1416,7 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 							$resultm = mysql_query($qm, $this->_db->connection);
 							while ($rowm = mysql_fetch_array($resultm)) {
 								$mid = $rowm["id"];
+								$title = $rowm["title"];
 								if($rowm["bin"] == "1") { // deleted meeting
 									foreach($rowm as $key => $val) {
 										$treatment[$key] = $val;
@@ -1449,6 +1450,7 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 											foreach($rowmt as $key => $val) {
 												$treatments_task[$key] = $val;
 											}
+											$treatments_task["title"] = $title;
 											$treatments_task["bintime"] = $this->_date->formatDate($treatments_task["bintime"],CO_DATETIME_FORMAT);
 											$treatments_task["binuser"] = $this->_users->getUserFullname($treatments_task["binuser"]);
 											$treatments_tasks[] = new Lists($treatments_task);
@@ -2441,6 +2443,81 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 
 		return $items_arr;
 }
+
+
+	function getTreatmentsDialog($field) {
+		global $session;
+		$str = '<div class="dialog-text">';
+		/*$q ="select * from " . CO_TBL_PATIENTS_TREATMENTS . " ORDER BY positionstext ASC";
+		$result = mysql_query($q, $this->_db->connection);
+		while ($row = mysql_fetch_array($result)) {
+			$str .= '<a href="#" class="insertFromDialog" min="90" title="' . $row["positionstext"] . " " . $row["name"] . '" field="'.$field.'" gid="'.$row["id"].'">' . $row["positionstext"] . " " . $row["name"] . '</a>';
+		}*/
+		$str .= 'some text</div>';	
+		return $str;
+	 }
+	 
+	 function getCalendarTreatmentsSearch($term){
+		/*global $system, $session;
+		$num=0;
+		$access=" ";
+		if(!$session->isSysadmin()) {
+			$access = " and a.id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
+	  	}
+		$q = "select id,title,item_date,access,status,checked_out,checked_out_user from " . CO_TBL_PATIENTS_TREATMENTS . " where pid = '$id' and bin != '1' " . $sql . $order;
+		
+		$result = mysql_query($q, $this->_db->connection);
+		$num=mysql_affected_rows();
+		$rows = array();
+		while($r = mysql_fetch_assoc($result)) {
+			 $rows[] = $r;
+		}
+		return json_encode($rows);*/
+		
+		
+		global $system;
+		$num=0;
+		//$q = "SELECT id, CONCAT(lastname,' ',firstname) as label from " . CO_TBL_USERS . " where (lastname like '%$term%' or firstname like '%$term%') and bin ='0' and invisible = '0'";
+		$q = "SELECT b.id, CONCAT(a.lastname,' ',a.firstname,', ',b.title) as label from " . CO_TBL_USERS . " as a, " . CO_TBL_PATIENTS_TREATMENTS . " as b, " . CO_TBL_PATIENTS . " as c WHERE  b.pid = c.id and c.cid=a.id and (a.lastname like '%$term%' or a.firstname like '%$term%' or b.title like '%$term%') and a.bin ='0' and b.bin='0' and a.invisible = '0'";
+		
+		$result = mysql_query($q, $this->_db->connection);
+		$num=mysql_affected_rows();
+		$rows = array();
+		while($r = mysql_fetch_assoc($result)) {
+			 $rows[] = $r;
+		}
+		return json_encode($rows);
+	}
+	
+	function getLast10CalTreatments() {
+		global $session;
+		//$treatments = $this->getUserArray($this->getUserSetting("last-used-treatments"));
+		$treatments = $this->getTreatmentsCalArray($this->getUserSetting("last-used-caltreatments"));
+	  return $treatments;
+	}
+	
+	function getTreatmentsCalArray($string){
+		$users_string = explode(",", $string);
+		$users_total = sizeof($users_string);
+		$users = '';
+		if($users_total == 0) { 
+			return $users; 
+		}
+		// check if user is available and build array
+		$users_arr = "";
+		foreach ($users_string as &$value) {
+			//$q = "SELECT b.id, LEFT(CONCAT(a.lastname,' ',LEFT(a.firstname,1),'., ',b.title),31) as label from " . CO_TBL_USERS . " as a, " . CO_TBL_PATIENTS_TREATMENTS . " as b, " . CO_TBL_PATIENTS . " as c WHERE b.id='$value' and b.pid = c.id and c.cid=a.id and a.bin ='0' and b.bin='0' and a.invisible = '0'";
+			$q = "SELECT b.id, CONCAT(a.lastname,' ',a.firstname,', ',b.title) as label from " . CO_TBL_USERS . " as a, " . CO_TBL_PATIENTS_TREATMENTS . " as b, " . CO_TBL_PATIENTS . " as c WHERE b.id='$value' and b.pid = c.id and c.cid=a.id and a.bin ='0' and b.bin='0' and a.invisible = '0'";
+			$result_user = mysql_query($q, $this->_db->connection);
+			if(mysql_num_rows($result_user) > 0) {
+				while($row_user = mysql_fetch_assoc($result_user)) {
+					$users_arr[] = array("id" => $row_user["id"], "label" => $row_user["label"]);		
+				}
+			}
+		}
+		return $users_arr;
+	}
+	
 	
 	function getLast10Patients() {
 		global $session;
