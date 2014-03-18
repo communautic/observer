@@ -439,6 +439,15 @@ class PatientsModel extends Model {
 		
 		$q = "UPDATE " . CO_TBL_PATIENTS_FOLDERS . " set bin = '1', bintime = '$now', binuser= '$session->uid' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
+		
+		// get all patients
+		$q = "SELECT id FROM " . CO_TBL_PATIENTS . " where folder = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+			$tid = $row['id'];
+			$this->binPatient($tid);
+		}
+		
 		if ($result) {
 		  	return true;
 		}
@@ -452,6 +461,15 @@ class PatientsModel extends Model {
 		
 		$q = "UPDATE " . CO_TBL_PATIENTS_FOLDERS . " set bin = '0' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
+		
+		// get all patients
+		$q = "SELECT id FROM " . CO_TBL_PATIENTS . " where folder = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+			$tid = $row['id'];
+			$this->restorePatient($tid);
+		}
+		
 		if ($result) {
 		  	return true;
 		}
@@ -1122,6 +1140,16 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 		
 		$q = "UPDATE " . CO_TBL_PATIENTS . " set bin = '1', bintime = '$now', binuser= '$session->uid' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
+		
+		// get all treatments
+		$treatmentsModel = new PatientsTreatmentsModel();
+		$q = "SELECT id FROM " . CO_TBL_PATIENTS_TREATMENTS . " where pid = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+			$tid = $row['id'];
+			$treatmentsModel->binTreatment($tid);
+		}
+		
 		if ($result) {
 		  	return true;
 		}
@@ -1130,6 +1158,15 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 	function restorePatient($id) {
 		$q = "UPDATE " . CO_TBL_PATIENTS . " set bin = '0' WHERE id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
+		
+		// get all treatments
+		$treatmentsModel = new PatientsTreatmentsModel();
+		$q = "SELECT id FROM " . CO_TBL_PATIENTS_TREATMENTS . " where pid = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+			$tid = $row['id'];
+			$treatmentsModel->restoreTreatment($tid);
+		}
 		if ($result) {
 		  	return true;
 		}
