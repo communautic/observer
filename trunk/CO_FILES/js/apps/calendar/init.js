@@ -7274,18 +7274,15 @@ $(document).ready(function() {
 			eventRender: function(event, element, view) {
 				var str = event.title;
 				if(view.name === "month"){
-						// do something
-						var res = str.split('<br />'); 
-						str = res[0];
-					}
+					var res = str.split('<br />'); 
+					str = res[0];
+				}
+				if(event.description != '') {
+					str = '<span class="hasDescription"></span> '+str;
+				}
 				element.find('.fc-event-title').html(str);
 				if(event.eventtype != 0) {
-					
-					/*var res = str.split(','); 
-					var title = res[0]+'<br /> <span style="font-weight: normal">'+res[1]+'</span>';*/
-					//console.log(title);
 					element.addClass('fc-event-treatment');
-					
 					element.prepend('<div class="fc-event-treatment-icon loadTreatment" rel="patients,'+event.folderid+','+event.patientid+','+event.treatmentid+',treatments"></div>');
 				}
 			}

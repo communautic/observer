@@ -923,3 +923,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a0bee9', end
     border: 1px solid #EB4600;
     color: #FFFFFF;
 }
+
+#calendar span.hasDescription {
+    background: url("../../img/icons.png") no-repeat scroll -200px -75px rgba(0, 0, 0, 0);
+    height: 10px;
+    width: 8px;
+	display: inline-block;
+}
