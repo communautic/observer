@@ -39,8 +39,8 @@ define("CO_LICENSE"				, 			"communautic KG" 			);
 
 /* Default Language */
 define("CO_DEFAULT_LANGUAGE"	, 			"de" 								);
-define("CO_DEFAULT_TIMEZONE"	, 			"Europe/London" 					);
-date_default_timezone_set("UTC");
+define("CO_DEFAULT_TIMEZONE"	, 			"Europe/Vienna" 					);
+date_default_timezone_set(CO_DEFAULT_TIMEZONE);
 
 /* -------------------------------------------------------------------------
 * Settings for Invoice Reminder Days
@@ -116,5 +116,7 @@ define("EMAIL_FROM_NAME", "YourName");
 define("EMAIL_FROM_ADDR", "youremail@address.com");
 define("EMAIL_WELCOME", false);
 define("ALL_LOWERCASE", false);
+
+define("PASSWORDSALT", '6a67a466cb3ede6e947f55831f90f5');
 
 ?>
