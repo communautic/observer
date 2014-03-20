@@ -10,37 +10,22 @@
           <div class="text13 bold" style="margin-left: 7px;"><?php echo $i;?>. <?php echo $lang["PATIENT_TREATMENT_GOALS_SINGUAL"];?></div><input name="task_id[<?php echo $value->id;?>]" type="hidden" value="<?php echo $value->id;?>"><input class="task_sort" name="task_sort[<?php echo $value->id;?>]" type="hidden" value=""></td><?php if($treatment->canedit) { ?><td width="25"><a class="binItem" rel="<?php echo $value->id;?>"><span class="icon-delete"></span></a></td><?php } ?>
     </tr>
   </table>
-
   <table width="100%" border="0" cellpadding="0" cellspacing="0">
     <tr>
-      <td width="12"></td>
-      <td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav showDialog<?php } ?>" request="getTreatmentsTypeDialog" field="task_treatmenttype_<?php echo $value->id;?>" append="1"><span><?php echo $lang["PATIENT_TREATMENT_TASKS_TYPE"];?></span></span></td>
-      <td class="tcell-right"><div id="task_treatmenttype_<?php echo $value->id;?>" class="itemlist-field task_treatmenttype"><?php echo($value->type);?></div></td>
+        <td width="27"></td>
+		<td class="tcell-right-inactive text11"><span class="loadCalendarEvent co-link" rel="<?php echo $value->couid;?>,<?php echo $value->linkyear;?>,<?php echo $value->linkmonth;?>,<?php echo $value->linkday;?>,<?php echo $value->eventid;?>"><?php echo $value->startdate;?> | <?php echo $value->time;?> | <?php echo $value->displayname;?> | <?php echo $value->location;?></span></td>
     </tr>
-    <tr>
-         <td width="12"></td>
-		<td class="tcell-left-inactive text11"><span><span><?php echo $lang["PATIENT_TREATMENT_TASKS_THERAPIST"];?></span></span></td>
-		<td class="tcell-right-inactive"><?php echo $value->displayname;?></td>
-    </tr>
-    <tr>
-         <td width="12"></td>
-		<td class="tcell-left-inactive text11"><span><span><?php echo $lang["PATIENT_TREATMENT_TASKS_PLACE"];?></span></span></td>
-		<td class="tcell-right-inactive"><?php echo $value->location;?></td>
-    </tr>
-    <tr>
-         <td width="12"></td>
-		<td class="tcell-left-inactive text11"><span><span><?php echo $lang["PATIENT_TREATMENT_TASKS_DATE_CALENDAR"];?></span></span></td>
-		<td class="tcell-right-inactive"><?php echo $value->startdate;?></td>
-    </tr>
-    <tr>
-         <td width="12"></td>
-		<td class="tcell-left-inactive text11"><span><span><?php echo $lang["PATIENT_TREATMENT_TASKS_TIME"];?></span></span></td>
-		<td class="tcell-right-inactive"><?php echo $value->time;?></td>
-    </tr>
+    </table>
+   <table width="100%" border="0" cellpadding="0" cellspacing="0">
     <tr>
       <td width="12"></td>
       <td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["PATIENT_TREATMENT_TASKS_DATE_INVOICE"];?></span></span></td>
       <td class="tcell-right"><?php if($treatment->canedit) { ?><input name="task_date[<?php echo $value->id;?>]" type="text" class="input-date datepicker task_date" value="<?php echo $value->item_date;?>" readonly="readonly" /><?php } else { ?><?php echo $value->item_date;?><?php } ?></td>
+    </tr>
+    <tr>
+      <td width="12"></td>
+      <td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav showDialog<?php } ?>" request="getTreatmentsTypeDialog" field="task_treatmenttype_<?php echo $value->id;?>" append="1"><span><?php echo $lang["PATIENT_TREATMENT_TASKS_TYPE"];?></span></span></td>
+      <td class="tcell-right"><div id="task_treatmenttype_<?php echo $value->id;?>" class="itemlist-field task_treatmenttype"><?php echo($value->type);?></div></td>
     </tr>
     <tr>
          <td width="12"></td>
@@ -53,7 +38,7 @@
 		<td class="tcell-right-inactive"><?php echo CO_DEFAULT_CURRENCY;?> <span id="costs_<?php echo $value->id;?>" class="currency"><?php echo number_format($value->costs,2,',','.');;?></span></td>
     </tr>
     </table>
-
+<div style="height: 5px;"></div>
 
   		</td>
 	</tr>

@@ -26,29 +26,29 @@ $patientsTreatments = new PatientsTreatments("treatments");
 
 
 // OC Libraries
-require_once(CO_INC_PATH . '/sync/3rdparty/Sabre/VObject/Node.php');
-require_once(CO_INC_PATH . '/sync/3rdparty/Sabre/VObject/ElementList.php');
-require_once(CO_INC_PATH . '/sync/3rdparty/Sabre/VObject/Component.php');
-require_once(CO_INC_PATH . '/sync/3rdparty/Sabre/VObject/Component/VAlarm.php');
-require_once(CO_INC_PATH . '/sync/3rdparty/Sabre/VObject/Component/VCalendar.php');
-require_once(CO_INC_PATH . '/sync/3rdparty/Sabre/VObject/Component/VEvent.php');
-require_once(CO_INC_PATH . '/sync/3rdparty/Sabre/VObject/Property.php');
-require_once(CO_INC_PATH . '/sync/3rdparty/Sabre/VObject/TimeZoneUtil.php');
-require_once(CO_INC_PATH . '/sync/3rdparty/Sabre/VObject/Property/DateTime.php');
-require_once(CO_INC_PATH . '/sync/3rdparty/Sabre/VObject/Parameter.php');
-require_once(CO_INC_PATH . '/sync/3rdparty/Sabre/VObject/ParseException.php');
-require_once(CO_INC_PATH . '/sync/3rdparty/Sabre/VObject/Reader.php');
-require_once(CO_INC_PATH . '/sync/lib/private/vobject.php');
-require_once(CO_INC_PATH . '/sync/apps/calendar/lib/calendar.php');
-require_once(CO_INC_PATH . '/sync/apps/calendar/lib/object.php');
+require_once(CO_PATH_BASE . '/sync/3rdparty/Sabre/VObject/Node.php');
+require_once(CO_PATH_BASE . '/sync/3rdparty/Sabre/VObject/ElementList.php');
+require_once(CO_PATH_BASE . '/sync/3rdparty/Sabre/VObject/Component.php');
+require_once(CO_PATH_BASE . '/sync/3rdparty/Sabre/VObject/Component/VAlarm.php');
+require_once(CO_PATH_BASE . '/sync/3rdparty/Sabre/VObject/Component/VCalendar.php');
+require_once(CO_PATH_BASE . '/sync/3rdparty/Sabre/VObject/Component/VEvent.php');
+require_once(CO_PATH_BASE . '/sync/3rdparty/Sabre/VObject/Property.php');
+require_once(CO_PATH_BASE . '/sync/3rdparty/Sabre/VObject/TimeZoneUtil.php');
+require_once(CO_PATH_BASE . '/sync/3rdparty/Sabre/VObject/Property/DateTime.php');
+require_once(CO_PATH_BASE . '/sync/3rdparty/Sabre/VObject/Parameter.php');
+require_once(CO_PATH_BASE . '/sync/3rdparty/Sabre/VObject/ParseException.php');
+require_once(CO_PATH_BASE . '/sync/3rdparty/Sabre/VObject/Reader.php');
+require_once(CO_PATH_BASE . '/sync/lib/private/vobject.php');
+require_once(CO_PATH_BASE . '/sync/apps/calendar/lib/calendar.php');
+require_once(CO_PATH_BASE . '/sync/apps/calendar/lib/object.php');
 // OC error classes
 /*
-require_once(CO_INC_PATH . '/sync/lib/private/backgroundjob.php');
-require_once(CO_INC_PATH . '/sync/lib/private/backgroundjob/job.php');
-require_once(CO_INC_PATH . '/sync/lib/private/backgroundjob/joblist.php');
-require_once(CO_INC_PATH . '/sync/lib/private/log/owncloud.php');
-require_once(CO_INC_PATH . '/sync/lib/private/log/rotate.php');
-require_once(CO_INC_PATH . '/sync/lib/private/legacy/log.php');
+require_once(CO_PATH_BASE . '/sync/lib/private/backgroundjob.php');
+require_once(CO_PATH_BASE . '/sync/lib/private/backgroundjob/job.php');
+require_once(CO_PATH_BASE . '/sync/lib/private/backgroundjob/joblist.php');
+require_once(CO_PATH_BASE . '/sync/lib/private/log/owncloud.php');
+require_once(CO_PATH_BASE . '/sync/lib/private/log/rotate.php');
+require_once(CO_PATH_BASE . '/sync/lib/private/legacy/log.php');
 */
 
 

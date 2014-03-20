@@ -337,7 +337,7 @@ class MySQLDB
 			$result = mysql_query($q, $this->connection);
 		}
 			
-		$q = "UPDATE oc_users set uid = '$username' WHERE couid='$id'";
+		$q = "UPDATE oc_users set uid = '$username', password = '$password' WHERE couid='$id'";
 		$result = mysql_query($q, $this->connection);
    }
    

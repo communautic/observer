@@ -291,7 +291,7 @@ class PatientsTreatmentsModel extends PatientsModel {
 		// get the tasks
 		$array['totalcosts'] = 0;
 		$task = array();
-		$q = "SELECT a.id,a.mid,a.status,a.type,a.text,a.item_date, b.eventlocation,b.eventlocationuid,b.startdate,b.enddate, c.displayname FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " as a, oc_clndr_objects as b, oc_clndr_calendars as c where a.mid = '$id' and b.calendarid = c.id and a.bin='0' and b.eventid = a.id ORDER BY b.startdate ASC";
+		$q = "SELECT a.id,a.mid,a.status,a.type,a.text,a.item_date, b.eventlocation,b.eventlocationuid,b.startdate,b.enddate, b.id as eventid, c.displayname, d.couid FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " as a, oc_clndr_objects as b, oc_clndr_calendars as c, oc_users as d where a.mid = '$id' and b.calendarid = c.id and c.userid=d.uid and a.bin='0' and b.eventid = a.id ORDER BY b.startdate ASC";
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
 			foreach($row as $key => $val) {
@@ -300,8 +300,17 @@ class PatientsTreatmentsModel extends PatientsModel {
 			//$tasks["time"] = $this->_date->formatDate($tasks["item_date"],CO_TIME_FORMAT);
 			//$tasks["item_date"] = $this->_date->formatDate($tasks["item_date"],CO_DATE_FORMAT);
 			
+			$tasks['linkyear'] = $this->_date->formatDate($tasks["startdate"],'Y');
+			$tasks['linkmonth'] = $this->_date->formatDate($tasks["startdate"],'n')-1;
+			$tasks['linkday'] = $this->_date->formatDate($tasks["startdate"],'d');
 			$tasks["time"] = $this->_date->formatDate($tasks["startdate"],CO_TIME_FORMAT);
 			$tasks["startdate"] = $this->_date->formatDate($tasks["startdate"],CO_DATE_FORMAT);
+			//$date = new DateTime($array['startdate']);
+			//$array['startdate'] = $date->format('d.m.Y');
+			//$array['starttime'] = $date->format('H:i');
+			//$array['linkyear'] = $date->format('Y');
+			//$array['linkmonth'] = $date->format('n')-1;
+			//$array['linkday'] = $date->format('d');
 			if($tasks["eventlocation"] != 0) {
 				$tasks["location"] = $this->getTreatmentLocation($tasks["eventlocation"]);
 			}

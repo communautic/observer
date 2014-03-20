@@ -437,6 +437,7 @@ $(document).keydown(function(e) {
 var z = num_apps; //for setting the initial z-index's
 var inAnimation = false; //flag for testing if we are in a animation
 var appTab = false; // hack to load treatmentlist for patients
+var editEventID = 0; //listener in fullcalendar renderView() to autoopen event
 
 
 $(document).ready(function() {
@@ -514,6 +515,11 @@ $(document).ready(function() {
 					vdoct.fadeIn('slow').css('cssText', 'top: 130px !important');
 				}
 			})
+			if(app != 'calendar') {
+				if($('#event').dialog('isOpen') == true){
+					$('#event').dialog('destroy').remove();
+				}
+			}
 			var appobject = window[app];
 		}
 	}).disableSelection();
@@ -2766,3 +2772,12 @@ function externalLoadThreeLevels(objectname,f,p,ph,app) { // from Desktop
 	
 
 }
+
+function externalLoadCalendar(uid,year,month,day) {
+		if($('#calendar').data("first") != uid) {
+			$('#calendar').data({ "first" : uid});
+			$('#calendar1 .module-click[rel='+uid+']').trigger('click');
+		}
+		$('span.app_calendar').trigger('click');
+		$('#calendar-right').fullCalendar( 'gotoDate',year,month,day)
+	}

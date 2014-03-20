@@ -4981,10 +4981,10 @@ function AgendaEventRenderer() {
 			left = Math.max(left, columnLeft);
 			right = Math.min(right, columnRight);
 			width = right - left;
-			seg.top = top+2;
-			seg.left = left;
+			seg.top = top+1;
+			seg.left = left-1;
 			seg.outerWidth = width;
-			seg.outerHeight = bottom - top - 2;
+			seg.outerHeight = bottom - top - 1;
 			html += slotSegHtml(event, seg);
 		}
 
@@ -7272,6 +7272,7 @@ $(document).ready(function() {
 				day:      buttonTextDay
 			},
 			eventRender: function(event, element, view) {
+				element.attr('id','event_'+event.id);
 				var str = event.title;
 				if(view.name === "month"){
 					var res = str.split('<br />'); 
@@ -7282,14 +7283,24 @@ $(document).ready(function() {
 				}
 				element.find('.fc-event-title').html(str);
 				if(event.eventtype != 0) {
+					if(event.calendarid != 2) {
 					element.addClass('fc-event-treatment');
+					}
 					element.prepend('<div class="fc-event-treatment-icon loadTreatment" rel="patients,'+event.folderid+','+event.patientid+','+event.treatmentid+',treatments"></div>');
 				}
 			}
+			/*,
+			eventAfterAllRender: function(view) {
+						if(editEventID !='0') {
+					console.log('open event');
+					editEventID = 0;
+				}
+
+			}*/
 		});
 		
 		
-		$("#dialog").dialog({
+		/*$("#dialog").dialog({
         autoOpen: false,
         height: 350,
         width: 700,
@@ -7301,7 +7312,8 @@ $(document).ready(function() {
             Cancel: function () {
                 $(this).dialog('close');
             }
-        },
+        }
+		,
 
         close: function () {
 			
@@ -7317,7 +7329,7 @@ $(document).ready(function() {
 			
         }
 
-    });
+    });*/
 		
 	/*$('.activeCalendar').livequery(function () {
 	$(this).change(function () {
@@ -7359,7 +7371,7 @@ $(document).ready(function() {
 				$('#titleDisplay').show();
 				//$('#treatmentLocDisplay').hide();
 				//$('#locDisplay').show();
-				$('#dateToDisplay').show();
+				//$('#dateToDisplay').show();
 				$('#allDayDisplay').show();
 			break;
 			case '1':
@@ -7367,7 +7379,7 @@ $(document).ready(function() {
 				$('#titleDisplay').hide();
 				//$('#treatmentLocDisplay').show();
 				//$('#locDisplay').hide();
-				$('#dateToDisplay').hide();
+				//$('#dateToDisplay').hide();
 				$('#allDayDisplay').hide();
 			break;
 		}

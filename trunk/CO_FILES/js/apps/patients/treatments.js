@@ -622,7 +622,9 @@ function patientsTreatments(name) {
 				tcosts += parseFloat($(this).attr('costs'));
 				tmins += parseInt($(this).attr('minutes'));
 			})
-			$("#costs_"+tid).text(tcosts).number( true, 2, ',', '.' );
+			//$("#costs_"+tid).text(tcosts).number( true, 2, ',', '.' );
+			tcosts = $.number( tcosts, 2, ',', '.' );
+			$("#costs_"+tid).text(tcosts);
 			$("#minutes_"+tid).text(tmins);
 			
 			
@@ -950,7 +952,10 @@ var colors = ['#3C4664','#EB4600','#915500','#0A960A','#AA19AA','#3C4664','#EB46
 				tcosts += parseFloat($(this).attr('costs'));
 				tmins += parseInt($(this).attr('minutes'));
 			})
-			$("#costs_"+tid).text(tcosts).number( true, 2, ',', '.' );
+			//$("#costs_"+tid).text(tcosts).number( true, 2, ',', '.' );
+			//$("#costs_"+tid).text(tcosts);
+			tcosts = $.number( tcosts, 2, ',', '.' );
+			$("#costs_"+tid).text(tcosts);
 			$("#minutes_"+tid).text(tmins);
 			
 			var totalcosts = 0;
@@ -972,6 +977,16 @@ var colors = ['#3C4664','#EB4600','#915500','#0A960A','#AA19AA','#3C4664','#EB46
 	
 
 	$(document).ready(function () {
+		
+		
+		$(document).on('click','.loadCalendarEvent',function(e) {
+			e.preventDefault();
+			var href = $(this).attr('rel').split(",");
+			externalLoadCalendar(href[0],href[1],href[2],href[3]);
+			editEventID = href[4];
+			//setTimeout(function() { $('#event_'+href[4]).trigger('click') }, 1000)
+		})
+		
 		
 		
 		// autocomplete contacts search
@@ -1353,7 +1368,9 @@ var colors = ['#3C4664','#EB4600','#915500','#0A960A','#AA19AA','#3C4664','#EB46
 				tcosts += parseFloat($(this).attr('costs'));
 				tmins += parseInt($(this).attr('minutes'));
 			})
-			$("#costs_"+tid).text(tcosts).number( true, 2, ',', '.' );
+			//$("#costs_"+tid).text(tcosts).number( true, 2, ',', '.' );
+			tcosts = $.number( tcosts, 2, ',', '.' );
+			$("#costs_"+tid).text(tcosts);
 			$("#minutes_"+tid).text(tmins);
 			
 			var totalcosts = 0;
