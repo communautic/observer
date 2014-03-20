@@ -331,8 +331,18 @@ class ContactsModel extends Model {
 		
 		// calendar
 		$array["calendar_status"] = $lang['CONTACTS_CALENDAR_DEACTIVE'];
+		$array['outlook_caldavurl'] = '';
+		$array['ios_caldavurl'] = '';
+		$array['caldavurl'] = '';
+		$array['caldavurl_shared'] = '';
 		if($array["calendar"] == 1) {
 			$array["calendar_status"] = $lang['CONTACTS_CALENDAR_ACTIVE'];
+			$url = explode('.',$_SERVER['HTTP_HOST']);
+			$caldavurl = $url[0] . '.sync.' . $url[1] . '.' .$url[2];
+			$array['outlook_caldavurl'] = 'https://' . $caldavurl . '/remote.php/caldav/calendars/' . $array["username"] . '/' . $array["username"] . '?export';
+			$array['ios_caldavurl'] = $caldavurl . '/remote.php/caldav/principals/' . $array["username"];
+			$array['caldavurl'] = 'https://' . $caldavurl . '/remote.php/caldav/calendars/' . $array["username"] . '/' . $array["username"];
+			$array['caldavurl_shared'] = 'https://' . $caldavurl . '/remote.php/caldav/calendars/USERNAME/' . $array["username"] . '_shared_by_' . $array["username"];
 		}
 		
 		if(!empty($array["username"])) {

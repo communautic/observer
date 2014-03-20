@@ -80,7 +80,7 @@
 	</div>
     
     <!-- Date To -->
-    <div id="dateToDisplay" class="fieldset2 whitebg"  <?php echo $regularEventDisplay;?>>
+    <div id="dateToDisplay" class="fieldset2 whitebg">
 		<label>
         	<span class="content-nav ui-datepicker-trigger-action"><span><?php echo $lang["CALENDAR_EVENT_DATE_TO"];?></span></span>
 		</label>

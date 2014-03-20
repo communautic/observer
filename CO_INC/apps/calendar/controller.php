@@ -57,7 +57,7 @@ class Calendar extends Controller {
 		/* OC way*/
 		$output = array();
 		foreach($events as $event) {
-			$result = $this->generateEventOutput($event, $start, $end);
+			$result = $this->generateEventOutput($event, $start, $end, $calendarid);
 			if (is_array($result)) {
 				$output = array_merge($output, $result);
 			}
@@ -75,7 +75,7 @@ class Calendar extends Controller {
 	 * @param (int) $end - DateTime object of end
 	 * @return (array) $output - readable output
 	 */
-	function generateEventOutput(array $event, $start, $end) {
+	function generateEventOutput(array $event, $start, $end, $calendarid) {
 		global $session, $lang;
 		
 		if(!isset($event['calendardata']) && !isset($event['vevent'])) {
@@ -159,7 +159,8 @@ class Calendar extends Controller {
 							'treatment'=>$event['eventid'],
 							'treatmentid'=>$event['treat'],
 							'patientid'=>$event['patientid'],
-							'folderid'=>$event['folderid']
+							'folderid'=>$event['folderid'],
+							'calendarid'=>$calendarid
 							);
 			
 			if($this->isrepeating($id) && $this->model->is_cached_inperiod($event['id'], $start, $end)) {
@@ -365,21 +366,7 @@ class Calendar extends Controller {
 		$t_locuid = $post['treatmentlocationuid'];
 		//$post['description'] = str_replace("\r\n", '\n', $system->checkMagicQuotes($post['description']));
 		
-		// title
-		$title = $post['title'];
-			if($eventtype == 1) {
-				$treatmentsModel = new PatientsTreatmentsModel();
-				$pid = $treatmentsModel->getTreatmentPatientID($t_id);
-				$contactsModel = new ContactsModel();
-				$title = $contactsModel->getUserFullnameShortFirstname($pid);
-				if($t_loc != 0) {
-					$title .= ', ' . $post['location'];
-				}
-				if($t_locuid != 0) {
-					$title .=  ', ' . $lang['CALENDAR_EVENT_HOUSE_CALL'];
-				}
-			}
-		$post['title'] = $title;
+		
 		
 		$errarr = $this->validateRequest($post);
 		if($errarr) {
@@ -388,6 +375,24 @@ class Calendar extends Controller {
 				$data[$key] = $value;
 			}
 		} else {
+			
+			// title
+			$title = $post['title'];
+				if($eventtype == 1) {
+					$treatmentsModel = new PatientsTreatmentsModel();
+					$pid = $treatmentsModel->getTreatmentPatientID($t_id);
+					$contactsModel = new ContactsModel();
+					$title = $contactsModel->getUserFullnameShortFirstname($pid);
+					if($t_loc != 0) {
+						$title .= ', ' . $post['location'];
+					}
+					if($t_locuid != 0) {
+						$title .=  ', ' . $lang['CALENDAR_EVENT_HOUSE_CALL'];
+					}
+				}
+			$post['title'] = $title;
+			
+			
 			$vcalendar = $this->createVCalendarFromRequest($post);
 			$res = $this->add($cal, $vcalendar->serialize(), $eventtype, $t_id, $t_loc, $t_locuid);
 			if($post['desktop'] == 1) {
@@ -509,21 +514,7 @@ class Calendar extends Controller {
 		//$post['description'] = str_replace("\r\n", '\n', $post['description']);
 		//$post['description'] = str_replace("\n", '\n', $post['description']);
 		
-		// title
-		$title = $post['title'];
-			if($eventtype == 1) {
-				$treatmentsModel = new PatientsTreatmentsModel();
-				$pid = $treatmentsModel->getTreatmentPatientID($t_id);
-				$contactsModel = new ContactsModel();
-				$title = $contactsModel->getUserFullnameShortFirstname($pid);
-				if($t_loc != 0) {
-					$title .= ', ' . $post['location'];
-				}
-				if($t_locuid != 0) {
-					$title .=  ', ' . $lang['CALENDAR_EVENT_HOUSE_CALL'];
-				}
-			}
-		$post['title'] = $title;
+		
 		
 		$errarr = $this->validateRequest($post);
 		if($errarr) {
@@ -532,6 +523,23 @@ class Calendar extends Controller {
 				$data[$key] = $value;
 			}
 		} else {
+			
+			// title
+			$title = $post['title'];
+				if($eventtype == 1) {
+					$treatmentsModel = new PatientsTreatmentsModel();
+					$pid = $treatmentsModel->getTreatmentPatientID($t_id);
+					$contactsModel = new ContactsModel();
+					$title = $contactsModel->getUserFullnameShortFirstname($pid);
+					if($t_loc != 0) {
+						$title .= ', ' . $post['location'];
+					}
+					if($t_locuid != 0) {
+						$title .=  ', ' . $lang['CALENDAR_EVENT_HOUSE_CALL'];
+					}
+				}
+			$post['title'] = $title;
+			
 			$data = $this->getEventObject($id, false, false);
 			$vcalendar = OC_VObject::parse($data['calendardata']);
 			self::updateVCalendarFromRequest($post, $vcalendar);

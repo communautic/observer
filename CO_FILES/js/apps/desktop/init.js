@@ -447,14 +447,7 @@ $(document).ready(function() {
 		})
 	});
 	
-	function externalLoadCalendar(uid,year,month,day) {
-		if($('#calendar').data("first") != uid) {
-			$('#calendar').data({ "first" : uid});
-			$('#calendar1 .module-click[rel='+uid+']').trigger('click');
-		}
-		$('span.app_calendar').trigger('click');
-		$('#calendar-right').fullCalendar( 'gotoDate',year,month,day)
-	}
+	
 	$(document).on('click', '#desktop .calendarLinkRead', function(e) {
 		e.preventDefault();
 		var href = $(this).attr('rel').split(",");
