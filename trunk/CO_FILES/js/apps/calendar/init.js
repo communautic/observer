@@ -252,45 +252,23 @@ Calendar={
 						if(data.treatmentlocation == "true"){
 							output = output + ALERT_CALENDAR_MISSING_LOCATION + "<br />";
 						}
-						/*if(data.cal == "true"){
-							output = output + missing_field_calendar + "<br />";
-						}
-						if(data.from == "true"){
-							output = output + missing_field_fromdate + "<br />";
-						}
-						if(data.fromtime == "true"){
-							output = output + missing_field_fromtime + "<br />";
-						}
-						if(data.to == "true"){
-							output = output + missing_field_todate + "<br />";
-						}
-						if(data.totime == "true"){
-							output = output + missing_field_totime + "<br />";
-						}
-						if(data.endbeforestart == "true"){
-							output = output + missing_field_startsbeforeends + "!<br/>";
-						}
-						if(data.dberror == "true"){
-							output = "There was a database fail!";
-						}*/
-						//$("#errorbox").html(output);
 						$.prompt(ALERT_CALENDAR_DATA + output);
 					}
 					if(data.status == 'success'){
 						$('#event').dialog('destroy').remove();
-						//$('#calendar-right').fullCalendar('refetchEvents');
 						var aid = $("#calendar1 .active-link").data('id');
 						Calendar.UI.Calendar.display(aid);
 					}
 					if(data.status == 'busy'){
-						//$('#event').dialog('destroy').remove();
-						//$('#calendar-right').fullCalendar('refetchEvents');
-						//$.prompt(ALERT_CALENDAR_ROOM_BUSY);
 						var aid = $("#calendar1 .active-link").data('id');
 						Calendar.UI.Calendar.display(aid);
 						$('#calendarTreatmentLocation').html('');
 						$('#event-location').val('');
-						$('#EventLocDisplay').trigger('click');
+						$.prompt(ALERT_CALENDAR_ROOM_BUSY,{
+						submit: function(e,v,m,f){
+							$('#EventLocDisplay').trigger('click');
+							}
+						})
 					}
 				},"json");
 		},
