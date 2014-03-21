@@ -291,7 +291,7 @@ class PatientsTreatmentsModel extends PatientsModel {
 		// get the tasks
 		$array['totalcosts'] = 0;
 		$task = array();
-		$q = "SELECT a.id,a.mid,a.status,a.type,a.text,a.item_date, b.eventlocation,b.eventlocationuid,b.startdate,b.enddate, b.id as eventid, c.displayname, d.couid FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " as a, oc_clndr_objects as b, oc_clndr_calendars as c, oc_users as d where a.mid = '$id' and b.calendarid = c.id and c.userid=d.uid and a.bin='0' and b.eventid = a.id ORDER BY b.startdate ASC";
+		$q = "SELECT a.id,a.mid,a.status,a.type,a.text,a.item_date, b.eventlocation,b.eventlocationuid,b.startdate,b.enddate, b.id as eventid, c.id as calendarid, c.displayname, d.couid FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " as a, oc_clndr_objects as b, oc_clndr_calendars as c, oc_users as d where a.mid = '$id' and b.calendarid = c.id and c.userid=d.uid and a.bin='0' and b.eventid = a.id ORDER BY b.startdate ASC";
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
 			foreach($row as $key => $val) {
@@ -305,6 +305,10 @@ class PatientsTreatmentsModel extends PatientsModel {
 			$tasks['linkday'] = $this->_date->formatDate($tasks["startdate"],'d');
 			$tasks["time"] = $this->_date->formatDate($tasks["startdate"],CO_TIME_FORMAT);
 			$tasks["startdate"] = $this->_date->formatDate($tasks["startdate"],CO_DATE_FORMAT);
+			
+			if($tasks['calendarid'] == 2) {
+				$tasks['displayname'] = $lang["CALENDAR_OFFICE_CALENDAR"];
+			}
 			//$date = new DateTime($array['startdate']);
 			//$array['startdate'] = $date->format('d.m.Y');
 			//$array['starttime'] = $date->format('H:i');

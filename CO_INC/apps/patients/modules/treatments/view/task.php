@@ -5,22 +5,18 @@
     	<td class="tcell-right-nopadding">
   <table width="100%" border="0" cellpadding="0" cellspacing="0">
     <tr>
-      <td width="20" style="padding-top: 4px;"><input name="task[<?php echo $value->id;?>]" type="checkbox" value="<?php echo $value->id;?>" class="cbx jNiceHidden <?php if(!$treatment->canedit) { ?>noperm<?php } ?>" <?php echo $checked ;?> /></td>
-      <td class="text11" style="padding-top: 0px;">
-          <div class="text13 bold" style="margin-left: 7px;"><?php echo $i;?>. <?php echo $lang["PATIENT_TREATMENT_GOALS_SINGUAL"];?></div><input name="task_id[<?php echo $value->id;?>]" type="hidden" value="<?php echo $value->id;?>"><input class="task_sort" name="task_sort[<?php echo $value->id;?>]" type="hidden" value=""></td><?php if($treatment->canedit) { ?><td width="25"><a class="binItem" rel="<?php echo $value->id;?>"><span class="icon-delete"></span></a></td><?php } ?>
+      <td width="20" style="padding-top: 7px;"><input name="task[<?php echo $value->id;?>]" type="checkbox" value="<?php echo $value->id;?>" class="cbx jNiceHidden <?php if(!$treatment->canedit) { ?>noperm<?php } ?>" <?php echo $checked ;?> /></td>
+      <td width="144" class="text11" style="padding-top: 2px;">
+          <div class="text13 bold" style="margin-left: 7px;"><?php echo $i;?>. <?php echo $lang["PATIENT_TREATMENT_GOALS_SINGUAL"];?></div><input name="task_id[<?php echo $value->id;?>]" type="hidden" value="<?php echo $value->id;?>"><input class="task_sort" name="task_sort[<?php echo $value->id;?>]" type="hidden" value=""></td>
+		  <td class="tcell-right-inactive text11"><span class="loadCalendarEvent co-link" rel="<?php echo $value->couid;?>,<?php echo $value->linkyear;?>,<?php echo $value->linkmonth;?>,<?php echo $value->linkday;?>,<?php echo $value->eventid;?>"><?php echo $value->startdate;?>&nbsp; | &nbsp;<?php echo $value->time;?>&nbsp; | &nbsp;<?php echo $value->displayname;?>&nbsp; | &nbsp;<?php echo $value->location;?></span></td>
+		  <?php if($treatment->canedit) { ?><td width="25"><a class="binItem" rel="<?php echo $value->id;?>"><span class="icon-delete"></span></a></td><?php } ?>
     </tr>
   </table>
-  <table width="100%" border="0" cellpadding="0" cellspacing="0">
-    <tr>
-        <td width="27"></td>
-		<td class="tcell-right-inactive text11"><span class="loadCalendarEvent co-link" rel="<?php echo $value->couid;?>,<?php echo $value->linkyear;?>,<?php echo $value->linkmonth;?>,<?php echo $value->linkday;?>,<?php echo $value->eventid;?>"><?php echo $value->startdate;?> | <?php echo $value->time;?> | <?php echo $value->displayname;?> | <?php echo $value->location;?></span></td>
-    </tr>
-    </table>
    <table width="100%" border="0" cellpadding="0" cellspacing="0">
     <tr>
       <td width="12"></td>
       <td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["PATIENT_TREATMENT_TASKS_DATE_INVOICE"];?></span></span></td>
-      <td class="tcell-right"><?php if($treatment->canedit) { ?><input name="task_date[<?php echo $value->id;?>]" type="text" class="input-date datepicker task_date" value="<?php echo $value->item_date;?>" readonly="readonly" /><?php } else { ?><?php echo $value->item_date;?><?php } ?></td>
+      <td class="tcell-right"><?php if($treatment->canedit) { ?><input name="task_date[<?php echo $value->id;?>]" type="text" class="input-date datepicker task_date" value="<?php echo $value->item_date;?>" readonly="readonly" style="margin-left: -1px;" /><?php } else { ?><?php echo $value->item_date;?><?php } ?></td>
     </tr>
     <tr>
       <td width="12"></td>
@@ -29,13 +25,8 @@
     </tr>
     <tr>
          <td width="12"></td>
-		<td class="tcell-left-inactive text11"><span><span><?php echo $lang["PATIENT_TREATMENT_TASKS_DURATION"];?></span></span></td>
-		<td class="tcell-right-inactive"><span id="minutes_<?php echo $value->id;?>"><?php echo $value->min;?></span> Min</td>
-    </tr>
-    <tr>
-         <td width="12"></td>
-		<td class="tcell-left-inactive text11"><span><span><?php echo $lang["PATIENT_TREATMENT_AMOUNT"];?></span></span></td>
-		<td class="tcell-right-inactive"><?php echo CO_DEFAULT_CURRENCY;?> <span id="costs_<?php echo $value->id;?>" class="currency"><?php echo number_format($value->costs,2,',','.');;?></span></td>
+		<td class="tcell-left-inactive text11">&nbsp;</td>
+		<td class="tcell-right-inactive text11" style="padding-top: 1px;"><span id="minutes_<?php echo $value->id;?>"><?php echo $value->min;?></span> Min&nbsp; | &nbsp;<?php echo CO_DEFAULT_CURRENCY;?> <span id="costs_<?php echo $value->id;?>" class="currency"><?php echo number_format($value->costs,2,',','.');;?></span></td>
     </tr>
     </table>
 <div style="height: 5px;"></div>
