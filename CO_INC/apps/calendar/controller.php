@@ -148,6 +148,16 @@ class Calendar extends Controller {
 					$title .= '<br /> <span style="font-weight: normal">' . $treatmentsModel->getTreatmentLocation($event['eventlocation']) . '</span>';
 				}
 			}
+			if($allday) {
+				$tooltip_time = '';
+			} else {
+				$tooltip_start = new DateTime($event['startdate']);
+				$tooltip_start = $tooltip_start->format('H:i');
+				$tooltip_end = new DateTime($event['enddate']);
+				$tooltip_end = $tooltip_end->format('H:i');
+				$tooltip_time = $tooltip_start. ' - '.$tooltip_end. '<br />';
+			}
+			$tooltip = $tooltip_time . $title;
 			
 			$staticoutput = array('id'=>(int)$event['id'],
 							//'title' => (!is_null($vevent->SUMMARY) && $vevent->SUMMARY->value != '')? strtr($vevent->SUMMARY->value, array('\,' => ',', '\;' => ';')) : self::$l10n->t('unnamed'),
@@ -160,6 +170,7 @@ class Calendar extends Controller {
 							'treatmentid'=>$event['treat'],
 							'patientid'=>$event['patientid'],
 							'folderid'=>$event['folderid'],
+							'tooltip' => $tooltip,
 							'calendarid'=>$calendarid
 							);
 			

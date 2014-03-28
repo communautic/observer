@@ -27,7 +27,7 @@ foreach($project["phases"] as $key => &$value){ ?>
 	  $ltop += 18;
 	  ?>
       
-<div style="position: absolute; width: 163px; top: <?php echo $ltop; ?>px; left: 0px; padding: 1px 0 0 24px; height: 15px; background-color:#e5e5e5; vertical-align: top; font-size: 12px; line-height: 16px;"><?php echo($project["phases"][$key]["tasks"][$tkey]["text"]);?></div>
+<div style="position: absolute; overflow: hidden; width: 163px; top: <?php echo $ltop; ?>px; left: 0px; padding: 1px 0 0 24px; height: 15px; background-color:#e5e5e5; vertical-align: top; font-size: 12px; line-height: 16px;"><?php echo($project["phases"][$key]["tasks"][$tkey]["text"]);?></div>
 <div style="position: absolute; width: 28px; top: <?php echo $ltop; ?>px; left: 189px; text-align: right;  padding: 1px 10px 0 0;  height: 15px; background-color: #e5e5e5; vertical-align: top; font-size: 12px; line-height: 16px;"><?php echo($project["phases"][$key]["tasks"][$tkey]["days"]);?></div>
 
      <?php 
