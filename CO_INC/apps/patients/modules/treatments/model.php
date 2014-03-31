@@ -291,56 +291,162 @@ class PatientsTreatmentsModel extends PatientsModel {
 		// get the tasks
 		$array['totalcosts'] = 0;
 		$task = array();
-		$q = "SELECT a.id,a.mid,a.status,a.type,a.text,a.item_date, b.eventlocation,b.eventlocationuid,b.startdate,b.enddate, b.id as eventid, c.id as calendarid, c.displayname, d.couid FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " as a, oc_clndr_objects as b, oc_clndr_calendars as c, oc_users as d where a.mid = '$id' and b.calendarid = c.id and c.userid=d.uid and a.bin='0' and b.eventid = a.id ORDER BY b.startdate ASC";
-		$result = mysql_query($q, $this->_db->connection);
-		while($row = mysql_fetch_array($result)) {
-			foreach($row as $key => $val) {
-				$tasks[$key] = $val;
-			}
-			//$tasks["time"] = $this->_date->formatDate($tasks["item_date"],CO_TIME_FORMAT);
-			//$tasks["item_date"] = $this->_date->formatDate($tasks["item_date"],CO_DATE_FORMAT);
-			
-			$tasks['linkyear'] = $this->_date->formatDate($tasks["startdate"],'Y');
-			$tasks['linkmonth'] = $this->_date->formatDate($tasks["startdate"],'n')-1;
-			$tasks['linkday'] = $this->_date->formatDate($tasks["startdate"],'d');
-			$tasks["time"] = $this->_date->formatDate($tasks["startdate"],CO_TIME_FORMAT);
-			$tasks["startdate"] = $this->_date->formatDate($tasks["startdate"],CO_DATE_FORMAT);
-			
-			if($tasks['calendarid'] == 2) {
-				$tasks['displayname'] = $lang["CALENDAR_OFFICE_CALENDAR"];
-			}
-			//$date = new DateTime($array['startdate']);
-			//$array['startdate'] = $date->format('d.m.Y');
-			//$array['starttime'] = $date->format('H:i');
-			//$array['linkyear'] = $date->format('Y');
-			//$array['linkmonth'] = $date->format('n')-1;
-			//$array['linkday'] = $date->format('d');
-			if($tasks["eventlocation"] != 0) {
-				$tasks["location"] = $this->getTreatmentLocation($tasks["eventlocation"]);
-			}
-			if($tasks["eventlocationuid"] != 0) {
-				$tasks["location"] = $this->_contactsmodel->getPlaceListPlain($tasks["eventlocationuid"],'location', false);
-			}
-			$tasks["item_date"] = $this->_date->formatDate($tasks["item_date"],CO_DATE_FORMAT);
-			//$tasks["item_invoice_date"] = $this->_date->formatDate($tasks["item_date"],CO_DATE_FORMAT);
-			//$tasks["team"] = $this->_contactsmodel->getUserList($tasks['team'],'treatments_task_team_'.$tasks["id"], "", $array["canedit"]);
-			//$tasks["team_ct"] = empty($tasks["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $tasks['team_ct'];
-			if($tasks["type"] == '') {
-				$tasks["min"] = 0;
-				$tasks["costs"] = 0;
-				$tasks["type"] = '';
-			} else {
+		
+		// get all tasks not in bin
+		if(CO_PHYSIO_COMBAT) {
+			$q = "SELECT id FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where mid = '$id' and bin='0' ORDER BY item_date ASC";
+			$result = mysql_query($q, $this->_db->connection);
+			while($row = mysql_fetch_array($result)) {
+				// check for calendar entry
+				$eventid = $row['id'];
+				$q_event = "SELECT id FROM oc_clndr_objects WHERE eventid = '$eventid'";
+				$result_event = mysql_query($q_event, $this->_db->connection);
 				
-				$tasks["min"] = $this->getTreatmentTypeMin($tasks["type"]);
-				$tasks["costs"] = $this->getTreatmentTypeCosts($tasks["type"]);
-				$tasks["type"] = $this->getTreatmentList($tasks['type'],'task_treatmenttype_'.$tasks["id"], "", $array["canedit"]);
+				// calendar exists
+				if(mysql_num_rows($result_event) > 0) {
+					$q_task = "SELECT a.id,a.mid,a.status,a.type,a.text,a.item_date, b.eventlocation,b.eventlocationuid,b.startdate,b.enddate, b.id as eventid, c.id as calendarid, c.displayname, d.couid FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " as a, oc_clndr_objects as b, oc_clndr_calendars as c, oc_users as d WHERE a.id = '$eventid' and b.calendarid = c.id and c.userid=d.uid and a.bin='0' and b.eventid = '$eventid'";
+					$result_task = mysql_query($q_task, $this->_db->connection);
+					while($row_task = mysql_fetch_array($result_task)) {
+						foreach($row_task as $key => $val) {
+							$tasks[$key] = $val;
+						}
+						//$tasks["time"] = $this->_date->formatDate($tasks["item_date"],CO_TIME_FORMAT);
+						//$tasks["item_date"] = $this->_date->formatDate($tasks["item_date"],CO_DATE_FORMAT);
+						$tasks["calendarlink"] = true;
+						$tasks['linkyear'] = $this->_date->formatDate($tasks["startdate"],'Y');
+						$tasks['linkmonth'] = $this->_date->formatDate($tasks["startdate"],'n')-1;
+						$tasks['linkday'] = $this->_date->formatDate($tasks["startdate"],'d');
+						$tasks["time"] = $this->_date->formatDate($tasks["startdate"],CO_TIME_FORMAT);
+						$tasks["startdate"] = $this->_date->formatDate($tasks["startdate"],CO_DATE_FORMAT);
+						
+						if($tasks['calendarid'] == 2) {
+							$tasks['displayname'] = $lang["CALENDAR_OFFICE_CALENDAR"];
+						}
+						//$date = new DateTime($array['startdate']);
+						//$array['startdate'] = $date->format('d.m.Y');
+						//$array['starttime'] = $date->format('H:i');
+						//$array['linkyear'] = $date->format('Y');
+						//$array['linkmonth'] = $date->format('n')-1;
+						//$array['linkday'] = $date->format('d');
+						if($tasks["eventlocation"] != 0) {
+							$tasks["location"] = $this->getTreatmentLocation($tasks["eventlocation"]);
+						}
+						if($tasks["eventlocationuid"] != 0) {
+							$tasks["location"] = $this->_contactsmodel->getPlaceListPlain($tasks["eventlocationuid"],'location', false);
+						}
+						$tasks["item_date"] = $this->_date->formatDate($tasks["item_date"],CO_DATE_FORMAT);
+						//$tasks["item_invoice_date"] = $this->_date->formatDate($tasks["item_date"],CO_DATE_FORMAT);
+						//$tasks["team"] = $this->_contactsmodel->getUserList($tasks['team'],'treatments_task_team_'.$tasks["id"], "", $array["canedit"]);
+						//$tasks["team_ct"] = empty($tasks["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $tasks['team_ct'];
+						if($tasks["type"] == '') {
+							$tasks["min"] = 0;
+							$tasks["costs"] = 0;
+							$tasks["type"] = '';
+						} else {
+							
+							$tasks["min"] = $this->getTreatmentTypeMin($tasks["type"]);
+							$tasks["costs"] = $this->getTreatmentTypeCosts($tasks["type"]);
+							$tasks["type"] = $this->getTreatmentList($tasks['type'],'task_treatmenttype_'.$tasks["id"], "", $array["canedit"]);
+						}
+						//$tasks["place"] = $this->_contactsmodel->getPlaceList($tasks['place'],'place', $array["canedit"]);
+	
+					}
+					$array['totalcosts'] += $tasks["costs"];
+					$task[] = new Lists($tasks);
+					
+				} else {
+					$q_task = "SELECT * FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where id='$eventid'";
+					$result_task = mysql_query($q_task, $this->_db->connection);
+					while($row_task = mysql_fetch_array($result_task)) {
+						foreach($row_task as $key => $val) {
+							$tasks[$key] = $val;
+						}
+						$tasks["time"] = $this->_date->formatDate($tasks["item_date"],CO_TIME_FORMAT);
+						$tasks["item_date"] = $this->_date->formatDate($tasks["item_date"],CO_DATE_FORMAT);
+						$tasks["team"] = $this->_contactsmodel->getUserList($tasks['team'],'treatments_task_team_'.$tasks["id"], "", $array["canedit"]);
+						$tasks["team_ct"] = empty($tasks["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $tasks['team_ct'];
+						if($tasks["type"] == '') {
+							$tasks["min"] = 0;
+							$tasks["costs"] = 0;
+							$tasks["type"] = '';
+						} else {
+							
+							$tasks["min"] = $this->getTreatmentTypeMin($tasks["type"]);
+							$tasks["costs"] = $this->getTreatmentTypeCosts($tasks["type"]);
+							$tasks["type"] = $this->getTreatmentList($tasks['type'],'task_treatmenttype_'.$tasks["id"], "", $array["canedit"]);
+						}
+						$tasks["calendarlink"] = false;
+						$tasks["location"] = $this->_contactsmodel->getPlaceList($tasks['place'],'place', $array["canedit"]);
+						$tasks['linkyear'] = 0;
+						$tasks['linkmonth'] = 0;
+						$tasks['linkday'] = 0;
+						$tasks["time"] = $this->_date->formatDate($tasks["item_date"],CO_TIME_FORMAT);
+						$tasks["startdate"] = $this->_date->formatDate($tasks["item_date"],CO_DATE_FORMAT);
+						
+					}
+					$array['totalcosts'] += $tasks["costs"];
+						$task[] = new Lists($tasks);
+				}
+				
 			}
-			//$tasks["place"] = $this->_contactsmodel->getPlaceList($tasks['place'],'place', $array["canedit"]);
-			
-			$array['totalcosts'] += $tasks["costs"];
-			$task[] = new Lists($tasks);
+		} // CO_PHYSIO_COMBAT END
+
+		else {
+			// get all calendar tasks
+			$q = "SELECT a.id,a.mid,a.status,a.type,a.text,a.item_date, b.eventlocation,b.eventlocationuid,b.startdate,b.enddate, b.id as eventid, c.id as calendarid, c.displayname, d.couid FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " as a, oc_clndr_objects as b, oc_clndr_calendars as c, oc_users as d where a.mid = '$id' and b.calendarid = c.id and c.userid=d.uid and a.bin='0' and b.eventid = a.id ORDER BY b.startdate ASC";
+			$result = mysql_query($q, $this->_db->connection);
+			while($row = mysql_fetch_array($result)) {
+				foreach($row as $key => $val) {
+					$tasks[$key] = $val;
+				}
+				//$tasks["time"] = $this->_date->formatDate($tasks["item_date"],CO_TIME_FORMAT);
+				//$tasks["item_date"] = $this->_date->formatDate($tasks["item_date"],CO_DATE_FORMAT);
+				$tasks["calendarlink"] = true;
+				$tasks['linkyear'] = $this->_date->formatDate($tasks["startdate"],'Y');
+				$tasks['linkmonth'] = $this->_date->formatDate($tasks["startdate"],'n')-1;
+				$tasks['linkday'] = $this->_date->formatDate($tasks["startdate"],'d');
+				$tasks["time"] = $this->_date->formatDate($tasks["startdate"],CO_TIME_FORMAT);
+				$tasks["startdate"] = $this->_date->formatDate($tasks["startdate"],CO_DATE_FORMAT);
+				
+				if($tasks['calendarid'] == 2) {
+					$tasks['displayname'] = $lang["CALENDAR_OFFICE_CALENDAR"];
+				}
+				//$date = new DateTime($array['startdate']);
+				//$array['startdate'] = $date->format('d.m.Y');
+				//$array['starttime'] = $date->format('H:i');
+				//$array['linkyear'] = $date->format('Y');
+				//$array['linkmonth'] = $date->format('n')-1;
+				//$array['linkday'] = $date->format('d');
+				if($tasks["eventlocation"] != 0) {
+					$tasks["location"] = $this->getTreatmentLocation($tasks["eventlocation"]);
+				}
+				if($tasks["eventlocationuid"] != 0) {
+					$tasks["location"] = $this->_contactsmodel->getPlaceListPlain($tasks["eventlocationuid"],'location', false);
+				}
+				$tasks["item_date"] = $this->_date->formatDate($tasks["item_date"],CO_DATE_FORMAT);
+				//$tasks["item_invoice_date"] = $this->_date->formatDate($tasks["item_date"],CO_DATE_FORMAT);
+				//$tasks["team"] = $this->_contactsmodel->getUserList($tasks['team'],'treatments_task_team_'.$tasks["id"], "", $array["canedit"]);
+				//$tasks["team_ct"] = empty($tasks["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $tasks['team_ct'];
+				if($tasks["type"] == '') {
+					$tasks["min"] = 0;
+					$tasks["costs"] = 0;
+					$tasks["type"] = '';
+				} else {
+					
+					$tasks["min"] = $this->getTreatmentTypeMin($tasks["type"]);
+					$tasks["costs"] = $this->getTreatmentTypeCosts($tasks["type"]);
+					$tasks["type"] = $this->getTreatmentList($tasks['type'],'task_treatmenttype_'.$tasks["id"], "", $array["canedit"]);
+				}
+				//$tasks["place"] = $this->_contactsmodel->getPlaceList($tasks['place'],'place', $array["canedit"]);
+				
+				$array['totalcosts'] += $tasks["costs"];
+				$task[] = new Lists($tasks);
+			}
 		}
-		/*$array['totalcosts'] = 0;
+		
+		/*
+		OLD tasks
+		$array['totalcosts'] = 0;
 		$task = array();
 		$q = "SELECT * FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where mid = '$id' and bin='0' ORDER BY item_date ASC";
 		$result = mysql_query($q, $this->_db->connection);
