@@ -20,6 +20,8 @@ define("CO_FILES_NOHTTPS", "http://dev.companyobserver.com/CO_FILES" );
 
 // product variant: 0 = CO, 1 = Physio
 define("CO_PRODUCT_VARIANT", 0 );
+// PO compat (if true show old treatments without calendar)
+define("CO_PHYSIO_COMBAT", true );
 
 /* -------------------------------------------------------------------------
 * Database Configuration
