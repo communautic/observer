@@ -8,7 +8,7 @@
       <td width="20" style="padding-top: 7px;"><input name="task[<?php echo $value->id;?>]" type="checkbox" value="<?php echo $value->id;?>" class="cbx jNiceHidden <?php if(!$treatment->canedit) { ?>noperm<?php } ?>" <?php echo $checked ;?> /></td>
       <td width="144" class="text11" style="padding-top: 2px;">
           <div class="text13 bold" style="margin-left: 7px;"><?php echo $i;?>. <?php echo $lang["PATIENT_TREATMENT_GOALS_SINGUAL"];?></div><input name="task_id[<?php echo $value->id;?>]" type="hidden" value="<?php echo $value->id;?>"><input class="task_sort" name="task_sort[<?php echo $value->id;?>]" type="hidden" value=""></td>
-		  <td class="tcell-right-inactive text11"><span class="loadCalendarEvent co-link" rel="<?php echo $value->couid;?>,<?php echo $value->linkyear;?>,<?php echo $value->linkmonth;?>,<?php echo $value->linkday;?>,<?php echo $value->eventid;?>"><?php echo $value->startdate;?>&nbsp; | &nbsp;<?php echo $value->time;?>&nbsp; | &nbsp;<?php echo $value->displayname;?>&nbsp; | &nbsp;<?php echo $value->location;?></span></td>
+		  <td class="tcell-right-inactive text11"><span <?php if($value->calendarlink) {?>class="loadCalendarEvent co-link" rel="<?php echo $value->couid;?>,<?php echo $value->linkyear;?>,<?php echo $value->linkmonth;?>,<?php echo $value->linkday;?>,<?php echo $value->eventid;?>"<?php } ?>><?php echo $value->startdate;?>&nbsp; | &nbsp;<?php echo $value->time;?>&nbsp; | &nbsp;<?php echo $value->displayname;?>&nbsp; | &nbsp;<?php echo $value->location;?></span></td>
 		  <?php if($treatment->canedit) { ?><td width="25"><a class="binItem" rel="<?php echo $value->id;?>"><span class="icon-delete"></span></a></td><?php } ?>
     </tr>
   </table>
