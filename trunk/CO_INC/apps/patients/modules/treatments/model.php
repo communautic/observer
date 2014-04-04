@@ -363,8 +363,10 @@ class PatientsTreatmentsModel extends PatientsModel {
 						}
 						$tasks["time"] = $this->_date->formatDate($tasks["item_date"],CO_TIME_FORMAT);
 						$tasks["item_date"] = $this->_date->formatDate($tasks["item_date"],CO_DATE_FORMAT);
-						$tasks["team"] = $this->_contactsmodel->getUserList($tasks['team'],'treatments_task_team_'.$tasks["id"], "", $array["canedit"]);
-						$tasks["team_ct"] = empty($tasks["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $tasks['team_ct'];
+						$tasks["startdate"] = $tasks["item_date"];
+						$tasks['displayname'] = $this->_contactsmodel->getUserListPlain($tasks['team'],'treatments_task_team_'.$tasks["id"], "", $array["canedit"]);
+						//$tasks["team"] = $this->_contactsmodel->getUserList($tasks['team'],'treatments_task_team_'.$tasks["id"], "", $array["canedit"]);
+						//$tasks["team_ct"] = empty($tasks["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $tasks['team_ct'];
 						if($tasks["type"] == '') {
 							$tasks["min"] = 0;
 							$tasks["costs"] = 0;
@@ -380,8 +382,8 @@ class PatientsTreatmentsModel extends PatientsModel {
 						$tasks['linkyear'] = 0;
 						$tasks['linkmonth'] = 0;
 						$tasks['linkday'] = 0;
-						$tasks["time"] = $this->_date->formatDate($tasks["item_date"],CO_TIME_FORMAT);
-						$tasks["startdate"] = $this->_date->formatDate($tasks["item_date"],CO_DATE_FORMAT);
+						//$tasks["time"] = $this->_date->formatDate($tasks["item_date"],CO_TIME_FORMAT);
+						//$tasks["startdate"] = $this->_date->formatDate($tasks["item_date"],CO_DATE_FORMAT);
 						
 					}
 					$array['totalcosts'] += $tasks["costs"];
@@ -613,7 +615,7 @@ class PatientsTreatmentsModel extends PatientsModel {
 				$checked_items[$key] = '0';
 			}
 			//echo $task_date[$key]. " " . $task_time[$key];
-			//$item_date = $this->_date->formatDateGMT($task_date[$key]. " " . $task_time[$key]);
+			$item_date = $this->_date->formatDate($task_date[$key]);
 
 			//$$this->_date->formatDateGMT($treatmentdate . " " . $time);
 			/*if(isset($treatments_task_team[$key])) {
@@ -627,7 +629,7 @@ class PatientsTreatmentsModel extends PatientsModel {
 			} else {
 				$treatments_task_team_ct_i = "";
 			}*/
-			$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " set status = '$checked_items[$key]', text = '$task_text[$key]', type='$task_treatmenttype[$key]' WHERE id='$task_id[$key]'";
+			$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " set status = '$checked_items[$key]', item_date = '$item_date', text = '$task_text[$key]', type='$task_treatmenttype[$key]' WHERE id='$task_id[$key]'";
 			$result = mysql_query($q, $this->_db->connection);
 		}
 		if ($result) {
