@@ -46,7 +46,7 @@ class MySQLDB
 
       /* Verify that user is in database */
       //$q = "SELECT password FROM ".CO_TBL_USERS." WHERE username = '$username' and password = '$password'";
-	  $q = "SELECT password FROM ".CO_TBL_USERS." WHERE username = '$username'";
+	  $q = "SELECT id,password FROM ".CO_TBL_USERS." WHERE username = '$username'";
       $result = mysql_query($q, $this->connection);
       if(!$result || (mysql_numrows($result) < 1)){
          return 1; //Indicates username failure
@@ -55,6 +55,8 @@ class MySQLDB
       $dbarray = mysql_fetch_array($result);
       $dbarray['password'] = stripslashes($dbarray['password']);
       $password = stripslashes($password);
+	  
+	  $uid = $dbarray['id'];
 	  
 	  // first try new password hashing
 	  $hasher = new PasswordHash(8, 0);
@@ -67,6 +69,11 @@ class MySQLDB
 			$hasher = new PasswordHash(8, 0);
 			$hash = $hasher->HashPassword($password.PASSWORDSALT);
 			$this->updateUserField($username, 'password', $hash);
+			//check for calendar
+			if($this->checkCalendar($uid)) {
+				$this->updateUserCalendar($uid,$username,$hash);
+			}
+			
 			return 0;
 		 
 		 // now update to new pwd hash

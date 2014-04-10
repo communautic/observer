@@ -508,6 +508,12 @@ class Session
 	   global $database;
 	   return $database->checkUserActive($id);
    }
+   
+   function strToSafeURL($str) {
+		setlocale(LC_ALL, 'en_US.UTF8');
+		$str = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $str);
+		return $str;
+   }
 
 
 }

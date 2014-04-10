@@ -129,7 +129,7 @@ class CalendarModel extends Model {
 		$end = self::getUTCforMDB($end);
 		
 		$calendarobjects = array();
-		$q ="SELECT * FROM oc_clndr_objects WHERE calendarid = '$id' AND objecttype = 'VEVENT' AND ((startdate >= '$start' AND enddate <= '$end' AND repeating = '0') OR (enddate >= '$end' AND startdate <= '$start' AND repeating = 0) OR (startdate <= '$end' AND repeating = '1') )";
+		$q ="SELECT * FROM oc_clndr_objects WHERE calendarid = '$id' AND objecttype = 'VEVENT' AND ((startdate >= '$start' AND enddate <= '$end' AND repeating = '0') OR (enddate >= '$start' AND startdate <= '$end' AND repeating = 0) OR (startdate <= '$end' AND repeating = '1') )";
 		$result = mysql_query($q, $this->_db->connection);
 		/* CO Array
 		while($row = mysql_fetch_array($result))  {

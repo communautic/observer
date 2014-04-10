@@ -552,6 +552,7 @@ Calendar={
 			},
 			display:function(calendarid)
 			{
+				 
 				$('#calendar-right').fullCalendar( 'removeEvents').fullCalendar('removeEventSources');
 				$.ajax({ type: "GET", dataType:  'json', url: "/", data: { path: 'apps/calendar/', request: 'showSingleCalendar', calendarid: calendarid }, success: function(data){
 							$('#calendar-right').fullCalendar('addEventSource', data.eventSource);
@@ -559,6 +560,7 @@ Calendar={
 							$('#calendar-right').fullCalendar('addEventSource', {"url":"\/?path=apps\/calendar&request=getrequestedEvents&calendar_id=2","backgroundColor":"#FFD296","borderColor":"#FFD296","textColor":"#000000","cache":true});
 							// add holidays 
 							$('#calendar-right').fullCalendar('addEventSource', {"url":"\/?path=apps\/calendar&request=getrequestedEvents&calendar_id="+holidayCalendar+"","backgroundColor":"#FFD20A","borderColor":"#FFD20A","textColor":"#000000","cache":true});
+							$(".ui-tooltip-content").parents('div').remove();
 						}
 				  });
 			}
@@ -1110,7 +1112,7 @@ var defaults = {
 	ignoreTimezone: true,
 	
 	// event ajax
-	lazyFetching: false,
+	lazyFetching: true,
 	startParam: 'start',
 	endParam: 'end',
 	
@@ -7264,6 +7266,9 @@ $(document).ready(function() {
 					if(event.calendarid != 2) {
 					element.addClass('fc-event-treatment');
 					}
+					if(event.eventclass != '') {
+					element.addClass(event.eventclass);
+					}
 					element.prepend('<div class="fc-event-treatment-icon loadTreatment" rel="patients,'+event.folderid+','+event.patientid+','+event.treatmentid+',treatments"></div>');
 				}
 				element.addClass('coTooltip');
@@ -7351,7 +7356,7 @@ $(document).ready(function() {
 				$('#titleDisplay').show();
 				//$('#treatmentLocDisplay').hide();
 				//$('#locDisplay').show();
-				//$('#dateToDisplay').show();
+				$('#dateToDisplay').show();
 				$('#allDayDisplay').show();
 			break;
 			case '1':
@@ -7359,7 +7364,7 @@ $(document).ready(function() {
 				$('#titleDisplay').hide();
 				//$('#treatmentLocDisplay').show();
 				//$('#locDisplay').hide();
-				//$('#dateToDisplay').hide();
+				$('#dateToDisplay').hide();
 				$('#allDayDisplay').hide();
 			break;
 		}
