@@ -338,11 +338,15 @@ class ContactsModel extends Model {
 		if($array["calendar"] == 1) {
 			$array["calendar_status"] = $lang['CONTACTS_CALENDAR_ACTIVE'];
 			$url = explode('.',$_SERVER['HTTP_HOST']);
+			//$cal_uri = strtolower($array['firstname'].$array['lastname']);
+			$cal_uri = $session->strToSafeURL(strtolower($array['firstname'].$array['lastname']));
+			$replace = array("'","."," ", "&quot;");
+			$cal_uri = str_replace($replace, "", $cal_uri);
 			$caldavurl = $url[0] . '.sync.' . $url[1] . '.' .$url[2];
-			$array['outlook_caldavurl'] = 'https://' . $caldavurl . '/remote.php/caldav/calendars/' . $array["username"] . '/' . $array["username"] . '?export';
+			$array['outlook_caldavurl'] = 'https://' . $caldavurl . '/remote.php/caldav/calendars/' . $array["username"] . '/' . $cal_uri . '?export';
 			$array['ios_caldavurl'] = $caldavurl . '/remote.php/caldav/principals/' . $array["username"];
-			$array['caldavurl'] = 'https://' . $caldavurl . '/remote.php/caldav/calendars/' . $array["username"] . '/' . $array["username"];
-			$array['caldavurl_shared'] = 'https://' . $caldavurl . '/remote.php/caldav/calendars/USERNAME/' . $array["username"] . '_shared_by_' . $array["username"];
+			$array['caldavurl'] = 'https://' . $caldavurl . '/remote.php/caldav/calendars/' . $array["username"] . '/' . $cal_uri;
+			$array['caldavurl_shared'] = 'https://' . $caldavurl . '/remote.php/caldav/calendars/USERNAME/' . $cal_uri . '_shared_by_' . $array["username"];
 		}
 		
 		if(!empty($array["username"])) {
@@ -480,7 +484,9 @@ class ContactsModel extends Model {
 			$result = mysql_query($q, $this->_db->connection);
 			$calendar_userid = mysql_result($result,0);
 			$displayname = $lastname . ' ' . $firstname;
-			$uri = strtolower($firstname.$lastname);
+			$uri = $session->strToSafeURL(strtolower($firstname.$lastname));
+			$replace = array("'","."," ", "&quot;");
+			$uri = str_replace($replace, "", $uri);
 			$q = "UPDATE oc_clndr_calendars set displayname = '$displayname', uri='$uri' WHERE userid='$calendar_userid'";
 			$result = mysql_query($q, $this->_db->connection);
 			// check for share
@@ -599,6 +605,12 @@ class ContactsModel extends Model {
 		global $session;
 		$now = gmdate("Y-m-d H:i:s");
 		
+		// check for calendar
+		$calendar = $this->_db->checkCalendar($id);
+		if($calendar) { // update display name
+			$this->removeCalendar($id);
+		}
+		
 		$q = "UPDATE " . CO_TBL_USERS . " set bin = '1', bintime = '$now', binuser= '$session->uid' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
@@ -608,6 +620,13 @@ class ContactsModel extends Model {
 
 
 	function restoreContact($id) {
+		
+		// check for calendar
+		$calendar = $this->_db->checkCalendar($id);
+		if($calendar) { // update display name
+			$this->setCalendar($id);
+		}
+		
 		$q = "UPDATE " . CO_TBL_USERS . " set bin = '0' WHERE id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
@@ -616,6 +635,13 @@ class ContactsModel extends Model {
 	}
 	
 	function deleteContact($id) {
+		
+		// check for calendar
+		$calendar = $this->_db->checkCalendar($id);
+		if($calendar) { // update display name
+			$this->deleteCalendar($id);
+		}
+		
 		$q = "DELETE FROM " . CO_TBL_USER_SETTINGS . " WHERE uid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
@@ -1401,6 +1427,38 @@ class ContactsModel extends Model {
 		// remove calendar
 		// remove calendar objects
 		// remove share
+	}
+	
+	
+	function deleteCalendar($id) {
+		$q = "SELECT uid FROM oc_users WHERE couid='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$uid = mysql_result($result,0);
+		
+		$q = "SELECT id FROM oc_clndr_calendars WHERE userid='$uid'";
+		$result = mysql_query($q, $this->_db->connection);
+		$calid = mysql_result($result,0);
+		
+		
+		// delete share
+		$q = "DELETE FROM oc_share WHERE item_type='calendar' and item_source='$calid'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		// delete events
+		$q = "DELETE FROM oc_clndr_objects WHERE calendarid='$calid'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		// delete calendar
+		$q = "DELETE FROM oc_clndr_calendars WHERE id='$calid'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		// delete from group
+		$q = "DELETE FROM oc_group_user WHERE uid='$uid'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		// delete user
+		$q = "DELETE FROM oc_users WHERE couid='$id'";
+		$result = mysql_query($q, $this->_db->connection);
 	}
 
 	

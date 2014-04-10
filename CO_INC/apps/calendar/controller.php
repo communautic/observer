@@ -120,6 +120,7 @@ class Calendar extends Controller {
 			$event['treat'] = 0;
 			$event['patientid'] = 0;
 			$event['folderid'] = 0;
+			$eventclass = '';
 			//$regularEventDisplay = '';
 			//$treatmentEventDisplay = '';
 			if($event['eventtype'] == 1) {
@@ -134,6 +135,7 @@ class Calendar extends Controller {
 				}
 				if($event['eventlocationuid'] != 0) {
 					$title .=  '<br /> <span style="font-weight: normal">' . $lang['CALENDAR_EVENT_HOUSE_CALL'] . '</span>';
+					$eventclass = 'fc-event-treatment-housecall';
 				}
 				$event['treat'] = $treatmentevent['mid'];
 				$event['patientid'] = $treatmentevent['id'];
@@ -171,7 +173,8 @@ class Calendar extends Controller {
 							'patientid'=>$event['patientid'],
 							'folderid'=>$event['folderid'],
 							'tooltip' => $tooltip,
-							'calendarid'=>$calendarid
+							'calendarid'=>$calendarid,
+							'eventclass'=>$eventclass
 							);
 			
 			if($this->isrepeating($id) && $this->model->is_cached_inperiod($event['id'], $start, $end)) {
@@ -937,10 +940,12 @@ class Calendar extends Controller {
 			$return[0] = $use->name;
 			foreach($use->children as $property) {
 				if($property->name == 'DTSTART') {
-					$return[1] = $this->getUTCforMDB($property->getDateTime());
+					//$return[1] = $this->getUTCforMDB($property->getDateTime());
+					$return[1] = $property->getDateTime()->format('Y-m-d H:i');
 				}
 				elseif($property->name == 'DTEND') {
-					$return[2] = $this->getUTCforMDB($property->getDateTime());
+					//$return[2] = $this->getUTCforMDB($property->getDateTime());
+					$return[2] = $property->getDateTime()->format('Y-m-d H:i');
 				}
 				elseif($property->name == 'SUMMARY') {
 					$return[3] = $property->value;

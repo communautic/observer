@@ -744,6 +744,7 @@ table.fc-border-separate {
 .fc-event-treatment-icon { position: absolute; z-index: 9; top: 0; right: 0; width: 16px; height: 16px; 
 background: url("../../img/icons.png") no-repeat scroll -320px -20px transparent;
 }
+.fc-event-treatment-housecall { background-color: #DCD2FF !important; /*border-color: #A5BFE1 !important;*/}
 .fc-sat, .fc-sun { background-color: #E6EDF7;}
 	
 .calendarDialog .ui-corner-all {
