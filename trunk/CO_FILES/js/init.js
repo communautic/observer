@@ -516,7 +516,7 @@ $(document).ready(function() {
 				}
 			})
 			if(app != 'calendar') {
-				if($('#event').dialog('isOpen') == true){
+				if($('#event').is( ":ui-dialog" ) && $('#event').dialog('isOpen') == true){
 					$('#event').dialog('destroy').remove();
 				}
 			}
@@ -977,7 +977,7 @@ $(document).ready(function() {
 				$('#modalDialogTime').dialog("close");
 			}
 		}
-		if($('#modalDialogTimeCalendar').dialog("isOpen")) {
+		if($('#modalDialogTimeCalendar').is( ":ui-dialog" ) && $('#modalDialogTimeCalendar').dialog("isOpen")) {
 			if(clicked.is('#modalDialogTimeCalendar') || clicked.parents().is('#modalDialogTimeCalendar')) { 
 			} else {
 				$('#modalDialogTimeCalendar').dialog("close");
