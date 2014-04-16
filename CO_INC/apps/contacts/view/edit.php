@@ -71,7 +71,9 @@
 	<ul class="contentTabsList">
 		<li><span class="active" rel="ContactAddress"><?php echo $lang["CONTACT_TAB_ADDRESS"];?></span></li>
 		<li><span rel="ContactAccess"><?php echo $lang["CONTACT_TAB_ACCESS"];?></span></li>
-        <li><span rel="ContactCalendar"><?php echo $lang["CONTACT_TAB_CALENDAR"];?></span></li>
+        <?php if($contact->showCalendarTab) { ?>
+        		<li><span rel="ContactCalendar"><?php echo $lang["CONTACT_TAB_CALENDAR"];?></span></li>
+        <?php } ?>
 	</ul>
     <div id="ContactTabsContent" class="contentTabsContent">
     <div id="ContactAddress">
@@ -218,7 +220,7 @@ foreach($contact->applications as $key => $val) { ?>
 ?>
     </div>
     
-    
+    <?php if($contact->showCalendarTab) { ?>
     <div id="ContactCalendar" style="display: none;">
 		<?php if($contact->access_status != 0) { ?>
         <table border="0" cellpadding="0" cellspacing="0" class="table-content">
@@ -263,7 +265,7 @@ foreach($contact->applications as $key => $val) { ?>
         </table>-->
         <?php } ?>
     </div>
-    
+    <?php } ?>
     
     </div>
 </div>

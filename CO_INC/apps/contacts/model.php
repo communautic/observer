@@ -330,6 +330,15 @@ class ContactsModel extends Model {
 		$array["applications"] = "";
 		
 		// calendar
+		$array["showCalendarTab"] = false;
+		if($applications != "") {
+			foreach($applications as $app => $display) {
+				if($app == 'calendar') {
+					$array["showCalendarTab"] = true;
+				}
+			}
+		}
+		if($array["showCalendarTab"]) {
 		$array["calendar_status"] = $lang['CONTACTS_CALENDAR_DEACTIVE'];
 		$array['outlook_caldavurl'] = '';
 		$array['ios_caldavurl'] = '';
@@ -347,6 +356,7 @@ class ContactsModel extends Model {
 			$array['ios_caldavurl'] = $caldavurl . '/remote.php/caldav/principals/' . $array["username"];
 			$array['caldavurl'] = 'https://' . $caldavurl . '/remote.php/caldav/calendars/' . $array["username"] . '/' . $cal_uri;
 			$array['caldavurl_shared'] = 'https://' . $caldavurl . '/remote.php/caldav/calendars/USERNAME/' . $cal_uri . '_shared_by_' . $array["username"];
+		}
 		}
 		
 		if(!empty($array["username"])) {
