@@ -413,10 +413,10 @@ class CalendarModel extends Model {
 	function getBusyLocations($from,$fromtime,$totime) {
 		
 		$locations = array();
-		//$startdate = $this->_date->formatDateGMT($from . " " . $fromtime);
-		//$enddate = $this->_date->formatDateGMT( $from . " " . $totime);
-		$startdate = $this->_date->formatDate($from . " " . $fromtime);
-		$enddate = $this->_date->formatDate($from . " " . $totime);
+		$startdate = new DateTime($from . " " . $fromtime);
+		$startdate = $startdate->format('Y-m-d H:i:s');
+		$enddate = new DateTime($from . " " . $totime);
+		$enddate = $enddate->format('Y-m-d H:i:s');
 		$q ="SELECT eventlocation FROM oc_clndr_objects WHERE ((startdate<='$startdate' and enddate>'$startdate') or (startdate<'$enddate' and enddate>='$enddate') or (startdate>'$startdate' and enddate<'$enddate'))";
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {

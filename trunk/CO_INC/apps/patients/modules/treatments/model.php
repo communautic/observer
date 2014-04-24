@@ -316,9 +316,11 @@ class PatientsTreatmentsModel extends PatientsModel {
 						$tasks['linkyear'] = $this->_date->formatDate($tasks["startdate"],'Y');
 						$tasks['linkmonth'] = $this->_date->formatDate($tasks["startdate"],'n')-1;
 						$tasks['linkday'] = $this->_date->formatDate($tasks["startdate"],'d');
-						$tasks["time"] = $this->_date->formatDate($tasks["startdate"],CO_TIME_FORMAT);
+						//$tasks["time"] = $this->_date->formatDate($tasks["startdate"],CO_TIME_FORMAT);
+						$tasks["time"] = new DateTime($tasks["startdate"]);
+						$tasks["time"] = $tasks["time"]->format('H:i');
 						$tasks["startdate"] = $this->_date->formatDate($tasks["startdate"],CO_DATE_FORMAT);
-						
+
 						if($tasks['calendarid'] == 2) {
 							$tasks['displayname'] = $lang["CALENDAR_OFFICE_CALENDAR"];
 						}
@@ -407,7 +409,9 @@ class PatientsTreatmentsModel extends PatientsModel {
 				$tasks['linkyear'] = $this->_date->formatDate($tasks["startdate"],'Y');
 				$tasks['linkmonth'] = $this->_date->formatDate($tasks["startdate"],'n')-1;
 				$tasks['linkday'] = $this->_date->formatDate($tasks["startdate"],'d');
-				$tasks["time"] = $this->_date->formatDate($tasks["startdate"],CO_TIME_FORMAT);
+				//$tasks["time"] = $this->_date->formatDate($tasks["startdate"],CO_TIME_FORMAT);
+				$tasks["time"] = new DateTime($tasks["startdate"]);
+				$tasks["time"] = $tasks["time"]->format('H:i');
 				$tasks["startdate"] = $this->_date->formatDate($tasks["startdate"],CO_DATE_FORMAT);
 				
 				if($tasks['calendarid'] == 2) {
