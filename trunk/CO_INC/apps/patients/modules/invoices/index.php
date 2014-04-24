@@ -86,7 +86,7 @@ if (!empty($_POST['request'])) {
 	
 	switch ($_POST['request']) {
 		case 'setDetails':
-			echo($patientsInvoices->setDetails($_POST['pid'], $_POST['id'], $_POST['invoice_date'], $_POST['invoice_date_sent'], $_POST['invoice_number'],$_POST['payment_reminder'], $system->checkMagicQuotes($_POST['protocol_payment_reminder']), $system->checkMagicQuotes($_POST['protocol_invoice']),$_POST['documents']));
+			echo($patientsInvoices->setDetails($_POST['pid'], $_POST['id'], $_POST['invoice_date'], $_POST['invoice_date_sent'], $_POST['invoiceaddress'], $_POST['invoice_number'],$_POST['payment_reminder'], $system->checkMagicQuotes($_POST['protocol_payment_reminder']), $system->checkMagicQuotes($_POST['protocol_invoice']),$_POST['documents']));
 		break;
 		case 'sendDetails':
 			echo($patientsInvoices->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));

@@ -141,26 +141,19 @@ class PatientsInvoicesModel extends PatientsModel {
 		$array["perms"] = $this->getPatientAccess($array["pid"]);
 		$array["canedit"] = true;
 		$array["showCheckout"] = false;
-		//$array["checked_out_user_text"] = $this->_contactsmodel->getUserListPlain($array['checked_out_user']);
-
-		/*if($array["perms"] == "sysadmin" || $array["perms"] == "admin") {
-			if($array["checked_out"] == 1) {
-				if($array["checked_out_user"] == $session->uid) {
-					$array["canedit"] = true;
-				} else if(!$session->checkUserActive($array["checked_out_user"])) {
-					$array["canedit"] = $this->checkoutInvoice($id);
-					$array["canedit"] = true;
-				} else {
-					$array["canedit"] = false;
-					$array["showCheckout"] = true;
-		$array["checked_out_user_phone1"] = $this->_contactsmodel->getContactFieldFromID($array['checked_out_user'],"phone1");
-		$array["checked_out_user_email"] = $this->_contactsmodel->getContactFieldFromID($array['checked_out_user'],"email");
-
-				}
-			} else {
-				$array["canedit"] = $this->checkoutInvoice($id);
+		if($array['invoice_address'] == 0) {
+			$array['invoiceaddress'] = $array['patient'];
+		} else {
+			$alt_invoice = $array['invoice_address'];
+			$array["invoiceaddress_print"] = $this->_contactsmodel->getUserListPlain($array['invoice_address']);
+			$array["invoiceaddress"] = $this->_contactsmodel->getUserList($array['invoice_address'],'invoice_address', "", $array["canedit"]);
+			$q_alt = "SELECT lastname,firstname,title as ctitle,title2,position,phone1,email,address_line1,address_line2,address_town,address_postcode FROM co_users WHERE id = '$alt_invoice'";
+			$result_alt = mysql_query($q_alt, $this->_db->connection);
+			$row_alt = mysql_fetch_array($result_alt);
+			foreach($row_alt as $key => $val) {
+				$array[$key] = $val;
 			}
-		}*/
+		}
 		
 		// dates
 		$array["item_date"] = $this->_date->formatDate($array["item_date"],CO_DATE_FORMAT);
@@ -313,13 +306,13 @@ class PatientsInvoicesModel extends PatientsModel {
 		return $arr;
    }
 
-   function setDetails($pid,$id,$invoice_date,$invoice_date_sent,$invoice_number,$payment_reminder,$protocol_payment_reminder,$protocol,$documents) {
+   function setDetails($pid,$id,$invoice_date,$invoice_date_sent,$invoice_address,$invoice_number,$payment_reminder,$protocol_payment_reminder,$protocol,$documents) {
 		global $session, $lang;
 		$now = gmdate("Y-m-d H:i:s");
 		$invoice_date = $this->_date->formatDate($invoice_date);
 		$invoice_date_sent = $this->_date->formatDate($invoice_date_sent);
 		$payment_reminder = $this->_date->formatDate($payment_reminder);
-		$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS . " set invoice_date='$invoice_date', invoice_date_sent='$invoice_date_sent', invoice_number='$invoice_number', payment_reminder='$payment_reminder', protocol_payment_reminder='$protocol_payment_reminder', protocol_invoice='$protocol', documents = '$documents' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS . " set invoice_date='$invoice_date', invoice_date_sent='$invoice_date_sent', invoice_address='$invoice_address', invoice_number='$invoice_number', payment_reminder='$payment_reminder', protocol_payment_reminder='$protocol_payment_reminder', protocol_invoice='$protocol', documents = '$documents' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {

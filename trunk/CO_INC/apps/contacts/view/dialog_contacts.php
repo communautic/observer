@@ -11,6 +11,12 @@ switch($field) {
 			$hideTab3 = 1;
 		}
 	break;
+	case "patientsinvoicemanagement":
+		if($title == 'therapist') {
+			$hideTab2 = 1;
+			$hideTab3 = 1;
+		}
+	break;
 }
 if (preg_match("/postitto/i", $field)) {
    $hideTab3 = 1;
