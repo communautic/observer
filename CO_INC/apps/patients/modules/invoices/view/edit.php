@@ -64,11 +64,17 @@
     <td class="tcell-right-nopadding"><input name="invoice_number" type="text" class="bg" value="<?php echo($invoice->invoice_number);?>" /></td>
   </tr>
 </table>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+	<tr>
+	  <td class="tcell-left text11"><span class="<?php if($invoice->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="patientsinvoiceaddress" append="0" title="therapist"><span><?php echo $lang["PATIENT_INVOICE_ADDRESS"];?></span></span></td>
+	  <td class="tcell-right"><div id="patientsinvoiceaddress" class="itemlist-field"><?php echo($invoice->invoiceaddress);?></div></td>
+	</tr>
+</table>
 <div class="content-spacer"></div>
     <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-inactive no-margin loadContactExternal" rel="<?php echo($invoice->patient_id)?>" style="cursor: pointer;">
   <tr>
 		<td class="tcell-left-inactive text11" style="padding-top: 2px;"><?php echo $lang["PATIENT_CONTACT_DETAILS"];?></td>
-    	<td class="tcell-right-inactive"><?php echo($invoice->ctitle)?> <?php echo($invoice->title2)?> <?php echo($invoice->patient);?><br />
+    	<td class="tcell-right-inactive"><?php echo($invoice->ctitle)?> <?php echo($invoice->title2)?> <?php echo($invoice->lastname);?> <?php echo($invoice->firstname);?><br />
         <span class="text11"><?php echo($invoice->position . " &nbsp; | &nbsp; " . $lang["PATIENT_CONTACT_EMAIL"] . " " . $invoice->email . " &nbsp; | &nbsp; " . $lang["PATIENT_CONTACT_PHONE"] . " " . $invoice->phone1);?></span>
         </td>
         </tr>

@@ -12,6 +12,7 @@ $lang["PATIENT_INVOICE_ACTION_NEW"] = 'neue Rechnung anlegen';
 $lang["PATIENT_INVOICE_DATE"] = 'Invoice date';
 $lang["PATIENT_INVOICE_DATE_SENT"] = 'Invoice sent';
 $lang["PATIENT_INVOICE_NUMBER"] = 'Invoice No.';
+$lang["PATIENT_INVOICE_ADDRESS"] = 'Billing address';
 $lang["PATIENT_INVOICE_PAYMENT_REMINDER"] = 'Payment reminder';
 $lang["PATIENT_INVOICE_SERVICES"] = 'Services';
 $lang["PATIENT_INVOICE_SERVICES_LIST"] = 'Services';

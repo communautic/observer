@@ -7,6 +7,7 @@ function patientsInvoices(name) {
 	this.coPopupEditClass = 'popup-full';
 
 	this.formProcess = function(formData, form, poformOptions) {
+		formData[formData.length] = processListApps('invoiceaddress');
 		formData[formData.length] = processDocListApps('documents');
 		}
 	this.formResponse = function(data) {}
