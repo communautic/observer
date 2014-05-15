@@ -225,9 +225,9 @@ function contactsContact(name) {
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/contacts&request=getContactList", success: function(data){
 			$("#contacts1 ul:eq(0)").html(data.html);
 			if(data.html == "<li></li>") {
-				projectsActions(0);
+				contactsActions(0);
 			} else {
-				projectsActions(1);
+				contactsActions(1);
 			}
 			var idx = $("#contacts1 ul:eq(0) .module-click").index($("#contacts1 ul:eq(0) .module-click[rel='"+id+"']"));
 			$("#contacts1 ul:eq(0) .module-click:eq("+idx+")").addClass('active-link');
@@ -570,9 +570,9 @@ function contactsGroups(name) {
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/contacts&request=getGroupList", success: function(data){
 			$("#contacts1 ul:eq(1)").html(data.html);
 			if(data.html == "<li></li>") {
-				projectsActions(0);
+				contactsActions(0);
 			} else {
-				projectsActions(1);
+				contactsActions(1);
 			}
 			var idx = $("#contacts1 ul:eq(1) .module-click").index($("#contacts1 ul:eq(1) .module-click[rel='"+id+"']"));
 			$("#contacts1 ul:eq(1) .module-click:eq("+idx+")").addClass('active-link');
