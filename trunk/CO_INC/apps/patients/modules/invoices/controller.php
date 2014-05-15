@@ -84,7 +84,7 @@ class PatientsInvoices extends Patients {
 						include 'view/print_invoice.php';
 						$html = ob_get_contents();
 					ob_end_clean();
-					$title = $lang["PATIENT_INVOICE_TITLE"] . ' ' . $invoice->title;
+					$title = $lang["PATIENT_INVOICE_TITLE"][0] . $invoice->invoice_number . ' ' . $invoice->lastname;
 				}
 				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_INVOICE"];
 				$GLOBALS['BANKING'] = $invoice->m_bank . ' | BLZ: ' . $invoice->m_sort_code . ' | Kontonr.: ' . $invoice->m_account_number . ' | IBAN: ' . $invoice->m_iban . ' | BIC: ' . $invoice->m_bic;
@@ -108,7 +108,7 @@ class PatientsInvoices extends Patients {
 						include 'view/print_services.php';
 						$html = ob_get_contents();
 					ob_end_clean();
-					$title = $lang["PATIENT_INVOICE_SERVICES"] . ' ' . $invoice->title;
+					$title = $lang["PATIENT_INVOICE_SERVICES"][0] . $invoice->invoice_number . ' ' . $invoice->lastname;
 				}
 				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_SERVICES"];
 				$GLOBALS['BANKING'] = $invoice->m_bank . ' | BLZ: ' . $invoice->m_sort_code . ' | Kontonr.: ' . $invoice->m_account_number . ' | IBAN: ' . $invoice->m_iban . ' | BIC: ' . $invoice->m_bic;
@@ -132,7 +132,7 @@ class PatientsInvoices extends Patients {
 						include 'view/print_reminder.php';
 						$html = ob_get_contents();
 					ob_end_clean();
-					$title = $lang["PATIENT_INVOICE_PAYMENT_REMINDER"] . ' ' . $invoice->title;
+					$title = $lang["PATIENT_INVOICE_PAYMENT_REMINDER"][0] . $invoice->invoice_number . ' ' . $invoice->lastname;
 				}
 				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_REMINDER"];
 				$GLOBALS['BANKING'] = $invoice->m_bank . ' | BLZ: ' . $invoice->m_sort_code . ' | Kontonr.: ' . $invoice->m_account_number . ' | IBAN: ' . $invoice->m_iban . ' | BIC: ' . $invoice->m_bic;
@@ -155,7 +155,7 @@ class PatientsInvoices extends Patients {
 						include 'view/print_stationary.php';
 						$html = ob_get_contents();
 					ob_end_clean();
-					$title = 'Kuvert ' . $invoice->title;
+					$title = 'Kuvert ' . $invoice->lastname;
 				}
 				//$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_INVOICE"];
 				$this->printStationary($title,$html,'595','290');
@@ -240,7 +240,7 @@ class PatientsInvoices extends Patients {
 						include 'view/print_invoice.php';
 						$html = ob_get_contents();
 					ob_end_clean();
-					$title = $invoice->title;
+					$title = $lang["PATIENT_INVOICE_TITLE"][0] . $invoice->invoice_number . ' ' . $invoice->lastname;
 				}
 				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_INVOICE"];
 				$GLOBALS['BANKING'] = CO_INVOICE_FOOTER;
@@ -259,7 +259,7 @@ class PatientsInvoices extends Patients {
 						include 'view/print_services.php';
 						$html = ob_get_contents();
 					ob_end_clean();
-					$title = $lang["PATIENT_INVOICE_SERVICES"] . ' ' . $invoice->title;
+					$title = $lang["PATIENT_INVOICE_SERVICES"][0] . $invoice->invoice_number . ' ' . $invoice->lastname;
 				}
 				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_SERVICES"];
 				$GLOBALS['BANKING'] = CO_INVOICE_FOOTER;
@@ -278,7 +278,7 @@ class PatientsInvoices extends Patients {
 						include 'view/print_reminder.php';
 						$html = ob_get_contents();
 					ob_end_clean();
-					$title = $invoice->title;
+					$title = $lang["PATIENT_INVOICE_PAYMENT_REMINDER"][0] . $invoice->invoice_number . ' ' . $invoice->lastname;
 				}
 				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_REMINDER"];
 				$GLOBALS['BANKING'] = CO_INVOICE_FOOTER;
