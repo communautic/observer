@@ -46,9 +46,9 @@
   </tr>
 </table>
 <?php 
-$showAnswer = ' style="display: none"';
+$showAnswer = ' style="display: none; -webkit-user-select: text;"';
 if(isset($answers) && !empty($answers)) { 
-	$showAnswer = ' style="display: block"';
+	$showAnswer = ' style="display: block; -webkit-user-select: text;"';
 }
 ?>
 <table id="forumsAnswerOuter" <?php echo($showAnswer);?> border="0" cellpadding="0" cellspacing="0" class="table-content tbl-inactive">
