@@ -70,6 +70,8 @@ $lang['CONTACTS_CALENDAR_GIVE_RIGHT'] = 'aktivieren';
 $lang['CONTACTS_CALENDAR_REMOVE_RIGHT'] = 'deaktivieren';
 $lang['CONTACTS_CALENDAR_ACTIVE'] = 'aktiviert';
 $lang['CONTACTS_CALENDAR_DEACTIVE'] = 'deaktiviert';
+$lang['CONTACTS_CALENDAR_OTHERS'] = 'Andere / Caldav';
+$lang['CONTACTS_CALENDAR_ALL_URL'] = 'gemeinschaftskalender';
 
 $lang['CONTACTS_CUSTOM'] = 'Text';
 

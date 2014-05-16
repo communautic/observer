@@ -242,27 +242,40 @@ foreach($contact->applications as $key => $val) { ?>
        <table border="0" cellpadding="0" cellspacing="0" class="table-content">
             <tr>
               <td class="tcell-left text11"><span><span>Outlook/iCalendar</span></span></td>
-              <td class="tcell-right"><?php echo $contact->outlook_caldavurl;?></td>
+              <td class="tcell-right" style="-webkit-user-select: text"><?php echo $contact->outlook_caldavurl;?></td>
             </tr>
         </table>
         <table border="0" cellpadding="0" cellspacing="0" class="table-content">
             <tr>
               <td class="tcell-left text11"><span><span>Apple</span></span></td>
-              <td class="tcell-right"><?php echo $contact->ios_caldavurl;?></td>
+              <td class="tcell-right" style="-webkit-user-select: text"><?php echo $contact->ios_caldavurl;?></td>
             </tr>
         </table>
          <table border="0" cellpadding="0" cellspacing="0" class="table-content">
             <tr>
-              <td class="tcell-left text11"><span><span>Andere / Caldav</span></span></td>
-              <td class="tcell-right"><?php echo $contact->caldavurl;?></td>
+              <td class="tcell-left text11"><span><span><?php echo $lang['CONTACTS_CALENDAR_OTHERS'];?></span></span></td>
+              <td class="tcell-right" style="-webkit-user-select: text"><?php echo $contact->caldavurl;?></td>
             </tr>
         </table>
-        <!--<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+        <div class="content-spacer"></div>
+        <table border="0" cellpadding="0" cellspacing="0" class="table-content">
             <tr>
-              <td class="tcell-left text11"><span><span>Shared</span></span></td>
-              <td class="tcell-right"><?php echo $contact->caldavurl_shared;?></td>
+              <td class="tcell-left text11"><span><span>Gemeinschaftskalender</span></span></td>
+              <td class="tcell-right">&nbsp;</td>
             </tr>
-        </table>-->
+        </table>
+        <table border="0" cellpadding="0" cellspacing="0" class="table-content">
+            <tr>
+              <td class="tcell-left text11"><span><span>Outlook/iCalendar</span></span></td>
+              <td class="tcell-right" style="-webkit-user-select: text"><?php echo $contact->all_outlook_caldavurl;?></td>
+            </tr>
+        </table>
+         <table border="0" cellpadding="0" cellspacing="0" class="table-content">
+            <tr>
+              <td class="tcell-left text11"><span><span><?php echo $lang['CONTACTS_CALENDAR_OTHERS'];?></span></span></td>
+              <td class="tcell-right" style="-webkit-user-select: text"><?php echo $contact->all_caldavurl;?></td>
+            </tr>
+        </table>
         <?php } ?>
     </div>
     <?php } ?>
