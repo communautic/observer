@@ -356,6 +356,9 @@ class ContactsModel extends Model {
 			$array['ios_caldavurl'] = $caldavurl . '/remote.php/caldav/principals/' . $array["username"];
 			$array['caldavurl'] = 'https://' . $caldavurl . '/remote.php/caldav/calendars/' . $array["username"] . '/' . $cal_uri;
 			$array['caldavurl_shared'] = 'https://' . $caldavurl . '/remote.php/caldav/calendars/USERNAME/' . $cal_uri . '_shared_by_' . $array["username"];
+			
+			$array['all_outlook_caldavurl'] = 'https://' . $caldavurl . '/remote.php/caldav/calendars/' . $array["username"] . '/' . $lang['CONTACTS_CALENDAR_ALL_URL'] . '_shared_by_sysadmin?export';
+			$array['all_caldavurl'] = 'https://' . $caldavurl . '/remote.php/caldav/calendars/' . $array["username"] . '/' . $lang['CONTACTS_CALENDAR_ALL_URL'] . '_shared_by_sysadmin';
 		}
 		}
 		

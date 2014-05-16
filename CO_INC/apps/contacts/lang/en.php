@@ -70,6 +70,8 @@ $lang['CONTACTS_CALENDAR_GIVE_RIGHT'] = 'activate';
 $lang['CONTACTS_CALENDAR_REMOVE_RIGHT'] = 'deactivate';
 $lang['CONTACTS_CALENDAR_ACTIVE'] = 'active';
 $lang['CONTACTS_CALENDAR_DEACTIVE'] = 'deactive';
+$lang['CONTACTS_CALENDAR_OTHERS'] = 'Other / Caldav';
+$lang['CONTACTS_CALENDAR_ALL_URL'] = 'officecalendar';
 
 $lang['CONTACTS_CUSTOM'] = 'Note';
 
