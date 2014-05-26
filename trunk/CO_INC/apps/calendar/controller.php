@@ -129,17 +129,26 @@ class Calendar extends Controller {
 				$treatmentsModel = new PatientsTreatmentsModel();
 				$treatmentevent = $treatmentsModel->getTreatmentEvent($event['eventid'],1);
 				//$title = $treatmentevent['patient'] . ', ' . $treatmentevent['title'];
-				$title = $treatmentevent['patient'];
+				if(isset($treatmentevent['id']) && $treatmentevent['id'] > 0) {
+					$title = $treatmentevent['patient'];
+					if($event['eventlocation'] != 0) {
+						$title .= '<br /> <span style="font-weight: normal">' . $treatmentsModel->getTreatmentLocation($event['eventlocation']) . '</span>';
+					}
+					if($event['eventlocationuid'] != 0) {
+						$title .=  '<br /> <span style="font-weight: normal">' . $lang['CALENDAR_EVENT_HOUSE_CALL'] . '</span>';
+						$eventclass = 'fc-event-treatment-housecall';
+					}
+					$event['treat'] = $treatmentevent['mid'];
+					$event['patientid'] = $treatmentevent['id'];
+					$event['folderid'] = $treatmentevent['folder'];
+				} else {
+					$event['eventtype'] = 0;
+					$title = (!is_null($vevent->SUMMARY) && $vevent->SUMMARY->value != '')? strtr($vevent->SUMMARY->value, array('\,' => ',', '\;' => ';')) : 'no title';
 				if($event['eventlocation'] != 0) {
+					$treatmentsModel = new PatientsTreatmentsModel();
 					$title .= '<br /> <span style="font-weight: normal">' . $treatmentsModel->getTreatmentLocation($event['eventlocation']) . '</span>';
 				}
-				if($event['eventlocationuid'] != 0) {
-					$title .=  '<br /> <span style="font-weight: normal">' . $lang['CALENDAR_EVENT_HOUSE_CALL'] . '</span>';
-					$eventclass = 'fc-event-treatment-housecall';
 				}
-				$event['treat'] = $treatmentevent['mid'];
-				$event['patientid'] = $treatmentevent['id'];
-				$event['folderid'] = $treatmentevent['folder'];
 			} else {
 				//$regularEventDisplay  = ' style="display: block"';
 				//$treatmentEventDisplay = ' style="display: none"';
