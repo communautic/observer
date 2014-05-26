@@ -344,6 +344,8 @@ class ContactsModel extends Model {
 		$array['ios_caldavurl'] = '';
 		$array['caldavurl'] = '';
 		$array['caldavurl_shared'] = '';
+		$array['all_outlook_caldavurl'] = '';
+		$array['all_caldavurl'] = '';
 		if($array["calendar"] == 1) {
 			$array["calendar_status"] = $lang['CONTACTS_CALENDAR_ACTIVE'];
 			$url = explode('.',$_SERVER['HTTP_HOST']);
