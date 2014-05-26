@@ -157,7 +157,7 @@ class PatientsModel extends Model {
 		  }
 		
 		
-		$q = "SELECT a.*,CONCAT(b.lastname,' ',b.firstname) as title FROM " . CO_TBL_PATIENTS . " as a, co_users as b WHERE a.folder='$id' and a.bin='0' and a.cid=b.id" . $access . " " . $order;
+		$q = "SELECT a.*,CONCAT(b.lastname,' ',b.firstname) as title FROM " . CO_TBL_PATIENTS . " as a, co_users as b WHERE a.folder='$id' and a.bin='0' and a.cid=b.id and b.bin='0'" . $access . " " . $order;
 		$result = mysql_query($q, $this->_db->connection);
 	  	$patients = "";
 	  	while ($row = mysql_fetch_array($result)) {
@@ -500,13 +500,13 @@ class PatientsModel extends Model {
 		
 		$access = "";
 		 if(!$session->isSysadmin()) {
-			$access = " and id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
+			$access = " and a.id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
 		  }
 		
 		if($status == "") {
-			$q = "select id from " . CO_TBL_PATIENTS . " where folder='$id' " . $access . " and bin != '1'";
+			$q = "select a.id from " . CO_TBL_PATIENTS . " as a, co_users as b WHERE a.folder='$id' " . $access . " and a.bin='0' and a.cid=b.id and b.bin='0'";
 		} else {
-			$q = "select id from " . CO_TBL_PATIENTS . " where folder='$id' " . $access . " and status = '$status' and bin != '1'";
+			$q = "select a.id from " . CO_TBL_PATIENTS . " as a, co_users as b WHERE a.folder='$id' " . $access . " and a.status = '$status' and a.bin='0' and a.cid=b.id and b.bin='0'";
 		}
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_num_rows($result);
@@ -711,7 +711,7 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 	  if(!$session->isSysadmin()) {
 		$access = " and a.id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
 	  }
-	  $q ="select a.id,CONCAT(b.lastname,' ',b.firstname) as title,a.status,a.checked_out,a.checked_out_user from " . CO_TBL_PATIENTS . " as a, co_users as b where a.cid=b.id and a.folder='$id' and a.bin = '0' " . $access . $order;
+	  $q ="select a.id,CONCAT(b.lastname,' ',b.firstname) as title,a.status,a.checked_out,a.checked_out_user from " . CO_TBL_PATIENTS . " as a, co_users as b where a.cid=b.id and a.folder='$id' and a.bin = '0' and b.bin='0' " . $access . $order;
 
 	  $this->setSortStatus("patients-sort-status",$sortcur,$id);
       $result = mysql_query($q, $this->_db->connection);
