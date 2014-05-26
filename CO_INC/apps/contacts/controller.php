@@ -36,7 +36,9 @@ class Contacts extends Controller {
 				$membersarray = explode(",", $group->membersID);
 				foreach ($membersarray as &$value) {
 					if($contact = $this->model->getContactDetails($value)) {
-					$members[] = array("id" => $contact->id, "name" => $contact->lastname." ".$contact->firstname, "email" => $contact->email, "phone" => $contact->phone1);
+						if($contact->bin == 0) {
+							$members[] = array("id" => $contact->id, "name" => $contact->lastname." ".$contact->firstname, "email" => $contact->email, "phone" => $contact->phone1);
+						}
 					}
 				}
 			}
@@ -72,8 +74,11 @@ class Contacts extends Controller {
 			if(!empty($group->membersID))  {
 				$membersarray = explode(",", $group->membersID);
 				foreach ($membersarray as &$value) {
-					$contact = $this->model->getContactDetails($value);
+					if($contact = $this->model->getContactDetails($value)) {
+					if($contact->bin == 0) {
 					$members[] = array("id" => $contact->id, "name" => $contact->lastname." ".$contact->firstname, "email" => $contact->email, "phone" => $contact->phone1);
+					}
+					}
 				}
 			}
 			ob_start();
