@@ -1,7 +1,7 @@
 <?php
 switch(CO_PRODUCT_VARIANT) {
 	case 0:
-		$lang["APPLICATION_NAME"] = "company observer 6.5.3";
+		$lang["APPLICATION_NAME"] = "company observer 6.5.4";
 		$lang["APPLICATION_NAME_ALT"] = "company.observer";
 		$lang["APPLICATION_LOGO"] = "company_observer.png";
 		$lang["APPLICATION_LOGO_LOGIN"] = "company_observer_login.png";
@@ -9,7 +9,7 @@ switch(CO_PRODUCT_VARIANT) {
 		$GLOBALS["APPLICATION_LOGO_PRINT"] = "poweredby_company_observer.png";
 	break;
 	case 1:
-		$lang["APPLICATION_NAME"] = "physio observer 6.5.3";
+		$lang["APPLICATION_NAME"] = "physio observer 6.5.4";
 		$lang["APPLICATION_NAME_ALT"] = "physio.observer";
 		$lang["APPLICATION_LOGO"] = "physio_observer.png";
 		$lang["APPLICATION_LOGO_LOGIN"] = "physio_observer_login.png";
