@@ -7,7 +7,7 @@
     <tr>
       <td width="25" style="padding-top: 4px;"><span class="cbx">&nbsp;</span></td>
       <td width="20"><span class="icon-projectlink"></span></td>
-      <td class="text11" style="padding-top: 0px;"><div class="text13 bold" style="margin-left: 7px;"><span class="co-link externalLoadThreeLevels" rel="<?php echo $value->link;?>">Projektlink: <?php echo $value->text;?></span></div></td>
+      <td class="text11" style="padding-top: 0px;"><div class="text13 bold"><span class="co-link externalLoadThreeLevels" rel="<?php echo $value->link;?>">Projektlink: <?php echo $value->text;?></span></div></td>
       <?php if($phase->canedit) { ?><td width="25"><a class="binItem" rel="<?php echo $value->id;?>"><span class="icon-delete"></span></a></td><?php } ?>
     </tr>
   </table>

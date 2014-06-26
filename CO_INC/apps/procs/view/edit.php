@@ -31,10 +31,35 @@
         <td class="tcell-right"><div id="procsfolder" class="itemlist-field"><?php echo($proc->folder);?></div></td>
 	</tr>
 </table>
+<?php if($proc->proclink) { ?>
+<table id="ProcLink" border="0" cellpadding="0" cellspacing="0" class="table-content">
+	<tr>
+	  <td class="tcell-left text11"><span><span>Prozessvorlage</span></span></td>
+        <td class="tcell-right"><span rel="procs,<?php echo $proc->folder_id;?>,<?php echo $proc->id;?>,0,procs" class="co-link externalLoadThreeLevels"><?php echo($proc->title);?></span></td>
+	</tr>
+</table>
+<?php } ?>
+<?php if($proc->linktoproclink) { ?>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+	<tr>
+	  <td class="tcell-left text11"><span><span>Prozesslink</span></span></td>
+        <td class="tcell-right">
+        <?php 
+			foreach($proc->proclinksdetails as $key) {
+				//foreach($key as $value) { 
+				?>
+				<span rel="procs,<?php echo $key['folder'];?>,<?php echo $key['id'];?>,0,procs" class="co-link externalLoadThreeLevels"><?php echo $key['folder_title'];?></span> 
+				<?php }
+			//}
+		?>
+        </td>
+	</tr>
+</table>
+<?php } ?>
 </form>
 <?php if($proc->canedit) { ?>
 <div class="controlBar"><span class="newItemOption newnote" rel="note"></span> <span class="newItemOption newarrow" rel="arrow"></span> <span class="binItems" rel="arrow"></span></div><?php } ?>
-<div id="notesOuter">
+<div id="notesOuter"<?php if($proc->linktoproclink) { ?>style="top: 94px;"<?php } ?>>
 <?php
 if(is_array($notes)) {
 	$i = 1;
@@ -71,7 +96,7 @@ if(is_array($notes)) {
 	?>
     <div id="note-<?php echo($note->id);?>" class="<?php if($proc->canedit) { ?>note<?php } ?> shape<?php echo($note->shape);?> <?php echo $col;?><?php if($proc->canedit) { ?> showCoPopup<?php } ?>" request="<?php echo $request;?>" style="left: <?php echo $left;?>px; top: <?php echo $top;?>px; z-index: <?php echo $zindex;?>;">
         <div>
-        	<span id="note-more-<?php echo($note->id);?>" class="note-readmore" style="<?php if($note->text == "") { echo 'display: none;';}?>"></span>
+        	<span id="note-more-<?php echo($note->id);?>" class="note-readmore coTooltip" style="<?php if($note->text == "") { echo 'display: none;';}?>"><div style="display: none" class="coTooltipHtml"><?php echo nl2br($note->text);?></div></span>
             <div id="note-title-<?php echo($note->id);?>"><?php echo($note->title);?></div>
             <div id="note-text-<?php echo($note->id);?>" style="display: none;"><?php echo($note->text);?></div>
         </div>
@@ -86,7 +111,7 @@ if(is_array($notes)) {
 <div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-footer">
   <tr>
-    <td class="left"><?php echo($lang["GLOBAL_FOOTER_STATUS"] . " " . $proc->today);?></td>
+    <td class="left"><?php echo $lang["EDITED_BY_ON"];?> <?php echo($proc->edited_user.", ".$proc->edited_date)?></td>
     <td class="middle"></td>
     <td class="right"><?php echo $lang["CREATED_BY_ON"];?> <?php echo($proc->created_user.", ".$proc->created_date);?></td>
   </tr>

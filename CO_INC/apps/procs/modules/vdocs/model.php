@@ -9,7 +9,7 @@ class ProcsVDocsModel extends ProcsModel {
 	}
 
 
-	function getList($id,$sort) {
+	function getList($id,$sort,$fid=0) {
 		global $session;
 	  if($sort == 0) {
 		  $sortstatus = $this->getSortStatus("procs-vdocs-sort-status",$id);
@@ -73,6 +73,10 @@ class ProcsVDocsModel extends ProcsModel {
 	  $this->setSortStatus("procs-vdocs-sort-status",$sortcur,$id);
 	  $result = mysql_query($q, $this->_db->connection);
 	  $items = mysql_num_rows($result);
+	  
+	  if($this->appCheckProcesslink($fid,$id)) {
+			$perm = 'guest';
+		}
 	  
 	  $vdocs = "";
 	  while ($row = mysql_fetch_array($result)) {
@@ -162,7 +166,7 @@ class ProcsVDocsModel extends ProcsModel {
 	}
 
 
-	function getDetails($id) {
+	function getDetails($id,$fid=0) {
 		global $session, $lang;
 		
 		//$this->_documents = new DocumentsModel();
@@ -178,6 +182,12 @@ class ProcsVDocsModel extends ProcsModel {
 			}
 			
 		$array["perms"] = $this->getProcAccess($array["pid"]);
+		
+		$process_id = $array['pid'];
+		if($this->appCheckProcesslink($fid,$process_id)) {
+			$array["perms"] = 'guest';
+		}
+		
 		$array["canedit"] = false;
 		$array["showCheckout"] = false;
 		$array["checked_out_user_text"] = $this->_contactsmodel->getUserListPlain($array['checked_out_user']);

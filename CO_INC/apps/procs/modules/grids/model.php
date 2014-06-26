@@ -9,7 +9,7 @@ class ProcsGridsModel extends ProcsModel {
 	}
 
 
-	function getList($id,$sort) {
+	function getList($id,$sort,$fid=0) {
 		global $session;
 	  if($sort == 0) {
 		  $sortstatus = $this->getSortStatus("procs-grids-sort-status",$id);
@@ -72,6 +72,10 @@ class ProcsGridsModel extends ProcsModel {
 		$this->setSortStatus("procs-grids-sort-status",$sortcur,$id);
 		$result = mysql_query($q, $this->_db->connection);
 		$items = mysql_num_rows($result);
+		
+		if($this->appCheckProcesslink($fid,$id)) {
+			$perm = 'guest';
+		}
 		
 		$grids = "";
 		while ($row = mysql_fetch_array($result)) {
@@ -162,7 +166,7 @@ class ProcsGridsModel extends ProcsModel {
 	}
 	
 
-	function getDetails($id) {
+	function getDetails($id,$fid=0) {
 		global $session, $contactsmodel, $lang;
 		
 		$q = "SELECT * FROM " . CO_TBL_PROCS_GRIDS . " where id = '$id'";
@@ -176,6 +180,12 @@ class ProcsGridsModel extends ProcsModel {
 		}
 			
 		$array["perms"] = $this->getProcAccess($array["pid"]);
+		
+		$process_id = $array['pid'];
+		if($this->appCheckProcesslink($fid,$process_id)) {
+			$array["perms"] = 'guest';
+		}
+		
 		$array["canedit"] = false;
 		$array["showCheckout"] = false;
 		$array["checked_out_user_text"] = $this->_contactsmodel->getUserListPlain($array['checked_out_user']);
@@ -464,6 +474,16 @@ class ProcsGridsModel extends ProcsModel {
 
 		return $arr;
    }
+   
+   function setDetailsUpdate($id) {
+		global $session, $contactsmodel, $lang;
+
+		$now = gmdate("Y-m-d H:i:s");
+		
+		$q = "UPDATE " . CO_TBL_PROCS_GRIDS . " set edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		return "true";
+   }
 
 
    function saveGridColumns($cols) {
@@ -486,6 +506,7 @@ class ProcsGridsModel extends ProcsModel {
 		$result = mysql_query($q, $this->_db->connection);
 		$id = mysql_insert_id();
 		if ($result) {
+			$this->setDetailsUpdate($id);
 			return $id;
 		}
    }
@@ -550,6 +571,7 @@ class ProcsGridsModel extends ProcsModel {
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			$id = mysql_insert_id();
+			$this->setDetailsUpdate($pid);
 			return $id;
 		}
 	}	
@@ -568,6 +590,7 @@ class ProcsGridsModel extends ProcsModel {
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			$id = mysql_insert_id();
+			$this->setDetailsUpdate($pid);
 			return $id;
 		}
 	}	
@@ -600,6 +623,7 @@ class ProcsGridsModel extends ProcsModel {
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			$id = mysql_insert_id();
+			$this->setDetailsUpdate($pid);
 			return $id;
 		}
 	}	
@@ -624,6 +648,7 @@ class ProcsGridsModel extends ProcsModel {
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			$id = mysql_insert_id();
+			$this->setDetailsUpdate($pid);
 			return $id;
 		}
 	}
@@ -635,6 +660,7 @@ class ProcsGridsModel extends ProcsModel {
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			$id = mysql_insert_id();
+			$this->setDetailsUpdate($pid);
 			return $id;
 		}
 	}
@@ -646,16 +672,18 @@ class ProcsGridsModel extends ProcsModel {
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			$id = mysql_insert_id();
+			$this->setDetailsUpdate($pid);
 			return $id;
 		}
 	}
 
-   function saveGridNote($id,$title,$team,$team_ct,$text,$hours,$costs_employees,$costs_materials,$costs_external,$costs_other) {
+   function saveGridNote($proc_id,$id,$title,$team,$team_ct,$text,$hours,$costs_employees,$costs_materials,$costs_external,$costs_other) {
 		global $session;
 		$now = gmdate("Y-m-d H:i:s");
 		$q = "UPDATE " . CO_TBL_PROCS_GRIDS_NOTES . " set title = '$title', team = '$team', team_ct = '$team_ct', text = '$text', hours='$hours',  costs_employees='$costs_employees', costs_materials='$costs_materials', costs_external='$costs_external', costs_other='$costs_other', edited_user = '$session->uid', edited_date = '$now' WHERE id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
+			$this->setDetailsUpdate($proc_id);
 			return true;
 		}
 
@@ -844,10 +872,13 @@ class ProcsGridsModel extends ProcsModel {
    }
    
    	function setItemStatus($id,$status) {
-		
 		$q = "UPDATE " . CO_TBL_PROCS_GRIDS_NOTES . " set status = '$status' WHERE id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if($result) {
+			$q = "SELECT pid FROM " . CO_TBL_PROCS_GRIDS_NOTES . " WHERE id='$id'";
+			$result = mysql_query($q, $this->_db->connection);
+			$proc_id = mysql_result($result,0);
+			$this->setDetailsUpdate($proc_id);
 			return true;
 		}
 	}

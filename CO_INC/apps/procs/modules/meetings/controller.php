@@ -11,9 +11,9 @@ class ProcsMeetings extends Procs {
 	}
 
 
-	function getList($id,$sort) {
+	function getList($id,$sort,$fid=0) {
 		global $system, $lang;
-		$arr = $this->model->getList($id,$sort);
+		$arr = $this->model->getList($id,$sort,$fid);
 		$meetings = $arr["meetings"];
 		ob_start();
 			include('view/list.php');
@@ -27,9 +27,9 @@ class ProcsMeetings extends Procs {
 	}
 
 
-	function getDetails($id) {
+	function getDetails($id,$fid=0) {
 		global $lang;
-		if($arr = $this->model->getDetails($id)) {
+		if($arr = $this->model->getDetails($id,$fid)) {
 			$meeting = $arr["meeting"];
 			$task = $arr["task"];
 			$sendto = $arr["sendto"];
@@ -75,7 +75,7 @@ class ProcsMeetings extends Procs {
 	
 	function getSend($id) {
 		global $lang;
-		if($arr = $this->model->getDetails($id,'prepareSendTo')) {
+		if($arr = $this->model->getDetails($id,0,'prepareSendTo')) {
 			$meeting = $arr["meeting"];
 			$task = $arr["task"];
 			

@@ -4,6 +4,7 @@ function procsGrids(name) {
 	this.coPopupEditClass = 'popup-full';
 	var self = this;
 	this.coPopupEdit = '';
+	this.coPrintOptions = '';
 
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#procs input.title").fieldValue();
@@ -62,9 +63,15 @@ function procsGrids(name) {
 				self.coPopupEdit = html;
 			}});
 		}
+		if(self.coPrintOptions == '') {
+			$.ajax({ type: "GET", url: "/", data: "path=apps/procs/modules/grids&request=getPrintOptions", success: function(html){
+				self.coPrintOptions = html;
+			}});
+		}
 		var id = $("#procs3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
 		$('#procs').data({ "third" : id});
-		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs/modules/grids&request=getDetails&id="+id, success: function(data){
+		var fid = $('#procs').data('first');
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs/modules/grids&request=getDetails&id="+id+"&fid="+fid, success: function(data){
 			$("#procs-right").empty().html(data.html);
 			
 			if($('#checkedOut').length > 0) {
@@ -203,8 +210,9 @@ function procsGrids(name) {
 	this.actionRefresh = function() {
 		var id = $("#procs").data("third");
 		var pid = $("#procs").data("second");
+		var fid = $("#procs").data("first");
 		$("#procs3 ul[rel=grids] .active-link").trigger("click");
-		$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/procs/modules/grids&request=getList&id="+pid, success: function(data){																																																																				
+		$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/procs/modules/grids&request=getList&id="+pid+"&fid="+fid, success: function(data){																																																																				
 			$("#procs3 ul[rel=grids]").html(data.html);
 			$('#procs_grids_items').html(data.items);
 			var liindex = $("#procs3 ul[rel=grids] .module-click").index($("#procs3 ul[rel=grids] .module-click[rel='"+id+"']"));
@@ -214,10 +222,64 @@ function procsGrids(name) {
 	}
 
 
-	this.actionPrint = function() {
+	/*this.actionPrint = function() {
 		var id = $("#procs").data("third");
 		var url ='/?path=apps/procs/modules/grids&request=printDetails&id='+id;
 		$("#documentloader").attr('src', url);
+	}*/
+	
+	this.actionPrintOption = function(option) {
+		switch(option) {
+			case '1':
+				var id = $("#procs").data("third");
+				var url ='/?path=apps/procs/modules/grids&request=printDetails&option=grid&id='+id;
+				$("#documentloader").attr('src', url);
+			break;
+			case '2':
+				var id = $("#procs").data("third");
+				var url ='/?path=apps/procs/modules/grids&request=printDetails&option=list&id='+id;
+				$("#documentloader").attr('src', url);
+			break;
+		}
+	}
+	
+	this.actionPrint = function() {
+		var id = $("#procs").data("third");
+		//var url ='/?path=apps/patients/modules/invoices&request=printDetails&id='+id;
+		//$("#documentloader").attr('src', url);
+		var copopup = $('#co-splitActions');
+		var pclass = this.coPopupEditClass;
+		copopup.html(this.coPrintOptions);
+		copopup
+			.removeClass(function (index, css) {
+				   return (css.match (/\bpopup-\w+/g) || []).join(' ');
+			   })
+			.addClass(pclass)
+			.position({
+				  my: "center center",
+				  at: "right+123 center",
+				  of: '#procsActions .listPrint',
+				  collision: 'flip fit',
+				  within: '#procs-right .scroll-pane',
+				  using: function(coords, ui) {
+						var $modal = $(this),
+						t = coords.top,
+						l = coords.left,
+						className = 'switch-' + ui.horizontal;
+						$modal.css({
+							left: l + 'px',
+							top: t + 'px'
+						}).removeClass(function (index, css) {
+							return (css.match (/\bswitch-\w+/g) || []).join(' ');
+						})
+						.addClass(className);
+						copopup.hide().animate({width:'toggle'}, function() { 
+							//copopup.find('.arrow').offset({ top: ui.target.top+25 });
+							var arrowtop = Math.round(ui.target.top - ui.element.top)+20;
+							copopup.find('.arrow').css('top', arrowtop); 
+						})
+				}
+			});
 	}
 
 
@@ -244,9 +306,9 @@ function procsGrids(name) {
 		var module = this;
 		var cid = $('#procs input[name="id"]').val()
 		module.checkIn(cid);
-		
+		var folderid = $("#procs").data("first");
 		var fid = $("#procs2 .module-click:visible").attr("rel");
-		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs/modules/grids&request=getList&id="+fid+"&sort="+sortnew, success: function(data){
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs/modules/grids&request=getList&id="+fid+"&sort="+sortnew+"&fid="+folderid, success: function(data){
 			$("#procs3 ul[rel=grids]").html(data.html);
 			$('#procs_grids_items').html(data.items);
 			obj.attr("rel",sortnew);
@@ -489,7 +551,9 @@ function procsGrids(name) {
 		if(costs_other == '') { costs_other = 0; }
 		$('#procsgriditem-costs_other-'+id).text(costs_other);
 		
-		$.ajax({ type: "POST", url: "/", data: { path: 'apps/procs/modules/grids', request: 'saveGridNote', id: id, title: title, text: text, team: team, team_ct: team_ct, hours: hours, costs_employees: costs_employees, costs_materials: costs_materials, costs_external: costs_external, costs_other: costs_other }, success: function(data){
+		var proc_id = $("#procs").data("third");
+		
+		$.ajax({ type: "POST", url: "/", data: { path: 'apps/procs/modules/grids', request: 'saveGridNote', proc_id: proc_id, id: id, title: title, text: text, team: team, team_ct: team_ct, hours: hours, costs_employees: costs_employees, costs_materials: costs_materials, costs_external: costs_external, costs_other: costs_other }, success: function(data){
 			
 			var costs = 0;
 			var col = $('#procsgriditem_'+id).parent();
@@ -889,7 +953,7 @@ $(document).ready(function() {
 	});
 
 // Title
-	$('#procs-grid .procs-col-title').livequery( function() {
+	$('#procs-grid .procs-col-titleActive').livequery( function() {
 		$(this).droppable({
 			accept: '.droppable',
 			drop: function( event, ui ) {
@@ -956,7 +1020,7 @@ $(document).ready(function() {
 		})	
 	})
 
-	$('#procs-grid .procs-col-title>div').livequery( function() {
+	$('#procs-grid .procs-col-titleActive>div').livequery( function() {
 		$(this).draggable({
 			connectToSortable: ".procs-phase",
 			helper: "clone",
@@ -973,7 +1037,7 @@ $(document).ready(function() {
 
 
 // Stagegate
-	$('#procs-grid .procs-col-stagegate').livequery( function() {
+	$('#procs-grid .procs-col-stagegateActive').livequery( function() {
 		$(this).droppable({
 			accept: '.droppable',
 			tolerance: 'pointer',
@@ -1038,7 +1102,7 @@ $(document).ready(function() {
 		})	
 	})
 
-	$('#procs-grid .procs-col-stagegate>div').livequery( function() {
+	$('#procs-grid .procs-col-stagegateActive>div').livequery( function() {
 		$(this).draggable({
 			connectToSortable: ".procs-phase",
 			helper: "clone",
@@ -1201,7 +1265,7 @@ $(document).ready(function() {
 		var styles = '';
 		$("#procs-grid").width($("#procs-grid").width()+230);
 		$.ajax({ type: "GET", url: "/", data: "path=apps/procs/modules/grids&request=newGridColumn&id="+pid+"&sort="+sor, cache: false, success: function(num){
-			$("#procs-grid").append('<div id="gridscol_' + num + '"><div class="dragCol"><div id="procs-col-delete-' + num + '" class="procs-column-delete"><span class="icon-delete"></span></div></div><div class="procs-col-title  ui-droppable"><span rel="notetitle" class="newNoteItem newItemOption newNoteTitle"></span></div><div class="grids-spacer"></div><div class="procs-phase procs-phase-design ui-sortable"></div><span rel="note" class="newNoteItem newItemOption newNote empty"></span><div class="grids-spacer"></div><div class="procs-col-footer"><div class="procs-col-footer-stagegate"><div class="procs-stagegate   "></div><div class="procs-col-stagegate ui-droppable"><span rel="stagegate" class="newNoteItem newItemOption newNoteStagegate"></span></div></div><div class="grids-spacer"></div><div class="procs-col-footer-days"><div class="left"><span class="totalhours"> 0</span> <span>h</span></div><div class="right"><span>'+cur+'</span> <span class="totalcosts">0</span></div><div></div></div></div></div>').sortable("refresh");
+			$("#procs-grid").append('<div id="gridscol_' + num + '"><div class="dragCol dragColActive"><div id="procs-col-delete-' + num + '" class="procs-column-delete"><span class="icon-delete"></span></div></div><div class="procs-col-title procs-col-titleActive ui-droppable"><span rel="notetitle" class="newNoteItem newItemOption newNoteTitle"></span></div><div class="grids-spacer"></div><div class="procs-phase procs-phase-design ui-sortable"></div><span rel="note" class="newNoteItem newItemOption newNote empty"></span><div class="grids-spacer"></div><div class="procs-col-footer"><div class="procs-col-footer-stagegate"><div class="procs-stagegate   "></div><div class="procs-col-stagegate procs-col-stagegateActive ui-droppable"><span rel="stagegate" class="newNoteItem newItemOption newNoteStagegate"></span></div></div><div class="grids-spacer"></div><div class="procs-col-footer-days"><div class="left"><span class="totalhours"> 0</span> <span>h</span></div><div class="right"><span>'+cur+'</span> <span class="totalcosts">0</span></div><div></div></div></div></div>').sortable("refresh");
 			}
 		});
 	})

@@ -7,6 +7,8 @@ function procsApplication(name) {
 	this.name = name;
 	var module = this;
 	this.isRefresh = false;
+	var self = this;
+	this.coNewOptions = '';
 	
 	this.init = function() {
 		this.$app = $('#procs');
@@ -20,6 +22,12 @@ function procsApplication(name) {
 		this.coPopupEdit = '<div class="head">Bearbeiten</div><div class="content"><div class="fieldset"><label>Titel</label><input type="text" class="title" maxlength="40" value="" /></div><div class="saveItemShape"><span rel="1"><span class="shape1"></span></span><span rel="2"><span class="shape2"></span></span><span rel="3"><span class="shape3"></span></span><span rel="4"><span class="shape4"></span></span><span rel="5"><span class="shape5"></span></span></div><div class="saveItemColor"><span rel="1"><span class="color1"></span></span><span rel="2"><span class="color2"></span></span><span rel="3"><span class="color3"></span></span><span rel="4"><span class="color4"></span></span><span rel="5"><span class="color5"></span></span></div><div class="fieldset"><label>Beschreibung</label><textarea class="text"></textarea></div><ul class="popupButtons"><li><a href="#" class="binItem alert" rel="">'+DATEPICKER_CLEAR+'</a></li></ul></div><span class="arrow"></span>';
 		this.coPopupEditClassArrow = 'popup-arrows';
 		this.coPopupEditArrow = '<div class="head">Bearbeiten</div><div class="content"><div class="saveItemArrow"><span rel="1"><span class="arrow1"></span></span><span rel="2"><span class="arrow2"></span></span><span rel="3"><span class="arrow3"></span></span><span rel="4"><span class="arrow4"></span></span><span rel="5"><span class="arrow5"></span></span><span rel="6"><span  class="arrow6"></span></span><span rel="7"><span class="arrow7"></span></span><span rel="8"><span class="arrow8"></span></div><ul class="popupButtons"><li><a href="#" class="binItem alert" rel="">'+DATEPICKER_CLEAR+'</a></li></ul></div><span class="arrow"></span>';
+		if(self.coNewOptions == '') {
+			$.ajax({ type: "GET", url: "/", data: "path=apps/procs/&request=getNewOptions", success: function(html){
+				self.coNewOptions = html;
+			}});
+		}
+		this.coPopupEditClass = 'popup-full';
 	}
 	
 	this.formProcess = function(formData, form, poformOptions) {
@@ -40,7 +48,8 @@ function procsApplication(name) {
 				$("#procs2 span[rel='"+data.id+"'] .text").html($("#procs .title").val());
 			break;
 			case "reload":
-				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs&request=getProcDetails&id="+data.id, success: function(text){
+				var fid = $("#procs").data("first");
+				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs&request=getProcDetails&id="+data.id+"&fid="+fid, success: function(text){
 					$("#procs-right").html(text.html);
 						initProcsContentScrollbar();
 					}
@@ -68,7 +77,7 @@ function procsApplication(name) {
 	}
 	
 	
-	this.actionNew = function() {
+	/*this.actionNew = function() {
 		var module = this;
 		var cid = $('#procs input[name="id"]').val()
 		module.checkIn(cid);
@@ -91,6 +100,123 @@ function procsApplication(name) {
 			});
 			}
 		});
+	}*/
+	
+	this.actionNewOption = function(option) {
+		$('#co-splitActions').css('left',-1000);
+		switch(option) {
+			case '1':
+				var module = this;
+				var cid = $('#procs input[name="id"]').val()
+				module.checkIn(cid);
+				var id = $('#procs').data('first');
+				$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/procs&request=newProc&id=' + id, cache: false, success: function(data){
+					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs&request=getProcList&id="+id, success: function(list){
+						$("#procs2 ul").html(list.html);
+						var index = $("#procs2 .module-click").index($("#procs2 .module-click[rel='"+data.id+"']"));
+						setModuleActive($("#procs2"),index);
+						$('#procs').data({ "second" : data.id });				
+						$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs&request=getProcDetails&id="+data.id+"&fid="+id, success: function(text){
+							$("#procs-right").html(text.html);
+							initProcsContentScrollbar();
+							$('#procs-right .focusTitle').trigger('click');
+							module.getNavModulesNumItems(data.id);
+							}
+						});
+						procsActions(0);
+						}
+					});
+					}
+				});
+			break;
+			case '2':
+				this.actionDialog('my: "left top", at: "left+15 top+15", of: "#procs-right"','getProcsLinkDialog','status',1,'test');
+				/*var id = $("#patients").data("third");
+				var url ='/?path=apps/patients/modules/invoices&request=printDetails&option=reminder&id='+id;
+				$("#documentloader").attr('src', url);*/
+			break;
+		}
+	}
+	
+	this.addParentLink = function(pid) {
+		//alert(id+' to link to');
+		/*var module = this;
+		var pid = $('#'+ module.app).data("second");
+		var phid = $('#'+ module.app).data("third");
+		$("#modalDialog").dialog("close");
+		$.ajax({ type: "GET", url: "/", data: 'path=apps/'+ module.app +'/modules/phases&request=addProjectLink&id=' + id + '&pid=' + pid + '&phid=' + phid, success: function(html){
+				$('#'+ module.app +'phasetasks').append(html);
+				var idx = parseInt($('#'+ module.app +'-right .cbx').size() -1);
+				$('#'+ module.app +'-right div.phaseouter:eq('+idx+')').slideDown(function() {
+					$(this).find(":text:eq(0)").focus();
+					if(idx == 6) {
+					$('#'+ module.app +'-right .addTaskTable').clone().insertAfter('#'+ module.app +'phasetasks');
+					}
+					window['init'+ module.objectnameCaps +'ContentScrollbar']();							   
+				});
+				}
+			});
+		$.ajax({ type: "GET", url: "/", data: 'path=apps/'+ module.app +'&request=saveLastUsedProjects&id='+id});
+		*/
+				var module = this;
+				var cid = $('#procs input[name="id"]').val()
+				module.checkIn(cid);
+				var id = $('#procs').data('first');
+				$("#modalDialog").dialog("close");
+				$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/procs&request=newProcLink&id=' + pid+'&fid='+id, cache: false, success: function(data){
+					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs&request=getProcList&id="+id, success: function(list){
+						$("#procs2 ul").html(list.html);
+						var index = $("#procs2 .module-click").index($("#procs2 .module-click[rel='"+data.id+"']"));
+						setModuleActive($("#procs2"),index);
+						$('#procs').data({ "second" : pid });				
+						$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs&request=getProcDetails&id="+pid+"&fid="+id, success: function(text){
+							$("#procs-right").html(text.html);
+							initProcsContentScrollbar();
+							$('#procs-right .focusTitle').trigger('click');
+							module.getNavModulesNumItems(pid);
+							}
+						});
+						procsActions(20);
+						}
+					});
+					}
+				});
+	}
+	
+	this.actionNew = function() {
+		var copopup = $('#co-splitActions');
+		var pclass = this.coPopupEditClass;
+		copopup.html(this.coNewOptions);
+		copopup
+			.removeClass(function (index, css) {
+				   return (css.match (/\bpopup-\w+/g) || []).join(' ');
+			   })
+			.addClass(pclass)
+			.position({
+				  my: "center center",
+				  at: "right+123 center",
+				  of: '#procsActions .listNew',
+				  collision: 'flip fit',
+				  within: '#procs-right',
+				  using: function(coords, ui) {
+						var $modal = $(this),
+						t = coords.top,
+						l = coords.left,
+						className = 'switch-' + ui.horizontal;
+						$modal.css({
+							left: l + 'px',
+							top: t + 'px'
+						}).removeClass(function (index, css) {
+							return (css.match (/\bswitch-\w+/g) || []).join(' ');
+						})
+						.addClass(className);
+						copopup.hide().animate({width:'toggle'}, function() { 
+							//copopup.find('.arrow').offset({ top: ui.target.top+25 });
+							var arrowtop = Math.round(ui.target.top - ui.element.top)+20;
+							copopup.find('.arrow').css('top', arrowtop); 
+						})
+				}
+			});
 	}
 
 
@@ -106,7 +232,7 @@ function procsApplication(name) {
 					procsActions(0);
 					var idx = $("#procs2 .module-click").index($("#procs2 .module-click[rel='"+id+"']"));
 					setModuleActive($("#procs2"),idx)
-					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs&request=getProcDetails&id="+id, success: function(text){
+					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs&request=getProcDetails&id="+id+"&fid="+oid, success: function(text){
 							$("#procs").data("second",id);
 							$("#"+procs.name+"-right").html(text.html);
 							initProcsContentScrollbar();
@@ -122,7 +248,11 @@ function procsApplication(name) {
 
 	this.actionBin = function() {
 		var module = this;
-		var cid = $('#procs input[name="id"]').val()
+		if($('#ProcLink').length == 0) {
+			var cid = $('#procs input[name="id"]').val()
+		} else {
+			var cid = parseInt($('#procs2 .active-link').parent().attr('id').replace(/procItem_/, ""));
+		}
 		module.checkIn(cid);
 		var txt = ALERT_DELETE;
 		var langbuttons = {};
@@ -132,9 +262,9 @@ function procsApplication(name) {
 			buttons:langbuttons,
 			submit: function(e,v,m,f){		
 				if(v){
-					var id = $("#procs").data("second");
+					//var id = $("#procs").data("second");
 					var fid = $("#procs").data("first");
-					$.ajax({ type: "GET", url: "/", data: "path=apps/procs&request=binProc&id=" + id, cache: false, success: function(data){
+					$.ajax({ type: "GET", url: "/", data: "path=apps/procs&request=binProc&id=" + cid, cache: false, success: function(data){
 						if(data == "true") {
 							$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs&request=getProcList&id="+fid, success: function(list){
 								$("#procs2 ul").html(list.html);
@@ -169,12 +299,14 @@ function procsApplication(name) {
 
 
 	this.checkIn = function(id) {
-		$.ajax({ type: "GET", url: "/", async: false, data: 'path=apps/procs&request=checkinProc&id='+id, success: function(data){
-				if(!data) {
-					prompt("something wrong");
+		if($('#ProcLink').length == 0) {
+			$.ajax({ type: "GET", url: "/", async: false, data: 'path=apps/procs&request=checkinProc&id='+id, success: function(data){
+					if(!data) {
+						prompt("something wrong");
+					}
 				}
-			}
-		});
+			});
+		}
 	}
 
 
@@ -227,7 +359,7 @@ function procsApplication(name) {
 				return false;
 			}
 			setModuleActive($("#procs2"),'0');
-			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs&request=getProcDetails&id="+id, success: function(text){
+			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs&request=getProcDetails&id="+id+"&fid="+fid, success: function(text){
 				$("#"+procs.name+"-right").html(text.html);
 				initProcsContentScrollbar()
 				}
@@ -248,18 +380,30 @@ function procsApplication(name) {
 	
 	
 	this.actionDialog = function(offset,request,field,append,title,sql) {
-		$.ajax({ type: "GET", url: "/", data: 'path=apps/procs&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
-			$("#modalDialog").html(html);
-			$("#modalDialog").dialog('option', 'position', offset);
-			$("#modalDialog").dialog('option', 'title', title);
-			$("#modalDialog").dialog('open');
-			if($("#" + field + "_ct .ct-content").length > 0) {
-				var ct = $("#" + field + "_ct .ct-content").html();
-				ct = ct.replace(CUSTOM_NOTE + " ","");
-				$("#custom-text").val(ct);
-			}
-			}
-		});
+		switch(request) {
+			case "getProcsLinkDialog":
+				$.ajax({ type: "GET", url: "/", data: 'path=apps/procs&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
+					$("#modalDialog").html(html);
+					$("#modalDialog").dialog('option', 'position', { my: "left top", at: "left+15 top+50", of: "#procs-right" });
+					$("#modalDialog").dialog('option', 'title', 'window');
+					$("#modalDialog").dialog('open');
+					}
+				});
+			break;
+			default:
+			$.ajax({ type: "GET", url: "/", data: 'path=apps/procs&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
+				$("#modalDialog").html(html);
+				$("#modalDialog").dialog('option', 'position', offset);
+				$("#modalDialog").dialog('option', 'title', title);
+				$("#modalDialog").dialog('open');
+				if($("#" + field + "_ct .ct-content").length > 0) {
+					var ct = $("#" + field + "_ct .ct-content").html();
+					ct = ct.replace(CUSTOM_NOTE + " ","");
+					$("#custom-text").val(ct);
+				}
+				}
+			});
+		}
 	}
 	
 	
@@ -401,12 +545,13 @@ function procsApplication(name) {
 		$('#note-title-'+id).text(title);
 		var text = $('#co-popup textarea.text').val();
 		$('#note-text-'+id).text(text);
+		//$('#note-more-'+id+' .coTooltipHtml').text(text);
 		// shape & color
 		var shape = $('#co-popup .saveItemShape span.procs-shape-active').html();
 		$('#note-'+id).addClass('shape'+shape);
-		
-		
-		$.ajax({ type: "POST", url: "/", data: { path: 'apps/procs', request: 'saveProcNote', id: id, title: title, text: text }, success: function(data){
+		var proc_id = $('#procs').data('second');
+
+		$.ajax({ type: "POST", url: "/", data: { path: 'apps/procs', request: 'saveProcNote', proc_id : proc_id, id: id, title: title, text: text }, success: function(data){
 				if(text == "") {
 					$('#note-more-'+id).hide()
 				} else {
@@ -478,7 +623,8 @@ function procsApplication(name) {
 			buttons:langbuttons,
 			submit: function(e,v,m,f){		
 				if(v){
-					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs&request=deleteProcNote&id="+id, success: function(data){
+					var proc_id = $('#procs').data('second');
+					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs&request=deleteProcNote&id="+id+"&proc_id="+proc_id, success: function(data){
 						if(data){
 							$("#note-"+id).fadeOut(function(){ 
 								$(this).remove();
@@ -884,6 +1030,8 @@ function procsActions(status) {
 		
 		// rosters
 		case 12: actions = ['0','1','2','3','5','6','7','8']; break;
+		//procs link
+		case 20: actions = ['0','1','2','6','7','8']; break;
 		
 		
 		default: 	actions = ['6','7'];  								// none

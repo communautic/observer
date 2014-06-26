@@ -122,7 +122,7 @@ if($pspgrid->canedit) {
 	</div>
 <?php } ?>
 <div class="content-spacer"></div>
-<div style="position: absolute; top: <?php if($pspgrid->canedit) { echo '184'; } else { echo '224';} ?>px; height: 75px; width: 100%; background: #b2b2b2;"></div>
+<div style="position: absolute; top: <?php if($pspgrid->showCheckout) { echo '224'; } else { echo '184'; }?>px; height: 75px; min-width: 100%; width: <?php echo($pspgrid->pspgrid_width);?>px; background: #b2b2b2;"></div>
 <div id="procs-pspgrid" style="width: <?php echo($pspgrid->pspgrid_width);?>px;">
 <?php 
 $drag = '';
@@ -138,7 +138,12 @@ foreach($cols as $key => &$value){
 	} else {
 		echo '<div class="dragCol"></div>';
 	}
+		//echo '<div class="procs-col-title">';
+		if($pspgrid->canedit) {
+		echo '<div class="procs-col-title procs-col-titleActive">';
+	} else {
 		echo '<div class="procs-col-title">';
+	}
 		if($cols[$key]['titletext'] != "") {
 			echo '<div id="procspspgriditem_'.$cols[$key]['titleid'].'" rel="'.$cols[$key]['titleid'].'" class="droppable '.$showCoPopup.' colTitle ' . $cols[$key]['status'] . '" request="title">';
 			echo '<div class="itemTitle">'.$cols[$key]['titletext'].'</div>';
@@ -210,8 +215,10 @@ foreach($cols as $key => &$value){
 	}
 	
 	echo '</div>';
-if($pspgrid->canedit) {
-	echo '<span class="newNoteItem newItemOption newNote' . $newNoteItemClass . '" rel="note"></span><span class="newNoteBlind"></span>';
+	if($pspgrid->canedit) {
+		echo '<span class="newNoteItem newItemOption newNote' . $newNoteItemClass . '" rel="note"></span><span class="newNoteBlind"></span>';
+	} else {
+		echo '<span class="newNoteBlind" style="margin: -46px 0 0 0;"></span>';
 	}
 	echo '</div>';
  } ?>
@@ -250,7 +257,7 @@ if($pspgrid->canedit) {
 <div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-footer">
   <tr>
-    <td class="left"><?php echo($lang["GLOBAL_FOOTER_STATUS"] . " " . $pspgrid->today);?></td>
+    <td class="left"><?php echo $lang["EDITED_BY_ON"];?> <?php echo($pspgrid->edited_user.", ".$pspgrid->edited_date)?></td>
     <td class="middle"><?php echo $pspgrid->access_footer;?></td>
     <td class="right"><?php echo $lang["CREATED_BY_ON"];?> <?php echo($pspgrid->created_user.", ".$pspgrid->created_date);?></td>
   </tr>

@@ -7,6 +7,9 @@ $lang["PROC_GRIDS"] = 'Prozessraster';
 $lang["PROC_GRID_NEW"] = 'Neues Prozessraster';
 $lang["PROC_GRID_ACTION_NEW"] = 'neues Prozessraster anlegen';
 
+$lang["PROC_GRID_PRINTOPTION_GRID"] = 'Raster';
+$lang["PROC_GRID_PRINTOPTION_LIST"] = 'Checkliste mit Text';
+
 $lang["PROC_GRID_TIME"] = 'Durchlaufzeit';
 $lang["PROC_GRID_COSTS"] = 'Prozesskosten';
 $lang["PROC_GRID_OWNER"] = 'Prozesseigner';
@@ -33,7 +36,7 @@ $lang["PROC_PHASE_TITLE"] = 'Phase';
 
 $lang["PROC_GRID_HELP"] = 'manual_prozesse_prozessraster.pdf';
 
-$lang["PROC_PRINT_GRID"] = 'besprechung.png';
+$lang["PROC_PRINT_GRID"] = 'prozessraster.png';
 
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/procs/grids/de.php";

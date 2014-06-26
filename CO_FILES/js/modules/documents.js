@@ -104,7 +104,8 @@ function Documents(app) {
 		var module = this;
 		var id = $("#"+ module.app +"3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
 		$('#'+ module.app).data({ "third" : id});
-		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/'+ module.app +'/modules/documents&request=getDetails&id='+id, success: function(data){
+		var fid = $('#'+ module.app).data('first');
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/'+ module.app +'/modules/documents&request=getDetails&id='+id+"&fid="+fid, success: function(data){
 			$('#'+ module.app +'-right').html(data.html);
 			if(list == 0) {
 				switch (data.access) {
@@ -222,8 +223,9 @@ function Documents(app) {
 		var module = this;
 		var id = $('#'+ module.app).data("third");
 		var pid = $('#'+ module.app).data("second");
+		var fid = $('#'+ module.app).data("first");
 		$('#'+ module.app +'3 ul[rel=documents] .active-link').trigger("click");
-		$.ajax({ type: "GET", url: "/", dataType: 'json', data: 'path=apps/'+ module.app +'/modules/documents&request=getList&id='+pid, success: function(data){																																																																				
+		$.ajax({ type: "GET", url: "/", dataType: 'json', data: 'path=apps/'+ module.app +'/modules/documents&request=getList&id='+pid+"&fid="+fid, success: function(data){																																																																				
 			$('#'+ module.app +'3 ul[rel=documents]').html(data.html);
 			$('#'+ module.app +'_documents_items').html(data.items);
 			var liindex = $('#'+ module.app +'3 ul[rel=documents] .module-click').index($("#"+ module.app +"3 ul[rel=documents] .module-click[rel='"+id+"']"));
@@ -263,8 +265,9 @@ function Documents(app) {
 
 	this.sortclick = function (obj,sortcur,sortnew) {
 		var module = this;
+		var folderid = $('#'+ module.app).data("first");
 		var fid = $('#'+ module.app +'2 .module-click:visible').attr("rel");
-		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/'+ module.app +'/modules/documents&request=getList&id='+fid+'&sort='+sortnew, success: function(data){
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/'+ module.app +'/modules/documents&request=getList&id='+fid+'&sort='+sortnew+"&fid="+folderid, success: function(data){
 			$('#'+ module.app +'3 ul[rel=documents]').html(data.html);
 			$('#'+ module.app +'_documents_items').html(data.items);
 			obj.attr("rel",sortnew);

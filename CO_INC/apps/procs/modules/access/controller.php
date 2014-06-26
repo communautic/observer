@@ -23,9 +23,9 @@ class ProcsAccess extends Procs {
 		return $system->json_encode($data);
 	}
 	
-	function getDetails($id) {
+	function getDetails($id,$fid=0) {
 		global $lang;
-		if($access = $this->model->getDetails($id)) {
+		if($access = $this->model->getDetails($id,$fid)) {
 			include('view/edit.php');
 		} else {
 			include CO_INC .'/view/default.php';

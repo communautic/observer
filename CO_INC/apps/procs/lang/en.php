@@ -11,6 +11,9 @@ $lang["PROC_PROCS"] = 'Workplan';
 $lang["PROC_NEW"] = 'New Workplan';
 $lang["PROC_ACTION_NEW"] = 'new Task';
 
+$lang["PROC_NEW_OPTION_PROCESS"] = 'new Worklpan';
+$lang["PROC_NEW_OPTION_PROCESSLINK"] = 'Workplan Link';
+
 // Folder Right
 $lang["PROC_FOLDER_CREATED_ON"] = 'created on';
 $lang["PROC_FOLDER_INITIATOR"] = 'created by';

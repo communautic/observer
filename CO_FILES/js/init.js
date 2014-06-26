@@ -546,6 +546,12 @@ $(document).ready(function() {
 		var obj = getCurrentModule();
 		obj.actionNew();
 	})
+	$(document).on('click','span.actionNewOption',function(e) {
+		e.preventDefault();
+		var option = $(this).attr('rel');
+		var obj = getCurrentModule();
+		obj.actionNewOption(option);
+	});
 	
 	$('span.actionContact').on('click', function(e) {
 		e.preventDefault();
@@ -2135,7 +2141,7 @@ function navThreeTitleSecond(objectname, clicked, passed_id) {
 				setModuleActive(object.$second,index);
 				$('#'+objectname+'2 .sort').attr('rel', data.sort).addClass('sort'+data.sort);
 					//$(this).find('.west-ui-content').height(h-(object.modules_height+125));
-					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+objectname+"&request=get"+objectnameCapsSingular+"Details&id="+objecctid, success: function(text){
+					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+objectname+"&request=get"+objectnameCapsSingular+"Details&id="+objecctid+"&fid="+id, success: function(text){
 						object.$appContent.html(text.html);
 						switch (text.access) {
 							case "sysadmin":
@@ -2150,6 +2156,13 @@ function navThreeTitleSecond(objectname, clicked, passed_id) {
 									window[objectname+'Actions'](3);
 								} else {
 									window[objectname+'Actions'](0);
+								}
+							break;
+							case "linkaccess":
+								if(data.html == "<li></li>") {
+									window[objectname+'Actions'](3);
+								} else {
+									window[objectname+'Actions'](20);
 								}
 							break;
 							case "guestadmin":
@@ -2205,7 +2218,7 @@ function navThreeTitleSecond(objectname, clicked, passed_id) {
 					setModuleActive(object.$second,idx);
 					$('#'+objectname+'2 .sort').attr('rel', data.sort).addClass('sort'+data.sort);
 					var h = object.$layoutWest.height();
-					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+objectname+"&request=get"+objectnameCapsSingular+"Details&id="+objecctid, success: function(text){
+					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+objectname+"&request=get"+objectnameCapsSingular+"Details&id="+objecctid+"&fid="+id, success: function(text){
 						object.getNavModulesNumItems(objecctid)
 						object.$appContent.html(text.html);
 						if(text.access === undefined) {
@@ -2224,6 +2237,13 @@ function navThreeTitleSecond(objectname, clicked, passed_id) {
 									window[objectname+'Actions'](3);
 								} else {
 									window[objectname+'Actions'](0);
+								}
+							break;
+							case "linkaccess":
+								if(data.html == "<li></li>") {
+									window[objectname+'Actions'](3);
+								} else {
+									window[objectname+'Actions'](20);
 								}
 							break;
 							case "guestadmin":
@@ -2302,6 +2322,7 @@ function navThreeTitleThird(objectname, clicked, passed_id) {
 			// module 3 allready activated
 			if(object.$third.data('status') == 'open') {
 				var id = object.$app.data('second');
+				var fid = object.$app.data('first');
 				var mod = getCurrentModule();
 				var todeactivate = mod.name.replace(objectname+'_', "");
 				$('#'+objectname+'3 h3[rel='+todeactivate+']').removeClass("module-bg-active");	
@@ -2327,7 +2348,7 @@ function navThreeTitleThird(objectname, clicked, passed_id) {
 				})
 				
 				setTimeout(function() {
-					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+objectname+"/modules/"+module+"&request=getList&id="+id, success: function(data){
+					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+objectname+"/modules/"+module+"&request=getList&id="+id+"&fid="+fid, success: function(data){
 						$('#'+objectname+'3 ul:eq('+moduleidx+')').html(data.html);
 						$('#'+objectname+'Actions .actionNew').attr("title",data.title);
 						switch (data.perm) {
@@ -2362,6 +2383,7 @@ function navThreeTitleThird(objectname, clicked, passed_id) {
 			} else {
 				// load and slide up module 3
 				var id = object.$app.data('second');
+				var fid = object.$app.data('first');
 				if(id == undefined || id == 0) {
 					return false;
 				}
@@ -2379,7 +2401,7 @@ function navThreeTitleThird(objectname, clicked, passed_id) {
 						}
 					if(i == num_modules-1) {
 						setTimeout(function() {
-							$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+objectname+"/modules/"+module+"&request=getList&id="+id, success: function(data){
+							$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+objectname+"/modules/"+module+"&request=getList&id="+id+"&fid="+fid, success: function(data){
 								$('#'+objectname+'3 ul:eq('+moduleidx+')').html(data.html);
 								$('#'+objectname+'Actions .actionNew').attr("title",data.title);
 								switch (data.perm) {
@@ -2533,6 +2555,9 @@ function navItemSecond(objectname, clicked) {
 			break;
 			case "guest":
 				window[objectname+'Actions'](5);
+			break;
+			case "linkaccess":
+				window[objectname+'Actions'](20);
 			break;
 		}
 

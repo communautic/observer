@@ -38,10 +38,14 @@ if (!empty($_GET['request'])) {
 			if(!empty($_GET['sort'])) {
 				$sort = $_GET['sort'];
 			}
-			echo($procsMeetings->getList($_GET['id'],$sort));
+			$fid = 0;
+			if(!empty($_GET['fid'])) {
+				$fid = $_GET['fid'];
+			}
+			echo($procsMeetings->getList($_GET['id'],$sort,$fid));
 		break;
 		case 'getDetails':
-			echo($procsMeetings->getDetails($_GET['id']));
+			echo($procsMeetings->getDetails($_GET['id'],$_GET['fid']));
 		break;
 		case 'createNew':
 			echo($procsMeetings->createNew($_GET['id']));

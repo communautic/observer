@@ -107,7 +107,7 @@ background-color: #C1D5F0; }
 
 #forums-right .tcell-right-posts { border-left: 1px solid #fff; border-bottom: 1px solid #ccc;}
 
-#forumsPosts { background-image:url(../../img/forums_thread_bg.png); -webkit-user-select: text; }
+#forumsPosts { background-image:url(../../img/forums_thread_bg.png); }
 #forumsPosts .toggeled { border-bottom: 1px solid #ccc; overflow: hidden; }
 
 #modalDialogForumsPost span.coButton  { 

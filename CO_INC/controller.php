@@ -294,7 +294,13 @@ class Controller extends MySQLDB {
 			
 			$mail->MsgHTML(stripslashes($body . $footer));
 			if($attachment != "") {
-				$mail->AddAttachment($attachment);
+				if(is_array($attachment)) {
+					foreach ($attachment as &$att) {
+						$mail->AddAttachment($att); 
+					}
+				} else {
+					$mail->AddAttachment($attachment);
+				}
 			}
 			
 			if(is_array($attachment_array)) {

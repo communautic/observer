@@ -11,9 +11,9 @@ class ProcsGrids extends Procs {
 	}
 
 
-	function getList($id,$sort) {
+	function getList($id,$sort,$fid=0) {
 		global $system, $lang;
-		$arr = $this->model->getList($id,$sort);
+		$arr = $this->model->getList($id,$sort,$fid);
 		$grids = $arr["grids"];
 		ob_start();
 			include('view/list.php');
@@ -27,9 +27,9 @@ class ProcsGrids extends Procs {
 	}
 
 
-	function getDetails($id) {
+	function getDetails($id,$fid=0) {
 		global $lang;
-		if($arr = $this->model->getDetails($id)) {
+		if($arr = $this->model->getDetails($id,$fid)) {
 			$grid = $arr["grid"];
 			$cols = $arr["cols"];
 			$console_items = $arr["console_items"];
@@ -51,37 +51,72 @@ class ProcsGrids extends Procs {
 			return json_encode($data);
 		}
 	}
+	
+	function getPrintOptions() {
+		global $lang;
+			ob_start();
+				include 'view/print_options.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			return $html;
+	}
+	
+	function getSendToOptions() {
+		global $lang;
+			ob_start();
+				include 'view/sendto_options.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			return $html;
+	}
 
-
-	function printDetails($id,$t) {
+	function printDetails($id,$t,$option) {
 		global $session,$date,$lang;
 		$title = "";
 		$html = "";
-		if($arr = $this->model->getDetails($id)) {
-			$grid = $arr["grid"];
-			$cols = $arr["cols"];
-			$console_items = $arr["console_items"];
-			$sendto = $arr["sendto"];
-			$colheight = $arr["colheight"];
-			$listheight = $arr["listheight"];
-			$projects = $arr["projects"];
-			
-			$page_width = sizeof($cols)*203+100+100;
-			$page_height = $grid->max_items*20+5+20+142+100+100;
-			if($page_width < 896) {
-				$page_width = 896;
-			}
-			if($page_height < 595) {
-				$page_height = 595;
-			}
-			ob_start();
-				include 'view/print.php';
-				$html = ob_get_contents();
-			ob_end_clean();
-			$title = $grid->title;
+		switch($option) {
+			case 'grid':
+				if($arr = $this->model->getDetails($id)) {
+					$grid = $arr["grid"];
+					$cols = $arr["cols"];
+					$console_items = $arr["console_items"];
+					$sendto = $arr["sendto"];
+					$colheight = $arr["colheight"];
+					$listheight = $arr["listheight"];
+					$projects = $arr["projects"];
 					
-					
-			$this->printGrid($title,$html,$page_width,$page_height);
+					$page_width = sizeof($cols)*203+100+100;
+					$page_height = $grid->max_items*20+5+20+142+100+100;
+					if($page_width < 896) {
+						$page_width = 896;
+					}
+					if($page_height < 595) {
+						$page_height = 595;
+					}
+					ob_start();
+						include 'view/print.php';
+						$html = ob_get_contents();
+					ob_end_clean();
+					$title = $grid->title;
+							
+							
+					$this->printGrid($title,$html,$page_width,$page_height);
+				}
+			break;
+			case 'list':
+				if($arr = $this->model->getDetails($id)) {
+					$grid = $arr["grid"];
+					$cols = $arr["cols"];
+					$console_items = $arr["console_items"];
+					ob_start();
+							include 'view/print_list.php';
+						$html = ob_get_contents();
+					ob_end_clean();
+					$title = $grid->title;
+					$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PROC_PRINT_GRID"];
+					$this->printPDF($title,$html);
+				}
+			break;
 		}
 	}
 	
@@ -135,6 +170,7 @@ class ProcsGrids extends Procs {
 		global $session, $date, $users, $lang;
 		$title = "";
 		$html = "";
+		$attachment = "";
 		if($arr = $this->model->getDetails($id)) {
 			$grid = $arr["grid"];
 			$cols = $arr["cols"];
@@ -157,11 +193,22 @@ class ProcsGrids extends Procs {
 				$html = ob_get_contents();
 			ob_end_clean();
 			$title = $grid->title;
+			$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PROC_PRINT_GRID"];
+			$att = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
+			$pdf = $this->saveTimeline($title,$html,$att,$page_width,$page_height);
+			$attachment[] = $att;
+			
+			ob_start();
+				include 'view/print_list.php';
+				$html = ob_get_contents();			
+			ob_end_clean();
+			$title = $grid->title;
+			$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PROC_PRINT_GRID"];
+			$att = CO_PATH_PDF . "/" . $this->normal_chars($title) . "_list.pdf";
+			$pdf = $this->savePDF($title,$html,$att);
+			$attachment[] = $att;
 		}
-		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PROC_PRINT_GRID"];
-		$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
-		$pdf = $this->saveTimeline($title,$html,$attachment,$page_width,$page_height);
-		
+
 		// write sento log
 		$this->writeSendtoLog("procs_grids",$id,$to,$subject,$body);
 		
@@ -341,8 +388,8 @@ class ProcsGrids extends Procs {
 		}
 	}
 
-	function saveGridNote($id,$title,$team,$team_ct,$text,$hours,$costs_employees,$costs_materials,$costs_external,$costs_other) {
-		$retval = $this->model->saveGridNote($id,$title,$team,$team_ct,$text,$hours,$costs_employees,$costs_materials,$costs_external,$costs_other);
+	function saveGridNote($proc_id,$id,$title,$team,$team_ct,$text,$hours,$costs_employees,$costs_materials,$costs_external,$costs_other) {
+		$retval = $this->model->saveGridNote($proc_id,$id,$title,$team,$team_ct,$text,$hours,$costs_employees,$costs_materials,$costs_external,$costs_other);
 		if($retval){
 			 return $title;
 		  } else{

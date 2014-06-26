@@ -105,7 +105,8 @@ function Meetings(app) {
 		var module = this;
 		var id = $("#"+ module.app +"3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
 		$('#'+ module.app).data({ "third" : id});
-		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+ module.app +"/modules/meetings&request=getDetails&id="+id, success: function(data){
+		var fid = $('#'+ module.app).data('first');
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+ module.app +"/modules/meetings&request=getDetails&id="+id+"&fid="+fid, success: function(data){
 			$("#"+ module.app +"-right").html(data.html);
 			if($('#checkedOut').length > 0) {
 					$("#"+ module.app +"3 ul[rel=meetings] .active-link .icon-checked-out").addClass('icon-checked-out-active');
@@ -241,8 +242,9 @@ function Meetings(app) {
 		var module = this;
 		var id = $('#'+ module.app).data("third");
 		var pid = $('#'+ module.app).data("second");
+		var fid = $('#'+ module.app).data("first");
 		$('#'+ module.app +'3 ul[rel=meetings] .active-link').trigger("click");
-		$.ajax({ type: "GET", url: "/", dataType: 'json', data: 'path=apps/'+ module.app +'/modules/meetings&request=getList&id='+pid, success: function(data){																																																																				
+		$.ajax({ type: "GET", url: "/", dataType: 'json', data: 'path=apps/'+ module.app +'/modules/meetings&request=getList&id='+pid+"&fid="+fid, success: function(data){																																																																				
 			$('#'+ module.app +'3 ul[rel=meetings]').html(data.html);
 			$('#'+ module.app +'_meetings_items').html(data.items);
 			var liindex = $('#'+ module.app +'3 ul[rel=meetings] .module-click').index($("#"+ module.app +"3 ul[rel=meetings] .module-click[rel='"+id+"']"));
@@ -288,8 +290,9 @@ function Meetings(app) {
 		var module = this;
 		var cid = $('#'+ module.app +' input[name="id"]').val()
 		module.checkIn(cid);
+		var folderid = $('#'+ module.app).data("first");
 		var fid = $('#'+ module.app +'2 .module-click:visible').attr("rel");
-		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/'+ module.app +'/modules/meetings&request=getList&id='+fid+'&sort='+sortnew, success: function(data){
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/'+ module.app +'/modules/meetings&request=getList&id='+fid+'&sort='+sortnew+"&fid="+folderid, success: function(data){
 			$('#'+ module.app +'3 ul[rel=meetings]').html(data.html);
 			$('#'+ module.app +'_meetings_items').html(data.items);
 			obj.attr("rel",sortnew);
