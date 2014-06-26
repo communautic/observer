@@ -41,10 +41,14 @@ if (!empty($_GET['request'])) {
 			if(!empty($_GET['sort'])) {
 				$sort = $_GET['sort'];
 			}
-			echo($procsPspgrids->getList($_GET['id'],$sort));
+			$fid = 0;
+			if(!empty($_GET['fid'])) {
+				$fid = $_GET['fid'];
+			}
+			echo($procsPspgrids->getList($_GET['id'],$sort,$fid));
 		break;
 		case 'getDetails':
-			echo($procsPspgrids->getDetails($_GET['id']));
+			echo($procsPspgrids->getDetails($_GET['id'],$_GET['fid']));
 		break;
 		case 'createNew':
 			echo($procsPspgrids->createNew($_GET['id']));
@@ -75,7 +79,7 @@ if (!empty($_GET['request'])) {
 			if(!empty($_GET['t'])) {
 				$t = $_GET['t'];
 			}
-			echo($procsPspgrids->printDetails($_GET['id'],$t));
+			echo($procsPspgrids->printDetails($_GET['id'],$t,$_GET['option']));
 		break;
 		case 'getSend':
 			echo($procsPspgrids->getSend($_GET['id']));
@@ -83,6 +87,12 @@ if (!empty($_GET['request'])) {
 		case 'getSendtoDetails':
 			echo($procsPspgrids->getSendtoDetails("procs_pspgrids",$_GET['id']));
 		break;
+		case 'getPrintOptions':
+			echo($procsPspgrids->getPrintOptions());
+		break;
+		/*case 'getSendToOptions':
+			echo($procsPspgrids->getSendToOptions());
+		break;*/
 		case 'checkinPspgrid':
 			echo($procsPspgrids->checkinPspgrid($_GET['id']));
 		break;
@@ -145,7 +155,7 @@ if (!empty($_GET['request'])) {
 			echo($procsPspgrids->binItem($_GET['id']));
 		break;
 		case 'setItemStatus':
-			echo($procsPspgrids->setItemStatus($_GET['id'],$_GET["status"]));
+			echo($procsPspgrids->setItemStatus($_GET['proc_id'],$_GET['id'],$_GET["status"]));
 		break;
 		case 'setItemType':
 			echo($procsPspgrids->setItemType($_GET['id'],$_GET["type"]));
@@ -173,7 +183,7 @@ if (!empty($_POST['request'])) {
 			echo($procsPspgrids->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
 		break;
 		case 'savePspgridNote':
-			echo($procsPspgrids->savePspgridNote($_POST["id"],$system->checkMagicQuotes($_POST['title']), $_POST['team'],$system->checkMagicQuotes($_POST['team_ct']),htmlspecialchars($_POST['text']),$_POST['days'],$_POST['costs_employees'],$_POST['costs_materials'],$_POST['costs_external'],$_POST['costs_other']));
+			echo($procsPspgrids->savePspgridNote($_POST["proc_id"],$_POST["id"],$system->checkMagicQuotes($_POST['title']), $_POST['team'],$system->checkMagicQuotes($_POST['team_ct']),htmlspecialchars($_POST['text']),$_POST['days'],$_POST['costs_employees'],$_POST['costs_materials'],$_POST['costs_external'],$_POST['costs_other']));
 		break;
 	}
 }

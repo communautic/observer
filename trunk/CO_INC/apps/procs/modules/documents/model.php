@@ -8,7 +8,7 @@ class ProcsDocumentsModel extends ProcsModel {
 	}
 
 	
-	function getList($id,$sort) {
+	function getList($id,$sort,$fid=0) {
 		global $session;
 	  if($sort == 0) {
 		  $sortstatus = $this->getSortStatus("procs-documents-sort-status",$id);
@@ -71,6 +71,10 @@ class ProcsDocumentsModel extends ProcsModel {
 		$result = mysql_query($q, $this->_db->connection);
 		$items = mysql_num_rows($result);
 		
+		if($this->appCheckProcesslink($fid,$id)) {
+			$perm = 'guest';
+		}
+		
 		$documents = "";
 		while ($row = mysql_fetch_array($result)) {
 			foreach($row as $key => $val) {
@@ -124,7 +128,7 @@ class ProcsDocumentsModel extends ProcsModel {
 	}
 
 
-	function getDetails($id) {
+	function getDetails($id,$fid=0) {
 		global $session, $contactsmodel, $lang;
 		$q = "SELECT * FROM " . CO_TBL_PROCS_DOCUMENTS_FOLDERS . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
@@ -162,6 +166,12 @@ class ProcsDocumentsModel extends ProcsModel {
 		//$array["edit"] = "1";
 		
 		$perms = $this->getProcAccess($array["pid"]);
+		
+		$process_id = $array['pid'];
+		if($this->appCheckProcesslink($fid,$process_id)) {
+			$perms = 'guest';
+		}
+		
 		$array["canedit"] = false;
 		$array["perms"] = $perms;
 		if($perms == "sysadmin" || $perms == "admin") {

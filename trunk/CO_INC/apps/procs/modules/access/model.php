@@ -23,7 +23,7 @@ class ProcsAccessModel extends ProcsModel {
 	}
 
 
-	function getDetails($id) {
+	function getDetails($id,$fid=0) {
 		global $session, $contactsmodel;
 
 		// guest
@@ -50,6 +50,18 @@ class ProcsAccessModel extends ProcsModel {
 			$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
 			$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
 			$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);*/
+		}
+		
+		$array["canedit"] = true;
+		// is within processlink
+		/*$q_folder = "SELECT folder FROM " . CO_TBL_PROCS . " where id = '$id'";
+		$r_folder = mysql_query($q_folder, $this->_db->connection);
+		$folder_id = mysql_result($r_folder,0);
+		if($fid != 0 && $folder_id != $fid) {
+			$array["canedit"] = false;
+		}*/
+		if($this->appCheckProcesslink($fid,$id)) {
+			$array["canedit"] = false;
 		}
 		
 		$array["today"] = $this->_date->formatDate("now",CO_DATETIME_FORMAT);

@@ -23,10 +23,14 @@ if (!empty($_GET['request'])) {
 			if(!empty($_GET['sort'])) {
 				$sort = $_GET['sort'];
 			}
-			echo($procsVDocs->getList($_GET['id'],$sort));
+			$fid = 0;
+			if(!empty($_GET['fid'])) {
+				$fid = $_GET['fid'];
+			}
+			echo($procsVDocs->getList($_GET['id'],$sort,$fid));
 		break;
 		case 'getDetails':
-			echo($procsVDocs->getDetails($_GET['id']));
+			echo($procsVDocs->getDetails($_GET['id'],$_GET['fid']));
 		break;
 		case 'createNew':
 			echo($procsVDocs->createNew($_GET['id']));

@@ -68,7 +68,7 @@ if (!empty($_GET['request'])) {
 			echo($procs->setSortOrder("procs-sort",$_GET['procItem'],$_GET['id']));
 		break;
 		case 'getProcDetails':
-			echo($procs->getProcDetails($_GET['id']));
+			echo($procs->getProcDetails($_GET['id'],$_GET['fid']));
 		break;
 		case 'getDates':
 			echo($procs->getDates($_GET['id']));
@@ -98,6 +98,15 @@ if (!empty($_GET['request'])) {
 		break;
 		case 'newProc':
 			echo($procs->newProc($_GET['id']));
+		break;
+		case 'newProcLink':
+			echo($procs->newProcLink($_GET['id'],$_GET['fid']));
+		break;
+		case 'getProcsLinkDialog':
+			echo($procs->getProcsLinkDialog());
+		break;
+		case 'getNewOptions':
+			echo($procs->getNewOptions());
 		break;
 		case 'createDuplicate':
 			echo($procs->createDuplicate($_GET['id']));
@@ -141,7 +150,7 @@ if (!empty($_GET['request'])) {
 			echo($procs->binItems($_GET['id']));
 		break;
 		case 'deleteProcNote':
-			echo($procs->deleteProcNote($_GET['id']));
+			echo($procs->deleteProcNote($_GET['id'],$_GET['proc_id']));
 		break;
 		case 'saveItemStyle':
 			echo($procs->saveItemStyle($_GET['id'],$_GET['shape'],$_GET['color']));
@@ -200,7 +209,7 @@ if (!empty($_POST['request'])) {
 			echo($procs->setProcDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['folder']));
 		break;
 		case 'saveProcNote':
-			echo($procs->saveProcNote($_POST['id'],htmlspecialchars($_POST['title']),htmlspecialchars($_POST['text'])));
+			echo($procs->saveProcNote($_POST['proc_id'],$_POST['id'],htmlspecialchars($_POST['title']),htmlspecialchars($_POST['text'])));
 		break;
 		case 'moveProc':
 			echo($procs->moveProc($_POST['id'], $_POST['startdate'], $_POST['movedays']));

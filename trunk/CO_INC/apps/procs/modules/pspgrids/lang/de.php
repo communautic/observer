@@ -7,6 +7,9 @@ $lang["PROC_PSPGRIDS"] = 'Projektraster';
 $lang["PROC_PSPGRID_NEW"] = 'Neues Projektraster';
 $lang["PROC_PSPGRID_ACTION_NEW"] = 'neues Projektraster anlegen';
 
+$lang["PROC_PSPGRID_PRINTOPTION_GRID"] = 'Raster';
+$lang["PROC_PSPGRID_PRINTOPTION_LIST"] = 'Checkliste mit Text';
+
 $lang["PROC_PSPGRID_TIME"] = 'Projektdauer';
 $lang["PROC_PSPGRID_COSTS"] = 'Projektkosten';
 $lang["PROC_PSPGRID_OWNER"] = 'Projektauftraggeber';
@@ -33,7 +36,7 @@ $lang["PROC_PHASE_TITLE"] = 'Phase';
 
 $lang["PROC_PSPGRID_HELP"] = 'manual_prozesse_projektraster.pdf';
 
-$lang["PROC_PRINT_PSPGRID"] = 'besprechung.png';
+$lang["PROC_PRINT_PSPGRID"] = 'projektraster.png';
 
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/procs/pspgrids/de.php";

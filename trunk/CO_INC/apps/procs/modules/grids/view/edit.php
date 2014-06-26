@@ -128,7 +128,12 @@ foreach($cols as $key => &$value){
 	} else {
 		echo '<div class="dragCol"></div>';
 	}
+	//echo '<div class="procs-col-title ' . $cols[$key]['status'] . '">';
+	if($grid->canedit) {
+		echo '<div class="procs-col-title procs-col-titleActive ' . $cols[$key]['status'] . '">';
+	} else {
 		echo '<div class="procs-col-title ' . $cols[$key]['status'] . '">';
+	}
 		if($cols[$key]['titletext'] != "") {
 			echo '<div id="procsgriditem_'.$cols[$key]['titleid'].'" rel="'.$cols[$key]['titleid'].'" class="droppable '.$showCoPopup.' colTitle" request="title">';
 			echo '<div class="statusItem"><input name="" type="checkbox" value="'.$cols[$key]['titleid'].'" class="cbx jNiceHidden" /></div>';
@@ -173,7 +178,12 @@ foreach($cols as $key => &$value){
 		$stagegatestatus = "active";
 	}
 	echo '<div class="procs-stagegate   ' . $stagegatestatus . '"></div>';
-	echo '<div class="procs-col-stagegate">';
+	//echo '<div class="procs-col-stagegate">';
+	if($grid->canedit) {
+		echo '<div class="procs-col-stagegate procs-col-stagegateActive">';
+	} else {
+		echo '<div class="procs-col-stagegate">';
+	}
 		if($cols[$key]['stagegatetext'] != "") {
 			echo '<div id="procsgriditem_'.$cols[$key]['stagegateid'].'" rel="'.$cols[$key]['stagegateid'].'" class="droppable colStagegate '.$showCoPopup.'" request="stagegate">';
 			echo '<div class="statusItem"><input name="" type="checkbox" value="'.$cols[$key]['stagegateid'].'" class="cbx jNiceHidden" /></div>';
@@ -227,7 +237,7 @@ foreach($cols as $key => &$value){
 <div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-footer">
   <tr>
-    <td class="left"><?php echo($lang["GLOBAL_FOOTER_STATUS"] . " " . $grid->today);?></td>
+    <td class="left"><?php echo $lang["EDITED_BY_ON"];?> <?php echo($grid->edited_user.", ".$grid->edited_date)?></td>
     <td class="middle"><?php echo $grid->access_footer;?></td>
     <td class="right"><?php echo $lang["CREATED_BY_ON"];?> <?php echo($grid->created_user.", ".$grid->created_date);?></td>
   </tr>

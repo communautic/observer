@@ -13,13 +13,13 @@
 <input type="hidden" name="pid" value="<?php echo($access->pid);?>">
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
-		<td class="tcell-left text11"><span class="content-nav showDialog" request="getContactsDialog" field="procsadmins" append="1"><span><?php echo $lang["GLOBAL_ADMINS"];?></span></span></td>
+		<td class="tcell-left text11"><span class="<?php if($access->canedit) { echo 'content-nav showDialog'; }?>" request="getContactsDialog" field="procsadmins" append="1"><span><?php echo $lang["GLOBAL_ADMINS"];?></span></span></td>
 		<td class="tcell-right"><div id="procsadmins" class="itemlist-field"><?php echo($access->admins);?></div></td>
 	</tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
-		<td class="tcell-left text11"><span class="content-nav showDialog" request="getContactsDialog" field="procsguests" append="1"><span><?php echo $lang["GLOBAL_GUESTS"];?></span></span></td>
+		<td class="tcell-left text11"><span class="<?php if($access->canedit) { echo 'content-nav showDialog'; }?>" request="getContactsDialog" field="procsguests" append="1"><span><?php echo $lang["GLOBAL_GUESTS"];?></span></span></td>
 		<td class="tcell-right"><div id="procsguests" class="itemlist-field"><?php echo($access->guests);?></div></td>
 	</tr>
 </table>

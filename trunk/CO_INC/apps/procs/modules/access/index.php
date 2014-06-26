@@ -28,7 +28,7 @@ if (!empty($_GET['request'])) {
 			echo($procsAccess->getList($_GET['id'],$sort));
 		break;
 		case 'getDetails':
-			echo($procsAccess->getDetails($_GET['id']));
+			echo($procsAccess->getDetails($_GET['id'],$_GET['fid']));
 		break;
 		case 'getHelp':
 			echo($procsAccess->getHelp());

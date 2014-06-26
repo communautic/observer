@@ -199,9 +199,9 @@ class Procs extends Controller {
 	}
 
 
-	function getProcDetails($id) {
+	function getProcDetails($id,$fid=0) {
 		global $lang, $system;
-		if($arr = $this->model->getProcDetails($id)) {
+		if($arr = $this->model->getProcDetails($id,$fid)) {
 			$proc = $arr["proc"];
 			$notes = $arr["notes"];
 			ob_start();
@@ -351,6 +351,30 @@ class Procs extends Controller {
 		  }
 	}
 	
+	function newProcLink($id,$fid) {
+		$retval = $this->model->newProcLink($id,$fid);
+		if($retval){
+			 return '{ "action": "new", "id": "' . $retval . '" }';
+		  } else{
+			 return "error";
+		  }
+	}
+	
+	function getNewOptions() {
+		global $lang;
+			ob_start();
+				include 'view/new_options.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			return $html;
+	}
+	
+	function getProcsLinkDialog() {
+		global $system, $lang;
+		$procs = $this->model->getLast10Procs();
+		include('view/dialog_procslink.php');
+	}
+	
 	function newProcNote($id,$x,$y,$z,$what) {
 		global $lang;
 		$retval = $this->model->newProcNote($id,$x,$y,$z,$what);
@@ -363,8 +387,8 @@ class Procs extends Controller {
 		  }
 	}
 	
-	function saveProcNote($id,$title,$text) {
-		$retval = $this->model->saveProcNote($id,$title,$text);
+	function saveProcNote($proc_id,$id,$title,$text) {
+		$retval = $this->model->saveProcNote($proc_id,$id,$title,$text);
 		if($retval){
 			 $text = stripslashes($text);
 			 return nl2br($text);
@@ -382,8 +406,8 @@ class Procs extends Controller {
 		  }
 	}
 
-	function deleteProcNote($id) {
-		$retval = $this->model->deleteProcNote($id);
+	function deleteProcNote($id,$proc_id) {
+		$retval = $this->model->deleteProcNote($id,$proc_id);
 		if($retval){
 			 return "true";
 		  } else{

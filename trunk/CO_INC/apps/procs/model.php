@@ -124,7 +124,8 @@ class ProcsModel extends Model {
 		// get proc details
 		$access="";
 		if(!$session->isSysadmin()) {
-			$access = " and id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
+			//$access = " and id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
+			$access = " and (id IN (" . implode(',', $this->canAccess($session->uid)) . ") or link IN (" . implode(',', $this->canAccess($session->uid)) . ")) ";
 	  	}
 		
 		 $sortstatus = $this->getSortStatus("procs-sort-status",$id);
@@ -150,7 +151,7 @@ class ProcsModel extends Model {
 		  }
 		
 		
-		$q = "SELECT title, id, created_date, created_user FROM " . CO_TBL_PROCS . " where folder='$id' and bin='0'" . $access . " " . $order;
+		$q = "SELECT link, title, id, created_date, created_user FROM " . CO_TBL_PROCS . " where folder='$id' and bin='0'" . $access . " " . $order;
 
 		$result = mysql_query($q, $this->_db->connection);
 	  	$procs = "";
@@ -162,8 +163,25 @@ class ProcsModel extends Model {
 			$proc["created_date"] = $this->_date->formatDate($proc["created_date"],CO_DATE_FORMAT);
 			$proc["created_user"] = $this->_users->getUserFullname($proc["created_user"]);
 			$proc["perm"] = $this->getProcAccess($proc["id"]);
+			
+			
+			if($proc['link'] != 0) {
+				$array["itemstatus"] = ' module-item-active-link';
+				$linkid = $proc['link'];
+				$qlink = "select title,created_date,created_user from " . CO_TBL_PROCS . " where id='$linkid'";
+				$rlink = mysql_query($qlink, $this->_db->connection);
+				$rrow = mysql_fetch_row($rlink);
+				$proc['id'] = $linkid;
+				$proc['title'] = '<span class="proclink">&nbsp;</span>' . $rrow[0];
+				$proc["created_date"] = $this->_date->formatDate($rrow[1],CO_DATE_FORMAT);
+				$proc["created_user"] = $this->_users->getUserFullname($rrow[2]);
+				$proc["perm"] = $this->getProcAccess($linkid);
+			}
+			
 			$procs[] = new Lists($proc);
 	  	}
+		
+		
 		
 		
 		$access = "guest";
@@ -261,7 +279,8 @@ class ProcsModel extends Model {
 		
 		$access = "";
 		 if(!$session->isSysadmin()) {
-			$access = " and id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
+			//$access = " and id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
+			$access = " and (id IN (" . implode(',', $this->canAccess($session->uid)) . ") or link IN (" . implode(',', $this->canAccess($session->uid)) . ")) ";
 		  }
 		
 		$q = "select id from " . CO_TBL_PROCS . " where folder='$id' " . $access . " and bin != '1'";
@@ -468,13 +487,14 @@ class ProcsModel extends Model {
 	  
 	  $access = "";
 	  if(!$session->isSysadmin()) {
-		$access = " and id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
-	  }
-	  $q ="select id,title,checked_out,checked_out_user from " . CO_TBL_PROCS . " where folder='$id' and bin = '0' " . $access . $order;
+		$access = " and (id IN (" . implode(',', $this->canAccess($session->uid)) . ") or link IN (" . implode(',', $this->canAccess($session->uid)) . ")) ";
+	  }	  
+	  $q ="select id,link,title,checked_out,checked_out_user from " . CO_TBL_PROCS . " where folder='$id' and bin = '0' " . $access . $order;
 
 	  $this->setSortStatus("procs-sort-status",$sortcur,$id);
       $result = mysql_query($q, $this->_db->connection);
 	  $procs = "";
+	  
 	  while ($row = mysql_fetch_array($result)) {
 		foreach($row as $key => $val) {
 			$array[$key] = $val;
@@ -488,8 +508,16 @@ class ProcsModel extends Model {
 					$array["access"] = "";
 				}
 			}
-			
 		}
+		
+		$array["itemstatus"] = "";
+		$array['outerid'] = $array['id'];
+		
+		//check for processlink
+		/*if($array['folder'] != $id) {
+			$array['title'] = $array['title'] . ' - Link!';
+		}*/
+		
 		
 		$checked_out_status = "";
 		if($array["access"] != "guest" && $array["checked_out"] == 1 && $array["checked_out_user"] != $session->uid) {
@@ -500,6 +528,16 @@ class ProcsModel extends Model {
 			}
 		}
 		$array["checked_out_status"] = $checked_out_status;
+		
+		if($array['link'] != 0) {
+			$array["itemstatus"] = ' module-item-active-link';
+			$linkid = $array['link'];
+			$qlink = "select title,checked_out,checked_out_user from " . CO_TBL_PROCS . " where id='$linkid'";
+			$rlink = mysql_query($qlink, $this->_db->connection);
+			$rrow = mysql_fetch_row($rlink);
+			$array['id'] = $linkid;
+			$array['title'] = $rrow[0];
+		}
 		
 		$procs[] = new Lists($array);
 	  }
@@ -548,7 +586,7 @@ class ProcsModel extends Model {
 	}
 	
 
-   function getProcDetails($id) {
+   function getProcDetails($id, $fid=0) {
 		global $session, $contactsmodel, $lang;
 		$q = "SELECT * FROM " . CO_TBL_PROCS . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
@@ -570,6 +608,47 @@ class ProcsModel extends Model {
 					$array["access"] = "guestadmin";
 			}
 		}
+		$array['proclink'] = false;
+		if($fid !=0 && $fid != $array['folder']) {
+			$array['proclink'] = true;
+			//$array["access"] = "guestadmin";
+		}
+		if($array['proclink'] == true) {
+			$array["canedit"] = false;
+			$array["showCheckout"] = false;
+			$array["access"] = 'linkaccess';
+		}
+		
+		// check if there are links to this original
+		$array["linktoproclink"] = false;
+		if(!$array['proclink']) {
+			// are there any 
+			$qlink = "SELECT a.id,a.folder,b.title FROM " . CO_TBL_PROCS . " as a, " . CO_TBL_PROCS_FOLDERS . " as b WHERE a.link='$id' and a.folder = b.id and a.bin='0' and b.bin='0'";
+			$result_links = mysql_query($qlink, $this->_db->connection);
+			if(mysql_num_rows($result_links) > 0) {
+				$array["linktoproclink"] = true;
+				$arr = $this->getFolderList(0);
+				$folders = $arr['folders'];
+				$folder_ids = array();
+				foreach ($folders as $folder) {
+					$folder_ids[] = $folder->id;
+				}
+				$i = 0;
+				$array["proclinksdetails"] = array();
+				while($row_link = mysql_fetch_array($result_links)) {
+					if(in_array($row_link['folder'], $folder_ids)) {
+						$array["proclinksdetails"][$i]['folder'] = $row_link['folder'];
+						$array["proclinksdetails"][$i]['folder_title'] = $row_link['title'];
+						$array["proclinksdetails"][$i]['id'] = $id;
+					}
+					$i++;
+				}
+				if(empty($array["proclinksdetails"])) {
+					$array["linktoproclink"] = false;
+				}
+			}
+		}
+		
 		$array["canedit"] = false;
 		$array["showCheckout"] = false;
 		$array["checked_out_user_text"] = $contactsmodel->getUserListPlain($array['checked_out_user']);
@@ -593,12 +672,15 @@ class ProcsModel extends Model {
 			}
 		} // EOF perms
 		
+		
+		
 		// dates
 		$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
 		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
 		$array["today"] = $this->_date->formatDate("now",CO_DATETIME_FORMAT);
 		
 		// other functions
+		$array["folder_id"] = $array["folder"];
 		$array["folder"] = $this->getProcFolderDetails($array["folder"],"folder");
 		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
 		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
@@ -771,6 +853,19 @@ class ProcsModel extends Model {
 			return true;
 		}
 	}
+	
+	function setProcEdited($id) {
+		global $session, $contactsmodel;
+
+		$now = gmdate("Y-m-d H:i:s");
+		
+		$q = "UPDATE " . CO_TBL_PROCS . " set edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		if ($result) {
+			return true;
+		}
+	}
 
 
 	function newProc($id) {
@@ -792,6 +887,24 @@ class ProcsModel extends Model {
 		}
 	}
 	
+	function newProcLink($id,$fid) {
+		global $session, $contactsmodel, $lang;
+		
+		$now = gmdate("Y-m-d H:i:s");
+		
+		$q = "INSERT INTO " . CO_TBL_PROCS . " set folder = '$fid', link='$id', created_user = '$session->uid', created_date = '$now'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+			$id = mysql_insert_id();
+			// if admin insert him to access
+			/*if(!$session->isSysadmin()) {
+				$procsAccessModel = new ProcsAccessModel();
+				$procsAccessModel->setDetails($id,$session->uid,"");
+			}*/
+			return $id;
+		}
+	}
+	
 	
 	function newProcNote($id,$x,$y,$z,$what) {
 		global $session, $contactsmodel, $lang;
@@ -808,18 +921,20 @@ class ProcsModel extends Model {
 		$q = "INSERT INTO " . CO_TBL_PROCS_NOTES . " set pid = '$id', title = '$title', xyz = '".$x."x".$y."x".$z."', shape='$shape', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
-			$id = mysql_insert_id();
-			return $id;
+			$nid = mysql_insert_id();
+			$this->setProcEdited($id);
+			return $nid;
 		}
 	}
 
 
-	function saveProcNote($id,$title,$text) {
+	function saveProcNote($proc_id,$id,$title,$text) {
 		global $session;
 		$now = gmdate("Y-m-d H:i:s");
 		$q = "UPDATE " . CO_TBL_PROCS_NOTES . " set title = '$title', text = '$text', edited_user = '$session->uid', edited_date = '$now' WHERE id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
+			$this->setProcEdited($proc_id);
 			return true;
 		}
 	}
@@ -835,9 +950,10 @@ class ProcsModel extends Model {
    }
   
   
-	function deleteProcNote($id) {
+	function deleteProcNote($id,$proc_id) {
 		global $session;
-		$now = gmdate("Y-m-d H:i:s");
+		//$now = gmdate("Y-m-d H:i:s");
+		$this->setProcEdited($proc_id);
 		$q = "DELETE FROM " . CO_TBL_PROCS_NOTES . " where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
@@ -1037,7 +1153,7 @@ class ProcsModel extends Model {
 		$q = "DELETE FROM " . CO_TBL_PROCS_NOTES . " WHERE pid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
-		$q = "DELETE FROM " . CO_TBL_PROCS . " WHERE id='$id'";
+		$q = "DELETE FROM " . CO_TBL_PROCS . " WHERE id='$id' or link='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
@@ -1318,7 +1434,7 @@ class ProcsModel extends Model {
 
 
    function getBin() {
-		global $procs;
+		global $procs,$lang;
 		
 		$bin = array();
 		$bin["datetime"] = $this->_date->formatDate("now",CO_DATETIME_FORMAT);
@@ -1356,13 +1472,22 @@ class ProcsModel extends Model {
 				$arr["folders"] = $folders;
 			} else { // folder not binned
 				
-				$qp ="select id, title, bin, bintime, binuser from " . CO_TBL_PROCS . " where folder = '$id'";
+				$qp ="select id, title, bin, bintime, binuser, link from " . CO_TBL_PROCS . " where folder = '$id'";
 				$resultp = mysql_query($qp, $this->_db->connection);
 				while ($rowp = mysql_fetch_array($resultp)) {
 					$pid = $rowp["id"];
 					if($rowp["bin"] == "1") { // deleted procs
 						foreach($rowp as $key => $val) {
 							$pro[$key] = $val;
+						}
+						$pro["binheading"] = $lang["PROC_TITLE"];
+						// prclink check
+						if($pro["link"] != 0) {
+							$link = $pro["link"];
+							$qpl ="select title from " . CO_TBL_PROCS . " where id='$link'";
+							$resultpl = mysql_query($qpl, $this->_db->connection);
+							$pro["title"] = mysql_result($resultpl,0);
+							$pro["binheading"] = $lang["PROC_NEW_OPTION_PROCESSLINK"];
 						}
 						$pro["bintime"] = $this->_date->formatDate($pro["bintime"],CO_DATETIME_FORMAT);
 						$pro["binuser"] = $this->_users->getUserFullname($pro["binuser"]);
@@ -2202,6 +2327,16 @@ class ProcsModel extends Model {
 		
 		$this->setUserSetting("last-used-procs",$str);
 	  return true;
+	}
+	
+	
+	function appCheckProcesslink($folder,$pid) {
+		$q = "SELECT folder FROM " . CO_TBL_PROCS . " where id = '$pid'";
+		$result = mysql_query($q, $this->_db->connection);
+		$orig_folder = mysql_result($result,0);
+		if($folder != 0 && $orig_folder != $folder) {
+			return true;
+		}
 	}
 
 	

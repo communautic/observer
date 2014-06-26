@@ -9,7 +9,7 @@ class ProcsPspgridsModel extends ProcsModel {
 	}
 
 
-	function getList($id,$sort) {
+	function getList($id,$sort,$fid=0) {
 		global $session;
 	  if($sort == 0) {
 		  $sortstatus = $this->getSortStatus("procs-pspgrids-sort-status",$id);
@@ -72,6 +72,10 @@ class ProcsPspgridsModel extends ProcsModel {
 		$this->setSortStatus("procs-pspgrids-sort-status",$sortcur,$id);
 		$result = mysql_query($q, $this->_db->connection);
 		$items = mysql_num_rows($result);
+		
+		if($this->appCheckProcesslink($fid,$id)) {
+			$perm = 'guest';
+		}
 		
 		$pspgrids = "";
 		while ($row = mysql_fetch_array($result)) {
@@ -162,7 +166,7 @@ class ProcsPspgridsModel extends ProcsModel {
 	}
 	
 
-	function getDetails($id) {
+	function getDetails($id, $fid=0) {
 		global $session, $contactsmodel, $lang;
 		
 		$q = "SELECT * FROM " . CO_TBL_PROCS_PSPGRIDS . " where id = '$id'";
@@ -176,6 +180,12 @@ class ProcsPspgridsModel extends ProcsModel {
 		}
 			
 		$array["perms"] = $this->getProcAccess($array["pid"]);
+		
+		$process_id = $array['pid'];
+		if($this->appCheckProcesslink($fid,$process_id)) {
+			$array["perms"] = 'guest';
+		}
+		
 		$array["canedit"] = false;
 		$array["showCheckout"] = false;
 		$array["checked_out_user_text"] = $this->_contactsmodel->getUserListPlain($array['checked_out_user']);
@@ -449,6 +459,16 @@ class ProcsPspgridsModel extends ProcsModel {
 
 		return $arr;
    }
+   
+   function setDetailsUpdate($id) {
+		global $session, $contactsmodel, $lang;
+
+		$now = gmdate("Y-m-d H:i:s");
+		
+		$q = "UPDATE " . CO_TBL_PROCS_PSPGRIDS . " set edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		return "true";
+   }
 
 
    function savePspgridColumns($cols) {
@@ -470,11 +490,8 @@ class ProcsPspgridsModel extends ProcsModel {
 		$q = "INSERT INTO " . CO_TBL_PROCS_PSPGRIDS_COLUMNS . " set pid = '$id',sort = '$sort'";
 		$result = mysql_query($q, $this->_db->connection);
 		$cid = mysql_insert_id();
-		
-		//$this->savePspgridNewManualTitle($id,$cid);
-		//$this->savePspgridNewManualNote($id,$cid);
-		
 		if ($result) {
+			$this->setDetailsUpdate($id);
 			return $cid;
 		}
    }
@@ -601,6 +618,7 @@ class ProcsPspgridsModel extends ProcsModel {
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			$id = mysql_insert_id();
+			$this->setDetailsUpdate($pid);
 			return $id;
 		}
 	}
@@ -612,16 +630,18 @@ class ProcsPspgridsModel extends ProcsModel {
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			$id = mysql_insert_id();
+			$this->setDetailsUpdate($pid);
 			return $id;
 		}
 	}
 
-   function savePspgridNote($id,$title,$team,$team_ct,$text,$days,$costs_employees,$costs_materials,$costs_external,$costs_other) {
+   function savePspgridNote($proc_id,$id,$title,$team,$team_ct,$text,$days,$costs_employees,$costs_materials,$costs_external,$costs_other) {
 		global $session;
 		$now = gmdate("Y-m-d H:i:s");
 		$q = "UPDATE " . CO_TBL_PROCS_PSPGRIDS_NOTES . " set title = '$title', team = '$team', team_ct = '$team_ct', text = '$text', days='$days',  costs_employees='$costs_employees', costs_materials='$costs_materials', costs_external='$costs_external', costs_other='$costs_other', edited_user = '$session->uid', edited_date = '$now' WHERE id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
+			$this->setDetailsUpdate($proc_id);
 			return true;
 		}
 
@@ -797,10 +817,11 @@ class ProcsPspgridsModel extends ProcsModel {
 		}
    }
    
-   	function setItemStatus($id,$status) {
+   	function setItemStatus($proc_id,$id,$status) {
 		$q = "UPDATE " . CO_TBL_PROCS_PSPGRIDS_NOTES . " set status = '$status' WHERE id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if($result) {
+			$this->setDetailsUpdate($proc_id);
 			return true;
 		}
 	}

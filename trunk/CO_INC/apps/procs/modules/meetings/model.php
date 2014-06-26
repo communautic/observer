@@ -9,7 +9,7 @@ class ProcsMeetingsModel extends ProcsModel {
 	}
 
 
-	function getList($id,$sort) {
+	function getList($id,$sort,$fid=0) {
 		global $session;
 	  if($sort == 0) {
 		  $sortstatus = $this->getSortStatus("procs-meetings-sort-status",$id);
@@ -72,6 +72,10 @@ class ProcsMeetingsModel extends ProcsModel {
 		$this->setSortStatus("procs-meetings-sort-status",$sortcur,$id);
 		$result = mysql_query($q, $this->_db->connection);
 		$items = mysql_num_rows($result);
+		
+		if($this->appCheckProcesslink($fid,$id)) {
+			$perm = 'guest';
+		}
 		
 		$meetings = "";
 		while ($row = mysql_fetch_array($result)) {
@@ -175,7 +179,7 @@ class ProcsMeetingsModel extends ProcsModel {
 	}
 	
 
-	function getDetails($id, $option = "") {
+	function getDetails($id,$fid=0,$option = "") {
 		global $session, $lang;
 		
 		$this->_documents = new ProcsDocumentsModel();
@@ -193,6 +197,12 @@ class ProcsMeetingsModel extends ProcsModel {
 			
 			
 		$array["perms"] = $this->getProcAccess($array["pid"]);
+		
+		$process_id = $array['pid'];
+		if($this->appCheckProcesslink($fid,$process_id)) {
+			$array["perms"] = 'guest';
+		}
+		
 		$array["canedit"] = false;
 		$array["showCheckout"] = false;
 		$array["checked_out_user_text"] = $this->_contactsmodel->getUserListPlain($array['checked_out_user']);

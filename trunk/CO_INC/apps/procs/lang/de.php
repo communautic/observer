@@ -11,6 +11,9 @@ $lang["PROC_PROCS"] = 'Prozesse';
 $lang["PROC_NEW"] = 'Neuer Prozess';
 $lang["PROC_ACTION_NEW"] = 'neuen Prozess anlegen';
 
+$lang["PROC_NEW_OPTION_PROCESS"] = 'neuer Prozess';
+$lang["PROC_NEW_OPTION_PROCESSLINK"] = 'Prozesslink';
+
 // Folder Right
 $lang["PROC_FOLDER_CREATED_ON"] = 'angelegt am';
 $lang["PROC_FOLDER_INITIATOR"] = 'Initiative:';

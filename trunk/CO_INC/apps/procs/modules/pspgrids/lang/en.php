@@ -7,6 +7,9 @@ $lang["PROC_PSPGRIDS"] = 'Project Templates';
 $lang["PROC_PSPGRID_NEW"] = 'New Project Template';
 $lang["PROC_PSPGRID_ACTION_NEW"] = 'new Project Template';
 
+$lang["PROC_PSPGRID_PRINTOPTION_GRID"] = 'Grid';
+$lang["PROC_PSPGRID_PRINTOPTION_LIST"] = 'Checklist with text';
+
 $lang["PROC_PSPGRID_TIME"] = 'Duration';
 $lang["PROC_PSPGRID_COSTS"] = 'Costs';
 $lang["PROC_PSPGRID_OWNER"] = 'Owner';
@@ -33,7 +36,7 @@ $lang["PROC_PHASE_TITLE"] = 'Phase';
 
 $lang["PROC_PSPGRID_HELP"] = 'manual_prozesse_projektraster.pdf';
 
-$lang["PROC_PRINT_PSPGRID"] = 'pspgrid.png';
+$lang["PROC_PRINT_PSPGRID"] = 'project_template.png';
 
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/procs/pspgrids/en.php";

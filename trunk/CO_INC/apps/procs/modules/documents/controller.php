@@ -15,9 +15,9 @@ class ProcsDocuments extends Procs {
 	}
 
 
-	function getList($id,$sort) {
+	function getList($id,$sort,$fid=0) {
 		global $system, $lang;
-		$arr = $this->model->getList($id,$sort);
+		$arr = $this->model->getList($id,$sort,$fid);
 		$documents = $arr["documents"];
 		ob_start();
 			include('view/list.php');
@@ -31,9 +31,9 @@ class ProcsDocuments extends Procs {
 	}
 
 
-	function getDetails($id) {
+	function getDetails($id,$fid=0) {
 		global $lang;
-		if($arr = $this->model->getDetails($id)) {
+		if($arr = $this->model->getDetails($id,$fid)) {
 			$document = $arr["document"];
 			$doc = $arr["doc"];
 			$sendto = $arr["sendto"];

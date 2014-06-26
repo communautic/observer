@@ -41,10 +41,14 @@ if (!empty($_GET['request'])) {
 			if(!empty($_GET['sort'])) {
 				$sort = $_GET['sort'];
 			}
-			echo($procsGrids->getList($_GET['id'],$sort));
+			$fid = 0;
+			if(!empty($_GET['fid'])) {
+				$fid = $_GET['fid'];
+			}
+			echo($procsGrids->getList($_GET['id'],$sort,$fid));
 		break;
 		case 'getDetails':
-			echo($procsGrids->getDetails($_GET['id']));
+			echo($procsGrids->getDetails($_GET['id'],$_GET['fid']));
 		break;
 		case 'createNew':
 			echo($procsGrids->createNew($_GET['id']));
@@ -75,13 +79,19 @@ if (!empty($_GET['request'])) {
 			if(!empty($_GET['t'])) {
 				$t = $_GET['t'];
 			}
-			echo($procsGrids->printDetails($_GET['id'],$t));
+			echo($procsGrids->printDetails($_GET['id'],$t,$_GET['option']));
 		break;
 		case 'getSend':
 			echo($procsGrids->getSend($_GET['id']));
 		break;
 		case 'getSendtoDetails':
 			echo($procsGrids->getSendtoDetails("procs_grids",$_GET['id']));
+		break;
+		case 'getPrintOptions':
+			echo($procsGrids->getPrintOptions());
+		break;
+		case 'getSendToOptions':
+			echo($procsGrids->getSendToOptions());
 		break;
 		case 'checkinGrid':
 			echo($procsGrids->checkinGrid($_GET['id']));
@@ -182,7 +192,7 @@ if (!empty($_POST['request'])) {
 			echo($procsGrids->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
 		break;
 		case 'saveGridNote':
-			echo($procsGrids->saveGridNote($_POST["id"],$system->checkMagicQuotes($_POST['title']), $_POST['team'],$system->checkMagicQuotes($_POST['team_ct']),htmlspecialchars($_POST['text']),$_POST['hours'],$_POST['costs_employees'],$_POST['costs_materials'],$_POST['costs_external'],$_POST['costs_other']));
+			echo($procsGrids->saveGridNote($_POST["proc_id"],$_POST["id"],$system->checkMagicQuotes($_POST['title']), $_POST['team'],$system->checkMagicQuotes($_POST['team_ct']),htmlspecialchars($_POST['text']),$_POST['hours'],$_POST['costs_employees'],$_POST['costs_materials'],$_POST['costs_external'],$_POST['costs_other']));
 		break;
 	}
 }

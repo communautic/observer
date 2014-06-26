@@ -24,10 +24,14 @@ if (!empty($_GET['request'])) {
 			if(!empty($_GET['sort'])) {
 				$sort = $_GET['sort'];
 			}
-			echo($procsDocuments->getList($_GET['id'],$sort));
+			$fid = 0;
+			if(!empty($_GET['fid'])) {
+				$fid = $_GET['fid'];
+			}
+			echo($procsDocuments->getList($_GET['id'],$sort,$fid));
 		break;
 		case 'getDetails':
-			echo($procsDocuments->getDetails($_GET['id']));
+			echo($procsDocuments->getDetails($_GET['id'],$_GET['fid']));
 		break;
 		/*case 'getNew':
 			echo($procsDocuments->getNew($_GET['id']));

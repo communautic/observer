@@ -18,7 +18,8 @@ function Access(app) {
 	this.getDetails = function(moduleidx,liindex,list) {
 		var module = this;
 		var id = $('#'+ module.app).data('second');
-		$.ajax({ type: "GET", url: "/", data: 'path=apps/'+ module.app +'/modules/access&request=getDetails&id='+id, success: function(html){
+		var fid = $('#'+ module.app).data('first');
+		$.ajax({ type: "GET", url: "/", data: 'path=apps/'+ module.app +'/modules/access&request=getDetails&id='+id+"&fid="+fid, success: function(html){
 			$('#'+ module.app +'-right').html(html);
 			window['init'+ module.objectnameCaps +'ContentScrollbar']();
 			window[module.app +'Actions'](6);
