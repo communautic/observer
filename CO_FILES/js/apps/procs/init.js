@@ -1226,9 +1226,9 @@ $(document).ready(function() {
 			}));
 			var z = zMax + 1;
 			$(this).css('z-index',z);
-			var loc = $(this).position();
-			var x = loc.left;
-			var y = loc.top;
+			//var loc = $(this).position();
+			var x = parseInt($(this).css('left'));
+			var y = parseInt($(this).css('top'));
 			var id = $(this).attr("id").replace(/note-/, "");
 			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs&request=updateNotePosition&id="+id+"&x="+x+"&y="+y+"&z="+z, success: function(data){
 				}
