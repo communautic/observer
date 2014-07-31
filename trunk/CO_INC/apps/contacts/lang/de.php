@@ -78,8 +78,8 @@ $lang['CONTACTS_CUSTOM'] = 'Text';
 $lang['CONTACTS_AVATARS'] = 'Kontakte / Bilder';
 
 // Access codes Email
-$lang['ACCESS_CODES_EMAIL_SUBJECT'] = 'Company Observer© Zugangscodes';
-$lang['ACCESS_CODES_EMAIL'] =	'<p style="font-face: Arial, Verdana; font-size: small">Hiermit erhalten Sie Zugangscodes zur erstmaligen Anmeldung für die Online-Managementplattform Company Observer ©:</p>' .
+$lang['ACCESS_CODES_EMAIL_SUBJECT'] = $lang["APPLICATION_NAME_CAPS"].'© Zugangscodes';
+$lang['ACCESS_CODES_EMAIL'] =	'<p style="font-face: Arial, Verdana; font-size: small">Hiermit erhalten Sie Zugangscodes zur erstmaligen Anmeldung für die Online-Managementplattform ' . $lang["APPLICATION_NAME_CAPS"] . ' ©:</p>' .
 								'<p style="font-face: Arial, Verdana; font-size: small">Startseite: <a href="%1$s">%1$s</a></p>' .
     							'<p style="font-face: Arial, Verdana; font-size: small">Benutzername: %2$s<br />' .
     							'Passwort: %3$s</p>' .
