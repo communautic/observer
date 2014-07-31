@@ -45,14 +45,14 @@
 	  <td class="tcell-left text11"><span><span>Prozesslink</span></span></td>
         <td class="tcell-right">
         <?php 
-			foreach($proc->proclinksdetails as $key) {
-				//foreach($key as $value) { 
-				?>
-				<span rel="procs,<?php echo $key['folder'];?>,<?php echo $key['id'];?>,0,procs" class="co-link externalLoadThreeLevels"><?php echo $key['folder_title'];?></span> 
-				<?php }
-			//}
-		?>
-        </td>
+			$num = sizeof($proc->proclinksdetails);
+			$i = 1;
+			foreach($proc->proclinksdetails as $key) { ?>
+				<span rel="procs,<?php echo $key['folder'];?>,<?php echo $key['id'];?>,0,procs" class="co-link externalLoadThreeLevels"><?php echo $key['folder_title'];?></span><?php 
+				if($i < $num) { echo ', '; }
+				$i++;
+				}
+		?></td>
 	</tr>
 </table>
 <?php } ?>
