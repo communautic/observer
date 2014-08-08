@@ -123,6 +123,8 @@ function employeesApplication(name) {
 	
 	this.importContact = function(cid) {
 		var module = this;
+		var pid = $('#employees input[name="id"]').val()
+		module.checkIn(pid);
 		$("#modalDialog").dialog('close');
 		var id = $('#employees').data('first');
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/employees&request=newEmployee&id=' + id + '&cid=' + cid, cache: false, success: function(data){

@@ -117,6 +117,8 @@ function patientsApplication(name) {
 	
 	this.importContact = function(cid) {
 		var module = this;
+		var pid = $('#patients input[name="id"]').val()
+		module.checkIn(pid);
 		$("#modalDialog").dialog('close');
 		var id = $('#patients').data('first');
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/patients&request=newPatient&id=' + id + '&cid=' + cid, cache: false, success: function(data){
@@ -886,7 +888,7 @@ function patientsActions(status) {
 		case 9: 	actions = ['0','2','3','6','7','8']; break; // default folder if not empty
 		// vdocs
 		// 0 == 10
-		//case 10: actions = ['0','1','2','3','5','6','7','8']; break;
+		case 10: actions = ['0','1','2','3','5','6','7','8']; break;
 		// 5 == 11
 		case 11: 	actions = ['1','2','6','7','8']; break;   			// print, send, refresh
 		// rosters
