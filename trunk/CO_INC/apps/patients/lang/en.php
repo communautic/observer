@@ -15,8 +15,8 @@ $lang["PATIENT_ACTION_NEW"] = 'create new patient';
 $lang["PATIENT_FOLDER_TAB_LIST"] = 'Patients';
 $lang["PATIENT_FOLDER_TAB_INVOICES"] = 'Invoices';
 $lang["PATIENT_FOLDER_TAB_INVOICES_DATE"] = 'Date';
-
 $lang["PATIENT_FOLDER_TAB_INVOICES_PATIENT"] = 'Patient';
+$lang["PATIENT_FOLDER_TAB_INVOICES_NUMBER"] = 'Number';
 $lang["PATIENT_FOLDER_TAB_INVOICES_STATUS"] = 'Status';
 $lang["PATIENT_FOLDER_TAB_REVENUE"] = 'Revenue';
 $lang["PATIENT_FOLDER_TAB_FILTER"] = 'Filter';

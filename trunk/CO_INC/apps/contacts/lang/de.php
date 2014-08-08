@@ -50,6 +50,7 @@ $lang['CONTACTS_BANK_ACCOUNT_IBAN'] = 'IBAN';
 
 $lang['CONTACTS_LANGUAGE'] = 'Systemsprache';
 $lang['CONTACTS_TIMEZONE'] = 'Systemzeitzone';
+$lang["CONTACTS_DESCRIPTION"] = 'Notiz';
 
 $lang['CONTACTS_GROUPMEMBERSHIP'] = 'Gruppenmitglied';
 
@@ -79,11 +80,13 @@ $lang['CONTACTS_AVATARS'] = 'Kontakte / Bilder';
 
 // Access codes Email
 $lang['ACCESS_CODES_EMAIL_SUBJECT'] = $lang["APPLICATION_NAME_CAPS"].'© Zugangscodes';
-$lang['ACCESS_CODES_EMAIL'] =	'<p style="font-face: Arial, Verdana; font-size: small">Hiermit erhalten Sie Zugangscodes zur erstmaligen Anmeldung für die Online-Managementplattform ' . $lang["APPLICATION_NAME_CAPS"] . ' ©:</p>' .
-								'<p style="font-face: Arial, Verdana; font-size: small">Startseite: <a href="%1$s">%1$s</a></p>' .
+$lang['ACCESS_CODES_EMAIL'] =	'<p style="font-face: Arial, Verdana; font-size: small">Hiermit erhalten Sie Ihre Zugangscodes zur erstmaligen Anmeldung für die Online-Managementplattform ' . $lang["APPLICATION_NAME_CAPS"] . ' ©:</p>' .
+								'<p style="font-face: Arial, Verdana; font-size: small">Bitte öffnen Sie jetzt die Startseite: <a href="%1$s">%1$s</a></p>' .
+								'<p style="font-face: Arial, Verdana; font-size: small">Geben Sie anschließend folgende Zugangsdaten ein:</p>' .
     							'<p style="font-face: Arial, Verdana; font-size: small">Benutzername: %2$s<br />' .
     							'Passwort: %3$s</p>' .
-								'<p style="font-face: Arial, Verdana; font-size: small;">Bitte melden Sie sich an, indem Sie die angegebene Internetadresse aufrufen, diese Zugangsdaten (Benutzername und Passwort) eingeben und bestätigen. Im Anschluss werden Sie aufgefordert, Ihre persönlichen Zugangscodes zu kreieren. Mit diesen, neuen Zugangscodes erhalten Sie zukünftig Zugang zur Plattform (unter der gleichen Startseitenadresse wie oben angegeben).</p>' .
+								'<p style="font-face: Arial, Verdana; font-size: small;">Nachdem Sie Benutzername und Passwort eingegeben haben, bestätigen Sie die Angaben mit einem Mausklick auf „weiter“. Jetzt werden Sie aufgefordert, Ihre eigenen Zugangscodes zu kreieren. Bitte beachten Sie dass die vorhergehenden Codes damit ihre Gültigkeit verlieren. Es gelten ab sofort nur mehr Ihre persönlich kreierten Zugangsdaten. Mit diesen, neuen Zugangscodes erhalten Sie zukünftig Zugang zur Plattform (unter der gleichen Startseitenadresse wie oben angegeben).</p>' .
+								'<p style="font-face: Arial, Verdana; font-size: small;">Bei Fragen diesen Einstiegsprozess betreffend stehen wir Ihnen gerne unter der Emailadresse: ' . $lang["APPLICATION_SUPPORT_EMAIL"] . ' zur Verfügung.</p>' .
 								'<p style="font-face: Arial, Verdana; font-size: small;">Danke und viel Erfolg!</p>';
 
 $lang["CONTACTS_HELP"] = 'manual_kontakte_kontakte.pdf';

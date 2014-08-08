@@ -16,6 +16,7 @@ $lang["PATIENT_FOLDER_TAB_LIST"] = 'Patientenliste';
 $lang["PATIENT_FOLDER_TAB_INVOICES"] = 'Rechnungsarchiv';
 $lang["PATIENT_FOLDER_TAB_INVOICES_DATE"] = 'Datum';
 $lang["PATIENT_FOLDER_TAB_INVOICES_PATIENT"] = 'Patient';
+$lang["PATIENT_FOLDER_TAB_INVOICES_NUMBER"] = 'Nummer';
 $lang["PATIENT_FOLDER_TAB_INVOICES_STATUS"] = 'Status';
 $lang["PATIENT_FOLDER_TAB_REVENUE"] = 'Umsatzberechnung';
 $lang["PATIENT_FOLDER_TAB_FILTER"] = 'Datenfilter';

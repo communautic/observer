@@ -7,6 +7,7 @@ switch(CO_PRODUCT_VARIANT) {
 		$lang["APPLICATION_LOGO"] = "company_observer.png";
 		$lang["APPLICATION_LOGO_LOGIN"] = "company_observer_login.png";
 		$lang["APPLICATION_WEBSITE"] = "http://companyobserver.at";
+		$lang["APPLICATION_SUPPORT_EMAIL"] = "support@companyobserver.com";
 		$GLOBALS["APPLICATION_LOGO_PRINT"] = "poweredby_company_observer.png";
 	break;
 	case 1:
@@ -16,6 +17,7 @@ switch(CO_PRODUCT_VARIANT) {
 		$lang["APPLICATION_LOGO"] = "physio_observer.png";
 		$lang["APPLICATION_LOGO_LOGIN"] = "physio_observer_login.png";
 		$lang["APPLICATION_WEBSITE"] = "http://physioobserver.at";
+		$lang["APPLICATION_SUPPORT_EMAIL"] = "support@physioobserver.at";
 		$GLOBALS["APPLICATION_LOGO_PRINT"] = "poweredby_physio_observer.png";
 	break;
 }
