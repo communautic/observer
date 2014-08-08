@@ -237,6 +237,9 @@ class PatientsModel extends Model {
 			case 'Status':
 				$order = "status_invoice ASC";
 			break;
+			case 'Number':
+				$order = "invoice_number DESC";
+			break;
 		}
 		
 		$q = "SELECT a.id,a.title,a.invoice_date,a.invoice_number,a.status_invoice, a.discount, a.vat, b.id as pid, b.management, CONCAT(c.lastname,' ',c.firstname) as patient FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE a.status='2' and a.pid=b.id and b.folder='$id' and b.cid=c.id and a.bin='0' and b.bin='0' ORDER BY " . $order;
@@ -828,7 +831,8 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 		$array["canedit"] = false;
 		$array["showCheckout"] = false;
 		$array["checked_out_user_text"] = $contactsmodel->getUserListPlain($array['checked_out_user']);
-
+		
+		if($option != 'nocheckout') {
 		if($array["access"] == "sysadmin" || $array["access"] == "admin") {
 			//if($array["checked_out"] == 1 && $session->checkUserActive($array["checked_out_user"])) {
 			if($array["checked_out"] == 1) {
@@ -844,9 +848,11 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 					$array["checked_out_user_email"] = $contactsmodel->getContactFieldFromID($array['checked_out_user'],"email");
 				}
 			} else {
+				
 				$array["canedit"] = $this->checkoutPatient($id);
 			}
 		} // EOF perms
+		}
 		
 		// dates
 		$array["avatar"] = $contactsmodel->_users->getAvatar($array["cid"]);
