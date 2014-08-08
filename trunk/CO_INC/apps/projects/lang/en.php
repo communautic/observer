@@ -74,6 +74,14 @@ $lang["PROJECT_WIDGET_TITLE_PROJECT"]		=	'Projekt';
 $lang["PROJECT_WIDGET_INVITATION_ADMIN"]	=	'You have been invited as <span class="yellow">Administrator</span> to the Project "%1$s"';
 $lang["PROJECT_WIDGET_INVITATION_GUEST"]	=	'You have been invited as <span class="yellow">Guest</span> to the Project "%1$s"';
 
+$lang["PROJECT_WIDGET_PROJECTLINK_TITLE"]	=	'Change of Date';
+$lang["PROJECT_WIDGET_PROJECTLINK_STARTEND"]=	'Start and end for the project "%1$s" have changed';
+$lang["PROJECT_WIDGET_PROJECTLINK_START"]	=	'Start for the project "%1$s" has changed';
+$lang["PROJECT_WIDGET_PROJECTLINK_END"]		=	'End for the project "%1$s" has changed';
+
+$lang["PROJECT_WIDGET_PROJECTLINK_NOTICE_TITLE"]	=	'Project Link';
+$lang["PROJECT_WIDGET_PROJECTLINK_NOTICE"]=	'Your project "%1$s" was integrated into the project "%2$s"';
+
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/projects/en.php";
 if(file_exists($custom_lang)) {
