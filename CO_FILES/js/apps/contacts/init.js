@@ -1588,7 +1588,7 @@ $(document).ready(function() {
 	$(document).on('click', '#actionCalendarRemove', function(e) {
 		e.preventDefault();
 		var id = $("#contacts").data("first");
-		var txt = ALERT_DELETE_REALLY;
+		var txt = ALERT_CALENDAR_DEACTIVATE;
 		var langbuttons = {};
 		langbuttons[ALERT_YES] = true;
 		langbuttons[ALERT_NO] = false;

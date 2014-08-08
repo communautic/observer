@@ -67,6 +67,7 @@ var ALERT_SUCCESS_PROJECT_EXPORT = 'The project was successfully exported to: <b
 
 var ALERT_TRAINING_MOVE_ALL = "Wollen Sie alle Trainingstermine an das neue Startdatum anpassen?";
 
+var ALERT_CALENDAR_DEACTIVATE = "Do you really want to de-activate this calendar?";
 var ALERT_CALENDAR_DATA = "Please check the following entries:<br />";
 var ALERT_CALENDAR_MISSING_TITLE = "Title";
 var ALERT_CALENDAR_MISSING_TREATMENT = "Treatment";
