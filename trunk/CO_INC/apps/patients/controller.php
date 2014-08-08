@@ -450,7 +450,7 @@ class Patients extends Controller {
 		$title = "";
 		$html = "";
 		
-		if($arr = $this->model->getPatientDetails($id)) {
+		if($arr = $this->model->getPatientDetails($id,'nocheckout')) {
 			$patient = $arr["patient"];
 			//$num = $arr["num"];
 			$sendto = $arr["sendto"];

@@ -77,7 +77,7 @@ class PatientsInvoices extends Patients {
 					$invoice = $arr["invoice"];
 					$task = $arr["task"];
 					$pid = $invoice->pid;
-					if($arr = $this->model->getPatientDetails($pid)) {
+					if($arr = $this->model->getPatientDetails($pid,'nocheckout')) {
 						$patient = $arr["patient"];
 					}
 					ob_start();
@@ -101,7 +101,7 @@ class PatientsInvoices extends Patients {
 					$invoice = $arr["invoice"];
 					$task = $arr["task"];
 					$pid = $invoice->pid;
-					if($arr = $this->model->getPatientDetails($pid)) {
+					if($arr = $this->model->getPatientDetails($pid,'nocheckout')) {
 						$patient = $arr["patient"];
 					}
 					ob_start();
@@ -125,7 +125,7 @@ class PatientsInvoices extends Patients {
 					$invoice = $arr["invoice"];
 					$task = $arr["task"];
 					$pid = $invoice->pid;
-					if($arr = $this->model->getPatientDetails($pid)) {
+					if($arr = $this->model->getPatientDetails($pid,'nocheckout')) {
 						$patient = $arr["patient"];
 					}
 					ob_start();
@@ -148,7 +148,7 @@ class PatientsInvoices extends Patients {
 				if($arr = $this->model->getDetails($id)) {
 					$invoice = $arr["invoice"];
 					$pid = $invoice->pid;
-					if($arr = $this->model->getPatientDetails($pid)) {
+					if($arr = $this->model->getPatientDetails($pid,'nocheckout')) {
 						$patient = $arr["patient"];
 					}
 					ob_start();
@@ -201,7 +201,7 @@ class PatientsInvoices extends Patients {
 		if($arr = $this->model->getDetails($id,'prepareSendTo')) {
 			$invoice = $arr["invoice"];
 			$pid = $invoice->pid;
-			if($arr = $this->model->getPatientDetails($pid)) {
+			if($arr = $this->model->getPatientDetails($pid,'nocheckout')) {
 				$patient = $arr["patient"];
 			}
 			
@@ -233,7 +233,7 @@ class PatientsInvoices extends Patients {
 					$invoice = $arr["invoice"];
 					$task = $arr["task"];
 					$pid = $invoice->pid;
-					if($arr = $this->model->getPatientDetails($pid)) {
+					if($arr = $this->model->getPatientDetails($pid,'nocheckout')) {
 						$patient = $arr["patient"];
 					}
 					ob_start();
@@ -252,7 +252,7 @@ class PatientsInvoices extends Patients {
 					$invoice = $arr["invoice"];
 					$task = $arr["task"];
 					$pid = $invoice->pid;
-					if($arr = $this->model->getPatientDetails($pid)) {
+					if($arr = $this->model->getPatientDetails($pid,'nocheckout')) {
 						$patient = $arr["patient"];
 					}
 					ob_start();
@@ -271,7 +271,7 @@ class PatientsInvoices extends Patients {
 					$invoice = $arr["invoice"];
 					$task = $arr["task"];
 					$pid = $invoice->pid;
-					if($arr = $this->model->getPatientDetails($pid)) {
+					if($arr = $this->model->getPatientDetails($pid,'nocheckout')) {
 						$patient = $arr["patient"];
 					}
 					ob_start();
@@ -289,7 +289,7 @@ class PatientsInvoices extends Patients {
 				if($arr = $this->model->getDetails($id)) {
 					$invoice = $arr["invoice"];
 					$pid = $invoice->pid;
-					if($arr = $this->model->getPatientDetails($pid)) {
+					if($arr = $this->model->getPatientDetails($pid,'nocheckout')) {
 						$patient = $arr["patient"];
 					}
 					ob_start();
