@@ -2,7 +2,8 @@
     <div id="patientsFoldersSubTabs" class="contentSubTabs" style="position: absolute;">
         <ul>
             <li><span class="left<?php if($view == 'Timeline') { echo ' active';}?>" rel="Timeline"><?php echo $lang["PATIENT_FOLDER_TAB_INVOICES_DATE"];?></span></li>
-            <li><span class="<?php if($view == 'Patient') { echo ' active';}?>" rel="Patient"><?php echo $lang["PATIENT_FOLDER_TAB_INVOICES_PATIENT"];?></span></li>
+            <!--<li><span class="<?php if($view == 'Patient') { echo ' active';}?>" rel="Patient"><?php echo $lang["PATIENT_FOLDER_TAB_INVOICES_PATIENT"];?></span></li>-->
+            <li><span class="<?php if($view == 'Number') { echo ' active';}?>" rel="Number"><?php echo $lang["PATIENT_FOLDER_TAB_INVOICES_NUMBER"];?></span></li>
             <li><span class="right<?php if($view == 'Status') { echo ' active';}?>" rel="Status"><?php echo $lang["PATIENT_FOLDER_TAB_INVOICES_STATUS"];?></span></li>
         </ul>
     </div>

@@ -50,6 +50,7 @@ $lang['CONTACTS_BANK_ACCOUNT_IBAN'] = 'IBAN';
 
 $lang['CONTACTS_LANGUAGE'] = 'Language';
 $lang['CONTACTS_TIMEZONE'] = 'Timezone';
+$lang["CONTACTS_DESCRIPTION"] = 'Notes';
 
 $lang['CONTACTS_GROUPMEMBERSHIP'] = 'Group membership';
 
@@ -78,7 +79,7 @@ $lang['CONTACTS_CUSTOM'] = 'Note';
 $lang['CONTACTS_AVATARS'] = 'Contacts / Images';
 
 // Access codes Email
-$lang['ACCESS_CODES_EMAIL_SUBJECT'] = $lang["APPLICATION_NAME_CAPS"].© Access Codes';
+$lang['ACCESS_CODES_EMAIL_SUBJECT'] = $lang["APPLICATION_NAME_CAPS"].'© Access Codes';
 $lang['ACCESS_CODES_EMAIL'] =	'<p style="font-face: Arial, Verdana; font-size: small">Below are your access codes for the first login to the online management system ' . $lang["APPLICATION_NAME_CAPS"] . ' ©:</p>' .
 								'<p style="font-face: Arial, Verdana; font-size: small">Website: <a href="%1$s">%1$s</a></p>' .
     							'<p style="font-face: Arial, Verdana; font-size: small">Username: %2$s<br />' .
