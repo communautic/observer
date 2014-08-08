@@ -67,6 +67,7 @@ var ALERT_SUCCESS_PROJECT_EXPORT = 'Der Prozess wurde erfolgreich als Projekt ex
 
 var ALERT_TRAINING_MOVE_ALL = "Wollen Sie alle Trainingstermine an das neue Startdatum anpassen?";
 
+var ALERT_CALENDAR_DEACTIVATE = "Möchten Sie diesen Kalender wirklich deaktivieren?";
 var ALERT_CALENDAR_DATA = "Bitte überprüfen Sie folgende Eingaben:<br />";
 var ALERT_CALENDAR_MISSING_TITLE = "Betreff";
 var ALERT_CALENDAR_MISSING_TREATMENT = "Behandlung";
