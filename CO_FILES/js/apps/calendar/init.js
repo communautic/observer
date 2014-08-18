@@ -103,6 +103,7 @@ Calendar={
 			}
 		},*/
 		busy: false,
+		curCalId: 0,
 		startEventDialog:function(){
 			//Calendar.UI.loading(false);
 			$('#calendar-right').fullCalendar('unselect');
@@ -553,16 +554,19 @@ Calendar={
 			display:function(calendarid)
 			{
 				 
-				$('#calendar-right').fullCalendar( 'removeEvents').fullCalendar('removeEventSources');
-				$.ajax({ type: "GET", dataType:  'json', url: "/", data: { path: 'apps/calendar/', request: 'showSingleCalendar', calendarid: calendarid }, success: function(data){
-							$('#calendar-right').fullCalendar('addEventSource', data.eventSource);
+				if(Calendar.UI.Calendar.curCalId == calendarid) {	
+				
+					$.ajax({ type: "GET", dataType:  'json', url: "/", data: { path: 'apps/calendar/', request: 'showSingleCalendar', calendarid: calendarid }, success: function(data){
+						if(Calendar.UI.Calendar.curCalId == calendarid) { $('#calendar-right').fullCalendar( 'removeEvents').fullCalendar('removeEventSources'); }
+						if(Calendar.UI.Calendar.curCalId == calendarid) { $('#calendar-right').fullCalendar('addEventSource', data.eventSource); }
 							// add shared calendar for all 
-							$('#calendar-right').fullCalendar('addEventSource', {"url":"\/?path=apps\/calendar&request=getrequestedEvents&calendar_id=2","backgroundColor":"#FFD296","borderColor":"#FFD296","textColor":"#000000","cache":true});
+						if(Calendar.UI.Calendar.curCalId == calendarid) { $('#calendar-right').fullCalendar('addEventSource', {"url":"\/?path=apps\/calendar&request=getrequestedEvents&calendar_id=2","backgroundColor":"#FFD296","borderColor":"#FFD296","textColor":"#000000","cache":true}); }
 							// add holidays 
-							$('#calendar-right').fullCalendar('addEventSource', {"url":"\/?path=apps\/calendar&request=getrequestedEvents&calendar_id="+holidayCalendar+"","backgroundColor":"#FFD20A","borderColor":"#FFD20A","textColor":"#000000","cache":true});
+						if(Calendar.UI.Calendar.curCalId == calendarid) { $('#calendar-right').fullCalendar('addEventSource', {"url":"\/?path=apps\/calendar&request=getrequestedEvents&calendar_id="+holidayCalendar+"","backgroundColor":"#FFD20A","borderColor":"#FFD20A","textColor":"#000000","cache":true}); }
 							$(".ui-tooltip-content").parents('div').remove();
 						}
-				  });
+					});
+				}
 			}
 			/*newCalendar:function(object){
 				var tr = $(document.createElement('tr'))
@@ -977,6 +981,7 @@ $('#calendar .top-headline').text(txt);
 		//$("#calendar-right").html(html);
 		calendarInnerLayout.initContent('center');
 		var aid = first.data('id');
+		Calendar.UI.Calendar.curCalId = aid;
 		//$('#calendar-right').fullCalendar('refetchEvents');
 		Calendar.UI.Calendar.display(aid);
 		//$('#calendar-right').fullCalendar( 'changeView', 'agendaWeek' )
@@ -4679,6 +4684,13 @@ function AgendaView(element, calendar, viewName) {
 				}
 			}, ev);
 			$(document).one('mouseup', function(ev) {
+				/* prevent dbl mousedown */
+				var t = $(ev.target);
+				t.mousedown(dblclick_do_nothing)
+				setTimeout(function(){
+					t.unbind('mousedown', dblclick_do_nothing);
+				  }, 1000);
+				/* prevent dbl mousedown EOF*/
 				hoverListener.stop();
 				if (dates) {
 					if (+dates[0] == +dates[1]) {
@@ -6977,8 +6989,12 @@ function SelectionManager() {
 		trigger('select', null, startDate, endDate, allDay, ev);
 	}
 	
-	
+	var coDayClick = false;
 	function daySelectionMousedown(ev) { // not really a generic manager method, oh well
+		if(coDayClick) {
+			return false;
+		}
+		coDayClick = true;
 		var cellToDate = t.cellToDate;
 		var getIsCellAllDay = t.getIsCellAllDay;
 		var hoverListener = t.getHoverListener();
@@ -6997,6 +7013,11 @@ function SelectionManager() {
 				}
 			}, ev);
 			$(document).one('mouseup', function(ev) {
+				/* prevent dbl mousedown */
+				setTimeout(function(){
+					coDayClick = false;
+				  }, 1000);
+				/* prevent dbl mousedown EOF*/
 				hoverListener.stop();
 				if (dates) {
 					if (+dates[0] == +dates[1]) {
@@ -7328,6 +7349,8 @@ $(document).ready(function() {
 		$("#calendar .module-click").removeClass("active-link");
 		$(this).addClass("active-link");
 		$("#calendar").data("first",$(this).attr('rel'));
+		Calendar.UI.Calendar.curCalId = $(this).data('id');
+		$('#calendar-right').fullCalendar( 'removeEvents').fullCalendar('removeEventSources');
 		Calendar.UI.Calendar.display($(this).data('id'));
 		var txt = $(this).find('span').text();
 		$('#calendar .top-headline').text(txt);
@@ -7585,5 +7608,12 @@ $('#editCalendar-cancel').live('click', function () {
 $('.choosecalendar-rowfield-active').live('click', function () {
 	Calendar.UI.Share.activation($(this), $(this).data('id'));
 });*/
-		
+
+
+$(".fc-content").on('click', '.fc-event', function(e) {
+		prevent_dblclick(e)
+	})
+
+
+	
 });
