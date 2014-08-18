@@ -60,4 +60,12 @@
           <td class="smalltext bold" style="text-align: right; border-left: 1px solid #ccc; padding: 6px 0 4px 0;"><?php echo CO_DEFAULT_CURRENCY;?> <?php echo $invoice->totalcosts;?> &nbsp; &nbsp; </td>
       </tr>
 </table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<table width="100%" class="standard">
+    <tr>
+        <td><p style="line-height: 25px;"><?php echo $lang["PATIENT_INVOICE_SERVICES_FOR_SIG_PATIENT"];?>:</p></td>
+        <td><p style="line-height: 25px;"><?php echo $lang["PATIENT_INVOICE_SERVICES_FOR_SIG_THERAPIST"];?>:</p></td>
+    </tr>
+</table>
 <div style="page-break-after:always;">&nbsp;</div>

@@ -18,6 +18,8 @@ $lang["PATIENT_INVOICE_SERVICES"] = 'Leistungen';
 $lang["PATIENT_INVOICE_SERVICES_LIST"] = 'Leistungsaufstellung';
 $lang["PATIENT_INVOICE_SERVICES_FOR"] = 'für';
 $lang["PATIENT_INVOICE_SERVICES_INVOICENO"] = 'zu Rechnungsnummer';
+$lang["PATIENT_INVOICE_SERVICES_FOR_SIG_PATIENT"] = 'Unterschrift Patient';
+$lang["PATIENT_INVOICE_SERVICES_FOR_SIG_THERAPIST"] = 'Unterschrift Therapeut';
 
 $lang["PATIENT_INVOICE_TEXT_CITATION"] = 'Sehr geehrte/r';
 $lang["PATIENT_INVOICE_TEXT_LINE1"] = 'Für die von uns erbrachten Leistungen erlaube ich mir nachstehende Honorarnote zu legen:';

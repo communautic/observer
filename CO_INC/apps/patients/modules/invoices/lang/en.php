@@ -18,6 +18,8 @@ $lang["PATIENT_INVOICE_SERVICES"] = 'Services';
 $lang["PATIENT_INVOICE_SERVICES_LIST"] = 'Services';
 $lang["PATIENT_INVOICE_SERVICES_FOR"] = 'for';
 $lang["PATIENT_INVOICE_SERVICES_INVOICENO"] = 'for Invoice Number';
+$lang["PATIENT_INVOICE_SERVICES_FOR_SIG_PATIENT"] = 'Unterschrift Patient';
+$lang["PATIENT_INVOICE_SERVICES_FOR_SIG_THERAPIST"] = 'Unterschrift Therapist';
 
 $lang["PATIENT_INVOICE_TEXT_CITATION"] = 'Dear';
 $lang["PATIENT_INVOICE_TEXT_LINE1"] = 'Please see the following invoice for the provided services by us:';
