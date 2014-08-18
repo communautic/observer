@@ -28,11 +28,11 @@ body {
 *:first-child+html #container {height: 85%;} /* IE 7 Fix */
 
 /* optimised for chrome as app */
-#background { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; min-height: 713px; min-width: 1024px;}
+#background { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; min-height: 671px; min-width: 1024px;}
 #watermark { position: absolute; top: 15%; right: 5%; overflow: hidden; }
 
 #container {
-		min-height: 609px; /* optimised for chrome as app */
+		min-height: 512px; /* optimised for chrome as app */
 		min-width:	984px;
 		position:	absolute;
 		top:		24px;
@@ -458,13 +458,14 @@ border-top: 1px solid #989898;
 #logout a, #logout a:link, #logout a:active, #logout a:visited    { outline: none; background: url(../img/icons.png) no-repeat -240px 0px; }
 #logout a:hover { outline: none; background-image: url(../img/icons.png) no-repeat -220px 0px; }*/
 
-div.listClose { position: absolute; left: 8px; top: 40px; width: 44px; height: 33px; }
+div.listClose { position: absolute; left: 8px; top: 4px; width: 44px; height: 33px; }
 div.listClose span.actionClose { display: block; height: 33px; background: url(../img/buttons.png) no-repeat -50px 0px; }
 div.listClose span.actionClose:hover { background: url(../img/buttons.png) no-repeat -100px 0px; cursor: pointer;}
 div.listClose span.actionClose.noactive { background: url(../img/buttons.png) no-repeat 0px 0px; cursor: default;}
 
-ul.actionconsole { margin: 27px 8px 0 8px; }
-ul.actionconsole li { display: block; height: 33px; margin-bottom: 21px; }
+ul.actionconsole { margin: 5px 8px 0 8px; }
+ul.actionconsole li { display: block; height: 33px; margin-bottom: 18px; }
+ul.actionconsole li.listNew { margin-bottom: 17px; }
 ul.actionconsole span.actionNew { display: block; height: 33px; background: url(../img/buttons.png) no-repeat -50px -40px; }
 ul.actionconsole span.actionNew:hover { background: url(../img/buttons.png) no-repeat -100px -40px; cursor: pointer;}
 ul.actionconsole span.actionNew.noactive { background: url(../img/buttons.png) no-repeat 0px -40px; cursor: default;}
@@ -505,17 +506,17 @@ ul.actionconsole span.actionExport { display: block; height: 33px; background: u
 ul.actionconsole span.actionExport:hover { background: url(../img/buttons.png) no-repeat -100px -320px; cursor: pointer;}
 ul.actionconsole span.actionExport.noactive { background: url(../img/buttons.png) no-repeat -0px -320px; cursor: default; }
 
-ul.actionconsole li.listRefresh { display: block; height: 33px; margin-bottom: 21px; }
+ul.actionconsole li.listRefresh { display: block; height: 33px; }
 ul.actionconsole span.actionRefresh { display: block; height: 33px; background: url(../img/buttons.png) no-repeat -50px -360px;}
 ul.actionconsole span.actionRefresh:hover { background: url(../img/buttons.png) no-repeat -100px -360px; cursor: pointer;}
 ul.actionconsole span.actionRefresh.noactive { background: url(../img/buttons.png) no-repeat -0px -360px; cursor: default; }
 
-ul.actionconsole li.listHelp { position: absolute; bottom: 76px; height: 33px; width: 44px; margin: 0; }
+ul.actionconsole li.listHelp { position: absolute; bottom: 54px; height: 33px; width: 44px; margin: 0; }
 ul.actionconsole span.actionHelp { display: block; height: 36px; background: url(../img/buttons.png) no-repeat -50px -400px;}
 ul.actionconsole span.actionHelp:hover { background: url(../img/buttons.png) no-repeat -100px -400px; cursor: pointer;}
 ul.actionconsole span.actionHelp.noactive { background: url(../img/buttons.png) no-repeat -0px -400px; cursor: default;}
 
-ul.actionconsole li.listBin { position: absolute; bottom: 22px; height: 33px; width: 44px; margin: 0; }
+ul.actionconsole li.listBin { position: absolute; bottom: 4px; height: 33px; width: 44px; margin: 0; }
 ul.actionconsole span.actionBin { display: block; height: 36px; background: url(../img/buttons.png) no-repeat -50px -440px;}
 ul.actionconsole span.actionBin:hover { background: url(../img/buttons.png) no-repeat -100px -440px; cursor: pointer;}
 ul.actionconsole span.actionBin.noactive { background: url(../img/buttons.png) no-repeat -0px -440px; cursor: default;}

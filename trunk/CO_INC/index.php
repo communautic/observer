@@ -62,7 +62,7 @@ if($session->isSysadmin()) {
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9" />
 <meta name="msapplication-TileImage" content="<?php echo CO_FILES;?>/img/favicon_touch.png"> 
 <title><?php echo $lang["APPLICATION_NAME"];?></title>
@@ -162,7 +162,7 @@ if(file_exists(CO_PATH_DATA . '/watermark.png')) {
 ?>
 </head>
 <body>
-<div id="background"><img src="<?php echo CO_FILES;?>/img/background.jpg" style="width: 100%; height: 100%; min-height: 713px; min-width: 1024px;" /><img id="watermark" src="<?php echo $watermark;?>" /></div>
+<div id="background"><img src="<?php echo CO_FILES;?>/img/background.jpg" style="width: 100%; height: 100%; min-height: 616px; min-width: 1024px;" /><img id="watermark" src="<?php echo $watermark;?>" /></div>
 <div id="intro"><div id="intro-content"><p><img src="<?php echo CO_FILES;?>/img/ajax-loader.gif" alt="Loading" width="32" height="32" /></p></div></div>
 <div id="container">
 <div id="container-inner">
