@@ -7,7 +7,7 @@ function desktopApplication(name) {
 	}
 	
 	this.actionDialog = function(offset,request,field,append,title,sql) {
-		$.ajax({ type: "GET", url: "/", data: 'path=apps/projects&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
+		$.ajax({ type: "GET", url: "/", data: 'path=apps/contacts&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
 			$("#modalDialog").html(html);
 			$("#modalDialog").dialog('option', 'position', offset);
 			$("#modalDialog").dialog('option', 'title', title);
