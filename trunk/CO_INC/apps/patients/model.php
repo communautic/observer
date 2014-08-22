@@ -1611,6 +1611,23 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 								}
 							}
 						}
+						
+						
+						// vdocs
+						if(in_array("vdocs",$active_modules)) {
+							$qv ="select id, title, bin, bintime, binuser from " . CO_TBL_PATIENTS_VDOCS . " where pid = '$pid' and bin='1'";
+							$resultv = mysql_query($qv, $this->_db->connection);
+							while ($rowv = mysql_fetch_array($resultv)) {
+								$vid = $rowv["id"];
+									foreach($rowv as $key => $val) {
+										$vdoc[$key] = $val;
+									}
+									$vdoc["bintime"] = $this->_date->formatDate($vdoc["bintime"],CO_DATETIME_FORMAT);
+									$vdoc["binuser"] = $this->_users->getUserFullname($vdoc["binuser"]);
+									$vdocs[] = new Lists($vdoc);
+									$arr["vdocs"] = $vdocs;
+							}
+						}
 	
 
 					}
@@ -1808,6 +1825,22 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 								}
 							}
 						}
+						
+						
+						// vdocs
+						if(in_array("vdocs",$active_modules)) {
+							$patientsVDocsModel = new PatientsVDocsModel();
+							$qv ="select id, title, bin, bintime, binuser from " . CO_TBL_PATIENTS_VDOCS . " where pid = '$pid'";
+							$resultv = mysql_query($qv, $this->_db->connection);
+							while ($rowv = mysql_fetch_array($resultv)) {
+								$vid = $rowv["id"];
+								if($rowv["bin"] == "1") {
+									$patientsVDocsModel->deleteVDoc($vid);
+									$arr["vdocs"] = "";
+								}
+							}
+						}
+
 
 
 
