@@ -1,8 +1,10 @@
 <table width="100%" class="standard" style="margin-top: 20px;">
 	<tr>
 		<td style="text-align: right;"><p class="smalltext" style="line-height: 15px;"><?php echo($invoice->m_title)?> <?php echo($invoice->m_firstname)?> <?php echo($invoice->m_lastname)?></p>
-        <p class="smalltext" style="line-height: 15px;"><?php echo($invoice->m_phone)?></p>
+        <p class="smalltext" style="line-height: 15px;">Fon <?php echo($invoice->m_phone)?></p>
+        <?php if($invoice->m_fax != "") { ?><p class="smalltext" style="line-height: 15px;">Fax <?php echo($invoice->m_fax)?></p><?php } ?>
         <p class="smalltext" style="line-height: 15px;"><?php echo($invoice->m_email)?></p>
+        <?php if($invoice->m_email_alt != "") { ?><p class="smalltext" style="line-height: 15px;"><?php echo($invoice->m_email_alt)?></p><?php } ?>
         <p class="smalltext" style="line-height: 10px;">&nbsp;</p>
         <p class="smalltext" style="line-height: 15px;">Patient: <?php echo($invoice->patient)?></p>
         <p style="line-height: 15px;"><?php echo $lang["PATIENT_INVOICE_NUMBER"];?>: <?php echo($invoice->invoice_number);?></p>
