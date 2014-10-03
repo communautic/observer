@@ -68,7 +68,11 @@ function trainingsFeedbacks(name) {
 	this.actionPrint = function() {
 		var id = $("#trainings").data("third");
 		var url ='/?path=apps/trainings/modules/feedbacks&request=printDetails&id='+id;
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -151,7 +155,11 @@ function trainingsFeedbacks(name) {
 
 	this.actionHelp = function() {
 		var url = "/?path=apps/trainings/modules/feedbacks&request=getHelp";
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 		
 }

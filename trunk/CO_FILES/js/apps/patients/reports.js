@@ -194,7 +194,11 @@ function patientsReports(name) {
 	this.actionPrint = function() {
 		var id = $("#patients").data("third");
 		var url ='/?path=apps/patients/modules/reports&request=printDetails&id='+id;
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -338,7 +342,11 @@ function patientsReports(name) {
 	
 	this.actionHelp = function() {
 		var url = "/?path=apps/patients/modules/reports&request=getHelp";
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 	
 	

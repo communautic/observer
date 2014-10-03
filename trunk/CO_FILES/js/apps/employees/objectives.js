@@ -263,7 +263,11 @@ function employeesObjectives(name) {
 	this.actionPrint = function() {
 		var id = $("#employees").data("third");
 		var url ='/?path=apps/employees/modules/objectives&request=printDetails&id='+id;
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -464,7 +468,11 @@ function employeesObjectives(name) {
 
 	this.actionHelp = function() {
 		var url = "/?path=apps/employees/modules/objectives&request=getHelp";
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 	
 	

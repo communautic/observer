@@ -41,7 +41,11 @@ function binApplication(name) {
 
 	this.actionHelp = function() {
 		var url = "/?path=apps/bin&request=getHelp";
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 }

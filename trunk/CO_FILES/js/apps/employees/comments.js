@@ -197,7 +197,11 @@ function employeesComments(name) {
 	this.actionPrint = function() {
 		var id = $("#employees").data("third");
 		var url ='/?path=apps/employees/modules/comments&request=printDetails&id='+id;
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -318,7 +322,11 @@ function employeesComments(name) {
 	
 	this.actionHelp = function() {
 		var url = "/?path=apps/employees/modules/comments&request=getHelp";
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 	
 	

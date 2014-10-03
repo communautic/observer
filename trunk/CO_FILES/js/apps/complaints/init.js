@@ -228,7 +228,11 @@ function complaintsApplication(name) {
 	this.actionPrint = function() {
 		var id = $("#complaints").data("second");
 		var url ='/?path=apps/complaints&request=printComplaintDetails&id='+id;
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -354,7 +358,11 @@ function complaintsApplication(name) {
 	
 	this.actionHelp = function() {
 		var url = "/?path=apps/complaints&request=getComplaintsHelp";
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -557,7 +565,11 @@ function complaintsFolders(name) {
 	this.actionPrint = function() {
 		var id = $("#complaints").data("first");
 		var url ='/?path=apps/complaints&request=printFolderDetails&id='+id;
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -641,7 +653,11 @@ function complaintsFolders(name) {
 
 	this.actionHelp = function() {
 		var url = "/?path=apps/complaints&request=getComplaintsFoldersHelp";
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 

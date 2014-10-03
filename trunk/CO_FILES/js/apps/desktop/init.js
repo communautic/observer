@@ -74,7 +74,11 @@ function desktopApplication(name) {
 	
 	this.actionHelp = function() {
 		var url = "/?path=apps/desktop&request=getDesktopHelp";
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 	
 	this.markCheckpointRead = function(app,module,id) {

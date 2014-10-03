@@ -257,14 +257,22 @@ function projectsApplication(name) {
 	this.actionHandbook = function() {
 		var id = $("#projects").data("second");
 		var url ='/?path=apps/projects&request=printProjectHandbook&id='+id;
-		$("#documentloader").attr('src', url);	
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}	
 	}
 
 
 	this.actionPrint = function() {
 		var id = $("#projects").data("second");
 		var url ='/?path=apps/projects&request=printProjectDetails&id='+id;
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -360,7 +368,11 @@ function projectsApplication(name) {
 	
 	this.actionHelp = function() {
 		var url = "/?path=apps/projects&request=getProjectsHelp";
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -765,7 +777,11 @@ function projectsFolders(name) {
 			what = what + '&view=' + view;
 		}
 		var url ='/?path=apps/projects&request=print'+what+'&id='+id;
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -833,7 +849,11 @@ function projectsFolders(name) {
 
 	this.actionHelp = function() {
 		var url = "/?path=apps/projects&request=getProjectsFoldersHelp";
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 

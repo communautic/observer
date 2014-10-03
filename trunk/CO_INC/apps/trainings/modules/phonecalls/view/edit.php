@@ -28,7 +28,7 @@
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 		<td class="tcell-left text11"><span class="<?php if($phonecall->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["TRAINING_PHONECALL_DATE"];?></span></span></td>
-		<td class="tcell-right"><input name="item_date" type="text" class="input-date datepicker item_date" value="<?php echo($phonecall->item_date)?>" /></td>
+		<td class="tcell-right"><input name="item_date" type="text" class="input-date datepicker item_date" value="<?php echo($phonecall->item_date)?>" readonly="readonly" /></td>
 	</tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">

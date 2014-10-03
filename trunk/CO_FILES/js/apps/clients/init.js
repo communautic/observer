@@ -215,7 +215,11 @@ function clientsApplication(name) {
 	this.actionPrint = function() {
 		var id = $("#clients").data("second");
 		var url ='/?path=apps/clients&request=printClientDetails&id='+id;
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -340,7 +344,11 @@ function clientsApplication(name) {
 	
 	this.actionHelp = function() {
 		var url = "/?path=apps/clients&request=getClientsHelp";
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -535,7 +543,11 @@ function clientsFolders(name) {
 		} else {
 			$("#modalDialogClientsCreateExcel").dialog('close');
 			var url ='/?path=apps/clients/modules/orders&request=createExcel&folderid='+folderid+'&menueid='+menueid;
-			$("#documentloader").attr('src', url);
+			if(!iOS()) {
+				$("#documentloader").attr('src', url);
+			} else {
+				window.open(url);
+			}
 		}
 	}
 	
@@ -543,7 +555,11 @@ function clientsFolders(name) {
 	this.actionPrint = function() {
 		var id = $("#clients").data("first");
 		var url ='/?path=apps/clients&request=printFolderDetails&id='+id;
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -627,7 +643,11 @@ function clientsFolders(name) {
 
 	this.actionHelp = function() {
 		var url = "/?path=apps/clients&request=getClientsFoldersHelp";
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 

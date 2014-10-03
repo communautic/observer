@@ -216,7 +216,11 @@ function forumsApplication(name) {
 	this.actionPrint = function() {
 		var id = $("#forums").data("second");
 		var url ='/?path=apps/forums&request=printForumDetails&id='+id;
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -365,7 +369,11 @@ function forumsApplication(name) {
 	
 	this.actionHelp = function() {
 		var url = "/?path=apps/forums&request=getForumsHelp";
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -612,7 +620,11 @@ function forumsFolders(name) {
 	this.actionPrint = function() {
 		var id = $("#forums").data("first");
 		var url ='/?path=apps/forums&request=printFolderDetails&id='+id;
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -680,7 +692,11 @@ function forumsFolders(name) {
 
 	this.actionHelp = function() {
 		var url = "/?path=apps/forums&request=getForumsFoldersHelp";
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
