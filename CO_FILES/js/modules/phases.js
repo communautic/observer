@@ -320,7 +320,11 @@ function Phases(app) {
 		var id = $('#'+ module.app).data("third");
 		var num = $('#'+ module.app +'3 ul[rel=phases] .active-link').find(".phase_num").html();
 		var url ='/?path=apps/'+ module.app +'/modules/phases&request=printDetails&id='+id+"&num="+num;
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -643,7 +647,11 @@ function Phases(app) {
 	this.actionHelp = function() {
 		var module = this;
 		var url = '/?path=apps/'+ module.app +'/modules/phases&request=getHelp';
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 	
 	

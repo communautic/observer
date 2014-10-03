@@ -204,7 +204,11 @@ function Vdocs(app) {
 		var module = this;
 		var id = $('#'+ module.app).data("third");
 		var url ='/?path=apps/'+ module.app +'/modules/vdocs&request=exportDetails&id='+id;
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -212,7 +216,11 @@ function Vdocs(app) {
 		var module = this;
 		var id = $('#'+ module.app).data("third");
 		var url ='/?path=apps/'+ module.app +'/modules/vdocs&request=printDetails&id='+id;
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -304,7 +312,11 @@ function Vdocs(app) {
 	this.actionHelp = function() {
 		var module = this;
 		var url = '/?path=apps/'+ module.app +'/modules/vdocs&request=getHelp';
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
