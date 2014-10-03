@@ -12,11 +12,12 @@ if($protocol == "https://" && strtolower(@$_SERVER['HTTPS']) != 'on')  {
 //$path = '/home/dev/public_html';
 define("CO_INC_PATH"	, 		"/home/dev/public_html" 			);
 set_include_path(get_include_path() . PATH_SEPARATOR . CO_INC_PATH);
-define("CO_INC"	, 		"CO_INC" 			);
+include('version.php');
+define("CO_INC"	, 		$co_app_version 			);
 
 // FILES PATH
-define("CO_FILES"	, 		$protocol . "dev.companyobserver.com/CO_FILES" );
-define("CO_FILES_NOHTTPS", "http://dev.companyobserver.com/CO_FILES" );
+define("CO_FILES"	, 		$protocol . "dev.companyobserver.com/" . $co_files_version );
+define("CO_FILES_NOHTTPS", "http://dev.companyobserver.com/" . $co_files_version );
 
 // product variant: 0 = CO, 1 = Physio
 define("CO_PRODUCT_VARIANT", 0 );
