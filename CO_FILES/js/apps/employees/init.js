@@ -258,14 +258,22 @@ function employeesApplication(name) {
 	this.actionHandbook = function() {
 		var id = $("#employees").data("second");
 		var url ='/?path=apps/employees&request=printEmployeeHandbook&id='+id;
-		$("#documentloader").attr('src', url);	
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
 	this.actionPrint = function() {
 		var id = $("#employees").data("second");
 		var url ='/?path=apps/employees&request=printEmployeeDetails&id='+id;
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -400,7 +408,11 @@ function employeesApplication(name) {
 	
 	this.actionHelp = function() {
 		var url = "/?path=apps/employees&request=getEmployeesHelp";
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -603,7 +615,11 @@ function employeesFolders(name) {
 	this.actionPrint = function() {
 		var id = $("#employees").data("first");
 		var url ='/?path=apps/employees&request=printFolderDetails&id='+id;
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -687,7 +703,11 @@ function employeesFolders(name) {
 
 	this.actionHelp = function() {
 		var url = "/?path=apps/employees&request=getEmployeesFoldersHelp";
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 

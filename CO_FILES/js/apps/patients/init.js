@@ -267,14 +267,22 @@ function patientsApplication(name) {
 	this.actionHandbook = function() {
 		var id = $("#patients").data("second");
 		var url ='/?path=apps/patients&request=printPatientHandbook&id='+id;
-		$("#documentloader").attr('src', url);	
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
 	this.actionPrint = function() {
 		var id = $("#patients").data("second");
 		var url ='/?path=apps/patients&request=printPatientDetails&id='+id;
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -428,7 +436,11 @@ function patientsApplication(name) {
 	
 	this.actionHelp = function() {
 		var url = "/?path=apps/patients&request=getPatientsHelp";
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -684,7 +696,11 @@ function patientsFolders(name) {
 			what = what + '&who=' + who + '&start=' + start + '&end=' + end;
 		}
 		var url ='/?path=apps/patients&request=print'+what+'&id='+id;
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -805,7 +821,11 @@ function patientsFolders(name) {
 
 	this.actionHelp = function() {
 		var url = "/?path=apps/patients&request=getPatientsFoldersHelp";
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 

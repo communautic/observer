@@ -931,7 +931,11 @@ function calendarApplication(name) {
 
 	this.actionHelp = function() {
 		var url = "/?path=apps/calendar&request=getHelp";
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 }

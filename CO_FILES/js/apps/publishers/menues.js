@@ -207,7 +207,11 @@ function publishersMenues(name) {
 	this.actionPrint = function() {
 		var id = $("#publishers").data("first");
 		var url ='/?path=apps/publishers/modules/menues&request=printDetails&id='+id;
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -373,7 +377,11 @@ function publishersMenues(name) {
 	
 	this.actionHelp = function() {
 		var url = "/?path=apps/publishers/modules/menues&request=getHelp";
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 	
 	

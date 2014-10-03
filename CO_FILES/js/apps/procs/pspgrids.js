@@ -235,12 +235,20 @@ function procsPspgrids(name) {
 			case '1':
 				var id = $("#procs").data("third");
 				var url ='/?path=apps/procs/modules/pspgrids&request=printDetails&option=grid&id='+id;
-				$("#documentloader").attr('src', url);
+				if(!iOS()) {
+					$("#documentloader").attr('src', url);
+				} else {
+					window.open(url);
+				}
 			break;
 			case '2':
 				var id = $("#procs").data("third");
 				var url ='/?path=apps/procs/modules/pspgrids&request=printDetails&option=list&id='+id;
-				$("#documentloader").attr('src', url);
+				if(!iOS()) {
+					$("#documentloader").attr('src', url);
+				} else {
+					window.open(url);
+				}
 			break;
 		}
 	}
@@ -782,7 +790,11 @@ this.coPopupType = function() {
 
 	this.actionHelp = function() {
 		var url = "/?path=apps/procs/modules/pspgrids&request=getHelp";
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 	

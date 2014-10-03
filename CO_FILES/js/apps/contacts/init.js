@@ -239,7 +239,11 @@ function contactsContact(name) {
 	this.actionPrint = function() {
 		var id = $("#contacts").data("first");
 		var url ='/?path=apps/contacts&request=printContactDetails&id='+id;
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -325,7 +329,11 @@ function contactsContact(name) {
 	
 	this.actionHelp = function() {
 		var url = "/?path=apps/contacts&request=getContactsHelp";
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 	
 	this.binItem = function(id) {
@@ -584,7 +592,11 @@ function contactsGroups(name) {
 	this.actionPrint = function() {
 		var id = $("#contacts").data("first");
 		var url ='/?path=apps/contacts&request=printGroupDetails&id='+id;
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -668,7 +680,11 @@ function contactsGroups(name) {
 
 	this.actionHelp = function() {
 		var url = "/?path=apps/contacts&request=getContactsGroupsHelp";
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 

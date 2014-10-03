@@ -251,7 +251,11 @@ function procsDrawings(name) {
 	this.actionPrint = function() {
 		var id = $("#procs").data("third");
 		var url ='/?path=apps/procs/modules/drawings&request=printDetails&id='+id;
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -513,7 +517,11 @@ function procsDrawings(name) {
 	
 	this.actionHelp = function() {
 		var url = "/?path=apps/procs/modules/drawings&request=getHelp";
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 	
 	// Recycle Bin

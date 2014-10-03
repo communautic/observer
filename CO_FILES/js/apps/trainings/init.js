@@ -223,19 +223,31 @@ function trainingsApplication(name) {
 	this.actionHandbook = function() {
 		var id = $("#trainings").data("first");
 		var url ='/?path=apps/trainings&request=printTrainingHandbook&id='+id;
-		$("#documentloader").attr('src', url);	
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}	
 	}
 
 	this.actionPrint = function() {
 		var id = $("#trainings").data("second");
 		var url ='/?path=apps/trainings&request=printTrainingDetails&id='+id;
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 	
 	this.actionPrintTwo = function() {
 		var id = $("#trainings").data("second");
 		var url ='/?path=apps/trainings&request=printMemberList&id='+id;
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -553,7 +565,11 @@ function trainingsApplication(name) {
 
 	this.actionHelp = function() {
 		var url = "/?path=apps/trainings&request=getTrainingsHelp";
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -914,7 +930,11 @@ function trainingsFolders(name) {
 			what = what + '&view=' + view;
 		}
 		var url ='/?path=apps/trainings&request=print'+what+'&id='+id;
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 	this.actionSend = function() {
@@ -1001,7 +1021,11 @@ function trainingsFolders(name) {
 
 	this.actionHelp = function() {
 		var url = "/?path=apps/trainings&request=getTrainingsFoldersHelp";
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 

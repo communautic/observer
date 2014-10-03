@@ -421,7 +421,11 @@ function patientsTreatments(name) {
 	this.actionPrint = function() {
 		var id = $("#patients").data("third");
 		var url ='/?path=apps/patients/modules/treatments&request=printDetails&id='+id;
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -734,7 +738,11 @@ function patientsTreatments(name) {
 	
 	this.actionHelp = function() {
 		var url = "/?path=apps/patients/modules/treatments&request=getHelp";
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 	
 	// Recycle Bin

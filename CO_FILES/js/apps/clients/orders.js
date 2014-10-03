@@ -200,7 +200,11 @@ function clientsOrders(name) {
 	this.actionPrint = function() {
 		var id = $("#clients").data("third");
 		var url ='/?path=apps/clients/modules/orders&request=printDetails&id='+id;
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -317,7 +321,11 @@ function clientsOrders(name) {
 	
 	this.actionHelp = function() {
 		var url = "/?path=apps/clients/modules/orders&request=getHelp";
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 	
 	

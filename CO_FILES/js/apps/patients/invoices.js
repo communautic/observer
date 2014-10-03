@@ -116,22 +116,38 @@ function patientsInvoices(name) {
 			case '1':
 				var id = $("#patients").data("third");
 				var url ='/?path=apps/patients/modules/invoices&request=printDetails&option=invoice&id='+id;
-				$("#documentloader").attr('src', url);
+				if(!iOS()) {
+					$("#documentloader").attr('src', url);
+				} else {
+					window.open(url);
+				}
 			break;
 			case '2':
 				var id = $("#patients").data("third");
 				var url ='/?path=apps/patients/modules/invoices&request=printDetails&option=reminder&id='+id;
-				$("#documentloader").attr('src', url);
+				if(!iOS()) {
+					$("#documentloader").attr('src', url);
+				} else {
+					window.open(url);
+				}
 			break;
 			case '3':
 				var id = $("#patients").data("third");
 				var url ='/?path=apps/patients/modules/invoices&request=printDetails&option=stationary&id='+id;
-				$("#documentloader").attr('src', url);
+				if(!iOS()) {
+					$("#documentloader").attr('src', url);
+				} else {
+					window.open(url);
+				}
 			break;
 			case '4':
 				var id = $("#patients").data("third");
 				var url ='/?path=apps/patients/modules/invoices&request=printDetails&option=services&id='+id;
-				$("#documentloader").attr('src', url);
+				if(!iOS()) {
+					$("#documentloader").attr('src', url);
+				} else {
+					window.open(url);
+				}
 			break;
 		}
 	}
@@ -369,7 +385,11 @@ function patientsInvoices(name) {
 
 	this.actionHelp = function() {
 		var url = "/?path=apps/patients/modules/invoices&request=getHelp";
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 		
 }

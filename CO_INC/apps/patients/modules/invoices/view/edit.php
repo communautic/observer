@@ -49,13 +49,13 @@
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 		<td class="tcell-left text11"><span class="<?php if($invoice->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["PATIENT_INVOICE_DATE"];?></span></span></td>
-		<td class="tcell-right"><input name="invoice_date" type="text" class="input-date datepicker invoice_date" value="<?php echo($invoice->invoice_date)?>" /></td>
+		<td class="tcell-right"><input name="invoice_date" type="text" class="input-date datepicker invoice_date" value="<?php echo($invoice->invoice_date)?>" readonly="readonly" /></td>
 	</tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 		<td class="tcell-left text11"><span class="<?php if($invoice->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["PATIENT_INVOICE_DATE_SENT"];?></span></span></td>
-		<td class="tcell-right"><input name="invoice_date_sent" type="text" class="input-date datepicker invoice_date_sent" value="<?php echo($invoice->invoice_date_sent)?>" /></td>
+		<td class="tcell-right"><input name="invoice_date_sent" type="text" class="input-date datepicker invoice_date_sent" value="<?php echo($invoice->invoice_date_sent)?>" readonly="readonly" /></td>
 	</tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
@@ -155,7 +155,7 @@
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 		<td class="tcell-left text11"><span class="<?php if($invoice->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["PATIENT_INVOICE_PAYMENT_REMINDER"];?></span></span></td>
-		<td class="tcell-right"><input name="payment_reminder" type="text" class="input-date datepicker payment_reminder" value="<?php echo($invoice->payment_reminder)?>" /></td>
+		<td class="tcell-right"><input name="payment_reminder" type="text" class="input-date datepicker payment_reminder" value="<?php echo($invoice->payment_reminder)?>" readonly="readonly" /></td>
 	</tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">

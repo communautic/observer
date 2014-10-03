@@ -233,12 +233,20 @@ function procsGrids(name) {
 			case '1':
 				var id = $("#procs").data("third");
 				var url ='/?path=apps/procs/modules/grids&request=printDetails&option=grid&id='+id;
-				$("#documentloader").attr('src', url);
+				if(!iOS()) {
+					$("#documentloader").attr('src', url);
+				} else {
+					window.open(url);
+				}
 			break;
 			case '2':
 				var id = $("#procs").data("third");
 				var url ='/?path=apps/procs/modules/grids&request=printDetails&option=list&id='+id;
-				$("#documentloader").attr('src', url);
+				if(!iOS()) {
+					$("#documentloader").attr('src', url);
+				} else {
+					window.open(url);
+				}
 			break;
 		}
 	}
@@ -742,7 +750,11 @@ function procsGrids(name) {
 
 	this.actionHelp = function() {
 		var url = "/?path=apps/procs/modules/grids&request=getHelp";
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 	

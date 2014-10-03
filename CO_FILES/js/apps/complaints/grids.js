@@ -199,7 +199,11 @@ function complaintsGrids(name) {
 	this.actionPrint = function() {
 		var id = $("#complaints").data("third");
 		var url ='/?path=apps/complaints/modules/grids&request=printDetails&id='+id;
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -452,7 +456,11 @@ function complaintsGrids(name) {
 
 	this.actionHelp = function() {
 		var url = "/?path=apps/complaints/modules/grids&request=getHelp";
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 	

@@ -326,7 +326,11 @@ function procsApplication(name) {
 	this.actionPrint = function() {
 		var id = $("#procs").data("second");
 		var url ='/?path=apps/procs&request=printProcDetails&id='+id;
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -662,7 +666,11 @@ function procsApplication(name) {
 	
 	this.actionHelp = function() {
 		var url = "/?path=apps/procs&request=getProcsHelp";
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -887,7 +895,11 @@ function procsFolders(name) {
 	this.actionPrint = function() {
 		var id = $("#procs").data("first");
 		var url ='/?path=apps/procs&request=printFolderDetails&id='+id;
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 
 
@@ -951,7 +963,11 @@ function procsFolders(name) {
 
 	this.actionHelp = function() {
 		var url = "/?path=apps/procs&request=getProcsFoldersHelp";
-		$("#documentloader").attr('src', url);
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
 	}
 	
 

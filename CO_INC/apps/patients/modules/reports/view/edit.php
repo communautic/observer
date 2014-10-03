@@ -32,7 +32,7 @@ if($report->tid == 0) {
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 		<td class="tcell-left text11"><span class="<?php if($report->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["PATIENT_REPORT_DATE"];?></span></span></td>
-		<td class="tcell-right"><input name="item_date" type="text" class="input-date datepicker item_date" value="<?php echo($report->item_date)?>" /></td>
+		<td class="tcell-right"><input name="item_date" type="text" class="input-date datepicker item_date" value="<?php echo($report->item_date)?>" readonly="readonly" /></td>
 	</tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
@@ -46,7 +46,7 @@ if($report->tid == 0) {
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 		<td class="tcell-left text11"><span class="<?php if($report->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["PATIENT_REPORT_DATE"];?></span></span></td>
-		<td class="tcell-right"><input name="item_date" type="text" class="input-date datepicker item_date" value="<?php echo($report->item_date)?>" /></td>
+		<td class="tcell-right"><input name="item_date" type="text" class="input-date datepicker item_date" value="<?php echo($report->item_date)?>" readonly="readonly" /></td>
 	</tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
