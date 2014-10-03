@@ -17,6 +17,9 @@ $(document).ready(function() {
 	
 	
 	
+	$('.ui-datepicker-trigger-action').datepicker().on('show', function (e) {
+        $(this).trigger('blur');
+    })
 	
 
     /*$('span').each(function() {

@@ -7248,9 +7248,9 @@ $(document).ready(function() {
 						// Tuesday, Sep 8, 2009
 			},*/
 			titleFormat: {
-				month: 'MMMM yyyy',
-				week: "d[. MMMM] [ yyyy]{ '- 'd. MMMM yyyy}",
-				day: 'dddd, d. MMMM, yyyy'
+				month: 'MMM yyyy',
+				week: "d[.MM][.yyyy]{ '- 'd.MM.yyyy}",
+				day: 'ddd, d.MM.yyyy'
 			},
 			axisFormat: defaulttime,
 			monthNames: monthNames,
