@@ -19,8 +19,8 @@
 <div id="patientsFoldersTabs" class="contentTabs">
 	<ul class="contentTabsList">
 		<li><span class="active" rel="FolderDetailsList"><?php echo $lang["PATIENT_FOLDER_TAB_LIST"];?></span></li>
-		<?php if($folder->access == "sysadmin") { ?>
         <li><span rel="FolderDetailsInvoices"><?php echo $lang["PATIENT_FOLDER_TAB_INVOICES"];?></span></li>
+        <?php if($folder->access == "sysadmin") { ?>
 		<li><span rel="FolderDetailsRevenue"><?php echo $lang["PATIENT_FOLDER_TAB_REVENUE"];?></span></li>
         <?php } ?>
 	</ul>
