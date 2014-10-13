@@ -7296,8 +7296,10 @@ $(document).ready(function() {
 					}
 					element.prepend('<div class="fc-event-treatment-icon loadTreatment" rel="patients,'+event.folderid+','+event.patientid+','+event.treatmentid+',treatments"></div>');
 				}
-				element.addClass('coTooltip');
-				element.append('<div style="display: none" class="coTooltipHtml">'+event.tooltip+'</div>');
+				if(!iOS()) {
+					element.addClass('coTooltip');
+					element.append('<div style="display: none" class="coTooltipHtml">'+event.tooltip+'</div>');
+				}
 			}
 			/*,
 			eventAfterAllRender: function(view) {
