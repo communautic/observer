@@ -88,62 +88,12 @@
 <div class="content-spacer"></div>
 <div id="patientTabs" class="contentTabs">
 	<ul class="contentTabsList">
-		<li><span class="active" rel="PatientsTreatmentsFirst"><?php echo $lang["PATIENT_TREATMENT_DIAGNOSE"];?></span></li>
-		<li><span rel="PatientsTreatmentsSecond"><?php echo $lang["PATIENT_TREATMENT_PLAN"];?></span></li>
+		<li><span class="active" rel="PatientsTreatmentsFirst"><?php echo $lang["PATIENT_TREATMENT_PLAN"];?></span></li>
+		<li><span rel="PatientsTreatmentsSecond"><?php echo $lang["PATIENT_TREATMENT_DIAGNOSE"];?></span></li>
 	</ul>
     <div id="PatientsTreatmentsTabsContent" class="contentTabsContent">
         <div id="PatientsTreatmentsFirst">
-        <div class="canvasToolsOuter">
-        <div class="canvasTools">
-        	<span class="addTool"></span>
-            <span class="penTool active"></span>
-            <span class="erasorTool"></span>
-            <span class="clearTool"></span>
-            <span class="undoTool"></span>
-        </div>
-        </div>
-        <table border="0" cellpadding="0" cellspacing="0" class="table-content">
-                <tr>
-                    <td style="width:401px;"><div style="position: relative; width: 400px; height: 400px; border-top: 1px solid #fff; border-right: 1px solid #ccc; background: #d3ddff;"><div class="canvasDiv">
-                    <?php $i = 1; 
-							$j = $treatment->diagnoses;
-                        foreach($diagnose as $value) { 
-							$active = '';
-							if($i == 1) {
-								$active = ' active';
-							}
-							$curcol = ($i-1) % 10;
-							?>
-                            <canvas class="canvasDraw" id="c<?php echo $i;?>" width="400" height="400" style="z-index: <?php echo $j;?>" rel="<?php echo $value->id;?>"></canvas>
-                            <div id="dia-<?php echo $value->id;?>" style="z-index: 10<?php echo $i;?>; top: <?php echo $value->y;?>px; left: <?php echo $value->x;?>px;" class="loadCanvas circle circle<?php echo $curcol;?> <?php echo $active;?>" rel="<?php echo $i;?>"><div><?php echo $i;?></div></div>
-                        <?php 
-						$i++;
-						$j--;
-						} ?>
-                    </div></div></td>
-                	<td valign="top" style=""><div id="canvasDivText" style="border-left: 1px solid #fff; background: #e5e5e5; height: 401px;"><?php 
-					$i = 1;
-                        foreach($diagnose as $value) { 
-						$active = '';
-							if($i == 1) {
-								$active = ' active';
-							}
-							$curcol = ($i-1) % 10;
-                            include("diagnose.php");
-							$i++;
-                         } ?></div></td>
-                </tr>
-            </table>
-			
-            <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
-  <tr>
-    <td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["PATIENT_TREATMENT_PROTOCOL2"];?></span></span></td>
-    <td class="tcell-right"><?php if($treatment->canedit) { ?><textarea name="protocol2" id="protocol2" class="elastic"><?php echo(strip_tags($treatment->protocol2));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($treatment->protocol2)));?><?php } ?></td>
-  </tr>
-</table>
-        </div>
-        <div id="PatientsTreatmentsSecond" style="display: none;">
-			<table border="0" cellpadding="0" cellspacing="0" class="table-content addTaskTable">
+        <table border="0" cellpadding="0" cellspacing="0" class="table-content addTaskTable">
                 <tr>
                     <td class="tcell-left text11">
                     <!--<span class="<?php if($treatment->canedit) { ?>content-nav newItem<?php } ?>"><span><?php echo $lang["PATIENT_TREATMENT_GOALS"];?></span></span>-->
@@ -170,6 +120,66 @@
   <tr>
     <td class="tcell-left-inactive text11"><?php echo $lang["PATIENT_TREATMENT_PROTOCOL2"];?></td>
     <td class="tcell-right-inactive"><span id="protocol2_inactive"><?php echo(nl2br(strip_tags($treatment->protocol2)));?></span></td>
+  </tr>
+</table>
+        </div>
+        <div id="PatientsTreatmentsSecond" style="display: none;">
+			<div class="canvasToolsOuter">
+        <div class="canvasTools">
+        	<?php if($treatment->canedit) { ?>
+            <span class="addTool"></span>
+            <span class="penTool active"></span>
+            <span class="erasorTool"></span>
+            <span class="clearTool"></span>
+            <span class="undoTool"></span>
+            <?php } ?>
+        </div>
+        </div>
+        <?php
+			$background = '#d3ddff';
+			$canvasDrawBG = '';
+			if(defined('CO_PHYSIO_BODYCHART_WHITE')) {
+				$background = '#fff';
+				$canvasDrawBG = 'style="background-image: url(' . CO_FILES . '/img/body_white.png);"';
+			}
+		?>
+        <table border="0" cellpadding="0" cellspacing="0" class="table-content">
+                <tr>
+                    <td style="width:401px;"><div style="position: relative; width: 400px; height: 400px; border-top: 1px solid #fff; border-right: 1px solid #ccc; background: <?php echo $background;?>;"><div class="canvasDiv" <?php echo $canvasDrawBG;?>>
+                    <?php $i = 1; 
+							$j = $treatment->diagnoses;
+                        foreach($diagnose as $value) { 
+							$active = '';
+							if($i == 1) {
+								$active = ' active';
+							}
+							$curcol = ($i-1) % 10;
+							?>
+                            <canvas <?php if($treatment->canedit) { ?>class="canvasDraw"<?php } ?> id="c<?php echo $i;?>" width="400" height="400" style="z-index: <?php echo $j;?>; position: absolute;" rel="<?php echo $value->id;?>"></canvas>
+                            <div id="dia-<?php echo $value->id;?>" style="z-index: 10<?php echo $i;?>; top: <?php echo $value->y;?>px; left: <?php echo $value->x;?>px;" class="loadCanvas circle circle<?php echo $curcol;?> <?php echo $active;?>" rel="<?php echo $i;?>"><div><?php echo $i;?></div></div>
+                        <?php 
+						$i++;
+						$j--;
+						} ?>
+                    </div></div></td>
+                	<td valign="top" style=""><div id="canvasDivText" style="border-left: 1px solid #fff; background: #e5e5e5; height: 401px;"><?php 
+					$i = 1;
+                        foreach($diagnose as $value) { 
+						$active = '';
+							if($i == 1) {
+								$active = ' active';
+							}
+							$curcol = ($i-1) % 10;
+                            include("diagnose.php");
+							$i++;
+                         } ?></div></td>
+                </tr>
+            </table>
+			
+            <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
+  <tr>
+    <td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["PATIENT_TREATMENT_PROTOCOL2"];?></span></span></td>
+    <td class="tcell-right"><?php if($treatment->canedit) { ?><textarea name="protocol2" id="protocol2" class="elastic"><?php echo(strip_tags($treatment->protocol2));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($treatment->protocol2)));?><?php } ?></td>
   </tr>
 </table>
         </div>

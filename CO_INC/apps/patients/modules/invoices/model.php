@@ -65,11 +65,11 @@ class PatientsInvoicesModel extends PatientsModel {
 		$perm = $this->getPatientAccess($id);
 		$sql ="";
 		if( $perm ==  "guest") {
-			$sql = " and access = '1' ";
+			$sql = " and access_invoice = '1' ";
 		}
 		
 		//$q = "SELECT a.*,CONCAT(b.lastname,', ',b.firstname) as title FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, co_users as b where a.tookpart='1' and a.cid=b.id and a.pid = '$id' and a.bin='0' and b.bin='0' ORDER BY title ASC";
-		$q = "select id,title,item_date,access,status_invoice,checked_out,checked_out_user from " . CO_TBL_PATIENTS_TREATMENTS . " where pid = '$id' and (status='2' or status='3') and bin != '1' " . $sql . $order;
+		$q = "select id,title,item_date,access_invoice,status_invoice,checked_out,checked_out_user from " . CO_TBL_PATIENTS_TREATMENTS . " where pid = '$id' and (status='2' or status='3') and bin != '1' " . $sql . $order;
 		$this->setSortStatus("patients-invoices-sort-status",$sortcur,$id);
 		$result = mysql_query($q, $this->_db->connection);
 		$items = mysql_num_rows($result);
@@ -81,7 +81,14 @@ class PatientsInvoicesModel extends PatientsModel {
 		foreach($row as $key => $val) {
 				$array[$key] = $val;
 			}
-			
+			// access
+			$accessstatus = "";
+			if($perm !=  "guest") {
+				if($array["access_invoice"] == 1) {
+					$accessstatus = " module-access-active";
+				}
+			}
+			$array["accessstatus"] = $accessstatus;
 			// status
 			$itemstatus = "";
 			if($array["status_invoice"] == 1) {
@@ -101,12 +108,12 @@ class PatientsInvoicesModel extends PatientsModel {
 
 
 	function getNavNumItems($id) {
-		/*$perm = $this->getPatientAccess($id);
+		$perm = $this->getPatientAccess($id);
 		$sql ="";
 		if( $perm ==  "guest") {
-			$sql = " and access = '1' ";
-		}*/
-		$q = "select count(*) as items from " . CO_TBL_PATIENTS_TREATMENTS . " where pid = '$id' and (status='2' or status='3') and bin != '1'";
+			$sql = " and access_invoice = '1' ";
+		}
+		$q = "select count(*) as items from " . CO_TBL_PATIENTS_TREATMENTS . " where pid = '$id' and (status='2' or status='3') and bin != '1'" . $sql;
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_fetch_array($result);
 		$items = $row['items'];
@@ -139,8 +146,14 @@ class PatientsInvoicesModel extends PatientsModel {
 		}	
 		$array['patient'] = $array['lastname'] . ' ' . $array['firstname'];
 		$array["perms"] = $this->getPatientAccess($array["pid"]);
-		$array["canedit"] = true;
+		$array["canedit"] = false;
 		$array["showCheckout"] = false;
+		
+		if($array["perms"] == "sysadmin" || $array["perms"] == "admin") {
+			$array["canedit"] = true;
+		}
+		
+		
 		if($array['invoice_address'] == 0) {
 			$array['invoiceaddress'] = $array['patient'];
 		} else {
@@ -186,15 +199,15 @@ class PatientsInvoicesModel extends PatientsModel {
 		$array["doctor_ct"] = empty($array["doctor_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['doctor_ct'];
 		$array["documents"] = $this->_documents->getDocListFromIDs($array['documents'],'documents');
 		
-		switch($array["access"]) {
+		switch($array["access_invoice"]) {
 			case "0":
 				$array["access_text"] = $lang["GLOBAL_ACCESS_INTERNAL"];
 				$array["access_footer"] = "";
 			break;
 			case "1":
 				$array["access_text"] = $lang["GLOBAL_ACCESS_PUBLIC"];
-				$array["access_user"] = $this->_users->getUserFullname($array["access_user"]);
-				$array["access_date"] = $this->_date->formatDate($array["access_date"],CO_DATETIME_FORMAT);
+				$array["access_user_invoice"] = $this->_users->getUserFullname($array["access_user"]);
+				$array["access_date_invoice"] = $this->_date->formatDate($array["access_date"],CO_DATETIME_FORMAT);
 				$array["access_footer"] = $lang["GLOBAL_ACCESS_FOOTER"] . " " . $array["access_user"] . ", " .$array["access_date"];
 			break;
 		}
@@ -306,13 +319,26 @@ class PatientsInvoicesModel extends PatientsModel {
 		return $arr;
    }
 
-   function setDetails($pid,$id,$invoice_date,$invoice_date_sent,$invoice_address,$invoice_number,$payment_reminder,$protocol_payment_reminder,$protocol,$documents) {
+   function setDetails($pid,$id,$invoice_date,$invoice_date_sent,$invoice_address,$invoice_number,$payment_reminder,$protocol_payment_reminder,$protocol,$documents,$invoice_access,$invoice_access_orig) {
 		global $session, $lang;
 		$now = gmdate("Y-m-d H:i:s");
 		$invoice_date = $this->_date->formatDate($invoice_date);
 		$invoice_date_sent = $this->_date->formatDate($invoice_date_sent);
 		$payment_reminder = $this->_date->formatDate($payment_reminder);
-		$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS . " set invoice_date='$invoice_date', invoice_date_sent='$invoice_date_sent', invoice_address='$invoice_address', invoice_number='$invoice_number', payment_reminder='$payment_reminder', protocol_payment_reminder='$protocol_payment_reminder', protocol_invoice='$protocol', documents = '$documents' where id='$id'";
+		
+		
+		if($invoice_access == $invoice_access_orig) {
+			$accesssql = "";
+		} else {
+			$invoice_access_date = "";
+			if($invoice_access == 1) {
+				$invoice_access_date = $now;
+			}
+			$accesssql = ", access_invoice='$invoice_access', access_date_invoice='$invoice_access_date', access_invoice_user = '$session->uid'";
+		}
+		
+		
+		$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS . " set invoice_date='$invoice_date', invoice_date_sent='$invoice_date_sent', invoice_address='$invoice_address', invoice_number='$invoice_number', payment_reminder='$payment_reminder', protocol_payment_reminder='$protocol_payment_reminder', protocol_invoice='$protocol', documents = '$documents'$accesssql where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {

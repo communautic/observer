@@ -1170,7 +1170,7 @@ function getTreatmentTypeMin($string){
 	
 	
 	
-	function getTreatmentList($string, $field, $sql="", $canedit = true){
+	function getTreatmentList($string, $field, $sql="", $canedit){
 		$users_string = explode(",", $string);
 		$users_total = sizeof($users_string);
 		$users = '';

@@ -121,6 +121,7 @@ class Calendar extends Controller {
 			$event['patientid'] = 0;
 			$event['folderid'] = 0;
 			$eventclass = '';
+			$eventaccess = 1;
 			//$regularEventDisplay = '';
 			//$treatmentEventDisplay = '';
 			if($event['eventtype'] == 1) {
@@ -141,6 +142,14 @@ class Calendar extends Controller {
 					$event['treat'] = $treatmentevent['mid'];
 					$event['patientid'] = $treatmentevent['id'];
 					$event['folderid'] = $treatmentevent['folder'];
+					
+					// check here if I am admin for this patient
+					if (!$session->isSysadmin()) {
+						if(!in_array($event['patientid'],$treatmentsModel->getEditPerms($session->uid))) {
+							$eventaccess = 0;
+						}
+					} 
+					
 				} else {
 					$event['eventtype'] = 0;
 					$title = (!is_null($vevent->SUMMARY) && $vevent->SUMMARY->value != '')? strtr($vevent->SUMMARY->value, array('\,' => ',', '\;' => ';')) : 'no title';
@@ -183,7 +192,8 @@ class Calendar extends Controller {
 							'folderid'=>$event['folderid'],
 							'tooltip' => $tooltip,
 							'calendarid'=>$calendarid,
-							'eventclass'=>$eventclass
+							'eventclass'=>$eventclass,
+							'eventaccess'=>$eventaccess
 							);
 			
 			if($this->isrepeating($id) && $this->model->is_cached_inperiod($event['id'], $start, $end)) {

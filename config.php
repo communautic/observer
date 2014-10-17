@@ -24,6 +24,9 @@ define("CO_PRODUCT_VARIANT", 0 );
 // PO compat (if true show old treatments without calendar)
 define("CO_PHYSIO_COMBAT", false );
 
+// Bodychart background
+define("CO_PHYSIO_BODYCHART_WHITE", true );
+
 /* -------------------------------------------------------------------------
 * Database Configuration
 * -------------------------------------------------------------------------*/

@@ -238,7 +238,7 @@ function patientsTreatments(name) {
 			
 			if(tab != 0) { $('#patients-right .contentTabsList li span:eq('+tab+')').trigger('click'); }
 			if(appTab) {
-				$('#patients-right .contentTabsList li span:eq(1)').trigger('click');
+				$('#patients-right .contentTabsList li span:eq(0)').trigger('click');
 				appTab = false;
 			}
 			
@@ -546,11 +546,13 @@ function patientsTreatments(name) {
 	this.showItemContext = function(ele,uid,field) {
 		var module = this;
 		//var id = $("#"+field).val();
+		if(ele.attr('edit') == 1) {
 		$.ajax({ type: "GET", url: "/", data: 'path=apps/patients/modules/treatments&request=getTaskContext&id='+uid+'&field='+field, success: function(html){
 			ele.parent().append(html);
 			ele.next().slideDown();
 			}
 		});
+		}
 	}
 
 	this.insertStatus = function(rel,text) {

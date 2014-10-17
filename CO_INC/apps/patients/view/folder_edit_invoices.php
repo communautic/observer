@@ -31,8 +31,9 @@ if(is_array($invoices)) { ?>
     <td width="210" style="padding-left: 15px;" class="row<?php  echo ($i % 2);?>"><?php echo($invoice->patient);?></td>
     <td width="265" class="row<?php  echo ($i % 2);?>"><div class="loadInvoice" pid="<?php echo($invoice->pid);?>" rel="<?php echo($invoice->id);?>"><div class="co-link <?php echo($invoice->status_invoice_class);?>" style="height: 21px; overflow: hidden; padding-left: 9px;"><?php echo($invoice->title);?></div></div></td>
     <td width="50" class="row<?php  echo ($i % 2);?>" style="padding-left: 14px;"><?php echo($invoice->invoice_number);?></td>
-    <td width="120" class="row<?php  echo ($i % 2);?>" style="padding-left: 14px;"><?php echo($invoice->invoice_date);?></td>
-    <td width="107" class="row<?php  echo ($i % 2);?>"><?php echo(CO_DEFAULT_CURRENCY . ' ' . $invoice->totalcosts);?></td>
+    <td width="90" class="row<?php  echo ($i % 2);?>" style="padding-left: 14px;"><?php echo($invoice->invoice_date);?></td>
+    <td width="70" class="row<?php  echo ($i % 2);?>"><?php echo($invoice->totalmin);?></td>
+    <td width="70" class="row<?php  echo ($i % 2);?>"><?php echo(CO_DEFAULT_CURRENCY . ' ' . $invoice->totalcosts);?></td>
     <td class="row<?php  echo ($i % 2);?>"><?php echo($invoice->management);?></td>
     </tr>
     <?php 

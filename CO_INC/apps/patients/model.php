@@ -242,7 +242,18 @@ class PatientsModel extends Model {
 			break;
 		}
 		
-		$q = "SELECT a.id,a.title,a.invoice_date,a.invoice_number,a.status_invoice, a.discount, a.vat, b.id as pid, b.management, CONCAT(c.lastname,' ',c.firstname) as patient FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE a.status='2' and a.pid=b.id and b.folder='$id' and b.cid=c.id and a.bin='0' and b.bin='0' ORDER BY " . $order;
+		$access="";
+		if(!$session->isSysadmin()) {
+			//$perm = $this->getPatientAccess($patient["id"]);
+			$adminPerm = implode(',',$this->getEditPerms($session->uid));
+			$guestPerm = implode(',',$this->getViewPerms($session->uid));
+			if($adminPerm == '') { $adminPerm = 0; }
+			if($guestPerm == '') { $guestPerm = 0; }
+			$access = " and (b.id IN (" . $adminPerm . ") or (b.id IN (" . $guestPerm . ") and a.access_invoice='1'))";
+	  	}
+		
+		$q = "SELECT a.id,a.title,a.invoice_date,a.invoice_number,a.status_invoice, a.discount, a.vat, b.id as pid, b.management, CONCAT(c.lastname,' ',c.firstname) as patient FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE a.status='2' and a.pid=b.id and b.folder='$id' and b.cid=c.id and a.bin='0' and b.bin='0'" . $access . " ORDER BY " . $order;
+		//echo $q;
 		
 		
 		$result = mysql_query($q, $this->_db->connection);
@@ -271,16 +282,20 @@ class PatientsModel extends Model {
 		
 		// get the tasks
 		$array['totalcosts'] = 0;
+		$array['totalmin'] = 0;
 		$qt = "SELECT type FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where mid = '$id' and bin='0' ORDER BY item_date ASC";
 		$resultt = mysql_query($qt, $this->_db->connection);
 		$PatientsTreatmentsModel = new PatientsTreatmentsModel();
 		if(mysql_num_rows($resultt) > 0) {
 		while($rowt = mysql_fetch_array($resultt)) {
 			if($rowt["type"] == '') {
+				$mins = 0;
 				$costs = 0;
 			} else {
+				$mins = $PatientsTreatmentsModel->getTreatmentTypeMin($rowt["type"]);
 				$costs = $PatientsTreatmentsModel->getTreatmentTypeCosts($rowt["type"]);
 			}
+			$array['totalmin'] += $mins;
 			$array['totalcosts'] += $costs;
 		}
 		}
@@ -295,6 +310,11 @@ class PatientsModel extends Model {
 			$array['totalcosts'] = $array['totalcosts']+(($array['totalcosts']/100)*$array['vat']);
 		}
 		$array['totalcosts'] = number_format($array['totalcosts'],2,',','.');
+		settype($array['totalmin'], 'integer');
+		$hours = floor($array['totalmin'] / 60);
+		$minutes = ($array['totalmin'] % 60);
+		
+		$array['totalmin'] = sprintf('%02d:%02d h', $hours, $minutes);
 		
 		$invoices[] = new Lists($array);
 		

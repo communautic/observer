@@ -9,8 +9,18 @@ function patientsInvoices(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		formData[formData.length] = processListApps('invoiceaddress');
 		formData[formData.length] = processDocListApps('documents');
+		formData[formData.length] = processListApps('invoice_access');
 		}
-	this.formResponse = function(data) {}
+	this.formResponse = function(data) {
+		switch(data.access) {
+			case "0":
+				$("#patients3 ul[rel=invoices] span[rel="+data.id+"] .module-access-status").removeClass("module-access-active");
+			break;
+			case "1":
+				$("#patients3 ul[rel=invoices] span[rel="+data.id+"] .module-access-status").addClass("module-access-active");
+			break;
+		}	
+	}
 	this.poformOptions = { beforeSubmit: this.formProcess, dataType: 'json', success: this.formResponse };
 
 	this.statusOnClose = function(dp) {
