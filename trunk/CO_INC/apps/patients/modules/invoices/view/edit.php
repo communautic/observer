@@ -60,8 +60,8 @@
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
-    <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang["PATIENT_INVOICE_NUMBER"];?></span></span></td>
-    <td class="tcell-right-nopadding"><input name="invoice_number" type="text" class="bg" value="<?php echo($invoice->invoice_number);?>" /></td>
+    <td class="tcell-left-shorter text11"><span class="<?php if($invoice->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["PATIENT_INVOICE_NUMBER"];?></span></span></td>
+    <td class="tcell-right-nopadding"><?php if($invoice->canedit) { ?><input name="invoice_number" type="text" class="bg" value="<?php echo($invoice->invoice_number);?>" /><?php } else { echo '<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $invoice->invoice_number . '</span>';}?></td>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
@@ -71,7 +71,7 @@
 	</tr>
 </table>
 <div class="content-spacer"></div>
-    <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-inactive no-margin loadContactExternal" rel="<?php echo($invoice->patient_id)?>" style="cursor: pointer;">
+    <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-inactive no-margin <?php if($invoice->canedit) { ?>loadContactExternal<?php } ?>" rel="<?php echo($invoice->patient_id)?>" style="cursor: pointer;">
   <tr>
 		<td class="tcell-left-inactive text11" style="padding-top: 2px;"><?php echo $lang["PATIENT_CONTACT_DETAILS"];?></td>
     	<td class="tcell-right-inactive"><?php echo($invoice->ctitle)?> <?php echo($invoice->title2)?> <?php echo($invoice->lastname);?> <?php echo($invoice->firstname);?><br />
@@ -166,6 +166,12 @@
 </table>
 <?php if($invoice->perms != "guest") { ?>
 <div class="content-spacer"></div>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
+	  <td class="tcell-left text11"><span class="<?php if($invoice->canedit) { ?>content-nav showDialog<?php } ?>" request="getAccessDialog" field="patientsinvoice_access" append="1"><span><?php echo $lang["GLOBAL_ACCESS"];?></span></span></td>
+        <td class="tcell-right"><div id="patientsinvoice_access" class="itemlist-field"><div class="listmember" field="patientsinvoice_access" uid="<?php echo($invoice->access_invoice);?>" style="float: left"><?php echo($invoice->access_text);?></div></div><input type="hidden" name="invoice_access_orig" value="<?php echo($invoice->access_invoice);?>" /></td>
+	</tr>
+</table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 	  <td class="tcell-left text11"><span class="content-nav ui-datepicker-trigger-action"><span><?php echo $lang['GLOBAL_CHECKPOINT'];?></span></span></td>

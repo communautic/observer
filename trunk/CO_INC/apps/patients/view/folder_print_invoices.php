@@ -52,6 +52,12 @@ if(is_array($invoices)) { ?>
             <td class="grey smalltext fourCols-paddingTop"><?php echo($invoice->invoice_date);?></td>
         </tr>
         <tr>
+            <td class="grey fourCols-one smalltext" style="padding-left: 15pt;"><?php echo $lang["GLOBAL_DURATION"];?></td>
+            <td class="fourCols-two">&nbsp;</td>
+            <td class="fourCols-three">&nbsp;</td>
+            <td class="grey smalltext fourCols-paddingTop"><?php echo($invoice->totalmin);?></td>
+        </tr>
+        <tr>
             <td class="grey fourCols-one smalltext" style="padding-left: 15pt;">Honorar</td>
             <td class="fourCols-two">&nbsp;</td>
             <td class="fourCols-three">&nbsp;</td>

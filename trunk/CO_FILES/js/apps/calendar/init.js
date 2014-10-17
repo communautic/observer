@@ -3847,8 +3847,9 @@ setDefaults({
 	allDaySlot: true,
 	allDayText: 'all-day',
 	firstHour: 7,
-	slotMinutes: 30,
-	defaultEventMinutes: 120,
+	slotMinutes: 15,
+	//snapMinutes: 45,
+	defaultEventMinutes: 45,
 	axisFormat: 'h(:mm)tt',
 	timeFormat: {
 		agenda: 'h:mm{ - h:mm}'
@@ -7242,7 +7243,7 @@ $(document).ready(function() {
 			},
 			weekNumbers: true,
 			weekNumberTitle: weekNumberTitle,
-			defaultEventMinutes: 60,
+			defaultEventMinutes: 45,
 			/*titleFormat: {
 				month: t('calendar', 'MMMM yyyy'),
 						// September 2009
@@ -7294,7 +7295,9 @@ $(document).ready(function() {
 					if(event.eventclass != '') {
 					element.addClass(event.eventclass);
 					}
+					if(event.eventaccess != 0) {
 					element.prepend('<div class="fc-event-treatment-icon loadTreatment" rel="patients,'+event.folderid+','+event.patientid+','+event.treatmentid+',treatments"></div>');
+					}
 				}
 				if(!iOS()) {
 					element.addClass('coTooltip');

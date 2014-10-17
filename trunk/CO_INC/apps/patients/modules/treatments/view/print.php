@@ -58,8 +58,10 @@
 </table>
 <?php //if ($printcanvas == 1) { ?>
 <div style="height: 400px; width: 400px; position: relative;">
-<img src="<?php echo(CO_FILES);?>/img/body.png" />
-<?php $i = 1; 
+<?php if(!defined('CO_PHYSIO_BODYCHART_WHITE')) {
+				echo '<img src="'.CO_FILES.'/img/body.png" />';
+}
+    $i = 1; 
 	$j = $treatment->diagnoses;
 	foreach($diagnose as $value) { 
 		$curcol = ($i-1) % 10;

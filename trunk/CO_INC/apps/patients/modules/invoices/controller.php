@@ -314,9 +314,9 @@ class PatientsInvoices extends Patients {
 	}
 	
 
-	function setDetails($pid,$id,$invoice_date,$invoice_date_sent,$invoice_address,$invoice_number,$payment_reminder,$protocol_payment_reminder,$protocol,$documents) {
-		if($retval = $this->model->setDetails($pid,$id,$invoice_date,$invoice_date_sent,$invoice_address,$invoice_number,$payment_reminder,$protocol_payment_reminder,$protocol,$documents)){
-			return '{ "id": "' . $id . '"}';
+	function setDetails($pid,$id,$invoice_date,$invoice_date_sent,$invoice_address,$invoice_number,$payment_reminder,$protocol_payment_reminder,$protocol,$documents,$invoice_access,$invoice_access_orig) {
+		if($retval = $this->model->setDetails($pid,$id,$invoice_date,$invoice_date_sent,$invoice_address,$invoice_number,$payment_reminder,$protocol_payment_reminder,$protocol,$documents,$invoice_access,$invoice_access_orig)){
+			return '{ "id": "' . $id . '", "access": "' . $invoice_access . '"}';
 		} else{
 			return "error";
 		}
