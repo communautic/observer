@@ -990,7 +990,8 @@ $(document).ready(function() {
 			}
 		}
 	});
-
+	
+	$('#co-popup').draggable({ handle: '.head'});
 
 	// init custom form elements
 	$('form.jNice').livequery(function() { 

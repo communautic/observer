@@ -195,14 +195,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7b599', end
 /* full popup */
 #co-popup.popup-full {
 	background: #2d2d2d;
-	height: auto;
+	height: auto !important;
 	width: 298px;
 	border: 1px solid #2d2d2d;
 	z-index: 10;
 }
 #co-popup.popup-arrows {
 	background: #2d2d2d;
-	height: 221px;
+	height: 252px !important;
 	width: 298px;
 	border: 1px solid #2d2d2d;
 	z-index: 10;
@@ -242,7 +242,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#949494', end
 #co-popup.popup-arrows .content {
     border-radius: 3px 3px 3px 3px;
     margin: 0 3px 2px;
-    height: 170px;
+    height: 202px;
     padding: 10px 12px;
 	background-color: #d8d8d8;
 }
