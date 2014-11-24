@@ -103,7 +103,7 @@ var co_lang = '<?php echo $session->userlang;?>';
 <?php if($session->userlang != 'en') { ?>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/ui.datepicker-<?php echo($session->userlang); ?>.js"></script>
 <?php } ?>
-<script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.livequery-1.1.1.min.js"></script>
+<script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.livequery.min.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.form.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.layout-1.3.0.js"></script>
 <script type="text/javascript" src="<?php echo CO_FILES;?>/js/libraries/jquery.jNice.js"></script>
