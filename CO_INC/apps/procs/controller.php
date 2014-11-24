@@ -433,6 +433,34 @@ class Procs extends Controller {
 		  }
 	}
 	
+	function saveItemWidth($id,$width) {
+		$retval = $this->model->saveItemWidth($id,$width);
+		if($retval){
+			 return "true";
+		  } else{
+			 return "error";
+		  }
+	}
+	
+	function saveItemHeight($id,$height) {
+		$retval = $this->model->saveItemHeight($id,$height);
+		if($retval){
+			 return "true";
+		  } else{
+			 return "error";
+		  }
+	}
+
+	
+	/*function resetItemWH($id) {
+		$retval = $this->model->resetItemWH($id);
+		if($retval){
+			 return "true";
+		  } else{
+			 return "error";
+		  }
+	}*/
+	
 	function deleteItem($id) {
 		$retval = $this->model->deleteItem($id);
 		if($retval){

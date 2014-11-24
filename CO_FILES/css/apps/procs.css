@@ -538,61 +538,86 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d8d3ab', end
 #procs-right .controlBar span { position: absolute; top: -15px; width: 35px; height: 30px; cursor: pointer; background: url(../../img/procs_arrows.png) no-repeat -237px 6px;}
 #procs-right .controlBar span.newnote { left: 150px; background-position: 0px -31px; }
 #procs-right .controlBar span.newarrow { left: 200px; background-position: -45px -31px; }
-#procs-right .controlBar span.binItems { left: 242px; background-position: -91px -31px; }
+#procs-right .controlBar span.newarrow2 { left: 242px; background-position: -131px -31px; }
+#procs-right .controlBar span.newarrow3 { left: 300px; background-position: -169px -31px; }
+#procs-right .controlBar span.newarrow4 { left: 350px; background-position: -201px -31px; }
+#procs-right .controlBar span.binItems { left: 400px; background-position: -91px -31px; }
 
-#notesOuter { position: absolute; top: 75px; bottom: 0; left: 0; right: 0; overflow: auto; background: url(../../img/procs_grid.png); }
+#notesOuter { position: absolute; top: 75px; bottom: 0; left: 0; right: 0; overflow: auto; 
+background-image: url('../../img/procs_grid.png');
+    background-repeat: repeat;
+    background-attachment: local;
+}
 #notesOuter > div { font-size: 11px; font-weight: bold; }
+
+#procs-right div.firstArrowStyle { display: none; }
+#procs-right div.secondArrowStyle { display: none; }
 /* shapes */
 /* square */
-#procs-right .shape1 { position: absolute; width: 166px; height: 90px; background: url(../../img/formen.png)  no-repeat 0px 0px; }
+#procs-right .shape1 { position: absolute; width: 160px; height: 80px; background: url(../../img/formen.png)  no-repeat 1px 1px; }
 #procs-right .shape1>div { width: 140px; height: 60px; margin: 10px; overflow: hidden; }
 #procs-right .shape1>div>div { width: 140px; height: 60px; display: table-cell; vertical-align: middle; text-align: center; }
-#procs-right .shape1.color1 { background-position: 0px 0px; }
-#procs-right .shape1.color2 { background-position: -180px 0px; }
-#procs-right .shape1.color3 { background-position: -360px 0px; }
-#procs-right .shape1.color4 { background-position: -540px 0px; }
-#procs-right .shape1.color5 { background-position: -720px 0px; }
+#procs-right .shape1.color1 { background-position: 1px 1px; }
+#procs-right .shape1.color2 { background-position: -179px 1px; }
+#procs-right .shape1.color3 { background-position: -359px 1px; }
+#procs-right .shape1.color4 { background-position: -539px 1px; }
+#procs-right .shape1.color5 { background-position: -719px 1px; }
 #procs-right .shape1.note:hover { cursor: pointer; }
 /* oval */
-#procs-right .shape2 { position: absolute; width: 166px; height: 90px; background: url(../../img/formen.png)  no-repeat 0px -110px; }
+#procs-right .shape2 { position: absolute; width: 160px; height: 80px; background: url(../../img/formen.png)  no-repeat 1px -109px; }
 #procs-right .shape2>div { width: 140px; height: 60px; margin: 10px; overflow: hidden; }
 #procs-right .shape2>div>div { width: 140px; height: 60px; display: table-cell; vertical-align: middle; text-align: center; }
-#procs-right .shape2.color1 { background-position: 0px -110px; }
-#procs-right .shape2.color2 { background-position: -180px -110px; }
-#procs-right .shape2.color3 { background-position: -360px -110px; }
-#procs-right .shape2.color4 { background-position: -540px -110px; }
-#procs-right .shape2.color5 { background-position: -720px -110px; }
+#procs-right .shape2.color1 { background-position: 1px -109px; }
+#procs-right .shape2.color2 { background-position: -179px -109px; }
+#procs-right .shape2.color3 { background-position: -359px -109px; }
+#procs-right .shape2.color4 { background-position: -539px -109px; }
+#procs-right .shape2.color5 { background-position: -719px -109px; }
 #procs-right .shape2.note:hover { cursor: pointer; }
 /* rhombus */
-#procs-right .shape3 { position: absolute; width: 166px; height: 110px; background: url(../../img/formen.png)  no-repeat 0px -430px; }
-#procs-right .shape3>div { width: 120px; height: 70px; margin: 20px; overflow: hidden; }
+#procs-right .shape3 { position: absolute; width: 160px; height: 80px; background: url(../../img/formen.png)  no-repeat 1px -429px; }
+#procs-right .shape3>div { width: 120px; height: 50px; margin: 7px 20px; overflow: hidden; }
 #procs-right .shape3>div>div { width: 120px; height: 67px; display: table-cell; vertical-align: middle; text-align: center; }
-#procs-right .shape3.color1 { background-position: 0px -430px; }
-#procs-right .shape3.color2 { background-position: -180px -430px; }
-#procs-right .shape3.color3 { background-position: -360px -430px; }
-#procs-right .shape3.color4 { background-position: -540px -430px; }
-#procs-right .shape3.color5 { background-position: -720px -430px; }
+#procs-right .shape3.color1 { background-position: 1px -429px; }
+#procs-right .shape3.color2 { background-position: -179px -429px; }
+#procs-right .shape3.color3 { background-position: -359px -429px; }
+#procs-right .shape3.color4 { background-position: -539px -429px; }
+#procs-right .shape3.color5 { background-position: -719px -429px; }
 #procs-right .shape3.note:hover { cursor: pointer; }
 /* sqare + down arrow */
-#procs-right .shape4 { position: absolute; width: 166px; height: 90px; background: url(../../img/formen.png)  no-repeat 0px -330px; }
+#procs-right .shape4 { position: absolute; width: 160px; height: 80px; background: url(../../img/formen.png)  no-repeat 1px -329px; }
 #procs-right .shape4>div { width: 140px; height: 60px; margin: 10px; overflow: hidden; }
 #procs-right .shape4>div>div { width: 140px; height: 60px; display: table-cell; vertical-align: middle; text-align: center; }
-#procs-right .shape4.color1 { background-position: 0px -330px; }
-#procs-right .shape4.color2 { background-position: -180px -330px; }
-#procs-right .shape4.color3 { background-position: -360px -330px; }
-#procs-right .shape4.color4 { background-position: -540px -330px; }
-#procs-right .shape4.color5 { background-position: -720px -330px; }
+#procs-right .shape4.color1 { background-position: 1px -329px; }
+#procs-right .shape4.color2 { background-position: -179px -329px; }
+#procs-right .shape4.color3 { background-position: -359px -329px; }
+#procs-right .shape4.color4 { background-position: -539px -329px; }
+#procs-right .shape4.color5 { background-position: -719px -329px; }
 #procs-right .shape4.note:hover { cursor: pointer; }
 /* square arrow */
-#procs-right .shape5 { position: absolute; width: 166px; height: 90px; background: url(../../img/formen.png)  no-repeat 0px -220px; }
+#procs-right .shape5 { position: absolute; width: 166px; height: 90px; background: url(../../img/formen.png)  no-repeat 1px -219px; }
 #procs-right .shape5>div { width: 140px; height: 60px; margin: 10px 10px 10px 15px; overflow: hidden; }
 #procs-right .shape5>div>div { width: 135px; height: 60px; display: table-cell; vertical-align: middle; text-align: center; }
-#procs-right .shape5.color1 { background-position: 0px -220px; }
-#procs-right .shape5.color2 { background-position: -180px -220px; }
-#procs-right .shape5.color3 { background-position: -360px -220px; }
-#procs-right .shape5.color4 { background-position: -540px -220px; }
-#procs-right .shape5.color5 { background-position: -720px -220px; }
+#procs-right .shape5.color1 { background-position: 1px -219px; }
+#procs-right .shape5.color2 { background-position: -179px -219px; }
+#procs-right .shape5.color3 { background-position: -359px -219px; }
+#procs-right .shape5.color4 { background-position: -539px -219px; }
+#procs-right .shape5.color5 { background-position: -719px -219px; }
 #procs-right .shape5.note:hover { cursor: pointer; }
+
+/* text only */
+#procs-right .shape34 { margin: 1px 0 0 1px; position: absolute; }
+#procs-right .shape34>div { overflow: hidden; }
+#procs-right .shape34>div>div { background: #fff; max-width: 100px; min-width: 40px; padding: 5px 7px; display: table-cell; vertical-align: middle; text-align: center; }
+#procs-right .shape34.note:hover { cursor: pointer; }
+#procs-right .shape34 span.note-readmore {
+    left: 50%;
+	background: url("../../img/icons.png") no-repeat scroll -200px -75px rgba(0, 0, 0, 0);
+    height: 10px;
+    margin-left: -4px;
+    position: absolute;
+    top: -10px;
+    width: 8px;
+}
 
 /* arrows */
 /*#procs-right .shape10 { position: absolute; width: 34px; height: 16px; }
@@ -606,7 +631,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d8d3ab', end
 #procs-right .shape10.arrow7 { transform:rotate(270deg); -ms-transform:rotate(270deg); -moz-transform:rotate(270deg); -webkit-transform:rotate(270deg); -o-transform:rotate(270deg); }
 #procs-right .shape10.arrow8 { transform:rotate(315deg); -ms-transform:rotate(315deg); -moz-transform:rotate(315deg); -webkit-transform:rotate(315deg); -o-transform:rotate(315deg); }*/
 
-#procs-right .shape10 div { display: none; }
+/*#procs-right .shape10 div { display: none; }
 #procs-right .shape10 { position: absolute; background: url(../../img/pfeile.png) no-repeat 0px -10px; }
 #procs-right .shape10.arrow1 {width: 45px; height: 22px; background-position: 0px -10px; }
 #procs-right .shape10.arrow2 {width: 40px; height: 44px; background-position: -80px 0px; }
@@ -615,15 +640,210 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d8d3ab', end
 #procs-right .shape10.arrow5 {width: 45px; height: 22px; background-position: -300px -10px; }
 #procs-right .shape10.arrow6 {width: 40px; height: 44px; background-position: -378px 0px; }
 #procs-right .shape10.arrow7 {width: 22px; height: 44px; background-position: -461px 0px; }
-#procs-right .shape10.arrow8 {width: 40px; height: 44px; background-position: -525px 0px; }
+#procs-right .shape10.arrow8 {width: 40px; height: 44px; background-position: -525px 0px; }*/
 #procs-right .shape10.note:hover { cursor: pointer; }
+
+/* css arrow1 - right*/
+#procs-right .shape10.arrow1 { position: absolute; width: 40px; height: 22px; background: none;}
+#procs-right .shape10.arrow1>div.arrowStyle { position: relative; top: 10px; width: 33px; background: #000; height: 2px; }
+#procs-right .shape10.arrow1>div.arrowStyle:after, #procs-right .shape10.arrow1>div.arrowStyle:before { left: 100%; top: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#procs-right .shape10.arrow1>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-left-color: #000; border-width: 8px; margin-top: -8px; } 
+#procs-right .shape10.arrow1>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-left-color: #000; border-width: 8px; margin-top: -8px; }
+/* arrow1 end */
+
+/* css arrow3 - bottom */
+#procs-right .shape10.arrow3 { position: absolute; width: 22px; height: 40px; background: none;}
+#procs-right .shape10.arrow3>div.arrowStyle { position: relative; left: 10px; width: 2px; background: #000; height: 33px; }
+#procs-right .shape10.arrow3>div.arrowStyle:after, #procs-right .shape10.arrow3>div.arrowStyle:before { top: 100%; left: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#procs-right .shape10.arrow3>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-top-color: #000; border-width: 8px; margin-left: -8px; } 
+#procs-right .shape10.arrow3>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-top-color: #000; border-width: 8px; margin-left: -8px; }
+/* arrow3 end */
+
+/* css arrow5 - left */
+#procs-right .shape10.arrow5 { position: absolute; width: 40px; height: 22px; background: none;}
+#procs-right .shape10.arrow5>div.arrowStyle { position: relative; top: 10px; left: 7px; width: 33px; background: #000; height: 2px; }
+#procs-right .shape10.arrow5>div.arrowStyle:after, #procs-right .shape10.arrow5>div.arrowStyle:before { right: 100%; top: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#procs-right .shape10.arrow5>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-right-color: #000; border-width: 8px; margin-top: -8px; } 
+#procs-right .shape10.arrow5>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-right-color: #000; border-width: 8px; margin-top: -8px; }
+/* arrow5 end */
+
+/* css arrow7 - top */
+#procs-right .shape10.arrow7 { position: absolute; width: 22px; height: 40px; background: none;}
+#procs-right .shape10.arrow7>div.arrowStyle { position: relative; left: 10px; top: 7px; width: 2px; background: #000; height: 33px; }
+#procs-right .shape10.arrow7>div.arrowStyle:after, #procs-right .shape10.arrow7>div.arrowStyle:before { bottom: 100%; left: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#procs-right .shape10.arrow7>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-bottom-color: #000; border-width: 8px; margin-left: -8px; } 
+#procs-right .shape10.arrow7>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-bottom-color: #000; border-width: 8px; margin-left: -8px; }
+/* arrow7 end */
+
+/* css arrow9 - long with top right*/
+#procs-right .shape10.arrow9 { position: absolute; width: 192px; height: 40px; background: none;}
+#procs-right .shape10.arrow9>div.arrowStyle { position: absolute; right: 10px; top: 7px; width: 2px; background: #000; height: 33px; }
+#procs-right .shape10.arrow9>div.arrowStyle:after, #procs-right .shape10.arrow9>div.arrowStyle:before { bottom: 100%; left: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#procs-right .shape10.arrow9>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-bottom-color: #000; border-width: 8px; margin-left: -8px; } 
+#procs-right .shape10.arrow9>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-bottom-color: #000; border-width: 8px; margin-left: -8px; }
+#procs-right .shape10.arrow9>div.firstArrowStyle { display: block;  position: relative; width: 2px; background: #000; height: 40px; }
+#procs-right .shape10.arrow9>div.secondArrowStyle { display: block; position: absolute; left: 0; bottom: 0px; width: 180px; background: #000; height: 2px; }
+/* arrow9 end */
+
+/* css arrow10 - long with top left*/
+#procs-right .shape10.arrow10 { position: absolute; width: 192px; height: 40px; background: none;}
+#procs-right .shape10.arrow10>div.arrowStyle { position: relative; left: 10px; top: 7px; width: 2px; background: #000; height: 33px; }
+#procs-right .shape10.arrow10>div.arrowStyle:after, #procs-right .shape10.arrow10>div.arrowStyle:before { bottom: 100%; left: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#procs-right .shape10.arrow10>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-bottom-color: #000; border-width: 8px; margin-left: -8px; } 
+#procs-right .shape10.arrow10>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-bottom-color: #000; border-width: 8px; margin-left: -8px; }
+#procs-right .shape10.arrow10>div.firstArrowStyle { display: block;  position: absolute; right: 0; width: 2px; background: #000; height: 40px; }
+#procs-right .shape10.arrow10>div.secondArrowStyle { display: block; position: absolute; left: 10px; bottom: 0px; width: 180px; background: #000; height: 2px; }
+/* arrow10 end */
+
+/* css arrow11 - long with bottom right*/
+#procs-right .shape10.arrow11 { position: absolute; width: 192px; height: 40px; background: none;}
+#procs-right .shape10.arrow11>div.arrowStyle { position: absolute; right: 10px; top: 0; width: 2px; background: #000; height: 33px; }
+#procs-right .shape10.arrow11>div.arrowStyle:after, #procs-right .shape10.arrow11>div.arrowStyle:before { top: 100%; left: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#procs-right .shape10.arrow11>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-top-color: #000; border-width: 8px; margin-left: -8px; } 
+#procs-right .shape10.arrow11>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-top-color: #000; border-width: 8px; margin-left: -8px; }
+#procs-right .shape10.arrow11>div.firstArrowStyle { display: block;  position: relative; width: 2px; background: #000; height: 40px; }
+#procs-right .shape10.arrow11>div.secondArrowStyle { display: block; position: absolute; left: 0; top: 0px; width: 180px; background: #000; height: 2px; }
+/* arrow11 end */
+
+/* css arrow12 - long with bottom left*/
+#procs-right .shape10.arrow12 { position: absolute; width: 192px; height: 40px; background: none;}
+#procs-right .shape10.arrow12>div.arrowStyle { position: relative; left: 10px; top: 0; width: 2px; background: #000; height: 33px; }
+#procs-right .shape10.arrow12>div.arrowStyle:after, #procs-right .shape10.arrow12>div.arrowStyle:before { top: 100%; left: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#procs-right .shape10.arrow12>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-top-color: #000; border-width: 8px; margin-left: -8px; } 
+#procs-right .shape10.arrow12>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-top-color: #000; border-width: 8px; margin-left: -8px; }
+#procs-right .shape10.arrow12>div.firstArrowStyle { display: block;  position: absolute; right: 0; width: 2px; background: #000; height: 40px; }
+#procs-right .shape10.arrow12>div.secondArrowStyle { display: block; position: absolute; left: 10px; top: 0px; width: 180px; background: #000; height: 2px; }
+/* arrow12 end */
+
+/* css arrow13 - vert with top right */
+#procs-right .shape10.arrow13 { position: absolute; width: 40px; height: 80px; background: none; }
+#procs-right .shape10.arrow13>div.arrowStyle { position: relative; top: 10px; width: 33px; background: #000; height: 2px; }
+#procs-right .shape10.arrow13>div.arrowStyle:after, #procs-right .shape10.arrow13>div.arrowStyle:before { left: 100%; top: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#procs-right .shape10.arrow13>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-left-color: #000; border-width: 8px; margin-top: -8px; } 
+#procs-right .shape10.arrow13>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-left-color: #000; border-width: 8px; margin-top: -8px; }
+#procs-right .shape10.arrow13>div.firstArrowStyle { display: block;  position: absolute; left: 0; bottom: 0; width: 40px; background: #000; height: 2px; }
+#procs-right .shape10.arrow13>div.secondArrowStyle { display: block; position: absolute; left: 0px; top: 10px; width: 2px; background: #000; height: 70px; }
+/* arrow13 end */
+
+/* css arrow13 - vert with top right */
+#procs-right .shape10.arrow13 { position: absolute; width: 40px; height: 90px; background: none; }
+#procs-right .shape10.arrow13>div.arrowStyle { position: relative; top: 10px; width: 33px; background: #000; height: 2px; }
+#procs-right .shape10.arrow13>div.arrowStyle:after, #procs-right .shape10.arrow13>div.arrowStyle:before { left: 100%; top: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#procs-right .shape10.arrow13>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-left-color: #000; border-width: 8px; margin-top: -8px; } 
+#procs-right .shape10.arrow13>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-left-color: #000; border-width: 8px; margin-top: -8px; }
+#procs-right .shape10.arrow13>div.firstArrowStyle { display: block;  position: absolute; left: 0; bottom: 0; width: 40px; background: #000; height: 2px; }
+#procs-right .shape10.arrow13>div.secondArrowStyle { display: block; position: absolute; left: 0px; top: 10px; width: 2px; background: #000; height: 80px; }
+/* arrow13 end */
+
+/* css arrow14 - vert with bottom right */
+#procs-right .shape10.arrow14 { position: absolute; width: 40px; height: 90px; background: none; }
+#procs-right .shape10.arrow14>div.arrowStyle { position: absolute; bottom: 10px; width: 33px; background: #000; height: 2px; }
+#procs-right .shape10.arrow14>div.arrowStyle:after, #procs-right .shape10.arrow14>div.arrowStyle:before { left: 100%; top: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#procs-right .shape10.arrow14>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-left-color: #000; border-width: 8px; margin-top: -8px; } 
+#procs-right .shape10.arrow14>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-left-color: #000; border-width: 8px; margin-top: -8px; }
+#procs-right .shape10.arrow14>div.firstArrowStyle { display: block;  position: absolute; left: 0; top: 0; width: 40px; background: #000; height: 2px; }
+#procs-right .shape10.arrow14>div.secondArrowStyle { display: block; position: absolute; left: 0px; top: 0; width: 2px; background: #000; height: 80px; }
+/* arrow14 end */
+
+/* css arrow15 - vert with top left */
+#procs-right .shape10.arrow15 { position: absolute; width: 40px; height: 90px; background: none; }
+#procs-right .shape10.arrow15>div.arrowStyle { position: absolute; bottom: 10px; right: 0; width: 33px; background: #000; height: 2px; }
+#procs-right .shape10.arrow15>div.arrowStyle:after, #procs-right .shape10.arrow15>div.arrowStyle:before { right: 100%; top: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#procs-right .shape10.arrow15>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-right-color: #000; border-width: 8px; margin-top: -8px; } 
+#procs-right .shape10.arrow5>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-right-color: #000; border-width: 8px; margin-top: -8px; }
+#procs-right .shape10.arrow15>div.firstArrowStyle { display: block;  position: absolute; left: 0; top: 0; width: 40px; background: #000; height: 2px; }
+#procs-right .shape10.arrow15>div.secondArrowStyle { display: block; position: absolute; right: 0px; top: 0; width: 2px; background: #000; height: 80px; }
+/* arrow15 end */
+
+/* css arrow16 - vert with top right */
+#procs-right .shape10.arrow16 { position: absolute; width: 40px; height: 90px; background: none; }
+#procs-right .shape10.arrow16>div.arrowStyle { position: absolute; top: 10px; right: 0; width: 33px; background: #000; height: 2px; }
+#procs-right .shape10.arrow16>div.arrowStyle:after, #procs-right .shape10.arrow16>div.arrowStyle:before { right: 100%; top: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#procs-right .shape10.arrow16>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-right-color: #000; border-width: 8px; margin-top: -8px; } 
+#procs-right .shape10.arrow5>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-right-color: #000; border-width: 8px; margin-top: -8px; }
+#procs-right .shape10.arrow16>div.firstArrowStyle { display: block;  position: absolute; left: 0; bottom: 0; width: 40px; background: #000; height: 2px; }
+#procs-right .shape10.arrow16>div.secondArrowStyle { display: block; position: absolute; right: 0px; top: 10px; width: 2px; background: #000; height: 80px; }
+/* arrow16 end */
+
+/* css arrow17 - square with top right */
+#procs-right .shape10.arrow17 { position: absolute; width: 40px; height: 50px; background: none; }
+#procs-right .shape10.arrow17>div.arrowStyle { position: relative; top: 10px; width: 33px; background: #000; height: 2px; }
+#procs-right .shape10.arrow17>div.arrowStyle:after, #procs-right .shape10.arrow17>div.arrowStyle:before { left: 100%; top: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#procs-right .shape10.arrow17>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-left-color: #000; border-width: 8px; margin-top: -8px; } 
+#procs-right .shape10.arrow17>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-left-color: #000; border-width: 8px; margin-top: -8px; }
+#procs-right .shape10.arrow17>div.secondArrowStyle { display: block; position: absolute; left: 0px; top: 10px; width: 2px; background: #000; height: 40px; }
+/* arrow17 end */
+
+/* css arrow18 - square with bottom right */
+#procs-right .shape10.arrow18 { position: absolute; width: 40px; height: 50px; background: none; }
+#procs-right .shape10.arrow18>div.arrowStyle { position: absolute; bottom: 10px; width: 33px; background: #000; height: 2px; }
+#procs-right .shape10.arrow18>div.arrowStyle:after, #procs-right .shape10.arrow18>div.arrowStyle:before { left: 100%; top: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#procs-right .shape10.arrow18>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-left-color: #000; border-width: 8px; margin-top: -8px; } 
+#procs-right .shape10.arrow18>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-left-color: #000; border-width: 8px; margin-top: -8px; }
+#procs-right .shape10.arrow18>div.secondArrowStyle { display: block; position: absolute; left: 0px; top: 0; width: 2px; background: #000; height: 40px; }
+/* arrow18 end */
+
+/* css arrow19 - square with top left */
+#procs-right .shape10.arrow19 { position: absolute; width: 40px; height: 50px; background: none; }
+#procs-right .shape10.arrow19>div.arrowStyle { position: absolute; bottom: 10px; right: 0; width: 33px; background: #000; height: 2px; }
+#procs-right .shape10.arrow19>div.arrowStyle:after, #procs-right .shape10.arrow19>div.arrowStyle:before { right: 100%; top: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#procs-right .shape10.arrow19>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-right-color: #000; border-width: 8px; margin-top: -8px; } 
+#procs-right .shape10.arrow5>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-right-color: #000; border-width: 8px; margin-top: -8px; }
+#procs-right .shape10.arrow19>div.secondArrowStyle { display: block; position: absolute; right: 0px; top: 0; width: 2px; background: #000; height: 40px; }
+/* arrow19 end */
+
+/* css arrow20 - square with top right */
+#procs-right .shape10.arrow20 { position: absolute; width: 40px; height: 50px; background: none; }
+#procs-right .shape10.arrow20>div.arrowStyle { position: absolute; top: 10px; right: 0; width: 33px; background: #000; height: 2px; }
+#procs-right .shape10.arrow20>div.arrowStyle:after, #procs-right .shape10.arrow20>div.arrowStyle:before { right: 100%; top: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#procs-right .shape10.arrow20>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-right-color: #000; border-width: 8px; margin-top: -8px; } 
+#procs-right .shape10.arrow5>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-right-color: #000; border-width: 8px; margin-top: -8px; }
+#procs-right .shape10.arrow20>div.secondArrowStyle { display: block; position: absolute; right: 0px; top: 10px; width: 2px; background: #000; height: 40px; }
+/* arrow20 end */
+
+/* css arrow21 - long with top right*/
+#procs-right .shape10.arrow21 { position: absolute; width: 50px; height: 40px; background: none;}
+#procs-right .shape10.arrow21>div.arrowStyle { position: absolute; right: 10px; top: 7px; width: 2px; background: #000; height: 33px; }
+#procs-right .shape10.arrow21>div.arrowStyle:after, #procs-right .shape10.arrow21>div.arrowStyle:before { bottom: 100%; left: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#procs-right .shape10.arrow21>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-bottom-color: #000; border-width: 8px; margin-left: -8px; } 
+#procs-right .shape10.arrow21>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-bottom-color: #000; border-width: 8px; margin-left: -8px; }
+#procs-right .shape10.arrow21>div.secondArrowStyle { display: block; position: absolute; left: 0; bottom: 0px; width: 40px; background: #000; height: 2px; }
+/* arrow21 end */
+
+/* css arrow22 - long with top left*/
+#procs-right .shape10.arrow22 { position: absolute; width: 50px; height: 40px; background: none;}
+#procs-right .shape10.arrow22>div.arrowStyle { position: relative; left: 10px; top: 7px; width: 2px; background: #000; height: 33px; }
+#procs-right .shape10.arrow22>div.arrowStyle:after, #procs-right .shape10.arrow22>div.arrowStyle:before { bottom: 100%; left: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#procs-right .shape10.arrow22>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-bottom-color: #000; border-width: 8px; margin-left: -8px; } 
+#procs-right .shape10.arrow22>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-bottom-color: #000; border-width: 8px; margin-left: -8px; }
+#procs-right .shape10.arrow22>div.secondArrowStyle { display: block; position: absolute; left: 10px; bottom: 0px; width: 40px; background: #000; height: 2px; }
+/* arrow22 end */
+
+/* css arrow23 - long with bottom right*/
+#procs-right .shape10.arrow23 { position: absolute; width: 50px; height: 40px; background: none;}
+#procs-right .shape10.arrow23>div.arrowStyle { position: absolute; right: 10px; top: 0; width: 2px; background: #000; height: 33px; }
+#procs-right .shape10.arrow23>div.arrowStyle:after, #procs-right .shape10.arrow23>div.arrowStyle:before { top: 100%; left: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#procs-right .shape10.arrow23>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-top-color: #000; border-width: 8px; margin-left: -8px; } 
+#procs-right .shape10.arrow23>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-top-color: #000; border-width: 8px; margin-left: -8px; }
+#procs-right .shape10.arrow23>div.secondArrowStyle { display: block; position: absolute; left: 0; top: 0px; width: 40px; background: #000; height: 2px; }
+/* arrow23 end */
+
+/* css arrow24 - long with bottom left*/
+#procs-right .shape10.arrow24 { position: absolute; width: 50px; height: 40px; background: none;}
+#procs-right .shape10.arrow24>div.arrowStyle { position: relative; left: 10px; top: 0; width: 2px; background: #000; height: 33px; }
+#procs-right .shape10.arrow24>div.arrowStyle:after, #procs-right .shape10.arrow24>div.arrowStyle:before { top: 100%; left: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#procs-right .shape10.arrow24>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-top-color: #000; border-width: 8px; margin-left: -8px; } 
+#procs-right .shape10.arrow24>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-top-color: #000; border-width: 8px; margin-left: -8px; }
+#procs-right .shape10.arrow24>div.secondArrowStyle { display: block; position: absolute; left: 10px; top: 0px; width: 40px; background: #000; height: 2px; }
+/* arrow24 end */
+
 
 #procs-right span.note-readmore { height: 10px; left: 77px; position: absolute; top: 10px; width: 8px; background: url(../../img/icons.png) no-repeat -200px -75px; }
 
 #co-popup .saveItemShape, #co-popup .saveItemColor { height: 65px; background: #fff; border: 1px solid #b2b2b2; border-radius: 4px; margin-bottom: 8px;}
-#co-popup .saveItemArrow { height: 128px; background: #fff; border: 1px solid #b2b2b2; border-radius: 4px; margin-bottom: 8px;}
+#co-popup .saveItemArrow { position: relative; padding-right: 50px; height: 128px; background: #fff; border: 1px solid #b2b2b2; border-radius: 4px; margin-bottom: 8px;}
 
-#co-popup .saveItemShape>span, #co-popup .saveItemColor>span, #co-popup .saveItemArrow>span  { display: inline-block; width: 40px; height: 40px; border: 2px solid #fff; border-radius: 3px; margin: 12px 0 0 7px;}
+#co-popup .saveItemShape>span, #co-popup .saveItemColor>span, #co-popup .saveItemArrow>span  { display: inline-block; width: 40px; height: 40px; border: 2px solid #fff; border-radius: 3px; margin: 12px 0 0 6px;}
 #co-popup .saveItemShape>span.procs-shape-active, #co-popup .saveItemColor>span.procs-shape-active, #co-popup .saveItemArrow>span.procs-shape-active { border: 2px solid #5aff1e; }
 #co-popup .saveItemShape>span>span, #co-popup .saveItemColor>span>span, #co-popup .saveItemArrow>span>span { cursor: pointer; display: block; width: 38px; height: 38px; line-height: 38px; color: #000; text-align: center; background: #ccc; border: 1px solid #000; border-radius: 3px;}
 #co-popup .saveItemShape>span>span.shape1 {  background: url(../../img/procs_shapes.png) no-repeat -97px 9px; }
@@ -646,6 +866,36 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d8d3ab', end
 #co-popup .saveItemArrow>span>span.arrow6 {  background: url(../../img/procs_arrows.png) no-repeat -168px 6px; }
 #co-popup .saveItemArrow>span>span.arrow7 {  background: url(../../img/procs_arrows.png) no-repeat -196px 6px; }
 #co-popup .saveItemArrow>span>span.arrow8 {  background: url(../../img/procs_arrows.png) no-repeat -237px 6px; }
+
+/* second arrow Window */
+#co-popup .saveItemArrow>span>span.arrow18 {  background: url(../../img/procs_arrows.png) no-repeat 8px -91px; }
+#co-popup .saveItemArrow>span>span.arrow17 {  background: url(../../img/procs_arrows.png) no-repeat -61px -91px; }
+#co-popup .saveItemArrow>span>span.arrow19 {  background: url(../../img/procs_arrows.png) no-repeat -28px -91px; }
+#co-popup .saveItemArrow>span>span.arrow20 {  background: url(../../img/procs_arrows.png) no-repeat -99px -91px; }
+#co-popup .saveItemArrow>span>span.arrow21 {  background: url(../../img/procs_arrows.png) no-repeat -236px -91px; }
+#co-popup .saveItemArrow>span>span.arrow22 {  background: url(../../img/procs_arrows.png) no-repeat -200px -91px; }
+#co-popup .saveItemArrow>span>span.arrow23 {  background: url(../../img/procs_arrows.png) no-repeat -166px -91px; }
+#co-popup .saveItemArrow>span>span.arrow24 {  background: url(../../img/procs_arrows.png) no-repeat -132px -91px; }
+
+/* third arrow Window */
+#co-popup .saveItemArrow>span>span.arrow9 {  background: url(../../img/procs_arrows.png) no-repeat 6px -134px; }
+#co-popup .saveItemArrow>span>span.arrow10 {  background: url(../../img/procs_arrows.png) no-repeat -30px -134px; }
+#co-popup .saveItemArrow>span>span.arrow11 {  background: url(../../img/procs_arrows.png) no-repeat -64px -134px; }
+#co-popup .saveItemArrow>span>span.arrow12 {  background: url(../../img/procs_arrows.png) no-repeat -100px -134px; }
+#co-popup .saveItemArrow>span>span.arrow13 {  background: url(../../img/procs_arrows.png) no-repeat -197px -135px; }
+#co-popup .saveItemArrow>span>span.arrow14 {  background: url(../../img/procs_arrows.png) no-repeat -135px -135px; }
+#co-popup .saveItemArrow>span>span.arrow15 {  background: url(../../img/procs_arrows.png) no-repeat -162px -135px; }
+#co-popup .saveItemArrow>span>span.arrow16 {  background: url(../../img/procs_arrows.png) no-repeat -231px -135px; }
+
+/* + - */
+#co-popup .saveItemArrow .dimensionsOuter {width: 58px; position: absolute; top: 0; right: 6px;}
+#co-popup .saveItemArrow .arrowWidthMore {  position: absolute; right: 0; top: 50px; display: block; background: url(../../img/procs_arrows.png) no-repeat -40px -180px; height: 24px; line-height: 24px; width:24px; z-index: 1;}
+#co-popup .saveItemArrow .arrowWidthLess {  position: absolute; left: 0; top: 50px; display: block; background: url(../../img/procs_arrows.png) no-repeat -40px -220px; height: 24px; line-height: 24px; width:24px; z-index: 1;}
+#co-popup .saveItemArrow .arrowHeightMore {  position: absolute; left: 17px; top: 18px; display: block; background: url(../../img/procs_arrows.png) no-repeat 0px -180px; height: 46px; line-height: 46px; width:24px; z-index: 0;}
+#co-popup .saveItemArrow .arrowHeightLess {  position: absolute; left: 17px; top: 64px; display: block; background: url(../../img/procs_arrows.png) no-repeat 0px -226px; height: 46px; line-height: 46px; width:24px; z-index: 0;}
+#co-popup .resetIndexOuter { text-align: center; padding: 8px 10px 10px 10px;}
+#co-popup .resetZindex { color: #000; }
+#co-popup .resetZindex:hover { color: #7F7F7F; cursor: hand;}
 
 /* drawings */
 #procs .canvasToolsOuter { position: relative; height: 30px; z-index: 998}

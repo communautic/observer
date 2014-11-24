@@ -155,6 +155,15 @@ if (!empty($_GET['request'])) {
 		case 'saveItemStyle':
 			echo($procs->saveItemStyle($_GET['id'],$_GET['shape'],$_GET['color']));
 		break;
+		case 'saveItemWidth':
+			echo($procs->saveItemWidth($_GET['id'],$_GET['width']));
+		break;
+		case 'saveItemHeight':
+			echo($procs->saveItemHeight($_GET['id'],$_GET['height']));
+		break;
+		/*case 'resetItemWH':
+			echo($procs->resetItemWH($_GET['id']));
+		break;*/
 		case 'deleteItem':
 			echo($procs->deleteItem($_GET['id']));
 		break;

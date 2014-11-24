@@ -917,6 +917,18 @@ class ProcsModel extends Model {
 			$shape = 10;
 			$title = '';
 		}
+		if($what == 'arrow2') {
+			$shape = 27;
+			$title = '';
+		}
+		if($what == 'arrow3') {
+			$shape = 18;
+			$title = '';
+		}
+		if($what == 'text') {
+			$shape = 34;
+			//$title = '';
+		}
 		
 		$q = "INSERT INTO " . CO_TBL_PROCS_NOTES . " set pid = '$id', title = '$title', xyz = '".$x."x".$y."x".$z."', shape='$shape', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
@@ -970,6 +982,31 @@ class ProcsModel extends Model {
   
   function saveItemStyle($id,$shape,$color) {
 		$q = "UPDATE " . CO_TBL_PROCS_NOTES . " set shape='$shape', color='$color' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+			$this->resetItemWH($id);
+		  	return true;
+		}
+   }
+   
+   function saveItemWidth($id,$width) {
+		$q = "UPDATE " . CO_TBL_PROCS_NOTES . " set width='$width' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+		  	return true;
+		}
+   }
+   
+   function saveItemHeight($id,$height) {
+		$q = "UPDATE " . CO_TBL_PROCS_NOTES . " set height='$height' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+		  	return true;
+		}
+   }
+   
+   function resetItemWH($id) {
+		$q = "UPDATE " . CO_TBL_PROCS_NOTES . " set width='0', height='0' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 		  	return true;
@@ -1036,7 +1073,7 @@ class ProcsModel extends Model {
 			$procsAccessModel->setDetails($id_new,$session->uid,"");
 		}
 		// notes
-		$q = "SELECT id,title,text,xyz,shape,color FROM " . CO_TBL_PROCS_NOTES . " WHERE pid = '$id' and bin='0'";
+		$q = "SELECT id,title,text,xyz,shape,color,width,height FROM " . CO_TBL_PROCS_NOTES . " WHERE pid = '$id' and bin='0'";
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
 			$noteid = $row["id"];
@@ -1045,8 +1082,10 @@ class ProcsModel extends Model {
 			$xyz = $row["xyz"];
 			$shape = $row["shape"];
 			$color = $row["color"];
+			$width = $row["width"];
+			$height = $row["height"];
 			
-			$qp = "INSERT INTO " . CO_TBL_PROCS_NOTES . " set pid='$id_new',title='$title',text='$text',xyz='$xyz',shape='$shape',color='$color',created_date='$now',created_user='$session->uid',edited_date='$now',edited_user='$session->uid'";
+			$qp = "INSERT INTO " . CO_TBL_PROCS_NOTES . " set pid='$id_new',title='$title',text='$text',xyz='$xyz',width='$width',height='$height',shape='$shape',color='$color',created_date='$now',created_user='$session->uid',edited_date='$now',edited_user='$session->uid'";
 			$rp = mysql_query($qp, $this->_db->connection);
 			$id_p_new = mysql_insert_id();
 		}		

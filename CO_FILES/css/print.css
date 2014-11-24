@@ -124,3 +124,11 @@ hr { height: 1pt; color: #000; background-color: #000; border: 0; }
 .invitationLink.incomplete, .registrationLink.incomplete, .tookpartLink.incomplete, .feedbackLink.incomplete { background-color: #7f7f7f; }
 .invitationLink.active, .registrationLink.active, .tookpartLink.active, .feedbackLink.active { background-color: #82aa0a; }
 .invitationLink.deactive, .registrationLink.deactive, .tookpartLink.deactive, .feedbackLink.deactive { background-color: #eb4600; }
+
+/* css arrow1 - right*/
+/*.arrow1 { position: absolute; width: 40px; height: 22px; background: none;}
+.arrow1>div.arrowStyle { position: relative; top: 10px; width: 33px; background: #000; height: 2px; }
+.arrow1>div.arrowStyle:after, .arrow1>div.arrowStyle:before { left: 100%; top: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+.arrow1>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-left-color: #000; border-width: 8px; margin-top: -8px; } 
+.arrow1>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-left-color: #000; border-width: 8px; margin-top: -8px; }*/
+/* arrow1 end */
