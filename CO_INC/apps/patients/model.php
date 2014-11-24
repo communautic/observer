@@ -2678,7 +2678,7 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 			if(empty($editperms)) {
 				$skip = 1;
 			}
-			$access = " and c.id IN (" . implode(',', $editperms) . ") ";
+			$access = " and b.id IN (" . implode(',', $editperms) . ") ";
 
 		}
 

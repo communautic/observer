@@ -299,8 +299,8 @@ $(document).ready(function() {
 				var z = zMax + 1;
 				$(this).css('z-index',z);
 				var loc = $(this).position();
-				var x = loc.left;
-				var y = loc.top;
+				var x = Math.round(loc.left);
+				var y = Math.round(loc.top);
 				var id = $(this).attr("id").replace(/postit-/, "");
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/desktop&request=updatePostitPosition&id="+id+"&x="+x+"&y="+y+"&z="+z});
 			})
@@ -325,7 +325,7 @@ $(document).ready(function() {
 		}
 		var z = zMax + 1;
 		//desktopzIndex = z;
-		var x = $('#desktop').width()/2 - 152;
+		var x = Math.round($('#desktop').width()/2 - 152);
 		$.ajax({ type: "GET", url: "/", data: "path=apps/desktop&request=newPostit&z="+z+"&x=" + x, success: function(data){
 				desktoploadModuleStart();
 			}

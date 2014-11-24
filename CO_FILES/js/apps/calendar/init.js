@@ -7546,6 +7546,7 @@ $(document).on('click', '#advanced_options_button_repeat', function(e) {
 $(document).on('click', '#submitNewEvent', function(e) {
 //$('#submitNewEvent').live('click', function () {
 	Calendar.UI.validateEventForm($(this).data('link'));
+	prevent_dblclick(e)
 });
 /*$('#chooseCalendar').live('click', function () {
 	Calendar.UI.Calendar.newCalendar(this);
@@ -7591,10 +7592,12 @@ $(document).on('click', '#toggleDesktop', function(e) {
 $(document).on('click', '#submitEditEvent', function(e) {
 //$('#editEvent-submit').live('click', function () {
 	Calendar.UI.validateEventForm($(this).data('link'));
+	prevent_dblclick(e)
 });
 $(document).on('click', '#submitDeleteEvent', function(e) {
 //$('#editEvent-delete').live('click', function () {
 	Calendar.UI.submitDeleteEventForm($(this).data('link'));
+	prevent_dblclick(e)
 });
 /*$('#editEvent-export').live('click', function () {
 	window.location = $(this).data('link');

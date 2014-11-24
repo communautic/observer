@@ -19,9 +19,21 @@ function procsApplication(name) {
 		this.$thirdDiv = $('#procs3 div.thirdLevel');
 		this.$layoutWest = $('#procs div.ui-layout-west');
 		this.coPopupEditClass = 'popup-full';
-		this.coPopupEdit = '<div class="head">Bearbeiten</div><div class="content"><div class="fieldset"><label>Titel</label><input type="text" class="title" maxlength="40" value="" /></div><div class="saveItemShape"><span rel="1"><span class="shape1"></span></span><span rel="2"><span class="shape2"></span></span><span rel="3"><span class="shape3"></span></span><span rel="4"><span class="shape4"></span></span><span rel="5"><span class="shape5"></span></span></div><div class="saveItemColor"><span rel="1"><span class="color1"></span></span><span rel="2"><span class="color2"></span></span><span rel="3"><span class="color3"></span></span><span rel="4"><span class="color4"></span></span><span rel="5"><span class="color5"></span></span></div><div class="fieldset"><label>Beschreibung</label><textarea class="text"></textarea></div><ul class="popupButtons"><li><a href="#" class="binItem alert" rel="">'+DATEPICKER_CLEAR+'</a></li></ul></div><span class="arrow"></span>';
+		this.coPopupEdit = '<div class="head">Bearbeiten</div><div class="content"><div class="fieldset"><label>Titel</label><input type="text" class="title" maxlength="40" value="" /></div><div class="saveItemShape"><span rel="1"><span class="shape1"></span></span><span rel="2"><span class="shape2"></span></span><span rel="3"><span class="shape3"></span></span><span rel="4"><span class="shape4"></span></span><span rel="5"><span class="shape5"></span></span></div><div class="saveItemColor"><span rel="1"><span class="color1"></span></span><span rel="2"><span class="color2"></span></span><span rel="3"><span class="color3"></span></span><span rel="4"><span class="color4"></span></span><span rel="5"><span class="color5"></span></span></div><div class="fieldset"><label>Beschreibung</label><textarea class="text"></textarea></div><div class="resetIndexOuter"><span class="resetZindex">Anordnen in den Hintergrund</span></div><ul class="popupButtons"><li><a href="#" class="binItem alert" rel="">'+DATEPICKER_CLEAR+'</a></li></ul></div><span class="arrow"></span>';
 		this.coPopupEditClassArrow = 'popup-arrows';
-		this.coPopupEditArrow = '<div class="head">Bearbeiten</div><div class="content"><div class="saveItemArrow"><span rel="1"><span class="arrow1"></span></span><span rel="2"><span class="arrow2"></span></span><span rel="3"><span class="arrow3"></span></span><span rel="4"><span class="arrow4"></span></span><span rel="5"><span class="arrow5"></span></span><span rel="6"><span  class="arrow6"></span></span><span rel="7"><span class="arrow7"></span></span><span rel="8"><span class="arrow8"></span></div><ul class="popupButtons"><li><a href="#" class="binItem alert" rel="">'+DATEPICKER_CLEAR+'</a></li></ul></div><span class="arrow"></span>';
+		this.coPopupEditArrow = '<div class="head">Bearbeiten</div><div class="content"><div class="saveItemArrow"><span rel="1"><span class="arrow1"></span></span><!--<span rel="2"><span class="arrow2"></span></span>--><span rel="3"><span class="arrow3"></span></span><!--<span rel="4"><span class="arrow4"></span></span>--><span rel="5"><span class="arrow5"></span></span><!--<span rel="6"><span  class="arrow6"></span></span>--><span rel="7"><span class="arrow7"></span></span><!--<span rel="8"><span class="arrow8"></span></span>--><div class="dimensionsOuter"><span class="arrowWidthMore"></span><span class="arrowWidthLess"></span><span class="arrowHeightMore"></span><span class="arrowHeightLess"></span></div></div><div class="resetIndexOuter"><span class="resetZindex">Anordnen in den Hintergrund</span></div><ul class="popupButtons"><li><a href="#" class="binItem alert" rel="">'+DATEPICKER_CLEAR+'</a></li></ul></div><span class="arrow"></span>';
+		if(self.coNewOptions == '') {
+			$.ajax({ type: "GET", url: "/", data: "path=apps/procs/&request=getNewOptions", success: function(html){
+				self.coNewOptions = html;
+			}});
+		}
+		this.coPopupEditArrowWin2 = '<div class="head">Bearbeiten</div><div class="content"><div class="saveItemArrow"><span rel="18"><span class="arrow18"></span></span><span rel="17"><span class="arrow17"></span></span><span rel="19"><span class="arrow19"></span></span><span rel="20"><span class="arrow20"></span></span><span rel="21"><span class="arrow21"></span></span><span rel="22"><span  class="arrow22"></span></span><span rel="23"><span class="arrow23"></span></span><span rel="24"><span class="arrow24"></span></span><div class="dimensionsOuter"><span class="arrowWidthMore"></span><span class="arrowWidthLess"></span><span class="arrowHeightMore"></span><span class="arrowHeightLess"></span></div></div><div class="resetIndexOuter"><span class="resetZindex">Anordnen in den Hintergrund</span></div><ul class="popupButtons"><li><a href="#" class="binItem alert" rel="">'+DATEPICKER_CLEAR+'</a></li></ul></div><span class="arrow"></span>';
+		if(self.coNewOptions == '') {
+			$.ajax({ type: "GET", url: "/", data: "path=apps/procs/&request=getNewOptions", success: function(html){
+				self.coNewOptions = html;
+			}});
+		}
+		this.coPopupEditArrowWin3 = '<div class="head">Bearbeiten</div><div class="content"><div class="saveItemArrow"><span rel="9"><span class="arrow9"></span></span><span rel="10"><span class="arrow10"></span></span><span rel="11"><span class="arrow11"></span></span><span rel="12"><span class="arrow12"></span></span><span rel="13"><span class="arrow13"></span></span><span rel="14"><span  class="arrow14"></span></span><span rel="15"><span class="arrow15"></span></span><span rel="16"><span class="arrow16"></span></span><div class="dimensionsOuter"><span class="arrowWidthMore"></span><span class="arrowWidthLess"></span><span class="arrowHeightMore"></span><span class="arrowHeightLess"></span></div></div><div class="resetIndexOuter"><span class="resetZindex">Anordnen in den Hintergrund</span></div><ul class="popupButtons"><li><a href="#" class="binItem alert" rel="">'+DATEPICKER_CLEAR+'</a></li></ul></div><span class="arrow"></span>';
 		if(self.coNewOptions == '') {
 			$.ajax({ type: "GET", url: "/", data: "path=apps/procs/&request=getNewOptions", success: function(html){
 				self.coNewOptions = html;
@@ -460,6 +472,57 @@ function procsApplication(name) {
 								var arrowtop = Math.round(ui.target.top - ui.element.top)+40;
 								copopup.find('.arrow').css('top', arrowtop); 
 				  		}
+					})
+			break;
+			case 'text':
+				var elepos = el.position();
+				var id = parseInt(el.attr('id').replace(/note-/, ""));
+				currentProcEditedNote = id;
+				var title = $('#note-title-'+id).text();
+				var text = $('#note-text-'+id).text();
+				//var regshape = /shape([0-9])+/.exec(el.attr('class'));
+				//var shape = regshape[1]-1;
+				//var regcolor = /color([0-9])+/.exec(el.attr('class'));
+				//var color = regcolor[1]-1;
+				var html = this.coPopupEdit;
+				var pclass = this.coPopupEditClass;
+				var copopup = $('#co-popup');
+				copopup.html(html);
+				copopup.find('.title').val(title);
+				copopup.find('.text').val(text);
+				//copopup.find('.saveItemShape>span:eq('+shape+')').addClass('procs-shape-active');
+				//copopup.find('.saveItemColor>span:eq('+color+')').addClass('procs-shape-active');
+				copopup.find('.saveItemShape').hide();
+				copopup.find('.saveItemColor').hide();
+				//copopup.find('.saveItem')
+				$('#co-popup a.binItem').attr('rel',id);
+				copopup
+					.removeClass(function (index, css) {
+						   return (css.match (/\bpopup-\w+/g) || []).join(' ');
+					   })
+					.addClass(pclass)
+					.position({
+						  my: "center center",
+						  at: "right+170 center",
+						  of: el,
+						  collision: 'flip fit',
+						  within: '#notesOuter',
+						  using: function(coords, ui) {
+								var $modal = $(this),
+								t = coords.top,
+								l = coords.left,
+								className = 'switch-' + ui.horizontal;
+								$modal.css({
+									left: l + 'px',
+									top: t + 'px'
+								}).removeClass(function (index, css) {
+						   			return (css.match (/\bswitch-\w+/g) || []).join(' ');
+					   			})
+								.addClass(className);
+								//copopup.find('.arrow').offset({ top: ui.target.top+25 });
+								var arrowtop = Math.round(ui.target.top - ui.element.top)+40;
+								copopup.find('.arrow').css('top', arrowtop); 
+				  		}
 					});
 			break;
 			case 'arrow':
@@ -468,12 +531,15 @@ function procsApplication(name) {
 				currentProcEditedNote = id;
 				var html = procs.coPopupEditArrow;
 				var pclass = procs.coPopupEditClassArrow;
+				//var regshape = /arrow([0-9])+/.exec(el.attr('class'));
+				//var shape = regshape[1]-1;
 				var regshape = /arrow([0-9])+/.exec(el.attr('class'));
-				var shape = regshape[1]-1;
+				var shape = parseInt(regshape[0].replace(/arrow/, ""));
 				var copopup = $('#co-popup');
 				copopup.html(html);
 				$('#co-popup a.binItem').attr('rel',id);
-				copopup.find('.saveItemArrow>span:eq('+shape+')').addClass('procs-shape-active');
+				//copopup.find('.saveItemArrow>span:eq('+shape+')').addClass('procs-shape-active');
+				copopup.find('.saveItemArrow>span[rel="'+shape+'"]').addClass('procs-shape-active');
 				copopup
 					.removeClass(function (index, css) {
 						return (css.match (/\bpopup-\w+/g) || []).join(' ');
@@ -499,9 +565,94 @@ function procsApplication(name) {
 								.addClass(className);
 								//copopup.find('.arrow').offset({ top: ui.target.top-6 });
 								var arrowtop = Math.round(ui.target.top - ui.element.top)+11;
+								if(arrowtop < 40) { arrowtop = 40; }
 								copopup.find('.arrow').css('top', arrowtop); 
 				  		}
-					});
+					})
+			break;
+			case 'arrowWin2':
+				var elepos = el.position();
+				var id = parseInt(el.attr('id').replace(/note-/, ""));
+				currentProcEditedNote = id;
+				var html = procs.coPopupEditArrowWin2;
+				var pclass = procs.coPopupEditClassArrow;
+				var regshape = /arrow([0-9])+/.exec(el.attr('class'));
+				var shape = parseInt(regshape[0].replace(/arrow/, ""));
+				var copopup = $('#co-popup');
+				copopup.html(html);
+				$('#co-popup a.binItem').attr('rel',id);
+				copopup.find('.saveItemArrow>span[rel="'+shape+'"]').addClass('procs-shape-active');
+				copopup
+					.removeClass(function (index, css) {
+						return (css.match (/\bpopup-\w+/g) || []).join(' ');
+					})
+					.addClass(pclass)
+					.position({
+						  my: "center center",
+						  at: "right+170 center+1",
+						  of: el,
+						  collision: 'flip fit',
+						  within: '#notesOuter',
+						  using: function(coords, ui) {
+								var $modal = $(this),
+								t = coords.top,
+								l = coords.left,
+								className = 'switch-' + ui.horizontal;
+								$modal.css({
+									left: l + 'px',
+									top: t + 'px'
+								}).removeClass(function (index, css) {
+						   			return (css.match (/\bswitch-\w+/g) || []).join(' ');
+					   			})
+								.addClass(className);
+								//copopup.find('.arrow').offset({ top: ui.target.top-6 });
+								var arrowtop = Math.round(ui.target.top - ui.element.top)+11;
+								if(arrowtop < 40) { arrowtop = 40; }
+								copopup.find('.arrow').css('top', arrowtop); 
+				  		}
+					})
+			break;
+			case 'arrowWin3':
+				var elepos = el.position();
+				var id = parseInt(el.attr('id').replace(/note-/, ""));
+				currentProcEditedNote = id;
+				var html = procs.coPopupEditArrowWin3;
+				var pclass = procs.coPopupEditClassArrow;
+				var regshape = /arrow([0-9])+/.exec(el.attr('class'));
+				var shape = parseInt(regshape[0].replace(/arrow/, ""));
+				var copopup = $('#co-popup');
+				copopup.html(html);
+				$('#co-popup a.binItem').attr('rel',id);
+				copopup.find('.saveItemArrow>span[rel="'+shape+'"]').addClass('procs-shape-active');
+				copopup
+					.removeClass(function (index, css) {
+						return (css.match (/\bpopup-\w+/g) || []).join(' ');
+					})
+					.addClass(pclass)
+					.position({
+						  my: "center center",
+						  at: "right+170 center+1",
+						  of: el,
+						  collision: 'flip fit',
+						  within: '#notesOuter',
+						  using: function(coords, ui) {
+								var $modal = $(this),
+								t = coords.top,
+								l = coords.left,
+								className = 'switch-' + ui.horizontal;
+								$modal.css({
+									left: l + 'px',
+									top: t + 'px'
+								}).removeClass(function (index, css) {
+						   			return (css.match (/\bswitch-\w+/g) || []).join(' ');
+					   			})
+								.addClass(className);
+								//copopup.find('.arrow').offset({ top: ui.target.top-6 });
+								var arrowtop = Math.round(ui.target.top - ui.element.top)+11;
+								if(arrowtop < 40) { arrowtop = 40; }
+								copopup.find('.arrow').css('top', arrowtop); 
+				  		}
+					})
 			break;
 		}
 	}
@@ -520,8 +671,10 @@ function procsApplication(name) {
 		var oid = $('#procs').data('first');
 		var id = $('#procs').data('second');
 		var outer = $("#notesOuter");
-		var x = outer.scrollLeft() + 20;
-		var y = outer.scrollTop() + 75;
+		//var x = outer.scrollLeft() + 20;
+		var x = Math.ceil((outer.scrollLeft()+1)/10)*10 + 20;
+		//var y = outer.scrollTop() + 60;
+		var y = Math.ceil((outer.scrollTop()+1)/10)*10 + 60;
 		var zMax = 0;
 		if($('#procs-right div.note').length > 0) {
 			zMax = Math.max.apply(null,$.map($('#procs-right div.note'), function(e,n){
@@ -531,9 +684,18 @@ function procsApplication(name) {
 		var z = zMax + 1;
 		procszIndex = z;
 		$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/procs&request=newProcNote&id="+id+"&x="+x+"&y="+y+"&z="+z+"&what="+what, success: function(data){
-				var line1 = '<div id="note-'+data.id+'" class="note shape1 color1 showCoPopup" request="note" style="left: '+x+'px; top: '+y+'px; z-index: '+z+';"><div><div id="note-title-'+data.id+'">'+data.title+'</div>';
+				var line1 = '<div id="note-'+data.id+'" class="note shape1 color1 showCoPopup" request="note" style="left: '+x+'px; top: '+y+'px; z-index: '+z+';"><div class="firstArrowStyle"></div><div class="secondArrowStyle"></div><div class="arrowStyle"><span id="note-more-'+data.id+'" class="note-readmore coTooltip" style="display: none;"><div style="display: none" class="coTooltipHtml"></div></span><div id="note-title-'+data.id+'">'+data.title+'</div>';
+				if(what == 'text') {
+					var line1 = '<div id="note-'+data.id+'" class="note shape34 color1 showCoPopup" request="text" style="left: '+x+'px; top: '+y+'px; z-index: '+z+';"><div class="firstArrowStyle"></div><div class="secondArrowStyle"></div><div class="arrowStyle"><span id="note-more-'+data.id+'" class="note-readmore coTooltip" style="display: none;"><div style="display: none" class="coTooltipHtml"></div></span><div id="note-title-'+data.id+'">'+data.title+'</div>';
+				}
 				if(what == 'arrow') {
-					var line1 = '<div id="note-'+data.id+'" class="note shape10 arrow1 showCoPopup" request="arrow" style="left: '+x+'px; top: '+y+'px; z-index: '+z+';"><div id="note-title-'+data.id+'"></div>';
+					var line1 = '<div id="note-'+data.id+'" class="note shape10 arrow1 showCoPopup" request="arrow" style="left: '+x+'px; top: '+y+'px; z-index: '+z+';"><div class="firstArrowStyle"></div><div class="secondArrowStyle"></div><div class="arrowStyle"><span id="note-more-'+data.id+'" class="note-readmore coTooltip" style="display: none;"><div style="display: none" class="coTooltipHtml"></div></span><div id="note-title-'+data.id+'"></div>';
+				}
+				if(what == 'arrow2') {
+					var line1 = '<div id="note-'+data.id+'" class="note shape10 arrow18 showCoPopup" request="arrowWin2" style="left: '+x+'px; top: '+y+'px; z-index: '+z+';"><div class="firstArrowStyle"></div><div class="secondArrowStyle"></div><div class="arrowStyle"><span id="note-more-'+data.id+'" class="note-readmore coTooltip" style="display: none;"><div style="display: none" class="coTooltipHtml"></div></span><div id="note-title-'+data.id+'"></div>';
+				}
+				if(what == 'arrow3') {
+					var line1 = '<div id="note-'+data.id+'" class="note shape10 arrow9 showCoPopup" request="arrowWin3" style="left: '+x+'px; top: '+y+'px; z-index: '+z+';"><div class="firstArrowStyle"></div><div class="secondArrowStyle"></div><div class="arrowStyle"><span id="note-more-'+data.id+'" class="note-readmore coTooltip" style="display: none;"><div style="display: none" class="coTooltipHtml"></div></span><div id="note-title-'+data.id+'"></div>';
 				}
 				var html = line1 +
         '<div id="note-text-'+data.id+'" style="display: none;"></div></div></div>';
@@ -611,11 +773,108 @@ function procsApplication(name) {
 		$('#note-'+id).removeClass(function (index, css) {
 			return (css.match (/\barrow\w+/g) || []).join(' ');
 		})
+		$('#note-'+id).css('width','');
+		$('#note-'+id).css('height','');
+		$('#note-'+id+' .arrowStyle').css('width','');
+		$('#note-'+id+' .arrowStyle').css('height','');
+		$('#note-'+id+' .firstArrowStyle').css('width','');
+		$('#note-'+id+' .firstArrowStyle').css('height','');
+		$('#note-'+id+' .secondArrowStyle').css('width','');
+		$('#note-'+id+' .secondArrowStyle').css('height','');
 		$('#note-'+id).addClass('arrow'+shape);
 		shape = parseInt(shape)+9;
 		$.ajax({ type: "GET", url: "/", data: 'path=apps/procs&request=saveItemStyle&id='+id+'&shape='+shape+'&color=0', success: function(html){
 			}
 		});
+	}
+	
+	this.saveItemArrowWidth = function(action) {
+		var id = currentProcEditedNote;
+		var regshape = /arrow([0-9])+/.exec($('#note-'+id).attr('class'));
+		var shape = parseInt(regshape[0].replace(/arrow/, ""));
+		var widthitem = $('#note-'+id+' .arrowStyle');
+		var dofirstArrowStyle = false;
+		//console.log(shape);
+		switch(shape) {
+			case 3: case 7: case 9: case 10: case 11: case 12: case 21: case 22: case 23: case 24:
+				widthitem = $('#note-'+id+' .secondArrowStyle');
+			break;
+			case 13: case 14: case 15: case 16:
+				dofirstArrowStyle = true;
+			break;
+		}
+		
+		var outerwidth = $('#note-'+id).width();
+		var arrowwidth = widthitem.width();
+		if(action == 'more') {
+			var outerwidthnew = outerwidth+20;
+			var arrowwidthnew = arrowwidth+20;
+		} else {
+			var outerwidthnew = outerwidth-20;
+			var arrowwidthnew = arrowwidth-20;
+		}
+		if(outerwidthnew < 40) {
+			outerwidthnew = outerwidth;
+			arrowwidthnew = arrowwidth;
+		}
+		$('#note-'+id).width(outerwidthnew);
+		widthitem.width(arrowwidthnew);
+		if(dofirstArrowStyle) {
+			$('#note-'+id+' .firstArrowStyle').width(outerwidthnew);
+		}
+		$.ajax({ type: "GET", url: "/", data: 'path=apps/procs&request=saveItemWidth&id='+id+'&width='+outerwidthnew, success: function(html){
+			}
+		});
+	}
+	
+	this.saveItemArrowHeight = function(action) {
+		var id = currentProcEditedNote;
+		var regshape = /arrow([0-9])+/.exec($('#note-'+id).attr('class'));
+		var shape = parseInt(regshape[0].replace(/arrow/, ""));
+		var heightitem = $('#note-'+id+' .arrowStyle');
+		var dofirstArrowStyle = false;
+		//console.log(shape);
+		switch(shape) {
+			case 1: case 5: case 18: case 17: case 19: case 20: case 13: case 14: case 15: case 16:
+				heightitem = $('#note-'+id+' .secondArrowStyle');
+			break;
+			case 9: case 10: case 11: case 12:
+				dofirstArrowStyle = true;
+			break;
+		}
+		
+		var outerheight = $('#note-'+id).height();
+		var arrowheight = heightitem.height();
+		if(action == 'more') {
+			var outerheightnew = outerheight+20;
+			var arrowheightnew = arrowheight+20;
+		} else {
+			var outerheightnew = outerheight-20;
+			var arrowheightnew = arrowheight-20;
+		}
+		if(outerheightnew < 40) {
+			outerheightnew = outerheight;
+			arrowheightnew = arrowheight;
+		}
+		$('#note-'+id).height(outerheightnew);
+		heightitem.height(arrowheightnew);
+		if(dofirstArrowStyle) {
+			$('#note-'+id+' .firstArrowStyle').height(outerheightnew);
+		}
+		$.ajax({ type: "GET", url: "/", data: 'path=apps/procs&request=saveItemHeight&id='+id+'&height='+outerheightnew, success: function(html){
+			}
+		});
+	}
+	
+	this.resetItemZindex = function() {
+		var id = currentProcEditedNote;
+		var note = $('#note-'+id);
+		note.css('z-index',0);
+		var x = parseInt(note.css('left'));
+		var y = parseInt(note.css('top'));
+			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs&request=updateNotePosition&id="+id+"&x="+x+"&y="+y+"&z=0", success: function(data){
+				}
+			});
 	}
 	
 	this.binItem = function(id) {
@@ -1217,6 +1476,7 @@ $(document).ready(function() {
 			}
 		}).draggable({
 			containment:[405,200],
+			grid:[10,10],
 			start: function(e,ui){ 
 				var zMax = 0;
 				zMax = Math.max.apply(null,$.map($('#procs-right div.note'), function(e,n){
@@ -1272,6 +1532,36 @@ $(document).ready(function() {
 		var ele = $(this);
 		var obj = getCurrentModule();
 		obj.saveItemArrow(ele);
+   });
+	
+	$(document).on('click','#co-popup .arrowWidthMore',function(e) {
+		e.preventDefault();
+		var action = 'more';
+		var obj = getCurrentModule();
+		obj.saveItemArrowWidth(action);
+   });
+	$(document).on('click','#co-popup .arrowWidthLess',function(e) {
+		e.preventDefault();
+		var action = 'less';
+		var obj = getCurrentModule();
+		obj.saveItemArrowWidth(action);
+   });
+	$(document).on('click','#co-popup .arrowHeightMore',function(e) {
+		e.preventDefault();
+		var action = 'more';
+		var obj = getCurrentModule();
+		obj.saveItemArrowHeight(action);
+   });
+	$(document).on('click','#co-popup .arrowHeightLess',function(e) {
+		e.preventDefault();
+		var action = 'less';
+		var obj = getCurrentModule();
+		obj.saveItemArrowHeight(action);
+   });
+	$(document).on('click','#co-popup .resetZindex',function(e) {
+		e.preventDefault();
+		var obj = getCurrentModule();
+		obj.resetItemZindex();
    });
 
 });
