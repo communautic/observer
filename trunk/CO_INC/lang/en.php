@@ -1,7 +1,7 @@
 <?php
 switch(CO_PRODUCT_VARIANT) {
 	case 0:
-		$lang["APPLICATION_NAME"] = "company observer 6.5.6";
+		$lang["APPLICATION_NAME"] = "company observer 6.5.7";
 		$lang["APPLICATION_NAME_ALT"] = "company.observer";
 		$lang["APPLICATION_NAME_CAPS"] = "Company Observer";
 		$lang["APPLICATION_LOGO"] = "company_observer.png";
@@ -11,7 +11,7 @@ switch(CO_PRODUCT_VARIANT) {
 		$GLOBALS["APPLICATION_LOGO_PRINT"] = "poweredby_company_observer.png";
 	break;
 	case 1:
-		$lang["APPLICATION_NAME"] = "physio observer 6.5.6";
+		$lang["APPLICATION_NAME"] = "physio observer 6.5.7";
 		$lang["APPLICATION_NAME_ALT"] = "physio.observer";
 		$lang["APPLICATION_NAME_CAPS"] = "Physio Observer";
 		$lang["APPLICATION_LOGO"] = "physio_observer.png";
@@ -50,6 +50,7 @@ $lang["ACTION_SENDTO"] = "send to";
 $lang["ACTION_DUPLICATE"] = "duplicate";
 $lang["ACTION_REFRESH"] = "refresh";
 $lang["ACTION_EXPORT"] = "export";
+$lang["ACTION_MOVETO_ARCHIVE"] = "archive";
 $lang["ACTION_HELP"] = "help";
 $lang["ACTION_DELETE"] = "delete";
 
@@ -58,12 +59,15 @@ $lang["TEXT_NOTE"] = "";
 $lang["CREATED_BY_ON"]		= 	'created:';
 $lang["EDITED_BY_ON"] 		= 	'edited:';
 $lang["CREATED_BY_ON"]		= 	'created:';
+$lang["ARCHIVED_BY_ON"] 	= 	'archived:';
 $lang["READ_BY_ON"] 		= 	'read by:';
 $lang["SENDTO_BY_ON"] 		= 	'forwarded to:';
 $lang["SENDFROM_BY_ON"] 	= 	'forwarded by:';
 $lang["DELETED_BY_ON"] 		= 	'deleted';
 $lang["INTERNAL_CHANGED"] 	= 	'released:';
 
+$lang["GLOBAL_MODULE"] = 'Module';
+$lang["GLOBAL_METATAGS"] = 'Metatags';
 $lang["GLOBAL_FOLDERS"] = 'Folders';
 $lang["GLOBAL_USER"] = 'User:';
 $lang["GLOBAL_ADMIN"] = 'Administrator';
