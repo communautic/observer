@@ -1,0 +1,84 @@
+@charset "utf-8";
+html, body { height: 100%; }
+html { background: none; }
+body { color: #000; font-family: Arial, Verdana, sans-serif; font-size:13px; background-color: #e5e5e5; margin: 0px; }
+#center { height: auto; min-height: 100%; margin: 0 auto; background: #fff; width: 715px; padding: 0 35px; }
+/*#center { position: absolute; top: 0; left: 50%; margin-left: -390px; width: 715px; padding: 0 35px; background: #fff; }*/
+#header { background: url(recheis_akademie.jpg) no-repeat 0px 15px; height: 86px; width: 715px; padding: 15px 0; }
+p, td { margin: 0px; padding: 0px; font-size:13px; }
+.text11 { width: 216px; font-size: 11px; padding-left: 20px; }
+.text11-full { width: 675px; font-size: 11px; padding-left: 20px; line-height: 22px; }
+.greyText { color: #666; }
+
+.num { width: 30px; padding-left: 20px; background-color: #e5e5e5;}
+
+/*ul,ol,li,form { margin-top: 0px; margin-bottom: 5px;  }*/
+
+.feedback-outer > span {
+    border: 1px solid #666666;
+    display: inline-block;
+    height: 12px;
+    width: 12px;
+	border-radius: 50%;
+	background: #fff;
+	margin: 2px 4px 0 6px;;
+}
+
+.feedback-outer > span.active div {
+	height: 4px;
+    width: 4px;
+	border-radius: 50%;
+	border: 1px solid #666;
+	background: #666;
+	margin: 3px;
+}
+
+
+a, a:link, a:visited, a:active	{ outline: none; color: #666; text-decoration: none;}
+a:hover { color: #666; text-decoration: none;} 
+
+strong, b { font-weight: bold; }
+
+#intro { color: #fff; background-color:#e5e5e5; position: absolute; height: 100%; min-width: 1024px; width: 100%; z-index: 50;}
+#intro-content { margin-left: 50%; margin-top: 300px;}
+
+#loader {
+	background-color:#e5e5e5;
+	height:544px;
+	position:absolute;
+	width:800px;
+	z-index:100;
+	text-align: center;
+	display: none;
+}
+
+#loader img { margin-top: 250px; }
+
+/*.loader-image { margin-top: 220px; margin-bottom: 30px;}*/
+
+.tbl-grey { width: 100%; background-color: #ccc; border: 0; border-bottom: 1px solid #666666; border-top: 1px solid #ffffff; height: 37px; }
+.tbl-grey img { margin: 13px 0 10px 0; }
+.tbl-grey td.number { width: 55px; vertical-align: top; text-align: center; }
+.tbl-grey td.col-full { vertical-align: middle; padding-right: 20px; }
+.tbl-grey td.col-middle { vertical-align: middle; width: 548px; }
+
+.tbl-white { width: 100%; background-color: #fff; border: 0; border-bottom: 1px solid #666666; height: 37px; }
+
+.tbl-normal { width: 100%; border: 0; line-height: 38px; text-align: center; }
+
+/* Pages */
+
+
+#feedback .tbl-grey img { margin: 6px 0 0 0; }
+#test .content, #feedback .content { height: 112px; }
+#test td span {
+	display: block;
+    line-height: 36px;
+    margin-right: 5px;
+    padding-left: 5px;
+	color: #000;
+}
+
+#feedback-code .content { height: 111px; }
+#feedback-code .tbl-grey { text-align: center; }
+#feedback-code input { border: 0; height: 35px; width: 200px; }
