@@ -43,7 +43,7 @@
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><span class="<?php if($patient->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="patientsmanagement" append="0" title="therapist"><span><?php echo $lang["PATIENT_MANAGEMENT"];?></span></span></td>
+	  <td class="tcell-left text11"><span class="<?php if($patient->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="patientsmanagement" append="0" title=""><span><?php echo $lang["PATIENT_MANAGEMENT"];?></span></span></td>
 	  <td class="tcell-right"><div id="patientsmanagement" class="itemlist-field"><?php echo($patient->management);?></div><div id="patientsmanagement_ct" class="itemlist-field"><a field="patientsmanagement_ct" class="ct-content"><?php echo($patient->management_ct);?></a></div></td>
 	</tr>
 </table>
