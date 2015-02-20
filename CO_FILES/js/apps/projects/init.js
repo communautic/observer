@@ -895,6 +895,69 @@ function projectsFolders(name) {
 	}
 
 
+	this.actionArchive = function() {
+		var module = this;
+		/*var cid = $('#projects input[name="id"]').val()*/
+		//var id = $("#projects").data("first");
+		//module.checkIn(cid);
+		var txt = ALERT_ARCHIVE;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			submit: function(e,v,m,f){		
+				if(v){
+					//var id = $("#projects").data("second");
+					var fid = $("#projects").data("first");
+					//alert(fid);
+					$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=moveFolderToArchive&&fid=" + fid, cache: false, success: function(data){
+						if(data == "true") {
+									//$("#projects-right").html(text.html);
+									//initProjectsContentScrollbar();
+									//module.getNavModulesNumItems(id);
+									module.actionRefresh();
+									}
+									}
+								});
+					
+					
+					/*$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=moveFoldertoArchive&&fid=" + fid, cache: false, success: function(data){
+						if(data == "true") {
+							$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getFolderDetails&id="+fid, success: function(list){
+								$("#projects2 ul").html(list.html);
+								if(list.html == "<li></li>") {
+									projectsActions(3);
+								} else {
+									projectsActions(0);
+									setModuleActive($("#projects2"),0);
+								}
+								var id = $("#projects2 .module-click:eq(0)").attr("rel");
+								if(typeof id == 'undefined') {
+									$("#projects").data("second", 0);
+								} else {
+									$("#projects").data("second", id);
+								}
+								$("#projects2 .module-click:eq(0)").addClass('active-link');
+								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectDetails&fid="+fid+"&id="+id, success: function(text){
+									$("#projects-right").html(text.html);
+									initProjectsContentScrollbar();
+									module.getNavModulesNumItems(id);
+									}
+								});
+							}
+							});
+						}
+					}
+					});*/
+				} 
+			}
+		});
+	}
+
+
+
+
 	this.actionHelp = function() {
 		var url = "/?path=apps/projects&request=getProjectsFoldersHelp";
 		if(!iOS()) {
@@ -971,7 +1034,7 @@ function projectsActions(status) {
 		case 6: 	actions = ['5','6','8']; break;   			// handbook refresh
 		case 7: 	actions = ['0','1','2','6','8']; break;   			// new, print, send, refresh
 		case 8: 	actions = ['1','2','5','6','8']; break;   			// print, send, handbook, refresh
-		case 9:		actions = ['0','1','2','6','8','9']; break;
+		case 9:		actions = ['0','1','2','6','7','8','9']; break;
 		// vdocs
 		// 0 == 10
 		case 10: actions = ['0','1','2','3','4','5','6','8','9']; break;
