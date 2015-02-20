@@ -2096,7 +2096,7 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 		//$term = utf8_decode($term);
 		$access=" ";
 		if(!$session->isSysadmin()) {
-			$access = " and id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
+			$access = " and a.id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
 	  	}
 		$rows = array();
 		$r = array();
@@ -2116,7 +2116,7 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 			 $r[] = $rows;
 		}
 		// loop through
-		$q = "SELECT id, folder FROM " . CO_TBL_PATIENTS . " WHERE bin='0'" . $access ."ORDER BY id";
+		$q = "SELECT a.id, a.folder FROM " . CO_TBL_PATIENTS . " as a WHERE a.bin='0'" . $access ."ORDER BY a.id";
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
 			$pid = $row['id'];
