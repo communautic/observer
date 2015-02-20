@@ -54,11 +54,7 @@ function Access(app) {
 	this.actionHelp = function() {
 		var module = this;
 		var url = '/?path=apps/'+ module.app +'/modules/access&request=getHelp';
-		if(!iOS()) {
-			$("#documentloader").attr('src', url);
-		} else {
-			window.open(url);
-		}
+		$("#documentloader").attr('src', url);
 	}
 	
 }
