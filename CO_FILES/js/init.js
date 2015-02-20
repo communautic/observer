@@ -492,9 +492,11 @@ $(document).ready(function() {
 
 	$('#appnav span.toggleObservers').on('click', function(e) {
 		e.preventDefault();
-		var obj = getCurrentModule();
-		var cid = $('#'+getCurrentApp()+' input[name="id"]').val()
-		obj.checkIn(cid);
+		if(getCurrentApp() != 'archives') {
+			var obj = getCurrentModule();
+			var cid = $('#'+getCurrentApp()+' input[name="id"]').val()
+			obj.checkIn(cid);
+		}
 		var clickobj = $(this);
 		var app = $(this).attr("rel");
 		var app_active = $('#appnav span.active-app').attr('rel');
@@ -669,6 +671,15 @@ $(document).ready(function() {
 		}
 		var obj = getCurrentModule();
 		obj.actionConvert();
+	});
+	
+	$('span.actionArchive').on('click', function(e){
+		e.preventDefault();
+		if($(this).hasClass("noactive")) {
+			return false;
+		}
+		var obj = getCurrentModule();
+		obj.actionArchive();
 	});
 
 
@@ -1682,8 +1693,9 @@ $(document).ready(function() {
 	
 	$('input.inlineSearch').livequery(function() {
 		var app = $(this).attr('rel');
+		var appReal = getCurrentApp();
 		$(this).autocomplete({
-			appendTo: '#'+app,
+			appendTo: '#'+appReal,
 			position: {my: "left top", at: "left bottom", collision: "none"},
 			source: '?path=apps/' + app + '&request=getInlineSearch',
 			//minLength: 2,
@@ -1817,12 +1829,99 @@ function loadModuleStartnavThree(objectname) {
 	});
 }
 
+// Three Levels of Nav for Archives
+function loadModuleStartnavThreeArchives(objectname) {
+	var object = window[objectname];
+	var objectFirst = objectname.substr(0, 1);
+	var objectnameCaps = objectFirst.toUpperCase() + objectname.substr(1);
+	//var num_modules = window[objectname+'_num_modules'];
+	//console.log(object)
+	
+	var h = object.$layoutWest.height();
+	$('#'+objectname+' div.radius-helper').height(h);
+	$('#'+objectname+' .secondLevelOuter').css('top',h-27);
+	$('#'+objectname+' .thirdLevelOuter').css('top',150);
+	object.$first.data('status','open');
+	object.$second.data('status','closed');
+	object.$third.data('status','closed');
+	object.$first.height(h-98);
+	$('#'+objectname+'1 .module-inner').height(h-98);
+	$('#'+objectname+'1 .module-actions').show();
+	$('#'+objectname+'2 .module-actions').hide();
+	$('#'+objectname+'2 li').show();
+	
+	$('#'+objectname+'-current').val("folder");
+	
+	
+	$.ajax({ type: "GET", url: "/",  data: "path=apps/"+objectname+"&request=getFolderList", success: function(data){
+		$('#'+objectname+'1 ul').html(data);
+
+		//$('#'+objectname+'Actions .actionNew').attr("title",data.title);
+		/*if(data.access == "guest") {
+			window[objectname+'Actions']();
+		} else {*/
+			
+		window[objectname+'Actions'](1);
+			
+		/*}*/
+		$('#'+objectname+'1 li').show();
+		//$('#'+objectname+'1 .sort').attr("rel", data.sort).addClass("sort"+data.sort);
+
+		//var module = $('#'+objectname+'1 .module-click:eq(0)').attr("rel");
+		
+		
+		// Module
+	var module = $('#'+objectname+'1 .module-click:eq(0)').attr("rel");
+	var moduleFirst = module.substr(0, 1);
+	var moduleCaps = moduleFirst.toUpperCase() + module.substr(1);
+	var moduleCapsSingular = moduleCaps.slice(0,-1);
+	var num_modules = window[module+'_num_modules'];
+		
+		
+		object.$second.height(h-125-num_modules*27).removeClass("module-active");
+	$('#'+objectname+'2 .module-inner').height(h-125-num_modules*27);
+		
+		/*if(id === undefined) {
+			id = 'projects';
+		}*/
+		$.ajax({ type: "GET", url: "/", data: "path=apps/"+module+"&request=getArchiveModules", success: function(html){
+			$('#archives3').html(html);
+			//var h = object.$layoutWest.height();
+			//console.log(h);
+			$('#'+objectname+'3 .module-actions').hide();
+			var h = object.$layoutWest.height();
+	$('#archives3').height(h-150);
+	$('#'+objectname+'3 .'+objectname+'3-content').height(h-(num_modules*module_title_height+152));
+	$('#archives3 div.thirdLevel').height(h-(num_modules*module_title_height+150-27));
+			$('#archives3 div.thirdLevel').each(function(i) { 
+		var position = $(this).position();
+		var t = position.top+h-150;
+		$(this).css('top',t+'px');
+		//$(this).animate({top: t})
+	})
+			}
+		});
+		
+
+		object.$app.data({ "current" : "folders" , "first" : module , "second" : 0 , "third" : 0});
+		$('#'+objectname+'1 .module-click:eq(0)').addClass('active-link');
+		//console.log('yoyo');
+		$.ajax({ type: "GET", url: "/",  dataType:  'json', data: "path=apps/"+module+"&request=getArchive", success: function(data){
+			object.$appContent.html(data.html);
+			window['init'+objectnameCaps+'ContentScrollbar']();
+			}
+		});
+		
+	}
+	});
+}
+
 
 function resetModuleHeightsnavThree(objectname) {
 	var object = window[objectname];
 	var objectFirst = objectname.substr(0, 1);
 	var objectnameCaps = objectFirst.toUpperCase() + objectname.substr(1);
-	var num_modules = window[objectname+'_num_modules'];	
+	var num_modules = window[objectname+'_num_modules'];
 	
 	var t = 2*$('#container-inner').height();
 	var app = getCurrentApp();
@@ -1846,6 +1945,75 @@ function resetModuleHeightsnavThree(objectname) {
 	if(object.$first.data('status') == 'open') {
 		$('#'+objectname+'2-outer').css('top',h-27);
 		object.$thirdDiv.each(function(i) { 
+			var t = h-150+i*27;
+			$(this).animate({top: t})
+		})
+	}
+	if(object.$second.data('status') == 'open') {	
+		var curmods = $('#'+objectname+'3 div.thirdLevel:not(.deactivated)').size();
+		object.$second.height(h-125-curmods*27).removeClass("module-active");
+		$('#'+objectname+'2 .module-inner').height(h-125-curmods*27);
+		$('#'+objectname+'3 .'+objectname+'3-content').height(h-(curmods*27+152));
+		object.$thirdDiv.height(h-(curmods*27+150-27));
+		$('#'+objectname+'3 div.thirdLevel:not(.deactivated)').each(function(i) { 
+			var t = h-150-curmods*27+i*27;
+			$(this).animate({top: t})
+		})
+	}
+	if(object.$third.data('status') == 'open') {
+		var obj = objectname + "_" + $("#"+objectname+"-current").val();
+		var idx = $('#'+objectname+'3 .thirdLevel:not(.deactivated)').index($('#'+objectname+'3 .thirdLevel:not(.deactivated)[id='+obj+']'));	
+		var curmods = $('#'+objectname+'3 div.thirdLevel:not(.deactivated)').size();
+		object.$second.height(h-125-curmods*27).removeClass("module-active");
+		$('#'+objectname+'2 .module-inner').height(h-125-curmods*27);
+		$('#'+objectname+'3 .'+objectname+'3-content').height(h-(curmods*27+152));
+		object.$thirdDiv.height(h-(curmods*27+150-27));
+		$('#'+objectname+'3 div.thirdLevel:not(.deactivated)').each(function(i) { 
+		if(i > idx) {
+			var pos = $(this).position();
+				var t = h-150-curmods*27+i*27;
+				$(this).animate({top: t})
+			}
+		})
+	}
+}
+
+
+function resetModuleHeightsnavThreeArchives(objectname) {
+	var object = window[objectname];
+	var objectFirst = objectname.substr(0, 1);
+	var objectnameCaps = objectFirst.toUpperCase() + objectname.substr(1);
+	
+		// Module
+		var module = object.$app.data('first');
+		var moduleFirst = module.substr(0, 1);
+		var moduleCaps = moduleFirst.toUpperCase() + module.substr(1);
+		var moduleCapsSingular = moduleCaps.slice(0,-1);
+		num_modules = window[module+'_num_modules'];
+	
+	
+	var t = 2*$('#container-inner').height();
+	var app = getCurrentApp();
+	
+	if(app != objectname) {
+		object.$app.css('top',t);
+	}
+	/* fix for now - move desktop if not active
+	if(app != 'desktop' && $('#desktop').css('top') != t) {
+		$('#desktop').css('top',t);
+	}*/
+	var h = object.$layoutWest.height();
+	$('#'+objectname+' div.radius-helper').height(h);
+	object.$first.height(h-98);
+	$('#'+objectname+'1 .module-inner').height(h-98);
+	object.$second.height(h-125-num_modules*27);
+	$('#'+objectname+'2 .module-inner').height(h-125-num_modules*27);
+	object.$third.height(h-150);
+	$('#'+objectname+'3 .'+objectname+'3-content').height(h-(num_modules*module_title_height+152));
+	object.$thirdDiv.height(h-(num_modules*module_title_height+150-27));
+	if(object.$first.data('status') == 'open') {
+		$('#'+objectname+'2-outer').css('top',h-27);
+		$('#archives3 div.thirdLevel').each(function(i) { 
 			var t = h-150+i*27;
 			$(this).animate({top: t})
 		})
@@ -2096,6 +2264,121 @@ function navThreeTitleFirst(objectname, clicked, passed_id) {
 }
 
 
+function navThreeTitleFirstArchive(objectname, clicked, passed_id) {
+	var object = window[objectname];
+	var objectFirst = objectname.substr(0, 1);
+	var objectnameCaps = objectFirst.toUpperCase() + objectname.substr(1);
+	var objectnameCapsSingular = objectnameCaps.slice(0,-1);
+	//var num_modules = window[objectname+'_num_modules'];
+	
+	var obj = getCurrentModule();
+	
+	// Module
+	var module = object.$app.data('first');
+	var moduleFirst = module.substr(0, 1);
+	var moduleCaps = moduleFirst.toUpperCase() + module.substr(1);
+	var moduleCapsSingular = moduleCaps.slice(0,-1);
+	var num_modules = window[module+'_num_modules'];
+	
+	/*if(confirmNavigation()) {
+		formChanged = false;
+		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+	}*/
+
+	object.$first.data('status','open');
+	object.$second.data('status','closed');
+	object.$third.data('status','closed');
+	object.$app.data({ 'second' : 0 });
+	object.$app.data({ 'third' : 0 });
+
+	
+	if(clicked.hasClass("module-bg-active")) { //module active
+		$.ajax({ type: "GET", url: "/", data: "path=apps/" + objectname +"&request=getFolderList", success: function(data){
+			$('#'+objectname+'1 ul').html(data);
+			//$('#'+objectname+'Actions .actionNew').attr("title",data.title);
+			/*if(data.access == "guest") {
+				window[objectname+'Actions']();
+			} else {
+				if(data.html == "<li></li>") {
+					window[objectname+'Actions'](3);
+				} else {
+					window[objectname+'Actions'](9);
+				}
+			}*/
+			window[objectname+'Actions'](1);
+			if(passed_id === undefined) {
+				var id = $('#'+objectname+'1 .module-click:eq(0)').attr("rel");
+				$('#'+objectname+'1 .module-click:eq(0)').addClass('active-link');
+			} else {
+				var id = passed_id;
+				$('#'+objectname+'1 .module-click[rel='+id+']').addClass('active-link');
+			}
+			object.$app.data('first' , id );
+			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/" + objectname +"&request=getFolderDetails&id="+id, success: function(text){
+				object.$appContent.html(text.html);
+				window['init'+objectnameCaps+'ContentScrollbar']();
+				var h = object.$layoutWest.height();
+				object.$first.delay(200).animate({height: h-71}, function() {
+					$(this).animate({height: h-98});
+				});
+				$('#'+objectname+'2-outer').delay(200).animate({top: h}, function() {
+					$(this).animate({top: h-27});
+				});
+				}
+			 });
+			}
+		});
+	} else { //module slide out
+		var h = object.$layoutWest.height();
+		var id = $('#'+objectname+'1 .module-click:visible').attr("rel");
+		object.$app.data({'first' : id});
+		var index = $('#'+objectname+'1 .module-click').index($('#'+objectname+'1 .module-click[rel='+id+']'));
+		object.$third.data('status','closed');
+		$.ajax({ type: "GET", url: "/", data: "path=apps/" + objectname +"&request=getFolderList", success: function(data){
+			$('#'+objectname+'1 ul').html(data);
+			setModuleActive(object.$first,index);
+			$('#'+objectname+'-current').val('folder');
+			setModuleDeactive(object.$second,'0');
+			setModuleDeactive(object.$third,'0');
+			$('#'+objectname+'2-outer').animate({top: h-27});
+			$('#'+objectname+'2 li').show();
+			object.$second.prev("h3").removeClass("white");
+			$('#'+objectname+'3 h3').removeClass("module-bg-active");
+			//object.$thirdDiv.each(function(i) { 
+			$('#archives3 div.thirdLevel').each(function(i) { 
+				var t = h-150+i*27;
+				$(this).animate({top: t})
+			})
+			//$('#'+objectname+'Actions .actionNew').attr("title",data.title);
+			/*if(data.access == "guest") {
+				window[objectname+'Actions']();
+			} else {
+				if(data.html == "<li></li>") {
+					window[objectname+'Actions'](3);
+				} else {
+					window[objectname+'Actions'](9);
+				}
+			}*/
+			window[objectname+'Actions'](1);
+			setTimeout(function() {
+				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/" + module +"&request=getArchive", success: function(text){
+					$('#'+objectname+'1 li').show();
+					object.$appContent.html(text.html);
+					window['init'+objectnameCaps+'ContentScrollbar']();
+					}
+				 });
+			}, 400)
+			}
+		});
+	}
+	object.$app.data({ "current" : "folder" });
+	$('#'+objectname+'-top .top-headline').html("");
+	$('#'+objectname+'-top .top-subheadline').html("");
+	$('#'+objectname+'-top .top-subheadlineTwo').html("");
+}
+
+
+
 function navThreeTitleSecond(objectname, clicked, passed_id) {
 	var object = window[objectname];
 	var objectFirst = objectname.substr(0, 1);
@@ -2292,6 +2575,211 @@ function navThreeTitleSecond(objectname, clicked, passed_id) {
 	$('#'+objectname+'-top .top-subheadlineTwo').html("");
 }
 
+function navThreeTitleSecondArchives(objectname, clicked, passed_id) {
+	var object = window[objectname];
+	var objectFirst = objectname.substr(0, 1);
+	var objectnameCaps = objectFirst.toUpperCase() + objectname.substr(1);
+	var objectnameCapsSingular = objectnameCaps.slice(0,-1);
+	var num_modules = window[object.$app.data('first')+'_num_modules'];
+	
+	var obj = getCurrentModule();
+	/*if(confirmNavigation()) {
+		formChanged = false;
+		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+	}
+	if(confirmCheckpoint()) {
+		checkpointChanged = false;
+		obj.saveCheckpointText();
+	}*/
+	/*var cid = $('#'+objectname+' input[name="id"]').val()
+	if(cid != undefined) {
+		obj.checkIn(cid);
+	}*/
+	
+	object.$third.data('status','closed');
+	object.$app.data({ 'third' : 0 });
+
+	if(clicked.hasClass("module-bg-active")) {
+		$('#'+objectname+'1-outer > h3').trigger("click");
+	} else {
+		if(object.$first.data('status') == 'closed') { // resize module
+			object.$second.data('status','open');
+			var h = object.$layoutWest.height();
+			var id = object.$app.data('first');
+			if(passed_id === undefined) {
+				var objecctid = object.$app.data('second');
+			} else {
+				var objecctid = passed_id;					
+			}
+			object.$app.data({ "second" : objecctid});
+			var index = $('#'+objectname+'2 .module-click').index($('#'+objectname+'2 .module-click[rel='+objecctid+']'));
+			$('#'+objectname+'3 .module-actions').hide();
+			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+id+"&request=getArchiveList", success: function(data){
+				$('#'+objectname+'2 ul').html(data.html);
+				$('#'+objectname+'Actions .actionNew').attr('title',data.title);	
+				$('#'+objectname+'2 li').show();
+				setModuleActive(object.$second,index);
+				//$('#'+objectname+'2 .sort').attr('rel', data.sort).addClass('sort'+data.sort);
+					//$(this).find('.west-ui-content').height(h-(object.modules_height+125));
+					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+id+"&request=getProjectDetailsArchive&id="+objecctid, success: function(text){
+						object.$appContent.html(text.html);
+						/*switch (text.access) {
+							case "sysadmin":
+								if(data.html == "<li></li>") {
+									window[objectname+'Actions'](3);
+								} else {
+									window[objectname+'Actions'](0);
+								}
+							break;
+							case "admin":
+								if(data.html == "<li></li>") {
+									window[objectname+'Actions'](3);
+								} else {
+									window[objectname+'Actions'](0);
+								}
+							break;
+							case "linkaccess":
+								if(data.html == "<li></li>") {
+									window[objectname+'Actions'](3);
+								} else {
+									window[objectname+'Actions'](20);
+								}
+							break;
+							case "guestadmin":
+								if(data.html == "<li></li>") {
+									window[objectname+'Actions'](3);
+								} else {
+									window[objectname+'Actions'](7);
+								}
+							break;
+							case "guest":
+								if(data.html == "<li></li>") {
+									window[objectname+'Actions']();
+								} else {
+									window[objectname+'Actions'](5);
+								}
+							break;
+						}*/
+						
+						window[objectname+'Actions'](0);
+						
+						/*if(text.access != "sysadmin") {								
+							window['modulesDisplayTwo'](objectname,text.access);
+						} else {*/
+							//object.$thirdDiv.each(function(i) { 
+							$('#archives3 div.thirdLevel').each(function(i) { 
+								var t = object.$third.height()-num_modules*27+i*27;
+								$(this).animate({top: t})
+							}) 
+						//}
+					window['init'+objectnameCaps+'ContentScrollbar']();
+					}
+				});
+				$('#'+objectname+'3 h3').removeClass('module-bg-active');
+				}
+			});
+		} else {
+			var id = object.$app.data('first');
+			var moduleFirst = id.substr(0, 1);
+			var moduleCaps = moduleFirst.toUpperCase() + id.substr(1);
+			var moduleCapsSingular = moduleCaps.slice(0,-1);
+			if(id == undefined || id == 0) {
+				return false;
+			}
+			var index = $('#'+objectname+'1 .module-click').index($('#'+objectname+'1 .module-click[rel='+id+']'));
+			setModuleDeactive(object.$first,index);
+			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+id+"&request=getArchiveList", success: function(data){
+				$('#'+objectname+'2 ul').html(data.html);
+				$('#'+objectname+'Actions .actionNew').attr('title',data.title);
+				if(passed_id === undefined) {
+					var objecctid = $('#'+objectname+'2 .module-click:eq(0)').attr('rel');
+				} else {
+					var objecctid = passed_id;					
+				}
+				object.$app.data({ "second" : objecctid});
+				if(object.$first.data('status') == 'open') { // slide up module
+					object.$first.data('status','closed');
+					object.$second.data('status','open');
+					var idx = $('#'+objectname+'2 .module-click').index($('#'+objectname+'2 .module-click[rel='+objecctid+']'));
+					setModuleActive(object.$second,idx);
+					//$('#'+objectname+'2 .sort').attr('rel', data.sort).addClass('sort'+data.sort);
+					var h = object.$layoutWest.height();
+					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+id+"&request=get"+moduleCapsSingular+"DetailsArchive&id="+objecctid, success: function(text){
+						object.getNavModulesNumItems(objecctid)
+						object.$appContent.html(text.html);
+						/*if(text.access === undefined) {
+							window[objectname+'Actions'](3);
+						} else {
+						switch (text.access) {
+							case "sysadmin":
+								if(data.html == "<li></li>") {
+									window[objectname+'Actions'](3);
+								} else {
+									window[objectname+'Actions'](0);
+								}
+							break;
+							case "admin":
+								if(data.html == "<li></li>") {
+									window[objectname+'Actions'](3);
+								} else {
+									window[objectname+'Actions'](0);
+								}
+							break;
+							case "linkaccess":
+								if(data.html == "<li></li>") {
+									window[objectname+'Actions'](3);
+								} else {
+									window[objectname+'Actions'](20);
+								}
+							break;
+							case "guestadmin":
+								if(data.html == "<li></li>") {
+									window[objectname+'Actions'](3);
+								} else {
+									window[objectname+'Actions'](7);
+								}
+							break;
+							case "guest":
+								if(data.html == "<li></li>") {
+									window[objectname+'Actions']();
+								} else {
+									window[objectname+'Actions'](5);
+								}
+							break;
+						}
+						}*/
+						window[objectname+'Actions'](0);
+						window['init'+objectnameCaps+'ContentScrollbar']();
+						/*if(text.access != "sysadmin") { 
+							window['modulesDisplayTwo'](objectname,text.access);
+						} else {*/
+							var t = object.$second.height();
+							object.$second.animate({height: t+num_modules*27})
+							$('#'+objectname+'2-outer').animate({top: 96}, function() {
+								//object.$thirdDiv.each(function(i) { 
+								$('#archives3 div.thirdLevel').each(function(i) { 
+									var position = $(this).position();
+									//console.log(num_modules);
+									var t = position.top-num_modules*module_title_height;
+									$(this).animate({top: t})
+								})					  								  
+								$('#'+objectname+'-top .top-headline').html($('#'+objectname+'1 .deactivated').find('.text').html());
+								object.$second.animate({height: t})
+							})
+						//}
+					}
+					});
+				}
+				}
+			});
+		}
+	}
+	object.$app.data({ "current" : objectname});
+	$('#'+objectname+'-current').val(objectname);
+	$('#'+objectname+'-top .top-subheadline').html("");
+	$('#'+objectname+'-top .top-subheadlineTwo').html("");
+}
+
 
 function navThreeTitleThird(objectname, clicked, passed_id) {
 	var object = window[objectname];
@@ -2449,6 +2937,194 @@ function navThreeTitleThird(objectname, clicked, passed_id) {
 }
 
 
+function navThreeTitleThirdArchives(objectname, clicked, passed_id) {
+	var object = window[objectname];
+	var objectFirst = objectname.substr(0, 1);
+	var objectnameCaps = objectFirst.toUpperCase() + objectname.substr(1);
+	var objectnameCapsSingular = objectnameCaps.slice(0,-1);
+	//var num_modules = window[objectname+'_num_modules'];
+	
+	// Module
+	var mainmodul = object.$app.data('first');
+	var moduleFirst = mainmodul.substr(0, 1);
+	var moduleCaps = moduleFirst.toUpperCase() + mainmodul.substr(1);
+	var moduleCapsSingular = moduleCaps.slice(0,-1);
+	var num_modules = window[mainmodul+'_num_modules'];
+	
+		/*var obj = getCurrentModule();
+		if(confirmNavigation()) {
+			formChanged = false;
+			$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+		}
+		if(confirmCheckpoint()) {
+			checkpointChanged = false;
+			obj.saveCheckpointText();
+		}
+		var cid = $('#'+objectname+' input[name="id"]').val()
+		if(cid != undefined) {
+			obj.checkIn(cid);
+		}*/
+		
+		var moduleidx = $('#'+objectname+'3 h3').index(clicked);
+		var module = clicked.attr("rel");
+		// module open and  active 
+		if(clicked.hasClass("module-bg-active")) {
+			$('#'+objectname+'2-outer > h3').trigger("click");
+		} else {
+			// module 3 allready activated
+			if(object.$third.data('status') == 'open') {
+				var id = object.$app.data('second');
+				var fid = object.$app.data('first');
+				//var mod = getCurrentModule();
+				//var todeactivate = mod.name.replace(objectname+'_', "");
+				var todeactivate = $('#archives3 .module-bg-active').attr('rel');
+				$('#'+objectname+'3 h3[rel='+todeactivate+']').removeClass("module-bg-active");	
+				$('#'+objectname+'3 .module-actions:visible').hide();
+				var curmoduleidx = $('#'+objectname+'3 h3').index($('#'+objectname+'3 h3[rel='+todeactivate+']'));
+				var t = moduleidx*module_title_height;
+				clicked.addClass("module-bg-active")
+				$('#'+objectname+'3 div.thirdLevel:not(.deactivated)').each(function(i) { 
+					if(i <= moduleidx) {
+						var mx = i*module_title_height;
+						$(this).animate({top: mx})
+					} else {
+						if(i <= curmoduleidx) {
+							var position = $(this).position();
+							var h = position.top+$(this).height()-27;
+							$(this).animate({top: h})
+						} else {
+							var position = $(this).position();
+							var h = position.top;
+							$(this).animate({top: h})
+						}
+					}
+				})
+				
+				setTimeout(function() {
+					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+mainmodul+"/modules/"+module+"&request=getListArchive&id="+id+"&fid="+fid, success: function(data){
+						$('#'+objectname+'3 ul:eq('+moduleidx+')').html(data.html);
+						$('#'+objectname+'Actions .actionNew').attr("title",data.title);
+						/*switch (data.perm) {
+							case "sysadmin": case "admin" :
+								if(data.html == "<li></li>") {
+									window[objectname+'Actions'](3);
+								} else {
+									window[objectname+'Actions'](0);
+								}
+							break;
+							case "guest":
+								if(data.html == "<li></li>") {
+									window[objectname+'Actions']();
+								} else {
+									window[objectname+'Actions'](5);
+								}
+							break;
+						}*/
+						window[objectname+'Actions'](1);
+						if(passed_id === undefined) {
+							var idx = 0;
+						} else {
+							var idx = $('#'+objectname+'3 ul:eq('+moduleidx+') .module-click').index($('#'+objectname+'3 ul:eq('+moduleidx+') .module-click[rel='+passed_id+']'));
+						}
+						$('#'+objectname+'3 ul:eq('+moduleidx+') .module-click:eq('+idx+')').addClass('active-link');
+						var obj = getCurrentModule();
+						obj.getDetails(moduleidx,idx,data.html);
+						//var appid = $("#archives3 ul:eq("+moduleidx+") .module-click:eq("+idx+")").attr("rel");
+								//$('#archives').data({ "third" : appid});
+								/*var num = $("#archives3 ul:eq("+moduleidx+") .phase_num:eq("+idx+")").html();
+								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+ mainmodul +"/modules/"+module+"&request=getDetailsArchive&id="+appid+"&num="+num, success: function(data){
+									$("#archives-right").html(data.html);
+									//window['init'+ module.objectnameCaps +'ContentScrollbar']();
+									window['init'+objectnameCaps+'ContentScrollbar']();
+									}
+								});*/
+						
+						
+						$('#'+objectname+'3 .module-actions:eq('+moduleidx+')').show();
+						//$('#'+objectname+'3 .sort:eq('+moduleidx+')').attr("rel", data.sort).addClass("sort"+data.sort);
+						}
+					});		
+				}, 400);
+			} else {
+				// load and slide up module 3
+				var id = object.$app.data('second');
+				var fid = object.$app.data('first');
+				if(id == undefined || id == 0) {
+					return false;
+				}
+				object.$second.data('status','closed');
+				object.$third.data('status','open');
+				var index = $('#'+objectname+'2 .module-click').index($('#'+objectname+'2 .module-click[rel='+id+']'));			
+				$('#'+objectname+'3 .module-actions:visible').hide();
+				clicked.addClass("module-bg-active");
+				setModuleDeactive(object.$second,index);
+				$('#archives3 div.thirdLevel').each(function(i) { 
+					if(i <= moduleidx) {
+						var position = $(this).position();
+							var h = i*27;
+							$(this).animate({top: h})
+						}
+					if(i == num_modules-1) {
+						setTimeout(function() {
+							$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+mainmodul+"/modules/"+module+"&request=getListArchive&id="+id+"&fid="+fid, success: function(data){
+								$('#'+objectname+'3 ul:eq('+moduleidx+')').html(data.html);
+								$('#'+objectname+'Actions .actionNew').attr("title",data.title);
+								/*switch (data.perm) {
+									case "sysadmin": case "admin" :
+										if(data.html == "<li></li>") {
+											window[objectname+'Actions'](3);
+										} else {
+											window[objectname+'Actions'](0);
+										}
+									break;
+									case "guest":
+										if(data.html == "<li></li>") {
+											window[objectname+'Actions']();
+										} else {
+											window[objectname+'Actions'](5);
+										}
+									break;
+								}*/
+								window[objectname+'Actions'](1);
+								if(passed_id === undefined) {
+									var idx = 0;
+								} else {
+									var idx = $('#'+objectname+'3 ul:eq('+moduleidx+') .module-click').index($('#'+objectname+'3 ul:eq('+moduleidx+') .module-click[rel='+passed_id+']'));
+								}
+								$('#'+objectname+'3 ul:eq('+moduleidx+') .module-click:eq('+idx+')').addClass('active-link');
+								$('#'+objectname+'-top .top-subheadline').html(', ' + $('#'+objectname+'2 .deactivated').find(".text").html());
+								if(objectname == 'projects') {
+									$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+objectname+"&request=getDates&id="+id, success: function(data){
+									$('#'+objectname+'-top .top-subheadlineTwo').html(data.startdate + ' - <span id="'+objectname+'enddate">' + data.enddate + '</span>');
+									}
+								}); }
+								var obj = getCurrentModule();
+								obj.getDetails(moduleidx,idx,data.html);
+								/*var appid = $("#archives3 ul:eq("+moduleidx+") .module-click:eq("+idx+")").attr("rel");
+								$('#archives').data({ "third" : appid});
+								var num = $("#archives3 ul:eq("+moduleidx+") .phase_num:eq("+idx+")").html();
+								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+ mainmodul +"/modules/"+module+"&request=getDetailsArchive&id="+appid+"&num="+num, success: function(data){
+									$("#archives-right").html(data.html);
+									//window['init'+ module.objectnameCaps +'ContentScrollbar']();
+									window['init'+objectnameCaps+'ContentScrollbar']();
+									}
+								});*/
+
+								//$('#'+objectname+'3 .sort:eq('+moduleidx+')').attr("rel", data.sort).addClass("sort"+data.sort);
+								$('#'+objectname+'3 .module-actions:eq('+moduleidx+')').show();
+								}
+							});
+						}, 400);
+					}
+				})
+			}
+			$('#'+objectname+'-current').val(module);
+			object.$app.data({ "current" : module});
+		}
+}
+
+
+
 function navItemFirst(objectname, clicked) {		
 	var object = window[objectname];
 	var objectFirst = objectname.substr(0, 1);
@@ -2586,6 +3262,87 @@ function navItemSecond(objectname, clicked) {
 	});
 }
 
+function navItemSecondArchives(objectname, clicked) {		
+	var object = window[objectname];
+	var objectFirst = objectname.substr(0, 1);
+	var objectnameCaps = objectFirst.toUpperCase() + objectname.substr(1);
+	var objectnameCapsSingular = objectnameCaps.slice(0,-1);
+	
+	
+	// Module
+	var module = object.$app.data('first');
+	var moduleFirst = module.substr(0, 1);
+	var moduleCaps = moduleFirst.toUpperCase() + module.substr(1);
+	var moduleCapsSingular = moduleCaps.slice(0,-1);
+	var num_modules = window[module+'_num_modules'];
+	
+	
+	if(clicked.hasClass("deactivated")) {
+		$('#'+objectname+'2-outer > h3').trigger("click");
+		return false;
+	}
+	var obj = getCurrentModule();
+	if(confirmNavigation()) {
+		formChanged = false;
+		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+	}
+	
+	var id = clicked.attr("rel");
+	object.$app.data({ "second" : id});
+	var index = $('#'+objectname+' .module-click').index(this);
+	$('#'+objectname+' .module-click').removeClass("active-link");
+	clicked.addClass("active-link");
+	$('#'+objectname+'-top .top-headline').html($('#'+objectname+'1 .deactivated').find(".text").html());
+	$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+module+"&request=get"+moduleCapsSingular+"DetailsArchive&id="+id, success: function(text){
+		object.$appContent.html(text.html);		
+		/*if($('#checkedOut').length > 0) {
+			$('#'+objectname+'2 .active-link .icon-checked-out').addClass('icon-checked-out-active');
+		} else {*/
+			$('#'+objectname+'2 .active-link .icon-checked-out').removeClass('icon-checked-out-active');
+		//}
+		switch (text.access) {
+			case "sysadmin":
+				window[objectname+'Actions'](0);
+			break;
+			case "admin":
+				window[objectname+'Actions'](0);
+			break;
+			case "guestadmin":
+				window[objectname+'Actions'](7);
+			break;
+			case "guest":
+				window[objectname+'Actions'](5);
+			break;
+			case "linkaccess":
+				window[objectname+'Actions'](20);
+			break;
+		}
+
+		window['init'+objectnameCaps+'ContentScrollbar']();
+		$('.'+objectname+'3-content ul').html('');
+		if(text.access != "sysadmin") { 
+			window['modulesDisplay'](objectname,text.access);
+			object.getNavModulesNumItems(id)
+		} else {
+			var t = object.$second.height();
+			object.$second.animate({height: t+num_modules*27}, function() {
+				object.getNavModulesNumItems(id)
+				$(this).animate({height: t})
+			})
+			$('#archives3 div.thirdLevel').each(function(i) { 
+				var position = $(this).position();
+				var t = position.top+num_modules*27;
+				$(this).animate({top: t}, function() {
+					$(this).animate({top: position.top});
+				})
+			})
+
+		}
+		}
+	});
+}
+
+
 
 function navItemThird(objectname, clicked) {		
 	var object = window[objectname];
@@ -2610,6 +3367,31 @@ function navItemThird(objectname, clicked) {
 	$('#'+objectname+'3 .module-click').removeClass("active-link");
 	clicked.addClass("active-link");
 	var list = 0;
+	obj.getDetails(ulidx,index,list);
+}
+
+function navItemThirdArchives(objectname, clicked) {		
+	var object = window[objectname];
+	var objectFirst = objectname.substr(0, 1);
+	var objectnameCaps = objectFirst.toUpperCase() + objectname.substr(1);
+	
+	// Module
+	var mainmodul = object.$app.data('first');
+	var module = clicked.parent().parent().attr("rel");
+	var appid = clicked.attr("rel");
+	$('#archives').data({ "third" : appid});
+	var ulidx = $('#'+objectname+'3 ul').index(clicked.parents("ul"));
+	var index = $('#'+objectname+'3 ul:eq('+ulidx+') .module-click').index($('#'+objectname+'3 ul:eq('+ulidx+') .module-click[rel='+appid+']'));
+	var ajax = '';
+	if(clicked.find('.phase_num').length > 0) {
+		var num = clicked.find('.phase_num').html();
+		var ajax = "&num="+num;
+	}
+	$('#'+objectname+'3 .module-click').removeClass("active-link");
+	clicked.addClass("active-link");
+	window[objectname+'Actions'](1);
+	var list = 0;
+	var obj = getCurrentModule();
 	obj.getDetails(ulidx,index,list);
 }
 

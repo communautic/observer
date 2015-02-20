@@ -74,6 +74,8 @@ var ALERT_CALENDAR_MISSING_TREATMENT = "Behandlung";
 var ALERT_CALENDAR_MISSING_LOCATION = "Ort";
 var ALERT_CALENDAR_ROOM_BUSY = "Der von Ihnen gewünschte Ort ist belegt.<br />Bitte wählen Sie einen anderen Ort aus.";
 
+var ALERT_ARCHIVE = "Wollen Sie die Daten wirklich in das Modul Archiv verschieben?";
+
 // calendar settings
 var defaultView="agendaWeek";
 var eventSources=[];

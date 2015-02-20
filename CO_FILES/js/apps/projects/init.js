@@ -366,6 +366,54 @@ function projectsApplication(name) {
 		$('#projects .coform').ajaxSubmit(obj.poformOptions);
 	}
 	
+	
+	this.actionArchive = function() {
+		var module = this;
+		var cid = $('#projects input[name="id"]').val()
+		module.checkIn(cid);
+		var txt = ALERT_ARCHIVE;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			submit: function(e,v,m,f){		
+				if(v){
+					var id = $("#projects").data("second");
+					var fid = $("#projects").data("first");
+					$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=movetoArchive&id=" + id + "&fid=" + fid, cache: false, success: function(data){
+						if(data == "true") {
+							$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectList&id="+fid, success: function(list){
+								$("#projects2 ul").html(list.html);
+								if(list.html == "<li></li>") {
+									projectsActions(3);
+								} else {
+									projectsActions(0);
+									setModuleActive($("#projects2"),0);
+								}
+								var id = $("#projects2 .module-click:eq(0)").attr("rel");
+								if(typeof id == 'undefined') {
+									$("#projects").data("second", 0);
+								} else {
+									$("#projects").data("second", id);
+								}
+								$("#projects2 .module-click:eq(0)").addClass('active-link');
+								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectDetails&fid="+fid+"&id="+id, success: function(text){
+									$("#projects-right").html(text.html);
+									initProjectsContentScrollbar();
+									module.getNavModulesNumItems(id);
+									}
+								});
+							}
+							});
+						}
+					}
+					});
+				} 
+			}
+		});
+	}
+	
 	this.actionHelp = function() {
 		var url = "/?path=apps/projects&request=getProjectsHelp";
 		if(!iOS()) {
@@ -907,22 +955,29 @@ var projects_folder = new projectsFolders('projects_folder');
 
 function projectsActions(status) {
 	/*	0= new	1= print	2= send		3= duplicate	4= handbook		5=refresh 	6 = delete*/
+	var obj = getCurrentModule();
 	switch(status) {
-		case 0: actions = ['0','1','2','3','5','6','7','8']; break;
-		case 1: actions = ['0','6','7','8']; break;
-		case 3: 	actions = ['0','6','7']; break;   					// just new
-		case 4: 	actions = ['0','1','2','5','6','7']; break;   		// new, print, send, handbook, refresh
-		case 5: 	actions = ['1','2','6','7']; break;   			// print, send, refresh
-		case 6: 	actions = ['5','6','7']; break;   			// handbook refresh
-		case 7: 	actions = ['0','1','2','6','7']; break;   			// new, print, send, refresh
-		case 8: 	actions = ['1','2','5','6','7']; break;   			// print, send, handbook, refresh
-		case 9:		actions = ['0','1','2','6','7','8']; break;
+		case 0: 
+			if(obj.name == 'projects') {
+				actions = ['0','1','2','3','5','6','7','8','9'];
+			} else {
+				actions = ['0','1','2','3','5','6','8','9'];
+			}
+		 break;
+		case 1: actions = ['0','6','8','9']; break;
+		case 3: 	actions = ['0','6','8']; break;   					// just new
+		case 4: 	actions = ['0','1','2','5','6','8']; break;   		// new, print, send, handbook, refresh
+		case 5: 	actions = ['1','2','6','8']; break;   			// print, send, refresh
+		case 6: 	actions = ['5','6','8']; break;   			// handbook refresh
+		case 7: 	actions = ['0','1','2','6','8']; break;   			// new, print, send, refresh
+		case 8: 	actions = ['1','2','5','6','8']; break;   			// print, send, handbook, refresh
+		case 9:		actions = ['0','1','2','6','8','9']; break;
 		// vdocs
 		// 0 == 10
-		case 10: actions = ['0','1','2','3','4','5','6','7','8']; break;
+		case 10: actions = ['0','1','2','3','4','5','6','8','9']; break;
 		// 5 == 11
-		case 11: 	actions = ['1','2','4','6','7']; break;   			// print, send, refresh
-		default: 	actions = ['6','7'];  								// none
+		case 11: 	actions = ['1','2','4','6','8']; break;   			// print, send, refresh
+		default: 	actions = ['6','8'];  								// none
 	}
 	$('#projectsActions > li span').each( function(index) {
 		if(index in oc(actions)) {

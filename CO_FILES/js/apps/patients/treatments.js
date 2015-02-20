@@ -946,7 +946,7 @@ var colors = ['#3C4664','#EB4600','#915500','#0A960A','#AA19AA','#3C4664','#EB46
 		var id = str[0];
 		var costs = str[1];
 		var minutes = str[2];
-		var html = '<span class="listmember-outer"><a href="patients_treatments" class="showItemContext" uid="' + id + '" field="'+field+'" costs="'+costs+'" minutes="'+minutes+'">' + value + '</a>';
+		var html = '<span class="listmember-outer"><a href="patients_treatments" class="showItemContext" edit="1" uid="' + id + '" field="'+field+'" costs="'+costs+'" minutes="'+minutes+'">' + value + '</a>';
 		var app = getCurrentApp();
 		var obj = getCurrentModule();
 			if($("#"+field).html() != "") {
@@ -1363,7 +1363,7 @@ var colors = ['#3C4664','#EB4600','#915500','#0A960A','#AA19AA','#3C4664','#EB46
 		var name = $(this).html();
 		var costs = $(this).attr("costs");
 		var minutes = $(this).attr("minutes");
-		var html = '<span class="listmember-outer"><a href="patients_treatments" class="showItemContext" uid="' + cid + '" field="'+field+'" costs="'+costs+'" minutes="'+minutes+'">' + name + '</a>';
+		var html = '<span class="listmember-outer"><a href="patients_treatments" class="showItemContext" edit="1" uid="' + cid + '" field="'+field+'" costs="'+costs+'" minutes="'+minutes+'">' + name + '</a>';
 		var app = getCurrentApp();
 		var obj = getCurrentModule();
 			if($("#"+field).html() != "") {
