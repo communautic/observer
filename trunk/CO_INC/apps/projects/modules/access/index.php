@@ -33,6 +33,13 @@ if (!empty($_GET['request'])) {
 		case 'getHelp':
 			echo($projectsAccess->getHelp());
 		break;
+		case 'getListArchive':
+			$sort = "0";
+			echo($projectsAccess->getListArchive($_GET['id'],$sort));
+		break;
+		case 'getDetailsArchive':
+			echo($projectsAccess->getDetailsArchive($_GET['id']));
+		break;
 	}
 }
 

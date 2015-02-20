@@ -119,6 +119,13 @@ if (!empty($_GET['request'])) {
 		case 'copyMeeting':
 			echo($projectsMeetings->copyMeeting($_GET['pid'],$_GET['phid']));
 		break;
+		case 'getListArchive':
+			$sort = "0";
+			echo($projectsMeetings->getListArchive($_GET['id'],$sort));
+		break;
+		case 'getDetailsArchive':
+			echo($projectsMeetings->getDetailsArchive($_GET['id']));
+		break;
 	}
 }
 

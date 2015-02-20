@@ -3,7 +3,7 @@ $projects_timelines_name = "Schedule";
 
 $lang["PROJECT_TIMELINE_PROJECT_PLAN"] = "Flow Chart";
 $lang["PROJECT_TIMELINE_DATES_LIST"] = "Phasing";
-$lang["PROJECT_TIMELINE_PROJECT_STRUCTURE"] = "Project Plan";
+$lang["PROJECT_TIMELINE_PROJECT_STRUCTURE"] = "Org Chart";
 $lang["PROJECT_TIMELINE_DATES_MILESTONES"] = "Milestones";
 
 $lang['PROJECT_TIMELINE_TIME'] = 'Days';

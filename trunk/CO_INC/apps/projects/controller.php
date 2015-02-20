@@ -769,6 +769,18 @@ class Projects extends Controller {
 		}
 	}
 	
+	function getBinArchive() {
+		global $lang, $projects;
+		if($arr = $this->model->getBinArchive()) {
+			$bin = $arr["bin"];
+			ob_start();
+			include 'view/bin_archive.php';
+			$html = ob_get_contents();
+			ob_end_clean();
+			return $html;
+		}
+	}
+	
 	function emptyBin() {
 		global $lang, $projects;
 		if($arr = $this->model->emptyBin()) {
@@ -777,6 +789,13 @@ class Projects extends Controller {
 		}
 		else {
 			include CO_INC .'/view/default.php';
+		}
+	}
+	
+	function emptyBinArchive() {
+		global $lang, $projects;
+		if($arr = $this->model->emptyBinArchive()) {
+			return true;
 		}
 	}
 	
@@ -909,6 +928,136 @@ class Projects extends Controller {
 			 return "error";
 		  }
 	}
+	
+	function moveFolderToArchive($fid) {
+		$retval = $this->model->moveFolderToArchive($fid);
+		if($retval){
+			 return "true";
+		  } else{
+			 return "error";
+		  }
+	}
+	
+	function movetoArchive($id,$fid) {
+		$retval = $this->model->movetoArchive($id,$fid);
+		if($retval){
+			 return "true";
+		  } else{
+			 return "error";
+		  }
+	}
+	
+	function getArchiveList() {
+		global $system, $lang;
+		$arr = $this->model->getArchiveList();
+		$projects = $arr["projects"];
+		ob_start();
+			include('view/list.php');
+			$data["html"] = ob_get_contents();
+		ob_end_clean();
+		$data["sort"] = $arr["sort"];
+		$data["title"] = $lang["PROJECT_ACTION_NEW"];
+		return $system->json_encode($data);
+	}
+	
+	function getArchive() {
+		global $lang, $system;
+		$arr = $this->model->getArchive();
+			$folder = $arr["folder"];
+			//$projects = $arr["projects"];
+			ob_start();
+			include 'view/folder_archive.php';
+			$data["html"] = ob_get_contents();
+			ob_end_clean();
+			/*$data["access"] = $arr["access"];*/
+			return json_encode($data);
+		/*} else {
+			ob_start();
+			include CO_INC .'/view/default.php';
+			$data["html"] = ob_get_contents();
+			ob_end_clean();
+			return json_encode($data);
+		}*/
+	}
+	
+	function getArchiveModules() {
+		global $lang, $system, $session, $projects, $projects_phases_name, $projects_meetings_name, $projects_phonecalls_name, $projects_documents_name, $projects_vdocs_name, $projects_controlling_name, $projects_timelines_name, $projects_access_name;
+		ob_start();
+			include 'view/modules_archive.php';
+			$html = ob_get_contents();
+			ob_end_clean();
+			return $html;
+	}
+	
+	function getProjectDetailsArchive($id) {
+		global $lang, $system;
+		if($arr = $this->model->getProjectDetailsArchive($id)) {
+			$project = $arr["project"];
+			$phases = $arr["phases"];
+			$num = $arr["num"];
+			$sendto = $arr["sendto"];
+			ob_start();
+				include 'view/edit_archive.php';
+				$data["html"] = ob_get_contents();
+			ob_end_clean();
+			$data["access"] = $arr["access"];
+			return $system->json_encode($data);
+		}
+		else {
+			ob_start();
+				include CO_INC .'/view/default.php';
+				$data["html"] = ob_get_contents();
+			ob_end_clean();
+			return $system->json_encode($data);
+		}
+	}
+
+	function archiveRevive($id,$folder) {
+		$retval = $this->model->archiveRevive($id,$folder);
+		if($retval){
+			 return "true";
+		  } else{
+			 return "error";
+		  }
+	}
+	
+	function archiveDuplicate($id,$folder) {
+		$retval = $this->model->archiveDuplicate($id,$folder);
+		if($retval){
+			 return "true";
+		  } else{
+			 return "error";
+		  }
+	}
+	
+	function archiveSaveMeta($id,$meta) {
+		$retval = $this->model->archiveSaveMeta($id,$meta);
+		if($retval){
+			 return "true";
+		  } else{
+			 return "error";
+		  }
+	}
+	
+	
+	function doArchiveSearch($meta,$title,$folder,$who,$start,$end) {
+		global $date, $lang, $system;
+		$arr = $this->model->doArchiveSearch($meta,$title,$folder,$who,$start,$end);
+		$projects = $arr["projects"];
+		ob_start();
+			include('view/folder_archive_search.php');
+			$data["html"] = ob_get_contents();
+		ob_end_clean();
+		return json_encode($data);
+	}
+	
+	
+	function getInlineSearch($term) {
+		$search = $this->model->getInlineSearch($term);
+		return $search;
+	}
+	
+	
 
 }
 

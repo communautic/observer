@@ -126,6 +126,32 @@ class ProjectsControlling extends Projects {
 		$data["module"] = "/modules/controlling";
 		$this->openHelpPDF($data);
 	}
+	
+	
+	function getListArchive($id,$sort) {
+		global $system;
+		$arr = $this->model->getList($id,$sort);
+		$controlling = $arr["controlling"];
+		ob_start();
+			include('view/list.php');
+			$data["html"] = ob_get_contents();
+		ob_end_clean();
+		$data["sort"] = $arr["sort"];
+		$data["title"] = "";
+		return $system->json_encode($data);
+	}
+
+
+	function getDetailsArchive($id,$pid) {
+		global $lang;
+		if($controlling = $this->model->getDetails($pid)) {
+			include('view/edit.php');
+		} else {
+			include CO_INC .'/view/default.php';
+		}
+	}
+	
+	
 
 	
 }

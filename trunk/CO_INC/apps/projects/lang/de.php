@@ -82,6 +82,9 @@ $lang["PROJECT_WIDGET_PROJECTLINK_END"]		=	'Der Endtermin für das Projekt "%1$s
 $lang["PROJECT_WIDGET_PROJECTLINK_NOTICE_TITLE"]	=	'Projektlink';
 $lang["PROJECT_WIDGET_PROJECTLINK_NOTICE"]=	'Ihr Projekt "%1$s" wurde in den Projektplan von "%2$s" miteingebunden';
 
+/* Archiv */
+$lang["PROJECT_ARCHIVE"] = 'Projektarchiv';
+
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/projects/de.php";
 if(file_exists($custom_lang)) {

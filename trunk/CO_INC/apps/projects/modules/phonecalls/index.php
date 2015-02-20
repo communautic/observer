@@ -80,6 +80,13 @@ if (!empty($_GET['request'])) {
 		case 'getHelp':
 			echo($projectsPhonecalls->getHelp());
 		break;
+		case 'getListArchive':
+			$sort = "0";
+			echo($projectsPhonecalls->getListArchive($_GET['id'],$sort));
+		break;
+		case 'getDetailsArchive':
+			echo($projectsPhonecalls->getDetailsArchive($_GET['id']));
+		break;
 	}
 }
 

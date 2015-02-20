@@ -82,6 +82,9 @@ $lang["PROJECT_WIDGET_PROJECTLINK_END"]		=	'End for the project "%1$s" has chang
 $lang["PROJECT_WIDGET_PROJECTLINK_NOTICE_TITLE"]	=	'Project Link';
 $lang["PROJECT_WIDGET_PROJECTLINK_NOTICE"]=	'Your project "%1$s" was integrated into the project "%2$s"';
 
+/* Archiv */
+$lang["PROJECT_ARCHIVE"] = 'Archived Projects';
+
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/projects/en.php";
 if(file_exists($custom_lang)) {

@@ -406,6 +406,41 @@ class ProjectsPhases extends Projects {
 		$this->model->deleteCheckpoint($id);
 		return true;
    }
+   
+   function getListArchive($id,$sort) {
+		global $system, $lang;
+		$arr = $this->model->getListArchive($id,$sort);
+		$phases = $arr["phases"];
+		$num = $arr["num"];
+		ob_start();
+			include('view/list.php');
+			$data["html"] = ob_get_contents();
+		ob_end_clean();
+		$data["sort"] = $arr["sort"];
+		$data["perm"] = $arr["perm"];
+		$data["title"] = $lang["PROJECT_PHASE_ACTION_NEW"];
+		return $system->json_encode($data);
+	}
+   
+   function getDetailsArchive($id,$num) {
+		global $lang, $system;
+		if($arr = $this->model->getDetailsArchive($id,$num)) {
+			$phase = $arr["phase"];
+			$task = $arr["task"];
+			$sendto = $arr["sendto"];
+			ob_start();
+				include 'view/edit.php';
+				$data["html"] = ob_get_contents();
+			ob_end_clean();
+			return json_encode($data);
+		} else {
+			ob_start();
+				include CO_INC .'/view/default.php';
+				$data["html"] = ob_get_contents();
+			ob_end_clean();
+			return json_encode($data);
+		}
+	}
 
 }
 

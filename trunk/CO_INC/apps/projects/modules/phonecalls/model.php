@@ -360,6 +360,120 @@ class ProjectsPhonecallsModel extends ProjectsModel {
 		  	return true;
 		}
    }
+   
+   
+   function getListArchive($id,$sort) {
+		global $session;
+
+				$order = "order by item_date DESC";
+				$sortcur = '1';
+	  
+		$perm = $this->getProjectAccess($id);
+		$sql ="";
+		if( $perm ==  "guest") {
+			$sql = " and access = '1' ";
+		}
+		
+		$q = "select id,title,item_date,access,status,checked_out,checked_out_user from " . CO_TBL_PROJECTS_PHONECALLS . " where pid = '$id' and bin != '1' " . $sql . $order;
+		$this->setSortStatus("projects-phonecalls-sort-status",$sortcur,$id);
+		$result = mysql_query($q, $this->_db->connection);
+		$items = mysql_num_rows($result);
+		
+		$phonecalls = "";
+		while ($row = mysql_fetch_array($result)) {
+
+		foreach($row as $key => $val) {
+				$array[$key] = $val;
+			}
+			// dates
+			$array["item_date"] = $this->_date->formatDate($array["item_date"],CO_DATE_FORMAT);
+			$accessstatus = "";
+			$array["accessstatus"] = '';
+			// status
+			$itemstatus = "";
+			$array["itemstatus"] = $itemstatus;
+			$array["checked_out_status"] = '';
+			$phonecalls[] = new Lists($array);
+	  }
+		
+	  $arr = array("phonecalls" => $phonecalls, "items" => $items, "sort" => $sortcur, "perm" => $perm);
+	  return $arr;
+	}
+	
+	
+	function getDetailsArchive($id, $option = "") {
+		global $session, $lang;
+		
+		$this->_documents = new ProjectsDocumentsModel();
+		
+		$q = "SELECT * FROM " . CO_TBL_PROJECTS_PHONECALLS . " where id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result) < 1) {
+			return false;
+		}
+		$row = mysql_fetch_array($result);
+		foreach($row as $key => $val) {
+			$array[$key] = $val;
+		}
+			
+		$array["perms"] = $this->getProjectAccess($array["pid"]);
+		$array["canedit"] = false;
+		$array["showCheckout"] = false;
+		$array["checked_out_user_text"] = $this->_contactsmodel->getUserListPlain($array['checked_out_user']);
+
+		// dates
+		$array["item_date"] = $this->_date->formatDate($array["item_date"],CO_DATE_FORMAT);
+		
+		// time
+		$array["start"] = $this->_date->formatDate($array["start"],CO_TIME_FORMAT);
+		$array["end"] = $this->_date->formatDate($array["end"],CO_TIME_FORMAT);
+		
+		$array["management_print"] = $this->_contactsmodel->getUserListPlain($array["management"]);
+		if($option = 'prepareSendTo') {
+			$array["sendtoTeam"] = $this->_contactsmodel->checkUserListEmail($array["management"],'projectsmanagement', "", $array["canedit"]);
+			$array["sendtoTeamNoEmail"] = $this->_contactsmodel->checkUserListEmail($array["management"],'projectsmanagement', "", $array["canedit"], 0);
+			$array["sendtoError"] = false;
+		}
+		$array["management"] = $this->_contactsmodel->getUserList($array['management'],'projectsmanagement', "", $array["canedit"]);
+		$array["management_ct"] = empty($array["management_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['management_ct'];
+		$array["documents"] = $this->_documents->getDocListFromIDs($array['documents'],'documents');
+		
+		$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
+		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
+		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
+		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
+		$array["current_user"] = $session->uid;
+		
+		switch($array["access"]) {
+			case "0":
+				$array["access_text"] = $lang["GLOBAL_ACCESS_INTERNAL"];
+				$array["access_footer"] = "";
+			break;
+			case "1":
+				$array["access_text"] = $lang["GLOBAL_ACCESS_PUBLIC"];
+				$array["access_user"] = $this->_users->getUserFullname($array["access_user"]);
+				$array["access_date"] = $this->_date->formatDate($array["access_date"],CO_DATETIME_FORMAT);
+				$array["access_footer"] = $lang["GLOBAL_ACCESS_FOOTER"] . " " . $array["access_user"] . ", " .$array["access_date"];
+			break;
+		}
+		
+		switch($array["status"]) {
+			case "0":
+				$array["status_text"] = $lang["PROJECT_PHONECALL_STATUS_OUTGOING"];
+				$array["status_date"] = '';
+			break;
+			case "1":
+				$array["status_text"] = $lang["PROJECT_PHONECALL_STATUS_ON_INCOMING"];
+				$array["status_date"] = '';
+			break;
+		}
+		
+		$sendto = $this->getSendtoDetails("projects_phonecalls",$id);
+
+		$phonecall = new Lists($array);
+		$arr = array("phonecall" => $phonecall, "sendto" => $sendto, "access" => $array["perms"]);
+		return $arr;
+   }
 
 }
 ?>

@@ -211,6 +211,42 @@ class ProjectsPhonecalls extends Projects {
 		$this->openHelpPDF($data);
 	}
 	
+	function getListArchive($id,$sort) {
+		global $system, $lang;
+		$arr = $this->model->getListArchive($id,$sort);
+		$phonecalls = $arr["phonecalls"];
+		ob_start();
+			include('view/list.php');
+			$data["html"] = ob_get_contents();
+		ob_end_clean();
+		$data["items"] = $arr["items"];
+		$data["sort"] = $arr["sort"];
+		$data["perm"] = $arr["perm"];
+		$data["title"] = $lang["PROJECT_PHONECALL_ACTION_NEW"];
+		return $system->json_encode($data);
+	}
+
+
+	function getDetailsArchive($id) {
+		global $lang;
+		if($arr = $this->model->getDetailsArchive($id)) {
+			$phonecall = $arr["phonecall"];
+			$sendto = $arr["sendto"];
+			ob_start();
+				include 'view/edit_archive.php';
+				$data["html"] = ob_get_contents();
+			ob_end_clean();
+			$data["access"] = $arr["access"];
+			return json_encode($data);
+		} else {
+			ob_start();
+				include CO_INC .'/view/default.php';
+				$data["html"] = ob_get_contents();
+			ob_end_clean();
+			return json_encode($data);
+		}
+	}
+	
 }
 
 $projectsPhonecalls = new ProjectsPhonecalls("phonecalls");

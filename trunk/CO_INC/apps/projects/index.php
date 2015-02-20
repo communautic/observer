@@ -222,6 +222,41 @@ if (!empty($_GET['request'])) {
 		case 'toggleCurrency':
 			echo($projects->toggleCurrency($_GET['id'],$_GET['cur']));
 		break;
+		/* Archive */
+		case 'moveFolderToArchive':
+			echo($projects->moveFolderToArchive($_GET['fid']));
+		break;
+		case 'movetoArchive':
+			echo($projects->movetoArchive($_GET['id'],$_GET['fid']));
+		break;
+		case 'getArchive':
+			echo $projects->getArchive();
+		break;
+		case 'getArchiveModules':
+			echo $projects->getArchiveModules();
+		break;
+		case 'getArchiveList':
+			echo($projects->getArchiveList());
+		break;
+		case 'getProjectDetailsArchive':
+			echo($projects->getProjectDetailsArchive($_GET['id']));
+		break;
+		case 'archiveRevive':
+			echo($projects->archiveRevive($_GET['id'],$_GET['folder']));
+		break;
+		case 'archiveDuplicate':
+			echo($projects->archiveDuplicate($_GET['id'],$_GET['folder']));
+		break;
+		case 'archiveSaveMeta':
+			echo($projects->archiveSaveMeta($_GET['id'],$system->checkMagicQuotes($_GET['meta'])));
+		break;
+		case 'doArchiveSearch':
+			echo($projects->doArchiveSearch($system->checkMagicQuotes($_GET['meta']),$system->checkMagicQuotes($_GET['title']),$system->checkMagicQuotes($_GET['folder']),$_GET['who'],$_GET['start'],$_GET['end']));
+		break;
+		case 'getInlineSearch':
+			echo($projects->getInlineSearch($system->checkMagicQuotesTinyMCE($_GET['term'])));
+		break;
+		
 	}
 }
 
