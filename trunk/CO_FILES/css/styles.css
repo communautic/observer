@@ -506,10 +506,25 @@ ul.actionconsole span.actionExport { display: block; height: 33px; background: u
 ul.actionconsole span.actionExport:hover { background: url(../img/buttons.png) no-repeat -100px -320px; cursor: pointer;}
 ul.actionconsole span.actionExport.noactive { background: url(../img/buttons.png) no-repeat -0px -320px; cursor: default; }
 
+ul.actionconsole li.listArchiveDuplicate { display: block; height: 33px; }
+ul.actionconsole span.actionArchiveDuplicate { display: block; height: 33px; background: url(../img/buttons.png) no-repeat -50px -560px;}
+ul.actionconsole span.actionArchiveDuplicate:hover { background: url(../img/buttons.png) no-repeat -100px -560px; cursor: pointer;}
+ul.actionconsole span.actionArchiveDuplicate.noactive { background: url(../img/buttons.png) no-repeat -0px -560px; cursor: default; }
+
 ul.actionconsole li.listRefresh { display: block; height: 33px; }
 ul.actionconsole span.actionRefresh { display: block; height: 33px; background: url(../img/buttons.png) no-repeat -50px -360px;}
 ul.actionconsole span.actionRefresh:hover { background: url(../img/buttons.png) no-repeat -100px -360px; cursor: pointer;}
 ul.actionconsole span.actionRefresh.noactive { background: url(../img/buttons.png) no-repeat -0px -360px; cursor: default; }
+
+ul.actionconsole li.listArchive { position: absolute; bottom: 104px; height: 33px; width: 44px; margin: 0; }
+ul.actionconsole span.actionArchive { display: block; height: 36px; background: url(../img/buttons.png) no-repeat -50px -640px;}
+ul.actionconsole span.actionArchive:hover { background: url(../img/buttons.png) no-repeat -100px -640px; cursor: pointer;}
+ul.actionconsole span.actionArchive.noactive { background: url(../img/buttons.png) no-repeat -0px -640px; cursor: default;}
+
+ul.actionconsole li.listArchiveRevive { position: absolute; bottom: 104px; height: 33px; width: 44px; margin: 0; }
+ul.actionconsole span.actionArchiveRevive { display: block; height: 36px; background: url(../img/buttons.png) no-repeat -50px -600px;}
+ul.actionconsole span.actionArchiveRevive:hover { background: url(../img/buttons.png) no-repeat -100px -600px; cursor: pointer;}
+ul.actionconsole span.actionArchiveRevive.noactive { background: url(../img/buttons.png) no-repeat -0px -600px; cursor: default;}
 
 ul.actionconsole li.listHelp { position: absolute; bottom: 54px; height: 33px; width: 44px; margin: 0; }
 ul.actionconsole span.actionHelp { display: block; height: 36px; background: url(../img/buttons.png) no-repeat -50px -400px;}
