@@ -132,6 +132,13 @@ if (!empty($_GET['request'])) {
 		case 'updateStatus':
 			echo($projectsPhases->updateStatus($_GET['id'],$_GET['date'],$_GET['status']));
 		break;
+		case 'getListArchive':
+			$sort = "0";
+			echo($projectsPhases->getList($_GET['id'],$sort));
+		break;
+		case 'getDetailsArchive':
+			echo($projectsPhases->getDetailsArchive($_GET['id'],$_GET['num']));
+		break;
 	}
 }
 

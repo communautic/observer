@@ -74,6 +74,13 @@ if (!empty($_GET['request'])) {
 		case 'getHelp':
 			echo($projectsVDocs->getHelp());
 		break;
+		case 'getListArchive':
+			$sort = "0";
+			echo($projectsVDocs->getListArchive($_GET['id'],$sort));
+		break;
+		case 'getDetailsArchive':
+			echo($projectsVDocs->getDetailsArchive($_GET['id']));
+		break;
 	}
 }
 

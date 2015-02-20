@@ -60,6 +60,13 @@ if (!empty($_GET['request'])) {
 		case 'getHelp':
 			echo($projectsControlling->getHelp());
 		break;
+		case 'getListArchive':
+			$sort = "0";
+			echo($projectsControlling->getList($_GET['id'],$sort));
+		break;
+		case 'getDetailsArchive':
+			echo($projectsControlling->getDetails($_GET['id'],$_GET['pid']));
+		break;
 	}
 }
 

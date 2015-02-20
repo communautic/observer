@@ -346,6 +346,55 @@ class ProjectsTimelines extends Projects {
 		$data["module"] = "/modules/timelines";
 		$this->openHelpPDF($data);
 	}
+	
+	
+	function getDetailsArchive($id,$pid,$zoom) {
+		global $date,$lang;
+		
+		switch($id) {
+			case "1":
+				$arr = $this->model->getBarchartDetails($pid,$zoom);
+				$project = $arr["project"];
+				ob_start();
+					include('view/barchart_archive.php');
+					$data["html"] = ob_get_contents();
+				ob_end_clean();
+				$data["access"] = $arr["access"];
+				return json_encode($data);
+			break;
+			case "2":
+				$arr = $this->model->getDetails($pid);
+				$project = $arr["project"];
+				ob_start();
+					include('view/schedule_archive.php');
+					$data["html"] = ob_get_contents();
+				ob_end_clean();
+				$data["access"] = $arr["access"];
+				return json_encode($data);
+			break;
+			case "3":
+				$arr = $this->model->getDetails($pid);
+				$project = $arr["project"];
+				ob_start();
+					include('view/psp_archive.php');
+					$data["html"] = ob_get_contents();
+				ob_end_clean();
+				$data["access"] = $arr["access"];
+				return json_encode($data);
+			break;
+			case "4":
+				$arr = $this->model->getDetails($pid);
+				$project = $arr["project"];
+				ob_start();
+					include('view/milestones_archive.php');
+					$data["html"] = ob_get_contents();
+				ob_end_clean();
+				$data["access"] = $arr["access"];
+				return json_encode($data);
+			break;
+		}
+	}
+
 
 	
 }

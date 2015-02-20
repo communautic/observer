@@ -536,4 +536,104 @@ class ProjectsDocumentsModel extends ProjectsModel {
 		exit;
 		}
 	}
+	
+	
+	function getListArchive($id,$sort) {
+		global $session;
+		$order = "order by title";
+		$sortcur = '1';
+		$perm = $this->getProjectAccess($id);
+		$sql ="";
+		/*if( $perm ==  "guest") {
+			$sql = " and access = '1' ";
+		}*/
+		$q = "select id,title,access,edited_date from " . CO_TBL_PROJECTS_DOCUMENTS_FOLDERS . " where pid = '$id' and bin != '1' " . $sql . $order;
+		$this->setSortStatus("projects-documents-sort-status",$sortcur,$id);
+		$result = mysql_query($q, $this->_db->connection);
+		$items = mysql_num_rows($result);
+		
+		$documents = "";
+		while ($row = mysql_fetch_array($result)) {
+			foreach($row as $key => $val) {
+				$array[$key] = $val;
+			}
+			// dates
+			$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATE_FORMAT);
+			
+			// access
+			$accessstatus = "";
+			$array["accessstatus"] = $accessstatus;
+			
+			$documents[] = new Lists($array);
+	  }
+		
+	  $arr = array("documents" => $documents, "items" => $items, "sort" => $sortcur, "perm" => $perm);
+	  return $arr;
+	}
+	
+	function getDetailsArchive($id) {
+		global $session, $contactsmodel, $lang;
+		$q = "SELECT * FROM " . CO_TBL_PROJECTS_DOCUMENTS_FOLDERS . " where id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result) < 1) {
+			return false;
+		}
+		$row = mysql_fetch_array($result);
+		foreach($row as $key => $val) {
+				$array[$key] = $val;
+			}
+		
+		//$array["filesize"] = $this->formatBytes($array["filesize"]);
+
+		$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
+		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
+		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
+		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
+		$array["current_user"] = $session->uid;
+		//$array["num"] = $num;
+		
+		switch($array["access"]) {
+			case "0":
+				$array["access_text"] = $lang["GLOBAL_ACCESS_INTERNAL"];
+				$array["access_footer"] = "";
+			break;
+			case "1":
+				$array["access_text"] = $lang["GLOBAL_ACCESS_PUBLIC"];
+				$array["access_user"] = $this->_users->getUserFullname($array["access_user"]);
+				$array["access_date"] = $this->_date->formatDate($array["access_date"],CO_DATETIME_FORMAT);
+				$array["access_footer"] = $lang["GLOBAL_ACCESS_FOOTER"] . " " . $array["access_user"] . ", " .$array["access_date"];
+			break;
+		}
+		
+		// get user perms
+		//$array["edit"] = "1";
+		
+		$perms = $this->getProjectAccess($array["pid"]);
+		$array["canedit"] = false;
+		$array["perms"] = $perms;
+		
+		$document = new Lists($array);
+		
+		// now get all actual documents
+		$doc = array();
+		$qt = "SELECT * FROM " . CO_TBL_PROJECTS_DOCUMENTS . " where did = '$id' and bin='0' ORDER BY created_date DESC";
+		$resultt = mysql_query($qt, $this->_db->connection);
+		while($rowt = mysql_fetch_array($resultt)) {
+			foreach($rowt as $key => $val) {
+				$docs[$key] = $val;
+			}
+			if(empty($docs["tempname"])) {
+				$docs["tempname"] = $docs["filename"];
+			}
+
+			$docs["filesize"] = $this->formatBytes($docs["filesize"]);
+			$doc[] = new Lists($docs);
+		}
+		
+		$sendto = $this->getSendtoDetails("projects_documents",$id);
+		
+		$arr = array("document" => $document, "doc" => $doc, "sendto" => $sendto, "access" => $perms);
+		return $arr;
+   }
+   
 ?>

@@ -51,6 +51,17 @@ if (!empty($_GET['request'])) {
 		case 'getHelp':
 			echo($projectsTimelines->getHelp());
 		break;
+		case 'getListArchive':
+			$sort = "0";
+			echo($projectsTimelines->getList($_GET['id'],$sort));
+		break;
+		case 'getDetailsArchive':
+			$zoom = 0;
+			if(!empty($_GET['zoom'])) {
+				$zoom = $_GET['zoom'];
+			}
+			echo($projectsTimelines->getDetailsArchive($_GET['id'],$_GET['pid'],$zoom));
+		break;
 	}
 }
 

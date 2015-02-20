@@ -1112,6 +1112,300 @@ class ProjectsPhasesModel extends ProjectsModel {
 		}
 		return $row;
    }
+   
+   
+   	function getListArchive($id,$sort) {
+		global $session;
+		//if($sort == 0) {
+				$order = "order by startdate";
+				$sortcur = '1';
+		
+	  
+		$perm = $this->getProjectAccess($id);
+		$sql ="";
+		if( $perm ==  "guest") {
+			$sql = " and a.access = '1' ";
+		}
+		
+		$q = "select a.title,a.id,a.access,a.status,a.checked_out,a.checked_out_user,(SELECT MIN(startdate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as startdate from " . CO_TBL_PROJECTS_PHASES . " as a where a.pid = '$id' and a.bin != '1' " . $sql . $order;
+		
+	  	//$this->setSortStatus("projects-phases-sort-status",$sortcur,$id);
+		$result = mysql_query($q, $this->_db->connection);
+	  	$phases = "";
+		
+	  	while ($row = mysql_fetch_array($result)) {
+			foreach($row as $key => $val) {
+				$array[$key] = $val;
+			}
+			
+			// access
+			$accessstatus = "";
+			if($perm !=  "guest") {
+				if($array["access"] == 1) {
+					$accessstatus = " module-access-active";
+				}
+			}
+			$array["accessstatus"] = $accessstatus;
+			// status
+			$itemstatus = "";
+			if($array["status"] == 2) {
+				$itemstatus = " module-item-active";
+			}
+			$array["itemstatus"] = $itemstatus;
+			
+			$checked_out_status = "";
+			/*if($perm !=  "guest" && $array["checked_out"] == 1 && $array["checked_out_user"] != $session->uid) {
+				//$checked_out_status = "icon-checked-out-active";
+				if($session->checkUserActive($array["checked_out_user"])) {
+					$checked_out_status = "icon-checked-out-active";
+				} else {
+					$this->checkinPhaseOverride($id);
+				}
+			}*/
+			$array["checked_out_status"] = $checked_out_status;
+			
+			$phases[] = new Lists($array);
+		}
+		
+		// generate phase numbering
+		$num = "";
+		
+		$qn = "select a.id,(SELECT MIN(startdate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as startdate from " . CO_TBL_PROJECTS_PHASES . " as a where a.pid = '$id' and a.bin != '1'" . $sql . " order by startdate";
+		$resultn = mysql_query($qn, $this->_db->connection);
+		$i = 1;
+		while ($rown = mysql_fetch_array($resultn)) {
+			$num[$rown["id"]] = $i;
+			$i++;
+		}
+		
+		$arr = array("phases" => $phases, "sort" => $sortcur, "num" => $num, "perm" => $perm);
+		return $arr;
+	}
+   
+   
+   function getDetailsArchive($id,$num, $option = "") {
+		global $session, $lang;
+		
+		$this->_documents = new ProjectsDocumentsModel();
+		
+		$q = "SELECT a.*,(SELECT MIN(startdate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as startdate,(SELECT MAX(enddate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.phaseid=a.id and b.bin='0') as enddate, (SELECT startdate FROM " . CO_TBL_PROJECTS . " WHERE id=a.pid) as kickoff FROM " . CO_TBL_PROJECTS_PHASES . " as a where a.id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result) < 1) {
+			return false;
+		}
+		$row = mysql_fetch_array($result);
+		foreach($row as $key => $val) {
+				$array[$key] = $val;
+			}
+		
+		foreach($this->getProjectSettings($array["pid"]) as $key => $val) {
+			$array[$key] = $val;
+		}
+		
+		$array["perms"] = $this->getProjectAccess($array["pid"]);
+		$array["canedit"] = false;
+		$array["showCheckout"] = false;		
+		$array["checked_out_user_text"] = $this->_contactsmodel->getUserListPlain($array['checked_out_user']);
+		
+		/*if($array["perms"] == "sysadmin" || $array["perms"] == "admin") {
+			//if($array["checked_out"] == 1 && $session->checkUserActive($array["checked_out_user"])) {
+			if($array["checked_out"] == 1) {
+				if($array["checked_out_user"] == $session->uid) {
+					$array["canedit"] = true;
+				} else if(!$session->checkUserActive($array["checked_out_user"])) {
+					$array["canedit"] = $this->checkoutPhase($id);
+					$array["canedit"] = true;
+				} else {
+					$array["canedit"] = false;
+					$array["showCheckout"] = true;
+					$array["checked_out_user_phone1"] = $this->_contactsmodel->getContactFieldFromID($array['checked_out_user'],"phone1");
+					$array["checked_out_user_email"] = $this->_contactsmodel->getContactFieldFromID($array['checked_out_user'],"email");
+
+				}
+			} else {
+				$array["canedit"] = $this->checkoutPhase($id);
+			}
+		}*/
+		
+		// dates
+		$array["today"] = $this->_date->formatDate("now",CO_DATE_FORMAT);
+		$array["startdate"] = $this->_date->formatDate($array["startdate"],CO_DATE_FORMAT);
+		$array["kickoff"] = $this->_date->formatDate($array["kickoff"],CO_DATE_FORMAT);
+		$array["enddate"] = $this->_date->formatDate($array["enddate"],CO_DATE_FORMAT);
+		$array["dependency_startdate"] = $this->_date->formatDate($row['dependency_startdate'],CO_DATE_FORMAT);
+		$array["dependency_enddate"] = $this->_date->formatDate($row['dependency_enddate'],CO_DATE_FORMAT);
+		$array["planned_date"] = $this->_date->formatDate($array["planned_date"],CO_DATE_FORMAT);
+		$array["inprogress_date"] = $this->_date->formatDate($array["inprogress_date"],CO_DATE_FORMAT);
+		$array["finished_date"] = $this->_date->formatDate($array["finished_date"],CO_DATE_FORMAT);
+		$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
+		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
+		
+		// other functions
+		$array["dependency"] = $this->getPhaseDetails($row['dependency'],'dependency');
+		$array["dependency_exists"] = $this->getDependency($id);
+		$array["projecttitle"] = $this->getProjectTitle($array['pid']);
+		$array["management"] = $this->_contactsmodel->getUserListPlain($this->getProjectField($array['pid'], 'management'));
+		$array["team_print"] = $this->_contactsmodel->getUserListPlain($array["team"]);
+		if($option = 'prepareSendTo') {
+			$array["sendtoTeam"] = $this->_contactsmodel->checkUserListEmail($array["team"],'projectsteam', "", $array["canedit"]);
+			$array["sendtoTeamNoEmail"] = $this->_contactsmodel->checkUserListEmail($array["team"],'projectsteam', "", $array["canedit"], 0);
+			$array["sendtoError"] = false;
+		}
+		$array["team"] = $this->_contactsmodel->getUserList($array['team'],'projectsteam', "", $array["canedit"]);
+		$array["team_ct"] = empty($array["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['team_ct'];
+		$array["documents"] = $this->_documents->getDocListFromIDs($array["documents"],'documents');
+		
+		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
+		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
+		$array["current_user"] = $session->uid;
+		$array["num"] = $num;
+		
+		switch($array["access"]) {
+			case "0":
+				$array["access_text"] = $lang["GLOBAL_ACCESS_INTERNAL"];
+				$array["access_footer"] = "";
+			break;
+			case "1":
+				$array["access_text"] = $lang["GLOBAL_ACCESS_PUBLIC"];
+				$array["access_user"] = $this->_users->getUserFullname($array["access_user"]);
+				$array["access_date"] = $this->_date->formatDate($array["access_date"],CO_DATETIME_FORMAT);
+				$array["access_footer"] = $lang["GLOBAL_ACCESS_FOOTER"] . " " . $array["access_user"] . ", " .$array["access_date"];
+			break;
+		}
+		
+		// status
+		$array["status_planned_active"] = "";
+		$array["status_inprogress_active"] = "";
+		$array["status_finished_active"] = "";
+		switch($array["status"]) {
+			case "0":
+				$array["status_text"] = $lang["GLOBAL_STATUS_PLANNED"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_PLANNED_TIME"];
+				$array["status_planned_active"] = " active";
+				$array["status_date"] = $array["planned_date"];
+			break;
+			case "1":
+				$array["status_text"] = $lang["GLOBAL_STATUS_INPROGRESS"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_INPROGRESS_TIME"];
+				$array["status_inprogress_active"] = " active";
+				$array["status_date"] = $array["inprogress_date"];
+			break;
+			case "2":
+				$array["status_text"] = $lang["GLOBAL_STATUS_FINISHED"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_FINISHED_TIME"];
+				$array["status_finished_active"] = " active";
+				$array["status_date"] = $array["finished_date"];
+			break;
+		}
+
+		// checkpoint
+		$array["checkpoint"] = 0;
+		$array["checkpoint_date"] = "";
+		$q = "SELECT date FROM " . CO_TBL_USERS_CHECKPOINTS . " where uid='$session->uid' and app = 'projects' and module = 'phases' and app_id = '$id' LIMIT 1";
+		$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result) > 0) {
+			while ($row = mysql_fetch_assoc($result)) {
+			$array["checkpoint"] = 1;
+			$array["checkpoint_date"] = $this->_date->formatDate($row['date'],CO_DATE_FORMAT);
+			}
+		}
+		
+		$array["costs_plan_total"] = 0;
+		$array["costs_real_total"] = 0;
+		// get the tasks
+		$task = array();
+		$qt = "SELECT * FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where phaseid = '$id' and bin='0' ORDER BY startdate";
+		$resultt = mysql_query($qt, $this->_db->connection);
+		while($rowt = mysql_fetch_array($resultt)) {
+			$tasks["costs_plan"] = 0;
+			$tasks["costs_employees"] = 0;
+			$tasks["costs_materials"] = 0;
+			$tasks["costs_external"] = 0;
+			$tasks["costs_other"] = 0;
+			$tasks["costs_real"] = 0;
+			$tasks["costs_employees_real"] = 0;
+			$tasks["costs_materials_real"] = 0;
+			$tasks["costs_external_real"] = 0;
+			$tasks["costs_other_real"] = 0;
+			foreach($rowt as $key => $val) {
+				$tasks[$key] = $val;
+			}
+			$tasks["startdate"] = $this->_date->formatDate($tasks["startdate"],CO_DATE_FORMAT);
+			$tasks["enddate"] = $this->_date->formatDate($tasks["enddate"],CO_DATE_FORMAT);
+			$tasks["donedate"] = $this->_date->formatDate($tasks["donedate"],CO_DATE_FORMAT);
+			$tasks["team"] = $this->_contactsmodel->getUserList($tasks['team'],'task_team_'.$tasks["id"], "", $array["canedit"]);
+			$tasks["team_ct"] = empty($tasks["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $tasks['team_ct'];
+			if($array['setting_costs'] == 1) {
+				$tasks["costs_plan"] = $tasks["costs_employees"]+$tasks["costs_materials"]+$tasks["costs_external"]+$tasks["costs_other"];
+				$array["costs_plan_total"] += $tasks["costs_plan"];
+				$tasks["costs_real"] = $tasks["costs_employees_real"]+$tasks["costs_materials_real"]+$tasks["costs_external_real"]+$tasks["costs_other_real"];
+				$array["costs_real_total"] += $tasks["costs_real"];
+				$tasks["costs_plan"] = number_format($tasks["costs_plan"],0,',','.');
+				$tasks["costs_real"] = number_format($tasks["costs_real"],0,',','.');
+			}
+			
+			$tasks["dependent_title"] = "";
+			if($tasks["dependent"] > 0) {
+				$dep = $tasks["dependent"];
+				$qta = "SELECT text FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " where id='$dep' and bin='0'";
+				$rqta = mysql_query($qta, $this->_db->connection);
+				if(mysql_num_rows($rqta) == 0) {
+					$tasks["dependent_title"] = "";
+					$tasks["dependent"] = 0;
+				} else {
+					$tasks["dependent_title"] = mysql_result($rqta,0);
+				}
+			}
+			
+			if($tasks["cat"] == 2) {
+				$link_id = $tasks["project_link"];
+				// make sure project is available = not bin and not deleted
+				$q = "SELECT * FROM " . CO_TBL_PROJECTS . " WHERE id='$link_id' and bin='0'";
+				$result = mysql_query($q, $this->_db->connection);
+				if(mysql_num_rows($result) > 0) {
+					$p = mysql_fetch_object($result);
+					$tasks["text"] = $p->title;
+					$tasks["link"] = 'projects,'.$p->folder.','.$p->id.',0,projects';
+					$tasks["team"] = $this->_contactsmodel->getUserListPlain($p->management);
+					switch($p->status) {
+						case "0":
+							$tasks["status_text"] = $lang["GLOBAL_STATUS_PLANNED"];
+							$tasks["status_text_time"] = $lang["GLOBAL_STATUS_PLANNED_TIME"];
+							$tasks["status_date"] = $this->_date->formatDate($p->planned_date,CO_DATE_FORMAT);
+						break;
+						case "1":
+							$tasks["status_text"] = $lang["GLOBAL_STATUS_INPROGRESS"];
+							$tasks["status_text_time"] = $lang["GLOBAL_STATUS_INPROGRESS_TIME"];
+							$tasks["status_date"] = $this->_date->formatDate($p->inprogress_date,CO_DATE_FORMAT);
+						break;
+						case "2":
+							$tasks["status_text"] = $lang["GLOBAL_STATUS_FINISHED"];
+							$tasks["status_text_time"] = $lang["GLOBAL_STATUS_FINISHED_TIME"];
+							$tasks["status_date"] = $this->_date->formatDate($p->finished_date,CO_DATE_FORMAT);
+						break;
+						case "3":
+							$tasks["status_text"] = $lang["GLOBAL_STATUS_STOPPED"];
+							$tasks["status_text_time"] = $lang["GLOBAL_STATUS_STOPPED_TIME"];
+							$tasks["status_date"] = $this->_date->formatDate($p->finished_date,CO_DATE_FORMAT);
+						break;
+					}
+					$task[] = new Lists($tasks);
+				} 
+			} else {
+				$task[] = new Lists($tasks);
+			}
+		}
+		if($array['setting_costs'] == 1) {
+			$array["costs_plan_total"] = number_format($array["costs_plan_total"],0,',','.');
+			$array["costs_real_total"] = number_format($array["costs_real_total"],0,',','.');
+		}
+		$phase = new Lists($array);
+		
+		$sendto = $this->getSendtoDetails("projects_phases",$id);
+		
+		$arr = array("phase" => $phase, "task" => $task, "sendto" => $sendto, "access" => $array["perms"]);
+		return $arr;
+	}
 
 
 }
