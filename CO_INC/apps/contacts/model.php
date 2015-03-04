@@ -690,7 +690,8 @@ class ContactsModel extends Model {
 		$q = "SELECT id, firstname, lastname FROM ".CO_TBL_USERS." where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_fetch_assoc($result);
-		$user = $row["lastname"] . ' ' . substr($row["firstname"], 0, 1) . '.';
+		mb_internal_encoding("UTF-8");
+		$user = $row["lastname"] . ' ' . mb_substr($row["firstname"], 0, 1) . '.';
 		return $user;
 	}
 	

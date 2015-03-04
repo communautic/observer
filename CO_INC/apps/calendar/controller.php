@@ -424,7 +424,7 @@ class Calendar extends Controller {
 					}
 				}
 			$post['title'] = $title;
-			
+			//print_r($post);
 			
 			$vcalendar = $this->createVCalendarFromRequest($post);
 			$res = $this->add($cal, $vcalendar->serialize(), $eventtype, $t_id, $t_loc, $t_locuid);
