@@ -75,6 +75,7 @@ var ALERT_CALENDAR_MISSING_LOCATION = "Location";
 var ALERT_CALENDAR_ROOM_BUSY = "This locatiuon is buys.<br />Please choose a different location.";
 
 var ALERT_ARCHIVE = "Would you really want to archive the data?";
+var ALERT_ARCHIVE_CHOOSE_FOLDER = 'Please pick a folder';
 
 // calendar settings
 var defaultView="agendaWeek";

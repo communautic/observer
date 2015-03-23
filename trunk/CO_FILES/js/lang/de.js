@@ -75,6 +75,7 @@ var ALERT_CALENDAR_MISSING_LOCATION = "Ort";
 var ALERT_CALENDAR_ROOM_BUSY = "Der von Ihnen gewünschte Ort ist belegt.<br />Bitte wählen Sie einen anderen Ort aus.";
 
 var ALERT_ARCHIVE = "Wollen Sie die Daten wirklich in das Modul Archiv verschieben?";
+var ALERT_ARCHIVE_CHOOSE_FOLDER = 'Bitte wählen Sie einen Ordner aus';
 
 // calendar settings
 var defaultView="agendaWeek";
