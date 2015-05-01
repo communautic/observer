@@ -104,8 +104,53 @@ class CalendarModel extends Model {
 	  
 	  return $arr;
    }
+   
+   
+   function printCalendar($id, $start, $end, $option) {
+		global $session;
+		$start = self::getUTCforMDB($start);
+		$end = self::getUTCforMDB($end);
+		$sql = '';
+		switch($option) {
+			case 1:
+				$sql = "and eventtype='1'";
+			break;
+			case 2:
+				$sql = "and eventtype='0'";
+			break;
+		}
+		
+		$calendarobjects = array();
+		$q ="SELECT * FROM oc_clndr_objects WHERE calendarid = '$id' AND objecttype = 'VEVENT' AND ((startdate >= '$start' AND enddate <= '$end' AND repeating = '0') OR (enddate >= '$start' AND startdate <= '$end' AND repeating = 0) OR (startdate <= '$end' AND repeating = '1') ) $sql ORDER BY startdate ASC";
+		$result = mysql_query($q, $this->_db->connection);
+		/* CO Array
+		while($row = mysql_fetch_array($result))  {
+			foreach($row as $key => $val) {
+				$array[$key] = $val;
+			}
+			$events['id'] = $array['id'];
+			$events['title'] = $array['summary'];
+			$events['description'] = '';
+			$events['lastmodified'] = $array['lastmodified'];
+			$events['allDay'] = true;
+			$events['start'] = $array['startdate'];
+			$events['end'] = $array['enddate'];
+			$calendarobjects[] = new Lists($events);
+		}*/
+		// OC way		
+		while($row = mysql_fetch_array($result))  {
+			$calendarobjects[] = $row;
+		}
+		
+		return $calendarobjects;
+	}
 
-
+	function getCalendarName($id) {
+	 
+	 $q = "SELECT CONCAT(a.lastname,' ',a.firstname) FROM co_users as a, oc_clndr_calendars as b WHERE b.id='$id' and a.username = b.userid";
+      $result = mysql_query($q, $this->_db->connection);
+	  return mysql_result($result,0);				
+	}
 
 	/**
 	 * @brief Returns all objects of a calendar between $start and $end
