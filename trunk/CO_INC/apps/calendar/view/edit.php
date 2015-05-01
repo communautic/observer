@@ -126,11 +126,21 @@
 		<div style="clear: both;"></div>
 	</div>
     <!-- Desktop Reminder -->
-    <div class="fieldset2 whitebg fieldborder-bottom">
+    <div class="fieldset2 whitebg">
 		<label><?php echo $lang["CALENDAR_EVENT_DESKTOP"];?></label>
 		<div class="dates">
             <span rel="0" id="toggleDesktop" class="coCheckbox"></span>
             <input id="desktop_checkbox" type="hidden" name="desktop" value="0">
+		</div>
+		<div style="clear: both;"></div>
+	</div>
+    
+    <!-- Copy Function -->
+    <div class="fieldset2 whitebg fieldborder-bottom">
+		<label>Kopieren</label>
+		<div class="dates">
+            <span rel="0" id="toggleCopy" class="coCheckbox"></span>
+            <input id="copy_checkbox" type="hidden" name="copy_checkbox" value="0">
 		</div>
 		<div style="clear: both;"></div>
 	</div>

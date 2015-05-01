@@ -63,6 +63,30 @@ if (!empty($_GET['request'])) {
 			}
 			echo($calendar->getFolderList($sort));
 		break;
+		case 'getSettingsList':
+			$sort = "0";
+			if(!empty($_GET['sort'])) {
+				$sort = $_GET['sort'];
+			}
+			echo($calendar->getSettingsList($sort));
+		break;
+		case 'getPrintOptions':
+			echo($calendar->getPrintOptions());
+		break;
+		case 'printCalendar':
+			$t = "pdf"; // options: pdf, html
+			if(!empty($_GET['t'])) {
+				$t = $_GET['t'];
+			}
+			echo($calendar->printCalendar($_GET['calid'],$_GET['start'],$_GET['end'],$_GET['option'],$t));
+		break;
+		case 'printCalendars':
+			$t = "pdf"; // options: pdf, html
+			if(!empty($_GET['t'])) {
+				$t = $_GET['t'];
+			}
+			echo($calendar->printCalendars($_GET['calid'],$_GET['start'],$_GET['end'],$_GET['option'],$t));
+		break;
 		case 'setSortOrder':
 			echo($calendar->setSortOrder("calendar-sort",$_GET['folderItem']));
 		break;
@@ -70,7 +94,7 @@ if (!empty($_GET['request'])) {
 			echo($calendar->getrequestedEvents($_GET["calendar_id"], $_GET["start"], $_GET["end"]));
 		break;
 		case 'toggleView':
-			echo($calendar->toggleView($_GET["calendarid"], $_GET["active"]));
+			echo($calendar->toggleView($_GET["calendarid"], $_GET["active"], $_GET["numberofcals"], $_GET["col"]));
 		break;
 		case 'showSingleCalendar':
 			echo($calendar->showSingleCalendar($_GET["calendarid"]));
@@ -105,7 +129,7 @@ if (!empty($_POST['request'])) {
 			echo($projects->setFolderDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['projectstatus']));
 		break;
 		case 'newEventForm':
-			echo($calendar->newEventForm($_POST["start"], $_POST["end"], $_POST["allday"], $_POST["calendar"]));
+			echo($calendar->newEventForm($_POST["start"], $_POST["end"], $_POST["allday"], $_POST["calendar"], $_POST["formtype"]));
 		break;
 		case 'newEvent':
 			echo($calendar->newEvent($_POST["calendar"], $_POST));

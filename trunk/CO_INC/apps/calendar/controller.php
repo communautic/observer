@@ -7,6 +7,8 @@
 **/
 
 class Calendar extends Controller {
+	//static $calendarcolors_used = array();
+	
 	// get all available apps
 	function __construct($name) {
 			$this->application = $name;
@@ -17,6 +19,8 @@ class Calendar extends Controller {
 			$this->binDisplay = false;
 			$this->archiveDisplay = false;
 			$this->contactsDisplay = false; // list access status on contact page
+			$this->calendarcolors = array('red','yellow','blue','grey');
+			
 	}
 	
 	function getFolderList($sort) {
@@ -30,6 +34,111 @@ class Calendar extends Controller {
 		ob_end_clean();
 		$data["sort"] = $arr["sort"];
 		return json_encode($data);
+	}
+	
+	function getSettingsList($sort) {
+		global $system, $lang;
+		$arr = $this->model->getFolderList($sort);
+		$folders = $arr["folders"];
+		ob_start();
+			include('view/settings_list.php');
+			$data["html"] = ob_get_contents();
+		ob_end_clean();
+		$data["sort"] = $arr["sort"];
+		return json_encode($data);
+	}
+	
+	function getPrintOptions() {
+		global $lang;
+			ob_start();
+				include 'view/print_options.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			return $html;
+	}
+	
+	function printCalendar($id, $start, $end, $option, $t) {
+		global $session,$lang;
+		$title = "";
+		$html = "";
+		$calendarName = $this->model->getCalendarName($id);
+		$events = $this->model->printCalendar($id, $start, $end, $option);
+		$output = array();
+		foreach($events as $event) {
+			$result = $this->generateEventOutput($event, $start, $end, $id);
+			if (is_array($result)) {
+				//$result['patientfullname'] = "test";
+				$output = array_merge($output, $result);
+			}
+		}
+		//print_r($output);
+		//if($arr = $this->model->printCalendar($id, $start, $end)) {
+			//$events = $arr["events"];
+			ob_start();
+				include 'view/print.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			$title = 'Kalender';
+		//}
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["CALENDAR_PRINT"];
+		switch($t) {
+			case "html":
+				$this->printHTML($title,$html);
+			break;
+			default:
+				$this->printPDF($title,$html);
+		}
+		
+	}
+	
+	function printCalendars($calids, $start, $end, $option, $t) {
+		global $session,$lang;
+		$title = "";
+		$html = "";
+		
+		switch($option) {
+			case 1:
+				$title = 'Behandlungen';
+			break;
+			case 2:
+				$title = 'Ereignisse';
+			break;
+			case 3:
+				$title = 'Alle Termine';
+			break;
+		}
+		
+		$output = array();
+		$calids = explode(',', $calids);
+		foreach($calids as $id) {
+			//$calendarName = $this->model->getCalendarName($id);
+			$events = $this->model->printCalendar($id, $start, $end, $option);
+			foreach($events as $event) {
+				$result = $this->generateEventOutput($event, $start, $end, $id);
+				if (is_array($result)) {
+					//$result['patientfullname'] = "test";
+					$output = array_merge($output, $result);
+				}
+			}
+		}
+		//print_r($output);
+		//if($arr = $this->model->printCalendar($id, $start, $end)) {
+			//$events = $arr["events"];
+			ob_start();
+				include 'view/print_multi.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			$title = 'Kalender';
+		//}
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["CALENDAR_PRINT"];
+		switch($t) {
+			case "html":
+				$this->printHTML($title,$html);
+			break;
+			default:
+				$this->printPDF($title,$html);
+		}
+		
 	}
 
 
@@ -133,14 +242,16 @@ class Calendar extends Controller {
 				if(isset($treatmentevent['id']) && $treatmentevent['id'] > 0) {
 					$title = $treatmentevent['patient'];
 					if($event['eventlocation'] != 0) {
-						$title .= '<br /> <span style="font-weight: normal">' . $treatmentsModel->getTreatmentLocation($event['eventlocation']) . '</span>';
+						$title .= '<br /> <span style="font-weight: normal; line-height: 19px;">' . $treatmentsModel->getTreatmentLocation($event['eventlocation']) . '</span>';
 					}
 					if($event['eventlocationuid'] != 0) {
-						$title .=  '<br /> <span style="font-weight: normal">' . $lang['CALENDAR_EVENT_HOUSE_CALL'] . '</span>';
+						$title .=  '<br /> <span style="font-weight: normal; line-height: 19px;">' . $lang['CALENDAR_EVENT_HOUSE_CALL'] . '</span>';
 						$eventclass = 'fc-event-treatment-housecall';
 					}
 					$event['treat'] = $treatmentevent['mid'];
 					$event['patientid'] = $treatmentevent['id'];
+					/*$contactsModel = new ContactsModel();
+					$event['patientfullname'] = $contactsModel->getUserFullname($treatmentevent['id']);*/
 					$event['folderid'] = $treatmentevent['folder'];
 					
 					// check here if I am admin for this patient
@@ -155,7 +266,7 @@ class Calendar extends Controller {
 					$title = (!is_null($vevent->SUMMARY) && $vevent->SUMMARY->value != '')? strtr($vevent->SUMMARY->value, array('\,' => ',', '\;' => ';')) : 'no title';
 				if($event['eventlocation'] != 0) {
 					$treatmentsModel = new PatientsTreatmentsModel();
-					$title .= '<br /> <span style="font-weight: normal">' . $treatmentsModel->getTreatmentLocation($event['eventlocation']) . '</span>';
+					$title .= '<br /> <span style="font-weight: normal; line-height: 19px;">' . $treatmentsModel->getTreatmentLocation($event['eventlocation']) . '</span>';
 				}
 				}
 			} else {
@@ -165,7 +276,7 @@ class Calendar extends Controller {
 				$title = (!is_null($vevent->SUMMARY) && $vevent->SUMMARY->value != '')? strtr($vevent->SUMMARY->value, array('\,' => ',', '\;' => ';')) : 'no title';
 				if($event['eventlocation'] != 0) {
 					$treatmentsModel = new PatientsTreatmentsModel();
-					$title .= '<br /> <span style="font-weight: normal">' . $treatmentsModel->getTreatmentLocation($event['eventlocation']) . '</span>';
+					$title .= '<br /> <span style="font-weight: normal; line-height: 19px;">' . $treatmentsModel->getTreatmentLocation($event['eventlocation']) . '</span>';
 				}
 			}
 			if($allday) {
@@ -298,11 +409,47 @@ class Calendar extends Controller {
 
 	}
 	
+	
+	
 	// OC: setCalendarActive
-	function toggleView($calendarid, $active) {
-		//$this->model->toggleView($calendarid, $active);
-		$calendar = $this->getCalendar($calendarid, true);
+	function toggleView($calendarid, $active, $numberofcals, $col) {
+		//$this->model->toggleView($calendarid, $active); original OC call
+		//$calendarcolors = array('red','yellow','blue','grey');
+		/*$this->calendarcolors_used[] = $numberofcals; 
+		print_r($this->calendarcolors_used);*/
 		
+		$calendar = $this->getCalendar($calendarid, true);
+		/*$colordiff = array_diff($this->calendarcolors, $this->calendarcolors_used);
+		$i = mt_rand(0, 3);
+		$this->calendarcolors_used[] = $this->calendarcolors[$i];
+		$c = array_values($this->calendarcolors_used);
+		if(!empty($c)) {
+			$calendar['calendarcolor'] =  $c[0];
+		}*/
+		/*echo $calendarcolors_used+$numberofcals;
+		//$index = $this->calendarcolors_used;
+		$calendar['calendarcolor'] = $this->calendarcolors[$calendarcolors_used];
+		echo $active;
+		echo $calendarcolors_used+1;
+		if($active == "1") {
+			$calendarcolors_used = $calendarcolors_used+1;
+			//echo $this->calendarcolors_used;
+		} else {
+			$calendarcolors_used = $calendarcolors_used-1;
+			//echo $this->calendarcolors_used;
+		}*/
+		$globalColor0 = '#FF7957';
+		$globalColor1 = '#79BC57';
+		$globalColor2 = '#579AFF';
+		$globalColor3 = '#BC79FF';
+		$globalColor4 = '#DBB057';
+		$globalColor5 = '#57BCBC';
+		$globalColor6 = '#DD79DD';
+		$globalColor7 = '#79DDFF';
+		$globalColor8 = '#BCDD57';
+		$globalColor9 = '#BCBCBC';
+		
+		$calendar['calendarcolor'] = ${$col};
 		return json_encode(array(
 			'active' => $active,
 			'eventSource' => $this->getEventSourceInfo($calendar)
@@ -351,7 +498,7 @@ class Calendar extends Controller {
 	}*/
 	
 	
-	function newEventForm($start, $end, $allday, $calendarid) {
+	function newEventForm($start, $end, $allday, $calendarid, $formtype) {
 		global $session,$system, $lang;
 		
 		$start = $_POST['start'];
@@ -377,10 +524,15 @@ class Calendar extends Controller {
 		
 		$arr = $this->model->getFolderList(0,1);
 		$calendars = $arr["folders"];
-		
+		if($formtype == 0) {
 		$regularEventDisplay = ' style="display: none"';
 		$treatmentEventDisplay = ' style="display: block"';
 		$eventtype = 1;
+	} else {
+		$regularEventDisplay = ' style="display: block"';
+		$treatmentEventDisplay = ' style="display: none"';
+		$eventtype = 0;
+	}
 		
 		ob_start();
 			include('view/new.php');

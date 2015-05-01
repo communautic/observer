@@ -1,4 +1,5 @@
 <div id="calendar" class="app">
+<div class="appSettingsPopup"><div class="head"><?php echo $lang["GLOBAL_SETTINGS"];?></div><div class="content"></div></div>
 <input name="calendar-current" id="calendar-current" type="hidden" value="" />
 <div class="ui-layout-west">
 <div class="radius-helper">
@@ -30,11 +31,17 @@
     </div>
 	<div class="center-west">
 		<ul id="calendarActions" class="ui-layout-content actionconsole">
+        	<li class="listPrint"><span class="actionPrint" title="<?php echo $lang["ACTION_PRINT"];?>"></span></li>
         	<li class="listRefresh"><span class="actionRefresh" title="<?php echo $lang["ACTION_REFRESH"];?>"></span></li>
             <li class="listHelp"><span class="actionHelp" title="<?php echo $lang["ACTION_HELP"];?>"></span></li>
 			<li class="listBin"><span class="actionBin" title="<?php echo $lang["ACTION_DELETE"];?>"></span></li>
 		</ul>
 	</div>
 	<div class="center-center" id="calendar-right"></div><div id="dialog_holder"></div>
+    <div class="appSettings" style="top: 76px;"></div><div class="appSettingsPopupContent" style="display: none;">
+    
+    </div>
+    
+    
 </div>
 </div>
