@@ -1,3 +1,4 @@
+var numActiveCals = 1;
 Calendar={
 	Util:{
 		sendmail: function(eventId, location, description, dtstart, dtend){
@@ -92,6 +93,43 @@ Calendar={
 				$('#to').val(movedDate);
 				$('#totime').val(movedTime);
 			}
+		},
+		setTimeline : function() {
+			var curTime = new Date();
+			if (curTime.getHours() == 0 && curTime.getMinutes() <= 5)// Because I am calling this function every 5 minutes
+			{
+				// the day has changed
+				var todayElem = $("#calendar-right .fc-today");
+				todayElem.removeClass("fc-today");
+				todayElem.removeClass("fc-state-highlight");
+
+				todayElem.next().addClass("fc-today");
+				todayElem.next().addClass("fc-state-highlight");
+			}
+
+			var parentDiv = $("#calendar-right .fc-agenda-slots:visible").parent();
+			var timeline = parentDiv.children(".timeline");
+			if (timeline.length == 0) {//if timeline isn't there, add it
+				timeline = $("<hr>").addClass("timeline");
+				parentDiv.prepend(timeline);
+			}
+
+			var curCalView = $('#calendar-right').fullCalendar("getView");
+			if (curCalView.visStart < curTime && curCalView.visEnd > curTime) {
+				timeline.show();
+			} else {
+				timeline.hide();
+			}
+
+			var curSeconds = (curTime.getHours() * 60 * 60) + (curTime.getMinutes() * 60) + curTime.getSeconds();
+			var percentOfDay = curSeconds / 86400;
+			//console.log(percentOfDay);
+			//console.log(parentDiv.height());
+			//24 * 60 * 60 = 86400, # of seconds in a day
+			var topLoc = Math.floor(parentDiv.height() * percentOfDay);
+			//var appNavigationWidth = ($(window).width() > 768) ? $('#app-navigation').width() : 0;
+			var appNavigationWidth = $('#calendar-right').offset().left;
+			$('#calendar-right  .timeline').css({'left':($('#calendar-right  .fc-today').offset().left-appNavigationWidth),'width': $('#calendar-right  .fc-today').width(),'top':topLoc + 'px'});
 		}
 	},
 	UI:{
@@ -103,6 +141,7 @@ Calendar={
 			}
 		},*/
 		busy: false,
+		eventdialogtype: 0,
 		curCalId: 0,
 		startEventDialog:function(){
 			//Calendar.UI.loading(false);
@@ -155,6 +194,24 @@ Calendar={
 				$('#EventLocDisplay').trigger('click');
 				Calendar.UI.busy = false;
 			}
+			if(Calendar.UI.eventdialogtype == 1 && $('#calendar').data('storeEvent-Active')) {
+					$('#event-title').val($('#calendar').data('storeEvent-title'))
+					$('#event-treatment').val($('#calendar').data('storeEvent-treatment'))
+					$('#calendarTreatmentTitle').html($('#calendar').data('storeEvent-treatmentTitle'))
+					
+					$('#event-location').val($('#calendar').data('storeEvent-location'))
+					$('#treatment-location').val($('#calendar').data('storeEvent-treatmentLocation'))
+					$('#treatment-locationuid').val($('#calendar').data('storeEvent-locationuid'))
+					$('#calendarTreatmentLocation').html($('#calendar').data('storeEvent-treatmentLocationText'));
+					//all day
+					if($('#calendar').data('storeEvent-allday') == 1) {
+						$('#toggleAllDay').addClass('active');
+						$('#allday_checkbox').val('1');
+					}
+					//$('#calendar').data('storeEvent-allday',$('#allday_checkbox').val());
+					$('#calendar').data('storeEvent-Active', false)
+					Calendar.UI.eventdialogtype = 0;
+				}
 			//Calendar.UI.Share.init();
 			/*$('#sendemailbutton').click(function() {
 				Calendar.Util.sendmail($(this).attr('data-eventid'), $(this).attr('data-location'), $(this).attr('data-description'), $(this).attr('data-dtstart'), $(this).attr('data-dtend'));
@@ -162,6 +219,9 @@ Calendar={
 		},
 		newEvent:function(start, end, allday){
 			var cal = $("#calendar1 .active-link").data('id')
+			if(cal === undefined) {
+				$.prompt(ALERT_CALENDAR_NO_CALENDAR);
+			} else {
 			start = Math.round(start.getTime()/1000);
 			if (end){
 				end = Math.round(end.getTime()/1000);
@@ -170,13 +230,33 @@ Calendar={
 				// TODO: save event
 				$('#event').dialog('destroy').remove();
 			}else{
+				var formtype = 0;
+				if($('#calendar').data('storeEvent-Active')) {
+					/*$('#event-title').val($('#calendar').data('storeEvent-title'))
+					$('#event-treatment').val($('#calendar').data('storeEvent-treatment'))*/
+					if($('#calendar').data('storeEvent-treatment') == 0) {
+						var formtype = 1;
+					}
+					/*$('#calendarTreatmentTitle').html($('#calendar').data('storeEvent-treatmentTitle'))
+					
+					$('#event-location').val($('#calendar').data('storeEvent-location'))
+					$('#treatment-location').val($('#calendar').data('storeEvent-treatmentLocation'))
+					$('#treatment-locationuid').val($('#calendar').data('storeEvent-locationuid'))
+					$('#calendarTreatmentLocation').html($('#calendar').data('storeEvent-treatmentLocationText'))
+					$('#calendar').data('storeEvent-Active', false)*/
+				}
 				//Calendar.UI.loading(true);
-				$('#dialog_holder').load('/?path=apps/calendar/', {request: 'newEventForm', start:start, end:end, allday:allday?1:0, calendar: cal}, Calendar.UI.startEventDialog);
+				Calendar.UI.eventdialogtype = 1;
+				$('#dialog_holder').load('/?path=apps/calendar/', {request: 'newEventForm', start:start, end:end, allday:allday?1:0, calendar: cal, formtype: formtype }, Calendar.UI.startEventDialog);
 				/*$.ajax({ type: "GET", url: "/", data: { path: 'apps/calendar/', request: 'newEventForm', start:start, end:end, allday:allday?1:0 }, success: function(html){
 						$('#dialog_holder').html(html);
 						Calendar.UI.startEventDialog
 					}
 				});*/
+				
+				
+				
+			}
 			}
 		},
 		editEvent:function(calEvent, jsEvent, view){
@@ -257,12 +337,14 @@ Calendar={
 					}
 					if(data.status == 'success'){
 						$('#event').dialog('destroy').remove();
-						var aid = $("#calendar1 .active-link").data('id');
-						Calendar.UI.Calendar.display(aid);
+						/*var aid = $("#calendar1 .active-link").data('id');
+						Calendar.UI.Calendar.display(aid);*/
+						$('#calendar-right').fullCalendar('refetchEvents');
 					}
 					if(data.status == 'busy'){
-						var aid = $("#calendar1 .active-link").data('id');
-						Calendar.UI.Calendar.display(aid);
+						/*var aid = $("#calendar1 .active-link").data('id');
+						Calendar.UI.Calendar.display(aid);*/
+						$('#calendar-right').fullCalendar('refetchEvents');
 						$('#calendarTreatmentLocation').html('');
 						$('#event-location').val('');
 						$.prompt(ALERT_CALENDAR_ROOM_BUSY,{
@@ -278,8 +360,9 @@ Calendar={
 			function(data) {
 				if (data.status == 'success'){
 					event.lastmodified = data.lastmodified;
-					var aid = $("#calendar1 .active-link").data('id');
-					Calendar.UI.Calendar.display(aid);
+					//var aid = $("#calendar1 .active-link").data('id');
+					$('#calendar-right').fullCalendar('refetchEvents');
+					//Calendar.UI.Calendar.display(aid);
 					//console.log("Event moved successfully");
 				}
 				if (data.status == 'busy'){
@@ -291,8 +374,10 @@ Calendar={
 					})
 				}
 				if (data.status == 'error'){
-					var aid = $("#calendar1 .active-link").data('id');
-					Calendar.UI.Calendar.display(aid);
+					/*var aid = $("#calendar1 .active-link").data('id');
+					Calendar.UI.Calendar.display(aid);*/
+					$('#calendar-right').fullCalendar('refetchEvents');
+					
 				}
 			},"json");
 		},
@@ -319,8 +404,9 @@ Calendar={
 					})
 				}
 				if (data.status == 'error'){
-					var aid = $("#calendar1 .active-link").data('id');
-					Calendar.UI.Calendar.display(aid);
+					/*var aid = $("#calendar1 .active-link").data('id');
+					Calendar.UI.Calendar.display(aid);*/
+					$('#calendar-right').fullCalendar('refetchEvents');
 				}
 			},"json");
 		},
@@ -512,7 +598,7 @@ Calendar={
 		},
 		categoriesChanged:function(newcategories){
 			categories = $.map(newcategories, function(v) {return v.name;});
-			console.log('Calendar categories changed to: ' + categories);
+			//console.log('Calendar categories changed to: ' + categories);
 			$('#category').multiple_autocomplete('option', 'source', categories);
 		},
 		Calendar:{
@@ -533,17 +619,18 @@ Calendar={
 					});
 				}
 			},
-			activation:function(checkbox, calendarid, active)
+			activation:function(checkbox, calendarid, active, col)
 			{
 				//Calendar.UI.loading(true);
 				//$.post(OC.filePath('calendar', 'ajax/calendar', 'activation.php'), { calendarid: calendarid, active: checkbox.checked?1:0 },
 				  //function(data) {
-				$.ajax({ type: "GET", dataType:  'json', url: "/", data: { path: 'apps/calendar/', request: 'toggleView', calendarid: calendarid, active: active }, success: function(data){
+				$.ajax({ type: "GET", dataType:  'json', url: "/", data: { path: 'apps/calendar/', request: 'toggleView', calendarid: calendarid, active: active, numberofcals: numActiveCals, col: col }, success: function(data){
 					//Calendar.UI.loading(false);
 					//if (data.status == 'success'){
 						//checkbox.checked = data.active == 1;
 						if (data.active == 1){
 							$('#calendar-right').fullCalendar('addEventSource', data.eventSource);
+							//console.log(data.eventSource);
 						}else{
 							$('#calendar-right').fullCalendar('removeEventSource', data.eventSource.url);
 						}
@@ -564,6 +651,17 @@ Calendar={
 							// add holidays 
 						if(Calendar.UI.Calendar.curCalId == calendarid) { $('#calendar-right').fullCalendar('addEventSource', {"url":"\/?path=apps\/calendar&request=getrequestedEvents&calendar_id="+holidayCalendar+"","backgroundColor":"#FFD20A","borderColor":"#FFD20A","textColor":"#000000","cache":true}); }
 							$(".ui-tooltip-content").parents('div').remove();
+						}
+					});
+				}
+			},
+			coprint:function(calendarid)
+			{
+				 
+				if(Calendar.UI.Calendar.curCalId == calendarid) {	
+				
+					$.ajax({ type: "GET", dataType:  'json', url: "/", data: { path: 'apps/calendar/', request: 'showSingleCalendar', calendarid: calendarid }, success: function(data){
+						
 						}
 					});
 				}
@@ -802,28 +900,191 @@ Calendar={
 /* calendar Object */
 function calendarApplication(name) {
 	this.name = name;
+	var self = this;
 	this.isRefresh = false;
+	this.coPrintOptions = '';
+	this.coPopupEditClass = 'popup-full';
+	if(self.coPrintOptions == '') {
+			$.ajax({ type: "GET", url: "/", data: "path=apps/calendar&request=getPrintOptions", success: function(html){
+				self.coPrintOptions = html;
+			}});
+		}
 
 	this.actionClose = function() {
 	  calendarLayout.toggle('west');
 	  $('#calendar-right').fullCalendar('render');
+	  setTimeout(Calendar.Util.setTimeline,500);
+	  
+	}
+	
+	
+	this.actionLoadSettings = function() {
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/calendar&request=getSettingsList", success: function(settings){
+				$('#calendar .appSettingsPopup .content').html(settings.html);
+				var cal = $('#calendar1 .active-link').attr('data-id');
+				$('#calendarSettings .coCheckbox[rel="'+cal+'"]').addClass('active');
+				$('#calendar .appSettingsPopup').slideDown();
+				$('#calendar1 .folderListColorBox').each(function(i) {
+					if($(this).is('[class*="globalColor"]')	) {
+						$('#calendarSettings .coCheckbox:eq('+i+')').addClass('active');
+					}
+				})
+				}
+			});
 	}
  
 
 	this.actionRefresh = function() {
+		numActiveCals = 1;
 		var id = $("#calendar").data("first");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/calendar&request=getFolderList", success: function(data){
 		$('#calendar1 ul').html(data.html);
 		var idx = $("#calendar1 .module-click").index($("#calendar1 .module-click[rel='"+id+"']"));
-		$("#calendar1 .module-click:eq("+idx+")").addClass('active-link');
-		var aid = $("#calendar1 .active-link").data('id');
+		$("#calendar1 .module-click:eq("+idx+")").click();
+		//$("#calendar1 .module-click:eq("+idx+")").addClass('active-link');
+		//var aid = $("#calendar1 .active-link").data('id');
 		//$('#calendar-right').fullCalendar('refetchEvents');
-		Calendar.UI.Calendar.display(aid);
+		//Calendar.UI.Calendar.display(aid);
 		//calendarInnerLayout.initContent('center');
+		
 		
 		}
 	});
 	}
+	
+	this.actionPrintOption = function(option) {
+		var visStart = $('#calendar-right').fullCalendar('getView').visStart;
+		var visEnd = $('#calendar-right').fullCalendar('getView').visEnd;
+		var start = Math.round(new Date(visStart).getTime()/1000);
+		var end = Math.round(new Date(visEnd).getTime()/1000);
+		switch(option) {
+			case '1':
+				if(numActiveCals > 1) {
+					var calid = '';
+					$('#calendar1 .folderListColorBox').each(function(i) {
+						if($(this).is('[class*="globalColor"]')	) {
+							if(calid == '') {
+								calid = calid+$(this).parent().attr('data-id');
+							} else {
+								calid = calid+','+$(this).parent().attr('data-id');
+							}
+						}
+					})
+					var url ='/?path=apps/calendar&request=printCalendars&calid='+calid+'&start='+start+'&end='+end+'&option=1';
+				} else {
+					var calid = $("#calendar1 .active-link").attr("data-id");
+					var url ='/?path=apps/calendar&request=printCalendar&calid='+calid+'&start='+start+'&end='+end+'&option=1';
+				}
+			break;
+			case '2':
+				if(numActiveCals > 1) {
+					var calid = '';
+					$('#calendar1 .folderListColorBox').each(function(i) {
+						if($(this).is('[class*="globalColor"]')	) {
+							if(calid == '') {
+								calid = calid+$(this).parent().attr('data-id');
+							} else {
+								calid = calid+','+$(this).parent().attr('data-id');
+							}
+						}
+					})
+					var url ='/?path=apps/calendar&request=printCalendars&calid='+calid+'&start='+start+'&end='+end+'&option=2';
+				} else {
+					var calid = $("#calendar1 .active-link").attr("data-id");
+					var url ='/?path=apps/calendar&request=printCalendar&calid='+calid+'&start='+start+'&end='+end+'&option=2';
+				}
+				/*var calid = $("#calendar1 .active-link").attr("data-id");
+				var visStart = $('#calendar-right').fullCalendar('getView').visStart;
+				var visEnd = $('#calendar-right').fullCalendar('getView').visEnd;
+				var start = Math.round(new Date(visStart).getTime()/1000);
+				var end = Math.round(new Date(visEnd).getTime()/1000);
+				var url ='/?path=apps/calendar&request=printCalendar&calid='+calid+'&start='+start+'&end='+end+'&option=2';
+				if(!iOS()) {
+					$("#documentloader").attr('src', url);
+				} else {
+					window.open(url);
+				}*/
+			break;
+			case '3':
+				if(numActiveCals > 1) {
+					var calid = '';
+					$('#calendar1 .folderListColorBox').each(function(i) {
+						if($(this).is('[class*="globalColor"]')	) {
+							if(calid == '') {
+								calid = calid+$(this).parent().attr('data-id');
+							} else {
+								calid = calid+','+$(this).parent().attr('data-id');
+							}
+						}
+					})
+					var url ='/?path=apps/calendar&request=printCalendars&calid='+calid+'&start='+start+'&end='+end+'&option=3';
+				} else {
+					var calid = $("#calendar1 .active-link").attr("data-id");
+					var url ='/?path=apps/calendar&request=printCalendar&calid='+calid+'&start='+start+'&end='+end+'&option=3';
+				}
+			break;
+		}
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
+	}
+	
+	this.actionPrint = function() {
+		var id = $("#calendar").data("first");
+		//var url ='/?path=apps/patients/modules/invoices&request=printDetails&id='+id;
+		//$("#documentloader").attr('src', url);
+		var copopup = $('#co-splitActions');
+		var pclass = this.coPopupEditClass;
+		copopup.html(this.coPrintOptions);
+		copopup
+			.removeClass(function (index, css) {
+				   return (css.match (/\bpopup-\w+/g) || []).join(' ');
+			   })
+			.addClass(pclass)
+			.position({
+				  my: "center center",
+				  at: "right+123 center",
+				  of: '#calendarActions .listPrint',
+				  collision: 'flip fit',
+				  within: '#calendar-right',
+				  using: function(coords, ui) {
+						var $modal = $(this),
+						t = coords.top,
+						l = coords.left,
+						className = 'switch-' + ui.horizontal;
+						$modal.css({
+							left: l + 'px',
+							top: t + 'px'
+						}).removeClass(function (index, css) {
+							return (css.match (/\bswitch-\w+/g) || []).join(' ');
+						})
+						.addClass(className);
+						copopup.hide().animate({width:'toggle'}, function() { 
+							//copopup.find('.arrow').offset({ top: ui.target.top+25 });
+							var arrowtop = Math.round(ui.target.top - ui.element.top)+20;
+							copopup.find('.arrow').css('top', arrowtop); 
+						})
+				}
+			});
+	}
+	
+	/*this.actionPrint = function() {
+		var calid = $("#calendar1 .active-link").attr("data-id");
+		var visStart = $('#calendar-right').fullCalendar('getView').visStart;
+		var visEnd = $('#calendar-right').fullCalendar('getView').visEnd;
+		var start = Math.round(new Date(visStart).getTime()/1000);
+		var end = Math.round(new Date(visEnd).getTime()/1000);
+		var url ='/?path=apps/calendar&request=printCalendar&calid='+calid+'&start='+start+'&end='+end;
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
+	}*/
+	
+	
 
 
 	this.actionCalendar = function() {
@@ -860,11 +1121,6 @@ function calendarApplication(name) {
 			var id = $("#calendar1 .module-click:eq(0)").attr("rel");
 			$('#calendar').data('first',id);
 			$("#calendar1 .module-click:eq(0)").addClass('active-link');
-			/*$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getFolderDetails&id="+id, success: function(text){
-				$("#projects-right").html(text.html);
-				initProjectsContentScrollbar()
-				}
-			});*/
 			}
 		});
 	}
@@ -946,7 +1202,7 @@ calendar.modules_height = calendar_num_modules*module_title_height;
 
 function calendarActions(status) {
 	switch(status) {
-		case 0: actions = ['0','1']; break;
+		case 0: actions = ['0','1','2']; break;
 		default: 	actions = [];  	// none
 	}
 	$('#calendarActions > li span').each( function(index) {
@@ -979,7 +1235,7 @@ function calendarloadModuleStart() {
 	$('#calendar').data('first',id);
 	first.addClass('active-link');
 	var txt = first.find('span').text();
-$('#calendar .top-headline').text(txt);
+	$('#calendar .top-headline').text(txt);
 	//$("#calendar1 .module-click:eq(0)").trigger('click');
 	//$.ajax({ type: "GET", url: "/", data: "path=apps/"+ id +"&request=getCalendar", success: function(html){
 		//$("#calendar-right").html(html);
@@ -989,8 +1245,17 @@ $('#calendar .top-headline').text(txt);
 		//$('#calendar-right').fullCalendar('refetchEvents');
 		Calendar.UI.Calendar.display(aid);
 		//$('#calendar-right').fullCalendar( 'changeView', 'agendaWeek' )
+		
+		/*$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/calendar&request=getSettingsList", success: function(data){
+			$('#calendarSettings').html(data.html);
+			$('#calendarSettings .coCheckbox:eq(0)').addClass('active');
+			}
+		});*/
+		
+		
 		}
 	});
+	
 }
 
 
@@ -1076,7 +1341,26 @@ $(document).ready(function() {
 		});
 		calendarActions(0);
 	});*/
+	
 
+    function checkTime(i) {
+        return (i < 10) ? "0" + i : i;
+    }
+
+    function startTime() {
+        var today = new Date(),
+            h = checkTime(today.getHours()),
+            m = checkTime(today.getMinutes()),
+            s = checkTime(today.getSeconds());
+			var output = h + ":" + m;
+        $('#agendaTime').html(output);
+		$('#agendaDay').html(today.toString('dddd, dd. MMMM yyyy'));
+		//$('#agendaWidget .fc-agenda-days tr:eq(0) th:eq(1)').html('<span style="font-size: 16px; font-weight: bold;" id="agendaDay">'+today.toString('dddd, dd. MMMM yyyy')+'</span>');
+        t = setTimeout(function () {
+            startTime()
+        }, 500);
+    }
+    startTime();
 
 });
 	
@@ -1828,7 +2112,7 @@ function Header(calendar, options) {
 		tm = options.theme ? 'ui' : 'fc';
 		var sections = options.header;
 		if (sections) {
-			element = $("<table class='fc-header' style='width:100%'/>")
+			element = $("<table class='fc-header' style='width:96%'/>")
 				.append(
 					$("<tr/>")
 						.append(renderSection('left'))
@@ -3846,7 +4130,7 @@ function AgendaDayView(element, calendar) {
 setDefaults({
 	allDaySlot: true,
 	allDayText: 'all-day',
-	firstHour: 7,
+	firstHour: 8,
 	slotMinutes: 15,
 	//snapMinutes: 45,
 	defaultEventMinutes: 45,
@@ -4977,11 +5261,11 @@ function AgendaEventRenderer() {
 			// make sure horizontal coordinates are in bounds
 			left = Math.max(left, columnLeft);
 			right = Math.min(right, columnRight);
-			width = right - left;
+			width = right - left-1; // event width Guni added 1px
 			seg.top = top+1;
 			seg.left = left-1;
 			seg.outerWidth = width;
-			seg.outerHeight = bottom - top - 1;
+			seg.outerHeight = bottom - top - 1; 
 			html += slotSegHtml(event, seg);
 		}
 
@@ -7220,6 +7504,19 @@ function HorizontalPositionCache(getElement) {
 
 
 $(document).ready(function() {
+		/**
+	* Set an interval timer to make the timeline move 
+	*/
+	setInterval(Calendar.Util.setTimeline,60000);	
+	$(window).resize($.debounce( 500, function() {
+		/**
+		* When i use it instant the timeline is walking behind the facts
+		* A little timeout will make sure that it positions correctly
+		*/
+		//console.log('called');
+		setTimeout(Calendar.Util.setTimeline,500);
+	}));
+		
 		var calendar = $('#calendar-right').fullCalendar({
 			//contentHeight: 600,
 			height: $("#calendar-right").height(),
@@ -7236,6 +7533,30 @@ $(document).ready(function() {
 				agenda: agendatime,
 				'': defaulttime
 			},
+			viewRender: function(view) {
+			/*$('#datecontrol_current').html($('<p>').html(view.title).text());
+			$( "#datecontrol_date" ).datepicker("setDate", $('#fullcalendar').fullCalendar('getDate'));
+			if (view.name != defaultView) {
+				$.post(OC.filePath('calendar', 'ajax', 'changeview.php'), {v:view.name});
+				defaultView = view.name;
+			}
+			if(view.name === 'agendaDay') {
+				$('td.fc-state-highlight').css('background-color', '#ffffff');
+			} else{
+				$('td.fc-state-highlight').css('background-color', '#ffc');
+			}
+			Calendar.UI.setViewActive(view.name);
+			if (view.name == 'agendaWeek') {
+				$('#fullcalendar').fullCalendar('option', 'aspectRatio', 0.1);
+			}
+			else {
+				$('#fullcalendar').fullCalendar('option', 'aspectRatio', 1.35);
+			}*/
+			try {
+				Calendar.Util.setTimeline();
+			} catch(err) {
+			}
+		},
 			columnFormat: {
 				month: 'dddd',    // Mon
 				week: 'dddd d.M', // Mon 9/7
@@ -7267,6 +7588,129 @@ $(document).ready(function() {
 			selectHelper: true,
 			select: Calendar.UI.newEvent,
 			eventClick: Calendar.UI.editEvent,
+			eventDrop: Calendar.UI.moveEvent,
+			eventResize: Calendar.UI.resizeEvent,
+			eventSources: eventSources,
+			weekMode: 'variable',
+			buttonText: {
+				today:    buttonTextToday,
+				month:    buttonTextMonth,
+				week:     buttonTextWeek,
+				day:      buttonTextDay
+			},
+			eventRender: function(event, element, view) {
+				element.attr('id','event_'+event.id);
+				var str = event.title;
+				if(view.name === "month"){
+					var res = str.split('<br />'); 
+					str = res[0];
+				}
+				
+				
+				
+				if(event.description != '') {
+					str = '<span class="hasDescription"></span> '+str;
+				}
+				element.find('.fc-event-title').html(str);
+				if(event.eventtype != 0) {
+					if(event.calendarid != 2) {
+						if(numActiveCals === 1) {
+							element.addClass('fc-event-treatment');
+						}
+					}
+					if(event.eventclass != '') {
+					element.addClass(event.eventclass);
+					}
+					if(event.eventaccess != 0) {
+						if(numActiveCals > 1) {
+					//element.find('.fc-event-title').hide();
+					element.removeClass('fc-event-treatment-housecall');
+					//var bgcolor = element.css('background-color');
+					//element.find('.fc-event-treatment-icon').css('background-color:'+bgcolor+' !important');
+					//console.log(bgcolor);
+				}
+					var bgcolor = element.css('background-color');
+					element.prepend('<div class="fc-event-treatment-icon loadTreatment" rel="patients,'+event.folderid+','+event.patientid+','+event.treatmentid+',treatments" style="background-color:'+bgcolor+' !important"><img src="'+co_files+'/img/icon_treatment.png"></div>');
+					element.prepend('<div style="position: absolute; width: 2px; right: 0; top: 0; bottom: 0; z-index: 3; background-color:'+bgcolor+'"></div>');
+					}
+				}
+				if(numActiveCals > 1) {
+					element.find('.fc-event-title').hide();
+					//element.removeClass('fc-event-treatment-housecall');
+					//var bgcolor = element.css('background-color');
+					//element.find('.fc-event-treatment-icon').css('background-color:'+bgcolor+' !important');
+					//console.log(bgcolor);
+				} else {
+					//element.find('.fc-event-title').show();
+					//element.addClass('fc-event-treatment-housecall');
+				}
+				if(!iOS()) {
+					element.addClass('coTooltip');
+					element.append('<div style="display: none" class="coTooltipHtml">'+event.tooltip+'</div>');
+				}
+			}
+			/*,
+			eventAfterAllRender: function(view) {
+						if(editEventID !='0') {
+					console.log('open event');
+					editEventID = 0;
+				}
+
+			}*/
+		});
+		
+		
+		var calendar = $('#agendaWidget').fullCalendar({
+			//contentHeight: 600,
+			height: 500,
+			//contentHeight: $("#calendar-right").height(),
+			events: '/?path=apps/calendar&request=getrequestedEvents&calendar_id=' + $('#agendaWidget').attr('rel'),
+			header: {
+				left: 'prev,next today',
+				center: '',
+				right: ''
+			},
+			firstDay: firstDay,
+			editable: false,
+			disableDragging: true,
+			disableResizing: true,
+			defaultView: 'agendaDay',
+			timeFormat: {
+				agenda: agendatime,
+				'': defaulttime
+			},
+			columnFormat: {
+				month: 'dddd',    // Mon
+				week: 'dddd d.M', // Mon 9/7
+				day: 'dddd d.M'  // Monday 9/7
+			},
+			weekNumbers: true,
+			weekNumberTitle: weekNumberTitle,
+			slotMinutes: 30,
+			defaultEventMinutes: 45,
+			/*titleFormat: {
+				month: t('calendar', 'MMMM yyyy'),
+						// September 2009
+				week: t('calendar', "MMM d[ yyyy]{ '–'[ MMM] d yyyy}"),
+						// Sep 7 - 13 2009
+				day: t('calendar', 'dddd, MMM d, yyyy'),
+						// Tuesday, Sep 8, 2009
+			},*/
+			titleFormat: {
+				month: 'MMM yyyy',
+				week: "d[.MM][.yyyy]{ '- 'd.MM.yyyy}",
+				day: 'ddd, d.MM.yyyy'
+			},
+			axisFormat: defaulttime,
+			monthNames: monthNames,
+			monthNamesShort: monthNamesShort,
+			dayNames: dayNames,
+			dayNamesShort: dayNamesShort,
+			allDayText: allDayText,
+			selectable: false,
+			selectHelper: false,
+			select: Calendar.UI.newEvent,
+			//eventClick: Calendar.UI.editEvent,
 			eventDrop: Calendar.UI.moveEvent,
 			eventResize: Calendar.UI.resizeEvent,
 			eventSources: eventSources,
@@ -7352,6 +7796,28 @@ $(document).ready(function() {
 	});
 	});*/
 	
+	/*$('#calendar1').on('click', 'span.module-click', function(e) {
+		e.preventDefault();
+		prevent_dblclick(e)
+		var active = 1;
+		if($(this).hasClass('active-link')) {
+			$(this).removeClass("active-link");
+			active = 0;
+		} else {
+			$(this).addClass("active-link");
+		}
+		Calendar.UI.Calendar.activation(this,$(this).data('id'),active);
+		
+		$("#calendar .module-click").removeClass("active-link");
+		$(this).addClass("active-link");
+		$("#calendar").data("first",$(this).attr('rel'));
+		Calendar.UI.Calendar.curCalId = $(this).data('id');
+		$('#calendar-right').fullCalendar( 'removeEvents').fullCalendar('removeEventSources');
+		Calendar.UI.Calendar.display($(this).data('id'));
+		var txt = $(this).find('span').text();
+		$('#calendar .top-headline').text(txt);
+	});*/
+	
 	$('#calendar1').on('click', 'span.module-click', function(e) {
 		e.preventDefault();
 		prevent_dblclick(e)
@@ -7363,7 +7829,73 @@ $(document).ready(function() {
 		Calendar.UI.Calendar.display($(this).data('id'));
 		var txt = $(this).find('span').text();
 		$('#calendar .top-headline').text(txt);
+		numActiveCals = 1;
+		$('#calendar1 .folderListColorBox').each(function(i) {
+			if($(this).is('[class*="globalColor"]')	) {
+				$(this).removeClass('globalColor'+i);
+			}
+		})
 	});
+	
+	
+	$('#calendar').on('click', 'span.toggleCalendar', function(e) {
+		e.preventDefault();
+		prevent_dblclick(e)
+		
+		var activeCal = $("#calendar1 .module-click.active-link");
+		
+		var activeCalColor = activeCal.find('.folderListColorBox').attr('col');
+		var activeCalId = activeCal.attr('data-id');
+		
+		var ele = $(this);
+		var col = ele.attr('col');
+		//var cur = ele.attr('rel');
+		
+		var id = ele.attr('rel');
+		//console.log(id);
+		//var cur_id = $("#calendar .module-click.active-link").attr('data-id');
+		//console.log(cur_id);
+		
+		if(ele.hasClass('active') && id !== activeCalId) {
+			ele.removeClass('active');
+			Calendar.UI.Calendar.activation(this,id,0,col);
+			numActiveCals--;
+			$('#calendar1 .module-click[data-id="'+id+'"]').find('.folderListColorBox').removeClass(col);
+			if(numActiveCals == 1) {
+				activeCal.click();
+			}
+		} else {
+			if(id !== activeCalId) {
+				ele.addClass('active');
+				Calendar.UI.Calendar.activation(this,id,1,col);
+				numActiveCals++;
+				$('#calendar1 .module-click[data-id="'+id+'"]').find('.folderListColorBox').addClass(col);
+				if(numActiveCals == 2) {
+					console.log('reload active');
+					Calendar.UI.Calendar.activation(this,activeCalId,0,activeCalColor);
+					Calendar.UI.Calendar.activation(this,activeCalId,1,activeCalColor);
+				}
+			}
+		}
+		if(numActiveCals > 1) {
+			activeCal.find('.folderListColorBox').addClass(activeCalColor);
+		} else {
+			//var activecol = $("#calendar1 .module-click.active-link").find('.folderListColorBox').attr('col');
+			activeCal.find('.folderListColorBox').removeClass(activeCalColor);
+		}
+		//console.log(numActiveCals);
+		
+		
+		/*$("#calendar .module-click").removeClass("active-link");
+		$(this).addClass("active-link");
+		$("#calendar").data("first",$(this).attr('rel'));
+		Calendar.UI.Calendar.curCalId = $(this).data('id');
+		$('#calendar-right').fullCalendar( 'removeEvents').fullCalendar('removeEventSources');
+		Calendar.UI.Calendar.display($(this).data('id'));
+		var txt = $(this).find('span').text();
+		$('#calendar .top-headline').text(txt);*/
+	});
+	
 	
 	$(document).on('click', 'a.insertEventTypeFromDialog',function(e) {
 		e.preventDefault();
@@ -7503,7 +8035,7 @@ $(document).ready(function() {
 	});
 	
 	
-	/*$('#calendar-right').on('click', '.loadTreatment', function(e) {
+	$('#agendaWidget').on('click', '.loadTreatment', function(e) {
 		e.preventDefault();
 		e.stopPropagation();
 		var href = $(this).attr('rel').split(",");
@@ -7516,7 +8048,16 @@ $(document).ready(function() {
 		}
 		externalLoadThreeLevels(href[4],href[1],href[2],href[3],href[0]);
 		
-	});*/
+	});
+	
+	$('#agendaWidget').on('click', '.fc-event-title', function(e) {
+		e.preventDefault();
+		e.stopPropagation();
+		$('#appnav .app_calendar').click()
+		$('#calendar .fc-button-today').click()
+	});
+	
+	
 	
 	
 //$('#newCalendar').live('click', function () {
@@ -7586,6 +8127,40 @@ $(document).on('click', '#toggleDesktop', function(e) {
 	} else {
 		$('#desktop_checkbox').val(0);
 		desktop.removeClass('active');
+	}
+});
+
+function addCopyData() {
+	$('#calendar').data('storeEvent-Active',true);
+	$('#calendar').data('storeEvent-title',$('#event-title').val());
+	$('#calendar').data('storeEvent-treatment',$('#event-treatment').val());
+	$('#calendar').data('storeEvent-treatmentTitle',$('#calendarTreatmentTitle').html());
+	//location
+	$('#calendar').data('storeEvent-location',$('#event-location').val());
+	$('#calendar').data('storeEvent-treatmentLocation',$('#treatment-location').val());
+	$('#calendar').data('storeEvent-treatmentLocationText',$('#calendarTreatmentLocation').html());
+	$('#calendar').data('storeEvent-locationuid',$('#treatment-locationuid').val());
+	//all day
+	$('#calendar').data('storeEvent-allday',$('#allday_checkbox').val());
+}
+
+$(document).on('click', '#toggleCopy', function(e) {
+//$('#allday_checkbox').live('click', function () {
+	var status = $('#copy_checkbox').val();
+	if(status == 0) {
+		$('#copy_checkbox').val(1);
+	} else {
+		$('#copy_checkbox').val(0);
+	}
+	var copy = $('#toggleCopy');
+	var status = $('#copy_checkbox').val();
+	if(status == 1) {
+		$('#copy_checkbox').val(1);
+		copy.addClass('active');
+		addCopyData();
+	} else {
+		$('#copy_checkbox').val(0);
+		copy.removeClass('active');
 	}
 });
 
