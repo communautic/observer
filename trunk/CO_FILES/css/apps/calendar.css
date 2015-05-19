@@ -412,11 +412,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	/*border: 1px solid #A5BFE1;*/ /* default BORDER color */
 	background-color: #A5BFE1; /* default BACKGROUND color */
 	border: 0;
-	border-top: 1px solid #fff !important;
-	border-left: 1px solid #fff !important;
+	/*border-top: 1px solid #e1f0af !important;
+	border-left: 1px solid #e1f0af !important;
+	border-right: 1px solid #fff !important;*/
 	color: #fff;               /* default TEXT color */
 	font-size: 11px;
 	cursor: default;
+	overflow: hidden;
 	}
 
 a.fc-event {
@@ -437,10 +439,25 @@ a.fc-event,
 	height: 100%;
 	overflow: hidden;
 	}
+
+
+.fc-event-time {
+		padding: 1px 3px 2px 3px;
+		display: inline-block;
+	}
 	
-.fc-event-time,
 .fc-event-title {
-		padding: 2px;
+		padding: 1px 3px 2px 3px;
+		overflow: hidden;
+	}
+	
+.fc-event-treatment .fc-event-time {
+		padding: 1px 16px 2px 3px;
+		display: inline-block;
+	}
+
+.fc-event-treatment .fc-event-title {
+		padding: 2px 16px 3px 3px;
 	}
 .fc-event-title {
 	font-weight: bold;
@@ -630,8 +647,8 @@ table.fc-border-separate {
 	}
 	
 .fc-agenda-allday .fc-day-content {
-	min-height: 34px; /* TODO: doesnt work well in quirksmode */
-	_height: 34px;
+	min-height: 18px; /* TODO: doesnt work well in quirksmode */
+	_height: 18px;
 	}
 	
 /* divider (between all-day and slots) */
@@ -641,7 +658,7 @@ table.fc-border-separate {
 	}
 	
 .fc-widget-header .fc-agenda-divider-inner {
-	background: #eee;
+	/*background: #eee;*/
 	}
 	
 /* slot rows */
@@ -656,7 +673,7 @@ table.fc-border-separate {
 	}
 	
 .fc-agenda-slots td div {
-	height: 20px;
+	height: 16px;
 	}
 	
 .fc-agenda-slots tr.fc-slot0 th,
@@ -664,10 +681,16 @@ table.fc-border-separate {
 	border-top-width: 0;
 	}
 
-.fc-agenda-slots tr.fc-minor th,
+
 .fc-agenda-slots tr.fc-minor td {
 	/*border-top-style: dotted;*/
 	border-top-color: #dfdfdf;
+	border-style: dotted;
+	}
+.fc-agenda-slots tr.fc-minor th {
+	/*border-top-style: dotted;*/
+	border-top-color: #fff;
+	border-style: dotted;
 	}
 	
 .fc-agenda-slots tr.fc-minor th.ui-widget-header {
@@ -727,9 +750,9 @@ table.fc-border-separate {
 .fc-event-vert .ui-resizable-s {
 	bottom: 0        !important; /* importants override pre jquery ui 1.7 styles */
 	width: 100%      !important;
-	height: 8px      !important;
+	height: 3px      !important;
 	overflow: hidden !important;
-	line-height: 8px !important;
+	line-height: 3px !important;
 	font-size: 11px  !important;
 	font-family: monospace;
 	text-align: center;
@@ -740,9 +763,11 @@ table.fc-border-separate {
 	_overflow: hidden;
 	}
 
-.fc-event-treatment { background-color: #A5BFE1 !important; /*border-color: #A5BFE1 !important;*/}
-.fc-event-treatment-icon { position: absolute; z-index: 9; top: 0; right: 0; width: 16px; height: 16px; 
-background: url("../../img/icons.png") no-repeat scroll -320px -20px transparent;
+.fc-event-treatment { background-color: #A5BFE1 !important; border-color: #A5BFE1 !important;}
+.fc-event-treatment-icon { position: absolute; z-index: 9; top: 1px; right: 0; width: 16px; height: 15px;
+/*background: url("../../img/icons.png") no-repeat scroll -320px -20px transparent;*/
+}
+.fc-event-treatment-icon img{ margin-left: 2px;
 }
 .fc-event-treatment-housecall { background-color: #DCD2FF !important; /*border-color: #A5BFE1 !important;*/}
 .fc-sat, .fc-sun { background-color: #E6EDF7;}
@@ -889,7 +914,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a0bee9', end
     width: 145px;
 	font-size: 13px;
 }
-.calendarDialog .fieldset2 input#event-title {
+.calendarDialog .fieldset2 input#event-title, .calendarDialog .fieldset2 input#event-lastname, .calendarDialog .fieldset2 input#event-firstname, .calendarDialog .fieldset2 input#event-phone, .calendarDialog .fieldset2 input#event-email, .calendarDialog .fieldset2 input#event-treatmenttitle {
     display: inline-block; width: 165px; padding: 0 10px 0 10px; height: 23px; background: #fff; border: 1px solid #b2b2b2; border-radius: 4px; 
 	margin: 1px 0;
 }
@@ -942,3 +967,34 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a0bee9', end
     width: 8px;
 	display: inline-block;
 }
+
+#calendar-right .fc-agenda-slots tr:hover, #calendar-right .fc-agenda-slots tr:active { background:#e5e5e5; opacity: 0.5;}
+
+#calendar-right .timeline {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: #EB4600;
+    border-image: none;
+    border-right: medium none;
+    border-style: solid none none;
+    border-width: 1px medium medium;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    width: 100%;
+    z-index: 999;
+}
+
+.folderListColorBox { position: absolute; top: 3px; right: 4px; width: 22px; height: 16px; }
+.globalColor0 { background: #6EAAFF; }
+.globalColor1 { background: #FF7878; }
+.globalColor2 { background: #8CD264; }
+.globalColor3 { background: #FFD41D; }
+.globalColor4 { background: #D2B4FF; }
+.globalColor5 { background: #FF9E1F; }
+.globalColor6 { background: #64CCC9; }
+.globalColor7 { background: #FF83FF; }
+.globalColor8 { background: #9999FF; }
+.globalColor9 { background: #BCBCBC; }
