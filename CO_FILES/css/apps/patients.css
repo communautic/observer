@@ -122,11 +122,11 @@ background-color: #D2DCFF; }
     background-color: #d2dcff;
 }
 
-#canvasDivText .tbl-protocol td, #canvasDivText .elastic, #canvasDivText .elastic-two, .patients-colorTable {
+#canvasDivText .tbl-protocol td, #canvasDivText .elastic, #canvasDivText .elastic-two, #canvasDivTextSketch .tbl-protocol td, #canvasDivTextSketch .elastic, #canvasDivTextSketch .elastic-two, .patients-colorTable {
     background-color: #E5E5E5;
 }
 
-#canvasDivText .tbl-protocol .active, #canvasDivText .active .elastic {
+#canvasDivText .tbl-protocol .active, #canvasDivText .active .elastic, #canvasDivTextSketch .tbl-protocol .active, #canvasDivTextSketch .active .elastic {
     background-color: #d2dcff;
 }
 
@@ -391,8 +391,10 @@ background: url("../../img/brainstorms_grid_stagegate.png") no-repeat scroll 1px
 
 
 #patients .canvasDiv { width: 400px; height: 400px; background-image:url(../../img/body.png); float: left;}
+#patients .canvasDivSketch { width: 1161px; height: 400px; background-repeat: no-repeat; background-size: auto 400px; float: left;}
 #patients .tasks { width: 400px; height: 400px; border: 1px solid #000; float: left;}
 #patients .canvasDraw{ position: absolute; width: 400px; height: 400px; cursor: url("../../img/draw.gif") 2 2, crosshair;}
+#patients .canvasDrawSketch{ position: absolute; width: 1161px; height: 400px; cursor: url("../../img/draw.gif") 2 2, crosshair;}
 #patients .canvasDraw:active { cursor: url("../../img/draw.gif") 2 2, crosshair;}
 #patients .circle { position: absolute; cursor: pointer; background: #fff; border-radius: 50% 50% 50% 50%; 
     display: block;
@@ -410,39 +412,46 @@ background: url("../../img/brainstorms_grid_stagegate.png") no-repeat scroll 1px
 #patients .circle8 { border: 2px solid #0A960A; color: #0A960A; }
 #patients .circle9 { border: 2px solid #AA19AA; color: #AA19AA; }*/
 
-#patients .circle0 { background: #3C4664; }
-#patients .circle1 { background: #EB4600; }
-#patients .circle2 { background: #915500; }
-#patients .circle3 { background: #0A960A; }
-#patients .circle4 { background: #AA19AA; }
-#patients .circle5 { background: #3C4664; }
-#patients .circle6 { background: #EB4600; }
-#patients .circle7 { background: #915500; }
-#patients .circle8 { background: #0A960A; }
-#patients .circle9 { background: #AA19AA; }
+#patients .circle0 { background: #6EAAFF; }
+#patients .circle1 { background: #FF7878; }
+#patients .circle2 { background: #FFD41D; }
+#patients .circle3 { background: #8CD264; }
+#patients .circle4 { background: #D2B4FF; }
+#patients .circle5 { background: #9999FF; }
+#patients .circle6 { background: #FF9E1F; }
+#patients .circle7 { background: #BCBCBC; }
+#patients .circle8 { background: #64CCC9; }
+#patients .circle9 { background: #FF83FF; }
 
 /*#patients .loadanvas.active { cursor: pointer; background: red; }*/
 #patients .loadCanvasList { cursor: pointer; background: #ccc; }
 #patients .loadCanvasList.active { cursor: pointer; background: red; }
 
-#patients .canvasToolsOuter { position: relative; height: 10px; z-index: 998}
-#patients .canvasTools { position: absolute; left: 30px; height: 26px; width: 370px; z-index: 999; }
-#patients .canvasTools span { display: inline-block; width: 22px; height: 24px; background: url(../../img/drawtools.png) no-repeat; margin-right: 30px; }
+#patients .canvasToolsOuter { position: relative; height: 60px; z-index: 998}
+#patients .canvasTools { position: absolute; left: 0px; height: 60px; z-index: 999; }
+#patients .canvasTools span { display: inline-block; width: 60px; height: 60px; background: url(../../img/drawtools.png) no-repeat; }
 #patients .canvasTools span:hover { cursor: pointer; }
 
-#patients .canvasTools span.addTool { background-position: 0px 0px; }
-#patients .canvasTools span.addTool:hover { background-position: 0px -30px; }
-#patients .canvasTools span.penTool { background-position: -30px 0px; }
-#patients .canvasTools span.penTool:hover { background-position: -30px -30px; }
-#patients .canvasTools span.penTool.active { background-position: -30px -30px; }
-#patients .canvasTools span.erasorTool { background-position: -60px 0px; }
-#patients .canvasTools span.erasorTool:hover { background-position: -60px -30px; }
-#patients .canvasTools span.erasorTool.active { background-position: -60px -30px; }
-#patients .canvasTools span.clearTool { background-position: -90px 0px; }
-#patients .canvasTools span.clearTool:hover { background-position: -90px -30px; }
-#patients .canvasTools span.undoTool { background-position: -120px 0px; }
-#patients .canvasTools span.undoTool:hover { background-position: -120px -30px; }
-#patients .canvasTools span.undoTool.active { background-position: -120px -30px; }
+#patients .canvasTools span.addTool { background-position: 19px 19px; }
+#patients .canvasTools span.addTool:hover { background-position: 19px -61px; }
+
+#patients .canvasTools span.penTool { background-position: -42px 19px; }
+#patients .canvasTools span.penTool:hover { background-position: -42px -61px; }
+#patients .canvasTools span.penTool.active { background-position: -42px -61px; }
+
+#patients .canvasTools span.erasorTool { background-position: -120px 19px; }
+#patients .canvasTools span.erasorTool:hover { background-position: -120px -61px; }
+#patients .canvasTools span.erasorTool.active { background-position: -120px -61px; }
+
+#patients .canvasTools span.rotateTool { background-position: -327px 19px; }
+#patients .canvasTools span.rotateTool:hover { background-position: -327px -61px; }
+
+#patients .canvasTools span.clearTool { background-position: -187px 19px; }
+#patients .canvasTools span.clearTool:hover { background-position: -187px -61px; }
+
+#patients .canvasTools span.undoTool { background-position: -260px 21px; }
+#patients .canvasTools span.undoTool:hover { background-position: -260px -59px; }
+#patients .canvasTools span.undoTool.active { background-position: -260px -59px; }
 
 #patients .row0 { background: #f2f2f2; border-top: 1px solid #fff; border-bottom: 1px solid #ccc; line-height: 21px; }
 #patients .row1 { background: #e5e5e5; border-top: 1px solid #fff; border-bottom: 1px solid #ccc; line-height: 21px; }
@@ -453,3 +462,11 @@ background: url("../../img/brainstorms_grid_stagegate.png") no-repeat scroll 1px
 #patients-right .barchart_color_inprogress { background-color: #FFD20A;}
 #patients-right .barchart_color_inprogress { background-color: #FFD20A;}
 #patients-right .barchart_color_finished { background-color: #82aa0b;}
+
+/*#patients-right .ui-upload-button { position: absolute !important; width: 80px; height: 120px;}
+#patients-right .qq-upload-button-hover {background-color: #E9D09A; background-image: url("../../img/avatar_hover.jpg");  background-repeat: no-repeat; }
+#patients-right .ui-upload-drop-area { position: absolute; width: 74px; padding: 20px 3px 3px 3px; height: 97px; background: #E9D09A; opacity: 0.6; z-index: 1; font-size: 11px; text-align: center; }
+#patients-right .ui-upload-drop-area-active { background: #E9D09A;}
+#patients-right .ui-upload-list { display: none; position: absolute; width: 74px; padding: 3px; text-align: center; height: 114px; font-size: 11px; z-index: 2; background: #E9D09A; opacity: 0.8 }
+#patients-right .ui-upload-file { display: none;}
+#patients-right .ui-upload-spinner {display:inline-block; background: url("../../img/file_loading.gif"); width:15px; height:15px; vertical-align:text-bottom;}*/
