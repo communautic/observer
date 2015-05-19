@@ -1,7 +1,7 @@
 <?php
 switch(CO_PRODUCT_VARIANT) {
 	case 0:
-		$lang["APPLICATION_NAME"] = "company observer 6.5.7";
+		$lang["APPLICATION_NAME"] = "company observer 6.5.8";
 		$lang["APPLICATION_NAME_ALT"] = "company.observer";
 		$lang["APPLICATION_NAME_CAPS"] = "Company Observer";
 		$lang["APPLICATION_LOGO"] = "company_observer.png";
@@ -11,7 +11,7 @@ switch(CO_PRODUCT_VARIANT) {
 		$GLOBALS["APPLICATION_LOGO_PRINT"] = "poweredby_company_observer.png";
 	break;
 	case 1:
-		$lang["APPLICATION_NAME"] = "physio observer 6.5.7";
+		$lang["APPLICATION_NAME"] = "physio observer 6.5.8";
 		$lang["APPLICATION_NAME_ALT"] = "physio.observer";
 		$lang["APPLICATION_NAME_CAPS"] = "Physio Observer";
 		$lang["APPLICATION_LOGO"] = "physio_observer.png";
@@ -19,6 +19,16 @@ switch(CO_PRODUCT_VARIANT) {
 		$lang["APPLICATION_WEBSITE"] = "http://physioobserver.at";
 		$lang["APPLICATION_SUPPORT_EMAIL"] = "support@physioobserver.at";
 		$GLOBALS["APPLICATION_LOGO_PRINT"] = "poweredby_physio_observer.png";
+	break;
+	case 2:
+		$lang["APPLICATION_NAME"] = "therapy observer 6.5.8";
+		$lang["APPLICATION_NAME_ALT"] = "therapy.observer";
+		$lang["APPLICATION_NAME_CAPS"] = "Therapy Observer";
+		$lang["APPLICATION_LOGO"] = "therapy_observer.png";
+		$lang["APPLICATION_LOGO_LOGIN"] = "therapy_observer_login.png";
+		$lang["APPLICATION_WEBSITE"] = "http://physioobserver.at";
+		$lang["APPLICATION_SUPPORT_EMAIL"] = "support@physioobserver.at";
+		$GLOBALS["APPLICATION_LOGO_PRINT"] = "poweredby_therapy_observer.png";
 	break;
 }
 

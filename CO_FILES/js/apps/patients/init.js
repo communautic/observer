@@ -21,7 +21,12 @@ function patientsApplication(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#patients input.title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
+			setTimeout(function() {
+				title = $("#patients input.title").fieldValue();
+				if(title == "") {
+					$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
+				}
+			}, 5000)
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -30,6 +35,8 @@ function patientsApplication(name) {
 		formData[formData.length] = processListApps('folder');
 		formData[formData.length] = processListApps('management');
 		formData[formData.length] = processCustomTextApps('management_ct');
+		formData[formData.length] = processListApps('insurer');
+		formData[formData.length] = processCustomTextApps('insurer_ct');
 		formData[formData.length] = processListAppsInsurance('insurance');
 		formData[formData.length] = processStringApps('insuranceadd');
 		formData[formData.length] = processDocListApps('documents');
@@ -41,6 +48,14 @@ function patientsApplication(name) {
 			case "edit":
 				$("#patients2 span[rel='"+data.id+"'] .text").html($("#patients .title").val());
 				$("#patientDurationStart").html($("#patients-right input[name='startdate']").val());
+				var clientid = $('#patients .loadContactExternal').attr('rel');
+				var insurerid = $('#patientsinsurer .listmember').attr('uid');
+				//console.log(clientid + insurerid);
+				if(clientid != insurerid) {
+					$('#number_two').show();
+				} else {
+					$('#number_two').hide();
+				}
 			break;
 		}
 	}
@@ -142,7 +157,38 @@ function patientsApplication(name) {
 		});
 	}
 	
-	// autocomplete contacts search
+	// autocomplete treatments search
+	$('.calendarcontacts-search').livequery(function() { 
+		$(this).autocomplete({
+			appendTo: '#tabs-cal',
+			source: "?path=apps/patients&request=getCalendarContactsSearch",
+			//minLength: 2,
+			select: function(event, ui) {
+				var field = $(this).attr("field");
+				calendarcontactsSelect(field, ui.item.id, ui.item.value);
+			},
+			close: function(event, ui) {
+				$(this).val("");
+			}
+		});
+	});
+	
+	// autocomplete treatments search
+	$('.calendarpatients-search').livequery(function() { 
+		$(this).autocomplete({
+			appendTo: '#tabs-cal',
+			source: "?path=apps/patients&request=getCalendarPatientsSearch",
+			//minLength: 2,
+			select: function(event, ui) {
+				var field = $(this).attr("field");
+				calendarpatientsSelect(field, ui.item.id, ui.item.value);
+			},
+			close: function(event, ui) {
+				$(this).val("");
+			}
+		});
+	});
+	// autocomplete treatments search
 	$('.calendartreatments-search').livequery(function() { 
 		$(this).autocomplete({
 			appendTo: '#tabs-cal',
@@ -540,7 +586,12 @@ function patientsFolders(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#patients input.title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
+			setTimeout(function() {
+				title = $("#patients input.title").fieldValue();
+				if(title == "") {
+					$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
+				}
+			}, 5000)
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -883,7 +934,7 @@ function patientsActions(status) {
 	switch(status) {
 		case 0: 
 			if(obj.name == 'patients') {
-				actions = ['1','2','3','4','6','7','8','9']; 
+				actions = ['1','2','3','6','7','8','9']; 
 			} else if(obj.name == 'patients_invoices') {
 				actions = ['2','3','6','7','8']; 
 			} else {
@@ -926,15 +977,51 @@ function patientsActions(status) {
 
 var patientsLayout, patientsInnerLayout;
 
+function calendarcontactsSelect(field,str,value) {
+		closedialog = 0;
+		var html = '<span class="listmember" uid="' + str + '">' + value + '</span>';
+		$('#event-contactid').val(str);
+		$("#"+field).html(html);
+		$("#modalDialog").dialog('close');
+	}
+
+function calendarpatientsSelect(field,str,value) {
+		closedialog = 0;
+		/*var html = '<span class="listmember" uid="' + str + '">' + value + '</span>';
+		
+		$("#"+field).html(html);
+		$("#modalDialog").dialog('close');*/
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients&request=getPatientInfoForCalendar&id=" + str, cache: false, success: function(data){
+			//console.log(data.patient);
+			var patient = '<span class="listmember" uid="' + str + '">' + data.patient + '</span>';
+			var folder = '<span class="listmember" uid="' + str + '">' + data.foldertitle + '</span>';
+			$('#event-patientid').val(str);
+			$("#"+field).html(patient);
+			$("#calendarFolderActive").html(folder);
+			$("#event-folderid").val(data.folder);
+			$("#modalDialog").dialog('close');
+			//$.ajax({ type: "GET", url: "/", data: "path=apps/calendar/&request=saveLastUsedTreatments&id="+str}); 
+			}
+		});
+	}
 
 function calendartreatmentsSelect(field,str,value) {
 		closedialog = 0;
-		var html = '<span class="listmember" uid="' + str + '">' + value + '</span>';
-		$('#event-treatment').val(str);
-		$('#event-title').val(value);
-		$("#"+field).html(html);
-		$("#modalDialog").dialog('close');
-		$.ajax({ type: "GET", url: "/", data: "path=apps/calendar/&request=saveLastUsedTreatments&id="+str}); 
+		var title = '<span class="listmember" uid="' + str + '">' + value + '</span>';
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients/modules/treatments&request=getTreatmentInfoForCalendar&id=" + str, cache: false, success: function(data){
+			//console.log(data.patient);
+			var patient = '<span class="listmember" uid="' + str + '">' + data.patient + '</span>';
+			var folder = '<span class="listmember" uid="' + str + '">' + data.foldertitle + '</span>';
+			var treatment = '<span class="listmember" uid="' + str + '">' + data.title + '</span>';
+			$('#event-treatment').val(str);
+			$('#event-title').val(title);
+			$("#"+field).html(treatment);
+			$("#calendarPatient").html(patient);
+			$("#calendarFolder").html(folder);
+			$("#modalDialog").dialog('close');
+			$.ajax({ type: "GET", url: "/", data: "path=apps/calendar/&request=saveLastUsedTreatments&id="+str}); 
+			}
+		});
 	}
 
 
@@ -1026,7 +1113,7 @@ $(document).ready(function() {
 		obj.insertFolderFromDialog(field,gid,title);
 	});
 	
-	$(document).on('click', 'a.insertCalendarTreatmentfromDialog', function(e) {
+	/*$(document).on('click', 'a.insertCalendarTreatmentfromDialog', function(e) {
 		e.preventDefault();
 		var field = $(this).attr("field");
 		var cid = $(this).attr("cid");
@@ -1038,6 +1125,52 @@ $(document).ready(function() {
 		$("#"+field).html(html);
 		$("#modalDialog").dialog('close');
 		$.ajax({ type: "GET", url: "/", data: "path=apps/calendar/&request=saveLastUsedTreatments&id="+cid}); 
+	});*/
+	
+	
+	$(document).on('click', 'a.insertCalendarContactfromDialog', function(e) {
+		e.preventDefault();
+		var field = $(this).attr("field");
+		var cid = $(this).attr("cid");
+		var text = $(this).html();
+		$("#"+field).html(text);
+		$('#event-contactid').val(cid);
+		
+	});
+	
+	$(document).on('click', 'a.insertCalendarPatientfromDialog', function(e) {
+		e.preventDefault();
+		var field = $(this).attr("field");
+		var cid = $(this).attr("cid");
+		var text = $(this).html();
+		$("#"+field).html(text);
+		$('#event-contactid').val(cid);
+		
+	});
+	
+	$(document).on('click', 'a.insertCalendarTreatmentfromDialog', function(e) {
+		e.preventDefault();
+		var field = $(this).attr("field");
+		var cid = $(this).attr("cid");
+		var title = $(this).html();
+		
+		/* get patient id, name, folder*/
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients/modules/treatments&request=getTreatmentInfoForCalendar&id=" + cid, cache: false, success: function(data){
+			//console.log(data.patient);
+			var patient = '<span class="listmember" uid="' + cid + '">' + data.patient + '</span>';
+			var folder = '<span class="listmember" uid="' + cid + '">' + data.foldertitle + '</span>';
+			var treatment = '<span class="listmember" uid="' + cid + '">' + data.title + '</span>';
+			$('#event-treatment').val(cid);
+			$('#event-title').val(title);
+			$("#"+field).html(treatment);
+			$("#calendarPatient").html(patient);
+			$("#calendarFolder").html(folder);
+			$("#modalDialog").dialog('close');
+			$.ajax({ type: "GET", url: "/", data: "path=apps/calendar/&request=saveLastUsedTreatments&id="+cid}); 
+			}
+		});
+
+		
 	});
 	
 	

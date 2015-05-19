@@ -21,7 +21,12 @@ function projectsApplication(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#projects input.title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
+			setTimeout(function() {
+				title = $("#projects input.title").fieldValue();
+				if(title == "") {
+					$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
+				}
+			}, 5000)
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -675,7 +680,12 @@ function projectsFolders(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#projects input.title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
+			setTimeout(function() {
+				title = $("#projects input.title").fieldValue();
+				if(title == "") {
+					$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
+				}
+			}, 5000)
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -1140,6 +1150,16 @@ $(document).ready(function() {
 		var title = $(this).attr("title");
 		var obj = getCurrentModule();
 		obj.insertFolderFromDialog(field,gid,title);
+	});
+	
+	$(document).on('click', 'a.insertProjectFolderfromArchiveDialog',function(e) {
+		e.preventDefault();
+		var field = $(this).attr("field");
+		var gid = $(this).attr("gid");
+		var title = $(this).attr("title");
+		var html = '<span uid="' + gid + '">' + title + '</span>';
+		$("#"+field).html(html);
+		$("#modalDialog").dialog('close');
 	});
 
 

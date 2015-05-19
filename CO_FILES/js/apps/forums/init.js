@@ -20,7 +20,12 @@ function forumsApplication(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#forums input.title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
+			setTimeout(function() {
+				title = $("#forums input.title").fieldValue();
+				if(title == "") {
+					$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
+				}
+			}, 5000)
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -507,7 +512,12 @@ function forumsFolders(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#forums input.title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
+			setTimeout(function() {
+				title = $("#forums input.title").fieldValue();
+				if(title == "") {
+					$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
+				}
+			}, 5000)
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };

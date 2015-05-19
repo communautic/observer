@@ -21,7 +21,12 @@ function archivesApplication(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#archives input.title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
+			setTimeout(function() {
+				title = $("#archives input.title").fieldValue();
+				if(title == "") {
+					$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
+				}
+			}, 5000)
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -358,7 +363,12 @@ function archivesFolders(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#archives input.title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
+			setTimeout(function() {
+				title = $("#archives input.title").fieldValue();
+				if(title == "") {
+					$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
+				}
+			}, 5000)
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -837,19 +847,23 @@ $(document).ready(function() {
 			$('#archiveSearchResult').html(data.html);
 			}
 		});
-		/*var id = $("#patients").data("first");
-		if($('#calcFolder').attr('rel') == '1') {
-			id = 0;
-		}
+	});
+	
+	$(document).on('click', '#archiveProcsSearch', function(e) {
+		e.preventDefault();
+		var meta = $('#metaSearch').val();
+		var title = $('#titleSearch').val();
+		var folder = $('#folderSearch').val();
 		var who = $('#calcWho').val();
-		if($('#calcWhoField').val() == '') {
+		if($('#archiveManagementField').val() == '') {
 			who = 0;
 		}
-		
-		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients&request=getFolderDetailsRevenueResults&id=" + id + "&who=" + who + "&start=" + start + "&end=" + end, cache: false, success: function(data){
-			$('#revenueResult').html(data.html);
+		var start = $('#archiveStartDate').val();
+		var end = $('#archiveEndDate').val();
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs&request=doArchiveSearch&meta=" + meta+ "&title=" + title+ "&folder=" + folder+ "&who=" + who+ "&start=" + start + "&end=" + end, cache: false, success: function(data){
+			$('#archiveSearchResult').html(data.html);
 			}
-		});*/
+		});
 	});
 	
 	
@@ -1044,7 +1058,7 @@ $(document).ready(function() {
 		var id = $("#archives").data("second");
 		var folder = $('#archiveRevivefolder>span').attr('uid');
 		if(typeof folder == 'undefined' || folder == false) {
-			$.prompt('Ordner??');
+			$.prompt(ALERT_ARCHIVE_CHOOSE_FOLDER);
 			return false;
 		}
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+module+"/&request=archiveRevive&id="+id+"&folder="+folder, success: function(data){																																																	  			//$.prompt(ALERT_SUCCESS_PROJECT_EXPORT + '"'+data.fid+'"');
@@ -1064,7 +1078,7 @@ $(document).ready(function() {
 		var id = $("#archives").data("second");
 		var folder = $('#archiveDuplicatefolder>span').attr('uid');
 		if(typeof folder == 'undefined' || folder == false) {
-			$.prompt('Ordner??');
+			$.prompt(ALERT_ARCHIVE_CHOOSE_FOLDER);
 			return false;
 		}
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+module+"/&request=archiveDuplicate&id="+id+"&folder="+folder, success: function(data){																																																	  			//$.prompt(ALERT_SUCCESS_PROJECT_EXPORT + '"'+data.fid+'"');

@@ -157,7 +157,7 @@ class PatientsModel extends Model {
 		  }
 		
 		
-		$q = "SELECT a.*,CONCAT(b.lastname,' ',b.firstname) as title FROM " . CO_TBL_PATIENTS . " as a, co_users as b WHERE a.folder='$id' and a.bin='0' and a.cid=b.id and b.bin='0'" . $access . " " . $order;
+		$q = "SELECT a.*,CONCAT(b.lastname,' ',b.firstname) as title, b.address_line1, b.address_town, b.address_postcode, b.email, b.phone1 FROM " . CO_TBL_PATIENTS . " as a, co_users as b WHERE a.folder='$id' and a.bin='0' and a.cid=b.id and b.bin='0'" . $access . " " . $order;
 		$result = mysql_query($q, $this->_db->connection);
 	  	$patients = "";
 	  	while ($row = mysql_fetch_array($result)) {
@@ -880,6 +880,13 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 		$array["management_print"] = $contactsmodel->getUserListPlain($array['management']);
 		$array["management"] = $contactsmodel->getUserList($array['management'],'patientsmanagement', "", $array["canedit"]);
 		$array["management_ct"] = empty($array["management_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['management_ct'];
+		$array["showaddnumber"] = false;
+		if($array["insurer"] != $array["cid"]) {
+			$array["showaddnumber"] = true;
+		}
+		$array["insurer"] = $contactsmodel->getUserList($array['insurer'],'patientsinsurer', "", $array["canedit"]);
+		$array["insurer_ct"] = empty($array["insurer_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['insurer_ct'];
+		
 
 		$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
 		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
@@ -1017,12 +1024,12 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
    /**
    * get details for the patient folder
    */
-   function setPatientDetails($id,$folder,$management,$management_ct,$protocol,$number,$insurance,$insuranceadd,$dob,$coo,$documents) {
+   function setPatientDetails($id,$folder,$management,$management_ct,$insurer,$insurer_ct,$protocol,$number,$number_insurer,$insurance,$insuranceadd,$code,$dob,$coo,$documents) {
 		global $session, $contactsmodel;
 		$dob = $this->_date->formatDate($dob);
 		$now = gmdate("Y-m-d H:i:s");
 		
-		$q = "UPDATE " . CO_TBL_PATIENTS . " set folder = '$folder', management='$management', management_ct='$management_ct', protocol = '$protocol', number = '$number', insurance = '$insurance', insurance_add = '$insuranceadd', dob = '$dob', coo = '$coo', documents = '$documents', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PATIENTS . " set folder = '$folder', management='$management', management_ct='$management_ct', insurer='$insurer', insurer_ct='$insurer_ct', protocol = '$protocol', number = '$number', number_insurer='$number_insurer', insurance = '$insurance', insurance_add = '$insuranceadd', code='$code', dob = '$dob', coo = '$coo', documents = '$documents', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
@@ -1067,7 +1074,7 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 		//$title = $lang["PATIENT_NEW"];
 		$insurance_add = $lang["GLOBAL_NO"];
 		
-		$q = "INSERT INTO " . CO_TBL_PATIENTS . " set folder = '$id', cid='$cid', status = '0', planned_date = '$now',  management='$session->uid', insurance_add='$insurance_add', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+		$q = "INSERT INTO " . CO_TBL_PATIENTS . " set folder = '$id', cid='$cid', status = '0', planned_date = '$now',  management='$session->uid', insurer='$cid', insurance_add='$insurance_add', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			$id = mysql_insert_id();
@@ -1076,6 +1083,30 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 				$patientsAccessModel = new PatientsAccessModel();
 				$patientsAccessModel->setDetails($id,$session->uid,"");
 			}
+			return $id;
+		}
+	}
+	
+	function newPatientFromCalendar($folderId,$contactId,$management) {
+		global $session, $contactsmodel, $lang;
+		
+		$now = gmdate("Y-m-d H:i:s");
+		//$title = $lang["PATIENT_NEW"];
+		$insurance_add = $lang["GLOBAL_NO"];
+		
+		$q = "INSERT INTO " . CO_TBL_PATIENTS . " set folder = '$folderId', cid='$contactId', status = '1', finished_date = '$now',  management='$management', insurer='$contactId', insurance_add='$insurance_add', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+			$id = mysql_insert_id();
+			// if admin insert him to access
+			//if(!$session->isSysadmin()) {
+				include_once("modules/access/config.php");
+				include_once("modules/access/lang/" . $session->userlang . ".php");
+				include_once("modules/access/model.php");
+				include_once("modules/access/controller.php");
+				$patientsAccessModel = new PatientsAccessModel();
+				$patientsAccessModel->setDetails($id,$management,"");
+			//}
 			return $id;
 		}
 	}
@@ -1221,6 +1252,16 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 			}
 		}
 		
+		if(in_array("sketches",$active_modules)) {
+			$patientsSketchesModel = new PatientsSketchesModel();
+			$q = "SELECT id FROM co_patients_sketches where pid = '$id'";
+			$result = mysql_query($q, $this->_db->connection);
+			while($row = mysql_fetch_array($result)) {
+				$mid = $row["id"];
+				$patientsSketchesModel->deleteSketch($mid);
+			}
+		}
+		
 		if(in_array("reports",$active_modules)) {
 			$patientsReportsModel = new PatientsReportsModel();
 			$q = "SELECT id FROM co_patients_reports where pid = '$id'";
@@ -1314,6 +1355,23 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 		} else {
 			$q ="select id, title from " . CO_TBL_PATIENTS_FOLDERS . " where status='0' and bin = '0' ORDER BY title";
 		}
+		$result = mysql_query($q, $this->_db->connection);
+		while ($row = mysql_fetch_array($result)) {
+			$str .= '<a href="#" class="insertPatientFolderfromDialog" title="' . $row["title"] . '" field="'.$field.'" gid="'.$row["id"].'">' . $row["title"] . '</a>';
+		}
+		$str .= '</div>';	
+		return $str;
+	 }
+	 
+	 function getPatientFolderDialogCalendar($field,$title) {
+		global $session;
+		$str = '<div class="dialog-text">';
+		//$q ="select id, title from " . CO_TBL_PATIENTS_FOLDERS . " where status='0' and bin = '0' ORDER BY title";
+		/*if(!$session->isSysadmin()) {
+			$q ="select a.id, a.title from " . CO_TBL_PATIENTS_FOLDERS . " as a where a.status='0' and a.bin = '0' and (SELECT count(*) FROM co_patients_access as b, co_patients as c WHERE (b.admins REGEXP '[[:<:]]" . $session->uid . "[[:>:]]' or b.guests REGEXP '[[:<:]]" . $session->uid . "[[:>:]]') and c.folder=a.id and b.pid=c.id) > 0 ORDER BY title";
+		} else {*/
+			$q ="select id, title from " . CO_TBL_PATIENTS_FOLDERS . " where status='0' and bin = '0' ORDER BY title";
+		//}
 		$result = mysql_query($q, $this->_db->connection);
 		while ($row = mysql_fetch_array($result)) {
 			$str .= '<a href="#" class="insertPatientFolderfromDialog" title="' . $row["title"] . '" field="'.$field.'" gid="'.$row["id"].'">' . $row["title"] . '</a>';
@@ -1490,7 +1548,7 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 									$arr["treatments"] = $treatments;
 								} else {
 									// treatments_disgnoses
-									$qmt ="select id, text, bin, bintime, binuser from " . CO_TBL_PATIENTS_TREATMENTS_DIAGNOSES . " where mid = '$mid'";
+									/*$qmt ="select id, text, bin, bintime, binuser from " . CO_TBL_PATIENTS_TREATMENTS_DIAGNOSES . " where mid = '$mid'";
 									$resultmt = mysql_query($qmt, $this->_db->connection);
 									while ($rowmt = mysql_fetch_array($resultmt)) {
 										if($rowmt["bin"] == "1") { // deleted phases
@@ -1519,7 +1577,59 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 											$treatments_tasks[] = new Lists($treatments_task);
 											$arr["treatments_tasks"] = $treatments_tasks;
 										}
+									}*/
+								}
+							}
+						}
+						
+						
+						// sketches
+						if(in_array("sketches",$active_modules)) {
+							$qs ="select id, title, bin, bintime, binuser from " . CO_TBL_PATIENTS_SKETCHES . " where pid = '$pid'";
+							$results = mysql_query($qs, $this->_db->connection);
+							while ($rows = mysql_fetch_array($results)) {
+								$mid = $rows["id"];
+								$title = $rows["title"];
+								if($rows["bin"] == "1") { // deleted meeting
+									foreach($rows as $key => $val) {
+										$sketch[$key] = $val;
 									}
+									$sketch["bintime"] = $this->_date->formatDate($sketch["bintime"],CO_DATETIME_FORMAT);
+									$sketch["binuser"] = $this->_users->getUserFullname($sketch["binuser"]);
+									$sketches[] = new Lists($sketch);
+									$arr["sketches"] = $sketches;
+								} else {
+									// sketch_disgnoses
+									$qmt ="select id, text, bin, bintime, binuser from " . CO_TBL_PATIENTS_SKETCHES_DIAGNOSES . " where mid = '$mid'";
+									$resultmt = mysql_query($qmt, $this->_db->connection);
+									while ($rowmt = mysql_fetch_array($resultmt)) {
+										if($rowmt["bin"] == "1") { // deleted phases
+											foreach($rowmt as $key => $val) {
+												$sketches_diag[$key] = $val;
+											}
+											$sketches_diag["bintime"] = $this->_date->formatDate($sketches_diag["bintime"],CO_DATETIME_FORMAT);
+											$sketches_diag["binuser"] = $this->_users->getUserFullname($sketches_diag["binuser"]);
+											$sketches_diags[] = new Lists($sketches_diag);
+											$arr["sketches_diags"] = $sketches_diags;
+										}
+									}
+									
+									
+									// treatments_tasks
+									/*$qmt ="select id, title, bin, bintime, binuser from " . CO_TBL_PATIENTS_SKETCHES_TASKS . " where mid = '$mid'";
+									$resultmt = mysql_query($qmt, $this->_db->connection);
+									while ($rowmt = mysql_fetch_array($resultmt)) {
+										if($rowmt["bin"] == "1") { // deleted phases
+											foreach($rowmt as $key => $val) {
+												$sketches_task[$key] = $val;
+											}
+											$sketches_task["title"] = $title;
+											$sketches_task["bintime"] = $this->_date->formatDate($sketches_task["bintime"],CO_DATETIME_FORMAT);
+											$sketches_task["binuser"] = $this->_users->getUserFullname($sketches_task["binuser"]);
+											$sketches_tasks[] = new Lists($sketches_task);
+											$arr["sketches_tasks"] = $sketches_tasks;
+										}
+									}*/
 								}
 							}
 						}
@@ -1765,6 +1875,41 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 								}
 							}
 						}
+						
+						// sketches
+						if(in_array("sketches",$active_modules)) {
+							$patientsSketchesModel = new PatientsSketchesModel();
+							$qm ="select id, title, bin, bintime, binuser from " . CO_TBL_PATIENTS_SKETCHES . " where pid = '$pid'";
+							$resultm = mysql_query($qm, $this->_db->connection);
+							while ($rowm = mysql_fetch_array($resultm)) {
+								$mid = $rowm["id"];
+								if($rowm["bin"] == "1") { // deleted meeting
+									$patientsSketchesModel->deleteSketch($mid);
+									$arr["sketches"] = "";
+								} else {
+									// sketches_disgnoses
+									$qmt ="select id, text, bin, bintime, binuser from " . CO_TBL_PATIENTS_SKETCHES_DIAGNOSES . " where mid = '$mid'";
+									$resultmt = mysql_query($qmt, $this->_db->connection);
+									while ($rowmt = mysql_fetch_array($resultmt)) {
+										if($rowmt["bin"] == "1") { // deleted phases
+											$mtid = $rowmt["id"];
+											$patientsSketchesModel->deleteSketchDiagnose($mtid);
+											$arr["objectives_diags"] = "";
+										}
+									}
+									// sketches_tasks
+									/*$qmt ="select id, title, bin, bintime, binuser from " . CO_TBL_PATIENTS_SKETCHES_TASKS . " where mid = '$mid'";
+									$resultmt = mysql_query($qmt, $this->_db->connection);
+									while ($rowmt = mysql_fetch_array($resultmt)) {
+										if($rowmt["bin"] == "1") { // deleted phases
+											$mtid = $rowmt["id"];
+											$patientsSketchesModel->deleteSketchTask($mtid);
+											$arr["sketches_tasks"] = "";
+										}
+									}*/
+								}
+							}
+						}
 	
 						// reports
 						if(in_array("reports",$active_modules)) {
@@ -1970,6 +2115,10 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 		if(in_array("treatments",$active_modules)) {
 			$patientsTreatmentsModel = new PatientsTreatmentsModel();
 			$data["patients_treatments_items"] = $patientsTreatmentsModel->getNavNumItems($id);
+		}
+		if(in_array("sketches",$active_modules)) {
+			$patientsSketchesModel = new PatientsSketchesModel();
+			$data["patients_sketches_items"] = $patientsSketchesModel->getNavNumItems($id);
 		}
 		if(in_array("reports",$active_modules)) {
 			$patientsReportsModel = new PatientsReportsModel();
@@ -2541,6 +2690,109 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 }
 
 
+	function getCalendarContactsSearch($term,$exclude=''){
+		global $system, $session;
+		$num=0;
+		/*$access=" ";
+		if(!$session->isSysadmin()) {
+			$access = " and a.id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
+	  	}*/
+		
+		$q = "SELECT id,CONCAT(lastname,' ',firstname) as label FROM co_users WHERE (lastname like '%$term%' or firstname like '%$term%') and  bin='0' ORDER BY lastname, firstname ASC";
+		
+		$result = mysql_query($q, $this->_db->connection);
+		$num=mysql_affected_rows();
+		$rows = array();
+		$r = array();
+		/*while($r = mysql_fetch_assoc($result)) {
+			 $rows[] = $r;
+		}*/
+		while($row = mysql_fetch_array($result)) {
+			$rows['value'] = htmlspecialchars_decode($row['label']);
+			$rows['id'] = $row['id'];
+			$r[] = $rows;
+		}
+		return json_encode($r);
+	}
+
+
+	function getCalendarPatientsSearch($term,$exclude=''){
+		global $system, $session;
+		$num=0;
+		/*$access=" ";
+		if(!$session->isSysadmin()) {
+			$access = " and a.id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
+	  	}*/
+		
+		$q = "SELECT a.id,CONCAT(b.lastname,' ',b.firstname,', ', c.title) as label FROM " . CO_TBL_PATIENTS . " as a, co_users as b, " . CO_TBL_PATIENTS_FOLDERS . " as c WHERE a.cid=b.id and a.folder = c.id and (lastname like '%$term%' or firstname like '%$term%') and  a.bin='0' ORDER BY lastname, firstname ASC";
+		
+		$result = mysql_query($q, $this->_db->connection);
+		$num=mysql_affected_rows();
+		$rows = array();
+		$r = array();
+		/*while($r = mysql_fetch_assoc($result)) {
+			 $rows[] = $r;
+		}*/
+		while($row = mysql_fetch_array($result)) {
+			$rows['value'] = htmlspecialchars_decode($row['label']);
+			$rows['id'] = $row['id'];
+			$r[] = $rows;
+		}
+		return json_encode($r);
+	}
+	
+	function getPatientInfoForCalendar($id){
+		$q = "SELECT a.id,CONCAT(b.lastname,' ',b.firstname) as patient, c.title as foldertitle, a.folder FROM " . CO_TBL_PATIENTS . " as a, co_users as b, " . CO_TBL_PATIENTS_FOLDERS . " as c WHERE a.id='$id' and a.cid=b.id and a.folder = c.id and  a.bin='0' ORDER BY lastname, firstname ASC";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_array($result);
+		return $row;
+	}
+
+	function patientExistsInFolder($pid,$folder_id) {
+		$q = "SELECT * FROM " . CO_TBL_PATIENTS . " WHERE id='$pid' and folder = '$folder_id' and bin='0'";
+		$result = mysql_query($q, $this->_db->connection);
+		//$row = mysql_fetch_array($result);
+		if(mysql_num_rows($result) > 0) {
+			return true;
+		} else {
+			return false;	
+		}
+	}
+	
+	function getUserFullnameShortFirstname($id){
+		$q = "SELECT b.firstname, b.lastname FROM " . CO_TBL_PATIENTS . " as a, co_users as b WHERE a.id='$id' and a.cid=b.id and a.bin='0'";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_assoc($result);
+		mb_internal_encoding("UTF-8");
+		$user = $row["lastname"] . ' ' . mb_substr($row["firstname"], 0, 1) . '.';
+		return $user;
+	}
+	
+	
+function createDuplicatePatientFromCalendar($id,$folder,$management) {
+		global $session, $lang;
+		
+		$now = gmdate("Y-m-d H:i:s");
+		// patient
+		$q = "INSERT INTO " . CO_TBL_PATIENTS . " (folder,cid,management,management_ct,insurer,insurer_ct,insurance,insurance_add,number,number_insurer,protocol,code,dob,coo,status,planned_date,created_date,created_user,edited_date,edited_user) SELECT '$folder',cid,'$management',management_ct,insurer,insurer_ct,insurance,insurance_add,number,number_insurer,protocol,code,dob,coo,'0','$now','$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_PATIENTS . " where id='$id'";
+
+		$result = mysql_query($q, $this->_db->connection);
+		$id_new = mysql_insert_id();
+		
+		//if(!$session->isSysadmin()) {
+			include_once("modules/access/config.php");
+				include_once("modules/access/lang/" . $session->userlang . ".php");
+				include_once("modules/access/model.php");
+				include_once("modules/access/controller.php");
+			$patientsAccessModel = new PatientsAccessModel();
+			$patientsAccessModel->setDetails($id_new,$management,"");
+		//}
+
+		if ($result) {
+			return $id_new;
+		}
+	}
+
 	function getTreatmentsDialog($field) {
 		global $session;
 		$str = '<div class="dialog-text">';
@@ -2574,7 +2826,9 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 		global $system;
 		$num=0;
 		//$q = "SELECT id, CONCAT(lastname,' ',firstname) as label from " . CO_TBL_USERS . " where (lastname like '%$term%' or firstname like '%$term%') and bin ='0' and invisible = '0'";
-		$q = "SELECT b.id, CONCAT(a.lastname,' ',a.firstname,', ',b.title) as label from " . CO_TBL_USERS . " as a, " . CO_TBL_PATIENTS_TREATMENTS . " as b, " . CO_TBL_PATIENTS . " as c WHERE  b.pid = c.id and c.cid=a.id and (a.lastname like '%$term%' or a.firstname like '%$term%' or b.title like '%$term%') and a.bin ='0' and b.bin='0' and a.invisible = '0'";
+		//$q = "SELECT b.id, CONCAT(a.lastname,' ',a.firstname,', ',b.title) as label from " . CO_TBL_USERS . " as a, " . CO_TBL_PATIENTS_TREATMENTS . " as b, " . CO_TBL_PATIENTS . " as c WHERE  b.pid = c.id and c.cid=a.id and (a.lastname like '%$term%' or a.firstname like '%$term%' or b.title like '%$term%') and a.bin ='0' and b.bin='0' and a.invisible = '0'";
+		
+		$q = "SELECT b.id, CONCAT(a.lastname,' ',a.firstname,', ',b.title) as label from " . CO_TBL_USERS . " as a, " . CO_TBL_PATIENTS_TREATMENTS . " as b, " . CO_TBL_PATIENTS . " as c WHERE  b.pid = c.id and c.cid=a.id and (a.lastname like '%$term%' or a.firstname like '%$term%') and a.bin ='0' and b.bin='0' and a.invisible = '0'";
 		
 		$result = mysql_query($q, $this->_db->connection);
 		$num=mysql_affected_rows();
@@ -2668,6 +2922,7 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 		$now = new DateTime("now");
 		$today = $date->formatDate("now","Y-m-d");
 		$tomorrow = $date->addDays($today, 1);
+		$oneMonthAgo = $date->addDays($today, -30);
 		$string = "";
 		
 		$access = "";
@@ -2695,6 +2950,22 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 				$reminders[] = new Lists($array);
 			}
 		}
+		
+		
+		$waitinglist = "";
+		if($skip == 0) {
+			$q ="select b.folder,b.id, CONCAT(c.lastname,' ',c.firstname) as title from " . CO_TBL_PATIENTS . " as b, co_users as c, " . CO_TBL_PATIENTS_FOLDERS . " as d WHERE b.status='0' and b.planned_date <= '$oneMonthAgo' and b.cid=c.id and b.folder=d.id and b.bin = '0' and c.bin='0' and d.bin='0'" . $access;
+			$result = mysql_query($q, $this->_db->connection);
+			$waitinglist = "";
+			while ($row = mysql_fetch_array($result)) {
+				foreach($row as $key => $val) {
+					$array[$key] = $val;
+				}
+				$string .= $array["folder"] . "," . $array["id"] . ",0,";
+				$waitinglist[] = new Lists($array);
+			}
+		}
+		
 
 		$alerts = "";
 		$array = "";
@@ -2726,7 +2997,7 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 			$result = mysql_query($q, $this->_db->connection);
 		}
 		
-		$arr = array("reminders" => $reminders, "alerts" => $alerts, "widgetaction" => $widgetaction);
+		$arr = array("reminders" => $reminders, "waitinglist" => $waitinglist, "alerts" => $alerts, "widgetaction" => $widgetaction);
 		return $arr;
    }
 

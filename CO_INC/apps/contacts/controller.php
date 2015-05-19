@@ -304,6 +304,22 @@ class Contacts extends Controller {
 		}
 		
 	}
+	
+	function printCalendarInstructions($id, $applications) {
+		global $session, $lang;
+		$title = "";
+		$html = "";
+		if($contact = $this->model->getContactDetails($id,$applications)) {
+			ob_start();
+				include 'view/print_instructions.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			$title = $contact->lastname . "_" . $contact->firstname;
+		}
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_EXTERNAL_CALENDAR"];
+		$this->printPDF($title,$html);
+		
+	}
 
 
 function getContactSend($id) {

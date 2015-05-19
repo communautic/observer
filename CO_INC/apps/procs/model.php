@@ -2377,6 +2377,492 @@ class ProcsModel extends Model {
 			return true;
 		}
 	}
+	
+	
+	function moveFolderToArchive($fid) {
+		global $session;
+		
+		$q = "SELECT title FROM " . CO_TBL_PROCS_FOLDERS . " WHERE id='$fid'";
+		$result = mysql_query($q, $this->_db->connection);
+		$folder = mysql_result($result,0);
+		$now = gmdate("Y-m-d H:i:s");
+
+		/*$access="";
+		if(!$session->isSysadmin()) {
+			$access = " and id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
+	  	}*/
+
+		$q = "SELECT id FROM " . CO_TBL_PROCS . " WHERE folder='$fid' and bin='0'";
+		$result = mysql_query($q, $this->_db->connection);
+	  	while ($row = mysql_fetch_array($result)) {
+			$id = $row['id'];
+			$qp = "UPDATE " . CO_TBL_PROCS . " set folder='0', checked_out='0', archive_folder='$folder', archive_time = '$now', archive_user= '$session->uid' where id='$id'";
+			$resultp = mysql_query($qp, $this->_db->connection);
+	  	}
+		return true;
+	}
+
+	
+	function movetoArchive($id,$fid) {
+		global $session;
+		$now = gmdate("Y-m-d H:i:s");
+		$q = "SELECT title FROM " . CO_TBL_PROCS_FOLDERS . " WHERE id='$fid'";
+		$result = mysql_query($q, $this->_db->connection);
+		$folder = mysql_result($result,0);
+		
+		$q = "UPDATE " . CO_TBL_PROCS . " set folder='0', checked_out='0', archive_folder='$folder', archive_time = '$now', archive_user= '$session->uid' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		if ($result) {
+		  	return true;
+		}
+	}
+
+	
+	
+	function getArchiveList() {
+       global $session;
+
+	  $access = "";
+	  if(!$session->isSysadmin()) {
+		$access = " and (id IN (" . implode(',', $this->canAccess($session->uid)) . ") or link IN (" . implode(',', $this->canAccess($session->uid)) . ")) ";
+	  }	  
+	  $q ="select id,link,title,checked_out,checked_out_user from " . CO_TBL_PROCS . " where folder='0' and bin = '0' " . $access . " ORDER BY title";
+
+      $result = mysql_query($q, $this->_db->connection);
+	  $procs = "";
+	  
+	  while ($row = mysql_fetch_array($result)) {
+		foreach($row as $key => $val) {
+			$array[$key] = $val;
+			if($key == "id") {
+				if($this->getProcAccess($val) == "guest") {
+					$array["access"] = "guest";
+					$array["iconguest"] = ' icon-guest-active"';
+					$array["checked_out_status"] = "";
+				} else {
+					$array["iconguest"] = '';
+					$array["access"] = "";
+				}
+			}
+		}
+		
+		$array["itemstatus"] = "";
+		$array['outerid'] = $array['id'];
+		
+		//check for processlink
+		/*if($array['folder'] != $id) {
+			$array['title'] = $array['title'] . ' - Link!';
+		}*/
+		
+		
+		$checked_out_status = "";
+		if($array["access"] != "guest" && $array["checked_out"] == 1 && $array["checked_out_user"] != $session->uid) {
+			if($session->checkUserActive($array["checked_out_user"])) {
+				$checked_out_status = "icon-checked-out-active";
+			} else {
+				$this->checkinProcOverride($id);
+			}
+		}
+		$array["checked_out_status"] = $checked_out_status;
+		
+		if($array['link'] != 0) {
+			$array["itemstatus"] = ' module-item-active-link';
+			$linkid = $array['link'];
+			$qlink = "select title,checked_out,checked_out_user from " . CO_TBL_PROCS . " where id='$linkid'";
+			$rlink = mysql_query($qlink, $this->_db->connection);
+			$rrow = mysql_fetch_row($rlink);
+			$array['id'] = $linkid;
+			$array['title'] = $rrow[0];
+		}
+		
+		$procs[] = new Lists($array);
+	  }
+	  $arr = array("procs" => $procs, "sort" => "0");
+	  return $arr;
+   }
+   
+   function getArchive() {
+		global $session, $contactsmodel, $procsControllingModel;
+		/*$q = "SELECT * FROM " . CO_TBL_PROCS_FOLDERS . " where id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result) < 1) {
+			return false;
+		}
+		$row = mysql_fetch_assoc($result);
+		foreach($row as $key => $val) {
+			$array[$key] = $val;
+		}
+		
+		$array["allprocs"] = $this->getNumProcs($id);
+		$array["plannedprocs"] = $this->getNumProcs($id, $status="0");
+		$array["activeprocs"] = $this->getNumProcs($id, $status="1");
+		$array["inactiveprocs"] = $this->getNumProcs($id, $status="2");*/
+		
+		/*$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
+		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
+		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
+		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);*/
+		$array["today"] = $this->_date->formatDate("now",CO_DATETIME_FORMAT);
+		
+		$array["canedit"] = true;
+		$array["access"] = "sysadmin";
+ 		if(!$session->isSysadmin()) {
+			$array["canedit"] = false;
+			$array["access"] = "guest";
+		}
+		
+		$folder = new Lists($array);
+		
+		// get proc details
+		$access="";
+		if(!$session->isSysadmin()) {
+			//$access = " and id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
+			$access = " and (id IN (" . implode(',', $this->canAccess($session->uid)) . ") or link IN (" . implode(',', $this->canAccess($session->uid)) . ")) ";
+	  	}
+		
+		 /*$sortstatus = $this->getSortStatus("procs-sort-status",$id);
+		if(!$sortstatus) {
+		  	$order = "order by title";
+		  } else {
+			  switch($sortstatus) {
+				  case "1":
+				  		$order = "order by title";
+				  break;
+				  case "2":
+				  		$order = "order by title DESC";
+				  break;
+				  case "3":
+				  		$sortorder = $this->getSortOrder("procs-sort-order",$id);
+				  		if(!$sortorder) {
+						  	$order = "order by title";
+						  } else {
+							$order = "order by field(id,$sortorder)";
+						  }
+				  break;	
+			  }
+		  }*/
+		$order = "order by title";
+
+		$q = "SELECT link, title, id, created_date, created_user FROM " . CO_TBL_PROCS . " where folder='0' and bin='0'" . $access . " " . $order;
+
+		$result = mysql_query($q, $this->_db->connection);
+	  	$procs = "";
+	  	while ($row = mysql_fetch_array($result)) {
+			foreach($row as $key => $val) {
+				$proc[$key] = $val;
+			}
+			
+			$proc["created_date"] = $this->_date->formatDate($proc["created_date"],CO_DATE_FORMAT);
+			$proc["created_user"] = $this->_users->getUserFullname($proc["created_user"]);
+			$proc["perm"] = $this->getProcAccess($proc["id"]);
+			
+			
+			if($proc['link'] != 0) {
+				$array["itemstatus"] = ' module-item-active-link';
+				$linkid = $proc['link'];
+				$qlink = "select title,created_date,created_user from " . CO_TBL_PROCS . " where id='$linkid'";
+				$rlink = mysql_query($qlink, $this->_db->connection);
+				$rrow = mysql_fetch_row($rlink);
+				$proc['id'] = $linkid;
+				$proc['title'] = '<span class="proclink">&nbsp;</span>' . $rrow[0];
+				$proc["created_date"] = $this->_date->formatDate($rrow[1],CO_DATE_FORMAT);
+				$proc["created_user"] = $this->_users->getUserFullname($rrow[2]);
+				$proc["perm"] = $this->getProcAccess($linkid);
+			}
+			
+			$procs[] = new Lists($proc);
+	  	}
+		
+		
+		
+		
+		$access = "guest";
+		  if($session->isSysadmin()) {
+			  $access = "sysadmin";
+		  }
+		
+		$arr = array("folder" => $folder, "procs" => $procs, "access" => $access);
+		return $arr;
+   }
+   
+   
+   function getProcDetailsArchive($id, $fid=0) {
+		global $session, $contactsmodel, $lang;
+		$q = "SELECT * FROM " . CO_TBL_PROCS . " where id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result) < 1) {
+			return false;
+		}
+		$row = mysql_fetch_array($result);
+		foreach($row as $key => $val) {
+			$array[$key] = $val;
+		}
+		
+		// perms
+		$array["access"] = $this->getProcAccess($id);
+
+		if($array["access"] == "guest") {
+			// check if this user is admin in some other proc
+			$canEdit = $this->getEditPerms($session->uid);
+			if(!empty($canEdit)) {
+					$array["access"] = "guestadmin";
+			}
+		}
+		$array['proclink'] = false;
+		$array["canedit"] = false;
+		$array["showCheckout"] = false;
+		//$array["access"] = 'linkaccess';
+		
+		// check if there are links to this original
+		$array["linktoproclink"] = false;
+		if(!$array['proclink']) {
+			// are there any 
+			$qlink = "SELECT a.id,a.folder,b.title FROM " . CO_TBL_PROCS . " as a, " . CO_TBL_PROCS_FOLDERS . " as b WHERE a.link='$id' and a.folder = b.id and a.bin='0' and b.bin='0'";
+			$result_links = mysql_query($qlink, $this->_db->connection);
+			if(mysql_num_rows($result_links) > 0) {
+				$array["linktoproclink"] = true;
+				$arr = $this->getFolderList(0);
+				$folders = $arr['folders'];
+				$folder_ids = array();
+				foreach ($folders as $folder) {
+					$folder_ids[] = $folder->id;
+				}
+				$i = 0;
+				$array["proclinksdetails"] = array();
+				while($row_link = mysql_fetch_array($result_links)) {
+					if(in_array($row_link['folder'], $folder_ids)) {
+						$array["proclinksdetails"][$i]['folder'] = $row_link['folder'];
+						$array["proclinksdetails"][$i]['folder_title'] = $row_link['title'];
+						$array["proclinksdetails"][$i]['id'] = $id;
+					}
+					$i++;
+				}
+				if(empty($array["proclinksdetails"])) {
+					$array["linktoproclink"] = false;
+				}
+			}
+		}
+		
+		$array["canedit"] = false;
+		$array["showCheckout"] = false;
+		$array["checked_out_user_text"] = $contactsmodel->getUserListPlain($array['checked_out_user']);
+		// dates
+		$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
+		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
+		$array["archive_time"] = $this->_date->formatDate($array["archive_time"],CO_DATETIME_FORMAT);
+		$array["today"] = $this->_date->formatDate("now",CO_DATETIME_FORMAT);
+		
+		// other functions
+		$array["folder_id"] = $array["folder"];
+		//$array["folder"] = $array["archive_folder"];
+		$array["folder"] = $array["archive_folder"];
+		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
+		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
+		$array["archive_user"] = $this->_users->getUserFullname($array["archive_user"]);
+		$array["current_user"] = $session->uid;
+		
+		// metas
+		$metas_string = explode(",", $array["archive_meta"]);
+		$metas_total = sizeof($metas_string);
+		$meta = '';
+		if($metas_total == 0) { 
+			$array["archive_meta"] = "";
+		} else {
+			$i = 1;
+			foreach ($metas_string as $key => &$value) {
+				if(trim($value) != "") {
+					$meta .= '<span class="meta-outer"><a href="archives" class="meta showItemContext">' . $value;		
+					if($i < $metas_total) {
+						$meta .= ', ';
+					}
+					$meta .= '</a></span>';	
+				}
+				$i++;
+			}
+			$array["archive_meta"] = $meta;
+		}
+		
+		
+		$proc = new Lists($array);
+		
+		$sql="";
+		$now = gmdate("Y-m-d H:i:s");
+		// Notes
+		$q = "select * from " . CO_TBL_PROCS_NOTES . " where pid = '$id' and bin = '0'";
+		
+		$result = mysql_query($q, $this->_db->connection);
+	  	$notes = "";
+	  	while ($row = mysql_fetch_array($result)) {
+			foreach($row as $key => $val) {
+				$note[$key] = $val;
+			}
+			
+			$days = $this->_date->dateDiff($note['edited_date'],$now);
+			switch($days) {
+				case 0:
+					$note["days"] = $lang["GLOBAL_TODAY"];
+				break;
+				case 1:
+					$note["days"] = $lang["GLOBAL_YESTERDAY"];
+				break;
+				default:
+				$note["days"] = sprintf($lang["GLOBAL_DAYS_AGO"], $days);
+			}
+			
+			$note["date"] = $this->_date->formatDate($note['edited_date'],CO_DATETIME_FORMAT);
+			
+			// dates
+			$note["created_date"] = $this->_date->formatDate($note["created_date"],CO_DATETIME_FORMAT);
+			$note["edited_date"] = $this->_date->formatDate($note["edited_date"],CO_DATETIME_FORMAT);
+			
+			// other functions
+			$note["created_user"] = $this->_users->getUserFullname($note["created_user"]);
+			$note["edited_user"] = $this->_users->getUserFullname($note["edited_user"]);
+			
+			$notes[] = new Lists($note);
+	  	}
+		
+		$arr = array("proc" => $proc, "notes" => $notes, "access" => $array["access"]);
+		return $arr;
+   }
+   
+   
+   function archiveRevive($id,$folder) {
+		global $session;
+		$now = gmdate("Y-m-d H:i:s");
+		
+		$q = "UPDATE " . CO_TBL_PROCS . " set folder='$folder', archive_folder='', edited_date = '$now', edited_user= '$session->uid' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		if ($result) {
+		  	return true;
+		}
+	}
+	
+	function archiveDuplicate($id,$folder) {
+		global $session;
+		$now = gmdate("Y-m-d H:i:s");
+		
+		$dup = $this->createDuplicate($id);
+		
+		$q = "UPDATE " . CO_TBL_PROCS . " set folder='$folder', archive_folder='', edited_date = '$now', edited_user= '$session->uid' where id='$dup'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		if ($result) {
+		  	return true;
+		}
+	}
+	
+	function archiveSaveMeta($id,$meta) {
+		global $session;
+		
+		$q = "UPDATE " . CO_TBL_PROCS . " set archive_meta='$meta' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		if ($result) {
+		  	return true;
+		}
+	}
+	
+	
+	function doArchiveSearch($meta,$title,$folder,$who,$start,$end){
+		global $session, $contactsmodel, $projectsControllingModel, $lang;
+		 $access = "";
+	  if(!$session->isSysadmin()) {
+		$access = " and id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
+	  }
+	  $order = "order by a.title";
+	  
+	  $meta_sql = "";
+	  if($meta != '') {
+		  $meta_sql = " and archive_meta LIKE '%$meta%' ";
+	  }
+	  
+	  $title_sql = "";
+	  if($title != '') {
+		  $title_sql = " and title LIKE '%$title%' ";
+	  }
+	  
+	  $folder_sql = "";
+	  if($folder != '') {
+		  $folder_sql = " and archive_folder LIKE '%$folder%' ";
+	  }
+	  
+	  $who_sql = "";
+	  if($who != 0) {
+		  $who_sql = " and created_user LIKE '%$who%' ";
+	  }
+	  
+	  $date_sql = "";
+	  if($start != '') {
+	  	$start = $this->_date->formatDate($start, "Y-m-d");
+	  	if($end != '') {
+			$end = $this->_date->formatDate($end, "Y-m-d");
+		} else {
+			$end = date("Y-m-d");
+		}
+		$date_sql = " and (created_date >= '$start' && created_date <= '$end')";
+	  }
+		
+		//$q = "SELECT a.title,a.id,a.created_user,a.status, (SELECT MIN(startdate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as startdate ,(SELECT MAX(enddate) FROM " . CO_TBL_PROJECTS_PHASES_TASKS . " as b WHERE b.pid=a.id and b.bin = '0') as enddate FROM " . CO_TBL_PROJECTS . " as a where a.folder='0' and a.bin='0'" .$title_sql.$folder_sql.$who_sql.$meta_sql .$date_sql . $access . " " . $order;
+		$q = "SELECT a.title,a.id,a.created_date, a.created_user FROM " . CO_TBL_PROCS . " as a WHERE a.folder='0' and a.bin='0'" .$title_sql.$folder_sql.$who_sql.$meta_sql .$date_sql . $access . " " . $order;
+
+		$result = mysql_query($q, $this->_db->connection);
+	  	$procs = "";
+	  	while ($row = mysql_fetch_array($result)) {
+			foreach($row as $key => $val) {
+				$proc[$key] = $val;
+			}
+			$proc["created_date"] = $this->_date->formatDate($proc["created_date"],CO_DATE_FORMAT);
+			//$proc["enddate"] = $this->_date->formatDate($project["enddate"],CO_DATE_FORMAT);
+			//$proc["realisation"] = $projectsControllingModel->getChart($project["id"], "realisation", 0);
+			$proc["created_user"] = $contactsmodel->getUserListPlain($proc['created_user']);
+			/*$proc["perm"] = $this->getProjectAccess($project["id"]);
+			
+			switch($project["status"]) {
+				case "0":
+					$project["status_text"] = $lang["GLOBAL_STATUS_PLANNED"];
+				break;
+				case "1":
+					$project["status_text"] = $lang["GLOBAL_STATUS_INPROGRESS"];
+				break;
+				case "2":
+					$project["status_text"] = $lang["GLOBAL_STATUS_FINISHED"];
+				break;
+				case "3":
+					$project["status_text"] = $lang["GLOBAL_STATUS_STOPPED"];
+				break;
+			}*/
+			
+			$procs[] = new Lists($proc);
+	  	}
+	  
+	  $arr = array("procs" => $procs, "sort" => "0");
+	  
+	  return $arr;
+	}
+   
+   
+   
+   function getProcFolderArchiveDialog($field,$title) {
+		global $session;
+		$str = '<div class="dialog-text">';
+		//$q ="select id, title from " . CO_TBL_PROCS_FOLDERS . " where status='0' and bin = '0' ORDER BY title";
+		if(!$session->isSysadmin()) {
+			$q ="select a.id, a.title from " . CO_TBL_PROCS_FOLDERS . " as a where a.status='0' and a.bin = '0' and (SELECT count(*) FROM co_procs_access as b, co_procs as c WHERE (b.admins REGEXP '[[:<:]]" . $session->uid . "[[:>:]]' or b.guests REGEXP '[[:<:]]" . $session->uid . "[[:>:]]') and c.folder=a.id and b.pid=c.id) > 0 ORDER BY title";
+		} else {
+			$q ="select id, title from " . CO_TBL_PROCS_FOLDERS . " where status='0' and bin = '0' ORDER BY title";
+		}
+		$result = mysql_query($q, $this->_db->connection);
+		while ($row = mysql_fetch_array($result)) {
+			$str .= '<a href="#" class="insertProcFolderfromArchiveDialog" title="' . $row["title"] . '" field="'.$field.'" gid="'.$row["id"].'">' . $row["title"] . '</a>';
+		}
+		$str .= '</div>';	
+		return $str;
+	 }
+	 
+	 
 
 	
 	

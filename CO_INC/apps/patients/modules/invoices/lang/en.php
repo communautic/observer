@@ -12,7 +12,13 @@ $lang["PATIENT_INVOICE_ACTION_NEW"] = 'neue Rechnung anlegen';
 $lang["PATIENT_INVOICE_DATE"] = 'Invoice date';
 $lang["PATIENT_INVOICE_DATE_SENT"] = 'Invoice sent';
 $lang["PATIENT_INVOICE_NUMBER"] = 'Invoice No.';
+$lang["PATIENT_INVOICE_CARRIER"] = 'Invoice carrier';
 $lang["PATIENT_INVOICE_ADDRESS"] = 'Billing address';
+$lang["PATIENT_PAYMENT_TYPE"] = 'Payment type';
+$lang["PATIENT_PAYMENT_TYPE"] = 'Payment type';
+$lang["PATIENT_PAYMENT_TYPE_CASH"] = 'Cash';
+$lang["PATIENT_PAYMENT_TYPE_BANK_TRANSFER"] = 'Bank transfer';
+
 $lang["PATIENT_INVOICE_PAYMENT_REMINDER"] = 'Payment reminder';
 $lang["PATIENT_INVOICE_SERVICES"] = 'Services';
 $lang["PATIENT_INVOICE_SERVICES_LIST"] = 'Services';
@@ -56,6 +62,7 @@ $lang["PATIENT_INVOICE_NOTES"] = 'Notes';
 //$lang["PATIENT_INVOICE_POSPONED"] = 'verschoben';
 
 $lang["PATIENT_INVOICE_PRINTOPTION_INVOICE"] = 'Invoice';
+$lang["PATIENT_INVOICE_PRINTOPTION_INVOICE_PLAIN"] = 'Rechnung plain';
 $lang["PATIENT_INVOICE_PRINTOPTION_SERVICES"] = 'Services';
 $lang["PATIENT_INVOICE_PRINTOPTION_PAYMENT_REMINDER"] = 'Payment reminder';
 $lang["PATIENT_INVOICE_PRINTOPTION_ENVELOPE"] = 'Envelope';

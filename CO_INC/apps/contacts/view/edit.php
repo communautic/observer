@@ -248,6 +248,13 @@ foreach($contact->applications as $key => $val) { ?>
        <?php if($contact->access_status == 0) { ?>
        <table border="0" cellpadding="0" cellspacing="0" class="table-content">
             <tr>
+              <td class="tcell-left text11"><span><span>Anleitungen</span></span></td>
+              <td class="tcell-right"><span class="co-link" id="printCalendarInstructions">Externe Kalender</span></td>
+            </tr>
+        </table>
+        
+       <!--<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+            <tr>
               <td class="tcell-left text11"><span><span>Outlook/iCalendar</span></span></td>
               <td class="tcell-right" style="-webkit-user-select: text"><?php echo $contact->outlook_caldavurl;?></td>
             </tr>
@@ -282,7 +289,7 @@ foreach($contact->applications as $key => $val) { ?>
               <td class="tcell-left text11"><span><span><?php echo $lang['CONTACTS_CALENDAR_OTHERS'];?></span></span></td>
               <td class="tcell-right" style="-webkit-user-select: text"><?php echo $contact->all_caldavurl;?></td>
             </tr>
-        </table>
+        </table>-->
         <?php } ?>
     </div>
     <?php } ?>

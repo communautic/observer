@@ -19,8 +19,8 @@ define("CO_INC"	, 		$co_app_version 			);
 define("CO_FILES"	, 		$protocol . "dev.companyobserver.com/" . $co_files_version );
 define("CO_FILES_NOHTTPS", "http://dev.companyobserver.com/" . $co_files_version );
 
-// product variant: 0 = CO, 1 = Physio
-define("CO_PRODUCT_VARIANT", 0 );
+// product variant: 0 = CO, 1 = Physio, 2 = Therapy
+define("CO_PRODUCT_VARIANT", 1 );
 // PO compat (if true show old treatments without calendar)
 define("CO_PHYSIO_COMBAT", false );
 

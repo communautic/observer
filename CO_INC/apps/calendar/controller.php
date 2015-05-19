@@ -231,11 +231,7 @@ class Calendar extends Controller {
 			$event['folderid'] = 0;
 			$eventclass = '';
 			$eventaccess = 1;
-			//$regularEventDisplay = '';
-			//$treatmentEventDisplay = '';
 			if($event['eventtype'] == 1) {
-				//$regularEventDisplay  = ' style="display: none"';
-				//$treatmentEventDisplay = ' style="display: block"';
 				$treatmentsModel = new PatientsTreatmentsModel();
 				$treatmentevent = $treatmentsModel->getTreatmentEvent($event['eventid'],1);
 				//$title = $treatmentevent['patient'] . ', ' . $treatmentevent['title'];
@@ -438,15 +434,15 @@ class Calendar extends Controller {
 			$calendarcolors_used = $calendarcolors_used-1;
 			//echo $this->calendarcolors_used;
 		}*/
-		$globalColor0 = '#FF7957';
-		$globalColor1 = '#79BC57';
-		$globalColor2 = '#579AFF';
-		$globalColor3 = '#BC79FF';
-		$globalColor4 = '#DBB057';
-		$globalColor5 = '#57BCBC';
-		$globalColor6 = '#DD79DD';
-		$globalColor7 = '#79DDFF';
-		$globalColor8 = '#BCDD57';
+		$globalColor0 = '#6EAAFF';
+		$globalColor1 = '#FF7878';
+		$globalColor2 = '#8CD264';
+		$globalColor3 = '#FFD41D';
+		$globalColor4 = '#D2B4FF';
+		$globalColor5 = '#FF9E1F';
+		$globalColor6 = '#64CCC9';
+		$globalColor7 = '#FF83FF';
+		$globalColor8 = '#9999FF';
 		$globalColor9 = '#BCBCBC';
 		
 		$calendar['calendarcolor'] = ${$col};
@@ -524,15 +520,59 @@ class Calendar extends Controller {
 		
 		$arr = $this->model->getFolderList(0,1);
 		$calendars = $arr["folders"];
-		if($formtype == 0) {
-		$regularEventDisplay = ' style="display: none"';
-		$treatmentEventDisplay = ' style="display: block"';
-		$eventtype = 1;
-	} else {
-		$regularEventDisplay = ' style="display: block"';
-		$treatmentEventDisplay = ' style="display: none"';
-		$eventtype = 0;
-	}
+		switch($formtype) {
+			case 0; // sitzung
+				$regularEventDisplay = ' style="display: none"';
+				$treatmentEventDisplay = ' style="display: block"';
+				$contactEventDisplay = ' style="display: none"';
+				$newContactEventDisplay = ' style="display: none"';
+				$newPatientEventDisplay = ' style="display: none"';
+				$eventtype = 1;
+			break;
+			case 1; // event
+				$regularEventDisplay = ' style="display: block"';
+				$treatmentEventDisplay = ' style="display: none"';
+				$contactEventDisplay = ' style="display: none"';
+				$newContactEventDisplay = ' style="display: none"';
+				$newPatientEventDisplay = ' style="display: none"';
+				$eventtype = 0;
+			break;
+			case 2; // neuanlage
+				$regularEventDisplay = ' style="display: none"';
+				$treatmentEventDisplay = ' style="display: none"';
+				$contactEventDisplay = ' style="display: block"';
+				$newContactEventDisplay = ' style="display: none"';
+				$newPatientEventDisplay = ' style="display: none"';
+				$eventtype = 1;
+			break;
+			case 3; // patientenakt
+				$regularEventDisplay = ' style="display: none"';
+				$treatmentEventDisplay = ' style="display: none"';
+				$contactEventDisplay = ' style="display: none"';
+				$newContactEventDisplay = ' style="display: block"';
+				$newPatientEventDisplay = ' style="display: none"';
+				$eventtype = 1;
+			break;
+			case 4; // behandlung
+				$regularEventDisplay = ' style="display: none"';
+				$treatmentEventDisplay = ' style="display: none"';
+				$contactEventDisplay = ' style="display: none"';
+				$newContactEventDisplay = ' style="display: none"';
+				$newPatientEventDisplay = ' style="display: block"';
+				$eventtype = 1;
+			break;
+		}
+		
+		/*if($formtype == 0) {
+			$regularEventDisplay = ' style="display: none"';
+			$treatmentEventDisplay = ' style="display: block"';
+			$contactEventDisplay = ' style="display: none"';
+			$eventtype = 1;
+		} else if($formtype == 1){
+			$regularEventDisplay = ' style="display: block"';
+			$treatmentEventDisplay = ' style="display: none"';
+			$eventtype = 0;
+		}*/
 		
 		ob_start();
 			include('view/new.php');
@@ -574,6 +614,159 @@ class Calendar extends Controller {
 					if($t_locuid != 0) {
 						$title .=  ', ' . $lang['CALENDAR_EVENT_HOUSE_CALL'];
 					}
+				}
+				if($eventtype == 2) {
+					
+					$lastname = $post['lastname'];
+					$firstname = $post['firstname'];
+					$phone = $post['phone'];
+					$email = $post['email'];
+					// new contact
+					$contactsModel = new ContactsModel();
+					$contact_id = $contactsModel->newContactFromCalendar($lastname,$firstname,$phone,$email);
+					$title = $contactsModel->getUserFullnameShortFirstname($contact_id);
+					if($t_loc != 0) {
+						$title .= ', ' . $post['location'];
+					}
+					if($t_locuid != 0) {
+						$title .=  ', ' . $lang['CALENDAR_EVENT_HOUSE_CALL'];
+					}
+					// add contact as patient
+					$management_id = $this->model->getUIDFromCalendar($post['calendar']);
+					$folder_id = $post['folderid'];
+					$patientsModel = new PatientsModel();
+					$pid = $patientsModel->newPatientFromCalendar($folder_id,$contact_id,$management_id);
+					
+					// then create the treatment
+					$treatmentsModel = new PatientsTreatmentsModel();
+					$treatment_title = $post['treatmenttitle'];
+					$t_id = $treatmentsModel->createNewFromCalendar($pid, $treatment_title);
+					$eventtype = 1;
+				}
+				if($eventtype == 3) {
+					$contact_id = $post['contactid'];
+					$contactsModel = new ContactsModel();
+					$title = $contactsModel->getUserFullnameShortFirstname($contact_id);
+					if($t_loc != 0) {
+						$title .= ', ' . $post['location'];
+					}
+					if($t_locuid != 0) {
+						$title .=  ', ' . $lang['CALENDAR_EVENT_HOUSE_CALL'];
+					}
+					// add contact as patient
+					$management_id = $this->model->getUIDFromCalendar($post['calendar']);
+					$folder_id = $post['folderid'];
+					$patientsModel = new PatientsModel();
+					$pid = $patientsModel->newPatientFromCalendar($folder_id,$contact_id,$management_id);
+					
+					// then create the treatment
+					$treatmentsModel = new PatientsTreatmentsModel();
+					$treatment_title = $post['treatmenttitle'];
+					$t_id = $treatmentsModel->createNewFromCalendar($pid, $treatment_title);
+					$eventtype = 1;
+				}
+				if($eventtype == 4) {
+					/*$pid = $post['patientid'];
+					$contactsModel = new ContactsModel();
+					$title = $contactsModel->getUserFullnameShortFirstname($pid);
+					if($t_loc != 0) {
+						$title .= ', ' . $post['location'];
+					}
+					if($t_locuid != 0) {
+						$title .=  ', ' . $lang['CALENDAR_EVENT_HOUSE_CALL'];
+					}
+					// add contact as patient
+					$management_id = $this->model->getUIDFromCalendar($post['calendar']);
+					$folder_id = $post['folderid'];
+					//$patientsModel = new PatientsModel();
+					//$pid = $patientsModel->newPatientFromCalendar($folder_id,$contact_id,$management_id);
+					
+					// then create the treatment
+					$treatmentsModel = new PatientsTreatmentsModel();
+					$treatment_title = $post['treatmenttitle'];
+					$t_id = $treatmentsModel->createNewFromCalendar($pid, $treatment_title);
+					$eventtype = 1;*/
+					/*$contact_id = $post['patientid'];
+					$contactsModel = new ContactsModel();
+					$title = $contactsModel->getUserFullnameShortFirstname($contact_id);
+					if($t_loc != 0) {
+						$title .= ', ' . $post['location'];
+					}
+					if($t_locuid != 0) {
+						$title .=  ', ' . $lang['CALENDAR_EVENT_HOUSE_CALL'];
+					}
+					// add contact as patient
+					$management_id = $this->model->getUIDFromCalendar($post['calendar']);
+					$folder_id = $post['folderid'];
+					$patientsModel = new PatientsModel();
+					$pid = $patientsModel->newPatientFromCalendar($folder_id,$contact_id,$management_id);
+					
+					// then create the treatment
+					$treatmentsModel = new PatientsTreatmentsModel();
+					$treatment_title = $post['treatmenttitle'];
+					$t_id = $treatmentsModel->createNewFromCalendar($pid, $treatment_title);
+					$eventtype = 1;*/
+					$pid = $post['patientid'];
+					
+					$folder_id = $post['folderid'];
+					$patientsModel = new PatientsModel();
+					//$contact_id = $patientsModel->getUserFullnameShortFirstname($pid);
+					$title = $patientsModel->getUserFullnameShortFirstname($pid);
+					//echo $title;
+					//$pid = $patientsModel->newPatientFromCalendar($folder_id,$contact_id,$management_id);
+					if($patientsModel->patientExistsInFolder($pid,$folder_id)) {
+						//create treatment
+						//$contactsModel = new ContactsModel();
+						//$title = $contactsModel->getUserFullnameShortFirstname($contact_id);
+						if($t_loc != 0) {
+							$title .= ', ' . $post['location'];
+						}
+						if($t_locuid != 0) {
+							$title .=  ', ' . $lang['CALENDAR_EVENT_HOUSE_CALL'];
+						}
+						// then create the treatment
+						$treatmentsModel = new PatientsTreatmentsModel();
+						$treatment_title = $post['treatmenttitle'];
+						$t_id = $treatmentsModel->createNewFromCalendar($pid, $treatment_title);
+					} else {
+						// duplicate patient to folder
+						$management_id = $this->model->getUIDFromCalendar($post['calendar']);
+						$pid = $patientsModel->createDuplicatePatientFromCalendar($pid,$folder_id,$management_id);
+						if($t_loc != 0) {
+							$title .= ', ' . $post['location'];
+						}
+						if($t_locuid != 0) {
+							$title .=  ', ' . $lang['CALENDAR_EVENT_HOUSE_CALL'];
+						}
+						// then create the treatment
+						$treatmentsModel = new PatientsTreatmentsModel();
+						$treatment_title = $post['treatmenttitle'];
+						$t_id = $treatmentsModel->createNewFromCalendar($pid, $treatment_title);
+						
+					}
+					
+					
+					// then create the treatment
+					//$treatmentsModel = new PatientsTreatmentsModel();
+					//$treatment_title = $post['treatmenttitle'];
+					//$t_id = $treatmentsModel->createNewFromCalendar($pid, $treatment_title);
+					
+					/*$contactsModel = new ContactsModel();
+					$title = $contactsModel->getUserFullnameShortFirstname($contact_id);
+					if($t_loc != 0) {
+						$title .= ', ' . $post['location'];
+					}
+					if($t_locuid != 0) {
+						$title .=  ', ' . $lang['CALENDAR_EVENT_HOUSE_CALL'];
+					}
+					// add contact as patient
+					$management_id = $this->model->getUIDFromCalendar($post['calendar']);
+					$folder_id = $post['folderid'];
+					$patientsModel = new PatientsModel();
+					$pid = $patientsModel->newPatientFromCalendar($folder_id,$contact_id,$management_id);
+					
+					*/
+					$eventtype = 1;
 				}
 			$post['title'] = $title;
 			//print_r($post);
@@ -654,7 +847,9 @@ class Calendar extends Controller {
 			
 			$treatmentevent = $treatmentsModel->getTreatmentEvent($treatmentid);
 			$treatid = $treatmentevent['mid'];
-			$treatmenttitle = '<span class="listmember" uid="' .  $treatid . '">' . $treatmentevent['patient'] . ', ' . $treatmentevent['title'] . '</span>';
+			$treatmentpatient = '<span class="listmember" uid="' .  $treatid . '">' . $treatmentevent['patient'] . '</span>';
+			$treatmentfolder = $treatmentevent['foldertitle'];
+			$treatmenttitle = $treatmentevent['title'];
 		}
 		$eventlocation = $data['eventlocation'];
 		$eventlocationuid = $data['eventlocationuid'];
@@ -1336,8 +1531,8 @@ class Calendar extends Controller {
 		return $vobject;
 	}
 	
-	function getEventTypesDialog($field,$title) {
-		$retval = $this->model->getEventTypesDialog($field,$title);
+	function getEventTypesDialog($field,$title,$option) {
+		$retval = $this->model->getEventTypesDialog($field,$title,$option);
 		if($retval){
 			 return $retval;
 		  } else{
@@ -1383,7 +1578,7 @@ class Calendar extends Controller {
 		$errnum = 0;
 		//$errarr = array('title'=>'false', 'cal'=>'false', 'from'=>'false', 'fromtime'=>'false', 'to'=>'false', 'totime'=>'false', 'endbeforestart'=>'false');
 		
-		$errarr = array('treatment'=>'false','treatmentlocation'=>'false','title'=>'false');
+		$errarr = array('treatment'=>'false','treatmentlocation'=>'false','title'=>'false','lastname'=>'false','firstname'=>'false','folder'=>'false','treatmenttitle'=>'false','contactid'=>'false','patientid'=>'false');
 		if($request['eventtype'] == 0 && $request['title'] == '') {
 			$errarr['title'] = 'true';
 			$errnum++;
@@ -1393,6 +1588,34 @@ class Calendar extends Controller {
 			$errnum++;
 		}
 		if($request['eventtype'] == 1 && $request['treatmentlocationid'] == 0 && $request['treatmentlocationuid'] == 0) {
+			$errarr['treatmentlocation'] = 'true';
+			$errnum++;
+		}
+		if($request['eventtype'] == 2 && $request['lastname'] == '') {
+			$errarr['lastname'] = 'true';
+			$errnum++;
+		}
+		if($request['eventtype'] == 2 && $request['firstname'] == '') {
+			$errarr['firstname'] = 'true';
+			$errnum++;
+		}
+		if($request['eventtype'] == 3 && $request['contactid'] == 0) {
+			$errarr['contactid'] = 'true';
+			$errnum++;
+		}
+		if($request['eventtype'] == 4 && $request['patientid'] == 0) {
+			$errarr['patientid'] = 'true';
+			$errnum++;
+		}
+		if(($request['eventtype'] == 2 || $request['eventtype'] == 3 || $request['eventtype'] == 4) && $request['folderid'] == 0) {
+			$errarr['folder'] = 'true';
+			$errnum++;
+		}
+		if(($request['eventtype'] == 2 || $request['eventtype'] == 3 || $request['eventtype'] == 4) && $request['treatmenttitle'] == '') {
+			$errarr['treatmenttitle'] = 'true';
+			$errnum++;
+		}
+		if(($request['eventtype'] == 2 || $request['eventtype'] == 3 || $request['eventtype'] == 4) && $request['treatmentlocationid'] == 0 && $request['treatmentlocationuid'] == 0) {
 			$errarr['treatmentlocation'] = 'true';
 			$errnum++;
 		}

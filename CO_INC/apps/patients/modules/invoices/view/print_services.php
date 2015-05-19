@@ -13,7 +13,7 @@
 <table width="100%" class="standard">
     <tr>
         <td><p style="line-height: 25px;"><b><?php echo $lang["PATIENT_INVOICE_SERVICES_LIST"];?></b></p>
-        <p style="line-height: 25px;"><?php echo $lang["PATIENT_INVOICE_SERVICES_FOR"];?> <?php echo($invoice->title2)?> <?php echo($invoice->patient);?></p>
+        <p style="line-height: 25px;"><?php echo $lang["PATIENT_INVOICE_SERVICES_FOR"];?> <?php echo($invoice->patient);?></p>
         <p style="line-height: 25px;">zu Rechnungsnummer <?php echo($invoice->invoice_number);?></p></td>
         <td valign="bottom" style="text-align: right;">&nbsp;</td>
     </tr>

@@ -444,12 +444,20 @@ class CalendarModel extends Model {
 		return true;
 	}
 	
-	function getEventTypesDialog($field,$title) {
+	function getEventTypesDialog($field,$title,$option) {
 		global $session,$lang;
 		$str = '<div class="dialog-text">';
 		//$q ="select id, title from " . CO_TBL_PROJECTS_FOLDERS . " where status='0' and bin = '0' ORDER BY title";
-		foreach($lang["EVENTTYPE"] as $key => $value) {
-			$str .= '<a href="#" class="insertEventTypeFromDialog" title="' . $value . '" field="'.$field.'" gid="'.$key.'">' . $value . '</a>';
+		if($option == 'all') {
+			foreach($lang["EVENTTYPE"] as $key => $value) {
+				$str .= '<a href="#" class="insertEventTypeFromDialog" title="' . $value . '" field="'.$field.'" gid="'.$key.'">' . $value . '</a>';
+			}
+		} else {
+			foreach($lang["EVENTTYPE"] as $key => $value) {
+				if($key == 1 || $key == 0) {
+				$str .= '<a href="#" class="insertEventTypeFromDialog" title="' . $value . '" field="'.$field.'" gid="'.$key.'">' . $value . '</a>';
+				}
+			}
 		}
 		$str .= '</div>';	
 		return $str;

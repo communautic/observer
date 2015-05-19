@@ -1,14 +1,23 @@
 /* treatments Object */
 function patientsTreatments(name) {
 	this.name = name;
+	var self = this;
 	this.isRefresh = false;
 	this.askStatus = true;
+	this.coPrintOptions = '';
+	this.coSendToOptions = '';
+	this.coPopupEditClass = 'popup-full';
 
 
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#patients input.title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
+			setTimeout(function() {
+				title = $("#patients input.title").fieldValue();
+				if(title == "") {
+					$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
+				}
+			}, 5000)
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -65,7 +74,7 @@ function patientsTreatments(name) {
 			formData[formData.length] = processListArray('task_place',reg);
 		});*/
 		
-		$("#canvasDivText > div").each(function() {
+		/*$("#canvasDivText > div").each(function() {
 			var id = $(this).attr('id');
 			var reg = /[0-9]+/.exec(id);
 			var yo = "canvasList_text_"+reg;
@@ -82,10 +91,11 @@ function patientsTreatments(name) {
 				var text = $('#'+yo).html();
 				formData[formData.length] = { "name": name, "value": text };
 			}
-		});
+		});*/
 		
 		formData[formData.length] = processListApps('doctor');
 		formData[formData.length] = processCustomTextApps('doctor_ct');
+		formData[formData.length] = processListApps('method');
 		formData[formData.length] = processListApps('treatment_access');
 	 }
 	 
@@ -94,6 +104,7 @@ function patientsTreatments(name) {
 		 var module = getCurrentModule();
 		$("#patients3 ul[rel=treatments] span[rel="+data.id+"] .text").html($("#patients .item_date").val() + ' - ' +$("#patients .title").val());
 		$("#protocol2_inactive").html($.nl2br($("#protocol2").val()));
+		$("#sessioncount").text(data.updatestatus);
 		switch(data.access) {
 			case "0":
 				$("#patients3 ul[rel=treatments] span[rel="+data.id+"] .module-access-status").removeClass("module-access-active");
@@ -223,6 +234,17 @@ function patientsTreatments(name) {
 
 	this.getDetails = function(moduleidx,liindex,list) {
 		//loadDemand();
+		//alert(this.coPrintOptions);
+		if(self.coPrintOptions == '') {
+			$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/treatments&request=getPrintOptions", success: function(html){
+				self.coPrintOptions = html;
+			}});
+		}
+		if(self.coSendToOptions == '') {
+			$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/treatments&request=getSendToOptions", success: function(html){
+				self.coSendToOptions = html;
+			}});
+		}
 		this.askStatus = true;
 		contexts = [];
 		var id = $("#patients3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
@@ -236,11 +258,11 @@ function patientsTreatments(name) {
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients/modules/treatments&request=getDetails&id="+id, success: function(data){
 			$("#patients-right").empty().html(data.html);
 			
-			if(tab != 0) { $('#patients-right .contentTabsList li span:eq('+tab+')').trigger('click'); }
+			/*if(tab != 0) { $('#patients-right .contentTabsList li span:eq('+tab+')').trigger('click'); }
 			if(appTab) {
 				$('#patients-right .contentTabsList li span:eq(0)').trigger('click');
 				appTab = false;
-			}
+			}*/
 			
 			if($('#checkedOut').length > 0) {
 					$("#patients3 ul[rel=treatments] .active-link .icon-checked-out").addClass('icon-checked-out-active');
@@ -276,7 +298,8 @@ function patientsTreatments(name) {
 				}
 				
 			}
-			if(data.html != '') {
+			initPatientsContentScrollbar();	
+			/*if(data.html != '') {
 				c = data.canvases;
 				var j;
 				var a;
@@ -297,7 +320,7 @@ function patientsTreatments(name) {
 						initPatientsContentScrollbar();			
 				},300)
 				
-			}
+			}*/
 			}
 		});	
 	}
@@ -418,7 +441,7 @@ function patientsTreatments(name) {
 	}
 
 
-	this.actionPrint = function() {
+	/*this.actionPrint = function() {
 		var id = $("#patients").data("third");
 		var url ='/?path=apps/patients/modules/treatments&request=printDetails&id='+id;
 		if(!iOS()) {
@@ -426,6 +449,68 @@ function patientsTreatments(name) {
 		} else {
 			window.open(url);
 		}
+	}*/
+	
+	this.actionPrintOption = function(option) {
+		switch(option) {
+			case '1':
+				var id = $("#patients").data("third");
+				var url ='/?path=apps/patients/modules/treatments&request=printDetails&option=plan&id='+id;
+				if(!iOS()) {
+					$("#documentloader").attr('src', url);
+				} else {
+					window.open(url);
+				}
+			break;
+			case '2':
+				var id = $("#patients").data("third");
+				var url ='/?path=apps/patients/modules/treatments&request=printDetails&option=list&id='+id;
+				if(!iOS()) {
+					$("#documentloader").attr('src', url);
+				} else {
+					window.open(url);
+				}
+			break;
+		}
+	}
+	
+	this.actionPrint = function() {
+		var id = $("#patients").data("third");
+		//var url ='/?path=apps/patients/modules/invoices&request=printDetails&id='+id;
+		//$("#documentloader").attr('src', url);
+		var copopup = $('#co-splitActions');
+		var pclass = this.coPopupEditClass;
+		copopup.html(this.coPrintOptions);
+		copopup
+			.removeClass(function (index, css) {
+				   return (css.match (/\bpopup-\w+/g) || []).join(' ');
+			   })
+			.addClass(pclass)
+			.position({
+				  my: "center center",
+				  at: "right+123 center",
+				  of: '#patientsActions .listPrint',
+				  collision: 'flip fit',
+				  within: '#patients-right .scroll-pane',
+				  using: function(coords, ui) {
+						var $modal = $(this),
+						t = coords.top,
+						l = coords.left,
+						className = 'switch-' + ui.horizontal;
+						$modal.css({
+							left: l + 'px',
+							top: t + 'px'
+						}).removeClass(function (index, css) {
+							return (css.match (/\bswitch-\w+/g) || []).join(' ');
+						})
+						.addClass(className);
+						copopup.hide().animate({width:'toggle'}, function() { 
+							//copopup.find('.arrow').offset({ top: ui.target.top+25 });
+							var arrowtop = Math.round(ui.target.top - ui.element.top)+20;
+							copopup.find('.arrow').css('top', arrowtop); 
+						})
+				}
+			});
 	}
 
 
@@ -516,6 +601,15 @@ function patientsTreatments(name) {
 					}
 				});
 			break;
+			case "getTreatmentsMethodDialog":
+				$.ajax({ type: "GET", url: "/", data: 'path=apps/patients/modules/treatments&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
+					$("#modalDialog").html(html);
+					$("#modalDialog").dialog('option', 'position', offset);
+					$("#modalDialog").dialog('option', 'title', title);
+					$("#modalDialog").dialog('open');
+					}
+				});
+			break;
 			case "getDocumentsDialog":
 				var id = $("#patients").data("second");
 				$.ajax({ type: "GET", url: "/", data: 'path=apps/patients/modules/documents&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql+'&id=' + id, success: function(html){
@@ -574,18 +668,24 @@ function patientsTreatments(name) {
 	
 	
 	this.insertFromDialog = function(field,gid,title) {
-		var html = '<span class="listmember-outer"><span class="listmember listmemberTreatmentType" uid="' + gid + '" field="'+field+'">' + title + '</span></div>';
+		if(field == 'treatmentsmethod') {
+			var html = '<span class="listmember-outer"><span class="listmember" uid="' + gid + '" field="'+field+'">' + title + '</span></div>';
+		} else {
+			var html = '<span class="listmember-outer"><span class="listmember listmemberTreatmentType" uid="' + gid + '" field="'+field+'">' + title + '</span></div>';
+		}
 		$("#"+field).html(html);
 		$("#modalDialog").dialog('close');
 		var obj = getCurrentModule();
 		$('#patients .coform').ajaxSubmit(obj.poformOptions);
 		// get minutes
+		if(field != 'treatmentsmethod') {
 		var id = /[0-9]+/.exec(field);
 		$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/treatments&request=getTreatmentTypeMin&id=" + gid, success: function(html){
 			$('#minutes_'+id).html(html);
 			
 			}
 		});
+		}
 	}
 
 
@@ -674,7 +774,7 @@ function patientsTreatments(name) {
 	}
 	
 	
-	this.newDrawing = function() {
+	/*this.newDrawing = function() {
 		var module = this;
 		var mid = $("#patients").data("third");
 		zIndexes++;
@@ -699,9 +799,9 @@ function patientsTreatments(name) {
 			initPatientsContentScrollbar();
 			}
 		});		
-	}
+	}*/
 	
-	this.saveDrawing = function(id,img) {
+	/*this.saveDrawing = function(id,img) {
 		var imgsave = '';
 		if(img != '') {
 			imgsave = img.replace(/^data:image\/png;base64,/, "");
@@ -711,7 +811,7 @@ function patientsTreatments(name) {
 		$.ajax({ type: "POST", url: "/", data: "path=apps/patients/modules/treatments&request=saveDrawing&id=" + id + "&img=" + imgsave, success: function(id){
 			}
 		});		
-	}
+	}*/
 
 
 	this.binDiagnose = function(id) {
@@ -1016,14 +1116,14 @@ var colors = ['#3C4664','#EB4600','#915500','#0A960A','#AA19AA','#3C4664','#EB46
 	});
 		
 		
-		$("div.loadCanvas").livequery( function() {
+		/*$("div.loadCanvas").livequery( function() {
 			$(this).each(function(){
 				tmp = $(this).css('z-index');
 				if(tmp>zIndexes) zIndexes = tmp;
 			})						  
-		})							  
+		})	*/						  
 		
-		$('div.loadCanvas.active').livequery( function() {
+		/*$('div.loadCanvas.active').livequery( function() {
 			$(this).draggable({
 				containment:"parent",
 				cursor: 'move',
@@ -1036,24 +1136,16 @@ var colors = ['#3C4664','#EB4600','#915500','#0A960A','#AA19AA','#3C4664','#EB46
 					});
 				}
 			});
-		});
+		});*/
 
-		$(document).on('click','div.loadCanvas',function(e) {
+		/*$(document).on('click','div.loadCanvas',function(e) {
 			e.preventDefault();
 			//var rel = $(this).attr('rel');
 			var id = $(this).attr("id").replace(/dia-/, "");
-			/*activeCanvas = $("#c"+rel)[0];
-			zIndexes = ++zIndexes;
-			$('div.loadCanvas').removeClass('active');
-			$('div.loadCanvasList .tcell-right').removeClass('active');
-			$('#canvasList_'+id).find('.tcell-right').addClass('active').find('textarea').focus();
-			$(this).css('z-index',zIndexes).addClass('active');
-			$('.canvasDraw').css('z-index',1);
-			$('#c'+rel).css('z-index',2);*/
 			$('#canvasList_'+id).trigger('click');
-		})
+		})*/
 
-		$(document).on('click','.loadCanvasList',function(e) {
+		/*$(document).on('click','.loadCanvasList',function(e) {
 			e.preventDefault();
 			var rel = $(this).attr('rel');
 			var id = $(this).attr("id").replace(/canvasList_/, "");
@@ -1071,14 +1163,10 @@ var colors = ['#3C4664','#EB4600','#915500','#0A960A','#AA19AA','#3C4664','#EB46
 			} else {
 				$('span.undoTool').removeClass('active');
 			}
-			/*if(!$('span.penTool').hasClass('active')) {
-				!$('span.penTool').addClass('active');
-				$('span.erasorTool').removeClass('active');
-			}*/
 			$('span.penTool').trigger('click');
-		})
+		})*/
 
-		$(document).on('click','span.addTool',function(e) {
+		/*$(document).on('click','span.addTool',function(e) {
 			e.preventDefault();
 			patients_treatments.newDrawing();
 		})
@@ -1098,9 +1186,9 @@ var colors = ['#3C4664','#EB4600','#915500','#0A960A','#AA19AA','#3C4664','#EB46
 			restorePoint[id] = '';
 			var rel = $('#'+id).attr('rel');
 			patients_treatments.saveDrawing(rel,img);
-		})
+		})*/
 
-		$(document).on('click','span.undoTool',function(e) {
+		/*$(document).on('click','span.undoTool',function(e) {
 			e.preventDefault();
 			var id = activeCanvas.id;
 			if($(this).hasClass('active')) {
@@ -1122,9 +1210,9 @@ var colors = ['#3C4664','#EB4600','#915500','#0A960A','#AA19AA','#3C4664','#EB46
 			if (restorePoints[id].length < 1) {
 				$(this).removeClass('active');
 			}
-		})
+		})*/
 		
-		$(document).on('click','span.erasorTool',function(e) {
+		/*$(document).on('click','span.erasorTool',function(e) {
 			e.preventDefault();
 			$(this).addClass('active');
 			$('span.penTool').removeClass('active');
@@ -1148,24 +1236,21 @@ var colors = ['#3C4664','#EB4600','#915500','#0A960A','#AA19AA','#3C4664','#EB46
 				contexts[id].strokeStyle = colors[curcol];
 				contexts[id].lineWidth   = 3;
 			});
-		})
+		})*/
 		
-		var curcol = 0;
+		/*var curcol = 0;
 		$('.canvasDraw').livequery(function() {
-			//$(this).each(function(i,el) {
 			  var id = this.id;
 			  var rel = $(this).attr('rel');
 			  var index = $(".canvasDraw").index(this);
 			  var curcol = index % 10;
 			  contexts[id] = this.getContext('2d');
 			  contexts[id].strokeStyle = colors[curcol];
-			//  $('#dia-'+rel).css('background',colors[curcol])
 			  contexts[id].lineWidth   = 3;
-			//})
-		})			
+		})			*/
 
 		// This will be defined on a TOUCH device such as iPad or Android, etc.
-		var is_touch_device = 'ontouchstart' in document.documentElement;
+		/*var is_touch_device = 'ontouchstart' in document.documentElement;
 		if (is_touch_device) {
             // create a drawer which tracks touch movements
 			var drawer = new Array();
@@ -1194,21 +1279,6 @@ var colors = ['#3C4664','#EB4600','#915500','#0A960A','#AA19AA','#3C4664','#EB46
 							 contexts[id].stroke();
 						  }
 					   }
-					   /*,
-					   touchend: function (coors) {
-						  alert('yoyo');
-						  if (this.isDrawing) {
-							 this.touchmove(coors);
-							 this.isDrawing = false;
-							 
-							 var can = document.getElementById(id); 
-		var img = can.toDataURL();
-		restorePoints[id].push(restorePoint[id]);
-		restorePoint[id] = img;
-		var rel = $('#'+id).attr('rel');
-		patients_treatments.saveDrawing(rel,img);
-						  }
-					   }*/
 					};
 				//})
 			})
@@ -1243,17 +1313,6 @@ var colors = ['#3C4664','#EB4600','#915500','#0A960A','#AA19AA','#3C4664','#EB46
 				}
 			});
 
-			/*$('.canvasDraw').livequery(function() {
-				//$(this).each(function(el) {
-					this.addEventListener('touchstart', function(){draw(event,this)}, false);
-					this.addEventListener('touchmove', function(){draw(event,this)}, false);
-					this.addEventListener('touchend', function(){draw(event,this)}, false);
-					// prevent elastic scrolling
-				   this.addEventListener('touchmove', function (event) {
-					   event.preventDefault();
-					}, false);
-				//})
-			})*/
 		} else {
 			// Pencil
 			$(document).on('mousedown','.canvasDraw',function(mouseEvent) {
@@ -1271,11 +1330,12 @@ var colors = ['#3C4664','#EB4600','#915500','#0A960A','#AA19AA','#3C4664','#EB46
 				  finishDrawing(mouseEvent, id);
 			   });
 			});
-		}
+		}*/
+		
 	});
 	  
 	  
-	var contexts = new Array(); 
+	/*var contexts = new Array(); 
 	function getPosition(e, id) {
 	   var x, y;
 	   var canvas = $('#'+id).get(0);
@@ -1291,21 +1351,21 @@ var colors = ['#3C4664','#EB4600','#915500','#0A960A','#AA19AA','#3C4664','#EB46
 		  y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
 	   }
 	   return { X: x - canvas.offsetLeft - cparentOffset.left, Y: y - canvasOffset.top};
-	}
+	}*/
  
  
 	// draws a line to the x and y coordinates of the mouse event inside
 	// the specified element using the specified context
-	function drawLine(mouseEvent, id) {
+	/*function drawLine(mouseEvent, id) {
 	   var position = getPosition(mouseEvent, id);
 	   contexts[id].lineTo(position.X, position.Y);
 	   contexts[id].stroke();
-	}
+	}*/
  
 	// draws a line from the last coordiantes in the path to the finishing
 	// coordinates and unbind any event handlers which need to be preceded
 	// by the mouse down event
-	function finishDrawing(mouseEvent, id) {
+	/*function finishDrawing(mouseEvent, id) {
 		//drawLine(mouseEvent, id);
 		$('#patients span.undoTool').addClass('active');
 		var can = document.getElementById(id); 
@@ -1315,9 +1375,9 @@ var colors = ['#3C4664','#EB4600','#915500','#0A960A','#AA19AA','#3C4664','#EB46
 		var rel = $('#'+id).attr('rel');
 		patients_treatments.saveDrawing(rel,img);
 		$('#'+id).unbind("mousemove").unbind("mouseup").unbind("mouseout");
-	}
+	}*/
 	
-	$(document).on('click','a.binDiagnose',function(e) {
+	/*$(document).on('click','a.binDiagnose',function(e) {
 		e.preventDefault();
 		if($(this).hasClass('deactivated')) {
 			return false;
@@ -1353,7 +1413,7 @@ var colors = ['#3C4664','#EB4600','#915500','#0A960A','#AA19AA','#3C4664','#EB46
 				}
 			});
 		}
-	});
+	});*/
 	
 	$(document).on('click', 'a.insertTreatmentfromDialog', function(e) {
 		e.preventDefault();

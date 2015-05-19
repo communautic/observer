@@ -79,9 +79,14 @@ function contactsContact(name) {
 	
 
 	this.formProcess = function(formData, form, poformOptions) {
-		var title = $("#contacts .title").fieldValue();
+		var title = $("#contacts input.title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
+			setTimeout(function() {
+				title = $("#contacts input.title").fieldValue();
+				if(title == "") {
+					$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
+				}
+			}, 5000)
 			return false;
 		} else {
 			formData[formData.length] = { "name": "lastname", "value": title };
@@ -239,6 +244,16 @@ function contactsContact(name) {
 	this.actionPrint = function() {
 		var id = $("#contacts").data("first");
 		var url ='/?path=apps/contacts&request=printContactDetails&id='+id;
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
+	}
+	
+	this.actionPrintCalendarInstructions = function() {
+		var id = $("#contacts").data("first");
+		var url ='/?path=apps/contacts&request=printCalendarInstructions&id='+id;
 		if(!iOS()) {
 			$("#documentloader").attr('src', url);
 		} else {
@@ -456,9 +471,14 @@ function contactsGroups(name) {
 	
 	
 	this.formProcess = function(formData, form, poformOptions) {
-		var title = $("#contacts .title").fieldValue();
+		var title = $("#contacts input.title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
+			setTimeout(function() {
+				title = $("#contacts input.title").fieldValue();
+				if(title == "") {
+					$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
+				}
+			}, 5000)
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -1715,6 +1735,11 @@ $(document).ready(function() {
 			// save to lastused
 			$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=saveLastUsedContacts&id="+cid});
 		}*/
+	});
+	
+	$(document).on('click', '#printCalendarInstructions', function(e){
+		e.preventDefault();
+		contacts.actionPrintCalendarInstructions();
 	});
 
 });

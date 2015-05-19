@@ -53,6 +53,9 @@ $lang["PROC_WIDGET_TITLE_PROC"]		=	'Freischaltung';
 $lang["PROC_WIDGET_INVITATION_ADMIN"]	=	'als <span class="yellow">Administrator</span> für "%1$s"';
 $lang["PROC_WIDGET_INVITATION_GUEST"]	=	'als <span class="yellow">Beobachter</span> für "%1$s"';
 
+/* Archiv */
+$lang["PROC_ARCHIVE"] = 'Prozessarchiv';
+
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/procs/de.php";
 if(file_exists($custom_lang)) {

@@ -76,6 +76,7 @@
             <li class="listExport"><span class="actionExport" title="<?php echo $lang["ACTION_EXPORT"];?>"></span></li>
 			<li class="listConvert"><span class="actionConvert" title="in Projekt umwandeln"></span></li>
             <li class="listRefresh"><span class="actionRefresh" title="<?php echo $lang["ACTION_REFRESH"];?>"></span></li>
+            <li class="listArchive"><span class="actionArchive" title="<?php echo $lang["ACTION_MOVETO_ARCHIVE"];?>"></span></li>
             <li class="listHelp"><span class="actionHelp" title="<?php echo $lang["ACTION_HELP"];?>"></span></li>
             <li class="listBin"><span class="actionBin" title="<?php echo $lang["ACTION_DELETE"];?>"></span></li>
 		</ul>

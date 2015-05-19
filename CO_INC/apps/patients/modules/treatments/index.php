@@ -66,7 +66,13 @@ if (!empty($_GET['request'])) {
 			if(!empty($_GET['t'])) {
 				$t = $_GET['t'];
 			}
-			echo($patientsTreatments->printDetails($_GET['id'],$t));
+			echo($patientsTreatments->printDetails($_GET['id'],$t,$_GET['option']));
+		break;
+		case 'getPrintOptions':
+			echo($patientsTreatments->getPrintOptions());
+		break;
+		case 'getSendToOptions':
+			echo($patientsTreatments->getSendToOptions());
 		break;
 		case 'getSend':
 			echo($patientsTreatments->getSend($_GET['id']));
@@ -141,7 +147,12 @@ if (!empty($_GET['request'])) {
 		case 'saveLastUsedTreatments':
 			echo($patientsTreatments->saveLastUsedTreatments($_GET['id']));
 		break;
-		
+		case 'getTreatmentsMethodDialog':
+			echo($patientsTreatments->getTreatmentsMethodDialog($_GET['field']));
+		break;
+		case 'getTreatmentInfoForCalendar':
+			echo($patientsTreatments->getTreatmentInfoForCalendar($_GET['id']));
+		break;
 	}
 }
 
@@ -199,7 +210,7 @@ if (!empty($_POST['request'])) {
 			if(isset($_POST['task_sort'])) {
 				$task_sort = $_POST['task_sort'];
 			}
-			echo($patientsTreatments->setDetails($_POST['pid'], $_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['item_date'], $system->checkMagicQuotes($_POST['protocol']),$system->checkMagicQuotes($_POST['protocol2']),$system->checkMagicQuotes($_POST['protocol3']), $_POST['discount'], $_POST['vat'], $_POST['doctor'], $system->checkMagicQuotes($_POST['doctor_ct']),$task_id,$task_date,$task_text,$task,$task_treatmenttype,$canvasList_id,$canvasList_text,$_POST['treatment_access'],$_POST['treatment_access_orig']));
+			echo($patientsTreatments->setDetails($_POST['pid'], $_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['item_date'], $system->checkMagicQuotes($_POST['protocol']),$_POST['method'],$system->checkMagicQuotes($_POST['protocol2']),$system->checkMagicQuotes($_POST['protocol3']), $_POST['discount'], $_POST['vat'], $_POST['doctor'], $system->checkMagicQuotes($_POST['doctor_ct']),$task_id,$task_date,$task_text,$task,$task_treatmenttype,$canvasList_id,$canvasList_text,$_POST['treatment_access'],$_POST['treatment_access_orig']));
 		break;
 		case 'sendDetails':
 			echo($patientsTreatments->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));

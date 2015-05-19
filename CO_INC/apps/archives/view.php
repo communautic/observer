@@ -10,7 +10,7 @@
     	<!--<div class="module-actions"><div class="sort-outer"><span class="sort" rel="1"></span></div></div>-->
     	<div class="module-inner west-ui-content">
         <div class="scrolling-content">
-            <ul class="sortable"></ul>
+            <ul></ul>
         </div>
         </div>
 	</div>
@@ -20,7 +20,7 @@
         <div id="archives2" class="gradient">
     	<div class="module-inner west-ui-content">
             <div class="scrolling-content">
-            <ul class="sortable"><li></li></ul>
+            <ul></ul>
             </div>
         </div>
         </div>

@@ -41,9 +41,13 @@ $lang["PATIENT_CONTACT_POSITION"] = 'Position';
 $lang["PATIENT_CONTACT_PHONE"] = 'Phone';
 $lang["PATIENT_CONTACT_EMAIL"] = 'E-mail';
 $lang["PATIENT_INSURANCE"] = 'Insurance';
-$lang["PATIENT_INSURANCE_NUMBER"] = 'NI number';
+$lang["PATIENT_INSURANCE_NUMBER"] = 'Patient NI number';
+$lang["PATIENT_INSURER"] = 'Insurer';
+$lang["PATIENT_INSURANCE_INSURER_NUMBER"] = 'Insurer NI number';
+
 $lang["PATIENT_INSURANCE_ADDITIONAL"] = 'Additional Insurance';
 $lang["PATIENT_DESCRIPTION"] = 'History';
+$lang["PATIENT_CODE"] = 'Patient code';
 $lang["PATIENT_DOB"] = 'D.O.B';
 $lang["PATIENT_COO"] = 'Profession';
 
@@ -63,6 +67,8 @@ $lang["PATIENT_WIDGET_TITLE"] 	=	'Payment reminder';
 $lang["PATIENT_WIDGET_ALERT"] 	= 	'Invoice "%1$s" for patient "%2$s" is <span class="yellow">overdue</span>';
 $lang["PATIENT_WIDGET_TITLE_INVOICE"] 	=	'Invoice';
 $lang["PATIENT_WIDGET_REMINDER_INVOICE"] 	= 	'Invoice "%1$s" for patient "%2$s" was <span class="yellow">created</span>';
+$lang["PATIENT_WIDGET_TITLE_WAITINGLIST"] 	=	'Waitinglist';
+$lang["PATIENT_WIDGET_REMINDER_WAITINGLIST"] 	= 	'Patient "%1$s" is still on the <span class="yellow">waiting list</span> for a treatment';
 
 $lang["EVENTTYPE"][1] = 'Treatment';
 

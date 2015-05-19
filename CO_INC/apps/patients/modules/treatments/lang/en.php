@@ -21,6 +21,11 @@ $lang["PATIENT_TREATMENT_DURATION"] = 'Treatment duration';
 $lang["PATIENT_TREATMENT_DATE"] = 'Date of diagnosis';
 $lang["PATIENT_TREATMENT_DOCTOR"] = 'Doctor';
 $lang["PATIENT_TREATMENT_DOCTOR_DIAGNOSE"] = 'Medical findings';
+$lang["PATIENT_TREATMENT_METHOD"] = 'Treatment method';
+$lang["PATIENT_TREATMENT_PRESCRIPTION_PHYSIO"] = 'Treatments';
+$lang["PATIENT_TREATMENT_PRESCRIPTION_THERAPY"] = 'Treatments';
+$lang["PATIENT_TREATMENT_ACHIEVMENT_STATUS_PHYSIO"] = 'Sitzungsstatus';
+$lang["PATIENT_TREATMENT_ACHIEVMENT_STATUS_THERAPY"] = 'Leistungsstatus';
 $lang["PATIENT_TREATMENT_DESCRIPTION"] = 'Description';
 $lang["PATIENT_TREATMENT_PROTOCOL2"] = 'Prescription';
 
@@ -46,9 +51,13 @@ $lang["PATIENT_TREATMENT_TASKS_TIME"] = 'Time';
 $lang["PATIENT_TREATMENT_TASKS_DATE_INVOICE"] = 'Date of invoice';
 $lang["PATIENT_TREATMENT_TASKS_DURATION"] = 'Duration';
 
+$lang["PATIENT_TREATMENT_PRINT_OPTION"] = 'Treatment';
+$lang["PATIENT_TREATMENT_PRINT_OPTION_DATES"] = 'List';
+
 $lang["PATIENT_TREATMENT_HELP"] = 'manual_patients_treatments.pdf';
 
 $lang["PATIENT_PRINT_TREATMENT"] = 'treatment.png';
+$lang["PATIENT_PRINT_TREATMENT_LIST"] = 'terminliste.png';
 
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/patients/treatments/en.php";

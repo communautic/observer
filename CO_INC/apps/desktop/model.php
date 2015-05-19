@@ -312,6 +312,18 @@ class DesktopModel extends Model {
 		  	return true;
 		}
    }
+   
+   function checkForCalendar() {
+		global $session;
+		$q = "SELECT b.id as calendarid FROM co_users as a, oc_clndr_calendars as b WHERE a.id='$session->uid' and a.username = b.userid and a.calendar = '1' and a.invisible = '0' and a.bin = '0'";
+		$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result)==0) {
+			return false;	
+		} else {
+			$row = mysql_result($result,0);
+			return $row;
+		}
+	}
 
 }
 ?>

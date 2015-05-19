@@ -25,7 +25,7 @@
     <!-- Event Type -->
     <div class="fieldset2 whitebg fieldborder-bottom">
 		<label>
-        	<span append="1" field="calendarEventTypes" request="getEventTypesDialog" class="content-nav showDialog"><span><?php echo $lang["CALENDAR_EVENT_TYPE"];?></span></span>
+        	<span append="1" field="calendarEventTypes" request="getEventTypesDialog" sql="notall" class="content-nav showDialog"><span><?php echo $lang["CALENDAR_EVENT_TYPE"];?></span></span>
 		</label>
 		<div class="contacts">
             <div class="itemlist-field" id="calendarEventTypes"><span uid="<?php echo $eventtype;?>" class="listmember"><?php echo $lang["EVENTTYPE"][$eventtype];?></span></div>
@@ -33,7 +33,7 @@
 		<div style="clear: both;"></div>
 	</div>
     <input id="eventtype" type="hidden" value="<?php echo $eventtype;?>" name="eventtype" />
-    
+    <div style="height: 1px;"></div>
     <!-- Event Title -->
     <div id="titleDisplay" class="fieldset2" <?php echo $regularEventDisplay;?>>
 		<label style="width: 79px;"><?php echo $lang["CALENDAR_EVENT_TITLE"];?></label>
@@ -43,11 +43,36 @@
 		<div style="clear: both;"></div>
 	</div>
     
+    <!-- patient -->
+    <div id="patientDisplay" class="fieldset2" <?php echo $treatmentEventDisplay;?>>
+		<label>
+            <span append="0" field="calendarTreatmentTitle" request="getTreatmentsDialog" class="content-nav showDialog"><span><?php echo $lang["PATIENT_TITLE"];?></span></span>
+		</label>
+		<div class="contacts">
+			<div class="itemlist-field" id="calendarPatient"><?php echo $treatmentpatient;?></div>
+		</div>
+		<div style="clear: both;"></div>
+	</div>
+    <input id="event-patient" type="hidden" value="0" name="patientid" />
+    
+    <!-- Folder -->
+    <div id="folderDisplay" class="fieldset2" <?php echo $treatmentEventDisplay;?>>
+		<label>
+        	<!--<span append="0" field="calendarFolder" request="getCalendarFoldersDialog" class="content-nav showDialog"><span><?php echo $lang["PATIENT_FOLDER"];?></span></span>-->
+            <span><span><?php echo $lang["PATIENT_FOLDER"];?></span></span>
+		</label>
+		<div class="contacts">
+			<div class="itemlist-field" id="calendarFolder"><?php echo $treatmentfolder;?></div>
+		</div>
+		<div style="clear: both;"></div>
+	</div>
+    <input id="event-folder" type="hidden" value="0" name="folderid" />
     
     <!-- Treatment -->
     <div id="treatmentDisplay" class="fieldset2" <?php echo $treatmentEventDisplay;?>>
 		<label>
-        	<span append="0" field="calendarTreatmentTitle" request="getTreatmentsDialog" class="content-nav showDialog"><span><?php echo $lang["PATIENT_TREATMENT_TITLE"];?></span></span>
+        	<!--<span append="0" field="calendarTreatmentTitle" request="getTreatmentsDialog" class="content-nav showDialog"><span><?php echo $lang["PATIENT_TREATMENT_TITLE"];?></span></span>-->
+            <span><span><?php echo $lang["PATIENT_TREATMENT_CALENDAR_TITLE"];?></span></span>
 		</label>
 		<div class="contacts">
 			<div class="itemlist-field" id="calendarTreatmentTitle"><?php echo $treatmenttitle;?></div>

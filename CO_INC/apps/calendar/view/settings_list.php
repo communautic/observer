@@ -10,5 +10,7 @@ if(is_array($folders)) {
 } else {
 	echo('');
 }
-?></table>
+?>
+<!--<tr><td valign="middle">Alle</td><td valign="middle" width="35" align="right"><span class="toggleAllCalendar coCheckbox"></span></td></tr>-->
+</table>
 </div>

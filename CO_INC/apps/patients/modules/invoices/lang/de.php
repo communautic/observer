@@ -12,7 +12,12 @@ $lang["PATIENT_INVOICE_ACTION_NEW"] = 'neue Rechnung anlegen';
 $lang["PATIENT_INVOICE_DATE"] = 'Rechnungsdatum';
 $lang["PATIENT_INVOICE_DATE_SENT"] = 'Rechnungsversand';
 $lang["PATIENT_INVOICE_NUMBER"] = 'Rechnungsnummer';
+$lang["PATIENT_INVOICE_CARRIER"] = 'Rechnungslegung';
 $lang["PATIENT_INVOICE_ADDRESS"] = 'Rechnungsempfänger';
+$lang["PATIENT_PAYMENT_TYPE"] = 'Zahlungsart';
+$lang["PATIENT_PAYMENT_TYPE_CASH"] = 'Barbezahlung';
+$lang["PATIENT_PAYMENT_TYPE_BANK_TRANSFER"] = 'Überweisung';
+
 $lang["PATIENT_INVOICE_PAYMENT_REMINDER"] = 'Mahnung';
 $lang["PATIENT_INVOICE_SERVICES"] = 'Leistungen';
 $lang["PATIENT_INVOICE_SERVICES_LIST"] = 'Leistungsaufstellung';
@@ -21,6 +26,8 @@ $lang["PATIENT_INVOICE_SERVICES_INVOICENO"] = 'zu Rechnungsnummer';
 $lang["PATIENT_INVOICE_SERVICES_FOR_SIG_PATIENT"] = 'Unterschrift Patient';
 $lang["PATIENT_INVOICE_SERVICES_FOR_SIG_THERAPIST"] = 'Unterschrift Therapeut';
 
+$lang["PATIENT_INVOICE_REQUEST_PAYMENT"] = 'Ich bitte um Anweisung des Gesamtbetrages innerhalb von 10 Tagen.';
+$lang["PATIENT_INVOICE_PAYMENT_CASH"] = 'Betrag dankend erhalten.';
 $lang["PATIENT_INVOICE_TEXT_CITATION"] = 'Sehr geehrte/r';
 $lang["PATIENT_INVOICE_TEXT_LINE1"] = 'Für die von uns erbrachten Leistungen erlaube ich mir nachstehende Honorarnote zu legen:';
 $lang["PATIENT_INVOICE_TEXT_LINE2"] = 'Ich danke für Ihr Vertrauen und bitte um Anweisung des Gesamthonorars innerhalb von 10 Tagen.';
@@ -56,6 +63,7 @@ $lang["PATIENT_INVOICE_NOTES"] = 'Notiz';
 //$lang["PATIENT_INVOICE_POSPONED"] = 'verschoben';
 
 $lang["PATIENT_INVOICE_PRINTOPTION_INVOICE"] = 'Rechnung';
+$lang["PATIENT_INVOICE_PRINTOPTION_INVOICE_PLAIN"] = 'Rechnung(anonym)';
 $lang["PATIENT_INVOICE_PRINTOPTION_SERVICES"] = 'Leistungen';
 $lang["PATIENT_INVOICE_PRINTOPTION_PAYMENT_REMINDER"] = 'Mahnung';
 $lang["PATIENT_INVOICE_PRINTOPTION_ENVELOPE"] = 'Kuvert';

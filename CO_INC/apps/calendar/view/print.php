@@ -1,7 +1,10 @@
 <table width="100%" class="title">
 	<tr>
-        <td class="tcell-left">Kalender</td>
+        <td class="tcell-left" style="width: 119px">Kalender</td>
         <td><strong><?php echo $calendarName;?></strong></td>
+        <td align="right" style="padding-right: 5px; padding-top: 4px;" class="smalltext">von <?php 
+		date_default_timezone_set($session->timezone);
+		echo date('d.m.Y',$start);?> bis <?php echo date('d.m.Y',strtotime('-1 day',$end));?></td>
 	</tr>
 </table>
 <p>&nbsp;</p>
@@ -30,6 +33,6 @@ foreach($output as $key => $row) {
 		$title = $patientsModel->getPatientTitle($row['patientid']);
 	}
 	
-	echo '<table width="100%" cellpadding="0" cellspacing="0"><tr><td width="10%">&nbsp;</td><td width="50%">' . $title . '</td><td class="smalltext grey" valign="middle">' . $start . ' ' . $end . '</td></tr></table>';
+	echo '<table width="100%" cellpadding="0" cellspacing="0"><tr><td width="20px">&nbsp;</td><td width="50%">' . $title . '</td><td class="smalltext grey" valign="middle">' . $start . ' - ' . $end . '</td></tr></table>';
 	$i++;
 }?>

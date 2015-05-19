@@ -8,6 +8,8 @@ function patientsInvoices(name) {
 
 	this.formProcess = function(formData, form, poformOptions) {
 		formData[formData.length] = processListApps('invoiceaddress');
+		formData[formData.length] = processListApps('invoice_carrier');
+		formData[formData.length] = processStringApps('payment_type');
 		formData[formData.length] = processDocListApps('documents');
 		formData[formData.length] = processListApps('invoice_access');
 		}
@@ -153,6 +155,15 @@ function patientsInvoices(name) {
 			case '4':
 				var id = $("#patients").data("third");
 				var url ='/?path=apps/patients/modules/invoices&request=printDetails&option=services&id='+id;
+				if(!iOS()) {
+					$("#documentloader").attr('src', url);
+				} else {
+					window.open(url);
+				}
+			break;
+			case '5':
+				var id = $("#patients").data("third");
+				var url ='/?path=apps/patients/modules/invoices&request=printDetails&option=invoice_plain&id='+id;
 				if(!iOS()) {
 					$("#documentloader").attr('src', url);
 				} else {
@@ -334,6 +345,15 @@ function patientsInvoices(name) {
 				});
 			break;
 			case "getInvoiceCatDialog":
+				$.ajax({ type: "GET", url: "/", data: 'path=apps/patients/modules/invoices&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
+					$("#modalDialog").html(html);
+					$("#modalDialog").dialog('option', 'position', offset);
+					$("#modalDialog").dialog('option', 'title', title);
+					$("#modalDialog").dialog('open');
+					}
+				});
+			break;
+			case "getPaymentTypeDialog":
 				$.ajax({ type: "GET", url: "/", data: 'path=apps/patients/modules/invoices&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
 					$("#modalDialog").html(html);
 					$("#modalDialog").dialog('option', 'position', offset);

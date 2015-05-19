@@ -706,7 +706,6 @@ class Projects extends Controller {
 		  }
 	}
 
-
 	function getProjectStatusDialog() {
 		global $lang;
 		include 'view/dialog_status.php';
@@ -1055,6 +1054,16 @@ class Projects extends Controller {
 	function getInlineSearch($term) {
 		$search = $this->model->getInlineSearch($term);
 		return $search;
+	}
+	
+	
+	function getProjectFolderArchiveDialog($field,$title) {
+		$retval = $this->model->getProjectFolderArchiveDialog($field,$title);
+		if($retval){
+			 return $retval;
+		  } else{
+			 return "error";
+		  }
 	}
 	
 	

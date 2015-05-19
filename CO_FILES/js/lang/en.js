@@ -73,6 +73,12 @@ var ALERT_CALENDAR_MISSING_TITLE = "Title";
 var ALERT_CALENDAR_MISSING_TREATMENT = "Treatment";
 var ALERT_CALENDAR_MISSING_LOCATION = "Location";
 var ALERT_CALENDAR_ROOM_BUSY = "This locatiuon is buys.<br />Please choose a different location.";
+var ALERT_CALENDAR_NO_CALENDAR = "There is no calendar available<br />Please activate a calendar user first.";
+var ALERT_CALENDAR_MISSING_LASTNAME = "Nachname";
+var ALERT_CALENDAR_MISSING_FIRSTNAME = "Vorname";
+var ALERT_CALENDAR_MISSING_FOLDER = "Ordner";
+var ALERT_CALENDAR_MISSING_CONTACT = "Kontakt";
+var ALERT_CALENDAR_MISSING_PATIENT = "Patient";
 
 var ALERT_ARCHIVE = "Would you really want to archive the data?";
 var ALERT_ARCHIVE_CHOOSE_FOLDER = 'Please pick a folder';

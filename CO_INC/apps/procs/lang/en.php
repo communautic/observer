@@ -53,6 +53,9 @@ $lang["PROC_WIDGET_TITLE_PROC"]	=	'Proc';
 $lang["PROC_WIDGET_INVITATION_ADMIN"]	=	'You have been invited as <span class="yellow">Administrator</span> to the proc "%1$s"';
 $lang["PROC_WIDGET_INVITATION_GUEST"]	=	'You have been invited as <span class="yellow">Guest</span> to the proc "%1$s"';
 
+/* Archiv */
+$lang["PROC_ARCHIVE"] = 'Archived Workplans';
+
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/procs/en.php";
 if(file_exists($custom_lang)) {

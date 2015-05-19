@@ -6,4 +6,5 @@ define("CO_TBL_PATIENTS_TREATMENTS_DIAGNOSES"		,	TBL_PREFIX . "patients_treatmen
 define("CO_TBL_PATIENTS_TREATMENTS_TASKS"		,	TBL_PREFIX . "patients_treatments_tasks" 	);
 define("CO_TBL_PATIENTS_TREATMENTS_DIALOG"		,	TBL_PREFIX . "patients_treatments_dialog" 	);
 define("CO_TBL_PATIENTS_TREATMENTS_LOCATIONS"		,	TBL_PREFIX . "patients_treatments_locations" 	);
+define("CO_TBL_PATIENTS_TREATMENTS_METHODS"		,	TBL_PREFIX . "patients_treatments_methods" 	);
 ?>

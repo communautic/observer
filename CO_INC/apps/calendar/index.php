@@ -100,7 +100,7 @@ if (!empty($_GET['request'])) {
 			echo($calendar->showSingleCalendar($_GET["calendarid"]));
 		break;
 		case 'getEventTypesDialog':
-			echo($calendar->getEventTypesDialog($_GET['field'],$_GET['title']));
+			echo($calendar->getEventTypesDialog($_GET['field'],$_GET['title'],$_GET['sql']));
 		break;
 		case 'getTreatmentsLocationsDialog':
 			echo($calendar->getTreatmentsLocationsDialog($_GET['field'],$_GET['title'],$_GET['from'],$_GET['fromtime'],$_GET['totime'],$_GET['eventtype']));

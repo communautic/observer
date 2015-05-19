@@ -733,6 +733,137 @@ class Procs extends Controller {
 		$search = $this->model->getGlobalSearch($term);
 		return $search;
 	}
+	
+	
+	function moveFolderToArchive($fid) {
+		$retval = $this->model->moveFolderToArchive($fid);
+		if($retval){
+			 return "true";
+		  } else{
+			 return "error";
+		  }
+	}
+	
+	function movetoArchive($id,$fid) {
+		$retval = $this->model->movetoArchive($id,$fid);
+		if($retval){
+			 return "true";
+		  } else{
+			 return "error";
+		  }
+	}
+	
+	function getArchiveList() {
+		global $system, $lang;
+		$arr = $this->model->getArchiveList();
+		$procs = $arr["procs"];
+		ob_start();
+			include('view/list.php');
+			$data["html"] = ob_get_contents();
+		ob_end_clean();
+		$data["sort"] = $arr["sort"];
+		//$data["title"] = $lang["PROC_FOLDER_ACTION_NEW"];
+		return $system->json_encode($data);
+	}
+	
+	function getArchive() {
+		global $lang, $system;
+		if($arr = $this->model->getArchive()) {
+			$folder = $arr["folder"];
+			$procs = $arr["procs"];
+			ob_start();
+			include 'view/folder_archive.php';
+			$data["html"] = ob_get_contents();
+			ob_end_clean();
+			$data["access"] = $arr["access"];
+			return json_encode($data);
+		} else {
+			ob_start();
+			include CO_INC .'/view/default.php';
+			$data["html"] = ob_get_contents();
+			ob_end_clean();
+			return json_encode($data);
+		}
+	}
+	
+	function getArchiveModules() {
+		global $lang, $system, $session, $procs, $procs_pspgrids_name, $procs_grids_name, $procs_meetings_name, $procs_documents_name, $procs_vdocs_name, $procs_access_name;
+		ob_start();
+			include 'view/modules_archive.php';
+			$html = ob_get_contents();
+			ob_end_clean();
+			return $html;
+	}
+	
+	function getProcDetailsArchive($id,$fid=0) {
+		global $lang, $system;
+		if($arr = $this->model->getProcDetailsArchive($id,$fid)) {
+			$proc = $arr["proc"];
+			$notes = $arr["notes"];
+			ob_start();
+				include 'view/edit_archive.php';
+				$data["html"] = ob_get_contents();
+			ob_end_clean();
+			$data["access"] = $arr["access"];
+			return json_encode($data);
+		}
+		else {
+			ob_start();
+				include CO_INC .'/view/default.php';
+				$data["html"] = ob_get_contents();
+			ob_end_clean();
+			return $system->json_encode($data);
+		}
+	}
+
+	function archiveRevive($id,$folder) {
+		$retval = $this->model->archiveRevive($id,$folder);
+		if($retval){
+			 return "true";
+		  } else{
+			 return "error";
+		  }
+	}
+	
+	function archiveDuplicate($id,$folder) {
+		$retval = $this->model->archiveDuplicate($id,$folder);
+		if($retval){
+			 return "true";
+		  } else{
+			 return "error";
+		  }
+	}
+	
+	function archiveSaveMeta($id,$meta) {
+		$retval = $this->model->archiveSaveMeta($id,$meta);
+		if($retval){
+			 return "true";
+		  } else{
+			 return "error";
+		  }
+	}
+	
+	
+	function doArchiveSearch($meta,$title,$folder,$who,$start,$end) {
+		global $date, $lang, $system;
+		$arr = $this->model->doArchiveSearch($meta,$title,$folder,$who,$start,$end);
+		$procs = $arr["procs"];
+		ob_start();
+			include('view/folder_archive_search.php');
+			$data["html"] = ob_get_contents();
+		ob_end_clean();
+		return json_encode($data);
+	}
+	
+	
+	function getProcFolderArchiveDialog($field,$title) {
+		$retval = $this->model->getProcFolderArchiveDialog($field,$title);
+		if($retval){
+			 return $retval;
+		  } else{
+			 return "error";
+		  }
+	}
 
 
 }

@@ -36,6 +36,9 @@ if($session->isSysadmin()) {
 		if($app == "calendar") {
 			$userapps[] = $app;	
 		}
+		if($app == "archives") {
+			$userapps[] = $app;	
+		}
 		foreach(${$app}->modules as $module => $value) {
 			if($module == 'access') {
 				if(${$app}->isAdmin()) {

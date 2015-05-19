@@ -586,8 +586,8 @@ class Patients extends Controller {
 	}
 
 
-	function setPatientDetails($id,$folder,$management,$management_ct,$protocol,$number,$insurance,$insuranceadd,$dob,$coo,$documents) {
-		$retval = $this->model->setPatientDetails($id,$folder,$management,$management_ct,$protocol,$number,$insurance,$insuranceadd,$dob,$coo,$documents);
+	function setPatientDetails($id,$folder,$management,$management_ct,$insurer,$insurer_ct,$protocol,$number,$number_insurer,$insurance,$insuranceadd,$code,$dob,$coo,$documents) {
+		$retval = $this->model->setPatientDetails($id,$folder,$management,$management_ct,$insurer,$insurer_ct,$protocol,$number,$number_insurer,$insurance,$insuranceadd,$code,$dob,$coo,$documents);
 		if($retval){
 			 return '{ "action": "edit", "id": "' . $id . '"}';
 		  } else{
@@ -652,6 +652,15 @@ class Patients extends Controller {
 			 return "error";
 		  }
 	}
+	
+	function getPatientFolderDialogCalendar($field,$title) {
+		$retval = $this->model->getPatientFolderDialogCalendar($field,$title);
+		if($retval){
+			 return $retval;
+		  } else{
+			 return "error";
+		  }
+	}
 
 
 	function getPatientStatusDialog() {
@@ -700,6 +709,45 @@ class Patients extends Controller {
 			 return "error";
 		  }
 	}
+	
+	function getCalendarContactsDialog($field,$append) {
+		global $lang;
+		$contactsmmodel = new ContactsModel();
+		$contacts = $contactsmmodel->getLast10Contacts();
+		include_once dirname(__FILE__).'/view/dialog_calendar_contacts.php';
+	}
+	function getCalendarContactsSearch($term) {
+		$search = $this->model->getCalendarContactsSearch($term);
+		return $search;
+	}
+	
+	function getCalendarPatientsDialog($field,$append) {
+		global $lang;
+		$patients = $this->model->getLast10Patients();
+		include_once dirname(__FILE__).'/view/dialog_calendar_patients.php';
+	}
+	function getCalendarPatientsSearch($term) {
+		$search = $this->model->getCalendarPatientsSearch($term);
+		return $search;
+	}
+	
+	function getCalendarFoldersDialog($field,$append) {
+		global $lang;
+		$treatments = $this->model->getLast10CalTreatments();
+		include_once dirname(__FILE__).'/view/dialog_treatments.php';
+	}
+	
+	function getTreatmentsContactsDialog($field,$append) {
+		global $lang;
+		$treatments = $this->model->getLast10CalTreatments();
+		include_once dirname(__FILE__).'/view/dialog_treatments.php';
+	}
+	
+	/*function getTreatmentsPatientsDialog($field,$append) {
+		global $lang;
+		$treatments = $this->model->getLast10CalTreatments();
+		include_once dirname(__FILE__).'/view/dialog_treatments.php';
+	}*/
 	
 	function getTreatmentsDialog($field,$append) {
 		global $lang;
@@ -889,6 +937,7 @@ class Patients extends Controller {
 		if($arr = $this->model->getWidgetAlerts()) {
 			$alerts = $arr["alerts"];
 			$reminders = $arr["reminders"];
+			$waitinglist = $arr["waitinglist"];
 			ob_start();
 			include 'view/widget.php';
 			$data["html"] = ob_get_contents();
@@ -902,6 +951,11 @@ class Patients extends Controller {
 			ob_end_clean();
 			return json_encode($data);
 		}
+	}
+	
+	function getPatientInfoForCalendar($id) {
+		$arr = $this->model->getPatientInfoForCalendar($id);
+		return json_encode($arr);
 	}
    
 }

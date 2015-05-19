@@ -33,6 +33,33 @@
 	</tr>
 </table>
 <?php } ?>
+<?php if(!empty($treatment->method)) { ?>
+&nbsp;
+<table width="100%" class="standard">
+	<tr>
+        <td class="tcell-left top"><?php echo $lang["PATIENT_TREATMENT_METHOD"];?></td>
+        <td><?php echo(nl2br($treatment->method));?></td>
+	</tr>
+</table>
+<?php } ?>
+<?php if(!empty($treatment->protocol2)) { ?>
+<table width="100%" class="standard">
+	<tr>
+        <td class="tcell-left top"><?php if(CO_PRODUCT_VARIANT == 1) { echo $lang["PATIENT_TREATMENT_PRESCRIPTION_PHYSIO"]; } else { echo $lang["PATIENT_TREATMENT_PRESCRIPTION_THERAPY"]; }?></td>
+        <td><?php echo(nl2br($treatment->protocol2));?></td>
+	</tr>
+</table>
+<?php } ?>
+<?php if(!empty($treatment->sessionvalstext)) { ?>
+<table width="100%" class="standard">
+	<tr>
+        <td class="tcell-left top"><?php if(CO_PRODUCT_VARIANT == 1) { echo $lang["PATIENT_TREATMENT_ACHIEVMENT_STATUS_PHYSIO"]; } else { echo $lang["PATIENT_TREATMENT_ACHIEVMENT_STATUS_THERAPY"]; }?></td>
+        <td><?php echo(nl2br($treatment->sessionvalstext));?></td>
+	</tr>
+</table>
+<?php } ?>
+
+
 <?php if(!empty($treatment->protocol3)) { ?>
 &nbsp;
 <table width="100%" class="protocol">
@@ -50,55 +77,8 @@
 	</tr>
 </table>
 
-<table width="100%" class="standard">
-	<tr>
-	  <td class="tcell-left"><?php echo $lang["PATIENT_TREATMENT_DIAGNOSE"];?></td>
-        <td>&nbsp;</td>
-	</tr>
-</table>
-<?php //if ($printcanvas == 1) { ?>
-<div style="height: 400px; width: 400px; position: relative;">
-<?php if(!defined('CO_PHYSIO_BODYCHART_WHITE')) {
-				echo '<img src="'.CO_FILES.'/img/body.png" />';
-}
-    $i = 1; 
-	$j = $treatment->diagnoses;
-	foreach($diagnose as $value) { 
-		$curcol = ($i-1) % 10;
-		?>
-        <?php if(!empty($value->canvas)) { ?>
-	   <div style="position: absolute;"><img src="data:image/png;base64,<?php echo $value->canvas;?>" /></div>
-       <?php }?>
-	   <div style="position: absolute; z-index: 10<?php echo $i;?>; top: <?php echo $value->y;?>px; left: <?php echo $value->x;?>px;" class="loadCanvas circle circle<?php echo $curcol;?>"><div><?php echo $i;?></div></div>
-	<?php 
-	$i++;
-	$j--;
-} ?>
-</div>
-<p>&nbsp;</p>
-<?php 
-//}
-$i = 1;
-	foreach($diagnose as $value) { 
-	$curcol = ($i-1) % 10; ?>
-    <table width="100%" class="standard">
-        <tr>
-        <td class="top" style="width: 30px;"><div class="circle circle<?php echo $curcol;?>"><div><?php echo $i;?></div></div></td>
-          <td><?php echo $value->text;?>&nbsp;</td>
-        </tr>
-    </table>
-<?php 
-	$i++;
-} ?>
-<p>&nbsp;</p>
-<?php if(!empty($treatment->protocol2)) { ?>
-<table width="100%" class="protocol">
-	<tr>
-        <td class="tcell-left top"><?php echo $lang["PATIENT_TREATMENT_PROTOCOL2"];?></td>
-        <td><?php echo(nl2br($treatment->protocol2));?></td>
-	</tr>
-</table>
-<?php } ?>
+
+
 &nbsp;
 <?php
 $i = 1;
@@ -120,7 +100,7 @@ if($value->status == 1) {
             <td class="fourCols-one">&nbsp;</td>
             <td class="fourCols-two">&nbsp;</td>
             <td class="fourCols-three">&nbsp;</td>
-            <td class="grey smalltext fourCols-paddingTop"><?php echo $lang["PATIENT_TREATMENT_TASKS_TYPE"];?> <?php echo($value->type);?></td>
+            <td class="grey smalltext fourCols-paddingTop"><?php echo $lang["PATIENT_TREATMENT_TASKS_TYPE"];?> <?php echo strip_tags($value->type);?></td>
         </tr>
         <?php } ?>
         <?php if(!empty($value->team) || !empty($value->team_ct)) { ?>

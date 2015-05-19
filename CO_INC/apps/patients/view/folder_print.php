@@ -16,18 +16,31 @@ if(is_array($patients)) {
         <td class="fourCols-two">&nbsp;</td>
         <td class="fourCols-three greybg">&nbsp;</td>
 		<td class="fourCols-four greybg"><?php echo($patient->title);?></td>
+        <td class="fourCols-four greybg smalltext" align="right" valign="bottom"><?php echo($patient->status_text . " " . $patient->status_text_time . " " . $patient->status_date);?></td>
 	</tr>
     <tr>
 		<td class="fourCols-one">&nbsp;</td>
         <td class="fourCols-two">&nbsp;</td>
         <td class="fourCols-three">&nbsp;</td>
-		<td class="grey smalltext fourCols-paddingTop"><?php echo($patient->status_text . " " . $patient->status_text_time . " " . $patient->status_date);?></td>
+		<td class="grey smalltext fourCols-paddingTop" colspan="2"><?php echo($patient->address_line1);?>, <?php echo($patient->address_postcode);?> <?php echo($patient->address_town);?></td>
+	</tr>
+    <tr>
+		<td class="fourCols-one">&nbsp;</td>
+        <td class="fourCols-two">&nbsp;</td>
+        <td class="fourCols-three">&nbsp;</td>
+		<td class="grey smalltext fourCols-paddingTop" colspan="2"><?php echo($patient->email);?></td>
+	</tr>
+    <tr>
+		<td class="fourCols-one">&nbsp;</td>
+        <td class="fourCols-two">&nbsp;</td>
+        <td class="fourCols-three">&nbsp;</td>
+		<td class="grey smalltext fourCols-paddingTop" colspan="2"><?php echo($patient->phone1);?></td>
 	</tr>
      <tr>
              <td class="fourCols-one">&nbsp;</td>
             <td class="fourCols-two">&nbsp;</td>
             <td class="fourCols-three">&nbsp;</td>
-            <td class="grey smalltext">&nbsp;</td>
+            <td class="grey smalltext" colspan="2">&nbsp;</td>
         </tr>
 </table>
     <?php 
