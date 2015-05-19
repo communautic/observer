@@ -150,6 +150,9 @@ if (!empty($_GET['request'])) {
 		case 'getPatientFolderDialog':
 			echo($patients->getPatientFolderDialog($_GET['field'],$_GET['title']));
 		break;
+		case 'getPatientFolderDialogCalendar':
+			echo($patients->getPatientFolderDialogCalendar($_GET['field'],$_GET['title']));
+		break;
 		case 'getPatientStatusDialog':
 			echo($patients->getPatientStatusDialog());
 		break;
@@ -216,6 +219,21 @@ if (!empty($_GET['request'])) {
 		case 'getInsuranceContext':
 			echo($patients->getInsuranceContext($_GET['id'],$_GET['field'],$_GET['edit']));
 		break;
+		case 'getCalendarContactsDialog':
+			echo($patients->getCalendarContactsDialog($_GET['field'],$_GET['append']));
+		break;
+		case 'getCalendarContactsSearch':
+			echo($patients->getCalendarContactsSearch($_GET['term']));
+		break;
+		case 'getCalendarPatientsDialog':
+			echo($patients->getCalendarPatientsDialog($_GET['field'],$_GET['append']));
+		break;
+		case 'getCalendarPatientsSearch':
+			echo($patients->getCalendarPatientsSearch($_GET['term']));
+		break;
+		case 'getCalendarFoldersDialog':
+			echo($patients->getCalendarFoldersDialog($_GET['field'],$_GET['append']));
+		break;
 		case 'getTreatmentsDialog':
 			echo($patients->getTreatmentsDialog($_GET['field'],$_GET['append']));
 		break;
@@ -225,6 +243,10 @@ if (!empty($_GET['request'])) {
 		case 'getCalendarTreatmentsSearch':
 			echo($patients->getCalendarTreatmentsSearch($_GET['term']));
 		break;
+		case 'getPatientInfoForCalendar':
+			echo($patients->getPatientInfoForCalendar($_GET['id']));
+		break;
+		
 	}
 }
 
@@ -234,7 +256,7 @@ if (!empty($_POST['request'])) {
 			echo($patients->setFolderDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['patientstatus']));
 		break;
 		case 'setPatientDetails':
-			echo($patients->setPatientDetails($_POST['id'], $_POST['folder'], $_POST['management'], $system->checkMagicQuotes($_POST['management_ct']), $system->checkMagicQuotes($_POST['protocol']), $_POST['number'], $_POST['insurance'], $_POST['insuranceadd'], $_POST['dob'], $_POST['coo'], $_POST['documents']));
+			echo($patients->setPatientDetails($_POST['id'], $_POST['folder'], $_POST['management'], $system->checkMagicQuotes($_POST['management_ct']), $_POST['insurer'], $system->checkMagicQuotes($_POST['insurer_ct']), $system->checkMagicQuotes($_POST['protocol']), $_POST['number'], $_POST['number_insurer'], $_POST['insurance'], $_POST['insuranceadd'], $_POST['code'], $_POST['dob'], $_POST['coo'], $_POST['documents']));
 		break;
 		case 'movePatient':
 			echo($patients->movePatient($_POST['id'], $_POST['startdate'], $_POST['movedays']));

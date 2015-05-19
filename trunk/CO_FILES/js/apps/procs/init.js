@@ -45,7 +45,12 @@ function procsApplication(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#procs input.title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
+			setTimeout(function() {
+				title = $("#procs input.title").fieldValue();
+				if(title == "") {
+					$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
+				}
+			}, 5000)
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -923,6 +928,55 @@ function procsApplication(name) {
 	}
 	
 	
+	this.actionArchive = function() {
+		var module = this;
+		var cid = $('#procs input[name="id"]').val()
+		module.checkIn(cid);
+		var txt = ALERT_ARCHIVE;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			submit: function(e,v,m,f){		
+				if(v){
+					var id = $("#procs").data("second");
+					var fid = $("#procs").data("first");
+					$.ajax({ type: "GET", url: "/", data: "path=apps/procs&request=movetoArchive&id=" + id + "&fid=" + fid, cache: false, success: function(data){
+						if(data == "true") {
+							$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs&request=getProcList&id="+fid, success: function(list){
+								$("#procs2 ul").html(list.html);
+								if(list.html == "<li></li>") {
+									procsActions(3);
+								} else {
+									procsActions(0);
+									setModuleActive($("#procs2"),0);
+								}
+								var id = $("#procs2 .module-click:eq(0)").attr("rel");
+								if(typeof id == 'undefined') {
+									$("#procs").data("second", 0);
+								} else {
+									$("#procs").data("second", id);
+								}
+								$("#procs2 .module-click:eq(0)").addClass('active-link');
+								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/procs&request=getProcDetails&fid="+fid+"&id="+id, success: function(text){
+									$("#procs-right").html(text.html);
+									initProcsContentScrollbar();
+									module.getNavModulesNumItems(id);
+									}
+								});
+							}
+							});
+						}
+					}
+					});
+				} 
+			}
+		});
+	}
+	
+	
+	
 	this.actionHelp = function() {
 		var url = "/?path=apps/procs&request=getProcsHelp";
 		if(!iOS()) {
@@ -1045,7 +1099,12 @@ function procsFolders(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#procs input.title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
+			setTimeout(function() {
+				title = $("#procs input.title").fieldValue();
+				if(title == "") {
+					$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
+				}
+			}, 5000)
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -1280,36 +1339,43 @@ var procs_folder = new procsFolders('procs_folder');
 
 function procsActions(status) {
 	/*	0= new	1= print	2= send		3= duplicate	4= roster		5=refresh 	6 = delete*/
+	var obj = getCurrentModule();
 	switch(status) {
 		//case 0: actions = ['0','1','2','3','5','6']; break;
-		case 0: actions = ['0','1','2','3','6','7','8']; break;
-		case 1: actions = ['0','6','7','8']; break;
-		case 3: 	actions = ['0','6','7']; break;   					// just new
+		case 0: 
+			if(obj.name == 'procs') {
+				actions = ['0','1','2','3','6','7','8','9'];
+			} else {
+				actions = ['0','1','2','3','6','8','9'];
+			}
+		break;
+		case 1: actions = ['0','6','8','9']; break;
+		case 3: 	actions = ['0','6','8']; break;   					// just new
 		//case 4: 	actions = ['0','1','2','4','5']; break;   		// new, print, send, handbook, refresh
-		case 4: 	actions = ['0','1','2','5','6','7']; break;
+		case 4: 	actions = ['0','1','2','5','6','8']; break;
 		//case 5: 	actions = ['1','2','5']; break;   			// print, send, refresh
-		case 5: 	actions = ['1','2','6','7']; break;
+		case 5: 	actions = ['1','2','6','8']; break;
 		case 6: 	actions = ['6','7']; break;   			// handbook refresh
 		//case 7: 	actions = ['0','1','2','5']; break;   			// new, print, send, refresh
-		case 7: 	actions = ['0','1','2','6','7']; break;
+		case 7: 	actions = ['0','1','2','6','8']; break;
 		//case 8: 	actions = ['1','2','4','5']; break;   			// print, send, handbook, refresh
-		case 8: 	actions = ['1','2','5','6','7']; break;
+		case 8: 	actions = ['1','2','5','6','8']; break;
 		//case 9: actions = ['0','1','2','3','4','5','6']; break;
-		case 9: actions = ['0','1','2','6','7','8']; break;
+		case 9: actions = ['0','1','2','6','7','8','9']; break;
 		
 		// vdocs
 		// 0 == 10
-		case 10: actions = ['0','1','2','3','4','6','7','8']; break;
+		case 10: actions = ['0','1','2','3','4','6','8','9']; break;
 		// 5 == 11
-		case 11: 	actions = ['1','2','4','6','7']; break;   			// print, send, refresh
+		case 11: 	actions = ['1','2','4','6','8']; break;   			// print, send, refresh
 		
 		// rosters
-		case 12: actions = ['0','1','2','3','5','6','7','8']; break;
+		case 12: actions = ['0','1','2','3','5','6','8','9']; break;
 		//procs link
-		case 20: actions = ['0','1','2','6','7','8']; break;
+		case 20: actions = ['0','1','2','6','8','9']; break;
 		
 		
-		default: 	actions = ['6','7'];  								// none
+		default: 	actions = ['6','8'];  								// none
 	}
 	$('#procsActions > li span').each( function(index) {
 		if(index in oc(actions)) {
@@ -1425,6 +1491,16 @@ $(document).ready(function() {
 		$("#modalDialog").dialog('close');
 		var obj = getCurrentModule();
 		$('#procs .coform').ajaxSubmit(obj.poformOptions);
+	});
+	
+	$(document).on('click', 'a.insertProcFolderfromArchiveDialog', function(e) {
+		e.preventDefault();
+		var field = $(this).attr("field");
+		var gid = $(this).attr("gid");
+		var title = $(this).attr("title");
+		var html = '<span uid="' + gid + '">' + title + '</span>';
+		$("#"+field).html(html);
+		$("#modalDialog").dialog('close');
 	});
 	
 	

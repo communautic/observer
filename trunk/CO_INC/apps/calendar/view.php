@@ -1,5 +1,5 @@
 <div id="calendar" class="app">
-<div class="appSettingsPopup"><div class="head"><?php echo $lang["GLOBAL_SETTINGS"];?></div><div class="content"></div></div>
+<div class="appSettingsPopup"><div class="head"><?php echo $lang["GLOBAL_SETTINGS"];?></div><div class="content"></div><div class="" style="background: #2d2d2d;"><div class="coButton-outer dark"><span class="showAllCalendars coButton dark">Alle</span></div></div></div>
 <input name="calendar-current" id="calendar-current" type="hidden" value="" />
 <div class="ui-layout-west">
 <div class="radius-helper">

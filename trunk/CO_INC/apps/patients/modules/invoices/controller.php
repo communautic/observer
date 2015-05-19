@@ -96,6 +96,30 @@ class PatientsInvoices extends Patients {
 						$this->printInvoice($title,$html);
 				}
 			break;
+			case 'invoice_plain':
+				if($arr = $this->model->getDetails($id)) {
+					$invoice = $arr["invoice"];
+					$task = $arr["task"];
+					$pid = $invoice->pid;
+					if($arr = $this->model->getPatientDetails($pid,'nocheckout')) {
+						$patient = $arr["patient"];
+					}
+					ob_start();
+						include 'view/print_invoice_anon.php';
+						$html = ob_get_contents();
+					ob_end_clean();
+					$title = $lang["PATIENT_INVOICE_TITLE"][0] . $invoice->invoice_number . ' ' . $invoice->lastname;
+				}
+				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_INVOICE"];
+				$GLOBALS['BANKING'] = $invoice->m_bank . ' | BLZ: ' . $invoice->m_sort_code . ' | Kontonr.: ' . $invoice->m_account_number . ' | IBAN: ' . $invoice->m_iban . ' | BIC: ' . $invoice->m_bic;
+				switch($t) {
+					case "html":
+						$this->printHTML($title,$html);
+					break;
+					default:
+						$this->printInvoice($title,$html);
+				}
+			break;
 			case 'services':
 				if($arr = $this->model->getDetails($id)) {
 					$invoice = $arr["invoice"];
@@ -314,8 +338,8 @@ class PatientsInvoices extends Patients {
 	}
 	
 
-	function setDetails($pid,$id,$invoice_date,$invoice_date_sent,$invoice_address,$invoice_number,$payment_reminder,$protocol_payment_reminder,$protocol,$documents,$invoice_access,$invoice_access_orig) {
-		if($retval = $this->model->setDetails($pid,$id,$invoice_date,$invoice_date_sent,$invoice_address,$invoice_number,$payment_reminder,$protocol_payment_reminder,$protocol,$documents,$invoice_access,$invoice_access_orig)){
+	function setDetails($pid,$id,$invoice_carrier,$invoice_date,$invoice_date_sent,$invoice_address,$payment_type,$invoice_number,$payment_reminder,$protocol_payment_reminder,$protocol,$documents,$invoice_access,$invoice_access_orig) {
+		if($retval = $this->model->setDetails($pid,$id,$invoice_carrier,$invoice_date,$invoice_date_sent,$invoice_address,$payment_type,$invoice_number,$payment_reminder,$protocol_payment_reminder,$protocol,$documents,$invoice_access,$invoice_access_orig)){
 			return '{ "id": "' . $id . '", "access": "' . $invoice_access . '"}';
 		} else{
 			return "error";
@@ -361,6 +385,11 @@ class PatientsInvoices extends Patients {
 		$this->model->updateQuestion($id,$field,$val);
 		return true;
    }
+   
+   function getPaymentTypeDialog($field) {
+		global $lang;
+		include_once dirname(__FILE__).'/view/dialog_payment.php';
+	}
 
 }
 

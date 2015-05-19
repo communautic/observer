@@ -48,16 +48,38 @@
 		<td class="tcell-right"><input name="item_date" type="text" class="input-date datepicker item_date" value="<?php echo($treatment->item_date)?>" readonly="readonly" /></td>
 	</tr>
 </table>
+<?php if(CO_PRODUCT_VARIANT == 2) { ?><div style="display: none"><?php } ?>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 		<td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="patientsdoctor" append="1"><span><?php echo $lang["PATIENT_TREATMENT_DOCTOR"];?></span></span></td>
 		<td class="tcell-right"><div id="patientsdoctor" class="itemlist-field"><?php echo($treatment->doctor);?></div><div id="patientsdoctor_ct" class="itemlist-field"><a field="patientsdoctor_ct" class="ct-content"><?php echo($treatment->doctor_ct);?></a></div></td>
 	</tr>
 </table>
+<?php if(CO_PRODUCT_VARIANT == 2) { ?></div><?php } ?>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
   <tr>
     <td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["PATIENT_TREATMENT_DOCTOR_DIAGNOSE"];?></span></span></td>
     <td class="tcell-right"><?php if($treatment->canedit) { ?><textarea name="protocol" class="elastic"><?php echo(strip_tags($treatment->protocol));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($treatment->protocol)));?><?php } ?></td>
+  </tr>
+</table>
+<?php if(CO_PRODUCT_VARIANT == 1) { ?><div style="display: none"><?php } ?>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
+	  <td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav showDialog<?php } ?>" request="getTreatmentsMethodDialog" field="patientsmethod" append="0" sql=""><span><?php echo $lang["PATIENT_TREATMENT_METHOD"];?></span></span></td>
+        <td class="tcell-right"><div id="patientsmethod" class="itemlist-field"><?php echo($treatment->method);?></div></td>
+	</tr>
+</table>
+<?php if(CO_PRODUCT_VARIANT == 1) { ?></div><?php } ?>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+  <tr>
+    <td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php if(CO_PRODUCT_VARIANT == 1) { echo $lang["PATIENT_TREATMENT_PRESCRIPTION_PHYSIO"]; } else { echo $lang["PATIENT_TREATMENT_PRESCRIPTION_THERAPY"]; }?></span></span></td>
+    <td class="tcell-right"><?php if($treatment->canedit) { ?><textarea name="protocol2" id="protocol2" class="elastic" style="background: #fff;"><?php echo(strip_tags($treatment->protocol2));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($treatment->protocol2)));?><?php } ?></td>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+  <tr>
+    <td class="tcell-left-inactive text11"><span><span><?php if(CO_PRODUCT_VARIANT == 1) { echo $lang["PATIENT_TREATMENT_ACHIEVMENT_STATUS_PHYSIO"]; } else { echo $lang["PATIENT_TREATMENT_ACHIEVMENT_STATUS_THERAPY"]; }?></span></span></td>
+    <td class="tcell-right-inactive"><span id="sessioncount"><?php print_r($treatment->sessionvalstext);?></span></td>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
@@ -86,17 +108,10 @@
   </tr>
 </table>
 <div class="content-spacer"></div>
-<div id="patientTabs" class="contentTabs">
-	<ul class="contentTabsList">
-		<li><span class="active" rel="PatientsTreatmentsFirst"><?php echo $lang["PATIENT_TREATMENT_PLAN"];?></span></li>
-		<li><span rel="PatientsTreatmentsSecond"><?php echo $lang["PATIENT_TREATMENT_DIAGNOSE"];?></span></li>
-	</ul>
-    <div id="PatientsTreatmentsTabsContent" class="contentTabsContent">
-        <div id="PatientsTreatmentsFirst">
+
         <table border="0" cellpadding="0" cellspacing="0" class="table-content addTaskTable">
                 <tr>
                     <td class="tcell-left text11">
-                    <!--<span class="<?php if($treatment->canedit) { ?>content-nav newItem<?php } ?>"><span><?php echo $lang["PATIENT_TREATMENT_GOALS"];?></span></span>-->
                     <span><span><?php echo $lang["PATIENT_TREATMENT_GOALS"];?></span></span>
                     </td>
                     <td class="tcell-right">&nbsp;</td>
@@ -114,77 +129,8 @@
 							$i++;
                          } ?>
                         </div>
-            </table>
-            <div class="content-spacer"></div>
-            <table border="0" cellpadding="0" cellspacing="0" class="table-content">
-  <tr>
-    <td class="tcell-left-inactive text11"><?php echo $lang["PATIENT_TREATMENT_PROTOCOL2"];?></td>
-    <td class="tcell-right-inactive"><span id="protocol2_inactive"><?php echo(nl2br(strip_tags($treatment->protocol2)));?></span></td>
-  </tr>
-</table>
-        </div>
-        <div id="PatientsTreatmentsSecond" style="display: none;">
-			<div class="canvasToolsOuter">
-        <div class="canvasTools">
-        	<?php if($treatment->canedit) { ?>
-            <span class="addTool"></span>
-            <span class="penTool active"></span>
-            <span class="erasorTool"></span>
-            <span class="clearTool"></span>
-            <span class="undoTool"></span>
-            <?php } ?>
-        </div>
-        </div>
-        <?php
-			$background = '#d3ddff';
-			$canvasDrawBG = '';
-			if(defined('CO_PHYSIO_BODYCHART_WHITE')) {
-				$background = '#fff';
-				$canvasDrawBG = 'style="background-image: url(' . CO_FILES . '/img/body_white.png);"';
-			}
-		?>
-        <table border="0" cellpadding="0" cellspacing="0" class="table-content">
-                <tr>
-                    <td style="width:401px;"><div style="position: relative; width: 400px; height: 400px; border-top: 1px solid #fff; border-right: 1px solid #ccc; background: <?php echo $background;?>;"><div class="canvasDiv" <?php echo $canvasDrawBG;?>>
-                    <?php $i = 1; 
-							$j = $treatment->diagnoses;
-                        foreach($diagnose as $value) { 
-							$active = '';
-							if($i == 1) {
-								$active = ' active';
-							}
-							$curcol = ($i-1) % 10;
-							?>
-                            <canvas <?php if($treatment->canedit) { ?>class="canvasDraw"<?php } ?> id="c<?php echo $i;?>" width="400" height="400" style="z-index: <?php echo $j;?>; position: absolute;" rel="<?php echo $value->id;?>"></canvas>
-                            <div id="dia-<?php echo $value->id;?>" style="z-index: 10<?php echo $i;?>; top: <?php echo $value->y;?>px; left: <?php echo $value->x;?>px;" class="loadCanvas circle circle<?php echo $curcol;?> <?php echo $active;?>" rel="<?php echo $i;?>"><div><?php echo $i;?></div></div>
-                        <?php 
-						$i++;
-						$j--;
-						} ?>
-                    </div></div></td>
-                	<td valign="top" style=""><div id="canvasDivText" style="border-left: 1px solid #fff; background: #e5e5e5; height: 401px;"><?php 
-					$i = 1;
-                        foreach($diagnose as $value) { 
-						$active = '';
-							if($i == 1) {
-								$active = ' active';
-							}
-							$curcol = ($i-1) % 10;
-                            include("diagnose.php");
-							$i++;
-                         } ?></div></td>
-                </tr>
-            </table>
-			
-            <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
-  <tr>
-    <td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["PATIENT_TREATMENT_PROTOCOL2"];?></span></span></td>
-    <td class="tcell-right"><?php if($treatment->canedit) { ?><textarea name="protocol2" id="protocol2" class="elastic"><?php echo(strip_tags($treatment->protocol2));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($treatment->protocol2)));?><?php } ?></td>
-  </tr>
-</table>
-        </div>
-    </div>
-</div>
+
+
 <?php if($treatment->perms != "guest") { ?>
 <div class="content-spacer"></div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">

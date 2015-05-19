@@ -79,6 +79,9 @@ if (!empty($_GET['request'])) {
 		case 'updateStatus':
 			echo($patientsInvoices->updateStatus($_GET['id'],$_GET['date'],$_GET['status']));
 		break;
+		case 'getPaymentTypeDialog':
+			echo($patientsInvoices->getPaymentTypeDialog($_GET['field']));
+		break;
 	}
 }
 
@@ -86,7 +89,7 @@ if (!empty($_POST['request'])) {
 	
 	switch ($_POST['request']) {
 		case 'setDetails':
-			echo($patientsInvoices->setDetails($_POST['pid'], $_POST['id'], $_POST['invoice_date'], $_POST['invoice_date_sent'], $_POST['invoiceaddress'], $_POST['invoice_number'],$_POST['payment_reminder'], $system->checkMagicQuotes($_POST['protocol_payment_reminder']), $system->checkMagicQuotes($_POST['protocol_invoice']),$_POST['documents'],$_POST['invoice_access'],$_POST['invoice_access_orig']));
+			echo($patientsInvoices->setDetails($_POST['pid'], $_POST['id'], $_POST['invoice_carrier'], $_POST['invoice_date'], $_POST['invoice_date_sent'], $_POST['invoiceaddress'], $_POST['payment_type'], $_POST['invoice_number'],$_POST['payment_reminder'], $system->checkMagicQuotes($_POST['protocol_payment_reminder']), $system->checkMagicQuotes($_POST['protocol_invoice']),$_POST['documents'],$_POST['invoice_access'],$_POST['invoice_access_orig']));
 		break;
 		case 'sendDetails':
 			echo($patientsInvoices->sendDetails($_POST['id'], $_POST['variable'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));

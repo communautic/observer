@@ -70,9 +70,15 @@ var ALERT_TRAINING_MOVE_ALL = "Wollen Sie alle Trainingstermine an das neue Star
 var ALERT_CALENDAR_DEACTIVATE = "Möchten Sie diesen Kalender wirklich deaktivieren?";
 var ALERT_CALENDAR_DATA = "Bitte überprüfen Sie folgende Eingaben:<br />";
 var ALERT_CALENDAR_MISSING_TITLE = "Betreff";
-var ALERT_CALENDAR_MISSING_TREATMENT = "Behandlung";
+var ALERT_CALENDAR_MISSING_TREATMENT = "Behandlungstitel";
 var ALERT_CALENDAR_MISSING_LOCATION = "Ort";
 var ALERT_CALENDAR_ROOM_BUSY = "Der von Ihnen gewünschte Ort ist belegt.<br />Bitte wählen Sie einen anderen Ort aus.";
+var ALERT_CALENDAR_NO_CALENDAR = "Keine Kalenderzuordnung möglich.<br />Schalten Sie bitte zuerst eine/n KalenderbenutzerIn frei";
+var ALERT_CALENDAR_MISSING_LASTNAME = "Nachname";
+var ALERT_CALENDAR_MISSING_FIRSTNAME = "Vorname";
+var ALERT_CALENDAR_MISSING_FOLDER = "Ordner";
+var ALERT_CALENDAR_MISSING_CONTACT = "Kontakt";
+var ALERT_CALENDAR_MISSING_PATIENT = "Patient";
 
 var ALERT_ARCHIVE = "Wollen Sie die Daten wirklich in das Modul Archiv verschieben?";
 var ALERT_ARCHIVE_CHOOSE_FOLDER = 'Bitte wählen Sie einen Ordner aus';

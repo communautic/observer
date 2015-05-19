@@ -56,7 +56,12 @@ function Documents(app) {
 		var app = getCurrentApp();
 		var title = $('#'+ app +' input.title').fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
+			setTimeout(function() {
+				var title = $('#'+ app +' input.title').fieldValue();
+				if(title == "") {
+					$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
+				}
+			}, 5000)
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -87,9 +92,14 @@ function Documents(app) {
 
  	this.formSerialize = function(formData, form, poformOptions) {
 		var app = getCurrentApp();
-		var title = $('#'+ app +' .title').val();
+		var title = $('#'+ app +' input.title').fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
+			setTimeout(function() {
+				var title = $('#'+ app +' input.title').fieldValue();
+				if(title == "") {
+					$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
+				}
+			}, 5000)
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };

@@ -20,7 +20,12 @@ $lang["PATIENT_TREATMENT_STATUS_STOPPED_TIME"] = 'am';
 $lang["PATIENT_TREATMENT_DURATION"] = 'Behandlungsdauer';
 $lang["PATIENT_TREATMENT_DATE"] = 'Befundungsdatum';
 $lang["PATIENT_TREATMENT_DOCTOR"] = 'Arzt';
-$lang["PATIENT_TREATMENT_DOCTOR_DIAGNOSE"] = 'Arztdiagnose';
+$lang["PATIENT_TREATMENT_DOCTOR_DIAGNOSE"] = 'Diagnose';
+$lang["PATIENT_TREATMENT_METHOD"] = 'Behandlungsmethode';
+$lang["PATIENT_TREATMENT_PRESCRIPTION_PHYSIO"] = 'Verordnung';
+$lang["PATIENT_TREATMENT_PRESCRIPTION_THERAPY"] = 'Sitzungsanzahl';
+$lang["PATIENT_TREATMENT_ACHIEVMENT_STATUS_PHYSIO"] = 'Leistungsstatus';
+$lang["PATIENT_TREATMENT_ACHIEVMENT_STATUS_THERAPY"] = 'Sitzungsstatus';
 $lang["PATIENT_TREATMENT_DESCRIPTION"] = 'Beschreibung';
 $lang["PATIENT_TREATMENT_PROTOCOL2"] = 'Verordnung';
 
@@ -46,9 +51,17 @@ $lang["PATIENT_TREATMENT_TASKS_TIME"] = 'Uhrzeit';
 $lang["PATIENT_TREATMENT_TASKS_DATE_INVOICE"] = 'Verrechnungsdatum';
 $lang["PATIENT_TREATMENT_TASKS_DURATION"] = 'Dauer';
 
+
+$lang["PATIENT_TREATMENT_CALENDAR_TITLE"] = 'Behandlungstitel';
+
+$lang["PATIENT_TREATMENT_PRINT_OPTION"] = 'Behandlung';
+$lang["PATIENT_TREATMENT_PRINT_OPTION_DATES"] = 'Terminliste';
+$lang["PATIENT_TREATMENT_PRINT_TITLE"] = 'Behandlung/Patient';
+
 $lang["PATIENT_TREATMENT_HELP"] = 'manual_patienten_behandlungen.pdf';
 
 $lang["PATIENT_PRINT_TREATMENT"] = 'behandlung.png';
+$lang["PATIENT_PRINT_TREATMENT_LIST"] = 'terminliste.png';
 
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/patients/treatments/de.php";

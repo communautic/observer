@@ -46,6 +46,12 @@
 		<td class="tcell-right-inactive"><?php echo($invoice->management);?></td>
     </tr>
 </table>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+	<tr>
+	  <td class="tcell-left text11"><span class="<?php if($invoice->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="patientsinvoice_carrier" append="0" title=""><span><?php echo $lang["PATIENT_INVOICE_CARRIER"];?></span></span></td>
+	  <td class="tcell-right"><div id="patientsinvoice_carrier" class="itemlist-field"><?php echo($invoice->invoice_carrier);?></div></td>
+	</tr>
+</table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 		<td class="tcell-left text11"><span class="<?php if($invoice->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["PATIENT_INVOICE_DATE"];?></span></span></td>
@@ -66,8 +72,14 @@
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><span class="<?php if($invoice->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="patientsinvoiceaddress" append="0" title="therapist"><span><?php echo $lang["PATIENT_INVOICE_ADDRESS"];?></span></span></td>
+	  <td class="tcell-left text11"><span class="<?php if($invoice->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="patientsinvoiceaddress" append="0" title=""><span><?php echo $lang["PATIENT_INVOICE_ADDRESS"];?></span></span></td>
 	  <td class="tcell-right"><div id="patientsinvoiceaddress" class="itemlist-field"><?php echo($invoice->invoiceaddress);?></div></td>
+	</tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
+	  <td class="tcell-left text11"><span class="<?php if($invoice->canedit) { ?>content-nav showDialog<?php } ?>" request="getPaymentTypeDialog" field="patientspayment_type" append="0"><span><?php echo $lang["PATIENT_PAYMENT_TYPE"];?></span></span></td>
+        <td class="tcell-right"><div id="patientspayment_type" class="itemlist-field"><?php echo($invoice->payment_type);?></div></td>
 	</tr>
 </table>
 <div class="content-spacer"></div>

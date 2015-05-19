@@ -52,16 +52,23 @@
   <tr>
 		<td class="tcell-left-inactive text11" style="padding-top: 2px;"><?php echo $lang["PATIENT_CONTACT_DETAILS"];?></td>
     	<td class="tcell-right-inactive"><?php echo($patient->ctitle)?> <?php echo($patient->title2)?> <?php echo($patient->title);?><br />
-        <span class="text11"><?php echo($patient->position . " &nbsp; | &nbsp; " . $lang["PATIENT_CONTACT_EMAIL"] . " " . $patient->email . " &nbsp; | &nbsp; " . $lang["PATIENT_CONTACT_PHONE"] . " " . $patient->phone1);?></span>
+        <span class="text11"><?php echo($lang["PATIENT_CONTACT_EMAIL"] . " " . $patient->email . " &nbsp; | &nbsp; " . $lang["PATIENT_CONTACT_PHONE"] . " " . $patient->phone1);?></span>
         </td>
         </tr>
 </table>
 <div class="content-spacer"></div>
+<?php if(CO_PRODUCT_VARIANT == 1) { ?><div style="display: none"><?php } ?>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+  <tr>
+    <td class="tcell-left-shorter text11"><span class="<?php if($patient->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["PATIENT_CODE"];?></span></span></td>
+    <td class="tcell-right-nopadding"><?php if($patient->canedit) { ?><input name="code" type="text" class="bg" value="<?php echo($patient->code);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $patient->code . '</span>'); } ?></td>
+  </tr>
+</table>
+<?php if(CO_PRODUCT_VARIANT == 1) { ?></div><?php } ?>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
     <td class="tcell-left-shorter text11"><span class="<?php if($patient->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["PATIENT_DOB"];?></span></span></td>
     <td class="tcell-right-nopadding"><?php if($patient->canedit) { ?><input name="dob" type="text" class="bg" <?php if($patient->dob == "") {?> value="00.00.0000" onclick="this.value=''"<?php } else { ?> value="<?php echo($patient->dob);?>"<?php } ?> /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $patient->dob . '</span>'); } ?></td>
-    
   </tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
@@ -71,16 +78,31 @@
   </tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
-	<tr>
-	  <td class="tcell-left text11"><span class="<?php if($patient->canedit) { ?>content-nav showDialog<?php } ?>" request="getPatientDialog" field="patientsinsurance" append="0" sql="insurance"><span><?php echo $lang["PATIENT_INSURANCE"];?></span></span></td>
-        <td class="tcell-right"><div id="patientsinsurance" class="itemlist-field"><?php echo($patient->insurance);?></div></td>
-	</tr>
-</table>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
     <td class="tcell-left-shorter text11"><span class="<?php if($patient->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["PATIENT_INSURANCE_NUMBER"];?></span></span></td>
     <td class="tcell-right-nopadding"><?php if($patient->canedit) { ?><input name="number" type="text" class="bg" value="<?php echo($patient->number);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $patient->number . '</span>'); } ?></td>
   </tr>
+</table>
+<div class="content-spacer"></div>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+	<tr>
+	  <td class="tcell-left text11"><span class="<?php if($patient->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="patientsinsurer" append="0" title=""><span><?php echo $lang["PATIENT_INSURER"];?></span></span></td>
+	  <td class="tcell-right"><div id="patientsinsurer" class="itemlist-field"><?php echo($patient->insurer);?></div><div id="patientsinsurer_ct" class="itemlist-field"><a field="patientsinsurer_ct" class="ct-content"><?php echo($patient->insurer_ct);?></a></div></td>
+	</tr>
+</table>
+<div id="number_two" <?php if(!$patient->showaddnumber) { ?>style="display: none;"<?php } ?>>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+  <tr>
+    <td class="tcell-left-shorter text11"><span class="<?php if($patient->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["PATIENT_INSURANCE_INSURER_NUMBER"];?></span></span></td>
+    <td class="tcell-right-nopadding"><?php if($patient->canedit) { ?><input name="number_insurer" type="text" class="bg" value="<?php echo($patient->number_insurer);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $patient->number_insurer . '</span>'); } ?></td>
+  </tr>
+</table>
+</div>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
+	  <td class="tcell-left text11"><span class="<?php if($patient->canedit) { ?>content-nav showDialog<?php } ?>" request="getPatientDialog" field="patientsinsurance" append="0" sql="insurance"><span><?php echo $lang["PATIENT_INSURANCE"];?></span></span></td>
+        <td class="tcell-right"><div id="patientsinsurance" class="itemlist-field"><?php echo($patient->insurance);?></div></td>
+	</tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>

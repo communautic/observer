@@ -203,6 +203,40 @@ if (!empty($_GET['request'])) {
 		case 'getGlobalSearch':
 			echo($procs->getGlobalSearch($system->checkMagicQuotesTinyMCE($_GET['term'])));
 		break;
+		/* Archive */
+		case 'moveFolderToArchive':
+			echo($procs->moveFolderToArchive($_GET['fid']));
+		break;
+		case 'movetoArchive':
+			echo($procs->movetoArchive($_GET['id'],$_GET['fid']));
+		break;
+		case 'getArchive':
+			echo $procs->getArchive();
+		break;
+		case 'getArchiveModules':
+			echo $procs->getArchiveModules();
+		break;
+		case 'getArchiveList':
+			echo $procs->getArchiveList();
+		break;
+		case 'getProcDetailsArchive':
+			echo($procs->getProcDetailsArchive($_GET['id']));
+		break;
+		case 'archiveRevive':
+			echo($procs->archiveRevive($_GET['id'],$_GET['folder']));
+		break;
+		case 'archiveDuplicate':
+			echo($procs->archiveDuplicate($_GET['id'],$_GET['folder']));
+		break;
+		case 'archiveSaveMeta':
+			echo($procs->archiveSaveMeta($_GET['id'],$system->checkMagicQuotes($_GET['meta'])));
+		break;
+		case 'doArchiveSearch':
+			echo($procs->doArchiveSearch($system->checkMagicQuotes($_GET['meta']),$system->checkMagicQuotes($_GET['title']),$system->checkMagicQuotes($_GET['folder']),$_GET['who'],$_GET['start'],$_GET['end']));
+		break;
+		case 'getProcFolderArchiveDialog':
+			echo($procs->getProcFolderArchiveDialog($_GET['field'],$_GET['title']));
+		break;
 	}
 }
 

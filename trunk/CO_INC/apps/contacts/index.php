@@ -86,6 +86,13 @@ if (!empty($_GET['request'])) {
 			}
 			echo($contacts->printContactDetails($_GET['id'],$t));
 		break;
+		case 'printCalendarInstructions':
+			$t = "pdf"; // options: pdf, html
+			if(!empty($_GET['t'])) {
+				$t = $_GET['t'];
+			}
+			echo($contacts->printCalendarInstructions($_GET['id'],$controller->applications));
+		break;
 		case 'getContactSend':
 			echo($contacts->getContactSend($_GET['id']));
 		break;

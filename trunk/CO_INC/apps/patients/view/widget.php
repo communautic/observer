@@ -14,6 +14,20 @@ if(is_array($alerts)) {
 	}
 }
 
+
+if(is_array($waitinglist)) {
+	$message = 0;
+	foreach ($waitinglist as $wait) { ?>
+		<div class="widgetItemOuter patientsLink" rel="patients,<?php echo $wait->folder . ',' . $wait->pid . ',0';?>"><div class="widgetItemTitle"><div class="widgetIconAlert"></div>
+    <?php
+			echo $lang["PATIENT_WIDGET_TITLE_WAITINGLIST"] . '</div><div class="widgetItemContent">';
+			echo sprintf($lang["PATIENT_WIDGET_REMINDER_WAITINGLIST"], $wait->title);
+		?>
+    	</div></div>
+    <?php
+	}
+}
+
 if(is_array($reminders)) {
 	$message = 0;
 	foreach ($reminders as $reminder) { ?>

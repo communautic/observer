@@ -6,7 +6,12 @@ function procsDrawings(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#procs input.title").fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
+			setTimeout(function() {
+				title = $("#procs input.title").fieldValue();
+				if(title == "") {
+					$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
+				}
+			}, 5000)
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };

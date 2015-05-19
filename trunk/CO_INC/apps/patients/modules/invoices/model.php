@@ -138,13 +138,14 @@ class PatientsInvoicesModel extends PatientsModel {
 		
 		$patientid = $array["pid"];
 		
-		$q = "SELECT b.id as patient_id, b.lastname,b.firstname,b.title as ctitle,b.title2,b.position,b.phone1,b.email,b.address_line1,b.address_line2,b.address_town,b.address_postcode FROM " . CO_TBL_PATIENTS . " as a, co_users as b where a.cid=b.id and a.id = '$patientid'";
+		$q = "SELECT a.number,a.number_insurer, b.id as patient_id, b.lastname,b.firstname,b.title as ctitle,b.title2,b.position,b.phone1,b.email,b.address_line1,b.address_line2,b.address_town,b.address_postcode FROM " . CO_TBL_PATIENTS . " as a, co_users as b where a.cid=b.id and a.id = '$patientid'";
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_fetch_array($result);
 		foreach($row as $key => $val) {
 			$array[$key] = $val;
 		}	
 		$array['patient'] = $array['lastname'] . ' ' . $array['firstname'];
+		$array['patient_address'] = $array['address_line1'] . ', ' . $array['address_postcode'] . ' ' . $array['address_town'];
 		$array["perms"] = $this->getPatientAccess($array["pid"]);
 		$array["canedit"] = false;
 		$array["showCheckout"] = false;
@@ -155,7 +156,8 @@ class PatientsInvoicesModel extends PatientsModel {
 		
 		
 		if($array['invoice_address'] == 0) {
-			$array['invoiceaddress'] = $array['patient'];
+			//$array['invoiceaddress'] = $array['patient'];
+			$array['invoiceaddress'] = $this->_contactsmodel->getUserListPlain($this->getPatientField($array["pid"],'insurer'),'invoice_address', "", $array["canedit"]);
 		} else {
 			$alt_invoice = $array['invoice_address'];
 			$array["invoiceaddress_print"] = $this->_contactsmodel->getUserListPlain($array['invoice_address']);
@@ -175,6 +177,8 @@ class PatientsInvoicesModel extends PatientsModel {
 		$array["invoice_date"] = $this->_date->formatDate($array["invoice_date"],CO_DATE_FORMAT);
 		$array["invoice_date_sent"] = $this->_date->formatDate($array["invoice_date_sent"],CO_DATE_FORMAT);
 		$array["payment_reminder"] = $this->_date->formatDate($array["payment_reminder"],CO_DATE_FORMAT);
+		//$array["invoice_carrier"] = $this->_contactsmodel->getUserListPlain($this->getPatientField($array["invoice_carrier"],'invoice_carrier'));
+		
 		
 		// time
 		$array["today"] = $this->_date->formatDate("now",CO_DATE_FORMAT);
@@ -185,19 +189,33 @@ class PatientsInvoicesModel extends PatientsModel {
 		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
 		$array["current_user"] = $session->uid;
 		
-		$management_print = $this->getPatientField($array["pid"],'management');
+		
+		if($array["invoice_carrier"] == 0) {
+			$management_print = $this->getPatientField($array["pid"],'management');
+		} else {
+			//$array["invoice_carrier"] = $this->_contactsmodel->getUserList($array['invoice_carrier'],'invoice_carrier', "", $array["canedit"]);
+			$management_print = $array["invoice_carrier"];
+		}
 		$q = "SELECT lastname as m_lastname,firstname as m_firstname,title2 as m_title, phone1 as m_phone, email as m_email, email_alt as m_email_alt, fax as m_fax, bank_name as m_bank, sort_code as m_sort_code, account_number as m_account_number, bic as m_bic, iban as m_iban FROM co_users where id = '$management_print'";
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_fetch_array($result);
 		foreach($row as $key => $val) {
 			$array[$key] = $val;
-		}	
+		}
+		
 		
 		$array["management"] = $this->_contactsmodel->getUserListPlain($this->getPatientField($array["pid"],'management'));
+		if($array["invoice_carrier"] == 0) {
+			$array["invoice_carrier"] = $array["management"];
+		} else {
+			$array["invoice_carrier"] = $this->_contactsmodel->getUserList($array['invoice_carrier'],'invoice_carrier', "", $array["canedit"]);
+		}
+		
 		$array["doctor_print"] = $this->_contactsmodel->getUserListPlain($array["doctor"]);
 		$array["doctor"] = $this->_contactsmodel->getUserList($array['doctor'],'patientsdoctor', "", $array["canedit"]);
 		$array["doctor_ct"] = empty($array["doctor_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['doctor_ct'];
 		$array["documents"] = $this->_documents->getDocListFromIDs($array['documents'],'documents');
+		$array["method"] = $this->_treatmentsmodel->getTreamentIdDetails($array["method"]);
 		
 		switch($array["access_invoice"]) {
 			case "0":
@@ -319,7 +337,7 @@ class PatientsInvoicesModel extends PatientsModel {
 		return $arr;
    }
 
-   function setDetails($pid,$id,$invoice_date,$invoice_date_sent,$invoice_address,$invoice_number,$payment_reminder,$protocol_payment_reminder,$protocol,$documents,$invoice_access,$invoice_access_orig) {
+   function setDetails($pid,$id,$invoice_carrier,$invoice_date,$invoice_date_sent,$invoice_address,$payment_type,$invoice_number,$payment_reminder,$protocol_payment_reminder,$protocol,$documents,$invoice_access,$invoice_access_orig) {
 		global $session, $lang;
 		$now = gmdate("Y-m-d H:i:s");
 		$invoice_date = $this->_date->formatDate($invoice_date);
@@ -338,7 +356,7 @@ class PatientsInvoicesModel extends PatientsModel {
 		}
 		
 		
-		$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS . " set invoice_date='$invoice_date', invoice_date_sent='$invoice_date_sent', invoice_address='$invoice_address', invoice_number='$invoice_number', payment_reminder='$payment_reminder', protocol_payment_reminder='$protocol_payment_reminder', protocol_invoice='$protocol', documents = '$documents'$accesssql where id='$id'";
+		$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS . " set invoice_carrier='$invoice_carrier',invoice_date='$invoice_date', invoice_date_sent='$invoice_date_sent', invoice_address='$invoice_address', payment_type='$payment_type', invoice_number='$invoice_number', payment_reminder='$payment_reminder', protocol_payment_reminder='$protocol_payment_reminder', protocol_invoice='$protocol', documents = '$documents'$accesssql where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {

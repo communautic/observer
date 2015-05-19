@@ -24,6 +24,14 @@
 		<?php echo($patient->position . "<br />" . $lang["PATIENT_CONTACT_EMAIL"] . " " . $patient->email . " &nbsp; | &nbsp; " . $lang["PATIENT_CONTACT_PHONE"] . " " . $patient->phone1);?></td>
 	</tr>
 </table>
+<?php if(CO_PRODUCT_VARIANT == 2 && !empty($patient->code)) { ?>
+<table width="100%" class="standard"> 
+   <tr>
+		<td class="tcell-left"><?php echo $lang["PATIENT_CODE"];?></td>
+		<td><?php echo($patient->code);?></td>
+	</tr>
+</table>
+<?php } ?>
 <?php if(!empty($patient->dob)) { ?>
 <table width="100%" class="standard"> 
    <tr>
@@ -47,19 +55,34 @@
 	</tr>
 </table>
 &nbsp;-->
-<?php if(!empty($patient->insurance)) { ?>
-<table width="100%" class="standard"> 
-   <tr>
-		<td class="tcell-left"><?php echo $lang["PATIENT_INSURANCE"];?></td>
-		<td><?php echo($patient->insurance);?></td>
-	</tr>
-</table>
-<?php } ?>
 <?php if(!empty($patient->number)) { ?>
 <table width="100%" class="standard"> 
    <tr>
 		<td class="tcell-left"><?php echo $lang["PATIENT_INSURANCE_NUMBER"];?></td>
 		<td><?php echo($patient->number);?></td>
+	</tr>
+</table>
+<?php } ?>
+&nbsp;
+<table width="100%" class="standard">
+	<tr>
+		<td class="tcell-left"><?php echo $lang["PATIENT_INSURER"];?></td>
+		<td><?php echo($patient->insurer);?><br /><?php echo($patient->insurer_ct);?></td>
+	</tr>
+</table>
+<?php if(!empty($patient->number_insurer)) { ?>
+<table width="100%" class="standard"> 
+   <tr>
+		<td class="tcell-left"><?php echo $lang["PATIENT_INSURANCE_INSURER_NUMBER"];?></td>
+		<td><?php echo($patient->number_insurer);?></td>
+	</tr>
+</table>
+<?php } ?>
+<?php if(!empty($patient->insurance)) { ?>
+<table width="100%" class="standard"> 
+   <tr>
+		<td class="tcell-left"><?php echo $lang["PATIENT_INSURANCE"];?></td>
+		<td><?php echo($patient->insurance);?></td>
 	</tr>
 </table>
 <?php } ?>

@@ -86,7 +86,16 @@ class Desktop extends Controller {
 					}
 				break;
 			}
-			
+		// agenda check?
+		if(in_array('agenda', $widgets)) {
+			$agenda_calendarid = $this->model->checkForCalendar();
+			//$agenda_calendarid = 29;
+			if(!$agenda_calendarid) {
+				if(($key = array_search('agenda', $widgets)) !== false) {
+					unset($widgets[$key]);
+				}
+			}
+		}
 		
 		if(is_array($widgets)) {
 			foreach ($widgets as $widget) {

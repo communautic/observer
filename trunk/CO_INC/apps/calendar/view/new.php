@@ -27,7 +27,7 @@
    <!-- Event Type -->
     <div class="fieldset2 whitebg fieldborder-bottom">
 		<label>
-        	<span append="1" field="calendarEventTypes" request="getEventTypesDialog" class="content-nav showDialog"><span><?php echo $lang["CALENDAR_EVENT_TYPE"];?></span></span>
+        	<span append="1" field="calendarEventTypes" request="getEventTypesDialog" sql="all" class="content-nav showDialog"><span><?php echo $lang["CALENDAR_EVENT_TYPE"];?></span></span>
 		</label>
 		<div class="contacts">
             <div class="itemlist-field" id="calendarEventTypes"><span uid="<?php echo $eventtype;?>" class="listmember"><?php echo $lang["EVENTTYPE"][$eventtype];?></span></div>
@@ -35,7 +35,7 @@
 		<div style="clear: both;"></div>
 	</div>
     <input id="eventtype" type="hidden" value="<?php echo $eventtype;?>" name="eventtype" />
-    
+    <div style="height: 1px;"></div>
     <!-- Event Title -->
     <div id="titleDisplay" class="fieldset2" <?php echo $regularEventDisplay;?>>
 		<label style="width: 79px;"><?php echo $lang["CALENDAR_EVENT_TITLE"];?></label>
@@ -45,10 +45,116 @@
 		<div style="clear: both;"></div>
 	</div>
     
+    <!-- patient for sitzung-->
+    <div id="patientDisplay" class="fieldset2" <?php echo $treatmentEventDisplay;?>>
+		<label>
+            <span append="0" field="calendarTreatmentTitle" request="getTreatmentsDialog" class="content-nav showDialog"><span><?php echo $lang["PATIENT_TITLE"];?></span></span>
+		</label>
+		<div class="contacts">
+			<div class="itemlist-field" id="calendarPatient"></div>
+		</div>
+		<div style="clear: both;"></div>
+	</div>
+    
+    <!-- contacts for patientenakt -->
+    <div id="pickContactDialog" class="fieldset2" <?php echo $newContactEventDisplay;?>>
+		<label>
+            <span append="0" field="newContact" request="getCalendarContactsDialog" class="content-nav showDialog"><span><?php echo $lang["CONTACTS_CONTACT"];?></span></span>
+		</label>
+		<div class="contacts">
+			<div class="itemlist-field" id="newContact"></div>
+		</div>
+		<div style="clear: both;"></div>
+	</div>
+    <input id="event-contactid" type="hidden" value="0" name="contactid" />
+    
+    <!-- patients for behandlung -->
+    <div id="pickPatientDialog" class="fieldset2" <?php echo $newPatientEventDisplay;?>>
+		<label>
+            <span append="0" field="newPatient" request="getCalendarPatientsDialog" class="content-nav showDialog"><span><?php echo $lang["PATIENT_TITLE"];?></span></span>
+		</label>
+		<div class="contacts">
+			<div class="itemlist-field" id="newPatient"></div>
+		</div>
+		<div style="clear: both;"></div>
+	</div>
+    <input id="event-patientid" type="hidden" value="0" name="patientid" />
+    
+    
+    <!-- last name -->
+     <div id="lastNameDisplay" class="fieldset2" <?php echo $contactEventDisplay;?>>
+		<label style="width: 79px;">Nachname</label>
+		<div class="dates" style="width: 187px;">
+			<input id="event-lastname" type="text" size="100" value="" maxlength="100" name="lastname" autofocus="autofocus" />
+		</div>
+		<div style="clear: both;"></div>
+	</div>
+    
+    <!-- first name -->
+     <div id="firstNameDisplay" class="fieldset2" <?php echo $contactEventDisplay;?>>
+		<label style="width: 79px;">Vorname</label>
+		<div class="dates" style="width: 187px;">
+			<input id="event-firstname" type="text" size="100" value="" maxlength="100" name="firstname" />
+		</div>
+		<div style="clear: both;"></div>
+	</div>
+    
+    <!-- phone -->
+     <div id="phoneDisplay" class="fieldset2" <?php echo $contactEventDisplay;?>>
+		<label style="width: 79px;">Telefon</label>
+		<div class="dates" style="width: 187px;">
+			<input id="event-phone" type="text" size="100" value="" maxlength="100" name="phone" />
+		</div>
+		<div style="clear: both;"></div>
+	</div>
+    
+    <!-- email -->
+     <div id="emailDisplay" class="fieldset2" <?php echo $contactEventDisplay;?>>
+		<label style="width: 79px;">Email</label>
+		<div class="dates" style="width: 187px;">
+			<input id="event-email" type="text" size="100" value="" maxlength="100" name="email" />
+		</div>
+		<div style="clear: both;"></div>
+	</div>
+    
+    <!-- Folder active -->
+    <div id="folderActiveDisplay" class="fieldset2" <?php echo $contactEventDisplay;?>>
+		<label>
+            <span append="0" field="calendarFolderActive" request="getPatientFolderDialogCalendar" class="content-nav showDialog"><span><?php echo $lang["PATIENT_FOLDER"];?></span></span>
+		</label>
+		<div class="contacts">
+			<div class="itemlist-field" id="calendarFolderActive"></div>
+		</div>
+		<div style="clear: both;"></div>
+	</div>
+    <input id="event-folderid" type="hidden" value="0" name="folderid" />
+    
+    <!-- Folder Inactive-->
+    <div id="folderDisplay" class="fieldset2" <?php echo $treatmentEventDisplay;?>>
+		<label>
+        	<!--<span append="0" field="calendarFolder" request="getCalendarFoldersDialog" class="content-nav showDialog"><span><?php echo $lang["PATIENT_FOLDER"];?></span></span>-->
+            <span><span><?php echo $lang["PATIENT_FOLDER"];?></span></span>
+		</label>
+		<div class="contacts">
+			<div class="itemlist-field" id="calendarFolder"></div>
+		</div>
+		<div style="clear: both;"></div>
+	</div>
+	
+    <!-- Treatment Title -->
+     <div id="treatmentTitleDisplay" class="fieldset2" <?php echo $contactEventDisplay;?>>
+		<label style="width: 79px;"><?php echo $lang["PATIENT_TREATMENT_CALENDAR_TITLE"];?></label>
+		<div class="dates" style="width: 187px;">
+			<input id="event-treatmenttitle" type="text" size="100" value="" maxlength="100" name="treatmenttitle" />
+		</div>
+		<div style="clear: both;"></div>
+	</div>
+    
     <!-- Treatment -->
     <div id="treatmentDisplay" class="fieldset2" <?php echo $treatmentEventDisplay;?>>
 		<label>
-        	<span append="0" field="calendarTreatmentTitle" request="getTreatmentsDialog" class="content-nav showDialog"><span><?php echo $lang["PATIENT_TREATMENT_TITLE"];?></span></span>
+        	<!--<span append="0" field="calendarTreatmentTitle" request="getTreatmentsDialog" class="content-nav showDialog"><span><?php echo $lang["PATIENT_TREATMENT_TITLE"];?></span></span>-->
+            <span><span><?php echo $lang["PATIENT_TREATMENT_CALENDAR_TITLE"];?></span></span>
 		</label>
 		<div class="contacts">
 			<div class="itemlist-field" id="calendarTreatmentTitle"></div>
@@ -70,7 +176,7 @@
     <input id="event-location" type="hidden" value="" name="location" />
     <input id="treatment-location" type="hidden" value="0" name="treatmentlocationid" />
     <input id="treatment-locationuid" type="hidden" value="0" name="treatmentlocationuid" />
-
+	<div style="height: 1px;"></div>
 	<!-- Date From -->
     <div class="fieldset2 whitebg">
 		<label>
@@ -126,7 +232,7 @@
 		<div style="clear: both;"></div>
 	</div>
     <!-- Desktop Reminder -->
-    <div class="fieldset2 whitebg">
+    <div class="fieldset2 whitebg fieldborder-bottom">
 		<label><?php echo $lang["CALENDAR_EVENT_DESKTOP"];?></label>
 		<div class="dates">
             <span rel="0" id="toggleDesktop" class="coCheckbox"></span>
@@ -136,14 +242,14 @@
 	</div>
     
     <!-- Copy Function -->
-    <div class="fieldset2 whitebg fieldborder-bottom">
+    <!--<div class="fieldset2 whitebg fieldborder-bottom">
 		<label>Kopieren</label>
 		<div class="dates">
             <span rel="0" id="toggleCopy" class="coCheckbox"></span>
             <input id="copy_checkbox" type="hidden" name="copy_checkbox" value="0">
 		</div>
 		<div style="clear: both;"></div>
-	</div>
+	</div>-->
     
     <!-- Description -->
     <div class="fieldset">

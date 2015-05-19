@@ -1512,8 +1512,6 @@ class ProjectsModel extends Model {
 		return $str;
 	 }
 
-
-
 	// STATISTIKEN
    
    
@@ -3469,6 +3467,23 @@ class ProjectsModel extends Model {
 		}
 		return json_encode($r);
 	}
+	
+	function getProjectFolderArchiveDialog($field,$title) {
+		global $session;
+		$str = '<div class="dialog-text">';
+		//$q ="select id, title from " . CO_TBL_PROJECTS_FOLDERS . " where status='0' and bin = '0' ORDER BY title";
+		if(!$session->isSysadmin()) {
+			$q ="select a.id, a.title from " . CO_TBL_PROJECTS_FOLDERS . " as a where a.status='0' and a.bin = '0' and (SELECT count(*) FROM co_projects_access as b, co_projects as c WHERE (b.admins REGEXP '[[:<:]]" . $session->uid . "[[:>:]]' or b.guests REGEXP '[[:<:]]" . $session->uid . "[[:>:]]') and c.folder=a.id and b.pid=c.id) > 0 ORDER BY title";
+		} else {
+			$q ="select id, title from " . CO_TBL_PROJECTS_FOLDERS . " where status='0' and bin = '0' ORDER BY title";
+		}
+		$result = mysql_query($q, $this->_db->connection);
+		while ($row = mysql_fetch_array($result)) {
+			$str .= '<a href="#" class="insertProjectFolderfromArchiveDialog" title="' . $row["title"] . '" field="'.$field.'" gid="'.$row["id"].'">' . $row["title"] . '</a>';
+		}
+		$str .= '</div>';	
+		return $str;
+	 }
 
 
 }

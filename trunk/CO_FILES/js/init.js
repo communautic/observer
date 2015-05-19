@@ -1610,8 +1610,12 @@ $(document).ready(function() {
 	$(document).on('click', 'div.appSettings',function(e) {
 		e.preventDefault();
 		var app = getCurrentApp();
-		$('#'+app+' .appSettingsPopup .content').html($(this).next().html());
-		$('#'+app+' .appSettingsPopup').slideDown();
+		if(app == 'calendar') {
+			calendar.actionLoadSettings();
+		} else {
+			$('#'+app+' .appSettingsPopup .content').html($(this).next().html());
+			$('#'+app+' .appSettingsPopup').slideDown();
+		}
 	})
 	
 	// costs checkbox
@@ -2702,6 +2706,13 @@ function navThreeTitleSecondArchives(objectname, clicked, passed_id) {
 					object.$second.data('status','open');
 					var idx = $('#'+objectname+'2 .module-click').index($('#'+objectname+'2 .module-click[rel='+objecctid+']'));
 					setModuleActive(object.$second,idx);
+					var itemtop = 0;
+					if($("#archives2 .active-link").length > 0) {
+						itemtop = parseInt($("#archives2 .active-link").offset().top);
+						$('#archives2 .scrolling-content').animate({
+							scrollTop: itemtop
+						}, 1000);
+					}
 					//$('#'+objectname+'2 .sort').attr('rel', data.sort).addClass('sort'+data.sort);
 					var h = object.$layoutWest.height();
 					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+id+"&request=get"+moduleCapsSingular+"DetailsArchive&id="+objecctid, success: function(text){

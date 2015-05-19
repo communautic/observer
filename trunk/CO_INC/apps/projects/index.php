@@ -256,6 +256,9 @@ if (!empty($_GET['request'])) {
 		case 'getInlineSearch':
 			echo($projects->getInlineSearch($system->checkMagicQuotesTinyMCE($_GET['term'])));
 		break;
+		case 'getProjectFolderArchiveDialog':
+			echo($projects->getProjectFolderArchiveDialog($_GET['field'],$_GET['title']));
+		break;
 		
 	}
 }

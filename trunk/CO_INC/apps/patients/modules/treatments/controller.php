@@ -32,14 +32,14 @@ class PatientsTreatments extends Patients {
 		if($arr = $this->model->getDetails($id)) {
 			$treatment = $arr["treatment"];
 			$task = $arr["task"];
-			$diagnose = $arr["diagnose"];
+			//$diagnose = $arr["diagnose"];
 			$sendto = $arr["sendto"];
 			ob_start();
 				include 'view/edit.php';
 				$data["html"] = ob_get_contents();
 			ob_end_clean();
 			$data["access"] = $arr["access"];
-			$data["canvases"] = $diagnose;
+			//$data["canvases"] = $diagnose;
 			return json_encode($data);
 		} else {
 			ob_start();
@@ -49,31 +49,75 @@ class PatientsTreatments extends Patients {
 			return json_encode($data);
 		}
 	}
+	
+	
+	function getPrintOptions() {
+		global $lang;
+			ob_start();
+				include 'view/print_options.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			return $html;
+	}
+	
+	function getSendToOptions() {
+		global $lang;
+			ob_start();
+				include 'view/sendto_options.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			return $html;
+	}
 
-
-	function printDetails($id,$t) {
+	function printDetails($id,$t,$option) {
 		global $session, $lang;
 		$title = "";
 		$html = "";
-		if($arr = $this->model->getDetails($id)) {
-			$treatment = $arr["treatment"];
-			$task = $arr["task"];
-			$diagnose = $arr["diagnose"];
-			$sendto = $arr["sendto"];
-			$printcanvas = 1;
-			ob_start();
-				include 'view/print.php';
-				$html = ob_get_contents();
-			ob_end_clean();
-			$title = $treatment->title;
-		}
-		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_TREATMENT"];
-		switch($t) {
-			case "html":
-				$this->printHTML($title,$html);
+		switch($option) {
+			case 'plan':
+				if($arr = $this->model->getDetails($id)) {
+					$treatment = $arr["treatment"];
+					$task = $arr["task"];
+					$diagnose = $arr["diagnose"];
+					$sendto = $arr["sendto"];
+					$printcanvas = 0;
+					ob_start();
+						include 'view/print.php';
+						$html = ob_get_contents();
+					ob_end_clean();
+					$title = $treatment->title;
+				}
+				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_TREATMENT"];
+				switch($t) {
+					case "html":
+						$this->printHTML($title,$html);
+					break;
+					default:
+						$this->printPDF($title,$html);
+				}
 			break;
-			default:
-				$this->printPDF($title,$html);
+			case 'list':
+				if($arr = $this->model->getDetails($id)) {
+					$treatment = $arr["treatment"];
+					$task = $arr["task"];
+					$diagnose = $arr["diagnose"];
+					$sendto = $arr["sendto"];
+					$printcanvas = 0;
+					ob_start();
+						include 'view/print_list.php';
+						$html = ob_get_contents();
+					ob_end_clean();
+					$title = $treatment->title;
+				}
+				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_TREATMENT_LIST"];
+				switch($t) {
+					case "html":
+						$this->printHTML($title,$html);
+					break;
+					default:
+						$this->printPDF($title,$html);
+				}
+			break;
 		}
 	}
 	
@@ -141,9 +185,9 @@ class PatientsTreatments extends Patients {
 	}
 	
 
-	function setDetails($pid,$id,$title,$treatmentdate,$protocol,$protocol2,$protocol3,$discount,$vat,$doctor,$doctor_ct,$task_id,$task_date,$task_text,$task,$task_treatmenttype,$canvasList_id,$canvasList_text,$treatment_access,$treatment_access_orig) {
-		if($arr = $this->model->setDetails($pid,$id,$title,$treatmentdate,$protocol,$protocol2,$protocol3,$discount,$vat,$doctor,$doctor_ct,$task_id,$task_date,$task_text,$task,$task_treatmenttype,$canvasList_id,$canvasList_text,$treatment_access,$treatment_access_orig)){
-			 return '{ "id": "' . $arr["id"] . '", "access": "' . $treatment_access . '", "changeTreatmentStatus": "' . $arr["changeTreatmentStatus"] . '"}';
+	function setDetails($pid,$id,$title,$treatmentdate,$protocol,$method,$protocol2,$protocol3,$discount,$vat,$doctor,$doctor_ct,$task_id,$task_date,$task_text,$task,$task_treatmenttype,$canvasList_id,$canvasList_text,$treatment_access,$treatment_access_orig) {
+		if($arr = $this->model->setDetails($pid,$id,$title,$treatmentdate,$protocol,$method,$protocol2,$protocol3,$discount,$vat,$doctor,$doctor_ct,$task_id,$task_date,$task_text,$task,$task_treatmenttype,$canvasList_id,$canvasList_text,$treatment_access,$treatment_access_orig)){
+			 return '{ "id": "' . $arr["id"] . '", "access": "' . $treatment_access . '", "changeTreatmentStatus": "' . $arr["changeTreatmentStatus"] . '", "updatestatus": "' . $arr["updatestatus"]->sessionvalstext . '"}';
 		  } else{
 			 return "error";
 		  }
@@ -389,6 +433,23 @@ class PatientsTreatments extends Patients {
 		   return "error";
 		}
 	}
+	function getTreatmentsMethodDialog($field) {
+		$retval = $this->model->getTreatmentsMethodDialog($field);
+		if($retval){
+			 return $retval;
+		  } else{
+			 return "error";
+		  }
+	}
+	
+	function getTreatmentInfoForCalendar($id) {
+		global $lang;
+		if($arr = $this->model->getTreatmentInfoForCalendar($id)) {
+			$treatment = $arr["treatment"];
+			return json_encode($treatment);
+		}
+	}
+	
 }
 
 $patientsTreatments = new PatientsTreatments("treatments");

@@ -10,7 +10,12 @@ function Phases(app) {
 		var app = getCurrentApp();
 		var title = $('#'+ app +' input.title').fieldValue();
 		if(title == "") {
-			$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
+			setTimeout(function() {
+				var title = $('#'+ app +' input.title').fieldValue();
+				if(title == "") {
+					$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
+				}
+			}, 5000)
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };

@@ -93,4 +93,5 @@ $lang["PCONTACTS_GROUPS_HELP"] = 'manual_contacts_groups.pdf';
 
 $lang["PRINT_GROUP"] = 'group.png';
 $lang["PRINT_CONTACT"] = 'contact.png';
+$lang["PRINT_EXTERNAL_CALENDAR"] = 'externekalender.png';
 ?>

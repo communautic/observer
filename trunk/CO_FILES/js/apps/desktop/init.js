@@ -153,8 +153,10 @@ function desktoploadCalendarModuleStart() {
 		if(data.widgetaction == 'open' && $('#calendarWidgetContent').is(':hidden')) {
 			$('#item_calendarWidget a.collapse').trigger('click');
 		}
+		$('#agendaWidget').fullCalendar( 'refetchEvents' )
 		}
 	});
+	
 }
 
 function desktoploadModuleStart() {
