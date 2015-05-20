@@ -159,6 +159,13 @@ $lang["GLOBAL_STATUS_MATERNITYLEAVE"] = 'karenziert';
 $lang["GLOBAL_STATUS_MATERNITYLEAVE_TIME"] = 'seit';
 $lang["GLOBAL_STATUS_LEAVE"] = 'ausgeschieden';
 $lang["GLOBAL_STATUS_LEAVE_TIME"] = 'am';
+// evals
+$lang["GLOBAL_STATUS_INPREPARATION"] = 'in Vorbereitung';
+$lang["GLOBAL_STATUS_INPREPARATION_TIME"] = 'seit';
+$lang["GLOBAL_STATUS_FIRSTEVAL"] = 'Erstanalyse';
+$lang["GLOBAL_STATUS_FIRSTEVAL_TIME"] = 'am';
+$lang["GLOBAL_STATUS_INEVALUATION"] = 'in Evaluierung';
+$lang["GLOBAL_STATUS_INEVALUATION_TIME"] = 'seit';
 // trainings
 $lang["GLOBAL_STATUS_INACTION"] = 'in Ausführung';
 $lang["GLOBAL_STATUS_INACTION_TIME"] = 'seit';
