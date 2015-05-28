@@ -239,7 +239,7 @@ Calendar={
 					/*$('#event-title').val($('#calendar').data('storeEvent-title'))
 					$('#event-treatment').val($('#calendar').data('storeEvent-treatment'))*/
 					if($('#calendar').data('storeEvent-treatment') == 0) {
-						var formtype = 1;
+						formtype = 1;
 					}
 					/*$('#calendarTreatmentTitle').html($('#calendar').data('storeEvent-treatmentTitle'))
 					
@@ -249,10 +249,14 @@ Calendar={
 					$('#calendarTreatmentLocation').html($('#calendar').data('storeEvent-treatmentLocationText'))
 					$('#calendar').data('storeEvent-Active', false)*/
 				}
+				if(allday) {
+					formtype = 1;
+				}
+				//alert(allday);
 				//Calendar.UI.loading(true);
 				Calendar.UI.eventdialogtype = 1;
-				//$('#dialog_holder').load('/?path=apps/calendar/', {request: 'newEventForm', start:start, end:end, allday:allday?1:0, calendar: cal, formtype: formtype }, Calendar.UI.startEventDialog);
-				$('#dialog_holder').load('/?path=apps/calendar/', {request: 'newEventForm', start:start, end:end, allday:0, calendar: cal, formtype: formtype }, Calendar.UI.startEventDialog);
+				$('#dialog_holder').load('/?path=apps/calendar/', {request: 'newEventForm', start:start, end:end, allday:allday?1:0, calendar: cal, formtype: formtype }, Calendar.UI.startEventDialog);
+				//$('#dialog_holder').load('/?path=apps/calendar/', {request: 'newEventForm', start:start, end:end, allday:0, calendar: cal, formtype: formtype }, Calendar.UI.startEventDialog);
 				/*$.ajax({ type: "GET", url: "/", data: { path: 'apps/calendar/', request: 'newEventForm', start:start, end:end, allday:allday?1:0 }, success: function(html){
 						$('#dialog_holder').html(html);
 						Calendar.UI.startEventDialog
@@ -1393,7 +1397,7 @@ $(document).ready(function() {
             s = checkTime(today.getSeconds());
 			var output = h + ":" + m;
         $('#agendaTime').html(output);
-		$('#agendaDay').html(today.toString('dddd, dd. MMMM'));
+		//$('#agendaDay').html(today.toString('dddd, dd. MMMM'));
 		//$('#agendaWidget .fc-agenda-days tr:eq(0) th:eq(1)').html('<span style="font-size: 16px; font-weight: bold;" id="agendaDay">'+today.toString('dddd, dd. MMMM yyyy')+'</span>');
         t = setTimeout(function () {
             startTime()
@@ -7966,10 +7970,10 @@ $(document).ready(function() {
 		var id = ele.attr('rel');
 		
 		if(ele.hasClass('active') && id !== activeCalId) {
-			ele.removeClass('active');
-			Calendar.UI.Calendar.activation(this,id,0,col);
-			numActiveCals--;
-			$('#calendar1 .module-click[data-id="'+id+'"]').find('.folderListColorBox').removeClass(col);
+			//ele.removeClass('active');
+			//Calendar.UI.Calendar.activation(this,id,0,col);
+			//numActiveCals--;
+			//$('#calendar1 .module-click[data-id="'+id+'"]').find('.folderListColorBox').removeClass(col);
 		} else {
 			if(id !== activeCalId) {
 				ele.addClass('active');
@@ -8132,6 +8136,29 @@ $(document).ready(function() {
 		$("#"+field).html(html);
 		$('#calendar-calendar').val(gid);
 		$("#modalDialog").dialog('close');
+		if(gid == 2) {
+			//aler('alle');
+			$('#calendarEventTypes').html('<span uid="0" class="listmember">Ereignis</span>');
+			$('#eventtype').val(0);
+			$('#patientDisplay').hide();
+			$('#pickContactDialog').hide();
+			$('#pickPatientDialog').hide();
+			$('#lastNameDisplay').hide();
+			$('#firstNameDisplay').hide();
+			$('#phoneDisplay').hide();
+			$('#emailDisplay').hide();
+			$('#folderActiveDisplay').hide();
+			$('#treatmentTitleDisplay').hide();
+			
+			$('#folderDisplay').hide();
+			$('#treatmentDisplay').hide();
+			$('#titleDisplay').show();
+			//$('#treatmentLocDisplay').hide();
+			//$('#locDisplay').show();
+			$('#dateToDisplay').show();
+			$('#allDayDisplay').show();
+				
+		}
 	});
 	
 	

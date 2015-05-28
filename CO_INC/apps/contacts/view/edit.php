@@ -248,8 +248,8 @@ foreach($contact->applications as $key => $val) { ?>
        <?php if($contact->access_status == 0) { ?>
        <table border="0" cellpadding="0" cellspacing="0" class="table-content">
             <tr>
-              <td class="tcell-left text11"><span><span>Anleitungen</span></span></td>
-              <td class="tcell-right"><span class="co-link" id="printCalendarInstructions">Externe Kalender</span></td>
+              <td class="tcell-left-inactive text11"><span><span>Download</span></span></td>
+              <td class="tcell-right"><span class="co-link printCalendarInstructions">Anleitung zur Einrichtung externer Kalenderfunktionen</span></td>
             </tr>
         </table>
         

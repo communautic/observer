@@ -1,12 +1,12 @@
 <?php
-$patients_sketches_name = "Skizzen";
+$patients_sketches_name = "Visualisierungen";
 
-$lang["PATIENT_SKETCH_TITLE"] = 'Skizze';
-$lang["PATIENT_SKETCHES"] = 'Skizzen';
+$lang["PATIENT_SKETCH_TITLE"] = 'Visualisierung';
+$lang["PATIENT_SKETCHES"] = 'Visualisierungen';
 
-$lang["PATIENT_SKETCH_NEW"] = 'Neue Skizze';
-$lang["PATIENT_SKETCH_ACTION_NEW"] = 'neue Skizze anlegen';
-$lang["PATIENT_SKETCH_TASK_NEW"] = 'Neue Sitzung';
+$lang["PATIENT_SKETCH_NEW"] = 'Neue Visualisierung';
+$lang["PATIENT_SKETCH_ACTION_NEW"] = 'neue Visualisierung anlegen';
+$lang["PATIENT_SKETCH_TASK_NEW"] = 'Neue Visualisierung';
 
 $lang["PATIENT_SKETCH_STATUS_PLANNED"] = 'in Befundung';
 $lang["PATIENT_SKETCH_STATUS_PLANNED_TIME"] = 'seit';
@@ -46,9 +46,17 @@ $lang["PATIENT_SKETCH_TASKS_TIME"] = 'Uhrzeit';
 $lang["PATIENT_SKETCH_TASKS_DATE_INVOICE"] = 'Verrechnungsdatum';
 $lang["PATIENT_SKETCH_TASKS_DURATION"] = 'Dauer';
 
-$lang["PATIENT_SKETCH_HELP"] = 'manual_patienten_behandlungen.pdf';
+$lang["PATIENT_SKETCH_ACTION_NEW"] = 'neu';
+$lang["PATIENT_SKETCH_ACTION_DRAW"] = 'zeichnen';
+$lang["PATIENT_SKETCH_ACTION_DELETE"] = 'l&ouml;schen';
+$lang["PATIENT_SKETCH_ACTION_ROTATE"] = 'Grafik drehen';
+$lang["PATIENT_SKETCH_ACTION_CLEAR"] = 'Inhalt entfernen';
+$lang["PATIENT_SKETCH_ACTION_UNDO"] = 'r&uuml;ckg&auml;ngig';
 
-$lang["PATIENT_PRINT_SKETCH"] = 'skizze.png';
+
+$lang["PATIENT_SKETCH_HELP"] = 'manual_patienten_visualisierungen.pdf';
+
+$lang["PATIENT_PRINT_SKETCH"] = 'visualisierung.png';
 
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/patients/sketches/de.php";

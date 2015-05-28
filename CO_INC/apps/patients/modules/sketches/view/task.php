@@ -37,7 +37,7 @@
 <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
   <tr>
     <td class="tcell-left text11"><span class="<?php if($sketch->canedit) { ?>selectTextarea<?php } ?>"><span>&nbsp;</span></span></td>
-    <td class="tcell-right"><?php if($sketch->canedit) { ?><textarea name="task_text[<?php echo $value->id;?>]" class="elastic"><?php echo(strip_tags($value->text));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($value->text)));?><?php } ?></td>
+    <td class="tcell-right"><?php if($sketch->canedit) { ?><textarea name="task_text[<?php echo $value->id;?>]" class="elastic"><?php echo(strip_tags($value->text));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($value->text)));?>&nbsp;<?php } ?></td>
   </tr>
 </table>
 </div>

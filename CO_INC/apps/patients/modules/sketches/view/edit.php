@@ -28,12 +28,12 @@
             
         <div class="canvasTools">
         	<?php if($sketch->canedit) { ?>
-            <span class="addTool"></span>
-            <span class="penTool active"></span>
-            <span class="erasorTool"></span>
-            <?php if($sketch->type == 2) { ?><span class="rotateTool"></span><?php } ?>
-            <span class="clearTool"></span>
-            <span class="undoTool"></span>
+            <span class="addTool" title="<?php echo $lang["PATIENT_SKETCH_ACTION_NEW"];?>"></span>
+            <span class="penTool active" title="<?php echo $lang["PATIENT_SKETCH_ACTION_DRAW"];?>"></span>
+            <span class="erasorTool" title="<?php echo $lang["PATIENT_SKETCH_ACTION_DELETE"];?>"></span>
+            <?php if($sketch->type == 2) { ?><span class="rotateTool" title="<?php echo $lang["PATIENT_SKETCH_ACTION_ROTATE"];?>"></span><?php } ?>
+            <span class="clearTool" title="<?php echo $lang["PATIENT_SKETCH_ACTION_CLEAR"];?>"></span>
+            <span class="undoTool" title="<?php echo $lang["PATIENT_SKETCH_ACTION_UNDO"];?>"></span>
             <?php } ?>
         </div>
         </div>

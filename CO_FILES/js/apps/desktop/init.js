@@ -327,7 +327,9 @@ $(document).ready(function() {
 		}
 		var z = zMax + 1;
 		//desktopzIndex = z;
-		var x = Math.round($('#desktop').width()/2 - 152);
+		var randomizer = Math.floor(Math.random() * 500) + 20;
+		//var x = Math.round($('#desktop').width()/2 - 152);
+		var x = Math.round($('#desktop').width()/2 - randomizer);
 		$.ajax({ type: "GET", url: "/", data: "path=apps/desktop&request=newPostit&z="+z+"&x=" + x, success: function(data){
 				desktoploadModuleStart();
 			}
