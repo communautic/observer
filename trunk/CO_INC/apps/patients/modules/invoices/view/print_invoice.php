@@ -78,6 +78,7 @@
     </tr>
 </table>
 <?php } ?>
+<?php if($invoice->protocol != "") { ?>
 <p>&nbsp;</p>
 <table width="100%" cellpadding="0" cellspacing="0" style="padding-right: 10pt;">
     <tr>
@@ -85,6 +86,7 @@
         <td width="75%"><?php echo($invoice->protocol)?></td>
     </tr>
 </table>
+<?php } ?>
 <?php if(CO_PRODUCT_VARIANT == 2) { ?>
 <table width="100%" cellpadding="0" cellspacing="0" style="padding-right: 10pt;">
     <tr>
@@ -140,11 +142,23 @@
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <?php if($invoice->payment_type != 'Barbezahlung') { ?>
-<p style="line-height: 20px;"><?php echo $lang["PATIENT_INVOICE_REQUEST_PAYMENT"];?></p>
+	<?php if(CO_PRODUCT_VARIANT == 2) { ?>
+    	<p style="line-height: 20px;"><?php echo $lang["PATIENT_INVOICE_REQUEST_PAYMENT"];?></p>
+    <?php } else { ?>
+    	<p style="line-height: 20px;"><?php echo $lang["PATIENT_INVOICE_TEXT_LINE2"];?></p>
+        <p>&nbsp;</p>
+        <p style="line-height: 20px;"><?php echo $lang["PATIENT_INVOICE_TEXT_LINE3"];?></p>
+    <?php } ?>
 <?php } else { ?>
 <p style="line-height: 20px;"><?php echo $lang["PATIENT_INVOICE_PAYMENT_CASH"];?></p>
+	<?php if(CO_PRODUCT_VARIANT == 1) { ?>
+        <p>&nbsp;</p>
+        <p style="line-height: 20px;"><?php echo $lang["PATIENT_INVOICE_TEXT_LINE3"];?></p>
+    <?php } ?>
 <?php } ?>
 <p>&nbsp;</p>
 <p style="line-height: 20px;"><?php echo $lang["PATIENT_INVOICE_TEXT_LINE4"];?></p>
-<!--<p><?php echo($invoice->m_firstname)?> <?php echo($invoice->m_lastname)?></p>-->
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><?php echo($invoice->m_firstname)?> <?php echo($invoice->m_lastname)?></p>
 <div style="page-break-after:always;">&nbsp;</div>

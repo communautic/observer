@@ -46,12 +46,14 @@
 		<td class="tcell-right-inactive"><?php echo($invoice->management);?></td>
     </tr>
 </table>
+<div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 	  <td class="tcell-left text11"><span class="<?php if($invoice->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="patientsinvoice_carrier" append="0" title=""><span><?php echo $lang["PATIENT_INVOICE_CARRIER"];?></span></span></td>
 	  <td class="tcell-right"><div id="patientsinvoice_carrier" class="itemlist-field"><?php echo($invoice->invoice_carrier);?></div></td>
 	</tr>
 </table>
+<div class="content-spacer"></div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 		<td class="tcell-left text11"><span class="<?php if($invoice->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["PATIENT_INVOICE_DATE"];?></span></span></td>
@@ -70,6 +72,7 @@
     <td class="tcell-right-nopadding"><?php if($invoice->canedit) { ?><input name="invoice_number" type="text" class="bg" value="<?php echo($invoice->invoice_number);?>" /><?php } else { echo '<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $invoice->invoice_number . '</span>';}?></td>
   </tr>
 </table>
+<div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 	  <td class="tcell-left text11"><span class="<?php if($invoice->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="patientsinvoiceaddress" append="0" title=""><span><?php echo $lang["PATIENT_INVOICE_ADDRESS"];?></span></span></td>
@@ -87,7 +90,7 @@
   <tr>
 		<td class="tcell-left-inactive text11" style="padding-top: 2px;"><?php echo $lang["PATIENT_CONTACT_DETAILS"];?></td>
     	<td class="tcell-right-inactive"><?php echo($invoice->ctitle)?> <?php echo($invoice->title2)?> <?php echo($invoice->lastname);?> <?php echo($invoice->firstname);?><br />
-        <span class="text11"><?php echo($invoice->position . " &nbsp; | &nbsp; " . $lang["PATIENT_CONTACT_EMAIL"] . " " . $invoice->email . " &nbsp; | &nbsp; " . $lang["PATIENT_CONTACT_PHONE"] . " " . $invoice->phone1);?></span>
+        <span class="text11"><?php echo($invoice->address_line1 . ", " . $invoice->address_postcode  . " " . $invoice->address_town . " &nbsp; | &nbsp; " . $lang["PATIENT_CONTACT_EMAIL"] . " " . $invoice->email . " &nbsp; | &nbsp; " . $lang["PATIENT_CONTACT_PHONE"] . " " . $invoice->phone1);?></span>
         </td>
         </tr>
 </table>

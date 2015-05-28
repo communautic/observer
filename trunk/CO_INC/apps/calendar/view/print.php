@@ -33,6 +33,6 @@ foreach($output as $key => $row) {
 		$title = $patientsModel->getPatientTitle($row['patientid']);
 	}
 	
-	echo '<table width="100%" cellpadding="0" cellspacing="0"><tr><td width="20px">&nbsp;</td><td width="50%">' . $title . '</td><td class="smalltext grey" valign="middle">' . $start . ' - ' . $end . '</td></tr></table>';
+	echo '<table width="100%" cellpadding="0" cellspacing="0"><tr><td width="20px">&nbsp;</td><td width="72%">' . $title . '</td><td class="smalltext grey" valign="middle">' . $start . ' - ' . $end . '</td></tr></table>';
 	$i++;
 }?>

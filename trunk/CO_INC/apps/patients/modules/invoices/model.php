@@ -138,7 +138,7 @@ class PatientsInvoicesModel extends PatientsModel {
 		
 		$patientid = $array["pid"];
 		
-		$q = "SELECT a.number,a.number_insurer, b.id as patient_id, b.lastname,b.firstname,b.title as ctitle,b.title2,b.position,b.phone1,b.email,b.address_line1,b.address_line2,b.address_town,b.address_postcode FROM " . CO_TBL_PATIENTS . " as a, co_users as b where a.cid=b.id and a.id = '$patientid'";
+		$q = "SELECT a.number,a.number_insurer,a.insurer, b.id as patient_id, b.lastname,b.firstname,b.title as ctitle,b.title2,b.position,b.phone1,b.email,b.address_line1,b.address_line2,b.address_town,b.address_postcode FROM " . CO_TBL_PATIENTS . " as a, co_users as b where a.cid=b.id and a.id = '$patientid'";
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_fetch_array($result);
 		foreach($row as $key => $val) {
@@ -157,7 +157,8 @@ class PatientsInvoicesModel extends PatientsModel {
 		
 		if($array['invoice_address'] == 0) {
 			//$array['invoiceaddress'] = $array['patient'];
-			$array['invoiceaddress'] = $this->_contactsmodel->getUserListPlain($this->getPatientField($array["pid"],'insurer'),'invoice_address', "", $array["canedit"]);
+			//$array['invoiceaddress'] = $this->_contactsmodel->getUserListPlain($this->getPatientField($array["pid"],'insurer'),'invoice_address', "", $array["canedit"]);
+			$array["invoiceaddress"] = $this->_contactsmodel->getUserList($array['insurer'], "invoice_address", "", $array["canedit"]);
 		} else {
 			$alt_invoice = $array['invoice_address'];
 			$array["invoiceaddress_print"] = $this->_contactsmodel->getUserListPlain($array['invoice_address']);

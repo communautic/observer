@@ -1737,7 +1737,7 @@ $(document).ready(function() {
 		}*/
 	});
 	
-	$(document).on('click', '#printCalendarInstructions', function(e){
+	$(document).on('click', '#contacts-right .printCalendarInstructions', function(e){
 		e.preventDefault();
 		contacts.actionPrintCalendarInstructions();
 	});
