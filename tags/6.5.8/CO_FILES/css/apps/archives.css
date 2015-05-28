@@ -1,0 +1,547 @@
+#archives .module-bg-active { 
+	border-top: 1px solid #fff;
+	border-bottom: 1px solid #182929;
+	background: #3CA0A0;
+}
+
+#archives1, #archives2, #archives3  { position: relative; padding: 0; }
+#archives3 { display: block;}
+#archives3 .scrolling-content { width: 100% !important;}
+
+.archives3-content { 
+	width: 100%; 
+	padding:0; 
+	overflow:hidden !important;
+	background: #3CA0A0;
+	border-bottom: 1px solid #5A690A;
+    border-top: 1px solid #FFFFFF;
+}
+
+#archives .ui-layout-west li>span:hover   { background-color: #C8FFFF}
+#archives .ui-layout-west li>span.active-link  { background-color: #C8FFFF}
+#archives .hover-bg  { background-color: #577207}
+#archives .hover-outline { border: 1px solid #577207}
+
+#archives .module-access-status {  border-right: 1px solid #3CA0A0; }
+#archives .module-item-status {  border-left: 1px solid #3CA0A0; }
+#archives .icon-guest {  border-left: 1px solid #3CA0A0; }
+#archives .icon-checked-out {  border-left: 1px solid #3CA0A0; }
+
+#archives .co-link:hover { color: #82aa0b; }
+
+#archives .center-center a         { color: #000; }
+#archives .center-center a:link    { color: #000; }
+#archives .center-center a:active  { color: #000; }
+#archives .center-center a:visited { color: #000; }
+#archives .center-center a:hover   { color: #82aa0b; cursor: pointer}
+
+#archivesActions { display: block; }
+
+#menu .app_archives {  }
+#menu .app_archives:hover, #menu .app_archives.active-app {
+	border: 1px solid #182929;
+	border-top-color: #3CA0A0;
+	background: #c7ffff; /* Old browsers */
+/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2M3ZmZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iIzM3ODQ4NCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUxJSIgc3RvcC1jb2xvcj0iIzM3ODI4MiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMyYTVkNWQiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+background: -moz-linear-gradient(top,  #c7ffff 0%, #378484 50%, #378282 51%, #2a5d5d 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#c7ffff), color-stop(50%,#378484), color-stop(51%,#378282), color-stop(100%,#2a5d5d)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #c7ffff 0%,#378484 50%,#378282 51%,#2a5d5d 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #c7ffff 0%,#378484 50%,#378282 51%,#2a5d5d 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #c7ffff 0%,#378484 50%,#378282 51%,#2a5d5d 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #c7ffff 0%,#378484 50%,#378282 51%,#2a5d5d 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c7ffff', endColorstr='#2a5d5d',GradientType=0 ); /* IE6-8 */
+
+}
+
+
+#archives div.contentTabs li span:hover, #archives div.contentTabs li span.active {
+border: 1px solid #c1c99d;
+background: #bfc79a;
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2JmYzc5YSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iIzk0YTI1NyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUxJSIgc3RvcC1jb2xvcj0iIzY0NzgwYSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM2NDc4MGEiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+background: -moz-linear-gradient(top,  #bfc79a 0%, #94a257 50%, #64780a 51%, #64780a 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#bfc79a), color-stop(50%,#94a257), color-stop(51%,#64780a), color-stop(100%,#64780a));
+background: -webkit-linear-gradient(top,  #bfc79a 0%,#94a257 50%,#64780a 51%,#64780a 100%);
+background: -o-linear-gradient(top,  #bfc79a 0%,#94a257 50%,#64780a 51%,#64780a 100%);
+background: -ms-linear-gradient(top,  #bfc79a 0%,#94a257 50%,#64780a 51%,#64780a 100%);
+background: linear-gradient(to bottom,  #bfc79a 0%,#94a257 50%,#64780a 51%,#64780a 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bfc79a', endColorstr='#64780a',GradientType=0 );
+}
+
+#archives div.contentSubTabs li span:hover, #archives div.contentSubTabs li span.active {
+color: #fff;
+border: 1px solid #666;
+background: rgb(61,61,61); /* Old browsers */
+/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzNkM2QzZCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iIzc0NzQ3NCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUxJSIgc3RvcC1jb2xvcj0iIzdmN2Y3ZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM3ZjdmN2YiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+background: -moz-linear-gradient(top,  rgba(61,61,61,1) 0%, rgba(116,116,116,1) 50%, rgba(127,127,127,1) 51%, rgba(127,127,127,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(61,61,61,1)), color-stop(50%,rgba(116,116,116,1)), color-stop(51%,rgba(127,127,127,1)), color-stop(100%,rgba(127,127,127,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  rgba(61,61,61,1) 0%,rgba(116,116,116,1) 50%,rgba(127,127,127,1) 51%,rgba(127,127,127,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  rgba(61,61,61,1) 0%,rgba(116,116,116,1) 50%,rgba(127,127,127,1) 51%,rgba(127,127,127,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  rgba(61,61,61,1) 0%,rgba(116,116,116,1) 50%,rgba(127,127,127,1) 51%,rgba(127,127,127,1) 100%); /* IE10+ */
+background: linear-gradient(top,  rgba(61,61,61,1) 0%,rgba(116,116,116,1) 50%,rgba(127,127,127,1) 51%,rgba(127,127,127,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3d3d3d', endColorstr='#7f7f7f',GradientType=0 ); /* IE6-8 */
+
+}
+
+
+.milestone { width: 18px; height: 18px; background: url(../../../img/milestone.png) no-repeat 0px 0px; text-align: center; line-height: 19px;}
+.milestone span { margin-left: 3px; }
+
+#archives .table-title, #archives .textarea-title { 
+background-color: #C8FFFF; }
+
+#archives .ui-datepicker-trigger-action-status {
+	position: absolute;
+	left: 318px;
+	display: block; height: 13px; width: 15px; margin-top: -15px; background: url(../../../img/icons.png) no-repeat -20px 0px
+}
+
+#archives a.disabled { background-position: 0px 0px; }
+
+#archives-right .tcell-left span span { position: relative; display: block; padding: 0 0 0 15px; }
+#archives-right .tcell-left-short span { display: block; padding: 0 0 0 15px; }
+
+#archives-right .content-nav         { display: block; color: #000; }
+#archives-right .content-nav:hover   { display: block; background-color: #3CA0A0; color: #000; cursor: pointer; }
+
+.content-outline {background-color: #C8FFFF;}
+
+#archives-right textarea:hover,
+#archives-right textarea:focus,
+#archives-right input.bg:hover, 
+#archives-right input.bg:focus {
+    background-color: #C8FFFF;
+}
+
+.loadArchive { cursor: pointer }
+.loadArchivesPhase { cursor: pointer }
+
+#archives .tbl-protocol td, #archives .elastic, #archives .elastic-two, .archives-colorTable {
+ background-color:#C8FFFF;
+}
+/*
+#barchart-zoom { margin: 5px 0 0 42px; }
+#barchart-zoom .zoom-xsmall { float: left; margin-right: 7px; display: block; height: 13px; width: 13px; background: url(../../img/icons.png) no-repeat 0px -20px}
+#barchart-zoom .zoom-xsmall:hover { background: url(../../img/icons.png) no-repeat -100px -20px; cursor: pointer;}
+#barchart-zoom .zoom-xsmall-active { float: left; margin-right: 7px; display: block; height: 13px; width: 13px; background: url(../../img/icons.png) no-repeat -100px -20px}
+
+#barchart-zoom .zoom-small { float: left; margin-right: 7px; display: block; height: 13px; width: 13px; background: url(../../img/icons.png) no-repeat -20px -20px}
+#barchart-zoom .zoom-small:hover { background: url(../../img/icons.png) no-repeat -120px -20px; cursor: pointer;}
+#barchart-zoom .zoom-small-active { float: left; margin-right: 7px; display: block; height: 13px; width: 13px; background: url(../../img/icons.png) no-repeat -120px -20px}
+
+#barchart-zoom .zoom-medium { float: left; margin-right: 7px; display: block; height: 13px; width: 13px; background: url(../../img/icons.png) no-repeat -40px -20px}
+#barchart-zoom .zoom-medium:hover { background: url(../../img/icons.png) no-repeat -140px -20px; cursor: pointer;}
+#barchart-zoom .zoom-medium-active { float: left; margin-right: 7px; display: block; height: 13px; width: 13px; background: url(../../img/icons.png) no-repeat -140px -20px}
+
+#barchart-zoom .zoom-large { float: left; margin-right: 7px; display: block; height: 13px; width: 13px; background: url(../../img/icons.png) no-repeat -60px -20px}
+#barchart-zoom .zoom-large:hover { background: url(../../img/icons.png) no-repeat -160px -20px; cursor: pointer;}
+#barchart-zoom .zoom-large-active { float: left; margin-right: 7px; display: block; height: 13px; width: 13px; background: url(../../img/icons.png) no-repeat -160px -20px}
+
+#barchart-zoom .zoom-xlarge { float: left; margin-right: 7px; display: block; height: 13px; width: 13px; background: url(../../img/icons.png) no-repeat -80px -20px}
+#barchart-zoom .zoom-xlarge:hover { background: url(../../img/icons.png) no-repeat -180px -20px; cursor: pointer;}
+#barchart-zoom .zoom-xlarge-active { float: left; margin-right: 7px; display: block; height: 13px; width: 13px; background: url(../../img/icons.png) no-repeat -180px -20px}
+*/
+
+/* PSP */
+
+/*#psp { margin-left: 10px;}
+.barchart-outer { border-right:  1px solid #dedede; border-bottom:  1px solid #dedede; }
+.barchart-dependency { border-left:  1px solid #333; border-bottom:  1px solid #333; }
+.barchart-arrow { position: absolute; right: -6px; bottom: -6px; height: 6px; width: 13px; background-image:url(../../img/gantt_arrow.png) }
+.psp-item .line { height: 1px; border-left: 1px solid #fff; }
+.barchart_color_planned { background-color: #6496DC;}
+.barchart_color_planned .line { background-color: #436593;}
+.barchart_color_planned .light { background-color: #c1d5f0;}
+.barchart_color_inprogress { background-color: #FFD20A;}
+.barchart_color_inprogress .line { background-color: #C9A409;}
+.barchart_color_inprogress .light { background-color: #ffe780;}
+.barchart_color_finished { background-color: #82aa0b;}
+.barchart_color_finished .line { background-color: #5A690A;}
+.barchart_color_finished .light { background-color: #C8FFFF;}
+.barchart_color_not_finished { background-color: #7f7f7f;}
+.barchart_color_not_finished .line { background-color: #666;}
+.barchart_color_not_finished .light { background-color: #e5e5e5;}
+.barchart_color_overdue { background-color: #EB4600 !important;}
+.barchart_color_overdue .line { background-color: #8E1E00;}
+.barchart_color_overdue .light { background-color: #EB4600;}
+
+.timeline-legend { width: 700px; font-size: 11px; line-height: 16px; }
+.timeline-legend span { width: 120px; display: block; padding-left: 8px;}
+
+.psp-item { position: relative; margin: 0 0 15px 10px; border: 1px solid #666; width: 168px; height: 71px; font-size: 11px;  }
+.psp-item.phase { width: 178px; margin-left: 0px; }
+.psp-item div.border { border-left: 1px solid #fff; border-top: 1px solid #fff; }
+.psp-item-startdate { position: absolute; left: 9px; bottom: 3px; width: 75px; height: 13px;}
+.psp-item-enddate { position: absolute; right: 9px; bottom: 3px; width: 74px; height: 13px; text-align: right;}
+.psp-item-datedash { position: absolute; left: 82px; bottom: 3px; width: 74px; height: 13px; }
+.psp-item-milestone { bottom: 5px; height: 16px; left: 9px; position: absolute; width: 75px; }
+.psp-item-archivelink { position: absolute; left: 0px; bottom: 0; width: 22px; height: 13px; }
+.icon-archivelink-psp { background: url("../../img/icons.png") no-repeat scroll -550px -84px transparent; display: block; height: 15px; margin: 0 0 0 9px; width: 21px; }
+.psp-item-startdate-archivelink { position: absolute; left: 40px; bottom: 3px; width: 55px; height: 13px;}
+.psp-item-enddate-archivelink { position: absolute; right: 9px; bottom: 3px; width: 64px; height: 13px; text-align: right;}
+.psp-connector-archive-vert { position: absolute; top: 72px; left: -1px; height: 19px; width: 90px; }
+.psp-connector-archive-vert .top { position: absolute; top: 0; left: 0; height: 9px; width: 89px; border-left: 1px solid #666; border-bottom: 1px solid #666; }
+.psp-connector-archive-vert .bottom { position: absolute; top: 10px; right: 0px; height: 9px; width: 1px; background-color: #666; }
+.psp-connector-phase-hori { position: absolute; top: -11px; left: -102px; height: 9px; width: 190px; border-top: 1px solid #666; border-right: 1px solid #666; }
+.psp-connector-phase-vert { position: absolute; top: 28px; left: -10px; height: 1px; width: 9px; background-color: #000; }
+.psp-connector-vert { position: absolute; top: -51px; left: -11px; height: 87px; width: 9px; border-bottom: 1px solid #666; border-left: 1px solid #666; }
+*/
+.td_border_top_right {
+ border-top: 1px solid #24211D; 
+ border-right: 1px solid #24211D; 
+ border-bottom: 0; 
+ border-left:  0; 
+}
+
+.td_border_left {
+ border-top: 0; 
+ border-left: 1px solid #24211D; 
+ border-right: 0; 
+ border-bottom:  0; 
+}
+
+#archives .SendToContent { display: none; background-color: #E5E5E5; font-style: italic; padding: 10px; }
+
+#archives .qq-upload-drop-area { background: #C8FFFF; }
+#archives .qq-upload-drop-area-active { background:#3CA0A0;}
+
+/* Module Filter*/
+#archives > .ui-autocomplete { box-shadow: 4px 4px 6px #666666; width: 250px !important; height: 250px !important; max-height: 250px; background: #C8FFFF; border: 1px solid #3CA0A0;}
+#archives > .ui-autocomplete a { color: #000;}
+#archives > .ui-autocomplete a.ui-state-hover, #archives > .ui-autocomplete a.ui-state-active { color: #fff; margin: 0; background: #3CA0A0; border-radius: 0;}
+
+
+
+
+#modalDialogArchiveRevive, #modalDialogArchiveDuplicate {
+	z-index: 9999; position: absolute; bottom: 0; width: 100%; height: 135px; display: none;
+	-webkit-border-radius: 4px 4px 4px 4px;
+	-moz-border-radius: 4px 4px 4px 4px;
+	border-radius: 4px 4px 4px 4px;
+	overflow: hidden;
+}
+
+#modalDialogArchiveReviveInner, #modalDialogArchiveDuplicateInner {
+	background-color: #3ca0a0;
+	height: 84px;
+	border-radius: 0 0 4px 4px;
+}
+#modalDialogArchiveReviveInnerContent, #modalDialogArchiveDuplicateInnerContent {
+	height: 80px;
+	-webkit-border-radius: 4px 4px 4px 4px;
+	-moz-border-radius: 4px 4px 4px 4px;
+	border-radius: 4px 4px 4px 4px;
+	background: #c8ffff; margin: 0 4px;
+}
+
+#modalDialogArchiveRevive span.coButton, #modalDialogArchiveDuplicate span.coButton  { 
+font-size: 11px;
+color: #fff; border-radius: 4px; font-weight: bold; 
+border: 1px solid #286964;
+background: #87c4c4; /* Old browsers */
+/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzg3YzRjNCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iIzQ0YTRhNCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUxJSIgc3RvcC1jb2xvcj0iIzNjYTBhMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMzY2EwYTAiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+background: -moz-linear-gradient(top, #87c4c4 0%, #44a4a4 50%, #3ca0a0 51%, #3ca0a0 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#87c4c4), color-stop(50%,#44a4a4), color-stop(51%,#3ca0a0), color-stop(100%,#3ca0a0)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, #87c4c4 0%,#44a4a4 50%,#3ca0a0 51%,#3ca0a0 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, #87c4c4 0%,#44a4a4 50%,#3ca0a0 51%,#3ca0a0 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top, #87c4c4 0%,#44a4a4 50%,#3ca0a0 51%,#3ca0a0 100%); /* IE10+ */
+background: linear-gradient(to bottom, #87c4c4 0%,#44a4a4 50%,#3ca0a0 51%,#3ca0a0 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#87c4c4', endColorstr='#3ca0a0',GradientType=0 ); /* IE6-8 */
+}
+#modalDialogArchiveRevive span.coButton:hover, #modalDialogArchiveDuplicate span.coButton:hover  { border: 1px solid #fff; color: #fff; cursor: pointer; }
+
+#modalDialogArchiveReviveClose, #modalDialogArchiveDuplicateClose { 
+padding-top: 3px; cursor: pointer; position: absolute; right: 0px; width: 30px;
+}
+
+.modalDialogArchiveReviveHeader, .modalDialogArchiveDuplicateHeader { 
+height: 26px;
+-webkit-border-radius: 4px 4px 0 0;
+	-moz-border-radius: 4px 4px 0 0;
+	border-radius: 4px 4px 0 0;
+background: #cbe5e5; /* Old browsers */
+/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjY2JlNWU1IiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjNTVhY2FjIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iNTElIiBzdG9wLWNvbG9yPSIjM2NhMGEwIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzNjYTBhMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgPC9saW5lYXJHcmFkaWVudD4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);
+background: -moz-linear-gradient(top, #cbe5e5 0, #55acac 50%, #3ca0a0 51%, #3ca0a0 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0,#cbe5e5), color-stop(50%,#55acac), color-stop(51%,#3ca0a0), color-stop(100%,#3ca0a0)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, #cbe5e5 0,#55acac 50%,#3ca0a0 51%,#3ca0a0 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, #cbe5e5 0,#55acac 50%,#3ca0a0 51%,#3ca0a0 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top, #cbe5e5 0,#55acac 50%,#3ca0a0 51%,#3ca0a0 100%); /* IE10+ */
+background: linear-gradient(to bottom, #cbe5e5 0,#55acac 50%,#3ca0a0 51%,#3ca0a0 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cbe5e5', endColorstr='#3ca0a0',GradientType=0 ); /* IE6-8 */
+}
+
+/* module procs */
+
+#archives-right div.firstArrowStyle { display: none; }
+#archives-right div.secondArrowStyle { display: none; }
+
+#archives-right .shape1 { position: absolute; width: 160px; height: 80px; background: url(../../img/formen.png)  no-repeat 1px 1px; }
+#archives-right .shape1>div { width: 140px; height: 60px; margin: 10px; overflow: hidden; }
+#archives-right .shape1>div>div { width: 140px; height: 60px; display: table-cell; vertical-align: middle; text-align: center; }
+#archives-right .shape1.color1 { background-position: 1px 1px; }
+#archives-right .shape1.color2 { background-position: -179px 1px; }
+#archives-right .shape1.color3 { background-position: -359px 1px; }
+#archives-right .shape1.color4 { background-position: -539px 1px; }
+#archives-right .shape1.color5 { background-position: -719px 1px; }
+#archives-right .shape1.note:hover { cursor: pointer; }
+/* oval */
+#archives-right .shape2 { position: absolute; width: 160px; height: 80px; background: url(../../img/formen.png)  no-repeat 1px -109px; }
+#archives-right .shape2>div { width: 140px; height: 60px; margin: 10px; overflow: hidden; }
+#archives-right .shape2>div>div { width: 140px; height: 60px; display: table-cell; vertical-align: middle; text-align: center; }
+#archives-right .shape2.color1 { background-position: 1px -109px; }
+#archives-right .shape2.color2 { background-position: -179px -109px; }
+#archives-right .shape2.color3 { background-position: -359px -109px; }
+#archives-right .shape2.color4 { background-position: -539px -109px; }
+#archives-right .shape2.color5 { background-position: -719px -109px; }
+#archives-right .shape2.note:hover { cursor: pointer; }
+/* rhombus */
+#archives-right .shape3 { position: absolute; width: 160px; height: 80px; background: url(../../img/formen.png)  no-repeat 1px -429px; }
+#archives-right .shape3>div { width: 120px; height: 50px; margin: 7px 20px; overflow: hidden; }
+#archives-right .shape3>div>div { width: 120px; height: 67px; display: table-cell; vertical-align: middle; text-align: center; }
+#archives-right .shape3.color1 { background-position: 1px -429px; }
+#archives-right .shape3.color2 { background-position: -179px -429px; }
+#archives-right .shape3.color3 { background-position: -359px -429px; }
+#archives-right .shape3.color4 { background-position: -539px -429px; }
+#archives-right .shape3.color5 { background-position: -719px -429px; }
+#archives-right .shape3.note:hover { cursor: pointer; }
+/* sqare + down arrow */
+#archives-right .shape4 { position: absolute; width: 160px; height: 80px; background: url(../../img/formen.png)  no-repeat 1px -329px; }
+#archives-right .shape4>div { width: 140px; height: 60px; margin: 10px; overflow: hidden; }
+#archives-right .shape4>div>div { width: 140px; height: 60px; display: table-cell; vertical-align: middle; text-align: center; }
+#archives-right .shape4.color1 { background-position: 1px -329px; }
+#archives-right .shape4.color2 { background-position: -179px -329px; }
+#archives-right .shape4.color3 { background-position: -359px -329px; }
+#archives-right .shape4.color4 { background-position: -539px -329px; }
+#archives-right .shape4.color5 { background-position: -719px -329px; }
+#archives-right .shape4.note:hover { cursor: pointer; }
+/* square arrow */
+#archives-right .shape5 { position: absolute; width: 166px; height: 90px; background: url(../../img/formen.png)  no-repeat 1px -219px; }
+#archives-right .shape5>div { width: 140px; height: 60px; margin: 10px 10px 10px 15px; overflow: hidden; }
+#archives-right .shape5>div>div { width: 135px; height: 60px; display: table-cell; vertical-align: middle; text-align: center; }
+#archives-right .shape5.color1 { background-position: 1px -219px; }
+#archives-right .shape5.color2 { background-position: -179px -219px; }
+#archives-right .shape5.color3 { background-position: -359px -219px; }
+#archives-right .shape5.color4 { background-position: -539px -219px; }
+#archives-right .shape5.color5 { background-position: -719px -219px; }
+#archives-right .shape5.note:hover { cursor: pointer; }
+
+/* text only */
+#archives-right .shape34 { margin: 1px 0 0 1px; position: absolute; }
+#archives-right .shape34>div { overflow: hidden; }
+#archives-right .shape34>div>div { background: #fff; max-width: 100px; min-width: 40px; padding: 5px 7px; display: table-cell; vertical-align: middle; text-align: center; }
+#archives-right .shape34.note:hover { cursor: pointer; }
+#archives-right .shape34 span.note-readmore {
+    left: 50%;
+	background: url("../../img/icons.png") no-repeat scroll -200px -75px rgba(0, 0, 0, 0);
+    height: 10px;
+    margin-left: -4px;
+    position: absolute;
+    top: -10px;
+    width: 8px;
+}
+
+#archives-right .shape10.note:hover { cursor: pointer; }
+
+/* css arrow1 - right*/
+#archives-right .shape10.arrow1 { position: absolute; width: 40px; height: 22px; background: none;}
+#archives-right .shape10.arrow1>div.arrowStyle { position: relative; top: 10px; width: 33px; background: #000; height: 2px; }
+#archives-right .shape10.arrow1>div.arrowStyle:after, #archives-right .shape10.arrow1>div.arrowStyle:before { left: 100%; top: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#archives-right .shape10.arrow1>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-left-color: #000; border-width: 8px; margin-top: -8px; } 
+#archives-right .shape10.arrow1>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-left-color: #000; border-width: 8px; margin-top: -8px; }
+/* arrow1 end */
+
+/* css arrow3 - bottom */
+#archives-right .shape10.arrow3 { position: absolute; width: 22px; height: 40px; background: none;}
+#archives-right .shape10.arrow3>div.arrowStyle { position: relative; left: 10px; width: 2px; background: #000; height: 33px; }
+#archives-right .shape10.arrow3>div.arrowStyle:after, #archives-right .shape10.arrow3>div.arrowStyle:before { top: 100%; left: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#archives-right .shape10.arrow3>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-top-color: #000; border-width: 8px; margin-left: -8px; } 
+#archives-right .shape10.arrow3>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-top-color: #000; border-width: 8px; margin-left: -8px; }
+/* arrow3 end */
+
+/* css arrow5 - left */
+#archives-right .shape10.arrow5 { position: absolute; width: 40px; height: 22px; background: none;}
+#archives-right .shape10.arrow5>div.arrowStyle { position: relative; top: 10px; left: 7px; width: 33px; background: #000; height: 2px; }
+#archives-right .shape10.arrow5>div.arrowStyle:after, #archives-right .shape10.arrow5>div.arrowStyle:before { right: 100%; top: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#archives-right .shape10.arrow5>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-right-color: #000; border-width: 8px; margin-top: -8px; } 
+#archives-right .shape10.arrow5>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-right-color: #000; border-width: 8px; margin-top: -8px; }
+/* arrow5 end */
+
+/* css arrow7 - top */
+#archives-right .shape10.arrow7 { position: absolute; width: 22px; height: 40px; background: none;}
+#archives-right .shape10.arrow7>div.arrowStyle { position: relative; left: 10px; top: 7px; width: 2px; background: #000; height: 33px; }
+#archives-right .shape10.arrow7>div.arrowStyle:after, #archives-right .shape10.arrow7>div.arrowStyle:before { bottom: 100%; left: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#archives-right .shape10.arrow7>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-bottom-color: #000; border-width: 8px; margin-left: -8px; } 
+#archives-right .shape10.arrow7>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-bottom-color: #000; border-width: 8px; margin-left: -8px; }
+/* arrow7 end */
+
+/* css arrow9 - long with top right*/
+#archives-right .shape10.arrow9 { position: absolute; width: 192px; height: 40px; background: none;}
+#archives-right .shape10.arrow9>div.arrowStyle { position: absolute; right: 10px; top: 7px; width: 2px; background: #000; height: 33px; }
+#archives-right .shape10.arrow9>div.arrowStyle:after, #archives-right .shape10.arrow9>div.arrowStyle:before { bottom: 100%; left: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#archives-right .shape10.arrow9>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-bottom-color: #000; border-width: 8px; margin-left: -8px; } 
+#archives-right .shape10.arrow9>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-bottom-color: #000; border-width: 8px; margin-left: -8px; }
+#archives-right .shape10.arrow9>div.firstArrowStyle { display: block;  position: relative; width: 2px; background: #000; height: 40px; }
+#archives-right .shape10.arrow9>div.secondArrowStyle { display: block; position: absolute; left: 0; bottom: 0px; width: 180px; background: #000; height: 2px; }
+/* arrow9 end */
+
+/* css arrow10 - long with top left*/
+#archives-right .shape10.arrow10 { position: absolute; width: 192px; height: 40px; background: none;}
+#archives-right .shape10.arrow10>div.arrowStyle { position: relative; left: 10px; top: 7px; width: 2px; background: #000; height: 33px; }
+#archives-right .shape10.arrow10>div.arrowStyle:after, #archives-right .shape10.arrow10>div.arrowStyle:before { bottom: 100%; left: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#archives-right .shape10.arrow10>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-bottom-color: #000; border-width: 8px; margin-left: -8px; } 
+#archives-right .shape10.arrow10>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-bottom-color: #000; border-width: 8px; margin-left: -8px; }
+#archives-right .shape10.arrow10>div.firstArrowStyle { display: block;  position: absolute; right: 0; width: 2px; background: #000; height: 40px; }
+#archives-right .shape10.arrow10>div.secondArrowStyle { display: block; position: absolute; left: 10px; bottom: 0px; width: 180px; background: #000; height: 2px; }
+/* arrow10 end */
+
+/* css arrow11 - long with bottom right*/
+#archives-right .shape10.arrow11 { position: absolute; width: 192px; height: 40px; background: none;}
+#archives-right .shape10.arrow11>div.arrowStyle { position: absolute; right: 10px; top: 0; width: 2px; background: #000; height: 33px; }
+#archives-right .shape10.arrow11>div.arrowStyle:after, #archives-right .shape10.arrow11>div.arrowStyle:before { top: 100%; left: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#archives-right .shape10.arrow11>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-top-color: #000; border-width: 8px; margin-left: -8px; } 
+#archives-right .shape10.arrow11>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-top-color: #000; border-width: 8px; margin-left: -8px; }
+#archives-right .shape10.arrow11>div.firstArrowStyle { display: block;  position: relative; width: 2px; background: #000; height: 40px; }
+#archives-right .shape10.arrow11>div.secondArrowStyle { display: block; position: absolute; left: 0; top: 0px; width: 180px; background: #000; height: 2px; }
+/* arrow11 end */
+
+/* css arrow12 - long with bottom left*/
+#archives-right .shape10.arrow12 { position: absolute; width: 192px; height: 40px; background: none;}
+#archives-right .shape10.arrow12>div.arrowStyle { position: relative; left: 10px; top: 0; width: 2px; background: #000; height: 33px; }
+#archives-right .shape10.arrow12>div.arrowStyle:after, #archives-right .shape10.arrow12>div.arrowStyle:before { top: 100%; left: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#archives-right .shape10.arrow12>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-top-color: #000; border-width: 8px; margin-left: -8px; } 
+#archives-right .shape10.arrow12>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-top-color: #000; border-width: 8px; margin-left: -8px; }
+#archives-right .shape10.arrow12>div.firstArrowStyle { display: block;  position: absolute; right: 0; width: 2px; background: #000; height: 40px; }
+#archives-right .shape10.arrow12>div.secondArrowStyle { display: block; position: absolute; left: 10px; top: 0px; width: 180px; background: #000; height: 2px; }
+/* arrow12 end */
+
+/* css arrow13 - vert with top right */
+#archives-right .shape10.arrow13 { position: absolute; width: 40px; height: 80px; background: none; }
+#archives-right .shape10.arrow13>div.arrowStyle { position: relative; top: 10px; width: 33px; background: #000; height: 2px; }
+#archives-right .shape10.arrow13>div.arrowStyle:after, #archives-right .shape10.arrow13>div.arrowStyle:before { left: 100%; top: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#archives-right .shape10.arrow13>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-left-color: #000; border-width: 8px; margin-top: -8px; } 
+#archives-right .shape10.arrow13>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-left-color: #000; border-width: 8px; margin-top: -8px; }
+#archives-right .shape10.arrow13>div.firstArrowStyle { display: block;  position: absolute; left: 0; bottom: 0; width: 40px; background: #000; height: 2px; }
+#archives-right .shape10.arrow13>div.secondArrowStyle { display: block; position: absolute; left: 0px; top: 10px; width: 2px; background: #000; height: 70px; }
+/* arrow13 end */
+
+/* css arrow13 - vert with top right */
+#archives-right .shape10.arrow13 { position: absolute; width: 40px; height: 90px; background: none; }
+#archives-right .shape10.arrow13>div.arrowStyle { position: relative; top: 10px; width: 33px; background: #000; height: 2px; }
+#archives-right .shape10.arrow13>div.arrowStyle:after, #archives-right .shape10.arrow13>div.arrowStyle:before { left: 100%; top: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#archives-right .shape10.arrow13>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-left-color: #000; border-width: 8px; margin-top: -8px; } 
+#archives-right .shape10.arrow13>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-left-color: #000; border-width: 8px; margin-top: -8px; }
+#archives-right .shape10.arrow13>div.firstArrowStyle { display: block;  position: absolute; left: 0; bottom: 0; width: 40px; background: #000; height: 2px; }
+#archives-right .shape10.arrow13>div.secondArrowStyle { display: block; position: absolute; left: 0px; top: 10px; width: 2px; background: #000; height: 80px; }
+/* arrow13 end */
+
+/* css arrow14 - vert with bottom right */
+#archives-right .shape10.arrow14 { position: absolute; width: 40px; height: 90px; background: none; }
+#archives-right .shape10.arrow14>div.arrowStyle { position: absolute; bottom: 10px; width: 33px; background: #000; height: 2px; }
+#archives-right .shape10.arrow14>div.arrowStyle:after, #archives-right .shape10.arrow14>div.arrowStyle:before { left: 100%; top: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#archives-right .shape10.arrow14>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-left-color: #000; border-width: 8px; margin-top: -8px; } 
+#archives-right .shape10.arrow14>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-left-color: #000; border-width: 8px; margin-top: -8px; }
+#archives-right .shape10.arrow14>div.firstArrowStyle { display: block;  position: absolute; left: 0; top: 0; width: 40px; background: #000; height: 2px; }
+#archives-right .shape10.arrow14>div.secondArrowStyle { display: block; position: absolute; left: 0px; top: 0; width: 2px; background: #000; height: 80px; }
+/* arrow14 end */
+
+/* css arrow15 - vert with top left */
+#archives-right .shape10.arrow15 { position: absolute; width: 40px; height: 90px; background: none; }
+#archives-right .shape10.arrow15>div.arrowStyle { position: absolute; bottom: 10px; right: 0; width: 33px; background: #000; height: 2px; }
+#archives-right .shape10.arrow15>div.arrowStyle:after, #archives-right .shape10.arrow15>div.arrowStyle:before { right: 100%; top: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#archives-right .shape10.arrow15>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-right-color: #000; border-width: 8px; margin-top: -8px; } 
+#archives-right .shape10.arrow5>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-right-color: #000; border-width: 8px; margin-top: -8px; }
+#archives-right .shape10.arrow15>div.firstArrowStyle { display: block;  position: absolute; left: 0; top: 0; width: 40px; background: #000; height: 2px; }
+#archives-right .shape10.arrow15>div.secondArrowStyle { display: block; position: absolute; right: 0px; top: 0; width: 2px; background: #000; height: 80px; }
+/* arrow15 end */
+
+/* css arrow16 - vert with top right */
+#archives-right .shape10.arrow16 { position: absolute; width: 40px; height: 90px; background: none; }
+#archives-right .shape10.arrow16>div.arrowStyle { position: absolute; top: 10px; right: 0; width: 33px; background: #000; height: 2px; }
+#archives-right .shape10.arrow16>div.arrowStyle:after, #archives-right .shape10.arrow16>div.arrowStyle:before { right: 100%; top: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#archives-right .shape10.arrow16>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-right-color: #000; border-width: 8px; margin-top: -8px; } 
+#archives-right .shape10.arrow5>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-right-color: #000; border-width: 8px; margin-top: -8px; }
+#archives-right .shape10.arrow16>div.firstArrowStyle { display: block;  position: absolute; left: 0; bottom: 0; width: 40px; background: #000; height: 2px; }
+#archives-right .shape10.arrow16>div.secondArrowStyle { display: block; position: absolute; right: 0px; top: 10px; width: 2px; background: #000; height: 80px; }
+/* arrow16 end */
+
+/* css arrow17 - square with top right */
+#archives-right .shape10.arrow17 { position: absolute; width: 40px; height: 50px; background: none; }
+#archives-right .shape10.arrow17>div.arrowStyle { position: relative; top: 10px; width: 33px; background: #000; height: 2px; }
+#archives-right .shape10.arrow17>div.arrowStyle:after, #archives-right .shape10.arrow17>div.arrowStyle:before { left: 100%; top: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#archives-right .shape10.arrow17>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-left-color: #000; border-width: 8px; margin-top: -8px; } 
+#archives-right .shape10.arrow17>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-left-color: #000; border-width: 8px; margin-top: -8px; }
+#archives-right .shape10.arrow17>div.secondArrowStyle { display: block; position: absolute; left: 0px; top: 10px; width: 2px; background: #000; height: 40px; }
+/* arrow17 end */
+
+/* css arrow18 - square with bottom right */
+#archives-right .shape10.arrow18 { position: absolute; width: 40px; height: 50px; background: none; }
+#archives-right .shape10.arrow18>div.arrowStyle { position: absolute; bottom: 10px; width: 33px; background: #000; height: 2px; }
+#archives-right .shape10.arrow18>div.arrowStyle:after, #archives-right .shape10.arrow18>div.arrowStyle:before { left: 100%; top: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#archives-right .shape10.arrow18>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-left-color: #000; border-width: 8px; margin-top: -8px; } 
+#archives-right .shape10.arrow18>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-left-color: #000; border-width: 8px; margin-top: -8px; }
+#archives-right .shape10.arrow18>div.secondArrowStyle { display: block; position: absolute; left: 0px; top: 0; width: 2px; background: #000; height: 40px; }
+/* arrow18 end */
+
+/* css arrow19 - square with top left */
+#archives-right .shape10.arrow19 { position: absolute; width: 40px; height: 50px; background: none; }
+#archives-right .shape10.arrow19>div.arrowStyle { position: absolute; bottom: 10px; right: 0; width: 33px; background: #000; height: 2px; }
+#archives-right .shape10.arrow19>div.arrowStyle:after, #archives-right .shape10.arrow19>div.arrowStyle:before { right: 100%; top: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#archives-right .shape10.arrow19>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-right-color: #000; border-width: 8px; margin-top: -8px; } 
+#archives-right .shape10.arrow5>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-right-color: #000; border-width: 8px; margin-top: -8px; }
+#archives-right .shape10.arrow19>div.secondArrowStyle { display: block; position: absolute; right: 0px; top: 0; width: 2px; background: #000; height: 40px; }
+/* arrow19 end */
+
+/* css arrow20 - square with top right */
+#archives-right .shape10.arrow20 { position: absolute; width: 40px; height: 50px; background: none; }
+#archives-right .shape10.arrow20>div.arrowStyle { position: absolute; top: 10px; right: 0; width: 33px; background: #000; height: 2px; }
+#archives-right .shape10.arrow20>div.arrowStyle:after, #archives-right .shape10.arrow20>div.arrowStyle:before { right: 100%; top: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#archives-right .shape10.arrow20>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-right-color: #000; border-width: 8px; margin-top: -8px; } 
+#archives-right .shape10.arrow5>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-right-color: #000; border-width: 8px; margin-top: -8px; }
+#archives-right .shape10.arrow20>div.secondArrowStyle { display: block; position: absolute; right: 0px; top: 10px; width: 2px; background: #000; height: 40px; }
+/* arrow20 end */
+
+/* css arrow21 - long with top right*/
+#archives-right .shape10.arrow21 { position: absolute; width: 50px; height: 40px; background: none;}
+#archives-right .shape10.arrow21>div.arrowStyle { position: absolute; right: 10px; top: 7px; width: 2px; background: #000; height: 33px; }
+#archives-right .shape10.arrow21>div.arrowStyle:after, #archives-right .shape10.arrow21>div.arrowStyle:before { bottom: 100%; left: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#archives-right .shape10.arrow21>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-bottom-color: #000; border-width: 8px; margin-left: -8px; } 
+#archives-right .shape10.arrow21>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-bottom-color: #000; border-width: 8px; margin-left: -8px; }
+#archives-right .shape10.arrow21>div.secondArrowStyle { display: block; position: absolute; left: 0; bottom: 0px; width: 40px; background: #000; height: 2px; }
+/* arrow21 end */
+
+/* css arrow22 - long with top left*/
+#archives-right .shape10.arrow22 { position: absolute; width: 50px; height: 40px; background: none;}
+#archives-right .shape10.arrow22>div.arrowStyle { position: relative; left: 10px; top: 7px; width: 2px; background: #000; height: 33px; }
+#archives-right .shape10.arrow22>div.arrowStyle:after, #archives-right .shape10.arrow22>div.arrowStyle:before { bottom: 100%; left: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#archives-right .shape10.arrow22>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-bottom-color: #000; border-width: 8px; margin-left: -8px; } 
+#archives-right .shape10.arrow22>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-bottom-color: #000; border-width: 8px; margin-left: -8px; }
+#archives-right .shape10.arrow22>div.secondArrowStyle { display: block; position: absolute; left: 10px; bottom: 0px; width: 40px; background: #000; height: 2px; }
+/* arrow22 end */
+
+/* css arrow23 - long with bottom right*/
+#archives-right .shape10.arrow23 { position: absolute; width: 50px; height: 40px; background: none;}
+#archives-right .shape10.arrow23>div.arrowStyle { position: absolute; right: 10px; top: 0; width: 2px; background: #000; height: 33px; }
+#archives-right .shape10.arrow23>div.arrowStyle:after, #archives-right .shape10.arrow23>div.arrowStyle:before { top: 100%; left: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#archives-right .shape10.arrow23>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-top-color: #000; border-width: 8px; margin-left: -8px; } 
+#archives-right .shape10.arrow23>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-top-color: #000; border-width: 8px; margin-left: -8px; }
+#archives-right .shape10.arrow23>div.secondArrowStyle { display: block; position: absolute; left: 0; top: 0px; width: 40px; background: #000; height: 2px; }
+/* arrow23 end */
+
+/* css arrow24 - long with bottom left*/
+#archives-right .shape10.arrow24 { position: absolute; width: 50px; height: 40px; background: none;}
+#archives-right .shape10.arrow24>div.arrowStyle { position: relative; left: 10px; top: 0; width: 2px; background: #000; height: 33px; }
+#archives-right .shape10.arrow24>div.arrowStyle:after, #archives-right .shape10.arrow24>div.arrowStyle:before { top: 100%; left: 50%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; } 
+#archives-right .shape10.arrow24>div.arrowStyle:after { border-color: rgba(0, 0, 0, 0); border-top-color: #000; border-width: 8px; margin-left: -8px; } 
+#archives-right .shape10.arrow24>div.arrowStyle:before { border-color: rgba(0, 0, 0, 0); border-top-color: #000; border-width: 8px; margin-left: -8px; }
+#archives-right .shape10.arrow24>div.secondArrowStyle { display: block; position: absolute; left: 10px; top: 0px; width: 40px; background: #000; height: 2px; }
+/* arrow24 end */
+
+
+#archives-right span.note-readmore { height: 10px; left: 77px; position: absolute; top: 10px; width: 8px; background: url(../../img/icons.png) no-repeat -200px -75px; }
+
+/* module procs end*/
+
+#archiveProjectsSearch:hover, #archiveProcsSearch:hover { cursor: pointer; }
