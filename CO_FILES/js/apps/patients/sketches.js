@@ -1439,8 +1439,8 @@ var colors = ['#6EAAFF','#FF7878','#FFD41D','#8CD264','#D2B4FF','#9999FF','#FF9E
 		})			
 
 		// This will be defined on a TOUCH device such as iPad or Android, etc.
-		var is_touch_device = 'ontouchstart' in document.documentElement;
-		if (is_touch_device) {
+		//var is_touch_device = 'ontouchstart' in document.documentElement;
+		//if (is_touch_device) {
             // create a drawer which tracks touch movements
 			var drawer = new Array();
 			$('.canvasDrawSketch').livequery(function() {
@@ -1491,7 +1491,7 @@ var colors = ['#6EAAFF','#FF7878','#FFD41D','#8CD264','#D2B4FF','#9999FF','#FF9E
 			   var id = obj.id
 			   var cparent = $('#patients-right .scroll-pane');
 			   var cparentTop = cparent.scrollTop();
-			   var coors = {x: event.targetTouches[0].pageX,y: event.targetTouches[0].pageY+cparentTop};
+			   var coors = {x: event.targetTouches[0].pageX + cparent.scrollLeft(),y: event.targetTouches[0].pageY+cparentTop};
                if (obj.offsetParent) {
                   do {
                      coors.x -= obj.offsetLeft;
@@ -1528,7 +1528,7 @@ var colors = ['#6EAAFF','#FF7878','#FFD41D','#8CD264','#D2B4FF','#9999FF','#FF9E
 					}, false);
 				//})
 			})*/
-		} else {
+		//} else {
 			// Pencil
 			$(document).on('mousedown','.canvasDrawSketch',function(mouseEvent) {
 			   var id = $(this).attr('id');
@@ -1545,7 +1545,7 @@ var colors = ['#6EAAFF','#FF7878','#FFD41D','#8CD264','#D2B4FF','#9999FF','#FF9E
 				  finishDrawing(mouseEvent, id);
 			   });
 			});
-		}
+		//}
 	});
 	  
 	  
