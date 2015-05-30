@@ -452,7 +452,7 @@ a.fc-event,
 	}
 	
 .fc-event-treatment .fc-event-time {
-		padding: 1px 16px 2px 3px;
+		/*padding: 1px 16px 2px 3px;*/
 		display: inline-block;
 	}
 

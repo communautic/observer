@@ -70,4 +70,3 @@
         <td><p style="line-height: 25px;"><?php echo $lang["PATIENT_INVOICE_SERVICES_FOR_SIG_THERAPIST"];?>:</p></td>
     </tr>
 </table>
-<div style="page-break-after:always;">&nbsp;</div>
