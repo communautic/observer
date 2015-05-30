@@ -51,12 +51,40 @@ Die Vorgehensweise für generelle calDav fähige Kalenderprogramme (z.B. Android
   </tr>
 </table>
 &nbsp;
+<p>&nbsp;</p>
+<table width="100%" class="standard">
+    <tr>
+        <td class="tcell-left">&nbsp;</td>
+        <td><p>Der Gemeinschaftskalender muss (außer bei IOS Systemen) separat eingefügt
+            werden.</p>
+    </td>
+    </tr>
+</table>
+&nbsp;
+<table width="100%" class="standard">
+  <tr>
+    <td class="tcell-left">Outlook Kalender</td>
+    <td><p>Kalender hinzufügen <strong>>></strong> Aus dem Internet <strong>>></strong> Speicherort angeben:<br />
+<a style="color: #4ca1d7" href="<?php echo $contact->all_outlook_caldavurl;?>"><?php echo splitcalURL($contact->all_outlook_caldavurl);?></a><br />
+<strong>>></strong> den Internetkalender hinzufügen und abonnieren <strong>>></strong> Eingabe des
+bestehenden Physio Observer Benutzernamens und Kennwortes</p></td>
+  </tr>
+</table>
+&nbsp;
+<table width="100%" class="standard">
+  <tr>
+    <td class="tcell-left">Andere/Caldav</td>
+    <td><p>Die Vorgehensweise für generelle calDav fähige Kalenderprogramme (z.B. Android, Mozilla Sunbird) entspricht in etwa den vorher angeführten Arbeitsschritten. Die einzugebende Adresse lautet:<br />
+<a style="color: #4ca1d7" href="<?php echo $contact->all_caldavurl;?>"><?php echo splitcalURL($contact->all_caldavurl);?></a><br /></p>
+</td>
+  </tr>
+</table>
+&nbsp;
+<p>&nbsp;</p>
 <table width="100%" class="standard">
   <tr>
     <td class="tcell-left">&nbsp;</td>
     <td><p style="color: #ff6633">ACHTUNG: Der PO Kalender kann aus Sicherheitsgründen auf externen Geräten nur gelesen, aber nicht manipuliert, verändert werden.</p>
-        <p>&nbsp;</p>
-        <p>Der Gemeinschaftskalender (alle) muss separat eingefügt werden.</p>
     </td>
   </tr>
 </table>

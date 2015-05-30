@@ -39,12 +39,14 @@
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <?php if(CO_PRODUCT_VARIANT == 2) { ?>
+<?php if($patient->code != "") { ?>
 <table width="100%" cellpadding="0" cellspacing="0" style="padding-right: 10pt;">
     <tr>
         <td width="25%" class="smalltext"><?php echo $lang["PATIENT_CODE"];?></td>
         <td width="75%"><?php echo $patient->code;?></td>
     </tr>
 </table>
+<?php } ?>
 <?php } ?>
 <table width="100%" cellpadding="0" cellspacing="0" style="padding-right: 10pt;">
     <tr>
@@ -60,6 +62,8 @@
     </tr>
 </table>
 <?php } ?>
+<?php if(CO_PRODUCT_VARIANT == 2) { ?>
+<?php if($invoice->method != "") { ?>
 <p>&nbsp;</p>
 <table width="100%" cellpadding="0" cellspacing="0" style="padding-right: 10pt;">
     <tr>
@@ -67,6 +71,8 @@
         <td width="75%"><?php echo($invoice->method)?></td>
     </tr>
 </table>
+<?php } ?>
+<?php } ?>
 <p>&nbsp;</p>
 <table width="100%" class="standard" style="border:1px solid #ccc;">
 	<?php 
@@ -133,4 +139,3 @@
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p><?php echo($invoice->m_firstname)?> <?php echo($invoice->m_lastname)?></p>
-<div style="page-break-after:always;">&nbsp;</div>
