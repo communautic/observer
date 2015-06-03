@@ -939,7 +939,7 @@ function getEvalTitleFromMeetingIDs($array,$target, $link = 0){
 		$now = gmdate("Y-m-d H:i:s");
 		$title = $lang["EVAL_NEW"];
 		
-		$q = "INSERT INTO " . CO_TBL_EVALS . " set folder = '$id', cid='$cid', status = '0', planned_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+		$q = "INSERT INTO " . CO_TBL_EVALS . " set folder = '$id', cid='$cid', status = '0', startdate = '$now', planned_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			$id = mysql_insert_id();
@@ -1844,11 +1844,24 @@ function getEvalTitleFromMeetingIDs($array,$target, $link = 0){
 	}
 	
 	
-	function getChartPerformance($id, $what, $image = 1) { 
+	function getObjectives($id) {
+		$q = "SELECT * FROM " . CO_TBL_EVALS_OBJECTIVES . " WHERE pid = '$id' and status = '1' and bin = '0' ORDER BY item_date DESC";
+		$result = mysql_query($q, $this->_db->connection);
+		$num = mysql_num_rows($result);
+		return $num;
+	}
+	
+	function getChartPerformance($id, $what, $image = 1, $tendency = 1, $offset = 0) { 
 		global $lang;
+		//echo $offset;
+		if($offset != 0) {
+			$offsetNext = $offset-1;
+		} else {
+			$offsetNext = $offset;
+		}
 		switch($what) {
 			case 'happiness':
-				$q = "SELECT * FROM " . CO_TBL_EVALS_OBJECTIVES . " WHERE pid = '$id' and status = '1' and bin = '0' ORDER BY item_date DESC LIMIT 0,1";
+				$q = "SELECT * FROM " . CO_TBL_EVALS_OBJECTIVES . " WHERE pid = '$id' and status = '1' and bin = '0' ORDER BY item_date ASC LIMIT $offset,1";
 				$result = mysql_query($q, $this->_db->connection);
 				$num = mysql_num_rows($result);
 				$i = 1;
@@ -1885,7 +1898,7 @@ function getEvalTitleFromMeetingIDs($array,$target, $link = 0){
 				
 				$chart["tendency"] = "tendency_positive.png";
 				
-				$q2 = "SELECT * FROM " . CO_TBL_EVALS_OBJECTIVES . " WHERE pid = '$id' and status = '1' and bin = '0' ORDER BY item_date DESC LIMIT 1,1";
+				$q2 = "SELECT * FROM " . CO_TBL_EVALS_OBJECTIVES . " WHERE pid = '$id' and status = '1' and bin = '0' ORDER BY item_date ASC LIMIT $offsetNext,1";
 				$result2 = mysql_query($q2, $this->_db->connection);
 				$num2 = mysql_num_rows($result2);
 				$i = 1;
@@ -1893,23 +1906,23 @@ function getEvalTitleFromMeetingIDs($array,$target, $link = 0){
 				while($row2 = mysql_fetch_array($result2)) {
 					// Tab 1 questios
 					$tab1result2 = 0;
-					if(!empty($row2["tab1q1"])) { $tab1result += $row2["tab1q1"]; }
-					if(!empty($row2["tab1q2"])) { $tab1result += $row2["tab1q2"]; }
-					if(!empty($row2["tab1q3"])) { $tab1result += $row2["tab1q3"]; }
-					if(!empty($row2["tab1q4"])) { $tab1result += $row2["tab1q4"]; }
-					if(!empty($row2["tab1q5"])) { $tab1result += $row2["tab1q5"]; }
-					if(!empty($row2["tab1q6"])) { $tab1result += $row2["tab1q6"]; }
-					if(!empty($row2["tab1q7"])) { $tab1result += $row2["tab1q7"]; }
-					if(!empty($row2["tab1q8"])) { $tab1result += $row2["tab1q8"]; }
-					if(!empty($row2["tab1q9"])) { $tab1result += $row2["tab1q9"]; }
-					if(!empty($row2["tab1q10"])) { $tab1result += $row2["tab1q10"]; }
-					if(!empty($row2["tab1q11"])) { $tab1result += $row2["tab1q11"]; }
-					if(!empty($row2["tab1q12"])) { $tab1result += $row2["tab1q12"]; }
-					if(!empty($row2["tab1q13"])) { $tab1result += $row2["tab1q13"]; }
-					if(!empty($row2["tab1q14"])) { $tab1result += $row2["tab1q14"]; }
-					if(!empty($row2["tab1q15"])) { $tab1result += $row2["tab1q15"]; }
-					if(!empty($row2["tab1q16"])) { $tab1result += $row2["tab1q16"]; }
-					if(!empty($row2["tab1q17"])) { $tab1result += $row2["tab1q17"]; }
+					if(!empty($row2["tab1q1"])) { $tab1result2 += $row2["tab1q1"]; }
+					if(!empty($row2["tab1q2"])) { $tab1result2 += $row2["tab1q2"]; }
+					if(!empty($row2["tab1q3"])) { $tab1result2 += $row2["tab1q3"]; }
+					if(!empty($row2["tab1q4"])) { $tab1result2 += $row2["tab1q4"]; }
+					if(!empty($row2["tab1q5"])) { $tab1result2 += $row2["tab1q5"]; }
+					if(!empty($row2["tab1q6"])) { $tab1result2 += $row2["tab1q6"]; }
+					if(!empty($row2["tab1q7"])) { $tab1result2 += $row2["tab1q7"]; }
+					if(!empty($row2["tab1q8"])) { $tab1result2 += $row2["tab1q8"]; }
+					if(!empty($row2["tab1q9"])) { $tab1result2 += $row2["tab1q9"]; }
+					if(!empty($row2["tab1q10"])) { $tab1result2 += $row2["tab1q10"]; }
+					if(!empty($row2["tab1q11"])) { $tab1result2 += $row2["tab1q11"]; }
+					if(!empty($row2["tab1q12"])) { $tab1result2 += $row2["tab1q12"]; }
+					if(!empty($row2["tab1q13"])) { $tab1result2 += $row2["tab1q13"]; }
+					if(!empty($row2["tab1q14"])) { $tab1result2 += $row2["tab1q14"]; }
+					if(!empty($row2["tab1q15"])) { $tab1result2 += $row2["tab1q15"]; }
+					if(!empty($row2["tab1q16"])) { $tab1result2 += $row2["tab1q16"]; }
+					if(!empty($row2["tab1q17"])) { $tab1result2 += $row2["tab1q17"]; }
 					$tab1result2 = round(100/170* $tab1result2,0);
 				}
 				$chart["real_old"] =  $tab1result2;
@@ -1922,9 +1935,12 @@ function getEvalTitleFromMeetingIDs($array,$target, $link = 0){
 						$chart["tendency"] = "tendency_negative.png";
 					}
 				}
+				
+				if($tendency == 0) { $chart["tendency"] = "pixel.gif"; }
+				
 				$chart["rest"] = $this->getRest($chart["real"]);
 				$chart["title"] = 'Kommunikation';
-				$chart["img_name"] = "ma_" . $id . "_happiness.png";
+				$chart["img_name"] = "eval_" . $id . "_" . $offset . "_happiness.png";
 				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,E5E5E5';
 				if($image == 1) {
 					$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
@@ -1932,7 +1948,7 @@ function getEvalTitleFromMeetingIDs($array,$target, $link = 0){
 			break;
 			case 'performance':
 				$chart["real"] = 0;
-				$q = "SELECT * FROM " . CO_TBL_EVALS_OBJECTIVES . " WHERE pid = '$id' and status = '1' and bin = '0' ORDER BY item_date DESC LIMIT 0,1";
+				$q = "SELECT * FROM " . CO_TBL_EVALS_OBJECTIVES . " WHERE pid = '$id' and status = '1' and bin = '0' ORDER BY item_date ASC LIMIT $offset,1";
 				$result = mysql_query($q, $this->_db->connection);
 				$num = mysql_num_rows($result);
 				$i = 1;
@@ -1969,7 +1985,7 @@ function getEvalTitleFromMeetingIDs($array,$target, $link = 0){
 				
 				$chart["tendency"] = "tendency_positive.png";
 				
-				$q2 = "SELECT * FROM " . CO_TBL_EVALS_OBJECTIVES . " WHERE pid = '$id' and status = '1' and bin = '0' ORDER BY item_date DESC LIMIT 1,1";
+				$q2 = "SELECT * FROM " . CO_TBL_EVALS_OBJECTIVES . " WHERE pid = '$id' and status = '1' and bin = '0' ORDER BY item_date ASC LIMIT $offsetNext,1";
 				$result2 = mysql_query($q2, $this->_db->connection);
 				$num2 = mysql_num_rows($result2);
 				$i = 1;
@@ -1977,23 +1993,23 @@ function getEvalTitleFromMeetingIDs($array,$target, $link = 0){
 				$tab2result2 = 0;
 				while($row2 = mysql_fetch_array($result2)) {
 					
-					if(!empty($row2["tab2q1"])) { $tab2result += $row2["tab2q1"]; }
-					if(!empty($row2["tab2q2"])) { $tab2result += $row2["tab2q2"]; }
-					if(!empty($row2["tab2q3"])) { $tab2result += $row2["tab2q3"]; }
-					if(!empty($row2["tab2q4"])) { $tab2result += $row2["tab2q4"]; }
-					if(!empty($row2["tab2q5"])) { $tab2result += $row2["tab2q5"]; }
-					if(!empty($row2["tab2q6"])) { $tab2result += $row2["tab2q6"]; }
-					if(!empty($row2["tab2q7"])) { $tab2result += $row2["tab2q7"]; }
-					if(!empty($row2["tab2q8"])) { $tab2result += $row2["tab2q8"]; }
-					if(!empty($row2["tab2q9"])) { $tab2result += $row2["tab2q9"]; }
-					if(!empty($row2["tab2q10"])) { $tab2result += $row2["tab2q10"]; }
-					if(!empty($row2["tab2q11"])) { $tab2result += $row2["tab2q11"]; }
-					if(!empty($row2["tab2q12"])) { $tab2result += $row2["tab2q12"]; }
-					if(!empty($row2["tab2q13"])) { $tab2result += $row2["tab2q13"]; }
-					if(!empty($row2["tab2q14"])) { $tab2result += $row2["tab2q14"]; }
-					if(!empty($row2["tab2q15"])) { $tab2result += $row2["tab2q15"]; }
-					if(!empty($row2["tab2q16"])) { $tab2result += $row2["tab2q16"]; }
-					if(!empty($row2["tab2q17"])) { $tab2result += $row2["tab2q17"]; }
+					if(!empty($row2["tab2q1"])) { $tab2result2 += $row2["tab2q1"]; }
+					if(!empty($row2["tab2q2"])) { $tab2result2 += $row2["tab2q2"]; }
+					if(!empty($row2["tab2q3"])) { $tab2result2 += $row2["tab2q3"]; }
+					if(!empty($row2["tab2q4"])) { $tab2result2 += $row2["tab2q4"]; }
+					if(!empty($row2["tab2q5"])) { $tab2result2 += $row2["tab2q5"]; }
+					if(!empty($row2["tab2q6"])) { $tab2result2 += $row2["tab2q6"]; }
+					if(!empty($row2["tab2q7"])) { $tab2result2 += $row2["tab2q7"]; }
+					if(!empty($row2["tab2q8"])) { $tab2result2 += $row2["tab2q8"]; }
+					if(!empty($row2["tab2q9"])) { $tab2result2 += $row2["tab2q9"]; }
+					if(!empty($row2["tab2q10"])) { $tab2result2 += $row2["tab2q10"]; }
+					if(!empty($row2["tab2q11"])) { $tab2result2 += $row2["tab2q11"]; }
+					if(!empty($row2["tab2q12"])) { $tab2result2 += $row2["tab2q12"]; }
+					if(!empty($row2["tab2q13"])) { $tab2result2 += $row2["tab2q13"]; }
+					if(!empty($row2["tab2q14"])) { $tab2result2 += $row2["tab2q14"]; }
+					if(!empty($row2["tab2q15"])) { $tab2result2 += $row2["tab2q15"]; }
+					if(!empty($row2["tab2q16"])) { $tab2result2 += $row2["tab2q16"]; }
+					if(!empty($row2["tab2q17"])) { $tab2result2 += $row2["tab2q17"]; }
 					//$tab2result2 = $tab2result2;
 					$tab2result2 = round(100/170* $tab2result2,0);
 				}
@@ -2007,9 +2023,10 @@ function getEvalTitleFromMeetingIDs($array,$target, $link = 0){
 						$chart["tendency"] = "tendency_negative.png";
 					}
 				}
+				if($tendency == 0) { $chart["tendency"] = "pixel.gif"; }
 				$chart["rest"] = $this->getRest($chart["real"]);
 				$chart["title"] = 'Projektmanagement';
-				$chart["img_name"] = "ma_" . $id . "_performance.png";
+				$chart["img_name"] = "eval_" . $id . "_" . $offset . "_performance.png";
 				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,E5E5E5';
 				if($image == 1) {
 					$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
@@ -2017,7 +2034,7 @@ function getEvalTitleFromMeetingIDs($array,$target, $link = 0){
 			break;
 			case 'legal':
 				$chart["real"] = 0;
-				$q = "SELECT * FROM " . CO_TBL_EVALS_OBJECTIVES . " WHERE pid = '$id' and status = '1' and bin = '0' ORDER BY item_date DESC LIMIT 0,1";
+				$q = "SELECT * FROM " . CO_TBL_EVALS_OBJECTIVES . " WHERE pid = '$id' and status = '1' and bin = '0' ORDER BY item_date ASC LIMIT $offset,1";
 				$result = mysql_query($q, $this->_db->connection);
 				$num = mysql_num_rows($result);
 				$i = 1;
@@ -2054,7 +2071,7 @@ function getEvalTitleFromMeetingIDs($array,$target, $link = 0){
 				
 				$chart["tendency"] = "tendency_positive.png";
 				
-				$q2 = "SELECT * FROM " . CO_TBL_EVALS_OBJECTIVES . " WHERE pid = '$id' and status = '1' and bin = '0' ORDER BY item_date DESC LIMIT 1,1";
+				$q2 = "SELECT * FROM " . CO_TBL_EVALS_OBJECTIVES . " WHERE pid = '$id' and status = '1' and bin = '0' ORDER BY item_date ASC LIMIT $offsetNext,1";
 				$result2 = mysql_query($q2, $this->_db->connection);
 				$num2 = mysql_num_rows($result2);
 				$i = 1;
@@ -2062,23 +2079,23 @@ function getEvalTitleFromMeetingIDs($array,$target, $link = 0){
 				$tab3result2 = 0;
 				while($row2 = mysql_fetch_array($result2)) {
 					
-					if(!empty($row2["tab3q1"])) { $tab3result += $row2["tab3q1"]; }
-					if(!empty($row2["tab3q2"])) { $tab3result += $row2["tab3q2"]; }
-					if(!empty($row2["tab3q3"])) { $tab3result += $row2["tab3q3"]; }
-					if(!empty($row2["tab3q4"])) { $tab3result += $row2["tab3q4"]; }
-					if(!empty($row2["tab3q5"])) { $tab3result += $row2["tab3q5"]; }
-					if(!empty($row2["tab3q6"])) { $tab3result += $row2["tab3q6"]; }
-					if(!empty($row2["tab3q7"])) { $tab3result += $row2["tab3q7"]; }
-					if(!empty($row2["tab3q8"])) { $tab3result += $row2["tab3q8"]; }
-					if(!empty($row2["tab3q9"])) { $tab3result += $row2["tab3q9"]; }
-					if(!empty($row2["tab3q10"])) { $tab3result += $row2["tab3q10"]; }
-					if(!empty($row2["tab3q11"])) { $tab3result += $row2["tab3q11"]; }
-					if(!empty($row2["tab3q12"])) { $tab3result += $row2["tab3q12"]; }
-					if(!empty($row2["tab3q13"])) { $tab3result += $row2["tab3q13"]; }
-					if(!empty($row2["tab3q14"])) { $tab3result += $row2["tab3q14"]; }
-					if(!empty($row2["tab3q15"])) { $tab3result += $row2["tab3q15"]; }
-					if(!empty($row2["tab3q16"])) { $tab3result += $row2["tab3q16"]; }
-					if(!empty($row2["tab3q17"])) { $tab3result += $row2["tab3q17"]; }
+					if(!empty($row2["tab3q1"])) { $tab3result2 += $row2["tab3q1"]; }
+					if(!empty($row2["tab3q2"])) { $tab3result2 += $row2["tab3q2"]; }
+					if(!empty($row2["tab3q3"])) { $tab3result2 += $row2["tab3q3"]; }
+					if(!empty($row2["tab3q4"])) { $tab3result2 += $row2["tab3q4"]; }
+					if(!empty($row2["tab3q5"])) { $tab3result2 += $row2["tab3q5"]; }
+					if(!empty($row2["tab3q6"])) { $tab3result2 += $row2["tab3q6"]; }
+					if(!empty($row2["tab3q7"])) { $tab3result2 += $row2["tab3q7"]; }
+					if(!empty($row2["tab3q8"])) { $tab3result2 += $row2["tab3q8"]; }
+					if(!empty($row2["tab3q9"])) { $tab3result2 += $row2["tab3q9"]; }
+					if(!empty($row2["tab3q10"])) { $tab3result2 += $row2["tab3q10"]; }
+					if(!empty($row2["tab3q11"])) { $tab3result2 += $row2["tab3q11"]; }
+					if(!empty($row2["tab3q12"])) { $tab3result2 += $row2["tab3q12"]; }
+					if(!empty($row2["tab3q13"])) { $tab3result2 += $row2["tab3q13"]; }
+					if(!empty($row2["tab3q14"])) { $tab3result2 += $row2["tab3q14"]; }
+					if(!empty($row2["tab3q15"])) { $tab3result2 += $row2["tab3q15"]; }
+					if(!empty($row2["tab3q16"])) { $tab3result2 += $row2["tab3q16"]; }
+					if(!empty($row2["tab3q17"])) { $tab3result2 += $row2["tab3q17"]; }
 					//$tab3result2 = $tab3result2;
 					$tab3result2 = round(100/170* $tab3result2,0);
 				}
@@ -2092,9 +2109,10 @@ function getEvalTitleFromMeetingIDs($array,$target, $link = 0){
 						$chart["tendency"] = "tendency_negative.png";
 					}
 				}
+				if($tendency == 0) { $chart["tendency"] = "pixel.gif"; }
 				$chart["rest"] = $this->getRest($chart["real"]);
 				$chart["title"] = 'Recht & Wirtschaft';
-				$chart["img_name"] = "ma_" . $id . "_legal.png";
+				$chart["img_name"] = "eval_" . $id . "_" . $offset . "_legal.png";
 				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=82aa0b&chf=bg,s,E5E5E5';
 				if($image == 1) {
 					$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
@@ -2102,7 +2120,7 @@ function getEvalTitleFromMeetingIDs($array,$target, $link = 0){
 			break;
 			case 'goals':
 				$chart["real"] = 0;
-				$q = "SELECT id FROM " . CO_TBL_EVALS_OBJECTIVES . " WHERE pid = '$id' and status = '1' and bin = '0' ORDER BY item_date DESC LIMIT 0,1";
+				$q = "SELECT id FROM " . CO_TBL_EVALS_OBJECTIVES . " WHERE pid = '$id' and status = '1' and bin = '0' ORDER BY item_date ASC LIMIT $offset,1";
 				$result = mysql_query($q, $this->_db->connection);
 				if(mysql_num_rows($result) > 0) {
 					$mid = mysql_result($result,0);
@@ -2123,7 +2141,7 @@ function getEvalTitleFromMeetingIDs($array,$target, $link = 0){
 				$chart["tendency"] = "tendency_positive.png";
 				
 				$tab3result2 = 0;
-				$q = "SELECT id FROM " . CO_TBL_EVALS_OBJECTIVES . " WHERE pid = '$id' and status = '1' and bin = '0' ORDER BY item_date DESC LIMIT 1,1";
+				$q = "SELECT id FROM " . CO_TBL_EVALS_OBJECTIVES . " WHERE pid = '$id' and status = '1' and bin = '0' ORDER BY item_date ASC LIMIT $offsetNext,1";
 				$result = mysql_query($q, $this->_db->connection);
 				if(mysql_num_rows($result) > 0) {
 					$mid = mysql_result($result,0);
@@ -2158,13 +2176,13 @@ function getEvalTitleFromMeetingIDs($array,$target, $link = 0){
 				}
 			break;
 			case 'totals':
-				$chart = $this->getChartPerformance($id,'happiness',0);
+				$chart = $this->getChartPerformance($id,'happiness',0,1,$offset);
 				$happiness = $chart["real"];
 				$happiness_old = $chart["real_old"];
-				$chart = $this->getChartPerformance($id,'performance',0);
+				$chart = $this->getChartPerformance($id,'performance',0,1,$offset);
 				$performance = $chart["real"];
 				$performance_old = $chart["real_old"];
-				$chart = $this->getChartPerformance($id,'legal',0);
+				$chart = $this->getChartPerformance($id,'legal',0,1,$offset);
 				$legal = $chart["real"];
 				$legal_old = $chart["real_old"];
 				
@@ -2186,10 +2204,10 @@ function getEvalTitleFromMeetingIDs($array,$target, $link = 0){
 				} else {
 					$chart["tendency"] = "tendency_negative.png";
 				}
-				
+				if($tendency == 0) { $chart["tendency"] = "pixel.gif"; }
 				$chart["rest"] = $this->getRest($chart["real"]);
 				$chart["title"] = 'Gesamtergebnis';
-				$chart["img_name"] = "ma_" . $id . "_totals.png";
+				$chart["img_name"] = "eval_" . $id . "_" . $offset . "_totals.png";
 				$chart["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chart["real"]. ',' .$chart["rest"] . '&chs=150x90&chco=87461e&chf=bg,s,E5E5E5';
 				if($image == 1) {
 					$image = self::saveImage($chart["url"],CO_PATH_BASE . '/data/charts/',$chart["img_name"]);
