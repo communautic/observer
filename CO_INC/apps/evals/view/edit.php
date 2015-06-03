@@ -157,24 +157,45 @@
     <td class="tcell-right-nopadding">&nbsp;</td>
   </tr>
 </table>
-<div class="content-spacer"></div>
-<div class="grey">
-	<?php $this->getChartPerformance($eval->id,'happiness');
-        $this->getChartPerformance($eval->id,'performance');
-        $this->getChartPerformance($eval->id,'legal');
-        $this->getChartPerformance($eval->id,'totals');
+	<?php 
+$numOfObjectives = $this->getObjectives($eval->id);
+if($numOfObjectives < 1) { ?>
+    <div class="grey">
+        <?php 
+			$this->getChartPerformance($eval->id,'happiness',0,1,0,0);
+            $this->getChartPerformance($eval->id,'performance',0,1,0,0);
+            $this->getChartPerformance($eval->id,'legal',0,1,0,0);
+            $this->getChartPerformance($eval->id,'totals',0,1,0,0);
+        ?>
+        <div style="clear: both;"></div>
+    </div>
+<?php } else { 
+	$i = 0;
+	while($i < $numOfObjectives) {?>
+        <div class="grey">
+		<?php 
+			if($i == 0) {
+				$this->getChartPerformance($eval->id,'happiness',0,1,0,$i);
+				$this->getChartPerformance($eval->id,'performance',0,1,0,$i);
+				$this->getChartPerformance($eval->id,'legal',0,1,0,$i);
+				$this->getChartPerformance($eval->id,'totals',0,1,0,$i);
+			} else {
+				$this->getChartPerformance($eval->id,'happiness',0,1,1,$i);
+				$this->getChartPerformance($eval->id,'performance',0,1,1,$i);
+				$this->getChartPerformance($eval->id,'legal',0,1,1,$i);
+				$this->getChartPerformance($eval->id,'totals',0,1,1,$i);
+
+			}
+		?>
+            <div style="clear: both;"></div>
+        </div>
+		<div class="content-spacer"></div>
+	<?php 
+	$i++;
+	}
+}
     ?>
-    <div style="clear: both;"></div>
-</div>
-<div class="content-spacer"></div>
-<div class="grey">
-	<?php $this->getChartPerformance($eval->id,'happiness');
-        $this->getChartPerformance($eval->id,'performance');
-        $this->getChartPerformance($eval->id,'legal');
-        $this->getChartPerformance($eval->id,'totals');
-    ?>
-    <div style="clear: both;"></div>
-</div>
+
 <div class="content-spacer"></div> 
 </form>
 <?php if($eval->access != "guest") { ?>

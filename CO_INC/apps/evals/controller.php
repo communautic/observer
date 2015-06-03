@@ -561,9 +561,15 @@ class Evals extends Controller {
 	}
 	
 	
-	function getChartPerformance($id,$what,$print=0,$type=0) {
+	function getObjectives($id) {
 		global $lang;
-		if($chart = $this->model->getChartPerformance($id,$what)) {
+		return $this->model->getObjectives($id);
+	}
+
+	
+	function getChartPerformance($id,$what,$print=0,$type=0,$tendency=1, $offset) {
+		global $lang;
+		if($chart = $this->model->getChartPerformance($id,$what,1,$tendency,$offset)) {
 			if($print == 1) {
 				include 'view/chart_print.php';
 			} else {
