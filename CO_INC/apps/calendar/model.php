@@ -121,7 +121,7 @@ class CalendarModel extends Model {
 		}
 		
 		$calendarobjects = array();
-		$q ="SELECT * FROM oc_clndr_objects WHERE calendarid = '$id' AND objecttype = 'VEVENT' AND ((startdate >= '$start' AND enddate <= '$end' AND repeating = '0') OR (enddate >= '$start' AND startdate <= '$end' AND repeating = 0) OR (startdate <= '$end' AND repeating = '1') ) $sql ORDER BY startdate ASC";
+		$q ="SELECT * FROM oc_clndr_objects WHERE (calendarid = '$id' || calendarid = '2') AND objecttype = 'VEVENT' AND ((startdate >= '$start' AND enddate <= '$end' AND repeating = '0') OR (enddate >= '$start' AND startdate <= '$end' AND repeating = 0) OR (startdate <= '$end' AND repeating = '1') ) $sql ORDER BY startdate ASC";
 		$result = mysql_query($q, $this->_db->connection);
 		/* CO Array
 		while($row = mysql_fetch_array($result))  {
