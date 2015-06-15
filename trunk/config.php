@@ -25,7 +25,7 @@ define("CO_PRODUCT_VARIANT", 1 );
 define("CO_PHYSIO_COMBAT", false );
 
 // Bodychart background
-define("CO_PHYSIO_BODYCHART_WHITE", true );
+//define("CO_PHYSIO_BODYCHART_WHITE", true );
 
 /* -------------------------------------------------------------------------
 * Database Configuration
