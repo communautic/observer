@@ -63,14 +63,14 @@ $lang["EVAL_EDUCATION_ADDITIONAL"] = 'Berufserfahrung intern';
 $lang["EVAL_EXPERIENCE"] = 'Berufserfahrung extern';
 $lang["EVAL_EXPERIENCE_EXTERNAL"] = 'Zusatzausbildungen';
 
-$lang["EVAL_HANDBOOK"] = 'Personalakt';
+$lang["EVAL_HANDBOOK"] = 'Evaluierungsakt';
 
 $lang["EVAL_HELP"] = 'manual_mitarbeiter_mitarbeiter.pdf';
 $lang["EVAL_FOLDER_HELP"] = 'manual_mitarbeiter_ordner.pdf';
 
 // Print images
-$lang["PRINT_EVAL_MANUAL"] = 'personalakt.png';
-$lang["PRINT_EVAL"] = 'mitarbeiter.png';
+$lang["PRINT_EVAL_MANUAL"] = 'evaluierungsakt.png';
+$lang["PRINT_EVAL"] = 'teilnehmer.png';
 $lang["PRINT_EVAL_FOLDER"] = 'ordner.png';
 
 

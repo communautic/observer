@@ -100,7 +100,7 @@ $lang["EVAL_OBJECTIVE_POSPONED"] = 'verschoben';
 
 $lang["EVAL_OBJECTIVE_HELP"] = 'manual_mitarbeiter_zielvereinbarungen.pdf';
 
-$lang["EVAL_PRINT_OBJECTIVE"] = 'zielvereinbarung.png';
+$lang["EVAL_PRINT_OBJECTIVE"] = 'evaluierung.png';
 
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/evals/objectives/de.php";
