@@ -106,153 +106,69 @@
 	</tr>
 </table>
 <?php } ?>
-
-&nbsp;
-<table width="100%" class="standard-grey-paddingBottom"> 
-   <tr>
-		<td class="tcell-left">Privatadresse</td>
-		<td>&nbsp;</td>
-	</tr>
-</table>
-<?php if(!empty($eval->street_private)) { ?>
-<table width="100%" class="standard"> 
-   <tr>
-		<td class="tcell-left"><?php echo $lang["EVAL_PRIVATE_STREET"];?></td>
-		<td><?php echo($eval->street_private);?></td>
-	</tr>
-</table>
-<?php } ?>
-<?php if(!empty($eval->city_private)) { ?>
-<table width="100%" class="standard"> 
-   <tr>
-		<td class="tcell-left"><?php echo $lang["EVAL_PRIVATE_CITY"];?></td>
-		<td><?php echo($eval->city_private);?></td>
-	</tr>
-</table>
-<?php } ?>
-<?php if(!empty($eval->zip_private)) { ?>
-<table width="100%" class="standard"> 
-   <tr>
-		<td class="tcell-left"><?php echo $lang["EVAL_PRIVATE_ZIP"];?></td>
-		<td><?php echo($eval->zip_private);?></td>
-	</tr>
-</table>
-<?php } ?>
-<?php if(!empty($eval->phone_private)) { ?>
-<table width="100%" class="standard"> 
-   <tr>
-		<td class="tcell-left"><?php echo $lang["EVAL_PRIVATE_PHONE"];?></td>
-		<td><?php echo($eval->phone_private);?></td>
-	</tr>
-</table>
-<?php } ?>
-<?php if(!empty($eval->email_private)) { ?>
-<table width="100%" class="standard"> 
-   <tr>
-		<td class="tcell-left"><?php echo $lang["EVAL_PRIVATE_EMAIL"];?></td>
-		<td><?php echo($eval->email_private);?></td>
-	</tr>
-</table>
-<?php } ?>
-&nbsp;
-<table width="100%" class="standard-grey-paddingBottom"> 
-   <tr>
-		<td class="tcell-left">Einstiegskompetenz</td>
-		<td>&nbsp;</td>
-	</tr>
-</table>
-<?php if(!empty($eval->education)) { ?>
-<table width="100%" class="standard"> 
-   <tr>
-		<td class="tcell-left"><?php echo $lang["EVAL_EDUCATION"];?></td>
-		<td><?php echo($eval->education);?></td>
-	</tr>
-</table>
-<?php } ?>
-<?php if(!empty($eval->protocol5)) { ?>
-<table width="100%" class="standard"> 
-   <tr>
-		<td class="tcell-left">&nbsp;</td>
-		<td><?php echo($eval->protocol5);?></td>
-	</tr>
-</table>
-<?php } ?>
-<?php if(!empty($eval->protocol6)) { ?>
-<table width="100%" class="standard"> 
-   <tr>
-		<td class="tcell-left"><?php echo $lang["EVAL_EXPERIENCE_EXTERNAL"];?></td>
-		<td><?php echo($eval->protocol6);?></td>
-	</tr>
-</table>
-<?php } ?>
-<?php if(!empty($eval->protocol3)) { ?>
-<table width="100%" class="standard"> 
-   <tr>
-		<td class="tcell-left"><?php echo $lang["EVAL_EXPERIENCE"];?></td>
-		<td><?php echo($eval->protocol3);?></td>
-	</tr>
-</table>
-<?php } ?>
-<?php if(!empty($eval->protocol2)) { ?>
-<table width="100%" class="standard"> 
-   <tr>
-		<td class="tcell-left"><?php echo $lang["EVAL_EDUCATION_ADDITIONAL"];?></td>
-		<td><?php echo($eval->protocol2);?></td>
-	</tr>
-</table>
-<?php } ?>
-<?php if($trainig_display) { ?>
-<div class="content-spacer"></div>
-<table width="100%" class="standard"> 
-   <tr>
-		<td class="tcell-left">Trainingsteilnahmen</td>
-        <td><?php 
-		if(!empty($trainings)) {
-			foreach($trainings as $training) {
-				echo($training->title . ' | ' . $training->dates_display . ' | ' . $training->total_result . '%<br />');
-			}
-		}
-		?></td>
-	</tr>
-</table>
-<div class="content-spacer"></div>
-<?php } ?>
 &nbsp;
 <table width="100%" class="standard"> 
    <tr>
-		<td class="tcell-left">Leistungsstatus</td>
+		<td class="tcell-left">Erstanalyse</td>
 		<td>&nbsp;</td>
+	</tr>
+</table>
+<?php 
+$numOfObjectives = $this->getObjectives($eval->id);
+if($numOfObjectives < 1) { ?>
+<table width="100%" class="standard-margin grey">
+	<tr>
+		<td width="33%"><?php $this->getChartPerformance($eval->id,'happiness',1,1,0,0);?></td>
+		<td width="33%"><?php $this->getChartPerformance($eval->id,'performance',1,1,0,0);?></td>
+		<td><?php $this->getChartPerformance($eval->id,'legal',1,1,0,0);?></td>
 	</tr>
 </table>
 <table width="100%" class="standard-margin grey">
 	<tr>
-		<td width="33%"><?php $this->getChartPerformance($eval->id,'happiness',1);?></td>
-		<td width="33%"><?php $this->getChartPerformance($eval->id,'performance',1);?></td>
-		<td><?php $this->getChartPerformance($eval->id,'goals',1);?></td>
-	</tr>
-</table>
-<table width="100%" class="standard-margin grey">
-	<tr>
-        <td width="33%"><?php $this->getChartPerformance($eval->id,'totals',1);?></td>
+        <td width="33%"><?php $this->getChartPerformance($eval->id,'totals',1,1,0,0);?></td>
         <td width="33%">&nbsp;</td>
 		<td width="33%">&nbsp;</td>
 	</tr>
 </table>
 &nbsp;
-<table width="100%" class="standard"> 
-   <tr>
-		<td class="tcell-left">Leistungsarchiv</td>
-		<td><?php 
-		if(!empty($leistungen)) {
-			$i = 0;
-			foreach($leistungen as $leistung) {
-				if($i != 0) {
-				echo ($leistung->item_date . ', ' . $leistung->title . ' (' . $leistung->total . '%)<br />');
-				}
-			$i++;
+<?php } else { 
+	$i = 0;
+	while($i < $numOfObjectives) {?>
+		<?php if($i == 0) { ?>
+				<table width="100%" class="standard-margin grey">
+                    <tr>
+                        <td width="33%"><?php $this->getChartPerformance($eval->id,'happiness',1,1,0,$i);?></td>
+                        <td width="33%"><?php $this->getChartPerformance($eval->id,'performance',1,1,0,$i);?></td>
+                        <td><?php $this->getChartPerformance($eval->id,'legal',1,1,0,$i);?></td>
+                    </tr>
+                </table>
+                <table width="100%" class="standard-margin grey">
+                    <tr>
+                        <td width="33%"><?php $this->getChartPerformance($eval->id,'totals',1,1,0,$i);?></td>
+                        <td width="33%">&nbsp;</td>
+                        <td width="33%">&nbsp;</td>
+                    </tr>
+                </table>
+                &nbsp;
+			<?php } else { ?>
+                <table width="100%" class="standard-margin grey">
+                    <tr>
+                        <td width="33%"><?php $this->getChartPerformance($eval->id,'happiness',1,1,1,$i);?></td>
+                        <td width="33%"><?php $this->getChartPerformance($eval->id,'performance',1,1,1,$i);?></td>
+                        <td><?php $this->getChartPerformance($eval->id,'legal',1,1,1,$i);?></td>
+                    </tr>
+                </table>
+                <table width="100%" class="standard-margin grey">
+                    <tr>
+                        <td width="33%"><?php $this->getChartPerformance($eval->id,'totals',1,1,1,$i);?></td>
+                        <td width="33%">&nbsp;</td>
+                        <td width="33%">&nbsp;</td>
+                    </tr>
+                </table>
+                &nbsp;
+	<?php
 			}
-		}
-		?></td>
-	</tr>
-</table>
-<div style="page-break-after:always;">&nbsp;</div>
+	$i++;
+	}
+}
+    ?>

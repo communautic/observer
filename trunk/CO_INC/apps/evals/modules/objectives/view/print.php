@@ -52,226 +52,99 @@
 </table>
 &nbsp;<br />
 &nbsp;
+<!-- Tab 1 -->
 <table width="100%" class="standard-grey-paddingBottom">
 	<tr>
-	  <td class="tcell-left">MA-Zufriedenheit</td>
-        <td><strong>erreichte Zufriedenheit <?php echo $objective->tab1result;?>%</strong></td>
+	  <td class="tcell-left">Kommunikation</td>
+        <td><strong>Kompetenzeinschätzung <?php echo $objective->tab1result;?>%</strong></td>
 	</tr>
 </table>
-<table width="100%" class="standard">
+<!--<table width="100%" class="standard">
 	<tr>
 	  <td class="tcell-left"><?php echo $lang["EVAL_OBJECTIVE_DESCRIPTION"];?></td>
         <td><?php echo(nl2br(strip_tags($objective->protocol)));?></td>
 	</tr>
-</table>
+</table>-->
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<!-- Q1 -->
+<?php for($i=1; $i < 18; $i++) { ?>
 <table width="100%" class="standard">
 	<tr>
-	  <td><?php echo $lang["EVAL_OBJECTIVE_TAB1_QUESTION_1"];?></td>
+	  <td><?php echo $lang["EVAL_OBJECTIVE_TAB1_QUESTION_".$i];?></td>
       <?php 
-	  	$num = $objective->tab1q1_selected;
+	  	$num = $objective->{"tab1q".$i."_selected"};
 	  	$class = '';
 	  	if($num < 4) { $class = 'neg'; }
 		if($num > 3 && $num < 7) { $class = 'med'; }
 		if($num > 6 ) { $class = 'pos'; }
 		if($num == "") { $class = 'none'; }
 	  ?>
-        <td width="30"><?php echo '<div class="' . $class . '">' . $objective->tab1q1_selected . '</div>';?></td>
+        <td width="30"><?php echo '<div class="' . $class . '">' . $num . '</div>';?></td>
 	</tr>
 </table>
-<?php echo(nl2br(strip_tags($objective->tab1q1_text)));?>
+<?php echo(nl2br(strip_tags($objective->{"tab1q".$i."_text"})));?>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-<!-- Q2 -->
-<table width="100%" class="standard">
-	<tr>
-	  <td><?php echo $lang["EVAL_OBJECTIVE_TAB1_QUESTION_2"];?></td>
-      <?php 
-	  	$num = $objective->tab1q2_selected;
-	  	$class = '';
-	  	if($num < 4) { $class = 'neg'; }
-		if($num > 3 && $num < 7) { $class = 'med'; }
-		if($num > 6 ) { $class = 'pos'; }
-		if($num == "") { $class = 'none'; }
-	  ?>
-        <td width="30"><?php echo '<div class="' . $class . '">' . $objective->tab1q2_selected . '</div>';?></td>
-	</tr>
-</table>
-<?php echo(nl2br(strip_tags($objective->tab1q2_text)));?>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<!-- Q3 -->
-<table width="100%" class="standard">
-	<tr>
-	  <td><?php echo $lang["EVAL_OBJECTIVE_TAB1_QUESTION_3"];?></td>
-      <?php 
-	  	$num = $objective->tab1q3_selected;
-	  	$class = '';
-	  	if($num < 4) { $class = 'neg'; }
-		if($num > 3 && $num < 7) { $class = 'med'; }
-		if($num > 6 ) { $class = 'pos'; }
-		if($num == "") { $class = 'none'; }
-	  ?>
-        <td width="30"><?php echo '<div class="' . $class . '">' . $objective->tab1q3_selected . '</div>';?></td>
-	</tr>
-</table>
-<?php echo(nl2br(strip_tags($objective->tab1q3_text)));?>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<!-- Q4 -->
-<table width="100%" class="standard">
-	<tr>
-	  <td><?php echo $lang["EVAL_OBJECTIVE_TAB1_QUESTION_4"];?></td>
-      <?php 
-	  	$num = $objective->tab1q4_selected;
-	  	$class = '';
-	  	if($num < 4) { $class = 'neg'; }
-		if($num > 3 && $num < 7) { $class = 'med'; }
-		if($num > 6 ) { $class = 'pos'; }
-		if($num == "") { $class = 'none'; }
-	  ?>
-        <td width="30"><?php echo '<div class="' . $class . '">' . $objective->tab1q4_selected . '</div>';?></td>
-	</tr>
-</table>
-<?php echo(nl2br(strip_tags($objective->tab1q4_text)));?>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<!-- Q5 -->
-<table width="100%" class="standard">
-	<tr>
-	  <td><?php echo $lang["EVAL_OBJECTIVE_TAB1_QUESTION_5"];?></td>
-      <?php 
-	  	$num = $objective->tab1q5_selected;
-	  	$class = '';
-	  	if($num < 4) { $class = 'neg'; }
-		if($num > 3 && $num < 7) { $class = 'med'; }
-		if($num > 6 ) { $class = 'pos'; }
-		if($num == "") { $class = 'none'; }
-	  ?>
-        <td width="30"><?php echo '<div class="' . $class . '">' . $objective->tab1q5_selected . '</div>';?></td>
-	</tr>
-</table>
-<?php echo(nl2br(strip_tags($objective->tab1q5_text)));?>
-<div style="page-break-after:always;">&nbsp;</div>
+<?php } ?>
+
 <table width="100%" class="standard-grey-paddingBottom">
 	<tr>
-	  <td class="tcell-left">Leistungsbewertung</td>
-        <td><strong>erreichte Leistung <?php echo $objective->tab2result;?>%</strong></td>
-	</tr>
-</table>
-<table width="100%" class="standard">
-	<tr>
-	  <td class="tcell-left">Bewertungskategorie</td>
-        <td><?php echo($objective->cat_name);?></td>
+	  <td class="tcell-left">Projektmanagement</td>
+        <td><strong>Kompetenzeinschätzung <?php echo $objective->tab2result;?>%</strong></td>
 	</tr>
 </table>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<!-- Q1 -->
+<?php for($i=1; $i < 18; $i++) { ?>
 <table width="100%" class="standard">
 	<tr>
-	  <td><?php echo $lang["EVAL_OBJECTIVE_TAB2_CAT".$objective->cat."_QUESTION_1"];?></td>
+	  <td><?php echo $lang["EVAL_OBJECTIVE_TAB2_QUESTION_".$i];?></td>
       <?php 
-	  	$num = $objective->tab2q1_selected;
+	  	$num = $objective->{"tab2q".$i."_selected"};
 	  	$class = '';
 	  	if($num < 4) { $class = 'neg'; }
 		if($num > 3 && $num < 7) { $class = 'med'; }
 		if($num > 6 ) { $class = 'pos'; }
 		if($num == "") { $class = 'none'; }
 	  ?>
-        <td width="30"><?php echo '<div class="' . $class . '">' . $objective->tab2q1_selected . '</div>';?></td>
+        <td width="30"><?php echo '<div class="' . $class . '">' . $num . '</div>';?></td>
 	</tr>
 </table>
-<?php echo(nl2br(strip_tags($objective->tab2q1_text)));?>
+<?php echo(nl2br(strip_tags($objective->{"tab2q".$i."_text"})));?>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
+<?php } ?>
+
+
+<table width="100%" class="standard-grey-paddingBottom">
+	<tr>
+	  <td class="tcell-left">Recht &amp; Wirtschaft</td>
+        <td><strong>Kompetenzeinschätzung <?php echo $objective->tab3result;?>%</strong></td>
+	</tr>
+</table>
 <p>&nbsp;</p>
-<!-- Q2 -->
+<?php for($i=1; $i < 18; $i++) { ?>
 <table width="100%" class="standard">
 	<tr>
-	  <td><?php echo $lang["EVAL_OBJECTIVE_TAB2_CAT".$objective->cat."_QUESTION_2"];?></td>
+	  <td><?php echo $lang["EVAL_OBJECTIVE_TAB3_QUESTION_".$i];?></td>
       <?php 
-	  	$num = $objective->tab2q2_selected;
+	  	$num = $objective->{"tab3q".$i."_selected"};
 	  	$class = '';
 	  	if($num < 4) { $class = 'neg'; }
 		if($num > 3 && $num < 7) { $class = 'med'; }
 		if($num > 6 ) { $class = 'pos'; }
 		if($num == "") { $class = 'none'; }
 	  ?>
-        <td width="30"><?php echo '<div class="' . $class . '">' . $objective->tab2q2_selected . '</div>';?></td>
+        <td width="30"><?php echo '<div class="' . $class . '">' . $num . '</div>';?></td>
 	</tr>
 </table>
-<?php echo(nl2br(strip_tags($objective->tab2q2_text)));?>
+<?php echo(nl2br(strip_tags($objective->{"tab3q".$i."_text"})));?>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-<!-- Q3 -->
-<table width="100%" class="standard">
-	<tr>
-	  <td><?php echo $lang["EVAL_OBJECTIVE_TAB2_CAT".$objective->cat."_QUESTION_3"];?></td>
-      <?php 
-	  	$num = $objective->tab2q3_selected;
-	  	$class = '';
-	  	if($num < 4) { $class = 'neg'; }
-		if($num > 3 && $num < 7) { $class = 'med'; }
-		if($num > 6 ) { $class = 'pos'; }
-		if($num == "") { $class = 'none'; }
-	  ?>
-        <td width="30"><?php echo '<div class="' . $class . '">' . $objective->tab2q3_selected . '</div>';?></td>
-	</tr>
-</table>
-<?php echo(nl2br(strip_tags($objective->tab2q3_text)));?>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<!-- Q4 -->
-<table width="100%" class="standard">
-	<tr>
-	  <td><?php echo $lang["EVAL_OBJECTIVE_TAB2_CAT".$objective->cat."_QUESTION_4"];?></td>
-      <?php 
-	  	$num = $objective->tab2q4_selected;
-	  	$class = '';
-	  	if($num < 4) { $class = 'neg'; }
-		if($num > 3 && $num < 7) { $class = 'med'; }
-		if($num > 6 ) { $class = 'pos'; }
-		if($num == "") { $class = 'none'; }
-	  ?>
-        <td width="30"><?php echo '<div class="' . $class . '">' . $objective->tab2q4_selected . '</div>';?></td>
-	</tr>
-</table>
-<?php echo(nl2br(strip_tags($objective->tab2q4_text)));?>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<!-- Q5 -->
-<table width="100%" class="standard">
-	<tr>
-	  <td><?php echo $lang["EVAL_OBJECTIVE_TAB2_CAT".$objective->cat."_QUESTION_5"];?></td>
-      <?php 
-	  	$num = $objective->tab2q5_selected;
-	  	$class = '';
-	  	if($num < 4) { $class = 'neg'; }
-		if($num > 3 && $num < 7) { $class = 'med'; }
-		if($num > 6 ) { $class = 'pos'; }
-		if($num == "") { $class = 'none'; }
-	  ?>
-        <td width="30"><?php echo '<div class="' . $class . '">' . $objective->tab2q5_selected . '</div>';?></td>
-	</tr>
-</table>
-<?php echo(nl2br(strip_tags($objective->tab2q5_text)));?>
-<div style="page-break-after:always;">&nbsp;</div>
+<?php } ?>
+
 <table width="100%"  class="standard-grey-paddingBottom">
 	<tr>
-	  <td class="tcell-left">Zielsetzungen</td>
-        <td><strong>erreichte Zielsetzungen <?php echo $objective->tab3result;?>%</strong></td>
+	  <td class="tcell-left">Pers&ouml;nliche Ziele</td>
+        <td><strong>erreichte Zielsetzungen <?php echo $objective->tab4result;?>%</strong></td>
 	</tr>
 </table>
 <?php
