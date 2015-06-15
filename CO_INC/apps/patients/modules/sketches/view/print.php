@@ -7,9 +7,9 @@
 <p>&nbsp;</p>
 <?php //if ($printcanvas == 1) { ?>
 <div style="height: 400px; width: 1161px; position: relative;">
-<?php if(!defined('CO_PHYSIO_BODYCHART_WHITE')) {
+<?php /*if(!defined('CO_PHYSIO_BODYCHART_WHITE')) {
 				echo '<img src="'.CO_FILES.'/img/body.png" />';
-}	
+}	*/
 
 				switch($sketch->type) {
 					case 0:
