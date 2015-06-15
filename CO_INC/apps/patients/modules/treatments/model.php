@@ -355,10 +355,12 @@ class PatientsTreatmentsModel extends PatientsModel {
 							$tasks["min"] = 0;
 							$tasks["costs"] = 0;
 							$tasks["type"] = '';
+							$array['sessions'] = array();
 						} else {
 							
 							$tasks["min"] = $this->getTreatmentTypeMin($tasks["type"]);
 							$tasks["costs"] = $this->getTreatmentTypeCosts($tasks["type"]);
+							$array['sessions'] = explode(',',$tasks['type']);
 							
 							$tasks["type"] = $this->getTreatmentList($tasks['type'],'task_treatmenttype_'.$tasks["id"], "", $array["canedit"]);
 						}
@@ -389,10 +391,13 @@ class PatientsTreatmentsModel extends PatientsModel {
 							$tasks["min"] = 0;
 							$tasks["costs"] = 0;
 							$tasks["type"] = '';
+							$array['sessions'] = array();
 						} else {
 							
 							$tasks["min"] = $this->getTreatmentTypeMin($tasks["type"]);
 							$tasks["costs"] = $this->getTreatmentTypeCosts($tasks["type"]);
+							$array['sessions'] = explode(',',$tasks['type']);
+							
 							$tasks["type"] = $this->getTreatmentList($tasks['type'],'task_treatmenttype_'.$tasks["id"], "", $array["canedit"]);
 						}
 						$tasks["calendarlink"] = false;
@@ -456,6 +461,7 @@ class PatientsTreatmentsModel extends PatientsModel {
 					$tasks["min"] = 0;
 					$tasks["costs"] = 0;
 					$tasks["type"] = '';
+					$array['sessions'] = array();
 				} else {
 					
 					$tasks["min"] = $this->getTreatmentTypeMin($tasks["type"]);
