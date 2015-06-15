@@ -834,6 +834,8 @@ class Calendar extends Controller {
 		$treatmenttitle = '';
 		$treatmentlocationid = 0;
 		$treatmentlocation = '';
+		$treatmentpatient = '';
+		$treatmentfolder = '';
 		$treatid = 0;
 		$regularEventDisplay = ' style="display: block"';
 		$treatmentEventDisplay = ' style="display: none"';
