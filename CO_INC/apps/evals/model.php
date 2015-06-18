@@ -2187,9 +2187,9 @@ function getEvalTitleFromMeetingIDs($array,$target, $link = 0){
 				$legal_old = $chart["real_old"];
 				
 				
-				$chart = $this->getChartPerformance($id,'goals',0);
+				/*$chart = $this->getChartPerformance($id,'goals',0);
 				$goals = $chart["real"]*3;
-				$goals_old = $chart["real_old"]*3;
+				$goals_old = $chart["real_old"]*3;*/
 				
 				$total = $happiness+$performance+$legal;
 				$chart["real"] = round(100/300*$total,0);
