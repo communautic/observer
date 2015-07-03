@@ -1,5 +1,6 @@
 <?php
 include(CO_INC . "/classes/database.php");
+include(CO_INC . "/classes/PasswordHash.php");
 
 /* 1 - authorize */
 if(empty($_GET["u"]) || empty($_GET["p"])) {
@@ -7,15 +8,35 @@ if(empty($_GET["u"]) || empty($_GET["p"])) {
 	exit();
 }
 $username = $_GET["u"];
-$password = md5($_GET["p"]);
-
 // check if user is valid sysadmin
-$q = "SELECT * FROM " . CO_TBL_USERS . " WHERE username = '$username' and password ='$password' and userlevel = '1'";
+$q = "SELECT * FROM " . CO_TBL_USERS . " WHERE username = '$username' and userlevel = '1'";
 $result = $database->query($q);
 if(!mysql_num_rows($result) == 1) {
 	echo("Sorry, but you don't seem to have permissions to proceed");
 	exit();
 }
+
+$password = $_GET["p"];
+$q = "SELECT id,password FROM ".CO_TBL_USERS." WHERE username = '$username'";
+$result = $database->query($q);
+      if(!$result || (mysql_numrows($result) < 1)){
+         echo("Sorry, but you don't seem to have permissions to proceed");
+	exit();
+      }
+      /* Retrieve password from result, strip slashes */
+      $dbarray = mysql_fetch_array($result);
+      $dbarray['password'] = stripslashes($dbarray['password']);
+      $password = stripslashes($password);
+
+//$password = md5($_GET["p"]);
+
+$hasher = new PasswordHash(8, 0);
+if (!$hasher->CheckPassword($password.PASSWORDSALT, $dbarray['password'])) {
+		 echo("Sorry, but you don't seem to have permissions to proceed");
+		 exit();
+		 
+}
+
 
 /*2 - dump mysql */
 //mysqldump --opt -Q -uroot -pnik2Emiq DATABASENAME > /PATH/TO/DUMP.SQL
@@ -32,7 +53,7 @@ curl -k --user username:password -o backup.xml -O 'https://api.del.icio.us/v1/po
 
 /* Download */
 $date = date("Y-m-d_Hi");
-$file = "companyobserver_" . $date . ".tar.gz";
+$file = "backup" . $date . ".tar.gz";
 $path = CO_PATH_BASE . "/" . $file;
 
 if(exec("tar -czvf " . $file . " data/"))  {

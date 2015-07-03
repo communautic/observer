@@ -341,6 +341,7 @@ class PatientsTreatmentsModel extends PatientsModel {
 						//$array['linkyear'] = $date->format('Y');
 						//$array['linkmonth'] = $date->format('n')-1;
 						//$array['linkday'] = $date->format('d');
+						$tasks["location"] = '';
 						if($tasks["eventlocation"] != 0) {
 							$tasks["location"] = $this->getTreatmentLocation($tasks["eventlocation"]);
 						}
@@ -447,6 +448,7 @@ class PatientsTreatmentsModel extends PatientsModel {
 				//$array['linkyear'] = $date->format('Y');
 				//$array['linkmonth'] = $date->format('n')-1;
 				//$array['linkday'] = $date->format('d');
+				$tasks["location"] = '';
 				if($tasks["eventlocation"] != 0) {
 					$tasks["location"] = $this->getTreatmentLocation($tasks["eventlocation"]);
 				}

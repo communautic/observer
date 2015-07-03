@@ -166,7 +166,7 @@
 	<!-- Location -->
     <div class="fieldset2">
 		<label>
-        	<span append="0" field="calendarTreatmentLocation" request="getTreatmentsLocationsDialog" class="content-nav showDialog"><span><?php echo $lang["CALENDAR_EVENT_LOCATION"];?></span></span>
+        	<span id="EventLocDisplay" append="0" field="calendarTreatmentLocation" request="getTreatmentsLocationsDialog" class="content-nav showDialog"><span><?php echo $lang["CALENDAR_EVENT_LOCATION"];?></span></span>
 		</label>
 		<div class="contacts">
 			<div class="itemlist-field" id="calendarTreatmentLocation"></div>
