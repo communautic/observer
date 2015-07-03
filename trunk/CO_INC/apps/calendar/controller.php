@@ -841,6 +841,16 @@ class Calendar extends Controller {
 		$treatmentEventDisplay = ' style="display: none"';
 		$eventtype = $data['eventtype'];
 		$treatmentsModel = new PatientsTreatmentsModel();
+		$eventlocation = $data['eventlocation'];
+		$eventlocationuid = $data['eventlocationuid'];
+		$location = strtr($vevent->getAsString('LOCATION'), array('\,' => ',', '\;' => ';'));
+		if($eventlocation != 0) {
+			$location = $treatmentsModel->getTreatmentLocation($eventlocation);
+		}
+		if($eventlocationuid != 0) {
+			$contactsModel = new ContactsModel();
+			$location = $contactsModel->getPlaceListPlain($eventlocationuid,'calendarTreatmentLocation', false);
+		}
 		if($data['eventtype'] == 1) {
 			//$eventtype = 'Behandlung';
 			$regularEventDisplay  = ' style="display: none"';
@@ -852,17 +862,13 @@ class Calendar extends Controller {
 			$treatmentpatient = '<span class="listmember" uid="' .  $treatid . '">' . $treatmentevent['patient'] . '</span>';
 			$treatmentfolder = $treatmentevent['foldertitle'];
 			$treatmenttitle = $treatmentevent['title'];
+			if($eventlocation == 0) {
+				$location = '';
+				$summary_noroom = explode(',', $summary);
+				$summary = $summary_noroom[0];
+			}
 		}
-		$eventlocation = $data['eventlocation'];
-		$eventlocationuid = $data['eventlocationuid'];
-		$location = strtr($vevent->getAsString('LOCATION'), array('\,' => ',', '\;' => ';'));
-		if($eventlocation != 0) {
-			$location = $treatmentsModel->getTreatmentLocation($eventlocation);
-		}
-		if($eventlocationuid != 0) {
-			$contactsModel = new ContactsModel();
-			$location = $contactsModel->getPlaceListPlain($eventlocationuid,'calendarTreatmentLocation', false);
-		}
+		
 		
 		$categories = $vevent->getAsString('CATEGORIES');
 		$description = strtr($vevent->getAsString('DESCRIPTION'), array('\,' => ',', '\;' => ';'));
