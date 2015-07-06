@@ -743,7 +743,7 @@ class PatientsTreatmentsModel extends PatientsModel {
 		}
 		$payment_reminder = $this->_date->addDays($date, CO_INVOICE_REMINDER_DAYS);
 		
-		$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS . " set status = '$status', status_date = '$date', invoice_date = '$date', payment_reminder='$payment_reminder', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS . " set status = '$status', status_invoice='0', status_date = '$date', invoice_date = '$date', payment_reminder='$payment_reminder', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			return true;
