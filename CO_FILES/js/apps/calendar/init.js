@@ -275,7 +275,7 @@ Calendar={
 		},
 		editEvent:function(calEvent, jsEvent, view){
 			var t = $(jsEvent.target).parent();
-			console.log(t);
+			//console.log(t);
 			if(t.hasClass('fc-event-treatment-icon')) {
 				var href = t.attr('rel').split(",");
 				var app = href[0];
