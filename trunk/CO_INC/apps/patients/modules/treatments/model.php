@@ -1313,7 +1313,7 @@ function getTreatmentTypeMin($string){
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_assoc($result)) {
 			//$name = $row["positionstext"] . ' ' . $row["shortname"] . ' (' . $row["minutes"] . ')';
-			$name = $row["positionstext"];
+			$name = $row["positionstext"] . ' ' . $row["shortname"];
 				}
 		return $name;
 	}
