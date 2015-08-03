@@ -122,6 +122,7 @@ class Session
 		 $this->email = $this->userinfo['email'];
 		 $this->uid = $this->userinfo['id'];
 		 $this->userlang = $this->userinfo['lang'];
+		 if($this->userlang == '') { $this->userlang = CO_DEFAULT_LANGUAGE; }
 		 $this->useroffset = $this->userinfo['offset'];
 		 $this->timezone = $this->userinfo['timezone'];
 		 $this->pwd_pick = $this->userinfo['pwd_pick'];
