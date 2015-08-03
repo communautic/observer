@@ -255,13 +255,13 @@ Calendar={
 					$('#calendar').data('storeEvent-Active', false)*/
 				}
 				if(allday) {
-					formtype = 1;
+					//formtype = 1;
 				}
 				//alert(allday);
 				//Calendar.UI.loading(true);
 				Calendar.UI.eventdialogtype = 1;
-				$('#dialog_holder').load('/?path=apps/calendar/', {request: 'newEventForm', start:start, end:end, allday:allday?1:0, calendar: cal, formtype: formtype }, Calendar.UI.startEventDialog );
-				//$('#dialog_holder').load('/?path=apps/calendar/', {request: 'newEventForm', start:start, end:end, allday:0, calendar: cal, formtype: formtype }, Calendar.UI.startEventDialog);
+				//$('#dialog_holder').load('/?path=apps/calendar/', {request: 'newEventForm', start:start, end:end, allday:allday?1:0, calendar: cal, formtype: formtype }, Calendar.UI.startEventDialog );
+				$('#dialog_holder').load('/?path=apps/calendar/', {request: 'newEventForm', start:start, end:end, allday:0, calendar: cal, formtype: formtype }, Calendar.UI.startEventDialog);
 				/*$.ajax({ type: "POST", url: "/", data: { path: 'apps/calendar/', request: 'newEventForm', start:start, end:end, allday:allday?1:0, calendar: cal, formtype: formtype }, success: function(html){
 						$('#dialog_holder').html(html);
 						Calendar.UI.startEventDialog
