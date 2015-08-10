@@ -121,19 +121,19 @@ class PatientsTreatments extends Patients {
 		}
 	}
 	
-	function getSend($id) {
+	function getSend($id,$option) {
 		global $lang;
 		if($arr = $this->model->getDetails($id,'prepareSendTo')) {
 			$treatment = $arr["treatment"];
 			$task = $arr["task"];
-			$diagnose = $arr["diagnose"];
+			//$diagnose = $arr["diagnose"];
 			
 			$form_url = $this->form_url;
 			$request = "sendDetails";
 			$to = "";
 			$cc = "";
 			$subject = $treatment->title;
-			$variable = "";
+			$variable = $option;
 			
 			$data["error"] = 0;
 			$data["error_message"] = "";
@@ -154,21 +154,42 @@ class PatientsTreatments extends Patients {
 		global $session, $users, $lang;
 		$title = "";
 		$html = "";
-		if($arr = $this->model->getDetails($id)) {
-			$treatment = $arr["treatment"];
-			$task = $arr["task"];
-			$diagnose = $arr["diagnose"];
-			$sendto = $arr["sendto"];
-			ob_start();
-				include 'view/print.php';
-				$html = ob_get_contents();
-			ob_end_clean();
-			$title = $treatment->title;
+		switch($variable) {
+			case 'plan':
+				if($arr = $this->model->getDetails($id)) {
+					$treatment = $arr["treatment"];
+					$task = $arr["task"];
+					//$diagnose = $arr["diagnose"];
+					$sendto = $arr["sendto"];
+					$printcanvas = 0;
+					ob_start();
+						include 'view/print.php';
+						$html = ob_get_contents();
+					ob_end_clean();
+					$title = $treatment->title;
+				}
+				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_TREATMENT"];
+				$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
+				$pdf = $this->savePDF($title,$html,$attachment);
+			break;
+			case 'list':
+				if($arr = $this->model->getDetails($id)) {
+					$treatment = $arr["treatment"];
+					$task = $arr["task"];
+					$diagnose = $arr["diagnose"];
+					$sendto = $arr["sendto"];
+					$printcanvas = 0;
+					ob_start();
+						include 'view/print_list.php';
+						$html = ob_get_contents();
+					ob_end_clean();
+					$title = $treatment->title;
+				}
+				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_TREATMENT"];
+				$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
+				$pdf = $this->savePDF($title,$html,$attachment);
+			break;
 		}
-		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_TREATMENT"];
-		$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
-		$pdf = $this->savePDF($title,$html,$attachment);
-		
 		// write sento log
 		$this->writeSendtoLog("patients_treatments",$id,$to,$subject,$body);
 		
