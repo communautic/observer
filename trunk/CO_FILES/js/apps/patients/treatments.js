@@ -514,7 +514,7 @@ function patientsTreatments(name) {
 	}
 
 
-	this.actionSend = function() {
+	/*this.actionSend = function() {
 		var id = $("#patients").data("third");
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients/modules/treatments&request=getSend&id="+id, success: function(data){
 			$("#modalDialogForward").html(data.html).dialog('open');
@@ -524,7 +524,74 @@ function patientsTreatments(name) {
 			}
 			}
 		});
+	}*/
+	
+	this.actionSendToOption = function(option) {
+		switch(option) {
+			case '1':
+				var id = $("#patients").data("third");
+				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients/modules/treatments&request=getSend&option=plan&id="+id, success: function(data){
+					$("#modalDialogForward").html(data.html).dialog('open');
+					if(data.error == 1) {
+						$.prompt('<div style="text-align: center">' + ALERT_REMOVE_RECIPIENT + data.error_message + '<br /></div>');
+						return false;
+					}
+					}
+				});
+			break;
+			case '2':
+				var id = $("#patients").data("third");
+				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients/modules/treatments&request=getSend&option=list&id="+id, success: function(data){
+					$("#modalDialogForward").html(data.html).dialog('open');
+					if(data.error == 1) {
+						$.prompt('<div style="text-align: center">' + ALERT_REMOVE_RECIPIENT + data.error_message + '<br /></div>');
+						return false;
+					}
+					}
+				});
+			break;
+		}
 	}
+	
+	this.actionSend = function() {
+		var id = $("#patients").data("third");
+		//var url ='/?path=apps/patients/modules/invoices&request=printDetails&id='+id;
+		//$("#documentloader").attr('src', url);
+		var copopup = $('#co-splitActions');
+		var pclass = this.coPopupEditClass;
+		copopup.html(this.coSendToOptions);
+		copopup
+			.removeClass(function (index, css) {
+				   return (css.match (/\bpopup-\w+/g) || []).join(' ');
+			   })
+			.addClass(pclass)
+			.position({
+				  my: "center center",
+				  at: "right+123 center",
+				  of: '#patientsActions .listSend',
+				  collision: 'flip fit',
+				  within: '#patients-right .scroll-pane',
+				  using: function(coords, ui) {
+						var $modal = $(this),
+						t = coords.top,
+						l = coords.left,
+						className = 'switch-' + ui.horizontal;
+						$modal.css({
+							left: l + 'px',
+							top: t + 'px'
+						}).removeClass(function (index, css) {
+							return (css.match (/\bswitch-\w+/g) || []).join(' ');
+						})
+						.addClass(className);
+						copopup.hide().animate({width:'toggle'}, function() { 
+							//copopup.find('.arrow').offset({ top: ui.target.top+25 });
+							var arrowtop = Math.round(ui.target.top - ui.element.top)+20;
+							copopup.find('.arrow').css('top', arrowtop); 
+						})
+				}
+			});
+	}
+
 
 
 	this.actionSendtoResponse = function() {

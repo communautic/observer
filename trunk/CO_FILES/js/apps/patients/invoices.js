@@ -271,6 +271,17 @@ function patientsInvoices(name) {
 					}
 				});
 			break;
+			case '5':
+				var id = $("#patients").data("third");
+				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients/modules/invoices&request=getSend&option=invoice_plain&id="+id, success: function(data){
+					$("#modalDialogForward").html(data.html).dialog('open');
+					if(data.error == 1) {
+						$.prompt('<div style="text-align: center">' + ALERT_REMOVE_RECIPIENT + data.error_message + '<br /></div>');
+						return false;
+					}
+					}
+				});
+			break;
 		}
 	}
 	

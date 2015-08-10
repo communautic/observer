@@ -75,7 +75,7 @@ if (!empty($_GET['request'])) {
 			echo($patientsTreatments->getSendToOptions());
 		break;
 		case 'getSend':
-			echo($patientsTreatments->getSend($_GET['id']));
+			echo($patientsTreatments->getSend($_GET['id'],$_GET['option']));
 		break;
 		case 'getSendtoDetails':
 			echo($patientsTreatments->getSendtoDetails("patients_treatments",$_GET['id']));

@@ -271,6 +271,25 @@ class PatientsInvoices extends Patients {
 				$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
 				$pdf = $this->saveInvoice($title,$html,$attachment);
 			break;
+			case 'invoice_plain':
+				if($arr = $this->model->getDetails($id)) {
+					$invoice = $arr["invoice"];
+					$task = $arr["task"];
+					$pid = $invoice->pid;
+					if($arr = $this->model->getPatientDetails($pid,'nocheckout')) {
+						$patient = $arr["patient"];
+					}
+					ob_start();
+						include 'view/print_invoice_anon.php';
+						$html = ob_get_contents();
+					ob_end_clean();
+					$title = $lang["PATIENT_INVOICE_TITLE"][0] . $invoice->invoice_number . ' ' . $invoice->lastname;
+				}
+				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_INVOICE"];
+				$GLOBALS['BANKING'] = CO_INVOICE_FOOTER;
+				$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
+				$pdf = $this->saveInvoice($title,$html,$attachment);
+			break;
 			case 'services':
 				if($arr = $this->model->getDetails($id)) {
 					$invoice = $arr["invoice"];
