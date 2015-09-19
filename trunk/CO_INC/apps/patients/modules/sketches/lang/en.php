@@ -5,6 +5,7 @@ $lang["PATIENT_SKETCH_TITLE"] = 'Sketch';
 $lang["PATIENT_SKETCHES"] = 'Sketches';
 
 $lang["PATIENT_SKETCH_NEW"] = 'New Sketch';
+$lang["PATIENT_SKETCH_ACTION_NEW_CUSTOM"] = 'Bodychart';
 $lang["PATIENT_SKETCH_ACTION_NEW"] = 'create new Sketch';
 $lang["PATIENT_SKETCH_TASK_NEW"] = 'new Session';
 

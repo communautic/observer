@@ -47,6 +47,7 @@ $lang["PATIENT_SKETCH_TASKS_DATE_INVOICE"] = 'Verrechnungsdatum';
 $lang["PATIENT_SKETCH_TASKS_DURATION"] = 'Dauer';
 
 $lang["PATIENT_SKETCH_ACTION_NEW"] = 'neu';
+$lang["PATIENT_SKETCH_ACTION_NEW_CUSTOM"] = 'Bodychart';
 $lang["PATIENT_SKETCH_ACTION_DRAW"] = 'zeichnen';
 $lang["PATIENT_SKETCH_ACTION_DELETE"] = 'l&ouml;schen';
 $lang["PATIENT_SKETCH_ACTION_ROTATE"] = 'Grafik drehen';

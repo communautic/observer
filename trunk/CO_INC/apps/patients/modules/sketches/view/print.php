@@ -7,16 +7,17 @@
 <p>&nbsp;</p>
 <?php //if ($printcanvas == 1) { ?>
 <div style="height: 400px; width: 1161px; position: relative;">
-<?php /*if(!defined('CO_PHYSIO_BODYCHART_WHITE')) {
-				echo '<img src="'.CO_FILES.'/img/body.png" />';
-}	*/
-
+<?php 
 				switch($sketch->type) {
 					case 0:
 						$canvasDrawBG = '';
 					break;
 					case 1:
-						$canvasDrawBG = '<img src="' . CO_FILES . '/img/body.png" style="height: 400px;" />';
+						if(defined('CO_PATIENT_SKETCHES_CUSTOM')) { 
+							$canvasDrawBG = '<img src="' . CO_PATH_DATA . '/sketch_custom.png" style="height: 400px;" />';
+						} else { 
+							$canvasDrawBG = '<img src="' . CO_FILES . '/img/body.png" style="height: 400px;" />';
+						}
 					break;
 					case 2:
 						$canvasDrawBG = '<img src="' . CO_PATH_URL . '/data/sketches/' . $sketch->type_image . '" style="height: 400px;" />';
