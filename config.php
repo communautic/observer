@@ -24,6 +24,9 @@ define("CO_PRODUCT_VARIANT", 1 );
 // PO compat (if true show old treatments without calendar)
 define("CO_PHYSIO_COMBAT", false );
 
+// if uncommented use a different img and wording for sketches Bodychart
+define("CO_PATIENT_SKETCHES_CUSTOM", "Testing" );
+
 // Bodychart background
 //define("CO_PHYSIO_BODYCHART_WHITE", true );
 

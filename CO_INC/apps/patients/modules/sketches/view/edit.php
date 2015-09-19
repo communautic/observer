@@ -6,7 +6,7 @@
   </tr>
 </table>
 </div>
-<div class="ui-layout-content"><div class="scroll-pane">
+<div class="ui-layout-content"><div id="sketchesScroll" class="scroll-pane">
 <form action="/" method="post" class="<?php if($sketch->canedit) { ?>coform <?php } ?>jNice">
 <input type="hidden" id="path" name="path" value="<?php echo $this->form_url;?>">
 <input type="hidden" id="poformaction" name="request" value="setDetails">
@@ -43,7 +43,12 @@
 				$canvasDrawBG = '';
 			break;
 			case 1:
-				$canvasDrawBG = 'style="background-image: url(' . CO_FILES . '/img/body.png); width: 1161px;"';
+				if(defined('CO_PATIENT_SKETCHES_CUSTOM')) { 
+					$canvasDrawBG = 'style="background-image: url(/data/sketch_custom.png); width: 1161px;"';
+				} else { 
+					$canvasDrawBG = 'style="background-image: url(' . CO_FILES . '/img/body.png); width: 1161px;"';
+				}
+				//$canvasDrawBG = 'style="background-image: url(' . CO_FILES . '/img/body.png); width: 1161px;"';
 			break;
 			case 2:
 				$randy = md5( uniqid (rand(), 1) );

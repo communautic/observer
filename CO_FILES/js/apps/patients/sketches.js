@@ -1546,6 +1546,17 @@ var colors = ['#6EAAFF','#FF7878','#FFD41D','#8CD264','#D2B4FF','#9999FF','#FF9E
 			   });
 			});
 		//}
+		
+		$("#sketchesScroll").livequery( function() {
+			var scroller = $(this);
+			scroller.scroll(function() {
+				var $scrollingDiv = $("#sketchesScroll .canvasToolsOuter");
+				$scrollingDiv.stop().animate({"marginLeft": (scroller.scrollLeft()) + "px"}, "fast" );
+			});
+		});
+		
+		
+		
 	});
 	  
 	  
