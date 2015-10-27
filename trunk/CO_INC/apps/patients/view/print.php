@@ -40,6 +40,14 @@
 	</tr>
 </table>
 <?php } ?>
+<?php if(!empty($patient->familystatus)) { ?>
+<table width="100%" class="standard">
+	<tr>
+		<td class="tcell-left"><?php echo $lang["PATIENT_FAMILYSTATUS"];?></td>
+		<td><?php echo($patient->familystatus);?></td>
+    </tr>
+</table>
+<?php } ?>
 <?php if(!empty($patient->coo)) { ?>
 <table width="100%" class="standard"> 
    <tr>

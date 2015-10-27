@@ -17,5 +17,9 @@ $lang["WIDGET_REMOVE_NOTICE"] 	= 	'>>> entfernen';
 
 $lang["CHECKPOINTS_WIDGET_NO_ACTIVITY"]		=	'Keine aktuellen Benachrichtigungen';
 
-$lang["DESKTOP_HELP"] = 'manual_desktop.pdf';
+if(CO_PRODUCT_VARIANT == 0) {
+	$lang["DESKTOP_HELP"] = 'manual_desktop.pdf';
+} else {
+	$lang["DESKTOP_HELP"] = 'manual_desktop_po_to.pdf';
+}
 ?>

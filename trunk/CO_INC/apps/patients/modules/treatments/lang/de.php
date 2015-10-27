@@ -55,12 +55,14 @@ $lang["PATIENT_TREATMENT_TASKS_DURATION"] = 'Dauer';
 $lang["PATIENT_TREATMENT_CALENDAR_TITLE"] = 'Behandlungstitel';
 
 $lang["PATIENT_TREATMENT_PRINT_OPTION"] = 'Behandlung';
+$lang["PATIENT_TREATMENT_PRINT_OPTION_DOCU"] = 'Dokumentation';
 $lang["PATIENT_TREATMENT_PRINT_OPTION_DATES"] = 'Terminliste';
 $lang["PATIENT_TREATMENT_PRINT_TITLE"] = 'Behandlung/Patient';
 
 $lang["PATIENT_TREATMENT_HELP"] = 'manual_patienten_behandlungen.pdf';
 
 $lang["PATIENT_PRINT_TREATMENT"] = 'behandlung.png';
+$lang["PATIENT_PRINT_TREATMENT_DOCU"] = 'dokumentation.png';
 $lang["PATIENT_PRINT_TREATMENT_LIST"] = 'terminliste.png';
 
 // check for custom lang file

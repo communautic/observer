@@ -5,6 +5,7 @@ class PatientsReportsModel extends PatientsModel {
 	public function __construct() {  
      	parent::__construct();
 		$this->_contactsmodel = new ContactsModel();
+		$this->_treatmentsmodel = new PatientsTreatmentsModel();
 	}
 
 
@@ -177,6 +178,23 @@ class PatientsReportsModel extends PatientsModel {
 		foreach($row as $key => $val) {
 			$array[$key] = $val;
 		}
+		
+		$patientid = $array["pid"];
+		
+		$q = "SELECT b.id as patient_id, b.lastname,b.firstname,b.title as ctitle,b.title2,b.position,b.phone1,b.email,b.address_line1,b.address_line2,b.address_town,b.address_postcode, b.company, b.position, a.* FROM " . CO_TBL_PATIENTS . " as a, co_users as b where a.cid=b.id and a.id = '$patientid'";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_array($result);
+		foreach($row as $key => $val) {
+			if($key != 'id' && $key != 'protocol') {
+				$array[$key] = $val;
+			}
+		}	
+		$array['patient'] = $array['lastname'] . ' ' . $array['firstname'];
+		$array["dob"] = $this->_date->formatDate($array["dob"],CO_DATE_FORMAT);
+		
+		$array["insurer"] = $this->_contactsmodel->getUserList($array['insurer'],'patientsinsurer', "");
+		$array["insurer_ct"] = empty($array["insurer_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['insurer_ct'];
+		$array["insurance"] = $this->getPatientIdDetails($array["insurance"],"patientsinsurance");
 			
 		$array["perms"] = $this->getPatientAccess($array["pid"]);
 		$array["canedit"] = false;
@@ -204,7 +222,17 @@ class PatientsReportsModel extends PatientsModel {
 		
 		// dates
 		$array["item_date"] = $this->_date->formatDate($array["item_date"],CO_DATE_FORMAT);
+		$recipient_print = $array["recipient"];
+		$array["recipient"] = $this->_contactsmodel->getUserList($array['recipient'],'patientsrecipient', "", $array["canedit"]);
+		$array["recipient_ct"] = empty($array["recipient_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['recipient_ct'];
 		
+		$qr = "SELECT lastname as r_lastname,firstname as r_firstname,title as r_title, title2 as r_title2, address_line1 as r_address_line1, address_postcode as r_address_postcode, address_town as r_address_town FROM co_users where id = '$recipient_print'";
+		$resultr = mysql_query($qr, $this->_db->connection);
+		$rowr = mysql_fetch_array($resultr);
+		foreach($rowr as $key => $val) {
+			$array[$key] = $val;
+		}
+
 		/*if($option = 'prepareSendTo') {
 			$array["sendtoTeam"] = $this->_contactsmodel->checkUserListEmail($array["management"],'patientsmanagement', "", $array["canedit"]);
 			$array["sendtoTeamNoEmail"] = $this->_contactsmodel->checkUserListEmail($array["management"],'patientsmanagement', "", $array["canedit"], 0);
@@ -237,9 +265,11 @@ class PatientsReportsModel extends PatientsModel {
 		$array["treatment_title"] = '';
 		$array["treatment_patient"] = '';
 		$array["treatment_diagnose"] = '';
+		$array["treatment_method"] = '';
 		$array["treatment_date"] = '';
 		$array["treatment_management"] = '';
 		$array["treatment_doctor"] = '';
+		$array["treatment_doctor_ct"] = '';
 		$array["treatment_treats"] = '';
 		
 		
@@ -252,7 +282,9 @@ class PatientsReportsModel extends PatientsModel {
 			$array["treatment_diagnose"] = $rowt->protocol;
 			$array["treatment_date"] = $this->_date->formatDate($rowt->item_date,CO_DATE_FORMAT);
 			$array["treatment_doctor"] = $this->_users->getUserFullname($rowt->doctor);
+			$array["treatment_doctor_ct"] = empty($rowt->doctor_ct) ? "" : $lang["TEXT_NOTE"] . " " . $rowt->doctor_ct;
 			$array["treatment_treats"] = $rowt->protocol2;
+			$array["treatment_method"] = $this->_treatmentsmodel->getTreamentIdDetails($rowt->method);
 		}
 		
 		$pid = $array["pid"];
@@ -261,7 +293,15 @@ class PatientsReportsModel extends PatientsModel {
 		if(mysql_num_rows($resultu) > 0) {
 			$rowu = mysql_fetch_object($resultu);
 			$array["treatment_patient"] = $rowu->patient;
+			$management_print = $rowu->management;
 			$array["treatment_management"] = $this->_users->getUserFullname($rowu->management);
+		}
+		
+		$q = "SELECT lastname as m_lastname,firstname as m_firstname,title2 as m_title, phone1 as m_phone, email as m_email, email_alt as m_email_alt, fax as m_fax, address_town as m_address_town FROM co_users where id = '$management_print'";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_array($result);
+		foreach($row as $key => $val) {
+			$array[$key] = $val;
 		}
 	
 		$report = new Lists($array);
@@ -274,7 +314,6 @@ function setDetailsTitle($pid,$id,$title,$reportdate) {
 		global $session, $lang;
 		
 		$reportdate = $this->_date->formatDate($reportdate);
-		
 		$now = gmdate("Y-m-d H:i:s");
 
 		$q = "UPDATE " . CO_TBL_PATIENTS_REPORTS . " set title = '$title', item_date = '$reportdate' , edited_user = '$session->uid', edited_date = '$now' where id='$id'";
@@ -288,7 +327,7 @@ function setDetailsTitle($pid,$id,$title,$reportdate) {
    }
 
 
-   function setDetails($pid,$id,$title,$reportdate,$protocol,$protocol2,$feedback,$documents,$report_access,$report_access_orig) {
+   function setDetails($pid,$id,$title,$reportdate,$recipient,$recipient_ct,$protocol,$documents,$report_access,$report_access_orig) {
 		global $session, $lang;
 		
 		$reportdate = $this->_date->formatDate($reportdate);
@@ -305,7 +344,7 @@ function setDetailsTitle($pid,$id,$title,$reportdate) {
 			$accesssql = "access='$report_access', access_date='$report_access_date', access_user = '$session->uid',";
 		}
 
-		$q = "UPDATE " . CO_TBL_PATIENTS_REPORTS . " set title = '$title', item_date = '$reportdate', protocol = '$protocol', protocol2 = '$protocol2', feedback='$feedback', documents = '$documents', access='$report_access', $accesssql edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PATIENTS_REPORTS . " set title = '$title', item_date = '$reportdate', recipient = '$recipient', recipient_ct = '$recipient_ct', protocol = '$protocol', documents = '$documents', access='$report_access', $accesssql edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
@@ -322,7 +361,7 @@ function setDetailsTitle($pid,$id,$title,$reportdate) {
 		$now = gmdate("Y-m-d H:i:s");
 		$time = gmdate("Y-m-d H");
 		
-		$q = "INSERT INTO " . CO_TBL_PATIENTS_REPORTS . " set title = '" . $lang["PATIENT_REPORT_NEW"] . "', item_date='$now', pid = '$id',  created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+		$q = "INSERT INTO " . CO_TBL_PATIENTS_REPORTS . " set title = '" . $lang["PATIENT_REPORT_NEW"] . "', item_date='$now', pid = '$id', recipient = '$id',  created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id = mysql_insert_id();
 				

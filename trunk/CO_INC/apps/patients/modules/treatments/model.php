@@ -189,13 +189,20 @@ class PatientsTreatmentsModel extends PatientsModel {
 			
 		$patientid = $array["pid"];
 		
-		$q = "SELECT b.id as patient_id, b.lastname,b.firstname,b.title as ctitle,b.title2,b.position,b.phone1,b.email,b.address_line1,b.address_line2,b.address_town,b.address_postcode FROM " . CO_TBL_PATIENTS . " as a, co_users as b where a.cid=b.id and a.id = '$patientid'";
+		$q = "SELECT b.id as patient_id, b.lastname,b.firstname,b.title as ctitle,b.title2,b.position,b.phone1,b.email,b.address_line1,b.address_line2,b.address_town,b.address_postcode, b.company, b.position, a.* FROM " . CO_TBL_PATIENTS . " as a, co_users as b where a.cid=b.id and a.id = '$patientid'";
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_fetch_array($result);
 		foreach($row as $key => $val) {
+			if($key != 'id' && $key != 'protocol') {
 			$array[$key] = $val;
+			}
 		}	
 		$array['patient'] = $array['lastname'] . ' ' . $array['firstname'];
+		$array["dob"] = $this->_date->formatDate($array["dob"],CO_DATE_FORMAT);
+		
+		$array["insurer"] = $this->_contactsmodel->getUserList($array['insurer'],'patientsinsurer', "");
+		$array["insurer_ct"] = empty($array["insurer_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['insurer_ct'];
+		$array["insurance"] = $this->getPatientIdDetails($array["insurance"],"patientsinsurance");
 			
 		$array["perms"] = $this->getPatientAccess($array["pid"]);
 		$array["canedit"] = false;

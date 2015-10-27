@@ -1024,12 +1024,12 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
    /**
    * get details for the patient folder
    */
-   function setPatientDetails($id,$folder,$management,$management_ct,$insurer,$insurer_ct,$protocol,$number,$number_insurer,$insurance,$insuranceadd,$code,$dob,$coo,$documents) {
+   function setPatientDetails($id,$folder,$management,$management_ct,$insurer,$insurer_ct,$protocol,$number,$number_insurer,$insurance,$insuranceadd,$code,$dob,$familystatus,$coo,$documents) {
 		global $session, $contactsmodel;
 		$dob = $this->_date->formatDate($dob);
 		$now = gmdate("Y-m-d H:i:s");
 		
-		$q = "UPDATE " . CO_TBL_PATIENTS . " set folder = '$folder', management='$management', management_ct='$management_ct', insurer='$insurer', insurer_ct='$insurer_ct', protocol = '$protocol', number = '$number', number_insurer='$number_insurer', insurance = '$insurance', insurance_add = '$insuranceadd', code='$code', dob = '$dob', coo = '$coo', documents = '$documents', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PATIENTS . " set folder = '$folder', management='$management', management_ct='$management_ct', insurer='$insurer', insurer_ct='$insurer_ct', protocol = '$protocol', number = '$number', number_insurer='$number_insurer', insurance = '$insurance', insurance_add = '$insuranceadd', code='$code', dob = '$dob', familystatus = '$familystatus', coo = '$coo', documents = '$documents', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
@@ -1117,7 +1117,7 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 		
 		$now = gmdate("Y-m-d H:i:s");
 		// patient
-		$q = "INSERT INTO " . CO_TBL_PATIENTS . " (folder,cid,management,management_ct,insurance,insurance_add,number,protocol,dob,coo,status,planned_date,created_date,created_user,edited_date,edited_user) SELECT folder,cid,management,management_ct,insurance,insurance_add,number,protocol,dob,coo,'0','$now','$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_PATIENTS . " where id='$id'";
+		$q = "INSERT INTO " . CO_TBL_PATIENTS . " (folder,cid,management,management_ct,insurance,insurance_add,number,protocol,dob,familystatus,coo,status,planned_date,created_date,created_user,edited_date,edited_user) SELECT folder,cid,management,management_ct,insurance,insurance_add,number,protocol,dob,familystatus,coo,'0','$now','$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_PATIENTS . " where id='$id'";
 
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
@@ -2774,7 +2774,7 @@ function createDuplicatePatientFromCalendar($id,$folder,$management) {
 		
 		$now = gmdate("Y-m-d H:i:s");
 		// patient
-		$q = "INSERT INTO " . CO_TBL_PATIENTS . " (folder,cid,management,management_ct,insurer,insurer_ct,insurance,insurance_add,number,number_insurer,protocol,code,dob,coo,status,planned_date,created_date,created_user,edited_date,edited_user) SELECT '$folder',cid,'$management',management_ct,insurer,insurer_ct,insurance,insurance_add,number,number_insurer,protocol,code,dob,coo,'0','$now','$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_PATIENTS . " where id='$id'";
+		$q = "INSERT INTO " . CO_TBL_PATIENTS . " (folder,cid,management,management_ct,insurer,insurer_ct,insurance,insurance_add,number,number_insurer,protocol,code,dob,familystatus,coo,status,planned_date,created_date,created_user,edited_date,edited_user) SELECT '$folder',cid,'$management',management_ct,insurer,insurer_ct,insurance,insurance_add,number,number_insurer,protocol,code,dob,familystatus,coo,'0','$now','$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_PATIENTS . " where id='$id'";
 
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();

@@ -164,4 +164,4 @@
 <p style="line-height: 20px;"><?php echo $lang["PATIENT_INVOICE_TEXT_LINE4"];?></p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
-<p><?php echo($invoice->m_firstname)?> <?php echo($invoice->m_lastname)?></p>
+<p><?php echo($invoice->m_title)?> <?php echo($invoice->m_firstname)?> <?php echo($invoice->m_lastname)?></p>

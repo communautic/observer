@@ -4,6 +4,12 @@ if(is_array($posts)) {
 	foreach ($posts as $postit) { 
 		list($left,$top,$zindex) = explode('x',$postit->xyz);
 		list($width,$height) = explode('x',$postit->wh);
+		if($top < 0) {
+			$top = 100;
+		}
+		if($left < 0) {
+			$left = 100;
+		}
 	?>
     <div id="postit-<?php echo($postit->id);?>" class="postit postit-design" style="width: <?php echo $width;?>px; height: <?php echo $height;?>px; left: <?php echo $left;?>px; top: <?php echo $top;?>px; z-index: <?php echo $zindex;?>;">
         <div class="postit-header"><span class="postit-header-left"><?php echo $postit->days;?></span><span class="postit-header-right"><?php echo $postit->date;?></span></div>

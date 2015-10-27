@@ -96,6 +96,28 @@ class PatientsTreatments extends Patients {
 						$this->printPDF($title,$html);
 				}
 			break;
+			case 'docu':
+				if($arr = $this->model->getDetails($id)) {
+					$treatment = $arr["treatment"];
+					$task = $arr["task"];
+					$diagnose = $arr["diagnose"];
+					$sendto = $arr["sendto"];
+					$printcanvas = 0;
+					ob_start();
+						include 'view/print_docu.php';
+						$html = ob_get_contents();
+					ob_end_clean();
+					$title = $treatment->title;
+				}
+				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_TREATMENT_DOCU"];
+				switch($t) {
+					case "html":
+						$this->printHTML($title,$html);
+					break;
+					default:
+						$this->printPDF($title,$html);
+				}
+			break;
 			case 'list':
 				if($arr = $this->model->getDetails($id)) {
 					$treatment = $arr["treatment"];
@@ -169,6 +191,23 @@ class PatientsTreatments extends Patients {
 					$title = $treatment->title;
 				}
 				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_TREATMENT"];
+				$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
+				$pdf = $this->savePDF($title,$html,$attachment);
+			break;
+			case 'docu':
+				if($arr = $this->model->getDetails($id)) {
+					$treatment = $arr["treatment"];
+					$task = $arr["task"];
+					//$diagnose = $arr["diagnose"];
+					$sendto = $arr["sendto"];
+					$printcanvas = 0;
+					ob_start();
+						include 'view/print_docu.php';
+						$html = ob_get_contents();
+					ob_end_clean();
+					$title = $treatment->title;
+				}
+				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_TREATMENT_DOCU"];
 				$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
 				$pdf = $this->savePDF($title,$html,$attachment);
 			break;

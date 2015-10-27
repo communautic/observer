@@ -6,7 +6,7 @@ $lang["PATIENT_VDOC_VDOCS"] = 'Textbeiträge';
 $lang["PATIENT_VDOC_NEW"] = 'Neuer Textbeitrag';
 $lang["PATIENT_VDOC_ACTION_NEW"] = 'neuen Texbeitrag anlegen';
 
-$lang["PATIENT_VDOC_HELP"] = 'manual_projekte_textbeitraege.pdf';
+$lang["PATIENT_VDOC_HELP"] = 'manual_patienten_textbeitraege_po_to.pdf';
 
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/patients/vdocs/de.php";

@@ -863,7 +863,7 @@ class Calendar extends Controller {
 			$treatmentfolder = $treatmentevent['foldertitle'];
 			$treatmenttitle = $treatmentevent['title'];
 			if($eventlocation == 0) {
-				$location = '';
+				//$location = '';
 				$summary_noroom = explode(',', $summary);
 				$summary = $summary_noroom[0];
 			}

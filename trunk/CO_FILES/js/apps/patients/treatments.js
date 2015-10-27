@@ -471,6 +471,15 @@ function patientsTreatments(name) {
 					window.open(url);
 				}
 			break;
+			case '3':
+				var id = $("#patients").data("third");
+				var url ='/?path=apps/patients/modules/treatments&request=printDetails&option=docu&id='+id;
+				if(!iOS()) {
+					$("#documentloader").attr('src', url);
+				} else {
+					window.open(url);
+				}
+			break;
 		}
 	}
 	
@@ -542,6 +551,16 @@ function patientsTreatments(name) {
 			case '2':
 				var id = $("#patients").data("third");
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients/modules/treatments&request=getSend&option=list&id="+id, success: function(data){
+					$("#modalDialogForward").html(data.html).dialog('open');
+					if(data.error == 1) {
+						$.prompt('<div style="text-align: center">' + ALERT_REMOVE_RECIPIENT + data.error_message + '<br /></div>');
+						return false;
+					}
+					}
+				});
+				case '3':
+				var id = $("#patients").data("third");
+				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients/modules/treatments&request=getSend&option=docu&id="+id, success: function(data){
 					$("#modalDialogForward").html(data.html).dialog('open');
 					if(data.error == 1) {
 						$.prompt('<div style="text-align: center">' + ALERT_REMOVE_RECIPIENT + data.error_message + '<br /></div>');

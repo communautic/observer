@@ -50,6 +50,8 @@ $lang["PATIENT_DESCRIPTION"] = 'Notiz';
 $lang["PATIENT_CODE"] = 'Patientencode';
 $lang["PATIENT_DOB"] = 'Geburtsdatum';
 $lang["PATIENT_COO"] = 'Beruf';
+$lang["PATIENT_FAMILYSTATUS"] = 'Familienstand';
+
 
 $lang["PATIENT_HANDBOOK"] = 'Patientenakt';
 

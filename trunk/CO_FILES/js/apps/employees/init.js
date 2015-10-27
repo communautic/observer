@@ -404,7 +404,7 @@ function employeesApplication(name) {
 	
 	
 	this.insertFromDialog = function(field,gid,title) {
-		var html = '<a class="listmember" uid="' + gid + '" field="'+field+'">' + title + '</a>';
+		var html = '<span class="listmember" uid="' + gid + '" field="'+field+'">' + title + '</span>';
 		$("#"+field).html(html);
 		$("#modalDialog").dialog('close');
 		var obj = getCurrentModule();
