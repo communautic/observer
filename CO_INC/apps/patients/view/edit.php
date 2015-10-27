@@ -73,6 +73,12 @@
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
+    <td class="tcell-left-shorter text11"><span class="<?php if($patient->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["PATIENT_FAMILYSTATUS"];?></span></span></td>
+    <td class="tcell-right-nopadding"><?php if($patient->canedit) { ?><input name="familystatus" type="text" class="bg" value="<?php echo($patient->familystatus);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $patient->familystatus . '</span>'); } ?></td>
+  </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+  <tr>
     <td class="tcell-left-shorter text11"><span class="<?php if($patient->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["PATIENT_COO"];?></span></span></td>
     <td class="tcell-right-nopadding"><?php if($patient->canedit) { ?><input name="coo" type="text" class="bg" value="<?php echo($patient->coo);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $patient->coo . '</span>'); } ?></td>
   </tr>

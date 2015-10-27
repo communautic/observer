@@ -16,6 +16,12 @@ include_once(CO_INC . "/apps/patients/modules/documents/lang/" . $session->userl
 include_once(CO_INC . "/apps/patients/modules/documents/model.php");
 include_once(CO_INC . "/apps/patients/modules/documents/controller.php");
 
+// Treatments
+include_once(CO_INC . "/apps/patients/modules/treatments/config.php");
+include_once(CO_INC . "/apps/patients/modules/treatments/lang/" . $session->userlang . ".php");
+include_once(CO_INC . "/apps/patients/modules/treatments/model.php");
+include_once(CO_INC . "/apps/patients/modules/treatments/controller.php");
+$patientsTreatments = new PatientsTreatments("treatments");
 
 // Reports
 include_once(CO_INC . "/apps/patients/modules/reports/config.php");
@@ -97,7 +103,7 @@ if (!empty($_POST['request'])) {
 			if($tid == 0) {
 				echo($patientsReports->setDetailsTitle($_POST['pid'], $_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['item_date']));
 			} else {
-				echo($patientsReports->setDetails($_POST['pid'], $_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['item_date'],  $system->checkMagicQuotes($_POST['protocol']), $system->checkMagicQuotes($_POST['protocol2']), $system->checkMagicQuotes($_POST['feedback']),$_POST['documents'],$_POST['report_access'],$_POST['report_access_orig']));
+				echo($patientsReports->setDetails($_POST['pid'], $_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['item_date'], $_POST['recipient'], $system->checkMagicQuotes($_POST['recipient_ct']), $system->checkMagicQuotes($_POST['protocol']),$_POST['documents'],$_POST['report_access'],$_POST['report_access_orig']));
 			}
 		break;
 		case 'sendDetails':

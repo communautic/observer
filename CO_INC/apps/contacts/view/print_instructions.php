@@ -1,7 +1,7 @@
 <table width="100%" class="title">
 	<tr>
 		<td class="tcell-left">Kontakt</td>
-		<td><strong><?php echo($contact->lastname);?> <?php echo $lang['CONTACTS_FIRSTNAME'];?></strong></td>
+		<td><strong><?php echo($contact->lastname);?> <?php echo($contact->firstname);?></strong></td>
 	</tr>
 </table>
 &nbsp;
@@ -19,6 +19,7 @@ function splitcalURL($url) {
 }
 
 ?>
+<!--
 &nbsp;
 <table width="100%" class="standard">
   <tr>
@@ -30,6 +31,7 @@ Kalender hinzufügen <strong>>></strong> Aus dem Internet <strong>>></strong> Sp
 bestehenden Physio Observer Benutzernamens und Kennwortes</p></td>
   </tr>
 </table>
+-->
 &nbsp;
 <table width="100%" class="standard">
   <tr>
@@ -60,6 +62,7 @@ Die Vorgehensweise für generelle calDav fähige Kalenderprogramme (z.B. Android
     </td>
     </tr>
 </table>
+<!--
 &nbsp;
 <table width="100%" class="standard">
   <tr>
@@ -69,7 +72,7 @@ Die Vorgehensweise für generelle calDav fähige Kalenderprogramme (z.B. Android
 <strong>>></strong> den Internetkalender hinzufügen und abonnieren <strong>>></strong> Eingabe des
 bestehenden Physio Observer Benutzernamens und Kennwortes</p></td>
   </tr>
-</table>
+</table>-->
 &nbsp;
 <table width="100%" class="standard">
   <tr>

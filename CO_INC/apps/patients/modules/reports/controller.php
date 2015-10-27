@@ -139,8 +139,8 @@ class PatientsReports extends Patients {
 		}
 	}
 
-	function setDetails($pid,$id,$title,$reportdate,$protocol,$protocol2,$feedback,$documents,$report_access,$report_access_orig) {
-		if($arr = $this->model->setDetails($pid,$id,$title,$reportdate,$protocol,$protocol2,$feedback,$documents,$report_access,$report_access_orig)){
+	function setDetails($pid,$id,$title,$reportdate,$recipient,$recipient_ct,$protocol,$documents,$report_access,$report_access_orig) {
+		if($arr = $this->model->setDetails($pid,$id,$title,$reportdate,$recipient,$recipient_ct,$protocol,$documents,$report_access,$report_access_orig)){
 			return '{ "action": "edit" , "id": "' . $arr["id"] . '", "access": "' . $report_access . '"}';
 		} else{
 			return "error";

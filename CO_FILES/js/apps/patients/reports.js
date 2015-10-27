@@ -18,6 +18,8 @@ function patientsReports(name) {
 		}
 		var tid = $("#patients input.tid").fieldValue();
 		if(tid > 0) {
+			formData[formData.length] = processListApps('recipient');
+			formData[formData.length] = processCustomTextApps('recipient_ct');
 			formData[formData.length] = processDocListApps('documents');
 			formData[formData.length] = processListApps('report_access');
 		}

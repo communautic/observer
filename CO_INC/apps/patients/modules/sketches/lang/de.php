@@ -54,8 +54,11 @@ $lang["PATIENT_SKETCH_ACTION_ROTATE"] = 'Grafik drehen';
 $lang["PATIENT_SKETCH_ACTION_CLEAR"] = 'Inhalt entfernen';
 $lang["PATIENT_SKETCH_ACTION_UNDO"] = 'r&uuml;ckg&auml;ngig';
 
-
-$lang["PATIENT_SKETCH_HELP"] = 'manual_patienten_visualisierungen.pdf';
+if(CO_PRODUCT_VARIANT == 2) {
+	$lang["PATIENT_SKETCH_HELP"] = 'manual_patienten_visualisierung_to.pdf';
+} else {
+	$lang["PATIENT_SKETCH_HELP"] = 'manual_patienten_visualisierungen.pdf';
+}
 
 $lang["PATIENT_PRINT_SKETCH"] = 'visualisierung.png';
 

@@ -48,23 +48,8 @@
 </table>
 <?php } ?>
 <?php } ?>
-<table width="100%" cellpadding="0" cellspacing="0" style="padding-right: 10pt;">
-    <tr>
-        <td width="25%" class="smalltext"><?php echo $lang["PATIENT_INSURANCE_NUMBER"];?></td>
-        <td width="75%"><?php echo($invoice->number)?></td>
-    </tr>
-</table>
-<?php if($invoice->number_insurer != "") { ?>
-<table width="100%" cellpadding="0" cellspacing="0" style="padding-right: 10pt;">
-    <tr>
-        <td width="25%" class="smalltext"><?php echo $lang["PATIENT_INSURANCE_INSURER_NUMBER"];?></td>
-        <td width="75%"><?php echo($invoice->number_insurer)?></td>
-    </tr>
-</table>
-<?php } ?>
 <?php if(CO_PRODUCT_VARIANT == 2) { ?>
 <?php if($invoice->method != "") { ?>
-<p>&nbsp;</p>
 <table width="100%" cellpadding="0" cellspacing="0" style="padding-right: 10pt;">
     <tr>
         <td width="25%" class="smalltext"><?php echo $lang["PATIENT_TREATMENT_METHOD"];?></td>
@@ -138,4 +123,4 @@
 <p style="line-height: 20px;"><?php echo $lang["PATIENT_INVOICE_TEXT_LINE4"];?></p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
-<p><?php echo($invoice->m_firstname)?> <?php echo($invoice->m_lastname)?></p>
+<p><?php echo($invoice->m_title)?> <?php echo($invoice->m_firstname)?> <?php echo($invoice->m_lastname)?></p>

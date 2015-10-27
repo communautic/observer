@@ -20,7 +20,7 @@
 <table width="100%" class="standard">
 	<tr>
 		<td class="tcell-left"><?php echo $lang["PATIENT_TREATMENT_DOCTOR"];?></td>
-		<td><?php echo($treatment->doctor_print)?><br /><?php echo($treatment->doctor_ct);?></td>
+		<td><?php echo($treatment->doctor_print)?><?php echo($treatment->doctor_ct);?></td>
     </tr>
 </table>
 <?php } ?>
@@ -148,7 +148,7 @@ if($value->status == 1) {
             <td class="fourCols-one">&nbsp;</td>
             <td class="fourCols-two">&nbsp;</td>
             <td class="fourCols-three">&nbsp;</td>
-            <td class="grey smalltext"><?php echo $value->text;?></td>
+            <td class="grey smalltext"><?php echo nl2br($value->text);?></td>
         </tr>
         <?php } ?>
         

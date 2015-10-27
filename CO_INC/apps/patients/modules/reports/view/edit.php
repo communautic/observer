@@ -55,47 +55,88 @@ if($report->tid == 0) {
         <td class="tcell-right-inactive"><div id="reportstreatment" class="itemlist-field"><?php echo($report->treatment_title);?></div></td>
 	</tr>
 </table>
+<?php if(CO_PRODUCT_VARIANT == 2) { ?>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-		<td class="tcell-left-inactive text11">Patient</td>
-		<td class="tcell-right-inactive"><span id="patients_treatmentstartdate"></span><?php echo($report->treatment_patient)?><span id="patients_treatmentenddate"></span>
-        </td>
+		<td class="tcell-left-inactive text11"><?php echo $lang["PATIENT_CODE"];?></td>
+		<td class="tcell-right-inactive"><?php echo($report->code)?> </td>
     </tr>
 </table>
+<?php } ?>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
+		<td class="tcell-left-inactive text11">Patient/in</td>
+		<td class="tcell-right-inactive"><?php echo($report->treatment_patient)?> </td>
+    </tr>
+</table>
+<?php if(!empty($report->number)) { ?>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
+		<td class="tcell-left-inactive text11"><?php echo $lang["PATIENT_INSURANCE_NUMBER"];?></td>
+		<td class="tcell-right-inactive"><?php echo($report->number)?> </td>
+    </tr>
+</table>
+<?php } ?>
+<div class="content-spacer"></div>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
+		<td class="tcell-left-inactive text11"><?php echo $lang["PATIENT_INSURER"];?></td>
+		<td class="tcell-right-inactive"><?php echo($report->insurer);?><br /><?php echo($report->insurer_ct);?></td>
+    </tr>
+</table>
+<?php if(!empty($report->number_insurer)) { ?>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
+		<td class="tcell-left-inactive text11"><?php echo $lang["PATIENT_INSURANCE_INSURER_NUMBER"];?></td>
+		<td class="tcell-right-inactive"><?php echo($report->number_insurer);?><br /><?php echo($report->insurer_ct);?></td>
+    </tr>
+</table>
+<?php } ?>
+<div class="content-spacer"></div>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
+		<td class="tcell-left text11"><span class="<?php if($report->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="patientsrecipient" append="1"><span>Adressat</span></span></td>
+		<td class="tcell-right"><div id="patientsrecipient" class="itemlist-field"><?php echo($report->recipient);?></div><div id="patientsrecipient_ct" class="itemlist-field"><a field="patientsrecipient_ct" class="ct-content"><?php echo($report->recipient_ct);?></a></div></td>
+	</tr>
+</table>
+<div class="content-spacer"></div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 		<td class="tcell-left-inactive text11"><?php echo $lang["PATIENT_REPORT_DOCTOR_DIAGNOSE"];?></td>
-		<td class="tcell-right-inactive"><span id="patients_treatmentstartdate"></span><?php echo($report->treatment_diagnose)?><span id="patients_treatmentenddate"></span>
-        </td>
+		<td class="tcell-right-inactive"><?php echo($report->treatment_diagnose)?></td>
     </tr>
 </table>
+<?php if(CO_PRODUCT_VARIANT == 1) { ?><div style="display: none"><?php } ?>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
+		<td class="tcell-left-inactive text11"><?php echo $lang["PATIENT_REPORT_TREATMENT_METHOD"];?></td>
+		<td class="tcell-right-inactive"><?php echo($report->treatment_method)?></td>
+    </tr>
+</table>
+<?php if(CO_PRODUCT_VARIANT == 1) { ?></div><?php } ?>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 		<td class="tcell-left-inactive text11"><?php echo $lang["PATIENT_REPORT_TREATMENT_DATE"];?></td>
-		<td class="tcell-right-inactive"><span id="patients_treatmentstartdate"></span><?php echo($report->treatment_date)?><span id="patients_treatmentenddate"></span>
-        </td>
+		<td class="tcell-right-inactive"><?php echo($report->treatment_date)?></td>
     </tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 		<td class="tcell-left-inactive text11"><?php echo $lang["PATIENT_REPORT_MANAGEMENT"];?></td>
-		<td class="tcell-right-inactive"><span id="patients_treatmentstartdate"></span><?php echo($report->treatment_management)?><span id="patients_treatmentenddate"></span>
-        </td>
+		<td class="tcell-right-inactive"><?php echo($report->treatment_management)?></td>
     </tr>
 </table>
 <div class="content-spacer"></div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 		<td class="tcell-left-inactive text11"><?php echo $lang["PATIENT_REPORT_DOCTOR"];?></td>
-		<td class="tcell-right-inactive"><span id="patients_treatmentstartdate"></span><?php echo($report->treatment_doctor)?><span id="patients_treatmentenddate"></span>
-        </td>
+		<td class="tcell-right-inactive"><?php echo($report->treatment_doctor)?><?php echo($report->treatment_doctor_ct);?></td>
     </tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-		<td class="tcell-left-inactive text11"><?php echo $lang["PATIENT_REPORT_PROTOCOL2"];?></td>
-		<td class="tcell-right-inactive"><span id="patients_treatmentstartdate"></span><?php echo($report->treatment_treats)?><span id="patients_treatmentenddate"></span>
-        </td>
+		<td class="tcell-left-inactive text11"><?php if(CO_PRODUCT_VARIANT == 1) { echo $lang["PATIENT_TREATMENT_PRESCRIPTION_PHYSIO"]; } else { echo $lang["PATIENT_TREATMENT_PRESCRIPTION_THERAPY"]; }?></td>
+		<td class="tcell-right-inactive"><?php echo($report->treatment_treats)?></td>
     </tr>
 </table>
 <div class="content-spacer"></div>
@@ -105,7 +146,7 @@ if($report->tid == 0) {
     <td class="tcell-right"><?php if($report->canedit) { ?><textarea name="protocol" class="elastic"><?php echo(strip_tags($report->protocol));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($report->protocol)));?><?php } ?></td>
   </tr>
 </table>
-<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
+<!--<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
   <tr>
     <td class="tcell-left text11"><span class="<?php if($report->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["PATIENT_REPORT_TEXTFIELD2"];?></span></span></td>
     <td class="tcell-right"><?php if($report->canedit) { ?><textarea name="protocol2" class="elastic"><?php echo(strip_tags($report->protocol2));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($report->protocol2)));?><?php } ?></td>
@@ -117,7 +158,7 @@ if($report->tid == 0) {
     <td class="tcell-left-shorter text11"><span class="<?php if($report->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["PATIENT_REPORT_FEEDBACK"];?></span></span></td>
     <td class="tcell-right-nopadding"><?php if($report->canedit) { ?><input name="feedback" type="text" class="bg" value="<?php echo($report->feedback);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $report->feedback . '</span>'); } ?></td>
   </tr>
-</table>
+</table>-->
 <?php if($report->perms != "guest") { ?>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
