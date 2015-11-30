@@ -226,11 +226,21 @@ class PatientsReportsModel extends PatientsModel {
 		$array["recipient"] = $this->_contactsmodel->getUserList($array['recipient'],'patientsrecipient', "", $array["canedit"]);
 		$array["recipient_ct"] = empty($array["recipient_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['recipient_ct'];
 		
-		$qr = "SELECT lastname as r_lastname,firstname as r_firstname,title as r_title, title2 as r_title2, address_line1 as r_address_line1, address_postcode as r_address_postcode, address_town as r_address_town FROM co_users where id = '$recipient_print'";
-		$resultr = mysql_query($qr, $this->_db->connection);
-		$rowr = mysql_fetch_array($resultr);
-		foreach($rowr as $key => $val) {
-			$array[$key] = $val;
+		$array['r_title'] = '';
+		$array['r_title2'] = '';
+		$array['r_lastname'] = '';
+		$array['r_firstname'] = '';
+		$array['r_address_line1'] = '';
+		$array['r_address_postcode'] = '';
+		$array['r_address_town'] = '';
+		
+		if($recipient_print != "") {
+			$qr = "SELECT lastname as r_lastname,firstname as r_firstname,title as r_title, title2 as r_title2, address_line1 as r_address_line1, address_postcode as r_address_postcode, address_town as r_address_town FROM co_users where id = '$recipient_print'";
+			$resultr = mysql_query($qr, $this->_db->connection);
+			$rowr = mysql_fetch_array($resultr);
+			foreach($rowr as $key => $val) {
+				$array[$key] = $val;
+			}
 		}
 
 		/*if($option = 'prepareSendTo') {
@@ -361,7 +371,7 @@ function setDetailsTitle($pid,$id,$title,$reportdate) {
 		$now = gmdate("Y-m-d H:i:s");
 		$time = gmdate("Y-m-d H");
 		
-		$q = "INSERT INTO " . CO_TBL_PATIENTS_REPORTS . " set title = '" . $lang["PATIENT_REPORT_NEW"] . "', item_date='$now', pid = '$id', recipient = '$id',  created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+		$q = "INSERT INTO " . CO_TBL_PATIENTS_REPORTS . " set title = '" . $lang["PATIENT_REPORT_NEW"] . "', item_date='$now', pid = '$id',  created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id = mysql_insert_id();
 				
