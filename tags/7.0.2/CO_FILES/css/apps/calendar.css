@@ -1,0 +1,1000 @@
+#calendar-right { overflow-y: auto; }
+
+#calendar .module-bg-active {
+	border-top: 1px solid #ababab;
+	border-bottom: 1px solid #666;
+	background: #575757;
+}
+
+#calendar .ui-layout-west li > span {
+    color: #fff;
+}
+
+#calendar1, #calendar2, #calendar3 { padding:0; overflow: hidden !important; /* prevent scrollbars auto-added by Layout */}
+/*#calendar3 { display: block;}
+#calendar3 .scrolling-content { width: 325px !important;}
+
+.bin3-content { width: 325px;; background-color: #82aa0a; padding:0; overflow:hidden !important;}*/
+
+#calendar .ui-layout-west li>span:hover   { background-color: #333}
+#calendar .ui-layout-west li>span.active-link  { background-color: #333}
+#calendar .hover-bg  { background-color: #666}
+#calendar .hover-outline { border: 1px solid #666}
+
+#menu .app_calendar { }
+#menu .app_calendar:hover, #menu .app_calendar.active-app { 
+	border: 1px solid #383838;
+	border-top-color: #585858;
+	background: #5e5e5e;
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzVlNWU1ZSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMzODM4MzgiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+background: -moz-linear-gradient(top,  #5e5e5e 0%, #383838 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#5e5e5e), color-stop(100%,#383838));
+background: -webkit-linear-gradient(top,  #5e5e5e 0%,#383838 100%);
+background: -o-linear-gradient(top,  #5e5e5e 0%,#383838 100%);
+background: -ms-linear-gradient(top,  #5e5e5e 0%,#383838 100%);
+background: linear-gradient(to bottom,  #5e5e5e 0%,#383838 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5e5e5e', endColorstr='#383838',GradientType=0 );
+
+}
+
+
+#calendar .table-title, #calendar .textarea-title { 
+background-color: #e1f0af; }
+
+
+
+#calendar a.disabled{
+	background-position: 0px 0px
+}
+/*.table-content input.bg:hover, .table-content input.bg:focus {
+    border: 1px solid #82AA0A;
+}*/
+
+#calendar-right .tcell-left span { display: block; padding: 0 0 0 15px; }
+#calendar-right .tcell-left-short span { display: block; padding: 0 0 0 15px; }
+
+
+
+/*!
+ * FullCalendar v1.6.4 Stylesheet
+ * Docs & License: http://arshaw.com/fullcalendar/
+ * (c) 2013 Adam Shaw
+ */
+
+
+.fc {
+	direction: ltr;
+	text-align: left;
+	}
+	
+.fc table {
+	border-collapse: collapse;
+	border-spacing: 0;
+	}
+	
+html .fc,
+.fc table {
+	font-size: 11px;
+	}
+	
+.fc td,
+.fc th {
+	padding: 0;
+	vertical-align: top;
+	}
+.fc-mon.fc-widget-header, .fc-tue.fc-widget-header, .fc-wed.fc-widget-header, .fc-thu.fc-widget-header, .fc-fri.fc-widget-header {
+	background: #A5BFE1;
+}
+
+
+/* Header
+------------------------------------------------------------------------*/
+
+.fc-header td {
+	white-space: nowrap;
+	padding-top: 12px;
+	height: 32px;
+	}
+
+.fc-header-left {
+	width: 25%;
+	text-align: left;
+}
+	
+.fc-header-center {
+	text-align: center;
+	}
+	
+.fc-header-right {
+	width: 25%;
+	text-align: right;
+	padding-right: 16px !important;
+	}
+	
+.fc-header-title {
+	display: inline-block;
+	vertical-align: top;
+	}
+	
+.fc-header-title h2 {
+	margin-top: 0;
+	white-space: nowrap;
+	font-size: 18px;
+	color: #575757;
+	}
+	
+.fc .fc-header-space {
+	padding-left: 10px;
+	}
+	
+.fc-header .fc-button {
+	margin-bottom: 1em;
+	vertical-align: top;
+	}
+	
+/* buttons edges butting together */
+
+.fc-header .fc-button {
+	margin-right: -1px;
+	}
+	
+.fc-header .fc-corner-right,  /* non-theme */
+.fc-header .ui-corner-right { /* theme */
+	margin-right: 0; /* back to normal */
+	}
+	
+/* button layering (for border precedence) */
+	
+.fc-header .fc-state-hover,
+.fc-header .ui-state-hover {
+	z-index: 2;
+	}
+	
+.fc-header .fc-state-down {
+	z-index: 3;
+	}
+
+.fc-header .fc-state-active,
+.fc-header .ui-state-active {
+	z-index: 4;
+	}
+	
+	
+	
+/* Content
+------------------------------------------------------------------------*/
+	
+.fc-content {
+	clear: both;
+	zoom: 1; /* for IE7, gives accurate coordinates for [un]freezeContentHeight */
+	}
+	
+.fc-view {
+	width: 100%;
+	overflow: hidden;
+	}
+	
+	
+
+/* Cell Styles
+------------------------------------------------------------------------*/
+
+.fc-widget-header,    /* <th>, usually */
+.fc-widget-content {  /* <td>, usually */
+	border: 1px solid #808080;
+	}
+	
+.fc-state-highlight { /* <td> today cell */ /* TODO: add .fc-today to <th> */
+	background: #FAF5D7;
+	}
+	
+.fc-cell-overlay { /* semi-transparent rectangle while dragging */
+	background: #bce8f1;
+	opacity: .3;
+	filter: alpha(opacity=30); /* for IE */
+	}
+	
+
+
+/* Buttons
+------------------------------------------------------------------------*/
+
+.fc-button {
+	position: relative;
+	display: inline-block;
+	padding: 0 .6em;
+	overflow: hidden;
+	height: 1.9em;
+	line-height: 1.9em;
+	white-space: nowrap;
+	cursor: pointer;
+	}
+	
+.fc-state-default { /* non-theme */
+	border: 1px solid;
+	}
+
+.fc-state-default.fc-corner-left { /* non-theme */
+	border-top-left-radius: 4px;
+	border-bottom-left-radius: 4px;
+	}
+
+.fc-state-default.fc-corner-right { /* non-theme */
+	border-top-right-radius: 4px;
+	border-bottom-right-radius: 4px;
+	}
+
+/*
+	Our default prev/next buttons use HTML entities like &lsaquo; &rsaquo; &laquo; &raquo;
+	and we'll try to make them look good cross-browser.
+*/
+
+.fc-text-arrow {
+	margin: 0 .1em;
+	font-size: 2em;
+	font-family: "Courier New", Courier, monospace;
+	vertical-align: baseline; /* for IE7 */
+	}
+
+.fc-button-prev .fc-text-arrow,
+.fc-button-next .fc-text-arrow { /* for &lsaquo; &rsaquo; */
+	font-weight: bold;
+	}
+	
+/* icon (for jquery ui) */
+	
+.fc-button .fc-icon-wrap {
+	position: relative;
+	float: left;
+	top: 50%;
+	}
+	
+.fc-button .ui-icon {
+	position: relative;
+	float: left;
+	margin-top: -50%;
+	*margin-top: 0;
+	*top: -50%;
+	}
+	
+/*
+  button states
+  borrowed from twitter bootstrap (http://twitter.github.com/bootstrap/)
+*/
+
+.fc-state-default {
+	/*background-color: #f5f5f5;
+	background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));
+	background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
+	background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
+	background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
+	background-repeat: repeat-x;
+	border-color: #e6e6e6 #e6e6e6 #bfbfbf;
+	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	color: #333;
+	text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);*/
+	
+	-moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: #ffffff;
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUxJSIgc3RvcC1jb2xvcj0iI2VkZWRlZCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNhOWE5YTkiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+background: -moz-linear-gradient(top,  #ffffff 0%, #ffffff 50%, #ededed 51%, #a9a9a9 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(50%,#ffffff), color-stop(51%,#ededed), color-stop(100%,#a9a9a9));
+background: -webkit-linear-gradient(top,  #ffffff 0%,#ffffff 50%,#ededed 51%,#a9a9a9 100%);
+background: -o-linear-gradient(top,  #ffffff 0%,#ffffff 50%,#ededed 51%,#a9a9a9 100%);
+background: -ms-linear-gradient(top,  #ffffff 0%,#ffffff 50%,#ededed 51%,#a9a9a9 100%);
+background: linear-gradient(to bottom,  #ffffff 0%,#ffffff 50%,#ededed 51%,#a9a9a9 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#a9a9a9',GradientType=0 );
+    border-color: #666666 -moz-use-text-color #666666 #666666;
+    border-image: none;
+    border-radius: 0;
+    border-style: solid;
+    border-width: 1px;
+    color: #858585;
+    font-size: 11px;
+    height: 18px;
+    line-height: 18px;
+    width: 67px;
+	text-align: center;
+	
+}
+
+.fc-state-hover,
+.fc-state-down,
+.fc-state-active,
+.fc-state-disabled {
+	/*color: #333333;
+	background-color: #e6e6e6;*/
+	color: #fff;
+	border: 1px solid #666;
+	background: rgb(61,61,61); /* Old browsers */
+	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzNkM2QzZCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iIzc0NzQ3NCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUxJSIgc3RvcC1jb2xvcj0iIzdmN2Y3ZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM3ZjdmN2YiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top,  rgba(61,61,61,1) 0%, rgba(116,116,116,1) 50%, rgba(127,127,127,1) 51%, rgba(127,127,127,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(61,61,61,1)), color-stop(50%,rgba(116,116,116,1)), color-stop(51%,rgba(127,127,127,1)), color-stop(100%,rgba(127,127,127,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(61,61,61,1) 0%,rgba(116,116,116,1) 50%,rgba(127,127,127,1) 51%,rgba(127,127,127,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(61,61,61,1) 0%,rgba(116,116,116,1) 50%,rgba(127,127,127,1) 51%,rgba(127,127,127,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(61,61,61,1) 0%,rgba(116,116,116,1) 50%,rgba(127,127,127,1) 51%,rgba(127,127,127,1) 100%); /* IE10+ */
+	background: linear-gradient(top,  rgba(61,61,61,1) 0%,rgba(116,116,116,1) 50%,rgba(127,127,127,1) 51%,rgba(127,127,127,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3d3d3d', endColorstr='#7f7f7f',GradientType=0 ); /* IE6-8 */
+}
+
+.fc-state-hover {
+	/*color: #333333;
+	text-decoration: none;
+	background-position: 0 -15px;
+	-webkit-transition: background-position 0.1s linear;
+	   -moz-transition: background-position 0.1s linear;
+	     -o-transition: background-position 0.1s linear;
+	        transition: background-position 0.1s linear;*/
+			
+			
+			
+	color: #fff;
+	border: 1px solid #666;
+	background: rgb(61,61,61); /* Old browsers */
+	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzNkM2QzZCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iIzc0NzQ3NCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUxJSIgc3RvcC1jb2xvcj0iIzdmN2Y3ZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM3ZjdmN2YiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top,  rgba(61,61,61,1) 0%, rgba(116,116,116,1) 50%, rgba(127,127,127,1) 51%, rgba(127,127,127,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(61,61,61,1)), color-stop(50%,rgba(116,116,116,1)), color-stop(51%,rgba(127,127,127,1)), color-stop(100%,rgba(127,127,127,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(61,61,61,1) 0%,rgba(116,116,116,1) 50%,rgba(127,127,127,1) 51%,rgba(127,127,127,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(61,61,61,1) 0%,rgba(116,116,116,1) 50%,rgba(127,127,127,1) 51%,rgba(127,127,127,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(61,61,61,1) 0%,rgba(116,116,116,1) 50%,rgba(127,127,127,1) 51%,rgba(127,127,127,1) 100%); /* IE10+ */
+	background: linear-gradient(top,  rgba(61,61,61,1) 0%,rgba(116,116,116,1) 50%,rgba(127,127,127,1) 51%,rgba(127,127,127,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3d3d3d', endColorstr='#7f7f7f',GradientType=0 ); /* IE6-8 */
+}
+
+.fc-state-down,
+.fc-state-active {
+	/*background-color: #cccccc;
+	background-image: none;
+	outline: 0;
+	box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);*/
+	color: #fff;
+	border: 1px solid #666;
+	background: rgb(61,61,61); /* Old browsers */
+	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzNkM2QzZCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iIzc0NzQ3NCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUxJSIgc3RvcC1jb2xvcj0iIzdmN2Y3ZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM3ZjdmN2YiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top,  rgba(61,61,61,1) 0%, rgba(116,116,116,1) 50%, rgba(127,127,127,1) 51%, rgba(127,127,127,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(61,61,61,1)), color-stop(50%,rgba(116,116,116,1)), color-stop(51%,rgba(127,127,127,1)), color-stop(100%,rgba(127,127,127,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(61,61,61,1) 0%,rgba(116,116,116,1) 50%,rgba(127,127,127,1) 51%,rgba(127,127,127,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(61,61,61,1) 0%,rgba(116,116,116,1) 50%,rgba(127,127,127,1) 51%,rgba(127,127,127,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(61,61,61,1) 0%,rgba(116,116,116,1) 50%,rgba(127,127,127,1) 51%,rgba(127,127,127,1) 100%); /* IE10+ */
+	background: linear-gradient(top,  rgba(61,61,61,1) 0%,rgba(116,116,116,1) 50%,rgba(127,127,127,1) 51%,rgba(127,127,127,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3d3d3d', endColorstr='#7f7f7f',GradientType=0 ); /* IE6-8 */
+}
+
+.fc-state-disabled {
+	cursor: default;
+	/*background-image: none;
+	opacity: 0.65;
+	filter: alpha(opacity=65);
+	box-shadow: none;*/
+	color: #fff;
+	border: 1px solid #666;
+	background: rgb(61,61,61); /* Old browsers */
+	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzNkM2QzZCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iIzc0NzQ3NCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUxJSIgc3RvcC1jb2xvcj0iIzdmN2Y3ZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM3ZjdmN2YiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top,  rgba(61,61,61,1) 0%, rgba(116,116,116,1) 50%, rgba(127,127,127,1) 51%, rgba(127,127,127,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(61,61,61,1)), color-stop(50%,rgba(116,116,116,1)), color-stop(51%,rgba(127,127,127,1)), color-stop(100%,rgba(127,127,127,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(61,61,61,1) 0%,rgba(116,116,116,1) 50%,rgba(127,127,127,1) 51%,rgba(127,127,127,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(61,61,61,1) 0%,rgba(116,116,116,1) 50%,rgba(127,127,127,1) 51%,rgba(127,127,127,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(61,61,61,1) 0%,rgba(116,116,116,1) 50%,rgba(127,127,127,1) 51%,rgba(127,127,127,1) 100%); /* IE10+ */
+	background: linear-gradient(top,  rgba(61,61,61,1) 0%,rgba(116,116,116,1) 50%,rgba(127,127,127,1) 51%,rgba(127,127,127,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3d3d3d', endColorstr='#7f7f7f',GradientType=0 ); /* IE6-8 */
+	}
+
+.fc-button-prev {
+	margin-left: 59px;
+}
+.fc-button-next, .fc-button-prev {
+	width: 20px;
+}
+	
+
+/* Global Event Styles
+------------------------------------------------------------------------*/
+
+.fc-event-container > * {
+	z-index: 8;
+	}
+
+.fc-event-container > .ui-draggable-dragging,
+.fc-event-container > .ui-resizable-resizing {
+	z-index: 9;
+	}
+	 
+.fc-event {
+	/*border: 1px solid #A5BFE1;*/ /* default BORDER color */
+	background-color: #A5BFE1; /* default BACKGROUND color */
+	border: 0;
+	/*border-top: 1px solid #e1f0af !important;
+	border-left: 1px solid #e1f0af !important;
+	border-right: 1px solid #fff !important;*/
+	color: #fff;               /* default TEXT color */
+	font-size: 11px;
+	cursor: default;
+	overflow: hidden;
+	}
+
+a.fc-event {
+	text-decoration: none;
+	}
+	
+a.fc-event,
+.fc-event-draggable {
+	cursor: pointer;
+	}
+	
+.fc-rtl .fc-event {
+	text-align: right;
+	}
+
+.fc-event-inner {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	}
+
+
+.fc-event-time {
+		padding: 1px 3px 2px 3px;
+		display: inline-block;
+	}
+	
+.fc-event-title {
+		padding: 1px 3px 2px 3px;
+		overflow: hidden;
+	}
+	
+.fc-event-treatment .fc-event-time {
+		/*padding: 1px 16px 2px 3px;*/
+		display: inline-block;
+	}
+
+.fc-event-treatment .fc-event-title {
+		padding: 2px 16px 3px 3px;
+	}
+.fc-event-title {
+	font-weight: bold;
+	}
+	
+.fc .ui-resizable-handle {
+	display: block;
+	position: absolute;
+	z-index: 99999;
+	overflow: hidden; /* hacky spaces (IE6/7) */
+	font-size: 300%;  /* */
+	line-height: 50%; /* */
+	}
+	
+	
+	
+/* Horizontal Events
+------------------------------------------------------------------------*/
+
+.fc-event-hori {
+	border-width: 1px 0;
+	margin-bottom: 1px;
+	}
+
+.fc-ltr .fc-event-hori.fc-event-start,
+.fc-rtl .fc-event-hori.fc-event-end {
+	border-left-width: 1px;
+	/*border-top-left-radius: 3px;
+	border-bottom-left-radius: 3px;*/
+	}
+
+.fc-ltr .fc-event-hori.fc-event-end,
+.fc-rtl .fc-event-hori.fc-event-start {
+	border-right-width: 1px;
+	/*border-top-right-radius: 3px;
+	border-bottom-right-radius: 3px;*/
+	}
+	
+/* resizable */
+	
+.fc-event-hori .ui-resizable-e {
+	top: 0           !important; /* importants override pre jquery ui 1.7 styles */
+	right: -3px      !important;
+	width: 7px       !important;
+	height: 100%     !important;
+	cursor: e-resize;
+	}
+	
+.fc-event-hori .ui-resizable-w {
+	top: 0           !important;
+	left: -3px       !important;
+	width: 7px       !important;
+	height: 100%     !important;
+	cursor: w-resize;
+	}
+	
+.fc-event-hori .ui-resizable-handle {
+	_padding-bottom: 14px; /* IE6 had 0 height */
+	}
+	
+	
+	
+/* Reusable Separate-border Table
+------------------------------------------------------------*/
+
+table.fc-border-separate {
+	border-collapse: separate;
+	}
+	
+.fc-border-separate th,
+.fc-border-separate td {
+	border-width: 1px 0 0 1px;
+	}
+	
+.fc-border-separate th.fc-last,
+.fc-border-separate td.fc-last {
+	border-right-width: 1px;
+	}
+	
+.fc-border-separate tr.fc-last th,
+.fc-border-separate tr.fc-last td {
+	border-bottom-width: 1px;
+	}
+	
+.fc-border-separate tbody tr.fc-first td,
+.fc-border-separate tbody tr.fc-first th {
+	border-top-width: 0;
+	}
+	
+	
+
+/* Month View, Basic Week View, Basic Day View
+------------------------------------------------------------------------*/
+
+.fc-grid th {
+	text-align: center;
+	}
+
+.fc .fc-week-number {
+	width: 22px;
+	text-align: center;
+	}
+
+.fc .fc-week-number div {
+	padding: 0 2px;
+	}
+	
+.fc-grid .fc-day-number {
+	float: right;
+	padding: 0 2px;
+	}
+	
+.fc-grid .fc-other-month .fc-day-number {
+	opacity: 0.3;
+	filter: alpha(opacity=30); /* for IE */
+	/* opacity with small font can sometimes look too faded
+	   might want to set the 'color' property instead
+	   making day-numbers bold also fixes the problem */
+	}
+	
+.fc-grid .fc-day-content {
+	clear: both;
+	padding: 0 0 0 1px; /* distance between events and day edges */
+	}
+	
+/* event styles */
+	
+.fc-grid .fc-event-time {
+	font-weight: normal;
+	}
+	
+/* right-to-left */
+	
+.fc-rtl .fc-grid .fc-day-number {
+	float: left;
+	}
+	
+.fc-rtl .fc-grid .fc-event-time {
+	float: right;
+	}
+	
+	
+
+/* Agenda Week View, Agenda Day View
+------------------------------------------------------------------------*/
+
+.fc-agenda table {
+	border-collapse: separate;
+	}
+	
+.fc-agenda-days th {
+	text-align: center;
+	}
+	
+.fc-agenda .fc-agenda-axis {
+	width: 50px;
+	padding: 0 4px;
+	vertical-align: middle;
+	text-align: right;
+	white-space: nowrap;
+	font-weight: normal;
+	}
+
+.fc-agenda .fc-week-number {
+	/*font-weight: bold;*/
+	}
+	
+.fc-agenda .fc-day-content {
+	/*padding: 2px 2px 1px;*/
+	padding: 1px 0 1px 1px;
+	}
+	
+/* make axis border take precedence */
+	
+.fc-agenda-days .fc-agenda-axis {
+	border-right-width: 1px;
+	}
+	
+.fc-agenda-days .fc-col0 {
+	border-left-width: 0;
+	}
+	
+/* all-day area */
+	
+.fc-agenda-allday th {
+	border-width: 0 1px;
+	}
+	
+.fc-agenda-allday .fc-day-content {
+	min-height: 18px; /* TODO: doesnt work well in quirksmode */
+	_height: 18px;
+	}
+	
+/* divider (between all-day and slots) */
+.fc-agenda-divider-inner {
+	height: 2px;
+	overflow: hidden;
+	}
+	
+.fc-widget-header .fc-agenda-divider-inner {
+	/*background: #eee;*/
+	}
+	
+/* slot rows */
+	
+.fc-agenda-slots th {
+	border-width: 1px 1px 0;
+	}
+	
+.fc-agenda-slots td {
+	border-width: 1px 0 0;
+	background: none;
+	}
+	
+.fc-agenda-slots td div {
+	height: 16px;
+	}
+	
+.fc-agenda-slots tr.fc-slot0 th,
+.fc-agenda-slots tr.fc-slot0 td {
+	border-top-width: 0;
+	}
+
+
+.fc-agenda-slots tr.fc-minor td {
+	/*border-top-style: dotted;*/
+	border-top-color: #dfdfdf;
+	border-style: dotted;
+	}
+.fc-agenda-slots tr.fc-minor th {
+	/*border-top-style: dotted;*/
+	border-top-color: #fff;
+	border-style: dotted;
+	}
+	
+.fc-agenda-slots tr.fc-minor th.ui-widget-header {
+	*border-top-style: solid; /* doesn't work with background in IE6/7 */
+	}
+	
+
+
+/* Vertical Events
+------------------------------------------------------------------------*/
+
+.fc-event-vert {
+	border-width: 0 1px;
+	}
+
+.fc-event-vert.fc-event-start {
+	/*border-top-width: 1px;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;*/
+	}
+
+.fc-event-vert.fc-event-end {
+	/*border-bottom-width: 1px;
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;*/
+	}
+	
+.fc-event-vert .fc-event-time {
+	white-space: nowrap;
+	font-size: 10px;
+	}
+
+.fc-event-vert .fc-event-inner {
+	position: relative;
+	z-index: 2;
+	}
+	
+.fc-event-vert .fc-event-bg { /* makes the event lighter w/ a semi-transparent overlay  */
+	/*position: absolute;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: #fff;
+	opacity: .25;
+	filter: alpha(opacity=25);*/
+	}
+	
+.fc .ui-draggable-dragging .fc-event-bg, /* TODO: something nicer like .fc-opacity */
+.fc-select-helper .fc-event-bg {
+	display: none\9; /* for IE6/7/8. nested opacity filters while dragging don't work */
+	}
+	
+/* resizable */
+	
+.fc-event-vert .ui-resizable-s {
+	bottom: 0        !important; /* importants override pre jquery ui 1.7 styles */
+	width: 100%      !important;
+	height: 3px      !important;
+	overflow: hidden !important;
+	line-height: 3px !important;
+	font-size: 11px  !important;
+	font-family: monospace;
+	text-align: center;
+	cursor: s-resize;
+	}
+	
+.fc-agenda .ui-resizable-resizing { /* TODO: better selector */
+	_overflow: hidden;
+	}
+
+.fc-event-treatment { background-color: #A5BFE1 !important; border-color: #A5BFE1 !important;}
+.fc-event-treatment-icon { position: absolute; z-index: 9; top: 1px; right: 0; width: 16px; height: 15px;
+/*background: url("../../img/icons.png") no-repeat scroll -320px -20px transparent;*/
+}
+.fc-event-treatment-icon img{ margin-left: 2px;
+}
+.fc-event-treatment-housecall { background-color: #DCD2FF !important; /*border-color: #A5BFE1 !important;*/}
+.fc-sat, .fc-sun { background-color: #E6EDF7;}
+	
+.calendarDialog .ui-corner-all {
+	border-radius: 0;
+}
+
+.calendarDialog { 
+background-color: #2D2D2D !important; 
+border: 1px solid #2D2D2D;
+border-radius: 6px;
+box-shadow: 0;
+overflow: visible;
+}
+
+.calendarDialog .ui-widget-header { 
+border-radius: 4px 4px 4px 4px;
+    color: #d3d3d3;
+    height: 25px;
+    line-height: 24px;
+    overflow: hidden;
+    text-align: center;
+	padding: 1px 4px;
+	background: #949494;
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjOTQ5NDk0IiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjNGU0ZTRlIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iNTElIiBzdG9wLWNvbG9yPSIjMWYxZjFmIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzFmMWYxZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgPC9saW5lYXJHcmFkaWVudD4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);
+background: -moz-linear-gradient(top,  #949494 0, #4e4e4e 50%, #1f1f1f 51%, #1f1f1f 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0,#949494), color-stop(50%,#4e4e4e), color-stop(51%,#1f1f1f), color-stop(100%,#1f1f1f));
+background: -webkit-linear-gradient(top,  #949494 0,#4e4e4e 50%,#1f1f1f 51%,#1f1f1f 100%);
+background: -o-linear-gradient(top,  #949494 0,#4e4e4e 50%,#1f1f1f 51%,#1f1f1f 100%);
+background: -ms-linear-gradient(top,  #949494 0,#4e4e4e 50%,#1f1f1f 51%,#1f1f1f 100%);
+background: linear-gradient(to bottom,  #949494 0,#4e4e4e 50%,#1f1f1f 51%,#1f1f1f 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#949494', endColorstr='#1f1f1f',GradientType=0 );
+}
+
+.calendarDialog .ui-tabs-nav.ui-widget-header {
+	background: none;
+	text-align: left;
+	height: 46px;
+}
+
+.calendarDialog .ui-dialog-title {
+	padding: 0;
+}
+
+
+
+.calendarDialog .ui-widget-content { 
+/*border-right: 3px solid #6699cc;
+border-bottom: 3px solid #6699cc;
+border-left: 3px solid #6699cc;
+border-radius:  0 0 8px 8px;*/
+    background-color: #D8D8D8;
+    border-radius: 3px;
+    height: auto;
+    margin: 0 3px 2px;
+    padding: 10px 0px;
+    width: 268px;
+}
+
+.calendarDialog .ui-state-hover, .calendarDialog .ui-state-focus { background-color: transparent !important; border: 0;}
+
+.calendarDialog span.coButton  { 
+color: #fff; border-radius: 4px; font-weight: bold; 
+border: 1px solid #436593;
+background: #a0bee9; /* Old browsers */
+/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2EwYmVlOSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iIzZhOWFkZCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUxJSIgc3RvcC1jb2xvcj0iIzY0OTZkYyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM2NDk2ZGMiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+background: -moz-linear-gradient(top,  #a0bee9 0%, #6a9add 50%, #6496dc 51%, #6496dc 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#a0bee9), color-stop(50%,#6a9add), color-stop(51%,#6496dc), color-stop(100%,#6496dc)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #a0bee9 0%,#6a9add 50%,#6496dc 51%,#6496dc 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #a0bee9 0%,#6a9add 50%,#6496dc 51%,#6496dc 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #a0bee9 0%,#6a9add 50%,#6496dc 51%,#6496dc 100%); /* IE10+ */
+background: linear-gradient(top,  #a0bee9 0%,#6a9add 50%,#6496dc 51%,#6496dc 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a0bee9', endColorstr='#6496dc',GradientType=0 ); /* IE6-8 */
+
+
+}
+.calendarDialog span.coButton:hover   { border: 1px solid #fff; color: #fff; cursor: pointer; }
+.calendarDialog input { border: 0;}
+.calendarDialog textarea { border: 0; height: 140px;}
+
+.calendarDialog .content-nav         {  display: block; }
+.calendarDialog .content-nav:hover   { color: #000; cursor: pointer; }
+
+.calendarDialog .fieldset {
+    color: #666666;
+	padding: 0px 12px;
+}
+.calendarDialog .fieldset label {
+    display: inline-block;
+    line-height: 23px;
+    padding-right: 10px;
+}
+.calendarDialog .fieldset input {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #B2B2B2;
+    border-radius: 4px;
+    display: inline-block;
+    height: 25px;
+    margin-bottom: 8px;
+    padding-left: 10px;
+    width: 223px;
+}
+.calendarDialog .fieldset textarea {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #B2B2B2;
+    border-radius: 4px;
+    height: 70px;
+    margin-bottom: 4px;
+    padding: 10px;
+    width: 273px;
+}
+
+
+.calendarDialog .fieldset2 {
+    color: #666666;
+	font-size: 13px;
+	padding: 0px 12px;
+}
+.calendarDialog .fieldset2.whitebg {
+    background-color: #fff;
+	border-top: 1px solid #B2B2B2;
+}
+.calendarDialog .fieldborder-bottom {
+	border-bottom: 1px solid #B2B2B2;
+}
+
+.calendarDialog .fieldset2 label {
+    display: inline-block;
+    line-height: 25px;
+    padding-right: 10px;
+    width: 107px;
+	font-size: 11px;
+}
+
+.calendarDialog .fieldset2 input {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 0;
+    display: inline-block;
+    height: 25px;
+    margin: 0;
+    padding: 0;
+    width: 145px;
+	font-size: 13px;
+}
+.calendarDialog .fieldset2 input#event-title, .calendarDialog .fieldset2 input#event-lastname, .calendarDialog .fieldset2 input#event-firstname, .calendarDialog .fieldset2 input#event-phone, .calendarDialog .fieldset2 input#event-email, .calendarDialog .fieldset2 input#event-treatmenttitle {
+    display: inline-block; width: 165px; padding: 0 10px 0 10px; height: 23px; background: #fff; border: 1px solid #b2b2b2; border-radius: 4px; 
+	margin: 1px 0;
+}
+
+
+.calendarDialog .fieldset2 input[type=checkbox]{
+    height: auto;
+    margin-top: 6px;
+    width: auto;
+}
+.calendarDialog .fieldset2 input.short {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #B2B2B2;
+    border-radius: 4px;
+    display: inline-block;
+    height: 25px;
+    margin-bottom: 8px;
+    padding: 0 10px;
+    width: 30px;
+}
+.calendarDialog .fieldset2 div.contacts {
+    color: #000000;
+    float: right;
+    margin: 4px 0 1px 0;
+    min-height: 15px;
+    width: 175px;
+}
+.calendarDialog .fieldset2 div.dates {
+    float: right;
+    width: 175px;
+	
+}
+.calendarDialog .fieldset2 div.contacts a {
+    color: #000000;
+}
+.calendarDialog .fieldset2 div.contacts a:hover {
+    color: #82AA0B;
+    cursor: pointer;
+}
+.calendarDialog  .coButton-outer { margin: 0 13px 0 12px;}
+.calendarDialog .coButton.delete {
+    background: linear-gradient(to bottom, #F7B599 0%, #F18050 50%, #EB4600 51%, #EB4600 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border: 1px solid #EB4600;
+    color: #FFFFFF;
+}
+
+#calendar span.hasDescription {
+    background: url("../../img/icons.png") no-repeat scroll -200px -75px rgba(0, 0, 0, 0);
+    height: 10px;
+    width: 8px;
+	display: inline-block;
+}
+
+#calendar-right .fc-agenda-slots tr:hover, #calendar-right .fc-agenda-slots tr:active { background:#e5e5e5; opacity: 0.5;}
+
+#calendar-right .timeline {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: #EB4600;
+    border-image: none;
+    border-right: medium none;
+    border-style: solid none none;
+    border-width: 1px medium medium;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    width: 100%;
+    z-index: 999;
+}
+
+.folderListColorBox { position: absolute; top: 3px; right: 4px; width: 22px; height: 16px; }
+.globalColor0 { background: #6EAAFF; }
+.globalColor1 { background: #FF7878; }
+.globalColor2 { background: #8CD264; }
+.globalColor3 { background: #FFD41D; }
+.globalColor4 { background: #D2B4FF; }
+.globalColor5 { background: #FF9E1F; }
+.globalColor6 { background: #64CCC9; }
+.globalColor7 { background: #FF83FF; }
+.globalColor8 { background: #9999FF; }
+.globalColor9 { background: #BCBCBC; }
