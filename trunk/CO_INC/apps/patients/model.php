@@ -224,7 +224,7 @@ class PatientsModel extends Model {
    
    
    
-     function getFolderDetailsInvoices($id, $view) {
+  function getFolderDetailsInvoices($id, $view) {
 		global $session, $contactsmodel, $patientsControllingModel, $lang;
 		
 		switch($view) {
@@ -252,7 +252,7 @@ class PatientsModel extends Model {
 			$access = " and (b.id IN (" . $adminPerm . ") or (b.id IN (" . $guestPerm . ") and a.access_invoice='1'))";
 	  	}
 		
-		$q = "SELECT a.id,a.title,a.invoice_date,a.invoice_number,a.status_invoice, a.discount, a.vat, b.id as pid, b.management, CONCAT(c.lastname,' ',c.firstname) as patient FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE a.status='2' and a.pid=b.id and b.folder='$id' and b.cid=c.id and a.bin='0' and b.bin='0'" . $access . " ORDER BY " . $order;
+		$q = "SELECT a.id,a.title,a.invoice_date,a.invoice_number,a.status_invoice, a.discount, a.vat, a.payment_type, b.id as pid, b.management, CONCAT(c.lastname,' ',c.firstname) as patient FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE a.status='2' and a.pid=b.id and b.folder='$id' and b.cid=c.id and a.bin='0' and b.bin='0'" . $access . " ORDER BY " . $order;
 		//echo $q;
 		
 		
@@ -269,6 +269,9 @@ class PatientsModel extends Model {
 		$array["management"] = $contactsmodel->getUserListPlain($array['management']);
 		
 		switch($array["status_invoice"]) {
+			case 3:
+				$array["status_invoice_class"] = 'barchart_color_not_finished';
+			break;
 			case 2:
 				$array["status_invoice_class"] = 'barchart_color_finished';
 			break;
@@ -283,7 +286,7 @@ class PatientsModel extends Model {
 		// get the tasks
 		$array['totalcosts'] = 0;
 		$array['totalmin'] = 0;
-		$qt = "SELECT type FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where mid = '$id' and bin='0' ORDER BY item_date ASC";
+		$qt = "SELECT type FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where status='1' and mid = '$id' and bin='0' ORDER BY item_date ASC";
 		$resultt = mysql_query($qt, $this->_db->connection);
 		$PatientsTreatmentsModel = new PatientsTreatmentsModel();
 		if(mysql_num_rows($resultt) > 0) {
@@ -340,6 +343,7 @@ class PatientsModel extends Model {
 		$start = $this->_date->formatDate($start, "Y-m-d");
 		$end = $this->_date->formatDate($end, "Y-m-d");
 		$calctotal = 0;
+		$calctotalmin = 0;
 		$management = "b.management='$who' and ";
 		if($who == 0) {
 			$management = '';
@@ -349,7 +353,7 @@ class PatientsModel extends Model {
 			$folder = '';
 		}
 		
-		$q = "SELECT a.id,a.title,a.invoice_date,a.status_invoice, a.discount, b.id as pid, b.folder, b.management, CONCAT(c.lastname,' ',c.firstname) as patient FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE $management $folder a.invoice_date >= '$start' and a.invoice_date <= '$end' and a.status='2' and a.pid=b.id and b.cid=c.id and a.bin='0' and b.bin='0'";
+		$q = "SELECT a.id,a.title,a.invoice_date,a.status_invoice, a.invoice_number, a.payment_type, a.discount, b.id as pid, b.folder, b.management, CONCAT(c.lastname,' ',c.firstname) as patient FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE $management $folder a.invoice_date >= '$start' and a.invoice_date <= '$end' and a.status='2' and status_invoice !='3' and a.pid=b.id and b.cid=c.id and a.bin='0' and b.bin='0'";
 		
 		$result = mysql_query($q, $this->_db->connection);
 		if(mysql_num_rows($result) < 1) {
@@ -383,16 +387,20 @@ class PatientsModel extends Model {
 		
 		// get the tasks
 		$array['totalcosts'] = 0;
-		$qt = "SELECT type FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where mid = '$id' and bin='0' ORDER BY item_date ASC";
+		$array['totalmin'] = 0;
+		$qt = "SELECT type FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where status='1' and mid = '$id' and bin='0' ORDER BY item_date ASC";
 		$resultt = mysql_query($qt, $this->_db->connection);
 		$PatientsTreatmentsModel = new PatientsTreatmentsModel();
 		if(mysql_num_rows($resultt) > 0) {
 		while($rowt = mysql_fetch_array($resultt)) {
 			if($rowt["type"] == '') {
+				$mins = 0;
 				$costs = 0;
 			} else {
+				$mins = $PatientsTreatmentsModel->getTreatmentTypeMin($rowt["type"]);
 				$costs = $PatientsTreatmentsModel->getTreatmentTypeCosts($rowt["type"]);
 			}
+			$array['totalmin'] += $mins;
 			$array['totalcosts'] += $costs;
 		}
 		}
@@ -403,18 +411,183 @@ class PatientsModel extends Model {
 		}
 		$calctotal += $array['totalcosts'];
 		$array['totalcosts'] = number_format($array['totalcosts'],2,',','.');
+		$calctotalmin += $array['totalmin'];
+		settype($array['totalmin'], 'integer');
+		$hours = floor($array['totalmin'] / 60);
+		$minutes = ($array['totalmin'] % 60);
+		
+		$array['totalmin'] = sprintf('%02d:%02d h', $hours, $minutes);
 		
 		$invoices[] = new Lists($array);
 		
 		}
 		$calctotal = number_format($calctotal,2,',','.');
+		settype($calctotalmin, 'integer');
+		$totalhours = floor($calctotalmin / 60);
+		$totalminutes = ($calctotalmin % 60);
+		$calctotalmin = sprintf('%02d:%02d h', $totalhours, $totalminutes);
 		
 		$access = "guest";
 		  if($session->isSysadmin()) {
 			  $access = "sysadmin";
 		  }
 		
-		$arr = array("calctotal" => $calctotal, "invoices" => $invoices, "access" => $access, "manager" => $manager);
+		$arr = array("calctotal" => $calctotal, "calctotalmin" => $calctotalmin, "invoices" => $invoices, "access" => $access, "manager" => $manager);
+		return $arr;
+	}
+	
+	
+	function getFolderDetailsBelegeResults($id,$who,$start,$end) {
+		global $session, $system, $contactsmodel, $patientsControllingModel, $lang;
+		
+		$start = $this->_date->formatDate($start, "Y-m-d");
+		$end = $this->_date->formatDate($end, "Y-m-d");
+		$calctotal = 0;
+		//$calctotalmin = 0;
+		$zahlungen = 0;
+		$storno = 0;
+		$management = "b.management='$who' and ";
+		if($who == 0) {
+			$management = '';
+		}
+		$folder = "b.folder='$id' and ";
+		if($id == 0) {
+			$folder = '';
+		}
+		// first get all vat numbers
+		$q = "SELECT DISTINCT(a.vat) FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE $management $folder a.invoice_date >= '$start' and a.invoice_date <= '$end' and a.status='2' and payment_type='Barzahlung' and a.pid=b.id and b.cid=c.id and a.bin='0' and b.bin='0' ORDER BY a.vat ASC";
+		$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result) < 1) {
+			return false;
+		}
+		
+		// select all Belege
+		$i = 0;
+		while($row = mysql_fetch_array($result)) {
+			$vat = $row['vat'];
+			$invoices[$i] = array();
+			$invoices[$i]['vat'] = $vat;
+			$invoices[$i]['netto'] = 0;
+			$invoices[$i]['vat_sum'] = 0;
+			$invoices[$i]['brutto'] = 0;
+			$qb = "SELECT a.id,a.title,a.invoice_date,a.status_invoice, a.vat, a.invoice_number, a.payment_type, a.beleg_nummer, a.discount, b.id as pid, b.folder, b.management, CONCAT(c.lastname,' ',c.firstname) as patient FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE $management $folder a.vat='$vat' and a.invoice_date >= '$start' and a.invoice_date <= '$end' and a.status='2' and payment_type='Barzahlung' and a.pid=b.id and b.cid=c.id and a.bin='0' and b.bin='0' ORDER BY beleg_nummer DESC";
+			$resultb = mysql_query($qb, $this->_db->connection);
+			if(mysql_num_rows($resultb) < 1) {
+				return false;
+			}
+			//$invoices[$i]['zahlungen'] = mysql_num_rows($resultb);
+			$j = 0;
+			while($rowb = mysql_fetch_array($resultb)) {
+				foreach($rowb as $key => $val) {
+					$array[$key] = $val;
+				}
+				$zahlungen++;
+				if($array["status_invoice"] == 3) {
+					$storno++;
+				}
+				$id = $array["id"];
+				$array["invoice_date"] = $this->_date->formatDate($array["invoice_date"],CO_DATE_FORMAT);
+				$array["management"] = $contactsmodel->getUserListPlain($array['management']);
+				$manager = $array["management"];
+				$array["showmanagertoitem"] = false;
+				if($who == 0) {
+					//$array["management"] = "";
+					$manager = "";
+					$array["showmanagertoitem"] = true;
+				}
+				switch($array["status_invoice"]) {
+					case 2:
+						$array["status_invoice_class"] = 'barchart_color_finished';
+					break;
+					case 1:
+						$array["status_invoice_class"] = 'barchart_color_inprogress';
+						
+					break;
+					default:
+						$array["status_invoice_class"] = 'barchart_color_planned';
+				}
+				
+				// get the tasks
+				$vatcalctotal = 0;
+				
+				$array['beleg_nummer'] = $system->formatBelegNummer($array['beleg_nummer']);
+				
+				$array['totalcosts'] = 0;
+				$array['totalmin'] = 0;
+				$qt = "SELECT type FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where status='1' and  mid = '$id' and bin='0' ORDER BY item_date ASC";
+				$resultt = mysql_query($qt, $this->_db->connection);
+				$PatientsTreatmentsModel = new PatientsTreatmentsModel();
+				if(mysql_num_rows($resultt) > 0) {
+					while($rowt = mysql_fetch_array($resultt)) {
+						if($rowt["type"] == '') {
+							$mins = 0;
+							$costs = 0;
+						} else {
+							$mins = $PatientsTreatmentsModel->getTreatmentTypeMin($rowt["type"]);
+							$costs = $PatientsTreatmentsModel->getTreatmentTypeCosts($rowt["type"]);
+						}
+						$array['totalmin'] += $mins;
+						$array['totalcosts'] += $costs;
+					}
+				}
+				if($array['discount'] != 0) {
+					$array['discount_costs'] = ($array['totalcosts']/100)*$array['discount'];
+					$array['discount_costs'] = number_format($array['discount_costs'],2,',','.');
+					$array['totalcosts'] = $array['totalcosts']-(($array['totalcosts']/100)*$array['discount']);
+				}
+				$array['vat_costs'] = 0;
+				if($array['vat'] != 0) {
+					$array['vat_costs'] = ($array['totalcosts']/100)*$array['vat'];
+					$invoices[$i]['vat_sum'] += $array['vat_costs'];
+					$array['vat_costs'] = number_format($array['vat_costs'],2,',','.');
+					//$array['totalcosts'] = $array['totalcosts']+(($array['totalcosts']/100)*$array['vat']);
+				}
+				//$calctotal += $array['totalcosts'];
+				if($array['status_invoice'] != 3) {
+				$vatcalctotal += $array['totalcosts'];
+				$invoices[$i]['netto'] += $vatcalctotal;
+				}
+				//
+				//$invoices[$i]['netto'] += number_format($invoices[$i]['netto'],2,',','.');
+				$array['totalcosts'] = number_format($array['totalcosts'],2,',','.');
+				//$calctotalmin += $array['totalmin'];
+				//settype($array['totalmin'], 'integer');
+				//$hours = floor($array['totalmin'] / 60);
+				//$minutes = ($array['totalmin'] % 60);
+				
+				//$array['totalmin'] = sprintf('%02d:%02d h', $hours, $minutes);
+				//print_r($array);
+				$invoices[$i]['item'][$j] = new Lists($array);
+				$j++;
+			}
+			$invoices[$i]['brutto'] = $invoices[$i]['netto']+$invoices[$i]['vat_sum'];
+			$calctotal += $invoices[$i]['brutto'];
+			$invoices[$i]['brutto'] = number_format($invoices[$i]['brutto'],2,',','.');
+			$invoices[$i]['netto'] = number_format($invoices[$i]['netto'],2,',','.');
+			$invoices[$i]['vat_sum'] = number_format($invoices[$i]['vat_sum'],2,',','.');
+		//$invoices[$i]['netto'] += number_format($invoices[$i]['netto'],2,',','.');
+		//$array['totalcosts'] = $array['totalcosts']
+		$i++;
+		}
+		
+		$calctotal = number_format($calctotal,2,',','.');
+		//$invoices[$i]['netto'] += number_format($invoices[$i]['netto'],2,',','.');
+		/*
+		$calctotal = number_format($calctotal,2,',','.');
+		settype($calctotalmin, 'integer');
+		$totalhours = floor($calctotalmin / 60);
+		$totalminutes = ($calctotalmin % 60);
+		$calctotalmin = sprintf('%02d:%02d h', $totalhours, $totalminutes);
+		*/
+		$access = "guest";
+		  if($session->isSysadmin()) {
+			  $access = "sysadmin";
+		  }
+		
+		//$arr = array("calctotal" => $calctotal, "calctotalmin" => $calctotalmin, "invoices" => $invoices, "access" => $access, "manager" => $manager);
+		
+		
+		$arr = array("calctotal" => $calctotal, "zahlungen" => $zahlungen, "storno" => $storno, "invoices" => $invoices, "access" => $access, "manager" => $manager);
 		return $arr;
 	}
 	
@@ -2828,7 +3001,7 @@ function createDuplicatePatientFromCalendar($id,$folder,$management) {
 		//$q = "SELECT id, CONCAT(lastname,' ',firstname) as label from " . CO_TBL_USERS . " where (lastname like '%$term%' or firstname like '%$term%') and bin ='0' and invisible = '0'";
 		//$q = "SELECT b.id, CONCAT(a.lastname,' ',a.firstname,', ',b.title) as label from " . CO_TBL_USERS . " as a, " . CO_TBL_PATIENTS_TREATMENTS . " as b, " . CO_TBL_PATIENTS . " as c WHERE  b.pid = c.id and c.cid=a.id and (a.lastname like '%$term%' or a.firstname like '%$term%' or b.title like '%$term%') and a.bin ='0' and b.bin='0' and a.invisible = '0'";
 		
-		$q = "SELECT b.id, CONCAT(a.lastname,' ',a.firstname,', ',b.title) as label from " . CO_TBL_USERS . " as a, " . CO_TBL_PATIENTS_TREATMENTS . " as b, " . CO_TBL_PATIENTS . " as c WHERE  b.pid = c.id and c.cid=a.id and (a.lastname like '%$term%' or a.firstname like '%$term%') and a.bin ='0' and b.bin='0' and a.invisible = '0'";
+		$q = "SELECT b.id, CONCAT(a.lastname,' ',a.firstname,', ',b.title) as label from " . CO_TBL_USERS . " as a, " . CO_TBL_PATIENTS_TREATMENTS . " as b, " . CO_TBL_PATIENTS . " as c WHERE  b.pid = c.id and c.cid=a.id and (a.lastname like '%$term%' or a.firstname like '%$term%') and a.bin ='0' and b.status_invoice = '0' and b.bin='0' and a.invisible = '0'";
 		
 		$result = mysql_query($q, $this->_db->connection);
 		$num=mysql_affected_rows();
@@ -2857,7 +3030,7 @@ function createDuplicatePatientFromCalendar($id,$folder,$management) {
 		$users_arr = "";
 		foreach ($users_string as &$value) {
 			//$q = "SELECT b.id, LEFT(CONCAT(a.lastname,' ',LEFT(a.firstname,1),'., ',b.title),31) as label from " . CO_TBL_USERS . " as a, " . CO_TBL_PATIENTS_TREATMENTS . " as b, " . CO_TBL_PATIENTS . " as c WHERE b.id='$value' and b.pid = c.id and c.cid=a.id and a.bin ='0' and b.bin='0' and a.invisible = '0'";
-			$q = "SELECT b.id, CONCAT(a.lastname,' ',a.firstname,', ',b.title) as label from " . CO_TBL_USERS . " as a, " . CO_TBL_PATIENTS_TREATMENTS . " as b, " . CO_TBL_PATIENTS . " as c WHERE b.id='$value' and b.pid = c.id and c.cid=a.id and a.bin ='0' and b.bin='0' and a.invisible = '0'";
+			$q = "SELECT b.id, CONCAT(a.lastname,' ',a.firstname,', ',b.title) as label from " . CO_TBL_USERS . " as a, " . CO_TBL_PATIENTS_TREATMENTS . " as b, " . CO_TBL_PATIENTS . " as c WHERE b.id='$value' and b.pid = c.id and c.cid=a.id and a.bin ='0' and b.bin='0' and b.status_invoice = '0' and a.invisible = '0'";
 			$result_user = mysql_query($q, $this->_db->connection);
 			if(mysql_num_rows($result_user) > 0) {
 				while($row_user = mysql_fetch_assoc($result_user)) {

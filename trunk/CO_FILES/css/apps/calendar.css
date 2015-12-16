@@ -767,6 +767,8 @@ table.fc-border-separate {
 .fc-event-treatment-icon { position: absolute; z-index: 9; top: 1px; right: 0; width: 16px; height: 15px;
 /*background: url("../../img/icons.png") no-repeat scroll -320px -20px transparent;*/
 }
+.fc-event-treatment-icon-active { background-color: red !important;}
+/*.fc-event-treatment-active { background-color: red !important; border-color: red !important;}*/
 .fc-event-treatment-icon img{ margin-left: 2px;
 }
 .fc-event-treatment-housecall { background-color: #DCD2FF !important; /*border-color: #A5BFE1 !important;*/}

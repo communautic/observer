@@ -19,6 +19,7 @@ $lang["PATIENT_FOLDER_TAB_INVOICES_PATIENT"] = 'Patient';
 $lang["PATIENT_FOLDER_TAB_INVOICES_NUMBER"] = 'Nummer';
 $lang["PATIENT_FOLDER_TAB_INVOICES_STATUS"] = 'Status';
 $lang["PATIENT_FOLDER_TAB_REVENUE"] = 'Umsatzberechnung';
+$lang["PATIENT_FOLDER_TAB_BELEGE"] = 'Belegarchiv';
 $lang["PATIENT_FOLDER_TAB_FILTER"] = 'Datenfilter';
 $lang["PATIENT_FOLDER_TAB_THERAPIST"] = 'Betreuer';
 $lang["PATIENT_FOLDER_TAB_CALCULATE"] = 'berechnen';
@@ -62,6 +63,9 @@ $lang["PATIENT_FOLDER_HELP"] = 'manual_patienten_ordner.pdf';
 $lang["PRINT_PATIENT_MANUAL"] = 'patientenakt.png';
 $lang["PRINT_PATIENT"] = 'patient.png';
 $lang["PRINT_PATIENT_FOLDER"] = 'patientenliste.png';
+$lang["PRINT_PATIENT_RECHNUNGEN"] = 'rechnungen.png';
+$lang["PRINT_PATIENT_UMSATZ"] = 'umsatzergebnis.png';
+$lang["PRINT_PATIENT_BELEGE"] = 'belegarchiv.png';
 
 // Dektop Widget
 $lang["PATIENT_WIDGET_NO_ACTIVITY"]		=	'Keine aktuellen Benachrichtigungen';

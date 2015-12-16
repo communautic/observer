@@ -36,12 +36,14 @@
 	</tr>
 </table>
 <?php } ?>
+<?php if(!empty($treatment->insurer)) { ?>
 <table width="100%" class="standard">
 	<tr>
 		<td class="tcell-left"><?php echo $lang["PATIENT_INSURER"];?></td>
 		<td><?php echo($treatment->insurer);?><br /><?php echo($treatment->insurer_ct);?></td>
 	</tr>
 </table>
+<?php } ?>
 <?php if(!empty($treatment->number_insurer)) { ?>
 <table width="100%" class="standard"> 
    <tr>
@@ -66,18 +68,22 @@
 		<td><?php echo($treatment->address_line1)?>, <?php echo($treatment->address_postcode)?> <?php echo($treatment->address_town)?></td>
     </tr>
 </table>
+<?php if(!empty($treatment->phone1)) { ?>
 <table width="100%" class="standard">
 	<tr>
 		<td class="tcell-left">Telefon</td>
 		<td><?php echo($treatment->phone1)?></td>
     </tr>
 </table>
+<?php } ?>
+<?php if(!empty($treatment->email)) { ?>
 <table width="100%" class="standard">
 	<tr>
 		<td class="tcell-left">E-mail</td>
 		<td><?php echo($treatment->email)?></td>
     </tr>
 </table>
+<?php } ?>
 &nbsp;
 &nbsp;
 <?php if(!empty($treatment->familystatus)) { ?>

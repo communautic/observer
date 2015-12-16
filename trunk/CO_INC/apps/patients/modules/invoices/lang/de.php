@@ -15,7 +15,7 @@ $lang["PATIENT_INVOICE_NUMBER"] = 'Rechnungsnummer';
 $lang["PATIENT_INVOICE_CARRIER"] = 'Rechnungslegung';
 $lang["PATIENT_INVOICE_ADDRESS"] = 'Rechnungsempfänger';
 $lang["PATIENT_PAYMENT_TYPE"] = 'Zahlungsart';
-$lang["PATIENT_PAYMENT_TYPE_CASH"] = 'Barbezahlung';
+$lang["PATIENT_PAYMENT_TYPE_CASH"] = 'Barzahlung';
 $lang["PATIENT_PAYMENT_TYPE_BANK_TRANSFER"] = 'Überweisung';
 
 $lang["PATIENT_INVOICE_PAYMENT_REMINDER"] = 'Mahnung';
@@ -49,6 +49,8 @@ $lang["PATIENT_INVOICE_STATUS_INPROGRESS"] = 'ausständig';
 $lang["PATIENT_INVOICE_STATUS_INPROGRESS_TIME"] = 'seit';
 $lang["PATIENT_INVOICE_STATUS_FINISHED"] = 'bezahlt';
 $lang["PATIENT_INVOICE_STATUS_FINISHED_TIME"] = 'am';
+$lang["PATIENT_INVOICE_STATUS_STORNO"] = 'storno';
+$lang["PATIENT_INVOICE_STATUS_STORNO_TIME"] = 'am';
 
 $lang["PATIENT_INVOICE_DURATION"] = 'Behandlungsdauer';
 $lang["PATIENT_INVOICE_LIST"] = 'Auflistung';
@@ -67,12 +69,14 @@ $lang["PATIENT_INVOICE_PRINTOPTION_INVOICE_PLAIN"] = 'Rechnung(anonym)';
 $lang["PATIENT_INVOICE_PRINTOPTION_SERVICES"] = 'Leistungen';
 $lang["PATIENT_INVOICE_PRINTOPTION_PAYMENT_REMINDER"] = 'Mahnung';
 $lang["PATIENT_INVOICE_PRINTOPTION_ENVELOPE"] = 'Kuvert';
+$lang["PATIENT_INVOICE_PRINTOPTION_BELEG"] = 'Kassenbeleg';
 
 $lang["PATIENT_INVOICE_HELP"] = 'manual_patienten_rechnungen.pdf';
 
 $lang["PATIENT_PRINT_INVOICE"] = 'rechnung.png';
 $lang["PATIENT_PRINT_SERVICES"] = 'leistungen.png';
 $lang["PATIENT_PRINT_REMINDER"] = 'mahnung.png';
+$lang["PATIENT_PRINT_BELEG"] = 'beleg.png';
 
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/patients/invoices/de.php";

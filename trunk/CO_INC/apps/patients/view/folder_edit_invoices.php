@@ -8,13 +8,15 @@
         </ul>
     </div>
     <div style="position: absolute; left: 225px; top: 2px;">
-    <table border="0" cellspacing="0" cellpadding="0" class="timeline-legend" style="width: 400px">
+    <table border="0" cellspacing="0" cellpadding="0" class="timeline-legend" style="width: 522px">
         <tr>
             <td class="barchart_color_planned" width="112"><span><?php echo $lang["PATIENT_INVOICE_STATUS_PLANNED"];?></span></td>
             <td width="10"></td>
             <td class="barchart_color_inprogress" width="112"><span><?php echo $lang["PATIENT_INVOICE_STATUS_INPROGRESS"];?></span></td>
              <td width="10"></td>
             <td class="barchart_color_finished" width="112"><span><?php echo $lang["PATIENT_INVOICE_STATUS_FINISHED"];?></span></td>
+            <td width="10"></td>
+            <td class="barchart_color_not_finished" width="112"><span><?php echo $lang["PATIENT_INVOICE_STATUS_STORNO"];?></span></td>
         </tr>
     </table>
     </div>
@@ -34,13 +36,14 @@ if(is_array($invoices)) { ?>
     <td width="90" class="row<?php  echo ($i % 2);?>" style="padding-left: 14px;"><?php echo($invoice->invoice_date);?></td>
     <td width="70" class="row<?php  echo ($i % 2);?>"><?php echo($invoice->totalmin);?></td>
     <td width="70" class="row<?php  echo ($i % 2);?>"><?php echo(CO_DEFAULT_CURRENCY . ' ' . $invoice->totalcosts);?></td>
-    <td class="row<?php  echo ($i % 2);?>"><?php echo($invoice->management);?></td>
+    <td width="150" class="row<?php  echo ($i % 2);?>"><?php echo($invoice->management);?></td>
+    <td class="row<?php  echo ($i % 2);?>"><?php if($invoice->payment_type == 'Barzahlung') { echo($invoice->payment_type); } ?> <!--<?php if($invoice->status_invoice == 3) { echo('Storno'); } ?>--></td>
+    <td></td>
     </tr>
     <?php 
 	$i++;
 	} ?>
-   </table>
+   </table></div>
   <?php
 }
 ?>
-</div>

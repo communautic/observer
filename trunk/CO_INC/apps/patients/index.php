@@ -45,6 +45,12 @@ if (!empty($_GET['request'])) {
 		case 'getFolderDetailsRevenueResults':
 			echo($patients->getFolderDetailsRevenueResults($_GET['id'],$_GET['who'],$_GET['start'],$_GET['end']));
 		break;
+		case 'getFolderDetailsBelege':
+			echo($patients->getFolderDetailsBelege($_GET['id']));
+		break;
+		case 'getFolderDetailsBelegeResults':
+			echo($patients->getFolderDetailsBelegeResults($_GET['id'],$_GET['who'],$_GET['start'],$_GET['end']));
+		break;
 		case 'setFolderOrder':
 			echo($patients->setSortOrder("patients-folder-sort",$_GET['folderItem']));
 		break;
@@ -67,6 +73,9 @@ if (!empty($_GET['request'])) {
 		case 'printFolderDetailsRevenue':
 			echo $patients->printFolderDetailsRevenue($_GET['id'],$_GET['who'],$_GET['start'],$_GET['end']);
 		break;
+		case 'printFolderDetailsBelege':
+			echo $patients->printFolderDetailsBelege($_GET['id'],$_GET['who'],$_GET['start'],$_GET['end']);
+		break;
 		case 'getSendFolderDetailsList':
 			echo($patients->getFolderSend($_GET['id']));
 		break;
@@ -75,6 +84,9 @@ if (!empty($_GET['request'])) {
 		break;
 		case 'getSendFolderDetailsRevenue':
 			echo $patients->getFolderSendRevenue($_GET['id'],$_GET['who'],$_GET['start'],$_GET['end']);
+		break;
+		case 'getSendFolderDetailsBelege':
+			echo $patients->getFolderSendBelege($_GET['id'],$_GET['who'],$_GET['start'],$_GET['end']);
 		break;
 		case 'binFolder':
 			echo($patients->binFolder($_GET['id']));
@@ -272,6 +284,9 @@ if (!empty($_POST['request'])) {
 		break;
 		case 'sendFolderDetailsRevenue':
 			echo($patients->sendFolderDetailsRevenue($_POST['variable'], $_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
+		break;
+		case 'sendFolderDetailsBelege':
+			echo($patients->sendFolderDetailsBelege($_POST['variable'], $_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));
 		break;
 		case 'updateCheckpointText':
 			echo($patients->updateCheckpointText($_POST['id'],$system->checkMagicQuotes($_POST['text'])));

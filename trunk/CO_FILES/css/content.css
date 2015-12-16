@@ -537,5 +537,5 @@ input.inlineDatepicker {
 	height: 18px;
 }
 
-#calculateRevenue:hover { cursor: pointer; }
+#calculateRevenue:hover, #calculateBelege:hover { cursor: pointer; }
 .contentArrow { width: 17px; height: 7px; background: url(../img/icons.png) no-repeat -400px 0px; display: inline-block; }

@@ -19,6 +19,11 @@ class System
 		return $string;
 	}
 	
+	function formatBelegNummer($num) {
+		$num = str_pad($num, 5, "0", STR_PAD_LEFT);
+		return $num;
+	}
+	
 	
 	/**
 	 * Returns a reference to a json object

@@ -20,9 +20,9 @@
         <td><input name="startdate" type="text" id="calcStart" value="<?php echo $start_date;?>" class="inlineDatepicker" /></td>
         <td><input name="enddate" type="text" id="calcEnd" value="<?php echo $end_date;?>" class="inlineDatepicker" /><span rel="0" id="calcFolder" class="inlineCheckbox coCheckbox inline" style="display: none;"></span></td>
         <!--<td></td>-->
-         <td><span id="calculateRevenue" class="bold"><em><span class="contentArrow"></span> <?php echo $lang["PATIENT_FOLDER_TAB_CALCULATE"];?></em></span></td>
+         <td><span id="calculateBelege" class="bold"><em><span class="contentArrow"></span> <?php echo $lang["PATIENT_FOLDER_TAB_CALCULATE"];?></em></span></td>
     </tr>
 </table>
 </div>
-<div id="revenueResult" style="position: absolute; top: 140px; bottom: 0; left: 0; right: 0px; overflow: auto;">
+<div id="belegeResult" style="position: absolute; top: 140px; bottom: 0; left: 0; right: 0px; overflow: auto;">
 </div>

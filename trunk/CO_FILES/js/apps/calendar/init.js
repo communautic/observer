@@ -212,7 +212,10 @@ Calendar={
 					//$('#calendar').data('storeEvent-allday',$('#allday_checkbox').val());
 					$('#calendar').data('storeEvent-Active', false)
 					Calendar.UI.eventdialogtype = 0;
-					Calendar.UI.busy = true;
+					//Calendar.UI.busy = true;
+					if($('#calendar').data('storeEvent-treatment') > 0) {
+						$('#EventLocDisplay').trigger('click');
+					}
 				}
 				if(Calendar.UI.busy) {
 				$('#calendarTreatmentLocation').html('');
@@ -7653,9 +7656,10 @@ $(document).ready(function() {
 					var res = str.split('<br />'); 
 					str = res[0];
 				}
-				
-				
-				
+				if(event.treatmentstatus == 1) {
+					event.editable = false;
+				}
+				//event.editable = false;
 				if(event.description != '') {
 					str = '<span class="hasDescription"></span> '+str;
 				}
@@ -7665,6 +7669,9 @@ $(document).ready(function() {
 					if(event.calendarid != 2) {
 						if(numActiveCals === 1) {
 							element.addClass('fc-event-treatment');
+							/*if(event.id == editEventID) {
+						element.addClass('fc-event-treatment-active');
+					}*/
 						}
 					}
 					if(event.eventclass != '') {
@@ -7679,11 +7686,21 @@ $(document).ready(function() {
 					//console.log(bgcolor);
 				}
 					var bgcolor = element.css('background-color');
+					/*if(event.id == editEventID) {
+						var bgcolor = 'red';
+					}*/
+					//var iconAddClass = '';
+					if(event.id == editEventID) {
+						var bgcolor = '#BBFF00';
+					}
 					element.prepend('<div class="fc-event-treatment-icon loadTreatment" rel="patients,'+event.folderid+','+event.patientid+','+event.treatmentid+',treatments" style="background-color:'+bgcolor+' !important"><img src="'+co_files+'/img/icon_treatment.png"></div>');
 					
 					}
 				}
 				var bgcolor = element.css('background-color');
+				/*if(event.id == editEventID) {
+						var bgcolor = 'red';
+					}*/
 				element.prepend('<div style="position: absolute; width: 2px; right: 0; top: 0; bottom: 0; z-index: 3; background-color:'+bgcolor+'"></div>');
 				if(numActiveCals > 1) {
 					element.find('.fc-event-title').hide();
@@ -7793,6 +7810,7 @@ $(document).ready(function() {
 					str = '<span class="hasDescription"></span> '+str;
 				}
 				element.find('.fc-event-title').html(str);
+				element.find('.fc-event-title').attr('rel',event.id);
 				if(event.eventtype != 0) {
 					if(event.calendarid != 2) {
 					element.addClass('fc-event-treatment');
@@ -8285,6 +8303,10 @@ $(document).ready(function() {
 		e.stopPropagation();
 		$('#appnav .app_calendar').click()
 		$('#calendar .fc-button-today').click()
+		editEventID = $(this).attr('rel');
+		if($('#event_'+editEventID).length > 0) {
+				$('#event_'+editEventID+' .fc-event-treatment-icon').css('background-color','#BBFF00')
+			}
 	});
 	
 	

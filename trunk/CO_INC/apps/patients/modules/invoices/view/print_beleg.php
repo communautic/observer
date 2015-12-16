@@ -5,100 +5,65 @@
         <?php if($invoice->m_fax != "") { ?><p class="smalltext" style="line-height: 15px;">Fax <?php echo($invoice->m_fax)?></p><?php } ?>
         <p class="smalltext" style="line-height: 15px;"><?php echo($invoice->m_email)?></p>
         <?php if($invoice->m_email_alt != "") { ?><p class="smalltext" style="line-height: 15px;"><?php echo($invoice->m_email_alt)?></p><?php } ?>
-        <p style="line-height: 25px;"><strong><?php echo strtoupper($lang["PATIENT_INVOICE_PAYMENT_REMINDER"]);?></strong></p>
         <p class="smalltext" style="line-height: 10px;">&nbsp;</p>
         <p class="smalltext" style="line-height: 15px;"></p>
+        <p style="line-height: 25px;"><strong>&nbsp;</strong></p>
         <p style="line-height: 15px;"></p>
 	</tr>
 </table>
-<table width="100%" cellpadding="0" cellspacing="0" style="padding-right: 10pt;">
+<!--<table width="100%" cellpadding="0" cellspacing="0" style="padding-right: 10pt;">
     <tr>
         <td width="50%"><?php echo($invoice->ctitle)?> <?php echo($invoice->title2)?> <?php echo($invoice->lastname);?> <?php echo($invoice->firstname);?></td>
-        <td width="20%"><span class="smalltext">Rechnungsdatum</span></td>
-        <td width="30%"style="text-align: right;"><?php echo $invoice->invoice_date;?></td>
+        <td width="20%">&nbsp;</td>
+        <td width="30%"style="text-align: right;">&nbsp;</td>
     </tr>
 </table>
 <table width="100%" cellpadding="0" cellspacing="0" style="padding-right: 10pt;">
     <tr>
         <td width="50%"><?php echo($invoice->address_line1)?></td>
-        <td width="20%"><span class="smalltext"><?php echo $lang["PATIENT_INVOICE_NUMBER"];?></span></td>
-        <td width="30%" style="text-align: right;"><span><?php echo($invoice->invoice_number);?></span></td>
+        <td width="20%">&nbsp;</td>
+        <td width="30%" style="text-align: right;">&nbsp;</td>
     </tr>
 </table>
 <table width="100%" cellpadding="0" cellspacing="0" style="padding-right: 10pt;">
     <tr>
         <td width="50%"><?php echo($invoice->address_postcode)?> <?php echo($invoice->address_town)?></td>
-        <td width="20%"><span class="smalltext">Leistungszeitraum</span></td>
-        <td width="30%" style="text-align: right;"><?php echo($invoice->treatment_start);?> - <?php echo($invoice->treatment_end);?></td>
+        <td width="20%">&nbsp;</td>
+        <td width="30%" style="text-align: right;">&nbsp;</td>
     </tr>
 </table>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
+<p>&nbsp;</p>-->
+<p style="font-size: 25pt;">Kassenbeleg</p>
 <p>&nbsp;</p>
-<p style="font-size: 25pt;">Honorarnote</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<?php if(CO_PRODUCT_VARIANT == 2) { ?>
-<?php if($patient->code != "") { ?>
-<table width="100%" cellpadding="0" cellspacing="0" style="padding-right: 10pt;">
-    <tr>
-        <td width="25%" class="smalltext"><?php echo $lang["PATIENT_CODE"];?></td>
-        <td width="75%"><?php echo $patient->code;?></td>
-    </tr>
-</table>
-<?php } ?>
-<?php } ?>
-<table width="100%" cellpadding="0" cellspacing="0" style="padding-right: 10pt;">
-    <tr>
-        <td width="25%" class="smalltext">Patient/in</td>
-        <td width="75%"><?php echo($invoice->patient)?></td>
-    </tr>
-</table>
-<table width="100%" cellpadding="0" cellspacing="0" style="padding-right: 10pt;">
-    <tr>
-        <td width="25%" class="smalltext"><?php echo $lang["PATIENT_INSURANCE_NUMBER"];?></td>
-        <td width="75%"><?php echo($invoice->number)?></td>
-    </tr>
-</table>
-<table width="100%" cellpadding="0" cellspacing="0" style="padding-right: 10pt;">
-    <tr>
-        <td width="25%" class="smalltext">Adresse</td>
-        <td width="75%"><?php echo($invoice->patient_address)?></td>
-    </tr>
-</table>
-<?php if($invoice->number_insurer != "") { ?>
-<table width="100%" cellpadding="0" cellspacing="0" style="padding-right: 10pt;">
-    <tr>
-        <td width="25%" class="smalltext"><?php echo $lang["PATIENT_INSURER"];?></td>
-        <td width="75%"><?php echo($invoice->title2)?> <?php echo($invoice->lastname);?> <?php echo($invoice->firstname);?></td>
-    </tr>
-</table>
-<table width="100%" cellpadding="0" cellspacing="0" style="padding-right: 10pt;">
-    <tr>
-        <td width="25%" class="smalltext"><?php echo $lang["PATIENT_INSURANCE_INSURER_NUMBER"];?></td>
-        <td width="75%"><?php echo($invoice->number_insurer)?></td>
-    </tr>
-</table>
-<?php } ?>
-<?php if($invoice->protocol != "") { ?>
 <p>&nbsp;</p>
 <table width="100%" cellpadding="0" cellspacing="0" style="padding-right: 10pt;">
     <tr>
-        <td width="25%" class="smalltext"><?php echo $lang["PATIENT_TREATMENT_DOCTOR_DIAGNOSE"];?></td>
-        <td width="75%"><?php echo($invoice->protocol)?></td>
+        <td width="25%" class="smalltext">Belegnummer</td>
+        <td width="75%"><?php echo $invoice->beleg_nummer;?></td>
     </tr>
 </table>
-<?php } ?>
-<?php if(CO_PRODUCT_VARIANT == 2) { ?>
-<?php if($invoice->method != "") { ?>
+<p>&nbsp;</p>
 <table width="100%" cellpadding="0" cellspacing="0" style="padding-right: 10pt;">
     <tr>
-        <td width="25%" class="smalltext"><?php echo $lang["PATIENT_TREATMENT_METHOD"];?></td>
-        <td width="75%"><?php echo($invoice->method)?></td>
+        <td width="25%" class="smalltext">Datum / Uhrzeit</td>
+        <td width="75%"><?php echo($invoice->beleg_datum)?> <?php echo($invoice->beleg_time)?></td>
     </tr>
 </table>
-<?php } ?>
-<?php } ?>
+<table width="100%" cellpadding="0" cellspacing="0" style="padding-right: 10pt;">
+    <tr>
+        <td width="25%" class="smalltext"><?php echo $lang["PATIENT_INVOICE_NUMBER"];?></td>
+        <td width="75%"><?php echo($invoice->invoice_number)?></td>
+    </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0" style="padding-right: 10pt;">
+    <tr>
+        <td width="25%" class="smalltext">Leistungszeitraum</td>
+        <td width="75%"><?php echo($invoice->treatment_start);?> - <?php echo($invoice->treatment_end);?></td>
+    </tr>
+</table>
+
 <p>&nbsp;</p>
 <table width="100%" class="standard" style="border:1px solid #ccc;">
 	<?php 
@@ -145,23 +110,7 @@
 </table>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
-<?php if($invoice->payment_type != 'Barzahlung') { ?>
-	<?php if(CO_PRODUCT_VARIANT == 2) { ?>
-    	<p style="line-height: 20px;"><?php echo $lang["PATIENT_INVOICE_REQUEST_PAYMENT"];?></p>
-    <?php } else { ?>
-    	<p style="line-height: 20px;"><?php echo $lang["PATIENT_INVOICE_TEXT_LINE2"];?></p>
-        <p>&nbsp;</p>
-        <p style="line-height: 20px;"><?php echo $lang["PATIENT_INVOICE_TEXT_LINE3"];?></p>
-    <?php } ?>
-<?php } else { ?>
 <p style="line-height: 20px;"><?php echo $lang["PATIENT_INVOICE_PAYMENT_CASH"];?></p>
-	<?php if(CO_PRODUCT_VARIANT == 1) { ?>
-        <p>&nbsp;</p>
-        <p style="line-height: 20px;"><?php echo $lang["PATIENT_INVOICE_TEXT_LINE3"];?></p>
-    <?php } ?>
-<?php } ?>
 <p>&nbsp;</p>
 <p style="line-height: 20px;"><?php echo $lang["PATIENT_INVOICE_TEXT_LINE4"];?></p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p><?php echo($invoice->m_firstname)?> <?php echo($invoice->m_lastname)?></p>
+<p><?php echo($invoice->m_title)?> <?php echo($invoice->m_firstname)?> <?php echo($invoice->m_lastname)?></p>

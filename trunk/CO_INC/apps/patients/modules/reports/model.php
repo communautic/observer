@@ -192,7 +192,8 @@ class PatientsReportsModel extends PatientsModel {
 		$array['patient'] = $array['lastname'] . ' ' . $array['firstname'];
 		$array["dob"] = $this->_date->formatDate($array["dob"],CO_DATE_FORMAT);
 		
-		$array["insurer"] = $this->_contactsmodel->getUserList($array['insurer'],'patientsinsurer', "");
+		//$array["insurer"] = $this->_contactsmodel->getUserList($array['insurer'],'patientsinsurer', "", false);
+		$array["insurer"] = trim($this->_users->getUserFullname($array["insurer"]));	
 		$array["insurer_ct"] = empty($array["insurer_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['insurer_ct'];
 		$array["insurance"] = $this->getPatientIdDetails($array["insurance"],"patientsinsurance");
 			
@@ -291,7 +292,7 @@ class PatientsReportsModel extends PatientsModel {
 			$array["treatment_title"] = $rowt->title;
 			$array["treatment_diagnose"] = $rowt->protocol;
 			$array["treatment_date"] = $this->_date->formatDate($rowt->item_date,CO_DATE_FORMAT);
-			$array["treatment_doctor"] = $this->_users->getUserFullname($rowt->doctor);
+			$array["treatment_doctor"] = trim($this->_users->getUserFullname($rowt->doctor));
 			$array["treatment_doctor_ct"] = empty($rowt->doctor_ct) ? "" : $lang["TEXT_NOTE"] . " " . $rowt->doctor_ct;
 			$array["treatment_treats"] = $rowt->protocol2;
 			$array["treatment_method"] = $this->_treatmentsmodel->getTreamentIdDetails($rowt->method);
