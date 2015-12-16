@@ -1180,6 +1180,10 @@ var colors = ['#3C4664','#EB4600','#915500','#0A960A','#AA19AA','#3C4664','#EB46
 			var href = $(this).attr('rel').split(",");
 			externalLoadCalendar(href[0],href[1],href[2],href[3]);
 			editEventID = href[4];
+			if($('#event_'+editEventID).length > 0) {
+				//$('#event_'+editEventID).addClass('fc-event-treatment-active');
+				$('#event_'+editEventID+' .fc-event-treatment-icon').css('background-color','#BBFF00')
+			}
 			//setTimeout(function() { $('#event_'+href[4]).trigger('click') }, 1000)
 		})
 		

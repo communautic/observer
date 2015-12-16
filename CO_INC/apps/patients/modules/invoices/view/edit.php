@@ -10,14 +10,16 @@
     	<ul>
         	<li><span class="left<?php if($invoice->canedit) { ?> statusButton <?php } ?> planned<?php echo $invoice->status_planned_active;?>" rel="0" reltext="<?php echo $lang["PATIENT_INVOICE_STATUS_PLANNED_TIME"];?>"><?php echo $lang["PATIENT_INVOICE_STATUS_PLANNED"];?></span></li>
             <li><span class="<?php if($invoice->canedit) { ?>statusButton <?php } ?>inprogress<?php echo $invoice->status_inprogress_active;?>" rel="1" reltext="<?php echo $lang["PATIENT_INVOICE_STATUS_INPROGRESS_TIME"];?>"><?php echo $lang["PATIENT_INVOICE_STATUS_INPROGRESS"];?></span></li>
-            <li><span class="right<?php if($invoice->canedit) { ?> statusButton <?php } ?> finished<?php echo $invoice->status_finished_active;?>" rel="2" reltext="<?php echo $lang["PATIENT_INVOICE_STATUS_FINISHED_TIME"];?>"><?php echo $lang["PATIENT_INVOICE_STATUS_FINISHED"];?></span></li>
+            <li><span class="<?php if($invoice->canedit) { ?> statusButton statusAlert <?php } ?> finished<?php echo $invoice->status_finished_active;?>" rel="2" reltext="<?php echo $lang["PATIENT_INVOICE_STATUS_FINISHED_TIME"];?>"><?php echo $lang["PATIENT_INVOICE_STATUS_FINISHED"];?></span></li>
+            <?php if($access != "guest") { ?><li><span class="right statusButton statusAlert  stopped<?php echo $invoice->status_storno_active;?>" rel="3" reltext="<?php echo $lang["PATIENT_INVOICE_STATUS_STORNO_TIME"];?>"><?php echo $lang["PATIENT_INVOICE_STATUS_STORNO"];?></span></li><?php } ?>
             <li><div class="status-time"><?php echo($invoice->status_text_time)?></div><div class="status-input"><input name="invoice_status_date" type="text" class="input-date statusdp" value="<?php echo($invoice->status_date)?>" readonly="readonly" /></div></li>
+            
 		</ul></div></td>
   </tr>
 </table>
 </div>
 <div class="ui-layout-content"><div class="scroll-pane">
-<form action="/" method="post" class="<?php if($invoice->canedit) { ?>coform <?php } ?>jNice">
+<form action="/" method="post" class="<?php if($invoice->canedit || $invoice->specialcanedit) { ?>coform <?php } ?>jNice">
 <input type="hidden" id="path" name="path" value="<?php echo $this->form_url;?>">
 <input type="hidden" id="poformaction" name="request" value="setDetails">
 <input type="hidden" name="id" value="<?php echo($invoice->id);?>">
@@ -53,17 +55,16 @@
 	  <td class="tcell-right"><div id="patientsinvoice_carrier" class="itemlist-field"><?php echo($invoice->invoice_carrier);?></div></td>
 	</tr>
 </table>
-<div class="content-spacer"></div>
-<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
-		<td class="tcell-left text11"><span class="<?php if($invoice->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["PATIENT_INVOICE_DATE"];?></span></span></td>
-		<td class="tcell-right"><input name="invoice_date" type="text" class="input-date datepicker invoice_date" value="<?php echo($invoice->invoice_date)?>" readonly="readonly" /></td>
+	  <td class="tcell-left text11"><span class="<?php if($invoice->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="patientsinvoiceaddress" append="0" title=""><span><?php echo $lang["PATIENT_INVOICE_ADDRESS"];?></span></span></td>
+	  <td class="tcell-right"><div id="patientsinvoiceaddress" class="itemlist-field"><?php echo($invoice->invoiceaddress);?></div></td>
 	</tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-		<td class="tcell-left text11"><span class="<?php if($invoice->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["PATIENT_INVOICE_DATE_SENT"];?></span></span></td>
-		<td class="tcell-right"><input name="invoice_date_sent" type="text" class="input-date datepicker invoice_date_sent" value="<?php echo($invoice->invoice_date_sent)?>" readonly="readonly" /></td>
+		<td class="tcell-left text11"><span class="<?php if($invoice->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["PATIENT_INVOICE_DATE"];?></span></span></td>
+		<td class="tcell-right"><input name="invoice_date" type="text" class="input-date datepicker invoice_date" value="<?php echo($invoice->invoice_date)?>" readonly="readonly" /></td>
 	</tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
@@ -73,18 +74,42 @@
   </tr>
 </table>
 <div class="content-spacer"></div>
-<table border="0" cellpadding="0" cellspacing="0" class="table-content">
-	<tr>
-	  <td class="tcell-left text11"><span class="<?php if($invoice->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="patientsinvoiceaddress" append="0" title=""><span><?php echo $lang["PATIENT_INVOICE_ADDRESS"];?></span></span></td>
-	  <td class="tcell-right"><div id="patientsinvoiceaddress" class="itemlist-field"><?php echo($invoice->invoiceaddress);?></div></td>
-	</tr>
-</table>
+
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 	  <td class="tcell-left text11"><span class="<?php if($invoice->canedit) { ?>content-nav showDialog<?php } ?>" request="getPaymentTypeDialog" field="patientspayment_type" append="0"><span><?php echo $lang["PATIENT_PAYMENT_TYPE"];?></span></span></td>
         <td class="tcell-right"><div id="patientspayment_type" class="itemlist-field"><?php echo($invoice->payment_type);?></div></td>
 	</tr>
 </table>
+
+<div id="barDetails" <?php if($invoice->payment_type !="Barzahlung") { ?>style="display: none"<?php } ?>>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
+	  <td class="tcell-left text11"><span><span>Belegnummer</span></span></td>
+        <td class="tcell-right"><div id="beleg_nummer"><?php echo $invoice->beleg_nummer;?></div></td>
+	</tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
+		<td class="tcell-left text11"><span class="<?php if($invoice->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span>Datum</span></span></td>
+		<td class="tcell-right"><input id="beleg_datum" name="beleg_datum" type="text" class="input-date datepicker beleg_datum" value="<?php echo $invoice->beleg_datum; ?>" readonly="readonly" /></td>
+	</tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+  <tr>
+    <td class="tcell-left-shorter text11"><span class="<?php if($invoice->canedit) { ?>content-nav selectTextfield<?php } ?>"><span>Uhrzeit</span></span></td>
+    <td class="tcell-right-nopadding"><?php if($invoice->canedit) { ?><input id="beleg_time" name="beleg_time" type="text" class="bg" value="<?php echo($invoice->beleg_time);?>" /><?php } else { echo '<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $invoice->beleg_time . '</span>';}?></td>
+  </tr>
+</table>
+</div>
+<div id="transferDetails" <?php if($invoice->payment_type !="Überweisung") { ?>style="display: none"<?php } ?>>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
+		<td class="tcell-left text11"><span class="<?php if($invoice->canedit) { ?>content-nav ui-datepicker-trigger-action<?php } ?>"><span><?php echo $lang["PATIENT_INVOICE_DATE_SENT"];?></span></span></td>
+		<td class="tcell-right"><input name="invoice_date_sent" type="text" class="input-date datepicker invoice_date_sent" value="<?php echo($invoice->invoice_date_sent)?>" readonly="readonly" /></td>
+	</tr>
+</table>
+</div>
 <div class="content-spacer"></div>
     <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-inactive no-margin <?php if($invoice->canedit) { ?>loadContactExternal<?php } ?>" rel="<?php echo($invoice->patient_id)?>" style="cursor: pointer;">
   <tr>
@@ -183,7 +208,7 @@
 <div class="content-spacer"></div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><span class="<?php if($invoice->canedit) { ?>content-nav showDialog<?php } ?>" request="getAccessDialog" field="patientsinvoice_access" append="1"><span><?php echo $lang["GLOBAL_ACCESS"];?></span></span></td>
+	  <td class="tcell-left text11"><span class="content-nav showDialog" request="getAccessDialog" field="patientsinvoice_access" append="1"><span><?php echo $lang["GLOBAL_ACCESS"];?></span></span></td>
         <td class="tcell-right"><div id="patientsinvoice_access" class="itemlist-field"><div class="listmember" field="patientsinvoice_access" uid="<?php echo($invoice->access_invoice);?>" style="float: left"><?php echo($invoice->access_text);?></div></div><input type="hidden" name="invoice_access_orig" value="<?php echo($invoice->access_invoice);?>" /></td>
 	</tr>
 </table>

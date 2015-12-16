@@ -145,7 +145,7 @@
 </table>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
-<?php if($invoice->payment_type != 'Barbezahlung') { ?>
+<?php if($invoice->payment_type != 'Barzahlung') { ?>
 	<?php if(CO_PRODUCT_VARIANT == 2) { ?>
     	<p style="line-height: 20px;"><?php echo $lang["PATIENT_INVOICE_REQUEST_PAYMENT"];?></p>
     <?php } else { ?>
@@ -160,6 +160,8 @@
         <p style="line-height: 20px;"><?php echo $lang["PATIENT_INVOICE_TEXT_LINE3"];?></p>
     <?php } ?>
 <?php } ?>
+<p>&nbsp;</p>
+<?php echo nl2br($invoice->protocol_invoice);?>
 <p>&nbsp;</p>
 <p style="line-height: 20px;"><?php echo $lang["PATIENT_INVOICE_TEXT_LINE4"];?></p>
 <p>&nbsp;</p>

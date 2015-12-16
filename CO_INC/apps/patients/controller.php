@@ -126,6 +126,34 @@ class Patients extends Controller {
 		$data["access"] = $arr["access"];
 		return json_encode($data);
 	}
+	
+	function getFolderDetailsBelege($id) {
+		global $date, $lang, $system;
+		$start = new DateTime("first day of last month");
+		$end = new DateTime("last day of last month");
+		$start_date = $start->format('d.m.Y');
+		$end_date = $end->format('d.m.Y');
+		ob_start();
+			include('view/folder_edit_belege.php');
+			$data["html"] = ob_get_contents();
+		ob_end_clean();
+		return json_encode($data);
+	}
+	
+	function getFolderDetailsBelegeResults($id,$who,$start,$end) {
+		global $date, $lang, $system;
+		$arr = $this->model->getFolderDetailsBelegeResults($id,$who,$start,$end);
+		$calctotal = $arr["calctotal"];
+		$zahlungen = $arr["zahlungen"];
+		$storno = $arr["storno"];
+		$invoices = $arr["invoices"];
+		ob_start();
+			include('view/folder_edit_belege_results.php');
+			$data["html"] = ob_get_contents();
+		ob_end_clean();
+		$data["access"] = $arr["access"];
+		return json_encode($data);
+	}
 
 
 	function printFolderDetailsList($id, $t) {
@@ -167,7 +195,7 @@ class Patients extends Controller {
 					$html = ob_get_contents();
 				ob_end_clean();		
 		}
-		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_PATIENT_FOLDER"];
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_PATIENT_RECHNUNGEN"];
 		$this->printPDF($title,$html);
 	}
 
@@ -182,6 +210,7 @@ class Patients extends Controller {
 		}
 		if($arr = $this->model->getFolderDetailsRevenueResults($id,$who,$start,$end)) {
 			$calctotal = $arr["calctotal"];
+			$calctotalmin = $arr["calctotalmin"];
 			$invoices = $arr["invoices"];
 			$manager = $arr["manager"];
 			ob_start();
@@ -189,7 +218,30 @@ class Patients extends Controller {
 				$html = ob_get_contents();
 			ob_end_clean();	
 		}
-		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_PATIENT_FOLDER"];
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_PATIENT_UMSATZ"];
+		$this->printPDF($title,$html);
+	}
+	
+	function printFolderDetailsBelege($id,$who,$start,$end) {
+		global $date,$session,$lang;
+		$title = 'Belegarchiv';
+		$html = "";
+		if($arr = $this->model->getFolderDetails($id)) {
+			$folder = $arr["folder"];
+			//$title = $lang["PATIENT_FOLDER_TAB_REVENUE"];
+		}
+		if($arr = $this->model->getFolderDetailsBelegeResults($id,$who,$start,$end)) {
+			$calctotal = $arr["calctotal"];
+			$zahlungen = $arr["zahlungen"];
+			$storno = $arr["storno"];
+			$invoices = $arr["invoices"];
+			$manager = $arr["manager"];
+			ob_start();
+				include('view/folder_print_belege.php');
+				$html = ob_get_contents();
+			ob_end_clean();	
+		}
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_PATIENT_BELEGE"];
 		$this->printPDF($title,$html);
 	}
 
@@ -302,6 +354,28 @@ class Patients extends Controller {
 			include CO_INC .'/view/default.php';
 		}
 	}
+	
+	function getFolderSendBelege($id,$who,$start,$end) {
+		global $lang;
+		if($arr = $this->model->getFolderDetailsBelegeResults($id,$who,$start,$end)) {
+			$calctotal = $arr["calctotal"];
+			$invoices = $arr["invoices"];
+			$manager = $arr["manager"];
+			if($arr = $this->model->getFolderDetails($id)) {
+			$folder = $arr["folder"];
+		}
+			$form_url = $this->form_url;
+			$request = "sendFolderDetailsBelege";
+			$to = "";
+			$cc = "";
+			$subject = $folder->title;
+			$variable = $who.'-'.$start.'-'.$end;
+			include CO_INC .'/view/dialog_send.php';
+		}
+		else {
+			include CO_INC .'/view/default.php';
+		}
+	}
 
 	function sendFolderDetailsRevenue($variable,$id,$to,$cc,$subject,$body) {
 		global $session,$users, $lang;
@@ -316,6 +390,34 @@ class Patients extends Controller {
 		$start = $var[1];
 		$end = $var[2];
 		if($arr = $this->model->getFolderDetailsRevenueResults($id,$who,$start,$end)) {
+			$calctotal = $arr["calctotal"];
+			$invoices = $arr["invoices"];
+			$manager = $arr["manager"];
+			ob_start();
+				include 'view/folder_print_revenue.php';
+				$html = ob_get_contents();
+			ob_end_clean();
+			//$title = $folder->title;
+		}
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_PATIENT_FOLDER"];
+		$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
+		$pdf = $this->savePDF($title,$html,$attachment);
+		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment);
+	}
+	
+	function sendFolderDetailsBelege($variable,$id,$to,$cc,$subject,$body) {
+		global $session,$users, $lang;
+		$title = "";
+		$html = "";
+		if($arr = $this->model->getFolderDetails($id)) {
+			$folder = $arr["folder"];
+			$title = $folder->title;
+		}
+		$var = explode("-", $variable);
+		$who = $var[0];
+		$start = $var[1];
+		$end = $var[2];
+		if($arr = $this->model->getFolderDetailsBelegeResults($id,$who,$start,$end)) {
 			$calctotal = $arr["calctotal"];
 			$invoices = $arr["invoices"];
 			$manager = $arr["manager"];
@@ -482,6 +584,27 @@ class Patients extends Controller {
 				}
 				//$html .= '<div style="page-break-after:always;">&nbsp;</div>';
 			}
+			
+			
+			// visualisierungen
+			$patientsSketches = new PatientsSketches("sketches");
+			if($arrrs = $patientsSketches->model->getList($id,"0")) {
+				$rs = $arrrs["sketches"];
+				foreach ($rs as $r) {
+					if($arr = $patientsSketches->model->getDetails($r->id)) {
+						$sketch = $arr["sketch"];
+						$diagnose = $arr["diagnose"];
+						$r = $arr["r"];
+						$sendto = $arr["sendto"];
+						ob_start();
+							include 'modules/sketches/view/print.php';
+							$html .= ob_get_contents();
+						ob_end_clean();
+					}
+				}
+				//$html .= '<div style="page-break-after:always;">&nbsp;</div>';
+			}
+			
 			// reports
 			$patientsReports = new PatientsReports("reports");
 			if($arrrs = $patientsReports->model->getList($id,"0")) {

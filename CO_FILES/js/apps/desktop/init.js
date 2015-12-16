@@ -459,6 +459,10 @@ $(document).ready(function() {
 	$(document).on('click', '#desktop .calendarLinkRead', function(e) {
 		e.preventDefault();
 		var href = $(this).attr('rel').split(",");
+		editEventID = href[4];
+		if($('#event_'+editEventID).length > 0) {
+				$('#event_'+editEventID+' .fc-event-treatment-icon').css('background-color','#BBFF00')
+			}
 		externalLoadCalendar(href[0],href[1],href[2],href[3]);
 		setTimeout(function() { desktoploadCalendarModuleStart() },500);
 	});

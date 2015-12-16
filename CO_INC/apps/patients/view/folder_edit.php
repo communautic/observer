@@ -23,6 +23,7 @@
         <?php if($folder->access == "sysadmin") { ?>
 		<li><span rel="FolderDetailsRevenue"><?php echo $lang["PATIENT_FOLDER_TAB_REVENUE"];?></span></li>
         <?php } ?>
+        <li><span rel="FolderDetailsBelege"><?php echo $lang["PATIENT_FOLDER_TAB_BELEGE"];?></span></li>
 	</ul>
     <div id="patientsFoldersTabsContent" class="contentTabsContent">
     <?php include('folder_edit_list.php');?>

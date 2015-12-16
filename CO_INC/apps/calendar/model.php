@@ -478,9 +478,9 @@ class CalendarModel extends Model {
 		return $locations;
 	}
 	
-	function newWidgetItem($uid,$id) {
+	function newWidgetItem($uid,$id,$description) {
 		global $session;
-		$q = "INSERT INTO " . CO_TBL_CALENDAR_DESKTOP . " set pid='$id', uid = '$uid'";
+		$q = "INSERT INTO " . CO_TBL_CALENDAR_DESKTOP . " set pid='$id', uid = '$uid', note = '$description'";
 		$result = mysql_query($q, $this->_db->connection);
    }
 
@@ -580,7 +580,7 @@ class CalendarModel extends Model {
 		//$q ="select c.folder,c.id as pid,c.title as title from  " . CO_TBL_FORUMS . " as c where c.status='1' and c.bin = '0' " . $access;
 		$reminders = "";
 		//$q ="select a.id as pid,a.folder,a.title as forumtitle from " . CO_TBL_FORUMS . " as a,  " . CO_TBL_FORUMS_DESKTOP . " as b where a.id = b.pid and b.newpost = '1' and a.bin = '0' and b.uid = '$session->uid' GROUP BY pid ORDER BY b.id DESC";
-		$q ="select a.id as pid, b.id as folderid, b.uid, a.startdate, a.summary FROM oc_clndr_objects as a,  " . CO_TBL_CALENDAR_DESKTOP . " as b where a.id = b.pid and b.uid = '$session->uid'";
+		$q ="select a.id as pid, b.id as folderid, b.uid, a.startdate, a.summary, b.pid as eventID, b.note FROM oc_clndr_objects as a,  " . CO_TBL_CALENDAR_DESKTOP . " as b where a.id = b.pid and b.uid = '$session->uid'";
 
 		$result = mysql_query($q, $this->_db->connection);
 		while ($row = mysql_fetch_array($result)) {

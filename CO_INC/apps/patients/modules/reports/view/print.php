@@ -61,12 +61,14 @@ table.standard { margin: 2pt 0 0 -15pt; }
 </table>
 <?php } ?>
 &nbsp;
+<?php if(!empty($report->insurer)) { ?>
 <table width="100%" class="standard">
 	<tr>
 		<td class="tcell-left"><?php echo $lang["PATIENT_INSURER"];?></td>
 		<td><?php echo($report->insurer);?><br /><?php echo($report->insurer_ct);?></td>
     </tr>
 </table>
+<?php } ?>
 <?php if(!empty($report->number_insurer)) { ?>
 <table width="100%" class="standard">
 	<tr>
@@ -74,13 +76,14 @@ table.standard { margin: 2pt 0 0 -15pt; }
 		<td><?php echo($report->number_insurer);?><br /><?php echo($report->insurer_ct);?></td>
     </tr>
 </table>
-<?php } ?>
 &nbsp;
+<?php } ?>
+
 <?php if(!empty($report->treatment_diagnose)) { ?>
 <table width="100%" class="standard">
 	<tr>
 	  <td class="tcell-left"><strong><?php echo $lang["PATIENT_REPORT_DOCTOR_DIAGNOSE"];?></strong></td>
-        <td><strong><?php echo($report->treatment_diagnose)?></strong></td>
+        <td><strong><?php echo $report->treatment_diagnose;?></strong></td>
 	</tr>
 </table>
 <?php } ?>
@@ -89,7 +92,7 @@ table.standard { margin: 2pt 0 0 -15pt; }
 <table width="100%" class="standard">
 	<tr>
 	  <td class="tcell-left"><?php echo $lang["PATIENT_REPORT_TREATMENT_METHOD"];?></td>
-        <td><?php echo($report->treatment_method)?></td>
+        <td><?php echo $report->treatment_method;?></td>
 	</tr>
 </table>
 <?php } ?>
@@ -97,17 +100,17 @@ table.standard { margin: 2pt 0 0 -15pt; }
 <table width="100%" class="standard">
 	<tr>
 	  <td class="tcell-left"><?php echo $lang["PATIENT_REPORT_TREATMENT_DATE"];?></td>
-        <td><?php echo($report->treatment_date)?></td>
+        <td><?php echo $report->treatment_date; ?></td>
 	</tr>
 </table>
 &nbsp;
-&nbsp;
 <?php if(CO_PRODUCT_VARIANT == 1) { ?>
+&nbsp;
 <?php if(!empty($report->treatment_doctor)) { ?>
 <table width="100%" class="standard">
 	<tr>
 	  <td class="tcell-left"><?php echo $lang["PATIENT_REPORT_DOCTOR"];?></td>
-        <td><?php echo($report->treatment_doctor)?><?php echo($report->treatment_doctor_ct)?></td>
+        <td><?php echo $report->treatment_doctor;?><?php echo($report->treatment_doctor_ct); ?></td>
 	</tr>
 </table>
 <?php } ?>
@@ -115,7 +118,7 @@ table.standard { margin: 2pt 0 0 -15pt; }
 <table width="100%" class="standard">
 	<tr>
 	  <td class="tcell-left"><?php if(CO_PRODUCT_VARIANT == 1) { echo $lang["PATIENT_TREATMENT_PRESCRIPTION_PHYSIO"]; } else { echo $lang["PATIENT_TREATMENT_PRESCRIPTION_THERAPY"]; }?></td>
-        <td><?php echo(nl2br($report->treatment_treats))?></td>
+        <td><?php echo nl2br($report->treatment_treats);?></td>
 	</tr>
 </table>
 <?php } ?>

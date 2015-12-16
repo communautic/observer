@@ -175,9 +175,9 @@
         <label><?php echo $lang["CALENDAR_EVENT_DESCRIPTION"];?></label>
         <textarea id="event-description" name="description"><?php echo $description;?></textarea>
 	</div>
-    	
+  <?php if($treatstatus == 0) { ?>
 	<div class="coButton-outer"  style="float: left;"><span class="content-nav coButton" id="submitEditEvent" data-link="/?path=apps/calendar/"><?php echo $lang["GLOBAL_SAVE"];?></span></div>
-        
 	<div class="coButton-outer" style="float: right;"><span class="content-nav coButton delete" id="submitDeleteEvent" data-link="/?path=apps/calendar/"><?php echo $lang["GLOBAL_DELETE"];?></span></div>
+  <?php } ?>
 	</form>
 </div>

@@ -38,6 +38,12 @@ function patientsInvoices(name) {
 					case "2":
 						$("#patients3 ul[rel=invoices] span[rel="+data.id+"] .module-item-status").addClass("module-item-active-circle").removeClass("module-item-active-trial");
 						$('#patients-right input.payment_reminder').val('');
+						module.actionRefresh();
+					break;
+					case "3":
+						$("#patients3 ul[rel=invoices] span[rel="+data.id+"] .module-item-status").addClass("module-item-active-storno").removeClass("module-item-active-trial");
+						$('#patients-right input.payment_reminder').val('');
+						module.actionRefresh();
 					break;
 					default:
 						$("#patients3 ul[rel=invoices] span[rel="+data.id+"] .module-item-status").removeClass("module-item-active-trial").removeClass("module-item-active-circle");
@@ -170,6 +176,15 @@ function patientsInvoices(name) {
 					window.open(url);
 				}
 			break;
+			case '6':
+				var id = $("#patients").data("third");
+				var url ='/?path=apps/patients/modules/invoices&request=printDetails&option=beleg&id='+id;
+				if(!iOS()) {
+					$("#documentloader").attr('src', url);
+				} else {
+					window.open(url);
+				}
+			break;
 		}
 	}
 	
@@ -274,6 +289,17 @@ function patientsInvoices(name) {
 			case '5':
 				var id = $("#patients").data("third");
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients/modules/invoices&request=getSend&option=invoice_plain&id="+id, success: function(data){
+					$("#modalDialogForward").html(data.html).dialog('open');
+					if(data.error == 1) {
+						$.prompt('<div style="text-align: center">' + ALERT_REMOVE_RECIPIENT + data.error_message + '<br /></div>');
+						return false;
+					}
+					}
+				});
+			break;
+			case '6':
+				var id = $("#patients").data("third");
+				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients/modules/invoices&request=getSend&option=beleg&id="+id, success: function(data){
 					$("#modalDialogForward").html(data.html).dialog('open');
 					if(data.error == 1) {
 						$.prompt('<div style="text-align: center">' + ALERT_REMOVE_RECIPIENT + data.error_message + '<br /></div>');
@@ -459,6 +485,37 @@ $(document).ready(function() {
 		var id = $('#patients').data('third');
 		$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/invoices&request=updateQuestion&id=" + id + "&field=invoice_" + q + "&val=" + val, cache: false });
 		
+	});
+	
+	$(document).on('click', '.insertPaymentTypeFromDialog',function(e) {
+		e.preventDefault();
+		var field = $(this).attr("rel");
+		var val = $(this).html();
+		$('#'+field).html(val);
+		var id = $("#patients").data("third");
+		if(val == 'Barzahlung') {
+			$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/patients/modules/invoices&request=setBar&id='+id, success: function(data){
+					$('#beleg_nummer').text(data.beleg_nummer);
+					$('#beleg_datum').val(data.beleg_datum);
+					$('#beleg_time').val(data.beleg_time);
+					$('#barDetails').slideDown();
+					$('#transferDetails').slideUp();
+					}
+				});
+		} else {
+			$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/patients/modules/invoices&request=removeBar&id='+id, success: function(data){
+					$('#beleg_nummer').text('0');
+					$('#beleg_datum').val('');
+					$('#beleg_time').val('');
+					$('#barDetails').slideUp();
+					$('#transferDetails').slideDown();
+					}
+				});
+			
+		}
+		/*var obj = getCurrentModule();
+		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);*/
+		$("#modalDialog").dialog("close");
 	});
 	
 });	

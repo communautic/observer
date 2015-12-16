@@ -746,6 +746,19 @@ function patientsFolders(name) {
 			var end = $('#calcEnd').val();
 			what = what + '&who=' + who + '&start=' + start + '&end=' + end;
 		}
+		if(what == 'FolderDetailsBelege') {
+			var id = $("#patients").data("first");
+			if($('#calcFolder').attr('rel') == '1') {
+				id = 0;
+			}
+			var who = $('#calcWho').val();
+			if($('#calcWhoField').val() == '') {
+				who = 0;
+			}
+			var start = $('#calcStart').val();
+			var end = $('#calcEnd').val();
+			what = what + '&who=' + who + '&start=' + start + '&end=' + end;
+		}
 		var url ='/?path=apps/patients&request=print'+what+'&id='+id;
 		if(!iOS()) {
 			$("#documentloader").attr('src', url);
@@ -763,6 +776,19 @@ function patientsFolders(name) {
 			what = what + '&view=' + view;
 		}
 		if(what == 'FolderDetailsRevenue') {
+			var id = $("#patients").data("first");
+			if($('#calcFolder').attr('rel') == '1') {
+				id = 0;
+			}
+			var who = $('#calcWho').val();
+			if($('#calcWhoField').val() == '') {
+				who = 0;
+			}
+			var start = $('#calcStart').val();
+			var end = $('#calcEnd').val();
+			what = what + '&who=' + who + '&start=' + start + '&end=' + end;
+		}
+		if(what == 'FolderDetailsBelege') {
 			var id = $("#patients").data("first");
 			if($('#calcFolder').attr('rel') == '1') {
 				id = 0;
@@ -952,8 +978,8 @@ function patientsActions(status) {
 			}
 		break;
 		case 4: 	actions = ['0','1','2','7','8','9']; break;
-		case 5: 	actions = ['2','3','7','8']; break;
-		case 6: 	actions = ['6','8','9']; break;   			// handbook refresh
+		case 5: 	actions = ['2','7','8']; break;
+		case 6: 	actions = ['6','7','8']; break;   			// handbook refresh
 		case 7: 	actions = ['0','1','2','8','9']; break;
 		case 8: 	actions = ['1','2','7','8','9']; break;
 		case 9: 	actions = ['0','2','3','7','8','9']; break; // default folder if not empty
@@ -961,7 +987,7 @@ function patientsActions(status) {
 		// 0 == 10
 		case 10: actions = ['0','2','3','4','5','6','7','8','9']; break;
 		// 5 == 11
-		case 11: 	actions = ['1','2','7','8','9']; break;   			// print, send, refresh
+		case 11: 	actions = ['1','7','8','9']; break;   			// print, send, refresh
 		// rosters
 		case 12: actions = ['0','1','2','3','4','7','8','9']; break;
 		default: 	actions = ['6','7'];  								// none
@@ -1204,6 +1230,14 @@ $(document).ready(function() {
 		externalLoadThreeLevels('invoices',fid,pid,id,'patients');
 	});
 	
+	$(document).on('click', '.loadInvoiceBelege', function(e) {
+		e.stopPropagation();
+		var fid = $(this).attr("folder");
+		var pid = $(this).attr("pid");
+		var id = $(this).attr("rel");
+		externalLoadThreeLevels('invoices',fid,pid,id,'patients');
+	});
+	
 	$(document).on('click', 'a.listmemberInsurance', function(e) {
 		e.preventDefault();
 		var ele = $(this);
@@ -1256,6 +1290,24 @@ $(document).ready(function() {
 		var end = $('#calcEnd').val();
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients&request=getFolderDetailsRevenueResults&id=" + id + "&who=" + who + "&start=" + start + "&end=" + end, cache: false, success: function(data){
 			$('#revenueResult').html(data.html);
+			}
+		});
+	});
+	
+	$(document).on('click', '#calculateBelege', function(e) {
+		e.preventDefault();
+		var id = $("#patients").data("first");
+		if($('#calcFolder').attr('rel') == '1') {
+			id = 0;
+		}
+		var who = $('#calcWho').val();
+		if($('#calcWhoField').val() == '') {
+			who = 0;
+		}
+		var start = $('#calcStart').val();
+		var end = $('#calcEnd').val();
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients&request=getFolderDetailsBelegeResults&id=" + id + "&who=" + who + "&start=" + start + "&end=" + end, cache: false, success: function(data){
+			$('#belegeResult').html(data.html);
 			}
 		});
 	});

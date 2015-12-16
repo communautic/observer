@@ -77,6 +77,7 @@ if($report->tid == 0) {
     </tr>
 </table>
 <?php } ?>
+<?php if(!empty($report->insurer)) { ?>
 <div class="content-spacer"></div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
@@ -84,6 +85,7 @@ if($report->tid == 0) {
 		<td class="tcell-right-inactive"><?php echo($report->insurer);?><br /><?php echo($report->insurer_ct);?></td>
     </tr>
 </table>
+<?php } ?>
 <?php if(!empty($report->number_insurer)) { ?>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
@@ -126,6 +128,7 @@ if($report->tid == 0) {
 		<td class="tcell-right-inactive"><?php echo($report->treatment_management)?></td>
     </tr>
 </table>
+<?php if(CO_PRODUCT_VARIANT == 1) { ?>
 <div class="content-spacer"></div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
@@ -139,6 +142,7 @@ if($report->tid == 0) {
 		<td class="tcell-right-inactive"><?php echo($report->treatment_treats)?></td>
     </tr>
 </table>
+<?php } ?>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
   <tr>

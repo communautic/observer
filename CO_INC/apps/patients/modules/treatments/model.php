@@ -187,6 +187,35 @@ class PatientsTreatmentsModel extends PatientsModel {
 				$array[$key] = $val;
 			}
 			
+			
+			$array["status_planned_active"] = "";
+		$array["status_inprogress_active"] = "";
+		$array["status_finished_active"] = "";
+		$array["status_stopped_active"] = "";
+		//$array["status_date"] = $this->_date->formatDate($array["status_date"],CO_DATE_FORMAT);
+		$array["status_date"] = "";
+		$array["status_text_time"] = "";
+		switch($array["status"]) {
+			case "0":
+				$array["status_text"] = $lang["PATIENT_TREATMENT_STATUS_PLANNED"];
+				$array["status_planned_active"] = " active";
+			break;
+			case "1":
+				$array["status_text"] = $lang["PATIENT_TREATMENT_STATUS_INPROGRESS"];
+				$array["status_inprogress_active"] = " active";
+			break;
+			case "2":
+				$array["status_text"] = $lang["PATIENT_TREATMENT_STATUS_FINISHED"];
+				$array["status_finished_active"] = " active";
+				break;
+			case "3":
+				$array["status_text"] = $lang["PATIENT_TREATMENT_STATUS_STOPPED"];
+				$array["status_stopped_active"] = " active";
+			break;
+		}
+		
+		
+			
 		$patientid = $array["pid"];
 		
 		$q = "SELECT b.id as patient_id, b.lastname,b.firstname,b.title as ctitle,b.title2,b.position,b.phone1,b.email,b.address_line1,b.address_line2,b.address_town,b.address_postcode, b.company, b.position, a.* FROM " . CO_TBL_PATIENTS . " as a, co_users as b where a.cid=b.id and a.id = '$patientid'";
@@ -229,6 +258,11 @@ class PatientsTreatmentsModel extends PatientsModel {
 			}
 		}
 		
+		if($array["status_invoice"] == 2 || $array["status_invoice"] == 3) {
+				$array["canedit"] = false;
+				$array["specialcanedit"] = true;
+		}
+		
 		// dates
 		$array["item_date"] = $this->_date->formatDate($array["item_date"],CO_DATE_FORMAT);
 		$array["treatment_start"] = $this->_date->formatDate($array["treatment_start"],CO_DATE_FORMAT);
@@ -263,31 +297,7 @@ class PatientsTreatmentsModel extends PatientsModel {
 				$array["access_footer"] = $lang["GLOBAL_ACCESS_FOOTER"] . " " . $array["access_user"] . ", " .$array["access_date"];
 			break;
 		}
-		$array["status_planned_active"] = "";
-		$array["status_inprogress_active"] = "";
-		$array["status_finished_active"] = "";
-		$array["status_stopped_active"] = "";
-		//$array["status_date"] = $this->_date->formatDate($array["status_date"],CO_DATE_FORMAT);
-		$array["status_date"] = "";
-		$array["status_text_time"] = "";
-		switch($array["status"]) {
-			case "0":
-				$array["status_text"] = $lang["PATIENT_TREATMENT_STATUS_PLANNED"];
-				$array["status_planned_active"] = " active";
-			break;
-			case "1":
-				$array["status_text"] = $lang["PATIENT_TREATMENT_STATUS_INPROGRESS"];
-				$array["status_inprogress_active"] = " active";
-			break;
-			case "2":
-				$array["status_text"] = $lang["PATIENT_TREATMENT_STATUS_FINISHED"];
-				$array["status_finished_active"] = " active";
-				break;
-			case "3":
-				$array["status_text"] = $lang["PATIENT_TREATMENT_STATUS_STOPPED"];
-				$array["status_stopped_active"] = " active";
-			break;
-		}
+		
 		
 		
 		
@@ -568,7 +578,7 @@ class PatientsTreatmentsModel extends PatientsModel {
    function getTreatmentEvent($id, $shortfirst = 0) {
 		global $session, $lang;
 	   $tasks = array();
-	   $q = "SELECT a.title,c.id,c.folder,d.title as foldertitle,b.mid,c.cid  FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " as b, " . CO_TBL_PATIENTS . " as c, " . CO_TBL_PATIENTS_FOLDERS . " as d WHERE b.id='$id' and b.mid = a.id and a.pid=c.id and c.folder = d.id";
+	   $q = "SELECT a.title,c.id,c.folder,d.title as foldertitle,b.mid,b.status,c.cid  FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " as b, " . CO_TBL_PATIENTS . " as c, " . CO_TBL_PATIENTS_FOLDERS . " as d WHERE b.id='$id' and b.mid = a.id and a.pid=c.id and c.folder = d.id";
 		$result = mysql_query($q, $this->_db->connection);
 		if($result) {
 		while($row = mysql_fetch_array($result)) {
@@ -873,7 +883,7 @@ function getTreatmentTypeMin($string){
 		$now = gmdate("Y-m-d H:i:s");
 		$time = gmdate("Y-m-d H");
 		
-		$q = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS . " set title = '" . $lang["PATIENT_TREATMENT_NEW"] . "', item_date='$now', pid = '$id', status = '0', status_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+		$q = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS . " set title = '" . $lang["PATIENT_TREATMENT_NEW"] . "', item_date='$now', pid = '$id', status = '0', status_date = '$now', payment_type='Überweisung', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id = mysql_insert_id();
 		

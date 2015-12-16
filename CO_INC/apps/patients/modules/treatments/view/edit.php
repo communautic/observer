@@ -18,7 +18,7 @@
 </table>
 </div>
 <div class="ui-layout-content"><div class="scroll-pane">
-<form action="/" method="post" class="<?php if($treatment->canedit) { ?>coform <?php } ?>jNice">
+<form action="/" method="post" class="<?php if($treatment->canedit || $treatment->specialcanedit) { ?>coform <?php } ?>jNice">
 <input type="hidden" id="path" name="path" value="<?php echo $this->form_url;?>">
 <input type="hidden" id="poformaction" name="request" value="setDetails">
 <input type="hidden" name="id" value="<?php echo($treatment->id);?>">
@@ -51,7 +51,7 @@
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 		<td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="patientsdoctor" append="1"><span><?php echo $lang["PATIENT_TREATMENT_DOCTOR"];?></span></span></td>
-		<td class="tcell-right"><div id="patientsdoctor" class="itemlist-field"><?php echo($treatment->doctor);?></div><div id="patientsdoctor_ct" class="itemlist-field"><a field="patientsdoctor_ct" class="ct-content"><?php echo($treatment->doctor_ct);?></a></div></td>
+		<td class="tcell-right"><div id="patientsdoctor" class="itemlist-field"><?php echo($treatment->doctor);?></div><div id="patientsdoctor_ct" class="itemlist-field"><?php if($treatment->canedit) { ?><a<?php } else { ?> <span <?php } ?>field="patientsdoctor_ct" class="ct-content"><?php echo($treatment->doctor_ct);?><?php if($treatment->canedit) { ?></a><?php } else { ?> </span><?php } ?></div></td>
 	</tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
@@ -133,7 +133,7 @@
 <div class="content-spacer"></div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-	  <td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav showDialog<?php } ?>" request="getAccessDialog" field="patientstreatment_access" append="1"><span><?php echo $lang["GLOBAL_ACCESS"];?></span></span></td>
+	  <td class="tcell-left text11"><span class="content-nav showDialog" request="getAccessDialog" field="patientstreatment_access" append="1"><span><?php echo $lang["GLOBAL_ACCESS"];?></span></span></td>
         <td class="tcell-right"><div id="patientstreatment_access" class="itemlist-field"><div class="listmember" field="patientstreatment_access" uid="<?php echo($treatment->access);?>" style="float: left"><?php echo($treatment->access_text);?></div></div><input type="hidden" name="treatment_access_orig" value="<?php echo($treatment->access);?>" /></td>
 	</tr>
 </table>

@@ -97,6 +97,9 @@ class PatientsInvoicesModel extends PatientsModel {
 			if($array["status_invoice"] == 2) {
 				$itemstatus = " module-item-active-circle";
 			}
+			if($array["status_invoice"] == 3) {
+				$itemstatus = " module-item-active-storno";
+			}
 			$array["itemstatus"] = $itemstatus;
 			
 			$invoices[] = new Lists($array);
@@ -122,7 +125,7 @@ class PatientsInvoicesModel extends PatientsModel {
 
 
 	function getDetails($id, $option = "") {
-		global $session, $lang;
+		global $session, $lang, $system;
 		
 		$this->_documents = new PatientsDocumentsModel();
 		
@@ -154,6 +157,47 @@ class PatientsInvoicesModel extends PatientsModel {
 			$array["canedit"] = true;
 		}
 		
+		$array["specialcanedit"] = false;
+		
+		$array["status_planned_active"] = "";
+		$array["status_inprogress_active"] = "";
+		$array["status_finished_active"] = "";
+		$array["status_storno_active"] = "";
+		//$array["status_date"] = $this->_date->formatDate($array["status_date"],CO_DATE_FORMAT);
+		//$array["status_date"] = "";
+		$array["status_text_time"] = "";
+		switch($array["status_invoice"]) {
+			case "0":
+				$array["status_text"] = $lang["PATIENT_TREATMENT_STATUS_PLANNED"];
+				$array["status_text_time"] = $lang["PATIENT_INVOICE_STATUS_PLANNED_TIME"];
+				$array["status_planned_active"] = " active";
+				//$array["status_date"] = $array["status_date"];
+			break;
+			case "1":
+				$array["status_text"] = $lang["PATIENT_TREATMENT_STATUS_INPROGRESS"];
+				$array["status_text_time"] = $lang["PATIENT_INVOICE_STATUS_INPROGRESS_TIME"];
+				$array["status_inprogress_active"] = " active";
+				//$array["status_date"] = $array["invoice_inprogress_date"];
+			break;
+			case "2":
+				$array["status_text"] = $lang["PATIENT_TREATMENT_STATUS_FINISHED"];
+				$array["status_text_time"] = $lang["PATIENT_INVOICE_STATUS_FINISHED_TIME"];
+				$array["status_finished_active"] = " active";
+				//$array["status_date"] = $array["invoice_finished_date"];
+				$array["canedit"] = false;
+				$array["specialcanedit"] = true;
+			break;
+			case "3":
+				$array["status_text"] = $lang["PATIENT_INVOICE_STATUS_STORNO"];
+				$array["status_text_time"] = $lang["PATIENT_INVOICE_STATUS_STORNO_TIME"];
+				$array["status_storno_active"] = " active";
+				//$array["status_date"] = $array["invoice_finished_date"];
+				$array["canedit"] = false;
+				$array["specialcanedit"] = true;
+			break;
+		}
+		$array["status_date"] = $this->_date->formatDate($array["status_invoice_date"],CO_DATE_FORMAT);
+		
 		
 		if($array['invoice_address'] == 0) {
 			//$array['invoiceaddress'] = $array['patient'];
@@ -179,6 +223,9 @@ class PatientsInvoicesModel extends PatientsModel {
 		$array["invoice_date_sent"] = $this->_date->formatDate($array["invoice_date_sent"],CO_DATE_FORMAT);
 		$array["payment_reminder"] = $this->_date->formatDate($array["payment_reminder"],CO_DATE_FORMAT);
 		//$array["invoice_carrier"] = $this->_contactsmodel->getUserListPlain($this->getPatientField($array["invoice_carrier"],'invoice_carrier'));
+		$array["beleg_nummer"] = $system->formatBelegNummer($array["beleg_nummer"]);
+		$array["beleg_datum"] = $this->_date->formatDate($array["beleg_datum"],CO_DATE_FORMAT);
+		$array["beleg_time"] = $this->_date->formatDate($array["beleg_time"],CO_TIME_FORMAT);
 		
 		
 		// time
@@ -230,33 +277,7 @@ class PatientsInvoicesModel extends PatientsModel {
 				$array["access_footer"] = $lang["GLOBAL_ACCESS_FOOTER"] . " " . $array["access_user"] . ", " .$array["access_date"];
 			break;
 		}
-		$array["status_planned_active"] = "";
-		$array["status_inprogress_active"] = "";
-		$array["status_finished_active"] = "";
-		//$array["status_date"] = $this->_date->formatDate($array["status_date"],CO_DATE_FORMAT);
-		//$array["status_date"] = "";
-		$array["status_text_time"] = "";
-		switch($array["status_invoice"]) {
-			case "0":
-				$array["status_text"] = $lang["PATIENT_TREATMENT_STATUS_PLANNED"];
-				$array["status_text_time"] = $lang["PATIENT_INVOICE_STATUS_PLANNED_TIME"];
-				$array["status_planned_active"] = " active";
-				//$array["status_date"] = $array["status_date"];
-			break;
-			case "1":
-				$array["status_text"] = $lang["PATIENT_TREATMENT_STATUS_INPROGRESS"];
-				$array["status_text_time"] = $lang["PATIENT_INVOICE_STATUS_INPROGRESS_TIME"];
-				$array["status_inprogress_active"] = " active";
-				//$array["status_date"] = $array["invoice_inprogress_date"];
-			break;
-			case "2":
-				$array["status_text"] = $lang["PATIENT_TREATMENT_STATUS_FINISHED"];
-				$array["status_text_time"] = $lang["PATIENT_INVOICE_STATUS_FINISHED_TIME"];
-				$array["status_finished_active"] = " active";
-				//$array["status_date"] = $array["invoice_finished_date"];
-			break;
-		}
-		$array["status_date"] = $this->_date->formatDate($array["status_invoice_date"],CO_DATE_FORMAT);
+		
 		
 		
 		// checkpoint
@@ -338,12 +359,15 @@ class PatientsInvoicesModel extends PatientsModel {
 		return $arr;
    }
 
-   function setDetails($pid,$id,$invoice_carrier,$invoice_date,$invoice_date_sent,$invoice_address,$payment_type,$invoice_number,$payment_reminder,$protocol_payment_reminder,$protocol,$documents,$invoice_access,$invoice_access_orig) {
+   function setDetails($pid,$id,$invoice_carrier,$invoice_date,$invoice_date_sent,$invoice_address,$payment_type,$invoice_number,$beleg_datum,$beleg_time,$payment_reminder,$protocol_payment_reminder,$protocol,$documents,$invoice_access,$invoice_access_orig) {
 		global $session, $lang;
 		$now = gmdate("Y-m-d H:i:s");
 		$invoice_date = $this->_date->formatDate($invoice_date);
 		$invoice_date_sent = $this->_date->formatDate($invoice_date_sent);
 		$payment_reminder = $this->_date->formatDate($payment_reminder);
+		
+		$beleg_time = $this->_date->formatDateGMT( $beleg_time . " " . $end);
+		$beleg_datum = $this->_date->formatDate($beleg_datum);
 		
 		
 		if($invoice_access == $invoice_access_orig) {
@@ -357,7 +381,52 @@ class PatientsInvoicesModel extends PatientsModel {
 		}
 		
 		
-		$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS . " set invoice_carrier='$invoice_carrier',invoice_date='$invoice_date', invoice_date_sent='$invoice_date_sent', invoice_address='$invoice_address', payment_type='$payment_type', invoice_number='$invoice_number', payment_reminder='$payment_reminder', protocol_payment_reminder='$protocol_payment_reminder', protocol_invoice='$protocol', documents = '$documents'$accesssql where id='$id'";
+		$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS . " set invoice_carrier='$invoice_carrier',invoice_date='$invoice_date', invoice_date_sent='$invoice_date_sent', invoice_address='$invoice_address', payment_type='$payment_type', invoice_number='$invoice_number',  beleg_datum='$beleg_datum', beleg_time='$beleg_time', payment_reminder='$payment_reminder', protocol_payment_reminder='$protocol_payment_reminder', protocol_invoice='$protocol', documents = '$documents'$accesssql where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		if ($result) {
+			return $id;
+		}
+   }
+	 
+	 function setBar($id) {
+		global $session, $lang, $system;
+
+		// patient id
+		$q = "SELECT pid FROM " . CO_TBL_PATIENTS_TREATMENTS . " WHERE id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$pid = mysql_result($result,0);
+		
+		// manager id
+		$q = "SELECT management FROM " . CO_TBL_PATIENTS . " WHERE id = '$pid'";
+		$result = mysql_query($q, $this->_db->connection);
+		$manager = mysql_result($result,0);
+		
+		$q = "SELECT MAX(beleg_nummer) FROM co_patients_treatments as a, co_patients as b WHERE b.management = '$manager' and a.pid=b.id;";
+		$result = mysql_query($q, $this->_db->connection);
+		$nummer = mysql_result($result,0);
+		$nummer_neu = $nummer+1;
+		
+		$now = gmdate("Y-m-d H:i:s");
+		$time = gmdate("Y-m-d H:i");
+
+		$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS . " set payment_type='Barzahlung', beleg_nummer='$nummer_neu', beleg_datum='$now', beleg_time='$time' where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+
+		if ($result) {
+			$array["beleg_nummer"] = $system->formatBelegNummer($nummer_neu);
+			$array["beleg_datum"] = $this->_date->formatDate($now,CO_DATE_FORMAT);
+			$array["beleg_time"] = $this->_date->formatDate($time,CO_TIME_FORMAT);
+			return $array;
+		}
+   }
+	 
+	 function removeBar($id) {
+		global $session, $lang;
+		$now = gmdate("Y-m-d H:i:s");
+		//$invoice_date = $this->_date->formatDate($invoice_date);
+
+		$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS . " set payment_type='Überweisung', beleg_nummer='0', beleg_datum='0', beleg_time='0' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {

@@ -6,7 +6,7 @@ switch($field) {
 		$hideTab3 = 1;
 	break;
 	case "patientsmanagement":
-		if($title == 'therapist') {
+		if($title == 'Betreuung') {
 			$hideTab2 = 1;
 			$hideTab3 = 1;
 		}
@@ -16,6 +16,10 @@ switch($field) {
 			$hideTab2 = 1;
 			$hideTab3 = 1;
 		}
+	break;
+	case "patientsinvoice_carrier": case "patientsinvoiceaddress": 
+			$hideTab2 = 1;
+			$hideTab3 = 1;
 	break;
 }
 if (preg_match("/postitto/i", $field)) {

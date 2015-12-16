@@ -229,6 +229,7 @@ class Calendar extends Controller {
 			$event['treat'] = 0;
 			$event['patientid'] = 0;
 			$event['folderid'] = 0;
+			$event['status'] = 0;
 			$eventclass = '';
 			$eventaccess = 1;
 			if($event['eventtype'] == 1) {
@@ -245,6 +246,7 @@ class Calendar extends Controller {
 						$eventclass = 'fc-event-treatment-housecall';
 					}
 					$event['treat'] = $treatmentevent['mid'];
+					$event['status'] = $treatmentevent['status'];
 					$event['patientid'] = $treatmentevent['id'];
 					/*$contactsModel = new ContactsModel();
 					$event['patientfullname'] = $contactsModel->getUserFullname($treatmentevent['id']);*/
@@ -295,6 +297,7 @@ class Calendar extends Controller {
 							'eventtype'=>$event['eventtype'],
 							'treatment'=>$event['eventid'],
 							'treatmentid'=>$event['treat'],
+							'treatmentstatus'=>$event['status'],
 							'patientid'=>$event['patientid'],
 							'folderid'=>$event['folderid'],
 							'tooltip' => $tooltip,
@@ -831,6 +834,7 @@ class Calendar extends Controller {
 		$summary = strtr($vevent->getAsString('SUMMARY'), array('\,' => ',', '\;' => ';'));
 		// check for Treatment
 		$treatmentid = 0;
+		$treatstatus = 0;
 		$treatmenttitle = '';
 		$treatmentlocationid = 0;
 		$treatmentlocation = '';
@@ -859,6 +863,7 @@ class Calendar extends Controller {
 			
 			$treatmentevent = $treatmentsModel->getTreatmentEvent($treatmentid);
 			$treatid = $treatmentevent['mid'];
+			$treatstatus = $treatmentevent['status'];
 			$treatmentpatient = '<span class="listmember" uid="' .  $treatid . '">' . $treatmentevent['patient'] . '</span>';
 			$treatmentfolder = $treatmentevent['foldertitle'];
 			$treatmenttitle = $treatmentevent['title'];
@@ -942,11 +947,11 @@ class Calendar extends Controller {
 						$arr = $this->model->getFolderList(0);
 						$folders = $arr["folders"];
 						foreach($folders as $folder) {
-							$this->model->newWidgetItem($folder->id,$id);
+							$this->model->newWidgetItem($folder->id,$id,$post['description']);
 						}
 					} else {
 						$uid = $this->model->getUIDFromCalendar($cal);
-						$this->model->newWidgetItem($uid,$id);
+						$this->model->newWidgetItem($uid,$id,$post['description']);
 					}
 				}
 				

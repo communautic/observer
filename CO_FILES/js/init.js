@@ -958,6 +958,13 @@ $(document).ready(function() {
 	$(document).mousedown(function(e) {
 		var clicked=$(e.target); // get the element clicked
 		var app = getCurrentApp();
+		if(editEventID != 0) {
+			if(clicked.is('#event_'+editEventID)) { 
+			} else {
+				$('#event_'+editEventID+' .fc-event-treatment-icon').css('background-color','#a5bfe1')
+				editEventID = 0;
+			}
+		}
 		if(clicked.is('.context') || clicked.parents().is('.context')) { 
 		} else {
 			$('.context').slideUp(function() {
@@ -1314,6 +1321,7 @@ $(document).ready(function() {
 	$(document).on('click', 'span.statusButton',function(e) {
 		e.preventDefault();
 		var p = $(this).parent().parent();
+		var button = $(this);
 		if($(this).hasClass('noDate')) {
 			$('#'+getCurrentApp()+' span.statusButton').removeClass('active');
 			$(this).addClass('active');
@@ -1327,6 +1335,27 @@ $(document).ready(function() {
 			var status = $(this).attr('rel');
 			var obj = getCurrentModule();
 			obj.coPopupStatus(status);
+		} else if($(this).hasClass('statusAlert')) {
+			var txt = 'Wollen Sie die Rechnung in dieser Form endg&uuml;ltig archivieren?';
+			var langbuttons = {};
+			langbuttons[ALERT_YES] = true;
+			langbuttons[ALERT_NO] = false;
+			$.prompt(txt,{ 
+				buttons: langbuttons,
+				submit: function(e,v,m,f){		
+					if(v){
+						$('#'+getCurrentApp()+' .statusTabs span').removeClass('active');
+						button.addClass('active');
+						p.find('.status-time').html($(this).attr('reltext'));
+						p.find('img').trigger('click');
+					}
+				}
+			});
+			/*$('#co-popup span.statusButton').removeClass('active');
+			$(this).addClass('active');
+			var status = $(this).attr('rel');
+			var obj = getCurrentModule();
+			obj.coPopupStatus(status);*/
 		} else {
 			$('#'+getCurrentApp()+' span.statusButton').removeClass('active');
 			$(this).addClass('active');
