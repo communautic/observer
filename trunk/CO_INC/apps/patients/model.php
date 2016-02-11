@@ -3127,7 +3127,7 @@ function createDuplicatePatientFromCalendar($id,$folder,$management) {
 		
 		$waitinglist = "";
 		if($skip == 0) {
-			$q ="select b.folder,b.id, CONCAT(c.lastname,' ',c.firstname) as title from " . CO_TBL_PATIENTS . " as b, co_users as c, " . CO_TBL_PATIENTS_FOLDERS . " as d WHERE b.status='0' and b.planned_date <= '$oneMonthAgo' and b.cid=c.id and b.folder=d.id and b.bin = '0' and c.bin='0' and d.bin='0'" . $access;
+			$q ="select b.folder,b.id,b.protocol, CONCAT(c.lastname,' ',c.firstname) as title from " . CO_TBL_PATIENTS . " as b, co_users as c, " . CO_TBL_PATIENTS_FOLDERS . " as d WHERE b.status='0' and b.planned_date <= '$oneMonthAgo' and b.cid=c.id and b.folder=d.id and b.bin = '0' and c.bin='0' and d.bin='0'" . $access;
 			$result = mysql_query($q, $this->_db->connection);
 			$waitinglist = "";
 			while ($row = mysql_fetch_array($result)) {

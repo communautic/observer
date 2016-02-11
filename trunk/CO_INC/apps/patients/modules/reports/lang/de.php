@@ -24,7 +24,7 @@ $lang["PATIENT_REPORT_TEXTFIELD2"] = 'Empfehlung';
 $lang["PATIENT_REPORT_FEEDBACK"] = 'Rückmeldung';
 $lang["PATIENT_REPORT_PRINT_GREETING"] = 'Mit freundlichen Grüßen,';
 
-$lang["PATIENT_REPORT_HELP"] = 'manual_patienten_therapieberichte.pdf';
+$lang["PATIENT_REPORT_HELP"] = 'manual_patienten_berichte.pdf';
 
 $lang["PATIENT_PRINT_REPORT"] = 'bericht.png';
 

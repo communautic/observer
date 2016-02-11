@@ -244,7 +244,7 @@ class PatientsInvoicesModel extends PatientsModel {
 			//$array["invoice_carrier"] = $this->_contactsmodel->getUserList($array['invoice_carrier'],'invoice_carrier', "", $array["canedit"]);
 			$management_print = $array["invoice_carrier"];
 		}
-		$q = "SELECT lastname as m_lastname,firstname as m_firstname,title2 as m_title, phone1 as m_phone, email as m_email, email_alt as m_email_alt, fax as m_fax, bank_name as m_bank, sort_code as m_sort_code, account_number as m_account_number, bic as m_bic, iban as m_iban FROM co_users where id = '$management_print'";
+		$q = "SELECT lastname as m_lastname,firstname as m_firstname,title2 as m_title, phone1 as m_phone, email as m_email, email_alt as m_email_alt, fax as m_fax, company as m_company, address_postcode as m_plz, address_town as m_town, address_line1 as m_street, company_no as m_co_no, company_reg_loc as m_legal, vat_no as m_vat, bank_name as m_bank, sort_code as m_sort_code, account_number as m_account_number, bic as m_bic, iban as m_iban FROM co_users where id = '$management_print'";
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_fetch_array($result);
 		foreach($row as $key => $val) {

@@ -169,17 +169,36 @@
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
     <tr>
+        <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_BANK_ACCOUNT_IBAN'];?></span></span></td>
+        <td class="tcell-right-nopadding"><input name="iban" id="iban" type="text" class="bg" value="<?php echo($contact->iban);?>" /></td>
+        </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+    <tr>
         <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_BANK_ACCOUNT_BIC'];?></span></span></td>
         <td class="tcell-right-nopadding"><input name="bic" id="bic" type="text" class="bg" value="<?php echo($contact->bic);?>" /></td>
         </tr>
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
     <tr>
-        <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_BANK_ACCOUNT_IBAN'];?></span></span></td>
-        <td class="tcell-right-nopadding"><input name="iban" id="iban" type="text" class="bg" value="<?php echo($contact->iban);?>" /></td>
+        <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_VAT_NO'];?></span></span></td>
+        <td class="tcell-right-nopadding"><input name="vat_no" id="vat_no" type="text" class="bg" value="<?php echo($contact->vat_no);?>" /></td>
         </tr>
 </table>
-    
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+    <tr>
+        <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_COMPANY_NO'];?></span></span></td>
+        <td class="tcell-right-nopadding"><input name="company_no" id="company_no" type="text" class="bg" value="<?php echo($contact->company_no);?>" /></td>
+        </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+    <tr>
+        <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_LEGAL_PLACE'];?></span></span></td>
+        <td class="tcell-right-nopadding"><input name="company_reg_loc" id="company_reg_loc" type="text" class="bg" value="<?php echo($contact->company_reg_loc);?>" /></td>
+        </tr>
+</table>
+
+    <div class="content-spacer"></div>
     </div>
     <div id="ContactAccess" style="display: none;">
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">

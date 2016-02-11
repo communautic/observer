@@ -88,7 +88,43 @@ class PatientsInvoices extends Patients {
 					$title = $lang["PATIENT_INVOICE_TITLE"][0] . $invoice->invoice_number . ' ' . $invoice->lastname;
 				}
 				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_INVOICE"];
-				$GLOBALS['BANKING'] = $invoice->m_bank . ' | BLZ: ' . $invoice->m_sort_code . ' | Kontonr.: ' . $invoice->m_account_number . ' | IBAN: ' . $invoice->m_iban . ' | BIC: ' . $invoice->m_bic;
+				
+				$line_1 = '';
+				if($invoice->m_company != "") {
+					$line_1 .= $invoice->m_company . ' | ';
+				}
+				if($invoice->m_plz != "" && $invoice->m_town != "" && $invoice->m_street != "") {
+					$line_1 .= $invoice->m_plz . ' ' . $invoice->m_town . ', ' . $invoice->m_street . ' | ';
+				}
+				if($invoice->m_co_no != "") {
+					$line_1 .= 'FN: ' . $invoice->m_co_no . ' | ';
+				}
+				if($invoice->m_legal != "") {
+					$line_1 .= 'Gerichtsstand: ' . $invoice->m_legal . ' | ';
+				}
+				if($invoice->m_vat != "") {
+					$line_1 .= 'UID-Nummer: ' . $invoice->m_vat;
+				}
+				$GLOBALS['BANKING_LINE_1'] =  $line_1;
+				
+				$line_2 = '';
+				if($invoice->m_bank != "") {
+					$line_2 .= $invoice->m_bank . ' | ';
+				}
+				if($invoice->m_sort_code != "") {
+					$line_2 .= 'BLZ: ' . $invoice->m_sort_code . ' | ';
+				}
+				if($invoice->m_account_number != "") {
+					$line_2 .= 'Kontonr.: ' . $invoice->m_account_number . ' | ';
+				}
+				if($invoice->m_iban != "") {
+					$line_2 .= 'IBAN: ' . $invoice->m_iban . ' | ';
+				}
+				if($invoice->m_bic != "") {
+					$line_2 .= 'BIC: ' . $invoice->m_bic;
+				}
+				$GLOBALS['BANKING_LINE_2'] =  $line_2;
+				
 				switch($t) {
 					case "html":
 						$this->printHTML($title,$html);
@@ -112,7 +148,43 @@ class PatientsInvoices extends Patients {
 					$title = 'B ' . $invoice->beleg_nummer . ' ' . $invoice->lastname;
 				}
 				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_BELEG"];
-				$GLOBALS['BANKING'] = $invoice->m_bank . ' | BLZ: ' . $invoice->m_sort_code . ' | Kontonr.: ' . $invoice->m_account_number . ' | IBAN: ' . $invoice->m_iban . ' | BIC: ' . $invoice->m_bic;
+				
+				$line_1 = '';
+				if($invoice->m_company != "") {
+					$line_1 .= $invoice->m_company . ' | ';
+				}
+				if($invoice->m_plz != "" && $invoice->m_town != "" && $invoice->m_street != "") {
+					$line_1 .= $invoice->m_plz . ' ' . $invoice->m_town . ', ' . $invoice->m_street . ' | ';
+				}
+				if($invoice->m_co_no != "") {
+					$line_1 .= 'FN: ' . $invoice->m_co_no . ' | ';
+				}
+				if($invoice->m_legal != "") {
+					$line_1 .= 'Gerichtsstand: ' . $invoice->m_legal . ' | ';
+				}
+				if($invoice->m_vat != "") {
+					$line_1 .= 'UID-Nummer: ' . $invoice->m_vat;
+				}
+				$GLOBALS['BANKING_LINE_1'] =  $line_1;
+				
+				$line_2 = '';
+				if($invoice->m_bank != "") {
+					$line_2 .= $invoice->m_bank . ' | ';
+				}
+				if($invoice->m_sort_code != "") {
+					$line_2 .= 'BLZ: ' . $invoice->m_sort_code . ' | ';
+				}
+				if($invoice->m_account_number != "") {
+					$line_2 .= 'Kontonr.: ' . $invoice->m_account_number . ' | ';
+				}
+				if($invoice->m_iban != "") {
+					$line_2 .= 'IBAN: ' . $invoice->m_iban . ' | ';
+				}
+				if($invoice->m_bic != "") {
+					$line_2 .= 'BIC: ' . $invoice->m_bic;
+				}
+				$GLOBALS['BANKING_LINE_2'] =  $line_2;
+				
 				switch($t) {
 					case "html":
 						$this->printHTML($title,$html);
@@ -136,7 +208,43 @@ class PatientsInvoices extends Patients {
 					$title = $lang["PATIENT_INVOICE_TITLE"][0] . $invoice->invoice_number . ' ' . $invoice->lastname;
 				}
 				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_INVOICE"];
-				$GLOBALS['BANKING'] = $invoice->m_bank . ' | BLZ: ' . $invoice->m_sort_code . ' | Kontonr.: ' . $invoice->m_account_number . ' | IBAN: ' . $invoice->m_iban . ' | BIC: ' . $invoice->m_bic;
+				
+				$line_1 = '';
+				if($invoice->m_company != "") {
+					$line_1 .= $invoice->m_company . ' | ';
+				}
+				if($invoice->m_plz != "" && $invoice->m_town != "" && $invoice->m_street != "") {
+					$line_1 .= $invoice->m_plz . ' ' . $invoice->m_town . ', ' . $invoice->m_street . ' | ';
+				}
+				if($invoice->m_co_no != "") {
+					$line_1 .= 'FN: ' . $invoice->m_co_no . ' | ';
+				}
+				if($invoice->m_legal != "") {
+					$line_1 .= 'Gerichtsstand: ' . $invoice->m_legal . ' | ';
+				}
+				if($invoice->m_vat != "") {
+					$line_1 .= 'UID-Nummer: ' . $invoice->m_vat;
+				}
+				$GLOBALS['BANKING_LINE_1'] =  $line_1;
+				
+				$line_2 = '';
+				if($invoice->m_bank != "") {
+					$line_2 .= $invoice->m_bank . ' | ';
+				}
+				if($invoice->m_sort_code != "") {
+					$line_2 .= 'BLZ: ' . $invoice->m_sort_code . ' | ';
+				}
+				if($invoice->m_account_number != "") {
+					$line_2 .= 'Kontonr.: ' . $invoice->m_account_number . ' | ';
+				}
+				if($invoice->m_iban != "") {
+					$line_2 .= 'IBAN: ' . $invoice->m_iban . ' | ';
+				}
+				if($invoice->m_bic != "") {
+					$line_2 .= 'BIC: ' . $invoice->m_bic;
+				}
+				$GLOBALS['BANKING_LINE_2'] =  $line_2;
+				
 				switch($t) {
 					case "html":
 						$this->printHTML($title,$html);
@@ -160,7 +268,43 @@ class PatientsInvoices extends Patients {
 					$title = $lang["PATIENT_INVOICE_SERVICES"][0] . $invoice->invoice_number . ' ' . $invoice->lastname;
 				}
 				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_SERVICES"];
-				$GLOBALS['BANKING'] = $invoice->m_bank . ' | BLZ: ' . $invoice->m_sort_code . ' | Kontonr.: ' . $invoice->m_account_number . ' | IBAN: ' . $invoice->m_iban . ' | BIC: ' . $invoice->m_bic;
+				
+				$line_1 = '';
+				if($invoice->m_company != "") {
+					$line_1 .= $invoice->m_company . ' | ';
+				}
+				if($invoice->m_plz != "" && $invoice->m_town != "" && $invoice->m_street != "") {
+					$line_1 .= $invoice->m_plz . ' ' . $invoice->m_town . ', ' . $invoice->m_street . ' | ';
+				}
+				if($invoice->m_co_no != "") {
+					$line_1 .= 'FN: ' . $invoice->m_co_no . ' | ';
+				}
+				if($invoice->m_legal != "") {
+					$line_1 .= 'Gerichtsstand: ' . $invoice->m_legal . ' | ';
+				}
+				if($invoice->m_vat != "") {
+					$line_1 .= 'UID-Nummer: ' . $invoice->m_vat;
+				}
+				$GLOBALS['BANKING_LINE_1'] =  $line_1;
+				
+				$line_2 = '';
+				if($invoice->m_bank != "") {
+					$line_2 .= $invoice->m_bank . ' | ';
+				}
+				if($invoice->m_sort_code != "") {
+					$line_2 .= 'BLZ: ' . $invoice->m_sort_code . ' | ';
+				}
+				if($invoice->m_account_number != "") {
+					$line_2 .= 'Kontonr.: ' . $invoice->m_account_number . ' | ';
+				}
+				if($invoice->m_iban != "") {
+					$line_2 .= 'IBAN: ' . $invoice->m_iban . ' | ';
+				}
+				if($invoice->m_bic != "") {
+					$line_2 .= 'BIC: ' . $invoice->m_bic;
+				}
+				$GLOBALS['BANKING_LINE_2'] =  $line_2;
+				
 				switch($t) {
 					case "html":
 						$this->printHTML($title,$html);
@@ -184,7 +328,43 @@ class PatientsInvoices extends Patients {
 					$title = $lang["PATIENT_INVOICE_PAYMENT_REMINDER"][0] . $invoice->invoice_number . ' ' . $invoice->lastname;
 				}
 				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_REMINDER"];
-				$GLOBALS['BANKING'] = $invoice->m_bank . ' | BLZ: ' . $invoice->m_sort_code . ' | Kontonr.: ' . $invoice->m_account_number . ' | IBAN: ' . $invoice->m_iban . ' | BIC: ' . $invoice->m_bic;
+				
+				$line_1 = '';
+				if($invoice->m_company != "") {
+					$line_1 .= $invoice->m_company . ' | ';
+				}
+				if($invoice->m_plz != "" && $invoice->m_town != "" && $invoice->m_street != "") {
+					$line_1 .= $invoice->m_plz . ' ' . $invoice->m_town . ', ' . $invoice->m_street . ' | ';
+				}
+				if($invoice->m_co_no != "") {
+					$line_1 .= 'FN: ' . $invoice->m_co_no . ' | ';
+				}
+				if($invoice->m_legal != "") {
+					$line_1 .= 'Gerichtsstand: ' . $invoice->m_legal . ' | ';
+				}
+				if($invoice->m_vat != "") {
+					$line_1 .= 'UID-Nummer: ' . $invoice->m_vat;
+				}
+				$GLOBALS['BANKING_LINE_1'] =  $line_1;
+				
+				$line_2 = '';
+				if($invoice->m_bank != "") {
+					$line_2 .= $invoice->m_bank . ' | ';
+				}
+				if($invoice->m_sort_code != "") {
+					$line_2 .= 'BLZ: ' . $invoice->m_sort_code . ' | ';
+				}
+				if($invoice->m_account_number != "") {
+					$line_2 .= 'Kontonr.: ' . $invoice->m_account_number . ' | ';
+				}
+				if($invoice->m_iban != "") {
+					$line_2 .= 'IBAN: ' . $invoice->m_iban . ' | ';
+				}
+				if($invoice->m_bic != "") {
+					$line_2 .= 'BIC: ' . $invoice->m_bic;
+				}
+				$GLOBALS['BANKING_LINE_2'] =  $line_2;
+				
 				switch($t) {
 					case "html":
 						$this->printHTML($title,$html);
@@ -292,7 +472,43 @@ class PatientsInvoices extends Patients {
 					$title = $lang["PATIENT_INVOICE_TITLE"][0] . $invoice->invoice_number . ' ' . $invoice->lastname;
 				}
 				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_INVOICE"];
-				$GLOBALS['BANKING'] = CO_INVOICE_FOOTER;
+				
+				$line_1 = '';
+				if($invoice->m_company != "") {
+					$line_1 .= $invoice->m_company . ' | ';
+				}
+				if($invoice->m_plz != "" && $invoice->m_town != "" && $invoice->m_street != "") {
+					$line_1 .= $invoice->m_plz . ' ' . $invoice->m_town . ', ' . $invoice->m_street . ' | ';
+				}
+				if($invoice->m_co_no != "") {
+					$line_1 .= 'FN: ' . $invoice->m_co_no . ' | ';
+				}
+				if($invoice->m_legal != "") {
+					$line_1 .= 'Gerichtsstand: ' . $invoice->m_legal . ' | ';
+				}
+				if($invoice->m_vat != "") {
+					$line_1 .= 'UID-Nummer: ' . $invoice->m_vat;
+				}
+				$GLOBALS['BANKING_LINE_1'] =  $line_1;
+				
+				$line_2 = '';
+				if($invoice->m_bank != "") {
+					$line_2 .= $invoice->m_bank . ' | ';
+				}
+				if($invoice->m_sort_code != "") {
+					$line_2 .= 'BLZ: ' . $invoice->m_sort_code . ' | ';
+				}
+				if($invoice->m_account_number != "") {
+					$line_2 .= 'Kontonr.: ' . $invoice->m_account_number . ' | ';
+				}
+				if($invoice->m_iban != "") {
+					$line_2 .= 'IBAN: ' . $invoice->m_iban . ' | ';
+				}
+				if($invoice->m_bic != "") {
+					$line_2 .= 'BIC: ' . $invoice->m_bic;
+				}
+				$GLOBALS['BANKING_LINE_2'] =  $line_2;
+				
 				$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
 				$pdf = $this->saveInvoice($title,$html,$attachment);
 			break;
@@ -311,7 +527,43 @@ class PatientsInvoices extends Patients {
 					$title = 'B ' . $invoice->beleg_nummer . ' ' . $invoice->lastname;
 				}
 				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_BELEG"];
-				$GLOBALS['BANKING'] = CO_INVOICE_FOOTER;
+				
+				$line_1 = '';
+				if($invoice->m_company != "") {
+					$line_1 .= $invoice->m_company . ' | ';
+				}
+				if($invoice->m_plz != "" && $invoice->m_town != "" && $invoice->m_street != "") {
+					$line_1 .= $invoice->m_plz . ' ' . $invoice->m_town . ', ' . $invoice->m_street . ' | ';
+				}
+				if($invoice->m_co_no != "") {
+					$line_1 .= 'FN: ' . $invoice->m_co_no . ' | ';
+				}
+				if($invoice->m_legal != "") {
+					$line_1 .= 'Gerichtsstand: ' . $invoice->m_legal . ' | ';
+				}
+				if($invoice->m_vat != "") {
+					$line_1 .= 'UID-Nummer: ' . $invoice->m_vat;
+				}
+				$GLOBALS['BANKING_LINE_1'] =  $line_1;
+				
+				$line_2 = '';
+				if($invoice->m_bank != "") {
+					$line_2 .= $invoice->m_bank . ' | ';
+				}
+				if($invoice->m_sort_code != "") {
+					$line_2 .= 'BLZ: ' . $invoice->m_sort_code . ' | ';
+				}
+				if($invoice->m_account_number != "") {
+					$line_2 .= 'Kontonr.: ' . $invoice->m_account_number . ' | ';
+				}
+				if($invoice->m_iban != "") {
+					$line_2 .= 'IBAN: ' . $invoice->m_iban . ' | ';
+				}
+				if($invoice->m_bic != "") {
+					$line_2 .= 'BIC: ' . $invoice->m_bic;
+				}
+				$GLOBALS['BANKING_LINE_2'] =  $line_2;
+				
 				$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
 				$pdf = $this->saveInvoice($title,$html,$attachment);
 			break;
@@ -330,7 +582,43 @@ class PatientsInvoices extends Patients {
 					$title = $lang["PATIENT_INVOICE_TITLE"][0] . $invoice->invoice_number . ' ' . $invoice->lastname;
 				}
 				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_INVOICE"];
-				$GLOBALS['BANKING'] = CO_INVOICE_FOOTER;
+				
+				$line_1 = '';
+				if($invoice->m_company != "") {
+					$line_1 .= $invoice->m_company . ' | ';
+				}
+				if($invoice->m_plz != "" && $invoice->m_town != "" && $invoice->m_street != "") {
+					$line_1 .= $invoice->m_plz . ' ' . $invoice->m_town . ', ' . $invoice->m_street . ' | ';
+				}
+				if($invoice->m_co_no != "") {
+					$line_1 .= 'FN: ' . $invoice->m_co_no . ' | ';
+				}
+				if($invoice->m_legal != "") {
+					$line_1 .= 'Gerichtsstand: ' . $invoice->m_legal . ' | ';
+				}
+				if($invoice->m_vat != "") {
+					$line_1 .= 'UID-Nummer: ' . $invoice->m_vat;
+				}
+				$GLOBALS['BANKING_LINE_1'] =  $line_1;
+				
+				$line_2 = '';
+				if($invoice->m_bank != "") {
+					$line_2 .= $invoice->m_bank . ' | ';
+				}
+				if($invoice->m_sort_code != "") {
+					$line_2 .= 'BLZ: ' . $invoice->m_sort_code . ' | ';
+				}
+				if($invoice->m_account_number != "") {
+					$line_2 .= 'Kontonr.: ' . $invoice->m_account_number . ' | ';
+				}
+				if($invoice->m_iban != "") {
+					$line_2 .= 'IBAN: ' . $invoice->m_iban . ' | ';
+				}
+				if($invoice->m_bic != "") {
+					$line_2 .= 'BIC: ' . $invoice->m_bic;
+				}
+				$GLOBALS['BANKING_LINE_2'] =  $line_2;
+				
 				$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
 				$pdf = $this->saveInvoice($title,$html,$attachment);
 			break;
@@ -349,7 +637,43 @@ class PatientsInvoices extends Patients {
 					$title = $lang["PATIENT_INVOICE_SERVICES"][0] . $invoice->invoice_number . ' ' . $invoice->lastname;
 				}
 				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_SERVICES"];
-				$GLOBALS['BANKING'] = CO_INVOICE_FOOTER;
+				
+				$line_1 = '';
+				if($invoice->m_company != "") {
+					$line_1 .= $invoice->m_company . ' | ';
+				}
+				if($invoice->m_plz != "" && $invoice->m_town != "" && $invoice->m_street != "") {
+					$line_1 .= $invoice->m_plz . ' ' . $invoice->m_town . ', ' . $invoice->m_street . ' | ';
+				}
+				if($invoice->m_co_no != "") {
+					$line_1 .= 'FN: ' . $invoice->m_co_no . ' | ';
+				}
+				if($invoice->m_legal != "") {
+					$line_1 .= 'Gerichtsstand: ' . $invoice->m_legal . ' | ';
+				}
+				if($invoice->m_vat != "") {
+					$line_1 .= 'UID-Nummer: ' . $invoice->m_vat;
+				}
+				$GLOBALS['BANKING_LINE_1'] =  $line_1;
+				
+				$line_2 = '';
+				if($invoice->m_bank != "") {
+					$line_2 .= $invoice->m_bank . ' | ';
+				}
+				if($invoice->m_sort_code != "") {
+					$line_2 .= 'BLZ: ' . $invoice->m_sort_code . ' | ';
+				}
+				if($invoice->m_account_number != "") {
+					$line_2 .= 'Kontonr.: ' . $invoice->m_account_number . ' | ';
+				}
+				if($invoice->m_iban != "") {
+					$line_2 .= 'IBAN: ' . $invoice->m_iban . ' | ';
+				}
+				if($invoice->m_bic != "") {
+					$line_2 .= 'BIC: ' . $invoice->m_bic;
+				}
+				$GLOBALS['BANKING_LINE_2'] =  $line_2;
+				
 				$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
 				$pdf = $this->saveInvoice($title,$html,$attachment);
 			break;
@@ -368,7 +692,43 @@ class PatientsInvoices extends Patients {
 					$title = $lang["PATIENT_INVOICE_PAYMENT_REMINDER"][0] . $invoice->invoice_number . ' ' . $invoice->lastname;
 				}
 				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_REMINDER"];
-				$GLOBALS['BANKING'] = CO_INVOICE_FOOTER;
+				
+				$line_1 = '';
+				if($invoice->m_company != "") {
+					$line_1 .= $invoice->m_company . ' | ';
+				}
+				if($invoice->m_plz != "" && $invoice->m_town != "" && $invoice->m_street != "") {
+					$line_1 .= $invoice->m_plz . ' ' . $invoice->m_town . ', ' . $invoice->m_street . ' | ';
+				}
+				if($invoice->m_co_no != "") {
+					$line_1 .= 'FN: ' . $invoice->m_co_no . ' | ';
+				}
+				if($invoice->m_legal != "") {
+					$line_1 .= 'Gerichtsstand: ' . $invoice->m_legal . ' | ';
+				}
+				if($invoice->m_vat != "") {
+					$line_1 .= 'UID-Nummer: ' . $invoice->m_vat;
+				}
+				$GLOBALS['BANKING_LINE_1'] =  $line_1;
+				
+				$line_2 = '';
+				if($invoice->m_bank != "") {
+					$line_2 .= $invoice->m_bank . ' | ';
+				}
+				if($invoice->m_sort_code != "") {
+					$line_2 .= 'BLZ: ' . $invoice->m_sort_code . ' | ';
+				}
+				if($invoice->m_account_number != "") {
+					$line_2 .= 'Kontonr.: ' . $invoice->m_account_number . ' | ';
+				}
+				if($invoice->m_iban != "") {
+					$line_2 .= 'IBAN: ' . $invoice->m_iban . ' | ';
+				}
+				if($invoice->m_bic != "") {
+					$line_2 .= 'BIC: ' . $invoice->m_bic;
+				}
+				$GLOBALS['BANKING_LINE_2'] =  $line_2;
+				
 				$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
 				$pdf = $this->saveInvoice($title,$html,$attachment);
 			break;

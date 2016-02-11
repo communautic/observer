@@ -23,6 +23,8 @@ if(is_array($waitinglist)) {
 			echo $lang["PATIENT_WIDGET_TITLE_WAITINGLIST"] . '</div><div class="widgetItemContent">';
 			echo sprintf($lang["PATIENT_WIDGET_REMINDER_WAITINGLIST"], $wait->title);
 		?>
+    <br />
+    <em><?php echo $wait->protocol;?></em>
     	</div></div>
     <?php
 	}

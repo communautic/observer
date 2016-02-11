@@ -48,6 +48,10 @@ $lang['CONTACTS_BANK_ACCOUNT_NBR'] = 'Konto';
 $lang['CONTACTS_BANK_ACCOUNT_BIC'] = 'BIC';
 $lang['CONTACTS_BANK_ACCOUNT_IBAN'] = 'IBAN';
 
+$lang['CONTACTS_VAT_NO'] = 'UID-Nummer';
+$lang['CONTACTS_COMPANY_NO'] = 'FN';
+$lang['CONTACTS_LEGAL_PLACE'] = 'Gerichtsstand';
+
 $lang['CONTACTS_LANGUAGE'] = 'Systemsprache';
 $lang['CONTACTS_TIMEZONE'] = 'Systemzeitzone';
 $lang["CONTACTS_DESCRIPTION"] = 'Notiz';

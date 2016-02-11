@@ -35,7 +35,7 @@
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
-<p style="font-size: 25pt;">Honorarnote</p>
+<p style="font-size: 25pt;">Rechnung</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <?php if(CO_PRODUCT_VARIANT == 2) { ?>
@@ -54,12 +54,14 @@
         <td width="75%"><?php echo($invoice->patient)?></td>
     </tr>
 </table>
+<?php if($invoice->number != "") { ?>
 <table width="100%" cellpadding="0" cellspacing="0" style="padding-right: 10pt;">
     <tr>
         <td width="25%" class="smalltext"><?php echo $lang["PATIENT_INSURANCE_NUMBER"];?></td>
         <td width="75%"><?php echo($invoice->number)?></td>
     </tr>
 </table>
+<?php } ?>
 <table width="100%" cellpadding="0" cellspacing="0" style="padding-right: 10pt;">
     <tr>
         <td width="25%" class="smalltext">Adresse</td>

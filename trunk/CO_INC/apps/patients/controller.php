@@ -571,9 +571,9 @@ class Patients extends Controller {
 				foreach ($ts as $t) {
 					if($arr = $patientsTreatments->model->getDetails($t->id)) {
 						$treatment = $arr["treatment"];
-						$t = $arr["t"];
+						//$t = $arr["t"];
 						$task = $arr["task"];
-						$diagnose = $arr["diagnose"];
+						//$diagnose = $arr["diagnose"];
 						$sendto = $arr["sendto"];
 						$printcanvas = 0;
 						ob_start();
@@ -587,14 +587,14 @@ class Patients extends Controller {
 			
 			
 			// visualisierungen
-			$patientsSketches = new PatientsSketches("sketches");
+			/*$patientsSketches = new PatientsSketches("sketches");
 			if($arrrs = $patientsSketches->model->getList($id,"0")) {
 				$rs = $arrrs["sketches"];
 				foreach ($rs as $r) {
 					if($arr = $patientsSketches->model->getDetails($r->id)) {
 						$sketch = $arr["sketch"];
 						$diagnose = $arr["diagnose"];
-						$r = $arr["r"];
+						//$r = $arr["r"];
 						$sendto = $arr["sendto"];
 						ob_start();
 							include 'modules/sketches/view/print.php';
@@ -602,8 +602,7 @@ class Patients extends Controller {
 						ob_end_clean();
 					}
 				}
-				//$html .= '<div style="page-break-after:always;">&nbsp;</div>';
-			}
+			}*/
 			
 			// reports
 			$patientsReports = new PatientsReports("reports");
@@ -612,7 +611,7 @@ class Patients extends Controller {
 				foreach ($rs as $r) {
 					if($arr = $patientsReports->model->getDetails($r->id)) {
 						$report = $arr["report"];
-						$r = $arr["r"];
+						//$r = $arr["r"];
 						$sendto = $arr["sendto"];
 						ob_start();
 							include 'modules/reports/view/print.php';

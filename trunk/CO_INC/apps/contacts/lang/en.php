@@ -48,6 +48,10 @@ $lang['CONTACTS_BANK_ACCOUNT_NBR'] = 'Account no';
 $lang['CONTACTS_BANK_ACCOUNT_BIC'] = 'BIC';
 $lang['CONTACTS_BANK_ACCOUNT_IBAN'] = 'IBAN';
 
+$lang['CONTACTS_VAT_NO'] = 'VAT Number';
+$lang['CONTACTS_COMPANY_NO'] = 'Company Number';
+$lang['CONTACTS_LEGAL_PLACE'] = 'Reg. Location';
+
 $lang['CONTACTS_LANGUAGE'] = 'Language';
 $lang['CONTACTS_TIMEZONE'] = 'Timezone';
 $lang["CONTACTS_DESCRIPTION"] = 'Notes';

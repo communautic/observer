@@ -35,7 +35,7 @@
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
-<p style="font-size: 25pt;">Honorarnote</p>
+<p style="font-size: 25pt;">Rechnung</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <?php if(CO_PRODUCT_VARIANT == 2) { ?>
