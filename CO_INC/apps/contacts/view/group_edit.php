@@ -25,6 +25,13 @@
     </td>
   </tr>
 </table>
+<div class="content-spacer"></div>
+<table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
+	<tr>
+		<td class="tcell-left text11"><span class="content-nav selectTextarea"><span><?php echo $lang["CONTACTS_DESCRIPTION"];?></span></span></td>
+        <td class="tcell-right"><textarea name="notes" class="elastic"><?php echo(strip_tags($group->notes));?></textarea></td>
+	</tr>
+</table>
 </form>
 <div class="content-spacer"></div>
 <div class="content-spacer"></div>

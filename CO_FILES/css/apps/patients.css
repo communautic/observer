@@ -462,6 +462,7 @@ background: url("../../img/brainstorms_grid_stagegate.png") no-repeat scroll 1px
 #patients-right .barchart_color_inprogress { background-color: #FFD20A;}
 #patients-right .barchart_color_inprogress { background-color: #FFD20A;}
 #patients-right .barchart_color_finished { background-color: #82aa0b;}
+#patients-right .barchart_color_not_finished { background-color: #7f7f7f;}
 
 /*#patients-right .ui-upload-button { position: absolute !important; width: 80px; height: 120px;}
 #patients-right .qq-upload-button-hover {background-color: #E9D09A; background-image: url("../../img/avatar_hover.jpg");  background-repeat: no-repeat; }

@@ -106,13 +106,13 @@ class ContactsModel extends Model {
 	}
 
 
-	function setGroupDetails($id,$title,$members) {
+	function setGroupDetails($id,$title,$members,$notes) {
 		global $session;
 		
 		$now = gmdate("Y-m-d H:i:s");
 		
 		$members = $this->sortUserIDsByName($members);
-		$q = "UPDATE " . CO_CONTACTS_TBL_GROUPS . " set title = '$title', members = '$members', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_CONTACTS_TBL_GROUPS . " set title = '$title', notes = '$notes', members = '$members', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
 			return true;
@@ -488,7 +488,7 @@ class ContactsModel extends Model {
    }*/
 
 
-	function setContactDetails($id, $lastname, $firstname, $title, $title2, $company, $position, $email, $email_alt, $phone1, $phone2, $fax, $address_line1, $address_line2, $address_town, $address_postcode, $address_country, $lang,$timezone,$bank_name,$sort_code,$account_number,$bic,$iban,$notes) {
+	function setContactDetails($id, $lastname, $firstname, $title, $title2, $company, $position, $email, $email_alt, $phone1, $phone2, $fax, $address_line1, $address_line2, $address_town, $address_postcode, $address_country, $lang,$timezone,$bank_name,$sort_code,$account_number,$bic,$iban,$vat_no,$company_no,$company_reg_loc,$notes) {
 		global $session;
 		$now = gmdate("Y-m-d H:i:s");
 		
@@ -513,7 +513,7 @@ class ContactsModel extends Model {
 			}
 		}
 		
-		$q = "UPDATE " . CO_TBL_USERS . " set lastname = '$lastname', firstname = '$firstname', title = '$title', title2 = '$title2', company = '$company', position = '$position', email = '$email', email_alt = '$email_alt', phone1 = '$phone1', phone2 = '$phone2', fax = '$fax', address_line1 = '$address_line1', address_line2 = '$address_line2', address_town = '$address_town', address_postcode = '$address_postcode', address_country = '$address_country', lang = '$lang', timezone = '$timezone', notes='$notes', bank_name='$bank_name', sort_code='$sort_code', account_number='$account_number', bic='$bic', iban='$iban', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_USERS . " set lastname = '$lastname', firstname = '$firstname', title = '$title', title2 = '$title2', company = '$company', position = '$position', email = '$email', email_alt = '$email_alt', phone1 = '$phone1', phone2 = '$phone2', fax = '$fax', address_line1 = '$address_line1', address_line2 = '$address_line2', address_town = '$address_town', address_postcode = '$address_postcode', address_country = '$address_country', lang = '$lang', timezone = '$timezone', notes='$notes', bank_name='$bank_name', sort_code='$sort_code', account_number='$account_number', bic='$bic', iban='$iban', vat_no ='$vat_no', company_no='$company_no', company_reg_loc='$company_reg_loc', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {

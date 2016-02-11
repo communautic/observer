@@ -2,7 +2,7 @@
 <table border="0" cellpadding="0" cellspacing="0" class="table-title">
   <tr>
     <td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav focusTitle<?php } ?>"><span><?php echo $lang["PATIENT_TREATMENT_TITLE"];?></span></span></td>
-    <td><input name="title" type="text" class="title textarea-title" value="<?php echo($treatment->title);?>" maxlength="100" /></td>
+    <td><?php if($treatment->canedit) { ?><input name="title" type="text" class="title textarea-title" value="<?php echo($treatment->title);?>" maxlength="100" /><?php } else { ?><div class="textarea-title"><?php echo($treatment->title);?></div><?php } ?></td>
   </tr>
   <tr class="table-title-status">
     <td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_STATUS"];?></td>
