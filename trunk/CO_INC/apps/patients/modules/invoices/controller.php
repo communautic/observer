@@ -190,7 +190,7 @@ class PatientsInvoices extends Patients {
 						$this->printHTML($title,$html);
 					break;
 					default:
-						$this->printInvoice($title,$html);
+						$this->printBeleg($title,$html);
 				}
 			break;
 			case 'invoice_plain':

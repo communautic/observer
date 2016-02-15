@@ -91,12 +91,16 @@ class PatientsInvoicesModel extends PatientsModel {
 			$array["accessstatus"] = $accessstatus;
 			// status
 			$itemstatus = "";
-			if($array["status_invoice"] == 1) {
+			if($array["status_invoice"] == 0) {
 				$itemstatus = " module-item-active-trial";
 			}
-			if($array["status_invoice"] == 2) {
+			if($array["status_invoice"] == 1) {
 				$itemstatus = " module-item-active-circle";
+				//$itemstatus = " module-item-active-trial";
 			}
+			//if($array["status_invoice"] == 2) {
+				//$itemstatus = " module-item-active-circle";
+			//}
 			if($array["status_invoice"] == 3) {
 				$itemstatus = " module-item-active-storno";
 			}

@@ -1,7 +1,7 @@
-<?php if(CO_PRODUCT_VARIANT == 2 && !empty($treatment->code)) { ?>
+<?php if(!empty($treatment->code)) { ?>
 <table width="100%" class="standard"> 
    <tr>
-		<td class="tcell-left"><?php echo $lang["PATIENT_CODE"];?></td>
+		<td class="tcell-left"><?php if(CO_PRODUCT_VARIANT == 1) { echo $lang["PATIENT_CODE_PO"]; }?><?php if(CO_PRODUCT_VARIANT == 2) { echo $lang["PATIENT_CODE_TO"]; }?></td>
 		<td><?php echo($treatment->code);?></td>
 	</tr>
 </table>

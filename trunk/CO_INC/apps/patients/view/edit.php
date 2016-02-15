@@ -57,14 +57,12 @@
         </tr>
 </table>
 <div class="content-spacer"></div>
-<?php if(CO_PRODUCT_VARIANT == 1) { ?><div style="display: none"><?php } ?>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
-    <td class="tcell-left-shorter text11"><span class="<?php if($patient->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["PATIENT_CODE"];?></span></span></td>
+    <td class="tcell-left-shorter text11"><span class="<?php if($patient->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php if(CO_PRODUCT_VARIANT == 1) { echo $lang["PATIENT_CODE_PO"]; }?><?php if(CO_PRODUCT_VARIANT == 2) { echo $lang["PATIENT_CODE_TO"]; }?></span></span></td>
     <td class="tcell-right-nopadding"><?php if($patient->canedit) { ?><input name="code" type="text" class="bg" value="<?php echo($patient->code);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $patient->code . '</span>'); } ?></td>
   </tr>
 </table>
-<?php if(CO_PRODUCT_VARIANT == 1) { ?></div><?php } ?>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
     <td class="tcell-left-shorter text11"><span class="<?php if($patient->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["PATIENT_DOB"];?></span></span></td>
