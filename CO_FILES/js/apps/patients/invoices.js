@@ -32,11 +32,14 @@ function patientsInvoices(name) {
 		var date = $("#patients .statusTabs input").val();
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients/modules/invoices&request=updateStatus&id=" + id + "&date=" + date + "&status=" + status, cache: false, success: function(data){
 				switch(data.status) {
-					case "1":
+					case "0":
 						$("#patients3 ul[rel=invoices] span[rel="+data.id+"] .module-item-status").addClass("module-item-active-trial").removeClass("module-item-active-circle");
 					break;
-					case "2":
+					case "1":
 						$("#patients3 ul[rel=invoices] span[rel="+data.id+"] .module-item-status").addClass("module-item-active-circle").removeClass("module-item-active-trial");
+					break;
+					case "2":
+						$("#patients3 ul[rel=invoices] span[rel="+data.id+"] .module-item-status").removeClass("module-item-active-trial").removeClass("module-item-active-circle");
 						$('#patients-right input.payment_reminder').val('');
 						module.actionRefresh();
 					break;
@@ -45,8 +48,8 @@ function patientsInvoices(name) {
 						$('#patients-right input.payment_reminder').val('');
 						module.actionRefresh();
 					break;
-					default:
-						$("#patients3 ul[rel=invoices] span[rel="+data.id+"] .module-item-status").removeClass("module-item-active-trial").removeClass("module-item-active-circle");
+					/*default:
+						$("#patients3 ul[rel=invoices] span[rel="+data.id+"] .module-item-status").removeClass("module-item-active-trial").removeClass("module-item-active-circle");*/
 				}
 			}
 		});

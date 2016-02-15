@@ -48,6 +48,8 @@ $lang["PATIENT_INSURANCE_INSURER_NUMBER"] = 'Insurer NI number';
 $lang["PATIENT_INSURANCE_ADDITIONAL"] = 'Additional Insurance';
 $lang["PATIENT_DESCRIPTION"] = 'History';
 $lang["PATIENT_CODE"] = 'Patient code';
+$lang["PATIENT_CODE_PO"] = 'Referentennummer';
+$lang["PATIENT_CODE_TO"] = 'Patientencode';
 $lang["PATIENT_DOB"] = 'D.O.B';
 $lang["PATIENT_COO"] = 'Profession';
 

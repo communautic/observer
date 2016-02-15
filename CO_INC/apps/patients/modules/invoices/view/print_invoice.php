@@ -38,15 +38,13 @@
 <p style="font-size: 25pt;">Rechnung</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
-<?php if(CO_PRODUCT_VARIANT == 2) { ?>
 <?php if($patient->code != "") { ?>
 <table width="100%" cellpadding="0" cellspacing="0" style="padding-right: 10pt;">
     <tr>
-        <td width="25%" class="smalltext"><?php echo $lang["PATIENT_CODE"];?></td>
+        <td width="25%" class="smalltext"><?php if(CO_PRODUCT_VARIANT == 1) { echo $lang["PATIENT_CODE_PO"]; }?><?php if(CO_PRODUCT_VARIANT == 2) { echo $lang["PATIENT_CODE_TO"]; }?></td>
         <td width="75%"><?php echo $patient->code;?></td>
     </tr>
 </table>
-<?php } ?>
 <?php } ?>
 <table width="100%" cellpadding="0" cellspacing="0" style="padding-right: 10pt;">
     <tr>

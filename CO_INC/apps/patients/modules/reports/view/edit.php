@@ -55,14 +55,12 @@ if($report->tid == 0) {
         <td class="tcell-right-inactive"><div id="reportstreatment" class="itemlist-field"><?php echo($report->treatment_title);?></div></td>
 	</tr>
 </table>
-<?php if(CO_PRODUCT_VARIANT == 2) { ?>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
-		<td class="tcell-left-inactive text11"><?php echo $lang["PATIENT_CODE"];?></td>
+		<td class="tcell-left-inactive text11"><?php if(CO_PRODUCT_VARIANT == 1) { echo $lang["PATIENT_CODE_PO"]; }?><?php if(CO_PRODUCT_VARIANT == 2) { echo $lang["PATIENT_CODE_TO"]; }?></td>
 		<td class="tcell-right-inactive"><?php echo($report->code)?> </td>
     </tr>
 </table>
-<?php } ?>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 		<td class="tcell-left-inactive text11">Patient/in</td>
