@@ -70,7 +70,7 @@
 <table width="100%" cellpadding="0" cellspacing="0" style="padding-right: 10pt;">
     <tr>
         <td width="25%" class="smalltext"><?php echo $lang["PATIENT_INSURER"];?></td>
-        <td width="75%"><?php echo($invoice->title2)?> <?php echo($invoice->lastname);?> <?php echo($invoice->firstname);?></td>
+        <td width="75%"><?php echo($invoice->insurer);?></td>
     </tr>
 </table>
 <table width="100%" cellpadding="0" cellspacing="0" style="padding-right: 10pt;">
