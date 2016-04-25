@@ -354,7 +354,7 @@ class Controller extends MySQLDB {
 		try {
   			$mail = new PHPMailerLite(true); //New instance, with exceptions enabled
 			$mail->CharSet = "UTF-8";
-			$mail->Encoding = 'quoted-printable';
+			//$mail->Encoding = 'quoted-printable';
 			//$body = file_get_contents('contents.html');
 			//$body = preg_replace('/\\\\/','', $body); //Strip backslashes
 			if($bodynl2br == 1) {

@@ -80,7 +80,7 @@ $lang["PATIENT_WIDGET_REMINDER_WAITINGLIST"] 	= 	'Patient "%1$s" ist noch auf de
 
 $lang["EVENTTYPE"][1] = 'Sitzung';
 $lang["EVENTTYPE"][2] = 'Neuaufnahme';
-$lang["EVENTTYPE"][3] = 'Patientenakt';
+$lang["EVENTTYPE"][3] = 'Patient';
 $lang["EVENTTYPE"][4] = 'Behandlung';
 
 // check for custom lang file

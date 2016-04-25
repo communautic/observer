@@ -68,6 +68,7 @@ class PHP_Evaluator {
     }
 
     eval(utf8_decode($code)); 
+		//eval($code); 
   }
 
   function render($frame) {

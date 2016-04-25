@@ -219,6 +219,9 @@ class PatientsInvoicesModel extends PatientsModel {
 			}
 		}
 		
+		//insurer field 
+		$array["insurer"] = $this->_contactsmodel->getUserListPlain($array['insurer'],'insurer', "", $array["canedit"]);
+		
 		// dates
 		$array["item_date"] = $this->_date->formatDate($array["item_date"],CO_DATE_FORMAT);
 		$array["treatment_start"] = $this->_date->formatDate($array["treatment_start"],CO_DATE_FORMAT);
