@@ -36,8 +36,9 @@ if(is_array($invoices)) { ?>
     <td width="90" class="row<?php  echo ($i % 2);?>" style="padding-left: 14px;"><?php echo($invoice->invoice_date);?></td>
     <td width="70" class="row<?php  echo ($i % 2);?>"><?php echo($invoice->totalmin);?></td>
     <td width="70" class="row<?php  echo ($i % 2);?>"><?php echo(CO_DEFAULT_CURRENCY . ' ' . $invoice->totalcosts);?></td>
-    <td width="150" class="row<?php  echo ($i % 2);?>"><?php echo($invoice->management);?></td>
-    <td class="row<?php  echo ($i % 2);?>"><?php if($invoice->payment_type == 'Barzahlung') { echo($invoice->payment_type); } ?> <!--<?php if($invoice->status_invoice == 3) { echo('Storno'); } ?>--></td>
+    <td class="row<?php  echo ($i % 2);?>"><?php echo($invoice->management);?></td>
+    <td class="row<?php  echo ($i % 2);?>"><?php if($invoice->status_invoice_class == 'barchart_color_finished') { echo($invoice->payment_type); } ?></td>
+    <td class="row<?php  echo ($i % 2);?>"><?php if($invoice->status_invoice_class == 'barchart_color_finished') { echo('am ' . $invoice->status_invoice_date); } ?></td>
     <td></td>
     </tr>
     <?php 

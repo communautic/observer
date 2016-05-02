@@ -153,6 +153,9 @@ if (!empty($_GET['request'])) {
 		case 'getTreatmentInfoForCalendar':
 			echo($patientsTreatments->getTreatmentInfoForCalendar($_GET['id']));
 		break;
+		case 'getMethodContext':
+			echo($patientsTreatments->getMethodContext($_GET['id'],$_GET['field'],$_GET['edit']));
+		break;
 	}
 }
 

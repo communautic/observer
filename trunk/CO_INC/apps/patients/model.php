@@ -252,7 +252,7 @@ class PatientsModel extends Model {
 			$access = " and (b.id IN (" . $adminPerm . ") or (b.id IN (" . $guestPerm . ") and a.access_invoice='1'))";
 	  	}
 		
-		$q = "SELECT a.id,a.title,a.invoice_date,a.invoice_number,a.status_invoice, a.discount, a.vat, a.payment_type, b.id as pid, b.management, CONCAT(c.lastname,' ',c.firstname) as patient FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE a.status='2' and a.pid=b.id and b.folder='$id' and b.cid=c.id and a.bin='0' and b.bin='0'" . $access . " ORDER BY " . $order;
+		$q = "SELECT a.id,a.title,a.invoice_date,a.invoice_number,a.status_invoice,a.status_invoice_date, a.discount, a.vat, a.payment_type, b.id as pid, b.management, CONCAT(c.lastname,' ',c.firstname) as patient FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE a.status='2' and a.pid=b.id and b.folder='$id' and b.cid=c.id and a.bin='0' and b.bin='0'" . $access . " ORDER BY " . $order;
 		//echo $q;
 		
 		
@@ -266,6 +266,7 @@ class PatientsModel extends Model {
 		}
 		$id = $array["id"];
 		$array["invoice_date"] = $this->_date->formatDate($array["invoice_date"],CO_DATE_FORMAT);
+		$array["status_invoice_date"] = $this->_date->formatDate($array["status_invoice_date"],CO_DATE_FORMAT);
 		$array["management"] = $contactsmodel->getUserListPlain($array['management']);
 		
 		switch($array["status_invoice"]) {
@@ -353,7 +354,7 @@ class PatientsModel extends Model {
 			$folder = '';
 		}
 		
-		$q = "SELECT a.id,a.title,a.invoice_date,a.status_invoice, a.invoice_number, a.payment_type, a.discount, b.id as pid, b.folder, b.management, CONCAT(c.lastname,' ',c.firstname) as patient FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE $management $folder a.invoice_date >= '$start' and a.invoice_date <= '$end' and a.status='2' and status_invoice !='3' and a.pid=b.id and b.cid=c.id and a.bin='0' and b.bin='0'";
+		$q = "SELECT a.id,a.title,a.invoice_date,a.status_invoice,a.status_invoice_date, a.invoice_number, a.payment_type, a.discount, b.id as pid, b.folder, b.management, CONCAT(c.lastname,' ',c.firstname) as patient FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE $management $folder a.invoice_date >= '$start' and a.invoice_date <= '$end' and a.status='2' and status_invoice !='3' and a.pid=b.id and b.cid=c.id and a.bin='0' and b.bin='0'";
 		
 		$result = mysql_query($q, $this->_db->connection);
 		if(mysql_num_rows($result) < 1) {
@@ -365,6 +366,7 @@ class PatientsModel extends Model {
 		}
 		$id = $array["id"];
 		$array["invoice_date"] = $this->_date->formatDate($array["invoice_date"],CO_DATE_FORMAT);
+		$array["status_invoice_date"] = $this->_date->formatDate($array["status_invoice_date"],CO_DATE_FORMAT);
 		$array["management"] = $contactsmodel->getUserListPlain($array['management']);
 		$manager = $array["management"];
 		$array["showmanagertoitem"] = false;

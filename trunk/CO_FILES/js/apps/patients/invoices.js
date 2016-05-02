@@ -188,6 +188,15 @@ function patientsInvoices(name) {
 					window.open(url);
 				}
 			break;
+			case '7':
+				var id = $("#patients").data("third");
+				var url ='/?path=apps/patients/modules/invoices&request=printDetails&option=zuschuss&id='+id;
+				if(!iOS()) {
+					$("#documentloader").attr('src', url);
+				} else {
+					window.open(url);
+				}
+			break;
 		}
 	}
 	
@@ -303,6 +312,17 @@ function patientsInvoices(name) {
 			case '6':
 				var id = $("#patients").data("third");
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients/modules/invoices&request=getSend&option=beleg&id="+id, success: function(data){
+					$("#modalDialogForward").html(data.html).dialog('open');
+					if(data.error == 1) {
+						$.prompt('<div style="text-align: center">' + ALERT_REMOVE_RECIPIENT + data.error_message + '<br /></div>');
+						return false;
+					}
+					}
+				});
+			break;
+			case '1':
+				var id = $("#patients").data("third");
+				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients/modules/invoices&request=getSend&option=zuschuss&id="+id, success: function(data){
 					$("#modalDialogForward").html(data.html).dialog('open');
 					if(data.error == 1) {
 						$.prompt('<div style="text-align: center">' + ALERT_REMOVE_RECIPIENT + data.error_message + '<br /></div>');

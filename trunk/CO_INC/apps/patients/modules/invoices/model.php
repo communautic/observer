@@ -145,7 +145,7 @@ class PatientsInvoicesModel extends PatientsModel {
 		
 		$patientid = $array["pid"];
 		
-		$q = "SELECT a.number,a.number_insurer,a.insurer, b.id as patient_id, b.lastname,b.firstname,b.title as ctitle,b.title2,b.position,b.phone1,b.email,b.address_line1,b.address_line2,b.address_town,b.address_postcode FROM " . CO_TBL_PATIENTS . " as a, co_users as b where a.cid=b.id and a.id = '$patientid'";
+		$q = "SELECT a.number,a.number_insurer,a.insurer, a.insurance, b.id as patient_id, b.lastname,b.firstname,b.title as ctitle,b.title2,b.position,b.phone1,b.email,b.address_line1,b.address_line2,b.address_town,b.address_postcode,b.bank_name,b.sort_code, b.account_number, b.bic, b.iban FROM " . CO_TBL_PATIENTS . " as a, co_users as b where a.cid=b.id and a.id = '$patientid'";
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_fetch_array($result);
 		foreach($row as $key => $val) {
@@ -156,6 +156,19 @@ class PatientsInvoicesModel extends PatientsModel {
 		$array["perms"] = $this->getPatientAccess($array["pid"]);
 		$array["canedit"] = false;
 		$array["showCheckout"] = false;
+		
+		if($array["insurance"] != '') {
+				$insurance_id = $array["insurance"];
+				$insurance_q = "SELECT name, text from " . CO_TBL_PATIENTS_DIALOG_PATIENTS . " where id = '$insurance_id'";
+				$result_insurance = mysql_query($insurance_q, $this->_db->connection);
+				while($row_insurance = mysql_fetch_array($result_insurance)) {
+					$array['insurance_name'] = $row_insurance['name'];
+					$insurance_address = explode('</div>',$row_insurance['text']);
+					$array['insurance_address_line_1'] = str_replace('<div class="regular">','',$insurance_address[0]);
+					$array['insurance_address_line_2'] = str_replace('<div class="regular">','',$insurance_address[1]);
+				}
+				
+		}
 		
 		if($array["perms"] == "sysadmin" || $array["perms"] == "admin") {
 			$array["canedit"] = true;
@@ -211,7 +224,7 @@ class PatientsInvoicesModel extends PatientsModel {
 			$alt_invoice = $array['invoice_address'];
 			$array["invoiceaddress_print"] = $this->_contactsmodel->getUserListPlain($array['invoice_address']);
 			$array["invoiceaddress"] = $this->_contactsmodel->getUserList($array['invoice_address'],'invoice_address', "", $array["canedit"]);
-			$q_alt = "SELECT lastname,firstname,title as ctitle,title2,position,phone1,email,address_line1,address_line2,address_town,address_postcode FROM co_users WHERE id = '$alt_invoice'";
+			$q_alt = "SELECT lastname,firstname,title as ctitle,title2,position,phone1,email,address_line1,address_line2,address_town,address_postcode,bank_name, sort_code, account_number, bic, iban FROM co_users WHERE id = '$alt_invoice'";
 			$result_alt = mysql_query($q_alt, $this->_db->connection);
 			$row_alt = mysql_fetch_array($result_alt);
 			foreach($row_alt as $key => $val) {
@@ -251,7 +264,7 @@ class PatientsInvoicesModel extends PatientsModel {
 			//$array["invoice_carrier"] = $this->_contactsmodel->getUserList($array['invoice_carrier'],'invoice_carrier', "", $array["canedit"]);
 			$management_print = $array["invoice_carrier"];
 		}
-		$q = "SELECT lastname as m_lastname,firstname as m_firstname,title2 as m_title, phone1 as m_phone, email as m_email, email_alt as m_email_alt, fax as m_fax, company as m_company, address_postcode as m_plz, address_town as m_town, address_line1 as m_street, company_no as m_co_no, company_reg_loc as m_legal, vat_no as m_vat, bank_name as m_bank, sort_code as m_sort_code, account_number as m_account_number, bic as m_bic, iban as m_iban FROM co_users where id = '$management_print'";
+		$q = "SELECT lastname as m_lastname,firstname as m_firstname,title2 as m_title, phone1 as m_phone, email as m_email, email_alt as m_email_alt, fax as m_fax, company as m_company, position as m_position, address_postcode as m_plz, address_town as m_town, address_line1 as m_street, company_no as m_co_no, company_reg_loc as m_legal, vat_no as m_vat, bank_name as m_bank, sort_code as m_sort_code, account_number as m_account_number, bic as m_bic, iban as m_iban, dvr as m_dvr FROM co_users where id = '$management_print'";
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_fetch_array($result);
 		foreach($row as $key => $val) {
