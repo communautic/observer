@@ -197,6 +197,12 @@
         <td class="tcell-right-nopadding"><input name="company_reg_loc" id="company_reg_loc" type="text" class="bg" value="<?php echo($contact->company_reg_loc);?>" /></td>
         </tr>
 </table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+    <tr>
+        <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_DVR_NUMBER'];?></span></span></td>
+        <td class="tcell-right-nopadding"><input name="dvr" id="dvr" type="text" class="bg" value="<?php echo($contact->dvr);?>" /></td>
+        </tr>
+</table>
 
     <div class="content-spacer"></div>
     </div>
