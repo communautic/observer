@@ -125,9 +125,16 @@ class PatientsTreatments extends Patients {
 					$diagnose = $arr["diagnose"];
 					$sendto = $arr["sendto"];
 					$printcanvas = 0;
+					$terminliste_text = CO_PATH_DATA . '/templates/terminliste_text.php';
+					if(file_exists($terminliste_text)) {
+						ob_start();
+							include $terminliste_text;
+							$html .= ob_get_contents();
+						ob_end_clean();
+					}
 					ob_start();
 						include 'view/print_list.php';
-						$html = ob_get_contents();
+						$html .= ob_get_contents();
 					ob_end_clean();
 					$title = $treatment->title;
 				}
@@ -508,6 +515,12 @@ class PatientsTreatments extends Patients {
 			$treatment = $arr["treatment"];
 			return json_encode($treatment);
 		}
+	}
+	
+	function getMethodContext($id,$field,$edit) {
+		global $lang;
+		$context = $this->model->getMethodContext($id,$field);
+		include 'view/method_context.php';
 	}
 	
 }

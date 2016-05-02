@@ -18,7 +18,6 @@
         <td width="50%" class="text-lg" style="text-align: right;"><?php echo $invoice->beleg_nummer;?></td>
     </tr>
 </table>
-<p>&nbsp;</p>
 <table width="100%" cellpadding="0" cellspacing="0">
     <tr valign="bottom">
         <td width="50%">Datum / Zeit</td>
@@ -112,4 +111,4 @@
 <p class="text-lg"><?php echo $lang["PATIENT_INVOICE_PAYMENT_CASH"];?></p>
 <p>&nbsp;</p>
 <p class="text-lg"><?php echo $lang["PATIENT_INVOICE_TEXT_LINE4"];?></p>
-<p class="text-lg"><?php echo($invoice->m_title)?> <?php echo($invoice->m_firstname)?> <?php echo($invoice->m_lastname)?></p>
+<p class="text-lg"><?php echo($invoice->m_title)?> <?php echo($invoice->m_firstname)?> <?php echo($invoice->m_lastname)?><br /><span class="smalltext"><?php echo($invoice->m_position)?></span></p>

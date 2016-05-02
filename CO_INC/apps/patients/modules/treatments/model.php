@@ -638,7 +638,7 @@ class PatientsTreatmentsModel extends PatientsModel {
 				$q = "SELECT id, name from " . CO_TBL_PATIENTS_TREATMENTS_METHODS . " where id = '$value'";
 				$result_user = mysql_query($q, $this->_db->connection);
 				while($row_user = mysql_fetch_assoc($result_user)) {
-					$users .= '<span class="listmember-outer"><span class="listmember" uid="' . $row_user["id"] . '">' . $row_user["name"] . '</span></div>';
+					$users .= '<span class="listmember-outer"><a class="listmemberMethod" uid="' . $row_user["id"] . '">' . $row_user["name"] . '</a></div>';
 					if($i < $users_total) {
 						$users .= ', ';
 					}
@@ -920,7 +920,7 @@ function getTreatmentTypeMin($string){
 		$now = gmdate("Y-m-d H:i:s");
 
 		// treatment
-		$q = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS . " (pid,title,item_date,doctor,doctor_ct,protocol,protocol2,protocol3,status_date,created_date,created_user,edited_date,edited_user) SELECT pid,CONCAT(title,' " . $lang["GLOBAL_DUPLICAT"] . "'),'$now',doctor,doctor_ct,protocol,protocol2,protocol3,'$now','$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_PATIENTS_TREATMENTS . " where id='$id'";
+		$q = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS . " (pid,title,item_date,doctor,doctor_ct,method,discount,vat,protocol,protocol2,protocol3,status_date,created_date,created_user,edited_date,edited_user) SELECT pid,CONCAT(title,' " . $lang["GLOBAL_DUPLICAT"] . "'),'$now',doctor,doctor_ct,method,discount,vat,protocol,protocol2,protocol3,'$now','$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_PATIENTS_TREATMENTS . " where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
 		// tasks
@@ -1469,6 +1469,21 @@ function getTreatmentTypeMin($string){
 		$arr = array("treatment" => $treatment);
 		return $arr;
    }
+	 
+	 	function getMethodContext($id,$field){
+		//$q = "SELECT id, firstname, lastname, company, position,phone1,phone2,fax,address_line1, address_town, address_postcode,email FROM ".CO_TBL_USERS." where id = '$id'";
+		$q = "SELECT id, name from " . CO_TBL_PATIENTS_TREATMENTS_METHODS . " where id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		$row = mysql_fetch_array($result);
+		foreach($row as $key => $val) {
+			$array[$key] = $val;
+		}
+		
+		$array["field"] = $field;
+		
+		$context = new Lists($array); 
+	  	return $context;
+	}
 
 }
 ?>

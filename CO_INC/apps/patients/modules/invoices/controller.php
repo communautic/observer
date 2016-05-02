@@ -89,6 +89,12 @@ class PatientsInvoices extends Patients {
 				}
 				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_INVOICE"];
 				
+				$dvr = '';
+				if($invoice->m_dvr != "") {
+					$dvr .= 'DVR-Nummer: ' . $invoice->m_dvr;
+				}
+				$GLOBALS['DVR'] =  $dvr;
+				
 				$line_1 = '';
 				if($invoice->m_company != "") {
 					$line_1 .= $invoice->m_company . ' | ';
@@ -148,6 +154,12 @@ class PatientsInvoices extends Patients {
 					$title = 'B ' . $invoice->beleg_nummer . ' ' . $invoice->lastname;
 				}
 				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_BELEG"];
+				
+				$dvr = '';
+				if($invoice->m_dvr != "") {
+					$dvr .= 'DVR-Nummer: ' . $invoice->m_dvr;
+				}
+				$GLOBALS['DVR'] =  $dvr;
 				
 				$line_1 = '';
 				if($invoice->m_company != "") {
@@ -209,6 +221,12 @@ class PatientsInvoices extends Patients {
 				}
 				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_INVOICE"];
 				
+				$dvr = '';
+				if($invoice->m_dvr != "") {
+					$dvr .= 'DVR-Nummer: ' . $invoice->m_dvr;
+				}
+				$GLOBALS['DVR'] =  $dvr;
+				
 				$line_1 = '';
 				if($invoice->m_company != "") {
 					$line_1 .= $invoice->m_company . ' | ';
@@ -268,6 +286,12 @@ class PatientsInvoices extends Patients {
 					$title = $lang["PATIENT_INVOICE_SERVICES"][0] . $invoice->invoice_number . ' ' . $invoice->lastname;
 				}
 				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_SERVICES"];
+				
+				$dvr = '';
+				if($invoice->m_dvr != "") {
+					$dvr .= 'DVR-Nummer: ' . $invoice->m_dvr;
+				}
+				$GLOBALS['DVR'] =  $dvr;
 				
 				$line_1 = '';
 				if($invoice->m_company != "") {
@@ -329,6 +353,12 @@ class PatientsInvoices extends Patients {
 				}
 				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_REMINDER"];
 				
+				$dvr = '';
+				if($invoice->m_dvr != "") {
+					$dvr .= 'DVR-Nummer: ' . $invoice->m_dvr;
+				}
+				$GLOBALS['DVR'] =  $dvr;
+				
 				$line_1 = '';
 				if($invoice->m_company != "") {
 					$line_1 .= $invoice->m_company . ' | ';
@@ -388,6 +418,34 @@ class PatientsInvoices extends Patients {
 				}
 				//$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_INVOICE"];
 				$this->printStationary($title,$html,'595','290');
+			break;
+			case 'zuschuss':
+				if($arr = $this->model->getDetails($id)) {
+					$invoice = $arr["invoice"];
+					$task = $arr["task"];
+					$pid = $invoice->pid;
+					if($arr = $this->model->getPatientDetails($pid,'nocheckout')) {
+						$patient = $arr["patient"];
+					}
+					ob_start();
+						include 'view/print_zuschuss.php';
+						$html = ob_get_contents();
+					ob_end_clean();
+					$title = 'K_' . $invoice->invoice_number . ' ' . $invoice->lastname;
+				}
+				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_ZUSCHUSS"];
+				
+				$GLOBALS['BANKING_LINE_1'] =  '';
+				
+				$GLOBALS['BANKING_LINE_2'] =  '';
+				
+				switch($t) {
+					case "html":
+						$this->printHTML($title,$html);
+					break;
+					default:
+						$this->printInvoice($title,$html);
+				}
 			break;
 		}
 	}

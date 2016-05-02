@@ -70,6 +70,7 @@ $lang["PATIENT_INVOICE_PRINTOPTION_SERVICES"] = 'Leistungen';
 $lang["PATIENT_INVOICE_PRINTOPTION_PAYMENT_REMINDER"] = 'Mahnung';
 $lang["PATIENT_INVOICE_PRINTOPTION_ENVELOPE"] = 'Kuvert';
 $lang["PATIENT_INVOICE_PRINTOPTION_BELEG"] = 'Kassenbeleg';
+$lang["PATIENT_INVOICE_PRINTOPTION_ZUSCHUSS"] = 'Kostenzuschuss';
 
 $lang["PATIENT_INVOICE_HELP"] = 'manual_patienten_rechnungen.pdf';
 
@@ -77,6 +78,7 @@ $lang["PATIENT_PRINT_INVOICE"] = 'rechnung.png';
 $lang["PATIENT_PRINT_SERVICES"] = 'leistungen.png';
 $lang["PATIENT_PRINT_REMINDER"] = 'mahnung.png';
 $lang["PATIENT_PRINT_BELEG"] = 'beleg.png';
+$lang["PATIENT_PRINT_ZUSCHUSS"] = 'anweisung.png';
 
 // check for custom lang file
 $custom_lang = CO_PATH_BASE . "/lang/patients/invoices/de.php";

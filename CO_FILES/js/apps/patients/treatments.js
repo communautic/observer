@@ -1204,6 +1204,20 @@ var colors = ['#3C4664','#EB4600','#915500','#0A960A','#AA19AA','#3C4664','#EB46
 			}
 		});
 	});
+	
+	$(document).on('click', 'a.listmemberMethod', function(e) {
+		e.preventDefault();
+		var ele = $(this);
+		var uid = $(this).attr('uid');
+		var field = $(this).attr('field');
+		var edit = $(this).attr('edit');
+		$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/treatments&request=getMethodContext&id="+uid+"&field="+field+"&edit="+edit, success: function(html){
+			ele.parent().append(html);
+			ele.next().slideDown();
+			}
+		});
+	});
+
 		
 		
 		/*$("div.loadCanvas").livequery( function() {
