@@ -453,8 +453,8 @@ function getContactSend($id) {
 	}
 	
 	
-	function setContactDetails($id, $lastname, $firstname, $title, $title2, $company, $position, $email, $email_alt, $phone1, $phone2, $fax, $address_line1, $address_line2, $address_town, $address_postcode, $address_country, $lang,$timezone,$bank_name,$sort_code,$account_number,$bic,$iban,$vat_no,$company_no,$company_reg_loc,$notes) {
-		$retval = $this->model->setContactDetails($id, $lastname, $firstname, $title, $title2, $company, $position, $email, $email_alt, $phone1, $phone2, $fax, $address_line1, $address_line2, $address_town, $address_postcode, $address_country, $lang,$timezone,$bank_name,$sort_code,$account_number,$bic,$iban,$vat_no,$company_no,$company_reg_loc,$notes);
+	function setContactDetails($id, $lastname, $firstname, $title, $title2, $company, $position, $email, $email_alt, $phone1, $phone2, $fax, $address_line1, $address_line2, $address_town, $address_postcode, $address_country, $lang,$timezone,$bank_name,$sort_code,$account_number,$bic,$iban,$vat_no,$company_no,$company_reg_loc,$dvr,$notes) {
+		$retval = $this->model->setContactDetails($id, $lastname, $firstname, $title, $title2, $company, $position, $email, $email_alt, $phone1, $phone2, $fax, $address_line1, $address_line2, $address_town, $address_postcode, $address_country, $lang,$timezone,$bank_name,$sort_code,$account_number,$bic,$iban,$vat_no,$company_no,$company_reg_loc,$dvr,$notes);
 		if($retval){
 			 return '{ "action": "edit", "id": "' . $id . '" }';
 		  } else{
