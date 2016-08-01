@@ -535,7 +535,7 @@ class ProjectsDocumentsModel extends ProjectsModel {
 		fclose ($fd);
 		exit;
 		}
-	}
+	
 	
 	
 	function getListArchive($id,$sort) {
@@ -635,5 +635,7 @@ class ProjectsDocumentsModel extends ProjectsModel {
 		$arr = array("document" => $document, "doc" => $doc, "sendto" => $sendto, "access" => $perms);
 		return $arr;
    }
+	 
+	 }
    
 ?>
