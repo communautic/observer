@@ -2639,6 +2639,12 @@ function navThreeTitleSecondArchives(objectname, clicked, passed_id) {
 			object.$second.data('status','open');
 			var h = object.$layoutWest.height();
 			var id = object.$app.data('first');
+			
+			//var id = object.$app.data('first');
+			var moduleFirst = id.substr(0, 1);
+			var moduleCaps = moduleFirst.toUpperCase() + id.substr(1);
+			var moduleCapsSingular = moduleCaps.slice(0,-1);
+			
 			if(passed_id === undefined) {
 				var objecctid = object.$app.data('second');
 			} else {
@@ -2654,7 +2660,7 @@ function navThreeTitleSecondArchives(objectname, clicked, passed_id) {
 				setModuleActive(object.$second,index);
 				//$('#'+objectname+'2 .sort').attr('rel', data.sort).addClass('sort'+data.sort);
 					//$(this).find('.west-ui-content').height(h-(object.modules_height+125));
-					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+id+"&request=getProjectDetailsArchive&id="+objecctid, success: function(text){
+					$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+id+"&request=get"+moduleCapsSingular+"DetailsArchive&id="+objecctid, success: function(text){
 						object.$appContent.html(text.html);
 						/*switch (text.access) {
 							case "sysadmin":
