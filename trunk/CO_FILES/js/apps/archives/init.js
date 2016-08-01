@@ -21,12 +21,12 @@ function archivesApplication(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#archives input.title").fieldValue();
 		if(title == "") {
-			setTimeout(function() {
+			/*setTimeout(function() {
 				title = $("#archives input.title").fieldValue();
 				if(title == "") {
 					$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
 				}
-			}, 5000)
+			}, 5000)*/
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -91,9 +91,10 @@ function archivesApplication(name) {
 
 
 	this.getNavModulesNumItems = function(id) {
-		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/archives&request=getNavModulesNumItems&id=' + id, success: function(data){
+		var module = $("#archives").data("first");
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/'+module+'&request=getNavModulesNumItems&id=' + id, success: function(data){
 				$.each( data, function(k, v){
-   					$('#'+k).html(v);
+   					$('#archive_'+k).html(v);
  				});
 			}
 		});
@@ -216,14 +217,23 @@ function archivesApplication(name) {
 		var moduleFirst = module.substr(0, 1);
 		var moduleCaps = moduleFirst.toUpperCase() + module.substr(1);
 		var moduleCapsSingular = moduleCaps.slice(0,-1);
-		
+		//console.log('called');
 		var id = $("#archives").data("second");
-		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/'+module+'&request=get'+moduleCapsSingular+'Send&id='+id, success: function(data){
-			$("#modalDialogForward").html(data.html).dialog('open');
-			if(data.error == 1) {
+		var dataType = 'json';
+		if(module == 'procs') {
+			dataType = 'html';
+		}
+		$.ajax({ type: "GET", url: "/", dataType:  dataType, data: 'path=apps/'+module+'&request=get'+moduleCapsSingular+'Send&id='+id, success: function(data){
+			//console.log(data);
+			if(module == 'procs') {
+				$("#modalDialogForward").html(data).dialog('open');
+			} else {
+				$("#modalDialogForward").html(data.html).dialog('open');
+			}
+			/*if(data.error == 1) {
 				$.prompt('<div style="text-align: center">' + ALERT_REMOVE_RECIPIENT + data.error_message + '<br /></div>');
 				return false;
-			}
+			}*/
 			}
 		});
 	}
@@ -363,12 +373,12 @@ function archivesFolders(name) {
 	this.formProcess = function(formData, form, poformOptions) {
 		var title = $("#archives input.title").fieldValue();
 		if(title == "") {
-			setTimeout(function() {
+			/*setTimeout(function() {
 				title = $("#archives input.title").fieldValue();
 				if(title == "") {
 					$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
 				}
-			}, 5000)
+			}, 5000)*/
 			return false;
 		} else {
 			formData[formData.length] = { "name": "title", "value": title };
@@ -1514,12 +1524,8 @@ function archivesDocuments(app) {
 		var module = this;
 		var mainmodule = $('#'+ module.app).data("first");
 		var id = $('#'+ module.app).data("third");
-		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/'+ mainmodule +'/modules/documents&request=getSend&id='+id, success: function(data){
-			$("#modalDialogForward").html(data.html).dialog('open');
-			if(data.error == 1) {
-				$.prompt('<div style="text-align: center">' + ALERT_REMOVE_RECIPIENT + data.error_message + '<br /></div>');
-				return false;
-			}
+		$.ajax({ type: "GET", url: "/", data: 'path=apps/'+ mainmodule +'/modules/documents&request=getSend&id='+id, success: function(data){
+			$("#modalDialogForward").html(data).dialog('open');
 			}
 		});
 	}
@@ -1622,12 +1628,8 @@ function archivesVdocs(app) {
 		var module = this;
 		var mainmodule = $('#'+ module.app).data("first");
 		var id = $('#'+ module.app).data("third");
-		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/'+ mainmodule +'/modules/vdocs&request=getSend&id='+id, success: function(data){
-			$("#modalDialogForward").html(data.html).dialog('open');
-			if(data.error == 1) {
-				$.prompt('<div style="text-align: center">' + ALERT_REMOVE_RECIPIENT + data.error_message + '<br /></div>');
-				return false;
-			}
+		$.ajax({ type: "GET", url: "/", data: 'path=apps/'+ mainmodule +'/modules/vdocs&request=getSend&id='+id, success: function(data){
+			$("#modalDialogForward").html(data).dialog('open');
 			}
 		});
 	}
@@ -1987,3 +1989,225 @@ function archivesAccess(app) {
 	}
 }
 var archives_access = new archivesAccess('archives');
+
+
+/* pspgrids Object */
+function archivesPspgrids(app) {
+	this.name = app +'_pspgrids';
+	this.app = app;
+	this.object = window[app];
+	this.objectFirst = this.app.substr(0, 1);
+	this.objectnameCaps = this.objectFirst.toUpperCase() + this.app.substr(1);
+	
+	this.getDetails = function(moduleidx,liindex,list) {
+		var module = this;
+		var mainmodule = $('#archives').data("first");
+		var appid = $("#archives3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
+		$('#archives').data({ "third" : appid});
+		var num = $("#archives3 ul:eq("+moduleidx+") .phase_num:eq("+liindex+")").html();
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+ mainmodule +"/modules/pspgrids&request=getDetailsArchive&id="+appid+"&num="+num, success: function(data){
+			$("#archives-right").html(data.html);
+			window['init'+ module.objectnameCaps +'ContentScrollbar']();
+			}
+		});
+	}
+	
+	this.actionRefresh = function() {
+		var module = this;
+		var mainmodule = $('#'+ module.app).data("first");
+		var id = $('#'+ module.app).data("third");
+		var pid = $('#'+ module.app).data("second");
+		$('#'+ module.app +'3 ul[rel=pspgrids] .active-link').trigger("click");
+		$.ajax({ type: "GET", url: "/", dataType: 'json', data: 'path=apps/'+ mainmodule +'/modules/pspgrids&request=getListArchive&id='+pid, success: function(data){																																																																				
+			$('#'+ module.app +'3 ul[rel=pspgrids]').html(data.html);
+			var liindex = $('#'+ module.app +'3 ul[rel=pspgrids] .module-click').index($("#"+ module.app +"3 ul[rel=pspgrids] .module-click[rel='"+id+"']"));
+			$("#"+ module.app +"3 ul[rel=pspgrids] .module-click:eq("+liindex+")").addClass('active-link');
+			$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/'+ module.app +'&request=getDates&id='+pid, success: function(val){
+						$('#'+ module.app +'enddate').html(val.enddate);
+					}
+				});
+			}
+		});
+	}
+
+
+	this.actionPrint = function() {
+		var module = this;
+		var mainmodule = $('#'+ module.app).data("first");
+		var id = $('#'+ module.app).data("third");
+		var num = $('#'+ module.app +'3 ul[rel=pspgrids] .active-link').find(".phase_num").html();
+		var url ='/?path=apps/'+ mainmodule +'/modules/pspgrids&request=printDetails&id='+id+"&num="+num;
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
+	}
+
+
+	this.actionSend = function() {
+		var module = this;
+		var mainmodule = $('#'+ module.app).data("first");
+		var id = $('#'+ module.app).data("third");
+		$.ajax({ type: "GET", url: "/", data: 'path=apps/'+ mainmodule +'/modules/pspgrids&request=getSend&id='+id, success: function(html){
+			$("#modalDialogForward").html(html).dialog('open');
+			}
+		});
+		
+	}
+
+
+	this.actionSendtoResponse = function() {
+		var module = this;
+		var mainmodule = $('#'+ module.app).data("first");
+		var id = $('#'+ module.app).data("third");
+		$.ajax({ type: "GET", url: "/", data: 'path=apps/'+ mainmodule +'/modules/pspgrids&request=getSendtoDetails&id='+id, success: function(html){
+			//$('#'+ mainmodule +'_phase_sendto').html(html);
+			}
+		});
+	}
+	
+	this.actionDialog = function(offset,request,field,append,title,sql) {
+		var module = this;
+		var mainmodule = $('#'+ module.app).data("first");
+			$.ajax({ type: "GET", url: "/", data: 'path=apps/'+ mainmodule +'&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
+				$("#modalDialog").html(html);
+				$("#modalDialog").dialog('option', 'position', offset);
+				$("#modalDialog").dialog('option', 'title', title);
+				$("#modalDialog").dialog('open');
+				if($("#" + field + "_ct .ct-content").length > 0) {
+					var ct = $("#" + field + "_ct .ct-content").html();
+					ct = ct.replace(CUSTOM_NOTE + " ","");
+					$("#custom-text").val(ct);
+				}
+				}
+			});
+	}
+	
+	this.checkIn = function(id) {
+		return true;
+	}
+
+	
+	this.actionHelp = function() {
+		var module = this;
+		var url = "/?path=apps/archives&request=getArchivesHelp";
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
+	}
+}
+var archives_pspgrids = new archivesPspgrids('archives');
+
+
+/* grids Object */
+function archivesGrids(app) {
+	this.name = app +'_grids';
+	this.app = app;
+	this.object = window[app];
+	this.objectFirst = this.app.substr(0, 1);
+	this.objectnameCaps = this.objectFirst.toUpperCase() + this.app.substr(1);
+	
+	this.getDetails = function(moduleidx,liindex,list) {
+		var module = this;
+		var mainmodule = $('#archives').data("first");
+		var appid = $("#archives3 ul:eq("+moduleidx+") .module-click:eq("+liindex+")").attr("rel");
+		$('#archives').data({ "third" : appid});
+		var num = $("#archives3 ul:eq("+moduleidx+") .phase_num:eq("+liindex+")").html();
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+ mainmodule +"/modules/grids&request=getDetailsArchive&id="+appid+"&num="+num, success: function(data){
+			$("#archives-right").html(data.html);
+			window['init'+ module.objectnameCaps +'ContentScrollbar']();
+			}
+		});
+	}
+	
+	this.actionRefresh = function() {
+		var module = this;
+		var mainmodule = $('#'+ module.app).data("first");
+		var id = $('#'+ module.app).data("third");
+		var pid = $('#'+ module.app).data("second");
+		$('#'+ module.app +'3 ul[rel=grids] .active-link').trigger("click");
+		$.ajax({ type: "GET", url: "/", dataType: 'json', data: 'path=apps/'+ mainmodule +'/modules/grids&request=getListArchive&id='+pid, success: function(data){																																																																				
+			$('#'+ module.app +'3 ul[rel=grids]').html(data.html);
+			var liindex = $('#'+ module.app +'3 ul[rel=grids] .module-click').index($("#"+ module.app +"3 ul[rel=grids] .module-click[rel='"+id+"']"));
+			$("#"+ module.app +"3 ul[rel=grids] .module-click:eq("+liindex+")").addClass('active-link');
+			$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/'+ module.app +'&request=getDates&id='+pid, success: function(val){
+						$('#'+ module.app +'enddate').html(val.enddate);
+					}
+				});
+			}
+		});
+	}
+
+
+	this.actionPrint = function() {
+		var module = this;
+		var mainmodule = $('#'+ module.app).data("first");
+		var id = $('#'+ module.app).data("third");
+		var num = $('#'+ module.app +'3 ul[rel=grids] .active-link').find(".phase_num").html();
+		var url ='/?path=apps/'+ mainmodule +'/modules/grids&request=printDetails&id='+id+"&num="+num;
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
+	}
+
+
+	this.actionSend = function() {
+		var module = this;
+		var mainmodule = $('#'+ module.app).data("first");
+		var id = $('#'+ module.app).data("third");
+		$.ajax({ type: "GET", url: "/", data: 'path=apps/'+ mainmodule +'/modules/grids&request=getSend&id='+id, success: function(html){
+			$("#modalDialogForward").html(html).dialog('open');
+			}
+		});
+		
+	}
+
+
+	this.actionSendtoResponse = function() {
+		var module = this;
+		var mainmodule = $('#'+ module.app).data("first");
+		var id = $('#'+ module.app).data("third");
+		$.ajax({ type: "GET", url: "/", data: 'path=apps/'+ mainmodule +'/modules/grids&request=getSendtoDetails&id='+id, success: function(html){
+			//$('#'+ mainmodule +'_phase_sendto').html(html);
+			}
+		});
+	}
+	
+	this.actionDialog = function(offset,request,field,append,title,sql) {
+		var module = this;
+		var mainmodule = $('#'+ module.app).data("first");
+			$.ajax({ type: "GET", url: "/", data: 'path=apps/'+ mainmodule +'&request='+request+'&field='+field+'&append='+append+'&title='+title+'&sql='+sql, success: function(html){
+				$("#modalDialog").html(html);
+				$("#modalDialog").dialog('option', 'position', offset);
+				$("#modalDialog").dialog('option', 'title', title);
+				$("#modalDialog").dialog('open');
+				if($("#" + field + "_ct .ct-content").length > 0) {
+					var ct = $("#" + field + "_ct .ct-content").html();
+					ct = ct.replace(CUSTOM_NOTE + " ","");
+					$("#custom-text").val(ct);
+				}
+				}
+			});
+	}
+	
+	this.checkIn = function(id) {
+		return true;
+	}
+
+	
+	this.actionHelp = function() {
+		var module = this;
+		var url = "/?path=apps/archives&request=getArchivesHelp";
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
+	}
+}
+var archives_grids = new archivesGrids('archives');

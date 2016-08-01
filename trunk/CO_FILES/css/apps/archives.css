@@ -25,7 +25,7 @@
 #archives .module-access-status {  border-right: 1px solid #3CA0A0; }
 #archives .module-item-status {  border-left: 1px solid #3CA0A0; }
 #archives .icon-guest {  border-left: 1px solid #3CA0A0; }
-#archives .icon-checked-out {  border-left: 1px solid #3CA0A0; }
+#archives .icon-checked-out { display: none; border-left: 1px solid #3CA0A0; }
 
 #archives .co-link:hover { color: #82aa0b; }
 
