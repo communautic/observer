@@ -26,8 +26,8 @@ switch(CO_PRODUCT_VARIANT) {
 		$lang["APPLICATION_NAME_CAPS"] = "Therapy Observer";
 		$lang["APPLICATION_LOGO"] = "therapy_observer.png";
 		$lang["APPLICATION_LOGO_LOGIN"] = "therapy_observer_login.png";
-		$lang["APPLICATION_WEBSITE"] = "http://physioobserver.at";
-		$lang["APPLICATION_SUPPORT_EMAIL"] = "support@physioobserver.at";
+		$lang["APPLICATION_WEBSITE"] = "http://therapyobserver.at";
+		$lang["APPLICATION_SUPPORT_EMAIL"] = "support@therapyobserver.at";
 		$GLOBALS["APPLICATION_LOGO_PRINT"] = "poweredby_therapy_observer.png";
 	break;
 }
