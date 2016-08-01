@@ -439,7 +439,7 @@ function setDetailsTitle($pid,$id,$title,$reportdate) {
    function getReportsTreatmentsDialog($field,$sql) {
 		global $session;
 		$str = '<div class="dialog-text">';
-		$q ="select id, title, item_date from co_patients_treatments WHERE pid='$sql' ORDER BY item_date DESC";
+		$q ="select id, title, item_date from co_patients_treatments WHERE pid='$sql' and bin='0' ORDER BY item_date DESC";
 		$result = mysql_query($q, $this->_db->connection);
 		while ($row = mysql_fetch_array($result)) {
 			$date = $this->_date->formatDate($row["item_date"],CO_DATE_FORMAT);
