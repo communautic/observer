@@ -226,4 +226,4 @@ foreach($task as $value) {
 	$i++;
 	}
 ?>
-<div style="page-break-after:always;">&nbsp;</div>
+<div style="page-break-after:always;"></div>
