@@ -2765,6 +2765,51 @@ class ProcsModel extends Model {
 		}
 	}
 	
+	function getBinArchive() {
+		global $procs,$lang;
+		
+		$bin = array();
+		$bin["datetime"] = $this->_date->formatDate("now",CO_DATETIME_FORMAT);
+		$arr = array();
+		$arr["bin"] = $bin;
+		
+		$arr["pros"] = "";
+		$pro["binheading"] = $lang["PROC_TITLE"];
+		
+
+				$qp ="select id, title, bin, bintime, binuser from " . CO_TBL_PROCS . " where bin='1' and folder='0'";
+				$resultp = mysql_query($qp, $this->_db->connection);
+				while ($rowp = mysql_fetch_array($resultp)) {
+					$pid = $rowp["id"];
+					if($rowp["bin"] == "1") { // deleted projects
+						foreach($rowp as $key => $val) {
+							$pro[$key] = $val;
+						}
+						$pro["bintime"] = $this->_date->formatDate($pro["bintime"],CO_DATETIME_FORMAT);
+						$pro["binuser"] = $this->_users->getUserFullname($pro["binuser"]);
+						$pros[] = new Lists($pro);
+						$arr["pros"] = $pros;
+					}
+				//}
+			//}
+	  	}
+		//print_r($arr);
+		//$mod = new Lists($mods);
+		return $arr;
+   }
+	
+	function emptyBinArchive() {
+		global $procs;
+				$qp ="select id, title, bin, bintime, binuser from " . CO_TBL_PROCS . " where bin='1' and folder = '0'";
+				$resultp = mysql_query($qp, $this->_db->connection);
+				while ($rowp = mysql_fetch_array($resultp)) {
+					$pid = $rowp["id"];
+					if($rowp["bin"] == "1") { // deleted projects
+						$this->deleteProc($pid);
+					}
+			}
+		return true;
+   }
 	
 	function doArchiveSearch($meta,$title,$folder,$who,$start,$end){
 		global $session, $contactsmodel, $projectsControllingModel, $lang;

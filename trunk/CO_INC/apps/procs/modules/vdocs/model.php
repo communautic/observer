@@ -336,6 +336,87 @@ class ProcsVDocsModel extends ProcsModel {
 		  	return true;
 		}
    }
+	 
+	 function getListArchive($id,$sort) {
+		global $session;
+		$order = "order by title";
+		$sortcur = '1';
+
+	  $perm = $this->getProcAccess($id);
+		$sql ="";
+		
+		//$q = "select title,id,intern,startdate,enddate from " . CO_TBL_PROJECTS_PHASES . " where pid = '$id' and bin != '1' " . $order;
+		$q = "select id,title,access,checked_out,checked_out_user from " . CO_TBL_PROCS_VDOCS . " where pid = '$id' and bin != '1' " . $sql . $order;
+	  $this->setSortStatus("procs-vdocs-sort-status",$sortcur,$id);
+	  $result = mysql_query($q, $this->_db->connection);
+	  $items = mysql_num_rows($result);
+	  
+	  $vdocs = "";
+	  while ($row = mysql_fetch_array($result)) {
+
+		foreach($row as $key => $val) {
+				$array[$key] = $val;
+			}
+
+			$array["accessstatus"] = "";
+			$array["checked_out_status"] = "";
+			
+			$vdocs[] = new Lists($array);
+	  }
+		
+	  $arr = array("vdocs" => $vdocs, "items" => $items, "sort" => $sortcur, "perm" => $perm);
+	  return $arr;
+	}
+	
+	
+	function getDetailsArchive($id) {
+		global $session, $lang;
+		
+		$q = "SELECT * FROM " . CO_TBL_PROCS_VDOCS . " where id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result) < 1) {
+			return false;
+		}
+		$row = mysql_fetch_array($result);
+		foreach($row as $key => $val) {
+				$array[$key] = $val;
+			}
+			
+		$array["perms"] = $this->getProcAccess($array["pid"]);
+		$array["canedit"] = false;
+		$array["showCheckout"] = false;
+		$array["checked_out_user_text"] = $this->_contactsmodel->getUserListPlain($array['checked_out_user']);
+
+		
+		$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
+		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
+		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
+		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
+		$array["current_user"] = $session->uid;
+		
+		switch($array["access"]) {
+			case "0":
+				$array["access_text"] = $lang["GLOBAL_ACCESS_INTERNAL"];
+				$array["access_footer"] = "";
+			break;
+			case "1":
+				$array["access_text"] = $lang["GLOBAL_ACCESS_PUBLIC"];
+				$array["access_user"] = $this->_users->getUserFullname($array["access_user"]);
+				$array["access_date"] = $this->_date->formatDate($array["access_date"],CO_DATETIME_FORMAT);
+				$array["access_footer"] = $lang["GLOBAL_ACCESS_FOOTER"] . " " . $array["access_user"] . ", " .$array["access_date"];
+			break;
+		}
+		
+		
+		// get user perms
+		//$array["edit"] = "1";
+		
+		$sendto = $this->getSendtoDetails("procs_vdocs",$id);
+		
+		$vdoc = new Lists($array);
+		$arr = array("vdoc" => $vdoc, "sendto" => $sendto, "access" => $array["perms"]);
+		return $arr;
+   }
    
    //$vdocsmodel = new VDocsModel();
 

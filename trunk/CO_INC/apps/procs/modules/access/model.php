@@ -52,7 +52,7 @@ class ProcsAccessModel extends ProcsModel {
 			$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);*/
 		}
 		
-		$array["canedit"] = true;
+		//$array["canedit"] = true;
 		// is within processlink
 		/*$q_folder = "SELECT folder FROM " . CO_TBL_PROCS . " where id = '$id'";
 		$r_folder = mysql_query($q_folder, $this->_db->connection);
@@ -60,9 +60,9 @@ class ProcsAccessModel extends ProcsModel {
 		if($fid != 0 && $folder_id != $fid) {
 			$array["canedit"] = false;
 		}*/
-		if($this->appCheckProcesslink($fid,$id)) {
+		/*if($this->appCheckProcesslink($fid,$id)) {
 			$array["canedit"] = false;
-		}
+		}*/
 		
 		$array["today"] = $this->_date->formatDate("now",CO_DATETIME_FORMAT);
 		

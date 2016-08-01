@@ -79,7 +79,11 @@ if (!empty($_GET['request'])) {
 			if(!empty($_GET['t'])) {
 				$t = $_GET['t'];
 			}
-			echo($procsGrids->printDetails($_GET['id'],$t,$_GET['option']));
+			$option = "grid"; // options: pdf, html
+			if(!empty($_GET['option'])) {
+				$option = $_GET['option'];
+			}
+			echo($procsGrids->printDetails($_GET['id'],$t,$option));
 		break;
 		case 'getSend':
 			echo($procsGrids->getSend($_GET['id']));
@@ -177,6 +181,13 @@ if (!empty($_GET['request'])) {
 		break;
 		case 'toggleCurrency':
 			echo($procsGrids->toggleCurrency($_GET['id'],$_GET['cur']));
+		break;
+		case 'getListArchive':
+			$sort = "0";
+			echo($procsGrids->getList($_GET['id'],$sort));
+		break;
+		case 'getDetailsArchive':
+			echo($procsGrids->getDetailsArchive($_GET['id'],$_GET['num']));
 		break;
 
 	}

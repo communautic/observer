@@ -78,6 +78,13 @@ if (!empty($_GET['request'])) {
 		case 'getHelp':
 			echo($procsVDocs->getHelp());
 		break;
+		case 'getListArchive':
+			$sort = "0";
+			echo($procsVDocs->getListArchive($_GET['id'],$sort));
+		break;
+		case 'getDetailsArchive':
+			echo($procsVDocs->getDetailsArchive($_GET['id']));
+		break;
 	}
 }
 

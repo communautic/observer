@@ -246,6 +246,43 @@ class ProcsDocuments extends Procs {
 		$data["module"] = "/modules/documents";
 		$this->openHelpPDF($data);
 	}
+	
+	function getListArchive($id,$sort) {
+		global $system, $lang;
+		$arr = $this->model->getList($id,$sort);
+		$documents = $arr["documents"];
+		ob_start();
+			include('view/list.php');
+			$data["html"] = ob_get_contents();
+		ob_end_clean();
+		$data["items"] = $arr["items"];
+		$data["sort"] = $arr["sort"];
+		$data["perm"] = $arr["perm"];
+		$data["title"] = $lang["PROC_DOCUMENT_ACTION_NEW"];
+		return json_encode($data);
+	}
+
+
+	function getDetailsArchive($id) {
+		global $lang;
+		if($arr = $this->model->getDetails($id)) {
+			$document = $arr["document"];
+			$doc = $arr["doc"];
+			$sendto = $arr["sendto"];
+			ob_start();
+				include 'view/edit_archive.php';
+				$data["html"] = ob_get_contents();
+			ob_end_clean();
+			$data["access"] = $arr["access"];
+			return json_encode($data);
+		} else {
+			ob_start();
+				include CO_INC .'/view/default.php';
+				$data["html"] = ob_get_contents();
+			ob_end_clean();
+			return json_encode($data);
+		}
+	}
 
 }
 

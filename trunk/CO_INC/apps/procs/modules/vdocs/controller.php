@@ -218,6 +218,42 @@ class ProcsVDocs extends Procs {
 		$data["module"] = "/modules/vdocs";
 		$this->openHelpPDF($data);
 	}
+	
+	function getListArchive($id,$sort) {
+		global $system, $lang;
+		$arr = $this->model->getListArchive($id,$sort);
+		$vdocs = $arr["vdocs"];
+		ob_start();
+			include('view/list.php');
+			$data["html"] = ob_get_contents();
+		ob_end_clean();
+		$data["items"] = $arr["items"];
+		$data["sort"] = $arr["sort"];
+		$data["perm"] = $arr["perm"];
+		$data["title"] = $lang["PROC_VDOC_ACTION_NEW"];
+		return $system->json_encode($data);
+	}
+
+
+	function getDetailsArchive($id) {
+		global $lang;
+		if($arr = $this->model->getDetailsArchive($id)) {
+			$vdoc = $arr["vdoc"];
+			$sendto = $arr["sendto"];
+			ob_start();
+				include 'view/edit_archive.php';
+				$data["html"] = ob_get_contents();
+			ob_end_clean();
+			$data["access"] = $arr["access"];
+			return json_encode($data);
+		} else {
+			ob_start();
+				include CO_INC .'/view/default.php';
+				$data["html"] = ob_get_contents();
+			ob_end_clean();
+			return json_encode($data);
+		}
+	}
 
 }
 
