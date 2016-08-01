@@ -123,6 +123,13 @@ if (!empty($_GET['request'])) {
 		case 'copyMeeting':
 			echo($procsMeetings->copyMeeting($_GET['pid'],$_GET['phid']));
 		break;
+		case 'getListArchive':
+			$sort = "0";
+			echo($procsMeetings->getListArchive($_GET['id'],$sort));
+		break;
+		case 'getDetailsArchive':
+			echo($procsMeetings->getDetailsArchive($_GET['id']));
+		break;
 	}
 }
 

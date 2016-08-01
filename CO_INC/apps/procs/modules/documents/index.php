@@ -88,6 +88,13 @@ if (!empty($_GET['request'])) {
 		case 'getHelp':
 			echo($procsDocuments->getHelp());
 		break;
+		case 'getListArchive':
+			$sort = "0";
+			echo($procsDocuments->getListArchive($_GET['id'],$sort));
+		break;
+		case 'getDetailsArchive':
+			echo($procsDocuments->getDetailsArchive($_GET['id']));
+		break;
 	}
 }
 

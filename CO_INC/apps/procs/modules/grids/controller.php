@@ -570,6 +570,46 @@ class ProcsGrids extends Procs {
 			 return "error";
 		  }
 	}
+	
+	function getListArchive($id,$sort) {
+		global $system, $lang;
+		$arr = $this->model->getListArchive($id,$sort);
+		$grids = $arr["grids"];
+		ob_start();
+			include('view/list.php');
+			$data["html"] = ob_get_contents();
+		ob_end_clean();
+		$data["items"] = $arr["items"];
+		$data["sort"] = $arr["sort"];
+		$data["perm"] = $arr["perm"];
+		$data["title"] = $lang["PROC_GRID_ACTION_NEW"];
+		return $system->json_encode($data);
+	}
+   
+   function getDetailsArchive($id) {
+		global $lang;
+		if($arr = $this->model->getDetailsArchive($id)) {
+			$grid = $arr["grid"];
+			$cols = $arr["cols"];
+			$console_items = $arr["console_items"];
+			$sendto = $arr["sendto"];
+			$colheight = $arr["colheight"];
+			$listheight = $arr["listheight"];
+			$projects = $arr["projects"];
+			ob_start();
+				include 'view/edit.php';
+				$data["html"] = ob_get_contents();
+			ob_end_clean();
+			$data["access"] = $arr["access"];
+			return json_encode($data);
+		} else {
+			ob_start();
+				include CO_INC .'/view/default.php';
+				$data["html"] = ob_get_contents();
+			ob_end_clean();
+			return json_encode($data);
+		}
+	}
 
 }
 

@@ -1062,6 +1062,388 @@ class ProcsGridsModel extends ProcsModel {
 			return true;
 		}
 	}
+	
+	function getListArchive($id,$sort) {
+		global $session;
+	  if($sort == 0) {
+		  $sortstatus = $this->getSortStatus("procs-grids-sort-status",$id);
+		  if(!$sortstatus) {
+				$order = "order by title";
+				$sortcur = '1';
+		  } else {
+			  switch($sortstatus) {
+				  case "1":
+				  		$order = "order by title";
+						$sortcur = '1';
+				  break;
+				  case "2":
+				  		$order = "order by title DESC";
+							$sortcur = '2';
+				  break;
+				  case "3":
+				  		$sortorder = $this->getSortOrder("procs-grids-sort-order",$id);
+				  		if(!$sortorder) {
+								$order = "order by title";
+								$sortcur = '1';
+						  } else {
+								$order = "order by field(id,$sortorder)";
+								$sortcur = '3';
+						  }
+				  break;	
+			  }
+		  }
+	  } else {
+		  switch($sort) {
+				  case "1":
+				  		$order = "order by title";
+						$sortcur = '1';
+				  break;
+				  case "2":
+				  		$order = "order by title DESC";
+						$sortcur = '2';
+				  break;
+				  case "3":
+				  		$sortorder = $this->getSortOrder("procs-grids-sort-order",$id);
+				  		if(!$sortorder) {
+						  	$order = "order by title";
+								$sortcur = '1';
+						  } else {
+								$order = "order by field(id,$sortorder)";
+								$sortcur = '3';
+						  }
+				  break;	
+			  }
+		}
+	  
+	  
+		$perm = $this->getProcAccess($id);
+		$sql ="";
+		if( $perm ==  "guest") {
+			$sql = " and access = '1' ";
+		}
+		
+		$q = "select id,title,access,checked_out,checked_out_user from " . CO_TBL_PROCS_GRIDS . " where pid = '$id' and bin != '1' " . $sql . $order;
+		$this->setSortStatus("procs-grids-sort-status",$sortcur,$id);
+		$result = mysql_query($q, $this->_db->connection);
+		$items = mysql_num_rows($result);
+		
+		if($this->appCheckProcesslink($fid,$id)) {
+			$perm = 'guest';
+		}
+		
+		$grids = "";
+		while ($row = mysql_fetch_array($result)) {
+
+		foreach($row as $key => $val) {
+				$array[$key] = $val;
+			}
+					
+			$checked_out_status = "";
+			if($perm !=  "guest" && $array["checked_out"] == 1 && $array["checked_out_user"] != $session->uid) {
+				if($session->checkUserActive($array["checked_out_user"])) {
+					$checked_out_status = "icon-checked-out-active";
+				} else {
+					$this->checkinGridOverride($id);
+				}
+			}
+			
+			// access
+			$accessstatus = "";
+			if($perm !=  "guest") {
+				if($array["access"] == 1) {
+					$accessstatus = " module-access-active";
+				}
+			}
+			$array["accessstatus"] = $accessstatus;
+			
+			$array["checked_out_status"] = $checked_out_status;
+			
+			
+			$grids[] = new Lists($array);
+	  }
+		
+	  $arr = array("grids" => $grids, "items" => $items, "sort" => $sortcur, "perm" => $perm);
+	  return $arr;
+	}
+	
+	function getDetailsArchive($id, $fid=0) {
+		global $session, $contactsmodel, $lang;
+		
+		$q = "SELECT * FROM " . CO_TBL_PROCS_GRIDS . " where id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result) < 1) {
+			return false;
+		}
+		$row = mysql_fetch_array($result);
+		foreach($row as $key => $val) {
+			$array[$key] = $val;
+		}
+			
+		$array["perms"] = $this->getProcAccess($array["pid"]);
+		
+		$process_id = $array['pid'];
+		if($this->appCheckProcesslink($fid,$process_id)) {
+			$array["perms"] = 'guest';
+		}
+		
+		$array["canedit"] = false;
+		$array["showCheckout"] = false;
+		$array["checked_out_user_text"] = $this->_contactsmodel->getUserListPlain($array['checked_out_user']);
+
+		/*if($array["perms"] == "sysadmin" || $array["perms"] == "admin") {
+			//if($array["checked_out"] == 1 && $session->checkUserActive($array["checked_out_user"])) {
+			if($array["checked_out"] == 1) {
+				if($array["checked_out_user"] == $session->uid) {
+					$array["canedit"] = true;
+				} else if(!$session->checkUserActive($array["checked_out_user"])) {
+					$array["canedit"] = $this->checkoutGrid($id);
+					$array["canedit"] = true;
+				} else {
+					$array["canedit"] = false;
+					$array["showCheckout"] = true;
+		$array["checked_out_user_phone1"] = $this->_contactsmodel->getContactFieldFromID($array['checked_out_user'],"phone1");
+		$array["checked_out_user_email"] = $this->_contactsmodel->getContactFieldFromID($array['checked_out_user'],"email");
+
+				}
+			} else {
+				$array["canedit"] = $this->checkoutGrid($id);
+			}
+		}*/
+		$array["owner_print"] = $contactsmodel->getUserListPlain($array['owner']);
+		$array["owner_convert"] = $array['owner'];
+		$array["owner"] = $contactsmodel->getUserList($array['owner'],'procgridowner', "", $array["canedit"]);
+		$array["owner_ct_convert"] = $array['owner_ct'];
+		$array["owner_ct"] = empty($array["owner_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['owner_ct'];
+		$array["management_print"] = $contactsmodel->getUserListPlain($array['management']);
+		$array["management_convert"] = $array['management'];
+		$array["management"] = $contactsmodel->getUserList($array['management'],'procgridmanagement', "", $array["canedit"]);
+		$array["management_ct_convert"] = $array['management_ct'];
+		$array["management_ct"] = empty($array["management_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['management_ct'];
+		$array["team_print"] = $contactsmodel->getUserListPlain($array['team']);
+		$array["team_convert"] = $array['team'];
+		$array["team"] = $contactsmodel->getUserList($array['team'],'procgridteam', "", $array["canedit"]);
+		$array["team_ct_convert"] = $array['team_ct'];
+		$array["team_ct"] = empty($array["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['team_ct'];
+				
+		$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
+		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
+		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
+		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
+		$array["current_user"] = $session->uid;
+		$array["today"] = $this->_date->formatDate("now",CO_DATETIME_FORMAT);
+		
+		switch($array["access"]) {
+			case "0":
+				$array["access_text"] = $lang["GLOBAL_ACCESS_INTERNAL"];
+				$array["access_footer"] = "";
+			break;
+			case "1":
+				$array["access_text"] = $lang["GLOBAL_ACCESS_PUBLIC"];
+				$array["access_user"] = $this->_users->getUserFullname($array["access_user"]);
+				$array["access_date"] = $this->_date->formatDate($array["access_date"],CO_DATETIME_FORMAT);
+				$array["access_footer"] = $lang["GLOBAL_ACCESS_FOOTER"] . " " . $array["access_user"] . ", " .$array["access_date"];
+			break;
+		}
+		
+		// build cols and notes
+		$cols = array();
+		$num_notes = array('0');
+		$q = "SELECT * FROM " . CO_TBL_PROCS_GRIDS_COLUMNS . " where pid = '$id' and bin='0' ORDER BY sort";
+		$result = mysql_query($q, $this->_db->connection);
+		$hours_total = 0;
+		$tcosts = 0;
+		while($row = mysql_fetch_object($result)) {
+			$colID = $row->id;
+			$coldays = $row->days;
+			//$days += $coldays;
+			$titleid = 0;
+			$titletext = '';
+			$titletextcontent = '';
+			$titleteam_convert = '';
+			$titleteam = '';
+			$titleteam_ct = '';
+			$titlehours = 0;
+			$titlecosts_employees = 0;
+			$titlecosts_materials = 0;
+			$titlecosts_external = 0;
+			$titlecosts_other = 0;
+			$stagegateid = 0;
+			$stagegatetext = '';
+			$stagegatetextcontent = '';
+			$stagegateteam = '';
+			$stagegateteam_ct = '';
+			$stagegatehours = 0;
+			$stagegatecosts_employees = 0;
+			$stagegatecosts_materials = 0;
+			$stagegatecosts_external = 0;
+			$stagegatecosts_other = 0;
+			$qn = "SELECT * FROM " . CO_TBL_PROCS_GRIDS_NOTES . " where cid = '$colID' and bin='0' ORDER BY sort";
+			$resultn = mysql_query($qn, $this->_db->connection);
+			$items = array();
+			$n = 0;
+			$nchecked = 0;
+			$costs = 0;
+			$hours = 0;
+			while($rown = mysql_fetch_object($resultn)) {
+				if($rown->istitle == 1) {
+					$titleid = $rown->id;
+					$titletext = $rown->title;
+					$titletextcontent = $rown->text;
+					$titleteam_convert = $rown->team;
+					$titleteam = $contactsmodel->getUserList($rown->team,'coPopup-team', "", '1');
+					$titleteam_ct = $rown->team_ct;
+					$titlehours = $rown->hours;
+					$titlecosts_employees = $rown->costs_employees;
+					$titlecosts_materials = $rown->costs_materials;
+					$titlecosts_external = $rown->costs_external;
+					$titlecosts_other = $rown->costs_other;
+				} else if ($rown->isstagegate == 1) {
+					$stagegateid = $rown->id;
+					$stagegatetext = $rown->title;
+					$stagegatetextcontent = $rown->text;
+					$stagegateteam = $contactsmodel->getUserList($rown->team,'coPopup-team', "", '1');
+					$stagegateteam_ct = $rown->team_ct;
+					$stagegatehours = $rown->hours;
+					$stagegatecosts_employees = $rown->costs_employees;
+					$stagegatecosts_materials = $rown->costs_materials;
+					$stagegatecosts_external = $rown->costs_external;
+					$stagegatecosts_other = $rown->costs_other;
+				} else {
+					$items[] = array(
+						"note_id" => $rown->id,
+						"title" => $rown->title,
+						"text" => $rown->text,
+						"status" => $rown->status,
+						"team_convert" => $rown->team,
+						"team" => $contactsmodel->getUserList($rown->team,'coPopup-team', "", '1'),
+						"team_ct" => $rown->team_ct,
+						"hours" => $rown->hours,
+						"costs_employees" => $rown->costs_employees,
+						"costs_materials" => $rown->costs_materials,
+						"costs_external" => $rown->costs_external,
+						"costs_other" => $rown->costs_other
+					);
+					$costs += $rown->costs_employees + $rown->costs_materials + $rown->costs_external + $rown->costs_other;
+					$tcosts += $rown->costs_employees + $rown->costs_materials + $rown->costs_external + $rown->costs_other;
+					$hours += $rown->hours;
+					$hours_total += $rown->hours;
+					if($rown->status == 1) {
+						$nchecked++;
+					}
+					$n++;
+				}
+			}
+			$num_notes[] = $n;
+			
+			//$colheight=  $n*27+78+80+8+4-27;
+			$colheight=  $n*27+170;
+			if($colheight < 170) {
+				$colheight = 170;
+			}
+			$listheight = $n*27+54;
+			if($listheight < 54) {
+				$listheight = 54;
+			}
+			
+			if($n == 0 && $titleid == 0) {
+				$colstatus = '';
+			}
+			if(($n > 0 || $titleid > 0) && $nchecked == 0) {
+				$colstatus = 'planned';
+			}
+			if($nchecked > 0 && $nchecked < $n ) {
+				$colstatus = 'progress';
+			}
+			if($n != 0 && $n == $nchecked) {
+				$colstatus = 'finished';
+			}
+			$cols[]= array(
+				"id" => $colID,
+				"status" => $colstatus,
+				"colheight" => $colheight,
+				"listheight" => $listheight,
+				"coldays" => $coldays,
+				"titleid" => $titleid,
+				"titletext" => $titletext,
+				"titletextcontent" => $titletextcontent,
+				"titleteam_convert" => $titleteam_convert,
+				"titleteam" => $titleteam,
+				"titleteam_ct" => $titleteam_ct,
+				"titlehours" => $titlehours,
+				"titlecosts_employees" => $titlecosts_employees,
+				"titlecosts_materials" => $titlecosts_materials,
+				"titlecosts_external" => $titlecosts_external,
+				"titlecosts_other" => $titlecosts_other,
+				"stagegateid" => $stagegateid,
+				"stagegatetext" => $stagegatetext,
+				"stagegatetextcontent" => $stagegatetextcontent,
+				"stagegateteam" => $stagegateteam,
+				"stagegateteam_ct" => $stagegateteam_ct,
+				"stagegatehours" => $stagegatehours,
+				"stagegatecosts_employees" => $stagegatecosts_employees,
+				"stagegatecosts_materials" => $stagegatecosts_materials,
+				"stagegatecosts_external" => $stagegatecosts_external,
+				"stagegatecosts_other" => $stagegatecosts_other,
+				"notes" => $items,
+				"hours" => $hours,
+				"hours_total" => $hours_total,
+				"costs" => number_format($costs,0,',','.')
+			);
+		}
+		
+		$array["max_items"] = max($num_notes);
+		$array["tcosts"] = number_format($tcosts,0,',','.');
+		
+		//$colheight=  max($num_notes)*27+78+80+8-27;
+		$colheight=  max($num_notes)*27+170;
+		if($colheight < 170) {
+			$colheight = 170;
+		}
+		$listheight = max($num_notes)*27+54;
+		if($listheight < 54) {
+			$listheight = 54;
+		}
+		
+		// build the console
+		$console_items = array();
+		$pid = $array["pid"];
+		$qc = "SELECT * FROM " . CO_TBL_PROCS_NOTES . " where pid = '$pid' and shape<'10' and bin='0' ORDER BY title ASC";
+		$resultc = mysql_query($qc, $this->_db->connection);
+		while($rowc = mysql_fetch_object($resultc)) {
+				$console_items[] = array(
+				"id" => $rowc->id,
+				"title" => $rowc->title,
+				"text" => $rowc->text
+			);
+		}
+		
+		$sendto = $this->getSendtoDetails("procs_grids",$id);
+		
+		$array["grid_width"] = sizeof($cols)*230;
+		//$array["grid_days"] = $days;
+		$array["hours_total"] = $hours_total;
+		
+		$grid = new Lists($array);
+		
+		// get created projects
+		$ql = "SELECT * FROM co_procs_grids_log where rid = '$id' ORDER BY created_date DESC";
+		$resultl = mysql_query($ql, $this->_db->connection);
+		
+		$projectsmodel = new ProjectsModel();
+		
+		$projects = array();
+		while($rowl = mysql_fetch_array($resultl)) {
+			$projects[]= array(
+				"fid" => $projectsmodel->getProjectFolderDetails($rowl['fid'],'title'),
+				"pid" => $rowl['pid'],
+				"created_date" => $this->_date->formatDate($rowl["created_date"],CO_DATETIME_FORMAT),
+				"created_user" => $this->_users->getUserFullname($rowl["created_user"])
+			);
+		}
+		
+		$arr = array("grid" => $grid, "cols" => $cols, "colheight" => $colheight, "listheight" => $listheight, "console_items" => $console_items, "sendto" => $sendto, "access" => $array["perms"], "projects" => $projects);
+		return $arr;
+   }
    
 
 }

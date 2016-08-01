@@ -14,7 +14,7 @@ class Procs extends Controller {
 			$this->modules = $this->getModules($this->application);
 			$this->num_modules = sizeof((array)$this->modules);
 			$this->binDisplay = true;
-			$this->archiveDisplay = false;
+			$this->archiveDisplay = true;
 			$this->contactsDisplay = true; // list access status on contact page
 			
 			if (!$session->isSysadmin()) {
@@ -625,6 +625,18 @@ class Procs extends Controller {
 		}
 	}
 	
+	function getBinArchive() {
+		global $lang, $procs;
+		if($arr = $this->model->getBinArchive()) {
+			$bin = $arr["bin"];
+			ob_start();
+			include 'view/bin_archive.php';
+			$html = ob_get_contents();
+			ob_end_clean();
+			return $html;
+		}
+	}
+	
 	function emptyBin() {
 		global $lang, $procs;
 		if($arr = $this->model->emptyBin()) {
@@ -633,6 +645,13 @@ class Procs extends Controller {
 		}
 		else {
 			include CO_INC .'/view/default.php';
+		}
+	}
+	
+	function emptyBinArchive() {
+		global $lang, $procs;
+		if($arr = $this->model->emptyBinArchive()) {
+			return true;
 		}
 	}
 	

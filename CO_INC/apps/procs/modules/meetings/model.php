@@ -643,6 +643,193 @@ class ProcsMeetingsModel extends ProcsModel {
 			return $pro;
 		}
 	}
+	
+	function getListArchive($id,$sort) {
+		global $session;
+
+				$order = "order by item_date DESC";
+				$sortcur = '1';
+
+		$perm = $this->getProcAccess($id);
+		$sql ="";
+		if( $perm ==  "guest") {
+			$sql = " and access = '1' ";
+		}
+		
+		$q = "select id,title,item_date,access,status,checked_out,checked_out_user from " . CO_TBL_PROCS_MEETINGS . " where pid = '$id' and bin != '1' " . $sql . $order;
+		//$this->setSortStatus("projects-meetings-sort-status",$sortcur,$id);
+		$result = mysql_query($q, $this->_db->connection);
+		$items = mysql_num_rows($result);
+		
+		$meetings = "";
+		while ($row = mysql_fetch_array($result)) {
+
+		foreach($row as $key => $val) {
+				$array[$key] = $val;
+			}
+			
+			// dates
+			$array["item_date"] = $this->_date->formatDate($array["item_date"],CO_DATE_FORMAT);
+			
+			// access
+			$accessstatus = "";
+			if($perm !=  "guest") {
+				if($array["access"] == 1) {
+					$accessstatus = " module-access-active";
+				}
+			}
+			$array["accessstatus"] = $accessstatus;
+			// status
+			$itemstatus = "";
+			if($array["status"] == 1) {
+				$itemstatus = " module-item-active";
+			}
+			if($array["status"] == 2) {
+				$itemstatus = " module-item-active-stopped";
+			}
+			$array["itemstatus"] = $itemstatus;
+			
+			$checked_out_status = "";
+			$array["checked_out_status"] = $checked_out_status;
+			
+			
+			$meetings[] = new Lists($array);
+	  }
+		
+	  $arr = array("meetings" => $meetings, "items" => $items, "sort" => $sortcur, "perm" => $perm);
+	  return $arr;
+	}
+	
+	function getDetailsArchive($id, $option = "") {
+		global $session, $lang;
+		
+		$this->_documents = new ProcsDocumentsModel();
+		
+		$q = "SELECT * FROM " . CO_TBL_PROCS_MEETINGS . " where id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result) < 1) {
+			return false;
+		}
+		$row = mysql_fetch_array($result);
+		foreach($row as $key => $val) {
+				$array[$key] = $val;
+			}
+			
+			
+			
+		$array["perms"] = $this->getProcAccess($array["pid"]);
+		$array["canedit"] = false;
+		$array["showCheckout"] = false;
+		$array["checked_out_user_text"] = $this->_contactsmodel->getUserListPlain($array['checked_out_user']);
+
+		// dates
+		$array["item_date"] = $this->_date->formatDate($array["item_date"],CO_DATE_FORMAT);
+		
+		// time
+		$array["start"] = $this->_date->formatDate($array["start"],CO_TIME_FORMAT);
+		$array["end"] = $this->_date->formatDate($array["end"],CO_TIME_FORMAT);
+		$array["location"] = $this->_contactsmodel->getPlaceList($array['location'],'location', $array["canedit"]);
+		$array["location_ct"] = empty($array["location_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['location_ct'];
+
+		/*$array["relates_to_text"] = "";
+		if($array['relates_to'] != "") {
+			$array["relates_to_text"] = $this->_phases->getPhaseTitle($array['relates_to']);
+		}*/
+		
+		$array["participants_print"] = $this->_contactsmodel->getUserListPlain($array["participants"]);
+		if($option = 'prepareSendTo') {
+			$array["sendtoTeam"] = $this->_contactsmodel->checkUserListEmail($array["participants"],'projectsparticipants', "", $array["canedit"]);
+			$array["sendtoTeamNoEmail"] = $this->_contactsmodel->checkUserListEmail($array["participants"],'projectsparticipants', "", $array["canedit"], 0);
+			$array["sendtoError"] = false;
+		}
+		$array["participants"] = $this->_contactsmodel->getUserList($array['participants'],'projectsparticipants', "", $array["canedit"]);
+		$array["participants_ct"] = empty($array["participants_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['participants_ct'];
+		$array["management_print"] = $this->_contactsmodel->getUserListPlain($array["management"]);
+		$array["management"] = $this->_contactsmodel->getUserList($array['management'],'projectsmanagement', "", $array["canedit"]);
+		$array["management_ct"] = empty($array["management_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['management_ct'];
+		$array["documents"] = $this->_documents->getDocListFromIDs($array['documents'],'documents');
+		$array["copies"] = $this->getProcTitleFromMeetingIDs(explode(",",$array['copies']),'meetings');
+		
+		$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
+		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
+		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
+		$array["edited_user"] = $this->_users->getUserFullname($array["edited_user"]);
+		$array["current_user"] = $session->uid;
+		
+		switch($array["access"]) {
+			case "0":
+				$array["access_text"] = $lang["GLOBAL_ACCESS_INTERNAL"];
+				$array["access_footer"] = "";
+			break;
+			case "1":
+				$array["access_text"] = $lang["GLOBAL_ACCESS_PUBLIC"];
+				$array["access_user"] = $this->_users->getUserFullname($array["access_user"]);
+				$array["access_date"] = $this->_date->formatDate($array["access_date"],CO_DATETIME_FORMAT);
+				$array["access_footer"] = $lang["GLOBAL_ACCESS_FOOTER"] . " " . $array["access_user"] . ", " .$array["access_date"];
+			break;
+		}
+		$array["status_planned_active"] = "";
+		$array["status_finished_active"] = "";
+		$array["status_stopped_active"] = "";
+		$array["status_posponed_active"] = "";
+		$array["status_date"] = $this->_date->formatDate($array["status_date"],CO_DATE_FORMAT);
+		switch($array["status"]) {
+			case "0":
+				$array["status_text"] = $lang["GLOBAL_STATUS_PLANNED"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_PLANNED_TIME"];
+				$array["status_planned_active"] = " active";
+			break;
+			case "1":
+				$array["status_date"] = "";
+				$array["status_text"] = $lang["GLOBAL_STATUS_COMPLETED"];
+				$array["status_text_time"] = "";
+				$array["status_finished_active"] = " active";
+			break;
+			case "2":
+				$array["status_text"] = $lang["GLOBAL_STATUS_CANCELLED"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_CANCELLED_TIME"];
+				$array["status_stopped_active"] = " active";
+				break;
+			case "3":
+				$array["status_text"] = $lang["GLOBAL_STATUS_POSPONED"];
+				$array["status_text_time"] = $lang["GLOBAL_STATUS_POSPONED_TIME"];
+				$array["status_posponed_active"] = " active";
+			break;
+		}
+
+		// checkpoint
+		$array["checkpoint"] = 0;
+		$array["checkpoint_date"] = "";
+		$array["checkpoint_note"] = "";
+		/*$q = "SELECT date,note FROM " . CO_TBL_USERS_CHECKPOINTS . " where uid='$session->uid' and app = 'projects' and module = 'meetings' and app_id = '$id' LIMIT 1";
+		$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result) > 0) {
+			while ($row = mysql_fetch_assoc($result)) {
+			$array["checkpoint"] = 1;
+			$array["checkpoint_date"] = $this->_date->formatDate($row['date'],CO_DATE_FORMAT);
+			$array["checkpoint_note"] = $row['note'];
+			}
+		}*/
+
+		// get the tasks
+		$task = array();
+		$q = "SELECT * FROM " . CO_TBL_PROCS_MEETINGS_TASKS . " where mid = '$id' and bin='0' ORDER BY sort";
+		$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+		foreach($row as $key => $val) {
+				$tasks[$key] = $val;
+			}
+			$task[] = new Lists($tasks);
+		}
+		
+		$sendto = $this->getSendtoDetails("procs_meetings",$id);
+		
+
+		$meeting = new Lists($array);
+		$arr = array("meeting" => $meeting, "task" => $task, "sendto" => $sendto, "access" => $array["perms"]);
+		return $arr;
+   }
+
 
 }
 ?>
