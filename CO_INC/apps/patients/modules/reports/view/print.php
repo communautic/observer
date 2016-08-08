@@ -127,3 +127,4 @@ table.standard { margin: 2pt 0 0 -15pt; }
 <p>&nbsp;</p>
 <p style="line-height: 20px;"><?php echo $lang["PATIENT_REPORT_PRINT_GREETING"];?></p>
 <p><?php echo($report->m_title)?> <?php echo($report->m_firstname)?> <?php echo($report->m_lastname)?></p>
+<div style="page-break-after:always;"></div>
