@@ -1278,6 +1278,66 @@ function procsFolders(name) {
 		});
 	}
 	
+	this.actionArchive = function() {
+		var module = this;
+		/*var cid = $('#projects input[name="id"]').val()*/
+		//var id = $("#projects").data("first");
+		//module.checkIn(cid);
+		var txt = ALERT_ARCHIVE;
+		var langbuttons = {};
+		langbuttons[ALERT_YES] = true;
+		langbuttons[ALERT_NO] = false;
+		$.prompt(txt,{ 
+			buttons:langbuttons,
+			submit: function(e,v,m,f){		
+				if(v){
+					//var id = $("#projects").data("second");
+					var fid = $("#procs").data("first");
+					//alert(fid);
+					$.ajax({ type: "GET", url: "/", data: "path=apps/procs&request=moveFolderToArchive&&fid=" + fid, cache: false, success: function(data){
+						if(data == "true") {
+									//$("#projects-right").html(text.html);
+									//initProjectsContentScrollbar();
+									//module.getNavModulesNumItems(id);
+									module.actionRefresh();
+									}
+									}
+								});
+					
+					
+					/*$.ajax({ type: "GET", url: "/", data: "path=apps/projects&request=moveFoldertoArchive&&fid=" + fid, cache: false, success: function(data){
+						if(data == "true") {
+							$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getFolderDetails&id="+fid, success: function(list){
+								$("#projects2 ul").html(list.html);
+								if(list.html == "<li></li>") {
+									projectsActions(3);
+								} else {
+									projectsActions(0);
+									setModuleActive($("#projects2"),0);
+								}
+								var id = $("#projects2 .module-click:eq(0)").attr("rel");
+								if(typeof id == 'undefined') {
+									$("#projects").data("second", 0);
+								} else {
+									$("#projects").data("second", id);
+								}
+								$("#projects2 .module-click:eq(0)").addClass('active-link');
+								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/projects&request=getProjectDetails&fid="+fid+"&id="+id, success: function(text){
+									$("#projects-right").html(text.html);
+									initProjectsContentScrollbar();
+									module.getNavModulesNumItems(id);
+									}
+								});
+							}
+							});
+						}
+					}
+					});*/
+				} 
+			}
+		});
+	}
+	
 
 	this.actionHelp = function() {
 		var url = "/?path=apps/procs&request=getProcsFoldersHelp";
