@@ -2303,7 +2303,7 @@ class ProcsModel extends Model {
 			$access = " and a.id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
 	  	}
 		
-		$q = "SELECT a.id,a.title as label FROM " . CO_TBL_PROCS . " as a WHERE a.id != '$exclude' and a.title like '%$term%' and  a.bin='0'" . $access ."ORDER BY a.title";
+		$q = "SELECT a.id,a.title as label FROM " . CO_TBL_PROCS . " as a WHERE a.id != '$exclude' and a.title like '%$term%' and  a.bin='0' and a.folder!='0'" . $access ."ORDER BY a.title";
 		
 		$result = mysql_query($q, $this->_db->connection);
 		$num=mysql_affected_rows();
@@ -2392,7 +2392,7 @@ class ProcsModel extends Model {
 			$access = " and id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
 	  	}*/
 
-		$q = "SELECT id FROM " . CO_TBL_PROCS . " WHERE folder='$fid' and bin='0'";
+		$q = "SELECT id FROM " . CO_TBL_PROCS . " WHERE folder='$fid' and bin='0' and link='0'";
 		$result = mysql_query($q, $this->_db->connection);
 	  	while ($row = mysql_fetch_array($result)) {
 			$id = $row['id'];
