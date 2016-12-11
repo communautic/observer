@@ -140,6 +140,12 @@ if (!empty($_GET['request'])) {
 		case 'getCustomTextContext':
 			echo('<div class="context notes"><div class="contact-dialog-header"><a href="delete" class="delete-ct">' . $lang["GLOBAL_DELETE"] . '</a></div></div>');
 		break;
+		case 'getGenderDialog':
+			echo($contacts->getGenderDialog($_GET['request'],$_GET['field'],$_GET['append'],$_GET['title'],$_GET['sql']));
+		break;
+		case 'getGenderContext':
+			echo($contacts->getGenderContext($_GET['id'],$_GET['field'],$_GET['edit']));
+		break;
 		case 'getLanguageDialog':
 			echo($contacts->getLanguageDialog($_GET['request'],$_GET['field'],$_GET['append'],$_GET['title'],$_GET['sql']));
 		break;
@@ -154,6 +160,9 @@ if (!empty($_GET['request'])) {
 		break;
 		case 'getCalendarDialog':
 			echo($contacts->getCalendarDialog($_GET['request'],$_GET['field'],$_GET['append'],$_GET['title'],$_GET['sql']));
+		break;
+		case 'getCalendarViewDialog':
+			echo($contacts->getCalendarViewDialog($_GET['request'],$_GET['field'],$_GET['append'],$_GET['title'],$_GET['sql']));
 		break;
 		case 'getContactsDialog':
 			echo($contacts->getContactsDialog($_GET['request'],$_GET['field'],$_GET['append'],$_GET['title'],$_GET['sql']));
@@ -206,6 +215,12 @@ if (!empty($_GET['request'])) {
 		case 'removeCalendar':
 			echo $contacts->removeCalendar($_GET['id']);
 		break;
+		case 'setCalendarView':
+			echo $contacts->setCalendarView($_GET['id']);
+		break;
+		case 'removeCalendarView':
+			echo $contacts->removeCalendarView($_GET['id']);
+		break;
 		
 	}
 	
@@ -219,7 +234,7 @@ if (!empty($_POST['request'])) {
 			echo($contacts->setGroupDetails($_POST['id'], $system->checkMagicQuotes($_POST['title']), $_POST['members'], $system->checkMagicQuotes($_POST['notes'])));
 		break;
 		case 'setContactDetails':
-			echo($contacts->setContactDetails($_POST['id'], $system->checkMagicQuotes($_POST['lastname']), $system->checkMagicQuotes($_POST['firstname']), $system->checkMagicQuotes($_POST['title']),$system->checkMagicQuotes($_POST['title2']), $system->checkMagicQuotes($_POST['company']), $system->checkMagicQuotes($_POST['position']), $system->checkMagicQuotes($_POST['email']), $system->checkMagicQuotes($_POST['email_alt']), $system->checkMagicQuotes($_POST['phone1']), $system->checkMagicQuotes($_POST['phone2']), $system->checkMagicQuotes($_POST['fax']), $system->checkMagicQuotes($_POST['address_line1']), $system->checkMagicQuotes($_POST['address_line2']), $system->checkMagicQuotes($_POST['address_town']), $system->checkMagicQuotes($_POST['address_postcode']), $system->checkMagicQuotes($_POST['address_country']), $_POST['lang'], $_POST['timezone'], $system->checkMagicQuotes($_POST['bank_name']), $system->checkMagicQuotes($_POST['sort_code']), $system->checkMagicQuotes($_POST['account_number']), $system->checkMagicQuotes($_POST['bic']), $system->checkMagicQuotes($_POST['iban']), $system->checkMagicQuotes($_POST['vat_no']), $system->checkMagicQuotes($_POST['company_no']), $system->checkMagicQuotes($_POST['company_reg_loc']), $system->checkMagicQuotes($_POST['dvr']), $system->checkMagicQuotes($_POST['notes'])));
+			echo($contacts->setContactDetails($_POST['id'], $system->checkMagicQuotes($_POST['lastname']), $system->checkMagicQuotes($_POST['firstname']), $system->checkMagicQuotes($_POST['title']),$system->checkMagicQuotes($_POST['title2']), $system->checkMagicQuotes($_POST['company']), $system->checkMagicQuotes($_POST['position']), $system->checkMagicQuotes($_POST['email']), $system->checkMagicQuotes($_POST['email_alt']), $system->checkMagicQuotes($_POST['phone1']), $system->checkMagicQuotes($_POST['phone2']), $system->checkMagicQuotes($_POST['fax']), $system->checkMagicQuotes($_POST['address_line1']), $system->checkMagicQuotes($_POST['address_line2']), $system->checkMagicQuotes($_POST['address_town']), $system->checkMagicQuotes($_POST['address_postcode']), $system->checkMagicQuotes($_POST['address_country']), $_POST['gender'], $_POST['lang'], $_POST['timezone'], $system->checkMagicQuotes($_POST['bank_name']), $system->checkMagicQuotes($_POST['sort_code']), $system->checkMagicQuotes($_POST['account_number']), $system->checkMagicQuotes($_POST['bic']), $system->checkMagicQuotes($_POST['iban']), $system->checkMagicQuotes($_POST['vat_no']), $system->checkMagicQuotes($_POST['company_no']), $system->checkMagicQuotes($_POST['company_reg_loc']), $system->checkMagicQuotes($_POST['dvr']), $system->checkMagicQuotes($_POST['notes'])));
 		break;
 		case 'sendContactDetails':
 			echo($contacts->sendContactDetails($_POST['id'], $_POST['to'], $_POST['cc'], $system->checkMagicQuotesTinyMCE($_POST['subject']), $system->checkMagicQuotesTinyMCE($_POST['body'])));

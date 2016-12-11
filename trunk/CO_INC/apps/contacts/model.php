@@ -329,6 +329,18 @@ class ContactsModel extends Model {
 		$array["sysadmin"] = $lang['CONTACTS_SYSADMIN_NORIGHTS'];
 		$array["applications"] = "";
 		
+		switch($array["gender"]) {
+			case 0:
+				$array["gender"] = '';
+			break;
+			case 1:
+				$array["gender"] = '<span class="listmember-outer"><a class="listmemberGender listmember" uid="1" field="contactsgender">männlich</a></span>';
+			break;
+			case 2:
+				$array["gender"] = '<span class="listmember-outer"><a class="listmemberGender listmember" uid="2" field="contactsgender">weiblich</a></span>';
+			break;
+		}
+
 		// calendar
 		$array["showCalendarTab"] = false;
 		if($applications != "") {
@@ -340,6 +352,10 @@ class ContactsModel extends Model {
 		}
 		if($array["showCalendarTab"]) {
 		$array["calendar_status"] = $lang['CONTACTS_CALENDAR_DEACTIVE'];
+		$array["calendar_view_status"] = 'nicht sichtbar';
+		if($array["calendars_view_all"] == 1) {
+			$array["calendar_view_status"] = 'sichtbar';
+		}
 		$array['outlook_caldavurl'] = '';
 		$array['ios_caldavurl'] = '';
 		$array['caldavurl'] = '';
@@ -348,6 +364,7 @@ class ContactsModel extends Model {
 		$array['all_caldavurl'] = '';
 		if($array["calendar"] == 1) {
 			$array["calendar_status"] = $lang['CONTACTS_CALENDAR_ACTIVE'];
+			//$array["calendar_view_status"] = $lang['CONTACTS_CALENDAR_ACTIVE'];
 			$url = explode('.',$_SERVER['HTTP_HOST']);
 			//$cal_uri = strtolower($array['firstname'].$array['lastname']);
 			$cal_uri = $session->strToSafeURL(strtolower($array['firstname'].$array['lastname']));
@@ -488,7 +505,7 @@ class ContactsModel extends Model {
    }*/
 
 
-	function setContactDetails($id, $lastname, $firstname, $title, $title2, $company, $position, $email, $email_alt, $phone1, $phone2, $fax, $address_line1, $address_line2, $address_town, $address_postcode, $address_country, $lang,$timezone,$bank_name,$sort_code,$account_number,$bic,$iban,$vat_no,$company_no,$company_reg_loc,$dvr,$notes) {
+	function setContactDetails($id, $lastname, $firstname, $title, $title2, $company, $position, $email, $email_alt, $phone1, $phone2, $fax, $address_line1, $address_line2, $address_town, $address_postcode, $address_country, $gender, $lang,$timezone,$bank_name,$sort_code,$account_number,$bic,$iban,$vat_no,$company_no,$company_reg_loc,$dvr,$notes) {
 		global $session;
 		$now = gmdate("Y-m-d H:i:s");
 		
@@ -513,7 +530,7 @@ class ContactsModel extends Model {
 			}
 		}
 		
-		$q = "UPDATE " . CO_TBL_USERS . " set lastname = '$lastname', firstname = '$firstname', title = '$title', title2 = '$title2', company = '$company', position = '$position', email = '$email', email_alt = '$email_alt', phone1 = '$phone1', phone2 = '$phone2', fax = '$fax', address_line1 = '$address_line1', address_line2 = '$address_line2', address_town = '$address_town', address_postcode = '$address_postcode', address_country = '$address_country', lang = '$lang', timezone = '$timezone', notes='$notes', bank_name='$bank_name', sort_code='$sort_code', account_number='$account_number', bic='$bic', iban='$iban', vat_no ='$vat_no', company_no='$company_no', company_reg_loc='$company_reg_loc', dvr='$dvr', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_USERS . " set lastname = '$lastname', firstname = '$firstname', title = '$title', title2 = '$title2', company = '$company', position = '$position', email = '$email', email_alt = '$email_alt', phone1 = '$phone1', phone2 = '$phone2', fax = '$fax', address_line1 = '$address_line1', address_line2 = '$address_line2', address_town = '$address_town', address_postcode = '$address_postcode', address_country = '$address_country', gender = '$gender', lang = '$lang', timezone = '$timezone', notes='$notes', bank_name='$bank_name', sort_code='$sort_code', account_number='$account_number', bic='$bic', iban='$iban', vat_no ='$vat_no', company_no='$company_no', company_reg_loc='$company_reg_loc', dvr='$dvr', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		
 		$result = mysql_query($q, $this->_db->connection);
 		if ($result) {
@@ -1456,6 +1473,24 @@ class ContactsModel extends Model {
 		// remove calendar
 		// remove calendar objects
 		// remove share
+	}
+	
+	
+	function setCalendarView($id) {
+		// update userfield
+		$q = "UPDATE co_users SET calendars_view_all='1' WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+
+	}
+
+	
+	function removeCalendarView($id) {
+		// update userfield
+		$q = "UPDATE co_users SET calendars_view_all='0' WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
+		
 	}
 	
 	

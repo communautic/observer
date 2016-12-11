@@ -3,7 +3,7 @@
 <input type="hidden"  name="path" value="<?php echo $form_url;?>">
 <input type="hidden"  name="request" value="<?php echo $request;?>">
 <input type="hidden" name="id" value="<?php echo $id;?>">
-<input type="hidden" name="variable" value="<?php echo $variable;?>">
+<input type="hidden" name="variable" value='<?php echo $variable;?>'>
 <table border="0" cellpadding="0" cellspacing="0" class="table-window">
 	<tr>
 		<td class="tcell-left text11"><a href="#" class="content-nav showDialog" request="getContactsDialog" field="to" append="1"><span><?php echo $lang["GLOBAL_TO"];?></span></a></td>

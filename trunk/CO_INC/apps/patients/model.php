@@ -252,7 +252,7 @@ class PatientsModel extends Model {
 			$access = " and (b.id IN (" . $adminPerm . ") or (b.id IN (" . $guestPerm . ") and a.access_invoice='1'))";
 	  	}
 		
-		$q = "SELECT a.id,a.title,a.invoice_date,a.invoice_number,a.status_invoice,a.status_invoice_date, a.discount, a.vat, a.payment_type, b.id as pid, b.management, CONCAT(c.lastname,' ',c.firstname) as patient FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE a.status='2' and a.pid=b.id and b.folder='$id' and b.cid=c.id and a.bin='0' and b.bin='0'" . $access . " ORDER BY " . $order;
+		$q = "SELECT a.id,a.title,a.invoice_date,a.invoice_number,a.status_invoice,a.status_invoice_date, a.discount, a.vat, a.payment_type,a.invoice_type,a.service_id, b.id as pid, b.management, CONCAT(c.lastname,' ',c.firstname) as patient FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE a.status='2' and a.pid=b.id and b.folder='$id' and b.cid=c.id and a.bin='0' and b.bin='0'" . $access . " ORDER BY " . $order;
 		//echo $q;
 		
 		
@@ -284,9 +284,24 @@ class PatientsModel extends Model {
 				$array["status_invoice_class"] = 'barchart_color_planned';
 		}
 		
-		// get the tasks
+		/*if($array["invoice_type"] == 1) {
+				$service_id = $array["service_id"];
+				$q_service = "select title,discount,vat from co_patients_services where id = '$service_id'";
+				$result_service = mysql_query($q_service, $this->_db->connection);
+				$row_service = mysql_fetch_array($result_service);
+				foreach($row_service as $key => $val) {
+					$array[$key] = $val;
+				}
+			}*/
+			
+			if (strlen($array['title']) > 30) $array['title'] = substr($array['title'], 0, 27) . '...';
+		
+		
 		$array['totalcosts'] = 0;
 		$array['totalmin'] = 0;
+		if($array["invoice_type"] == 0) { // Treatments
+		// get the tasks
+		
 		$qt = "SELECT type FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where status='1' and mid = '$id' and bin='0' ORDER BY item_date ASC";
 		$resultt = mysql_query($qt, $this->_db->connection);
 		$PatientsTreatmentsModel = new PatientsTreatmentsModel();
@@ -303,6 +318,39 @@ class PatientsModel extends Model {
 			$array['totalcosts'] += $costs;
 		}
 		}
+		
+		settype($array['totalmin'], 'integer');
+		$hours = floor($array['totalmin'] / 60);
+		$minutes = ($array['totalmin'] % 60);
+		
+		$array['totalmin'] = sprintf('%02d:%02d h', $hours, $minutes);
+		
+		
+		}
+		
+		if($array["invoice_type"] == 1) { // Services
+			// get the tasks
+
+			//$task = array();
+			$service_id = $array['service_id'];
+			$qt = "SELECT * FROM co_patients_services_tasks where status='1' and mid = '$service_id' and bin='0' ORDER BY sort ASC";
+			$resultt = mysql_query($qt, $this->_db->connection);
+			while($rowt = mysql_fetch_array($resultt)) {
+				/*foreach($rowt as $key => $val) {
+					$tasks[$key] = $val;
+				}*/
+
+				$taskcosts = 0;
+				//$menge = $rowt["menge"];
+				//$preis = number_format($rowt["preis"],2,',','.');
+				$taskcosts = $rowt["menge"]*$rowt["preis"];
+				$array['totalcosts'] += $taskcosts;
+				$taskcosts = number_format($taskcosts,2,',','.');
+				//$task[] = new Lists($tasks);
+			}
+			$array['totalmin'] = '';
+		}
+		
 		if($array['discount'] != 0) {
 			$array['discount_costs'] = ($array['totalcosts']/100)*$array['discount'];
 			$array['discount_costs'] = number_format($array['discount_costs'],2,',','.');
@@ -314,11 +362,11 @@ class PatientsModel extends Model {
 			$array['totalcosts'] = $array['totalcosts']+(($array['totalcosts']/100)*$array['vat']);
 		}
 		$array['totalcosts'] = number_format($array['totalcosts'],2,',','.');
-		settype($array['totalmin'], 'integer');
+		/*settype($array['totalmin'], 'integer');
 		$hours = floor($array['totalmin'] / 60);
 		$minutes = ($array['totalmin'] % 60);
 		
-		$array['totalmin'] = sprintf('%02d:%02d h', $hours, $minutes);
+		$array['totalmin'] = sprintf('%02d:%02d h', $hours, $minutes);*/
 		
 		$invoices[] = new Lists($array);
 		
@@ -338,80 +386,365 @@ class PatientsModel extends Model {
    }
 	
 	
-	function getFolderDetailsRevenueResults($id,$who,$start,$end) {
+	
+	
+	function getFolderDetailsRevenueResults($id,$who,$patient,$start,$end,$filters,$details,$detailsCount,$stats,$statsCount) {
 		global $session, $contactsmodel, $patientsControllingModel, $lang;
+		
+		$filter = json_decode($filters);
+		$detail = json_decode($details);
+		$stat = json_decode($stats);
+		//echo($filter->bezahlt);
+		
+		$ageData = array();
+		$genderData = array();
 		
 		$start = $this->_date->formatDate($start, "Y-m-d");
 		$end = $this->_date->formatDate($end, "Y-m-d");
 		$calctotal = 0;
+		$calcvattotal = array();
+		$calcvattotalsum = array();
+		$calcvatnetto = array();
 		$calctotalmin = 0;
 		$management = "b.management='$who' and ";
 		if($who == 0) {
 			$management = '';
 		}
+		
+		$patientsql = "c.id='$patient' and ";
+		if($patient == 0) {
+			$patientsql = '';
+		}
+		
 		$folder = "b.folder='$id' and ";
 		if($id == 0) {
 			$folder = '';
 		}
 		
-		$q = "SELECT a.id,a.title,a.invoice_date,a.status_invoice,a.status_invoice_date, a.invoice_number, a.payment_type, a.discount, b.id as pid, b.folder, b.management, CONCAT(c.lastname,' ',c.firstname) as patient FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE $management $folder a.invoice_date >= '$start' and a.invoice_date <= '$end' and a.status='2' and status_invoice !='3' and a.pid=b.id and b.cid=c.id and a.bin='0' and b.bin='0'";
+		// filter bezahlt / ausständig
+		$status_invoice = "a.status_invoice!='1' and a.status_invoice!='2' and ";
+		if($filter->bezahlt == 1 && $filter->ausstaendig == 1) {
+			$status_invoice = "(a.status_invoice='1' or a.status_invoice='2') and ";
+		} else {
+				if($filter->bezahlt == 1) {
+					$status_invoice = "a.status_invoice='2' and ";
+				}
+				if($filter->ausstaendig == 1) {
+					$status_invoice = "a.status_invoice='1' and ";
+				}
+		}
+		
+		// filter Barzahlung / Überweisung
+		$payment_type = "a.payment_type!='Barzahlung' and a.payment_type!='Überweisung' and a.payment_type!='' and ";
+		if($filter->barzahlung == 1 && $filter->ueberweisung == 1) {
+			$payment_type = "(a.payment_type='Barzahlung' or a.payment_type='Überweisung') and ";
+		} else {
+				if($filter->barzahlung == 1) {
+					$payment_type = "a.payment_type='Barzahlung' and ";
+				}
+				if($filter->ueberweisung == 1) {
+					$payment_type = "a.payment_type='Überweisung' and ";
+				}
+		}
+		
+		// filter Behandlung / Zusatzleistung
+		$invoice_type = "a.invoice_type!='0' and a.invoice_type!='1' and ";
+		if($filter->behandlung == 1 && $filter->zusatzleistung == 1) {
+			$invoice_type = "(a.invoice_type='0' or a.invoice_type='1') and ";
+		} else {
+				if($filter->behandlung == 1) {
+					$invoice_type = "a.invoice_type='0' and ";
+				}
+				if($filter->zusatzleistung == 1) {
+					$invoice_type = "a.invoice_type='1' and ";
+				}
+		}
+		
+		$array['showDetails'] = false;
+		if($detailsCount > 0) {
+			$array['showDetails'] = true;
+		}
+		// SHOW Filters
+		// filter Patient
+		$array["show_patient"] = $detail->patient;
+		$array["show_dob"] = $detail->dob;
+		$array["show_alter"] = $detail->alter;
+		$array["show_gender"] = $detail->gender;
+		$array["show_agegroup"] = $detail->agegroup;
+		
+		$array["show_betreuung"] = $detail->betreuung;
+		$array["show_ort"] = $detail->ort;
+		$array["show_dauer"] = $detail->dauer;
+		$array["show_arbeitszeit"] = $detail->arbeitszeit;
+		
+		
+		$array["show_rechnungsdatum"] = $detail->rechnungsdatum;
+		$array["show_rechnungsnummer"] = $detail->rechnungsnummer;
+		
+		
+		$q = "SELECT a.id,a.title,a.invoice_carrier,(SELECT MIN(item_date) FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " as b WHERE b.mid=a.id and b.bin='0') as treatment_start,(SELECT MAX(item_date) FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " as b WHERE b.mid=a.id and b.bin='0') as treatment_end,a.invoice_date,a.status_invoice,a.status_invoice_date, a.invoice_number, a.payment_type, a.discount,a.vat,a.invoice_type,a.service_id, b.id as pid, b.folder, b.management, CONCAT(c.lastname,' ',c.firstname) as patient,b.dob,c.gender FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE $patientsql $management $folder $payment_type $invoice_type a.invoice_date >= '$start' and a.invoice_date <= '$end' and $status_invoice status_invoice !='3' and status_invoice !='0' and a.pid=b.id and b.cid=c.id and a.bin='0' and b.bin='0' ORDER BY a.vat ASC,a.invoice_date ASC";
 		
 		$result = mysql_query($q, $this->_db->connection);
 		if(mysql_num_rows($result) < 1) {
 			return false;
 		}
+		
+		$i = 0;
+		$vatcheck = 0;
+		$calcvattotal[$vatcheck] = 0;
+		$calcvattotalsum[$vatcheck] = 0;
+		$calcvatnetto[$vatcheck] = 0;
+		
+		//$array['total_results' = mysql_num_rows($result);
 		while($row = mysql_fetch_array($result)) {
-		foreach($row as $key => $val) {
-			$array[$key] = $val;
-		}
-		$id = $array["id"];
-		$array["invoice_date"] = $this->_date->formatDate($array["invoice_date"],CO_DATE_FORMAT);
-		$array["status_invoice_date"] = $this->_date->formatDate($array["status_invoice_date"],CO_DATE_FORMAT);
-		$array["management"] = $contactsmodel->getUserListPlain($array['management']);
-		$manager = $array["management"];
-		$array["showmanagertoitem"] = false;
-		if($who == 0) {
-			//$array["management"] = "";
-			$manager = "";
-			$array["showmanagertoitem"] = true;
-		}
-		switch($array["status_invoice"]) {
-			case 2:
-				$array["status_invoice_class"] = 'barchart_color_finished';
-			break;
-			case 1:
-				$array["status_invoice_class"] = 'barchart_color_inprogress';
+			foreach($row as $key => $val) {
+				$array[$key] = $val;
+			}
+			$id = $array["id"];
+			$array["invoice_date"] = $this->_date->formatDate($array["invoice_date"],CO_DATE_FORMAT);
+			$array["status_invoice_date"] = $this->_date->formatDate($array["status_invoice_date"],CO_DATE_FORMAT);
+			$array["management"] = $contactsmodel->getUserListPlain($array['management']);
+			$manager = $array["management"];
+			$array["showmanagertoitem"] = false;
+			
+			$array["treatment_start"] = $this->_date->formatDate($array["treatment_start"],CO_DATE_FORMAT);
+			$array["treatment_end"] = $this->_date->formatDate($array["treatment_end"],CO_DATE_FORMAT);
+			
+			$pid = $array['pid'];
+			
+			
+			if($i == 0 || $vatcheck != $array["vat"]) {
+				$vatcheck = $array["vat"];
+				$calcvattotal[$vatcheck] = 0;
+				$calcvattotalsum[$vatcheck] = 0;
+				$calcvatnetto[$vatcheck] = 0;
+			}
+
+
+			if (strlen($array['title']) > 30) $array['title'] = substr($array['title'], 0, 27) . '...';
+
+			$html_patient = '';
+			$html_patient_end = '';
+			
+			if($array["show_patient"] == 1 || $array["show_dob"] == 1 || $array["show_alter"] == 1 || $array["show_gender"] == 1 || $array["show_agegroup"] == 1) {
+				$html_patient .= 'Patient: ';
+				$html_patient_end = '<br>';
+			}
+			
+			$d = DateTime::createFromFormat('Y-m-d', $array["dob"]);
+			if($d && $d->format('Y-m-d') == $array["dob"]) {
+				$array['age'] = date_diff(date_create($array["dob"]), date_create('today'))->y;
+				$ageData[$pid] = $array['age'];
+				$array["dob"] = $this->_date->formatDate($array["dob"],CO_DATE_FORMAT);
+			} else {
+				$array['age'] = 0;
+				$array["dob"] = 0;
+				$ageData[$pid] = 0;
+			}
+			
+			$html_patient_array = array();
+			
+			if($array["show_patient"] == 1) {
+				$html_patient_array[] = $array['patient'];
+			}
+			if($array["show_dob"] == 1) {
+				$html_patient_array[] = $array['dob'];
+			}
+			if($array["show_alter"] == 1) {
+				$html_patient_array[] = $array['age'] . ' Jahre';
+			}
+			if($array["show_gender"] == 1) {
+				switch($array['gender']) {
+					case 0:
+						$html_patient_array[] = '-';
+					break;
+					case 1:
+						$html_patient_array[] = $lang["GLOBAL_GENDER_MALE"];
+					break;
+					case 2:
+						$html_patient_array[] = $lang["GLOBAL_GENDER_FEMALE"];
+					break;
+				}
 				
-			break;
-			default:
-				$array["status_invoice_class"] = 'barchart_color_planned';
+			}
+			
+			if($array["show_agegroup"] == 1) {	
+				if($array['age'] == 0) {
+					$html_patient_array[] = '-';
+				} else 
+				if($array['age'] < 25) {
+					$html_patient_array[] = 'bis 25';
+				} else 
+				if($array['age'] < 60) {
+					$html_patient_array[] = '25 bis 60';
+				} else 
+				if($array['age'] >= 60) {
+					$html_patient_array[] = 'ab 61';
+				}
+			}
+			$array['html_patient'] = $html_patient . implode(", ", $html_patient_array) . $html_patient_end;
+			
+			
+			
+			$html_invoice = '';
+			$html_invoice_array = array();
+			
+			if($array["show_rechnungsdatum"] == 1) {
+				$html_invoice_array[] = 'Rechnungsdatum: ' . $array["invoice_date"];
+			}
+			if($array["show_rechnungsnummer"] == 1) {
+				$html_invoice_array[] = 'Rechnungsnummer: ' . $array["invoice_number"];
+			}
+			$array['html_invoice'] = $html_invoice . implode(", ", $html_invoice_array);
+			
+			
+			$html_betreuung = '';
+			$html_betreuung_end = '';
+			$html_betreuung_array = array();
+			
+			if($array["show_betreuung"] == 1 || $array["show_ort"] == 1 || $array["show_dauer"] == 1 || $array["show_arbeitszeit"] == 1) {
+				$html_betreuung .= 'Betreuung: ';
+				$html_betreuung_end = '<br>';
+			}
+			
+			if($array["show_betreuung"] == 1) {
+				$html_betreuung_array[] = $array['management'];
+			}
+			
+			
+			
+			
+			$genderData[$pid] = $array['gender'];
+			
+			if($who == 0) {
+				//$array["management"] = "";
+				$manager = "";
+				$array["showmanagertoitem"] = true;
+			}
+			switch($array["status_invoice"]) {
+				case 2:
+					$array["status_invoice_class"] = 'barchart_color_finished';
+				break;
+				case 1:
+					$array["status_invoice_class"] = 'barchart_color_inprogress';
+					
+				break;
+				default:
+					$array["status_invoice_class"] = 'barchart_color_planned';
+			}
+			
+			/*if($array["invoice_type"] == 1) {
+					$service_id = $array["service_id"];
+					$q_service = "select title,discount,vat from co_patients_services where id = '$service_id'";
+					$result_service = mysql_query($q_service, $this->_db->connection);
+					$row_service = mysql_fetch_array($result_service);
+					foreach($row_service as $key => $val) {
+						$array[$key] = $val;
+					}
+				}*/
+			
+			// get the tasks
+			$array['totalcosts'] = 0;
+			
+			$array['brutto'] = 0;
+			$array['totalvatcosts'] = 0; //per treatment
+			$array['totalmin'] = 0;
+			$html_location_array = array();
+			if($array["invoice_type"] == 0) { // Treatments
+			// get the tasks
+			//$qt = "SELECT type FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where status='1' and mid = '$id' and bin='0' ORDER BY item_date ASC";
+			
+			
+			//$qt = "SELECT a.type, b.eventlocation,b.eventlocationuid FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " as a, oc_clndr_objects as b, oc_clndr_calendars as c, oc_users as d WHERE a.id = '$eventid' and b.calendarid = c.id and c.userid=d.uid and a.bin='0' and b.eventid = '$eventid'";
+			
+				$qt = "SELECT a.type,b.eventlocation,b.eventlocationuid FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " as a, oc_clndr_objects as b, oc_clndr_calendars as c, oc_users as d where a.mid = '$id' and b.calendarid = c.id and c.userid=d.uid and a.bin='0' and b.eventid = a.id ORDER BY b.startdate ASC";
+				
+				
+				$resultt = mysql_query($qt, $this->_db->connection);
+				$PatientsTreatmentsModel = new PatientsTreatmentsModel();
+				if(mysql_num_rows($resultt) > 0) {
+					while($rowt = mysql_fetch_array($resultt)) {
+						if($rowt["type"] == '') {
+							$mins = 0;
+							$costs = 0;
+						} else {
+							$mins = $PatientsTreatmentsModel->getTreatmentTypeMin($rowt["type"]);
+							$costs = $PatientsTreatmentsModel->getTreatmentTypeCosts($rowt["type"]);
+						}
+			
+						if($rowt["eventlocation"] != 0) {
+							$html_location_array[] = $PatientsTreatmentsModel->getTreatmentLocation($rowt["eventlocation"]);
+						}
+						if($rowt["eventlocationuid"] != 0) {
+							$html_location_array[] = $contactsmodel->getPlaceListPlain($rowt["eventlocationuid"],'location', false);
+						}
+			
+						$array['totalmin'] += $mins;
+						$array['totalcosts'] += $costs;
+						$array['brutto'] += $costs;
+					}
+				}
+			}
+		
+			if($array["invoice_type"] == 1) { // Services
+				// get the tasks
+	
+				//$task = array();
+				$service_id = $array['service_id'];
+				$qt = "SELECT * FROM co_patients_services_tasks where status='1' and mid = '$service_id' and bin='0' ORDER BY sort ASC";
+				$resultt = mysql_query($qt, $this->_db->connection);
+				while($rowt = mysql_fetch_array($resultt)) {
+					/*foreach($rowt as $key => $val) {
+						$tasks[$key] = $val;
+					}*/
+	
+					$taskcosts = 0;
+					//$menge = $rowt["menge"];
+					//$preis = number_format($rowt["preis"],2,',','.');
+					$taskcosts = $rowt["menge"]*$rowt["preis"];
+					$array['totalcosts'] += $taskcosts;
+					$array['brutto'] += $taskcosts;
+					$taskcosts = number_format($taskcosts,2,',','.');
+					//$task[] = new Lists($tasks);
+			}
 		}
 		
-		// get the tasks
-		$array['totalcosts'] = 0;
-		$array['totalmin'] = 0;
-		$qt = "SELECT type FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where status='1' and mid = '$id' and bin='0' ORDER BY item_date ASC";
-		$resultt = mysql_query($qt, $this->_db->connection);
-		$PatientsTreatmentsModel = new PatientsTreatmentsModel();
-		if(mysql_num_rows($resultt) > 0) {
-		while($rowt = mysql_fetch_array($resultt)) {
-			if($rowt["type"] == '') {
-				$mins = 0;
-				$costs = 0;
-			} else {
-				$mins = $PatientsTreatmentsModel->getTreatmentTypeMin($rowt["type"]);
-				$costs = $PatientsTreatmentsModel->getTreatmentTypeCosts($rowt["type"]);
-			}
-			$array['totalmin'] += $mins;
-			$array['totalcosts'] += $costs;
-		}
-		}
+		
 		if($array['discount'] != 0) {
 			$array['discount_costs'] = ($array['totalcosts']/100)*$array['discount'];
 			$array['discount_costs'] = number_format($array['discount_costs'],2,',','.');
 			$array['totalcosts'] = $array['totalcosts']-(($array['totalcosts']/100)*$array['discount']);
+			$array['brutto'] = $array['totalcosts'];
+		}
+		$array['vat_costs'] = 0;
+		if($array['vat'] != 0) {
+			$array['vat_costs'] = ($array['totalcosts']/100)*$array['vat'];
+			$array['totalvatcosts'] = + $array['vat_costs'];
+			
+			$array['brutto'] = $array['totalcosts']+(($array['totalcosts']/100)*$array['vat']);
 		}
 		$calctotal += $array['totalcosts'];
+		
+		//echo $calcvattotal[$vatcheck];
+		//$n = $calcvattotal[$vatcheck];
+		$vatsum = $calcvattotal[$vatcheck] + $array['brutto'];
+		//$calcvattotal += $array['totalvatcosts'];
+		//echo $array['totalvatcosts'] . ' ' . $vatcheck . '%';
+		//echo $vatcheck;
+		$calcvattotal[$vatcheck] = $vatsum;
+		$calcvattotalsum[$vatcheck] = $calcvattotalsum[$vatcheck]+$array['vat_costs'];
+		$calcvatnetto[$vatcheck] = $calcvatnetto[$vatcheck]+$array['totalcosts'];
+		
+		$array['vat_costs'] = number_format($array['vat_costs'],2,',','.');
+		//echo $calcvattotal[$vatcheck];
+		
+		//print_r($calcvattotal);
+		$array['totalcosts_plain'] = $array['totalcosts'];
+		/*if($array['payment_type'] == 'Überweisung') {
+			$array['totalcosts_ueberweisung'] += $array['totalcosts_plain'];
+		} else {
+			$array['totalcosts_barzahlung'] += $array['totalcosts_plain'];
+		}*/
 		$array['totalcosts'] = number_format($array['totalcosts'],2,',','.');
 		$calctotalmin += $array['totalmin'];
 		settype($array['totalmin'], 'integer');
@@ -420,10 +753,33 @@ class PatientsModel extends Model {
 		
 		$array['totalmin'] = sprintf('%02d:%02d h', $hours, $minutes);
 		
+		$array['ort_string'] = '';
+		if($array["show_ort"] == 1 && $array["invoice_type"] == 0) {
+			$html_betreuung_array[] = implode(", ", array_unique($html_location_array));
+			$array['ort_string'] = implode(", ", array_unique($html_location_array));
+			
+		}
+		if($array["show_dauer"] == 1 && $array["invoice_type"] == 0) {
+			$html_betreuung_array[] = 'von ' . $array["treatment_start"] . ' bis ' . $array["treatment_end"];
+		}
+		if($array["show_arbeitszeit"] == 1 && $array["invoice_type"] == 0) {
+			$html_betreuung_array[] = $array['totalmin'];
+		}
+		
+		$array['html_betreuung'] = $html_betreuung . implode(", ", $html_betreuung_array) . $html_betreuung_end;
+		
+		
+		
 		$invoices[] = new Lists($array);
 		
-		}
+		$i++;
+		
+		} // end treatments loop
+		
+		
 		$calctotal = number_format($calctotal,2,',','.');
+		//$calcvattotal = number_format($calcvattotal,2,',','.');
+		//print_r($calcvattotal);
 		settype($calctotalmin, 'integer');
 		$totalhours = floor($calctotalmin / 60);
 		$totalminutes = ($calctotalmin % 60);
@@ -433,8 +789,128 @@ class PatientsModel extends Model {
 		  if($session->isSysadmin()) {
 			  $access = "sysadmin";
 		  }
+			
+			
+		$chartGender["show"] = false;
+		$chartAge["show"] = false;
+
+		if($stat->gender == 1) {
+			$chartGender["show"] = true;
+		}
+		if($stat->agegroups == 1) {
+			$chartAge["show"] = true;
+		}
+			
+		$_genderData = array();
+		$genderMale = 0;
+		$genderFemale = 0;
+		$genderNotset = 0;
 		
-		$arr = array("calctotal" => $calctotal, "calctotalmin" => $calctotalmin, "invoices" => $invoices, "access" => $access, "manager" => $manager);
+		foreach ($genderData as $key => $val) {
+			if (isset($_genderData[$key])) {
+				// found duplicate
+				continue;
+			}
+			// remember unique item
+			$_genderData[$key] = $val;
+			if($val == 0) {
+				$genderNotset++;
+			}
+			if($val == 1) {
+				$genderMale++;
+			}
+			if($val == 2) {
+				$genderFemale++;
+			}
+		}
+		//print_r($_genderData);
+		$genderSize = sizeof($_genderData);
+		// 0 = not set, 1 = male, 2 = female
+		if($genderSize == 0) {
+			$chartGender["male"] = 0;
+			$chartGender["female"] = 0;
+			$chartGender["notset"] = 0;
+		} else {
+			$chartGender["male"] = round((100/$genderSize)*$genderMale,0);
+			$chartGender["female"] = round((100/$genderSize)*$genderFemale,0);
+			$chartGender["notset"] = 100-$chartGender["male"]-$chartGender["female"];
+		}
+
+		$chartGender["title"] = '';
+		$chartGender["img_name"] = "patient_umsatzberechnung_geschlecht.png";
+		$chartGender["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chartGender["male"]. ',' .$chartGender["female"] . ',' .$chartGender["notset"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
+		
+		$image = self::saveImage($chartGender["url"],CO_PATH_BASE . '/data/charts/',$chartGender["img_name"]);
+			
+			//print_r($_ageData);
+			
+			
+		$_ageData = array();
+		$ageGroup25 = 0;
+		$ageGroup60 = 0;
+		$ageGroup60Plus = 0;
+		$ageGroupNotset = 0;
+		foreach ($ageData as $key => $val) {
+			if (isset($_ageData[$key])) {
+				// found duplicate
+				continue;
+			}
+			// remember unique item
+			$_ageData[$key] = $val;
+			if($val == 0) {
+				$ageGroupNotset++;
+			} else 
+			if($val < 25) {
+				$ageGroup25++;
+			} else 
+			if($val < 60) {
+				$ageGroup60++;
+			} else 
+			if($val >= 60) {
+				$ageGroup60Plus++;
+			}
+		}
+		
+		$ageSize = sizeof($_ageData);
+		// 0 = not set, 1 = male, 2 = female
+		if($ageSize == 0) {
+			$chartAge["ageGroupNotset"] = 0;
+			$chartAge["ageGroup25"] = 0;
+			$chartAge["ageGroup60"] = 0;
+			$chartAge["ageGroup60Plus"] = 0;
+		} else {
+			$chartAge["ageGroup25"] = round((100/$ageSize)*$ageGroup25,0);
+			$chartAge["ageGroup60"] = round((100/$ageSize)*$ageGroup60,0);
+			$chartAge["ageGroup60Plus"] = round((100/$ageSize)*$ageGroup60Plus,0);
+			$chartAge["ageGroupNotset"] = 100-$chartAge["ageGroup25"]-$chartAge["ageGroup60"]-$chartAge["ageGroup60Plus"];
+		}
+
+		$chartAge["title"] = '';
+		$chartAge["img_name"] = "patient_umsatzberechnung_alter.png";
+		$chartAge["url"] = 'https://chart.googleapis.com/chart?cht=p3&chd=t:' . $chartAge["ageGroup25"]. ',' .$chartAge["ageGroup60"] . ',' .$chartAge["ageGroup60Plus"] . ',' .$chartAge["ageGroupNotset"] . '&chs=150x90&chco=82aa0b&chf=bg,s,FFFFFF';
+		
+		$image = self::saveImage($chartAge["url"],CO_PATH_BASE . '/data/charts/',$chartAge["img_name"]);
+			
+			/* age array
+				$data = array(
+				1 => 45,
+				1 => 45,
+				2 => 60
+			);
+		// walk input array
+		$_data = array();
+		foreach ($data as $key => $val) {
+			if (isset($_data[$key])) {
+				// found duplicate
+				continue;
+			}
+			// remember unique item
+			$_data[$key] = $val;
+		}
+
+print_r($_data);
+		*/
+		$arr = array("calctotal" => $calctotal, "calcvattotal" => $calcvattotal, "calcvatnetto" => $calcvatnetto, "calcvattotalsum" => $calcvattotalsum,"calctotalmin" => $calctotalmin, "invoices" => $invoices, "access" => $access, "manager" => $manager, "chartGender" => $chartGender, "chartAge" => $chartAge);
 		return $arr;
 	}
 	
@@ -472,7 +948,7 @@ class PatientsModel extends Model {
 			$invoices[$i]['netto'] = 0;
 			$invoices[$i]['vat_sum'] = 0;
 			$invoices[$i]['brutto'] = 0;
-			$qb = "SELECT a.id,a.title,a.invoice_date,a.status_invoice, a.vat, a.invoice_number, a.payment_type, a.beleg_nummer, a.discount, b.id as pid, b.folder, b.management, CONCAT(c.lastname,' ',c.firstname) as patient FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE $management $folder a.vat='$vat' and a.invoice_date >= '$start' and a.invoice_date <= '$end' and a.status='2' and payment_type='Barzahlung' and a.pid=b.id and b.cid=c.id and a.bin='0' and b.bin='0' ORDER BY beleg_nummer DESC";
+			$qb = "SELECT a.id,a.title,a.invoice_date,a.status_invoice, a.vat, a.invoice_number, a.payment_type, a.beleg_nummer, a.discount,a.invoice_type,a.service_id, b.id as pid, b.folder, b.management, CONCAT(c.lastname,' ',c.firstname) as patient FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a LEFT JOIN co_patients_services as d ON a.service_id=d.id, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE $management $folder ((a.vat='0' and d.vat='$vat') or a.vat='$vat') and a.invoice_date >= '$start' and a.invoice_date <= '$end' and a.status='2' and payment_type='Barzahlung' and a.pid=b.id and b.cid=c.id and a.bin='0' and b.bin='0' ORDER BY beleg_nummer DESC";
 			$resultb = mysql_query($qb, $this->_db->connection);
 			if(mysql_num_rows($resultb) < 1) {
 				return false;
@@ -514,8 +990,26 @@ class PatientsModel extends Model {
 				
 				$array['beleg_nummer'] = $system->formatBelegNummer($array['beleg_nummer']);
 				
+				if (strlen($array['title']) > 30) $array['title'] = substr($array['title'], 0, 27) . '...';
+				
+				
+				/*if($array["invoice_type"] == 1) {
+					$service_id = $array["service_id"];
+					$q_service = "select title,discount,vat from co_patients_services where id = '$service_id'";
+					$result_service = mysql_query($q_service, $this->_db->connection);
+					$row_service = mysql_fetch_array($result_service);
+					foreach($row_service as $key => $val) {
+						$array[$key] = $val;
+					}
+				}*/
+				
 				$array['totalcosts'] = 0;
 				$array['totalmin'] = 0;
+				
+				if($array["invoice_type"] == 0) { // Treatments
+		// get the tasks
+				
+				
 				$qt = "SELECT type FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where status='1' and  mid = '$id' and bin='0' ORDER BY item_date ASC";
 				$resultt = mysql_query($qt, $this->_db->connection);
 				$PatientsTreatmentsModel = new PatientsTreatmentsModel();
@@ -532,6 +1026,29 @@ class PatientsModel extends Model {
 						$array['totalcosts'] += $costs;
 					}
 				}
+				}
+				
+				if($array["invoice_type"] == 1) { // Services
+			// get the tasks
+
+			//$task = array();
+			$service_id = $array['service_id'];
+			$qt = "SELECT * FROM co_patients_services_tasks where status='1' and mid = '$service_id' and bin='0' ORDER BY sort ASC";
+			$resultt = mysql_query($qt, $this->_db->connection);
+			while($rowt = mysql_fetch_array($resultt)) {
+				/*foreach($rowt as $key => $val) {
+					$tasks[$key] = $val;
+				}*/
+
+				$taskcosts = 0;
+				//$menge = $rowt["menge"];
+				//$preis = number_format($rowt["preis"],2,',','.');
+				$taskcosts = number_format($rowt["menge"]*$rowt["preis"],2,',','.');
+				$array['totalcosts'] += $taskcosts;
+				//$task[] = new Lists($tasks);
+			}
+		}
+				
 				if($array['discount'] != 0) {
 					$array['discount_costs'] = ($array['totalcosts']/100)*$array['discount'];
 					$array['discount_costs'] = number_format($array['discount_costs'],2,',','.');
@@ -840,7 +1357,55 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 		return $data;
    }
 
-   	function getPatientField($id,$field){
+
+function getPatientTitleFromServiceIDs($array,$target, $link = 0){
+		$total = sizeof($array);
+		$data = '';
+		if($total == 0) { 
+			return $data; 
+		}
+		$arr = array();
+		$i = 0;
+		foreach ($array as &$value) {
+			$qm = "SELECT pid,created_date FROM " . CO_TBL_PATIENTS_SERVICES . " where id = '$value' and bin='0'";
+			$resultm = mysql_query($qm, $this->_db->connection);
+			if(mysql_num_rows($resultm) > 0) {
+				$rowm = mysql_fetch_row($resultm);
+				$pid = $rowm[0];
+				$date = $this->_date->formatDate($rowm[1],CO_DATETIME_FORMAT);
+				$q = "SELECT a.id,a.folder,CONCAT(b.lastname,' ',b.firstname) as title FROM " . CO_TBL_PATIENTS . " as a, co_users as b  where a.id = '$pid' and a.cid=b.id and a.bin='0' and b.bin='0'";
+				$result = mysql_query($q, $this->_db->connection);
+				if(mysql_num_rows($result) > 0) {
+					while($row = mysql_fetch_assoc($result)) {
+						$arr[$i]["id"] = $row["id"];
+						$arr[$i]["item"] = $value;
+						$arr[$i]["access"] = $this->getPatientAccess($row["id"]);
+						$arr[$i]["title"] = $row["title"];
+						$arr[$i]["folder"] = $row["folder"];
+						$arr[$i]["date"] = $date;
+						$i++;
+					}
+				}
+			}
+		}
+		$arr_total = sizeof($arr);
+		$i = 1;
+		foreach ($arr as $key => &$value) {
+			if($value["access"] == "" || $link == 0) {
+				$data .= $value["title"] . ', ' . $value["date"];
+			} else {
+				$data .= '<a class="externalLoadThreeLevels" rel="' . $target. ','.$value["folder"].','.$value["id"].',' . $value["item"] . ',patients">' . $value["title"] . '</a>';
+			}
+			if($i < $arr_total) {
+				$data .= '<br />';
+			}
+			$data .= '';	
+			$i++;
+		}
+		return $data;
+   }
+
+   function getPatientField($id,$field){
 		global $session;
 		$q = "SELECT $field FROM " . CO_TBL_PATIENTS . " where id = '$id'";
 		$result = mysql_query($q, $this->_db->connection);
@@ -1051,7 +1616,15 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 		
 		// dates
 		$array["avatar"] = $contactsmodel->_users->getAvatar($array["cid"]);
-		$array["dob"] = $this->_date->formatDate($array["dob"],CO_DATE_FORMAT);
+		
+		$d = DateTime::createFromFormat('Y-m-d', $array["dob"]);
+    if($d && $d->format('Y-m-d') == $array["dob"]) {
+			$array["dob"] = $this->_date->formatDate($array["dob"],CO_DATE_FORMAT);
+		} else {
+			$array["dob"] = $array["dob"];
+		}
+		
+		//$array["dob"] = $this->_date->formatDate($array["dob"],CO_DATE_FORMAT);
 		$array["management_print"] = $contactsmodel->getUserListPlain($array['management']);
 		$array["management"] = $contactsmodel->getUserList($array['management'],'patientsmanagement', "", 0);
 		$array["management_ct"] = empty($array["management_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['management_ct'];
@@ -1201,7 +1774,14 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
    */
    function setPatientDetails($id,$folder,$management,$management_ct,$insurer,$insurer_ct,$protocol,$number,$number_insurer,$insurance,$insuranceadd,$code,$dob,$familystatus,$coo,$documents) {
 		global $session, $contactsmodel;
-		$dob = $this->_date->formatDate($dob);
+		//$d = DateTime::createFromFormat('Y-m-d', $array["dob"]);
+		//$dob = $this->_date->formatDate($dob);
+		$d = DateTime::createFromFormat('Y-m-d', $dob);
+    if($d && $d->format('Y-m-d') == $dob) {
+			$dob = $this->_date->formatDate($dob);
+		} else {
+			$dob = $dob;
+		}
 		$now = gmdate("Y-m-d H:i:s");
 		
 		$q = "UPDATE " . CO_TBL_PATIENTS . " set folder = '$folder', management='$management', management_ct='$management_ct', insurer='$insurer', insurer_ct='$insurer_ct', protocol = '$protocol', number = '$number', number_insurer='$number_insurer', insurance = '$insurance', insurance_add = '$insuranceadd', code='$code', dob = '$dob', familystatus = '$familystatus', coo = '$coo', documents = '$documents', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
@@ -1427,6 +2007,16 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 			}
 		}
 		
+		if(in_array("services",$active_modules)) {
+			$patientsServicesModel = new PatientsServicesModel();
+			$q = "SELECT id FROM co_patients_services where pid = '$id'";
+			$result = mysql_query($q, $this->_db->connection);
+			while($row = mysql_fetch_array($result)) {
+				$mid = $row["id"];
+				$patientsServicesModel->deleteService($mid);
+			}
+		}
+		
 		if(in_array("sketches",$active_modules)) {
 			$patientsSketchesModel = new PatientsSketchesModel();
 			$q = "SELECT id FROM co_patients_sketches where pid = '$id'";
@@ -1454,6 +2044,16 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 			while($row = mysql_fetch_array($result)) {
 				$mid = $row["id"];
 				$patientsMeetingsModel->deleteMeeting($mid);
+			}
+		}
+		
+		if(in_array("services",$active_modules)) {
+			$patientsServicesModel = new PatientsServicesModel();
+			$q = "SELECT id FROM co_patients_services where pid = '$id'";
+			$result = mysql_query($q, $this->_db->connection);
+			while($row = mysql_fetch_array($result)) {
+				$mid = $row["id"];
+				$patientsServicesModel->deleteService($mid);
 			}
 		}
 		
@@ -1757,6 +2357,41 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 							}
 						}
 						
+						// services
+						if(in_array("services",$active_modules)) {
+							$qm ="select id, title, bin, bintime, binuser from " . CO_TBL_PATIENTS_SERVICES . " where pid = '$pid'";
+							$resultm = mysql_query($qm, $this->_db->connection);
+							while ($rowm = mysql_fetch_array($resultm)) {
+								$mid = $rowm["id"];
+								if($rowm["bin"] == "1") { // deleted meeting
+									foreach($rowm as $key => $val) {
+										$service[$key] = $val;
+									}
+									$service["bintime"] = $this->_date->formatDate($service["bintime"],CO_DATETIME_FORMAT);
+									$service["binuser"] = $this->_users->getUserFullname($service["binuser"]);
+									$services[] = new Lists($service);
+									$arr["services"] = $services;
+								} else {
+									// meetings_tasks
+									$qmt ="select id, title, bin, bintime, binuser from " . CO_TBL_PATIENTS_SERVICES_TASKS . " where mid = '$mid'";
+									$resultmt = mysql_query($qmt, $this->_db->connection);
+									while ($rowmt = mysql_fetch_array($resultmt)) {
+										if($rowmt["bin"] == "1") { // deleted phases
+											foreach($rowmt as $key => $val) {
+												$services_task[$key] = $val;
+											}
+											$services_task["bintime"] = $this->_date->formatDate($services_task["bintime"],CO_DATETIME_FORMAT);
+											$services_task["binuser"] = $this->_users->getUserFullname($services_task["binuser"]);
+											$services_tasks[] = new Lists($services_task);
+											$arr["services_tasks"] = $services_tasks;
+										}
+									}
+								}
+							}
+						}
+						
+						
+						
 						
 						// sketches
 						if(in_array("sketches",$active_modules)) {
@@ -2051,6 +2686,31 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 							}
 						}
 						
+						// services
+						if(in_array("services",$active_modules)) {
+							$patientsServicesModel = new PatientsServicesModel();
+							$qm ="select id, title, bin, bintime, binuser from " . CO_TBL_PATIENTS_SERVICES . " where pid = '$pid'";
+							$resultm = mysql_query($qm, $this->_db->connection);
+							while ($rowm = mysql_fetch_array($resultm)) {
+								$mid = $rowm["id"];
+								if($rowm["bin"] == "1") { // deleted meeting
+									$patientsServicesModel->deleteService($mid);
+									$arr["services"] = "";
+								} else {
+									// meetings_tasks
+									$qmt ="select id, title, bin, bintime, binuser from " . CO_TBL_PATIENTS_SERVICES_TASKS . " where mid = '$mid'";
+									$resultmt = mysql_query($qmt, $this->_db->connection);
+									while ($rowmt = mysql_fetch_array($resultmt)) {
+										if($rowmt["bin"] == "1") { // deleted phases
+											$mtid = $rowmt["id"];
+											$patientsServicesModel->deleteServiceTask($mtid);
+											$arr["services_tasks"] = "";
+										}
+									}
+								}
+							}
+						}
+						
 						// sketches
 						if(in_array("sketches",$active_modules)) {
 							$patientsSketchesModel = new PatientsSketchesModel();
@@ -2119,6 +2779,32 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 											$mtid = $rowmt["id"];
 											$patientsMeetingsModel->deleteMeetingTask($mtid);
 											$arr["meetings_tasks"] = "";
+										}
+									}
+								}
+							}
+						}
+						
+						
+						// services
+						if(in_array("services",$active_modules)) {
+							$patientsServicesModel = new PatientsServicesModel();
+							$qm ="select id, title, bin, bintime, binuser from " . CO_TBL_PATIENTS_SERVICES . " where pid = '$pid'";
+							$resultm = mysql_query($qm, $this->_db->connection);
+							while ($rowm = mysql_fetch_array($resultm)) {
+								$mid = $rowm["id"];
+								if($rowm["bin"] == "1") { // deleted meeting
+									$patientsServicesModel->deleteService($mid);
+									$arr["services"] = "";
+								} else {
+									// meetings_tasks
+									$qmt ="select id, title, bin, bintime, binuser from " . CO_TBL_PATIENTS_SERVICES_TASKS . " where mid = '$mid'";
+									$resultmt = mysql_query($qmt, $this->_db->connection);
+									while ($rowmt = mysql_fetch_array($resultmt)) {
+										if($rowmt["bin"] == "1") { // deleted phases
+											$mtid = $rowmt["id"];
+											$patientsServicesModel->deleteServiceTask($mtid);
+											$arr["services_tasks"] = "";
 										}
 									}
 								}
@@ -2307,6 +2993,10 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 			$patientsMeetingsModel = new PatientsMeetingsModel();
 			$data["patients_meetings_items"] = $patientsMeetingsModel->getNavNumItems($id);
 		}
+		if(in_array("services",$active_modules)) {
+			$patientsServicesModel = new PatientsServicesModel();
+			$data["patients_services_items"] = $patientsServicesModel->getNavNumItems($id);
+		}
 		if(in_array("phonecalls",$active_modules)) {
 			$patientsPhonecallsModel = new PatientsPhonecallsModel();
 			$data["patients_phonecalls_items"] = $patientsPhonecallsModel->getNavNumItems($id);
@@ -2396,6 +3086,14 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 				include_once("modules/".$module."/model.php");
 				$patientsMeetingsModel = new PatientsMeetingsModel();
 				$row = $patientsMeetingsModel->getCheckpointDetails($id);
+				return $row;
+			}
+			if($module == 'services' && in_array("services",$active_modules)) {
+				include_once("modules/".$module."/config.php");
+				include_once("modules/".$module."/lang/" . $session->userlang . ".php");
+				include_once("modules/".$module."/model.php");
+				$patientsServicesModel = new PatientsServicesModel();
+				$row = $patientsServicesModel->getCheckpointDetails($id);
 				return $row;
 			}
 			if($module == 'invoices' && in_array("invoices",$active_modules)) {
@@ -2524,6 +3222,25 @@ function getPatientTitleFromMeetingIDs($array,$target, $link = 0){
 				while($rowp = mysql_fetch_array($resultp)) {
 					$rows['value'] = htmlspecialchars_decode($rowp['title']);
 					$rows['id'] = 'meetings,' .$folder. ',' . $pid . ',' .$rowp['id'].',patients';
+					$r[] = $rows;
+				}
+			}
+			
+			// Services
+			if(in_array("services",$active_modules)) {
+				$qp = "SELECT id,CONVERT(title USING latin1) as title FROM " . CO_TBL_PATIENTS_SERVICES . " WHERE pid = '$pid' and bin = '0' $sql and title like '%$term%' ORDER BY title";
+				$resultp = mysql_query($qp, $this->_db->connection);
+				while($rowp = mysql_fetch_array($resultp)) {
+					$rows['value'] = htmlspecialchars_decode($rowp['title']);
+					$rows['id'] = 'services,' .$folder. ',' . $pid . ',' .$rowp['id'].',patients';
+					$r[] = $rows;
+				}
+				// Meeting Tasks
+				$qp = "SELECT b.id,CONVERT(a.title USING latin1) as title FROM " . CO_TBL_PATIENTS_SERVICES_TASKS . " as a, " . CO_TBL_PATIENTS_SERVICES . " as b WHERE b.pid = '$pid' and a.mid = b.id and a.bin = '0' and b.bin = '0' $sql and a.title like '%$term%' ORDER BY a.title";
+				$resultp = mysql_query($qp, $this->_db->connection);
+				while($rowp = mysql_fetch_array($resultp)) {
+					$rows['value'] = htmlspecialchars_decode($rowp['title']);
+					$rows['id'] = 'services,' .$folder. ',' . $pid . ',' .$rowp['id'].',patients';
 					$r[] = $rows;
 				}
 			}
@@ -3114,13 +3831,22 @@ function createDuplicatePatientFromCalendar($id,$folder,$management) {
 
 		$reminders = "";
 		if($skip == 0) {
-			$q ="select b.folder,a.pid,a.id, a.title as text, CONCAT(c.lastname,' ',c.firstname) as title from " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c, " . CO_TBL_PATIENTS_FOLDERS . " as d WHERE a.status='2' and a.status_invoice='0' and a.pid = b.id and b.cid=c.id and b.folder=d.id and a.bin = '0' and b.bin = '0' and c.bin='0' and d.bin='0'" . $access;
+			$q ="select b.folder,a.pid,a.id, a.title as text, a.invoice_type, a. service_id, CONCAT(c.lastname,' ',c.firstname) as title from " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c, " . CO_TBL_PATIENTS_FOLDERS . " as d WHERE a.status='2' and a.status_invoice='0' and a.pid = b.id and b.cid=c.id and b.folder=d.id and a.bin = '0' and b.bin = '0' and c.bin='0' and d.bin='0'" . $access;
 			$result = mysql_query($q, $this->_db->connection);
 			$reminders = "";
 			while ($row = mysql_fetch_array($result)) {
 				foreach($row as $key => $val) {
 					$array[$key] = $val;
 				}
+				
+				// check for service
+			/*if($array["invoice_type"] == 1) {
+				$service_id = $array["service_id"];
+				$q_service = "select title from co_patients_services where id = '$service_id'";
+				$result_service = mysql_query($q_service, $this->_db->connection);
+				$array["text"] = mysql_result($result_service,0);
+			}*/
+				
 				$string .= $array["folder"] . "," . $array["pid"] . "," . $array["id"] . ",";
 				$reminders[] = new Lists($array);
 			}
@@ -3145,12 +3871,21 @@ function createDuplicatePatientFromCalendar($id,$folder,$management) {
 		$alerts = "";
 		$array = "";
 		if($skip == 0) {
-			$q ="select b.folder,a.pid,a.id, a.title as text, CONCAT(c.lastname,' ',c.firstname) as title from " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c, " . CO_TBL_PATIENTS_FOLDERS . " as d WHERE a.status_invoice='1' and a.pid = b.id and b.cid=c.id and b.folder=d.id and a.bin = '0' and b.bin = '0'  and c.bin='0' and d.bin='0' and a.payment_reminder <= '$tomorrow'" . $access;
+			$q ="select b.folder,a.pid,a.id, a.title as text, a.invoice_type, a. service_id, CONCAT(c.lastname,' ',c.firstname) as title from " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c, " . CO_TBL_PATIENTS_FOLDERS . " as d WHERE a.status_invoice='1' and a.pid = b.id and b.cid=c.id and b.folder=d.id and a.bin = '0' and b.bin = '0'  and c.bin='0' and d.bin='0' and a.payment_reminder <= '$tomorrow'" . $access;
 			$result = mysql_query($q, $this->_db->connection);
 			while ($row = mysql_fetch_array($result)) {
 				foreach($row as $key => $val) {
 					$array[$key] = $val;
 				}
+				
+				// check for service
+			/*if($array["invoice_type"] == 1) {
+				$service_id = $array["service_id"];
+				$q_service = "select title from co_patients_services where id = '$service_id'";
+				$result_service = mysql_query($q_service, $this->_db->connection);
+				$array["text"] = mysql_result($result_service,0);
+			}*/
+			
 				$string .= $array["folder"] . "," . $array["pid"] . "," . $array["id"] . ",";
 				$alerts[] = new Lists($array);
 			}

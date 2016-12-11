@@ -5,21 +5,39 @@ function Vdocs(app) {
 	this.object = window[app];
 	this.objectFirst = this.app.substr(0, 1);
 	this.objectnameCaps = this.objectFirst.toUpperCase() + this.app.substr(1);
+	//this.timer = null;
+	
 
 	this.formProcess = function(formData, form, poformOptions) {
 		var app = getCurrentApp();
 		var title = $('#'+ app +' input.title').fieldValue();
-		if(title == "") {
-			setTimeout(function() {
+		//this.setTitleTimeoutStop();
+		//if(title == "") {
+			/*setTimeout(function() {
+				var title = $('#'+ app +' input.title').fieldValue();
+				if(title == "") {
+					$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
+				}
+			}, 5000)*/
+			
+			/*console.log(this.timer);
+			if (this.timer != null) {
+				clearTimeout(this.timer); 
+				this.timer = null;
+			}
+			else {
+				this.timer = setTimeout(function() {
 				var title = $('#'+ app +' input.title').fieldValue();
 				if(title == "") {
 					$.prompt(ALERT_NO_TITLE, {submit: setTitleFocus});
 				}
 			}, 5000)
+			}
 			return false;
-		} else {
+		} else {*/
+			//this.timer = null;
 			formData[formData.length] = { "name": "title", "value": title };
-		}
+		//}
 		var content = $('#'+ app +'vdocContent').html();
 		for (var i=0; i < formData.length; i++) { 
 			if (formData[i].name == 'content') { 

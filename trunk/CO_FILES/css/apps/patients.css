@@ -471,3 +471,5 @@ background: url("../../img/brainstorms_grid_stagegate.png") no-repeat scroll 1px
 #patients-right .ui-upload-list { display: none; position: absolute; width: 74px; padding: 3px; text-align: center; height: 114px; font-size: 11px; z-index: 2; background: #E9D09A; opacity: 0.8 }
 #patients-right .ui-upload-file { display: none;}
 #patients-right .ui-upload-spinner {display:inline-block; background: url("../../img/file_loading.gif"); width:15px; height:15px; vertical-align:text-bottom;}*/
+
+#patients span.coCheckbox {height: 22px;  }

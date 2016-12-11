@@ -142,14 +142,14 @@ foreach($userapps as $key => $app) {
 }
 // include app specific js
 foreach(array_unique($modules_toload) as $key => $value) {
-	if($value == 'meetings' || $value == 'documents' || $value == 'phonecalls' || $value == 'vdocs' || $value == 'access' || $value == 'controlling' || $value == 'phases' || $value == 'timelines') {
+	if($value == 'meetings' || $value == 'services' || $value == 'documents' || $value == 'phonecalls' || $value == 'vdocs' || $value == 'access' || $value == 'controlling' || $value == 'phases' || $value == 'timelines') {
 	echo '<script type="text/javascript" src="' . CO_FILES . '/js/modules/' . $value . '.js"></script>'."\n";
 	}
 }
 foreach($userapps as $key => $app) {
 	echo '<script type="text/javascript" src="' . CO_FILES . '/js/apps/' . $app . '/init.js"></script>';
 	foreach(${$app}->modules as $module => $value) {
-		if($module != 'meetings' && $module != 'documents' && $module != 'phonecalls' && $module != 'vdocs' && $module != 'access' && $module != 'controlling' && $module != 'phases' && $module != 'timelines') {
+		if($module != 'meetings' && $module != 'services' && $module != 'documents' && $module != 'phonecalls' && $module != 'vdocs' && $module != 'access' && $module != 'controlling' && $module != 'phases' && $module != 'timelines') {
 			echo '<script type="text/javascript" src="' . CO_FILES . '/js/apps/' . $app . '/' . $module . '.js"></script>';
 		} else { ?>
         <script>

@@ -114,17 +114,408 @@ class Patients extends Controller {
 		return json_encode($data);
 	}
 	
-	function getFolderDetailsRevenueResults($id,$who,$start,$end) {
+	function getFolderDetailsRevenueResults($id,$who,$patient,$start,$end,$filters,$details,$detailsCount,$stats,$statsCount) {
 		global $date, $lang, $system;
-		$arr = $this->model->getFolderDetailsRevenueResults($id,$who,$start,$end);
+		$arr = $this->model->getFolderDetailsRevenueResults($id,$who,$patient,$start,$end,$filters,$details,$detailsCount,$stats,$statsCount);
 		$calctotal = $arr["calctotal"];
+		$calcvattotal = $arr["calcvattotal"];
+		$calcvattotalsum = $arr["calcvattotalsum"];
+		$calcvatnetto = $arr["calcvatnetto"];
+		$calctotalmin = $arr["calctotalmin"];
+		
 		$invoices = $arr["invoices"];
+		$chartGender = $arr["chartGender"];
+		$chartAge = $arr["chartAge"];
 		ob_start();
 			include('view/folder_edit_revenue_results.php');
 			$data["html"] = ob_get_contents();
 		ob_end_clean();
 		$data["access"] = $arr["access"];
 		return json_encode($data);
+	}
+	
+	function createFolderDetailsRevenueExcel($id,$who,$patient,$start,$end,$filters,$details,$detailsCount,$stats,$statsCount) {
+		global $system, $lang;
+		$arr = $this->model->getFolderDetailsRevenueResults($id,$who,$patient,$start,$end,$filters,$details,$detailsCount,$stats,$statsCount);
+		//print_r($arr);
+		if($arr2 = $this->model->getFolderDetails($id)) {
+			$folder = $arr2["folder"];
+			//$title = $lang["PATIENT_FOLDER_TAB_REVENUE"];
+		}
+		
+		$calctotal = $arr["calctotal"];
+		$calcvattotal = $arr["calcvattotal"];
+		$calcvattotalsum = $arr["calcvattotalsum"];
+		$calcvatnetto = $arr["calcvatnetto"];
+		$calctotalmin = $arr["calctotalmin"];
+		$invoices = $arr["invoices"];
+		$manager = $arr["manager"];
+		
+		$chartGender = $arr["chartGender"];
+		$chartAge = $arr["chartAge"];
+
+		require_once(CO_INC . "/classes/phpExcel/PHPExcel.php");
+		$objPHPExcel = new PHPExcel();
+		$objPHPExcel->getProperties()->setCreator("company observer")
+									 ->setTitle("company observer Export");
+		
+		$Sheet = $objPHPExcel->getActiveSheet();
+		
+		$styleArray = array(
+    'font'  => array(
+        //'bold'  => true,
+        //'color' => array('rgb' => 'FF0000'),
+        //'size'  => 15,
+        'name'  => 'Areal'
+    ));
+
+//$phpExcel->getActiveSheet()->getCell('A1')->setValue('Some text');
+//$Sheet ->getStyle('A1:1')->applyFromArray($styleArray);
+
+$objPHPExcel->getDefaultStyle()->getFont()
+    ->setName('Arial')
+    ->setSize(8);
+		
+		// row 1 Title
+		$Sheet->mergeCells('A1:B1');
+		$Sheet->setCellValue('A1', $folder->title);
+		$Sheet->getStyle('A1:A1')->getFont()->setBold(true);
+		
+		//row 3 
+		if($manager != "") { 
+			$betreuuung = $manager;
+		} else { 
+				$betreuuung = 'Alle';
+		}
+		$Sheet->setCellValue('B3', 'Betreuung');
+		$Sheet->getStyle('B3:B3')->getFont()->setBold(true);
+		$Sheet->setCellValue('C3', $betreuuung);
+		
+		$Sheet->setCellValue('B4', 'Zeitraum');
+		$Sheet->getStyle('B4:B4')->getFont()->setBold(true);
+		$Sheet->mergeCells('C4:D4');
+		$Sheet->setCellValue('C4', $start . ' - ' . $end);
+
+		$Sheet->setCellValue('B6', 'Umsatzsumme');
+		$Sheet->getStyle('B6:B6')->getFont()->setBold(true);
+		$Sheet->setCellValue('C6',CO_DEFAULT_CURRENCY . ' ' . $calctotal);
+		
+		$Sheet
+					->getStyle('A6:Z6')
+					->getFill()
+					->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+					->getStartColor()
+					->setRGB('e5e5e5');
+		
+		if(is_array($invoices)) {
+			$steuerstring = '';
+			$yup = 3;
+			foreach($calcvattotal as $key => $val) {
+				$steuerstring = CO_DEFAULT_CURRENCY . ' ' . number_format($val,2,',','.') . ' inkl. ' . $key . '% MwSt.';
+				$Sheet->setCellValueByColumnAndRow($yup, 6,$steuerstring);
+				$yup++;
+			} 
+			//$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D6', $steuerstring);
+		}
+		/*$objPHPExcel->setActiveSheetIndex(0)
+				->setCellValue('A1', 'Rechnung')
+				->setCellValue('B1', '')
+				->setCellValue('C1', 'Rn. Datum')
+				->setCellValue('D1', 'Umsatz');*/
+				
+		
+				
+		$row = 7;
+		
+		$i = 0;
+		$vatcheck = 0;
+		$totalinv = sizeof($invoices);
+	
+		if(is_array($invoices)) {
+			foreach($invoices as $invoice) {
+				$col = 0;
+				
+				
+				
+				if($i == 0 || $vatcheck != $invoice->vat) {
+					$vatcheck_old = $vatcheck;
+					$vatcheck = $invoice->vat;
+					
+					if($i != 0) {
+						
+						//$Sheet->setCellValueByColumnAndRow(1, $row, 'Summen');
+						//$Sheet->setCellValueByColumnAndRow(2, $row, number_format($calcvatnetto[$vatcheck_old],2,',','.'));
+						/*$Sheet
+					->getStyle('A1:E1')
+					->getFill()
+					->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+					->getStartColor()
+					->setARGB('FF808080');*/
+		
+						$Sheet->setCellValueByColumnAndRow(1, $row, "exkl.");
+						$Sheet->setCellValueByColumnAndRow(2, $row, $calcvatnetto[$vatcheck_old]);
+						$sum_letter = 'B'.$row;
+						$sum_range = "{$sum_letter}:{$sum_letter}";
+						$Sheet
+						->getStyle($sum_range)
+						->getAlignment()
+						->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT); 
+						$row++;
+						
+						$Sheet->setCellValueByColumnAndRow(1, $row, "$vatcheck_old% MwSt.");
+						$Sheet->setCellValueByColumnAndRow(2, $row, $calcvattotalsum[$vatcheck_old]);
+						$sum_letter = 'B'.$row;
+						$sum_range = "{$sum_letter}:{$sum_letter}";
+						$Sheet
+						->getStyle($sum_range)
+						->getAlignment()
+						->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT); 
+						$row++;
+						
+						$Sheet->setCellValueByColumnAndRow(1, $row, "Gesamt inkl. $vatcheck_old% MwSt.");
+						$Sheet->setCellValueByColumnAndRow(2, $row, $calcvattotal[$vatcheck_old]);
+						$sum_letter = 'B'.$row;
+						$sum_range = "{$sum_letter}:{$sum_letter}";
+						$Sheet
+						->getStyle($sum_range)
+						->getAlignment()
+						->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT); 
+						$row++;
+					}
+					$row++;
+					$row++;
+					$Sheet->setCellValueByColumnAndRow(1, $row, 'Einzelergebnisse ' . $invoice->vat . '% MwSt.');
+					$row++;
+					
+					$rowCol = 0;
+					$Sheet->setCellValueByColumnAndRow($rowCol++, $row, 'ID');
+					$Sheet->setCellValueByColumnAndRow($rowCol++, $row, 'Rechnungstitel');
+					$Sheet->setCellValueByColumnAndRow($rowCol++, $row, 'Summe');
+					$Sheet->setCellValueByColumnAndRow($rowCol++, $row, 'Zahlungsart');
+					$Sheet->setCellValueByColumnAndRow($rowCol++, $row, 'Einzahlung am');
+					$Sheet->setCellValueByColumnAndRow($rowCol++, $row, 'ausständig seit');
+					if($invoice->show_patient) {
+						$Sheet->setCellValueByColumnAndRow($rowCol++, $row, 'Patient');
+					}
+					if($invoice->show_dob) {
+						$Sheet->setCellValueByColumnAndRow($rowCol++, $row, 'Geburtsdatum');
+					}
+					if($invoice->show_alter) {
+						$Sheet->setCellValueByColumnAndRow($rowCol++, $row, 'Alter');
+					}
+					if($invoice->show_gender) {
+						$Sheet->setCellValueByColumnAndRow($rowCol++, $row, 'Geschlecht');
+					}
+					if($invoice->show_agegroup) {
+						$Sheet->setCellValueByColumnAndRow($rowCol++, $row, 'bis 25');
+						$Sheet->setCellValueByColumnAndRow($rowCol++, $row, 'bis 60');
+						$Sheet->setCellValueByColumnAndRow($rowCol++, $row, 'ab 61');
+					}
+					if($invoice->show_betreuung) {
+						$Sheet->setCellValueByColumnAndRow($rowCol++, $row, 'Betreuung');
+					}
+					if($invoice->show_dauer) {
+						$Sheet->setCellValueByColumnAndRow($rowCol++, $row, 'Dauer von');
+						$Sheet->setCellValueByColumnAndRow($rowCol++, $row, 'bis');
+					}
+					if($invoice->show_ort) {
+						$Sheet->setCellValueByColumnAndRow($rowCol++, $row, 'Ort');
+					}
+					if($invoice->show_arbeitszeit) {
+						$Sheet->setCellValueByColumnAndRow($rowCol++, $row, 'Arbeitszeit');
+					}
+					if($invoice->show_rechnungsdatum) {
+						$Sheet->setCellValueByColumnAndRow($rowCol++, $row, 'Rechnungsdatum');
+					}
+					if($invoice->show_rechnungsnummer) {
+						$Sheet->setCellValueByColumnAndRow($rowCol++, $row, 'Rechnungsnummer');
+					}
+
+					$first_letter = 'A'.$row;
+					$last_letter = 'z'.$row;
+					$header_range = "{$first_letter}:{$last_letter}";
+					$Sheet->getStyle($header_range)->getFont()->setBold(true);
+					
+					$row++;
+				}
+				
+				$Sheet->setCellValueByColumnAndRow($col++, $row, $i+1); // ID
+				$Sheet->setCellValueByColumnAndRow($col++, $row, $invoice->title); //Titel
+				$Sheet->setCellValueByColumnAndRow($col++, $row,$invoice->totalcosts_plain);
+				$Sheet->setCellValueByColumnAndRow($col++, $row,$invoice->payment_type);
+				/*if($invoice->payment_type == 'Überweisung') {
+					$Sheet->setCellValueByColumnAndRow($col++, $row,"$invoice->totalcosts_plain");
+					$sum_ueberweisung += $invoice->totalcosts_plain;
+					$col++;
+				}
+				if($invoice->payment_type == 'Barzahlung') {
+					$col++;
+					$Sheet->setCellValueByColumnAndRow($col++, $row,"$invoice->totalcosts_plain");
+				}*/
+				if($invoice->status_invoice_class == 'barchart_color_finished') { 
+					$Sheet->setCellValueByColumnAndRow($col++, $row, $invoice->status_invoice_date);
+				} else {
+					$col++;
+				}
+				if($invoice->status_invoice_class == 'barchart_color_inprogress') { 
+					$Sheet->setCellValueByColumnAndRow($col++, $row, $invoice->status_invoice_date);
+				} else {
+					$col++;
+				}
+				
+				/*$first_letter = 'A'.$row;
+					$last_letter = 'z'.$row;
+					$header_range = "{$first_letter}:{$last_letter}";
+				$sheet->getActiveSheet()->getStyle($header_range)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);*/
+				if($invoice->show_patient) {
+					$Sheet->setCellValueByColumnAndRow($col++, $row, $invoice->patient);
+				}
+				if($invoice->show_dob) {
+					$Sheet->setCellValueByColumnAndRow($col++, $row, $invoice->dob);
+				}
+				if($invoice->show_alter) {
+					$Sheet->setCellValueByColumnAndRow($col++, $row, $invoice->age);
+				}
+				if($invoice->show_gender) {
+					if($invoice->gender == 1) {
+						$Sheet->setCellValueByColumnAndRow($col++, $row, 'm');
+					}
+					if($invoice->gender == 2) {
+						$Sheet->setCellValueByColumnAndRow($col++, $row, 'w');
+					}
+					if($invoice->gender == 0) {
+						$Sheet->setCellValueByColumnAndRow($col++, $row, '');
+					}
+				}
+				if($invoice->show_agegroup) {
+					if($invoice->age == 0) {
+							$col = $col+3;
+						} else 
+						if($invoice->age < 25) {
+							$Sheet->setCellValueByColumnAndRow($col++, $row, '1');
+							$col = $col+2;
+						} else 
+						if($invoice->age < 60) {
+							$col++;
+							$Sheet->setCellValueByColumnAndRow($col++, $row, '1');
+							$col++;
+						} else 
+						if($invoice->age >= 60) {
+							$col = $col+2;
+							$Sheet->setCellValueByColumnAndRow($col++, $row, '1');
+						}
+				}
+				if($invoice->show_betreuung) {
+					$Sheet->setCellValueByColumnAndRow($col++, $row, $invoice->management);
+				}
+				if($invoice->show_dauer) {
+					$Sheet->setCellValueByColumnAndRow($col++, $row, $invoice->treatment_start);
+					$Sheet->setCellValueByColumnAndRow($col++, $row, $invoice->treatment_end);
+				}
+				if($invoice->show_ort) {
+					$Sheet->setCellValueByColumnAndRow($col++, $row, $invoice->ort_string);
+				}
+				if($invoice->show_arbeitszeit) {
+					$Sheet->setCellValueByColumnAndRow($col++, $row, $invoice->totalmin);
+				}
+				if($invoice->show_rechnungsdatum) {
+					$Sheet->setCellValueByColumnAndRow($col++, $row, $invoice->invoice_date);
+				}
+				if($invoice->show_rechnungsnummer) {
+					$Sheet->setCellValueByColumnAndRow($col++, $row, $invoice->invoice_number);
+				}
+				
+				$row++;
+				$i++;
+			}
+			
+			//$Sheet->setCellValueByColumnAndRow(1, $row, 'Summen');
+			//$Sheet->setCellValueByColumnAndRow(2, $row, number_format($calcvatnetto[$vatcheck],2,',','.'));
+						/*$Sheet
+					->getStyle('A1:E1')
+					->getFill()
+					->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+					->getStartColor()
+					->setARGB('FF808080');*/
+		
+						$Sheet->setCellValueByColumnAndRow(1, $row, "exkl.");
+						$Sheet->setCellValueByColumnAndRow(2, $row, $calcvatnetto[$vatcheck]);
+						$sum_letter = 'B'.$row;
+						$sum_range = "{$sum_letter}:{$sum_letter}";
+						$Sheet
+						->getStyle($sum_range)
+						->getAlignment()
+						->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT); 
+						$row++;
+						
+						$Sheet->setCellValueByColumnAndRow(1, $row, "$vatcheck% MwSt.");
+						$Sheet->setCellValueByColumnAndRow(2, $row, $calcvattotalsum[$vatcheck]);
+						$sum_letter = 'B'.$row;
+						$sum_range = "{$sum_letter}:{$sum_letter}";
+						$Sheet
+						->getStyle($sum_range)
+						->getAlignment()
+						->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT); 
+						$row++;
+						
+						$Sheet->setCellValueByColumnAndRow(1, $row, "Gesamt inkl. $vatcheck% MwSt.");
+						$Sheet->setCellValueByColumnAndRow(2, $row, $calcvattotal[$vatcheck]);
+						$sum_letter = 'B'.$row;
+						$sum_range = "{$sum_letter}:{$sum_letter}";
+						$Sheet
+						->getStyle($sum_range)
+						->getAlignment()
+						->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT); 
+						$row++;
+		}
+		$row++;
+		$row++;
+		$row++;
+		$row++;
+		$col = 3;
+		$rowStart = $row;
+		if($chartGender['show']) { 
+			$Sheet->getStyleByColumnAndRow($col, $row)->getFont()->setBold(true);
+			$Sheet->setCellValueByColumnAndRow($col, $row++, "Geschlecht");
+			
+			$Sheet->setCellValueByColumnAndRow($col, $row++, $chartGender['male'] . '% männlich');
+			$Sheet->setCellValueByColumnAndRow($col, $row++, $chartGender['female'] . '% weiblich');
+			$Sheet->setCellValueByColumnAndRow($col, $row++, $chartGender['notset'] . '% keine Angabe');
+			
+    	$col++;
+		}
+		if($chartAge['show']) { 
+			$row = $rowStart;
+			$Sheet->getStyleByColumnAndRow($col, $row)->getFont()->setBold(true);
+			$Sheet->setCellValueByColumnAndRow($col, $row++, "Altersgruppe");
+			
+			$Sheet->setCellValueByColumnAndRow($col, $row++, $chartAge['ageGroup25'] . '% bis 25');
+			$Sheet->setCellValueByColumnAndRow($col, $row++, $chartAge['ageGroup60'] . '% 25 bis 60');
+			$Sheet->setCellValueByColumnAndRow($col, $row++, $chartAge['ageGroup60Plus'] . '% ab 61');
+			$Sheet->setCellValueByColumnAndRow($col, $row++, $chartAge['ageGroupNotset'] . '% keine Angabe');
+			
+    	$col++;
+		} 
+
+		
+		
+		foreach(range('A','T') as $columnID) {
+    	$Sheet->getColumnDimension($columnID)
+        ->setAutoSize(true);
+		}
+
+$Sheet->getStyle('C1:C'.$row)->getNumberFormat()->setFormatCode('[$€-C07] #.00');
+	
+		$Sheet->setTitle('Export');
+		$objPHPExcel->setActiveSheetIndex(0);
+
+		header('Content-Type: application/vnd.ms-excel');
+		header('Content-Disposition: attachment;filename="umsatzabfrage.xls"');
+		header('Cache-Control: max-age=0');
+		
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+		$objWriter->save('php://output');
+		
 	}
 	
 	function getFolderDetailsBelege($id) {
@@ -200,7 +591,7 @@ class Patients extends Controller {
 	}
 
 
-	function printFolderDetailsRevenue($id,$who,$start,$end) {
+	function printFolderDetailsRevenue($id,$who,$patient,$start,$end,$filters,$details,$detailsCount,$stats,$statsCount) {
 		global $date,$session,$lang;
 		$title = $lang["PATIENT_FOLDER_TAB_REVENUE"];
 		$html = "";
@@ -208,11 +599,20 @@ class Patients extends Controller {
 			$folder = $arr["folder"];
 			//$title = $lang["PATIENT_FOLDER_TAB_REVENUE"];
 		}
-		if($arr = $this->model->getFolderDetailsRevenueResults($id,$who,$start,$end)) {
+		if($arr = $this->model->getFolderDetailsRevenueResults($id,$who,$patient,$start,$end,$filters,$details,$detailsCount,$stats,$statsCount)) {
 			$calctotal = $arr["calctotal"];
 			$calctotalmin = $arr["calctotalmin"];
 			$invoices = $arr["invoices"];
 			$manager = $arr["manager"];
+
+		$calcvattotal = $arr["calcvattotal"];
+		$calcvattotalsum = $arr["calcvattotalsum"];
+		$calcvatnetto = $arr["calcvatnetto"];
+		
+		$chartGender = $arr["chartGender"];
+		$chartAge = $arr["chartAge"];
+
+		
 			ob_start();
 				include('view/folder_print_revenue.php');
 				$html = ob_get_contents();
@@ -333,12 +733,21 @@ class Patients extends Controller {
 	}
 
 
-	function getFolderSendRevenue($id,$who,$start,$end) {
+	function getFolderSendRevenue($id,$who,$patient,$start,$end,$filters,$details,$detailsCount,$stats,$statsCount) {
 		global $lang;
-		if($arr = $this->model->getFolderDetailsRevenueResults($id,$who,$start,$end)) {
+		if($arr = $this->model->getFolderDetailsRevenueResults($id,$who,$patient,$start,$end,$filters,$details,$detailsCount,$stats,$statsCount)) {
 			$calctotal = $arr["calctotal"];
+			$calctotalmin = $arr["calctotalmin"];
 			$invoices = $arr["invoices"];
 			$manager = $arr["manager"];
+
+		$calcvattotal = $arr["calcvattotal"];
+		$calcvattotalsum = $arr["calcvattotalsum"];
+		$calcvatnetto = $arr["calcvatnetto"];
+		
+		$chartGender = $arr["chartGender"];
+		$chartAge = $arr["chartAge"];
+		
 			if($arr = $this->model->getFolderDetails($id)) {
 			$folder = $arr["folder"];
 		}
@@ -347,7 +756,7 @@ class Patients extends Controller {
 			$to = "";
 			$cc = "";
 			$subject = $folder->title;
-			$variable = $who.'-'.$start.'-'.$end;
+			$variable = $who.'-'.$start.'-'.$end.'-'.$patient.'-'.$filters.'-'.$details.'-'.$detailsCount.'-'.$stats.'-'.$statsCount;
 			include CO_INC .'/view/dialog_send.php';
 		}
 		else {
@@ -389,17 +798,29 @@ class Patients extends Controller {
 		$who = $var[0];
 		$start = $var[1];
 		$end = $var[2];
-		if($arr = $this->model->getFolderDetailsRevenueResults($id,$who,$start,$end)) {
+		$patient = $var[3];
+		$filters = $var[4];
+		$details = $var[5];
+		$detailsCount = $var[6];
+		$stats = $var[7];
+		$statsCount = $var[8];
+		if($arr = $this->model->getFolderDetailsRevenueResults($id,$who,$patient,$start,$end,$filters,$details,$detailsCount,$stats,$statsCount)) {
 			$calctotal = $arr["calctotal"];
 			$invoices = $arr["invoices"];
 			$manager = $arr["manager"];
+		$calcvattotal = $arr["calcvattotal"];
+		$calcvattotalsum = $arr["calcvattotalsum"];
+		$calcvatnetto = $arr["calcvatnetto"];
+		$calctotalmin = $arr["calctotalmin"];
+		$chartGender = $arr["chartGender"];
+		$chartAge = $arr["chartAge"];
 			ob_start();
 				include 'view/folder_print_revenue.php';
 				$html = ob_get_contents();
 			ob_end_clean();
 			//$title = $folder->title;
 		}
-		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_PATIENT_FOLDER"];
+		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_PATIENT_UMSATZ"];
 		$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
 		$pdf = $this->savePDF($title,$html,$attachment);
 		return $this->sendEmail($to,$cc,$session->email,$session->firstname . " " . $session->lastname,$subject,$body,$attachment);

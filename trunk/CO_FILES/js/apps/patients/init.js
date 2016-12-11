@@ -686,6 +686,7 @@ function patientsFolders(name) {
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/patients&request=get'+what+'&id='+id, success: function(data){
 			$('#patientsFoldersTabsContent').empty().html(data.html);
 			initPatientsContentScrollbar()
+			$('#patientsActions .actionExport').addClass('noactive');
 			}
 		});
 	}
@@ -696,6 +697,7 @@ function patientsFolders(name) {
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/patients&request=get'+what+'&view='+view+'&id='+id, success: function(data){
 			$('#patientsFoldersTabsContent').empty().html(data.html);
 			initPatientsContentScrollbar()
+			//$('#patientsActions .actionExport').addClass('noactive');
 			}
 		});
 	}
@@ -722,8 +724,90 @@ function patientsFolders(name) {
 		});
 	}
 	
+	
+	this.actionExport = function() {
+		
+		
+		var id = $("#patients").data("first");
+			if($('#calcFolder').attr('rel') == '1') {
+				id = 0;
+			}
+			var who = $('#calcWho').val();
+			if($('#calcWhoField').val() == '') {
+				who = 0;
+			}
+			var patient = $('#calcPatient').val();
+			if($('#calcPatientField').val() == '') {
+				patient = 0;
+			}
+			var start = $('#calcStart').val();
+			var end = $('#calcEnd').val();
+			
+			var filters = {};
+			filters['bezahlt'] = 0;
+			filters['ausstaendig'] = 0;
+			filters['ueberweisung'] = 0;
+			filters['barzahlung'] = 0;
+			filters['behandlung'] = 0;
+			filters['zusatzleistung'] = 0;
+			
+			$('#patients .toggleFilter.active').each(function() {
+					filters[$( this ).attr('rel')] = 1;																
+			})
+			
+			var details = {};
+			details['patient'] = 0;
+			details['betreuung'] = 0;
+			details['arbeitszeit'] = 0;
+			details['gender'] = 0;
+			details['dob'] = 0;
+			details['dauer'] = 0;
+			details['rechnungsdatum'] = 0;
+			details['agegroup'] = 0;
+			details['alter'] = 0;
+			details['ort'] = 0;
+			details['rechnungsnummer'] = 0;
+			
+			var detailsCount = 0;
+			$('#patients .toggleDetails.active').each(function() {
+					details[$( this ).attr('rel')] = 1;
+					detailsCount++;
+			})
+			
+			var stats = {};
+			stats['gender'] = 0;
+			stats['agegroups'] = 0;
+			
+			var statsCount = 0;
+			$('#patients .toggleStats.active').each(function() {
+					stats[$( this ).attr('rel')] = 1;
+					statsCount++;
+			})
+		
+		var url ="/?path=apps/patients&request=createFolderDetailsRevenueExcel&id=" + id + "&who=" + who + "&patient=" + patient + "&start=" + start + "&end=" + end + "&filters="+JSON.stringify(filters)+ "&details="+JSON.stringify(details) + "&detailsCount="+detailsCount + "&stats="+JSON.stringify(stats) + "&statsCount="+statsCount;
+		
+		
+		
+		
+		//var folderid = $("#patients").data("first");
+		//var menueid = $("#clientsExportMenue .listmember").attr("uid");
+		/*if (menueid === undefined) {
+			$('#autoopenExportMenue').trigger('click');
+			return false;
+		} else {*/
+			//$("#modalDialogClientsCreateExcel").dialog('close');
+			//console.log('ya');
+			//var url ='/?path=apps/patients&request=createFolderDetailsRevenueExcel&folderid='+folderid;
+			if(!iOS()) {
+				$("#documentloader").attr('src', url);
+			} else {
+				window.open(url);
+			}
+		//}
+	}
+	
 
-	this.actionPrint = function() {
+	/*this.actionPrint = function() {
 		var id = $("#patients").data("first");
 		//var url ='/?path=apps/patients&request=printFolderDetails&id='+id;
 		//$("#documentloader").attr('src', url);
@@ -742,9 +826,107 @@ function patientsFolders(name) {
 			if($('#calcWhoField').val() == '') {
 				who = 0;
 			}
+			var patient = $('#calcPatient').val();
+			if($('#calcPatientField').val() == '') {
+				patient = 0;
+			}
+			var start = $('#calcStart').val();
+			var end = $('#calcEnd').val();
+			what = what + '&who=' + who + '&patient=' + patient + '&start=' + start + '&end=' + end;
+		}
+		if(what == 'FolderDetailsBelege') {
+			var id = $("#patients").data("first");
+			if($('#calcFolder').attr('rel') == '1') {
+				id = 0;
+			}
+			var who = $('#calcWho').val();
+			if($('#calcWhoField').val() == '') {
+				who = 0;
+			}
 			var start = $('#calcStart').val();
 			var end = $('#calcEnd').val();
 			what = what + '&who=' + who + '&start=' + start + '&end=' + end;
+		}
+		var url ='/?path=apps/patients&request=print'+what+'&id='+id;
+		if(!iOS()) {
+			$("#documentloader").attr('src', url);
+		} else {
+			window.open(url);
+		}
+	}*/
+	
+	
+	
+	
+	this.actionPrint = function() {
+		var id = $("#patients").data("first");
+		//var url ='/?path=apps/patients&request=printFolderDetails&id='+id;
+		//$("#documentloader").attr('src', url);
+		// FolderDetailsList, FolderDetailsInvoices, FolderDetailsRevenue
+		var what = $('#patientsFoldersTabs ul.contentTabsList span[class=active]').attr('rel');
+		if(what == 'FolderDetailsInvoices') {
+			var view= $('#patientsFoldersSubTabs ul span[class~=active]').attr('rel');
+			what = what + '&view=' + view;
+		}
+		if(what == 'FolderDetailsRevenue') {
+			//e.preventDefault();
+		var id = $("#patients").data("first");
+		if($('#calcFolder').attr('rel') == '1') {
+			id = 0;
+		}
+		var who = $('#calcWho').val();
+		if($('#calcWhoField').val() == '') {
+			who = 0;
+		}
+		var patient = $('#calcPatient').val();
+		if($('#calcPatientField').val() == '') {
+			patient = 0;
+		}
+		var start = $('#calcStart').val();
+		var end = $('#calcEnd').val();
+		
+		var filters = {};
+		filters['bezahlt'] = 0;
+		filters['ausstaendig'] = 0;
+		filters['ueberweisung'] = 0;
+		filters['barzahlung'] = 0;
+		filters['behandlung'] = 0;
+		filters['zusatzleistung'] = 0;
+		
+		$('#patients .toggleFilter.active').each(function() {
+				filters[$( this ).attr('rel')] = 1;																
+		})
+		
+		var details = {};
+		details['patient'] = 0;
+		details['betreuung'] = 0;
+		details['arbeitszeit'] = 0;
+		details['gender'] = 0;
+		details['dob'] = 0;
+		details['dauer'] = 0;
+		details['rechnungsdatum'] = 0;
+		details['agegroup'] = 0;
+		details['alter'] = 0;
+		details['ort'] = 0;
+		details['rechnungsnummer'] = 0;
+		
+		var detailsCount = 0;
+		$('#patients .toggleDetails.active').each(function() {
+				details[$( this ).attr('rel')] = 1;
+				detailsCount++;
+		})
+		
+		var stats = {};
+		stats['gender'] = 0;
+		stats['agegroups'] = 0;
+		
+		var statsCount = 0;
+		$('#patients .toggleStats.active').each(function() {
+				stats[$( this ).attr('rel')] = 1;
+				statsCount++;
+		})
+		
+			what = what + '&who=' + who + '&patient=' + patient + '&start=' + start + '&end=' + end + "&filters="+JSON.stringify(filters)+ "&details="+JSON.stringify(details) + "&detailsCount="+detailsCount + "&stats="+JSON.stringify(stats) + "&statsCount="+statsCount;
 		}
 		if(what == 'FolderDetailsBelege') {
 			var id = $("#patients").data("first");
@@ -766,6 +948,8 @@ function patientsFolders(name) {
 			window.open(url);
 		}
 	}
+	
+	
 
 
 	this.actionSend = function() {
@@ -784,9 +968,55 @@ function patientsFolders(name) {
 			if($('#calcWhoField').val() == '') {
 				who = 0;
 			}
+			var patient = $('#calcPatient').val();
+			if($('#calcPatientField').val() == '') {
+				patient = 0;
+			}
 			var start = $('#calcStart').val();
 			var end = $('#calcEnd').val();
-			what = what + '&who=' + who + '&start=' + start + '&end=' + end;
+			
+			var filters = {};
+			filters['bezahlt'] = 0;
+			filters['ausstaendig'] = 0;
+			filters['ueberweisung'] = 0;
+			filters['barzahlung'] = 0;
+			filters['behandlung'] = 0;
+			filters['zusatzleistung'] = 0;
+			
+			$('#patients .toggleFilter.active').each(function() {
+					filters[$( this ).attr('rel')] = 1;																
+			})
+			
+			var details = {};
+			details['patient'] = 0;
+			details['betreuung'] = 0;
+			details['arbeitszeit'] = 0;
+			details['gender'] = 0;
+			details['dob'] = 0;
+			details['dauer'] = 0;
+			details['rechnungsdatum'] = 0;
+			details['agegroup'] = 0;
+			details['alter'] = 0;
+			details['ort'] = 0;
+			details['rechnungsnummer'] = 0;
+			
+			var detailsCount = 0;
+			$('#patients .toggleDetails.active').each(function() {
+					details[$( this ).attr('rel')] = 1;
+					detailsCount++;
+			})
+			
+			var stats = {};
+			stats['gender'] = 0;
+			stats['agegroups'] = 0;
+			
+			var statsCount = 0;
+			$('#patients .toggleStats.active').each(function() {
+					stats[$( this ).attr('rel')] = 1;
+					statsCount++;
+			})
+		
+			what = what + '&who=' + who + '&patient=' + patient + '&start=' + start + '&end=' + end + "&filters="+JSON.stringify(filters)+ "&details="+JSON.stringify(details) + "&detailsCount="+detailsCount + "&stats="+JSON.stringify(stats) + "&statsCount="+statsCount;
 		}
 		if(what == 'FolderDetailsBelege') {
 			var id = $("#patients").data("first");
@@ -1276,6 +1506,14 @@ $(document).ready(function() {
 		obj.addParentLink(id);
 	});
 	
+	$('#patients').on('click', 'span.toggleDiv', function(e) {
+		e.preventDefault();
+		var div = $(this).attr("rel");
+		$('#'+div).slideToggle();
+	});
+	
+	
+	
 	$(document).on('click', '#calculateRevenue', function(e) {
 		e.preventDefault();
 		var id = $("#patients").data("first");
@@ -1286,10 +1524,57 @@ $(document).ready(function() {
 		if($('#calcWhoField').val() == '') {
 			who = 0;
 		}
+		var patient = $('#calcPatient').val();
+		if($('#calcPatientField').val() == '') {
+			patient = 0;
+		}
 		var start = $('#calcStart').val();
 		var end = $('#calcEnd').val();
-		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients&request=getFolderDetailsRevenueResults&id=" + id + "&who=" + who + "&start=" + start + "&end=" + end, cache: false, success: function(data){
+		
+		var filters = {};
+		filters['bezahlt'] = 0;
+		filters['ausstaendig'] = 0;
+		filters['ueberweisung'] = 0;
+		filters['barzahlung'] = 0;
+		filters['behandlung'] = 0;
+		filters['zusatzleistung'] = 0;
+		
+		$('#patients .toggleFilter.active').each(function() {
+				filters[$( this ).attr('rel')] = 1;																
+		})
+		
+		var details = {};
+		details['patient'] = 0;
+		details['betreuung'] = 0;
+		details['arbeitszeit'] = 0;
+		details['gender'] = 0;
+		details['dob'] = 0;
+		details['dauer'] = 0;
+		details['rechnungsdatum'] = 0;
+		details['agegroup'] = 0;
+		details['alter'] = 0;
+		details['ort'] = 0;
+		details['rechnungsnummer'] = 0;
+		
+		var detailsCount = 0;
+		$('#patients .toggleDetails.active').each(function() {
+				details[$( this ).attr('rel')] = 1;
+				detailsCount++;
+		})
+		
+		var stats = {};
+		stats['gender'] = 0;
+		stats['agegroups'] = 0;
+		
+		var statsCount = 0;
+		$('#patients .toggleStats.active').each(function() {
+				stats[$( this ).attr('rel')] = 1;
+				statsCount++;
+		})
+		
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients&request=getFolderDetailsRevenueResults&id=" + id + "&who=" + who + "&patient=" + patient + "&start=" + start + "&end=" + end + "&filters="+JSON.stringify(filters)+ "&details="+JSON.stringify(details) + "&detailsCount="+detailsCount + "&stats="+JSON.stringify(stats) + "&statsCount="+statsCount, cache: false, success: function(data){
 			$('#revenueResult').html(data.html);
+			$('#patientsActions .actionExport').removeClass('noactive');
 			}
 		});
 	});
@@ -1311,5 +1596,55 @@ $(document).ready(function() {
 			}
 		});
 	});
+	
+	
+	$('#patients').on('click', 'span.toggleFilter', function(e) {
+		e.preventDefault();
+		prevent_dblclick(e)
+		
+		var ele = $(this);
+		
+		var id = ele.attr('rel');
+		
+		if(ele.hasClass('active')) {
+			ele.removeClass('active');
+		} else {
+			ele.addClass('active');
+		}
+		$('#calculateRevenue').click();
+	});
+	
+	$('#patients').on('click', 'span.toggleDetails', function(e) {
+		e.preventDefault();
+		prevent_dblclick(e)
+		
+		var ele = $(this);
+		
+		var id = ele.attr('rel');
+		
+		if(ele.hasClass('active')) {
+			ele.removeClass('active');
+		} else {
+			ele.addClass('active');
+		}
+		$('#calculateRevenue').click();
+	});
+	
+	$('#patients').on('click', 'span.toggleStats', function(e) {
+		e.preventDefault();
+		prevent_dblclick(e)
+		
+		var ele = $(this);
+		
+		var id = ele.attr('rel');
+		
+		if(ele.hasClass('active')) {
+			ele.removeClass('active');
+		} else {
+			ele.addClass('active');
+		}
+		$('#calculateRevenue').click();
+	});
+	
 
 });

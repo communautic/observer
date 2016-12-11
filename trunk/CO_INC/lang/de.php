@@ -201,6 +201,9 @@ $lang["GLOBAL_WEEK_SHORT"] = 'KW';
 $lang["GLOBAL_TIME_FROM"] = 'von';
 $lang["GLOBAL_TIME_TO"] = 'bis';
 
+$lang["GLOBAL_GENDER_MALE"] = 'männlich';
+$lang["GLOBAL_GENDER_FEMALE"] = 'weiblich';
+
 $lang["GLOBAL_ALERT"] = 'Warnung';
 $lang["GLOBAL_CONTENT_EDITED_BY"] = 'Dieser Inhaltsbereich wird aktuell bearbeitet von:';
 

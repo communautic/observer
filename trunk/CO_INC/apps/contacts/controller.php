@@ -453,8 +453,8 @@ function getContactSend($id) {
 	}
 	
 	
-	function setContactDetails($id, $lastname, $firstname, $title, $title2, $company, $position, $email, $email_alt, $phone1, $phone2, $fax, $address_line1, $address_line2, $address_town, $address_postcode, $address_country, $lang,$timezone,$bank_name,$sort_code,$account_number,$bic,$iban,$vat_no,$company_no,$company_reg_loc,$dvr,$notes) {
-		$retval = $this->model->setContactDetails($id, $lastname, $firstname, $title, $title2, $company, $position, $email, $email_alt, $phone1, $phone2, $fax, $address_line1, $address_line2, $address_town, $address_postcode, $address_country, $lang,$timezone,$bank_name,$sort_code,$account_number,$bic,$iban,$vat_no,$company_no,$company_reg_loc,$dvr,$notes);
+	function setContactDetails($id, $lastname, $firstname, $title, $title2, $company, $position, $email, $email_alt, $phone1, $phone2, $fax, $address_line1, $address_line2, $address_town, $address_postcode, $address_country, $gender, $lang,$timezone,$bank_name,$sort_code,$account_number,$bic,$iban,$vat_no,$company_no,$company_reg_loc,$dvr,$notes) {
+		$retval = $this->model->setContactDetails($id, $lastname, $firstname, $title, $title2, $company, $position, $email, $email_alt, $phone1, $phone2, $fax, $address_line1, $address_line2, $address_town, $address_postcode, $address_country, $gender, $lang,$timezone,$bank_name,$sort_code,$account_number,$bic,$iban,$vat_no,$company_no,$company_reg_loc,$dvr,$notes);
 		if($retval){
 			 return '{ "action": "edit", "id": "' . $id . '" }';
 		  } else{
@@ -491,6 +491,16 @@ function getContactSend($id) {
 		  }
 	}
 
+	function getGenderDialog($request,$field,$append,$title,$sql) {
+		global $lang;
+		include_once dirname(__FILE__).'/view/dialog_gender.php';
+	}
+	
+	function getGenderContext($id,$field,$edit) {
+		global $lang;
+		$context = $this->model->getGenderContext($id,$field);
+		include 'view/gender_context.php';
+	}
 	
 	function getLanguageDialog($request,$field,$append,$title,$sql) {
 		include_once dirname(__FILE__).'/view/dialog_languages.php';
@@ -513,6 +523,11 @@ function getContactSend($id) {
 	function getCalendarDialog($request,$field,$append,$title,$sql) {
 		global $lang;
 		include_once dirname(__FILE__).'/view/dialog_calendar.php';
+	}
+	
+	function getCalendarViewDialog($request,$field,$append,$title,$sql) {
+		global $lang;
+		include_once dirname(__FILE__).'/view/dialog_calendar_view.php';
 	}
 	
 	function getContactsDialog($request,$field,$append,$title,$sql) {
@@ -726,6 +741,18 @@ function getContactSend($id) {
 		global $lang;
 		$this->model->removeCalendar($id);
 		return $lang['CONTACTS_CALENDAR_DEACTIVE'];
+	}
+	
+	function setCalendarView($id) {
+		global $lang;
+		$this->model->setCalendarView($id);
+		return 'sichtbar';
+	}
+	
+	function removeCalendarView($id) {
+		global $lang;
+		$this->model->removeCalendarView($id);
+		return 'nicht sichtbar';
 	}
 
 }

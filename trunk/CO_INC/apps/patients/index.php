@@ -43,7 +43,10 @@ if (!empty($_GET['request'])) {
 			echo($patients->getFolderDetailsRevenue($_GET['id']));
 		break;
 		case 'getFolderDetailsRevenueResults':
-			echo($patients->getFolderDetailsRevenueResults($_GET['id'],$_GET['who'],$_GET['start'],$_GET['end']));
+			echo($patients->getFolderDetailsRevenueResults($_GET['id'],$_GET['who'],$_GET['patient'],$_GET['start'],$_GET['end'],$_GET['filters'],$_GET['details'],$_GET['detailsCount'],$_GET['stats'],$_GET['statsCount']));
+		break;
+		case 'createFolderDetailsRevenueExcel':
+			echo($patients->createFolderDetailsRevenueExcel($_GET['id'],$_GET['who'],$_GET['patient'],$_GET['start'],$_GET['end'],$_GET['filters'],$_GET['details'],$_GET['detailsCount'],$_GET['stats'],$_GET['statsCount']));
 		break;
 		case 'getFolderDetailsBelege':
 			echo($patients->getFolderDetailsBelege($_GET['id']));
@@ -71,7 +74,7 @@ if (!empty($_GET['request'])) {
 			echo($patients->printFolderDetailsInvoices($_GET['id'],$_GET['view']));
 		break;
 		case 'printFolderDetailsRevenue':
-			echo $patients->printFolderDetailsRevenue($_GET['id'],$_GET['who'],$_GET['start'],$_GET['end']);
+			echo $patients->printFolderDetailsRevenue($_GET['id'],$_GET['who'],$_GET['patient'],$_GET['start'],$_GET['end'],$_GET['filters'],$_GET['details'],$_GET['detailsCount'],$_GET['stats'],$_GET['statsCount']);
 		break;
 		case 'printFolderDetailsBelege':
 			echo $patients->printFolderDetailsBelege($_GET['id'],$_GET['who'],$_GET['start'],$_GET['end']);
@@ -83,7 +86,7 @@ if (!empty($_GET['request'])) {
 			echo($patients->getFolderSendInvoices($_GET['id'],$_GET['view']));
 		break;
 		case 'getSendFolderDetailsRevenue':
-			echo $patients->getFolderSendRevenue($_GET['id'],$_GET['who'],$_GET['start'],$_GET['end']);
+			echo $patients->getFolderSendRevenue($_GET['id'],$_GET['who'],$_GET['patient'],$_GET['start'],$_GET['end'],$_GET['filters'],$_GET['details'],$_GET['detailsCount'],$_GET['stats'],$_GET['statsCount']);
 		break;
 		case 'getSendFolderDetailsBelege':
 			echo $patients->getFolderSendBelege($_GET['id'],$_GET['who'],$_GET['start'],$_GET['end']);

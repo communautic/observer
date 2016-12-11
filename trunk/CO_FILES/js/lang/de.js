@@ -34,6 +34,9 @@ var ALERT_STATUS_TREATMENT_ACTIVATE = 'Wollen Sie die Behandlung mit heutigem Da
 var ALERT_STATUS_TREATMENT_COMPLETE = 'Wollen Sie die Behandlung mit heutigem Datum auf<br />„abgeschlossen” setzen?';
 var ALERT_STATUS_PATIENT_COMPLETE = 'Wollen Sie den Patienten mit heutigem Datum auf<br />„in Evidenz” setzen?';
 
+var ALERT_STATUS_SERVICE_ACTIVATE = 'Wollen Sie die Zusatzleistung mit heutigem Datum auf<br />„in Arbeit” setzen?';
+var ALERT_STATUS_SERVICE_COMPLETE = 'Wollen Sie die Zusatzleistung mit heutigem Datum auf<br />„abgeschlossen” setzen?';
+
 var ALERT_NO_FILE = "Bitte wählen Sie eine Datei aus";
 
 var ALERT_NO_VALID_EMAIL = "Bitte geben Sie eine gültige Email Adresse an.";
