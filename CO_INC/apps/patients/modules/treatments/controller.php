@@ -231,7 +231,7 @@ class PatientsTreatments extends Patients {
 					ob_end_clean();
 					$title = $treatment->title;
 				}
-				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_TREATMENT"];
+				$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PATIENT_PRINT_TREATMENT_LIST"];
 				$attachment = CO_PATH_PDF . "/" . $this->normal_chars($title) . ".pdf";
 				$pdf = $this->savePDF($title,$html,$attachment);
 			break;

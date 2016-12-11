@@ -68,7 +68,7 @@ class PatientsTreatmentsModel extends PatientsModel {
 			$sql = " and access = '1' ";
 		}
 		
-		$q = "select id,title,item_date,access,status,checked_out,checked_out_user from " . CO_TBL_PATIENTS_TREATMENTS . " where pid = '$id' and bin != '1' " . $sql . $order;
+		$q = "select id,title,item_date,access,status,checked_out,checked_out_user from " . CO_TBL_PATIENTS_TREATMENTS . " where pid = '$id' and invoice_type ='0' and bin != '1' " . $sql . $order;
 		$this->setSortStatus("patients-treatments-sort-status",$sortcur,$id);
 		$result = mysql_query($q, $this->_db->connection);
 		$items = mysql_num_rows($result);
@@ -227,7 +227,14 @@ class PatientsTreatmentsModel extends PatientsModel {
 			}
 		}	
 		$array['patient'] = $array['lastname'] . ' ' . $array['firstname'];
-		$array["dob"] = $this->_date->formatDate($array["dob"],CO_DATE_FORMAT);
+		
+		//$array["dob"] = $this->_date->formatDate($array["dob"],CO_DATE_FORMAT);
+		$d = DateTime::createFromFormat('Y-m-d', $array["dob"]);
+    if($d && $d->format('Y-m-d') == $array["dob"]) {
+			$array["dob"] = $this->_date->formatDate($array["dob"],CO_DATE_FORMAT);
+		} else {
+			$array["dob"] = $array["dob"];
+		}
 		
 		$array["insurer"] = $this->_contactsmodel->getUserList($array['insurer'],'patientsinsurer', "");
 		$array["insurer_ct"] = empty($array["insurer_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['insurer_ct'];
@@ -1274,7 +1281,7 @@ function getTreatmentTypeMin($string){
 		if(!$session->isSysadmin()) {
 			$access = " and a.id IN (" . implode(',', $this->canAccess($session->uid)) . ") ";
 	  	}
-		$q ="select CONCAT(id,',',costs,',',minutes) as id, CONCAT(positionstext, ' ',shortname, ' (',minutes,')') as label from " . CO_TBL_PATIENTS_TREATMENTS_DIALOG . " where (positionstext like '%$term%' or shortname like '%$term%') and active = '1'";
+		$q ="select CONCAT(id,',',costs,',',minutes) as id, CONCAT(positionstext, ' ',shortname, ' (',minutes,' Min | € ',costs,')') as label from " . CO_TBL_PATIENTS_TREATMENTS_DIALOG . " where (positionstext like '%$term%' or shortname like '%$term%') and active = '1'";
 		
 		$result = mysql_query($q, $this->_db->connection);
 		$num=mysql_affected_rows();
@@ -1301,7 +1308,7 @@ function getTreatmentTypeMin($string){
 			$result_user = mysql_query($q, $this->_db->connection);
 			if(mysql_num_rows($result_user) > 0) {
 				while($row_user = mysql_fetch_assoc($result_user)) {
-					$users_arr[] = ' uid="' . $row_user["id"] . '" minutes="'.$row_user["minutes"].'" costs="'.$row_user["costs"].'">' .$row_user["positionstext"] . ' ' . $row_user["shortname"] . ' (' . $row_user["minutes"] . ')';		
+					$users_arr[] = ' uid="' . $row_user["id"] . '" minutes="'.$row_user["minutes"].'" costs="'.$row_user["costs"].'">' .$row_user["positionstext"] . ' ' . $row_user["shortname"] . ' (' . $row_user["minutes"] . ' Min | € ' . $row_user["costs"] . ')';		
 				}
 			}
 		}
@@ -1393,7 +1400,7 @@ function getTreatmentTypeMin($string){
 			$result_user = mysql_query($q, $this->_db->connection);
 			if(mysql_num_rows($result_user) > 0) {
 				while($row_user = mysql_fetch_assoc($result_user)) {
-					$users_arr[] = array("id" => $row_user["id"], "shortname" => $row_user["positionstext"] . ' ' . $row_user["shortname"] . ' (' . $row_user["minutes"] . ')', "costs" => $row_user["costs"], "minutes" => $row_user["minutes"]);		
+					$users_arr[] = array("id" => $row_user["id"], "shortname" => $row_user["positionstext"] . ' ' . $row_user["shortname"] . ' (' . $row_user["minutes"] . ' Min | € ' . $row_user["costs"] . ')', "costs" => $row_user["costs"], "minutes" => $row_user["minutes"]);		
 				}
 			}
 		}
