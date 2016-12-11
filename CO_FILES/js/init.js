@@ -160,6 +160,26 @@ function processListAppsInsurance(list) {
 	return { "name": list, "value": itemlist };
 }
 
+function processListAppsMethod(list) {
+	var app = getCurrentApp();
+	var field = $("#"+app+list+" .listmemberMethod");
+	var items = field.size();
+	var itemlist = "";
+	field.each( function(i) {
+		if ( $(this).hasClass("deletefromlist") ) {
+			itemlist += "";
+		} else if ( $(this).hasClass("addtolist") ) {
+			itemlist += $(this).attr("uid") + ",";
+		} else {
+			itemlist += $(this).attr("uid") + ",";
+		}
+		if(items-1 == i) {
+		itemlist = itemlist.slice(0, -1)
+		}
+	})
+	return { "name": list, "value": itemlist };
+}
+
 function processListArray(field,num) {
 	var items = $("#"+field+"_"+num+" .listmember").size();
 	var itemlist = "";
@@ -1190,6 +1210,19 @@ $(document).ready(function() {
 		$("#modalDialog").dialog("close");
 	});
 	
+	$(document).on('click', '.insertGenderFromDialog',function(e) {
+		e.preventDefault();
+		var field = $(this).attr("rel");
+		var gid = $(this).attr("gid");
+		var title = $(this).html();
+		var html = '<span class="listmember-outer"><a class="listmemberGender listmember" uid="' + gid + '" field="'+field+'">' + title + '</a></div>';
+		$('#'+field).html(html);
+		
+		var obj = getCurrentModule();
+		$('#'+getCurrentApp()+' .coform').ajaxSubmit(obj.poformOptions);
+		$("#modalDialog").dialog("close");
+	});
+	
 	$(document).on('click', 'a.insertFromDialog', function(e) {
 		e.preventDefault();
 		var field = $(this).attr("field");
@@ -1727,6 +1760,7 @@ $(document).ready(function() {
 	$('input.inlineSearch').livequery(function() {
 		var app = $(this).attr('rel');
 		var appReal = getCurrentApp();
+		var fieldId = $(this).attr('id');
 		$(this).autocomplete({
 			appendTo: '#'+appReal,
 			position: {my: "left top", at: "left bottom", collision: "none"},
@@ -1738,7 +1772,12 @@ $(document).ready(function() {
 					obj.checkIn(cid);
 					var href = ui.item.id.split(",");
 					externalLoadThreeLevels(href[0],href[1],href[2],href[3],href[4]);*/
-					$('#calcWho').val(ui.item.id);
+					if(fieldId == 'calcWhoField') {
+						$('#calcWho').val(ui.item.id);
+					}
+					if(fieldId == 'calcPatientField') {
+						$('#calcPatient').val(ui.item.id);
+					}
 			},
 			close: function(event, ui) {
 				//$(this).val("");

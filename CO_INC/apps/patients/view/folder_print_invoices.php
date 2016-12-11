@@ -15,6 +15,8 @@
             <td class="barchart_color_inprogress"><span><?php echo $lang["PATIENT_INVOICE_STATUS_INPROGRESS"];?></span></td>
              <td width="10"></td>
             <td class="barchart_color_finished"><span><?php echo $lang["PATIENT_INVOICE_STATUS_FINISHED"];?></span></td>
+            <td width="10"></td>
+            <td class="barchart_color_not_finished"><span><?php echo $lang["PATIENT_INVOICE_STATUS_STORNO"];?></span></td>
         </tr>
     </table></td>
 	</tr>
@@ -23,57 +25,27 @@
 <?php
 if(is_array($invoices)) { ?>
 <?php
-	$i = 0;
+	$i = 1;
 	foreach ($invoices as $invoice) { 
 	?>
     <table width="100%" class="fourCols-grey">
         <tr>
-            <td class="fourCols-one greybg" style="padding-left: 15pt;">Patient</td>
-            <td class="fourCols-two greybg" style="padding-left: 20pt;">&nbsp;</td>
-            <td class="fourCols-three <?php echo($invoice->status_invoice_class);?>">&nbsp;</td>
-            <td class="fourCols-four <?php echo($invoice->status_invoice_class);?>"><?php echo($invoice->patient);?></td>
+            <td class="greybg tinytext" style="padding-left: 15pt; width: 40px"><?php echo $i;?></td>
+            <td class="<?php echo($invoice->status_invoice_class);?> tinytext" style="padding-left: 15pt; width: 224px"><?php echo($invoice->title);?></td>
+            <td class="greybg tinytext" style="padding-left: 15pt; width: 224px"><?php echo($invoice->payment_type);?> <?php if($invoice->status_invoice_class == 'barchart_color_finished') { echo('am ' . $invoice->status_invoice_date); } ?></td>
+            <td class="greybg tinytext" style="padding-right: 15pt; text-align: right;"><?php echo(CO_DEFAULT_CURRENCY . ' ' . $invoice->totalcosts);?></td>
         </tr>
-        <tr>
-            <td class="grey fourCols-one smalltext" style="padding-left: 15pt;">Behandlung</td>
-            <td class="fourCols-two">&nbsp;</td>
-            <td class="fourCols-three">&nbsp;</td>
-            <td class="grey smalltext fourCols-paddingTop"><?php echo($invoice->title);?></td>
-        </tr>
-        <tr>
-            <td class="grey fourCols-one smalltext" style="padding-left: 15pt;">Rechnungsnummer</td>
-            <td class="fourCols-two">&nbsp;</td>
-            <td class="fourCols-three">&nbsp;</td>
-            <td class="grey smalltext fourCols-paddingTop"><?php echo($invoice->invoice_number);?></td>
-        </tr>
-        <tr>
-            <td class="grey fourCols-one smalltext" style="padding-left: 15pt;">Datum</td>
-            <td class="fourCols-two">&nbsp;</td>
-            <td class="fourCols-three">&nbsp;</td>
-            <td class="grey smalltext fourCols-paddingTop"><?php echo($invoice->invoice_date);?></td>
-        </tr>
-        <tr>
-            <td class="grey fourCols-one smalltext" style="padding-left: 15pt;"><?php echo $lang["GLOBAL_DURATION"];?></td>
-            <td class="fourCols-two">&nbsp;</td>
-            <td class="fourCols-three">&nbsp;</td>
-            <td class="grey smalltext fourCols-paddingTop"><?php echo($invoice->totalmin);?></td>
-        </tr>
-        <tr>
-            <td class="grey fourCols-one smalltext" style="padding-left: 15pt;">Honorar</td>
-            <td class="fourCols-two">&nbsp;</td>
-            <td class="fourCols-three">&nbsp;</td>
-            <td class="grey smalltext fourCols-paddingTop"><?php echo(CO_DEFAULT_CURRENCY . ' ' . $invoice->totalcosts);?></td>
-        </tr>
-        <tr>
-            <td class="grey fourCols-one smalltext" style="padding-left: 15pt;">Betreuer</td>
-            <td class="fourCols-two">&nbsp;</td>
-            <td class="fourCols-three">&nbsp;</td>
-            <td class="grey smalltext fourCols-paddingTop"><?php echo($invoice->management);?></td>
-        </tr>
-    </table>
+        </table>
+
+            <p class="tinytext grey" style="padding-left:62px; line-height: 18px;">
+            	Patient: <?php echo($invoice->patient);?><br />
+              Betreuung: <?php echo($invoice->management);?><?php if($invoice->totalmin !='') { echo ',';} ?> <?php echo($invoice->totalmin);?> <br />
+              Rechnungsdatum: <?php echo($invoice->invoice_date);?>, Rechnungsnummer: <?php echo($invoice->invoice_number);?>
+             </p>
     <?php 
 	$i++;
 	} ?>
   <?php
 }
 ?>
-<div style="page-break-after:always;">&nbsp;</div>
+<div style="page-break-after:always;"></div>

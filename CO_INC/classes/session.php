@@ -24,6 +24,7 @@ class Session
    var $referrer;     //Last recorded site page viewed
     var $pwd_pick;     //Last recorded site page viewed
 	var $calendar;
+	var $calendarViewAll;
    //var $canView = array();
    //var $canEdit = array();
    //var $canAccess = array();
@@ -127,6 +128,7 @@ class Session
 		 $this->timezone = $this->userinfo['timezone'];
 		 $this->pwd_pick = $this->userinfo['pwd_pick'];
 		 $this->calendar = $this->userinfo['calendar'];
+		 $this->calendarViewAll = $this->userinfo['calendars_view_all'];
 		 //$this->canView = "";
 		 /*if (!$this->isSysadmin()) {
 			 $this->canView = $database->getViewPerms($this->uid);

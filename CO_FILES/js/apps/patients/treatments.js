@@ -95,7 +95,8 @@ function patientsTreatments(name) {
 		
 		formData[formData.length] = processListApps('doctor');
 		formData[formData.length] = processCustomTextApps('doctor_ct');
-		formData[formData.length] = processListApps('method');
+		//formData[formData.length] = processListApps('method');
+		formData[formData.length] = processListAppsMethod('method');
 		formData[formData.length] = processListApps('treatment_access');
 	 }
 	 
@@ -558,6 +559,7 @@ function patientsTreatments(name) {
 					}
 					}
 				});
+				break;
 				case '3':
 				var id = $("#patients").data("third");
 				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients/modules/treatments&request=getSend&option=docu&id="+id, success: function(data){
@@ -754,8 +756,8 @@ function patientsTreatments(name) {
 	
 	
 	this.insertFromDialog = function(field,gid,title) {
-		if(field == 'treatmentsmethod') {
-			var html = '<span class="listmember-outer"><span class="listmember" uid="' + gid + '" field="'+field+'">' + title + '</span></div>';
+		if(field == 'patientsmethod') {
+			var html = '<span class="listmember-outer"><a class="listmemberMethod" uid="' + gid + '" field="'+field+'">' + title + '</a></div>';
 		} else {
 			var html = '<span class="listmember-outer"><span class="listmember listmemberTreatmentType" uid="' + gid + '" field="'+field+'">' + title + '</span></div>';
 		}

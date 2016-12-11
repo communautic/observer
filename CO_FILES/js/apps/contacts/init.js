@@ -98,7 +98,7 @@ function contactsContact(name) {
 			$.prompt(ALERT_NO_VALID_EMAIL, {submit: setTitleFocus});
 			return false;
 		}*/
-		
+		formData[formData.length] = processListApps('gender');
 		formData[formData.length] = processString('lang');
 		formData[formData.length] = processString('timezone');
 	}
@@ -1644,6 +1644,43 @@ $(document).ready(function() {
 		});
 	});
 	
+	
+	$(document).on('click', '#actionCalendarViewAll', function(e) {
+		e.preventDefault();
+		var id = $("#contacts").data("first");
+		$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=setCalendarView&id=" + id, cache: false, success: function(data){	
+			$('#hasCalendarViewAll').html(data);
+			$('#calendarLinkViewAll').attr('sql','1');
+			$("#modalDialog").dialog('close');
+			contactsInnerLayout.initContent('center');
+			}																																			
+		});
+	});
+	
+	$(document).on('click', '#actionCalendarViewAllRemove', function(e) {
+		e.preventDefault();
+		var id = $("#contacts").data("first");
+		//var txt = ALERT_CALENDAR_DEACTIVATE;
+		//var langbuttons = {};
+		//langbuttons[ALERT_YES] = true;
+		//langbuttons[ALERT_NO] = false;
+		/*$.prompt(txt,{ 
+			buttons:langbuttons,
+			submit: function(e,v,m,f){		
+				if(v){*/
+					$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=removeCalendarView&id=" + id, cache: false, success: function(data){
+					$('#hasCalendarViewAll').html(data);
+					$('#calendarLinkViewAll').attr('sql','0');
+					$("#modalDialog").dialog('close');
+					contactsInnerLayout.initContent('center');
+			//}
+		//});
+			//	} 
+			}
+		});
+	});
+	
+	
 	$(".user-image-uploader:visible").livequery(function() {
 		contacts.createUploader($(this));
 	})
@@ -1740,6 +1777,19 @@ $(document).ready(function() {
 	$(document).on('click', '#contacts-right .printCalendarInstructions', function(e){
 		e.preventDefault();
 		contacts.actionPrintCalendarInstructions();
+	});
+	
+	$(document).on('click', 'a.listmemberGender', function(e) {
+		e.preventDefault();
+		var ele = $(this);
+		var uid = $(this).attr('uid');
+		var field = $(this).attr('field');
+		var edit = $(this).attr('edit');
+		$.ajax({ type: "GET", url: "/", data: "path=apps/patients&request=getGenderContext&id="+uid+"&field="+field+"&edit="+edit, success: function(html){
+			ele.parent().append(html);
+			ele.next().slideDown();
+			}
+		});
 	});
 
 });

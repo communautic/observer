@@ -60,28 +60,33 @@ class CalendarModel extends Model {
 		} else {
 			$q = "SELECT a.id, a.firstname, a.lastname, a.username, b.id as calendarid, b.active as calactive, b.calendarcolor FROM co_users as a, oc_clndr_calendars as b WHERE (a.username = b.userid or a.calendar_uid = b.userid) and a.calendar = '1' and a.invisible = '0' and a.bin = '0' " . $order;
 		}*/
-		$q = "SELECT a.id, a.firstname, a.lastname, a.username, b.id as calendarid, b.active as calactive, b.calendarcolor FROM co_users as a, oc_clndr_calendars as b WHERE a.username = b.userid and a.calendar = '1' and a.invisible = '0' and a.bin = '0' " . $order;
+		if($session->calendarViewAll == 1) {
+			$q = "SELECT a.id, a.firstname, a.lastname, a.username, b.id as calendarid, b.active as calactive, b.calendarcolor, b.userid FROM co_users as a, oc_clndr_calendars as b WHERE a.username = b.userid and a.calendar = '1' and a.invisible = '0' and a.bin = '0' " . $order;
+		} else {
+			$q = "SELECT a.id, a.firstname, a.lastname, a.username, b.id as calendarid, b.active as calactive, b.calendarcolor, b.userid FROM co_users as a, oc_clndr_calendars as b WHERE a.username ='$session->username' and b.userid='$session->username' and a.calendar = '1' and a.invisible = '0' and a.bin = '0' ";
+		}
 		
 	  $this->setSortStatus("calendar-sort-status",$sortcur);
-      $result = mysql_query($q, $this->_db->connection);
+    $result = mysql_query($q, $this->_db->connection);
 	  $folders = "";
 	  $eventSources = "";
+
 	  while ($row = mysql_fetch_array($result)) {
-		foreach($row as $key => $val) {
-			$array[$key] = $val;
-		}
-		if($array['calactive'] == 1) {
-			$eventSources[] = array(
-								'url' => '/?path=apps/calendar&request=getrequestedEvents&calendar_id=' . $array['calendarid'],
-								'backgroundColor' => $array['calendarcolor'],
-								"borderColor" => $array['calendarcolor'],
-								"textColor" => "#000000",
-								"cache" => true					
-							  );
-		}
-		
-		$folders[] = new Lists($array);
-		
+			foreach($row as $key => $val) {
+				$array[$key] = $val;
+			}
+
+					$eventSources[] = array(
+										'url' => '/?path=apps/calendar&request=getrequestedEvents&calendar_id=' . $array['calendarid'],
+										'backgroundColor' => $array['calendarcolor'],
+										"borderColor" => $array['calendarcolor'],
+										"textColor" => "#000000",
+										"cache" => true					
+										);
+
+			
+			$folders[] = new Lists($array);
+			
 	  }
 	  
 	  if($showGroupCalendar == 1) { // Gruppencalender

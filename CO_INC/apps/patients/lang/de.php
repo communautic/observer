@@ -19,12 +19,12 @@ $lang["PATIENT_FOLDER_TAB_INVOICES_PATIENT"] = 'Patient';
 $lang["PATIENT_FOLDER_TAB_INVOICES_NUMBER"] = 'Nummer';
 $lang["PATIENT_FOLDER_TAB_INVOICES_STATUS"] = 'Status';
 $lang["PATIENT_FOLDER_TAB_REVENUE"] = 'Umsatzberechnung';
-$lang["PATIENT_FOLDER_TAB_BELEGE"] = 'Belegarchiv';
+$lang["PATIENT_FOLDER_TAB_BELEGE"] = 'Belege';
 $lang["PATIENT_FOLDER_TAB_FILTER"] = 'Datenfilter';
 $lang["PATIENT_FOLDER_TAB_THERAPIST"] = 'Betreuer';
 $lang["PATIENT_FOLDER_TAB_CALCULATE"] = 'berechnen';
 $lang["PATIENT_FOLDER_TAB_INVOICES"] = 'Rechnungen';
-$lang["PATIENT_FOLDER_TAB_REVENUE"] = 'Umsatzergebnis';
+$lang["PATIENT_FOLDER_TAB_REVENUE"] = 'Umsatzabfrage';
 
 $lang["PATIENT_TITLE"] = 'Patient';
 

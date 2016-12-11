@@ -54,6 +54,12 @@
     <td width="110"></td>
   </tr>
 </table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
+	  <td class="tcell-left text11"><span class="content-nav showDialog" request="getGenderDialog" field="contactsgender" append="0" sql="gender"><span>Geschlecht</span></span></td>
+        <td class="tcell-right"><div id="contactsgender" class="itemlist-field"><?php echo($contact->gender);?></div></td>
+	</tr>
+</table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 	  <td class="tcell-left text11"><span class="content-nav showDialog" request="getLanguageDialog" field="lang" append="0"><span><?php echo $lang['CONTACTS_LANGUAGE'];?></span></span></td>
@@ -266,6 +272,12 @@ foreach($contact->applications as $key => $val) { ?>
             <tr>
               <td class="tcell-left text11"><span class="<?php if($contact->access_status == 0) { ?>content-nav showDialog<?php } ?>" id="calendarLink" request="getCalendarDialog" field="hasCalendar" append="0" sql="<?php echo($contact->calendar);?>"><span><?php echo $lang["CONTACT_TAB_CALENDAR"];?></span></span></td>
               <td class="tcell-right"><div id="hasCalendar" class="itemlist-field"><?php echo($contact->calendar_status);?></div></td>
+            </tr>
+        </table>
+        <table border="0" cellpadding="0" cellspacing="0" class="table-content">
+            <tr>
+              <td class="tcell-left<?php if(!$session->isSysadmin()) { ?>-inactive<?php } ?> text11"><span class="<?php if($session->isSysadmin()) { ?>content-nav showDialog<?php } ?>" id="calendarLinkViewAll" request="getCalendarViewDialog" field="hasCalendarViewAll" append="0" sql="<?php echo($contact->calendars_view_all);?>"><span>Alle Kalender</span></span></td>
+              <td class="tcell-right"><div id="hasCalendarViewAll" class="itemlist-field"><?php echo($contact->calendar_view_status);?></div></td>
             </tr>
         </table>
         <?php } ?>
