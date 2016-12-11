@@ -36,6 +36,7 @@
     </tr>
 </table>
 <?php } ?>
+<?php if($invoice->invoice_type == 0) { ?>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>
 		<td class="tcell-left-inactive text11"><?php echo $lang["PATIENT_INVOICE_DURATION"];?></td>
@@ -49,6 +50,7 @@
     </tr>
 </table>
 <div class="content-spacer"></div>
+<?php } ?>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 	  <td class="tcell-left text11"><span class="<?php if($invoice->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="patientsinvoice_carrier" append="0" title=""><span><?php echo $lang["PATIENT_INVOICE_CARRIER"];?></span></span></td>
@@ -70,7 +72,7 @@
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
     <td class="tcell-left-shorter text11"><span class="<?php if($invoice->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["PATIENT_INVOICE_NUMBER"];?></span></span></td>
-    <td class="tcell-right-nopadding"><?php if($invoice->canedit) { ?><input name="invoice_number" type="text" class="bg" value="<?php echo($invoice->invoice_number);?>" /><?php } else { echo '<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $invoice->invoice_number . '</span>';}?></td>
+    <td class="tcell-right-nopadding"><?php if($invoice->canedit) { ?><input name="invoice_number" type="text" class="bg" value="<?php echo($invoice->invoice_number);?>" /><?php } else { echo '<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $invoice->invoice_number . '</span><input name="invoice_number" type="hidden"value="'. $invoice->invoice_number.'" />';}?></td>
   </tr>
 </table>
 <div class="content-spacer"></div>
@@ -98,7 +100,7 @@
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
     <td class="tcell-left-shorter text11"><span class="<?php if($invoice->canedit) { ?>content-nav selectTextfield<?php } ?>"><span>Uhrzeit</span></span></td>
-    <td class="tcell-right-nopadding"><?php if($invoice->canedit) { ?><input id="beleg_time" name="beleg_time" type="text" class="bg" value="<?php echo($invoice->beleg_time);?>" /><?php } else { echo '<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $invoice->beleg_time . '</span>';}?></td>
+    <td class="tcell-right-nopadding"><?php if($invoice->canedit) { ?><input id="beleg_time" name="beleg_time" type="text" class="bg" value="<?php echo($invoice->beleg_time);?>" /><?php } else { echo '<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $invoice->beleg_time . '</span><input name="beleg_time" type="hidden"value="'. $invoice->beleg_time.'" />';}?></td>
   </tr>
 </table>
 </div>
@@ -127,13 +129,23 @@
     <td class="tcell-right-nopadding"><div style="width: 530px; border: 1px solid #ccc; color: #666;">
 	<?php 
 	$i = 1;
-	foreach($task as $value) { 
-		$checked = '';
-		if($value->status == 1  && is_array($value->type)) {
-			include("task.php");
-		}
-		$i++;
-	 } 
+	if($invoice->invoice_type == 0) {
+		foreach($task as $value) { 
+			$checked = '';
+			if($value->status == 1  && is_array($value->type)) {
+				include("task.php");
+			}
+			$i++;
+		 } 
+	} else {
+		foreach($task as $value) { 
+			$checked = '';
+			if($value->status == 1) {
+				include("task_service.php");
+			}
+			$i++;
+		 } 
+	}
 	?>
 	 <?php if($invoice->discount > 0) { ?>
 		 <div style="border-bottom: 1px solid #ccc;">

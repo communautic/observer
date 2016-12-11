@@ -9,7 +9,7 @@
         <p style="line-height: 18px;">&nbsp;</p>
 	</tr>
 </table>
-<p style="font-size: 25pt;">Kassenbeleg</p>
+<p style="font-size: 25pt;">Kassenbeleg <?php if($invoice->status_invoice == 3) { ?><span style="color: #ff3300;"><?php echo '(Storno)';?></span><?php } ?></p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <table width="100%" cellpadding="0" cellspacing="0">
@@ -32,6 +32,7 @@
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 
+<?php if($invoice->invoice_type == 0) { ?>
 	<?php 
 	$i = 1;
 	foreach($task as $value) { 
@@ -64,7 +65,32 @@
 <?php }
 		$i++;
 	 } ?>
+<?php } ?>
+
+<?php if($invoice->invoice_type == 1) { ?>
+	<?php 
+	$i = 1;
+	foreach($task as $value) { 
+		$checked = '';
+		if($value->status == 1) { ?>
+      <table width="100%" cellpadding="0" cellspacing="0">
+      <tr valign="top">
+        <td width="25%"><?php echo $i;?>. Inhalt&nbsp;</td>
+        <td width="50%"><?php echo $value->menge;?>x <?php echo $value->title;?> à <?php echo CO_DEFAULT_CURRENCY . ' ' . $value->preis;?>&nbsp;</td>
+        <td width="25%" class="text-lg" style="text-align: right;"><?php echo CO_DEFAULT_CURRENCY . ' ' . $value->taskcosts; ?>  </td>
+  </tr></table>
+<table width="100%" cellpadding="0" cellspacing="0">
+      <tr>
+        <td><span style="line-height: 8px;">&nbsp;</span></td>
+      </tr>
+</table>
+
    
+<?php }
+		$i++;
+	 } ?>
+   <?php } ?>
+
 	 <?php if($invoice->discount > 0) { ?>
               <table width="100%" cellpadding="0" cellspacing="0">
               <tr valign="bottom">

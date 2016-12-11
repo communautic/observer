@@ -69,7 +69,7 @@ class PatientsInvoicesModel extends PatientsModel {
 		}
 		
 		//$q = "SELECT a.*,CONCAT(b.lastname,', ',b.firstname) as title FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, co_users as b where a.tookpart='1' and a.cid=b.id and a.pid = '$id' and a.bin='0' and b.bin='0' ORDER BY title ASC";
-		$q = "select id,title,item_date,access_invoice,status_invoice,checked_out,checked_out_user from " . CO_TBL_PATIENTS_TREATMENTS . " where pid = '$id' and (status='2' or status='3') and bin != '1' " . $sql . $order;
+		$q = "select id,title,item_date,access_invoice,status_invoice,checked_out,checked_out_user,invoice_type,service_id from " . CO_TBL_PATIENTS_TREATMENTS . " where pid = '$id' and (status='2' or status='3') and bin != '1' " . $sql . $order;
 		$this->setSortStatus("patients-invoices-sort-status",$sortcur,$id);
 		$result = mysql_query($q, $this->_db->connection);
 		$items = mysql_num_rows($result);
@@ -105,6 +105,16 @@ class PatientsInvoicesModel extends PatientsModel {
 				$itemstatus = " module-item-active-storno";
 			}
 			$array["itemstatus"] = $itemstatus;
+			
+			// check for service
+			/*if($array["invoice_type"] == 1) {
+				$service_id = $array["service_id"];
+				$q_service = "select title from co_patients_services where id = '$service_id'";
+				$result_service = mysql_query($q_service, $this->_db->connection);
+				$array["title"] = mysql_result($result_service,0);
+			}*/
+			
+			
 			
 			$invoices[] = new Lists($array);
 	  }
@@ -314,44 +324,91 @@ class PatientsInvoicesModel extends PatientsModel {
 			}
 		}
 		
-		// get the tasks
-		$array['totalcosts'] = 0;
-		$task = array();
-		$q = "SELECT * FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where status='1' and mid = '$id' and bin='0' ORDER BY item_date ASC";
-		$result = mysql_query($q, $this->_db->connection);
-		while($row = mysql_fetch_array($result)) {
-			foreach($row as $key => $val) {
-				$tasks[$key] = $val;
+		/*if($array["invoice_type"] == 1) {
+				$service_id = $array["service_id"];
+				$q_service = "select title,discount,vat from co_patients_services where id = '$service_id'";
+				$result_service = mysql_query($q_service, $this->_db->connection);
+				$row_service = mysql_fetch_array($result_service);
+				foreach($row_service as $key => $val) {
+					$array[$key] = $val;
+				}
+			}*/
+		
+		if($array["invoice_type"] == 0) { // Treatments
+			// get the tasks
+			$array['totalcosts'] = 0;
+			$task = array();
+			$q = "SELECT * FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where status='1' and mid = '$id' and bin='0' ORDER BY item_date ASC";
+			$result = mysql_query($q, $this->_db->connection);
+			while($row = mysql_fetch_array($result)) {
+				foreach($row as $key => $val) {
+					$tasks[$key] = $val;
+				}
+				$tasks["time"] = $this->_date->formatDate($tasks["item_date"],CO_TIME_FORMAT);
+				$tasks["item_date"] = $this->_date->formatDate($tasks["item_date"],CO_DATE_FORMAT);
+				$tasks["team"] = $this->_contactsmodel->getUserList($tasks['team'],'task_team_'.$tasks["id"], "", $array["canedit"]);
+				$tasks["team_ct"] = empty($tasks["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $tasks['team_ct'];
+				if($tasks["type"] == '') {
+					$tasks["min"] = 0;
+					$tasks["costs"] = 0;
+					$tasks["type"] = '';
+				} else {
+					
+					$tasks["min"] = $this->_treatmentsmodel->getTreatmentTypeMin($tasks["type"]);
+					$tasks["costs"] = $this->_treatmentsmodel->getTreatmentTypeCosts($tasks["type"]);
+					$tasks["type"] = $this->_treatmentsmodel->getTreatmentArrayInvoice($tasks['type'],'task_treatmenttype_'.$tasks["id"], "", $array["canedit"]);
+				}
+				$tasks["place"] = $this->_contactsmodel->getPlaceList($tasks['place'],'place', $array["canedit"]);
+				$array['totalcosts'] += $tasks["costs"];
+				$task[] = new Lists($tasks);
 			}
-			$tasks["time"] = $this->_date->formatDate($tasks["item_date"],CO_TIME_FORMAT);
-			$tasks["item_date"] = $this->_date->formatDate($tasks["item_date"],CO_DATE_FORMAT);
-			$tasks["team"] = $this->_contactsmodel->getUserList($tasks['team'],'task_team_'.$tasks["id"], "", $array["canedit"]);
-			$tasks["team_ct"] = empty($tasks["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $tasks['team_ct'];
-			if($tasks["type"] == '') {
-				$tasks["min"] = 0;
-				$tasks["costs"] = 0;
-				$tasks["type"] = '';
-			} else {
+			if($array['discount'] != 0) {
+				$array['discount_costs'] = ($array['totalcosts']/100)*$array['discount'];
+				$array['discount_costs'] = number_format($array['discount_costs'],2,',','.');
+				$array['totalcosts'] = $array['totalcosts']-(($array['totalcosts']/100)*$array['discount']);
+			}
+			if($array['vat'] != 0) {
+				$array['vat_costs'] = ($array['totalcosts']/100)*$array['vat'];
+				$array['vat_costs'] = number_format($array['vat_costs'],2,',','.');
+				$array['totalcosts'] = $array['totalcosts']+(($array['totalcosts']/100)*$array['vat']);
+			}
+			$array['totalcosts'] = number_format($array['totalcosts'],2,',','.');
+		
+		}
+		
+		if($array["invoice_type"] == 1) { // Services
+			// get the tasks
+			$array['totalcosts'] = 0;
+			$task = array();
+			$service_id = $array['service_id'];
+			$q = "SELECT * FROM co_patients_services_tasks where status='1' and mid = '$service_id' and bin='0' ORDER BY sort ASC";
+			$result = mysql_query($q, $this->_db->connection);
+			while($row = mysql_fetch_array($result)) {
+				foreach($row as $key => $val) {
+					$tasks[$key] = $val;
+				}
+				$tasks['taskcosts'] = 0;
+				$tasks["menge"] = $tasks["menge"];
+				$tasks['taskcosts'] = $tasks["menge"]*$tasks["preis"];
+				$array['totalcosts'] += $tasks['taskcosts'];
+				$tasks['taskcosts'] = number_format($tasks['taskcosts'],2,',','.');
+				$tasks["preis"] = number_format($tasks["preis"],2,',','.');
 				
-				$tasks["min"] = $this->_treatmentsmodel->getTreatmentTypeMin($tasks["type"]);
-				$tasks["costs"] = $this->_treatmentsmodel->getTreatmentTypeCosts($tasks["type"]);
-				$tasks["type"] = $this->_treatmentsmodel->getTreatmentArrayInvoice($tasks['type'],'task_treatmenttype_'.$tasks["id"], "", $array["canedit"]);
+				$task[] = new Lists($tasks);
 			}
-			$tasks["place"] = $this->_contactsmodel->getPlaceList($tasks['place'],'place', $array["canedit"]);
-			$array['totalcosts'] += $tasks["costs"];
-			$task[] = new Lists($tasks);
+			if($array['discount'] != 0) {
+				$array['discount_costs'] = ($array['totalcosts']/100)*$array['discount'];
+				$array['discount_costs'] = number_format($array['discount_costs'],2,',','.');
+				$array['totalcosts'] = $array['totalcosts']-(($array['totalcosts']/100)*$array['discount']);
+			}
+			if($array['vat'] != 0) {
+				$array['vat_costs'] = ($array['totalcosts']/100)*$array['vat'];
+				$array['vat_costs'] = number_format($array['vat_costs'],2,',','.');
+				$array['totalcosts'] = $array['totalcosts']+(($array['totalcosts']/100)*$array['vat']);
+			}
+			$array['totalcosts'] = number_format($array['totalcosts'],2,',','.');
+		
 		}
-		if($array['discount'] != 0) {
-			$array['discount_costs'] = ($array['totalcosts']/100)*$array['discount'];
-			$array['discount_costs'] = number_format($array['discount_costs'],2,',','.');
-			$array['totalcosts'] = $array['totalcosts']-(($array['totalcosts']/100)*$array['discount']);
-		}
-		if($array['vat'] != 0) {
-			$array['vat_costs'] = ($array['totalcosts']/100)*$array['vat'];
-			$array['vat_costs'] = number_format($array['vat_costs'],2,',','.');
-			$array['totalcosts'] = $array['totalcosts']+(($array['totalcosts']/100)*$array['vat']);
-		}
-		$array['totalcosts'] = number_format($array['totalcosts'],2,',','.');
 		
 		// get the diagnoses
 		/*$diagnose = array();
@@ -386,7 +443,8 @@ class PatientsInvoicesModel extends PatientsModel {
 		$invoice_date_sent = $this->_date->formatDate($invoice_date_sent);
 		$payment_reminder = $this->_date->formatDate($payment_reminder);
 		
-		$beleg_time = $this->_date->formatDateGMT( $beleg_time . " " . $end);
+		//$beleg_time = $this->_date->formatDateGMT( $beleg_time . " " . $end);
+		$beleg_time = $this->_date->formatDateGMT( $beleg_time );
 		$beleg_datum = $this->_date->formatDate($beleg_datum);
 		
 		
@@ -517,13 +575,22 @@ class PatientsInvoicesModel extends PatientsModel {
    function getCheckpointDetails($id){
 		global $lang;
 		$row = "";
-		$q = "SELECT a.pid,a.title,b.folder FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b WHERE a.pid = b.id and a.id='$id' and a.bin='0'";
+		$q = "SELECT a.pid,a.title,a.invoice_type,a.service_id,b.folder FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b WHERE a.pid = b.id and a.id='$id' and a.bin='0'";
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_fetch_array($result);
 		if(mysql_num_rows($result) > 0) {
 			$row['checkpoint_app_name'] = $lang["PATIENT_INVOICE_TITLE"];
 			$row['app_id'] = $row['pid'];
 			$row['app_id_app'] = $id;
+			
+			// check for service
+			/*if($row["invoice_type"] == 1) {
+				$service_id = $row["service_id"];
+				$q_service = "select title from co_patients_services where id = '$service_id'";
+				$result_service = mysql_query($q_service, $this->_db->connection);
+				$row["title"] = mysql_result($result_service,0);
+			}*/
+			
 		}
 		return $row;
    }

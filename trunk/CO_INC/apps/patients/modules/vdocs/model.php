@@ -248,6 +248,9 @@ class PatientsVDocsModel extends PatientsModel {
 			}
 			$accesssql = "access='$vdoc_access', access_date='$vdoc_access_date', access_user = '$session->uid',";
 		}
+		if($title == '') {
+			$title = $lang["PATIENT_VDOC_NEW"];
+		}
 		
 		$q = "UPDATE " . CO_TBL_PATIENTS_VDOCS . " set title = '$title', content = '$content', access='$vdoc_access', $accesssql edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
