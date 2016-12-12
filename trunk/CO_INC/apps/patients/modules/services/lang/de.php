@@ -19,7 +19,7 @@ $lang["PATIENT_SERVICE_GOALS"] = 'Themen';
 
 $lang["PATIENT_SERVICE_POSPONED"] = 'verschoben';
 
-$lang["PATIENT_SERVICE_HELP"] = 'manual_patienten_service.pdf';
+$lang["PATIENT_SERVICE_HELP"] = 'manual_patienten_zusatzleistungen.pdf';
 
 $lang["PATIENT_PRINT_SERVICE"] = 'zusatzleistung.png';
 
