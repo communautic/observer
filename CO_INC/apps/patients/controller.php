@@ -126,6 +126,7 @@ class Patients extends Controller {
 		$invoices = $arr["invoices"];
 		$chartGender = $arr["chartGender"];
 		$chartAge = $arr["chartAge"];
+		$show_arbeitszeit = $arr["show_arbeitszeit"];
 		ob_start();
 			include('view/folder_edit_revenue_results.php');
 			$data["html"] = ob_get_contents();
@@ -150,9 +151,9 @@ class Patients extends Controller {
 		$calctotalmin = $arr["calctotalmin"];
 		$invoices = $arr["invoices"];
 		$manager = $arr["manager"];
-		
 		$chartGender = $arr["chartGender"];
 		$chartAge = $arr["chartAge"];
+		$show_arbeitszeit = $arr["show_arbeitszeit"];
 
 		require_once(CO_INC . "/classes/phpExcel/PHPExcel.php");
 		$objPHPExcel = new PHPExcel();
@@ -177,7 +178,7 @@ $objPHPExcel->getDefaultStyle()->getFont()
     ->setSize(8);
 		
 		// row 1 Title
-		$Sheet->mergeCells('A1:B1');
+		$Sheet->mergeCells('A1:F1');
 		$Sheet->setCellValue('A1', $folder->title);
 		$Sheet->getStyle('A1:A1')->getFont()->setBold(true);
 		
@@ -195,13 +196,33 @@ $objPHPExcel->getDefaultStyle()->getFont()
 		$Sheet->getStyle('B4:B4')->getFont()->setBold(true);
 		$Sheet->mergeCells('C4:D4');
 		$Sheet->setCellValue('C4', $start . ' - ' . $end);
+		
+		$row = 4;
+		
+		if($show_arbeitszeit == 1) {
+			$Sheet->setCellValue('B5', 'Arbeitszeit');
+			$Sheet->getStyle('B5:B5')->getFont()->setBold(true);
+			$Sheet->mergeCells('C5:D5');
+			$Sheet->setCellValue('C5', $calctotalmin);
+			$row++;
+		}
+		
+		$row++;
+		$row++;
+		
+		$B = 'B'.$row;
+		$B_RANGE = "{$B}:{$B}";
+		$C = 'C'.$row;
+		$A = 'A'.$row;
+		$Z = 'Z'.$row;
+		$BG_RANGE = "{$A}:{$Z}";
 
-		$Sheet->setCellValue('B6', 'Umsatzsumme');
-		$Sheet->getStyle('B6:B6')->getFont()->setBold(true);
-		$Sheet->setCellValue('C6',CO_DEFAULT_CURRENCY . ' ' . $calctotal);
+		$Sheet->setCellValue($B, 'Umsatzsumme');
+		$Sheet->getStyle($B_RANGE)->getFont()->setBold(true);
+		$Sheet->setCellValue($C,CO_DEFAULT_CURRENCY . ' ' . $calctotal);
 		
 		$Sheet
-					->getStyle('A6:Z6')
+					->getStyle($BG_RANGE)
 					->getFill()
 					->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
 					->getStartColor()
@@ -212,7 +233,7 @@ $objPHPExcel->getDefaultStyle()->getFont()
 			$yup = 3;
 			foreach($calcvattotal as $key => $val) {
 				$steuerstring = CO_DEFAULT_CURRENCY . ' ' . number_format($val,2,',','.') . ' inkl. ' . $key . '% MwSt.';
-				$Sheet->setCellValueByColumnAndRow($yup, 6,$steuerstring);
+				$Sheet->setCellValueByColumnAndRow($yup, $row,$steuerstring);
 				$yup++;
 			} 
 			//$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D6', $steuerstring);
@@ -224,8 +245,8 @@ $objPHPExcel->getDefaultStyle()->getFont()
 				->setCellValue('D1', 'Umsatz');*/
 				
 		
-				
-		$row = 7;
+			$row++;
+		
 		
 		$i = 0;
 		$vatcheck = 0;
@@ -251,7 +272,7 @@ $objPHPExcel->getDefaultStyle()->getFont()
 					->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
 					->getStartColor()
 					->setARGB('FF808080');*/
-		
+						$row++;
 						$Sheet->setCellValueByColumnAndRow(1, $row, "exkl.");
 						$Sheet->setCellValueByColumnAndRow(2, $row, $calcvatnetto[$vatcheck_old]);
 						$sum_letter = 'B'.$row;
@@ -273,6 +294,7 @@ $objPHPExcel->getDefaultStyle()->getFont()
 						$row++;
 						
 						$Sheet->setCellValueByColumnAndRow(1, $row, "Gesamt inkl. $vatcheck_old% MwSt.");
+						$Sheet->getStyleByColumnAndRow(2, $row)->getFont()->setBold(true);
 						$Sheet->setCellValueByColumnAndRow(2, $row, $calcvattotal[$vatcheck_old]);
 						$sum_letter = 'B'.$row;
 						$sum_range = "{$sum_letter}:{$sum_letter}";
@@ -422,12 +444,15 @@ $objPHPExcel->getDefaultStyle()->getFont()
 					$Sheet->setCellValueByColumnAndRow($col++, $row, $invoice->invoice_date);
 				}
 				if($invoice->show_rechnungsnummer) {
+					$Sheet->getStyleByColumnAndRow($col, $row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
 					$Sheet->setCellValueByColumnAndRow($col++, $row, $invoice->invoice_number);
+					
 				}
 				
 				$row++;
 				$i++;
 			}
+			$row++;
 			
 			//$Sheet->setCellValueByColumnAndRow(1, $row, 'Summen');
 			//$Sheet->setCellValueByColumnAndRow(2, $row, number_format($calcvatnetto[$vatcheck],2,',','.'));
@@ -459,6 +484,7 @@ $objPHPExcel->getDefaultStyle()->getFont()
 						$row++;
 						
 						$Sheet->setCellValueByColumnAndRow(1, $row, "Gesamt inkl. $vatcheck% MwSt.");
+						$Sheet->getStyleByColumnAndRow(2, $row)->getFont()->setBold(true);
 						$Sheet->setCellValueByColumnAndRow(2, $row, $calcvattotal[$vatcheck]);
 						$sum_letter = 'B'.$row;
 						$sum_range = "{$sum_letter}:{$sum_letter}";
@@ -611,7 +637,7 @@ $Sheet->getStyle('C1:C'.$row)->getNumberFormat()->setFormatCode('[$€-C07] #.00
 		
 		$chartGender = $arr["chartGender"];
 		$chartAge = $arr["chartAge"];
-
+		$show_arbeitszeit = $arr["show_arbeitszeit"];
 		
 			ob_start();
 				include('view/folder_print_revenue.php');
@@ -814,6 +840,7 @@ $Sheet->getStyle('C1:C'.$row)->getNumberFormat()->setFormatCode('[$€-C07] #.00
 		$calctotalmin = $arr["calctotalmin"];
 		$chartGender = $arr["chartGender"];
 		$chartAge = $arr["chartAge"];
+		$show_arbeitszeit = $arr["show_arbeitszeit"];
 			ob_start();
 				include 'view/folder_print_revenue.php';
 				$html = ob_get_contents();

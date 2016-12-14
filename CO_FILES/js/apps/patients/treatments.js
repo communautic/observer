@@ -137,11 +137,6 @@ function patientsTreatments(name) {
 							switch(data.status) {
 								case "2":
 									$("#patients3 ul[rel=treatments] span[rel="+treatid+"] .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
-									var pid = $("#patients").data("second");
-									$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/patients/modules/invoices&request=getList&id="+pid, success: function(data){
-										$('#patients_invoices_items').html(data.items);
-										}
-									});
 								break;
 								case "3":
 									$("#patients3 ul[rel=treatments] span[rel="+treatid+"] .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
@@ -149,6 +144,13 @@ function patientsTreatments(name) {
 								default:
 									$("#patients3 ul[rel=treatments] span[rel="+treatid+"] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
 							}
+							
+							var pid = $("#patients").data("second");
+									$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/patients/modules/invoices&request=getList&id="+pid, success: function(data){
+										$('#patients_invoices_items').html(data.items);
+										}
+									});
+							
 							$('#patients span.statusButton').removeClass('active');
 							$('#patients span.statusButton.'+button).addClass('active');
 							var today = new Date();

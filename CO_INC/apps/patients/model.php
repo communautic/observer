@@ -476,6 +476,7 @@ class PatientsModel extends Model {
 		$array["show_ort"] = $detail->ort;
 		$array["show_dauer"] = $detail->dauer;
 		$array["show_arbeitszeit"] = $detail->arbeitszeit;
+		$show_arbeitszeit = $detail->arbeitszeit;
 		
 		
 		$array["show_rechnungsdatum"] = $detail->rechnungsdatum;
@@ -910,7 +911,7 @@ class PatientsModel extends Model {
 
 print_r($_data);
 		*/
-		$arr = array("calctotal" => $calctotal, "calcvattotal" => $calcvattotal, "calcvatnetto" => $calcvatnetto, "calcvattotalsum" => $calcvattotalsum,"calctotalmin" => $calctotalmin, "invoices" => $invoices, "access" => $access, "manager" => $manager, "chartGender" => $chartGender, "chartAge" => $chartAge);
+		$arr = array("calctotal" => $calctotal, "calcvattotal" => $calcvattotal, "calcvatnetto" => $calcvatnetto, "calcvattotalsum" => $calcvattotalsum,"calctotalmin" => $calctotalmin, "invoices" => $invoices, "access" => $access, "manager" => $manager, "chartGender" => $chartGender, "chartAge" => $chartAge, "show_arbeitszeit" => $detail->arbeitszeit);
 		return $arr;
 	}
 	

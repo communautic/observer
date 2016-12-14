@@ -4,7 +4,11 @@
 		<td class="tcell-right-inactive tcell-right-nopadding"></td>
     </tr>
 </table>
+<?php if($show_arbeitszeit == 1) { ?>
 <div style="width: 100%; height: 44px; background: #e5e5e5; border-bottom: 1px solid #ccc; color: #666; ">
+<?php } else { ?>
+<div style="width: 100%; height: 29px; background: #e5e5e5; border-bottom: 1px solid #ccc; color: #666; ">
+<?php } ?>
 <div style="line-height: 18px; padding-left: 150px;">
 
 <table width="100%" style=" border-collapse: separate">
@@ -15,8 +19,8 @@
 		foreach($calcvattotal as $key => $val) {
 	echo CO_DEFAULT_CURRENCY . ' ' . number_format($val,2,',','.') . ' inkl. ' . $key . '% MwSt. / ';
 } }?>
-      <br />
-      Arbeitszeit: <?php echo $calctotalmin;?></td>
+      <?php if($show_arbeitszeit == 1) { ?><br />
+      Arbeitszeit: <?php echo $calctotalmin;?><?php } ?></td>
     </td>
     </tr>
 </table>
