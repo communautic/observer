@@ -31,7 +31,7 @@ $lang["PATIENT_INVOICE_PAYMENT_CASH"] = 'Betrag dankend erhalten.';
 $lang["PATIENT_INVOICE_TEXT_CITATION"] = 'Sehr geehrte/r';
 $lang["PATIENT_INVOICE_TEXT_LINE1"] = 'Für die von uns erbrachten Leistungen erlaube ich mir nachstehende Honorarnote zu legen:';
 $lang["PATIENT_INVOICE_TEXT_LINE2"] = 'Ich danke für Ihr Vertrauen und bitte um Anweisung des Gesamthonorars innerhalb von 10 Tagen.';
-$lang["PATIENT_INVOICE_TEXT_LINE3"] = 'Wenn die Möglichkeit einer tarifgemäßen Rückerstattung von Kosten besteht, dann übermitteln Sie Ihrer Versicherung diese Honorarnote im Original sowie Ihren Überweisungsschein und Einzahlungsbeleg.';
+$lang["PATIENT_INVOICE_TEXT_LINE3"] = 'Wenn die Möglichkeit einer tarifgemäßen Rückerstattung von Kosten besteht, dann übermitteln Sie Ihrer Versicherung diese Honorarnote im <br>Original sowie Ihren Überweisungsschein und Einzahlungsbeleg.';
 $lang["PATIENT_INVOICE_TEXT_LINE4"] = 'Mit freundlichen Grüßen,';
 
 

@@ -129,6 +129,13 @@ function Services(app) {
 								
 								
 							}
+							
+							var pid = $("#patients").data("second");
+									$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/patients/modules/invoices&request=getList&id="+pid, success: function(data){
+										$('#patients_invoices_items').html(data.items);
+										}
+									});
+							
 							//module.askStatus = false;
 							$('#patients span.statusButton').removeClass('active');
 							$('#patients span.statusButton.'+button).addClass('active');
@@ -156,11 +163,12 @@ function Services(app) {
 		var status = $("#"+ app +" .statusTabs li span.active").attr('rel');
 		var date = $("#"+ app +" .statusTabs input").val();
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/"+ app +"/modules/services&request=updateStatus&id="+ id +"&date="+ date +"&status="+ status, cache: false, success: function(data){
-			switch(data.action) {
-				case "edit":
+			/*switch(data.action) {
+				case "edit":*/
 					switch(data.status) {
 						case "2":
 							$("#"+ app +"3 ul[rel=services] span[rel="+data.id+"] .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
+							
 						break;
 						/*case "2":
 							$("#"+ app +"3 ul[rel=services] span[rel="+data.id+"] .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
@@ -168,8 +176,13 @@ function Services(app) {
 						default:
 							$("#"+ app +"3 ul[rel=services] span[rel="+data.id+"] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
 					}
-				break;
-				case "reload":
+					var pid = $("#patients").data("second");
+									$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/patients/modules/invoices&request=getList&id="+pid, success: function(data){
+										$('#patients_invoices_items').html(data.items);
+										}
+									});
+				//break;
+				/*case "reload":
 					var module = getCurrentModule();
 					var id = $('#'+ app).data('second');
 					$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/"+app+"/modules/services&request=getList&id="+id, success: function(list){
@@ -182,7 +195,8 @@ function Services(app) {
 						}
 					});
 				break;																																														  				}
-			}
+			}*/
+					 }
 		});
 	}
 

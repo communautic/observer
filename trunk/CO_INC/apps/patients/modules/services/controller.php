@@ -146,11 +146,11 @@ class PatientsServices extends Patients {
 
 	function updateStatus($id,$date,$status) {
 		$arr = $this->model->updateStatus($id,$date,$status);
-		if($arr["what"] == "edit") {
-			return '{ "action": "edit" , "id": "' . $arr["id"] . '", "status": "' . $status . '"}';
-		} else {
+		//if($arr["what"] == "edit") {
+			return '{ "action": "edit", "id": "' . $arr["id"] . '", "status": "' . $status . '"}';
+		/*} else {
 			return '{ "action": "reload" , "id": "' . $arr["id"] . '"}';
-		}
+		}*/
 	}
 
 

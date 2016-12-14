@@ -26,30 +26,32 @@
 <?php if($manager != "") { ?>
 <table width="100%">
 	<tr>
-		<td class="grey smalltext" style="padding-left: 62px; width: 108px;">Betreuung</td>
+		<td class="grey smalltext" style="padding-left: 59px; width: 108px;">Betreuung</td>
 		<td class="grey smalltext"><?php echo $manager;?></td>
     </tr>
 </table>
 <?php } else { ?>
 <table width="100%">
 	<tr>
-		<td class="grey smalltext" style="padding-left: 62px; width: 108px;">Betreuung</td>
+		<td class="grey smalltext" style="padding-left: 59px; width: 111px;">Betreuung</td>
 		<td class="grey smalltext">Alle</td>
     </tr>
 </table>
 <?php } ?>
 <table width="100%">
 	<tr>
-		<td class="grey smalltext" style="padding-left: 62px; width: 108px;">Zeitraum</td>
+		<td class="grey smalltext" style="padding-left: 59px; width: 111px;">Zeitraum</td>
 		<td class="grey smalltext"><?php echo $start;?> - <?php echo $end;?></td>
     </tr>
 </table>
+<?php if($show_arbeitszeit == 1) { ?>
 <table width="100%">
 	<tr>
-		<td class="grey smalltext" style="padding-left: 62px; width: 108px;">Arbeitszeit</td>
+		<td class="grey smalltext" style="padding-left: 59px; width: 111px;">Arbeitszeit</td>
 		<td class="grey smalltext"><?php echo $calctotalmin;?></td>
     </tr>
 </table>
+<?php } ?>
 <p>&nbsp;</p>
 <?php
 if(is_array($invoices)) { ?>
@@ -85,7 +87,7 @@ if(is_array($invoices)) { ?>
     <?php
 		}
 		?>
-    <table class="standardsmalltext">
+    <table width="100%" class="standard">
       <tr>
         <td class="tcell-left tinytext">Einzelergebnisse <?php echo $invoice->vat;?>% MwSt.</td>
      </tr>
@@ -105,7 +107,7 @@ if(is_array($invoices)) { ?>
         </table>
     
     <?php if($invoice->showDetails) { ?>
-    <p class="tinytext grey" style="padding-left:62px; line-height: 18px;">
+    <p class="tinytext grey" style="padding-left:61px; line-height: 18px;">
     <?php echo $invoice->html_patient;?>
     <?php echo $invoice->html_betreuung;?>
     <?php echo $invoice->html_invoice;?>

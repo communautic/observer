@@ -489,7 +489,7 @@ class PatientsServicesModel extends PatientsModel {
 		$now = gmdate("Y-m-d H:i:s");
 		
 		// service
-		$q = "INSERT INTO " . CO_TBL_PATIENTS_SERVICES . " (pid,title,status_date,created_date,created_user,edited_date,edited_user) SELECT pid,CONCAT(title,' " . $lang["GLOBAL_DUPLICAT"] . "'),'$now','$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_PATIENTS_SERVICES . " where id='$id'";
+		$q = "INSERT INTO " . CO_TBL_PATIENTS_SERVICES . " (pid,title,vat,status_date,created_date,created_user,edited_date,edited_user) SELECT pid,CONCAT(title,' " . $lang["GLOBAL_DUPLICAT"] . "'),vat,'$now','$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_PATIENTS_SERVICES . " where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
 		// tasks
