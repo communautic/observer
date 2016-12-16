@@ -909,7 +909,7 @@ function getTreatmentTypeMin($string){
 		$now = gmdate("Y-m-d H:i:s");
 		$time = gmdate("Y-m-d H");
 		
-		$q = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS . " set title = '$treatment_title', item_date='$now', pid = '$patient_id', status = '0', status_date = '$now', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+		$q = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS . " set title = '$treatment_title', item_date='$now', pid = '$patient_id', status = '0', status_date = '$now', payment_type='Überweisung', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 		$result = mysql_query($q, $this->_db->connection);
 		$id = mysql_insert_id();
 		
