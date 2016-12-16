@@ -78,7 +78,7 @@ class PatientsTreatments extends Patients {
 				if($arr = $this->model->getDetails($id)) {
 					$treatment = $arr["treatment"];
 					$task = $arr["task"];
-					$diagnose = $arr["diagnose"];
+					//$diagnose = $arr["diagnose"];
 					$sendto = $arr["sendto"];
 					$printcanvas = 0;
 					ob_start();
@@ -100,7 +100,7 @@ class PatientsTreatments extends Patients {
 				if($arr = $this->model->getDetails($id)) {
 					$treatment = $arr["treatment"];
 					$task = $arr["task"];
-					$diagnose = $arr["diagnose"];
+					//$diagnose = $arr["diagnose"];
 					$sendto = $arr["sendto"];
 					$printcanvas = 0;
 					ob_start();
@@ -122,7 +122,7 @@ class PatientsTreatments extends Patients {
 				if($arr = $this->model->getDetails($id)) {
 					$treatment = $arr["treatment"];
 					$task = $arr["task"];
-					$diagnose = $arr["diagnose"];
+					//$diagnose = $arr["diagnose"];
 					$sendto = $arr["sendto"];
 					$printcanvas = 0;
 					$terminliste_text = CO_PATH_DATA . '/templates/terminliste_text.php';
@@ -222,7 +222,7 @@ class PatientsTreatments extends Patients {
 				if($arr = $this->model->getDetails($id)) {
 					$treatment = $arr["treatment"];
 					$task = $arr["task"];
-					$diagnose = $arr["diagnose"];
+					//$diagnose = $arr["diagnose"];
 					$sendto = $arr["sendto"];
 					$printcanvas = 0;
 					ob_start();
