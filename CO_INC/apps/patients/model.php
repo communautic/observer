@@ -294,7 +294,7 @@ class PatientsModel extends Model {
 				}
 			}*/
 			
-			if (strlen($array['title']) > 30) $array['title'] = substr($array['title'], 0, 27) . '...';
+			if (strlen($array['title']) > 30) $array['title'] = mb_substr($array['title'], 0, 27, 'UTF-8') . '...';
 		
 		
 		$array['totalcosts'] = 0;
@@ -522,7 +522,7 @@ class PatientsModel extends Model {
 			}
 
 
-			if (strlen($array['title']) > 30) $array['title'] = substr($array['title'], 0, 27) . '...';
+			if (strlen($array['title']) > 30) $array['title'] = mb_substr($array['title'], 0, 27, 'UTF-8') . '...';
 
 			$html_patient = '';
 			$html_patient_end = '';
@@ -991,7 +991,7 @@ print_r($_data);
 				
 				$array['beleg_nummer'] = $system->formatBelegNummer($array['beleg_nummer']);
 				
-				if (strlen($array['title']) > 30) $array['title'] = substr($array['title'], 0, 27) . '...';
+				if (strlen($array['title']) > 30) $array['title'] = mb_substr($array['title'], 0, 27, 'UTF-8') . '...';
 				
 				
 				/*if($array["invoice_type"] == 1) {

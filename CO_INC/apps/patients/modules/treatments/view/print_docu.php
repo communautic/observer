@@ -150,7 +150,7 @@ if($value->status == 1) {
 						$text = '';
 						$text = explode('<br />', nl2br($value->text));
 						$firstline = $text[0];
-						$firstline = substr($firstline,0,25).'...';
+						$firstline = mb_substr($firstline,0,25,'UTF-8').'...';
 						?>
             
             <td style="border-bottom: 1px solid #ccc; padding: 7px 0 4px 0;"><?php echo $firstline;?></td>
