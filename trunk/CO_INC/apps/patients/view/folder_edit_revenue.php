@@ -9,7 +9,7 @@
    <table border="0" cellspacing="0" cellpadding="0" style="margin-left: 141px;">
     <tr>
         <td width="158"><span style="color: #666; font-size: 11px; line-height: 30px; padding-left: 11px;">Betreuung</span></td>
-        <td width="158">Patient</td>
+        <td width="158"><span style="color: #666; font-size: 11px; line-height: 30px; padding-left: 11px;">Patient</span></td>
         <td width="79"><span style="color: #666; font-size: 11px; line-height: 30px; padding-left: 11px;"><?php echo $lang["GLOBAL_TIME_FROM"];?></span></td>
         <td width="89"><span style="color: #666; font-size: 11px; line-height: 30px; padding-left: 11px;"><?php echo $lang["GLOBAL_TIME_TO"];?></span></td>
         <!--<td width="79"><span style="color: #666; font-size: 11px; line-height: 30px;">alle Ordner</span></td>-->
