@@ -347,6 +347,14 @@ class PatientsServicesModel extends PatientsModel {
 		$q = "UPDATE " . CO_TBL_PATIENTS_SERVICES . " set title = '$title', discount='$discount', vat='$vat', documents = '$documents', access='$service_access', $accesssql edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
+		// check for invoice
+		$qi = "SELECT * FROM co_patients_treatments where service_id='$id'";
+		$resulti = mysql_query($qi, $this->_db->connection);
+		if(mysql_num_rows($resulti) > 0) {
+			$qi = "UPDATE co_patients_treatments set title = '$title', discount = '$discount', vat = '$vat', edited_user = '$session->uid', edited_date = '$now' WHERE service_id='$id'";
+			$resulti = mysql_query($qi, $this->_db->connection);
+		}
+		
 		// do existing tasks
 		$task_size = sizeof($task_id);
 		$tasks_checked_size = sizeof($task);
@@ -412,7 +420,7 @@ class PatientsServicesModel extends PatientsModel {
 			$arr = array("id" => $id, "what" => "edit");
 		}
 		
-		$q = "SELECT * FROM co_patients_treatments where service_id='$id'";
+			$q = "SELECT * FROM co_patients_treatments where service_id='$id'";
 			$result = mysql_query($q, $this->_db->connection);
 			if(mysql_num_rows($result) > 0) {
 				
