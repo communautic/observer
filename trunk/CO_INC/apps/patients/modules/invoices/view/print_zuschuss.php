@@ -14,21 +14,21 @@
 <table width="100%" cellpadding="0" cellspacing="0" style="padding-right: 10pt;">
     <tr>
         <td width="50%"><?php echo($invoice->insurance_name)?></td>
-        <td width="20%"><span class="smalltext">Rechnungsdatum</span></td>
+        <td width="20%"><span>Rechnungsdatum</span></td>
         <td width="30%"style="text-align: right;"><?php echo $invoice->invoice_date;?></td>
     </tr>
 </table>
 <table width="100%" cellpadding="0" cellspacing="0" style="padding-right: 10pt;">
     <tr>
         <td width="50%"><?php echo($invoice->insurance_address_line_1)?></td>
-        <td width="20%"><span class="smalltext"><?php echo $lang["PATIENT_INVOICE_NUMBER"];?></span></td>
+        <td width="20%"><span><?php echo $lang["PATIENT_INVOICE_NUMBER"];?></span></td>
         <td width="30%" style="text-align: right;"><span><?php echo($invoice->invoice_number);?></span></td>
     </tr>
 </table>
 <table width="100%" cellpadding="0" cellspacing="0" style="padding-right: 10pt;">
     <tr>
         <td width="50%"><?php echo($invoice->insurance_address_line_2)?></td>
-        <td width="20%"><span class="smalltext">Leistungszeitraum</span></td>
+        <td width="20%"><span>Leistungszeitraum</span></td>
         <td width="30%" style="text-align: right;"><?php echo($invoice->treatment_start);?> - <?php echo($invoice->treatment_end);?></td>
     </tr>
 </table>

@@ -13,20 +13,20 @@
 </table>
 <table width="100%" cellpadding="0" cellspacing="0" style="padding-right: 10pt;"class="standard">
     <tr>
-        <td width="63%">&nbsp;
-						
-            </td>
+        <td width="53%">
+        &nbsp;
+				</td>
         <td width="17%">
-        	<?php if($invoice->invoice_type == 1) { ?><span class="tinytext" style="line-height: 11pt;">&nbsp;</span><br /><?php } ?>
-          <span class="tinytext" style="line-height: 11px;">Rechnungsdatum</span><br />
-          <span class="tinytext" style="line-height: 10pt;"><?php echo $lang["PATIENT_INVOICE_NUMBER"];?></span>
-          <?php if($invoice->invoice_type == 0) { ?><span class="tinytext" style="line-height: 10pt;">Leistungszeitraum</span><?php } ?>
+        	<?php if($invoice->invoice_type == 1) { ?><span style="line-height: 19px;">&nbsp;</span><br /><?php } ?>
+          <span style="line-height: 19px;">Rechnungsdatum</span><br />
+          <span style="line-height: 19px;"><?php echo $lang["PATIENT_INVOICE_NUMBER"];?></span>
+          <?php if($invoice->invoice_type == 0) { ?><span style="line-height: 19px;">Leistungszeitraum</span><?php } ?>
          </td>
-        <td width="20%"style="text-align: right;">
-        <?php if($invoice->invoice_type == 1) { ?><span class="tinytext" style="line-height: 11pt;">&nbsp;</span><br /><?php } ?>
-				<span class="tinytext" style="line-height: 11px;"><?php echo $invoice->invoice_date;?></span><br />
-        <span class="tinytext" style="line-height: 10pt;"><?php echo($invoice->invoice_number);?></span><br />
-        <?php if($invoice->invoice_type == 0) { ?><span class="tinytext" style="line-height: 10pt;"><?php echo($invoice->treatment_start);?> - <?php echo($invoice->treatment_end);?></span><?php } ?>
+        <td width="30%"style="text-align: right;">
+        <?php if($invoice->invoice_type == 1) { ?><span style="line-height: 19px;">&nbsp;</span><br /><?php } ?>
+				<span style="line-height: 19px;"><?php echo $invoice->invoice_date;?></span><br />
+        <span style="line-height: 19px;"><?php echo($invoice->invoice_number);?></span><br />
+        <?php if($invoice->invoice_type == 0) { ?><span style="line-height: 19px;"><?php echo($invoice->treatment_start);?> - <?php echo($invoice->treatment_end);?></span><?php } ?>
         </td>
     </tr>
 </table>
@@ -128,8 +128,8 @@
 				<td width="20%" style="padding:5px 0 1px 0;" class="tinytext">&nbsp;</td>
 				<td width="30%" style="padding:5px 0 1px 0;" class="tinytext">&nbsp;</td>
 				<td width="10%" style="padding:5px 0 1px 0;" class="tinytext">&nbsp;</td>
-				<td width="20%" style="text-align: right; padding:5px 7px 2px 0;" class="tinytext">Gesamtbetrag</td>
-				<td width="20%" style="text-align: right; padding:5px 7px 1px 0;" class="tinytext"><?php echo CO_DEFAULT_CURRENCY;?> <?php echo $invoice->totalcosts;?></td>
+				<td width="20%" style="text-align: right; padding:5px 7px 2px 0;"><strong>Gesamtbetrag</strong></td>
+				<td width="20%" style="text-align: right; padding:5px 7px 1px 0;"><strong><?php echo CO_DEFAULT_CURRENCY;?> <?php echo $invoice->totalcosts;?></strong></td>
       </tr>
 </table>
 <p>&nbsp;</p>
@@ -150,7 +150,7 @@
     <?php } ?>
 <?php } ?>
 <p>&nbsp;</p>
-<span class="tinytext"><?php echo nl2br($invoice->protocol_invoice);?></span>
+<span><?php echo nl2br($invoice->protocol_invoice);?></span>
 <p>&nbsp;</p>
 <p style="line-height: 20px;"><?php echo $lang["PATIENT_INVOICE_TEXT_LINE4"];?></p>
 <p class="tinytext">&nbsp;</p>
