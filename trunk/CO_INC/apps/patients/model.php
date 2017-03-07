@@ -3720,7 +3720,7 @@ function createDuplicatePatientFromCalendar($id,$folder,$management) {
 		//$q = "SELECT id, CONCAT(lastname,' ',firstname) as label from " . CO_TBL_USERS . " where (lastname like '%$term%' or firstname like '%$term%') and bin ='0' and invisible = '0'";
 		//$q = "SELECT b.id, CONCAT(a.lastname,' ',a.firstname,', ',b.title) as label from " . CO_TBL_USERS . " as a, " . CO_TBL_PATIENTS_TREATMENTS . " as b, " . CO_TBL_PATIENTS . " as c WHERE  b.pid = c.id and c.cid=a.id and (a.lastname like '%$term%' or a.firstname like '%$term%' or b.title like '%$term%') and a.bin ='0' and b.bin='0' and a.invisible = '0'";
 		
-		$q = "SELECT b.id, CONCAT(a.lastname,' ',a.firstname,', ',b.title) as label from " . CO_TBL_USERS . " as a, " . CO_TBL_PATIENTS_TREATMENTS . " as b, " . CO_TBL_PATIENTS . " as c WHERE  b.pid = c.id and c.cid=a.id and (a.lastname like '%$term%' or a.firstname like '%$term%') and a.bin ='0' and b.status_invoice = '0' and b.bin='0' and a.invisible = '0'";
+		$q = "SELECT b.id, CONCAT(a.lastname,' ',a.firstname,', ',b.title) as label from " . CO_TBL_USERS . " as a, " . CO_TBL_PATIENTS_TREATMENTS . " as b, " . CO_TBL_PATIENTS . " as c WHERE  b.invoice_type='0' and b.pid = c.id and c.cid=a.id and (a.lastname like '%$term%' or a.firstname like '%$term%') and a.bin ='0' and b.status_invoice = '0' and b.bin='0' and a.invisible = '0'";
 		
 		$result = mysql_query($q, $this->_db->connection);
 		$num=mysql_affected_rows();
