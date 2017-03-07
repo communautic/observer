@@ -1775,10 +1775,9 @@ function getPatientTitleFromServiceIDs($array,$target, $link = 0){
    */
    function setPatientDetails($id,$folder,$management,$management_ct,$insurer,$insurer_ct,$protocol,$number,$number_insurer,$insurance,$insuranceadd,$code,$dob,$familystatus,$coo,$documents) {
 		global $session, $contactsmodel;
-		//$d = DateTime::createFromFormat('Y-m-d', $array["dob"]);
-		//$dob = $this->_date->formatDate($dob);
-		$d = DateTime::createFromFormat('Y-m-d', $dob);
-    if($d && $d->format('Y-m-d') == $dob) {
+
+		$d = DateTime::createFromFormat('d.m.Y', $dob);
+    if($d && $d->format('d.m.Y') == $dob) {
 			$dob = $this->_date->formatDate($dob);
 		} else {
 			$dob = $dob;
