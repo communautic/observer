@@ -221,6 +221,9 @@ if (!empty($_GET['request'])) {
 		case 'removeCalendarView':
 			echo $contacts->removeCalendarView($_GET['id']);
 		break;
+		case 'setInvoiceAddon':
+			echo $contacts->setInvoiceAddon($_GET['id'],$_GET['addon']);
+		break;
 		
 	}
 	

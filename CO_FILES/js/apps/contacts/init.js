@@ -1791,5 +1791,62 @@ $(document).ready(function() {
 			}
 		});
 	});
+	
+	var startinvoicenumber = co_invoice_start+1;
+	var invoicedate = new Date();
+	var invoiceyear= invoicedate.getFullYear();
+	
+	var statesdemo = {
+	state0: {
+		html:'Rechnungsnummer AKTIVIEREN<br><input id="invoice_addon" name="invoice_addon" size="4" maxlength="4"> <input id="year" size="4" maxlength="4" placeholder="' + invoiceyear + '" disabled="disabled"> <input id="no" size="4" maxlength="4" placeholder="' + startinvoicenumber + '" disabled="disabled">',
+		buttons: { Ja: true, Nein: false  },
+		focus: 1,
+		submit:function(e,v,m,f){
+			if(v){
+				e.preventDefault();
+				if(f.invoice_addon == '') {
+					return false;
+				}
+				$.prompt.getStateContent('state1').find('#invoice_addon_txt').text(f.invoice_addon);
+				$.prompt.goToState('state1');
+				return false;
+			}
+			$.prompt.close();
+		}
+	},
+	state1: {
+		html:'Ihre erste automatisierte Rechnungsnummer wird lauten<br><span id="invoice_addon_txt"></span> / ' + invoiceyear + ' / ' + startinvoicenumber,
+		buttons: { Ja: true, Nein: false  },
+		focus: 1,
+		submit:function(e,v,m,f){
+			e.preventDefault();
+			if(v) {
+				var id = $("#contacts").data("first");
+				var addon = $('#invoice_addon_txt').text();
+				
+				$.ajax({ type: "GET", url: "/", data: "path=apps/contacts&request=setInvoiceAddon&id=" + id + "&addon=" + addon, cache: false, success: function(data){
+						$('#showInvoiceNoPrompt').removeClass('active').removeClass('content-nav');
+						$('#showInvoiceNoPrompt').parent().removeClass('tcell-left').addClass('tcell-left-inactive');
+						$('#invoiceAddonTxt').text(data);
+						$.prompt.close();
+						
+					}
+				});
+			} else {
+				$.prompt.close();
+			}
+			
+				//$.prompt.close();
+			//else if(v==-1)
+				//$.prompt.goToState('state0');
+		}
+	}
+};
+	
+	
+	$(document).on('click', '#showInvoiceNoPrompt.active', function(e) {
+		e.preventDefault();
+		$.prompt(statesdemo);
+	});
 
 });

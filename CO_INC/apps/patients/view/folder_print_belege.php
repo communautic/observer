@@ -69,6 +69,13 @@ foreach ($invoices as $invoice) {
             <td class="grey smalltext fourCols-paddingTop">
             	<span style="display:inline-block; width: 140px;">Belegnummer</span><?php echo($item->beleg_nummer);?></td>
         </tr>
+        <tr>
+            <td class="fourCols-one">&nbsp;</td>
+            <td class="fourCols-two">&nbsp;</td>
+            <td class="fourCols-three">&nbsp;</td>
+            <td class="grey smalltext fourCols-paddingTop">
+            	<span style="display:inline-block; width: 140px;">Rechnungsnummer</span><?php echo($item->invoice_number);?></td>
+        </tr>
         </table>
         &nbsp;
     <?php 

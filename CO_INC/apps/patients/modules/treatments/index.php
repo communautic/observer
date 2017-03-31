@@ -33,6 +33,15 @@ $patientsTreatments = new PatientsTreatments("treatments");
 
 if (!empty($_GET['request'])) {
 	switch ($_GET['request']) {
+		case 'getCoPopup':
+			echo($patientsTreatments->getCoPopup($_GET['id']));
+		break;
+		case 'generateBarzahlung':
+			echo($patientsTreatments->generateBarzahlung($_GET['tid'],$_GET['tasks']));
+		break;
+		case 'deleteBarBeleg':
+			echo($patientsTreatments->deleteBarBeleg($_GET['id']));
+		break;
 		case 'getList':
 			$sort = "0";
 			if(!empty($_GET['sort'])) {
@@ -155,6 +164,9 @@ if (!empty($_GET['request'])) {
 		break;
 		case 'getMethodContext':
 			echo($patientsTreatments->getMethodContext($_GET['id'],$_GET['field'],$_GET['edit']));
+		break;
+		case 'generateInvoice':
+			echo($patientsTreatments->generateInvoice($_GET['id']));
 		break;
 	}
 }

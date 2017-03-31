@@ -219,6 +219,33 @@ class PatientsServicesModel extends PatientsModel {
 				$array["specialcanedit"] = true;
 		}
 		}
+		
+		$array["invoice_no"] = CO_INVOICE_START;
+		$q_invoice_no = "SELECT invoice_no FROM co_patients_treatments where service_id='$id'";
+		$result_invoice_no = mysql_query($q_invoice_no, $this->_db->connection);
+		if(mysql_num_rows($result_invoice_no) > 0) {
+			$array["invoice_no"] = mysql_result($result_invoice_no,0);
+		}
+		
+		$array["invoice_carrier"] = '';
+		
+		$q_invoice_no = "SELECT invoice_carrier FROM co_patients_treatments where service_id='$id'";
+		$result_invoice_no = mysql_query($q_invoice_no, $this->_db->connection);
+		if(mysql_num_rows($result_invoice_no) > 0) {
+			$invoice_carrier = mysql_result($result_invoice_no,0);
+			if($invoice_carrier != 0) {
+				$qc = "SELECT invoice_addon FROM co_users where id = '$invoice_carrier'";
+				$resultc = mysql_query($qc, $this->_db->connection);
+				$array["invoice_carrier"] = mysql_result($resultc,0);
+			}
+		}
+		
+		$array["invoice_year"] = '';
+		$q_invoice_no = "SELECT invoice_year FROM co_patients_treatments where service_id='$id'";
+		$result_invoice_no = mysql_query($q_invoice_no, $this->_db->connection);
+		if(mysql_num_rows($result_invoice_no) > 0) {
+			$array["invoice_year"] = mysql_result($result_invoice_no,0);
+		}
 
 		$array["documents"] = $this->_documents->getDocListFromIDs($array['documents'],'documents');
 		$array["copies"] = $this->getPatientTitleFromServiceIDs(explode(",",$array['copies']),'services');
@@ -287,22 +314,38 @@ class PatientsServicesModel extends PatientsModel {
 		// get the tasks
 		$array['totalcosts'] = 0;
 		$task = array();
+		$bar_compare_array = array();
+		$task_bar = array();
+		
 		$q = "SELECT * FROM " . CO_TBL_PATIENTS_SERVICES_TASKS . " where mid = '$id' and bin='0' ORDER BY sort";
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
 		foreach($row as $key => $val) {
 				$tasks[$key] = $val;
 			}
+			$tid = $tasks['id'];
 			$tasks['taskcosts'] = 0;
 			$tasks["menge"] = $tasks["menge"];
 			
 			$preiscalc = $tasks["preis"];
 			$tasks['taskcosts'] = $tasks["menge"]*$preiscalc;
+			$bar_compare_array[$tid]['title'] = $tasks["title"];
+			$bar_compare_array[$tid]['costs'] = $tasks["taskcosts"];
 			$tasks['preis_pretty'] = number_format($tasks["preis"], 2, ',', '.'); 
 			$array['totalcosts'] += $tasks['taskcosts'];
 			
 			//$tasks["preis"] = $tasks["preis"],2,',','.');
 			$task[] = new Lists($tasks);
+		}
+		
+		// get tasks barzahlungen
+		$q = "SELECT * FROM co_patients_services_tasks_bar WHERE sid='$id' ORDER BY id ASC";
+		$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+				foreach($row as $key => $val) {
+					$tasks_bar[$key] = $val;
+				}
+				$task_bar[] = new Lists($tasks_bar);
 		}
 		
 		if($array['discount'] != 0) {
@@ -317,7 +360,7 @@ class PatientsServicesModel extends PatientsModel {
 		$sendto = $this->getSendtoDetails("patients_services",$id);
 
 		$service = new Lists($array);
-		$arr = array("service" => $service, "task" => $task, "sendto" => $sendto, "access" => $array["perms"]);
+		$arr = array("service" => $service, "task" => $task, "task_bar" => $task_bar, "bar_compare_array" => $bar_compare_array,"sendto" => $sendto, "access" => $array["perms"]);
 		return $arr;
    }
 
@@ -383,7 +426,8 @@ class PatientsServicesModel extends PatientsModel {
 			
 			//$preis = number_format((float)($task_text3[$key]), 2, '.', ''); 
 			//echo $preis;
-			$preis = str_replace(',', ".", $task_text3[$key]);
+			$preis = str_replace('.', "", $task_text3[$key]);
+			$preis = str_replace(',', ".", $preis);
 			$preis = (float)$preis;
 			
 			$q = "UPDATE " . CO_TBL_PATIENTS_SERVICES_TASKS . " set status = '$checked_items[$key]', title = '$task_title[$key]', menge = '$task_text2[$key]', preis = '$preis' WHERE id='$task_id[$key]'";
@@ -411,28 +455,83 @@ class PatientsServicesModel extends PatientsModel {
 		$date = $this->_date->formatDate($date);
 		$now = gmdate("Y-m-d H:i:s");
 		
-		
-		
 		$q = "UPDATE " . CO_TBL_PATIENTS_SERVICES . " set status = '$status', status_date = '$date', edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		if ($result) {
 			$arr = array("id" => $id, "what" => "edit");
 		}
+
+		$q = "SELECT invoice_no FROM co_patients_treatments WHERE service_id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result) > 0) {
+			$invoice_no = $invoice_no = mysql_result($result,0);
+			$num_sql = "";
+			if($invoice_no == CO_INVOICE_START) {
+				
+				$q = "SELECT pid FROM " . CO_TBL_PATIENTS_SERVICES . " WHERE id = '$id'";
+				$result = mysql_query($q, $this->_db->connection);
+				$pid = mysql_result($result,0);
+				
+				$q = "SELECT management FROM " . CO_TBL_PATIENTS . " WHERE id = '$pid'";
+				$result = mysql_query($q, $this->_db->connection);
+				$manager = mysql_result($result,0);
+				
+				$nummer_neu = $this->generateInvoiceNo($manager);
+				$num_sql = "invoice_no='$nummer_neu', payment_type='Barzahlung',";
+			}
+			//invoice exists so update the data
+			$qs = "SELECT * FROM " . CO_TBL_PATIENTS_SERVICES . " where id = '$id'";
+			$results = mysql_query($qs, $this->_db->connection);
+			if(mysql_num_rows($results) < 1) {
+				return false;
+			}
+			$rows = mysql_fetch_array($results);
+			foreach($rows as $key => $val) {
+					$array[$key] = $val;
+				}
+				
+				$title = $array['title'];
+				$discount = $array['discount'];
+				$vat = $array['vat'];
+
 		
-			$q = "SELECT * FROM co_patients_treatments where service_id='$id'";
+			$qu = "UPDATE co_patients_treatments set title = '$title', discount = '$discount', vat = '$vat', $num_sql edited_user = '$session->uid', edited_date = '$now' WHERE service_id='$id'";
+			$resultu = mysql_query($qu, $this->_db->connection);
+			$this->checkinService($id);
+			$arr = array("id" => $id, "what" => "reload");
+			
+			
+		} else {
+			//$invoice_no = mysql_result($result,0);
+			if($status == 2) {
+				
+				$q = "SELECT pid FROM " . CO_TBL_PATIENTS_SERVICES . " WHERE id = '$id'";
+				$result = mysql_query($q, $this->_db->connection);
+				$pid = mysql_result($result,0);
+				$this->generateInvoice($pid,$id);
+			}
+			
+		}
+		
+		
+		
+			/*$q = "SELECT * FROM co_patients_treatments where service_id='$id'";
 			$result = mysql_query($q, $this->_db->connection);
 			if(mysql_num_rows($result) > 0) {
 				
 				$q = "DELETE FROM co_patients_treatments where service_id='$id'";
 				$result = mysql_query($q, $this->_db->connection);
 			}
+		*/
 		
 		
-		$this->checkinService($id);
+			return $arr;
+		
+		
+		//$this->checkinService($id);
 		// move to invoices / treatments
-		if($status == 2) {
-			//$this->checkinService($id);
+		/*if($status == 2) {
 			
 			$q = "SELECT * FROM " . CO_TBL_PATIENTS_SERVICES . " where id = '$id'";
 			$result = mysql_query($q, $this->_db->connection);
@@ -451,25 +550,16 @@ class PatientsServicesModel extends PatientsModel {
 				
 				$q = "INSERT INTO co_patients_treatments set title = '$title', discount = '$discount', vat = '$vat',item_date='$now', pid = '$pid', invoice_type='1', service_id='$id',status = '2', status_date = '$now', status_invoice_date = '$now', invoice_date ='$now', payment_type='Überweisung', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
 			$result = mysql_query($q, $this->_db->connection);
-			//$id = mysql_insert_id();
+
 				
 			$arr = array("id" => $id, "what" => "reload");
 		} else {
-			//if invoice exists delete it
-			/*$this->checkinService($id);
-			
-			$q = "SELECT * FROM co_patients_treatments where service_id='$id'";
-			$result = mysql_query($q, $this->_db->connection);
-			if(mysql_num_rows($result) > 0) {
-				
-				$q = "DELETE FROM co_patients_treatments where service_id='$id'";
-				$result = mysql_query($q, $this->_db->connection);*/
-				
+
 			$arr = array("id" => $id, "what" => "reload");
-			//}
+
 		}
 
-		return $arr;
+		return $arr;*/
 	}
 
 
@@ -699,6 +789,157 @@ class PatientsServicesModel extends PatientsModel {
 			$pro['titlelink'] = $this->getPatientTitleFromServiceIDs(explode(",",$id_new),'services');
 			return $pro;
 		}
+	}
+	
+	
+	function generateInvoiceNo($manager) {
+		$q = "SELECT MAX(invoice_no) FROM co_patients_treatments as a, co_patients as b WHERE b.management = '$manager' and a.pid=b.id;";
+		$result = mysql_query($q, $this->_db->connection);
+		$nummer = mysql_result($result,0);
+		$nummer_neu = $nummer+1;
+		return $nummer_neu;
+		
+	}
+	
+	function generateInvoice($pid,$sid) {
+		global $session, $lang, $system;
+		
+		// manager id
+		$q = "SELECT management FROM " . CO_TBL_PATIENTS . " WHERE id = '$pid'";
+		$result = mysql_query($q, $this->_db->connection);
+		$manager = mysql_result($result,0);
+		
+		/*$q = "SELECT MAX(invoice_no) FROM co_patients_treatments as a, co_patients as b WHERE b.management = '$manager' and a.pid=b.id;";
+		$result = mysql_query($q, $this->_db->connection);
+		$nummer = mysql_result($result,0);
+		$nummer_neu = $nummer+1;*/
+		
+		$nummer_neu = $this->generateInvoiceNo($manager);
+		
+		$now = gmdate("Y-m-d H:i:s");
+		$time = gmdate("Y-m-d H:i");
+		$year = date("Y");
+		
+		$q = "SELECT * FROM " . CO_TBL_PATIENTS_SERVICES . " where id = '$sid'";
+			$result = mysql_query($q, $this->_db->connection);
+			if(mysql_num_rows($result) < 1) {
+				return false;
+			}
+			$row = mysql_fetch_array($result);
+			foreach($row as $key => $val) {
+					$array[$key] = $val;
+				}
+				
+				$pid = $array['pid'];
+				$title = $array['title'];
+				$discount = $array['discount'];
+				$vat = $array['vat'];
+
+		//$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS . " set invoice_carrier='$manager', status_invoice='0', status_invoice_date='$now', payment_type='Barzahlung', invoice_no='$nummer_neu', invoice_year='$year' where id='$id'";
+		//$result = mysql_query($q, $this->_db->connection);
+
+		
+		$q = "INSERT INTO co_patients_treatments set title = '$title', discount = '$discount', vat = '$vat',item_date='$now', pid = '$pid', invoice_type='1', service_id='$sid',invoice_carrier='$manager', status='1', status_date='$now', status_invoice='0', status_invoice_date='$now', invoice_date='$now', payment_type='Barzahlung', invoice_no='$nummer_neu', invoice_year='$year', created_user = '$session->uid', created_date = '$now', edited_user = '$session->uid', edited_date = '$now'";
+			$result = mysql_query($q, $this->_db->connection);
+
+		if ($result) {
+			$array["invoice_no"] = $system->formatInvoiceNumber($nummer_neu,$manager, $year);
+			/*$array["beleg_datum"] = $this->_date->formatDate($now,CO_DATE_FORMAT);
+			$array["beleg_time"] = $this->_date->formatDate($time,CO_TIME_FORMAT);*/
+			//$array = array();
+			return $array;
+		}
+   }
+	 
+	 
+	 function getBarServiceTasks($id) {
+		 
+		 $q = "SELECT * FROM " . CO_TBL_PATIENTS_SERVICES_TASKS . " where mid = '$id' and bin='0' ORDER BY sort";
+		$result = mysql_query($q, $this->_db->connection);
+		while($row = mysql_fetch_array($result)) {
+		foreach($row as $key => $val) {
+				$array[$key] = $val;
+			}
+		 
+		 // get all calendar tasks
+			/*$q = "SELECT a.id,a.bar,a.mid,a.status,a.type,a.text,a.item_date, b.eventlocation,b.eventlocationuid,b.startdate,b.enddate, b.id as eventid, c.id as calendarid, c.displayname, d.couid FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " as a, oc_clndr_objects as b, oc_clndr_calendars as c, oc_users as d where a.mid = '$id' and b.calendarid = c.id and c.userid=d.uid and a.bin='0' and b.eventid = a.id ORDER BY b.startdate ASC";
+			$result = mysql_query($q, $this->_db->connection);
+			while($row = mysql_fetch_array($result)) {
+				foreach($row as $key => $val) {
+					$array[$key] = $val;
+					
+				}*/
+				$tasks[] = new Lists($array); 
+			}
+			//$tasks[] = new Lists($task);
+			//$array["tasks"] = $field;
+		
+		$arr = array("tasks" => $tasks);
+	  return $arr;
+
+	 }
+	 
+	 function generateBarzahlung($sid,$tasks) {
+		 
+		$tasks = json_decode($tasks);
+		 
+		// generate Barzahlung
+		$bar_ids = '';
+		foreach($tasks as $key => $val) {
+			$bar_ids .= $val.',';
+		}
+		 
+		$bar_ids = rtrim($bar_ids, ",");
+		 
+		$q = "insert into co_patients_services_tasks_bar set sid='$sid', task_ids='$bar_ids'";
+		$result = mysql_query($q, $this->_db->connection);
+			
+		if ($result) {
+			// now save bar to tasks
+			foreach($tasks as $key => $val) {
+				$task_id = $val;
+				$q = "UPDATE " . CO_TBL_PATIENTS_SERVICES_TASKS . " set bar='1' where id='$task_id'";
+				$result = mysql_query($q, $this->_db->connection);
+
+		}
+		}
+		
+		return true;
+
+	}
+	
+	
+	function deleteBarBeleg($id) {
+		 
+		$q = "select * FROM co_patients_services_tasks_bar where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if ($result) {
+			$beleg = mysql_fetch_assoc($result);
+			$task_ids = explode(',', $beleg['task_ids']);
+													
+			foreach($task_ids as $key => $val) {
+				$qt = "UPDATE " . CO_TBL_PATIENTS_SERVICES_TASKS . " set bar='0' where id='$val'";
+				$resultt = mysql_query($qt, $this->_db->connection);
+			}
+			
+			$q = "delete FROM co_patients_services_tasks_bar where id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		return $task_ids;
+		
+		}
+		 
+			
+		/*if ($result) {
+			foreach($tasks as $key => $val) {
+				$task_id = $val;
+				$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " set bar='1' where id='$task_id'";
+				$result = mysql_query($q, $this->_db->connection);
+
+		}
+		}*/
+		
+		//return true;
+
 	}
 
 

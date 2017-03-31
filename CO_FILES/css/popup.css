@@ -108,6 +108,17 @@ background: linear-gradient(to bottom,  #f7b599 0%,#f18050 50%,#eb4600 51%,#eb46
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7b599', endColorstr='#eb4600',GradientType=0 );
 }
 
+#co-popup .popupButtons a.blue {
+	color: #fff;
+	border: 1px solid #679af0;
+	background: #679af0;
+background: -moz-linear-gradient(top,  #679af0 0%, #0e5fe6 50%, #015ae5 51%, #015ae5 100%);
+background: -webkit-linear-gradient(top,  #679af0 0%,#0e5fe6 50%,#015ae5 51%,#015ae5 100%);
+background: linear-gradient(to bottom,  #679af0 0%,#0e5fe6 50%,#015ae5 51%,#015ae5 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#679af0', endColorstr='#015ae5',GradientType=0 );
+
+}
+
 /* -----------------------------------------------------
 	Arrows
 ----------------------------------------------------- */
@@ -191,6 +202,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7b599', end
 .co-popupOuter { float: left; width: 200px; height: 22px; position: relative; }
 .co-popup-content { display: none; }
 
+#co-popup.popup-200 {
+	background: #2d2d2d;
+	height: auto !important;
+	width: 220px;
+	border: 1px solid #2d2d2d;
+	z-index: 10;
+}
 
 /* full popup */
 #co-popup.popup-full {
@@ -233,6 +251,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#949494', end
 	background-color: #d8d8d8;
 	width: 268px;
 }
+
+#co-popup.popup-200 .content {
+	width: 190px;
+}
+
 
 #co-popup .content.nohead {
     margin: 3px;

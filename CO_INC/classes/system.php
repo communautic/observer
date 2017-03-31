@@ -24,6 +24,12 @@ class System
 		return $num;
 	}
 	
+	function formatInvoiceNumber($num, $addon, $year) {
+		//$num = $addon . '/' . $year . '/' . str_pad($num, 4, "0", STR_PAD_LEFT);
+		$num = $addon . '/' . $year . '/' . $num;
+		return $num;
+	}
+	
 	
 	/**
 	 * Returns a reference to a json object

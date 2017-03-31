@@ -773,7 +773,7 @@ $(document).ready(function() {
 		module.newItemSelection(rel);
 	});
 
-	$(document).on('click','a.showItemContext',function(e) {
+	$(document).on('click','.showItemContext',function(e) {
 		e.preventDefault();
 		var ele = $(this);
 		var uid = $(this).attr('uid');

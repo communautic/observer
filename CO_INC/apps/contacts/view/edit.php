@@ -234,6 +234,13 @@ $style = "display: none;";
 </table>
 </div>
 
+<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+	<tr>
+	  <td class="tcell-left<?php if(!$contact->activateInvoiceNo) {?>-inactive<?php } ?> text11"><span <?php if($contact->activateInvoiceNo) {?> id="showInvoiceNoPrompt" class="content-nav active" <?php } ?>><span>Rechnungsnummer</span></span></td>
+	  <td class="tcell-right-inactive" id="invoiceAddonTxt"><?php if(!$contact->activateInvoiceNo) {?><?php echo($contact->invoice_addon);?>/<?php echo date('Y');?>/1001<?php } ?></td>
+	</tr>
+</table>
+
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>

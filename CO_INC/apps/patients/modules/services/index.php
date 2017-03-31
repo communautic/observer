@@ -33,6 +33,15 @@ $patientsServices = new PatientsServices("services");
 
 if (!empty($_GET['request'])) {
 	switch ($_GET['request']) {
+		case 'getCoPopup':
+			echo($patientsServices->getCoPopup($_GET['id']));
+		break;
+		case 'generateBarzahlung':
+			echo($patientsServices->generateBarzahlung($_GET['tid'],$_GET['tasks']));
+		break;
+		case 'deleteBarBeleg':
+			echo($patientsServices->deleteBarBeleg($_GET['id']));
+		break;
 		case 'getList':
 			$sort = "0";
 			if(!empty($_GET['sort'])) {
@@ -118,6 +127,9 @@ if (!empty($_GET['request'])) {
 		break;
 		case 'copyService':
 			echo($patientsServices->copyService($_GET['pid'],$_GET['phid']));
+		break;
+		case 'generateInvoice':
+			echo($patientsServices->generateInvoice($_GET['pid'],$_GET['sid']));
 		break;
 	}
 }

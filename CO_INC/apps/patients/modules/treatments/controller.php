@@ -32,6 +32,8 @@ class PatientsTreatments extends Patients {
 		if($arr = $this->model->getDetails($id)) {
 			$treatment = $arr["treatment"];
 			$task = $arr["task"];
+			$task_bar = $arr["task_bar"];
+			$bar_compare_array = $arr["bar_compare_array"];
 			//$diagnose = $arr["diagnose"];
 			$sendto = $arr["sendto"];
 			ob_start();
@@ -39,6 +41,7 @@ class PatientsTreatments extends Patients {
 				$data["html"] = ob_get_contents();
 			ob_end_clean();
 			$data["access"] = $arr["access"];
+			$data["invoice_no"] = $treatment->invoice_no;
 			//$data["canvases"] = $diagnose;
 			return json_encode($data);
 		} else {
@@ -271,6 +274,7 @@ class PatientsTreatments extends Patients {
 			}
 		}
 		if($status == 2) {
+			
 			$checkPatient = $this->model->checkPatientFinished($id);
 			if($checkPatient){
 				$changePatientStatus = 2;
@@ -522,6 +526,66 @@ class PatientsTreatments extends Patients {
 		$context = $this->model->getMethodContext($id,$field);
 		include 'view/method_context.php';
 	}
+	
+	function getCoPopup($id) {
+		global $system, $lang;
+		if($arr = $this->model->getBarTreatmentTasks($id)) {
+			$tasks = $arr['tasks'];
+			//print_r($tasks);
+			//$tasks = $arr["tasks"];
+			//echo $tasks;
+			//ob_start();
+				include 'view/copopup.php';
+				//$html = ob_get_contents();
+			//ob_end_clean();
+			//return $html;
+		}
+	}
+	
+	function generateInvoice($id) {
+		global $lang;
+		if($arr = $this->model->generateInvoice($id)) {
+			return json_encode($arr);
+		}
+	}
+	
+	function generateBarzahlung($tid,$tasks) {
+		global $lang;
+		if( $bar = $this->model->generateBarzahlung($tid,$tasks)) {
+			if($arr = $this->model->getDetails($tid)) {
+				$treatment = $arr["treatment"];
+				$task = $arr["task"];
+				$task_bar = $arr["task_bar"];
+				$bar_compare_array = $arr["bar_compare_array"];
+				$html = '';
+				
+					
+					foreach($task_bar as $value) { 
+               include("view/tasks_bar.php");
+							 ob_start();
+					//include 'view/edit.php';
+					$html .= ob_get_contents();
+					ob_end_clean();
+						}
+					
+				
+				//$data["canvases"] = $diagnose;
+				return $html;
+			} else {
+				return 'error';
+			}
+			return true;
+		}
+	}
+	
+	function deleteBarBeleg($id) {
+		global $lang;
+		if( $bar = $this->model->deleteBarBeleg($id)) {
+			return json_encode($bar);
+		}
+	}
+	
+	
 	
 }
 

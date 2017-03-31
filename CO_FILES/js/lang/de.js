@@ -86,6 +86,10 @@ var ALERT_CALENDAR_MISSING_PATIENT = "Patient";
 var ALERT_ARCHIVE = "Wollen Sie die Daten wirklich in das Modul Archiv verschieben?";
 var ALERT_ARCHIVE_CHOOSE_FOLDER = 'Bitte wählen Sie einen Ordner aus';
 
+var ALERT_MESSAGE_GERERATE_INVOICE = "Mit Aktivieren einer Barzahlung <br />generieren Sie eine neue Rechnungsvorlage inkl. <br />Rechnungsnummer";
+var ALERT_MESSAGE_TREATMENT_FINISHED_GERERATE_INVOICE = "Mit Abschließen der Behandlung <br />generieren Sie eine neue Rechnungsvorlage inkl. <br />Rechnungsnummer";
+var ALERT_MESSAGE_SERVICE_FINISHED_GERERATE_INVOICE = "Mit Abschließen der Zusatzleistung <br />generieren Sie eine neue Rechnungsvorlage inkl. <br />Rechnungsnummer";
+
 // calendar settings
 var defaultView="agendaWeek";
 var eventSources=[];

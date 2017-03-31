@@ -308,6 +308,12 @@ class ContactsModel extends Model {
 		}*/
 		
 		$array["avatar"] = $this->_users->getAvatar($id);
+		
+		// Rechnungsnummer
+		$array["activateInvoiceNo"] = false;
+		if($array["invoice_addon"] == '') {
+			$array["activateInvoiceNo"] = true;
+		}
 	
 		// dates
 		$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
@@ -1524,7 +1530,15 @@ class ContactsModel extends Model {
 		$q = "DELETE FROM oc_users WHERE couid='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 	}
+	
+	
+	function setInvoiceAddon($id,$addon) {
+		// update userfield
+		$q = "UPDATE co_users SET invoice_addon='$addon' WHERE id='$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		
 
+	}
 	
 }
 

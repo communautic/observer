@@ -6,7 +6,8 @@ function patientsTreatments(name) {
 	this.askStatus = true;
 	this.coPrintOptions = '';
 	this.coSendToOptions = '';
-	this.coPopupEditClass = 'popup-full';
+	this.coPopupEditClass = 'popup-200';
+	this.coPopupEdit = '';
 
 
 	this.formProcess = function(formData, form, poformOptions) {
@@ -115,55 +116,109 @@ function patientsTreatments(name) {
 			break;
 		}
 		var treatid = data.id;
+		//alert('alert 1');
+		var status = $("#patients .statusTabs li span.active").attr('rel');
+		if(status == 2 || status == 3) {
+			module.askStatus = false;
+		}
+		
 		if(data.changeTreatmentStatus != "0" && module.askStatus && $('.jqibox').length == 0) {
 			switch(data.changeTreatmentStatus) {
-				case "1":
+				/*case "1":
 					var txt = ALERT_STATUS_TREATMENT_ACTIVATE;
 					var button = 'inprogress';
-				break;
+				break;*/
 				case "2":
-					var txt = ALERT_STATUS_TREATMENT_COMPLETE;
+					var txt = ALERT_STATUS_TREATMENT_COMPLETE + '<br>' +ALERT_MESSAGE_TREATMENT_FINISHED_GERERATE_INVOICE;
 					var button = 'finished';
 				break;
 			}
-			var langbuttons = {};
-			langbuttons[ALERT_YES] = true;
-			langbuttons[ALERT_NO] = false;
-			$.prompt(txt,{ 
-				buttons:langbuttons,
-				submit: function(e,v,m,f){		
-					if(v){
-						$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/patients/modules/treatments&request=updateStatus&id=' + treatid + '&date=&status='+data.changeTreatmentStatus, cache: false, success: function(data){
-							switch(data.status) {
-								case "2":
-									$("#patients3 ul[rel=treatments] span[rel="+treatid+"] .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
-								break;
-								case "3":
-									$("#patients3 ul[rel=treatments] span[rel="+treatid+"] .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
-								break;
-								default:
-									$("#patients3 ul[rel=treatments] span[rel="+treatid+"] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
-							}
-							
-							var pid = $("#patients").data("second");
-									$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/patients/modules/invoices&request=getList&id="+pid, success: function(data){
-										$('#patients_invoices_items').html(data.items);
+			
+			
+			var checkForInvoice = $('#patients-right span.showCoPopup');
+			if(! checkForInvoice.hasClass('activeInvoice')) {
+				var langbuttons = {};
+				langbuttons[ALERT_YES] = true;
+				langbuttons[ALERT_NO] = false;
+				$.prompt(txt,{ 
+					buttons:langbuttons,
+					submit: function(e,v,m,f){		
+						if(v){
+							$.ajax({ type: "GET", dataType:  'json', url: "/", data: 'path=apps/patients/modules/treatments&request=generateInvoice&id='+treatid, success: function(html){
+								$.prompt.close();
+								checkForInvoice.addClass('activeInvoice');
+								//self.coPopupOpen(el,request);
+								var fid = $("#patients").data("second");
+								patients.getNavModulesNumItems(fid);
+								$('#patientsActions .actionBin').addClass('noactive');
+								
+								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients/modules/treatments&request=updateStatus&id=" + treatid + "&date=&status=" + data.changeTreatmentStatus, cache: false, success: function(data){
+										switch(data.status) {
+											case "2":
+										$("#patients3 ul[rel=treatments] span[rel="+treatid+"] .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
+									break;
+									case "3":
+										$("#patients3 ul[rel=treatments] span[rel="+treatid+"] .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
+	
+									break;
+									default:
+										$("#patients3 ul[rel=treatments] span[rel="+treatid+"] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
 										}
-									});
+										if(data.changePatientStatus != 0) { module.setPatientStatus(data.changePatientStatus); }
+										var pid = $("#patients").data("second");
+										$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/patients/modules/invoices&request=getList&id="+pid, success: function(data){																																																																				
+									$('#patients_invoices_items').html(data.items);
+											}
+										});
+										
+										$('#patients span.statusButton').removeClass('active');
+								$('#patients span.statusButton.'+button).addClass('active');
+								var today = new Date();
+								var statusdate = today.toString("dd.MM.yyyy");
+								$('#patients-right input.statusdp').val(statusdate);
+								if(data.changePatientStatus != 0) { module.setPatientStatus(data.changePatientStatus); }
+									}
+								});
+								
+								
+								}
+							});
 							
-							$('#patients span.statusButton').removeClass('active');
-							$('#patients span.statusButton.'+button).addClass('active');
-							var today = new Date();
-							var statusdate = today.toString("dd.MM.yyyy");
-							$('#patients-right input.statusdp').val(statusdate);
-							if(data.changePatientStatus != 0) { module.setPatientStatus(data.changePatientStatus); }
-							}
-						});
-					} else {
-						module.askStatus = false;
+							/*$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/patients/modules/treatments&request=updateStatus&id=' + treatid + '&date=&status='+data.changeTreatmentStatus, cache: false, success: function(data){
+								switch(data.status) {
+									case "2":
+										$("#patients3 ul[rel=treatments] span[rel="+treatid+"] .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
+									break;
+									case "3":
+										$("#patients3 ul[rel=treatments] span[rel="+treatid+"] .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
+	
+									break;
+									default:
+										$("#patients3 ul[rel=treatments] span[rel="+treatid+"] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
+								}
+								
+								var pid = $("#patients").data("second");
+										$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/patients/modules/invoices&request=getList&id="+pid, success: function(data){
+											$('#patients_invoices_items').html(data.items);
+											}
+										});
+								
+								$('#patients span.statusButton').removeClass('active');
+								$('#patients span.statusButton.'+button).addClass('active');
+								var today = new Date();
+								var statusdate = today.toString("dd.MM.yyyy");
+								$('#patients-right input.statusdp').val(statusdate);
+								if(data.changePatientStatus != 0) { module.setPatientStatus(data.changePatientStatus); }
+								}
+							});*/
+						} else {
+							module.askStatus = false;
+						}
 					}
-				}
-			});
+				});
+			}
+			
+			
 		}
 	}
 
@@ -176,7 +231,91 @@ function patientsTreatments(name) {
 		var id = $("#patients").data("third");
 		var status = $("#patients .statusTabs li span.active").attr('rel');
 		var date = $("#patients .statusTabs input").val();
-		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients/modules/treatments&request=updateStatus&id=" + id + "&date=" + date + "&status=" + status, cache: false, success: function(data){
+		
+		//check for abgeschlossen
+		if(status == 2) {
+			var checkForInvoice = $('#patients-right span.showCoPopup');
+			if(! checkForInvoice.hasClass('activeInvoice')) {
+				var langbuttons = {};
+				langbuttons[ALERT_YES] = true;
+				langbuttons[ALERT_NO] = false;
+				$.prompt(ALERT_MESSAGE_TREATMENT_FINISHED_GERERATE_INVOICE,{ 
+					buttons:langbuttons,
+					submit: function(e,v,m,f){		
+						if(v){
+							e.preventDefault();
+							var id = $("#patients").data("third");
+							$.ajax({ type: "GET", dataType:  'json', url: "/", data: 'path=apps/patients/modules/treatments&request=generateInvoice&id='+id, success: function(html){
+								$.prompt.close();
+								checkForInvoice.addClass('activeInvoice');
+								//self.coPopupOpen(el,request);
+								var fid = $("#patients").data("second");
+								patients.getNavModulesNumItems(fid);
+								$('#patientsActions .actionBin').addClass('noactive');
+								
+								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients/modules/treatments&request=updateStatus&id=" + id + "&date=" + date + "&status=" + status, cache: false, success: function(data){
+										switch(data.status) {
+											case "2":
+												$("#patients3 ul[rel=treatments] span[rel="+data.id+"] .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
+											break;
+											case "3":
+												$("#patients3 ul[rel=treatments] span[rel="+data.id+"] .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
+											break;
+											default:
+												$("#patients3 ul[rel=treatments] span[rel="+data.id+"] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
+										}
+										if(data.changePatientStatus != 0) { module.setPatientStatus(data.changePatientStatus); }
+										var pid = $("#patients").data("second");
+										$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/patients/modules/invoices&request=getList&id="+pid, success: function(data){																																																																				
+									$('#patients_invoices_items').html(data.items);
+											}
+										});
+									}
+								});
+								
+								
+								}
+							});
+							
+							
+						} else {
+							var fid = $("#patients").data("second");
+							patients.getNavModulesNumItems(fid);
+							e.preventDefault();
+							$.prompt.close();
+							$("#patients .statusTabs li span:eq(1)").click();
+							//return false;
+							status = 1;
+							
+							
+							$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients/modules/treatments&request=updateStatus&id=" + id + "&date=" + date + "&status=" + status, cache: false, success: function(data){
+									switch(data.status) {
+										case "2":
+											$("#patients3 ul[rel=treatments] span[rel="+data.id+"] .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
+										break;
+										case "3":
+											$("#patients3 ul[rel=treatments] span[rel="+data.id+"] .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
+										break;
+										default:
+											$("#patients3 ul[rel=treatments] span[rel="+data.id+"] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
+									}
+									if(data.changePatientStatus != 0) { module.setPatientStatus(data.changePatientStatus); }
+									var pid = $("#patients").data("second");
+									$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/patients/modules/invoices&request=getList&id="+pid, success: function(data){																																																																				
+								$('#patients_invoices_items').html(data.items);
+										}
+									});
+								}
+							});
+							
+							
+							
+						}
+					}
+				});
+			} else {
+				
+				$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients/modules/treatments&request=updateStatus&id=" + id + "&date=" + date + "&status=" + status, cache: false, success: function(data){
 				switch(data.status) {
 					case "2":
 						$("#patients3 ul[rel=treatments] span[rel="+data.id+"] .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
@@ -195,6 +334,32 @@ function patientsTreatments(name) {
 				});
 			}
 		});
+				
+			}
+				
+		} else {
+		
+			$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients/modules/treatments&request=updateStatus&id=" + id + "&date=" + date + "&status=" + status, cache: false, success: function(data){
+				switch(data.status) {
+					case "2":
+						$("#patients3 ul[rel=treatments] span[rel="+data.id+"] .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
+					break;
+					case "3":
+						$("#patients3 ul[rel=treatments] span[rel="+data.id+"] .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
+					break;
+					default:
+						$("#patients3 ul[rel=treatments] span[rel="+data.id+"] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
+				}
+				if(data.changePatientStatus != 0) { module.setPatientStatus(data.changePatientStatus); }
+				var pid = $("#patients").data("second");
+				$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/patients/modules/invoices&request=getList&id="+pid, success: function(data){																																																																				
+			$('#patients_invoices_items').html(data.items);
+					}
+				});
+			}
+		});
+		}
+		
 	}
 
 
@@ -238,6 +403,11 @@ function patientsTreatments(name) {
 	this.getDetails = function(moduleidx,liindex,list) {
 		//loadDemand();
 		//alert(this.coPrintOptions);
+		if(self.coPopupEdit == '') {
+			$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/treatments&request=getCoPopup", success: function(html){
+				self.coPopupEdit = html;
+			}});
+		}
 		if(self.coPrintOptions == '') {
 			$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/treatments&request=getPrintOptions", success: function(html){
 				self.coPrintOptions = html;
@@ -260,6 +430,8 @@ function patientsTreatments(name) {
 		}
 		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients/modules/treatments&request=getDetails&id="+id, success: function(data){
 			$("#patients-right").empty().html(data.html);
+			
+			
 			
 			/*if(tab != 0) { $('#patients-right .contentTabsList li span:eq('+tab+')').trigger('click'); }
 			if(appTab) {
@@ -300,6 +472,10 @@ function patientsTreatments(name) {
 					break;
 				}
 				
+			}
+			
+			if(data.invoice_no > co_invoice_start) {
+				$('#patientsActions .actionBin').addClass('noactive');
 			}
 			initPatientsContentScrollbar();	
 			/*if(data.html != '') {
@@ -726,6 +902,141 @@ function patientsTreatments(name) {
 		}
 	}
 	
+	
+	this.coPopup = function(el,request) {
+		
+		if(request == 'showAllTasks') {
+			if(el.hasClass('activeInvoice')) {
+				self.coPopupOpen(el,request);
+			} else {
+					var langbuttons = {};
+					langbuttons[ALERT_YES] = true;
+					langbuttons[ALERT_NO] = false;
+					$.prompt(ALERT_MESSAGE_GERERATE_INVOICE,{ 
+						buttons:langbuttons,
+						submit: function(e,v,m,f){		
+							if(v){
+								e.preventDefault();
+								var id = $("#patients").data("third");
+								$.ajax({ type: "GET", dataType:  'json', url: "/", data: 'path=apps/patients/modules/treatments&request=generateInvoice&id='+id, success: function(html){
+									$.prompt.close();
+									el.addClass('activeInvoice');
+									self.coPopupOpen(el,request);
+									var fid = $("#patients").data("second");
+									patients.getNavModulesNumItems(fid);
+									$('#patientsActions .actionBin').addClass('noactive');
+									}
+								});
+								
+								
+							} else {
+								e.preventDefault();
+								$.prompt.close();
+							}
+						}
+					});
+			}
+		} else {
+			self.coPopupOpen(el,request);
+		}
+	}
+	
+	
+	this.coPopupOpen = function(el,request) {
+
+				var elepos = el.position();
+				
+				if(request == 'showAllTasks') {
+				
+					var id = $("#patients").data("third");
+					$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/treatments&request=getCoPopup&id="+id, success: function(html){
+						self.coPopupEdit = html;
+					
+					var html = self.coPopupEdit;
+					var pclass = self.coPopupEditClass;
+					var copopup = $('#co-popup');
+					copopup.html(html);
+					if(request == 'title' || request == 'stagegate') {
+						copopup.find('.tohide').hide();
+						var r = 211;
+					} else {
+						copopup.find('.tohide').show();
+						var r = 170;
+					}
+					copopup
+						.removeClass(function (index, css) {
+								 return (css.match (/\bpopup-\w+/g) || []).join(' ');
+							 })
+						.addClass(pclass)
+						.position({
+								my: "right bottom",
+								at: "right+300 top",
+								of: el,
+								collision: 'flip fit',
+								within: '#patients-right .scroll-pane',
+								using: function(coords, ui) {
+									var $modal = $(this),
+									t = coords.top,
+									l = coords.left,
+									className = 'switch-' + ui.horizontal;
+									$modal.css({
+										left: l + 'px',
+										top: t + 'px'
+									}).removeClass(function (index, css) {
+											return (css.match (/\bswitch-\w+/g) || []).join(' ');
+										})
+									.addClass(className);
+									//copopup.find('.arrow').offset({ top: ui.target.top });
+									var arrowtop = Math.round(ui.target.top - ui.element.top)+14;
+									copopup.find('.arrow').css('top', arrowtop); 
+								}
+						});
+						}});
+				} else {
+					
+					var belegId = el.attr('rel');
+					var html = '<div class="head">Barzahlung</div><div class="BarzahlungenPopup content"><div class="inner" id="">' + $('#belegText-'+belegId).val() + '</div><ul class="popupButtons" style="margin-top: 5px;"><li style="display: inline-block"><a href="#" class="copyText blue" rel="' + belegId + '" style="width: 80px;">Kopieren</a></li><li style="display: inline-block"><a href="#" class="deleteBarBeleg alert" rel="'+belegId+'" style="width: 80px; margin-left: 18px;">L&ouml;schen</a></li></ul>';
+					var pclass = self.coPopupEditClass;
+					var copopup = $('#co-popup');
+					copopup.html(html);
+					if(request == 'title' || request == 'stagegate') {
+						copopup.find('.tohide').hide();
+						var r = 211;
+					} else {
+						copopup.find('.tohide').show();
+						var r = 170;
+					}
+					copopup
+						.removeClass(function (index, css) {
+								 return (css.match (/\bpopup-\w+/g) || []).join(' ');
+							 })
+						.addClass(pclass)
+						.position({
+								my: "center bottom",
+								at: "center top",
+								of: el,
+								collision: 'flip fit',
+								within: '#patients-right .scroll-pane',
+								using: function(coords, ui) {
+									var $modal = $(this),
+									t = coords.top,
+									l = coords.left,
+									className = 'switch-' + ui.horizontal;
+									$modal.css({
+										left: l + 'px',
+										top: t + 'px'
+									}).removeClass(function (index, css) {
+											return (css.match (/\bswitch-\w+/g) || []).join(' ');
+										})
+									.addClass(className);
+									//copopup.find('.arrow').offset({ top: ui.target.top });
+									var arrowtop = Math.round(ui.target.top - ui.element.top)+14;
+									copopup.find('.arrow').css('top', arrowtop); 
+								}
+						});
+					
+				}
+	}
 	
 	this.showItemContext = function(ele,uid,field) {
 		var module = this;
@@ -1531,7 +1842,7 @@ var colors = ['#3C4664','#EB4600','#915500','#0A960A','#AA19AA','#3C4664','#EB46
 		var name = $(this).html();
 		var costs = $(this).attr("costs");
 		var minutes = $(this).attr("minutes");
-		var html = '<span class="listmember-outer"><a href="patients_treatments" class="showItemContext" edit="1" uid="' + cid + '" field="'+field+'" costs="'+costs+'" minutes="'+minutes+'">' + name + '</a>';
+		var html = '<span class="listmember-outer"><span href="patients_treatments" class="showItemContext co-link" edit="1" uid="' + cid + '" field="'+field+'" costs="'+costs+'" minutes="'+minutes+'">' + name + '</span>';
 		var app = getCurrentApp();
 		var obj = getCurrentModule();
 			if($("#"+field).html() != "") {
@@ -1566,4 +1877,93 @@ var colors = ['#3C4664','#EB4600','#915500','#0A960A','#AA19AA','#3C4664','#EB46
 			$('#'+app+' .coform').ajaxSubmit(obj.poformOptions);
 			// save to lastused
 			$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/treatments&request=saveLastUsedTreatments&id="+cid});
+	});
+	
+	
+	$(document).on('click', 'span.toggleTaskBarzahlung', function(e) {
+		e.preventDefault();
+		prevent_dblclick(e)
+		
+		var ele = $(this);
+		
+		if(ele.hasClass('active')) {
+			ele.removeClass('active');
+		} else {
+			ele.addClass('active');
+		}
+		//$('#calculateRevenue').click();
+	});
+	
+	$(document).on('click', 'span.toggleAllTasksBarzahlung', function(e) {
+		e.preventDefault();
+		prevent_dblclick(e)
+
+		$('div.BarzahlungenPopup .toggleTaskBarzahlung').each(function(i) { 
+			var ele = $(this);
+		  ele.addClass('active');
+		})
+	});
+	
+	
+	$(document).on('click', 'a.saveTasksBarzahlung', function(e) {
+		e.preventDefault();
+		prevent_dblclick(e)
+		
+		var tasks = {};
+		
+		$('div.BarzahlungenPopup .toggleTaskBarzahlung.active').each(function(i) { 
+			tasks[i] = $( this ).attr('rel');	
+		})
+		//alert(JSON.stringify(tasks));
+		if($.isEmptyObject(tasks)) {
+			return false;
+		} else {
+			var tid = $('#patients').data('third');
+			$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/treatments&request=generateBarzahlung&tid=" + tid + "&tasks="+JSON.stringify(tasks), cache: false, success: function(html){
+				$('#listBarPayments').html(html);
+				for (i in tasks) {
+						var toRemove = tasks[i];
+						//$('#patients-right a.binItem[rel='+toRemove+']').remove();
+						var t = $('#task_'+toRemove);
+						t.find('a.binItem').hide();
+						t.find('.jNiceCheckbox').addClass('noperm');
+						t.find('.verrechnungsdatum').removeClass('content-nav').removeClass('ui-datepicker-trigger-action');
+						t.find('.behandlungsart').removeClass('content-nav').removeClass('showDialog');
+						t.find('.showItemContext ').removeClass('co-link').attr('edit', 0);
+				}
+				$('#co-popup').css('left',-1000);
+			}
+		});
+		}
+	});
+	
+	$(document).on('click', 'a.copyText', function(e) {
+		e.preventDefault();
+		prevent_dblclick(e)
+		var belegId = $(this).attr('rel');
+		$("#belegText-"+belegId  ).select();
+		document.execCommand("copy");
+	});
+	
+	$(document).on('click', 'a.deleteBarBeleg', function(e) {
+		e.preventDefault();
+		prevent_dblclick(e)
+		var belegId = $(this).attr('rel');
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients/modules/treatments&request=deleteBarBeleg&id=" + belegId , cache: false, success: function(data){
+			$('#barbeleg-'+belegId).remove();
+			//$('#patientsActions .actionExport').removeClass('noactive');
+			for(var i in data) {
+			var t = $('#task_'+data[i]);
+						t.find('a.binItem').show();
+						t.find('.jNiceCheckbox').removeClass('noperm');
+						t.find('.verrechnungsdatum').addClass('content-nav').addClass('ui-datepicker-trigger-action');
+						t.find('.behandlungsart').addClass('content-nav').addClass('showDialog');
+						t.find('.showItemContext ').addClass('co-link').attr('edit', 1);
+			}
+			$('#co-popup').css('left',-1000);
+			
+			}
+		});
+		//$("#belegText-"+belegId  ).select();
+		//document.execCommand("copy");
 	});

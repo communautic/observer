@@ -94,6 +94,7 @@ foreach($controller->applications as $app => $display) {
 var num_apps = <?php echo($num_apps);?>;
 var co_files = '<?php echo CO_FILES;?>';
 var co_lang = '<?php echo $session->userlang;?>';
+var co_invoice_start = <?php echo CO_INVOICE_START;?>;
 </script>
 <script src="<?php echo $protocol;?>ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js" type="text/javascript"></script>
 <!--<script src="<?php echo CO_FILES;?>/js/libraries/jquery-migrate-1.2.1.js"></script>-->

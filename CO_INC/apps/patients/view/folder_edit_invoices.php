@@ -37,7 +37,20 @@ if(is_array($invoices)) { ?>
     <td width="70" class="row<?php  echo ($i % 2);?>"><?php echo($invoice->totalmin);?></td>
     <td width="70" class="row<?php  echo ($i % 2);?>"><?php echo(CO_DEFAULT_CURRENCY . ' ' . $invoice->totalcosts);?></td>
     <td class="row<?php  echo ($i % 2);?>"><?php echo($invoice->management);?></td>
-    <td class="row<?php  echo ($i % 2);?>"><?php if($invoice->status_invoice_class == 'barchart_color_finished') { echo($invoice->payment_type); } ?></td>
+    <td class="row<?php  echo ($i % 2);?>"><?php 
+			if($invoice->display_legacy_payment_method) { 
+				echo($invoice->payment_type); 
+			} else { 
+					if($invoice->ueberweisungcosts > 0 && $invoice->barcosts > 0) {
+						echo 'Barzahlung / &Uuml;berweisung';
+					} else {
+						if($invoice->barcosts > 0) {
+							echo "Barzahlung";
+						} else {
+							echo "&Uuml;berweisung";
+						}
+					}
+			} ?></td>
     <td class="row<?php  echo ($i % 2);?>"><?php if($invoice->status_invoice_class == 'barchart_color_finished') { echo('am ' . $invoice->status_invoice_date); } ?></td>
     <td></td>
     </tr>

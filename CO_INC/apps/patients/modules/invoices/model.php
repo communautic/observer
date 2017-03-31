@@ -12,7 +12,9 @@ class PatientsInvoicesModel extends PatientsModel {
 
 	function getList($id,$sort) {
 		global $session;
-	  if($sort == 0) {
+		$order = "order by invoice_no DESC, invoice_number DESC"; 
+		$sortcur = '1';
+	  /*if($sort == 0) {
 		  $sortstatus = $this->getSortStatus("patients-invoices-sort-status",$id);
 		  if(!$sortstatus) {
 				$order = "order by item_date DESC";
@@ -60,7 +62,7 @@ class PatientsInvoicesModel extends PatientsModel {
 						  }
 				  break;	
 			  }
-		}
+		}*/
 	  
 		$perm = $this->getPatientAccess($id);
 		$sql ="";
@@ -69,7 +71,7 @@ class PatientsInvoicesModel extends PatientsModel {
 		}
 		
 		//$q = "SELECT a.*,CONCAT(b.lastname,', ',b.firstname) as title FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, co_users as b where a.tookpart='1' and a.cid=b.id and a.pid = '$id' and a.bin='0' and b.bin='0' ORDER BY title ASC";
-		$q = "select id,title,item_date,access_invoice,status_invoice,checked_out,checked_out_user,invoice_type,service_id from " . CO_TBL_PATIENTS_TREATMENTS . " where pid = '$id' and (status='2' or status='3') and bin != '1' " . $sql . $order;
+		$q = "select id,title,item_date,access_invoice,status_invoice,checked_out,checked_out_user,invoice_type,service_id from " . CO_TBL_PATIENTS_TREATMENTS . " where pid = '$id' and (status='2' or status='3' or invoice_no>'".CO_INVOICE_START."') and bin != '1' " . $sql . $order;
 		$this->setSortStatus("patients-invoices-sort-status",$sortcur,$id);
 		$result = mysql_query($q, $this->_db->connection);
 		$items = mysql_num_rows($result);
@@ -130,7 +132,7 @@ class PatientsInvoicesModel extends PatientsModel {
 		if( $perm ==  "guest") {
 			$sql = " and access_invoice = '1' ";
 		}
-		$q = "select count(*) as items from " . CO_TBL_PATIENTS_TREATMENTS . " where pid = '$id' and (status='2' or status='3') and bin != '1'" . $sql;
+		$q = "select count(*) as items from " . CO_TBL_PATIENTS_TREATMENTS . " where pid = '$id' and (status='2' or status='3' or invoice_no>'".CO_INVOICE_START."') and bin != '1'" . $sql;
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_fetch_array($result);
 		$items = $row['items'];
@@ -274,7 +276,7 @@ class PatientsInvoicesModel extends PatientsModel {
 			//$array["invoice_carrier"] = $this->_contactsmodel->getUserList($array['invoice_carrier'],'invoice_carrier', "", $array["canedit"]);
 			$management_print = $array["invoice_carrier"];
 		}
-		$q = "SELECT lastname as m_lastname,firstname as m_firstname,title2 as m_title, phone1 as m_phone, email as m_email, email_alt as m_email_alt, fax as m_fax, company as m_company, position as m_position, address_postcode as m_plz, address_town as m_town, address_line1 as m_street, company_no as m_co_no, company_reg_loc as m_legal, vat_no as m_vat, bank_name as m_bank, sort_code as m_sort_code, account_number as m_account_number, bic as m_bic, iban as m_iban, dvr as m_dvr FROM co_users where id = '$management_print'";
+		$q = "SELECT lastname as m_lastname,firstname as m_firstname,title2 as m_title, phone1 as m_phone, email as m_email, email_alt as m_email_alt, fax as m_fax, company as m_company, position as m_position, address_postcode as m_plz, address_town as m_town, address_line1 as m_street, company_no as m_co_no, company_reg_loc as m_legal, vat_no as m_vat, bank_name as m_bank, sort_code as m_sort_code, account_number as m_account_number, bic as m_bic, iban as m_iban, dvr as m_dvr, invoice_addon FROM co_users where id = '$management_print'";
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_fetch_array($result);
 		foreach($row as $key => $val) {
@@ -335,79 +337,259 @@ class PatientsInvoicesModel extends PatientsModel {
 			}*/
 		
 		if($array["invoice_type"] == 0) { // Treatments
-			// get the tasks
-			$array['totalcosts'] = 0;
-			$task = array();
-			$q = "SELECT * FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where status='1' and mid = '$id' and bin='0' ORDER BY item_date ASC";
-			$result = mysql_query($q, $this->_db->connection);
-			while($row = mysql_fetch_array($result)) {
-				foreach($row as $key => $val) {
-					$tasks[$key] = $val;
-				}
-				$tasks["time"] = $this->_date->formatDate($tasks["item_date"],CO_TIME_FORMAT);
-				$tasks["item_date"] = $this->_date->formatDate($tasks["item_date"],CO_DATE_FORMAT);
-				$tasks["team"] = $this->_contactsmodel->getUserList($tasks['team'],'task_team_'.$tasks["id"], "", $array["canedit"]);
-				$tasks["team_ct"] = empty($tasks["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $tasks['team_ct'];
-				if($tasks["type"] == '') {
-					$tasks["min"] = 0;
-					$tasks["costs"] = 0;
-					$tasks["type"] = '';
-				} else {
+			
+			if($array["invoice_no"] > CO_INVOICE_START) {
+				
+				$array['totalcosts'] = 0;
+				$array['barcosts'] = 0;
+				$array['restcosts'] = 0;
+				$zahlungsart_bar = 0;
+				$zahlungsart_ueberweisung = 0;
+				$array['barzahlung'] = 0;
+				$array['ueberweisung'] = 0;
+				$task = array();
+				$q = "SELECT * FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where status='1' and mid = '$id' and bin='0' ORDER BY item_date ASC";
+				$result = mysql_query($q, $this->_db->connection);
+				$i = 1;
+				while($row = mysql_fetch_array($result)) {
+					foreach($row as $key => $val) {
+						$tasks[$key] = $val;
+					}
+					$tasks["number"] = $i;
+					$tasks["time"] = $this->_date->formatDate($tasks["item_date"],CO_TIME_FORMAT);
+					$tasks["item_date"] = $this->_date->formatDate($tasks["item_date"],CO_DATE_FORMAT);
+					$tasks["team"] = $this->_contactsmodel->getUserList($tasks['team'],'task_team_'.$tasks["id"], "", $array["canedit"]);
+					$tasks["team_ct"] = empty($tasks["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $tasks['team_ct'];
+					if($tasks["type"] == '') {
+						$tasks["min"] = 0;
+						$tasks["costs"] = 0;
+						$tasks["type"] = '';
+					} else {
+						$tasks["min"] = $this->_treatmentsmodel->getTreatmentTypeMin($tasks["type"]);
+						$tasks["costs"] = $this->_treatmentsmodel->getTreatmentTypeCosts($tasks["type"]);
+						$tasks["type"] = $this->_treatmentsmodel->getTreatmentArrayInvoice($tasks['type'],'task_treatmenttype_'.$tasks["id"], "", $array["canedit"]);
+					}
+					$tasks["place"] = $this->_contactsmodel->getPlaceList($tasks['place'],'place', $array["canedit"]);
 					
-					$tasks["min"] = $this->_treatmentsmodel->getTreatmentTypeMin($tasks["type"]);
-					$tasks["costs"] = $this->_treatmentsmodel->getTreatmentTypeCosts($tasks["type"]);
-					$tasks["type"] = $this->_treatmentsmodel->getTreatmentArrayInvoice($tasks['type'],'task_treatmenttype_'.$tasks["id"], "", $array["canedit"]);
+
+					if($tasks["bar"] == 1) {
+						$array['barcosts'] += $tasks["costs"];
+						$zahlungsart_bar = 1;
+						$array['barzahlung'] = 1;
+					} else {
+						$array['restcosts'] += $tasks["costs"];
+						$zahlungsart_ueberweisung = 1;
+						$array['ueberweisung'] = 1;
+					}
+					
+					$array['totalcosts'] += $tasks["costs"];
+					$task[] = new Lists($tasks);
+					$i++;
 				}
-				$tasks["place"] = $this->_contactsmodel->getPlaceList($tasks['place'],'place', $array["canedit"]);
-				$array['totalcosts'] += $tasks["costs"];
-				$task[] = new Lists($tasks);
+				if($array['discount'] != 0) {
+					
+					$array['discount_barcosts'] = ($array['barcosts']/100)*$array['discount'];
+					$array['discount_barcosts'] = number_format($array['discount_barcosts'],2,',','.');
+					$array['barcosts'] = $array['barcosts']-(($array['barcosts']/100)*$array['discount']);
+					
+					$array['discount_restcosts'] = ($array['restcosts']/100)*$array['discount'];
+					$array['discount_restcosts'] = number_format($array['discount_restcosts'],2,',','.');
+					$array['restcosts'] = $array['restcosts']-(($array['restcosts']/100)*$array['discount']);
+					
+					$array['discount_costs'] = ($array['totalcosts']/100)*$array['discount'];
+					$array['discount_costs'] = number_format($array['discount_costs'],2,',','.');
+					$array['totalcosts'] = $array['totalcosts']-(($array['totalcosts']/100)*$array['discount']);
+					
+				}
+				if($array['vat'] != 0) {
+					$array['vat_barcosts'] = ($array['barcosts']/100)*$array['vat'];
+					$array['vat_barcosts'] = number_format($array['vat_barcosts'],2,',','.');
+					$array['barcosts'] = $array['barcosts']+(($array['barcosts']/100)*$array['vat']);
+					
+					$array['vat_restcosts'] = ($array['restcosts']/100)*$array['vat'];
+					$array['vat_restcosts'] = number_format($array['vat_restcosts'],2,',','.');
+					$array['restcosts'] = $array['restcosts']+(($array['restcosts']/100)*$array['vat']);
+					
+					$array['vat_costs'] = ($array['totalcosts']/100)*$array['vat'];
+					$array['vat_costs'] = number_format($array['vat_costs'],2,',','.');
+					$array['totalcosts'] = $array['totalcosts']+(($array['totalcosts']/100)*$array['vat']);
+				}
+				
+				$array['barcosts'] = number_format($array['barcosts'],2,',','.');
+				$array['restcosts'] = number_format($array['restcosts'],2,',','.');
+				$array['totalcosts'] = number_format($array['totalcosts'],2,',','.');
+				
+				$array['zahlungsart'] = '';
+				if($zahlungsart_bar == 1) {
+					$array['zahlungsart'] .= 'Barzahlung';
+				}
+				if($zahlungsart_ueberweisung == 1) {
+					if($zahlungsart_bar == 1) {
+						$array['zahlungsart'] .= ' / ';
+					}
+					$array['zahlungsart'] .= 'Überweisung';
+				}
+
+			} else {
+				// get the tasks
+				// LEGACY CODE
+				$array['totalcosts'] = 0;
+				$task = array();
+				$q = "SELECT * FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where status='1' and mid = '$id' and bin='0' ORDER BY item_date ASC";
+				$result = mysql_query($q, $this->_db->connection);
+				while($row = mysql_fetch_array($result)) {
+					foreach($row as $key => $val) {
+						$tasks[$key] = $val;
+					}
+					$tasks["time"] = $this->_date->formatDate($tasks["item_date"],CO_TIME_FORMAT);
+					$tasks["item_date"] = $this->_date->formatDate($tasks["item_date"],CO_DATE_FORMAT);
+					$tasks["team"] = $this->_contactsmodel->getUserList($tasks['team'],'task_team_'.$tasks["id"], "", $array["canedit"]);
+					$tasks["team_ct"] = empty($tasks["team_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $tasks['team_ct'];
+					if($tasks["type"] == '') {
+						$tasks["min"] = 0;
+						$tasks["costs"] = 0;
+						$tasks["type"] = '';
+					} else {
+						
+						$tasks["min"] = $this->_treatmentsmodel->getTreatmentTypeMin($tasks["type"]);
+						$tasks["costs"] = $this->_treatmentsmodel->getTreatmentTypeCosts($tasks["type"]);
+						$tasks["type"] = $this->_treatmentsmodel->getTreatmentArrayInvoice($tasks['type'],'task_treatmenttype_'.$tasks["id"], "", $array["canedit"]);
+					}
+					$tasks["place"] = $this->_contactsmodel->getPlaceList($tasks['place'],'place', $array["canedit"]);
+					$array['totalcosts'] += $tasks["costs"];
+					$task[] = new Lists($tasks);
+				}
+				if($array['discount'] != 0) {
+					$array['discount_costs'] = ($array['totalcosts']/100)*$array['discount'];
+					$array['discount_costs'] = number_format($array['discount_costs'],2,',','.');
+					$array['totalcosts'] = $array['totalcosts']-(($array['totalcosts']/100)*$array['discount']);
+				}
+				if($array['vat'] != 0) {
+					$array['vat_costs'] = ($array['totalcosts']/100)*$array['vat'];
+					$array['vat_costs'] = number_format($array['vat_costs'],2,',','.');
+					$array['totalcosts'] = $array['totalcosts']+(($array['totalcosts']/100)*$array['vat']);
+				}
+				$array['totalcosts'] = number_format($array['totalcosts'],2,',','.');
 			}
-			if($array['discount'] != 0) {
-				$array['discount_costs'] = ($array['totalcosts']/100)*$array['discount'];
-				$array['discount_costs'] = number_format($array['discount_costs'],2,',','.');
-				$array['totalcosts'] = $array['totalcosts']-(($array['totalcosts']/100)*$array['discount']);
-			}
-			if($array['vat'] != 0) {
-				$array['vat_costs'] = ($array['totalcosts']/100)*$array['vat'];
-				$array['vat_costs'] = number_format($array['vat_costs'],2,',','.');
-				$array['totalcosts'] = $array['totalcosts']+(($array['totalcosts']/100)*$array['vat']);
-			}
-			$array['totalcosts'] = number_format($array['totalcosts'],2,',','.');
-		
+
 		}
 		
 		if($array["invoice_type"] == 1) { // Services
-			// get the tasks
-			$array['totalcosts'] = 0;
-			$task = array();
-			$service_id = $array['service_id'];
-			$q = "SELECT * FROM co_patients_services_tasks where status='1' and mid = '$service_id' and bin='0' ORDER BY sort ASC";
-			$result = mysql_query($q, $this->_db->connection);
-			while($row = mysql_fetch_array($result)) {
-				foreach($row as $key => $val) {
-					$tasks[$key] = $val;
-				}
-				$tasks['taskcosts'] = 0;
-				$tasks["menge"] = $tasks["menge"];
-				$tasks['taskcosts'] = $tasks["menge"]*$tasks["preis"];
-				$array['totalcosts'] += $tasks['taskcosts'];
-				$tasks['taskcosts'] = number_format($tasks['taskcosts'],2,',','.');
-				$tasks["preis"] = number_format($tasks["preis"],2,',','.');
+			
+			if($array["invoice_no"] > CO_INVOICE_START) {
 				
-				$task[] = new Lists($tasks);
+					$array['totalcosts'] = 0;
+					$array['barcosts'] = 0;
+					$array['restcosts'] = 0;
+					$zahlungsart_bar = 0;
+					$zahlungsart_ueberweisung = 0;
+					$array['barzahlung'] = 0;
+					$array['ueberweisung'] = 0;
+					$task = array();
+					$service_id = $array['service_id'];
+					$q = "SELECT * FROM co_patients_services_tasks where status='1' and mid = '$service_id' and bin='0' ORDER BY sort ASC";
+					$result = mysql_query($q, $this->_db->connection);
+					$i = 1;
+					while($row = mysql_fetch_array($result)) {
+						foreach($row as $key => $val) {
+							$tasks[$key] = $val;
+						}
+						$tasks["number"] = $i;
+						$tasks['taskcosts'] = 0;
+						$tasks["menge"] = $tasks["menge"];
+						$tasks['taskcosts'] = $tasks["menge"]*$tasks["preis"];
+						if($tasks["bar"] == 1) {
+							$array['barcosts'] += $tasks["taskcosts"];
+							$zahlungsart_bar = 1;
+							$array['barzahlung'] = 1;
+						} else {
+							$array['restcosts'] += $tasks["taskcosts"];
+							$zahlungsart_ueberweisung = 1;
+							$array['ueberweisung'] = 1;
+						}
+						$array['totalcosts'] += $tasks['taskcosts'];
+						$tasks['taskcosts'] = number_format($tasks['taskcosts'],2,',','.');
+						$tasks["preis"] = number_format($tasks["preis"],2,',','.');
+						
+						$task[] = new Lists($tasks);
+						$i++;
+					}
+					if($array['discount'] != 0) {
+						
+						$array['discount_barcosts'] = ($array['barcosts']/100)*$array['discount'];
+						$array['discount_barcosts'] = number_format($array['discount_barcosts'],2,',','.');
+						$array['barcosts'] = $array['barcosts']-(($array['barcosts']/100)*$array['discount']);
+						
+						$array['discount_restcosts'] = ($array['restcosts']/100)*$array['discount'];
+						$array['discount_restcosts'] = number_format($array['discount_restcosts'],2,',','.');
+						$array['restcosts'] = $array['restcosts']-(($array['restcosts']/100)*$array['discount']);
+						
+						$array['discount_costs'] = ($array['totalcosts']/100)*$array['discount'];
+						$array['discount_costs'] = number_format($array['discount_costs'],2,',','.');
+						$array['totalcosts'] = $array['totalcosts']-(($array['totalcosts']/100)*$array['discount']);
+					}
+					if($array['vat'] != 0) {
+						
+						$array['vat_barcosts'] = ($array['barcosts']/100)*$array['vat'];
+						$array['vat_barcosts'] = number_format($array['vat_barcosts'],2,',','.');
+						$array['barcosts'] = $array['barcosts']+(($array['barcosts']/100)*$array['vat']);
+						
+						$array['vat_restcosts'] = ($array['restcosts']/100)*$array['vat'];
+						$array['vat_restcosts'] = number_format($array['vat_restcosts'],2,',','.');
+						$array['restcosts'] = $array['restcosts']+(($array['restcosts']/100)*$array['vat']);
+						
+						$array['vat_costs'] = ($array['totalcosts']/100)*$array['vat'];
+						$array['vat_costs'] = number_format($array['vat_costs'],2,',','.');
+						$array['totalcosts'] = $array['totalcosts']+(($array['totalcosts']/100)*$array['vat']);
+					}
+					$array['barcosts'] = number_format($array['barcosts'],2,',','.');
+					$array['restcosts'] = number_format($array['restcosts'],2,',','.');
+					$array['totalcosts'] = number_format($array['totalcosts'],2,',','.');
+					
+					$array['zahlungsart'] = '';
+					if($zahlungsart_bar == 1) {
+						$array['zahlungsart'] .= 'Barzahlung';
+					}
+					if($zahlungsart_ueberweisung == 1) {
+						if($zahlungsart_bar == 1) {
+							$array['zahlungsart'] .= ' / ';
+						}
+						$array['zahlungsart'] .= 'Überweisung';
+					}
+				
+			} else {
+				// get the tasks
+				$array['totalcosts'] = 0;
+				$task = array();
+				$service_id = $array['service_id'];
+				$q = "SELECT * FROM co_patients_services_tasks where status='1' and mid = '$service_id' and bin='0' ORDER BY sort ASC";
+				$result = mysql_query($q, $this->_db->connection);
+				while($row = mysql_fetch_array($result)) {
+					foreach($row as $key => $val) {
+						$tasks[$key] = $val;
+					}
+					$tasks['taskcosts'] = 0;
+					$tasks["menge"] = $tasks["menge"];
+					$tasks['taskcosts'] = $tasks["menge"]*$tasks["preis"];
+					$array['totalcosts'] += $tasks['taskcosts'];
+					$tasks['taskcosts'] = number_format($tasks['taskcosts'],2,',','.');
+					$tasks["preis"] = number_format($tasks["preis"],2,',','.');
+					
+					$task[] = new Lists($tasks);
+				}
+				if($array['discount'] != 0) {
+					$array['discount_costs'] = ($array['totalcosts']/100)*$array['discount'];
+					$array['discount_costs'] = number_format($array['discount_costs'],2,',','.');
+					$array['totalcosts'] = $array['totalcosts']-(($array['totalcosts']/100)*$array['discount']);
+				}
+				if($array['vat'] != 0) {
+					$array['vat_costs'] = ($array['totalcosts']/100)*$array['vat'];
+					$array['vat_costs'] = number_format($array['vat_costs'],2,',','.');
+					$array['totalcosts'] = $array['totalcosts']+(($array['totalcosts']/100)*$array['vat']);
+				}
+				$array['totalcosts'] = number_format($array['totalcosts'],2,',','.');
+			
 			}
-			if($array['discount'] != 0) {
-				$array['discount_costs'] = ($array['totalcosts']/100)*$array['discount'];
-				$array['discount_costs'] = number_format($array['discount_costs'],2,',','.');
-				$array['totalcosts'] = $array['totalcosts']-(($array['totalcosts']/100)*$array['discount']);
-			}
-			if($array['vat'] != 0) {
-				$array['vat_costs'] = ($array['totalcosts']/100)*$array['vat'];
-				$array['vat_costs'] = number_format($array['vat_costs'],2,',','.');
-				$array['totalcosts'] = $array['totalcosts']+(($array['totalcosts']/100)*$array['vat']);
-			}
-			$array['totalcosts'] = number_format($array['totalcosts'],2,',','.');
-		
 		}
 		
 		// get the diagnoses

@@ -1220,6 +1220,7 @@ function patientsActions(status) {
 		case 11: 	actions = ['1','7','8','9']; break;   			// print, send, refresh
 		// rosters
 		case 12: actions = ['0','1','2','3','4','7','8','9']; break;
+		//case 13: actions = ['0','2','3','4','6','7','8']; break;
 		default: 	actions = ['6','7'];  								// none
 	}
 	$('#patientsActions > li span').each( function(index) {

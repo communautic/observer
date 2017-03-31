@@ -51,7 +51,7 @@
 </table>
 <div class="content-spacer"></div>
 <?php } ?>
-<table border="0" cellpadding="0" cellspacing="0" class="table-content">
+<table border="0" cellpadding="0" cellspacing="0" class="table-content" style="display: none;">
 	<tr>
 	  <td class="tcell-left text11"><span class="<?php if($invoice->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="patientsinvoice_carrier" append="0" title=""><span><?php echo $lang["PATIENT_INVOICE_CARRIER"];?></span></span></td>
 	  <td class="tcell-right"><div id="patientsinvoice_carrier" class="itemlist-field"><?php echo($invoice->invoice_carrier);?></div></td>
@@ -71,8 +71,16 @@
 </table>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
   <tr>
-    <td class="tcell-left-shorter text11"><span class="<?php if($invoice->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["PATIENT_INVOICE_NUMBER"];?></span></span></td>
-    <td class="tcell-right-nopadding"><?php if($invoice->canedit) { ?><input name="invoice_number" type="text" class="bg" value="<?php echo($invoice->invoice_number);?>" /><?php } else { echo '<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $invoice->invoice_number . '</span><input name="invoice_number" type="hidden"value="'. $invoice->invoice_number.'" />';}?></td>
+    <td class="tcell-left-shorter text11"><span class="<?php 
+		if($invoice->canedit && $invoice->invoice_no == CO_INVOICE_START) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["PATIENT_INVOICE_NUMBER"];?></span></span></td>
+    <td class="tcell-right-nopadding">
+		<?php 
+		 if($invoice->invoice_no > CO_INVOICE_START) {
+			 echo '<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $invoice->invoice_addon . '/' . $invoice->invoice_year . '/' . $invoice->invoice_no . '</span><input name="invoice_number" type="hidden"value="'. $invoice->invoice_number.'" />';
+		 } else {
+				if($invoice->canedit) { ?><input name="invoice_number" type="text" class="bg" value="<?php echo($invoice->invoice_number);?>" /><?php } else { echo '<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $invoice->invoice_number . '</span><input name="invoice_number" type="hidden"value="'. $invoice->invoice_number.'" />';}
+		 }
+		?></td>
   </tr>
 </table>
 <div class="content-spacer"></div>
@@ -126,7 +134,7 @@
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
   <tr>
     <td class="tcell-left-shorter text11"><span><span style="color: #666;"><?php echo $lang["PATIENT_INVOICE_LIST"];?></span></span></td>
-    <td class="tcell-right-nopadding"><div style="width: 530px; border: 1px solid #ccc; color: #666;">
+    <td class="tcell-right-nopadding"><div style="width: 530px; border: 1px solid #ccc; border-bottom: 0; color: #666;">
 	<?php 
 	$i = 1;
 	if($invoice->invoice_type == 0) {
@@ -147,33 +155,38 @@
 		 } 
 	}
 	?>
+  </div>
 	 <?php if($invoice->discount > 0) { ?>
-		 <div style="border-bottom: 1px solid #ccc;">
+
             <table width="530" border="0" cellpadding="0" cellspacing="0">
               <tr>
                 <td class="text11" style="width: 215px; padding: 6px 0;">
                     <span class="text13 bold" style="margin-left: 7px;">&nbsp;</span></td>
                 <td class="text11" style="width: 157px; padding: 7px 0 4px 0;">&nbsp;</td>
                      <td class="text11" style="padding: 7px 0 4px 0;">-<?php echo $invoice->discount;?>% <?php echo $lang["PATIENT_TREATMENT_DISCOUNT_SHORT"];?></td>
-                    <td class="text11" style="width: 88px; text-align: right; border-left: 1px solid #ccc; padding: 7px 0 4px 0;">-<?php echo CO_DEFAULT_CURRENCY . ' ' . $invoice->discount_costs;?> &nbsp; &nbsp; </td>
+                    <td class="text11" style="width: 88px; text-align: right; padding: 7px 0 4px 0;">-<?php echo CO_DEFAULT_CURRENCY . ' ' . $invoice->discount_costs;?> &nbsp; &nbsp; </td>
               </tr>
             </table>
-        </div>
+
 	 <?php }?>
      <?php if($invoice->vat > 0) { ?>
-		 <div style="border-bottom: 1px solid #ccc;">
+
             <table width="530" border="0" cellpadding="0" cellspacing="0">
               <tr>
                 <td class="text11" style="width: 215px; padding: 6px 0;">
                     <span class="text13 bold" style="margin-left: 7px;">&nbsp;</span></td>
                 <td class="text11" style="width: 157px; padding: 7px 0 4px 0;">&nbsp;</td>
                      <td class="text11" style="padding: 7px 0 4px 0;"><?php echo $invoice->vat;?>% <?php echo $lang["PATIENT_TREATMENT_VAT_SHORT"];?></td>
-                    <td class="text11" style="width: 88px; text-align: right; border-left: 1px solid #ccc; padding: 7px 0 4px 0;"><?php echo CO_DEFAULT_CURRENCY . ' ' . $invoice->vat_costs;?> &nbsp; &nbsp; </td>
+                    <td class="text11" style="width: 88px; text-align: right; padding: 7px 0 4px 0;"><?php echo CO_DEFAULT_CURRENCY . ' ' . $invoice->vat_costs;?> &nbsp; &nbsp; </td>
               </tr>
             </table>
-        </div>
-	 <?php }?>
 
+	 <?php } ?>
+<?php if($invoice->discount > 0 && $invoice->vat > 0) { ?>
+<div style="width: 530px; border: 1px solid #ccc; color: #666;">
+<?php } else { ?>
+<div style="width: 530px; border: 1px solid #ccc; border-top: 0; color: #666;">
+<?php }?>
 
 <div style="background: #e5e5e5;">
 	<table width="530" border="0" cellpadding="0" cellspacing="0">
@@ -186,7 +199,9 @@
     </table>
 </div>
 
-</div></td>
+</div>
+
+</td>
   </tr>
 </table>
 <div class="content-spacer"></div>

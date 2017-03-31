@@ -127,6 +127,7 @@ class Patients extends Controller {
 		$chartGender = $arr["chartGender"];
 		$chartAge = $arr["chartAge"];
 		$show_arbeitszeit = $arr["show_arbeitszeit"];
+		$showResults = $arr["showResults"];
 		ob_start();
 			include('view/folder_edit_revenue_results.php');
 			$data["html"] = ob_get_contents();
@@ -364,7 +365,40 @@ $objPHPExcel->getDefaultStyle()->getFont()
 				$Sheet->setCellValueByColumnAndRow($col++, $row, $i+1); // ID
 				$Sheet->setCellValueByColumnAndRow($col++, $row, $invoice->title); //Titel
 				$Sheet->setCellValueByColumnAndRow($col++, $row,$invoice->totalcosts_plain);
-				$Sheet->setCellValueByColumnAndRow($col++, $row,$invoice->payment_type);
+				
+				$p_type = '';
+				if($invoice->display_legacy_payment_method) { 
+				$p_type = $invoice->payment_type; 
+			} else { 
+				if($invoice->filter_barzahlung == 1 && $invoice->filter_ueberweisung == 1) {
+					if($invoice->ueberweisungcosts > 0 && $invoice->barcosts > 0) {
+						$p_type =  'Barzahlung/Überweisung';
+					} else {
+						if($invoice->barcosts > 0) {
+							$p_type =  "Barzahlung";
+						} else {
+							$p_type =  "Überweisung";
+						}
+					}
+				} else {
+					if($invoice->filter_barzahlung == 1) {
+						if($invoice->ueberweisungcosts > 0) {
+							$p_type =  "Barzahlung (Teilbetrag)";
+						} else {
+							$p_type =  "Barzahlung";
+						}
+					}
+					if($invoice->filter_ueberweisung == 1) {
+						if($invoice->barcosts > 0) {
+							$p_type =  "Überweisung (Teilbetrag)";
+						} else {
+							$p_type =  "Überweisung";
+						}
+					}
+				}
+			}
+				
+				$Sheet->setCellValueByColumnAndRow($col++, $row,$p_type);
 				/*if($invoice->payment_type == 'Überweisung') {
 					$Sheet->setCellValueByColumnAndRow($col++, $row,"$invoice->totalcosts_plain");
 					$sum_ueberweisung += $invoice->totalcosts_plain;
@@ -1015,22 +1049,24 @@ $Sheet->getStyle('C1:C'.$row)->getNumberFormat()->setFormatCode('[$€-C07] #.00
 			// treatments
 			$patientsTreatments = new PatientsTreatments("treatments");
 			if($arrts = $patientsTreatments->model->getList($id,"0")) {
-				$ts = $arrts["treatments"];
-				foreach ($ts as $t) {
-					if($arr = $patientsTreatments->model->getDetails($t->id)) {
-						$treatment = $arr["treatment"];
-						//$t = $arr["t"];
-						$task = $arr["task"];
-						//$diagnose = $arr["diagnose"];
-						$sendto = $arr["sendto"];
-						$printcanvas = 0;
-						ob_start();
-							include 'modules/treatments/view/print.php';
-							$html .= ob_get_contents();
-						ob_end_clean();
+				if(!empty($arrts["treatments"])) {
+					$ts = $arrts["treatments"];
+					foreach ($ts as $t) {
+						if($arr = $patientsTreatments->model->getDetails($t->id)) {
+							$treatment = $arr["treatment"];
+							//$t = $arr["t"];
+							$task = $arr["task"];
+							//$task_bar = $arr["task_bar"];
+								//$bar_compare_array = $arr["bar_compare_array"];
+							$sendto = $arr["sendto"];
+							$printcanvas = 0;
+							ob_start();
+								include 'modules/treatments/view/print.php';
+								$html .= ob_get_contents();
+							ob_end_clean();
+						}
 					}
 				}
-				//$html .= '<div style="page-break-after:always;">&nbsp;</div>';
 			}
 			
 			
@@ -1055,24 +1091,26 @@ $Sheet->getStyle('C1:C'.$row)->getNumberFormat()->setFormatCode('[$€-C07] #.00
 			// reports
 			$patientsReports = new PatientsReports("reports");
 			if($arrrs = $patientsReports->model->getList($id,"0")) {
-				$rs = $arrrs["reports"];
-				foreach ($rs as $r) {
-					if($arr = $patientsReports->model->getDetails($r->id)) {
-						$report = $arr["report"];
-						//$r = $arr["r"];
-						$sendto = $arr["sendto"];
-						ob_start();
-							include 'modules/reports/view/print.php';
-							$html .= ob_get_contents();
-						ob_end_clean();
+				if(!empty($arrrs["reports"])) {
+					$rs = $arrrs["reports"];
+					foreach ($rs as $r) {
+						if($arr = $patientsReports->model->getDetails($r->id)) {
+							$report = $arr["report"];
+							//$r = $arr["r"];
+							$sendto = $arr["sendto"];
+							ob_start();
+								include 'modules/reports/view/print.php';
+								$html .= ob_get_contents();
+							ob_end_clean();
+						}
 					}
 				}
-				//$html .= '<div style="page-break-after:always;">&nbsp;</div>';
 			}
 
 			$title = $patient->title . " - " . $lang["PATIENT_HANDBOOK"];
 		}
 		$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PRINT_PATIENT_MANUAL"];
+		//$this->printHTML($title,$html);
 		switch($t) {
 			case "html":
 				$this->printHTML($title,$html);
