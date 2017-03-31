@@ -874,8 +874,8 @@ function Services(app) {
 							 })
 						.addClass(pclass)
 						.position({
-								my: "center center",
-								at: "right+"+r+" center",
+								my: "right bottom",
+								at: "right+300 top",
 								of: el,
 								collision: 'flip fit',
 								within: '#patients-right .scroll-pane',
@@ -900,7 +900,7 @@ function Services(app) {
 				} else {
 					
 					var belegId = el.attr('rel');
-					var html = '<div class="head">Barzahlung</div><div class="BarzahlungenPopup content"><div class="inner" id="">' + $('#belegText-'+belegId).val() + '</div><ul class="popupButtons"><li><a href="#" class="ServiceCopyText" rel="' + belegId + '">Kopieren</a></li><li><a href="#" class="ServiceDeleteBarBeleg" rel="'+belegId+'">L&ouml;schen</a></li></ul>';
+					var html = '<div class="head">Barzahlung</div><div class="BarzahlungenPopup content"><div class="inner" id="">' + $('#belegText-'+belegId).val() + '</div><ul class="popupButtons" style="margin-top: 5px;"><li style="display: inline-block"><a href="#" class="ServiceCopyText blue" rel="' + belegId + '" style="width: 80px;">Kopieren</a></li><li style="display: inline-block"><a href="#" class="ServiceDeleteBarBeleg alert" rel="'+belegId+'" style="width: 80px; margin-left: 18px;">L&ouml;schen</a></li></ul>';
 					var pclass = self.coPopupEditClass;
 					var copopup = $('#co-popup');
 					copopup.html(html);
@@ -917,8 +917,8 @@ function Services(app) {
 							 })
 						.addClass(pclass)
 						.position({
-								my: "center center",
-								at: "right+"+r+" center",
+								my: "center bottom",
+								at: "center top",
 								of: el,
 								collision: 'flip fit',
 								within: '#patients-right .scroll-pane',
