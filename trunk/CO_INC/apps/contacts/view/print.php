@@ -100,6 +100,55 @@
 &nbsp;
 <table width="100%" class="standard">
 	<tr>
+	  <td class="tcell-left"><?php echo $lang['CONTACTS_BANK_NAME'];?></td>
+      <td><?php echo($contact->bank_name);?></td>
+	</tr>
+</table>
+<table width="100%" class="standard">
+	<tr>
+	  <td class="tcell-left"><?php echo $lang['CONTACTS_BANK_SORT_CODE'];?></td>
+      <td><?php echo($contact->sort_code);?></td>
+	</tr>
+</table>
+<table width="100%" class="standard">
+	<tr>
+	  <td class="tcell-left"><?php echo $lang['CONTACTS_BANK_ACCOUNT_IBAN'];?></td>
+      <td><?php echo($contact->iban);?></td>
+	</tr>
+</table>
+<table width="100%" class="standard">
+	<tr>
+	  <td class="tcell-left"><?php echo $lang['CONTACTS_BANK_ACCOUNT_BIC'];?></td>
+      <td><?php echo($contact->bic);?></td>
+	</tr>
+</table>
+<table width="100%" class="standard">
+	<tr>
+	  <td class="tcell-left"><?php echo $lang['CONTACTS_VAT_NO'];?></td>
+      <td><?php echo($contact->vat_no);?></td>
+	</tr>
+</table>
+<table width="100%" class="standard">
+	<tr>
+	  <td class="tcell-left"><?php echo $lang['CONTACTS_COMPANY_NO'];?></td>
+      <td><?php echo($contact->company_no);?></td>
+	</tr>
+</table>
+<table width="100%" class="standard">
+	<tr>
+	  <td class="tcell-left"><?php echo $lang['CONTACTS_LEGAL_PLACE'];?></td>
+      <td><?php echo($contact->company_reg_loc);?></td>
+	</tr>
+</table>
+<table width="100%" class="standard">
+	<tr>
+	  <td class="tcell-left"><?php echo $lang['CONTACTS_DVR_NUMBER'];?></td>
+      <td><?php echo($contact->dvr);?></td>
+	</tr>
+</table>
+&nbsp;
+<table width="100%" class="standard">
+	<tr>
 	  <td class="tcell-left"><?php echo $lang['CONTACTS_LANGUAGE'];?></td>
       <td><?php echo($contact->lang);?></td>
 	</tr>

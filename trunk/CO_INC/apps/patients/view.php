@@ -39,8 +39,14 @@
                         <div class="module-actions module-actions-modules"><?php if (${'patients_'.$module.'_filter'} != 0) { ?><div class="sort-outer"><span class="sort" rel="1"></span></div><?php } ?></div>
                         <h3 rel="<?php echo($module);?>"><?php echo(${'patients_'.$module.'_name'});?></h3>
                         <div class="numItems" id="<?php echo('patients_'.$module.'_items');?>"></div>
-                        <div class="patients3-content"><div class="scrolling-content">        
-                        <ul class="sortable" rel="<?php echo($module);?>"><li></li></ul>
+                        <div class="patients3-content"><div class="scrolling-content"> 
+                        <?php 
+						$sortable = "sortable";
+						if($module == "invoices" || $module == "access" || $module == "controlling") {
+							$sortable = "";
+						}
+						?>       
+                        <ul class="<?php echo($sortable);?>" rel="<?php echo($module);?>"><li></li></ul>
                         </div>
                         </div>
                     </div>

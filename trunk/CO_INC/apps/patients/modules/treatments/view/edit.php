@@ -2,7 +2,7 @@
 <table border="0" cellpadding="0" cellspacing="0" class="table-title">
   <tr>
     <td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav focusTitle<?php } ?>"><span><?php echo $lang["PATIENT_TREATMENT_TITLE"];?></span></span></td>
-    <td><?php if($treatment->canedit) { ?><input name="title" type="text" class="title textarea-title" value="<?php echo($treatment->title);?>" maxlength="100" /><?php } else { ?><div class="textarea-title"><?php echo($treatment->title);?></div><?php } ?></td>
+    <td><?php if($treatment->canedit) { ?><input name="title" type="text" class="title textarea-title" value="<?php echo($treatment->title);?>" maxlength="100" /><?php } else { ?><div class="textarea-title"><?php echo($treatment->title);?><input style="display: none" name="title" type="text" class="title textarea-title" value="<?php echo($treatment->title);?>" maxlength="100" /></div><?php } ?></td>
   </tr>
   <tr class="table-title-status">
     <td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_STATUS"];?></td>
@@ -51,13 +51,13 @@
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 		<td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav showDialog<?php } ?>" request="getContactsDialog" field="patientsdoctor" append="1"><span><?php echo $lang["PATIENT_TREATMENT_DOCTOR"];?></span></span></td>
-		<td class="tcell-right"><div id="patientsdoctor" class="itemlist-field"><?php echo($treatment->doctor);?></div><div id="patientsdoctor_ct" class="itemlist-field"><?php if($treatment->canedit) { ?><a<?php } else { ?> <span <?php } ?>field="patientsdoctor_ct" class="ct-content"><?php echo($treatment->doctor_ct);?><?php if($treatment->canedit) { ?></a><?php } else { ?> </span><?php } ?></div></td>
+		<td class="tcell-right"><div id="patientsdoctor" class="itemlist-field"><?php echo($treatment->doctor);?></div><div id="patientsdoctor_ct" class="itemlist-field"><?php if($treatment->canedit) { ?><a<?php } else { ?> <span <?php } ?> field="patientsdoctor_ct" class="ct-content"><?php echo($treatment->doctor_ct);?><?php if($treatment->canedit) { ?></a><?php } else { ?> </span><?php } ?></div></td>
 	</tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
   <tr>
-    <td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["PATIENT_TREATMENT_DOCTOR_DIAGNOSE"];?></span></span></td>
-    <td class="tcell-right"><?php if($treatment->canedit) { ?><textarea name="protocol" class="elastic"><?php echo(strip_tags($treatment->protocol));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($treatment->protocol)));?><?php } ?></td>
+    <td class="tcell-left text11"><span class="<?php if($treatment->canedit || $treatment->specialcanedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["PATIENT_TREATMENT_DOCTOR_DIAGNOSE"];?></span></span></td>
+    <td class="tcell-right"><?php if($treatment->canedit || $treatment->specialcanedit) { ?><textarea name="protocol" class="elastic"><?php echo(strip_tags($treatment->protocol));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($treatment->protocol)));?><?php } ?></td>
   </tr>
 </table>
 <?php if(CO_PRODUCT_VARIANT == 1) { ?><div style="display: none"><?php } ?>
@@ -71,7 +71,7 @@
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
   <tr>
     <td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php if(CO_PRODUCT_VARIANT == 1) { echo $lang["PATIENT_TREATMENT_PRESCRIPTION_PHYSIO"]; } else { echo $lang["PATIENT_TREATMENT_PRESCRIPTION_THERAPY"]; }?></span></span></td>
-    <td class="tcell-right"><?php if($treatment->canedit) { ?><textarea name="protocol2" id="protocol2" class="elastic" style="background: #fff;"><?php echo(strip_tags($treatment->protocol2));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($treatment->protocol2)));?><?php } ?></td>
+    <td class="tcell-right"><?php if($treatment->canedit) { ?><textarea name="protocol2" id="protocol2" class="elastic" style="background: #fff;"><?php echo(strip_tags($treatment->protocol2));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($treatment->protocol2)));?><textarea name="protocol2" id="protocol2" class="elastic" style="display: none;"><?php echo(strip_tags($treatment->protocol2));?></textarea><?php } ?></td>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
@@ -82,8 +82,8 @@
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content tbl-protocol">
   <tr>
-    <td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["PATIENT_TREATMENT_DESCRIPTION"];?></span></span></td>
-    <td class="tcell-right"><?php if($treatment->canedit) { ?><textarea name="protocol3" class="elastic"><?php echo(strip_tags($treatment->protocol3));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($treatment->protocol3)));?><?php } ?></td>
+    <td class="tcell-left text11"><span class="<?php if($treatment->canedit || $treatment->specialcanedit) { ?>content-nav selectTextarea<?php } ?>"><span><?php echo $lang["PATIENT_TREATMENT_DESCRIPTION"];?></span></span></td>
+    <td class="tcell-right"><?php if($treatment->canedit || $treatment->specialcanedit) { ?><textarea name="protocol3" class="elastic"><?php echo(strip_tags($treatment->protocol3));?></textarea><?php } else { ?><?php echo(nl2br(strip_tags($treatment->protocol3)));?><?php } ?></td>
   </tr>
 </table>
 <div class="content-spacer"></div>
@@ -96,13 +96,13 @@
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
   <tr>
     <td class="tcell-left-shorter text11"><span class="<?php if($treatment->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["PATIENT_TREATMENT_DISCOUNT"];?> (%)</span></span></td>
-    <td class="tcell-right-nopadding"><?php if($treatment->canedit) { ?><input id="discount" name="discount" type="text" class="bg" value="<?php echo($treatment->discount);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $treatment->discount . '</span>'); } ?></td>
+    <td class="tcell-right-nopadding"><?php if($treatment->canedit) { ?><input id="discount" name="discount" type="text" class="bg" value="<?php echo($treatment->discount);?>" /><?php } else { echo('<input id="discount" name="discount" type="text" class="bg" value="'.$treatment->discount.'" style="display: none;"/><span style="display: block; padding-left: 7px; padding-top: 4px;">' . $treatment->discount . '</span>'); } ?></td>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
   <tr>
     <td class="tcell-left-shorter text11"><span class="<?php if($treatment->canedit) { ?>content-nav selectTextfield<?php } ?>"><span><?php echo $lang["PATIENT_TREATMENT_VAT"];?> (%)</span></span></td>
-    <td class="tcell-right-nopadding"><?php if($treatment->canedit) { ?><input id="vat" name="vat" type="text" class="bg" value="<?php echo($treatment->vat);?>" /><?php } else { echo('<span style="display: block; padding-left: 7px; padding-top: 4px;">' . $treatment->vat . '</span>'); } ?></td>
+    <td class="tcell-right-nopadding"><?php if($treatment->canedit) { ?><input id="vat" name="vat" type="text" class="bg" value="<?php echo($treatment->vat);?>" /><?php } else { echo('<input id="vat" name="vat" type="text" class="bg" value="'.$treatment->vat.'" style="display: none;" /><span style="display: block; padding-left: 7px; padding-top: 4px;">' . $treatment->vat . '</span>'); } ?></td>
   </tr>
 </table>
 <div class="content-spacer"></div>
@@ -130,6 +130,19 @@
 
 
 <?php if($treatment->perms != "guest") { ?>
+<div class="content-spacer"></div>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
+	  <td class="tcell-left text11"><span class="<?php if($treatment->canedit) { ?>content-nav showCoPopup<?php } ?> <?php if($treatment->invoice_no > CO_INVOICE_START) { echo 'activeInvoice'; }?>" request="showAllTasks"><span>Barzahlung</span></span></td>
+        <td class="tcell-right" id="listBarPayments">
+        <?php 
+					 foreach($task_bar as $value) { 
+               include("tasks_bar.php");
+						} ?>
+        
+        </td>
+	</tr>
+</table>
 <div class="content-spacer"></div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
 	<tr>

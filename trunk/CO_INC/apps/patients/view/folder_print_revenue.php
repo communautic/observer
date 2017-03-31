@@ -101,7 +101,38 @@ if(is_array($invoices)) { ?>
         <tr>
             <td class="greybg" style="padding-left: 15pt; width: 40px"><?php echo $i+1;?></td>
             <td class="greybg" style="padding-left: 15pt; width: 224px"><?php echo($invoice->title);?></td>
-            <td class="greybg" style="padding-left: 15pt; width: 224px"><?php echo($invoice->payment_type);?> <?php if($invoice->status_invoice_class == 'barchart_color_finished') { echo('am ' . $invoice->status_invoice_date); } ?></td>
+            <td class="greybg" style="padding-left: 15pt; width: 224px"><?php 
+			if($invoice->display_legacy_payment_method) { 
+				echo($invoice->payment_type); 
+			} else { ?> 
+      <?php 
+				if($invoice->filter_barzahlung == 1 && $invoice->filter_ueberweisung == 1) {
+					if($invoice->ueberweisungcosts > 0 && $invoice->barcosts > 0) {
+						echo 'Barzahlung/&Uuml;berweisung';
+					} else {
+						if($invoice->barcosts > 0) {
+							echo "Barzahlung";
+						} else {
+							echo "&Uuml;berweisung";
+						}
+					}
+				} else {
+					if($invoice->filter_barzahlung == 1) {
+						if($invoice->ueberweisungcosts > 0) {
+							echo "Barzahlung (Teilbetrag)";
+						} else {
+							echo "Barzahlung";
+						}
+					}
+					if($invoice->filter_ueberweisung == 1) {
+						if($invoice->barcosts > 0) {
+							echo "&Uuml;berweisung (Teilbetrag)";
+						} else {
+							echo "&Uuml;berweisung";
+						}
+					}
+				}
+			} ?> <?php if($invoice->status_invoice_class == 'barchart_color_finished') { echo('am ' . $invoice->status_invoice_date); } ?></td>
             <td class="greybg" style="padding-right: 15pt; text-align: right;"><?php echo(CO_DEFAULT_CURRENCY . ' ' . $invoice->totalcosts);?></td>
         </tr>
         </table>

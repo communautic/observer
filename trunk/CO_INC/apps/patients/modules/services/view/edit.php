@@ -2,7 +2,7 @@
 <table border="0" cellpadding="0" cellspacing="0" class="table-title">
   <tr>
     <td class="tcell-left text11"><span class="<?php if($service->canedit) { ?>content-nav focusTitle<?php } ?>"><span><?php echo $lang["PATIENT_SERVICE_TITLE"];?></span></span></td>
-    <td><input name="title" type="text" class="title textarea-title" value="<?php echo($service->title);?>" maxlength="100" /></td>
+    <td><?php if($service->canedit) { ?><input name="title" type="text" class="title textarea-title" value="<?php echo($service->title);?>" maxlength="100" /><?php } else { ?><div class="textarea-title"><?php echo($service->title);?><input style="display: none" name="title" type="text" class="title textarea-title" value="<?php echo($service->title);?>" maxlength="100" /></div><?php } ?></td>
   </tr>
   <tr class="table-title-status">
     <td class="tcell-left-inactive text11"><?php echo $lang["GLOBAL_STATUS"];?></td>
@@ -72,6 +72,19 @@ include("task.php");
  } ?>
 </div>
 <?php if($service->perms != "guest") { ?>
+<div class="content-spacer"></div>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content">
+	<tr>
+	  <td class="tcell-left text11"><span class="<?php if($service->canedit) { ?>content-nav showCoPopup<?php } ?> <?php if($service->invoice_no > CO_INVOICE_START) { echo 'activeInvoice'; }?>" request="showAllTasks"><span>Barzahlung</span></span></td>
+        <td class="tcell-right" id="listBarPayments">
+        <?php 
+					 foreach($task_bar as $value) { 
+               include("tasks_bar.php");
+						} ?>
+        
+        </td>
+	</tr>
+</table>
 <div class="content-spacer"></div>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
   <tr>

@@ -754,6 +754,14 @@ function getContactSend($id) {
 		$this->model->removeCalendarView($id);
 		return 'nicht sichtbar';
 	}
+	
+	function setInvoiceAddon($id,$addon) {
+		global $lang;
+		$this->model->setInvoiceAddon($id,$addon);
+		//return 'yodel';
+		$inv_start = CO_INVOICE_START+1;
+		return $addon.'/'.date('Y').'/'.$inv_start;
+	}
 
 }
 

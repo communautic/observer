@@ -495,23 +495,23 @@ background: linear-gradient(to bottom,  #949494 0,#4e4e4e 50%,#1f1f1f 51%,#1f1f1
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#949494', endColorstr='#1f1f1f',GradientType=0 );
 }
 
-.appSettingsPopup .content {
+.appSettingsPopup .content, .BarzahlungenPopup.content {
     border-radius: 3px 3px 3px 3px;
     margin: 0 3px 3px;
     height: auto;
 	background-color: #d8d8d8;
 	width: 194px;
 }
-.appSettingsPopup .content .inner {
+.appSettingsPopup .content .inner, .BarzahlungenPopup.content .inner {
 	padding: 10px 12px 5px 12px;
 	min-height: 21px;
 	color: #666;
 }
-.appSettingsPopup .content .left, .appSettingsPopup .content .right {
+.appSettingsPopup .content .left, .appSettingsPopup .content .right, .BarzahlungenPopup.content .left, .BarzahlungenPopup.content .right {
 	float: left;  width: 85px;
 	line-height: 26px;
 }
-.appSettingsPopup .content .line {
+.appSettingsPopup .content .line, .BarzahlungenPopup.content .line {
 	height: 1px;
 	background: #acacac;
 	clear: both;

@@ -1,3 +1,4 @@
+<?php if($showResults) { ?>
 <table border="0" cellpadding="0" cellspacing="0" class="table-content">
 	<tr>
 		<td class="tcell-left-inactive text11"><?php echo $lang["PATIENT_FOLDER_TAB_REVENUE"];?></td>
@@ -10,6 +11,7 @@
 <div style="width: 100%; height: 29px; background: #e5e5e5; border-bottom: 1px solid #ccc; color: #666; ">
 <?php } ?>
 <div style="line-height: 18px; padding-left: 150px;">
+
 
 <table width="100%" style=" border-collapse: separate">
     <tr >
@@ -32,7 +34,10 @@
 
 
 <?php
+//$showResults = true;
+
 if(is_array($invoices)) { ?>
+
 <div>
 <table width="100%" style="font-size: 11px; border-collapse: separate">
 <?php
@@ -40,7 +45,6 @@ if(is_array($invoices)) { ?>
 	$vatcheck = 0;
 	$totalinv = sizeof($invoices);
 	foreach ($invoices as $invoice) { 
-
 	
 	if($i == 0 || $vatcheck != $invoice->vat) {
 		$vatcheck_old = $vatcheck;
@@ -94,7 +98,38 @@ if(is_array($invoices)) { ?>
     <tr >
     <td width="135" class="row<?php  echo ($i % 2);?>" style="padding-left: 15px;"><?php  echo $i+1;?></td>
     <td width="169" class="row<?php  echo ($i % 2);?>" nowrap><div class="loadInvoice" pid="<?php echo($invoice->pid);?>" rel="<?php echo($invoice->id);?>"><div class="co-link" style="height: 21px; overflow: hidden;"><?php echo($invoice->title);?></div></div></td>
-    <td width="70" class="row<?php  echo ($i % 2);?>" style="padding-left: 20px;" nowrap><?php echo($invoice->payment_type); ?></td>
+    <td width="150" class="row<?php  echo ($i % 2);?>" style="padding-left: 20px;" nowrap>
+			<?php 
+			if($invoice->display_legacy_payment_method) { 
+				echo($invoice->payment_type); 
+			} else { 
+				if($invoice->filter_barzahlung == 1 && $invoice->filter_ueberweisung == 1) {
+					if($invoice->ueberweisungcosts > 0 && $invoice->barcosts > 0) {
+						echo 'Barzahlung / &Uuml;berweisung';
+					} else {
+						if($invoice->barcosts > 0) {
+							echo "Barzahlung";
+						} else {
+							echo "&Uuml;berweisung";
+						}
+					}
+				} else {
+					if($invoice->filter_barzahlung == 1) {
+						if($invoice->ueberweisungcosts > 0) {
+							echo "Barzahlung (Teilbetrag)";
+						} else {
+							echo "Barzahlung";
+						}
+					}
+					if($invoice->filter_ueberweisung == 1) {
+						if($invoice->barcosts > 0) {
+							echo "&Uuml;berweisung (Teilbetrag)";
+						} else {
+							echo "&Uuml;berweisung";
+						}
+					}
+				}
+			} ?></td>
     <td width="75" class="row<?php  echo ($i % 2);?>" style="padding-left: 20px;" nowrap><?php if($invoice->status_invoice_class == 'barchart_color_finished') { echo('am ' . $invoice->status_invoice_date); } ?></td>
     <td width="70" class="row<?php  echo ($i % 2);?>"  style="text-align: right; padding-right: 20px; padding-left: 20px;" nowrap><?php echo(CO_DEFAULT_CURRENCY . ' ' . $invoice->totalcosts);?></td>
     <td class="row<?php  echo ($i % 2);?>"></td>
@@ -111,7 +146,6 @@ if(is_array($invoices)) { ?>
     <?php 
 		}
 	$i++;
-	
 	
 	} ?>
 
@@ -147,6 +181,7 @@ if(is_array($invoices)) { ?>
    
    </table></div>
   <?php
+
 }
 ?>
 <div class="content-spacer"></div>
@@ -166,6 +201,7 @@ if(is_array($invoices)) { ?>
     <div><img src="/data/charts/<?php echo($chartAge['img_name']);?>?t=<?php echo(time());?>" alt="" width="150" height="90" title=""/></div>
     <?php echo($chartAge['ageGroup25']);?>% bis 25 <br /><?php echo($chartAge['ageGroup60']);?>% 25 bis 60 <br /><?php echo($chartAge['ageGroup60Plus']);?>% ab 61<br /><?php echo($chartAge['ageGroupNotset']);?>% keine Angabe
 </div>
+<?php } ?>
 <?php } ?>
 </div>
 <div class="content-spacer" style="clear:both;"></div>

@@ -32,6 +32,8 @@ class PatientsServices extends Patients {
 		if($arr = $this->model->getDetails($id)) {
 			$service = $arr["service"];
 			$task = $arr["task"];
+			$task_bar = $arr["task_bar"];
+			$bar_compare_array = $arr["bar_compare_array"];
 			$sendto = $arr["sendto"];
 			ob_start();
 				include 'view/edit.php';
@@ -56,6 +58,8 @@ class PatientsServices extends Patients {
 		if($arr = $this->model->getDetails($id)) {
 			$service = $arr["service"];
 			$task = $arr["task"];
+			$task_bar = $arr["task_bar"];
+			$bar_compare_array = $arr["bar_compare_array"];
 			$sendto = $arr["sendto"];
 			ob_start();
 				include 'view/print.php';
@@ -78,6 +82,8 @@ class PatientsServices extends Patients {
 		if($arr = $this->model->getDetails($id,'prepareSendTo')) {
 			$service = $arr["service"];
 			$task = $arr["task"];
+			$task_bar = $arr["task_bar"];
+			$bar_compare_array = $arr["bar_compare_array"];
 			
 			$form_url = $this->form_url;
 			$request = "sendDetails";
@@ -108,6 +114,8 @@ class PatientsServices extends Patients {
 		if($arr = $this->model->getDetails($id)) {
 			$service = $arr["service"];
 			$task = $arr["task"];
+			$task_bar = $arr["task_bar"];
+			$bar_compare_array = $arr["bar_compare_array"];
 			$sendto = $arr["sendto"];
 			ob_start();
 				include 'view/print.php';
@@ -307,6 +315,55 @@ class PatientsServices extends Patients {
 		global $lang;
 		$patient = $this->model->copyService($pid,$phid);
 		return json_encode($patient);
+	}
+	
+	function getCoPopup($id) {
+		global $system, $lang;
+		if($arr = $this->model->getBarServiceTasks($id)) {
+			$tasks = $arr['tasks'];
+				include 'view/copopup.php';
+		}
+	}
+	
+	function generateInvoice($pid,$sid) {
+		global $lang;
+		if($arr = $this->model->generateInvoice($pid,$sid)) {
+			return json_encode($arr);
+		}
+	}
+	
+	function generateBarzahlung($tid,$tasks) {
+		global $lang;
+		if( $bar = $this->model->generateBarzahlung($tid,$tasks)) {
+			if($arr = $this->model->getDetails($tid)) {
+				$service = $arr["service"];
+				$task = $arr["task"];
+			$task_bar = $arr["task_bar"];
+			$bar_compare_array = $arr["bar_compare_array"];
+				$html = '';
+					foreach($task_bar as $value) { 
+               include("view/tasks_bar.php");
+							 ob_start();
+					//include 'view/edit.php';
+					$html .= ob_get_contents();
+					ob_end_clean();
+						}
+					
+				
+				//$data["canvases"] = $diagnose;
+				return $html;
+			} else {
+				return 'error';
+			}
+			return true;
+		}
+	}
+	
+	function deleteBarBeleg($id) {
+		global $lang;
+		if( $bar = $this->model->deleteBarBeleg($id)) {
+			return json_encode($bar);
+		}
 	}
 	
 }

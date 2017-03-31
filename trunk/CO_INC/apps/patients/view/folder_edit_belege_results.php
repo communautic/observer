@@ -56,6 +56,7 @@ foreach ($invoices as $invoice) {
     <td class="row<?php  echo ($i % 2);?>" nowrap><div class="loadInvoice" pid="<?php echo($item->pid);?>" rel="<?php echo($item->id);?>"><div class="co-link" style="height: 21px; overflow: hidden;"><?php echo($item->title);?></div></div></td>
     <td class="row<?php  echo ($i % 2);?>" style="padding-left: 20px;" nowrap><?php echo($item->patient);?></td>
     <td width="" class="row<?php  echo ($i % 2);?>" style="padding-left: 20px;" nowrap><?php echo($item->beleg_nummer);?></td>
+    <td width="" class="row<?php  echo ($i % 2);?>" style="padding-left: 20px;" nowrap><?php echo($item->invoice_number);?></td>
     <td width="" align="right" nowrap class="row<?php  echo ($i % 2);?>"  style="padding-left: 20px;"><?php echo(CO_DEFAULT_CURRENCY . ' ' . $item->totalcosts);?></td>
     <td class="row<?php  echo ($i % 2);?>" style="padding-left: 20px;" nowrap><?php if($item->status_invoice == 3) { echo('Storno'); } ?></td>
     <td width="400" class="row<?php  echo ($i % 2);?>"></td>
@@ -68,6 +69,7 @@ foreach ($invoices as $invoice) {
     <td class="row<?php  echo ($i % 2);?>" nowrap></td>
     <td class="row<?php  echo ($i % 2);?>" style="padding-left: 20px;" nowrap></td>
     <td width="" class="row<?php  echo ($i % 2);?>"  style="padding-left: 20px;" nowrap></td>
+    <td width="" class="row<?php  echo ($i % 2);?>"  style="padding-left: 20px;" nowrap></td>
     <td width="" align="right" nowrap class="row<?php  echo ($i % 2);?>" style="padding-left: 20px;"><?php echo(CO_DEFAULT_CURRENCY . ' ' . $invoice['netto']);?><br />
       <?php echo(CO_DEFAULT_CURRENCY . ' ' . $invoice['vat_sum']);?><br />
       <strong class="text13"><?php echo(CO_DEFAULT_CURRENCY . ' ' . $invoice['brutto']);?></strong></td>
@@ -78,6 +80,7 @@ foreach ($invoices as $invoice) {
     </tr>
     <tr>
     <td>&nbsp;</td>
+    <td></td>
     <td></td>
     <td></td>
     <td></td>

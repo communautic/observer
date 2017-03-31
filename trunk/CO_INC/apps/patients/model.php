@@ -225,7 +225,7 @@ class PatientsModel extends Model {
    
    
   function getFolderDetailsInvoices($id, $view) {
-		global $session, $contactsmodel, $patientsControllingModel, $lang;
+		global $session, $contactsmodel, $patientsControllingModel, $lang, $system;
 		
 		switch($view) {
 			case 'Timeline':
@@ -238,7 +238,7 @@ class PatientsModel extends Model {
 				$order = "status_invoice ASC";
 			break;
 			case 'Number':
-				$order = "invoice_number DESC";
+				$order = "invoice_no DESC, invoice_number DESC";
 			break;
 		}
 		
@@ -252,7 +252,7 @@ class PatientsModel extends Model {
 			$access = " and (b.id IN (" . $adminPerm . ") or (b.id IN (" . $guestPerm . ") and a.access_invoice='1'))";
 	  	}
 		
-		$q = "SELECT a.id,a.title,a.invoice_date,a.invoice_number,a.status_invoice,a.status_invoice_date, a.discount, a.vat, a.payment_type,a.invoice_type,a.service_id, b.id as pid, b.management, CONCAT(c.lastname,' ',c.firstname) as patient FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE a.status='2' and a.pid=b.id and b.folder='$id' and b.cid=c.id and a.bin='0' and b.bin='0'" . $access . " ORDER BY " . $order;
+		$q = "SELECT a.id,a.title,a.invoice_date,a.invoice_number,a.status_invoice,a.status_invoice_date, a.discount, a.vat, a.payment_type,a.invoice_type,a.service_id,a.invoice_carrier,a.invoice_no ,a.invoice_year, b.id as pid, b.management, CONCAT(c.lastname,' ',c.firstname) as patient FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE (a.status='1' or a.status='2') and a.pid=b.id and b.folder='$id' and b.cid=c.id and a.bin='0' and b.bin='0'" . $access . " ORDER BY " . $order;
 		//echo $q;
 		
 		
@@ -265,6 +265,20 @@ class PatientsModel extends Model {
 			$array[$key] = $val;
 		}
 		$id = $array["id"];
+			
+			$array["display_legacy_payment_method"] = false;
+			
+			if($array["invoice_no"] > CO_INVOICE_START) {
+				$invoice_carrier = $array["invoice_carrier"];
+				$qu = "SELECT invoice_addon FROM co_users WHERE id = '$invoice_carrier'";
+				$resultu = mysql_query($qu, $this->_db->connection);
+				$addon = mysql_result($resultu,0);
+				$array["invoice_number"] = $system->formatInvoiceNumber($array["invoice_no"], $addon, $array["invoice_year"]);
+			} else {
+				$array["display_legacy_payment_method"] = true;
+			}
+		
+		
 		$array["invoice_date"] = $this->_date->formatDate($array["invoice_date"],CO_DATE_FORMAT);
 		$array["status_invoice_date"] = $this->_date->formatDate($array["status_invoice_date"],CO_DATE_FORMAT);
 		$array["management"] = $contactsmodel->getUserListPlain($array['management']);
@@ -298,15 +312,20 @@ class PatientsModel extends Model {
 		
 		
 		$array['totalcosts'] = 0;
+		$array['barcosts'] = 0;
+			$array['ueberweisungcosts'] = 0;
 		$array['totalmin'] = 0;
 		if($array["invoice_type"] == 0) { // Treatments
 		// get the tasks
 		
-		$qt = "SELECT type FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where status='1' and mid = '$id' and bin='0' ORDER BY item_date ASC";
+		$qt = "SELECT type,bar FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where status='1' and mid = '$id' and bin='0' ORDER BY item_date ASC";
 		$resultt = mysql_query($qt, $this->_db->connection);
 		$PatientsTreatmentsModel = new PatientsTreatmentsModel();
 		if(mysql_num_rows($resultt) > 0) {
 		while($rowt = mysql_fetch_array($resultt)) {
+			$barcosts = 0;
+			$ueberweisungcosts = 0;
+			
 			if($rowt["type"] == '') {
 				$mins = 0;
 				$costs = 0;
@@ -314,6 +333,19 @@ class PatientsModel extends Model {
 				$mins = $PatientsTreatmentsModel->getTreatmentTypeMin($rowt["type"]);
 				$costs = $PatientsTreatmentsModel->getTreatmentTypeCosts($rowt["type"]);
 			}
+			
+			
+						
+						
+						if($rowt["bar"] == 1) {
+							$array['barcosts'] += $costs;
+							$barcosts = $costs;
+						} else {
+							$array['ueberweisungcosts'] += $costs;
+							$ueberweisungcosts = $costs;
+						}
+			
+			
 			$array['totalmin'] += $mins;
 			$array['totalcosts'] += $costs;
 		}
@@ -389,7 +421,7 @@ class PatientsModel extends Model {
 	
 	
 	function getFolderDetailsRevenueResults($id,$who,$patient,$start,$end,$filters,$details,$detailsCount,$stats,$statsCount) {
-		global $session, $contactsmodel, $patientsControllingModel, $lang;
+		global $session, $system, $contactsmodel, $patientsControllingModel, $lang;
 		
 		$filter = json_decode($filters);
 		$detail = json_decode($details);
@@ -435,17 +467,28 @@ class PatientsModel extends Model {
 		}
 		
 		// filter Barzahlung / Überweisung
-		$payment_type = "a.payment_type!='Barzahlung' and a.payment_type!='Überweisung' and a.payment_type!='' and ";
-		if($filter->barzahlung == 1 && $filter->ueberweisung == 1) {
-			$payment_type = "(a.payment_type='Barzahlung' or a.payment_type='Überweisung') and ";
+		$payment_type = "";
+		//$payment_type = "a.payment_type!='Barzahlung' and a.payment_type!='Überweisung' and a.payment_type!='' and ";
+		//$payment_type = "a.payment_type!='Barzahlung' and a.payment_type!='Überweisung' and a.payment_type!='' and ";
+		/*if($filter->barzahlung == 1 && $filter->ueberweisung == 1) {
+			$payment_type = "(a.payment_type='Barzahlung' or a.payment_type='Überweisung' or a.payment_type='') and ";
 		} else {
 				if($filter->barzahlung == 1) {
-					$payment_type = "a.payment_type='Barzahlung' and ";
+					$payment_type = "(a.payment_type='Barzahlung' or a.payment_type='') and ";
 				}
 				if($filter->ueberweisung == 1) {
-					$payment_type = "a.payment_type='Überweisung' and ";
+					$payment_type = "(a.payment_type='Überweisung' or a.payment_type='') and ";
 				}
+		}*/
+		
+		$showResults = true;
+		
+		if($filter->barzahlung == 0 && $filter->ueberweisung == 0) {
+			$showResults = false;
 		}
+		
+		$array['filter_barzahlung'] = $filter->barzahlung;
+		$array['filter_ueberweisung'] = $filter->ueberweisung;
 		
 		// filter Behandlung / Zusatzleistung
 		$invoice_type = "a.invoice_type!='0' and a.invoice_type!='1' and ";
@@ -483,7 +526,8 @@ class PatientsModel extends Model {
 		$array["show_rechnungsnummer"] = $detail->rechnungsnummer;
 		
 		
-		$q = "SELECT a.id,a.title,a.invoice_carrier,(SELECT MIN(item_date) FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " as b WHERE b.mid=a.id and b.bin='0') as treatment_start,(SELECT MAX(item_date) FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " as b WHERE b.mid=a.id and b.bin='0') as treatment_end,a.invoice_date,a.status_invoice,a.status_invoice_date, a.invoice_number, a.payment_type, a.discount,a.vat,a.invoice_type,a.service_id, b.id as pid, b.folder, b.management, CONCAT(c.lastname,' ',c.firstname) as patient,b.dob,c.gender FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE $patientsql $management $folder $payment_type $invoice_type a.invoice_date >= '$start' and a.invoice_date <= '$end' and $status_invoice status_invoice !='3' and status_invoice !='0' and a.pid=b.id and b.cid=c.id and a.bin='0' and b.bin='0' ORDER BY a.vat ASC,a.invoice_date ASC";
+		$q = "SELECT a.id,a.title,a.invoice_carrier,a.invoice_no,a.invoice_year,(SELECT MIN(item_date) FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " as b WHERE b.mid=a.id and b.bin='0') as treatment_start,(SELECT MAX(item_date) FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " as b WHERE b.mid=a.id and b.bin='0') as treatment_end,a.invoice_date,a.status_invoice,a.status_invoice_date, a.invoice_number, a.payment_type, a.discount,a.vat,a.invoice_type,a.service_id, b.id as pid, b.folder, b.management, CONCAT(c.lastname,' ',c.firstname) as patient,b.dob,c.gender FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE $patientsql $management $folder $payment_type $invoice_type a.invoice_date >= '$start' and a.invoice_date <= '$end' and $status_invoice status_invoice !='3' and status_invoice !='0' and a.pid=b.id and b.cid=c.id and a.bin='0' and b.bin='0' ORDER BY a.vat ASC,a.invoice_date ASC";
+		
 		
 		$result = mysql_query($q, $this->_db->connection);
 		if(mysql_num_rows($result) < 1) {
@@ -498,10 +542,93 @@ class PatientsModel extends Model {
 		
 		//$array['total_results' = mysql_num_rows($result);
 		while($row = mysql_fetch_array($result)) {
+			
+			$bar = false;
+			$ueber = false;
 			foreach($row as $key => $val) {
 				$array[$key] = $val;
 			}
 			$id = $array["id"];
+			
+			$array["display_legacy_payment_method"] = false;
+			
+			if($array["invoice_no"] > CO_INVOICE_START) {
+				$invoice_carrier = $array["invoice_carrier"];
+				$qu = "SELECT invoice_addon FROM co_users WHERE id = '$invoice_carrier'";
+				$resultu = mysql_query($qu, $this->_db->connection);
+				$addon = mysql_result($resultu,0);
+				$array["invoice_number"] = $system->formatInvoiceNumber($array["invoice_no"], $addon, $array["invoice_year"]);
+				
+				// chec for payment types
+				if($array["invoice_type"] == 0) { // Treatments
+					$qbar = "SELECT bar FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where mid = '$id' and bar='1' and bin='0'";
+					$rbar = mysql_query($qbar, $this->_db->connection);
+					if(mysql_num_rows($rbar) > 0) {
+						$bar = true;
+					}
+					$qbar = "SELECT bar FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where mid = '$id' and bar='0' and bin='0'";
+					$rbar = mysql_query($qbar, $this->_db->connection);
+					if(mysql_num_rows($rbar) > 0) {
+						$ueber = true;
+					}
+				}
+				
+				if($array["invoice_type"] == 1) { // Services
+					$service_id = $array['service_id'];
+					$qbar = "SELECT bar FROM co_patients_services_tasks where status='1' and mid = '$service_id' and bar='1' and bin='0'";
+					$rbar = mysql_query($qbar, $this->_db->connection);
+					if(mysql_num_rows($rbar) > 0) {
+						$bar = true;
+					}
+					$qbar = "SELECT bar FROM co_patients_services_tasks where status='1' and mid = '$service_id' and bar='0' and bin='0'";
+					$rbar = mysql_query($qbar, $this->_db->connection);
+					if(mysql_num_rows($rbar) > 0) {
+						$ueber = true;
+					}
+				}
+				
+				$p_string = '';
+				if($bar) {
+					$array['payment_type'] = 'Barzahlung';
+				}
+				if($ueber) {
+					if($bar) {
+						$array['payment_type'] = 'Barzahlung/Überweisung';
+					} else {
+						$array['payment_type'] = 'Überweisung';
+					}
+				}
+				
+				
+			} else {
+				if($array['payment_type'] == 'Barzahlung') {
+					$bar = true;
+				}
+				
+				if($array['payment_type'] == 'Überweisung') {
+					$ueber = true;
+				}
+				
+				$array["display_legacy_payment_method"] = true;
+			}
+			
+			
+			
+			
+			// custom filter
+			if($filter->ueberweisung == 0 && $filter->barzahlung == 1 && !$bar) {
+				$i++;
+				continue;
+			}
+			if($filter->barzahlung == 0 && $filter->ueberweisung == 1 && !$ueber) {
+				$i++;
+				continue;
+			}
+			
+			/*foreach($row as $key => $val) {
+				$array[$key] = $val;
+			}
+			$id = $array["id"];*/
 			$array["invoice_date"] = $this->_date->formatDate($array["invoice_date"],CO_DATE_FORMAT);
 			$array["status_invoice_date"] = $this->_date->formatDate($array["status_invoice_date"],CO_DATE_FORMAT);
 			$array["management"] = $contactsmodel->getUserListPlain($array['management']);
@@ -510,6 +637,7 @@ class PatientsModel extends Model {
 			
 			$array["treatment_start"] = $this->_date->formatDate($array["treatment_start"],CO_DATE_FORMAT);
 			$array["treatment_end"] = $this->_date->formatDate($array["treatment_end"],CO_DATE_FORMAT);
+
 			
 			$pid = $array['pid'];
 			
@@ -646,11 +774,15 @@ class PatientsModel extends Model {
 			
 			// get the tasks
 			$array['totalcosts'] = 0;
+			$array['barcosts'] = 0;
+			$array['ueberweisungcosts'] = 0;
 			
 			$array['brutto'] = 0;
 			$array['totalvatcosts'] = 0; //per treatment
+			
 			$array['totalmin'] = 0;
 			$html_location_array = array();
+			
 			if($array["invoice_type"] == 0) { // Treatments
 			// get the tasks
 			//$qt = "SELECT type FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where status='1' and mid = '$id' and bin='0' ORDER BY item_date ASC";
@@ -658,13 +790,16 @@ class PatientsModel extends Model {
 			
 			//$qt = "SELECT a.type, b.eventlocation,b.eventlocationuid FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " as a, oc_clndr_objects as b, oc_clndr_calendars as c, oc_users as d WHERE a.id = '$eventid' and b.calendarid = c.id and c.userid=d.uid and a.bin='0' and b.eventid = '$eventid'";
 			
-				$qt = "SELECT a.type,b.eventlocation,b.eventlocationuid FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " as a, oc_clndr_objects as b, oc_clndr_calendars as c, oc_users as d where a.mid = '$id' and b.calendarid = c.id and c.userid=d.uid and a.bin='0' and b.eventid = a.id ORDER BY b.startdate ASC";
+				$qt = "SELECT a.type,a.bar,b.eventlocation,b.eventlocationuid FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " as a, oc_clndr_objects as b, oc_clndr_calendars as c, oc_users as d where a.mid = '$id' and b.calendarid = c.id and c.userid=d.uid and a.bin='0' and b.eventid = a.id ORDER BY b.startdate ASC";
 				
 				
 				$resultt = mysql_query($qt, $this->_db->connection);
 				$PatientsTreatmentsModel = new PatientsTreatmentsModel();
 				if(mysql_num_rows($resultt) > 0) {
 					while($rowt = mysql_fetch_array($resultt)) {
+						$barcosts = 0;
+						$ueberweisungcosts = 0;
+						
 						if($rowt["type"] == '') {
 							$mins = 0;
 							$costs = 0;
@@ -672,7 +807,15 @@ class PatientsModel extends Model {
 							$mins = $PatientsTreatmentsModel->getTreatmentTypeMin($rowt["type"]);
 							$costs = $PatientsTreatmentsModel->getTreatmentTypeCosts($rowt["type"]);
 						}
-			
+						
+						if($rowt["bar"] == 1) {
+							$array['barcosts'] += $costs;
+							$barcosts = $costs;
+						} else {
+							$array['ueberweisungcosts'] += $costs;
+							$ueberweisungcosts = $costs;
+						}
+						
 						if($rowt["eventlocation"] != 0) {
 							$html_location_array[] = $PatientsTreatmentsModel->getTreatmentLocation($rowt["eventlocation"]);
 						}
@@ -681,8 +824,109 @@ class PatientsModel extends Model {
 						}
 			
 						$array['totalmin'] += $mins;
-						$array['totalcosts'] += $costs;
-						$array['brutto'] += $costs;
+						/*$array['totalcosts'] += $costs;
+						$array['brutto'] += $costs;*/
+						
+						if($array["invoice_no"] > CO_INVOICE_START) {
+							if($filter->barzahlung == 1 && $filter->ueberweisung == 1 || $filter->barzahlung == 0 && $filter->ueberweisung == 0) {
+								$array['totalcosts'] += $costs;
+								$array['brutto'] += $costs;
+							}
+							
+							if($filter->barzahlung == 1 && $filter->ueberweisung == 0) {
+									$array['totalcosts'] += $barcosts;
+									$array['brutto'] += $barcosts;
+							}
+							
+							if($filter->barzahlung == 0 && $filter->ueberweisung == 1) {
+									$array['totalcosts'] += $ueberweisungcosts;
+									$array['brutto'] += $ueberweisungcosts;
+							}
+						} else {
+							$array['totalcosts'] += $costs;
+								$array['brutto'] += $costs;
+						}
+						/*if($filter->barzahlung == 1) {
+							
+							if($rowt["bar"] == 1) {
+								$array['barcosts'] += $costs;
+								$barcosts = $costs;
+							}
+							
+							if($array["invoice_no"] == CO_INVOICE_START) {
+								if($array['payment_type'] == 'Barzahlung') {
+									$barcosts = $costs;
+								} 
+													
+							}
+							
+							if($rowt["eventlocation"] != 0) {
+							$html_location_array[] = $PatientsTreatmentsModel->getTreatmentLocation($rowt["eventlocation"]);
+						}
+						if($rowt["eventlocationuid"] != 0) {
+							$html_location_array[] = $contactsmodel->getPlaceListPlain($rowt["eventlocationuid"],'location', false);
+						}
+							
+							
+							$array['totalmin'] += $mins;
+							
+							$array['totalcosts'] += $barcosts;
+								$array['brutto'] += $barcosts;
+						}*/
+						
+						
+						
+						/*$barcosts = 0;
+						$ueberweisungcosts = 0;
+						if($rowt["type"] == '') {
+							$mins = 0;
+							$costs = 0;
+						} else {
+							$mins = $PatientsTreatmentsModel->getTreatmentTypeMin($rowt["type"]);
+							$costs = $PatientsTreatmentsModel->getTreatmentTypeCosts($rowt["type"]);
+						}
+						if($rowt["bar"] == 1) {
+							$array['barcosts'] += $costs;
+							$barcosts = $costs;
+						} else {
+							$array['ueberweisungcosts'] += $costs;
+							$ueberweisungcosts = $costs;
+						}
+						
+						if($array["invoice_no"] == CO_INVOICE_START) {
+							if($array['payment_type'] == 'Barzahlung') {
+								$barcosts = $costs;
+							} else {
+								$ueberweisungcosts = $costs;
+							}
+												
+						}
+						
+						if($rowt["eventlocation"] != 0) {
+							$html_location_array[] = $PatientsTreatmentsModel->getTreatmentLocation($rowt["eventlocation"]);
+						}
+						if($rowt["eventlocationuid"] != 0) {
+							$html_location_array[] = $contactsmodel->getPlaceListPlain($rowt["eventlocationuid"],'location', false);
+						}
+			
+						$array['totalmin'] += $mins;
+						
+						if($filter->barzahlung == 1 && $filter->ueberweisung == 1) {
+							$array['totalcosts'] += $costs;
+							$array['brutto'] += $costs;
+						}
+						
+						if($filter->barzahlung == 1 && $filter->ueberweisung == 0) {
+								$array['totalcosts'] += $barcosts;
+								$array['brutto'] += $barcosts;
+						}
+						
+						if($filter->barzahlung == 0 && $filter->ueberweisung == 1) {
+								$array['totalcosts'] += $ueberweisungcosts;
+								$array['brutto'] += $ueberweisungcosts;
+						}*/
+
+						
 					}
 				}
 			}
@@ -690,28 +934,63 @@ class PatientsModel extends Model {
 			if($array["invoice_type"] == 1) { // Services
 				// get the tasks
 	
-				//$task = array();
+				
 				$service_id = $array['service_id'];
 				$qt = "SELECT * FROM co_patients_services_tasks where status='1' and mid = '$service_id' and bin='0' ORDER BY sort ASC";
 				$resultt = mysql_query($qt, $this->_db->connection);
 				while($rowt = mysql_fetch_array($resultt)) {
-					/*foreach($rowt as $key => $val) {
-						$tasks[$key] = $val;
-					}*/
+
 	
 					$taskcosts = 0;
-					//$menge = $rowt["menge"];
-					//$preis = number_format($rowt["preis"],2,',','.');
+					$barcosts = 0;
+					$ueberweisungcosts = 0;
+
 					$taskcosts = $rowt["menge"]*$rowt["preis"];
-					$array['totalcosts'] += $taskcosts;
-					$array['brutto'] += $taskcosts;
+					if($rowt["bar"] == 1) {
+							$array['barcosts'] += $taskcosts;
+							$barcosts = $taskcosts;
+						} else {
+							$array['ueberweisungcosts'] += $taskcosts;
+							$ueberweisungcosts = $taskcosts;
+						}
+						
+					if($array["invoice_no"] > CO_INVOICE_START) {
+							if($filter->barzahlung == 1 && $filter->ueberweisung == 1 || $filter->barzahlung == 0 && $filter->ueberweisung == 0) {
+								$array['totalcosts'] += $taskcosts;
+								$array['brutto'] += $taskcosts;
+							}
+							
+							if($filter->barzahlung == 1 && $filter->ueberweisung == 0) {
+									$array['totalcosts'] += $barcosts;
+									$array['brutto'] += $barcosts;
+							}
+							
+							if($filter->barzahlung == 0 && $filter->ueberweisung == 1) {
+									$array['totalcosts'] += $ueberweisungcosts;
+									$array['brutto'] += $ueberweisungcosts;
+							}
+						} else {
+							$array['totalcosts'] += $taskcosts;
+								$array['brutto'] += $taskcosts;
+						}
+
+					
+					
 					$taskcosts = number_format($taskcosts,2,',','.');
-					//$task[] = new Lists($tasks);
+
 			}
 		}
 		
 		
 		if($array['discount'] != 0) {
+			$array['discount_barcosts'] = ($array['barcosts']/100)*$array['discount'];
+			$array['discount_barcosts'] = number_format($array['discount_barcosts'],2,',','.');
+			$array['barcosts'] = $array['barcosts']-(($array['barcosts']/100)*$array['discount']);
+			
+			$array['discount_ueberweisungcosts'] = ($array['ueberweisungcosts']/100)*$array['discount'];
+			$array['discount_ueberweisungcosts'] = number_format($array['discount_ueberweisungcosts'],2,',','.');
+			$array['ueberweisungcosts'] = $array['ueberweisungcosts']-(($array['ueberweisungcosts']/100)*$array['discount']);
+			
 			$array['discount_costs'] = ($array['totalcosts']/100)*$array['discount'];
 			$array['discount_costs'] = number_format($array['discount_costs'],2,',','.');
 			$array['totalcosts'] = $array['totalcosts']-(($array['totalcosts']/100)*$array['discount']);
@@ -911,7 +1190,7 @@ class PatientsModel extends Model {
 
 print_r($_data);
 		*/
-		$arr = array("calctotal" => $calctotal, "calcvattotal" => $calcvattotal, "calcvatnetto" => $calcvatnetto, "calcvattotalsum" => $calcvattotalsum,"calctotalmin" => $calctotalmin, "invoices" => $invoices, "access" => $access, "manager" => $manager, "chartGender" => $chartGender, "chartAge" => $chartAge, "show_arbeitszeit" => $detail->arbeitszeit);
+		$arr = array("calctotal" => $calctotal, "calcvattotal" => $calcvattotal, "calcvatnetto" => $calcvatnetto, "calcvattotalsum" => $calcvattotalsum,"calctotalmin" => $calctotalmin, "invoices" => $invoices, "access" => $access, "manager" => $manager, "chartGender" => $chartGender, "chartAge" => $chartAge, "show_arbeitszeit" => $detail->arbeitszeit, "showResults" => $showResults);
 		return $arr;
 	}
 	
@@ -3720,7 +3999,7 @@ function createDuplicatePatientFromCalendar($id,$folder,$management) {
 		//$q = "SELECT id, CONCAT(lastname,' ',firstname) as label from " . CO_TBL_USERS . " where (lastname like '%$term%' or firstname like '%$term%') and bin ='0' and invisible = '0'";
 		//$q = "SELECT b.id, CONCAT(a.lastname,' ',a.firstname,', ',b.title) as label from " . CO_TBL_USERS . " as a, " . CO_TBL_PATIENTS_TREATMENTS . " as b, " . CO_TBL_PATIENTS . " as c WHERE  b.pid = c.id and c.cid=a.id and (a.lastname like '%$term%' or a.firstname like '%$term%' or b.title like '%$term%') and a.bin ='0' and b.bin='0' and a.invisible = '0'";
 		
-		$q = "SELECT b.id, CONCAT(a.lastname,' ',a.firstname,', ',b.title) as label from " . CO_TBL_USERS . " as a, " . CO_TBL_PATIENTS_TREATMENTS . " as b, " . CO_TBL_PATIENTS . " as c WHERE  b.invoice_type='0' and b.pid = c.id and c.cid=a.id and (a.lastname like '%$term%' or a.firstname like '%$term%') and a.bin ='0' and b.status_invoice = '0' and b.bin='0' and a.invisible = '0'";
+		$q = "SELECT b.id, CONCAT(a.lastname,' ',a.firstname,', ',b.title) as label from " . CO_TBL_USERS . " as a, " . CO_TBL_PATIENTS_TREATMENTS . " as b, " . CO_TBL_PATIENTS . " as c WHERE  b.invoice_type='0' and b.pid = c.id and c.cid=a.id and (a.lastname like '%$term%' or a.firstname like '%$term%') and a.bin ='0' and b.status_invoice != '2' and b.status_invoice != '3' and b.bin='0' and a.invisible = '0'";
 		
 		$result = mysql_query($q, $this->_db->connection);
 		$num=mysql_affected_rows();
