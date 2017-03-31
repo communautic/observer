@@ -14,11 +14,13 @@
 	}
 
 ?>
+</table>
+<table width="157" cellspacing="0" cellpadding="0" border="0">
 <tr><td valign="middle">&nbsp;</td><td valign="middle" width="35" align="right"><span class="toggleServiceAllTasksBarzahlung"><div class="coButton-outer dark"><span class="coButton dark">Alle</span></div></span></td></tr>
 </table>
 
 
-  <ul class="popupButtons">
-    <li><a href="#" class="saveServiceTasksBarzahlung"><?php echo $lang["GLOBAL_SAVE"];?></a></li>
+  <ul class="popupButtons" style="margin-top: 5px;">
+    <li><a href="#" class="saveServiceTasksBarzahlung blue" style="width: 80px;"><?php echo $lang["GLOBAL_SAVE"];?></a></li>
   </ul>
   </div>
