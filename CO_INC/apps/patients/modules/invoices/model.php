@@ -709,6 +709,17 @@ class PatientsInvoicesModel extends PatientsModel {
 		$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS . " set status_invoice = '$status', status_invoice_date = '$date', edited_user = '$session->uid', edited_date = '$now' $sql where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
+		//check for leistung
+		if($status == 2) {
+			$q_s = "SELECT service_id FROM co_patients_treatments where id='$id'";
+			$result_s = mysql_query($q_s, $this->_db->connection);
+			$service_id= mysql_result($result_s,0);
+			if($service_id > 0) {
+				$q_s = "UPDATE co_patients_services set status='2', status_date = '$date' where id='$service_id'";
+				$result_s = mysql_query($q_s, $this->_db->connection);
+			}
+		}
+		
 		if ($result) {
 			$arr = array("id" => $id, "what" => "edit");
 		}
