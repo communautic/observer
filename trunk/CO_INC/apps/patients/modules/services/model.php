@@ -210,7 +210,17 @@ class PatientsServicesModel extends PatientsModel {
 				$array["canedit"] = $this->checkoutService($id);
 			}
 		}
-		if($array["status"] == 2) {
+		//if($array["status"] == 2) {
+			
+		//}
+		
+		$array["invoice_no"] = CO_INVOICE_START;
+		$q_invoice_no = "SELECT invoice_no FROM co_patients_treatments where service_id='$id'";
+		$result_invoice_no = mysql_query($q_invoice_no, $this->_db->connection);
+		if(mysql_num_rows($result_invoice_no) > 0) {
+			$array["invoice_no"] = mysql_result($result_invoice_no,0);
+			
+			
 			$q_invoice = "SELECT status_invoice FROM co_patients_treatments where service_id='$id'";
 			$result_invoice = mysql_query($q_invoice, $this->_db->connection);
 			$invoice_status = mysql_result($result_invoice,0);
@@ -218,13 +228,8 @@ class PatientsServicesModel extends PatientsModel {
 				$array["canedit"] = false;
 				$array["specialcanedit"] = true;
 		}
-		}
-		
-		$array["invoice_no"] = CO_INVOICE_START;
-		$q_invoice_no = "SELECT invoice_no FROM co_patients_treatments where service_id='$id'";
-		$result_invoice_no = mysql_query($q_invoice_no, $this->_db->connection);
-		if(mysql_num_rows($result_invoice_no) > 0) {
-			$array["invoice_no"] = mysql_result($result_invoice_no,0);
+			
+			
 		}
 		
 		$array["invoice_carrier"] = '';
