@@ -130,7 +130,7 @@ if(is_array($invoices)) { ?>
 					}
 				}
 			} ?></td>
-    <td width="75" class="row<?php  echo ($i % 2);?>" style="padding-left: 20px;" nowrap><?php if($invoice->status_invoice_class == 'barchart_color_finished') { echo('am ' . $invoice->status_invoice_date); } ?></td>
+    <td width="80" class="row<?php  echo ($i % 2);?>" style="padding-left: 20px;" nowrap><?php if($invoice->status_invoice_class == 'barchart_color_finished') { echo('am ' . $invoice->status_invoice_date); } ?></td>
     <td width="70" class="row<?php  echo ($i % 2);?>"  style="text-align: right; padding-right: 20px; padding-left: 20px;" nowrap><?php echo(CO_DEFAULT_CURRENCY . ' ' . $invoice->totalcosts);?></td>
     <td class="row<?php  echo ($i % 2);?>"></td>
     </tr>

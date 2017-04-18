@@ -49,6 +49,9 @@ if (!empty($_GET['request'])) {
 			}
 			echo($patientsInvoices->printDetails($_GET['id'],$t,$_GET['option']));
 		break;
+		case 'setOrder':
+			echo($patients->setSortOrder("patients-invoices-sort",$_GET['invoiceItem'],$_GET['id']));
+		break;
 		case 'getSend':
 			echo($patientsInvoices->getSend($_GET['id'],$_GET['option']));
 		break;

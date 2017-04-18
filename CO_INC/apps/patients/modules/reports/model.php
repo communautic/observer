@@ -181,7 +181,7 @@ class PatientsReportsModel extends PatientsModel {
 		
 		$patientid = $array["pid"];
 		
-		$q = "SELECT b.id as patient_id, b.lastname,b.firstname,b.title as ctitle,b.title2,b.position,b.phone1,b.email,b.address_line1,b.address_line2,b.address_town,b.address_postcode, b.company, b.position, a.* FROM " . CO_TBL_PATIENTS . " as a, co_users as b where a.cid=b.id and a.id = '$patientid'";
+		$q = "SELECT b.id as patient_id, b.lastname,b.firstname,b.title as ctitle,b.title2,b.position,b.phone1,b.email,b.address_line1,b.address_line2,b.address_town,b.address_postcode,b.address_country, b.company, b.position, a.* FROM " . CO_TBL_PATIENTS . " as a, co_users as b where a.cid=b.id and a.id = '$patientid'";
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_fetch_array($result);
 		foreach($row as $key => $val) {
@@ -232,11 +232,12 @@ class PatientsReportsModel extends PatientsModel {
 		$array['r_lastname'] = '';
 		$array['r_firstname'] = '';
 		$array['r_address_line1'] = '';
+		$array['r_address_country'] = '';
 		$array['r_address_postcode'] = '';
 		$array['r_address_town'] = '';
 		
 		if($recipient_print != "") {
-			$qr = "SELECT lastname as r_lastname,firstname as r_firstname,title as r_title, title2 as r_title2, address_line1 as r_address_line1, address_postcode as r_address_postcode, address_town as r_address_town FROM co_users where id = '$recipient_print'";
+			$qr = "SELECT lastname as r_lastname,firstname as r_firstname,title as r_title, title2 as r_title2, address_line1 as r_address_line1, address_postcode as r_address_postcode, address_country as r_address_country, address_town as r_address_town FROM co_users where id = '$recipient_print'";
 			$resultr = mysql_query($qr, $this->_db->connection);
 			$rowr = mysql_fetch_array($resultr);
 			foreach($rowr as $key => $val) {

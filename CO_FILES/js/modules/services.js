@@ -900,7 +900,13 @@ function Services(app) {
 				} else {
 					
 					var belegId = el.attr('rel');
-					var html = '<div class="head">Barzahlung</div><div class="BarzahlungenPopup content"><div class="inner" id="">' + $('#belegText-'+belegId).val() + '</div><ul class="popupButtons" style="margin-top: 5px;"><li style="display: inline-block"><a href="#" class="ServiceCopyText blue" rel="' + belegId + '" style="width: 80px;">Kopieren</a></li><li style="display: inline-block"><a href="#" class="ServiceDeleteBarBeleg alert" rel="'+belegId+'" style="width: 80px; margin-left: 18px;">L&ouml;schen</a></li></ul>';
+					
+					var delButton = '';
+					if(el.hasClass('showdelete')) {
+						delButton = '<li style="display: inline-block"><a href="#" class="ServiceDeleteBarBeleg alert" rel="'+belegId+'" style="width: 80px; margin-left: 18px;">L&ouml;schen</a></li>';
+					}
+					
+					var html = '<div class="head">Barzahlung</div><div class="BarzahlungenPopup content"><div class="inner" id="">' + $('#belegText-'+belegId).val() + '</div><ul class="popupButtons" style="margin-top: 5px;"><li style="display: inline-block"><a href="#" class="ServiceCopyText blue" rel="' + belegId + '" style="width: 80px;">Kopieren</a></li>' + delButton + '</ul>';
 					var pclass = self.coPopupEditClass;
 					var copopup = $('#co-popup');
 					copopup.html(html);
@@ -1017,6 +1023,7 @@ $(document).ready(function () {
 		var belegId = $(this).attr('rel');
 		$("#belegText-"+belegId  ).select();
 		document.execCommand("copy");
+		$('#co-popup').css('left',-1000);
 	});
 	
 	$(document).on('click', 'a.ServiceDeleteBarBeleg', function(e) {

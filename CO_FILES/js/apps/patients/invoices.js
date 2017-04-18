@@ -382,6 +382,39 @@ function patientsInvoices(name) {
 			}
 		});
 	}
+	
+	this.sortclick = function (obj,sortcur,sortnew) {
+		var module = this;
+		var cid = $('#patients input[name="id"]').val()
+		module.checkIn(cid);
+		
+		var fid = $("#patients2 .module-click:visible").attr("rel");
+		$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients/modules/invoices&request=getList&id="+fid+"&sort="+sortnew, success: function(data){
+			$("#patients3 ul[rel=invoices]").html(data.html);
+			$('#patients_invoices_items').html(data.items);
+			obj.attr("rel",sortnew);
+			obj.removeClass("sort"+sortcur).addClass("sort"+sortnew);
+			var id = $("#patients3 ul[rel=invoices] .module-click:eq(0)").attr("rel");
+			$('#patients').data('third',id);
+			if(id == undefined) {
+				return false;
+			}
+			var moduleidx = $("#patients3 ul").index($("#patients3 ul[rel=invoices]"));
+			module.getDetails(moduleidx,0);
+			$("#patients3 ul[rel=invoices] .module-click:eq(0)").addClass('active-link');
+		}
+		});
+	}
+	
+	this.sortdrag = function (order) {
+		var fid = $("#patients").data("second");
+		$.ajax({ type: "GET", url: "/", data: "path=apps/patients/modules/invoices&request=setOrder&"+order+"&id="+fid, success: function(html){
+			$("#patients3 .sort:visible").attr("rel", "3");
+			$("#patients3 .sort:visible").removeClass("sort1").removeClass("sort2").addClass("sort3");
+			}
+		});
+	}
+
 
 	this.actionDialog = function(offset,request,field,append,title,sql) {
 		switch(request) {

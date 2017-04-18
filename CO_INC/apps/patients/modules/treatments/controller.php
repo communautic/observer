@@ -81,7 +81,8 @@ class PatientsTreatments extends Patients {
 				if($arr = $this->model->getDetails($id)) {
 					$treatment = $arr["treatment"];
 					$task = $arr["task"];
-					//$diagnose = $arr["diagnose"];
+			$task_bar = $arr["task_bar"];
+			$bar_compare_array = $arr["bar_compare_array"];
 					$sendto = $arr["sendto"];
 					$printcanvas = 0;
 					ob_start();

@@ -163,4 +163,40 @@ if($value->status == 1) {
 	$i++;
 	}
 ?>
+&nbsp;
+<?php if(!empty($task_bar)) { ?>
+<table width="100%" class="standard">
+	<tr>
+        <td class="tcell-left top">Barzahlung</td>
+        <td>
+        <?php 
+				foreach($task_bar as $value) {
+					$ttasks = explode(',',$value->task_ids);
+					$ttask_string = '';
+					$ttask_costs = 0;
+					$ttask_vat_text = '(inkl. ' . $treatment->vat . '% MwSt.)';
+					foreach($ttasks as $ttask) {
+						$ttask_costs += $bar_compare_array[$ttask]['costs'];
+						$ttask_string .= $bar_compare_array[$ttask]['task_num'] . '. ' . $lang["PATIENT_TREATMENT_GOALS_SINGUAL"] . ' | ';
+					}
+					
+					if($treatment->discount != 0) {
+							$ttask_costs = $ttask_costs-(($ttask_costs/100)*$treatment->discount);
+						}
+					if($treatment->vat != 0) {
+							$ttask_costs = $ttask_costs+(($ttask_costs/100)*$treatment->vat);
+						}
+					$ttask_costs = number_format($ttask_costs,2,',','.');
+					
+					$ttask_string_full = $ttask_string . ' Rechnungsnr. ' . $treatment->invoice_carrier . '/' . $treatment->invoice_year . '/' . $treatment->invoice_no . ' | ' . CO_DEFAULT_CURRENCY . ' ' . $ttask_costs . ' ' . $ttask_vat_text;
+					echo $ttask_string_full . '<br>';
+					}
+					
+
+		
+?>
+        </td>
+	</tr>
+</table>
+<?php } ?>
 <div style="page-break-after:always;">&nbsp;</div>

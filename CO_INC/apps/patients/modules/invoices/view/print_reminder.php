@@ -13,7 +13,7 @@
         <td width="53%" class="smalltext11">
 						<span style="padding:0; line-height: 19px;"><?php echo($invoice->ctitle)?> <?php echo($invoice->title2)?> <?php echo($invoice->lastname);?> <?php echo($invoice->firstname);?></span><br />
             <span style="padding:0; line-height: 19px;"><?php echo($invoice->address_line1)?></span><br />
-            <span style="padding:0; line-height: 19px;"><?php echo($invoice->address_postcode)?> <?php echo($invoice->address_town)?></span>
+            <span style="padding:0; line-height: 19px;"><?php if($invoice->address_country != "") { echo $invoice->address_country . ' - '; } ?><?php echo($invoice->address_postcode)?> <?php echo($invoice->address_town)?></span>
             </td>
         <td width="17%" class="smalltext" valign="middle">
         	<!--<?php if($invoice->invoice_type == 1) { ?><span style="line-height: 15px;">&nbsp;</span><br /><?php } ?>-->

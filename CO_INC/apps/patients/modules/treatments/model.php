@@ -126,7 +126,7 @@ class PatientsTreatmentsModel extends PatientsModel {
 		if( $perm ==  "guest") {
 			$sql = " and access = '1' ";
 		}
-		$q = "select count(*) as items from " . CO_TBL_PATIENTS_TREATMENTS . " where pid = '$id' and bin != '1' " . $sql;
+		$q = "select count(*) as items from " . CO_TBL_PATIENTS_TREATMENTS . " where pid = '$id' and invoice_type ='0' and bin != '1' " . $sql;
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_fetch_array($result);
 		$items = $row['items'];
