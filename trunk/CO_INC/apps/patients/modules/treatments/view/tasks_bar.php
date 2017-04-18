@@ -20,7 +20,7 @@
 	$ttask_string_full = $ttask_string . ' Rechnungsnr. ' . $treatment->invoice_carrier . '/' . $treatment->invoice_year . '/' . $treatment->invoice_no . ' | ' . CO_DEFAULT_CURRENCY . ' ' . $ttask_costs . ' ' . $ttask_vat_text;
 		
 ?>
-<span class="<?php if($treatment->canedit) { ?>showCoPopup co-link<?php } ?>" rel="<?php echo $value->id;?>"><?php echo $ttask_string_full;?></span>
+<span class="showCoPopup co-link <?php if($treatment->canedit) { ?>showdelete<?php } ?>" rel="<?php echo $value->id;?>"><?php echo $ttask_string_full;?></span>
 <div style="height: 1px; overflow: hidden">
   <textarea id="belegText-<?php echo $value->id;?>" style="border:0; margin-top: 1px;"><?php echo $ttask_string_full;?></textarea></div>
 </div>

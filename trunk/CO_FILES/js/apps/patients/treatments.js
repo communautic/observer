@@ -124,10 +124,10 @@ function patientsTreatments(name) {
 		
 		if(data.changeTreatmentStatus != "0" && module.askStatus && $('.jqibox').length == 0) {
 			switch(data.changeTreatmentStatus) {
-				/*case "1":
+				case "1":
 					var txt = ALERT_STATUS_TREATMENT_ACTIVATE;
 					var button = 'inprogress';
-				break;*/
+				break;
 				case "2":
 					var txt = ALERT_STATUS_TREATMENT_COMPLETE + '<br>' +ALERT_MESSAGE_TREATMENT_FINISHED_GERERATE_INVOICE;
 					var button = 'finished';
@@ -136,7 +136,7 @@ function patientsTreatments(name) {
 			
 			
 			var checkForInvoice = $('#patients-right span.showCoPopup');
-			if(! checkForInvoice.hasClass('activeInvoice')) {
+			if(! checkForInvoice.hasClass('activeInvoice') && data.changeTreatmentStatus == 2) {
 				var langbuttons = {};
 				langbuttons[ALERT_YES] = true;
 				langbuttons[ALERT_NO] = false;
@@ -155,19 +155,19 @@ function patientsTreatments(name) {
 								$.ajax({ type: "GET", url: "/", dataType:  'json', data: "path=apps/patients/modules/treatments&request=updateStatus&id=" + treatid + "&date=&status=" + data.changeTreatmentStatus, cache: false, success: function(data){
 										switch(data.status) {
 											case "2":
-										$("#patients3 ul[rel=treatments] span[rel="+treatid+"] .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
-									break;
-									case "3":
-										$("#patients3 ul[rel=treatments] span[rel="+treatid+"] .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
-	
-									break;
-									default:
-										$("#patients3 ul[rel=treatments] span[rel="+treatid+"] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
+												$("#patients3 ul[rel=treatments] span[rel="+treatid+"] .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
+											break;
+											case "3":
+												$("#patients3 ul[rel=treatments] span[rel="+treatid+"] .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
+			
+											break;
+											default:
+												$("#patients3 ul[rel=treatments] span[rel="+treatid+"] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
 										}
-										if(data.changePatientStatus != 0) { module.setPatientStatus(data.changePatientStatus); }
+										//if(data.changePatientStatus != 0) { module.setPatientStatus(data.changePatientStatus); }
 										var pid = $("#patients").data("second");
 										$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/patients/modules/invoices&request=getList&id="+pid, success: function(data){																																																																				
-									$('#patients_invoices_items').html(data.items);
+											$('#patients_invoices_items').html(data.items);
 											}
 										});
 										
@@ -212,10 +212,49 @@ function patientsTreatments(name) {
 								}
 							});*/
 						} else {
-							module.askStatus = false;
+							module.askStatus = true;
 						}
 					}
 				});
+			} else {
+				var langbuttons = {};
+			langbuttons[ALERT_YES] = true;
+			langbuttons[ALERT_NO] = false;
+			$.prompt(txt,{ 
+				buttons:langbuttons,
+				submit: function(e,v,m,f){		
+					if(v){
+						$.ajax({ type: "GET", url: "/", dataType:  'json', data: 'path=apps/patients/modules/treatments&request=updateStatus&id=' + treatid + '&date=&status='+data.changeTreatmentStatus, cache: false, success: function(data){
+							switch(data.status) {
+								case "2":
+									$("#patients3 ul[rel=treatments] span[rel="+treatid+"] .module-item-status").addClass("module-item-active").removeClass("module-item-active-stopped");
+								break;
+								case "3":
+									$("#patients3 ul[rel=treatments] span[rel="+treatid+"] .module-item-status").addClass("module-item-active-stopped").removeClass("module-item-active");
+								break;
+								default:
+									$("#patients3 ul[rel=treatments] span[rel="+treatid+"] .module-item-status").removeClass("module-item-active").removeClass("module-item-active-stopped");
+							}
+							
+							var pid = $("#patients").data("second");
+									$.ajax({ type: "GET", url: "/", dataType: 'json', data: "path=apps/patients/modules/invoices&request=getList&id="+pid, success: function(data){
+										$('#patients_invoices_items').html(data.items);
+										}
+									});
+							
+							$('#patients span.statusButton').removeClass('active');
+							$('#patients span.statusButton.'+button).addClass('active');
+							var today = new Date();
+							var statusdate = today.toString("dd.MM.yyyy");
+							$('#patients-right input.statusdp').val(statusdate);
+							if(data.changePatientStatus != 0) { module.setPatientStatus(data.changePatientStatus); }
+							}
+						});
+					} else {
+						module.askStatus = true;
+					}
+				}
+			});
 			}
 			
 			
@@ -995,7 +1034,12 @@ function patientsTreatments(name) {
 				} else {
 					
 					var belegId = el.attr('rel');
-					var html = '<div class="head">Barzahlung</div><div class="BarzahlungenPopup content"><div class="inner" id="">' + $('#belegText-'+belegId).val() + '</div><ul class="popupButtons" style="margin-top: 5px;"><li style="display: inline-block"><a href="#" class="copyText blue" rel="' + belegId + '" style="width: 80px;">Kopieren</a></li><li style="display: inline-block"><a href="#" class="deleteBarBeleg alert" rel="'+belegId+'" style="width: 80px; margin-left: 18px;">L&ouml;schen</a></li></ul>';
+					var delButton = '';
+					if(el.hasClass('showdelete')) {
+						delButton = '<li style="display: inline-block"><a href="#" class="deleteBarBeleg alert" rel="'+belegId+'" style="width: 80px; margin-left: 18px;">L&ouml;schen</a></li>';
+					}
+					
+					var html = '<div class="head">Barzahlung</div><div class="BarzahlungenPopup content"><div class="inner" id="">' + $('#belegText-'+belegId).val() + '</div><ul class="popupButtons" style="margin-top: 5px;"><li style="display: inline-block"><a href="#" class="copyText blue" rel="' + belegId + '" style="width: 80px;">Kopieren</a></li>' + delButton + '</ul>';
 					var pclass = self.coPopupEditClass;
 					var copopup = $('#co-popup');
 					copopup.html(html);
@@ -1943,6 +1987,7 @@ var colors = ['#3C4664','#EB4600','#915500','#0A960A','#AA19AA','#3C4664','#EB46
 		var belegId = $(this).attr('rel');
 		$("#belegText-"+belegId  ).select();
 		document.execCommand("copy");
+		$('#co-popup').css('left',-1000);
 	});
 	
 	$(document).on('click', 'a.deleteBarBeleg', function(e) {

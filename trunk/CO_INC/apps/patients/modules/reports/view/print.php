@@ -29,7 +29,7 @@ table.standard { margin: 2pt 0 0 -15pt; }
 </table>
 <table width="100%" cellpadding="0" cellspacing="0" style="padding-right: 10pt;">
     <tr>
-        <td width="50%"><?php echo($report->r_address_postcode)?> <?php echo($report->r_address_town)?></td>
+        <td width="50%"><?php if($report->r_address_country != "") { echo $report->r_address_country . ' - '; } ?><?php echo($report->r_address_postcode)?> <?php echo($report->r_address_town)?></td>
         <td width="20%"><span class="smalltext">&nbsp;</span></td>
         <td width="30%" style="text-align: right;">&nbsp;</td>
     </tr>

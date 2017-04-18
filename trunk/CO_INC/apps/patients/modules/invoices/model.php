@@ -12,27 +12,27 @@ class PatientsInvoicesModel extends PatientsModel {
 
 	function getList($id,$sort) {
 		global $session;
-		$order = "order by invoice_no DESC, invoice_number DESC"; 
-		$sortcur = '1';
-	  /*if($sort == 0) {
+		//$order = "order by invoice_date DESC"; 
+		//$sortcur = '1';
+	  if($sort == 0) {
 		  $sortstatus = $this->getSortStatus("patients-invoices-sort-status",$id);
 		  if(!$sortstatus) {
-				$order = "order by item_date DESC";
+				$order = "order by invoice_date DESC, title DESC";
 				$sortcur = '1';
 		  } else {
 			  switch($sortstatus) {
 				  case "1":
-				  		$order = "order by item_date DESC";
+				  		$order = "order by invoice_date DESC, title DESC";
 						$sortcur = '1';
 				  break;
 				  case "2":
-				  		$order = "order by item_date ASC";
+				  		$order = "order by invoice_date ASC, title ASC";
 							$sortcur = '2';
 				  break;
 				  case "3":
 				  		$sortorder = $this->getSortOrder("patients-invoices-sort-order",$id);
 				  		if(!$sortorder) {
-								$order = "order by item_date DESC";
+								$order = "order by invoice_date DESC, title DESC";
 								$sortcur = '1';
 						  } else {
 								$order = "order by field(id,$sortorder)";
@@ -44,17 +44,17 @@ class PatientsInvoicesModel extends PatientsModel {
 	  } else {
 		  switch($sort) {
 				  case "1":
-				  		$order = "order by item_date DESC";
+				  		$order = "order by invoice_date DESC, title DESC";
 						$sortcur = '1';
 				  break;
 				  case "2":
-				  		$order = "order by item_date ASC";
+				  		$order = "order by invoice_date ASC, title ASC";
 						$sortcur = '2';
 				  break;
 				  case "3":
 				  		$sortorder = $this->getSortOrder("patients-invoices-sort-order",$id);
 				  		if(!$sortorder) {
-						  	$order = "order by item_date DESC";
+						  	$order = "order by invoice_date DESC, title DESC";
 								$sortcur = '1';
 						  } else {
 								$order = "order by field(id,$sortorder)";
@@ -62,7 +62,7 @@ class PatientsInvoicesModel extends PatientsModel {
 						  }
 				  break;	
 			  }
-		}*/
+		}
 	  
 		$perm = $this->getPatientAccess($id);
 		$sql ="";
@@ -157,14 +157,16 @@ class PatientsInvoicesModel extends PatientsModel {
 		
 		$patientid = $array["pid"];
 		
-		$q = "SELECT a.number,a.number_insurer,a.insurer, a.insurance, b.id as patient_id, b.lastname,b.firstname,b.title as ctitle,b.title2,b.position,b.phone1,b.email,b.address_line1,b.address_line2,b.address_town,b.address_postcode,b.bank_name,b.sort_code, b.account_number, b.bic, b.iban FROM " . CO_TBL_PATIENTS . " as a, co_users as b where a.cid=b.id and a.id = '$patientid'";
+		$q = "SELECT a.number,a.number_insurer,a.insurer, a.insurance, b.id as patient_id, b.lastname,b.firstname,b.title as ctitle,b.title2,b.position,b.phone1,b.email,b.address_line1,b.address_line2,b.address_town,b.address_postcode,b.address_country,b.bank_name,b.sort_code, b.account_number, b.bic, b.iban FROM " . CO_TBL_PATIENTS . " as a, co_users as b where a.cid=b.id and a.id = '$patientid'";
 		$result = mysql_query($q, $this->_db->connection);
 		$row = mysql_fetch_array($result);
 		foreach($row as $key => $val) {
 			$array[$key] = $val;
 		}	
 		$array['patient'] = $array['lastname'] . ' ' . $array['firstname'];
-		$array['patient_address'] = $array['address_line1'] . ', ' . $array['address_postcode'] . ' ' . $array['address_town'];
+		$land = '';
+		if($array['address_country'] != "") { $land = $array['address_country'] . ' - '; }
+		$array['patient_address'] = $array['address_line1'] . ', ' . $land . $array['address_postcode'] . ' ' . $array['address_town'];
 		$array["perms"] = $this->getPatientAccess($array["pid"]);
 		$array["canedit"] = false;
 		$array["showCheckout"] = false;

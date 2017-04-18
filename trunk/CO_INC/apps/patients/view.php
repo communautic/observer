@@ -42,7 +42,7 @@
                         <div class="patients3-content"><div class="scrolling-content"> 
                         <?php 
 						$sortable = "sortable";
-						if($module == "invoices" || $module == "access" || $module == "controlling") {
+						if($module == "access" || $module == "controlling") {
 							$sortable = "";
 						}
 						?>       
