@@ -252,7 +252,7 @@ class PatientsModel extends Model {
 			$access = " and (b.id IN (" . $adminPerm . ") or (b.id IN (" . $guestPerm . ") and a.access_invoice='1'))";
 	  	}
 		
-		$q = "SELECT a.id,a.title,a.invoice_date,a.invoice_number,a.status_invoice,a.status_invoice_date, a.discount, a.vat, a.payment_type,a.invoice_type,a.service_id,a.invoice_carrier,a.invoice_no ,a.invoice_year, b.id as pid, b.management, CONCAT(c.lastname,' ',c.firstname) as patient FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE (a.status='0' or a.status='1' or a.status='2') and a.pid=b.id and b.folder='$id' and b.cid=c.id and a.bin='0' and b.bin='0'" . $access . " ORDER BY " . $order;
+		$q = "SELECT a.id,a.title,a.invoice_date,a.invoice_number,a.status_invoice,a.status_invoice_date, a.discount, a.vat, a.payment_type,a.invoice_type,a.service_id,a.invoice_carrier,a.invoice_no ,a.invoice_year, b.id as pid, b.management, CONCAT(c.lastname,' ',c.firstname) as patient FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE (a.status='2' or a.invoice_no > " . CO_INVOICE_START . ") and a.pid=b.id and b.folder='$id' and b.cid=c.id and a.bin='0' and b.bin='0'" . $access . " ORDER BY " . $order;
 		//echo $q;
 		
 		
@@ -4150,7 +4150,7 @@ function createDuplicatePatientFromCalendar($id,$folder,$management) {
 		$alerts = "";
 		$array = "";
 		if($skip == 0) {
-			$q ="select b.folder,a.pid,a.id, a.title as text, a.invoice_type, a. service_id, CONCAT(c.lastname,' ',c.firstname) as title from " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c, " . CO_TBL_PATIENTS_FOLDERS . " as d WHERE a.status_invoice='1' and a.pid = b.id and b.cid=c.id and b.folder=d.id and a.bin = '0' and b.bin = '0'  and c.bin='0' and d.bin='0' and a.payment_reminder <= '$tomorrow'" . $access;
+			$q ="select b.folder,a.pid,a.id, a.title as text, a.invoice_type, a. service_id, CONCAT(c.lastname,' ',c.firstname) as title from " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c, " . CO_TBL_PATIENTS_FOLDERS . " as d WHERE a.status_invoice='1' and a.pid = b.id and b.cid=c.id and b.folder=d.id and a.bin = '0' and b.bin = '0'  and c.bin='0' and d.bin='0' and a.payment_reminder != '0000-00-00' and a.payment_reminder <= '$tomorrow'" . $access;
 			$result = mysql_query($q, $this->_db->connection);
 			while ($row = mysql_fetch_array($result)) {
 				foreach($row as $key => $val) {

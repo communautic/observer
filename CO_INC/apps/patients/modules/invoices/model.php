@@ -704,6 +704,9 @@ class PatientsInvoicesModel extends PatientsModel {
 		$now = gmdate("Y-m-d H:i:s");
 		
 		$sql = "";
+		if($status == 1) {
+			$sql = ", payment_reminder = '$date'";
+		}
 		if($status == 2) {
 			$sql = ", payment_reminder = ''";
 		}
