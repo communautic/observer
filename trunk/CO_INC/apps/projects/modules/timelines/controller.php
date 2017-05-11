@@ -150,6 +150,7 @@ class ProjectsTimelines extends Projects {
 					ob_end_clean();
 					$title = $project["title"] . " - " . $lang["PROJECT_TIMELINE_DATES_MILESTONES"];
 					$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PROJECT_PRINT_MILESTONES"];
+					$this->printPDF($title,$html);
 				}
 			break;
 			default:
@@ -167,16 +168,17 @@ class ProjectsTimelines extends Projects {
 					ob_end_clean();
 					$title = $project["title"] . " - " . $lang["PROJECT_TIMELINE_DATES_LIST"];
 					$GLOBALS['SECTION'] = $session->userlang . "/" . $lang["PROJECT_PRINT_TIMELINE"];
+					$this->printPDF($title,$html);
 				}
 		}
 		
-		switch($t) {
+		/*switch($t) {
 			case "html":
 				$this->printHTML($title,$html);
 			break;
 			default:
 				$this->printPDF($title,$html);
-		}
+		}*/
 	}
 	
 	function printGantt($title,$text,$width,$height) {
