@@ -433,6 +433,7 @@ class PatientsModel extends Model {
 		
 		$start = $this->_date->formatDate($start, "Y-m-d");
 		$end = $this->_date->formatDate($end, "Y-m-d");
+		$end = $this->_date->addDays($end, 1);
 		$calctotal = 0;
 		$calcvattotal = array();
 		$calcvattotalsum = array();
@@ -526,7 +527,7 @@ class PatientsModel extends Model {
 		$array["show_rechnungsnummer"] = $detail->rechnungsnummer;
 		
 		
-		$q = "SELECT a.id,a.title,a.invoice_carrier,a.invoice_no,a.invoice_year,(SELECT MIN(item_date) FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " as b WHERE b.mid=a.id and b.bin='0') as treatment_start,(SELECT MAX(item_date) FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " as b WHERE b.mid=a.id and b.bin='0') as treatment_end,a.invoice_date,a.status_invoice,a.status_invoice_date, a.invoice_number, a.payment_type, a.discount,a.vat,a.invoice_type,a.service_id, b.id as pid, b.folder, b.management, CONCAT(c.lastname,' ',c.firstname) as patient,b.dob,c.gender FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE $patientsql $management $folder $payment_type $invoice_type a.invoice_date >= '$start' and a.invoice_date <= '$end' and $status_invoice status_invoice !='3' and status_invoice !='0' and a.pid=b.id and b.cid=c.id and a.bin='0' and b.bin='0' ORDER BY a.vat ASC,a.invoice_date ASC";
+		$q = "SELECT a.id,a.title,a.invoice_carrier,a.invoice_no,a.invoice_year,(SELECT MIN(item_date) FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " as b WHERE b.mid=a.id and b.bin='0') as treatment_start,(SELECT MAX(item_date) FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " as b WHERE b.mid=a.id and b.bin='0') as treatment_end,a.invoice_date,a.status_invoice,a.status_invoice_date, a.invoice_number, a.payment_type, a.discount,a.vat,a.invoice_type,a.service_id, b.id as pid, b.folder, b.management, CONCAT(c.lastname,' ',c.firstname) as patient,b.dob,c.gender FROM " . CO_TBL_PATIENTS_TREATMENTS . " as a, " . CO_TBL_PATIENTS . " as b, co_users as c WHERE $patientsql $management $folder $payment_type $invoice_type a.status_invoice_date >= '$start' and a.status_invoice_date < '$end' and $status_invoice status_invoice !='3' and status_invoice !='0' and a.pid=b.id and b.cid=c.id and a.bin='0' and b.bin='0' ORDER BY a.vat ASC,a.invoice_date ASC";
 		
 		
 		$result = mysql_query($q, $this->_db->connection);
@@ -1200,6 +1201,8 @@ print_r($_data);
 		
 		$start = $this->_date->formatDate($start, "Y-m-d");
 		$end = $this->_date->formatDate($end, "Y-m-d");
+		//$end = $this->_date->addDays($end, 1);
+		
 		$calctotal = 0;
 		//$calctotalmin = 0;
 		$zahlungen = 0;

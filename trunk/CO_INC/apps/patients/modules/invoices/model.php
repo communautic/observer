@@ -705,7 +705,9 @@ class PatientsInvoicesModel extends PatientsModel {
 		
 		$sql = "";
 		if($status == 1) {
-			$sql = ", payment_reminder = '$date'";
+			$time = strtotime($date);
+			$final = date("Y-m-d", strtotime("+1 month", $time));
+			$sql = ", payment_reminder = '$final'";
 		}
 		if($status == 2) {
 			$sql = ", payment_reminder = ''";

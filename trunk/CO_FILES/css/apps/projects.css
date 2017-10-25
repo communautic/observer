@@ -209,3 +209,78 @@ background-color: #e1f0af; }
 #projects > .ui-autocomplete { box-shadow: 4px 4px 6px #666666; width: 250px !important; height: 250px !important; max-height: 250px; background: #e1f0af; border: 1px solid #82aa0a;}
 #projects > .ui-autocomplete a { color: #000;}
 #projects > .ui-autocomplete a.ui-state-hover, #projects > .ui-autocomplete a.ui-state-active { color: #fff; margin: 0; background: #82aa0a; border-radius: 0;}
+
+
+#projects .canvasDiv { width: 400px; height: 400px; background-image:url(../../img/body.png); float: left;}
+#projects .canvasDivSketch { width: 1161px; height: 400px; background-repeat: no-repeat; background-size: auto 400px; float: left;}
+#projects .tasks { width: 400px; height: 400px; border: 1px solid #000; float: left;}
+#projects .canvasDraw{ position: absolute; width: 400px; height: 400px; cursor: url("../../img/draw.gif") 2 2, crosshair;}
+#projects .canvasDrawSketch{ position: absolute; width: 1161px; height: 400px; cursor: url("../../img/draw.gif") 2 2, crosshair;}
+#projects .canvasDraw:active { cursor: url("../../img/draw.gif") 2 2, crosshair;}
+#projects .circle { position: absolute; cursor: pointer; background: #fff; border-radius: 50% 50% 50% 50%; 
+    display: block;
+    height: 22px;
+    width: 22px; }
+#projects .circle div { padding-top: 3px; text-align: center; font-weight: bold; font-size: 12px; color: #fff; }
+/*#projects .circle0 { border: 2px solid #3C4664; color: #3C4664; }
+#projects .circle1 { border: 2px solid #EB4600; color: #EB4600; }
+#projects .circle2 { border: 2px solid #915500; color: #915500; }
+#projects .circle3 { border: 2px solid #0A960A; color: #0A960A; }
+#projects .circle4 { border: 2px solid #AA19AA; color: #AA19AA; }
+#projects .circle5 { border: 2px solid #3C4664; color: #3C4664; }
+#projects .circle6 { border: 2px solid #EB4600; color: #EB4600; }
+#projects .circle7 { border: 2px solid #915500; color: #915500; }
+#projects .circle8 { border: 2px solid #0A960A; color: #0A960A; }
+#projects .circle9 { border: 2px solid #AA19AA; color: #AA19AA; }*/
+
+#projects .circle0 { background: #6EAAFF; }
+#projects .circle1 { background: #FF7878; }
+#projects .circle2 { background: #FFD41D; }
+#projects .circle3 { background: #8CD264; }
+#projects .circle4 { background: #D2B4FF; }
+#projects .circle5 { background: #9999FF; }
+#projects .circle6 { background: #FF9E1F; }
+#projects .circle7 { background: #BCBCBC; }
+#projects .circle8 { background: #64CCC9; }
+#projects .circle9 { background: #FF83FF; }
+
+/*#projects .loadanvas.active { cursor: pointer; background: red; }*/
+#projects .loadCanvasList { cursor: pointer; background: #ccc; }
+#projects .loadCanvasList.active { cursor: pointer; background: red; }
+
+#projects .canvasToolsOuter { position: relative; height: 60px; z-index: 998}
+#projects .canvasTools { position: absolute; left: 0px; height: 60px; z-index: 999; }
+#projects .canvasTools span { display: inline-block; width: 60px; height: 60px; background: url(../../img/drawtools.png) no-repeat; }
+#projects .canvasTools span:hover { cursor: pointer; }
+
+#projects .canvasTools span.addTool { background-position: 19px 19px; }
+#projects .canvasTools span.addTool:hover { background-position: 19px -61px; }
+
+#projects .canvasTools span.penTool { background-position: -42px 19px; }
+#projects .canvasTools span.penTool:hover { background-position: -42px -61px; }
+#projects .canvasTools span.penTool.active { background-position: -42px -61px; }
+
+#projects .canvasTools span.erasorTool { background-position: -120px 19px; }
+#projects .canvasTools span.erasorTool:hover { background-position: -120px -61px; }
+#projects .canvasTools span.erasorTool.active { background-position: -120px -61px; }
+
+#projects .canvasTools span.rotateTool { background-position: -327px 19px; }
+#projects .canvasTools span.rotateTool:hover { background-position: -327px -61px; }
+
+#projects .canvasTools span.clearTool { background-position: -187px 19px; }
+#projects .canvasTools span.clearTool:hover { background-position: -187px -61px; }
+
+#projects .canvasTools span.undoTool { background-position: -260px 21px; }
+#projects .canvasTools span.undoTool:hover { background-position: -260px -59px; }
+#projects .canvasTools span.undoTool.active { background-position: -260px -59px; }
+
+#projects .row0 { background: #f2f2f2; border-top: 1px solid #fff; border-bottom: 1px solid #ccc; line-height: 21px; }
+#projects .row1 { background: #e5e5e5; border-top: 1px solid #fff; border-bottom: 1px solid #ccc; line-height: 21px; }
+
+#projects-right .timeline-legend { width: 700px; font-size: 11px; line-height: 16px; }
+#projects-right .timeline-legend span { width: 120px; display: block; padding-left: 8px;}
+#projects-right .barchart_color_planned { background-color: #6496DC;}
+#projects-right .barchart_color_inprogress { background-color: #FFD20A;}
+#projects-right .barchart_color_inprogress { background-color: #FFD20A;}
+#projects-right .barchart_color_finished { background-color: #82aa0b;}
+#projects-right .barchart_color_not_finished { background-color: #7f7f7f;}
