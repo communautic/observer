@@ -20,12 +20,14 @@ define("CO_FILES"	, 		$protocol . "dev.companyobserver.com/" . $co_files_version
 define("CO_FILES_NOHTTPS", "http://dev.companyobserver.com/" . $co_files_version );
 
 // product variant: 0 = CO, 1 = Physio, 2 = Therapy
-define("CO_PRODUCT_VARIANT", 1 );
+define("CO_PRODUCT_VARIANT", 2 );
 // PO compat (if true show old treatments without calendar)
 define("CO_PHYSIO_COMBAT", false );
 
 // if uncommented use a different img and wording for sketches Bodychart
 define("CO_PATIENT_SKETCHES_CUSTOM", "Testing" );
+
+define("CO_INVOICE_START", 1000 );
 
 // Bodychart background
 //define("CO_PHYSIO_BODYCHART_WHITE", true );

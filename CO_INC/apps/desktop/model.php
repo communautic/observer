@@ -270,7 +270,7 @@ class DesktopModel extends Model {
 		$q = "SELECT * FROM " . CO_TBL_DESKTOP_POSTITS . " WHERE id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		while($row = mysql_fetch_array($result)) {
-			$text = $row['text'];
+			$text = mysql_real_escape_string($row['text']);
 			$xyz = $row['xyz'];
 			$wh = $row['wh'];
 			$edited_user = $row['edited_user'];

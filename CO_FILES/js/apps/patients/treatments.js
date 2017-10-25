@@ -212,7 +212,7 @@ function patientsTreatments(name) {
 								}
 							});*/
 						} else {
-							module.askStatus = true;
+							module.askStatus = false;
 						}
 					}
 				});
@@ -251,7 +251,7 @@ function patientsTreatments(name) {
 							}
 						});
 					} else {
-						module.askStatus = true;
+						module.askStatus = false;
 					}
 				}
 			});
