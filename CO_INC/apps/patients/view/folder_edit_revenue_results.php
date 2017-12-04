@@ -202,6 +202,19 @@ if(is_array($invoices)) { ?>
     <?php echo($chartAge['ageGroup25']);?>% bis 25 <br /><?php echo($chartAge['ageGroup60']);?>% 25 bis 60 <br /><?php echo($chartAge['ageGroup60Plus']);?>% ab 61<br /><?php echo($chartAge['ageGroupNotset']);?>% keine Angabe
 </div>
 <?php } ?>
-<?php } ?>
 </div>
+<?php //} ?>
+<?php } else { // no umsaetze ?>
+<div style="width: 100%; height: 29px; background: #e5e5e5; border-bottom: 1px solid #ccc; color: #666; ">
+<div style="line-height: 18px; padding-left: 150px;">
+<table width="100%" style=" border-collapse: separate">
+    <tr >
+    <td width="184" valign="top" style="font-weight: bold; padding-top: 5px;">Kein Ergebnis vorhanden</td>
+    <td nowrap style="font-size: 11px; padding-top: 5px;"></td>
+    </td>
+    </tr>
+</table>
+</div>
+</div>
+<?php } ?>
 <div class="content-spacer" style="clear:both;"></div>
