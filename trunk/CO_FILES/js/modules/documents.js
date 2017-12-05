@@ -365,7 +365,8 @@ function Documents(app) {
 	this.removeItem = function(clicked,field) {
 		var module = this;
 		clicked.parent().fadeOut();
-		clicked.parent().prev().toggleClass('deletefromlist');
+		//clicked.parent().prev().toggleClass('deletefromlist');
+		clicked.parent().parent().prev().toggleClass('deletefromlist');
 		clicked.parents(".docitems-outer").hide();
 		if($("#"+field+" .docitems-outer:visible").length > 0) {
 		var text = $("#"+field+" .docitems-outer:visible:last .showItemContext").html();
