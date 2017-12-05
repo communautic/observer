@@ -38,12 +38,14 @@ table.standard { margin: 2pt 0 0 -15pt; }
 <p>&nbsp;</p>
 <p style="font-size: 25pt;"><?php echo($report->title)?></p>
 <p>&nbsp;</p>
+<?php if(!empty($report->code)) { ?>
 <table width="100%" class="standard">
 	<tr>
 	  <td class="tcell-left"><?php if(CO_PRODUCT_VARIANT == 1) { echo $lang["PATIENT_CODE_PO"]; }?><?php if(CO_PRODUCT_VARIANT == 2) { echo $lang["PATIENT_CODE_TO"]; }?></td>
         <td><?php echo($report->code)?></td>
 	</tr>
 </table>
+<?php } ?>
 <table width="100%" class="standard">
 	<tr>
 	  <td class="tcell-left">Patient/in</td>
