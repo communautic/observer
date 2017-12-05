@@ -411,7 +411,7 @@ class PatientsSketchesModel extends PatientsModel {
 		$result = mysql_query($q, $this->_db->connection);
 		$id_new = mysql_insert_id();
 		// diagnose
-		$qd = "INSERT INTO " . CO_TBL_PATIENTS_SKETCHES_DIAGNOSES . " (mid,text,canvas,xy,sort) SELECT $id_new,text,canvas,xy,sort FROM " . CO_TBL_PATIENTS_SKETCHES_DIAGNOSES . " where mid='$id' and bin='0'";
+		$qd = "INSERT INTO " . CO_TBL_PATIENTS_SKETCHES_DIAGNOSES . " (mid,text,canvas,xy,sort,color) SELECT $id_new,text,canvas,xy,sort,color FROM " . CO_TBL_PATIENTS_SKETCHES_DIAGNOSES . " where mid='$id' and bin='0'";
 		$resultd = mysql_query($qd, $this->_db->connection);
 		if ($result) {
 			return $id_new;
