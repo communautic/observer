@@ -98,6 +98,7 @@ function patientsTreatments(name) {
 		formData[formData.length] = processCustomTextApps('doctor_ct');
 		//formData[formData.length] = processListApps('method');
 		formData[formData.length] = processListAppsMethod('method');
+		formData[formData.length] = processDocListApps('documents');
 		formData[formData.length] = processListApps('treatment_access');
 	 }
 	 
