@@ -214,6 +214,8 @@ class PatientsTreatmentsModel extends PatientsModel {
 			break;
 		}
 		
+		$array["documentstreatment"] = $this->_documents->getDocListFromIDs($array['documents'],'documents');
+		
 		
 		//invoice carrier
 		
@@ -235,6 +237,9 @@ class PatientsTreatmentsModel extends PatientsModel {
 			}
 		}	
 		$array['patient'] = $array['lastname'] . ' ' . $array['firstname'];
+		
+		
+		$array["documents"] = $array["documentstreatment"];
 		
 		//$array["dob"] = $this->_date->formatDate($array["dob"],CO_DATE_FORMAT);
 		$d = DateTime::createFromFormat('Y-m-d', $array["dob"]);
@@ -287,6 +292,8 @@ class PatientsTreatmentsModel extends PatientsModel {
 		// time
 		$array["today"] = $this->_date->formatDate("now",CO_DATE_FORMAT);
 		
+		//$array["documents"] = $this->_documents->getDocListFromIDs($array['documents'],'documents');
+		
 		$array["created_date"] = $this->_date->formatDate($array["created_date"],CO_DATETIME_FORMAT);
 		$array["edited_date"] = $this->_date->formatDate($array["edited_date"],CO_DATETIME_FORMAT);
 		$array["created_user"] = $this->_users->getUserFullname($array["created_user"]);
@@ -297,6 +304,7 @@ class PatientsTreatmentsModel extends PatientsModel {
 		$array["doctor_print"] = $this->_contactsmodel->getUserListPlain($array["doctor"]);
 		$array["doctor"] = $this->_contactsmodel->getUserList($array['doctor'],'patientsdoctor', "", $array["canedit"]);
 		$array["doctor_ct"] = empty($array["doctor_ct"]) ? "" : $lang["TEXT_NOTE"] . " " . $array['doctor_ct'];
+		
 		
 		$array["method"] = $this->getTreamentIdDetails($array["method"]);
 		
@@ -336,6 +344,8 @@ class PatientsTreatmentsModel extends PatientsModel {
 		$task = array();
 		$bar_compare_array = array();
 		$task_bar = array();
+		
+		
 		
 		// get all tasks not in bin
 		if(CO_PHYSIO_COMBAT) {
@@ -613,6 +623,8 @@ class PatientsTreatmentsModel extends PatientsModel {
 			$diagnose[] = new Lists($diagnoses);
 		}*/
 		
+		
+		
 		$sendto = $this->getSendtoDetails("patients_treatments",$id);
 
 		$treatment = new Lists($array);
@@ -705,7 +717,7 @@ class PatientsTreatmentsModel extends PatientsModel {
    }
 
 
-   function setDetails($pid,$id,$title,$treatmentdate,$protocol,$method,$protocol2,$protocol3,$discount,$vat,$doctor,$doctor_ct,$task_id,$task_date,$task_text,$task,$task_treatmenttype,$canvasList_id,$canvasList_text,$treatment_access,$treatment_access_orig) {
+   function setDetails($pid,$id,$title,$treatmentdate,$protocol,$method,$protocol2,$protocol3,$discount,$vat,$doctor,$doctor_ct,$task_id,$task_date,$task_text,$task,$task_treatmenttype,$canvasList_id,$canvasList_text,$treatment_access,$treatment_access_orig,$documents) {
 		global $session, $lang;
 		
 		$treatmentdate = $this->_date->formatDate($treatmentdate);
@@ -723,7 +735,7 @@ class PatientsTreatmentsModel extends PatientsModel {
 			$accesssql = "access='$treatment_access', access_date='$treatment_access_date', access_user = '$session->uid',";
 		}
 		
-		$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS . " set title = '$title', item_date = '$treatmentdate', protocol='$protocol', method='$method', protocol2='$protocol2', protocol3='$protocol3', discount='$discount', vat='$vat', doctor='$doctor', doctor_ct='$doctor_ct', access='$treatment_access', $accesssql edited_user = '$session->uid', edited_date = '$now' where id='$id'";
+		$q = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS . " set title = '$title', item_date = '$treatmentdate', protocol='$protocol', method='$method', protocol2='$protocol2', protocol3='$protocol3', discount='$discount', vat='$vat', documents = '$documents', doctor='$doctor', doctor_ct='$doctor_ct', access='$treatment_access', $accesssql edited_user = '$session->uid', edited_date = '$now' where id='$id'";
 		$result = mysql_query($q, $this->_db->connection);
 		
 		// do existing diagnoses
