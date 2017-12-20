@@ -154,6 +154,12 @@
     <td class="tcell-right-nopadding"><input name="fax" id="fax" type="text" class="bg" value="<?php echo($contact->fax);?>" /></td>
   </tr>
 </table>
+<table border="0" cellspacing="0" cellpadding="0" class="table-content tbl-inactive">
+  <tr>
+    <td class="tcell-left-shorter text11"><span class="content-nav selectTextfield"><span><?php echo $lang['CONTACTS_WEBSITE'];?></span></span></td>
+    <td class="tcell-right-nopadding"><input name="website" id="website" type="text" class="bg" value="<?php echo($contact->website);?>" /></td>
+  </tr>
+</table>
 <div class="content-spacer"></div>
 <table border="0" cellspacing="0" cellpadding="0" class="table-content">
     <tr>

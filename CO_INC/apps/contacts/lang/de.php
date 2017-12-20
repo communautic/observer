@@ -30,6 +30,7 @@ $lang['CONTACTS_EMAIL_ALT'] = 'E-mail (Alternative)';
 $lang['CONTACTS_TEL'] = 'Telefon 1';
 $lang['CONTACTS_TEL2'] = 'Telefon 2';
 $lang['CONTACTS_FAX'] = 'Fax';
+$lang['CONTACTS_WEBSITE'] = 'Website Adresse';
 
 $lang["CONTACT_TAB_ADDRESS"] = "Adressen";
 $lang["CONTACT_TAB_ACCESS"] = "Berechtigungen";
