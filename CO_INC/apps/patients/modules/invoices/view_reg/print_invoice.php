@@ -124,8 +124,23 @@ if($invoice->invoice_type == 0) {
 						<td width="25%" style="border-bottom:1px solid #ccc; padding:5px 1px 0;" class="smalltext"><span style="margin-left: 7px;"><?php echo $value->number;?>. <?php echo $lang["PATIENT_TREATMENT_GOALS_SINGUAL"];?></span></td>
 						<td width="32%" style="border-bottom:1px solid #ccc; padding:5px 0 1px 0;" class="smalltext">(<?php echo $value->item_date;?>)</td>
 						<td width="15%" style="border-bottom:1px solid #ccc; padding:5px 0 1px 0;" class="smalltext"><?php foreach($value->type as $t) { echo '<span>' . $t['positionstext'] . ' ' . $t['shortname'] . '</span><br />'; } ?></td>
-						<td style="border-bottom:1px solid #ccc; padding:5px 7px 1px 0; text-align: right;" class="smalltext"><?php foreach($value->type as $t) { echo $t['minutes'] . 'min.<br />'; }?></td>
-						<td width="20%" style="padding:5px 7px 1px 0; text-align: right; border-left: 1px solid #ccc; border-bottom: 1px solid #ccc;" class="smalltext"><?php foreach($value->type as $t) { echo CO_DEFAULT_CURRENCY . ' ' . $t['costs'] . '<br />'; } ?> </td>
+						<td style="border-bottom:1px solid #ccc; padding:5px 7px 1px 0; text-align: right;" class="smalltext">
+            <?php foreach($value->type as $t) { 
+							if($t['minutes'] != 0) {
+								echo $t['minutes'] . 'min.<br />'; 
+							} else {
+								echo '<br />'; 
+							}
+						}?></td>
+						<td width="20%" style="padding:5px 7px 1px 0; text-align: right; border-left: 1px solid #ccc; border-bottom: 1px solid #ccc;" class="smalltext">
+            <?php foreach($value->type as $t) { 
+							if($t['costs'] != 0.00) {
+								echo CO_DEFAULT_CURRENCY . ' ' . $t['costs'] . '<br />'; 
+							} else {
+								echo '<br />'; 
+							}
+						}?>
+             </td>
 				</tr>
 			 
 		<?php }
@@ -180,8 +195,24 @@ if($invoice->invoice_type == 0) {
 						<td width="25%" style="border-bottom:1px solid #ccc; padding:5px 1px 0;" class="smalltext"><span style="margin-left: 7px;"><?php echo $value->number;?>. <?php echo $lang["PATIENT_TREATMENT_GOALS_SINGUAL"];?></span></td>
 						<td width="32%" style="border-bottom:1px solid #ccc; padding:5px 0 1px 0;" class="smalltext">(<?php echo $value->item_date;?>)</td>
 						<td width="15%" style="border-bottom:1px solid #ccc; padding:5px 0 1px 0;" class="smalltext"><?php foreach($value->type as $t) { echo '<span>' . $t['positionstext'] . ' ' . $t['shortname'] . '</span><br />'; } ?></td>
-						<td style="border-bottom:1px solid #ccc; padding:5px 7px 1px 0; text-align: right;" class="smalltext"><?php foreach($value->type as $t) { echo $t['minutes'] . 'min.<br />'; }?></td>
-						<td width="20%" style="padding:5px 7px 1px 0; text-align: right; border-left: 1px solid #ccc; border-bottom: 1px solid #ccc;" class="smalltext"><?php foreach($value->type as $t) { echo CO_DEFAULT_CURRENCY . ' ' . $t['costs'] . '<br />'; } ?> </td>
+						<td style="border-bottom:1px solid #ccc; padding:5px 7px 1px 0; text-align: right;" class="smalltext">
+            <?php foreach($value->type as $t) { 
+							if($t['minutes'] != 0) {
+								echo $t['minutes'] . 'min.<br />'; 
+							} else {
+								echo '<br />'; 
+							}
+						}?>
+            </td>
+						<td width="20%" style="padding:5px 7px 1px 0; text-align: right; border-left: 1px solid #ccc; border-bottom: 1px solid #ccc;" class="smalltext">
+            <?php foreach($value->type as $t) { 
+							if($t['costs'] != 0.00) {
+								echo CO_DEFAULT_CURRENCY . ' ' . $t['costs'] . '<br />'; 
+							} else {
+								echo '<br />'; 
+							}
+						}?>
+            </td>
 				</tr>
 			 
 		<?php }

@@ -10,7 +10,7 @@
     	<ul>
         	<li><span class="left<?php if($invoice->canedit) { ?> statusButton <?php } ?> planned<?php echo $invoice->status_planned_active;?>" rel="0" reltext="<?php echo $lang["PATIENT_INVOICE_STATUS_PLANNED_TIME"];?>"><?php echo $lang["PATIENT_INVOICE_STATUS_PLANNED"];?></span></li>
             <li><span class="<?php if($invoice->canedit) { ?>statusButton <?php } ?>inprogress<?php echo $invoice->status_inprogress_active;?>" rel="1" reltext="<?php echo $lang["PATIENT_INVOICE_STATUS_INPROGRESS_TIME"];?>"><?php echo $lang["PATIENT_INVOICE_STATUS_INPROGRESS"];?></span></li>
-            <li><span class="<?php if($invoice->canedit) { ?> statusButton statusAlert <?php } ?> finished<?php echo $invoice->status_finished_active;?>" rel="2" reltext="<?php echo $lang["PATIENT_INVOICE_STATUS_FINISHED_TIME"];?>"><?php echo $lang["PATIENT_INVOICE_STATUS_FINISHED"];?></span></li>
+            <li><span class="statusButton<?php if($invoice->canedit) { ?> statusAlert <?php } ?> finished<?php echo $invoice->status_finished_active;?>" rel="2" reltext="<?php echo $lang["PATIENT_INVOICE_STATUS_FINISHED_TIME"];?>"><?php echo $lang["PATIENT_INVOICE_STATUS_FINISHED"];?></span></li>
             <?php if($access != "guest") { ?><li><span class="right statusButton statusAlert  stopped<?php echo $invoice->status_storno_active;?>" rel="3" reltext="<?php echo $lang["PATIENT_INVOICE_STATUS_STORNO_TIME"];?>"><?php echo $lang["PATIENT_INVOICE_STATUS_STORNO"];?></span></li><?php } ?>
             <li><div class="status-time"><?php echo($invoice->status_text_time)?></div><div class="status-input"><input name="invoice_status_date" type="text" class="input-date statusdp" value="<?php echo($invoice->status_date)?>" readonly="readonly" /></div></li>
             

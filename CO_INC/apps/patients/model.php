@@ -2319,6 +2319,16 @@ function getPatientTitleFromServiceIDs($array,$target, $link = 0){
 			}
 		}
 		
+		if(in_array("prescriptions",$active_modules)) {
+			$patientsPrescriptionsModel = new PatientsPrescriptionsModel();
+			$q = "SELECT id FROM co_patients_prescriptions where pid = '$id'";
+			$result = mysql_query($q, $this->_db->connection);
+			while($row = mysql_fetch_array($result)) {
+				$mid = $row["id"];
+				$patientsPrescriptionsModel->deletePrescription($mid);
+			}
+		}
+		
 		if(in_array("meetings",$active_modules)) {
 			$patientsMeetingsModel = new PatientsMeetingsModel();
 			$q = "SELECT id FROM co_patients_meetings where pid = '$id'";
@@ -2746,6 +2756,24 @@ function getPatientTitleFromServiceIDs($array,$target, $link = 0){
 							}
 						}
 						
+						// prescriptions
+						if(in_array("prescriptions",$active_modules)) {
+							$qpc ="select id, title, bin, bintime, binuser from " . CO_TBL_PATIENTS_PRESCRIPTIONS . " where pid = '$pid'";
+							$resultpc = mysql_query($qpc, $this->_db->connection);
+							while ($rowpc = mysql_fetch_array($resultpc)) {
+								if($rowpc["bin"] == "1") {
+								$idp = $rowpc["id"];
+									foreach($rowpc as $key => $val) {
+										$prescription[$key] = $val;
+									}
+									$prescription["bintime"] = $this->_date->formatDate($prescription["bintime"],CO_DATETIME_FORMAT);
+									$prescription["binuser"] = $this->_users->getUserFullname($prescription["binuser"]);
+									$prescriptions[] = new Lists($prescription);
+									$arr["prescriptions"] = $prescriptions;
+								}
+							}
+						}
+						
 	
 						// meetings
 						if(in_array("meetings",$active_modules)) {
@@ -3041,6 +3069,20 @@ function getPatientTitleFromServiceIDs($array,$target, $link = 0){
 								}
 							}
 						}
+						
+						// prescriptions
+						if(in_array("prescriptions",$active_modules)) {
+							$patientsPrescriptionsModel = new PatientsPrescriptionsModel();
+							$qpc ="select id, title, bin, bintime, binuser from " . CO_TBL_PATIENTS_PRESCRIPTIONS . " where pid = '$pid'";
+							$resultpc = mysql_query($qpc, $this->_db->connection);
+							while ($rowpc = mysql_fetch_array($resultpc)) {
+								$mid = $rowpc["id"];
+								if($rowpc["bin"] == "1") {
+									$patientsPrescriptionsModel->deletePrescription($mid);
+									$arr["prescriptions"] = "";
+								}
+							}
+						}
 
 						// meetings
 						if(in_array("meetings",$active_modules)) {
@@ -3267,6 +3309,10 @@ function getPatientTitleFromServiceIDs($array,$target, $link = 0){
 			$patientsReportsModel = new PatientsReportsModel();
 			$data["patients_reports_items"] = $patientsReportsModel->getNavNumItems($id);
 		}
+		if(in_array("prescriptions",$active_modules)) {
+			$patientsPrescriptionsModel = new PatientsPrescriptionsModel();
+			$data["patients_prescriptions_items"] = $patientsPrescriptionsModel->getNavNumItems($id);
+		}
 		if(in_array("invoices",$active_modules)) {
 			$patientsInvoicesModel = new PatientsInvoicesModel();
 			$data["patients_invoices_items"] = $patientsInvoicesModel->getNavNumItems($id);
@@ -3481,6 +3527,17 @@ function getPatientTitleFromServiceIDs($array,$target, $link = 0){
 			// Reports
 			if(in_array("reports",$active_modules)) {
 				$qp = "SELECT id,CONVERT(title USING latin1) as title FROM " . CO_TBL_PATIENTS_REPORTS . " WHERE pid = '$pid' and bin = '0' $sql and title like '%$term%' ORDER BY title";
+				$resultp = mysql_query($qp, $this->_db->connection);
+				while($rowp = mysql_fetch_array($resultp)) {
+					$rows['value'] = htmlspecialchars_decode($rowp['title']);
+					$rows['id'] = 'reports,' .$folder. ',' . $pid . ',' .$rowp['id'].',patients';
+					$r[] = $rows;
+				}
+			}
+			
+			// Prescriptions
+			if(in_array("prescriptions",$active_modules)) {
+				$qp = "SELECT id,CONVERT(title USING latin1) as title FROM " . CO_TBL_PATIENTS_PRESCRIPTIONS . " WHERE pid = '$pid' and bin = '0' $sql and title like '%$term%' ORDER BY title";
 				$resultp = mysql_query($qp, $this->_db->connection);
 				while($rowp = mysql_fetch_array($resultp)) {
 					$rows['value'] = htmlspecialchars_decode($rowp['title']);

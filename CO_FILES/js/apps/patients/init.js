@@ -1193,6 +1193,8 @@ function patientsActions(status) {
 				actions = ['1','2','3','6','7','8','9']; 
 			} else if(obj.name == 'patients_invoices') {
 				actions = ['2','3','6','7','8']; 
+			} else if(obj.name == 'patients_prescriptions') {
+				actions = ['0','2','4','6','7','8','9']; 
 			} else {
 				actions = ['0','2','3','4','6','7','8','9']; 
 			}

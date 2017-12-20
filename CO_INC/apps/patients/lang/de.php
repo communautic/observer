@@ -52,7 +52,7 @@ $lang["PATIENT_CODE"] = 'Patientencode';
 $lang["PATIENT_CODE_PO"] = 'Refnr.';
 $lang["PATIENT_CODE_TO"] = 'Patientencode';
 $lang["PATIENT_DOB"] = 'Geburtsdatum';
-$lang["PATIENT_COO"] = 'Beruf';
+$lang["PATIENT_COO"] = 'Beschäftigung';
 $lang["PATIENT_FAMILYSTATUS"] = 'Familienstand';
 
 
