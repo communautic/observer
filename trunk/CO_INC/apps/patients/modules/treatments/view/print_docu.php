@@ -97,7 +97,7 @@
 <?php if(!empty($treatment->coo)) { ?>
 <table width="100%" class="standard">
 	<tr>
-		<td class="tcell-left">Beruf</td>
+		<td class="tcell-left">Beschäftigung</td>
 		<td><?php echo($treatment->coo);?></td>
     </tr>
 </table>
