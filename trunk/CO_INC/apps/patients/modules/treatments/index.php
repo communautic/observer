@@ -58,6 +58,9 @@ if (!empty($_GET['request'])) {
 		case 'createDuplicate':
 			echo($patientsTreatments->createDuplicate($_GET['id']));
 		break;
+		case 'createDuplicateWithTreatments':
+			echo($patientsTreatments->createDuplicateWithTreatments($_GET['id']));
+		break;
 		case 'binTreatment':
 			echo($patientsTreatments->binTreatment($_GET['id']));
 		break;
