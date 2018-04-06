@@ -437,7 +437,7 @@ function activateSessionCheck() {
 				}
 			}
 		});
-	}, 15000);
+	}, 60000);
 }
 activateSessionCheck();
 

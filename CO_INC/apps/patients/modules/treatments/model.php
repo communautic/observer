@@ -980,24 +980,73 @@ function getTreatmentTypeMin($string){
    }
 
    	function createDuplicate($id) {
-		global $session, $lang;
-		
-		$now = gmdate("Y-m-d H:i:s");
-
-		// treatment
-		$q = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS . " (pid,title,item_date,doctor,doctor_ct,method,discount,vat,protocol,protocol2,protocol3,status_date,created_date,created_user,edited_date,edited_user) SELECT pid,CONCAT(title,' " . $lang["GLOBAL_DUPLICAT"] . "'),'$now',doctor,doctor_ct,method,discount,vat,protocol,protocol2,protocol3,'$now','$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_PATIENTS_TREATMENTS . " where id='$id'";
-		$result = mysql_query($q, $this->_db->connection);
-		$id_new = mysql_insert_id();
-		// tasks
-		//$qt = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " (mid,type,team,team_ct,place,place_ct,item_date,text,sort) SELECT $id_new,type,team,team_ct,place,place_ct,'$now',text,sort FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where mid='$id' and bin='0'";
-		//$resultt = mysql_query($qt, $this->_db->connection);
-		// diagnose
-		$qd = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS_DIAGNOSES . " (mid,text,canvas,xy,sort) SELECT $id_new,text,canvas,xy,sort FROM " . CO_TBL_PATIENTS_TREATMENTS_DIAGNOSES . " where mid='$id' and bin='0'";
-		$resultd = mysql_query($qd, $this->_db->connection);
-		if ($result) {
-			return $id_new;
+			global $session, $lang;
+			
+			$now = gmdate("Y-m-d H:i:s");
+	
+			// treatment
+			$q = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS . " (pid,title,item_date,doctor,doctor_ct,method,discount,vat,protocol,protocol2,protocol3,status_date,created_date,created_user,edited_date,edited_user) SELECT pid,CONCAT(title,' " . $lang["GLOBAL_DUPLICAT"] . "'),'$now',doctor,doctor_ct,method,discount,vat,protocol,protocol2,protocol3,'$now','$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_PATIENTS_TREATMENTS . " where id='$id'";
+			$result = mysql_query($q, $this->_db->connection);
+			$id_new = mysql_insert_id();
+			// tasks
+			//$qt = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " (mid,type,team,team_ct,place,place_ct,item_date,text,sort) SELECT $id_new,type,team,team_ct,place,place_ct,'$now',text,sort FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where mid='$id' and bin='0'";
+			//$resultt = mysql_query($qt, $this->_db->connection);
+			// diagnose
+			$qd = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS_DIAGNOSES . " (mid,text,canvas,xy,sort) SELECT $id_new,text,canvas,xy,sort FROM " . CO_TBL_PATIENTS_TREATMENTS_DIAGNOSES . " where mid='$id' and bin='0'";
+			$resultd = mysql_query($qd, $this->_db->connection);
+			if ($result) {
+				return $id_new;
+			}
 		}
-	}
+		
+		
+		function createDuplicateWithTreatments($id) {
+			global $session, $lang;
+			
+			$now = gmdate("Y-m-d H:i:s");
+	
+			// treatment
+			$q = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS . " (pid,title,item_date,doctor,doctor_ct,method,discount,vat,protocol,protocol2,protocol3,status_date,created_date,created_user,edited_date,edited_user) SELECT pid,CONCAT(title,' " . $lang["GLOBAL_DUPLICAT"] . "'),'$now',doctor,doctor_ct,method,discount,vat,protocol,protocol2,protocol3,'$now','$now','$session->uid','$now','$session->uid' FROM " . CO_TBL_PATIENTS_TREATMENTS . " where id='$id'";
+			$result = mysql_query($q, $this->_db->connection);
+			$id_new = mysql_insert_id();
+			
+			// Update all treats with new treatid which are status 0
+			$qt = "UPDATE " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " SET mid='$id_new' WHERE mid='$id' and status='0' and bin='0'";
+			$resultt = mysql_query($qt, $this->_db->connection);
+			
+			// select the treatments not done
+			// insert them wir nre treat id
+			// get new id and update the calendar entry
+			/*$qt = "SELECT * FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where mid='$id' and status='0' and bin='0'";
+			$rt = mysql_query($qt, $this->_db->connection);
+			while($rowt = mysql_fetch_array($rt)) {
+				$tid = $row['id'];
+				$this->deleteTask($tid);
+			}*/
+			
+			//$qt = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " (mid,type,team,team_ct,place,place_ct,item_date,text,bar,sort) SELECT $id_new,type,team,team_ct,place,place_ct,'$now',text,bar,sort FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " where mid='$id' and status='0' and bin='0'";
+			//$resultt = mysql_query($qt, $this->_db->connection);
+			
+			/*$q = "SELECT a.*,(SELECT MIN(item_date) FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " as b WHERE b.mid=a.id and b.bin='0') as treatment_start,(SELECT MAX(item_date) FROM " . CO_TBL_PATIENTS_TREATMENTS_TASKS . " as b WHERE b.mid=a.id and b.bin='0') as treatment_end FROM " . CO_TBL_PATIENTS_TREATMENTS . "  as a where a.id = '$id'";
+		$result = mysql_query($q, $this->_db->connection);
+		if(mysql_num_rows($result) < 1) {
+			return false;
+		}
+		$row = mysql_fetch_array($result);
+		foreach($row as $key => $val) {
+				$array[$key] = $val;
+			}*/
+			
+			
+			
+			
+			// diagnose
+			$qd = "INSERT INTO " . CO_TBL_PATIENTS_TREATMENTS_DIAGNOSES . " (mid,text,canvas,xy,sort) SELECT $id_new,text,canvas,xy,sort FROM " . CO_TBL_PATIENTS_TREATMENTS_DIAGNOSES . " where mid='$id' and bin='0'";
+			$resultd = mysql_query($qd, $this->_db->connection);
+			if ($result) {
+				return $id_new;
+			}
+		}
 
 
    function binTreatment($id) {

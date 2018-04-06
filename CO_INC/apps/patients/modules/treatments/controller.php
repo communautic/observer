@@ -308,6 +308,15 @@ class PatientsTreatments extends Patients {
 			 return "error";
 		  }
 	}
+	
+	function createDuplicateWithTreatments($id) {
+		$retval = $this->model->createDuplicateWithTreatments($id);
+		if($retval){
+			 return $retval;
+		  } else{
+			 return "error";
+		  }
+	}
 
 
 	function binTreatment($id) {
